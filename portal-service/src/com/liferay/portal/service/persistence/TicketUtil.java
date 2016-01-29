@@ -106,11 +106,11 @@ public class TicketUtil {
 	}
 
 	/**
-	* Returns the ticket where key = &#63; or throws a {@link NoSuchTicketException} if it could not be found.
+	* Returns the ticket where key = &#63; or throws a {@link com.liferay.portal.exception.NoSuchTicketException} if it could not be found.
 	*
 	* @param key the key
 	* @return the matching ticket
-	* @throws NoSuchTicketException if a matching ticket could not be found
+	* @throws com.liferay.portal.exception.NoSuchTicketException if a matching ticket could not be found
 	*/
 	public static Ticket findByKey(java.lang.String key)
 		throws com.liferay.portal.exception.NoSuchTicketException {
@@ -248,7 +248,7 @@ public class TicketUtil {
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching ticket
-	* @throws NoSuchTicketException if a matching ticket could not be found
+	* @throws com.liferay.portal.exception.NoSuchTicketException if a matching ticket could not be found
 	*/
 	public static Ticket findByC_C_T_First(long classNameId, long classPK,
 		int type, OrderByComparator<Ticket> orderByComparator)
@@ -282,7 +282,7 @@ public class TicketUtil {
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching ticket
-	* @throws NoSuchTicketException if a matching ticket could not be found
+	* @throws com.liferay.portal.exception.NoSuchTicketException if a matching ticket could not be found
 	*/
 	public static Ticket findByC_C_T_Last(long classNameId, long classPK,
 		int type, OrderByComparator<Ticket> orderByComparator)
@@ -317,7 +317,7 @@ public class TicketUtil {
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next ticket
-	* @throws NoSuchTicketException if a ticket with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchTicketException if a ticket with the primary key could not be found
 	*/
 	public static Ticket[] findByC_C_T_PrevAndNext(long ticketId,
 		long classNameId, long classPK, int type,
@@ -384,7 +384,7 @@ public class TicketUtil {
 	*
 	* @param ticketId the primary key of the ticket
 	* @return the ticket that was removed
-	* @throws NoSuchTicketException if a ticket with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchTicketException if a ticket with the primary key could not be found
 	*/
 	public static Ticket remove(long ticketId)
 		throws com.liferay.portal.exception.NoSuchTicketException {
@@ -396,11 +396,11 @@ public class TicketUtil {
 	}
 
 	/**
-	* Returns the ticket with the primary key or throws a {@link NoSuchTicketException} if it could not be found.
+	* Returns the ticket with the primary key or throws a {@link com.liferay.portal.exception.NoSuchTicketException} if it could not be found.
 	*
 	* @param ticketId the primary key of the ticket
 	* @return the ticket
-	* @throws NoSuchTicketException if a ticket with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchTicketException if a ticket with the primary key could not be found
 	*/
 	public static Ticket findByPrimaryKey(long ticketId)
 		throws com.liferay.portal.exception.NoSuchTicketException {

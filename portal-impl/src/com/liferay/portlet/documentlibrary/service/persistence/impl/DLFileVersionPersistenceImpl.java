@@ -41,7 +41,6 @@ import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
-import com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException;
 import com.liferay.portlet.documentlibrary.model.DLFileVersion;
 import com.liferay.portlet.documentlibrary.model.impl.DLFileVersionImpl;
 import com.liferay.portlet.documentlibrary.model.impl.DLFileVersionModelImpl;
@@ -300,12 +299,12 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library file version
-	 * @throws NoSuchFileVersionException if a matching document library file version could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException if a matching document library file version could not be found
 	 */
 	@Override
 	public DLFileVersion findByUuid_First(String uuid,
 		OrderByComparator<DLFileVersion> orderByComparator)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		DLFileVersion dlFileVersion = fetchByUuid_First(uuid, orderByComparator);
 
 		if (dlFileVersion != null) {
@@ -321,7 +320,7 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileVersionException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException(msg.toString());
 	}
 
 	/**
@@ -349,12 +348,12 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library file version
-	 * @throws NoSuchFileVersionException if a matching document library file version could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException if a matching document library file version could not be found
 	 */
 	@Override
 	public DLFileVersion findByUuid_Last(String uuid,
 		OrderByComparator<DLFileVersion> orderByComparator)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		DLFileVersion dlFileVersion = fetchByUuid_Last(uuid, orderByComparator);
 
 		if (dlFileVersion != null) {
@@ -370,7 +369,7 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileVersionException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException(msg.toString());
 	}
 
 	/**
@@ -406,12 +405,12 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library file version
-	 * @throws NoSuchFileVersionException if a document library file version with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException if a document library file version with the primary key could not be found
 	 */
 	@Override
 	public DLFileVersion[] findByUuid_PrevAndNext(long fileVersionId,
 		String uuid, OrderByComparator<DLFileVersion> orderByComparator)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		DLFileVersion dlFileVersion = findByPrimaryKey(fileVersionId);
 
 		Session session = null;
@@ -652,16 +651,16 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 			new String[] { String.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the document library file version where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchFileVersionException} if it could not be found.
+	 * Returns the document library file version where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException} if it could not be found.
 	 *
 	 * @param uuid the uuid
 	 * @param groupId the group ID
 	 * @return the matching document library file version
-	 * @throws NoSuchFileVersionException if a matching document library file version could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException if a matching document library file version could not be found
 	 */
 	@Override
 	public DLFileVersion findByUUID_G(String uuid, long groupId)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		DLFileVersion dlFileVersion = fetchByUUID_G(uuid, groupId);
 
 		if (dlFileVersion == null) {
@@ -681,7 +680,7 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchFileVersionException(msg.toString());
+			throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException(msg.toString());
 		}
 
 		return dlFileVersion;
@@ -814,7 +813,7 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	 */
 	@Override
 	public DLFileVersion removeByUUID_G(String uuid, long groupId)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		DLFileVersion dlFileVersion = findByUUID_G(uuid, groupId);
 
 		return remove(dlFileVersion);
@@ -1119,12 +1118,12 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library file version
-	 * @throws NoSuchFileVersionException if a matching document library file version could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException if a matching document library file version could not be found
 	 */
 	@Override
 	public DLFileVersion findByUuid_C_First(String uuid, long companyId,
 		OrderByComparator<DLFileVersion> orderByComparator)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		DLFileVersion dlFileVersion = fetchByUuid_C_First(uuid, companyId,
 				orderByComparator);
 
@@ -1144,7 +1143,7 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileVersionException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException(msg.toString());
 	}
 
 	/**
@@ -1175,12 +1174,12 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library file version
-	 * @throws NoSuchFileVersionException if a matching document library file version could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException if a matching document library file version could not be found
 	 */
 	@Override
 	public DLFileVersion findByUuid_C_Last(String uuid, long companyId,
 		OrderByComparator<DLFileVersion> orderByComparator)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		DLFileVersion dlFileVersion = fetchByUuid_C_Last(uuid, companyId,
 				orderByComparator);
 
@@ -1200,7 +1199,7 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileVersionException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException(msg.toString());
 	}
 
 	/**
@@ -1238,13 +1237,13 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library file version
-	 * @throws NoSuchFileVersionException if a document library file version with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException if a document library file version with the primary key could not be found
 	 */
 	@Override
 	public DLFileVersion[] findByUuid_C_PrevAndNext(long fileVersionId,
 		String uuid, long companyId,
 		OrderByComparator<DLFileVersion> orderByComparator)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		DLFileVersion dlFileVersion = findByPrimaryKey(fileVersionId);
 
 		Session session = null;
@@ -1680,12 +1679,12 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library file version
-	 * @throws NoSuchFileVersionException if a matching document library file version could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException if a matching document library file version could not be found
 	 */
 	@Override
 	public DLFileVersion findByCompanyId_First(long companyId,
 		OrderByComparator<DLFileVersion> orderByComparator)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		DLFileVersion dlFileVersion = fetchByCompanyId_First(companyId,
 				orderByComparator);
 
@@ -1702,7 +1701,7 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileVersionException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException(msg.toString());
 	}
 
 	/**
@@ -1731,12 +1730,12 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library file version
-	 * @throws NoSuchFileVersionException if a matching document library file version could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException if a matching document library file version could not be found
 	 */
 	@Override
 	public DLFileVersion findByCompanyId_Last(long companyId,
 		OrderByComparator<DLFileVersion> orderByComparator)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		DLFileVersion dlFileVersion = fetchByCompanyId_Last(companyId,
 				orderByComparator);
 
@@ -1753,7 +1752,7 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileVersionException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException(msg.toString());
 	}
 
 	/**
@@ -1789,12 +1788,12 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library file version
-	 * @throws NoSuchFileVersionException if a document library file version with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException if a document library file version with the primary key could not be found
 	 */
 	@Override
 	public DLFileVersion[] findByCompanyId_PrevAndNext(long fileVersionId,
 		long companyId, OrderByComparator<DLFileVersion> orderByComparator)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		DLFileVersion dlFileVersion = findByPrimaryKey(fileVersionId);
 
 		Session session = null;
@@ -2189,12 +2188,12 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	 * @param fileEntryId the file entry ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library file version
-	 * @throws NoSuchFileVersionException if a matching document library file version could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException if a matching document library file version could not be found
 	 */
 	@Override
 	public DLFileVersion findByFileEntryId_First(long fileEntryId,
 		OrderByComparator<DLFileVersion> orderByComparator)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		DLFileVersion dlFileVersion = fetchByFileEntryId_First(fileEntryId,
 				orderByComparator);
 
@@ -2211,7 +2210,7 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileVersionException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException(msg.toString());
 	}
 
 	/**
@@ -2240,12 +2239,12 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	 * @param fileEntryId the file entry ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library file version
-	 * @throws NoSuchFileVersionException if a matching document library file version could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException if a matching document library file version could not be found
 	 */
 	@Override
 	public DLFileVersion findByFileEntryId_Last(long fileEntryId,
 		OrderByComparator<DLFileVersion> orderByComparator)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		DLFileVersion dlFileVersion = fetchByFileEntryId_Last(fileEntryId,
 				orderByComparator);
 
@@ -2262,7 +2261,7 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileVersionException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException(msg.toString());
 	}
 
 	/**
@@ -2298,12 +2297,12 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	 * @param fileEntryId the file entry ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library file version
-	 * @throws NoSuchFileVersionException if a document library file version with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException if a document library file version with the primary key could not be found
 	 */
 	@Override
 	public DLFileVersion[] findByFileEntryId_PrevAndNext(long fileVersionId,
 		long fileEntryId, OrderByComparator<DLFileVersion> orderByComparator)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		DLFileVersion dlFileVersion = findByPrimaryKey(fileVersionId);
 
 		Session session = null;
@@ -2711,12 +2710,12 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	 * @param mimeType the mime type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library file version
-	 * @throws NoSuchFileVersionException if a matching document library file version could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException if a matching document library file version could not be found
 	 */
 	@Override
 	public DLFileVersion findByMimeType_First(String mimeType,
 		OrderByComparator<DLFileVersion> orderByComparator)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		DLFileVersion dlFileVersion = fetchByMimeType_First(mimeType,
 				orderByComparator);
 
@@ -2733,7 +2732,7 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileVersionException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException(msg.toString());
 	}
 
 	/**
@@ -2762,12 +2761,12 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	 * @param mimeType the mime type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library file version
-	 * @throws NoSuchFileVersionException if a matching document library file version could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException if a matching document library file version could not be found
 	 */
 	@Override
 	public DLFileVersion findByMimeType_Last(String mimeType,
 		OrderByComparator<DLFileVersion> orderByComparator)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		DLFileVersion dlFileVersion = fetchByMimeType_Last(mimeType,
 				orderByComparator);
 
@@ -2784,7 +2783,7 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileVersionException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException(msg.toString());
 	}
 
 	/**
@@ -2820,12 +2819,12 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	 * @param mimeType the mime type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library file version
-	 * @throws NoSuchFileVersionException if a document library file version with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException if a document library file version with the primary key could not be found
 	 */
 	@Override
 	public DLFileVersion[] findByMimeType_PrevAndNext(long fileVersionId,
 		String mimeType, OrderByComparator<DLFileVersion> orderByComparator)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		DLFileVersion dlFileVersion = findByPrimaryKey(fileVersionId);
 
 		Session session = null;
@@ -3248,12 +3247,12 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library file version
-	 * @throws NoSuchFileVersionException if a matching document library file version could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException if a matching document library file version could not be found
 	 */
 	@Override
 	public DLFileVersion findByC_NotS_First(long companyId, int status,
 		OrderByComparator<DLFileVersion> orderByComparator)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		DLFileVersion dlFileVersion = fetchByC_NotS_First(companyId, status,
 				orderByComparator);
 
@@ -3273,7 +3272,7 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileVersionException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException(msg.toString());
 	}
 
 	/**
@@ -3304,12 +3303,12 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library file version
-	 * @throws NoSuchFileVersionException if a matching document library file version could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException if a matching document library file version could not be found
 	 */
 	@Override
 	public DLFileVersion findByC_NotS_Last(long companyId, int status,
 		OrderByComparator<DLFileVersion> orderByComparator)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		DLFileVersion dlFileVersion = fetchByC_NotS_Last(companyId, status,
 				orderByComparator);
 
@@ -3329,7 +3328,7 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileVersionException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException(msg.toString());
 	}
 
 	/**
@@ -3367,13 +3366,13 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library file version
-	 * @throws NoSuchFileVersionException if a document library file version with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException if a document library file version with the primary key could not be found
 	 */
 	@Override
 	public DLFileVersion[] findByC_NotS_PrevAndNext(long fileVersionId,
 		long companyId, int status,
 		OrderByComparator<DLFileVersion> orderByComparator)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		DLFileVersion dlFileVersion = findByPrimaryKey(fileVersionId);
 
 		Session session = null;
@@ -3595,16 +3594,16 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 			new String[] { Long.class.getName(), String.class.getName() });
 
 	/**
-	 * Returns the document library file version where fileEntryId = &#63; and version = &#63; or throws a {@link NoSuchFileVersionException} if it could not be found.
+	 * Returns the document library file version where fileEntryId = &#63; and version = &#63; or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException} if it could not be found.
 	 *
 	 * @param fileEntryId the file entry ID
 	 * @param version the version
 	 * @return the matching document library file version
-	 * @throws NoSuchFileVersionException if a matching document library file version could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException if a matching document library file version could not be found
 	 */
 	@Override
 	public DLFileVersion findByF_V(long fileEntryId, String version)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		DLFileVersion dlFileVersion = fetchByF_V(fileEntryId, version);
 
 		if (dlFileVersion == null) {
@@ -3624,7 +3623,7 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchFileVersionException(msg.toString());
+			throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException(msg.toString());
 		}
 
 		return dlFileVersion;
@@ -3757,7 +3756,7 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	 */
 	@Override
 	public DLFileVersion removeByF_V(long fileEntryId, String version)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		DLFileVersion dlFileVersion = findByF_V(fileEntryId, version);
 
 		return remove(dlFileVersion);
@@ -4047,12 +4046,12 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library file version
-	 * @throws NoSuchFileVersionException if a matching document library file version could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException if a matching document library file version could not be found
 	 */
 	@Override
 	public DLFileVersion findByF_S_First(long fileEntryId, int status,
 		OrderByComparator<DLFileVersion> orderByComparator)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		DLFileVersion dlFileVersion = fetchByF_S_First(fileEntryId, status,
 				orderByComparator);
 
@@ -4072,7 +4071,7 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileVersionException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException(msg.toString());
 	}
 
 	/**
@@ -4103,12 +4102,12 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library file version
-	 * @throws NoSuchFileVersionException if a matching document library file version could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException if a matching document library file version could not be found
 	 */
 	@Override
 	public DLFileVersion findByF_S_Last(long fileEntryId, int status,
 		OrderByComparator<DLFileVersion> orderByComparator)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		DLFileVersion dlFileVersion = fetchByF_S_Last(fileEntryId, status,
 				orderByComparator);
 
@@ -4128,7 +4127,7 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileVersionException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException(msg.toString());
 	}
 
 	/**
@@ -4166,13 +4165,13 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library file version
-	 * @throws NoSuchFileVersionException if a document library file version with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException if a document library file version with the primary key could not be found
 	 */
 	@Override
 	public DLFileVersion[] findByF_S_PrevAndNext(long fileVersionId,
 		long fileEntryId, int status,
 		OrderByComparator<DLFileVersion> orderByComparator)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		DLFileVersion dlFileVersion = findByPrimaryKey(fileVersionId);
 
 		Session session = null;
@@ -4614,12 +4613,12 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library file version
-	 * @throws NoSuchFileVersionException if a matching document library file version could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException if a matching document library file version could not be found
 	 */
 	@Override
 	public DLFileVersion findByG_F_S_First(long groupId, long folderId,
 		int status, OrderByComparator<DLFileVersion> orderByComparator)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		DLFileVersion dlFileVersion = fetchByG_F_S_First(groupId, folderId,
 				status, orderByComparator);
 
@@ -4642,7 +4641,7 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileVersionException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException(msg.toString());
 	}
 
 	/**
@@ -4675,12 +4674,12 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library file version
-	 * @throws NoSuchFileVersionException if a matching document library file version could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException if a matching document library file version could not be found
 	 */
 	@Override
 	public DLFileVersion findByG_F_S_Last(long groupId, long folderId,
 		int status, OrderByComparator<DLFileVersion> orderByComparator)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		DLFileVersion dlFileVersion = fetchByG_F_S_Last(groupId, folderId,
 				status, orderByComparator);
 
@@ -4703,7 +4702,7 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileVersionException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException(msg.toString());
 	}
 
 	/**
@@ -4743,13 +4742,13 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library file version
-	 * @throws NoSuchFileVersionException if a document library file version with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException if a document library file version with the primary key could not be found
 	 */
 	@Override
 	public DLFileVersion[] findByG_F_S_PrevAndNext(long fileVersionId,
 		long groupId, long folderId, int status,
 		OrderByComparator<DLFileVersion> orderByComparator)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		DLFileVersion dlFileVersion = findByPrimaryKey(fileVersionId);
 
 		Session session = null;
@@ -5243,13 +5242,13 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	 * @param version the version
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library file version
-	 * @throws NoSuchFileVersionException if a matching document library file version could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException if a matching document library file version could not be found
 	 */
 	@Override
 	public DLFileVersion findByG_F_T_V_First(long groupId, long folderId,
 		String title, String version,
 		OrderByComparator<DLFileVersion> orderByComparator)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		DLFileVersion dlFileVersion = fetchByG_F_T_V_First(groupId, folderId,
 				title, version, orderByComparator);
 
@@ -5275,7 +5274,7 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileVersionException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException(msg.toString());
 	}
 
 	/**
@@ -5311,13 +5310,13 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	 * @param version the version
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library file version
-	 * @throws NoSuchFileVersionException if a matching document library file version could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException if a matching document library file version could not be found
 	 */
 	@Override
 	public DLFileVersion findByG_F_T_V_Last(long groupId, long folderId,
 		String title, String version,
 		OrderByComparator<DLFileVersion> orderByComparator)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		DLFileVersion dlFileVersion = fetchByG_F_T_V_Last(groupId, folderId,
 				title, version, orderByComparator);
 
@@ -5343,7 +5342,7 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileVersionException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException(msg.toString());
 	}
 
 	/**
@@ -5386,13 +5385,13 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	 * @param version the version
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library file version
-	 * @throws NoSuchFileVersionException if a document library file version with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException if a document library file version with the primary key could not be found
 	 */
 	@Override
 	public DLFileVersion[] findByG_F_T_V_PrevAndNext(long fileVersionId,
 		long groupId, long folderId, String title, String version,
 		OrderByComparator<DLFileVersion> orderByComparator)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		DLFileVersion dlFileVersion = findByPrimaryKey(fileVersionId);
 
 		Session session = null;
@@ -5901,11 +5900,11 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	 *
 	 * @param fileVersionId the primary key of the document library file version
 	 * @return the document library file version that was removed
-	 * @throws NoSuchFileVersionException if a document library file version with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException if a document library file version with the primary key could not be found
 	 */
 	@Override
 	public DLFileVersion remove(long fileVersionId)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		return remove((Serializable)fileVersionId);
 	}
 
@@ -5914,11 +5913,11 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	 *
 	 * @param primaryKey the primary key of the document library file version
 	 * @return the document library file version that was removed
-	 * @throws NoSuchFileVersionException if a document library file version with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException if a document library file version with the primary key could not be found
 	 */
 	@Override
 	public DLFileVersion remove(Serializable primaryKey)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		Session session = null;
 
 		try {
@@ -5932,13 +5931,13 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchFileVersionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(dlFileVersion);
 		}
-		catch (NoSuchFileVersionException nsee) {
+		catch (com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -6264,11 +6263,11 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	 *
 	 * @param primaryKey the primary key of the document library file version
 	 * @return the document library file version
-	 * @throws NoSuchFileVersionException if a document library file version with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException if a document library file version with the primary key could not be found
 	 */
 	@Override
 	public DLFileVersion findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		DLFileVersion dlFileVersion = fetchByPrimaryKey(primaryKey);
 
 		if (dlFileVersion == null) {
@@ -6276,7 +6275,7 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchFileVersionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -6284,15 +6283,15 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	}
 
 	/**
-	 * Returns the document library file version with the primary key or throws a {@link NoSuchFileVersionException} if it could not be found.
+	 * Returns the document library file version with the primary key or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException} if it could not be found.
 	 *
 	 * @param fileVersionId the primary key of the document library file version
 	 * @return the document library file version
-	 * @throws NoSuchFileVersionException if a document library file version with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException if a document library file version with the primary key could not be found
 	 */
 	@Override
 	public DLFileVersion findByPrimaryKey(long fileVersionId)
-		throws NoSuchFileVersionException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException {
 		return findByPrimaryKey((Serializable)fileVersionId);
 	}
 

@@ -182,7 +182,7 @@ public class PasswordTrackerUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching password tracker
-	* @throws NoSuchPasswordTrackerException if a matching password tracker could not be found
+	* @throws com.liferay.portal.exception.NoSuchPasswordTrackerException if a matching password tracker could not be found
 	*/
 	public static PasswordTracker findByUserId_First(long userId,
 		OrderByComparator<PasswordTracker> orderByComparator)
@@ -208,7 +208,7 @@ public class PasswordTrackerUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching password tracker
-	* @throws NoSuchPasswordTrackerException if a matching password tracker could not be found
+	* @throws com.liferay.portal.exception.NoSuchPasswordTrackerException if a matching password tracker could not be found
 	*/
 	public static PasswordTracker findByUserId_Last(long userId,
 		OrderByComparator<PasswordTracker> orderByComparator)
@@ -235,7 +235,7 @@ public class PasswordTrackerUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next password tracker
-	* @throws NoSuchPasswordTrackerException if a password tracker with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPasswordTrackerException if a password tracker with the primary key could not be found
 	*/
 	public static PasswordTracker[] findByUserId_PrevAndNext(
 		long passwordTrackerId, long userId,
@@ -298,7 +298,7 @@ public class PasswordTrackerUtil {
 	*
 	* @param passwordTrackerId the primary key of the password tracker
 	* @return the password tracker that was removed
-	* @throws NoSuchPasswordTrackerException if a password tracker with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPasswordTrackerException if a password tracker with the primary key could not be found
 	*/
 	public static PasswordTracker remove(long passwordTrackerId)
 		throws com.liferay.portal.exception.NoSuchPasswordTrackerException {
@@ -310,11 +310,11 @@ public class PasswordTrackerUtil {
 	}
 
 	/**
-	* Returns the password tracker with the primary key or throws a {@link NoSuchPasswordTrackerException} if it could not be found.
+	* Returns the password tracker with the primary key or throws a {@link com.liferay.portal.exception.NoSuchPasswordTrackerException} if it could not be found.
 	*
 	* @param passwordTrackerId the primary key of the password tracker
 	* @return the password tracker
-	* @throws NoSuchPasswordTrackerException if a password tracker with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPasswordTrackerException if a password tracker with the primary key could not be found
 	*/
 	public static PasswordTracker findByPrimaryKey(long passwordTrackerId)
 		throws com.liferay.portal.exception.NoSuchPasswordTrackerException {

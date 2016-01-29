@@ -182,7 +182,7 @@ public class RatingsEntryUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching ratings entry
-	* @throws NoSuchEntryException if a matching ratings entry could not be found
+	* @throws com.liferay.portlet.ratings.exception.NoSuchEntryException if a matching ratings entry could not be found
 	*/
 	public static RatingsEntry findByUuid_First(java.lang.String uuid,
 		OrderByComparator<RatingsEntry> orderByComparator)
@@ -208,7 +208,7 @@ public class RatingsEntryUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching ratings entry
-	* @throws NoSuchEntryException if a matching ratings entry could not be found
+	* @throws com.liferay.portlet.ratings.exception.NoSuchEntryException if a matching ratings entry could not be found
 	*/
 	public static RatingsEntry findByUuid_Last(java.lang.String uuid,
 		OrderByComparator<RatingsEntry> orderByComparator)
@@ -235,7 +235,7 @@ public class RatingsEntryUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next ratings entry
-	* @throws NoSuchEntryException if a ratings entry with the primary key could not be found
+	* @throws com.liferay.portlet.ratings.exception.NoSuchEntryException if a ratings entry with the primary key could not be found
 	*/
 	public static RatingsEntry[] findByUuid_PrevAndNext(long entryId,
 		java.lang.String uuid, OrderByComparator<RatingsEntry> orderByComparator)
@@ -345,7 +345,7 @@ public class RatingsEntryUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching ratings entry
-	* @throws NoSuchEntryException if a matching ratings entry could not be found
+	* @throws com.liferay.portlet.ratings.exception.NoSuchEntryException if a matching ratings entry could not be found
 	*/
 	public static RatingsEntry findByUuid_C_First(java.lang.String uuid,
 		long companyId, OrderByComparator<RatingsEntry> orderByComparator)
@@ -375,7 +375,7 @@ public class RatingsEntryUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching ratings entry
-	* @throws NoSuchEntryException if a matching ratings entry could not be found
+	* @throws com.liferay.portlet.ratings.exception.NoSuchEntryException if a matching ratings entry could not be found
 	*/
 	public static RatingsEntry findByUuid_C_Last(java.lang.String uuid,
 		long companyId, OrderByComparator<RatingsEntry> orderByComparator)
@@ -406,7 +406,7 @@ public class RatingsEntryUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next ratings entry
-	* @throws NoSuchEntryException if a ratings entry with the primary key could not be found
+	* @throws com.liferay.portlet.ratings.exception.NoSuchEntryException if a ratings entry with the primary key could not be found
 	*/
 	public static RatingsEntry[] findByUuid_C_PrevAndNext(long entryId,
 		java.lang.String uuid, long companyId,
@@ -518,7 +518,7 @@ public class RatingsEntryUtil {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching ratings entry
-	* @throws NoSuchEntryException if a matching ratings entry could not be found
+	* @throws com.liferay.portlet.ratings.exception.NoSuchEntryException if a matching ratings entry could not be found
 	*/
 	public static RatingsEntry findByC_C_First(long classNameId, long classPK,
 		OrderByComparator<RatingsEntry> orderByComparator)
@@ -548,7 +548,7 @@ public class RatingsEntryUtil {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching ratings entry
-	* @throws NoSuchEntryException if a matching ratings entry could not be found
+	* @throws com.liferay.portlet.ratings.exception.NoSuchEntryException if a matching ratings entry could not be found
 	*/
 	public static RatingsEntry findByC_C_Last(long classNameId, long classPK,
 		OrderByComparator<RatingsEntry> orderByComparator)
@@ -579,7 +579,7 @@ public class RatingsEntryUtil {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next ratings entry
-	* @throws NoSuchEntryException if a ratings entry with the primary key could not be found
+	* @throws com.liferay.portlet.ratings.exception.NoSuchEntryException if a ratings entry with the primary key could not be found
 	*/
 	public static RatingsEntry[] findByC_C_PrevAndNext(long entryId,
 		long classNameId, long classPK,
@@ -612,13 +612,13 @@ public class RatingsEntryUtil {
 	}
 
 	/**
-	* Returns the ratings entry where userId = &#63; and classNameId = &#63; and classPK = &#63; or throws a {@link NoSuchEntryException} if it could not be found.
+	* Returns the ratings entry where userId = &#63; and classNameId = &#63; and classPK = &#63; or throws a {@link com.liferay.portlet.ratings.exception.NoSuchEntryException} if it could not be found.
 	*
 	* @param userId the user ID
 	* @param classNameId the class name ID
 	* @param classPK the class p k
 	* @return the matching ratings entry
-	* @throws NoSuchEntryException if a matching ratings entry could not be found
+	* @throws com.liferay.portlet.ratings.exception.NoSuchEntryException if a matching ratings entry could not be found
 	*/
 	public static RatingsEntry findByU_C_C(long userId, long classNameId,
 		long classPK)
@@ -769,7 +769,7 @@ public class RatingsEntryUtil {
 	* @param score the score
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching ratings entry
-	* @throws NoSuchEntryException if a matching ratings entry could not be found
+	* @throws com.liferay.portlet.ratings.exception.NoSuchEntryException if a matching ratings entry could not be found
 	*/
 	public static RatingsEntry findByC_C_S_First(long classNameId,
 		long classPK, double score,
@@ -805,7 +805,7 @@ public class RatingsEntryUtil {
 	* @param score the score
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching ratings entry
-	* @throws NoSuchEntryException if a matching ratings entry could not be found
+	* @throws com.liferay.portlet.ratings.exception.NoSuchEntryException if a matching ratings entry could not be found
 	*/
 	public static RatingsEntry findByC_C_S_Last(long classNameId, long classPK,
 		double score, OrderByComparator<RatingsEntry> orderByComparator)
@@ -841,7 +841,7 @@ public class RatingsEntryUtil {
 	* @param score the score
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next ratings entry
-	* @throws NoSuchEntryException if a ratings entry with the primary key could not be found
+	* @throws com.liferay.portlet.ratings.exception.NoSuchEntryException if a ratings entry with the primary key could not be found
 	*/
 	public static RatingsEntry[] findByC_C_S_PrevAndNext(long entryId,
 		long classNameId, long classPK, double score,
@@ -909,7 +909,7 @@ public class RatingsEntryUtil {
 	*
 	* @param entryId the primary key of the ratings entry
 	* @return the ratings entry that was removed
-	* @throws NoSuchEntryException if a ratings entry with the primary key could not be found
+	* @throws com.liferay.portlet.ratings.exception.NoSuchEntryException if a ratings entry with the primary key could not be found
 	*/
 	public static RatingsEntry remove(long entryId)
 		throws com.liferay.portlet.ratings.exception.NoSuchEntryException {
@@ -921,11 +921,11 @@ public class RatingsEntryUtil {
 	}
 
 	/**
-	* Returns the ratings entry with the primary key or throws a {@link NoSuchEntryException} if it could not be found.
+	* Returns the ratings entry with the primary key or throws a {@link com.liferay.portlet.ratings.exception.NoSuchEntryException} if it could not be found.
 	*
 	* @param entryId the primary key of the ratings entry
 	* @return the ratings entry
-	* @throws NoSuchEntryException if a ratings entry with the primary key could not be found
+	* @throws com.liferay.portlet.ratings.exception.NoSuchEntryException if a ratings entry with the primary key could not be found
 	*/
 	public static RatingsEntry findByPrimaryKey(long entryId)
 		throws com.liferay.portlet.ratings.exception.NoSuchEntryException {

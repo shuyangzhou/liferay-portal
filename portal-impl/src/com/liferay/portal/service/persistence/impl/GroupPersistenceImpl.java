@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchGroupException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -296,11 +295,12 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching group
-	 * @throws NoSuchGroupException if a matching group could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a matching group could not be found
 	 */
 	@Override
 	public Group findByUuid_First(String uuid,
-		OrderByComparator<Group> orderByComparator) throws NoSuchGroupException {
+		OrderByComparator<Group> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = fetchByUuid_First(uuid, orderByComparator);
 
 		if (group != null) {
@@ -316,7 +316,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchGroupException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchGroupException(msg.toString());
 	}
 
 	/**
@@ -344,11 +344,12 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching group
-	 * @throws NoSuchGroupException if a matching group could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a matching group could not be found
 	 */
 	@Override
 	public Group findByUuid_Last(String uuid,
-		OrderByComparator<Group> orderByComparator) throws NoSuchGroupException {
+		OrderByComparator<Group> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = fetchByUuid_Last(uuid, orderByComparator);
 
 		if (group != null) {
@@ -364,7 +365,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchGroupException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchGroupException(msg.toString());
 	}
 
 	/**
@@ -399,11 +400,12 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next group
-	 * @throws NoSuchGroupException if a group with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a group with the primary key could not be found
 	 */
 	@Override
 	public Group[] findByUuid_PrevAndNext(long groupId, String uuid,
-		OrderByComparator<Group> orderByComparator) throws NoSuchGroupException {
+		OrderByComparator<Group> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = findByPrimaryKey(groupId);
 
 		Session session = null;
@@ -644,16 +646,16 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 			new String[] { String.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the group where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchGroupException} if it could not be found.
+	 * Returns the group where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchGroupException} if it could not be found.
 	 *
 	 * @param uuid the uuid
 	 * @param groupId the group ID
 	 * @return the matching group
-	 * @throws NoSuchGroupException if a matching group could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a matching group could not be found
 	 */
 	@Override
 	public Group findByUUID_G(String uuid, long groupId)
-		throws NoSuchGroupException {
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = fetchByUUID_G(uuid, groupId);
 
 		if (group == null) {
@@ -673,7 +675,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchGroupException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchGroupException(msg.toString());
 		}
 
 		return group;
@@ -806,7 +808,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public Group removeByUUID_G(String uuid, long groupId)
-		throws NoSuchGroupException {
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = findByUUID_G(uuid, groupId);
 
 		return remove(group);
@@ -1108,11 +1110,12 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching group
-	 * @throws NoSuchGroupException if a matching group could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a matching group could not be found
 	 */
 	@Override
 	public Group findByUuid_C_First(String uuid, long companyId,
-		OrderByComparator<Group> orderByComparator) throws NoSuchGroupException {
+		OrderByComparator<Group> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = fetchByUuid_C_First(uuid, companyId, orderByComparator);
 
 		if (group != null) {
@@ -1131,7 +1134,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchGroupException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchGroupException(msg.toString());
 	}
 
 	/**
@@ -1161,11 +1164,12 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching group
-	 * @throws NoSuchGroupException if a matching group could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a matching group could not be found
 	 */
 	@Override
 	public Group findByUuid_C_Last(String uuid, long companyId,
-		OrderByComparator<Group> orderByComparator) throws NoSuchGroupException {
+		OrderByComparator<Group> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = fetchByUuid_C_Last(uuid, companyId, orderByComparator);
 
 		if (group != null) {
@@ -1184,7 +1188,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchGroupException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchGroupException(msg.toString());
 	}
 
 	/**
@@ -1222,12 +1226,12 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next group
-	 * @throws NoSuchGroupException if a group with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a group with the primary key could not be found
 	 */
 	@Override
 	public Group[] findByUuid_C_PrevAndNext(long groupId, String uuid,
 		long companyId, OrderByComparator<Group> orderByComparator)
-		throws NoSuchGroupException {
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = findByPrimaryKey(groupId);
 
 		Session session = null;
@@ -1659,11 +1663,12 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching group
-	 * @throws NoSuchGroupException if a matching group could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a matching group could not be found
 	 */
 	@Override
 	public Group findByCompanyId_First(long companyId,
-		OrderByComparator<Group> orderByComparator) throws NoSuchGroupException {
+		OrderByComparator<Group> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = fetchByCompanyId_First(companyId, orderByComparator);
 
 		if (group != null) {
@@ -1679,7 +1684,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchGroupException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchGroupException(msg.toString());
 	}
 
 	/**
@@ -1707,11 +1712,12 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching group
-	 * @throws NoSuchGroupException if a matching group could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a matching group could not be found
 	 */
 	@Override
 	public Group findByCompanyId_Last(long companyId,
-		OrderByComparator<Group> orderByComparator) throws NoSuchGroupException {
+		OrderByComparator<Group> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = fetchByCompanyId_Last(companyId, orderByComparator);
 
 		if (group != null) {
@@ -1727,7 +1733,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchGroupException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchGroupException(msg.toString());
 	}
 
 	/**
@@ -1763,11 +1769,12 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next group
-	 * @throws NoSuchGroupException if a group with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a group with the primary key could not be found
 	 */
 	@Override
 	public Group[] findByCompanyId_PrevAndNext(long groupId, long companyId,
-		OrderByComparator<Group> orderByComparator) throws NoSuchGroupException {
+		OrderByComparator<Group> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = findByPrimaryKey(groupId);
 
 		Session session = null;
@@ -1977,15 +1984,15 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 			new String[] { Long.class.getName() });
 
 	/**
-	 * Returns the group where liveGroupId = &#63; or throws a {@link NoSuchGroupException} if it could not be found.
+	 * Returns the group where liveGroupId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchGroupException} if it could not be found.
 	 *
 	 * @param liveGroupId the live group ID
 	 * @return the matching group
-	 * @throws NoSuchGroupException if a matching group could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a matching group could not be found
 	 */
 	@Override
 	public Group findByLiveGroupId(long liveGroupId)
-		throws NoSuchGroupException {
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = fetchByLiveGroupId(liveGroupId);
 
 		if (group == null) {
@@ -2002,7 +2009,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchGroupException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchGroupException(msg.toString());
 		}
 
 		return group;
@@ -2118,7 +2125,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public Group removeByLiveGroupId(long liveGroupId)
-		throws NoSuchGroupException {
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = findByLiveGroupId(liveGroupId);
 
 		return remove(group);
@@ -2384,11 +2391,12 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching group
-	 * @throws NoSuchGroupException if a matching group could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a matching group could not be found
 	 */
 	@Override
 	public Group findByC_C_First(long companyId, long classNameId,
-		OrderByComparator<Group> orderByComparator) throws NoSuchGroupException {
+		OrderByComparator<Group> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = fetchByC_C_First(companyId, classNameId, orderByComparator);
 
 		if (group != null) {
@@ -2407,7 +2415,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchGroupException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchGroupException(msg.toString());
 	}
 
 	/**
@@ -2438,11 +2446,12 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching group
-	 * @throws NoSuchGroupException if a matching group could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a matching group could not be found
 	 */
 	@Override
 	public Group findByC_C_Last(long companyId, long classNameId,
-		OrderByComparator<Group> orderByComparator) throws NoSuchGroupException {
+		OrderByComparator<Group> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = fetchByC_C_Last(companyId, classNameId, orderByComparator);
 
 		if (group != null) {
@@ -2461,7 +2470,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchGroupException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchGroupException(msg.toString());
 	}
 
 	/**
@@ -2499,12 +2508,12 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next group
-	 * @throws NoSuchGroupException if a group with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a group with the primary key could not be found
 	 */
 	@Override
 	public Group[] findByC_C_PrevAndNext(long groupId, long companyId,
 		long classNameId, OrderByComparator<Group> orderByComparator)
-		throws NoSuchGroupException {
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = findByPrimaryKey(groupId);
 
 		Session session = null;
@@ -2922,11 +2931,12 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param parentGroupId the parent group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching group
-	 * @throws NoSuchGroupException if a matching group could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a matching group could not be found
 	 */
 	@Override
 	public Group findByC_P_First(long companyId, long parentGroupId,
-		OrderByComparator<Group> orderByComparator) throws NoSuchGroupException {
+		OrderByComparator<Group> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = fetchByC_P_First(companyId, parentGroupId,
 				orderByComparator);
 
@@ -2946,7 +2956,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchGroupException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchGroupException(msg.toString());
 	}
 
 	/**
@@ -2977,11 +2987,12 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param parentGroupId the parent group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching group
-	 * @throws NoSuchGroupException if a matching group could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a matching group could not be found
 	 */
 	@Override
 	public Group findByC_P_Last(long companyId, long parentGroupId,
-		OrderByComparator<Group> orderByComparator) throws NoSuchGroupException {
+		OrderByComparator<Group> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = fetchByC_P_Last(companyId, parentGroupId,
 				orderByComparator);
 
@@ -3001,7 +3012,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchGroupException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchGroupException(msg.toString());
 	}
 
 	/**
@@ -3039,12 +3050,12 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param parentGroupId the parent group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next group
-	 * @throws NoSuchGroupException if a group with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a group with the primary key could not be found
 	 */
 	@Override
 	public Group[] findByC_P_PrevAndNext(long groupId, long companyId,
 		long parentGroupId, OrderByComparator<Group> orderByComparator)
-		throws NoSuchGroupException {
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = findByPrimaryKey(groupId);
 
 		Session session = null;
@@ -3266,16 +3277,16 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 			new String[] { Long.class.getName(), String.class.getName() });
 
 	/**
-	 * Returns the group where companyId = &#63; and groupKey = &#63; or throws a {@link NoSuchGroupException} if it could not be found.
+	 * Returns the group where companyId = &#63; and groupKey = &#63; or throws a {@link com.liferay.portal.exception.NoSuchGroupException} if it could not be found.
 	 *
 	 * @param companyId the company ID
 	 * @param groupKey the group key
 	 * @return the matching group
-	 * @throws NoSuchGroupException if a matching group could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a matching group could not be found
 	 */
 	@Override
 	public Group findByC_GK(long companyId, String groupKey)
-		throws NoSuchGroupException {
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = fetchByC_GK(companyId, groupKey);
 
 		if (group == null) {
@@ -3295,7 +3306,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchGroupException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchGroupException(msg.toString());
 		}
 
 		return group;
@@ -3428,7 +3439,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public Group removeByC_GK(long companyId, String groupKey)
-		throws NoSuchGroupException {
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = findByC_GK(companyId, groupKey);
 
 		return remove(group);
@@ -3520,16 +3531,16 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 			new String[] { Long.class.getName(), String.class.getName() });
 
 	/**
-	 * Returns the group where companyId = &#63; and friendlyURL = &#63; or throws a {@link NoSuchGroupException} if it could not be found.
+	 * Returns the group where companyId = &#63; and friendlyURL = &#63; or throws a {@link com.liferay.portal.exception.NoSuchGroupException} if it could not be found.
 	 *
 	 * @param companyId the company ID
 	 * @param friendlyURL the friendly u r l
 	 * @return the matching group
-	 * @throws NoSuchGroupException if a matching group could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a matching group could not be found
 	 */
 	@Override
 	public Group findByC_F(long companyId, String friendlyURL)
-		throws NoSuchGroupException {
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = fetchByC_F(companyId, friendlyURL);
 
 		if (group == null) {
@@ -3549,7 +3560,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchGroupException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchGroupException(msg.toString());
 		}
 
 		return group;
@@ -3682,7 +3693,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public Group removeByC_F(long companyId, String friendlyURL)
-		throws NoSuchGroupException {
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = findByC_F(companyId, friendlyURL);
 
 		return remove(group);
@@ -3969,11 +3980,12 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param site the site
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching group
-	 * @throws NoSuchGroupException if a matching group could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a matching group could not be found
 	 */
 	@Override
 	public Group findByC_S_First(long companyId, boolean site,
-		OrderByComparator<Group> orderByComparator) throws NoSuchGroupException {
+		OrderByComparator<Group> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = fetchByC_S_First(companyId, site, orderByComparator);
 
 		if (group != null) {
@@ -3992,7 +4004,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchGroupException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchGroupException(msg.toString());
 	}
 
 	/**
@@ -4022,11 +4034,12 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param site the site
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching group
-	 * @throws NoSuchGroupException if a matching group could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a matching group could not be found
 	 */
 	@Override
 	public Group findByC_S_Last(long companyId, boolean site,
-		OrderByComparator<Group> orderByComparator) throws NoSuchGroupException {
+		OrderByComparator<Group> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = fetchByC_S_Last(companyId, site, orderByComparator);
 
 		if (group != null) {
@@ -4045,7 +4058,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchGroupException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchGroupException(msg.toString());
 	}
 
 	/**
@@ -4083,12 +4096,12 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param site the site
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next group
-	 * @throws NoSuchGroupException if a group with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a group with the primary key could not be found
 	 */
 	@Override
 	public Group[] findByC_S_PrevAndNext(long groupId, long companyId,
 		boolean site, OrderByComparator<Group> orderByComparator)
-		throws NoSuchGroupException {
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = findByPrimaryKey(groupId);
 
 		Session session = null;
@@ -4505,11 +4518,12 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param active the active
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching group
-	 * @throws NoSuchGroupException if a matching group could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a matching group could not be found
 	 */
 	@Override
 	public Group findByC_A_First(long companyId, boolean active,
-		OrderByComparator<Group> orderByComparator) throws NoSuchGroupException {
+		OrderByComparator<Group> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = fetchByC_A_First(companyId, active, orderByComparator);
 
 		if (group != null) {
@@ -4528,7 +4542,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchGroupException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchGroupException(msg.toString());
 	}
 
 	/**
@@ -4558,11 +4572,12 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param active the active
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching group
-	 * @throws NoSuchGroupException if a matching group could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a matching group could not be found
 	 */
 	@Override
 	public Group findByC_A_Last(long companyId, boolean active,
-		OrderByComparator<Group> orderByComparator) throws NoSuchGroupException {
+		OrderByComparator<Group> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = fetchByC_A_Last(companyId, active, orderByComparator);
 
 		if (group != null) {
@@ -4581,7 +4596,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchGroupException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchGroupException(msg.toString());
 	}
 
 	/**
@@ -4619,12 +4634,12 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param active the active
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next group
-	 * @throws NoSuchGroupException if a group with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a group with the primary key could not be found
 	 */
 	@Override
 	public Group[] findByC_A_PrevAndNext(long groupId, long companyId,
 		boolean active, OrderByComparator<Group> orderByComparator)
-		throws NoSuchGroupException {
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = findByPrimaryKey(groupId);
 
 		Session session = null;
@@ -5039,11 +5054,12 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param active the active
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching group
-	 * @throws NoSuchGroupException if a matching group could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a matching group could not be found
 	 */
 	@Override
 	public Group findByT_A_First(int type, boolean active,
-		OrderByComparator<Group> orderByComparator) throws NoSuchGroupException {
+		OrderByComparator<Group> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = fetchByT_A_First(type, active, orderByComparator);
 
 		if (group != null) {
@@ -5062,7 +5078,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchGroupException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchGroupException(msg.toString());
 	}
 
 	/**
@@ -5092,11 +5108,12 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param active the active
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching group
-	 * @throws NoSuchGroupException if a matching group could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a matching group could not be found
 	 */
 	@Override
 	public Group findByT_A_Last(int type, boolean active,
-		OrderByComparator<Group> orderByComparator) throws NoSuchGroupException {
+		OrderByComparator<Group> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = fetchByT_A_Last(type, active, orderByComparator);
 
 		if (group != null) {
@@ -5115,7 +5132,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchGroupException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchGroupException(msg.toString());
 	}
 
 	/**
@@ -5153,12 +5170,12 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param active the active
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next group
-	 * @throws NoSuchGroupException if a group with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a group with the primary key could not be found
 	 */
 	@Override
 	public Group[] findByT_A_PrevAndNext(long groupId, int type,
 		boolean active, OrderByComparator<Group> orderByComparator)
-		throws NoSuchGroupException {
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = findByPrimaryKey(groupId);
 
 		Session session = null;
@@ -5575,12 +5592,12 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param parentGroupId the parent group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching group
-	 * @throws NoSuchGroupException if a matching group could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a matching group could not be found
 	 */
 	@Override
 	public Group findByG_C_P_First(long groupId, long companyId,
 		long parentGroupId, OrderByComparator<Group> orderByComparator)
-		throws NoSuchGroupException {
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = fetchByG_C_P_First(groupId, companyId, parentGroupId,
 				orderByComparator);
 
@@ -5603,7 +5620,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchGroupException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchGroupException(msg.toString());
 	}
 
 	/**
@@ -5636,12 +5653,12 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param parentGroupId the parent group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching group
-	 * @throws NoSuchGroupException if a matching group could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a matching group could not be found
 	 */
 	@Override
 	public Group findByG_C_P_Last(long groupId, long companyId,
 		long parentGroupId, OrderByComparator<Group> orderByComparator)
-		throws NoSuchGroupException {
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = fetchByG_C_P_Last(groupId, companyId, parentGroupId,
 				orderByComparator);
 
@@ -5664,7 +5681,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchGroupException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchGroupException(msg.toString());
 	}
 
 	/**
@@ -5791,17 +5808,17 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 			});
 
 	/**
-	 * Returns the group where companyId = &#63; and classNameId = &#63; and classPK = &#63; or throws a {@link NoSuchGroupException} if it could not be found.
+	 * Returns the group where companyId = &#63; and classNameId = &#63; and classPK = &#63; or throws a {@link com.liferay.portal.exception.NoSuchGroupException} if it could not be found.
 	 *
 	 * @param companyId the company ID
 	 * @param classNameId the class name ID
 	 * @param classPK the class p k
 	 * @return the matching group
-	 * @throws NoSuchGroupException if a matching group could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a matching group could not be found
 	 */
 	@Override
 	public Group findByC_C_C(long companyId, long classNameId, long classPK)
-		throws NoSuchGroupException {
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = fetchByC_C_C(companyId, classNameId, classPK);
 
 		if (group == null) {
@@ -5824,7 +5841,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchGroupException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchGroupException(msg.toString());
 		}
 
 		return group;
@@ -5951,7 +5968,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public Group removeByC_C_C(long companyId, long classNameId, long classPK)
-		throws NoSuchGroupException {
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = findByC_C_C(companyId, classNameId, classPK);
 
 		return remove(group);
@@ -6247,12 +6264,12 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param parentGroupId the parent group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching group
-	 * @throws NoSuchGroupException if a matching group could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a matching group could not be found
 	 */
 	@Override
 	public Group findByC_C_P_First(long companyId, long classNameId,
 		long parentGroupId, OrderByComparator<Group> orderByComparator)
-		throws NoSuchGroupException {
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = fetchByC_C_P_First(companyId, classNameId, parentGroupId,
 				orderByComparator);
 
@@ -6275,7 +6292,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchGroupException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchGroupException(msg.toString());
 	}
 
 	/**
@@ -6308,12 +6325,12 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param parentGroupId the parent group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching group
-	 * @throws NoSuchGroupException if a matching group could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a matching group could not be found
 	 */
 	@Override
 	public Group findByC_C_P_Last(long companyId, long classNameId,
 		long parentGroupId, OrderByComparator<Group> orderByComparator)
-		throws NoSuchGroupException {
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = fetchByC_C_P_Last(companyId, classNameId, parentGroupId,
 				orderByComparator);
 
@@ -6336,7 +6353,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchGroupException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchGroupException(msg.toString());
 	}
 
 	/**
@@ -6376,12 +6393,13 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param parentGroupId the parent group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next group
-	 * @throws NoSuchGroupException if a group with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a group with the primary key could not be found
 	 */
 	@Override
 	public Group[] findByC_C_P_PrevAndNext(long groupId, long companyId,
 		long classNameId, long parentGroupId,
-		OrderByComparator<Group> orderByComparator) throws NoSuchGroupException {
+		OrderByComparator<Group> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = findByPrimaryKey(groupId);
 
 		Session session = null;
@@ -6831,12 +6849,12 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param site the site
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching group
-	 * @throws NoSuchGroupException if a matching group could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a matching group could not be found
 	 */
 	@Override
 	public Group findByC_P_S_First(long companyId, long parentGroupId,
 		boolean site, OrderByComparator<Group> orderByComparator)
-		throws NoSuchGroupException {
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = fetchByC_P_S_First(companyId, parentGroupId, site,
 				orderByComparator);
 
@@ -6859,7 +6877,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchGroupException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchGroupException(msg.toString());
 	}
 
 	/**
@@ -6892,12 +6910,12 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param site the site
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching group
-	 * @throws NoSuchGroupException if a matching group could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a matching group could not be found
 	 */
 	@Override
 	public Group findByC_P_S_Last(long companyId, long parentGroupId,
 		boolean site, OrderByComparator<Group> orderByComparator)
-		throws NoSuchGroupException {
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = fetchByC_P_S_Last(companyId, parentGroupId, site,
 				orderByComparator);
 
@@ -6920,7 +6938,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchGroupException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchGroupException(msg.toString());
 	}
 
 	/**
@@ -6960,12 +6978,13 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param site the site
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next group
-	 * @throws NoSuchGroupException if a group with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a group with the primary key could not be found
 	 */
 	@Override
 	public Group[] findByC_P_S_PrevAndNext(long groupId, long companyId,
 		long parentGroupId, boolean site,
-		OrderByComparator<Group> orderByComparator) throws NoSuchGroupException {
+		OrderByComparator<Group> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = findByPrimaryKey(groupId);
 
 		Session session = null;
@@ -7205,17 +7224,17 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 			});
 
 	/**
-	 * Returns the group where companyId = &#63; and liveGroupId = &#63; and groupKey = &#63; or throws a {@link NoSuchGroupException} if it could not be found.
+	 * Returns the group where companyId = &#63; and liveGroupId = &#63; and groupKey = &#63; or throws a {@link com.liferay.portal.exception.NoSuchGroupException} if it could not be found.
 	 *
 	 * @param companyId the company ID
 	 * @param liveGroupId the live group ID
 	 * @param groupKey the group key
 	 * @return the matching group
-	 * @throws NoSuchGroupException if a matching group could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a matching group could not be found
 	 */
 	@Override
 	public Group findByC_L_GK(long companyId, long liveGroupId, String groupKey)
-		throws NoSuchGroupException {
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = fetchByC_L_GK(companyId, liveGroupId, groupKey);
 
 		if (group == null) {
@@ -7238,7 +7257,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchGroupException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchGroupException(msg.toString());
 		}
 
 		return group;
@@ -7380,7 +7399,8 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public Group removeByC_L_GK(long companyId, long liveGroupId,
-		String groupKey) throws NoSuchGroupException {
+		String groupKey)
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = findByC_L_GK(companyId, liveGroupId, groupKey);
 
 		return remove(group);
@@ -7486,18 +7506,19 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 			});
 
 	/**
-	 * Returns the group where companyId = &#63; and classNameId = &#63; and liveGroupId = &#63; and groupKey = &#63; or throws a {@link NoSuchGroupException} if it could not be found.
+	 * Returns the group where companyId = &#63; and classNameId = &#63; and liveGroupId = &#63; and groupKey = &#63; or throws a {@link com.liferay.portal.exception.NoSuchGroupException} if it could not be found.
 	 *
 	 * @param companyId the company ID
 	 * @param classNameId the class name ID
 	 * @param liveGroupId the live group ID
 	 * @param groupKey the group key
 	 * @return the matching group
-	 * @throws NoSuchGroupException if a matching group could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a matching group could not be found
 	 */
 	@Override
 	public Group findByC_C_L_GK(long companyId, long classNameId,
-		long liveGroupId, String groupKey) throws NoSuchGroupException {
+		long liveGroupId, String groupKey)
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = fetchByC_C_L_GK(companyId, classNameId, liveGroupId,
 				groupKey);
 
@@ -7524,7 +7545,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchGroupException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchGroupException(msg.toString());
 		}
 
 		return group;
@@ -7680,7 +7701,8 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public Group removeByC_C_L_GK(long companyId, long classNameId,
-		long liveGroupId, String groupKey) throws NoSuchGroupException {
+		long liveGroupId, String groupKey)
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = findByC_C_L_GK(companyId, classNameId, liveGroupId,
 				groupKey);
 
@@ -8019,12 +8041,13 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param inheritContent the inherit content
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching group
-	 * @throws NoSuchGroupException if a matching group could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a matching group could not be found
 	 */
 	@Override
 	public Group findByC_P_S_I_First(long companyId, long parentGroupId,
 		boolean site, boolean inheritContent,
-		OrderByComparator<Group> orderByComparator) throws NoSuchGroupException {
+		OrderByComparator<Group> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = fetchByC_P_S_I_First(companyId, parentGroupId, site,
 				inheritContent, orderByComparator);
 
@@ -8050,7 +8073,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchGroupException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchGroupException(msg.toString());
 	}
 
 	/**
@@ -8086,12 +8109,13 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param inheritContent the inherit content
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching group
-	 * @throws NoSuchGroupException if a matching group could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a matching group could not be found
 	 */
 	@Override
 	public Group findByC_P_S_I_Last(long companyId, long parentGroupId,
 		boolean site, boolean inheritContent,
-		OrderByComparator<Group> orderByComparator) throws NoSuchGroupException {
+		OrderByComparator<Group> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = fetchByC_P_S_I_Last(companyId, parentGroupId, site,
 				inheritContent, orderByComparator);
 
@@ -8117,7 +8141,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchGroupException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchGroupException(msg.toString());
 	}
 
 	/**
@@ -8161,12 +8185,13 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param inheritContent the inherit content
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next group
-	 * @throws NoSuchGroupException if a group with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a group with the primary key could not be found
 	 */
 	@Override
 	public Group[] findByC_P_S_I_PrevAndNext(long groupId, long companyId,
 		long parentGroupId, boolean site, boolean inheritContent,
-		OrderByComparator<Group> orderByComparator) throws NoSuchGroupException {
+		OrderByComparator<Group> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = findByPrimaryKey(groupId);
 
 		Session session = null;
@@ -8837,10 +8862,11 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 *
 	 * @param groupId the primary key of the group
 	 * @return the group that was removed
-	 * @throws NoSuchGroupException if a group with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a group with the primary key could not be found
 	 */
 	@Override
-	public Group remove(long groupId) throws NoSuchGroupException {
+	public Group remove(long groupId)
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		return remove((Serializable)groupId);
 	}
 
@@ -8849,10 +8875,11 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 *
 	 * @param primaryKey the primary key of the group
 	 * @return the group that was removed
-	 * @throws NoSuchGroupException if a group with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a group with the primary key could not be found
 	 */
 	@Override
-	public Group remove(Serializable primaryKey) throws NoSuchGroupException {
+	public Group remove(Serializable primaryKey)
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Session session = null;
 
 		try {
@@ -8865,13 +8892,13 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchGroupException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchGroupException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(group);
 		}
-		catch (NoSuchGroupException nsee) {
+		catch (com.liferay.portal.exception.NoSuchGroupException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -9243,11 +9270,11 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 *
 	 * @param primaryKey the primary key of the group
 	 * @return the group
-	 * @throws NoSuchGroupException if a group with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a group with the primary key could not be found
 	 */
 	@Override
 	public Group findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchGroupException {
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		Group group = fetchByPrimaryKey(primaryKey);
 
 		if (group == null) {
@@ -9255,7 +9282,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchGroupException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchGroupException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -9263,14 +9290,15 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	}
 
 	/**
-	 * Returns the group with the primary key or throws a {@link NoSuchGroupException} if it could not be found.
+	 * Returns the group with the primary key or throws a {@link com.liferay.portal.exception.NoSuchGroupException} if it could not be found.
 	 *
 	 * @param groupId the primary key of the group
 	 * @return the group
-	 * @throws NoSuchGroupException if a group with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchGroupException if a group with the primary key could not be found
 	 */
 	@Override
-	public Group findByPrimaryKey(long groupId) throws NoSuchGroupException {
+	public Group findByPrimaryKey(long groupId)
+		throws com.liferay.portal.exception.NoSuchGroupException {
 		return findByPrimaryKey((Serializable)groupId);
 	}
 

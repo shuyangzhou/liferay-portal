@@ -105,7 +105,7 @@ public interface SocialActivitySettingPersistence extends BasePersistence<Social
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching social activity setting
-	* @throws NoSuchActivitySettingException if a matching social activity setting could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivitySettingException if a matching social activity setting could not be found
 	*/
 	public SocialActivitySetting findByGroupId_First(long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<SocialActivitySetting> orderByComparator)
@@ -127,7 +127,7 @@ public interface SocialActivitySettingPersistence extends BasePersistence<Social
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching social activity setting
-	* @throws NoSuchActivitySettingException if a matching social activity setting could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivitySettingException if a matching social activity setting could not be found
 	*/
 	public SocialActivitySetting findByGroupId_Last(long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<SocialActivitySetting> orderByComparator)
@@ -150,7 +150,7 @@ public interface SocialActivitySettingPersistence extends BasePersistence<Social
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next social activity setting
-	* @throws NoSuchActivitySettingException if a social activity setting with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivitySettingException if a social activity setting with the primary key could not be found
 	*/
 	public SocialActivitySetting[] findByGroupId_PrevAndNext(
 		long activitySettingId, long groupId,
@@ -243,7 +243,7 @@ public interface SocialActivitySettingPersistence extends BasePersistence<Social
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching social activity setting
-	* @throws NoSuchActivitySettingException if a matching social activity setting could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivitySettingException if a matching social activity setting could not be found
 	*/
 	public SocialActivitySetting findByG_C_First(long groupId,
 		long classNameId,
@@ -269,7 +269,7 @@ public interface SocialActivitySettingPersistence extends BasePersistence<Social
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching social activity setting
-	* @throws NoSuchActivitySettingException if a matching social activity setting could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivitySettingException if a matching social activity setting could not be found
 	*/
 	public SocialActivitySetting findByG_C_Last(long groupId, long classNameId,
 		com.liferay.portal.kernel.util.OrderByComparator<SocialActivitySetting> orderByComparator)
@@ -295,7 +295,7 @@ public interface SocialActivitySettingPersistence extends BasePersistence<Social
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next social activity setting
-	* @throws NoSuchActivitySettingException if a social activity setting with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivitySettingException if a social activity setting with the primary key could not be found
 	*/
 	public SocialActivitySetting[] findByG_C_PrevAndNext(
 		long activitySettingId, long groupId, long classNameId,
@@ -390,7 +390,7 @@ public interface SocialActivitySettingPersistence extends BasePersistence<Social
 	* @param activityType the activity type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching social activity setting
-	* @throws NoSuchActivitySettingException if a matching social activity setting could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivitySettingException if a matching social activity setting could not be found
 	*/
 	public SocialActivitySetting findByG_A_First(long groupId,
 		int activityType,
@@ -416,7 +416,7 @@ public interface SocialActivitySettingPersistence extends BasePersistence<Social
 	* @param activityType the activity type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching social activity setting
-	* @throws NoSuchActivitySettingException if a matching social activity setting could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivitySettingException if a matching social activity setting could not be found
 	*/
 	public SocialActivitySetting findByG_A_Last(long groupId, int activityType,
 		com.liferay.portal.kernel.util.OrderByComparator<SocialActivitySetting> orderByComparator)
@@ -442,7 +442,7 @@ public interface SocialActivitySettingPersistence extends BasePersistence<Social
 	* @param activityType the activity type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next social activity setting
-	* @throws NoSuchActivitySettingException if a social activity setting with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivitySettingException if a social activity setting with the primary key could not be found
 	*/
 	public SocialActivitySetting[] findByG_A_PrevAndNext(
 		long activitySettingId, long groupId, int activityType,
@@ -542,7 +542,7 @@ public interface SocialActivitySettingPersistence extends BasePersistence<Social
 	* @param activityType the activity type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching social activity setting
-	* @throws NoSuchActivitySettingException if a matching social activity setting could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivitySettingException if a matching social activity setting could not be found
 	*/
 	public SocialActivitySetting findByG_C_A_First(long groupId,
 		long classNameId, int activityType,
@@ -570,7 +570,7 @@ public interface SocialActivitySettingPersistence extends BasePersistence<Social
 	* @param activityType the activity type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching social activity setting
-	* @throws NoSuchActivitySettingException if a matching social activity setting could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivitySettingException if a matching social activity setting could not be found
 	*/
 	public SocialActivitySetting findByG_C_A_Last(long groupId,
 		long classNameId, int activityType,
@@ -599,7 +599,7 @@ public interface SocialActivitySettingPersistence extends BasePersistence<Social
 	* @param activityType the activity type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next social activity setting
-	* @throws NoSuchActivitySettingException if a social activity setting with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivitySettingException if a social activity setting with the primary key could not be found
 	*/
 	public SocialActivitySetting[] findByG_C_A_PrevAndNext(
 		long activitySettingId, long groupId, long classNameId,
@@ -627,14 +627,14 @@ public interface SocialActivitySettingPersistence extends BasePersistence<Social
 	public int countByG_C_A(long groupId, long classNameId, int activityType);
 
 	/**
-	* Returns the social activity setting where groupId = &#63; and classNameId = &#63; and activityType = &#63; and name = &#63; or throws a {@link NoSuchActivitySettingException} if it could not be found.
+	* Returns the social activity setting where groupId = &#63; and classNameId = &#63; and activityType = &#63; and name = &#63; or throws a {@link com.liferay.portlet.social.exception.NoSuchActivitySettingException} if it could not be found.
 	*
 	* @param groupId the group ID
 	* @param classNameId the class name ID
 	* @param activityType the activity type
 	* @param name the name
 	* @return the matching social activity setting
-	* @throws NoSuchActivitySettingException if a matching social activity setting could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivitySettingException if a matching social activity setting could not be found
 	*/
 	public SocialActivitySetting findByG_C_A_N(long groupId, long classNameId,
 		int activityType, java.lang.String name)
@@ -718,7 +718,7 @@ public interface SocialActivitySettingPersistence extends BasePersistence<Social
 	*
 	* @param activitySettingId the primary key of the social activity setting
 	* @return the social activity setting that was removed
-	* @throws NoSuchActivitySettingException if a social activity setting with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivitySettingException if a social activity setting with the primary key could not be found
 	*/
 	public SocialActivitySetting remove(long activitySettingId)
 		throws com.liferay.portlet.social.exception.NoSuchActivitySettingException;
@@ -727,11 +727,11 @@ public interface SocialActivitySettingPersistence extends BasePersistence<Social
 		SocialActivitySetting socialActivitySetting);
 
 	/**
-	* Returns the social activity setting with the primary key or throws a {@link NoSuchActivitySettingException} if it could not be found.
+	* Returns the social activity setting with the primary key or throws a {@link com.liferay.portlet.social.exception.NoSuchActivitySettingException} if it could not be found.
 	*
 	* @param activitySettingId the primary key of the social activity setting
 	* @return the social activity setting
-	* @throws NoSuchActivitySettingException if a social activity setting with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivitySettingException if a social activity setting with the primary key could not be found
 	*/
 	public SocialActivitySetting findByPrimaryKey(long activitySettingId)
 		throws com.liferay.portlet.social.exception.NoSuchActivitySettingException;

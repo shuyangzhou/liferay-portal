@@ -100,7 +100,7 @@ public interface ImagePersistence extends BasePersistence<Image> {
 	* @param size the size
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching image
-	* @throws NoSuchImageException if a matching image could not be found
+	* @throws com.liferay.portal.exception.NoSuchImageException if a matching image could not be found
 	*/
 	public Image findByLtSize_First(int size,
 		com.liferay.portal.kernel.util.OrderByComparator<Image> orderByComparator)
@@ -122,7 +122,7 @@ public interface ImagePersistence extends BasePersistence<Image> {
 	* @param size the size
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching image
-	* @throws NoSuchImageException if a matching image could not be found
+	* @throws com.liferay.portal.exception.NoSuchImageException if a matching image could not be found
 	*/
 	public Image findByLtSize_Last(int size,
 		com.liferay.portal.kernel.util.OrderByComparator<Image> orderByComparator)
@@ -145,7 +145,7 @@ public interface ImagePersistence extends BasePersistence<Image> {
 	* @param size the size
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next image
-	* @throws NoSuchImageException if a image with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchImageException if a image with the primary key could not be found
 	*/
 	public Image[] findByLtSize_PrevAndNext(long imageId, int size,
 		com.liferay.portal.kernel.util.OrderByComparator<Image> orderByComparator)
@@ -193,7 +193,7 @@ public interface ImagePersistence extends BasePersistence<Image> {
 	*
 	* @param imageId the primary key of the image
 	* @return the image that was removed
-	* @throws NoSuchImageException if a image with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchImageException if a image with the primary key could not be found
 	*/
 	public Image remove(long imageId)
 		throws com.liferay.portal.exception.NoSuchImageException;
@@ -201,11 +201,11 @@ public interface ImagePersistence extends BasePersistence<Image> {
 	public Image updateImpl(Image image);
 
 	/**
-	* Returns the image with the primary key or throws a {@link NoSuchImageException} if it could not be found.
+	* Returns the image with the primary key or throws a {@link com.liferay.portal.exception.NoSuchImageException} if it could not be found.
 	*
 	* @param imageId the primary key of the image
 	* @return the image
-	* @throws NoSuchImageException if a image with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchImageException if a image with the primary key could not be found
 	*/
 	public Image findByPrimaryKey(long imageId)
 		throws com.liferay.portal.exception.NoSuchImageException;

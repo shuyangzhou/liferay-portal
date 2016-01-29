@@ -36,7 +36,6 @@ import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
-import com.liferay.shopping.exception.NoSuchCartException;
 import com.liferay.shopping.model.ShoppingCart;
 import com.liferay.shopping.model.impl.ShoppingCartImpl;
 import com.liferay.shopping.model.impl.ShoppingCartModelImpl;
@@ -277,12 +276,12 @@ public class ShoppingCartPersistenceImpl extends BasePersistenceImpl<ShoppingCar
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching shopping cart
-	 * @throws NoSuchCartException if a matching shopping cart could not be found
+	 * @throws com.liferay.shopping.exception.NoSuchCartException if a matching shopping cart could not be found
 	 */
 	@Override
 	public ShoppingCart findByGroupId_First(long groupId,
 		OrderByComparator<ShoppingCart> orderByComparator)
-		throws NoSuchCartException {
+		throws com.liferay.shopping.exception.NoSuchCartException {
 		ShoppingCart shoppingCart = fetchByGroupId_First(groupId,
 				orderByComparator);
 
@@ -299,7 +298,7 @@ public class ShoppingCartPersistenceImpl extends BasePersistenceImpl<ShoppingCar
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchCartException(msg.toString());
+		throw new com.liferay.shopping.exception.NoSuchCartException(msg.toString());
 	}
 
 	/**
@@ -327,12 +326,12 @@ public class ShoppingCartPersistenceImpl extends BasePersistenceImpl<ShoppingCar
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching shopping cart
-	 * @throws NoSuchCartException if a matching shopping cart could not be found
+	 * @throws com.liferay.shopping.exception.NoSuchCartException if a matching shopping cart could not be found
 	 */
 	@Override
 	public ShoppingCart findByGroupId_Last(long groupId,
 		OrderByComparator<ShoppingCart> orderByComparator)
-		throws NoSuchCartException {
+		throws com.liferay.shopping.exception.NoSuchCartException {
 		ShoppingCart shoppingCart = fetchByGroupId_Last(groupId,
 				orderByComparator);
 
@@ -349,7 +348,7 @@ public class ShoppingCartPersistenceImpl extends BasePersistenceImpl<ShoppingCar
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchCartException(msg.toString());
+		throw new com.liferay.shopping.exception.NoSuchCartException(msg.toString());
 	}
 
 	/**
@@ -385,12 +384,12 @@ public class ShoppingCartPersistenceImpl extends BasePersistenceImpl<ShoppingCar
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next shopping cart
-	 * @throws NoSuchCartException if a shopping cart with the primary key could not be found
+	 * @throws com.liferay.shopping.exception.NoSuchCartException if a shopping cart with the primary key could not be found
 	 */
 	@Override
 	public ShoppingCart[] findByGroupId_PrevAndNext(long cartId, long groupId,
 		OrderByComparator<ShoppingCart> orderByComparator)
-		throws NoSuchCartException {
+		throws com.liferay.shopping.exception.NoSuchCartException {
 		ShoppingCart shoppingCart = findByPrimaryKey(cartId);
 
 		Session session = null;
@@ -779,12 +778,12 @@ public class ShoppingCartPersistenceImpl extends BasePersistenceImpl<ShoppingCar
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching shopping cart
-	 * @throws NoSuchCartException if a matching shopping cart could not be found
+	 * @throws com.liferay.shopping.exception.NoSuchCartException if a matching shopping cart could not be found
 	 */
 	@Override
 	public ShoppingCart findByUserId_First(long userId,
 		OrderByComparator<ShoppingCart> orderByComparator)
-		throws NoSuchCartException {
+		throws com.liferay.shopping.exception.NoSuchCartException {
 		ShoppingCart shoppingCart = fetchByUserId_First(userId,
 				orderByComparator);
 
@@ -801,7 +800,7 @@ public class ShoppingCartPersistenceImpl extends BasePersistenceImpl<ShoppingCar
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchCartException(msg.toString());
+		throw new com.liferay.shopping.exception.NoSuchCartException(msg.toString());
 	}
 
 	/**
@@ -829,12 +828,12 @@ public class ShoppingCartPersistenceImpl extends BasePersistenceImpl<ShoppingCar
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching shopping cart
-	 * @throws NoSuchCartException if a matching shopping cart could not be found
+	 * @throws com.liferay.shopping.exception.NoSuchCartException if a matching shopping cart could not be found
 	 */
 	@Override
 	public ShoppingCart findByUserId_Last(long userId,
 		OrderByComparator<ShoppingCart> orderByComparator)
-		throws NoSuchCartException {
+		throws com.liferay.shopping.exception.NoSuchCartException {
 		ShoppingCart shoppingCart = fetchByUserId_Last(userId, orderByComparator);
 
 		if (shoppingCart != null) {
@@ -850,7 +849,7 @@ public class ShoppingCartPersistenceImpl extends BasePersistenceImpl<ShoppingCar
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchCartException(msg.toString());
+		throw new com.liferay.shopping.exception.NoSuchCartException(msg.toString());
 	}
 
 	/**
@@ -886,12 +885,12 @@ public class ShoppingCartPersistenceImpl extends BasePersistenceImpl<ShoppingCar
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next shopping cart
-	 * @throws NoSuchCartException if a shopping cart with the primary key could not be found
+	 * @throws com.liferay.shopping.exception.NoSuchCartException if a shopping cart with the primary key could not be found
 	 */
 	@Override
 	public ShoppingCart[] findByUserId_PrevAndNext(long cartId, long userId,
 		OrderByComparator<ShoppingCart> orderByComparator)
-		throws NoSuchCartException {
+		throws com.liferay.shopping.exception.NoSuchCartException {
 		ShoppingCart shoppingCart = findByPrimaryKey(cartId);
 
 		Session session = null;
@@ -1102,16 +1101,16 @@ public class ShoppingCartPersistenceImpl extends BasePersistenceImpl<ShoppingCar
 			new String[] { Long.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the shopping cart where groupId = &#63; and userId = &#63; or throws a {@link NoSuchCartException} if it could not be found.
+	 * Returns the shopping cart where groupId = &#63; and userId = &#63; or throws a {@link com.liferay.shopping.exception.NoSuchCartException} if it could not be found.
 	 *
 	 * @param groupId the group ID
 	 * @param userId the user ID
 	 * @return the matching shopping cart
-	 * @throws NoSuchCartException if a matching shopping cart could not be found
+	 * @throws com.liferay.shopping.exception.NoSuchCartException if a matching shopping cart could not be found
 	 */
 	@Override
 	public ShoppingCart findByG_U(long groupId, long userId)
-		throws NoSuchCartException {
+		throws com.liferay.shopping.exception.NoSuchCartException {
 		ShoppingCart shoppingCart = fetchByG_U(groupId, userId);
 
 		if (shoppingCart == null) {
@@ -1131,7 +1130,7 @@ public class ShoppingCartPersistenceImpl extends BasePersistenceImpl<ShoppingCar
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchCartException(msg.toString());
+			throw new com.liferay.shopping.exception.NoSuchCartException(msg.toString());
 		}
 
 		return shoppingCart;
@@ -1249,7 +1248,7 @@ public class ShoppingCartPersistenceImpl extends BasePersistenceImpl<ShoppingCar
 	 */
 	@Override
 	public ShoppingCart removeByG_U(long groupId, long userId)
-		throws NoSuchCartException {
+		throws com.liferay.shopping.exception.NoSuchCartException {
 		ShoppingCart shoppingCart = findByG_U(groupId, userId);
 
 		return remove(shoppingCart);
@@ -1475,10 +1474,11 @@ public class ShoppingCartPersistenceImpl extends BasePersistenceImpl<ShoppingCar
 	 *
 	 * @param cartId the primary key of the shopping cart
 	 * @return the shopping cart that was removed
-	 * @throws NoSuchCartException if a shopping cart with the primary key could not be found
+	 * @throws com.liferay.shopping.exception.NoSuchCartException if a shopping cart with the primary key could not be found
 	 */
 	@Override
-	public ShoppingCart remove(long cartId) throws NoSuchCartException {
+	public ShoppingCart remove(long cartId)
+		throws com.liferay.shopping.exception.NoSuchCartException {
 		return remove((Serializable)cartId);
 	}
 
@@ -1487,11 +1487,11 @@ public class ShoppingCartPersistenceImpl extends BasePersistenceImpl<ShoppingCar
 	 *
 	 * @param primaryKey the primary key of the shopping cart
 	 * @return the shopping cart that was removed
-	 * @throws NoSuchCartException if a shopping cart with the primary key could not be found
+	 * @throws com.liferay.shopping.exception.NoSuchCartException if a shopping cart with the primary key could not be found
 	 */
 	@Override
 	public ShoppingCart remove(Serializable primaryKey)
-		throws NoSuchCartException {
+		throws com.liferay.shopping.exception.NoSuchCartException {
 		Session session = null;
 
 		try {
@@ -1505,13 +1505,13 @@ public class ShoppingCartPersistenceImpl extends BasePersistenceImpl<ShoppingCar
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchCartException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.shopping.exception.NoSuchCartException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(shoppingCart);
 		}
-		catch (NoSuchCartException nsee) {
+		catch (com.liferay.shopping.exception.NoSuchCartException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -1689,11 +1689,11 @@ public class ShoppingCartPersistenceImpl extends BasePersistenceImpl<ShoppingCar
 	 *
 	 * @param primaryKey the primary key of the shopping cart
 	 * @return the shopping cart
-	 * @throws NoSuchCartException if a shopping cart with the primary key could not be found
+	 * @throws com.liferay.shopping.exception.NoSuchCartException if a shopping cart with the primary key could not be found
 	 */
 	@Override
 	public ShoppingCart findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchCartException {
+		throws com.liferay.shopping.exception.NoSuchCartException {
 		ShoppingCart shoppingCart = fetchByPrimaryKey(primaryKey);
 
 		if (shoppingCart == null) {
@@ -1701,7 +1701,7 @@ public class ShoppingCartPersistenceImpl extends BasePersistenceImpl<ShoppingCar
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchCartException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.shopping.exception.NoSuchCartException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -1709,15 +1709,15 @@ public class ShoppingCartPersistenceImpl extends BasePersistenceImpl<ShoppingCar
 	}
 
 	/**
-	 * Returns the shopping cart with the primary key or throws a {@link NoSuchCartException} if it could not be found.
+	 * Returns the shopping cart with the primary key or throws a {@link com.liferay.shopping.exception.NoSuchCartException} if it could not be found.
 	 *
 	 * @param cartId the primary key of the shopping cart
 	 * @return the shopping cart
-	 * @throws NoSuchCartException if a shopping cart with the primary key could not be found
+	 * @throws com.liferay.shopping.exception.NoSuchCartException if a shopping cart with the primary key could not be found
 	 */
 	@Override
 	public ShoppingCart findByPrimaryKey(long cartId)
-		throws NoSuchCartException {
+		throws com.liferay.shopping.exception.NoSuchCartException {
 		return findByPrimaryKey((Serializable)cartId);
 	}
 

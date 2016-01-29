@@ -190,7 +190,7 @@ public class ResourceBlockPermissionUtil {
 	* @param resourceBlockId the resource block ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching resource block permission
-	* @throws NoSuchResourceBlockPermissionException if a matching resource block permission could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException if a matching resource block permission could not be found
 	*/
 	public static ResourceBlockPermission findByResourceBlockId_First(
 		long resourceBlockId,
@@ -222,7 +222,7 @@ public class ResourceBlockPermissionUtil {
 	* @param resourceBlockId the resource block ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching resource block permission
-	* @throws NoSuchResourceBlockPermissionException if a matching resource block permission could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException if a matching resource block permission could not be found
 	*/
 	public static ResourceBlockPermission findByResourceBlockId_Last(
 		long resourceBlockId,
@@ -255,7 +255,7 @@ public class ResourceBlockPermissionUtil {
 	* @param resourceBlockId the resource block ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next resource block permission
-	* @throws NoSuchResourceBlockPermissionException if a resource block permission with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException if a resource block permission with the primary key could not be found
 	*/
 	public static ResourceBlockPermission[] findByResourceBlockId_PrevAndNext(
 		long resourceBlockPermissionId, long resourceBlockId,
@@ -361,7 +361,7 @@ public class ResourceBlockPermissionUtil {
 	* @param roleId the role ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching resource block permission
-	* @throws NoSuchResourceBlockPermissionException if a matching resource block permission could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException if a matching resource block permission could not be found
 	*/
 	public static ResourceBlockPermission findByRoleId_First(long roleId,
 		OrderByComparator<ResourceBlockPermission> orderByComparator)
@@ -387,7 +387,7 @@ public class ResourceBlockPermissionUtil {
 	* @param roleId the role ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching resource block permission
-	* @throws NoSuchResourceBlockPermissionException if a matching resource block permission could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException if a matching resource block permission could not be found
 	*/
 	public static ResourceBlockPermission findByRoleId_Last(long roleId,
 		OrderByComparator<ResourceBlockPermission> orderByComparator)
@@ -414,7 +414,7 @@ public class ResourceBlockPermissionUtil {
 	* @param roleId the role ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next resource block permission
-	* @throws NoSuchResourceBlockPermissionException if a resource block permission with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException if a resource block permission with the primary key could not be found
 	*/
 	public static ResourceBlockPermission[] findByRoleId_PrevAndNext(
 		long resourceBlockPermissionId, long roleId,
@@ -445,12 +445,12 @@ public class ResourceBlockPermissionUtil {
 	}
 
 	/**
-	* Returns the resource block permission where resourceBlockId = &#63; and roleId = &#63; or throws a {@link NoSuchResourceBlockPermissionException} if it could not be found.
+	* Returns the resource block permission where resourceBlockId = &#63; and roleId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchResourceBlockPermissionException} if it could not be found.
 	*
 	* @param resourceBlockId the resource block ID
 	* @param roleId the role ID
 	* @return the matching resource block permission
-	* @throws NoSuchResourceBlockPermissionException if a matching resource block permission could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException if a matching resource block permission could not be found
 	*/
 	public static ResourceBlockPermission findByR_R(long resourceBlockId,
 		long roleId)
@@ -543,7 +543,7 @@ public class ResourceBlockPermissionUtil {
 	*
 	* @param resourceBlockPermissionId the primary key of the resource block permission
 	* @return the resource block permission that was removed
-	* @throws NoSuchResourceBlockPermissionException if a resource block permission with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException if a resource block permission with the primary key could not be found
 	*/
 	public static ResourceBlockPermission remove(long resourceBlockPermissionId)
 		throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException {
@@ -556,11 +556,11 @@ public class ResourceBlockPermissionUtil {
 	}
 
 	/**
-	* Returns the resource block permission with the primary key or throws a {@link NoSuchResourceBlockPermissionException} if it could not be found.
+	* Returns the resource block permission with the primary key or throws a {@link com.liferay.portal.exception.NoSuchResourceBlockPermissionException} if it could not be found.
 	*
 	* @param resourceBlockPermissionId the primary key of the resource block permission
 	* @return the resource block permission
-	* @throws NoSuchResourceBlockPermissionException if a resource block permission with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException if a resource block permission with the primary key could not be found
 	*/
 	public static ResourceBlockPermission findByPrimaryKey(
 		long resourceBlockPermissionId)

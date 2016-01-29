@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchUserNotificationEventException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -297,12 +296,12 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user notification event
-	 * @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	 */
 	@Override
 	public UserNotificationEvent findByUuid_First(String uuid,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = fetchByUuid_First(uuid,
 				orderByComparator);
 
@@ -319,7 +318,7 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserNotificationEventException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserNotificationEventException(msg.toString());
 	}
 
 	/**
@@ -348,12 +347,12 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user notification event
-	 * @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	 */
 	@Override
 	public UserNotificationEvent findByUuid_Last(String uuid,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = fetchByUuid_Last(uuid,
 				orderByComparator);
 
@@ -370,7 +369,7 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserNotificationEventException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserNotificationEventException(msg.toString());
 	}
 
 	/**
@@ -406,13 +405,13 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user notification event
-	 * @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	 */
 	@Override
 	public UserNotificationEvent[] findByUuid_PrevAndNext(
 		long userNotificationEventId, String uuid,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = findByPrimaryKey(userNotificationEventId);
 
 		Session session = null;
@@ -868,13 +867,13 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user notification event
-	 * @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	 */
 	@Override
 	public UserNotificationEvent findByUuid_C_First(String uuid,
 		long companyId,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = fetchByUuid_C_First(uuid,
 				companyId, orderByComparator);
 
@@ -894,7 +893,7 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserNotificationEventException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserNotificationEventException(msg.toString());
 	}
 
 	/**
@@ -926,12 +925,12 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user notification event
-	 * @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	 */
 	@Override
 	public UserNotificationEvent findByUuid_C_Last(String uuid, long companyId,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = fetchByUuid_C_Last(uuid,
 				companyId, orderByComparator);
 
@@ -951,7 +950,7 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserNotificationEventException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserNotificationEventException(msg.toString());
 	}
 
 	/**
@@ -990,13 +989,13 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user notification event
-	 * @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	 */
 	@Override
 	public UserNotificationEvent[] findByUuid_C_PrevAndNext(
 		long userNotificationEventId, String uuid, long companyId,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = findByPrimaryKey(userNotificationEventId);
 
 		Session session = null;
@@ -1432,12 +1431,12 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user notification event
-	 * @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	 */
 	@Override
 	public UserNotificationEvent findByUserId_First(long userId,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = fetchByUserId_First(userId,
 				orderByComparator);
 
@@ -1454,7 +1453,7 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserNotificationEventException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserNotificationEventException(msg.toString());
 	}
 
 	/**
@@ -1483,12 +1482,12 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user notification event
-	 * @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	 */
 	@Override
 	public UserNotificationEvent findByUserId_Last(long userId,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = fetchByUserId_Last(userId,
 				orderByComparator);
 
@@ -1505,7 +1504,7 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserNotificationEventException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserNotificationEventException(msg.toString());
 	}
 
 	/**
@@ -1541,13 +1540,13 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user notification event
-	 * @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	 */
 	@Override
 	public UserNotificationEvent[] findByUserId_PrevAndNext(
 		long userNotificationEventId, long userId,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = findByPrimaryKey(userNotificationEventId);
 
 		Session session = null;
@@ -1954,12 +1953,12 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param type the type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user notification event
-	 * @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	 */
 	@Override
 	public UserNotificationEvent findByType_First(String type,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = fetchByType_First(type,
 				orderByComparator);
 
@@ -1976,7 +1975,7 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserNotificationEventException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserNotificationEventException(msg.toString());
 	}
 
 	/**
@@ -2005,12 +2004,12 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param type the type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user notification event
-	 * @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	 */
 	@Override
 	public UserNotificationEvent findByType_Last(String type,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = fetchByType_Last(type,
 				orderByComparator);
 
@@ -2027,7 +2026,7 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserNotificationEventException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserNotificationEventException(msg.toString());
 	}
 
 	/**
@@ -2063,13 +2062,13 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param type the type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user notification event
-	 * @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	 */
 	@Override
 	public UserNotificationEvent[] findByType_PrevAndNext(
 		long userNotificationEventId, String type,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = findByPrimaryKey(userNotificationEventId);
 
 		Session session = null;
@@ -2511,13 +2510,13 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param deliveryType the delivery type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user notification event
-	 * @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	 */
 	@Override
 	public UserNotificationEvent findByU_DT_First(long userId,
 		int deliveryType,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = fetchByU_DT_First(userId,
 				deliveryType, orderByComparator);
 
@@ -2537,7 +2536,7 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserNotificationEventException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserNotificationEventException(msg.toString());
 	}
 
 	/**
@@ -2569,12 +2568,12 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param deliveryType the delivery type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user notification event
-	 * @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	 */
 	@Override
 	public UserNotificationEvent findByU_DT_Last(long userId, int deliveryType,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = fetchByU_DT_Last(userId,
 				deliveryType, orderByComparator);
 
@@ -2594,7 +2593,7 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserNotificationEventException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserNotificationEventException(msg.toString());
 	}
 
 	/**
@@ -2633,13 +2632,13 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param deliveryType the delivery type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user notification event
-	 * @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	 */
 	@Override
 	public UserNotificationEvent[] findByU_DT_PrevAndNext(
 		long userNotificationEventId, long userId, int deliveryType,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = findByPrimaryKey(userNotificationEventId);
 
 		Session session = null;
@@ -3062,13 +3061,13 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param delivered the delivered
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user notification event
-	 * @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	 */
 	@Override
 	public UserNotificationEvent findByU_D_First(long userId,
 		boolean delivered,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = fetchByU_D_First(userId,
 				delivered, orderByComparator);
 
@@ -3088,7 +3087,7 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserNotificationEventException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserNotificationEventException(msg.toString());
 	}
 
 	/**
@@ -3120,12 +3119,12 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param delivered the delivered
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user notification event
-	 * @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	 */
 	@Override
 	public UserNotificationEvent findByU_D_Last(long userId, boolean delivered,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = fetchByU_D_Last(userId,
 				delivered, orderByComparator);
 
@@ -3145,7 +3144,7 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserNotificationEventException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserNotificationEventException(msg.toString());
 	}
 
 	/**
@@ -3184,13 +3183,13 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param delivered the delivered
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user notification event
-	 * @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	 */
 	@Override
 	public UserNotificationEvent[] findByU_D_PrevAndNext(
 		long userNotificationEventId, long userId, boolean delivered,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = findByPrimaryKey(userNotificationEventId);
 
 		Session session = null;
@@ -3613,12 +3612,12 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param archived the archived
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user notification event
-	 * @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	 */
 	@Override
 	public UserNotificationEvent findByU_A_First(long userId, boolean archived,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = fetchByU_A_First(userId,
 				archived, orderByComparator);
 
@@ -3638,7 +3637,7 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserNotificationEventException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserNotificationEventException(msg.toString());
 	}
 
 	/**
@@ -3670,12 +3669,12 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param archived the archived
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user notification event
-	 * @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	 */
 	@Override
 	public UserNotificationEvent findByU_A_Last(long userId, boolean archived,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = fetchByU_A_Last(userId,
 				archived, orderByComparator);
 
@@ -3695,7 +3694,7 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserNotificationEventException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserNotificationEventException(msg.toString());
 	}
 
 	/**
@@ -3733,13 +3732,13 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param archived the archived
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user notification event
-	 * @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	 */
 	@Override
 	public UserNotificationEvent[] findByU_A_PrevAndNext(
 		long userNotificationEventId, long userId, boolean archived,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = findByPrimaryKey(userNotificationEventId);
 
 		Session session = null;
@@ -4183,13 +4182,13 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param delivered the delivered
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user notification event
-	 * @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	 */
 	@Override
 	public UserNotificationEvent findByU_DT_D_First(long userId,
 		int deliveryType, boolean delivered,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = fetchByU_DT_D_First(userId,
 				deliveryType, delivered, orderByComparator);
 
@@ -4212,7 +4211,7 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserNotificationEventException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserNotificationEventException(msg.toString());
 	}
 
 	/**
@@ -4246,13 +4245,13 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param delivered the delivered
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user notification event
-	 * @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	 */
 	@Override
 	public UserNotificationEvent findByU_DT_D_Last(long userId,
 		int deliveryType, boolean delivered,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = fetchByU_DT_D_Last(userId,
 				deliveryType, delivered, orderByComparator);
 
@@ -4275,7 +4274,7 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserNotificationEventException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserNotificationEventException(msg.toString());
 	}
 
 	/**
@@ -4316,14 +4315,14 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param delivered the delivered
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user notification event
-	 * @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	 */
 	@Override
 	public UserNotificationEvent[] findByU_DT_D_PrevAndNext(
 		long userNotificationEventId, long userId, int deliveryType,
 		boolean delivered,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = findByPrimaryKey(userNotificationEventId);
 
 		Session session = null;
@@ -4779,13 +4778,13 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param archived the archived
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user notification event
-	 * @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	 */
 	@Override
 	public UserNotificationEvent findByU_DT_A_First(long userId,
 		int deliveryType, boolean archived,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = fetchByU_DT_A_First(userId,
 				deliveryType, archived, orderByComparator);
 
@@ -4808,7 +4807,7 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserNotificationEventException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserNotificationEventException(msg.toString());
 	}
 
 	/**
@@ -4842,13 +4841,13 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param archived the archived
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user notification event
-	 * @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	 */
 	@Override
 	public UserNotificationEvent findByU_DT_A_Last(long userId,
 		int deliveryType, boolean archived,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = fetchByU_DT_A_Last(userId,
 				deliveryType, archived, orderByComparator);
 
@@ -4871,7 +4870,7 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserNotificationEventException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserNotificationEventException(msg.toString());
 	}
 
 	/**
@@ -4912,14 +4911,14 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param archived the archived
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user notification event
-	 * @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	 */
 	@Override
 	public UserNotificationEvent[] findByU_DT_A_PrevAndNext(
 		long userNotificationEventId, long userId, int deliveryType,
 		boolean archived,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = findByPrimaryKey(userNotificationEventId);
 
 		Session session = null;
@@ -5374,13 +5373,13 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param actionRequired the action required
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user notification event
-	 * @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	 */
 	@Override
 	public UserNotificationEvent findByU_D_A_First(long userId,
 		boolean delivered, boolean actionRequired,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = fetchByU_D_A_First(userId,
 				delivered, actionRequired, orderByComparator);
 
@@ -5403,7 +5402,7 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserNotificationEventException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserNotificationEventException(msg.toString());
 	}
 
 	/**
@@ -5437,13 +5436,13 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param actionRequired the action required
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user notification event
-	 * @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	 */
 	@Override
 	public UserNotificationEvent findByU_D_A_Last(long userId,
 		boolean delivered, boolean actionRequired,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = fetchByU_D_A_Last(userId,
 				delivered, actionRequired, orderByComparator);
 
@@ -5466,7 +5465,7 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserNotificationEventException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserNotificationEventException(msg.toString());
 	}
 
 	/**
@@ -5507,14 +5506,14 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param actionRequired the action required
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user notification event
-	 * @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	 */
 	@Override
 	public UserNotificationEvent[] findByU_D_A_PrevAndNext(
 		long userNotificationEventId, long userId, boolean delivered,
 		boolean actionRequired,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = findByPrimaryKey(userNotificationEventId);
 
 		Session session = null;
@@ -5971,13 +5970,13 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param archived the archived
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user notification event
-	 * @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	 */
 	@Override
 	public UserNotificationEvent findByU_A_A_First(long userId,
 		boolean actionRequired, boolean archived,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = fetchByU_A_A_First(userId,
 				actionRequired, archived, orderByComparator);
 
@@ -6000,7 +5999,7 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserNotificationEventException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserNotificationEventException(msg.toString());
 	}
 
 	/**
@@ -6034,13 +6033,13 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param archived the archived
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user notification event
-	 * @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	 */
 	@Override
 	public UserNotificationEvent findByU_A_A_Last(long userId,
 		boolean actionRequired, boolean archived,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = fetchByU_A_A_Last(userId,
 				actionRequired, archived, orderByComparator);
 
@@ -6063,7 +6062,7 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserNotificationEventException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserNotificationEventException(msg.toString());
 	}
 
 	/**
@@ -6104,14 +6103,14 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param archived the archived
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user notification event
-	 * @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	 */
 	@Override
 	public UserNotificationEvent[] findByU_A_A_PrevAndNext(
 		long userNotificationEventId, long userId, boolean actionRequired,
 		boolean archived,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = findByPrimaryKey(userNotificationEventId);
 
 		Session session = null;
@@ -6596,13 +6595,13 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param delivered the delivered
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user notification event
-	 * @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	 */
 	@Override
 	public UserNotificationEvent findByU_T_DT_D_First(long userId, String type,
 		int deliveryType, boolean delivered,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = fetchByU_T_DT_D_First(userId,
 				type, deliveryType, delivered, orderByComparator);
 
@@ -6628,7 +6627,7 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserNotificationEventException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserNotificationEventException(msg.toString());
 	}
 
 	/**
@@ -6664,13 +6663,13 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param delivered the delivered
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user notification event
-	 * @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	 */
 	@Override
 	public UserNotificationEvent findByU_T_DT_D_Last(long userId, String type,
 		int deliveryType, boolean delivered,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = fetchByU_T_DT_D_Last(userId,
 				type, deliveryType, delivered, orderByComparator);
 
@@ -6696,7 +6695,7 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserNotificationEventException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserNotificationEventException(msg.toString());
 	}
 
 	/**
@@ -6739,14 +6738,14 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param delivered the delivered
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user notification event
-	 * @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	 */
 	@Override
 	public UserNotificationEvent[] findByU_T_DT_D_PrevAndNext(
 		long userNotificationEventId, long userId, String type,
 		int deliveryType, boolean delivered,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = findByPrimaryKey(userNotificationEventId);
 
 		Session session = null;
@@ -7262,13 +7261,13 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param actionRequired the action required
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user notification event
-	 * @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	 */
 	@Override
 	public UserNotificationEvent findByU_DT_D_A_First(long userId,
 		int deliveryType, boolean delivered, boolean actionRequired,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = fetchByU_DT_D_A_First(userId,
 				deliveryType, delivered, actionRequired, orderByComparator);
 
@@ -7294,7 +7293,7 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserNotificationEventException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserNotificationEventException(msg.toString());
 	}
 
 	/**
@@ -7330,13 +7329,13 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param actionRequired the action required
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user notification event
-	 * @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	 */
 	@Override
 	public UserNotificationEvent findByU_DT_D_A_Last(long userId,
 		int deliveryType, boolean delivered, boolean actionRequired,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = fetchByU_DT_D_A_Last(userId,
 				deliveryType, delivered, actionRequired, orderByComparator);
 
@@ -7362,7 +7361,7 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserNotificationEventException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserNotificationEventException(msg.toString());
 	}
 
 	/**
@@ -7406,14 +7405,14 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param actionRequired the action required
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user notification event
-	 * @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	 */
 	@Override
 	public UserNotificationEvent[] findByU_DT_D_A_PrevAndNext(
 		long userNotificationEventId, long userId, int deliveryType,
 		boolean delivered, boolean actionRequired,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = findByPrimaryKey(userNotificationEventId);
 
 		Session session = null;
@@ -7901,13 +7900,13 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param archived the archived
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user notification event
-	 * @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	 */
 	@Override
 	public UserNotificationEvent findByU_DT_A_A_First(long userId,
 		int deliveryType, boolean actionRequired, boolean archived,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = fetchByU_DT_A_A_First(userId,
 				deliveryType, actionRequired, archived, orderByComparator);
 
@@ -7933,7 +7932,7 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserNotificationEventException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserNotificationEventException(msg.toString());
 	}
 
 	/**
@@ -7969,13 +7968,13 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param archived the archived
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user notification event
-	 * @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	 */
 	@Override
 	public UserNotificationEvent findByU_DT_A_A_Last(long userId,
 		int deliveryType, boolean actionRequired, boolean archived,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = fetchByU_DT_A_A_Last(userId,
 				deliveryType, actionRequired, archived, orderByComparator);
 
@@ -8001,7 +8000,7 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserNotificationEventException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserNotificationEventException(msg.toString());
 	}
 
 	/**
@@ -8045,14 +8044,14 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 * @param archived the archived
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user notification event
-	 * @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	 */
 	@Override
 	public UserNotificationEvent[] findByU_DT_A_A_PrevAndNext(
 		long userNotificationEventId, long userId, int deliveryType,
 		boolean actionRequired, boolean archived,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = findByPrimaryKey(userNotificationEventId);
 
 		Session session = null;
@@ -8404,11 +8403,11 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 *
 	 * @param userNotificationEventId the primary key of the user notification event
 	 * @return the user notification event that was removed
-	 * @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	 */
 	@Override
 	public UserNotificationEvent remove(long userNotificationEventId)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		return remove((Serializable)userNotificationEventId);
 	}
 
@@ -8417,11 +8416,11 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 *
 	 * @param primaryKey the primary key of the user notification event
 	 * @return the user notification event that was removed
-	 * @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	 */
 	@Override
 	public UserNotificationEvent remove(Serializable primaryKey)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		Session session = null;
 
 		try {
@@ -8435,13 +8434,13 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchUserNotificationEventException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchUserNotificationEventException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(userNotificationEvent);
 		}
-		catch (NoSuchUserNotificationEventException nsee) {
+		catch (com.liferay.portal.exception.NoSuchUserNotificationEventException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -8873,11 +8872,11 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	 *
 	 * @param primaryKey the primary key of the user notification event
 	 * @return the user notification event
-	 * @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	 */
 	@Override
 	public UserNotificationEvent findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		UserNotificationEvent userNotificationEvent = fetchByPrimaryKey(primaryKey);
 
 		if (userNotificationEvent == null) {
@@ -8885,7 +8884,7 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchUserNotificationEventException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchUserNotificationEventException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -8893,15 +8892,15 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	}
 
 	/**
-	 * Returns the user notification event with the primary key or throws a {@link NoSuchUserNotificationEventException} if it could not be found.
+	 * Returns the user notification event with the primary key or throws a {@link com.liferay.portal.exception.NoSuchUserNotificationEventException} if it could not be found.
 	 *
 	 * @param userNotificationEventId the primary key of the user notification event
 	 * @return the user notification event
-	 * @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	 */
 	@Override
 	public UserNotificationEvent findByPrimaryKey(long userNotificationEventId)
-		throws NoSuchUserNotificationEventException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
 		return findByPrimaryKey((Serializable)userNotificationEventId);
 	}
 

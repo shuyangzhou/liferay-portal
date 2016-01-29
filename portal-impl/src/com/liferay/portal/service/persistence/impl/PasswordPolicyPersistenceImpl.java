@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchPasswordPolicyException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -301,12 +300,12 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching password policy
-	 * @throws NoSuchPasswordPolicyException if a matching password policy could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPasswordPolicyException if a matching password policy could not be found
 	 */
 	@Override
 	public PasswordPolicy findByUuid_First(String uuid,
 		OrderByComparator<PasswordPolicy> orderByComparator)
-		throws NoSuchPasswordPolicyException {
+		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
 		PasswordPolicy passwordPolicy = fetchByUuid_First(uuid,
 				orderByComparator);
 
@@ -323,7 +322,7 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchPasswordPolicyException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchPasswordPolicyException(msg.toString());
 	}
 
 	/**
@@ -351,12 +350,12 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching password policy
-	 * @throws NoSuchPasswordPolicyException if a matching password policy could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPasswordPolicyException if a matching password policy could not be found
 	 */
 	@Override
 	public PasswordPolicy findByUuid_Last(String uuid,
 		OrderByComparator<PasswordPolicy> orderByComparator)
-		throws NoSuchPasswordPolicyException {
+		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
 		PasswordPolicy passwordPolicy = fetchByUuid_Last(uuid, orderByComparator);
 
 		if (passwordPolicy != null) {
@@ -372,7 +371,7 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchPasswordPolicyException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchPasswordPolicyException(msg.toString());
 	}
 
 	/**
@@ -408,12 +407,12 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next password policy
-	 * @throws NoSuchPasswordPolicyException if a password policy with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPasswordPolicyException if a password policy with the primary key could not be found
 	 */
 	@Override
 	public PasswordPolicy[] findByUuid_PrevAndNext(long passwordPolicyId,
 		String uuid, OrderByComparator<PasswordPolicy> orderByComparator)
-		throws NoSuchPasswordPolicyException {
+		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
 		PasswordPolicy passwordPolicy = findByPrimaryKey(passwordPolicyId);
 
 		Session session = null;
@@ -705,13 +704,13 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next password policy
-	 * @throws NoSuchPasswordPolicyException if a password policy with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPasswordPolicyException if a password policy with the primary key could not be found
 	 */
 	@Override
 	public PasswordPolicy[] filterFindByUuid_PrevAndNext(
 		long passwordPolicyId, String uuid,
 		OrderByComparator<PasswordPolicy> orderByComparator)
-		throws NoSuchPasswordPolicyException {
+		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
 		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByUuid_PrevAndNext(passwordPolicyId, uuid,
 				orderByComparator);
@@ -1269,12 +1268,12 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching password policy
-	 * @throws NoSuchPasswordPolicyException if a matching password policy could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPasswordPolicyException if a matching password policy could not be found
 	 */
 	@Override
 	public PasswordPolicy findByUuid_C_First(String uuid, long companyId,
 		OrderByComparator<PasswordPolicy> orderByComparator)
-		throws NoSuchPasswordPolicyException {
+		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
 		PasswordPolicy passwordPolicy = fetchByUuid_C_First(uuid, companyId,
 				orderByComparator);
 
@@ -1294,7 +1293,7 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchPasswordPolicyException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchPasswordPolicyException(msg.toString());
 	}
 
 	/**
@@ -1325,12 +1324,12 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching password policy
-	 * @throws NoSuchPasswordPolicyException if a matching password policy could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPasswordPolicyException if a matching password policy could not be found
 	 */
 	@Override
 	public PasswordPolicy findByUuid_C_Last(String uuid, long companyId,
 		OrderByComparator<PasswordPolicy> orderByComparator)
-		throws NoSuchPasswordPolicyException {
+		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
 		PasswordPolicy passwordPolicy = fetchByUuid_C_Last(uuid, companyId,
 				orderByComparator);
 
@@ -1350,7 +1349,7 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchPasswordPolicyException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchPasswordPolicyException(msg.toString());
 	}
 
 	/**
@@ -1388,13 +1387,13 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next password policy
-	 * @throws NoSuchPasswordPolicyException if a password policy with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPasswordPolicyException if a password policy with the primary key could not be found
 	 */
 	@Override
 	public PasswordPolicy[] findByUuid_C_PrevAndNext(long passwordPolicyId,
 		String uuid, long companyId,
 		OrderByComparator<PasswordPolicy> orderByComparator)
-		throws NoSuchPasswordPolicyException {
+		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
 		PasswordPolicy passwordPolicy = findByPrimaryKey(passwordPolicyId);
 
 		Session session = null;
@@ -1700,13 +1699,13 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next password policy
-	 * @throws NoSuchPasswordPolicyException if a password policy with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPasswordPolicyException if a password policy with the primary key could not be found
 	 */
 	@Override
 	public PasswordPolicy[] filterFindByUuid_C_PrevAndNext(
 		long passwordPolicyId, String uuid, long companyId,
 		OrderByComparator<PasswordPolicy> orderByComparator)
-		throws NoSuchPasswordPolicyException {
+		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
 		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByUuid_C_PrevAndNext(passwordPolicyId, uuid, companyId,
 				orderByComparator);
@@ -2251,12 +2250,12 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching password policy
-	 * @throws NoSuchPasswordPolicyException if a matching password policy could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPasswordPolicyException if a matching password policy could not be found
 	 */
 	@Override
 	public PasswordPolicy findByCompanyId_First(long companyId,
 		OrderByComparator<PasswordPolicy> orderByComparator)
-		throws NoSuchPasswordPolicyException {
+		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
 		PasswordPolicy passwordPolicy = fetchByCompanyId_First(companyId,
 				orderByComparator);
 
@@ -2273,7 +2272,7 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchPasswordPolicyException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchPasswordPolicyException(msg.toString());
 	}
 
 	/**
@@ -2302,12 +2301,12 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching password policy
-	 * @throws NoSuchPasswordPolicyException if a matching password policy could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPasswordPolicyException if a matching password policy could not be found
 	 */
 	@Override
 	public PasswordPolicy findByCompanyId_Last(long companyId,
 		OrderByComparator<PasswordPolicy> orderByComparator)
-		throws NoSuchPasswordPolicyException {
+		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
 		PasswordPolicy passwordPolicy = fetchByCompanyId_Last(companyId,
 				orderByComparator);
 
@@ -2324,7 +2323,7 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchPasswordPolicyException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchPasswordPolicyException(msg.toString());
 	}
 
 	/**
@@ -2360,12 +2359,12 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next password policy
-	 * @throws NoSuchPasswordPolicyException if a password policy with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPasswordPolicyException if a password policy with the primary key could not be found
 	 */
 	@Override
 	public PasswordPolicy[] findByCompanyId_PrevAndNext(long passwordPolicyId,
 		long companyId, OrderByComparator<PasswordPolicy> orderByComparator)
-		throws NoSuchPasswordPolicyException {
+		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
 		PasswordPolicy passwordPolicy = findByPrimaryKey(passwordPolicyId);
 
 		Session session = null;
@@ -2631,13 +2630,13 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next password policy
-	 * @throws NoSuchPasswordPolicyException if a password policy with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPasswordPolicyException if a password policy with the primary key could not be found
 	 */
 	@Override
 	public PasswordPolicy[] filterFindByCompanyId_PrevAndNext(
 		long passwordPolicyId, long companyId,
 		OrderByComparator<PasswordPolicy> orderByComparator)
-		throws NoSuchPasswordPolicyException {
+		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
 		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByCompanyId_PrevAndNext(passwordPolicyId, companyId,
 				orderByComparator);
@@ -2936,16 +2935,16 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 			new String[] { Long.class.getName(), Boolean.class.getName() });
 
 	/**
-	 * Returns the password policy where companyId = &#63; and defaultPolicy = &#63; or throws a {@link NoSuchPasswordPolicyException} if it could not be found.
+	 * Returns the password policy where companyId = &#63; and defaultPolicy = &#63; or throws a {@link com.liferay.portal.exception.NoSuchPasswordPolicyException} if it could not be found.
 	 *
 	 * @param companyId the company ID
 	 * @param defaultPolicy the default policy
 	 * @return the matching password policy
-	 * @throws NoSuchPasswordPolicyException if a matching password policy could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPasswordPolicyException if a matching password policy could not be found
 	 */
 	@Override
 	public PasswordPolicy findByC_DP(long companyId, boolean defaultPolicy)
-		throws NoSuchPasswordPolicyException {
+		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
 		PasswordPolicy passwordPolicy = fetchByC_DP(companyId, defaultPolicy);
 
 		if (passwordPolicy == null) {
@@ -2965,7 +2964,7 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchPasswordPolicyException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchPasswordPolicyException(msg.toString());
 		}
 
 		return passwordPolicy;
@@ -3090,7 +3089,7 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 	 */
 	@Override
 	public PasswordPolicy removeByC_DP(long companyId, boolean defaultPolicy)
-		throws NoSuchPasswordPolicyException {
+		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
 		PasswordPolicy passwordPolicy = findByC_DP(companyId, defaultPolicy);
 
 		return remove(passwordPolicy);
@@ -3166,16 +3165,16 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 			new String[] { Long.class.getName(), String.class.getName() });
 
 	/**
-	 * Returns the password policy where companyId = &#63; and name = &#63; or throws a {@link NoSuchPasswordPolicyException} if it could not be found.
+	 * Returns the password policy where companyId = &#63; and name = &#63; or throws a {@link com.liferay.portal.exception.NoSuchPasswordPolicyException} if it could not be found.
 	 *
 	 * @param companyId the company ID
 	 * @param name the name
 	 * @return the matching password policy
-	 * @throws NoSuchPasswordPolicyException if a matching password policy could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPasswordPolicyException if a matching password policy could not be found
 	 */
 	@Override
 	public PasswordPolicy findByC_N(long companyId, String name)
-		throws NoSuchPasswordPolicyException {
+		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
 		PasswordPolicy passwordPolicy = fetchByC_N(companyId, name);
 
 		if (passwordPolicy == null) {
@@ -3195,7 +3194,7 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchPasswordPolicyException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchPasswordPolicyException(msg.toString());
 		}
 
 		return passwordPolicy;
@@ -3328,7 +3327,7 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 	 */
 	@Override
 	public PasswordPolicy removeByC_N(long companyId, String name)
-		throws NoSuchPasswordPolicyException {
+		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
 		PasswordPolicy passwordPolicy = findByC_N(companyId, name);
 
 		return remove(passwordPolicy);
@@ -3622,11 +3621,11 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 	 *
 	 * @param passwordPolicyId the primary key of the password policy
 	 * @return the password policy that was removed
-	 * @throws NoSuchPasswordPolicyException if a password policy with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPasswordPolicyException if a password policy with the primary key could not be found
 	 */
 	@Override
 	public PasswordPolicy remove(long passwordPolicyId)
-		throws NoSuchPasswordPolicyException {
+		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
 		return remove((Serializable)passwordPolicyId);
 	}
 
@@ -3635,11 +3634,11 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 	 *
 	 * @param primaryKey the primary key of the password policy
 	 * @return the password policy that was removed
-	 * @throws NoSuchPasswordPolicyException if a password policy with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPasswordPolicyException if a password policy with the primary key could not be found
 	 */
 	@Override
 	public PasswordPolicy remove(Serializable primaryKey)
-		throws NoSuchPasswordPolicyException {
+		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
 		Session session = null;
 
 		try {
@@ -3653,13 +3652,13 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchPasswordPolicyException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchPasswordPolicyException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(passwordPolicy);
 		}
-		catch (NoSuchPasswordPolicyException nsee) {
+		catch (com.liferay.portal.exception.NoSuchPasswordPolicyException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -3889,11 +3888,11 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 	 *
 	 * @param primaryKey the primary key of the password policy
 	 * @return the password policy
-	 * @throws NoSuchPasswordPolicyException if a password policy with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPasswordPolicyException if a password policy with the primary key could not be found
 	 */
 	@Override
 	public PasswordPolicy findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchPasswordPolicyException {
+		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
 		PasswordPolicy passwordPolicy = fetchByPrimaryKey(primaryKey);
 
 		if (passwordPolicy == null) {
@@ -3901,7 +3900,7 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchPasswordPolicyException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchPasswordPolicyException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -3909,15 +3908,15 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 	}
 
 	/**
-	 * Returns the password policy with the primary key or throws a {@link NoSuchPasswordPolicyException} if it could not be found.
+	 * Returns the password policy with the primary key or throws a {@link com.liferay.portal.exception.NoSuchPasswordPolicyException} if it could not be found.
 	 *
 	 * @param passwordPolicyId the primary key of the password policy
 	 * @return the password policy
-	 * @throws NoSuchPasswordPolicyException if a password policy with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPasswordPolicyException if a password policy with the primary key could not be found
 	 */
 	@Override
 	public PasswordPolicy findByPrimaryKey(long passwordPolicyId)
-		throws NoSuchPasswordPolicyException {
+		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
 		return findByPrimaryKey((Serializable)passwordPolicyId);
 	}
 

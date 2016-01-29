@@ -182,7 +182,7 @@ public class OrgGroupRoleUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching org group role
-	* @throws NoSuchOrgGroupRoleException if a matching org group role could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrgGroupRoleException if a matching org group role could not be found
 	*/
 	public static OrgGroupRole findByGroupId_First(long groupId,
 		OrderByComparator<OrgGroupRole> orderByComparator)
@@ -208,7 +208,7 @@ public class OrgGroupRoleUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching org group role
-	* @throws NoSuchOrgGroupRoleException if a matching org group role could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrgGroupRoleException if a matching org group role could not be found
 	*/
 	public static OrgGroupRole findByGroupId_Last(long groupId,
 		OrderByComparator<OrgGroupRole> orderByComparator)
@@ -235,7 +235,7 @@ public class OrgGroupRoleUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next org group role
-	* @throws NoSuchOrgGroupRoleException if a org group role with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrgGroupRoleException if a org group role with the primary key could not be found
 	*/
 	public static OrgGroupRole[] findByGroupId_PrevAndNext(
 		com.liferay.portal.service.persistence.OrgGroupRolePK orgGroupRolePK,
@@ -339,7 +339,7 @@ public class OrgGroupRoleUtil {
 	* @param roleId the role ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching org group role
-	* @throws NoSuchOrgGroupRoleException if a matching org group role could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrgGroupRoleException if a matching org group role could not be found
 	*/
 	public static OrgGroupRole findByRoleId_First(long roleId,
 		OrderByComparator<OrgGroupRole> orderByComparator)
@@ -365,7 +365,7 @@ public class OrgGroupRoleUtil {
 	* @param roleId the role ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching org group role
-	* @throws NoSuchOrgGroupRoleException if a matching org group role could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrgGroupRoleException if a matching org group role could not be found
 	*/
 	public static OrgGroupRole findByRoleId_Last(long roleId,
 		OrderByComparator<OrgGroupRole> orderByComparator)
@@ -392,7 +392,7 @@ public class OrgGroupRoleUtil {
 	* @param roleId the role ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next org group role
-	* @throws NoSuchOrgGroupRoleException if a org group role with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrgGroupRoleException if a org group role with the primary key could not be found
 	*/
 	public static OrgGroupRole[] findByRoleId_PrevAndNext(
 		com.liferay.portal.service.persistence.OrgGroupRolePK orgGroupRolePK,
@@ -456,7 +456,7 @@ public class OrgGroupRoleUtil {
 	*
 	* @param orgGroupRolePK the primary key of the org group role
 	* @return the org group role that was removed
-	* @throws NoSuchOrgGroupRoleException if a org group role with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrgGroupRoleException if a org group role with the primary key could not be found
 	*/
 	public static OrgGroupRole remove(
 		com.liferay.portal.service.persistence.OrgGroupRolePK orgGroupRolePK)
@@ -469,11 +469,11 @@ public class OrgGroupRoleUtil {
 	}
 
 	/**
-	* Returns the org group role with the primary key or throws a {@link NoSuchOrgGroupRoleException} if it could not be found.
+	* Returns the org group role with the primary key or throws a {@link com.liferay.portal.exception.NoSuchOrgGroupRoleException} if it could not be found.
 	*
 	* @param orgGroupRolePK the primary key of the org group role
 	* @return the org group role
-	* @throws NoSuchOrgGroupRoleException if a org group role with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrgGroupRoleException if a org group role with the primary key could not be found
 	*/
 	public static OrgGroupRole findByPrimaryKey(
 		com.liferay.portal.service.persistence.OrgGroupRolePK orgGroupRolePK)

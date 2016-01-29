@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchAccountException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -190,10 +189,11 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 *
 	 * @param accountId the primary key of the account
 	 * @return the account that was removed
-	 * @throws NoSuchAccountException if a account with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchAccountException if a account with the primary key could not be found
 	 */
 	@Override
-	public Account remove(long accountId) throws NoSuchAccountException {
+	public Account remove(long accountId)
+		throws com.liferay.portal.exception.NoSuchAccountException {
 		return remove((Serializable)accountId);
 	}
 
@@ -202,11 +202,11 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 *
 	 * @param primaryKey the primary key of the account
 	 * @return the account that was removed
-	 * @throws NoSuchAccountException if a account with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchAccountException if a account with the primary key could not be found
 	 */
 	@Override
 	public Account remove(Serializable primaryKey)
-		throws NoSuchAccountException {
+		throws com.liferay.portal.exception.NoSuchAccountException {
 		Session session = null;
 
 		try {
@@ -219,13 +219,13 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchAccountException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchAccountException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(account);
 		}
-		catch (NoSuchAccountException nsee) {
+		catch (com.liferay.portal.exception.NoSuchAccountException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -369,11 +369,11 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 *
 	 * @param primaryKey the primary key of the account
 	 * @return the account
-	 * @throws NoSuchAccountException if a account with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchAccountException if a account with the primary key could not be found
 	 */
 	@Override
 	public Account findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchAccountException {
+		throws com.liferay.portal.exception.NoSuchAccountException {
 		Account account = fetchByPrimaryKey(primaryKey);
 
 		if (account == null) {
@@ -381,7 +381,7 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchAccountException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchAccountException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -389,15 +389,15 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	}
 
 	/**
-	 * Returns the account with the primary key or throws a {@link NoSuchAccountException} if it could not be found.
+	 * Returns the account with the primary key or throws a {@link com.liferay.portal.exception.NoSuchAccountException} if it could not be found.
 	 *
 	 * @param accountId the primary key of the account
 	 * @return the account
-	 * @throws NoSuchAccountException if a account with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchAccountException if a account with the primary key could not be found
 	 */
 	@Override
 	public Account findByPrimaryKey(long accountId)
-		throws NoSuchAccountException {
+		throws com.liferay.portal.exception.NoSuchAccountException {
 		return findByPrimaryKey((Serializable)accountId);
 	}
 

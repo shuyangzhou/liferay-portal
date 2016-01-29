@@ -103,7 +103,7 @@ public interface PortletPersistence extends BasePersistence<Portlet> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching portlet
-	* @throws NoSuchPortletException if a matching portlet could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletException if a matching portlet could not be found
 	*/
 	public Portlet findByCompanyId_First(long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<Portlet> orderByComparator)
@@ -125,7 +125,7 @@ public interface PortletPersistence extends BasePersistence<Portlet> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching portlet
-	* @throws NoSuchPortletException if a matching portlet could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletException if a matching portlet could not be found
 	*/
 	public Portlet findByCompanyId_Last(long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<Portlet> orderByComparator)
@@ -148,7 +148,7 @@ public interface PortletPersistence extends BasePersistence<Portlet> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next portlet
-	* @throws NoSuchPortletException if a portlet with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletException if a portlet with the primary key could not be found
 	*/
 	public Portlet[] findByCompanyId_PrevAndNext(long id, long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<Portlet> orderByComparator)
@@ -170,12 +170,12 @@ public interface PortletPersistence extends BasePersistence<Portlet> {
 	public int countByCompanyId(long companyId);
 
 	/**
-	* Returns the portlet where companyId = &#63; and portletId = &#63; or throws a {@link NoSuchPortletException} if it could not be found.
+	* Returns the portlet where companyId = &#63; and portletId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchPortletException} if it could not be found.
 	*
 	* @param companyId the company ID
 	* @param portletId the portlet ID
 	* @return the matching portlet
-	* @throws NoSuchPortletException if a matching portlet could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletException if a matching portlet could not be found
 	*/
 	public Portlet findByC_P(long companyId, java.lang.String portletId)
 		throws com.liferay.portal.exception.NoSuchPortletException;
@@ -246,7 +246,7 @@ public interface PortletPersistence extends BasePersistence<Portlet> {
 	*
 	* @param id the primary key of the portlet
 	* @return the portlet that was removed
-	* @throws NoSuchPortletException if a portlet with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletException if a portlet with the primary key could not be found
 	*/
 	public Portlet remove(long id)
 		throws com.liferay.portal.exception.NoSuchPortletException;
@@ -254,11 +254,11 @@ public interface PortletPersistence extends BasePersistence<Portlet> {
 	public Portlet updateImpl(Portlet portlet);
 
 	/**
-	* Returns the portlet with the primary key or throws a {@link NoSuchPortletException} if it could not be found.
+	* Returns the portlet with the primary key or throws a {@link com.liferay.portal.exception.NoSuchPortletException} if it could not be found.
 	*
 	* @param id the primary key of the portlet
 	* @return the portlet
-	* @throws NoSuchPortletException if a portlet with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletException if a portlet with the primary key could not be found
 	*/
 	public Portlet findByPrimaryKey(long id)
 		throws com.liferay.portal.exception.NoSuchPortletException;

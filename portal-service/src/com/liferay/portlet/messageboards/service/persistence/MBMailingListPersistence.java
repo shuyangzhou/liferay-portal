@@ -105,7 +105,7 @@ public interface MBMailingListPersistence extends BasePersistence<MBMailingList>
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message boards mailing list
-	* @throws NoSuchMailingListException if a matching message boards mailing list could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMailingListException if a matching message boards mailing list could not be found
 	*/
 	public MBMailingList findByUuid_First(java.lang.String uuid,
 		com.liferay.portal.kernel.util.OrderByComparator<MBMailingList> orderByComparator)
@@ -127,7 +127,7 @@ public interface MBMailingListPersistence extends BasePersistence<MBMailingList>
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message boards mailing list
-	* @throws NoSuchMailingListException if a matching message boards mailing list could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMailingListException if a matching message boards mailing list could not be found
 	*/
 	public MBMailingList findByUuid_Last(java.lang.String uuid,
 		com.liferay.portal.kernel.util.OrderByComparator<MBMailingList> orderByComparator)
@@ -150,7 +150,7 @@ public interface MBMailingListPersistence extends BasePersistence<MBMailingList>
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message boards mailing list
-	* @throws NoSuchMailingListException if a message boards mailing list with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMailingListException if a message boards mailing list with the primary key could not be found
 	*/
 	public MBMailingList[] findByUuid_PrevAndNext(long mailingListId,
 		java.lang.String uuid,
@@ -173,12 +173,12 @@ public interface MBMailingListPersistence extends BasePersistence<MBMailingList>
 	public int countByUuid(java.lang.String uuid);
 
 	/**
-	* Returns the message boards mailing list where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchMailingListException} if it could not be found.
+	* Returns the message boards mailing list where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.portlet.messageboards.exception.NoSuchMailingListException} if it could not be found.
 	*
 	* @param uuid the uuid
 	* @param groupId the group ID
 	* @return the matching message boards mailing list
-	* @throws NoSuchMailingListException if a matching message boards mailing list could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMailingListException if a matching message boards mailing list could not be found
 	*/
 	public MBMailingList findByUUID_G(java.lang.String uuid, long groupId)
 		throws com.liferay.portlet.messageboards.exception.NoSuchMailingListException;
@@ -293,7 +293,7 @@ public interface MBMailingListPersistence extends BasePersistence<MBMailingList>
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message boards mailing list
-	* @throws NoSuchMailingListException if a matching message boards mailing list could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMailingListException if a matching message boards mailing list could not be found
 	*/
 	public MBMailingList findByUuid_C_First(java.lang.String uuid,
 		long companyId,
@@ -319,7 +319,7 @@ public interface MBMailingListPersistence extends BasePersistence<MBMailingList>
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message boards mailing list
-	* @throws NoSuchMailingListException if a matching message boards mailing list could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMailingListException if a matching message boards mailing list could not be found
 	*/
 	public MBMailingList findByUuid_C_Last(java.lang.String uuid,
 		long companyId,
@@ -346,7 +346,7 @@ public interface MBMailingListPersistence extends BasePersistence<MBMailingList>
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message boards mailing list
-	* @throws NoSuchMailingListException if a message boards mailing list with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMailingListException if a message boards mailing list with the primary key could not be found
 	*/
 	public MBMailingList[] findByUuid_C_PrevAndNext(long mailingListId,
 		java.lang.String uuid, long companyId,
@@ -435,7 +435,7 @@ public interface MBMailingListPersistence extends BasePersistence<MBMailingList>
 	* @param active the active
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message boards mailing list
-	* @throws NoSuchMailingListException if a matching message boards mailing list could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMailingListException if a matching message boards mailing list could not be found
 	*/
 	public MBMailingList findByActive_First(boolean active,
 		com.liferay.portal.kernel.util.OrderByComparator<MBMailingList> orderByComparator)
@@ -457,7 +457,7 @@ public interface MBMailingListPersistence extends BasePersistence<MBMailingList>
 	* @param active the active
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message boards mailing list
-	* @throws NoSuchMailingListException if a matching message boards mailing list could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMailingListException if a matching message boards mailing list could not be found
 	*/
 	public MBMailingList findByActive_Last(boolean active,
 		com.liferay.portal.kernel.util.OrderByComparator<MBMailingList> orderByComparator)
@@ -480,7 +480,7 @@ public interface MBMailingListPersistence extends BasePersistence<MBMailingList>
 	* @param active the active
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message boards mailing list
-	* @throws NoSuchMailingListException if a message boards mailing list with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMailingListException if a message boards mailing list with the primary key could not be found
 	*/
 	public MBMailingList[] findByActive_PrevAndNext(long mailingListId,
 		boolean active,
@@ -503,12 +503,12 @@ public interface MBMailingListPersistence extends BasePersistence<MBMailingList>
 	public int countByActive(boolean active);
 
 	/**
-	* Returns the message boards mailing list where groupId = &#63; and categoryId = &#63; or throws a {@link NoSuchMailingListException} if it could not be found.
+	* Returns the message boards mailing list where groupId = &#63; and categoryId = &#63; or throws a {@link com.liferay.portlet.messageboards.exception.NoSuchMailingListException} if it could not be found.
 	*
 	* @param groupId the group ID
 	* @param categoryId the category ID
 	* @return the matching message boards mailing list
-	* @throws NoSuchMailingListException if a matching message boards mailing list could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMailingListException if a matching message boards mailing list could not be found
 	*/
 	public MBMailingList findByG_C(long groupId, long categoryId)
 		throws com.liferay.portlet.messageboards.exception.NoSuchMailingListException;
@@ -579,7 +579,7 @@ public interface MBMailingListPersistence extends BasePersistence<MBMailingList>
 	*
 	* @param mailingListId the primary key of the message boards mailing list
 	* @return the message boards mailing list that was removed
-	* @throws NoSuchMailingListException if a message boards mailing list with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMailingListException if a message boards mailing list with the primary key could not be found
 	*/
 	public MBMailingList remove(long mailingListId)
 		throws com.liferay.portlet.messageboards.exception.NoSuchMailingListException;
@@ -587,11 +587,11 @@ public interface MBMailingListPersistence extends BasePersistence<MBMailingList>
 	public MBMailingList updateImpl(MBMailingList mbMailingList);
 
 	/**
-	* Returns the message boards mailing list with the primary key or throws a {@link NoSuchMailingListException} if it could not be found.
+	* Returns the message boards mailing list with the primary key or throws a {@link com.liferay.portlet.messageboards.exception.NoSuchMailingListException} if it could not be found.
 	*
 	* @param mailingListId the primary key of the message boards mailing list
 	* @return the message boards mailing list
-	* @throws NoSuchMailingListException if a message boards mailing list with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMailingListException if a message boards mailing list with the primary key could not be found
 	*/
 	public MBMailingList findByPrimaryKey(long mailingListId)
 		throws com.liferay.portlet.messageboards.exception.NoSuchMailingListException;

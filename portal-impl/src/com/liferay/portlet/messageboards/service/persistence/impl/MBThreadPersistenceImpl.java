@@ -45,7 +45,6 @@ import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
-import com.liferay.portlet.messageboards.exception.NoSuchThreadException;
 import com.liferay.portlet.messageboards.model.MBThread;
 import com.liferay.portlet.messageboards.model.impl.MBThreadImpl;
 import com.liferay.portlet.messageboards.model.impl.MBThreadModelImpl;
@@ -303,12 +302,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message boards thread
-	 * @throws NoSuchThreadException if a matching message boards thread could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a matching message boards thread could not be found
 	 */
 	@Override
 	public MBThread findByUuid_First(String uuid,
 		OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = fetchByUuid_First(uuid, orderByComparator);
 
 		if (mbThread != null) {
@@ -324,7 +323,7 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchThreadException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchThreadException(msg.toString());
 	}
 
 	/**
@@ -352,12 +351,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message boards thread
-	 * @throws NoSuchThreadException if a matching message boards thread could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a matching message boards thread could not be found
 	 */
 	@Override
 	public MBThread findByUuid_Last(String uuid,
 		OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = fetchByUuid_Last(uuid, orderByComparator);
 
 		if (mbThread != null) {
@@ -373,7 +372,7 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchThreadException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchThreadException(msg.toString());
 	}
 
 	/**
@@ -409,12 +408,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message boards thread
-	 * @throws NoSuchThreadException if a message boards thread with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a message boards thread with the primary key could not be found
 	 */
 	@Override
 	public MBThread[] findByUuid_PrevAndNext(long threadId, String uuid,
 		OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = findByPrimaryKey(threadId);
 
 		Session session = null;
@@ -655,16 +654,16 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 			new String[] { String.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the message boards thread where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchThreadException} if it could not be found.
+	 * Returns the message boards thread where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.portlet.messageboards.exception.NoSuchThreadException} if it could not be found.
 	 *
 	 * @param uuid the uuid
 	 * @param groupId the group ID
 	 * @return the matching message boards thread
-	 * @throws NoSuchThreadException if a matching message boards thread could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a matching message boards thread could not be found
 	 */
 	@Override
 	public MBThread findByUUID_G(String uuid, long groupId)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = fetchByUUID_G(uuid, groupId);
 
 		if (mbThread == null) {
@@ -684,7 +683,7 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchThreadException(msg.toString());
+			throw new com.liferay.portlet.messageboards.exception.NoSuchThreadException(msg.toString());
 		}
 
 		return mbThread;
@@ -817,7 +816,7 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 */
 	@Override
 	public MBThread removeByUUID_G(String uuid, long groupId)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = findByUUID_G(uuid, groupId);
 
 		return remove(mbThread);
@@ -1120,12 +1119,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message boards thread
-	 * @throws NoSuchThreadException if a matching message boards thread could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a matching message boards thread could not be found
 	 */
 	@Override
 	public MBThread findByUuid_C_First(String uuid, long companyId,
 		OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = fetchByUuid_C_First(uuid, companyId,
 				orderByComparator);
 
@@ -1145,7 +1144,7 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchThreadException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchThreadException(msg.toString());
 	}
 
 	/**
@@ -1176,12 +1175,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message boards thread
-	 * @throws NoSuchThreadException if a matching message boards thread could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a matching message boards thread could not be found
 	 */
 	@Override
 	public MBThread findByUuid_C_Last(String uuid, long companyId,
 		OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = fetchByUuid_C_Last(uuid, companyId,
 				orderByComparator);
 
@@ -1201,7 +1200,7 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchThreadException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchThreadException(msg.toString());
 	}
 
 	/**
@@ -1239,12 +1238,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message boards thread
-	 * @throws NoSuchThreadException if a message boards thread with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a message boards thread with the primary key could not be found
 	 */
 	@Override
 	public MBThread[] findByUuid_C_PrevAndNext(long threadId, String uuid,
 		long companyId, OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = findByPrimaryKey(threadId);
 
 		Session session = null;
@@ -1675,12 +1674,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message boards thread
-	 * @throws NoSuchThreadException if a matching message boards thread could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a matching message boards thread could not be found
 	 */
 	@Override
 	public MBThread findByGroupId_First(long groupId,
 		OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = fetchByGroupId_First(groupId, orderByComparator);
 
 		if (mbThread != null) {
@@ -1696,7 +1695,7 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchThreadException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchThreadException(msg.toString());
 	}
 
 	/**
@@ -1724,12 +1723,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message boards thread
-	 * @throws NoSuchThreadException if a matching message boards thread could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a matching message boards thread could not be found
 	 */
 	@Override
 	public MBThread findByGroupId_Last(long groupId,
 		OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = fetchByGroupId_Last(groupId, orderByComparator);
 
 		if (mbThread != null) {
@@ -1745,7 +1744,7 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchThreadException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchThreadException(msg.toString());
 	}
 
 	/**
@@ -1781,12 +1780,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message boards thread
-	 * @throws NoSuchThreadException if a message boards thread with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a message boards thread with the primary key could not be found
 	 */
 	@Override
 	public MBThread[] findByGroupId_PrevAndNext(long threadId, long groupId,
 		OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = findByPrimaryKey(threadId);
 
 		Session session = null;
@@ -2050,12 +2049,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message boards thread
-	 * @throws NoSuchThreadException if a message boards thread with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a message boards thread with the primary key could not be found
 	 */
 	@Override
 	public MBThread[] filterFindByGroupId_PrevAndNext(long threadId,
 		long groupId, OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByGroupId_PrevAndNext(threadId, groupId,
 				orderByComparator);
@@ -2353,15 +2352,15 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 			new String[] { Long.class.getName() });
 
 	/**
-	 * Returns the message boards thread where rootMessageId = &#63; or throws a {@link NoSuchThreadException} if it could not be found.
+	 * Returns the message boards thread where rootMessageId = &#63; or throws a {@link com.liferay.portlet.messageboards.exception.NoSuchThreadException} if it could not be found.
 	 *
 	 * @param rootMessageId the root message ID
 	 * @return the matching message boards thread
-	 * @throws NoSuchThreadException if a matching message boards thread could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a matching message boards thread could not be found
 	 */
 	@Override
 	public MBThread findByRootMessageId(long rootMessageId)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = fetchByRootMessageId(rootMessageId);
 
 		if (mbThread == null) {
@@ -2378,7 +2377,7 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchThreadException(msg.toString());
+			throw new com.liferay.portlet.messageboards.exception.NoSuchThreadException(msg.toString());
 		}
 
 		return mbThread;
@@ -2495,7 +2494,7 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 */
 	@Override
 	public MBThread removeByRootMessageId(long rootMessageId)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = findByRootMessageId(rootMessageId);
 
 		return remove(mbThread);
@@ -2766,12 +2765,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param categoryId the category ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message boards thread
-	 * @throws NoSuchThreadException if a matching message boards thread could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a matching message boards thread could not be found
 	 */
 	@Override
 	public MBThread findByG_C_First(long groupId, long categoryId,
 		OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = fetchByG_C_First(groupId, categoryId,
 				orderByComparator);
 
@@ -2791,7 +2790,7 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchThreadException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchThreadException(msg.toString());
 	}
 
 	/**
@@ -2822,12 +2821,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param categoryId the category ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message boards thread
-	 * @throws NoSuchThreadException if a matching message boards thread could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a matching message boards thread could not be found
 	 */
 	@Override
 	public MBThread findByG_C_Last(long groupId, long categoryId,
 		OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = fetchByG_C_Last(groupId, categoryId,
 				orderByComparator);
 
@@ -2847,7 +2846,7 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchThreadException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchThreadException(msg.toString());
 	}
 
 	/**
@@ -2885,12 +2884,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param categoryId the category ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message boards thread
-	 * @throws NoSuchThreadException if a message boards thread with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a message boards thread with the primary key could not be found
 	 */
 	@Override
 	public MBThread[] findByG_C_PrevAndNext(long threadId, long groupId,
 		long categoryId, OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = findByPrimaryKey(threadId);
 
 		Session session = null;
@@ -3167,12 +3166,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param categoryId the category ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message boards thread
-	 * @throws NoSuchThreadException if a message boards thread with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a message boards thread with the primary key could not be found
 	 */
 	@Override
 	public MBThread[] filterFindByG_C_PrevAndNext(long threadId, long groupId,
 		long categoryId, OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_C_PrevAndNext(threadId, groupId, categoryId,
 				orderByComparator);
@@ -4165,12 +4164,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param categoryId the category ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message boards thread
-	 * @throws NoSuchThreadException if a matching message boards thread could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a matching message boards thread could not be found
 	 */
 	@Override
 	public MBThread findByG_NotC_First(long groupId, long categoryId,
 		OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = fetchByG_NotC_First(groupId, categoryId,
 				orderByComparator);
 
@@ -4190,7 +4189,7 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchThreadException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchThreadException(msg.toString());
 	}
 
 	/**
@@ -4221,12 +4220,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param categoryId the category ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message boards thread
-	 * @throws NoSuchThreadException if a matching message boards thread could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a matching message boards thread could not be found
 	 */
 	@Override
 	public MBThread findByG_NotC_Last(long groupId, long categoryId,
 		OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = fetchByG_NotC_Last(groupId, categoryId,
 				orderByComparator);
 
@@ -4246,7 +4245,7 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchThreadException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchThreadException(msg.toString());
 	}
 
 	/**
@@ -4284,12 +4283,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param categoryId the category ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message boards thread
-	 * @throws NoSuchThreadException if a message boards thread with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a message boards thread with the primary key could not be found
 	 */
 	@Override
 	public MBThread[] findByG_NotC_PrevAndNext(long threadId, long groupId,
 		long categoryId, OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = findByPrimaryKey(threadId);
 
 		Session session = null;
@@ -4567,13 +4566,13 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param categoryId the category ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message boards thread
-	 * @throws NoSuchThreadException if a message boards thread with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a message boards thread with the primary key could not be found
 	 */
 	@Override
 	public MBThread[] filterFindByG_NotC_PrevAndNext(long threadId,
 		long groupId, long categoryId,
 		OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_NotC_PrevAndNext(threadId, groupId, categoryId,
 				orderByComparator);
@@ -5083,12 +5082,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message boards thread
-	 * @throws NoSuchThreadException if a matching message boards thread could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a matching message boards thread could not be found
 	 */
 	@Override
 	public MBThread findByG_S_First(long groupId, int status,
 		OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = fetchByG_S_First(groupId, status, orderByComparator);
 
 		if (mbThread != null) {
@@ -5107,7 +5106,7 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchThreadException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchThreadException(msg.toString());
 	}
 
 	/**
@@ -5137,12 +5136,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message boards thread
-	 * @throws NoSuchThreadException if a matching message boards thread could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a matching message boards thread could not be found
 	 */
 	@Override
 	public MBThread findByG_S_Last(long groupId, int status,
 		OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = fetchByG_S_Last(groupId, status, orderByComparator);
 
 		if (mbThread != null) {
@@ -5161,7 +5160,7 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchThreadException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchThreadException(msg.toString());
 	}
 
 	/**
@@ -5199,12 +5198,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message boards thread
-	 * @throws NoSuchThreadException if a message boards thread with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a message boards thread with the primary key could not be found
 	 */
 	@Override
 	public MBThread[] findByG_S_PrevAndNext(long threadId, long groupId,
 		int status, OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = findByPrimaryKey(threadId);
 
 		Session session = null;
@@ -5481,12 +5480,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message boards thread
-	 * @throws NoSuchThreadException if a message boards thread with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a message boards thread with the primary key could not be found
 	 */
 	@Override
 	public MBThread[] filterFindByG_S_PrevAndNext(long threadId, long groupId,
 		int status, OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_S_PrevAndNext(threadId, groupId, status,
 				orderByComparator);
@@ -5997,12 +5996,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param priority the priority
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message boards thread
-	 * @throws NoSuchThreadException if a matching message boards thread could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a matching message boards thread could not be found
 	 */
 	@Override
 	public MBThread findByC_P_First(long categoryId, double priority,
 		OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = fetchByC_P_First(categoryId, priority,
 				orderByComparator);
 
@@ -6022,7 +6021,7 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchThreadException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchThreadException(msg.toString());
 	}
 
 	/**
@@ -6053,12 +6052,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param priority the priority
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message boards thread
-	 * @throws NoSuchThreadException if a matching message boards thread could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a matching message boards thread could not be found
 	 */
 	@Override
 	public MBThread findByC_P_Last(long categoryId, double priority,
 		OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = fetchByC_P_Last(categoryId, priority,
 				orderByComparator);
 
@@ -6078,7 +6077,7 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchThreadException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchThreadException(msg.toString());
 	}
 
 	/**
@@ -6116,12 +6115,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param priority the priority
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message boards thread
-	 * @throws NoSuchThreadException if a message boards thread with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a message boards thread with the primary key could not be found
 	 */
 	@Override
 	public MBThread[] findByC_P_PrevAndNext(long threadId, long categoryId,
 		double priority, OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = findByPrimaryKey(threadId);
 
 		Session session = null;
@@ -6550,12 +6549,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param priority the priority
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message boards thread
-	 * @throws NoSuchThreadException if a matching message boards thread could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a matching message boards thread could not be found
 	 */
 	@Override
 	public MBThread findByL_P_First(Date lastPostDate, double priority,
 		OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = fetchByL_P_First(lastPostDate, priority,
 				orderByComparator);
 
@@ -6575,7 +6574,7 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchThreadException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchThreadException(msg.toString());
 	}
 
 	/**
@@ -6606,12 +6605,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param priority the priority
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message boards thread
-	 * @throws NoSuchThreadException if a matching message boards thread could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a matching message boards thread could not be found
 	 */
 	@Override
 	public MBThread findByL_P_Last(Date lastPostDate, double priority,
 		OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = fetchByL_P_Last(lastPostDate, priority,
 				orderByComparator);
 
@@ -6631,7 +6630,7 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchThreadException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchThreadException(msg.toString());
 	}
 
 	/**
@@ -6669,12 +6668,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param priority the priority
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message boards thread
-	 * @throws NoSuchThreadException if a message boards thread with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a message boards thread with the primary key could not be found
 	 */
 	@Override
 	public MBThread[] findByL_P_PrevAndNext(long threadId, Date lastPostDate,
 		double priority, OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = findByPrimaryKey(threadId);
 
 		Session session = null;
@@ -7144,12 +7143,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param lastPostDate the last post date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message boards thread
-	 * @throws NoSuchThreadException if a matching message boards thread could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a matching message boards thread could not be found
 	 */
 	@Override
 	public MBThread findByG_C_L_First(long groupId, long categoryId,
 		Date lastPostDate, OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = fetchByG_C_L_First(groupId, categoryId,
 				lastPostDate, orderByComparator);
 
@@ -7172,7 +7171,7 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchThreadException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchThreadException(msg.toString());
 	}
 
 	/**
@@ -7205,12 +7204,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param lastPostDate the last post date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message boards thread
-	 * @throws NoSuchThreadException if a matching message boards thread could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a matching message boards thread could not be found
 	 */
 	@Override
 	public MBThread findByG_C_L_Last(long groupId, long categoryId,
 		Date lastPostDate, OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = fetchByG_C_L_Last(groupId, categoryId,
 				lastPostDate, orderByComparator);
 
@@ -7233,7 +7232,7 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchThreadException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchThreadException(msg.toString());
 	}
 
 	/**
@@ -7273,13 +7272,13 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param lastPostDate the last post date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message boards thread
-	 * @throws NoSuchThreadException if a message boards thread with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a message boards thread with the primary key could not be found
 	 */
 	@Override
 	public MBThread[] findByG_C_L_PrevAndNext(long threadId, long groupId,
 		long categoryId, Date lastPostDate,
 		OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = findByPrimaryKey(threadId);
 
 		Session session = null;
@@ -7594,13 +7593,13 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param lastPostDate the last post date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message boards thread
-	 * @throws NoSuchThreadException if a message boards thread with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a message boards thread with the primary key could not be found
 	 */
 	@Override
 	public MBThread[] filterFindByG_C_L_PrevAndNext(long threadId,
 		long groupId, long categoryId, Date lastPostDate,
 		OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_C_L_PrevAndNext(threadId, groupId, categoryId,
 				lastPostDate, orderByComparator);
@@ -8189,12 +8188,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message boards thread
-	 * @throws NoSuchThreadException if a matching message boards thread could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a matching message boards thread could not be found
 	 */
 	@Override
 	public MBThread findByG_C_S_First(long groupId, long categoryId,
 		int status, OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = fetchByG_C_S_First(groupId, categoryId, status,
 				orderByComparator);
 
@@ -8217,7 +8216,7 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchThreadException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchThreadException(msg.toString());
 	}
 
 	/**
@@ -8250,12 +8249,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message boards thread
-	 * @throws NoSuchThreadException if a matching message boards thread could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a matching message boards thread could not be found
 	 */
 	@Override
 	public MBThread findByG_C_S_Last(long groupId, long categoryId, int status,
 		OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = fetchByG_C_S_Last(groupId, categoryId, status,
 				orderByComparator);
 
@@ -8278,7 +8277,7 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchThreadException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchThreadException(msg.toString());
 	}
 
 	/**
@@ -8318,13 +8317,13 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message boards thread
-	 * @throws NoSuchThreadException if a message boards thread with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a message boards thread with the primary key could not be found
 	 */
 	@Override
 	public MBThread[] findByG_C_S_PrevAndNext(long threadId, long groupId,
 		long categoryId, int status,
 		OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = findByPrimaryKey(threadId);
 
 		Session session = null;
@@ -8616,13 +8615,13 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message boards thread
-	 * @throws NoSuchThreadException if a message boards thread with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a message boards thread with the primary key could not be found
 	 */
 	@Override
 	public MBThread[] filterFindByG_C_S_PrevAndNext(long threadId,
 		long groupId, long categoryId, int status,
 		OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_C_S_PrevAndNext(threadId, groupId, categoryId,
 				status, orderByComparator);
@@ -9689,12 +9688,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message boards thread
-	 * @throws NoSuchThreadException if a matching message boards thread could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a matching message boards thread could not be found
 	 */
 	@Override
 	public MBThread findByG_C_NotS_First(long groupId, long categoryId,
 		int status, OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = fetchByG_C_NotS_First(groupId, categoryId, status,
 				orderByComparator);
 
@@ -9717,7 +9716,7 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchThreadException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchThreadException(msg.toString());
 	}
 
 	/**
@@ -9750,12 +9749,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message boards thread
-	 * @throws NoSuchThreadException if a matching message boards thread could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a matching message boards thread could not be found
 	 */
 	@Override
 	public MBThread findByG_C_NotS_Last(long groupId, long categoryId,
 		int status, OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = fetchByG_C_NotS_Last(groupId, categoryId, status,
 				orderByComparator);
 
@@ -9778,7 +9777,7 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchThreadException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchThreadException(msg.toString());
 	}
 
 	/**
@@ -9818,13 +9817,13 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message boards thread
-	 * @throws NoSuchThreadException if a message boards thread with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a message boards thread with the primary key could not be found
 	 */
 	@Override
 	public MBThread[] findByG_C_NotS_PrevAndNext(long threadId, long groupId,
 		long categoryId, int status,
 		OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = findByPrimaryKey(threadId);
 
 		Session session = null;
@@ -10117,13 +10116,13 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message boards thread
-	 * @throws NoSuchThreadException if a message boards thread with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a message boards thread with the primary key could not be found
 	 */
 	@Override
 	public MBThread[] filterFindByG_C_NotS_PrevAndNext(long threadId,
 		long groupId, long categoryId, int status,
 		OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_C_NotS_PrevAndNext(threadId, groupId, categoryId,
 				status, orderByComparator);
@@ -11192,12 +11191,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message boards thread
-	 * @throws NoSuchThreadException if a matching message boards thread could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a matching message boards thread could not be found
 	 */
 	@Override
 	public MBThread findByG_NotC_S_First(long groupId, long categoryId,
 		int status, OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = fetchByG_NotC_S_First(groupId, categoryId, status,
 				orderByComparator);
 
@@ -11220,7 +11219,7 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchThreadException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchThreadException(msg.toString());
 	}
 
 	/**
@@ -11253,12 +11252,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message boards thread
-	 * @throws NoSuchThreadException if a matching message boards thread could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a matching message boards thread could not be found
 	 */
 	@Override
 	public MBThread findByG_NotC_S_Last(long groupId, long categoryId,
 		int status, OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = fetchByG_NotC_S_Last(groupId, categoryId, status,
 				orderByComparator);
 
@@ -11281,7 +11280,7 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchThreadException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchThreadException(msg.toString());
 	}
 
 	/**
@@ -11321,13 +11320,13 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message boards thread
-	 * @throws NoSuchThreadException if a message boards thread with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a message boards thread with the primary key could not be found
 	 */
 	@Override
 	public MBThread[] findByG_NotC_S_PrevAndNext(long threadId, long groupId,
 		long categoryId, int status,
 		OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = findByPrimaryKey(threadId);
 
 		Session session = null;
@@ -11620,13 +11619,13 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message boards thread
-	 * @throws NoSuchThreadException if a message boards thread with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a message boards thread with the primary key could not be found
 	 */
 	@Override
 	public MBThread[] filterFindByG_NotC_S_PrevAndNext(long threadId,
 		long groupId, long categoryId, int status,
 		OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_NotC_S_PrevAndNext(threadId, groupId, categoryId,
 				status, orderByComparator);
@@ -12156,12 +12155,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message boards thread
-	 * @throws NoSuchThreadException if a matching message boards thread could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a matching message boards thread could not be found
 	 */
 	@Override
 	public MBThread findByG_NotC_NotS_First(long groupId, long categoryId,
 		int status, OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = fetchByG_NotC_NotS_First(groupId, categoryId,
 				status, orderByComparator);
 
@@ -12184,7 +12183,7 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchThreadException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchThreadException(msg.toString());
 	}
 
 	/**
@@ -12217,12 +12216,12 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message boards thread
-	 * @throws NoSuchThreadException if a matching message boards thread could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a matching message boards thread could not be found
 	 */
 	@Override
 	public MBThread findByG_NotC_NotS_Last(long groupId, long categoryId,
 		int status, OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = fetchByG_NotC_NotS_Last(groupId, categoryId,
 				status, orderByComparator);
 
@@ -12245,7 +12244,7 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchThreadException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchThreadException(msg.toString());
 	}
 
 	/**
@@ -12285,13 +12284,13 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message boards thread
-	 * @throws NoSuchThreadException if a message boards thread with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a message boards thread with the primary key could not be found
 	 */
 	@Override
 	public MBThread[] findByG_NotC_NotS_PrevAndNext(long threadId,
 		long groupId, long categoryId, int status,
 		OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = findByPrimaryKey(threadId);
 
 		Session session = null;
@@ -12584,13 +12583,13 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message boards thread
-	 * @throws NoSuchThreadException if a message boards thread with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a message boards thread with the primary key could not be found
 	 */
 	@Override
 	public MBThread[] filterFindByG_NotC_NotS_PrevAndNext(long threadId,
 		long groupId, long categoryId, int status,
 		OrderByComparator<MBThread> orderByComparator)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_NotC_NotS_PrevAndNext(threadId, groupId, categoryId,
 				status, orderByComparator);
@@ -13106,10 +13105,11 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 *
 	 * @param threadId the primary key of the message boards thread
 	 * @return the message boards thread that was removed
-	 * @throws NoSuchThreadException if a message boards thread with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a message boards thread with the primary key could not be found
 	 */
 	@Override
-	public MBThread remove(long threadId) throws NoSuchThreadException {
+	public MBThread remove(long threadId)
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		return remove((Serializable)threadId);
 	}
 
@@ -13118,11 +13118,11 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 *
 	 * @param primaryKey the primary key of the message boards thread
 	 * @return the message boards thread that was removed
-	 * @throws NoSuchThreadException if a message boards thread with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a message boards thread with the primary key could not be found
 	 */
 	@Override
 	public MBThread remove(Serializable primaryKey)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		Session session = null;
 
 		try {
@@ -13136,13 +13136,13 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchThreadException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portlet.messageboards.exception.NoSuchThreadException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(mbThread);
 		}
-		catch (NoSuchThreadException nsee) {
+		catch (com.liferay.portlet.messageboards.exception.NoSuchThreadException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -13485,11 +13485,11 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 *
 	 * @param primaryKey the primary key of the message boards thread
 	 * @return the message boards thread
-	 * @throws NoSuchThreadException if a message boards thread with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a message boards thread with the primary key could not be found
 	 */
 	@Override
 	public MBThread findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		MBThread mbThread = fetchByPrimaryKey(primaryKey);
 
 		if (mbThread == null) {
@@ -13497,7 +13497,7 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchThreadException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portlet.messageboards.exception.NoSuchThreadException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -13505,15 +13505,15 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	}
 
 	/**
-	 * Returns the message boards thread with the primary key or throws a {@link NoSuchThreadException} if it could not be found.
+	 * Returns the message boards thread with the primary key or throws a {@link com.liferay.portlet.messageboards.exception.NoSuchThreadException} if it could not be found.
 	 *
 	 * @param threadId the primary key of the message boards thread
 	 * @return the message boards thread
-	 * @throws NoSuchThreadException if a message boards thread with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchThreadException if a message boards thread with the primary key could not be found
 	 */
 	@Override
 	public MBThread findByPrimaryKey(long threadId)
-		throws NoSuchThreadException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchThreadException {
 		return findByPrimaryKey((Serializable)threadId);
 	}
 

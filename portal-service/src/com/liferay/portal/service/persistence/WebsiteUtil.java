@@ -179,7 +179,7 @@ public class WebsiteUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching website
-	* @throws NoSuchWebsiteException if a matching website could not be found
+	* @throws com.liferay.portal.exception.NoSuchWebsiteException if a matching website could not be found
 	*/
 	public static Website findByUuid_First(java.lang.String uuid,
 		OrderByComparator<Website> orderByComparator)
@@ -205,7 +205,7 @@ public class WebsiteUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching website
-	* @throws NoSuchWebsiteException if a matching website could not be found
+	* @throws com.liferay.portal.exception.NoSuchWebsiteException if a matching website could not be found
 	*/
 	public static Website findByUuid_Last(java.lang.String uuid,
 		OrderByComparator<Website> orderByComparator)
@@ -232,7 +232,7 @@ public class WebsiteUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next website
-	* @throws NoSuchWebsiteException if a website with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchWebsiteException if a website with the primary key could not be found
 	*/
 	public static Website[] findByUuid_PrevAndNext(long websiteId,
 		java.lang.String uuid, OrderByComparator<Website> orderByComparator)
@@ -341,7 +341,7 @@ public class WebsiteUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching website
-	* @throws NoSuchWebsiteException if a matching website could not be found
+	* @throws com.liferay.portal.exception.NoSuchWebsiteException if a matching website could not be found
 	*/
 	public static Website findByUuid_C_First(java.lang.String uuid,
 		long companyId, OrderByComparator<Website> orderByComparator)
@@ -371,7 +371,7 @@ public class WebsiteUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching website
-	* @throws NoSuchWebsiteException if a matching website could not be found
+	* @throws com.liferay.portal.exception.NoSuchWebsiteException if a matching website could not be found
 	*/
 	public static Website findByUuid_C_Last(java.lang.String uuid,
 		long companyId, OrderByComparator<Website> orderByComparator)
@@ -402,7 +402,7 @@ public class WebsiteUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next website
-	* @throws NoSuchWebsiteException if a website with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchWebsiteException if a website with the primary key could not be found
 	*/
 	public static Website[] findByUuid_C_PrevAndNext(long websiteId,
 		java.lang.String uuid, long companyId,
@@ -508,7 +508,7 @@ public class WebsiteUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching website
-	* @throws NoSuchWebsiteException if a matching website could not be found
+	* @throws com.liferay.portal.exception.NoSuchWebsiteException if a matching website could not be found
 	*/
 	public static Website findByCompanyId_First(long companyId,
 		OrderByComparator<Website> orderByComparator)
@@ -536,7 +536,7 @@ public class WebsiteUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching website
-	* @throws NoSuchWebsiteException if a matching website could not be found
+	* @throws com.liferay.portal.exception.NoSuchWebsiteException if a matching website could not be found
 	*/
 	public static Website findByCompanyId_Last(long companyId,
 		OrderByComparator<Website> orderByComparator)
@@ -565,7 +565,7 @@ public class WebsiteUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next website
-	* @throws NoSuchWebsiteException if a website with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchWebsiteException if a website with the primary key could not be found
 	*/
 	public static Website[] findByCompanyId_PrevAndNext(long websiteId,
 		long companyId, OrderByComparator<Website> orderByComparator)
@@ -666,7 +666,7 @@ public class WebsiteUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching website
-	* @throws NoSuchWebsiteException if a matching website could not be found
+	* @throws com.liferay.portal.exception.NoSuchWebsiteException if a matching website could not be found
 	*/
 	public static Website findByUserId_First(long userId,
 		OrderByComparator<Website> orderByComparator)
@@ -692,7 +692,7 @@ public class WebsiteUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching website
-	* @throws NoSuchWebsiteException if a matching website could not be found
+	* @throws com.liferay.portal.exception.NoSuchWebsiteException if a matching website could not be found
 	*/
 	public static Website findByUserId_Last(long userId,
 		OrderByComparator<Website> orderByComparator)
@@ -719,7 +719,7 @@ public class WebsiteUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next website
-	* @throws NoSuchWebsiteException if a website with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchWebsiteException if a website with the primary key could not be found
 	*/
 	public static Website[] findByUserId_PrevAndNext(long websiteId,
 		long userId, OrderByComparator<Website> orderByComparator)
@@ -828,7 +828,7 @@ public class WebsiteUtil {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching website
-	* @throws NoSuchWebsiteException if a matching website could not be found
+	* @throws com.liferay.portal.exception.NoSuchWebsiteException if a matching website could not be found
 	*/
 	public static Website findByC_C_First(long companyId, long classNameId,
 		OrderByComparator<Website> orderByComparator)
@@ -858,7 +858,7 @@ public class WebsiteUtil {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching website
-	* @throws NoSuchWebsiteException if a matching website could not be found
+	* @throws com.liferay.portal.exception.NoSuchWebsiteException if a matching website could not be found
 	*/
 	public static Website findByC_C_Last(long companyId, long classNameId,
 		OrderByComparator<Website> orderByComparator)
@@ -889,7 +889,7 @@ public class WebsiteUtil {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next website
-	* @throws NoSuchWebsiteException if a website with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchWebsiteException if a website with the primary key could not be found
 	*/
 	public static Website[] findByC_C_PrevAndNext(long websiteId,
 		long companyId, long classNameId,
@@ -1009,7 +1009,7 @@ public class WebsiteUtil {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching website
-	* @throws NoSuchWebsiteException if a matching website could not be found
+	* @throws com.liferay.portal.exception.NoSuchWebsiteException if a matching website could not be found
 	*/
 	public static Website findByC_C_C_First(long companyId, long classNameId,
 		long classPK, OrderByComparator<Website> orderByComparator)
@@ -1043,7 +1043,7 @@ public class WebsiteUtil {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching website
-	* @throws NoSuchWebsiteException if a matching website could not be found
+	* @throws com.liferay.portal.exception.NoSuchWebsiteException if a matching website could not be found
 	*/
 	public static Website findByC_C_C_Last(long companyId, long classNameId,
 		long classPK, OrderByComparator<Website> orderByComparator)
@@ -1078,7 +1078,7 @@ public class WebsiteUtil {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next website
-	* @throws NoSuchWebsiteException if a website with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchWebsiteException if a website with the primary key could not be found
 	*/
 	public static Website[] findByC_C_C_PrevAndNext(long websiteId,
 		long companyId, long classNameId, long classPK,
@@ -1209,7 +1209,7 @@ public class WebsiteUtil {
 	* @param primary the primary
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching website
-	* @throws NoSuchWebsiteException if a matching website could not be found
+	* @throws com.liferay.portal.exception.NoSuchWebsiteException if a matching website could not be found
 	*/
 	public static Website findByC_C_C_P_First(long companyId, long classNameId,
 		long classPK, boolean primary,
@@ -1247,7 +1247,7 @@ public class WebsiteUtil {
 	* @param primary the primary
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching website
-	* @throws NoSuchWebsiteException if a matching website could not be found
+	* @throws com.liferay.portal.exception.NoSuchWebsiteException if a matching website could not be found
 	*/
 	public static Website findByC_C_C_P_Last(long companyId, long classNameId,
 		long classPK, boolean primary,
@@ -1286,7 +1286,7 @@ public class WebsiteUtil {
 	* @param primary the primary
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next website
-	* @throws NoSuchWebsiteException if a website with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchWebsiteException if a website with the primary key could not be found
 	*/
 	public static Website[] findByC_C_C_P_PrevAndNext(long websiteId,
 		long companyId, long classNameId, long classPK, boolean primary,
@@ -1359,7 +1359,7 @@ public class WebsiteUtil {
 	*
 	* @param websiteId the primary key of the website
 	* @return the website that was removed
-	* @throws NoSuchWebsiteException if a website with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchWebsiteException if a website with the primary key could not be found
 	*/
 	public static Website remove(long websiteId)
 		throws com.liferay.portal.exception.NoSuchWebsiteException {
@@ -1371,11 +1371,11 @@ public class WebsiteUtil {
 	}
 
 	/**
-	* Returns the website with the primary key or throws a {@link NoSuchWebsiteException} if it could not be found.
+	* Returns the website with the primary key or throws a {@link com.liferay.portal.exception.NoSuchWebsiteException} if it could not be found.
 	*
 	* @param websiteId the primary key of the website
 	* @return the website
-	* @throws NoSuchWebsiteException if a website with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchWebsiteException if a website with the primary key could not be found
 	*/
 	public static Website findByPrimaryKey(long websiteId)
 		throws com.liferay.portal.exception.NoSuchWebsiteException {

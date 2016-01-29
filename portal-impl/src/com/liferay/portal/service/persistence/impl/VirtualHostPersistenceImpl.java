@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchVirtualHostException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -97,15 +96,15 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 			new String[] { String.class.getName() });
 
 	/**
-	 * Returns the virtual host where hostname = &#63; or throws a {@link NoSuchVirtualHostException} if it could not be found.
+	 * Returns the virtual host where hostname = &#63; or throws a {@link com.liferay.portal.exception.NoSuchVirtualHostException} if it could not be found.
 	 *
 	 * @param hostname the hostname
 	 * @return the matching virtual host
-	 * @throws NoSuchVirtualHostException if a matching virtual host could not be found
+	 * @throws com.liferay.portal.exception.NoSuchVirtualHostException if a matching virtual host could not be found
 	 */
 	@Override
 	public VirtualHost findByHostname(String hostname)
-		throws NoSuchVirtualHostException {
+		throws com.liferay.portal.exception.NoSuchVirtualHostException {
 		VirtualHost virtualHost = fetchByHostname(hostname);
 
 		if (virtualHost == null) {
@@ -122,7 +121,7 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchVirtualHostException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchVirtualHostException(msg.toString());
 		}
 
 		return virtualHost;
@@ -247,7 +246,7 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	 */
 	@Override
 	public VirtualHost removeByHostname(String hostname)
-		throws NoSuchVirtualHostException {
+		throws com.liferay.portal.exception.NoSuchVirtualHostException {
 		VirtualHost virtualHost = findByHostname(hostname);
 
 		return remove(virtualHost);
@@ -333,16 +332,16 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 			new String[] { Long.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the virtual host where companyId = &#63; and layoutSetId = &#63; or throws a {@link NoSuchVirtualHostException} if it could not be found.
+	 * Returns the virtual host where companyId = &#63; and layoutSetId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchVirtualHostException} if it could not be found.
 	 *
 	 * @param companyId the company ID
 	 * @param layoutSetId the layout set ID
 	 * @return the matching virtual host
-	 * @throws NoSuchVirtualHostException if a matching virtual host could not be found
+	 * @throws com.liferay.portal.exception.NoSuchVirtualHostException if a matching virtual host could not be found
 	 */
 	@Override
 	public VirtualHost findByC_L(long companyId, long layoutSetId)
-		throws NoSuchVirtualHostException {
+		throws com.liferay.portal.exception.NoSuchVirtualHostException {
 		VirtualHost virtualHost = fetchByC_L(companyId, layoutSetId);
 
 		if (virtualHost == null) {
@@ -362,7 +361,7 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchVirtualHostException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchVirtualHostException(msg.toString());
 		}
 
 		return virtualHost;
@@ -480,7 +479,7 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	 */
 	@Override
 	public VirtualHost removeByC_L(long companyId, long layoutSetId)
-		throws NoSuchVirtualHostException {
+		throws com.liferay.portal.exception.NoSuchVirtualHostException {
 		VirtualHost virtualHost = findByC_L(companyId, layoutSetId);
 
 		return remove(virtualHost);
@@ -740,11 +739,11 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	 *
 	 * @param virtualHostId the primary key of the virtual host
 	 * @return the virtual host that was removed
-	 * @throws NoSuchVirtualHostException if a virtual host with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchVirtualHostException if a virtual host with the primary key could not be found
 	 */
 	@Override
 	public VirtualHost remove(long virtualHostId)
-		throws NoSuchVirtualHostException {
+		throws com.liferay.portal.exception.NoSuchVirtualHostException {
 		return remove((Serializable)virtualHostId);
 	}
 
@@ -753,11 +752,11 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	 *
 	 * @param primaryKey the primary key of the virtual host
 	 * @return the virtual host that was removed
-	 * @throws NoSuchVirtualHostException if a virtual host with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchVirtualHostException if a virtual host with the primary key could not be found
 	 */
 	@Override
 	public VirtualHost remove(Serializable primaryKey)
-		throws NoSuchVirtualHostException {
+		throws com.liferay.portal.exception.NoSuchVirtualHostException {
 		Session session = null;
 
 		try {
@@ -771,13 +770,13 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchVirtualHostException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchVirtualHostException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(virtualHost);
 		}
-		catch (NoSuchVirtualHostException nsee) {
+		catch (com.liferay.portal.exception.NoSuchVirtualHostException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -891,11 +890,11 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	 *
 	 * @param primaryKey the primary key of the virtual host
 	 * @return the virtual host
-	 * @throws NoSuchVirtualHostException if a virtual host with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchVirtualHostException if a virtual host with the primary key could not be found
 	 */
 	@Override
 	public VirtualHost findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchVirtualHostException {
+		throws com.liferay.portal.exception.NoSuchVirtualHostException {
 		VirtualHost virtualHost = fetchByPrimaryKey(primaryKey);
 
 		if (virtualHost == null) {
@@ -903,7 +902,7 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchVirtualHostException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchVirtualHostException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -911,15 +910,15 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	}
 
 	/**
-	 * Returns the virtual host with the primary key or throws a {@link NoSuchVirtualHostException} if it could not be found.
+	 * Returns the virtual host with the primary key or throws a {@link com.liferay.portal.exception.NoSuchVirtualHostException} if it could not be found.
 	 *
 	 * @param virtualHostId the primary key of the virtual host
 	 * @return the virtual host
-	 * @throws NoSuchVirtualHostException if a virtual host with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchVirtualHostException if a virtual host with the primary key could not be found
 	 */
 	@Override
 	public VirtualHost findByPrimaryKey(long virtualHostId)
-		throws NoSuchVirtualHostException {
+		throws com.liferay.portal.exception.NoSuchVirtualHostException {
 		return findByPrimaryKey((Serializable)virtualHostId);
 	}
 

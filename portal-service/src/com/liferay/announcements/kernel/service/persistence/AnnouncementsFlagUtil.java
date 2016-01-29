@@ -185,7 +185,7 @@ public class AnnouncementsFlagUtil {
 	* @param entryId the entry ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching announcements flag
-	* @throws NoSuchFlagException if a matching announcements flag could not be found
+	* @throws com.liferay.announcements.kernel.exception.NoSuchFlagException if a matching announcements flag could not be found
 	*/
 	public static AnnouncementsFlag findByEntryId_First(long entryId,
 		OrderByComparator<AnnouncementsFlag> orderByComparator)
@@ -211,7 +211,7 @@ public class AnnouncementsFlagUtil {
 	* @param entryId the entry ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching announcements flag
-	* @throws NoSuchFlagException if a matching announcements flag could not be found
+	* @throws com.liferay.announcements.kernel.exception.NoSuchFlagException if a matching announcements flag could not be found
 	*/
 	public static AnnouncementsFlag findByEntryId_Last(long entryId,
 		OrderByComparator<AnnouncementsFlag> orderByComparator)
@@ -238,7 +238,7 @@ public class AnnouncementsFlagUtil {
 	* @param entryId the entry ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next announcements flag
-	* @throws NoSuchFlagException if a announcements flag with the primary key could not be found
+	* @throws com.liferay.announcements.kernel.exception.NoSuchFlagException if a announcements flag with the primary key could not be found
 	*/
 	public static AnnouncementsFlag[] findByEntryId_PrevAndNext(long flagId,
 		long entryId, OrderByComparator<AnnouncementsFlag> orderByComparator)
@@ -267,13 +267,13 @@ public class AnnouncementsFlagUtil {
 	}
 
 	/**
-	* Returns the announcements flag where userId = &#63; and entryId = &#63; and value = &#63; or throws a {@link com.liferay.portlet.announcements.exception.NoSuchFlagException} if it could not be found.
+	* Returns the announcements flag where userId = &#63; and entryId = &#63; and value = &#63; or throws a {@link com.liferay.announcements.kernel.exception.NoSuchFlagException} if it could not be found.
 	*
 	* @param userId the user ID
 	* @param entryId the entry ID
 	* @param value the value
 	* @return the matching announcements flag
-	* @throws NoSuchFlagException if a matching announcements flag could not be found
+	* @throws com.liferay.announcements.kernel.exception.NoSuchFlagException if a matching announcements flag could not be found
 	*/
 	public static AnnouncementsFlag findByU_E_V(long userId, long entryId,
 		int value)
@@ -368,7 +368,7 @@ public class AnnouncementsFlagUtil {
 	*
 	* @param flagId the primary key of the announcements flag
 	* @return the announcements flag that was removed
-	* @throws NoSuchFlagException if a announcements flag with the primary key could not be found
+	* @throws com.liferay.announcements.kernel.exception.NoSuchFlagException if a announcements flag with the primary key could not be found
 	*/
 	public static AnnouncementsFlag remove(long flagId)
 		throws com.liferay.announcements.kernel.exception.NoSuchFlagException {
@@ -381,11 +381,11 @@ public class AnnouncementsFlagUtil {
 	}
 
 	/**
-	* Returns the announcements flag with the primary key or throws a {@link NoSuchFlagException} if it could not be found.
+	* Returns the announcements flag with the primary key or throws a {@link com.liferay.announcements.kernel.exception.NoSuchFlagException} if it could not be found.
 	*
 	* @param flagId the primary key of the announcements flag
 	* @return the announcements flag
-	* @throws NoSuchFlagException if a announcements flag with the primary key could not be found
+	* @throws com.liferay.announcements.kernel.exception.NoSuchFlagException if a announcements flag with the primary key could not be found
 	*/
 	public static AnnouncementsFlag findByPrimaryKey(long flagId)
 		throws com.liferay.announcements.kernel.exception.NoSuchFlagException {

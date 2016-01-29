@@ -16,7 +16,6 @@ package com.liferay.counter.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.counter.exception.NoSuchCounterException;
 import com.liferay.counter.model.Counter;
 import com.liferay.counter.model.impl.CounterImpl;
 import com.liferay.counter.model.impl.CounterModelImpl;
@@ -182,10 +181,11 @@ public class CounterPersistenceImpl extends BasePersistenceImpl<Counter>
 	 *
 	 * @param name the primary key of the counter
 	 * @return the counter that was removed
-	 * @throws NoSuchCounterException if a counter with the primary key could not be found
+	 * @throws com.liferay.counter.exception.NoSuchCounterException if a counter with the primary key could not be found
 	 */
 	@Override
-	public Counter remove(String name) throws NoSuchCounterException {
+	public Counter remove(String name)
+		throws com.liferay.counter.exception.NoSuchCounterException {
 		return remove((Serializable)name);
 	}
 
@@ -194,11 +194,11 @@ public class CounterPersistenceImpl extends BasePersistenceImpl<Counter>
 	 *
 	 * @param primaryKey the primary key of the counter
 	 * @return the counter that was removed
-	 * @throws NoSuchCounterException if a counter with the primary key could not be found
+	 * @throws com.liferay.counter.exception.NoSuchCounterException if a counter with the primary key could not be found
 	 */
 	@Override
 	public Counter remove(Serializable primaryKey)
-		throws NoSuchCounterException {
+		throws com.liferay.counter.exception.NoSuchCounterException {
 		Session session = null;
 
 		try {
@@ -211,13 +211,13 @@ public class CounterPersistenceImpl extends BasePersistenceImpl<Counter>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchCounterException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.counter.exception.NoSuchCounterException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(counter);
 		}
-		catch (NoSuchCounterException nsee) {
+		catch (com.liferay.counter.exception.NoSuchCounterException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -322,11 +322,11 @@ public class CounterPersistenceImpl extends BasePersistenceImpl<Counter>
 	 *
 	 * @param primaryKey the primary key of the counter
 	 * @return the counter
-	 * @throws NoSuchCounterException if a counter with the primary key could not be found
+	 * @throws com.liferay.counter.exception.NoSuchCounterException if a counter with the primary key could not be found
 	 */
 	@Override
 	public Counter findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchCounterException {
+		throws com.liferay.counter.exception.NoSuchCounterException {
 		Counter counter = fetchByPrimaryKey(primaryKey);
 
 		if (counter == null) {
@@ -334,7 +334,7 @@ public class CounterPersistenceImpl extends BasePersistenceImpl<Counter>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchCounterException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.counter.exception.NoSuchCounterException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -342,14 +342,15 @@ public class CounterPersistenceImpl extends BasePersistenceImpl<Counter>
 	}
 
 	/**
-	 * Returns the counter with the primary key or throws a {@link NoSuchCounterException} if it could not be found.
+	 * Returns the counter with the primary key or throws a {@link com.liferay.counter.exception.NoSuchCounterException} if it could not be found.
 	 *
 	 * @param name the primary key of the counter
 	 * @return the counter
-	 * @throws NoSuchCounterException if a counter with the primary key could not be found
+	 * @throws com.liferay.counter.exception.NoSuchCounterException if a counter with the primary key could not be found
 	 */
 	@Override
-	public Counter findByPrimaryKey(String name) throws NoSuchCounterException {
+	public Counter findByPrimaryKey(String name)
+		throws com.liferay.counter.exception.NoSuchCounterException {
 		return findByPrimaryKey((Serializable)name);
 	}
 

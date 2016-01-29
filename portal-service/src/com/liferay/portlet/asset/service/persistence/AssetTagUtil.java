@@ -181,7 +181,7 @@ public class AssetTagUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching asset tag
-	* @throws NoSuchTagException if a matching asset tag could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchTagException if a matching asset tag could not be found
 	*/
 	public static AssetTag findByUuid_First(java.lang.String uuid,
 		OrderByComparator<AssetTag> orderByComparator)
@@ -207,7 +207,7 @@ public class AssetTagUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching asset tag
-	* @throws NoSuchTagException if a matching asset tag could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchTagException if a matching asset tag could not be found
 	*/
 	public static AssetTag findByUuid_Last(java.lang.String uuid,
 		OrderByComparator<AssetTag> orderByComparator)
@@ -234,7 +234,7 @@ public class AssetTagUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next asset tag
-	* @throws NoSuchTagException if a asset tag with the primary key could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchTagException if a asset tag with the primary key could not be found
 	*/
 	public static AssetTag[] findByUuid_PrevAndNext(long tagId,
 		java.lang.String uuid, OrderByComparator<AssetTag> orderByComparator)
@@ -263,12 +263,12 @@ public class AssetTagUtil {
 	}
 
 	/**
-	* Returns the asset tag where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchTagException} if it could not be found.
+	* Returns the asset tag where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.portlet.asset.exception.NoSuchTagException} if it could not be found.
 	*
 	* @param uuid the uuid
 	* @param groupId the group ID
 	* @return the matching asset tag
-	* @throws NoSuchTagException if a matching asset tag could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchTagException if a matching asset tag could not be found
 	*/
 	public static AssetTag findByUUID_G(java.lang.String uuid, long groupId)
 		throws com.liferay.portlet.asset.exception.NoSuchTagException {
@@ -403,7 +403,7 @@ public class AssetTagUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching asset tag
-	* @throws NoSuchTagException if a matching asset tag could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchTagException if a matching asset tag could not be found
 	*/
 	public static AssetTag findByUuid_C_First(java.lang.String uuid,
 		long companyId, OrderByComparator<AssetTag> orderByComparator)
@@ -433,7 +433,7 @@ public class AssetTagUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching asset tag
-	* @throws NoSuchTagException if a matching asset tag could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchTagException if a matching asset tag could not be found
 	*/
 	public static AssetTag findByUuid_C_Last(java.lang.String uuid,
 		long companyId, OrderByComparator<AssetTag> orderByComparator)
@@ -464,7 +464,7 @@ public class AssetTagUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next asset tag
-	* @throws NoSuchTagException if a asset tag with the primary key could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchTagException if a asset tag with the primary key could not be found
 	*/
 	public static AssetTag[] findByUuid_C_PrevAndNext(long tagId,
 		java.lang.String uuid, long companyId,
@@ -569,7 +569,7 @@ public class AssetTagUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching asset tag
-	* @throws NoSuchTagException if a matching asset tag could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchTagException if a matching asset tag could not be found
 	*/
 	public static AssetTag findByGroupId_First(long groupId,
 		OrderByComparator<AssetTag> orderByComparator)
@@ -595,7 +595,7 @@ public class AssetTagUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching asset tag
-	* @throws NoSuchTagException if a matching asset tag could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchTagException if a matching asset tag could not be found
 	*/
 	public static AssetTag findByGroupId_Last(long groupId,
 		OrderByComparator<AssetTag> orderByComparator)
@@ -622,7 +622,7 @@ public class AssetTagUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next asset tag
-	* @throws NoSuchTagException if a asset tag with the primary key could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchTagException if a asset tag with the primary key could not be found
 	*/
 	public static AssetTag[] findByGroupId_PrevAndNext(long tagId,
 		long groupId, OrderByComparator<AssetTag> orderByComparator)
@@ -684,7 +684,7 @@ public class AssetTagUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next asset tag
-	* @throws NoSuchTagException if a asset tag with the primary key could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchTagException if a asset tag with the primary key could not be found
 	*/
 	public static AssetTag[] filterFindByGroupId_PrevAndNext(long tagId,
 		long groupId, OrderByComparator<AssetTag> orderByComparator)
@@ -862,12 +862,12 @@ public class AssetTagUtil {
 	}
 
 	/**
-	* Returns the asset tag where groupId = &#63; and name = &#63; or throws a {@link NoSuchTagException} if it could not be found.
+	* Returns the asset tag where groupId = &#63; and name = &#63; or throws a {@link com.liferay.portlet.asset.exception.NoSuchTagException} if it could not be found.
 	*
 	* @param groupId the group ID
 	* @param name the name
 	* @return the matching asset tag
-	* @throws NoSuchTagException if a matching asset tag could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchTagException if a matching asset tag could not be found
 	*/
 	public static AssetTag findByG_N(long groupId, java.lang.String name)
 		throws com.liferay.portlet.asset.exception.NoSuchTagException {
@@ -1002,7 +1002,7 @@ public class AssetTagUtil {
 	* @param name the name
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching asset tag
-	* @throws NoSuchTagException if a matching asset tag could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchTagException if a matching asset tag could not be found
 	*/
 	public static AssetTag findByG_LikeN_First(long groupId,
 		java.lang.String name, OrderByComparator<AssetTag> orderByComparator)
@@ -1032,7 +1032,7 @@ public class AssetTagUtil {
 	* @param name the name
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching asset tag
-	* @throws NoSuchTagException if a matching asset tag could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchTagException if a matching asset tag could not be found
 	*/
 	public static AssetTag findByG_LikeN_Last(long groupId,
 		java.lang.String name, OrderByComparator<AssetTag> orderByComparator)
@@ -1063,7 +1063,7 @@ public class AssetTagUtil {
 	* @param name the name
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next asset tag
-	* @throws NoSuchTagException if a asset tag with the primary key could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchTagException if a asset tag with the primary key could not be found
 	*/
 	public static AssetTag[] findByG_LikeN_PrevAndNext(long tagId,
 		long groupId, java.lang.String name,
@@ -1134,7 +1134,7 @@ public class AssetTagUtil {
 	* @param name the name
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next asset tag
-	* @throws NoSuchTagException if a asset tag with the primary key could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchTagException if a asset tag with the primary key could not be found
 	*/
 	public static AssetTag[] filterFindByG_LikeN_PrevAndNext(long tagId,
 		long groupId, java.lang.String name,
@@ -1363,7 +1363,7 @@ public class AssetTagUtil {
 	*
 	* @param tagId the primary key of the asset tag
 	* @return the asset tag that was removed
-	* @throws NoSuchTagException if a asset tag with the primary key could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchTagException if a asset tag with the primary key could not be found
 	*/
 	public static AssetTag remove(long tagId)
 		throws com.liferay.portlet.asset.exception.NoSuchTagException {
@@ -1375,11 +1375,11 @@ public class AssetTagUtil {
 	}
 
 	/**
-	* Returns the asset tag with the primary key or throws a {@link NoSuchTagException} if it could not be found.
+	* Returns the asset tag with the primary key or throws a {@link com.liferay.portlet.asset.exception.NoSuchTagException} if it could not be found.
 	*
 	* @param tagId the primary key of the asset tag
 	* @return the asset tag
-	* @throws NoSuchTagException if a asset tag with the primary key could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchTagException if a asset tag with the primary key could not be found
 	*/
 	public static AssetTag findByPrimaryKey(long tagId)
 		throws com.liferay.portlet.asset.exception.NoSuchTagException {

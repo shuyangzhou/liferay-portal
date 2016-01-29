@@ -46,7 +46,6 @@ import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
-import com.liferay.portlet.asset.exception.NoSuchVocabularyException;
 import com.liferay.portlet.asset.model.AssetVocabulary;
 import com.liferay.portlet.asset.model.impl.AssetVocabularyImpl;
 import com.liferay.portlet.asset.model.impl.AssetVocabularyModelImpl;
@@ -306,12 +305,12 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching asset vocabulary
-	 * @throws NoSuchVocabularyException if a matching asset vocabulary could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchVocabularyException if a matching asset vocabulary could not be found
 	 */
 	@Override
 	public AssetVocabulary findByUuid_First(String uuid,
 		OrderByComparator<AssetVocabulary> orderByComparator)
-		throws NoSuchVocabularyException {
+		throws com.liferay.portlet.asset.exception.NoSuchVocabularyException {
 		AssetVocabulary assetVocabulary = fetchByUuid_First(uuid,
 				orderByComparator);
 
@@ -328,7 +327,7 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchVocabularyException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchVocabularyException(msg.toString());
 	}
 
 	/**
@@ -356,12 +355,12 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching asset vocabulary
-	 * @throws NoSuchVocabularyException if a matching asset vocabulary could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchVocabularyException if a matching asset vocabulary could not be found
 	 */
 	@Override
 	public AssetVocabulary findByUuid_Last(String uuid,
 		OrderByComparator<AssetVocabulary> orderByComparator)
-		throws NoSuchVocabularyException {
+		throws com.liferay.portlet.asset.exception.NoSuchVocabularyException {
 		AssetVocabulary assetVocabulary = fetchByUuid_Last(uuid,
 				orderByComparator);
 
@@ -378,7 +377,7 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchVocabularyException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchVocabularyException(msg.toString());
 	}
 
 	/**
@@ -414,12 +413,12 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset vocabulary
-	 * @throws NoSuchVocabularyException if a asset vocabulary with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchVocabularyException if a asset vocabulary with the primary key could not be found
 	 */
 	@Override
 	public AssetVocabulary[] findByUuid_PrevAndNext(long vocabularyId,
 		String uuid, OrderByComparator<AssetVocabulary> orderByComparator)
-		throws NoSuchVocabularyException {
+		throws com.liferay.portlet.asset.exception.NoSuchVocabularyException {
 		AssetVocabulary assetVocabulary = findByPrimaryKey(vocabularyId);
 
 		Session session = null;
@@ -661,16 +660,16 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 			new String[] { String.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the asset vocabulary where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchVocabularyException} if it could not be found.
+	 * Returns the asset vocabulary where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.portlet.asset.exception.NoSuchVocabularyException} if it could not be found.
 	 *
 	 * @param uuid the uuid
 	 * @param groupId the group ID
 	 * @return the matching asset vocabulary
-	 * @throws NoSuchVocabularyException if a matching asset vocabulary could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchVocabularyException if a matching asset vocabulary could not be found
 	 */
 	@Override
 	public AssetVocabulary findByUUID_G(String uuid, long groupId)
-		throws NoSuchVocabularyException {
+		throws com.liferay.portlet.asset.exception.NoSuchVocabularyException {
 		AssetVocabulary assetVocabulary = fetchByUUID_G(uuid, groupId);
 
 		if (assetVocabulary == null) {
@@ -690,7 +689,7 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchVocabularyException(msg.toString());
+			throw new com.liferay.portlet.asset.exception.NoSuchVocabularyException(msg.toString());
 		}
 
 		return assetVocabulary;
@@ -823,7 +822,7 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 	 */
 	@Override
 	public AssetVocabulary removeByUUID_G(String uuid, long groupId)
-		throws NoSuchVocabularyException {
+		throws com.liferay.portlet.asset.exception.NoSuchVocabularyException {
 		AssetVocabulary assetVocabulary = findByUUID_G(uuid, groupId);
 
 		return remove(assetVocabulary);
@@ -1128,12 +1127,12 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching asset vocabulary
-	 * @throws NoSuchVocabularyException if a matching asset vocabulary could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchVocabularyException if a matching asset vocabulary could not be found
 	 */
 	@Override
 	public AssetVocabulary findByUuid_C_First(String uuid, long companyId,
 		OrderByComparator<AssetVocabulary> orderByComparator)
-		throws NoSuchVocabularyException {
+		throws com.liferay.portlet.asset.exception.NoSuchVocabularyException {
 		AssetVocabulary assetVocabulary = fetchByUuid_C_First(uuid, companyId,
 				orderByComparator);
 
@@ -1153,7 +1152,7 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchVocabularyException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchVocabularyException(msg.toString());
 	}
 
 	/**
@@ -1184,12 +1183,12 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching asset vocabulary
-	 * @throws NoSuchVocabularyException if a matching asset vocabulary could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchVocabularyException if a matching asset vocabulary could not be found
 	 */
 	@Override
 	public AssetVocabulary findByUuid_C_Last(String uuid, long companyId,
 		OrderByComparator<AssetVocabulary> orderByComparator)
-		throws NoSuchVocabularyException {
+		throws com.liferay.portlet.asset.exception.NoSuchVocabularyException {
 		AssetVocabulary assetVocabulary = fetchByUuid_C_Last(uuid, companyId,
 				orderByComparator);
 
@@ -1209,7 +1208,7 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchVocabularyException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchVocabularyException(msg.toString());
 	}
 
 	/**
@@ -1247,13 +1246,13 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset vocabulary
-	 * @throws NoSuchVocabularyException if a asset vocabulary with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchVocabularyException if a asset vocabulary with the primary key could not be found
 	 */
 	@Override
 	public AssetVocabulary[] findByUuid_C_PrevAndNext(long vocabularyId,
 		String uuid, long companyId,
 		OrderByComparator<AssetVocabulary> orderByComparator)
-		throws NoSuchVocabularyException {
+		throws com.liferay.portlet.asset.exception.NoSuchVocabularyException {
 		AssetVocabulary assetVocabulary = findByPrimaryKey(vocabularyId);
 
 		Session session = null;
@@ -1690,12 +1689,12 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching asset vocabulary
-	 * @throws NoSuchVocabularyException if a matching asset vocabulary could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchVocabularyException if a matching asset vocabulary could not be found
 	 */
 	@Override
 	public AssetVocabulary findByGroupId_First(long groupId,
 		OrderByComparator<AssetVocabulary> orderByComparator)
-		throws NoSuchVocabularyException {
+		throws com.liferay.portlet.asset.exception.NoSuchVocabularyException {
 		AssetVocabulary assetVocabulary = fetchByGroupId_First(groupId,
 				orderByComparator);
 
@@ -1712,7 +1711,7 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchVocabularyException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchVocabularyException(msg.toString());
 	}
 
 	/**
@@ -1741,12 +1740,12 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching asset vocabulary
-	 * @throws NoSuchVocabularyException if a matching asset vocabulary could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchVocabularyException if a matching asset vocabulary could not be found
 	 */
 	@Override
 	public AssetVocabulary findByGroupId_Last(long groupId,
 		OrderByComparator<AssetVocabulary> orderByComparator)
-		throws NoSuchVocabularyException {
+		throws com.liferay.portlet.asset.exception.NoSuchVocabularyException {
 		AssetVocabulary assetVocabulary = fetchByGroupId_Last(groupId,
 				orderByComparator);
 
@@ -1763,7 +1762,7 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchVocabularyException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchVocabularyException(msg.toString());
 	}
 
 	/**
@@ -1799,12 +1798,12 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset vocabulary
-	 * @throws NoSuchVocabularyException if a asset vocabulary with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchVocabularyException if a asset vocabulary with the primary key could not be found
 	 */
 	@Override
 	public AssetVocabulary[] findByGroupId_PrevAndNext(long vocabularyId,
 		long groupId, OrderByComparator<AssetVocabulary> orderByComparator)
-		throws NoSuchVocabularyException {
+		throws com.liferay.portlet.asset.exception.NoSuchVocabularyException {
 		AssetVocabulary assetVocabulary = findByPrimaryKey(vocabularyId);
 
 		Session session = null;
@@ -2070,13 +2069,13 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset vocabulary
-	 * @throws NoSuchVocabularyException if a asset vocabulary with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchVocabularyException if a asset vocabulary with the primary key could not be found
 	 */
 	@Override
 	public AssetVocabulary[] filterFindByGroupId_PrevAndNext(
 		long vocabularyId, long groupId,
 		OrderByComparator<AssetVocabulary> orderByComparator)
-		throws NoSuchVocabularyException {
+		throws com.liferay.portlet.asset.exception.NoSuchVocabularyException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByGroupId_PrevAndNext(vocabularyId, groupId,
 				orderByComparator);
@@ -3019,12 +3018,12 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching asset vocabulary
-	 * @throws NoSuchVocabularyException if a matching asset vocabulary could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchVocabularyException if a matching asset vocabulary could not be found
 	 */
 	@Override
 	public AssetVocabulary findByCompanyId_First(long companyId,
 		OrderByComparator<AssetVocabulary> orderByComparator)
-		throws NoSuchVocabularyException {
+		throws com.liferay.portlet.asset.exception.NoSuchVocabularyException {
 		AssetVocabulary assetVocabulary = fetchByCompanyId_First(companyId,
 				orderByComparator);
 
@@ -3041,7 +3040,7 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchVocabularyException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchVocabularyException(msg.toString());
 	}
 
 	/**
@@ -3070,12 +3069,12 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching asset vocabulary
-	 * @throws NoSuchVocabularyException if a matching asset vocabulary could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchVocabularyException if a matching asset vocabulary could not be found
 	 */
 	@Override
 	public AssetVocabulary findByCompanyId_Last(long companyId,
 		OrderByComparator<AssetVocabulary> orderByComparator)
-		throws NoSuchVocabularyException {
+		throws com.liferay.portlet.asset.exception.NoSuchVocabularyException {
 		AssetVocabulary assetVocabulary = fetchByCompanyId_Last(companyId,
 				orderByComparator);
 
@@ -3092,7 +3091,7 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchVocabularyException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchVocabularyException(msg.toString());
 	}
 
 	/**
@@ -3128,12 +3127,12 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset vocabulary
-	 * @throws NoSuchVocabularyException if a asset vocabulary with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchVocabularyException if a asset vocabulary with the primary key could not be found
 	 */
 	@Override
 	public AssetVocabulary[] findByCompanyId_PrevAndNext(long vocabularyId,
 		long companyId, OrderByComparator<AssetVocabulary> orderByComparator)
-		throws NoSuchVocabularyException {
+		throws com.liferay.portlet.asset.exception.NoSuchVocabularyException {
 		AssetVocabulary assetVocabulary = findByPrimaryKey(vocabularyId);
 
 		Session session = null;
@@ -3344,16 +3343,16 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 			new String[] { Long.class.getName(), String.class.getName() });
 
 	/**
-	 * Returns the asset vocabulary where groupId = &#63; and name = &#63; or throws a {@link NoSuchVocabularyException} if it could not be found.
+	 * Returns the asset vocabulary where groupId = &#63; and name = &#63; or throws a {@link com.liferay.portlet.asset.exception.NoSuchVocabularyException} if it could not be found.
 	 *
 	 * @param groupId the group ID
 	 * @param name the name
 	 * @return the matching asset vocabulary
-	 * @throws NoSuchVocabularyException if a matching asset vocabulary could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchVocabularyException if a matching asset vocabulary could not be found
 	 */
 	@Override
 	public AssetVocabulary findByG_N(long groupId, String name)
-		throws NoSuchVocabularyException {
+		throws com.liferay.portlet.asset.exception.NoSuchVocabularyException {
 		AssetVocabulary assetVocabulary = fetchByG_N(groupId, name);
 
 		if (assetVocabulary == null) {
@@ -3373,7 +3372,7 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchVocabularyException(msg.toString());
+			throw new com.liferay.portlet.asset.exception.NoSuchVocabularyException(msg.toString());
 		}
 
 		return assetVocabulary;
@@ -3506,7 +3505,7 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 	 */
 	@Override
 	public AssetVocabulary removeByG_N(long groupId, String name)
-		throws NoSuchVocabularyException {
+		throws com.liferay.portlet.asset.exception.NoSuchVocabularyException {
 		AssetVocabulary assetVocabulary = findByG_N(groupId, name);
 
 		return remove(assetVocabulary);
@@ -3793,12 +3792,12 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 	 * @param name the name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching asset vocabulary
-	 * @throws NoSuchVocabularyException if a matching asset vocabulary could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchVocabularyException if a matching asset vocabulary could not be found
 	 */
 	@Override
 	public AssetVocabulary findByG_LikeN_First(long groupId, String name,
 		OrderByComparator<AssetVocabulary> orderByComparator)
-		throws NoSuchVocabularyException {
+		throws com.liferay.portlet.asset.exception.NoSuchVocabularyException {
 		AssetVocabulary assetVocabulary = fetchByG_LikeN_First(groupId, name,
 				orderByComparator);
 
@@ -3818,7 +3817,7 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchVocabularyException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchVocabularyException(msg.toString());
 	}
 
 	/**
@@ -3849,12 +3848,12 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 	 * @param name the name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching asset vocabulary
-	 * @throws NoSuchVocabularyException if a matching asset vocabulary could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchVocabularyException if a matching asset vocabulary could not be found
 	 */
 	@Override
 	public AssetVocabulary findByG_LikeN_Last(long groupId, String name,
 		OrderByComparator<AssetVocabulary> orderByComparator)
-		throws NoSuchVocabularyException {
+		throws com.liferay.portlet.asset.exception.NoSuchVocabularyException {
 		AssetVocabulary assetVocabulary = fetchByG_LikeN_Last(groupId, name,
 				orderByComparator);
 
@@ -3874,7 +3873,7 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchVocabularyException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchVocabularyException(msg.toString());
 	}
 
 	/**
@@ -3912,13 +3911,13 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 	 * @param name the name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset vocabulary
-	 * @throws NoSuchVocabularyException if a asset vocabulary with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchVocabularyException if a asset vocabulary with the primary key could not be found
 	 */
 	@Override
 	public AssetVocabulary[] findByG_LikeN_PrevAndNext(long vocabularyId,
 		long groupId, String name,
 		OrderByComparator<AssetVocabulary> orderByComparator)
-		throws NoSuchVocabularyException {
+		throws com.liferay.portlet.asset.exception.NoSuchVocabularyException {
 		AssetVocabulary assetVocabulary = findByPrimaryKey(vocabularyId);
 
 		Session session = null;
@@ -4224,13 +4223,13 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 	 * @param name the name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset vocabulary
-	 * @throws NoSuchVocabularyException if a asset vocabulary with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchVocabularyException if a asset vocabulary with the primary key could not be found
 	 */
 	@Override
 	public AssetVocabulary[] filterFindByG_LikeN_PrevAndNext(
 		long vocabularyId, long groupId, String name,
 		OrderByComparator<AssetVocabulary> orderByComparator)
-		throws NoSuchVocabularyException {
+		throws com.liferay.portlet.asset.exception.NoSuchVocabularyException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_LikeN_PrevAndNext(vocabularyId, groupId, name,
 				orderByComparator);
@@ -4791,11 +4790,11 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 	 *
 	 * @param vocabularyId the primary key of the asset vocabulary
 	 * @return the asset vocabulary that was removed
-	 * @throws NoSuchVocabularyException if a asset vocabulary with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchVocabularyException if a asset vocabulary with the primary key could not be found
 	 */
 	@Override
 	public AssetVocabulary remove(long vocabularyId)
-		throws NoSuchVocabularyException {
+		throws com.liferay.portlet.asset.exception.NoSuchVocabularyException {
 		return remove((Serializable)vocabularyId);
 	}
 
@@ -4804,11 +4803,11 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 	 *
 	 * @param primaryKey the primary key of the asset vocabulary
 	 * @return the asset vocabulary that was removed
-	 * @throws NoSuchVocabularyException if a asset vocabulary with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchVocabularyException if a asset vocabulary with the primary key could not be found
 	 */
 	@Override
 	public AssetVocabulary remove(Serializable primaryKey)
-		throws NoSuchVocabularyException {
+		throws com.liferay.portlet.asset.exception.NoSuchVocabularyException {
 		Session session = null;
 
 		try {
@@ -4822,13 +4821,13 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchVocabularyException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portlet.asset.exception.NoSuchVocabularyException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(assetVocabulary);
 		}
-		catch (NoSuchVocabularyException nsee) {
+		catch (com.liferay.portlet.asset.exception.NoSuchVocabularyException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -5053,11 +5052,11 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 	 *
 	 * @param primaryKey the primary key of the asset vocabulary
 	 * @return the asset vocabulary
-	 * @throws NoSuchVocabularyException if a asset vocabulary with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchVocabularyException if a asset vocabulary with the primary key could not be found
 	 */
 	@Override
 	public AssetVocabulary findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchVocabularyException {
+		throws com.liferay.portlet.asset.exception.NoSuchVocabularyException {
 		AssetVocabulary assetVocabulary = fetchByPrimaryKey(primaryKey);
 
 		if (assetVocabulary == null) {
@@ -5065,7 +5064,7 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchVocabularyException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portlet.asset.exception.NoSuchVocabularyException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -5073,15 +5072,15 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 	}
 
 	/**
-	 * Returns the asset vocabulary with the primary key or throws a {@link NoSuchVocabularyException} if it could not be found.
+	 * Returns the asset vocabulary with the primary key or throws a {@link com.liferay.portlet.asset.exception.NoSuchVocabularyException} if it could not be found.
 	 *
 	 * @param vocabularyId the primary key of the asset vocabulary
 	 * @return the asset vocabulary
-	 * @throws NoSuchVocabularyException if a asset vocabulary with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchVocabularyException if a asset vocabulary with the primary key could not be found
 	 */
 	@Override
 	public AssetVocabulary findByPrimaryKey(long vocabularyId)
-		throws NoSuchVocabularyException {
+		throws com.liferay.portlet.asset.exception.NoSuchVocabularyException {
 		return findByPrimaryKey((Serializable)vocabularyId);
 	}
 

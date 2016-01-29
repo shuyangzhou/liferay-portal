@@ -182,7 +182,7 @@ public class LayoutSetBranchUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching layout set branch
-	* @throws NoSuchLayoutSetBranchException if a matching layout set branch could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetBranchException if a matching layout set branch could not be found
 	*/
 	public static LayoutSetBranch findByGroupId_First(long groupId,
 		OrderByComparator<LayoutSetBranch> orderByComparator)
@@ -208,7 +208,7 @@ public class LayoutSetBranchUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching layout set branch
-	* @throws NoSuchLayoutSetBranchException if a matching layout set branch could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetBranchException if a matching layout set branch could not be found
 	*/
 	public static LayoutSetBranch findByGroupId_Last(long groupId,
 		OrderByComparator<LayoutSetBranch> orderByComparator)
@@ -235,7 +235,7 @@ public class LayoutSetBranchUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next layout set branch
-	* @throws NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
 	*/
 	public static LayoutSetBranch[] findByGroupId_PrevAndNext(
 		long layoutSetBranchId, long groupId,
@@ -299,7 +299,7 @@ public class LayoutSetBranchUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next layout set branch
-	* @throws NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
 	*/
 	public static LayoutSetBranch[] filterFindByGroupId_PrevAndNext(
 		long layoutSetBranchId, long groupId,
@@ -422,7 +422,7 @@ public class LayoutSetBranchUtil {
 	* @param privateLayout the private layout
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching layout set branch
-	* @throws NoSuchLayoutSetBranchException if a matching layout set branch could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetBranchException if a matching layout set branch could not be found
 	*/
 	public static LayoutSetBranch findByG_P_First(long groupId,
 		boolean privateLayout,
@@ -454,7 +454,7 @@ public class LayoutSetBranchUtil {
 	* @param privateLayout the private layout
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching layout set branch
-	* @throws NoSuchLayoutSetBranchException if a matching layout set branch could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetBranchException if a matching layout set branch could not be found
 	*/
 	public static LayoutSetBranch findByG_P_Last(long groupId,
 		boolean privateLayout,
@@ -487,7 +487,7 @@ public class LayoutSetBranchUtil {
 	* @param privateLayout the private layout
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next layout set branch
-	* @throws NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
 	*/
 	public static LayoutSetBranch[] findByG_P_PrevAndNext(
 		long layoutSetBranchId, long groupId, boolean privateLayout,
@@ -559,7 +559,7 @@ public class LayoutSetBranchUtil {
 	* @param privateLayout the private layout
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next layout set branch
-	* @throws NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
 	*/
 	public static LayoutSetBranch[] filterFindByG_P_PrevAndNext(
 		long layoutSetBranchId, long groupId, boolean privateLayout,
@@ -603,13 +603,13 @@ public class LayoutSetBranchUtil {
 	}
 
 	/**
-	* Returns the layout set branch where groupId = &#63; and privateLayout = &#63; and name = &#63; or throws a {@link NoSuchLayoutSetBranchException} if it could not be found.
+	* Returns the layout set branch where groupId = &#63; and privateLayout = &#63; and name = &#63; or throws a {@link com.liferay.portal.exception.NoSuchLayoutSetBranchException} if it could not be found.
 	*
 	* @param groupId the group ID
 	* @param privateLayout the private layout
 	* @param name the name
 	* @return the matching layout set branch
-	* @throws NoSuchLayoutSetBranchException if a matching layout set branch could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetBranchException if a matching layout set branch could not be found
 	*/
 	public static LayoutSetBranch findByG_P_N(long groupId,
 		boolean privateLayout, java.lang.String name)
@@ -761,7 +761,7 @@ public class LayoutSetBranchUtil {
 	* @param master the master
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching layout set branch
-	* @throws NoSuchLayoutSetBranchException if a matching layout set branch could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetBranchException if a matching layout set branch could not be found
 	*/
 	public static LayoutSetBranch findByG_P_M_First(long groupId,
 		boolean privateLayout, boolean master,
@@ -797,7 +797,7 @@ public class LayoutSetBranchUtil {
 	* @param master the master
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching layout set branch
-	* @throws NoSuchLayoutSetBranchException if a matching layout set branch could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetBranchException if a matching layout set branch could not be found
 	*/
 	public static LayoutSetBranch findByG_P_M_Last(long groupId,
 		boolean privateLayout, boolean master,
@@ -834,7 +834,7 @@ public class LayoutSetBranchUtil {
 	* @param master the master
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next layout set branch
-	* @throws NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
 	*/
 	public static LayoutSetBranch[] findByG_P_M_PrevAndNext(
 		long layoutSetBranchId, long groupId, boolean privateLayout,
@@ -910,7 +910,7 @@ public class LayoutSetBranchUtil {
 	* @param master the master
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next layout set branch
-	* @throws NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
 	*/
 	public static LayoutSetBranch[] filterFindByG_P_M_PrevAndNext(
 		long layoutSetBranchId, long groupId, boolean privateLayout,
@@ -993,7 +993,7 @@ public class LayoutSetBranchUtil {
 	*
 	* @param layoutSetBranchId the primary key of the layout set branch
 	* @return the layout set branch that was removed
-	* @throws NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
 	*/
 	public static LayoutSetBranch remove(long layoutSetBranchId)
 		throws com.liferay.portal.exception.NoSuchLayoutSetBranchException {
@@ -1005,11 +1005,11 @@ public class LayoutSetBranchUtil {
 	}
 
 	/**
-	* Returns the layout set branch with the primary key or throws a {@link NoSuchLayoutSetBranchException} if it could not be found.
+	* Returns the layout set branch with the primary key or throws a {@link com.liferay.portal.exception.NoSuchLayoutSetBranchException} if it could not be found.
 	*
 	* @param layoutSetBranchId the primary key of the layout set branch
 	* @return the layout set branch
-	* @throws NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
 	*/
 	public static LayoutSetBranch findByPrimaryKey(long layoutSetBranchId)
 		throws com.liferay.portal.exception.NoSuchLayoutSetBranchException {
