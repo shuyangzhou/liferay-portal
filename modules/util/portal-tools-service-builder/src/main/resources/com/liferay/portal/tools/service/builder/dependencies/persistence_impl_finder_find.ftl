@@ -1675,7 +1675,7 @@ that may or may not be enforced with a unique index at the database level. Case
 
 <#if !finder.isCollection() || finder.isUnique()>
 	/**
-	 * Returns the ${entity.humanName} where ${finder.getHumanConditions(false)} or throws a {@link ${packagePath}.exception.${noSuchEntity}Exception} if it could not be found.
+	 * Returns the ${entity.humanName} where ${finder.getHumanConditions(false)} or throws a {@link ${apiPackagePath}.exception.${noSuchEntity}Exception} if it could not be found.
 	 *
 	<#list finderColsList as finderCol>
 	 * @param ${finderCol.name} the ${finderCol.humanName}
