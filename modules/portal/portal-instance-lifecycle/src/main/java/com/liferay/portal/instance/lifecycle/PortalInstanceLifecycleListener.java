@@ -23,4 +23,6 @@ public interface PortalInstanceLifecycleListener {
 
 	public void portalInstanceRegistered(Company company) throws Exception;
 
+	public void portalInstanceUnregistered(Company company) throws Exception;
+
 }
