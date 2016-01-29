@@ -441,6 +441,19 @@ public class JournalContentDisplayContext {
 		return _contentMetadataAssetAddonEntries;
 	}
 
+	public long[] getSelectedGroupIds() throws PortalException {
+		ThemeDisplay themeDisplay = (ThemeDisplay)_portletRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		if (themeDisplay.getScopeGroupId() == themeDisplay.getSiteGroupId()) {
+			return PortalUtil.getSharedContentSiteGroupIds(
+				themeDisplay.getCompanyId(), themeDisplay.getScopeGroupId(),
+				themeDisplay.getUserId());
+		}
+
+		return new long[] {themeDisplay.getScopeGroupId()};
+	}
+
 	public List<UserToolAssetAddonEntry>
 		getSelectedUserToolAssetAddonEntries() {
 

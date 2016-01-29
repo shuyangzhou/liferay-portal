@@ -19,7 +19,6 @@
 <%
 String redirect = ParamUtil.getString(request, "redirect");
 String closeRedirect = ParamUtil.getString(request, "closeRedirect");
-boolean showBackURL = ParamUtil.getBoolean(request, "showBackURL", true);
 
 String portletResourceNamespace = ParamUtil.getString(request, "portletResourceNamespace", renderResponse.getNamespace());
 
@@ -72,6 +71,8 @@ String fieldsJSONArrayString = StringPool.BLANK;
 if (fieldsJSONArray != null) {
 	fieldsJSONArrayString = fieldsJSONArray.toString();
 }
+
+boolean showBackURL = ParamUtil.getBoolean(request, "showBackURL", true);
 %>
 
 <portlet:actionURL name="addStructure" var="addStructureURL">

@@ -395,16 +395,6 @@
 			<var name="pageName" value="${pageName}" />
 		</execute>
 
-		<execute macro="Portlet#dragAndDropPortletToColumnPG">
-			<var name="columnNumberFrom" value="1" />
-			<var name="columnNumberTo" value="2" />
-			<var name="portletName" value="Message Boards" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
-
 		<execute macro="MessageboardsThread#addPG">
 			<var name="threadBody" value="${threadBody}" />
 			<var name="threadSubject" value="${threadSubject}" />
@@ -938,18 +928,6 @@
 		</execute>
 	</command>
 
-	<command name="PreviewThread" priority="5">
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="Message Boards Page" />
-		</execute>
-
-		<execute macro="MessageboardsThread#previewAddPG">
-			<var name="threadBody" value="Message boards Preview Body" />
-			<var name="threadSubject" value="Message Boards Preview Subject" />
-			<var name="userName" value="Test Test" />
-		</execute>
-	</command>
-
 	<command name="SaveThreadAsDraft" priority="5">
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="Message Boards Page" />
@@ -1231,11 +1209,11 @@
 
 		<var name="key_threadSubject" value="MB Thread Message Subject" />
 
-		<execute function="AssertTextEquals" locator1="MessageBoards#THREAD_TABLE_THREAD" value1="MB Thread Message Subject" />
+		<execute function="AssertTextEquals" locator1="MessageBoards#THREAD_LIST_THREAD" value1="MB Thread Message Subject" />
 		<execute function="AssertTextEquals" locator1="MessageBoards#THREAD_TABLE_STARTED_BY" value1="Test Test" />
 		<execute function="AssertTextEquals" locator1="MessageBoards#THREAD_TABLE_POSTS" value1="2" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="MessageBoards#THREAD_TABLE_LAST_POST" value1="userfn userln" />
-		<execute function="Click" locator1="MessageBoards#THREAD_TABLE_THREAD" value1="MB Thread Message Subject" />
+		<execute function="Click" locator1="MessageBoards#THREAD_LIST_THREAD" value1="MB Thread Message Subject" />
 
 		<execute function="AssertTextEquals" locator1="MessageBoardsThread#THREAD_TABLE_SUBJECT_1" value1="MB Thread Message Subject" />
 		<execute function="AssertTextEquals" locator1="MessageBoardsThread#THREAD_TABLE_SUBJECT_2" value1="RE: MB Thread Message Subject" />
