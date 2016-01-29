@@ -15,6 +15,7 @@
 package com.liferay.portlet.expando.util;
 
 import com.liferay.expando.kernel.model.ExpandoColumnConstants;
+import com.liferay.expando.kernel.util.ExpandoConverterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.Date;
