@@ -36,12 +36,28 @@
 		<execute function="AssertVisible" locator1="TextInput#TITLE" />
 	</command>
 
-	<command name="gotoAddTemplate">
-		<execute function="Click" locator1="Button#PLUS" />
+	<command name="gotoAddPGViaWCD">
+		<execute function="Click#makeVisibleClickAt" locator1="WCD#ADD_WEB_CONTENT" />
 
-		<execute function="SelectFrame" />
+		<if>
+			<not>
+				<contains string="${structureName}" substring="{structureName}" />
+			</not>
+			<then>
+				<var name="structureName" value="${structureName}" />
+			</then>
+			<else>
+				<var name="structureName" value="Basic Web Content" />
+			</else>
+		</if>
 
-		<execute function="SelectFrame" locator1="IFrame#TEMPLATES" />
+		<var name="key_structureName" value="${structureName}" />
+
+		<execute function="AssertClick" locator1="WCD#ADD_STRUCTURED_WEB_CONTENT" value1="${structureName}" />
+
+		<execute function="SelectFrame" locator1="IFrame#EDIT_ASSET" />
+
+		<execute function="AssertVisible" locator1="TextInput#TITLE" />
 	</command>
 
 	<command name="gotoAddWithStructureCP">
@@ -75,16 +91,12 @@
 		<execute function="Click" locator1="Icon#HEADER_VERTICAL_ELLIPSIS" />
 
 		<execute function="AssertClick" locator1="MenuItem#STRUCTURES" value1="Structures" />
-
-		<execute function="SelectFrame" locator1="DDMSelectStructure#DDM_STRUCTURES_IFRAME" />
 	</command>
 
 	<command name="gotoManageTemplates">
 		<execute function="Click" locator1="Icon#HEADER_VERTICAL_ELLIPSIS" />
 
 		<execute function="AssertClick" locator1="MenuItem#TEMPLATES" value1="Templates" />
-
-		<execute function="SelectFrame" locator1="IFrame#TEMPLATES" />
 	</command>
 
 	<command name="gotoPreviewEntryCP">
@@ -121,10 +133,6 @@
 		<var name="key_ddlTemplateName" value="${templateName}" />
 
 		<execute function="AssertClick" locator1="DDMSelectTemplate#TEMPLATE_TABLE_NAME" value1="${templateName}" />
-
-		<execute function="SelectFrame" />
-
-		<execute function="SelectFrame" locator1="IFrame#TEMPLATES" />
 	</command>
 
 	<command name="showStructureDetails">

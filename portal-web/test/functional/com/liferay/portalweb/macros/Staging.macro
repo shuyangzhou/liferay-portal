@@ -602,13 +602,14 @@
 	</command>
 
 	<command name="publishToLive">
-		<execute function="AssertClickNoError#assertPartialTextClickAt" locator1="Button#SUBMIT" value1="Publish" />
+		<execute function="AssertClick" locator1="Button#PUBLISH_TO_LIVE" value1="Publish to Live" />
 
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#INFO" value1="There is currently 1 process in progress" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="Message#INFO" value1="There is currently 1 process in progress." />
 
 		<execute function="SelectFrameTop" value1="relative=top" />
 
 		<execute function="Pause" locator1="5000" />
+
 		<execute function="Refresh" />
 	</command>
 
@@ -843,12 +844,7 @@
 	</command>
 
 	<command name="undoStagingPageVersioningPG">
-		<if>
-			<condition function="IsElementNotPresent#isNotVisible" locator1="Staging#STAGING_MENULIST_PUBLISH_TO_LIVE_NOW" />
-			<then>
-				<execute function="AssertClick#assertTextClickAtClickDockbar" locator1="Staging#STAGING_DROP_DOWN_BUTTON" value1="Staging" />
-			</then>
-		</if>
+		<execute function="Click" locator1="Icon#HISTORY_VERTICAL_ELLIPSIS" />
 
 		<execute function="ClickNoError" locator1="Staging#STAGING_MENU_UNDO_BUTTON" />
 		<execute function="Confirm" value1="Are you sure you want to undo your last changes?" />

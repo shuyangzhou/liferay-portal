@@ -1135,6 +1135,7 @@
 		<execute macro="Page#add">
 			<var name="page" value="Private Pages" />
 			<var name="pageName" value="Private Blogs Page" />
+			<var name="sitePagePrivacy" value="Private" />
 			<var name="siteScopeSelected" value="true" />
 		</execute>
 
@@ -1780,7 +1781,7 @@
 		<for list="${orgNameList}" param="orgName">
 			<execute macro="Organization#addCP">
 				<var name="orgName" value="${orgName}" />
-				<var name="orgType" value="Regular Organization" />
+				<var name="orgType" value="Organization" />
 			</execute>
 
 			<execute macro="ProductMenu#gotoControlPanelUsers">

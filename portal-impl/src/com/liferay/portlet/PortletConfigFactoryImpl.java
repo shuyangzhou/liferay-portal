@@ -16,6 +16,7 @@ package com.liferay.portlet;
 
 import com.liferay.portal.kernel.security.pacl.DoPrivileged;
 import com.liferay.portal.model.Portlet;
+import com.liferay.portal.model.PortletConstants;
 import com.liferay.portal.security.lang.DoPrivilegedUtil;
 
 import java.util.Map;
@@ -53,7 +54,7 @@ public class PortletConfigFactoryImpl implements PortletConfigFactory {
 			portlet.getPortletId());
 
 		if (portletConfig == null) {
-			PortletContext portletContext = PortletContextFactory.create(
+			PortletContext portletContext = _portletContextFactory.create(
 				portlet, servletContext);
 
 			portletConfig = new PortletConfigImpl(portlet, portletContext);
@@ -76,13 +77,21 @@ public class PortletConfigFactoryImpl implements PortletConfigFactory {
 
 	@Override
 	public PortletConfig get(String portletId) {
-		Map<String, PortletConfig> portletConfigs = _pool.get(portletId);
+		String rootPortletId = PortletConstants.getRootPortletId(portletId);
+
+		Map<String, PortletConfig> portletConfigs = _pool.get(rootPortletId);
 
 		if (portletConfigs == null) {
 			return null;
 		}
 
 		return portletConfigs.get(portletId);
+	}
+
+	public void setPortletContextFactory(
+		PortletContextFactory portletContextFactory) {
+
+		_portletContextFactory = portletContextFactory;
 	}
 
 	@Override
@@ -107,5 +116,6 @@ public class PortletConfigFactoryImpl implements PortletConfigFactory {
 	}
 
 	private final Map<String, Map<String, PortletConfig>> _pool;
+	private PortletContextFactory _portletContextFactory;
 
 }

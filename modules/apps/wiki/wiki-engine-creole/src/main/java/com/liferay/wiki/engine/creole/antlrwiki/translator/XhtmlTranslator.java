@@ -199,7 +199,15 @@ public class XhtmlTranslator extends XhtmlTranslationVisitor {
 			append("<a class=\"wikipage\" href=\"");
 
 			if (_viewPageURL != null) {
-				append(_viewPageURL.toString());
+				String viewPageURLString = _viewPageURL.toString();
+
+				int index = viewPageURLString.indexOf(StringPool.POUND);
+
+				if (index != -1) {
+					viewPageURLString = viewPageURLString.substring(0, index);
+				}
+
+				append(viewPageURLString);
 			}
 
 			append(StringPool.POUND);

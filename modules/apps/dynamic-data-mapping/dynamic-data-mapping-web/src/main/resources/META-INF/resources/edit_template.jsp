@@ -19,8 +19,6 @@
 <%
 String redirect = ParamUtil.getString(request, "redirect");
 String closeRedirect = ParamUtil.getString(request, "closeRedirect");
-boolean showBackURL = ParamUtil.getBoolean(request, "showBackURL", true);
-boolean showHeader = ParamUtil.getBoolean(request, "showHeader", true);
 
 String portletResource = ParamUtil.getString(request, "portletResource");
 
@@ -76,7 +74,9 @@ if (Validator.isNotNull(structureAvailableFields)) {
 	scopeAvailableFields = structureAvailableFields;
 }
 
+boolean showBackURL = ParamUtil.getBoolean(request, "showBackURL", true);
 boolean showCacheableInput = ParamUtil.getBoolean(request, "showCacheableInput");
+boolean showHeader = ParamUtil.getBoolean(request, "showHeader", true);
 %>
 
 <portlet:actionURL name="addTemplate" var="addTemplateURL">

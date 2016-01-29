@@ -82,7 +82,7 @@ User selUser = (User)request.getAttribute("user.selUser");
 		</c:choose>
 
 		<c:choose>
-			<c:when test="<%= organization == null %>">
+			<c:when test="<%= organization == null && PropsValues.ORGANIZATIONS_TYPES.length > 1 %>">
 				<aui:select name="type">
 
 					<%
@@ -96,6 +96,9 @@ User selUser = (User)request.getAttribute("user.selUser");
 					%>
 
 				</aui:select>
+			</c:when>
+			<c:when test="<%= organization == null %>">
+				<aui:input name="type" type="hidden" value="<%= PropsValues.ORGANIZATIONS_TYPES[0] %>" />
 			</c:when>
 			<c:otherwise>
 				<aui:input name="typeLabel" type="resource" value="<%= LanguageUtil.get(request, organization.getType()) %>" />
