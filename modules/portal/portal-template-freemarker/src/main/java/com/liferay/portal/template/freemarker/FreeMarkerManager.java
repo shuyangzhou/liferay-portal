@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.template.TemplateException;
 import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.template.TemplateResourceLoader;
+import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -67,6 +68,7 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -158,6 +160,39 @@ public class FreeMarkerManager extends BaseSingleTemplateManager {
 	}
 
 	@Override
+	public void addTaglibSupport(
+		Map<String, Object> contextObjects, HttpServletRequest request,
+		HttpServletResponse response) {
+
+		ServletContext servletContext = request.getServletContext();
+
+		addTaglibApplication(contextObjects, "Application", servletContext);
+		addTaglibRequest(contextObjects, "Request", request, response);
+
+		// Legacy
+
+		addTaglibFactory(contextObjects, "PortalJspTagLibs", servletContext);
+		addTaglibFactory(contextObjects, "PortletJspTagLibs", servletContext);
+		addTaglibFactory(contextObjects, "taglibLiferayHash", servletContext);
+
+		// Contributed
+
+		TaglibFactoryWrapper taglibFactoryWrapper = new TaglibFactoryWrapper(
+			servletContext);
+
+		for (Map.Entry<String, String> entry : _taglibMappings.entrySet()) {
+			try {
+				contextObjects.put(
+					entry.getKey(), taglibFactoryWrapper.get(entry.getValue()));
+			}
+			catch (TemplateModelException tme) {
+				_log.error(
+					"Unable to add taglib " + entry.getKey() + " to context");
+			}
+		}
+	}
+
+	@Override
 	public void addTaglibTheme(
 		Map<String, Object> contextObjects, String themeName,
 		HttpServletRequest request, HttpServletResponse response) {
@@ -181,6 +216,8 @@ public class FreeMarkerManager extends BaseSingleTemplateManager {
 		_configuration.clearTemplateCache();
 
 		_configuration = null;
+
+		_taglibMappings.clear();
 
 		templateContextHelper.removeAllHelperUtilities();
 
@@ -253,6 +290,8 @@ public class FreeMarkerManager extends BaseSingleTemplateManager {
 		if (isEnableDebuggerService()) {
 			DebuggerService.getBreakpoints("*");
 		}
+
+		initTaglibMappings();
 	}
 
 	@Reference(unbind = "-")
@@ -330,6 +369,29 @@ public class FreeMarkerManager extends BaseSingleTemplateManager {
 			new ServletContextInvocationHandler(servletContext));
 	}
 
+	protected void initTaglibMappings() {
+		Enumeration<URL> enumeration = _bundle.findEntries(
+			"/", "*taglib-mapping.properties", false);
+
+		if (enumeration == null) {
+			return;
+		}
+
+		while (enumeration.hasMoreElements()) {
+			URL url = enumeration.nextElement();
+
+			try (InputStream inputStream = url.openStream()) {
+				Properties properties = PropertiesUtil.load(
+					inputStream, StringPool.UTF8);
+
+				_taglibMappings.putAll(PropertiesUtil.toMap(properties));
+			}
+			catch (Exception e) {
+				_log.error(e, e);
+			}
+		}
+	}
+
 	protected boolean isEnableDebuggerService() {
 		if ((System.getProperty("freemarker.debug.password") != null) &&
 			(System.getProperty("freemarker.debug.port") != null)) {
@@ -350,6 +412,8 @@ public class FreeMarkerManager extends BaseSingleTemplateManager {
 	private Configuration _configuration;
 	private volatile FreeMarkerEngineConfiguration
 		_freemarkerEngineConfiguration;
+	private final Map<String, String> _taglibMappings =
+		new ConcurrentHashMap<>();
 	private TemplateClassResolver _templateClassResolver;
 	private final Map<String, TemplateModel> _templateModels =
 		new ConcurrentHashMap<>();
