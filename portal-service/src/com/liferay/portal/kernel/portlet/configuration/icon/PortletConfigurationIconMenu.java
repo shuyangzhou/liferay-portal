@@ -32,10 +32,10 @@ public class PortletConfigurationIconMenu {
 			portletId, portletRequest, _comparator);
 	}
 
-	public void setComparator(Comparator comparator) {
+	public void setComparator(Comparator<?> comparator) {
 		_comparator = comparator;
 	}
 
-	private Comparator _comparator;
+	private Comparator<?> _comparator;
 
 }
