@@ -18,6 +18,7 @@ import com.liferay.asset.publisher.web.configuration.AssetPublisherWebConfigurat
 import com.liferay.asset.publisher.web.constants.AssetPublisherPortletKeys;
 import com.liferay.asset.publisher.web.display.context.AssetEntryResult;
 import com.liferay.asset.publisher.web.display.context.AssetPublisherDisplayContext;
+import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Property;
@@ -89,7 +90,6 @@ import com.liferay.portlet.asset.service.persistence.AssetEntryQuery;
 import com.liferay.portlet.asset.util.AssetEntryQueryProcessor;
 import com.liferay.portlet.asset.util.AssetUtil;
 import com.liferay.portlet.configuration.kernel.util.PortletConfigurationUtil;
-import com.liferay.portlet.expando.model.ExpandoBridge;
 import com.liferay.sites.kernel.util.SitesUtil;
 
 import java.io.IOException;
