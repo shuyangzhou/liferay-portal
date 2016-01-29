@@ -136,7 +136,7 @@ public class LiferayResourceManager extends ResourceManagerImpl {
 	private Template _createTemplate(TemplateResource templateResource)
 		throws IOException {
 
-		Template template = new LiferayTemplate(templateResource.getReader());
+		Template template = new LiferayTemplate(templateResource);
 
 		template.setEncoding(TemplateConstants.DEFAUT_ENCODING);
 		template.setName(templateResource.getTemplateId());
@@ -197,16 +197,20 @@ public class LiferayResourceManager extends ResourceManagerImpl {
 
 	private class LiferayTemplate extends Template {
 
-		public LiferayTemplate(Reader reader) {
-			_reader = reader;
+		public LiferayTemplate(TemplateResource templateResource) {
+			_templateResource = templateResource;
 		}
 
 		@Override
 		public boolean process() throws IOException, ParseErrorException {
 			data = null;
 
+			Reader reader = null;
+
 			try {
-				data = rsvc.parse(_reader, name);
+				reader = _templateResource.getReader();
+
+				data = rsvc.parse(reader, name);
 
 				initDocument();
 
@@ -217,13 +221,13 @@ public class LiferayResourceManager extends ResourceManagerImpl {
 					"Unable to parse Velocity template");
 			}
 			finally {
-				if (_reader != null) {
-					_reader.close();
+				if (reader != null) {
+					reader.close();
 				}
 			}
 		}
 
-		private final Reader _reader;
+		private final TemplateResource _templateResource;
 
 	}
 
