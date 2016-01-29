@@ -20,6 +20,6 @@ package com.liferay.message.boards.kernel.constants;
 public class MBConstants {
 
 	public static final String SERVICE_NAME =
-		"com.liferay.portlet.messageboards";
+		"com.liferay.message.boards.kernel";
 
 }

@@ -14,9 +14,9 @@
 
 package com.liferay.message.boards.kernel.util.comparator;
 
+import com.liferay.message.boards.kernel.model.MBThread;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portlet.messageboards.model.MBThread;
 
 /**
  * @author Brian Wing Shun Chan
