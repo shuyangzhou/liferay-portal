@@ -232,13 +232,13 @@ public class HtmlImpl implements Html {
 			return escape(text);
 		}
 
-		StringBuilder sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder(text.length());
 
 		for (int i = 0; i < text.length(); i++) {
 			char c = text.charAt(i);
 
-			if ((c > 255) || Character.isLetterOrDigit(c) ||
-				(c == CharPool.DASH) || (c == CharPool.UNDERLINE)) {
+			if ((c > 255) || (c == CharPool.DASH) ||
+				(c == CharPool.UNDERLINE) || Character.isLetterOrDigit(c)) {
 
 				sb.append(c);
 			}

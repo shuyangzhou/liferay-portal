@@ -65,6 +65,7 @@ import java.security.Key;
 import java.security.PrivilegedAction;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -276,38 +277,38 @@ public class PortletURLImpl
 			return _reservedParameters;
 		}
 
-		_reservedParameters = new LinkedHashMap<>();
+		Map<String, String>reservedParameters = new HashMap<>();
 
-		_reservedParameters.put("p_p_id", _portletId);
+		reservedParameters.put("p_p_id", _portletId);
 
 		if (_lifecycle.equals(PortletRequest.ACTION_PHASE)) {
-			_reservedParameters.put("p_p_lifecycle", "1");
+			reservedParameters.put("p_p_lifecycle", "1");
 		}
 		else if (_lifecycle.equals(PortletRequest.RENDER_PHASE)) {
-			_reservedParameters.put("p_p_lifecycle", "0");
+			reservedParameters.put("p_p_lifecycle", "0");
 		}
 		else if (_lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
-			_reservedParameters.put("p_p_lifecycle", "2");
+			reservedParameters.put("p_p_lifecycle", "2");
 		}
 
 		if (_windowStateString != null) {
-			_reservedParameters.put("p_p_state", _windowStateString);
+			reservedParameters.put("p_p_state", _windowStateString);
 		}
 
 		if (_windowStateRestoreCurrentView) {
-			_reservedParameters.put("p_p_state_rcv", "1");
+			reservedParameters.put("p_p_state_rcv", "1");
 		}
 
 		if (_portletModeString != null) {
-			_reservedParameters.put("p_p_mode", _portletModeString);
+			reservedParameters.put("p_p_mode", _portletModeString);
 		}
 
 		if (_resourceID != null) {
-			_reservedParameters.put("p_p_resource_id", _resourceID);
+			reservedParameters.put("p_p_resource_id", _resourceID);
 		}
 
 		if (_lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
-			_reservedParameters.put("p_p_cacheability", _cacheability);
+			reservedParameters.put("p_p_cacheability", _cacheability);
 		}
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)_request.getAttribute(
@@ -316,23 +317,23 @@ public class PortletURLImpl
 		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
 
 		if (Validator.isNotNull(portletDisplay.getColumnId())) {
-			_reservedParameters.put("p_p_col_id", portletDisplay.getColumnId());
+			reservedParameters.put("p_p_col_id", portletDisplay.getColumnId());
 		}
 
 		if (portletDisplay.getColumnPos() > 0) {
-			_reservedParameters.put(
+			reservedParameters.put(
 				"p_p_col_pos", String.valueOf(portletDisplay.getColumnPos()));
 		}
 
 		if (portletDisplay.getColumnCount() > 0) {
-			_reservedParameters.put(
+			reservedParameters.put(
 				"p_p_col_count",
 				String.valueOf(portletDisplay.getColumnCount()));
 		}
 
-		_reservedParameters = Collections.unmodifiableMap(_reservedParameters);
+		_reservedParameters = reservedParameters;
 
-		return _reservedParameters;
+		return Collections.unmodifiableMap(reservedParameters);
 	}
 
 	@Override
@@ -813,17 +814,6 @@ public class PortletURLImpl
 			return StringPool.BLANK;
 		}
 
-		String portalURL = null;
-
-		if (themeDisplay.isFacebook()) {
-			portalURL =
-				FacebookUtil.FACEBOOK_APPS_URL +
-					themeDisplay.getFacebookCanvasPageURL();
-		}
-		else {
-			portalURL = PortalUtil.getPortalURL(_request, _secure);
-		}
-
 		try {
 			if (_layoutFriendlyURL == null) {
 				Layout layout = getLayout();
@@ -858,7 +848,7 @@ public class PortletURLImpl
 		}
 
 		if (Validator.isNull(_layoutFriendlyURL)) {
-			sb.append(portalURL);
+			sb.append(PortalUtil.getPortalURL(_request, _secure));
 			sb.append(themeDisplay.getPathMain());
 			sb.append("/portal/layout?");
 
@@ -871,7 +861,8 @@ public class PortletURLImpl
 		}
 		else {
 			if (themeDisplay.isFacebook()) {
-				sb.append(portalURL);
+				sb.append(FacebookUtil.FACEBOOK_APPS_URL);
+				sb.append(themeDisplay.getFacebookCanvasPageURL());
 			}
 			else {
 
@@ -882,7 +873,7 @@ public class PortletURLImpl
 				if (!_layoutFriendlyURL.startsWith(Http.HTTP_WITH_SLASH) &&
 					!_layoutFriendlyURL.startsWith(Http.HTTPS_WITH_SLASH)) {
 
-					sb.append(portalURL);
+					sb.append(PortalUtil.getPortalURL(_request, _secure));
 				}
 
 				sb.append(_layoutFriendlyURL);
@@ -1323,9 +1314,9 @@ public class PortletURLImpl
 	protected String prependNamespace(String name) {
 		String namespace = getNamespace();
 
-		if (!PortalUtil.isReservedParameter(name) &&
-			!name.startsWith(PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE) &&
-			!name.startsWith(namespace)) {
+		if (!name.startsWith(PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE) &&
+			!name.startsWith(namespace) &&
+			!PortalUtil.isReservedParameter(name)) {
 
 			return namespace.concat(name);
 		}
