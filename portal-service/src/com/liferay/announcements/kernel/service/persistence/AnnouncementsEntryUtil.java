@@ -249,72 +249,6 @@ public class AnnouncementsEntryUtil {
 	}
 
 	/**
-	* Returns all the announcements entries that the user has permission to view where uuid = &#63;.
-	*
-	* @param uuid the uuid
-	* @return the matching announcements entries that the user has permission to view
-	*/
-	public static List<AnnouncementsEntry> filterFindByUuid(
-		java.lang.String uuid) {
-		return getPersistence().filterFindByUuid(uuid);
-	}
-
-	/**
-	* Returns a range of all the announcements entries that the user has permission to view where uuid = &#63;.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AnnouncementsEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param uuid the uuid
-	* @param start the lower bound of the range of announcements entries
-	* @param end the upper bound of the range of announcements entries (not inclusive)
-	* @return the range of matching announcements entries that the user has permission to view
-	*/
-	public static List<AnnouncementsEntry> filterFindByUuid(
-		java.lang.String uuid, int start, int end) {
-		return getPersistence().filterFindByUuid(uuid, start, end);
-	}
-
-	/**
-	* Returns an ordered range of all the announcements entries that the user has permissions to view where uuid = &#63;.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AnnouncementsEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param uuid the uuid
-	* @param start the lower bound of the range of announcements entries
-	* @param end the upper bound of the range of announcements entries (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @return the ordered range of matching announcements entries that the user has permission to view
-	*/
-	public static List<AnnouncementsEntry> filterFindByUuid(
-		java.lang.String uuid, int start, int end,
-		OrderByComparator<AnnouncementsEntry> orderByComparator) {
-		return getPersistence()
-				   .filterFindByUuid(uuid, start, end, orderByComparator);
-	}
-
-	/**
-	* Returns the announcements entries before and after the current announcements entry in the ordered set of announcements entries that the user has permission to view where uuid = &#63;.
-	*
-	* @param entryId the primary key of the current announcements entry
-	* @param uuid the uuid
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the previous, current, and next announcements entry
-	* @throws NoSuchEntryException if a announcements entry with the primary key could not be found
-	*/
-	public static AnnouncementsEntry[] filterFindByUuid_PrevAndNext(
-		long entryId, java.lang.String uuid,
-		OrderByComparator<AnnouncementsEntry> orderByComparator)
-		throws com.liferay.announcements.kernel.exception.NoSuchEntryException {
-		return getPersistence()
-				   .filterFindByUuid_PrevAndNext(entryId, uuid,
-			orderByComparator);
-	}
-
-	/**
 	* Removes all the announcements entries where uuid = &#63; from the database.
 	*
 	* @param uuid the uuid
@@ -331,16 +265,6 @@ public class AnnouncementsEntryUtil {
 	*/
 	public static int countByUuid(java.lang.String uuid) {
 		return getPersistence().countByUuid(uuid);
-	}
-
-	/**
-	* Returns the number of announcements entries that the user has permission to view where uuid = &#63;.
-	*
-	* @param uuid the uuid
-	* @return the number of matching announcements entries that the user has permission to view
-	*/
-	public static int filterCountByUuid(java.lang.String uuid) {
-		return getPersistence().filterCountByUuid(uuid);
 	}
 
 	/**
@@ -499,77 +423,6 @@ public class AnnouncementsEntryUtil {
 	}
 
 	/**
-	* Returns all the announcements entries that the user has permission to view where uuid = &#63; and companyId = &#63;.
-	*
-	* @param uuid the uuid
-	* @param companyId the company ID
-	* @return the matching announcements entries that the user has permission to view
-	*/
-	public static List<AnnouncementsEntry> filterFindByUuid_C(
-		java.lang.String uuid, long companyId) {
-		return getPersistence().filterFindByUuid_C(uuid, companyId);
-	}
-
-	/**
-	* Returns a range of all the announcements entries that the user has permission to view where uuid = &#63; and companyId = &#63;.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AnnouncementsEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param uuid the uuid
-	* @param companyId the company ID
-	* @param start the lower bound of the range of announcements entries
-	* @param end the upper bound of the range of announcements entries (not inclusive)
-	* @return the range of matching announcements entries that the user has permission to view
-	*/
-	public static List<AnnouncementsEntry> filterFindByUuid_C(
-		java.lang.String uuid, long companyId, int start, int end) {
-		return getPersistence().filterFindByUuid_C(uuid, companyId, start, end);
-	}
-
-	/**
-	* Returns an ordered range of all the announcements entries that the user has permissions to view where uuid = &#63; and companyId = &#63;.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AnnouncementsEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param uuid the uuid
-	* @param companyId the company ID
-	* @param start the lower bound of the range of announcements entries
-	* @param end the upper bound of the range of announcements entries (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @return the ordered range of matching announcements entries that the user has permission to view
-	*/
-	public static List<AnnouncementsEntry> filterFindByUuid_C(
-		java.lang.String uuid, long companyId, int start, int end,
-		OrderByComparator<AnnouncementsEntry> orderByComparator) {
-		return getPersistence()
-				   .filterFindByUuid_C(uuid, companyId, start, end,
-			orderByComparator);
-	}
-
-	/**
-	* Returns the announcements entries before and after the current announcements entry in the ordered set of announcements entries that the user has permission to view where uuid = &#63; and companyId = &#63;.
-	*
-	* @param entryId the primary key of the current announcements entry
-	* @param uuid the uuid
-	* @param companyId the company ID
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the previous, current, and next announcements entry
-	* @throws NoSuchEntryException if a announcements entry with the primary key could not be found
-	*/
-	public static AnnouncementsEntry[] filterFindByUuid_C_PrevAndNext(
-		long entryId, java.lang.String uuid, long companyId,
-		OrderByComparator<AnnouncementsEntry> orderByComparator)
-		throws com.liferay.announcements.kernel.exception.NoSuchEntryException {
-		return getPersistence()
-				   .filterFindByUuid_C_PrevAndNext(entryId, uuid, companyId,
-			orderByComparator);
-	}
-
-	/**
 	* Removes all the announcements entries where uuid = &#63; and companyId = &#63; from the database.
 	*
 	* @param uuid the uuid
@@ -588,17 +441,6 @@ public class AnnouncementsEntryUtil {
 	*/
 	public static int countByUuid_C(java.lang.String uuid, long companyId) {
 		return getPersistence().countByUuid_C(uuid, companyId);
-	}
-
-	/**
-	* Returns the number of announcements entries that the user has permission to view where uuid = &#63; and companyId = &#63;.
-	*
-	* @param uuid the uuid
-	* @param companyId the company ID
-	* @return the number of matching announcements entries that the user has permission to view
-	*/
-	public static int filterCountByUuid_C(java.lang.String uuid, long companyId) {
-		return getPersistence().filterCountByUuid_C(uuid, companyId);
 	}
 
 	/**
@@ -738,71 +580,6 @@ public class AnnouncementsEntryUtil {
 	}
 
 	/**
-	* Returns all the announcements entries that the user has permission to view where userId = &#63;.
-	*
-	* @param userId the user ID
-	* @return the matching announcements entries that the user has permission to view
-	*/
-	public static List<AnnouncementsEntry> filterFindByUserId(long userId) {
-		return getPersistence().filterFindByUserId(userId);
-	}
-
-	/**
-	* Returns a range of all the announcements entries that the user has permission to view where userId = &#63;.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AnnouncementsEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param userId the user ID
-	* @param start the lower bound of the range of announcements entries
-	* @param end the upper bound of the range of announcements entries (not inclusive)
-	* @return the range of matching announcements entries that the user has permission to view
-	*/
-	public static List<AnnouncementsEntry> filterFindByUserId(long userId,
-		int start, int end) {
-		return getPersistence().filterFindByUserId(userId, start, end);
-	}
-
-	/**
-	* Returns an ordered range of all the announcements entries that the user has permissions to view where userId = &#63;.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AnnouncementsEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param userId the user ID
-	* @param start the lower bound of the range of announcements entries
-	* @param end the upper bound of the range of announcements entries (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @return the ordered range of matching announcements entries that the user has permission to view
-	*/
-	public static List<AnnouncementsEntry> filterFindByUserId(long userId,
-		int start, int end,
-		OrderByComparator<AnnouncementsEntry> orderByComparator) {
-		return getPersistence()
-				   .filterFindByUserId(userId, start, end, orderByComparator);
-	}
-
-	/**
-	* Returns the announcements entries before and after the current announcements entry in the ordered set of announcements entries that the user has permission to view where userId = &#63;.
-	*
-	* @param entryId the primary key of the current announcements entry
-	* @param userId the user ID
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the previous, current, and next announcements entry
-	* @throws NoSuchEntryException if a announcements entry with the primary key could not be found
-	*/
-	public static AnnouncementsEntry[] filterFindByUserId_PrevAndNext(
-		long entryId, long userId,
-		OrderByComparator<AnnouncementsEntry> orderByComparator)
-		throws com.liferay.announcements.kernel.exception.NoSuchEntryException {
-		return getPersistence()
-				   .filterFindByUserId_PrevAndNext(entryId, userId,
-			orderByComparator);
-	}
-
-	/**
 	* Removes all the announcements entries where userId = &#63; from the database.
 	*
 	* @param userId the user ID
@@ -819,16 +596,6 @@ public class AnnouncementsEntryUtil {
 	*/
 	public static int countByUserId(long userId) {
 		return getPersistence().countByUserId(userId);
-	}
-
-	/**
-	* Returns the number of announcements entries that the user has permission to view where userId = &#63;.
-	*
-	* @param userId the user ID
-	* @return the number of matching announcements entries that the user has permission to view
-	*/
-	public static int filterCountByUserId(long userId) {
-		return getPersistence().filterCountByUserId(userId);
 	}
 
 	/**
@@ -987,77 +754,6 @@ public class AnnouncementsEntryUtil {
 	}
 
 	/**
-	* Returns all the announcements entries that the user has permission to view where classNameId = &#63; and classPK = &#63;.
-	*
-	* @param classNameId the class name ID
-	* @param classPK the class p k
-	* @return the matching announcements entries that the user has permission to view
-	*/
-	public static List<AnnouncementsEntry> filterFindByC_C(long classNameId,
-		long classPK) {
-		return getPersistence().filterFindByC_C(classNameId, classPK);
-	}
-
-	/**
-	* Returns a range of all the announcements entries that the user has permission to view where classNameId = &#63; and classPK = &#63;.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AnnouncementsEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param classNameId the class name ID
-	* @param classPK the class p k
-	* @param start the lower bound of the range of announcements entries
-	* @param end the upper bound of the range of announcements entries (not inclusive)
-	* @return the range of matching announcements entries that the user has permission to view
-	*/
-	public static List<AnnouncementsEntry> filterFindByC_C(long classNameId,
-		long classPK, int start, int end) {
-		return getPersistence().filterFindByC_C(classNameId, classPK, start, end);
-	}
-
-	/**
-	* Returns an ordered range of all the announcements entries that the user has permissions to view where classNameId = &#63; and classPK = &#63;.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AnnouncementsEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param classNameId the class name ID
-	* @param classPK the class p k
-	* @param start the lower bound of the range of announcements entries
-	* @param end the upper bound of the range of announcements entries (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @return the ordered range of matching announcements entries that the user has permission to view
-	*/
-	public static List<AnnouncementsEntry> filterFindByC_C(long classNameId,
-		long classPK, int start, int end,
-		OrderByComparator<AnnouncementsEntry> orderByComparator) {
-		return getPersistence()
-				   .filterFindByC_C(classNameId, classPK, start, end,
-			orderByComparator);
-	}
-
-	/**
-	* Returns the announcements entries before and after the current announcements entry in the ordered set of announcements entries that the user has permission to view where classNameId = &#63; and classPK = &#63;.
-	*
-	* @param entryId the primary key of the current announcements entry
-	* @param classNameId the class name ID
-	* @param classPK the class p k
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the previous, current, and next announcements entry
-	* @throws NoSuchEntryException if a announcements entry with the primary key could not be found
-	*/
-	public static AnnouncementsEntry[] filterFindByC_C_PrevAndNext(
-		long entryId, long classNameId, long classPK,
-		OrderByComparator<AnnouncementsEntry> orderByComparator)
-		throws com.liferay.announcements.kernel.exception.NoSuchEntryException {
-		return getPersistence()
-				   .filterFindByC_C_PrevAndNext(entryId, classNameId, classPK,
-			orderByComparator);
-	}
-
-	/**
 	* Removes all the announcements entries where classNameId = &#63; and classPK = &#63; from the database.
 	*
 	* @param classNameId the class name ID
@@ -1076,17 +772,6 @@ public class AnnouncementsEntryUtil {
 	*/
 	public static int countByC_C(long classNameId, long classPK) {
 		return getPersistence().countByC_C(classNameId, classPK);
-	}
-
-	/**
-	* Returns the number of announcements entries that the user has permission to view where classNameId = &#63; and classPK = &#63;.
-	*
-	* @param classNameId the class name ID
-	* @param classPK the class p k
-	* @return the number of matching announcements entries that the user has permission to view
-	*/
-	public static int filterCountByC_C(long classNameId, long classPK) {
-		return getPersistence().filterCountByC_C(classNameId, classPK);
 	}
 
 	/**
@@ -1263,82 +948,6 @@ public class AnnouncementsEntryUtil {
 	}
 
 	/**
-	* Returns all the announcements entries that the user has permission to view where classNameId = &#63; and classPK = &#63; and alert = &#63;.
-	*
-	* @param classNameId the class name ID
-	* @param classPK the class p k
-	* @param alert the alert
-	* @return the matching announcements entries that the user has permission to view
-	*/
-	public static List<AnnouncementsEntry> filterFindByC_C_A(long classNameId,
-		long classPK, boolean alert) {
-		return getPersistence().filterFindByC_C_A(classNameId, classPK, alert);
-	}
-
-	/**
-	* Returns a range of all the announcements entries that the user has permission to view where classNameId = &#63; and classPK = &#63; and alert = &#63;.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AnnouncementsEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param classNameId the class name ID
-	* @param classPK the class p k
-	* @param alert the alert
-	* @param start the lower bound of the range of announcements entries
-	* @param end the upper bound of the range of announcements entries (not inclusive)
-	* @return the range of matching announcements entries that the user has permission to view
-	*/
-	public static List<AnnouncementsEntry> filterFindByC_C_A(long classNameId,
-		long classPK, boolean alert, int start, int end) {
-		return getPersistence()
-				   .filterFindByC_C_A(classNameId, classPK, alert, start, end);
-	}
-
-	/**
-	* Returns an ordered range of all the announcements entries that the user has permissions to view where classNameId = &#63; and classPK = &#63; and alert = &#63;.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AnnouncementsEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param classNameId the class name ID
-	* @param classPK the class p k
-	* @param alert the alert
-	* @param start the lower bound of the range of announcements entries
-	* @param end the upper bound of the range of announcements entries (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @return the ordered range of matching announcements entries that the user has permission to view
-	*/
-	public static List<AnnouncementsEntry> filterFindByC_C_A(long classNameId,
-		long classPK, boolean alert, int start, int end,
-		OrderByComparator<AnnouncementsEntry> orderByComparator) {
-		return getPersistence()
-				   .filterFindByC_C_A(classNameId, classPK, alert, start, end,
-			orderByComparator);
-	}
-
-	/**
-	* Returns the announcements entries before and after the current announcements entry in the ordered set of announcements entries that the user has permission to view where classNameId = &#63; and classPK = &#63; and alert = &#63;.
-	*
-	* @param entryId the primary key of the current announcements entry
-	* @param classNameId the class name ID
-	* @param classPK the class p k
-	* @param alert the alert
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the previous, current, and next announcements entry
-	* @throws NoSuchEntryException if a announcements entry with the primary key could not be found
-	*/
-	public static AnnouncementsEntry[] filterFindByC_C_A_PrevAndNext(
-		long entryId, long classNameId, long classPK, boolean alert,
-		OrderByComparator<AnnouncementsEntry> orderByComparator)
-		throws com.liferay.announcements.kernel.exception.NoSuchEntryException {
-		return getPersistence()
-				   .filterFindByC_C_A_PrevAndNext(entryId, classNameId,
-			classPK, alert, orderByComparator);
-	}
-
-	/**
 	* Removes all the announcements entries where classNameId = &#63; and classPK = &#63; and alert = &#63; from the database.
 	*
 	* @param classNameId the class name ID
@@ -1360,19 +969,6 @@ public class AnnouncementsEntryUtil {
 	*/
 	public static int countByC_C_A(long classNameId, long classPK, boolean alert) {
 		return getPersistence().countByC_C_A(classNameId, classPK, alert);
-	}
-
-	/**
-	* Returns the number of announcements entries that the user has permission to view where classNameId = &#63; and classPK = &#63; and alert = &#63;.
-	*
-	* @param classNameId the class name ID
-	* @param classPK the class p k
-	* @param alert the alert
-	* @return the number of matching announcements entries that the user has permission to view
-	*/
-	public static int filterCountByC_C_A(long classNameId, long classPK,
-		boolean alert) {
-		return getPersistence().filterCountByC_C_A(classNameId, classPK, alert);
 	}
 
 	/**
