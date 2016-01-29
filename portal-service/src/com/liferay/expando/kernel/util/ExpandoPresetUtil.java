@@ -12,11 +12,11 @@
  * details.
  */
 
-package com.liferay.portlet.expando.util;
+package com.liferay.expando.kernel.util;
 
+import com.liferay.expando.kernel.model.ExpandoBridge;
+import com.liferay.expando.kernel.model.ExpandoColumnConstants;
 import com.liferay.portal.kernel.util.UnicodeProperties;
-import com.liferay.portlet.expando.model.ExpandoBridge;
-import com.liferay.portlet.expando.model.ExpandoColumnConstants;
 
 /**
  * @author Raymond Augé

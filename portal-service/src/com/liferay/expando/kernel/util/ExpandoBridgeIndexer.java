@@ -12,13 +12,18 @@
  * details.
  */
 
-package com.liferay.portlet.expando.model;
+package com.liferay.expando.kernel.util;
+
+import com.liferay.expando.kernel.model.ExpandoBridge;
+import com.liferay.portal.kernel.search.Document;
 
 /**
  * @author Raymond Augé
  */
-public class ExpandoTableConstants {
+public interface ExpandoBridgeIndexer {
 
-	public static final String DEFAULT_TABLE_NAME = "CUSTOM_FIELDS";
+	public void addAttributes(Document document, ExpandoBridge expandoBridge);
+
+	public String encodeFieldName(String columnName);
 
 }

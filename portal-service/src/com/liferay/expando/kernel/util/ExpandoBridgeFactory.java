@@ -12,9 +12,9 @@
  * details.
  */
 
-package com.liferay.portlet.expando.util;
+package com.liferay.expando.kernel.util;
 
-import com.liferay.portlet.expando.model.ExpandoBridge;
+import com.liferay.expando.kernel.model.ExpandoBridge;
 
 /**
  * @author Brian Wing Shun Chan
