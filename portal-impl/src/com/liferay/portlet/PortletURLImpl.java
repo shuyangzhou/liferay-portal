@@ -65,6 +65,7 @@ import java.security.Key;
 import java.security.PrivilegedAction;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -276,38 +277,38 @@ public class PortletURLImpl
 			return _reservedParameters;
 		}
 
-		_reservedParameters = new LinkedHashMap<>();
+		Map<String, String>reservedParameters = new HashMap<>();
 
-		_reservedParameters.put("p_p_id", _portletId);
+		reservedParameters.put("p_p_id", _portletId);
 
 		if (_lifecycle.equals(PortletRequest.ACTION_PHASE)) {
-			_reservedParameters.put("p_p_lifecycle", "1");
+			reservedParameters.put("p_p_lifecycle", "1");
 		}
 		else if (_lifecycle.equals(PortletRequest.RENDER_PHASE)) {
-			_reservedParameters.put("p_p_lifecycle", "0");
+			reservedParameters.put("p_p_lifecycle", "0");
 		}
 		else if (_lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
-			_reservedParameters.put("p_p_lifecycle", "2");
+			reservedParameters.put("p_p_lifecycle", "2");
 		}
 
 		if (_windowStateString != null) {
-			_reservedParameters.put("p_p_state", _windowStateString);
+			reservedParameters.put("p_p_state", _windowStateString);
 		}
 
 		if (_windowStateRestoreCurrentView) {
-			_reservedParameters.put("p_p_state_rcv", "1");
+			reservedParameters.put("p_p_state_rcv", "1");
 		}
 
 		if (_portletModeString != null) {
-			_reservedParameters.put("p_p_mode", _portletModeString);
+			reservedParameters.put("p_p_mode", _portletModeString);
 		}
 
 		if (_resourceID != null) {
-			_reservedParameters.put("p_p_resource_id", _resourceID);
+			reservedParameters.put("p_p_resource_id", _resourceID);
 		}
 
 		if (_lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
-			_reservedParameters.put("p_p_cacheability", _cacheability);
+			reservedParameters.put("p_p_cacheability", _cacheability);
 		}
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)_request.getAttribute(
@@ -316,23 +317,23 @@ public class PortletURLImpl
 		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
 
 		if (Validator.isNotNull(portletDisplay.getColumnId())) {
-			_reservedParameters.put("p_p_col_id", portletDisplay.getColumnId());
+			reservedParameters.put("p_p_col_id", portletDisplay.getColumnId());
 		}
 
 		if (portletDisplay.getColumnPos() > 0) {
-			_reservedParameters.put(
+			reservedParameters.put(
 				"p_p_col_pos", String.valueOf(portletDisplay.getColumnPos()));
 		}
 
 		if (portletDisplay.getColumnCount() > 0) {
-			_reservedParameters.put(
+			reservedParameters.put(
 				"p_p_col_count",
 				String.valueOf(portletDisplay.getColumnCount()));
 		}
 
-		_reservedParameters = Collections.unmodifiableMap(_reservedParameters);
+		_reservedParameters = reservedParameters;
 
-		return _reservedParameters;
+		return Collections.unmodifiableMap(reservedParameters);
 	}
 
 	@Override
