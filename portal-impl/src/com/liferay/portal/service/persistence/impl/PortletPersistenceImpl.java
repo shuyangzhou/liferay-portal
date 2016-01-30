@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchPortletException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -278,12 +277,12 @@ public class PortletPersistenceImpl extends BasePersistenceImpl<Portlet>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching portlet
-	 * @throws NoSuchPortletException if a matching portlet could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPortletException if a matching portlet could not be found
 	 */
 	@Override
 	public Portlet findByCompanyId_First(long companyId,
 		OrderByComparator<Portlet> orderByComparator)
-		throws NoSuchPortletException {
+		throws com.liferay.portal.exception.NoSuchPortletException {
 		Portlet portlet = fetchByCompanyId_First(companyId, orderByComparator);
 
 		if (portlet != null) {
@@ -299,7 +298,7 @@ public class PortletPersistenceImpl extends BasePersistenceImpl<Portlet>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchPortletException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchPortletException(msg.toString());
 	}
 
 	/**
@@ -327,12 +326,12 @@ public class PortletPersistenceImpl extends BasePersistenceImpl<Portlet>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching portlet
-	 * @throws NoSuchPortletException if a matching portlet could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPortletException if a matching portlet could not be found
 	 */
 	@Override
 	public Portlet findByCompanyId_Last(long companyId,
 		OrderByComparator<Portlet> orderByComparator)
-		throws NoSuchPortletException {
+		throws com.liferay.portal.exception.NoSuchPortletException {
 		Portlet portlet = fetchByCompanyId_Last(companyId, orderByComparator);
 
 		if (portlet != null) {
@@ -348,7 +347,7 @@ public class PortletPersistenceImpl extends BasePersistenceImpl<Portlet>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchPortletException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchPortletException(msg.toString());
 	}
 
 	/**
@@ -384,12 +383,12 @@ public class PortletPersistenceImpl extends BasePersistenceImpl<Portlet>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next portlet
-	 * @throws NoSuchPortletException if a portlet with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPortletException if a portlet with the primary key could not be found
 	 */
 	@Override
 	public Portlet[] findByCompanyId_PrevAndNext(long id, long companyId,
 		OrderByComparator<Portlet> orderByComparator)
-		throws NoSuchPortletException {
+		throws com.liferay.portal.exception.NoSuchPortletException {
 		Portlet portlet = findByPrimaryKey(id);
 
 		Session session = null;
@@ -600,16 +599,16 @@ public class PortletPersistenceImpl extends BasePersistenceImpl<Portlet>
 			new String[] { Long.class.getName(), String.class.getName() });
 
 	/**
-	 * Returns the portlet where companyId = &#63; and portletId = &#63; or throws a {@link NoSuchPortletException} if it could not be found.
+	 * Returns the portlet where companyId = &#63; and portletId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchPortletException} if it could not be found.
 	 *
 	 * @param companyId the company ID
 	 * @param portletId the portlet ID
 	 * @return the matching portlet
-	 * @throws NoSuchPortletException if a matching portlet could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPortletException if a matching portlet could not be found
 	 */
 	@Override
 	public Portlet findByC_P(long companyId, String portletId)
-		throws NoSuchPortletException {
+		throws com.liferay.portal.exception.NoSuchPortletException {
 		Portlet portlet = fetchByC_P(companyId, portletId);
 
 		if (portlet == null) {
@@ -629,7 +628,7 @@ public class PortletPersistenceImpl extends BasePersistenceImpl<Portlet>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchPortletException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchPortletException(msg.toString());
 		}
 
 		return portlet;
@@ -762,7 +761,7 @@ public class PortletPersistenceImpl extends BasePersistenceImpl<Portlet>
 	 */
 	@Override
 	public Portlet removeByC_P(long companyId, String portletId)
-		throws NoSuchPortletException {
+		throws com.liferay.portal.exception.NoSuchPortletException {
 		Portlet portlet = findByC_P(companyId, portletId);
 
 		return remove(portlet);
@@ -1001,10 +1000,11 @@ public class PortletPersistenceImpl extends BasePersistenceImpl<Portlet>
 	 *
 	 * @param id the primary key of the portlet
 	 * @return the portlet that was removed
-	 * @throws NoSuchPortletException if a portlet with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPortletException if a portlet with the primary key could not be found
 	 */
 	@Override
-	public Portlet remove(long id) throws NoSuchPortletException {
+	public Portlet remove(long id)
+		throws com.liferay.portal.exception.NoSuchPortletException {
 		return remove((Serializable)id);
 	}
 
@@ -1013,11 +1013,11 @@ public class PortletPersistenceImpl extends BasePersistenceImpl<Portlet>
 	 *
 	 * @param primaryKey the primary key of the portlet
 	 * @return the portlet that was removed
-	 * @throws NoSuchPortletException if a portlet with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPortletException if a portlet with the primary key could not be found
 	 */
 	@Override
 	public Portlet remove(Serializable primaryKey)
-		throws NoSuchPortletException {
+		throws com.liferay.portal.exception.NoSuchPortletException {
 		Session session = null;
 
 		try {
@@ -1030,13 +1030,13 @@ public class PortletPersistenceImpl extends BasePersistenceImpl<Portlet>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchPortletException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchPortletException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(portlet);
 		}
-		catch (NoSuchPortletException nsee) {
+		catch (com.liferay.portal.exception.NoSuchPortletException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -1169,11 +1169,11 @@ public class PortletPersistenceImpl extends BasePersistenceImpl<Portlet>
 	 *
 	 * @param primaryKey the primary key of the portlet
 	 * @return the portlet
-	 * @throws NoSuchPortletException if a portlet with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPortletException if a portlet with the primary key could not be found
 	 */
 	@Override
 	public Portlet findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchPortletException {
+		throws com.liferay.portal.exception.NoSuchPortletException {
 		Portlet portlet = fetchByPrimaryKey(primaryKey);
 
 		if (portlet == null) {
@@ -1181,7 +1181,7 @@ public class PortletPersistenceImpl extends BasePersistenceImpl<Portlet>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchPortletException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchPortletException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -1189,14 +1189,15 @@ public class PortletPersistenceImpl extends BasePersistenceImpl<Portlet>
 	}
 
 	/**
-	 * Returns the portlet with the primary key or throws a {@link NoSuchPortletException} if it could not be found.
+	 * Returns the portlet with the primary key or throws a {@link com.liferay.portal.exception.NoSuchPortletException} if it could not be found.
 	 *
 	 * @param id the primary key of the portlet
 	 * @return the portlet
-	 * @throws NoSuchPortletException if a portlet with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPortletException if a portlet with the primary key could not be found
 	 */
 	@Override
-	public Portlet findByPrimaryKey(long id) throws NoSuchPortletException {
+	public Portlet findByPrimaryKey(long id)
+		throws com.liferay.portal.exception.NoSuchPortletException {
 		return findByPrimaryKey((Serializable)id);
 	}
 

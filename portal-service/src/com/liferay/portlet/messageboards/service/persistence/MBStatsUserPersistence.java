@@ -105,7 +105,7 @@ public interface MBStatsUserPersistence extends BasePersistence<MBStatsUser> {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message boards stats user
-	* @throws NoSuchStatsUserException if a matching message boards stats user could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchStatsUserException if a matching message boards stats user could not be found
 	*/
 	public MBStatsUser findByGroupId_First(long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<MBStatsUser> orderByComparator)
@@ -127,7 +127,7 @@ public interface MBStatsUserPersistence extends BasePersistence<MBStatsUser> {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message boards stats user
-	* @throws NoSuchStatsUserException if a matching message boards stats user could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchStatsUserException if a matching message boards stats user could not be found
 	*/
 	public MBStatsUser findByGroupId_Last(long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<MBStatsUser> orderByComparator)
@@ -150,7 +150,7 @@ public interface MBStatsUserPersistence extends BasePersistence<MBStatsUser> {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message boards stats user
-	* @throws NoSuchStatsUserException if a message boards stats user with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchStatsUserException if a message boards stats user with the primary key could not be found
 	*/
 	public MBStatsUser[] findByGroupId_PrevAndNext(long statsUserId,
 		long groupId,
@@ -237,7 +237,7 @@ public interface MBStatsUserPersistence extends BasePersistence<MBStatsUser> {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message boards stats user
-	* @throws NoSuchStatsUserException if a matching message boards stats user could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchStatsUserException if a matching message boards stats user could not be found
 	*/
 	public MBStatsUser findByUserId_First(long userId,
 		com.liferay.portal.kernel.util.OrderByComparator<MBStatsUser> orderByComparator)
@@ -259,7 +259,7 @@ public interface MBStatsUserPersistence extends BasePersistence<MBStatsUser> {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message boards stats user
-	* @throws NoSuchStatsUserException if a matching message boards stats user could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchStatsUserException if a matching message boards stats user could not be found
 	*/
 	public MBStatsUser findByUserId_Last(long userId,
 		com.liferay.portal.kernel.util.OrderByComparator<MBStatsUser> orderByComparator)
@@ -282,7 +282,7 @@ public interface MBStatsUserPersistence extends BasePersistence<MBStatsUser> {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message boards stats user
-	* @throws NoSuchStatsUserException if a message boards stats user with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchStatsUserException if a message boards stats user with the primary key could not be found
 	*/
 	public MBStatsUser[] findByUserId_PrevAndNext(long statsUserId,
 		long userId,
@@ -305,12 +305,12 @@ public interface MBStatsUserPersistence extends BasePersistence<MBStatsUser> {
 	public int countByUserId(long userId);
 
 	/**
-	* Returns the message boards stats user where groupId = &#63; and userId = &#63; or throws a {@link NoSuchStatsUserException} if it could not be found.
+	* Returns the message boards stats user where groupId = &#63; and userId = &#63; or throws a {@link com.liferay.portlet.messageboards.exception.NoSuchStatsUserException} if it could not be found.
 	*
 	* @param groupId the group ID
 	* @param userId the user ID
 	* @return the matching message boards stats user
-	* @throws NoSuchStatsUserException if a matching message boards stats user could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchStatsUserException if a matching message boards stats user could not be found
 	*/
 	public MBStatsUser findByG_U(long groupId, long userId)
 		throws com.liferay.portlet.messageboards.exception.NoSuchStatsUserException;
@@ -430,7 +430,7 @@ public interface MBStatsUserPersistence extends BasePersistence<MBStatsUser> {
 	* @param messageCount the message count
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message boards stats user
-	* @throws NoSuchStatsUserException if a matching message boards stats user could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchStatsUserException if a matching message boards stats user could not be found
 	*/
 	public MBStatsUser findByG_NotU_NotM_First(long groupId, long userId,
 		int messageCount,
@@ -458,7 +458,7 @@ public interface MBStatsUserPersistence extends BasePersistence<MBStatsUser> {
 	* @param messageCount the message count
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message boards stats user
-	* @throws NoSuchStatsUserException if a matching message boards stats user could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchStatsUserException if a matching message boards stats user could not be found
 	*/
 	public MBStatsUser findByG_NotU_NotM_Last(long groupId, long userId,
 		int messageCount,
@@ -487,7 +487,7 @@ public interface MBStatsUserPersistence extends BasePersistence<MBStatsUser> {
 	* @param messageCount the message count
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message boards stats user
-	* @throws NoSuchStatsUserException if a message boards stats user with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchStatsUserException if a message boards stats user with the primary key could not be found
 	*/
 	public MBStatsUser[] findByG_NotU_NotM_PrevAndNext(long statsUserId,
 		long groupId, long userId, int messageCount,
@@ -540,7 +540,7 @@ public interface MBStatsUserPersistence extends BasePersistence<MBStatsUser> {
 	*
 	* @param statsUserId the primary key of the message boards stats user
 	* @return the message boards stats user that was removed
-	* @throws NoSuchStatsUserException if a message boards stats user with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchStatsUserException if a message boards stats user with the primary key could not be found
 	*/
 	public MBStatsUser remove(long statsUserId)
 		throws com.liferay.portlet.messageboards.exception.NoSuchStatsUserException;
@@ -548,11 +548,11 @@ public interface MBStatsUserPersistence extends BasePersistence<MBStatsUser> {
 	public MBStatsUser updateImpl(MBStatsUser mbStatsUser);
 
 	/**
-	* Returns the message boards stats user with the primary key or throws a {@link NoSuchStatsUserException} if it could not be found.
+	* Returns the message boards stats user with the primary key or throws a {@link com.liferay.portlet.messageboards.exception.NoSuchStatsUserException} if it could not be found.
 	*
 	* @param statsUserId the primary key of the message boards stats user
 	* @return the message boards stats user
-	* @throws NoSuchStatsUserException if a message boards stats user with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchStatsUserException if a message boards stats user with the primary key could not be found
 	*/
 	public MBStatsUser findByPrimaryKey(long statsUserId)
 		throws com.liferay.portlet.messageboards.exception.NoSuchStatsUserException;

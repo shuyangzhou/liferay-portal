@@ -103,7 +103,7 @@ public interface SystemEventPersistence extends BasePersistence<SystemEvent> {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching system event
-	* @throws NoSuchSystemEventException if a matching system event could not be found
+	* @throws com.liferay.portal.exception.NoSuchSystemEventException if a matching system event could not be found
 	*/
 	public SystemEvent findByGroupId_First(long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<SystemEvent> orderByComparator)
@@ -125,7 +125,7 @@ public interface SystemEventPersistence extends BasePersistence<SystemEvent> {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching system event
-	* @throws NoSuchSystemEventException if a matching system event could not be found
+	* @throws com.liferay.portal.exception.NoSuchSystemEventException if a matching system event could not be found
 	*/
 	public SystemEvent findByGroupId_Last(long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<SystemEvent> orderByComparator)
@@ -148,7 +148,7 @@ public interface SystemEventPersistence extends BasePersistence<SystemEvent> {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next system event
-	* @throws NoSuchSystemEventException if a system event with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchSystemEventException if a system event with the primary key could not be found
 	*/
 	public SystemEvent[] findByGroupId_PrevAndNext(long systemEventId,
 		long groupId,
@@ -241,7 +241,7 @@ public interface SystemEventPersistence extends BasePersistence<SystemEvent> {
 	* @param systemEventSetKey the system event set key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching system event
-	* @throws NoSuchSystemEventException if a matching system event could not be found
+	* @throws com.liferay.portal.exception.NoSuchSystemEventException if a matching system event could not be found
 	*/
 	public SystemEvent findByG_S_First(long groupId, long systemEventSetKey,
 		com.liferay.portal.kernel.util.OrderByComparator<SystemEvent> orderByComparator)
@@ -265,7 +265,7 @@ public interface SystemEventPersistence extends BasePersistence<SystemEvent> {
 	* @param systemEventSetKey the system event set key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching system event
-	* @throws NoSuchSystemEventException if a matching system event could not be found
+	* @throws com.liferay.portal.exception.NoSuchSystemEventException if a matching system event could not be found
 	*/
 	public SystemEvent findByG_S_Last(long groupId, long systemEventSetKey,
 		com.liferay.portal.kernel.util.OrderByComparator<SystemEvent> orderByComparator)
@@ -290,7 +290,7 @@ public interface SystemEventPersistence extends BasePersistence<SystemEvent> {
 	* @param systemEventSetKey the system event set key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next system event
-	* @throws NoSuchSystemEventException if a system event with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchSystemEventException if a system event with the primary key could not be found
 	*/
 	public SystemEvent[] findByG_S_PrevAndNext(long systemEventId,
 		long groupId, long systemEventSetKey,
@@ -390,7 +390,7 @@ public interface SystemEventPersistence extends BasePersistence<SystemEvent> {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching system event
-	* @throws NoSuchSystemEventException if a matching system event could not be found
+	* @throws com.liferay.portal.exception.NoSuchSystemEventException if a matching system event could not be found
 	*/
 	public SystemEvent findByG_C_C_First(long groupId, long classNameId,
 		long classPK,
@@ -418,7 +418,7 @@ public interface SystemEventPersistence extends BasePersistence<SystemEvent> {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching system event
-	* @throws NoSuchSystemEventException if a matching system event could not be found
+	* @throws com.liferay.portal.exception.NoSuchSystemEventException if a matching system event could not be found
 	*/
 	public SystemEvent findByG_C_C_Last(long groupId, long classNameId,
 		long classPK,
@@ -447,7 +447,7 @@ public interface SystemEventPersistence extends BasePersistence<SystemEvent> {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next system event
-	* @throws NoSuchSystemEventException if a system event with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchSystemEventException if a system event with the primary key could not be found
 	*/
 	public SystemEvent[] findByG_C_C_PrevAndNext(long systemEventId,
 		long groupId, long classNameId, long classPK,
@@ -554,7 +554,7 @@ public interface SystemEventPersistence extends BasePersistence<SystemEvent> {
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching system event
-	* @throws NoSuchSystemEventException if a matching system event could not be found
+	* @throws com.liferay.portal.exception.NoSuchSystemEventException if a matching system event could not be found
 	*/
 	public SystemEvent findByG_C_C_T_First(long groupId, long classNameId,
 		long classPK, int type,
@@ -584,7 +584,7 @@ public interface SystemEventPersistence extends BasePersistence<SystemEvent> {
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching system event
-	* @throws NoSuchSystemEventException if a matching system event could not be found
+	* @throws com.liferay.portal.exception.NoSuchSystemEventException if a matching system event could not be found
 	*/
 	public SystemEvent findByG_C_C_T_Last(long groupId, long classNameId,
 		long classPK, int type,
@@ -615,7 +615,7 @@ public interface SystemEventPersistence extends BasePersistence<SystemEvent> {
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next system event
-	* @throws NoSuchSystemEventException if a system event with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchSystemEventException if a system event with the primary key could not be found
 	*/
 	public SystemEvent[] findByG_C_C_T_PrevAndNext(long systemEventId,
 		long groupId, long classNameId, long classPK, int type,
@@ -672,7 +672,7 @@ public interface SystemEventPersistence extends BasePersistence<SystemEvent> {
 	*
 	* @param systemEventId the primary key of the system event
 	* @return the system event that was removed
-	* @throws NoSuchSystemEventException if a system event with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchSystemEventException if a system event with the primary key could not be found
 	*/
 	public SystemEvent remove(long systemEventId)
 		throws com.liferay.portal.exception.NoSuchSystemEventException;
@@ -680,11 +680,11 @@ public interface SystemEventPersistence extends BasePersistence<SystemEvent> {
 	public SystemEvent updateImpl(SystemEvent systemEvent);
 
 	/**
-	* Returns the system event with the primary key or throws a {@link NoSuchSystemEventException} if it could not be found.
+	* Returns the system event with the primary key or throws a {@link com.liferay.portal.exception.NoSuchSystemEventException} if it could not be found.
 	*
 	* @param systemEventId the primary key of the system event
 	* @return the system event
-	* @throws NoSuchSystemEventException if a system event with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchSystemEventException if a system event with the primary key could not be found
 	*/
 	public SystemEvent findByPrimaryKey(long systemEventId)
 		throws com.liferay.portal.exception.NoSuchSystemEventException;

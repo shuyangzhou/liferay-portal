@@ -105,7 +105,7 @@ public interface SocialActivityLimitPersistence extends BasePersistence<SocialAc
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching social activity limit
-	* @throws NoSuchActivityLimitException if a matching social activity limit could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivityLimitException if a matching social activity limit could not be found
 	*/
 	public SocialActivityLimit findByGroupId_First(long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<SocialActivityLimit> orderByComparator)
@@ -127,7 +127,7 @@ public interface SocialActivityLimitPersistence extends BasePersistence<SocialAc
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching social activity limit
-	* @throws NoSuchActivityLimitException if a matching social activity limit could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivityLimitException if a matching social activity limit could not be found
 	*/
 	public SocialActivityLimit findByGroupId_Last(long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<SocialActivityLimit> orderByComparator)
@@ -150,7 +150,7 @@ public interface SocialActivityLimitPersistence extends BasePersistence<SocialAc
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next social activity limit
-	* @throws NoSuchActivityLimitException if a social activity limit with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivityLimitException if a social activity limit with the primary key could not be found
 	*/
 	public SocialActivityLimit[] findByGroupId_PrevAndNext(
 		long activityLimitId, long groupId,
@@ -237,7 +237,7 @@ public interface SocialActivityLimitPersistence extends BasePersistence<SocialAc
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching social activity limit
-	* @throws NoSuchActivityLimitException if a matching social activity limit could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivityLimitException if a matching social activity limit could not be found
 	*/
 	public SocialActivityLimit findByUserId_First(long userId,
 		com.liferay.portal.kernel.util.OrderByComparator<SocialActivityLimit> orderByComparator)
@@ -259,7 +259,7 @@ public interface SocialActivityLimitPersistence extends BasePersistence<SocialAc
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching social activity limit
-	* @throws NoSuchActivityLimitException if a matching social activity limit could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivityLimitException if a matching social activity limit could not be found
 	*/
 	public SocialActivityLimit findByUserId_Last(long userId,
 		com.liferay.portal.kernel.util.OrderByComparator<SocialActivityLimit> orderByComparator)
@@ -282,7 +282,7 @@ public interface SocialActivityLimitPersistence extends BasePersistence<SocialAc
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next social activity limit
-	* @throws NoSuchActivityLimitException if a social activity limit with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivityLimitException if a social activity limit with the primary key could not be found
 	*/
 	public SocialActivityLimit[] findByUserId_PrevAndNext(
 		long activityLimitId, long userId,
@@ -375,7 +375,7 @@ public interface SocialActivityLimitPersistence extends BasePersistence<SocialAc
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching social activity limit
-	* @throws NoSuchActivityLimitException if a matching social activity limit could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivityLimitException if a matching social activity limit could not be found
 	*/
 	public SocialActivityLimit findByC_C_First(long classNameId, long classPK,
 		com.liferay.portal.kernel.util.OrderByComparator<SocialActivityLimit> orderByComparator)
@@ -399,7 +399,7 @@ public interface SocialActivityLimitPersistence extends BasePersistence<SocialAc
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching social activity limit
-	* @throws NoSuchActivityLimitException if a matching social activity limit could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivityLimitException if a matching social activity limit could not be found
 	*/
 	public SocialActivityLimit findByC_C_Last(long classNameId, long classPK,
 		com.liferay.portal.kernel.util.OrderByComparator<SocialActivityLimit> orderByComparator)
@@ -424,7 +424,7 @@ public interface SocialActivityLimitPersistence extends BasePersistence<SocialAc
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next social activity limit
-	* @throws NoSuchActivityLimitException if a social activity limit with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivityLimitException if a social activity limit with the primary key could not be found
 	*/
 	public SocialActivityLimit[] findByC_C_PrevAndNext(long activityLimitId,
 		long classNameId, long classPK,
@@ -449,7 +449,7 @@ public interface SocialActivityLimitPersistence extends BasePersistence<SocialAc
 	public int countByC_C(long classNameId, long classPK);
 
 	/**
-	* Returns the social activity limit where groupId = &#63; and userId = &#63; and classNameId = &#63; and classPK = &#63; and activityType = &#63; and activityCounterName = &#63; or throws a {@link NoSuchActivityLimitException} if it could not be found.
+	* Returns the social activity limit where groupId = &#63; and userId = &#63; and classNameId = &#63; and classPK = &#63; and activityType = &#63; and activityCounterName = &#63; or throws a {@link com.liferay.portlet.social.exception.NoSuchActivityLimitException} if it could not be found.
 	*
 	* @param groupId the group ID
 	* @param userId the user ID
@@ -458,7 +458,7 @@ public interface SocialActivityLimitPersistence extends BasePersistence<SocialAc
 	* @param activityType the activity type
 	* @param activityCounterName the activity counter name
 	* @return the matching social activity limit
-	* @throws NoSuchActivityLimitException if a matching social activity limit could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivityLimitException if a matching social activity limit could not be found
 	*/
 	public SocialActivityLimit findByG_U_C_C_A_A(long groupId, long userId,
 		long classNameId, long classPK, int activityType,
@@ -554,7 +554,7 @@ public interface SocialActivityLimitPersistence extends BasePersistence<SocialAc
 	*
 	* @param activityLimitId the primary key of the social activity limit
 	* @return the social activity limit that was removed
-	* @throws NoSuchActivityLimitException if a social activity limit with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivityLimitException if a social activity limit with the primary key could not be found
 	*/
 	public SocialActivityLimit remove(long activityLimitId)
 		throws com.liferay.portlet.social.exception.NoSuchActivityLimitException;
@@ -563,11 +563,11 @@ public interface SocialActivityLimitPersistence extends BasePersistence<SocialAc
 		SocialActivityLimit socialActivityLimit);
 
 	/**
-	* Returns the social activity limit with the primary key or throws a {@link NoSuchActivityLimitException} if it could not be found.
+	* Returns the social activity limit with the primary key or throws a {@link com.liferay.portlet.social.exception.NoSuchActivityLimitException} if it could not be found.
 	*
 	* @param activityLimitId the primary key of the social activity limit
 	* @return the social activity limit
-	* @throws NoSuchActivityLimitException if a social activity limit with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivityLimitException if a social activity limit with the primary key could not be found
 	*/
 	public SocialActivityLimit findByPrimaryKey(long activityLimitId)
 		throws com.liferay.portlet.social.exception.NoSuchActivityLimitException;

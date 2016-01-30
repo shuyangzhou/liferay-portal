@@ -41,7 +41,6 @@ import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
-import com.liferay.portlet.messageboards.exception.NoSuchBanException;
 import com.liferay.portlet.messageboards.model.MBBan;
 import com.liferay.portlet.messageboards.model.impl.MBBanImpl;
 import com.liferay.portlet.messageboards.model.impl.MBBanModelImpl;
@@ -294,11 +293,12 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message boards ban
-	 * @throws NoSuchBanException if a matching message boards ban could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchBanException if a matching message boards ban could not be found
 	 */
 	@Override
 	public MBBan findByUuid_First(String uuid,
-		OrderByComparator<MBBan> orderByComparator) throws NoSuchBanException {
+		OrderByComparator<MBBan> orderByComparator)
+		throws com.liferay.portlet.messageboards.exception.NoSuchBanException {
 		MBBan mbBan = fetchByUuid_First(uuid, orderByComparator);
 
 		if (mbBan != null) {
@@ -314,7 +314,7 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBanException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchBanException(msg.toString());
 	}
 
 	/**
@@ -342,11 +342,12 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message boards ban
-	 * @throws NoSuchBanException if a matching message boards ban could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchBanException if a matching message boards ban could not be found
 	 */
 	@Override
 	public MBBan findByUuid_Last(String uuid,
-		OrderByComparator<MBBan> orderByComparator) throws NoSuchBanException {
+		OrderByComparator<MBBan> orderByComparator)
+		throws com.liferay.portlet.messageboards.exception.NoSuchBanException {
 		MBBan mbBan = fetchByUuid_Last(uuid, orderByComparator);
 
 		if (mbBan != null) {
@@ -362,7 +363,7 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBanException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchBanException(msg.toString());
 	}
 
 	/**
@@ -397,11 +398,12 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message boards ban
-	 * @throws NoSuchBanException if a message boards ban with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchBanException if a message boards ban with the primary key could not be found
 	 */
 	@Override
 	public MBBan[] findByUuid_PrevAndNext(long banId, String uuid,
-		OrderByComparator<MBBan> orderByComparator) throws NoSuchBanException {
+		OrderByComparator<MBBan> orderByComparator)
+		throws com.liferay.portlet.messageboards.exception.NoSuchBanException {
 		MBBan mbBan = findByPrimaryKey(banId);
 
 		Session session = null;
@@ -642,16 +644,16 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 			new String[] { String.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the message boards ban where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchBanException} if it could not be found.
+	 * Returns the message boards ban where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.portlet.messageboards.exception.NoSuchBanException} if it could not be found.
 	 *
 	 * @param uuid the uuid
 	 * @param groupId the group ID
 	 * @return the matching message boards ban
-	 * @throws NoSuchBanException if a matching message boards ban could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchBanException if a matching message boards ban could not be found
 	 */
 	@Override
 	public MBBan findByUUID_G(String uuid, long groupId)
-		throws NoSuchBanException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchBanException {
 		MBBan mbBan = fetchByUUID_G(uuid, groupId);
 
 		if (mbBan == null) {
@@ -671,7 +673,7 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchBanException(msg.toString());
+			throw new com.liferay.portlet.messageboards.exception.NoSuchBanException(msg.toString());
 		}
 
 		return mbBan;
@@ -804,7 +806,7 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 	 */
 	@Override
 	public MBBan removeByUUID_G(String uuid, long groupId)
-		throws NoSuchBanException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchBanException {
 		MBBan mbBan = findByUUID_G(uuid, groupId);
 
 		return remove(mbBan);
@@ -1105,11 +1107,12 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message boards ban
-	 * @throws NoSuchBanException if a matching message boards ban could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchBanException if a matching message boards ban could not be found
 	 */
 	@Override
 	public MBBan findByUuid_C_First(String uuid, long companyId,
-		OrderByComparator<MBBan> orderByComparator) throws NoSuchBanException {
+		OrderByComparator<MBBan> orderByComparator)
+		throws com.liferay.portlet.messageboards.exception.NoSuchBanException {
 		MBBan mbBan = fetchByUuid_C_First(uuid, companyId, orderByComparator);
 
 		if (mbBan != null) {
@@ -1128,7 +1131,7 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBanException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchBanException(msg.toString());
 	}
 
 	/**
@@ -1158,11 +1161,12 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message boards ban
-	 * @throws NoSuchBanException if a matching message boards ban could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchBanException if a matching message boards ban could not be found
 	 */
 	@Override
 	public MBBan findByUuid_C_Last(String uuid, long companyId,
-		OrderByComparator<MBBan> orderByComparator) throws NoSuchBanException {
+		OrderByComparator<MBBan> orderByComparator)
+		throws com.liferay.portlet.messageboards.exception.NoSuchBanException {
 		MBBan mbBan = fetchByUuid_C_Last(uuid, companyId, orderByComparator);
 
 		if (mbBan != null) {
@@ -1181,7 +1185,7 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBanException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchBanException(msg.toString());
 	}
 
 	/**
@@ -1219,12 +1223,12 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message boards ban
-	 * @throws NoSuchBanException if a message boards ban with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchBanException if a message boards ban with the primary key could not be found
 	 */
 	@Override
 	public MBBan[] findByUuid_C_PrevAndNext(long banId, String uuid,
 		long companyId, OrderByComparator<MBBan> orderByComparator)
-		throws NoSuchBanException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchBanException {
 		MBBan mbBan = findByPrimaryKey(banId);
 
 		Session session = null;
@@ -1653,11 +1657,12 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message boards ban
-	 * @throws NoSuchBanException if a matching message boards ban could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchBanException if a matching message boards ban could not be found
 	 */
 	@Override
 	public MBBan findByGroupId_First(long groupId,
-		OrderByComparator<MBBan> orderByComparator) throws NoSuchBanException {
+		OrderByComparator<MBBan> orderByComparator)
+		throws com.liferay.portlet.messageboards.exception.NoSuchBanException {
 		MBBan mbBan = fetchByGroupId_First(groupId, orderByComparator);
 
 		if (mbBan != null) {
@@ -1673,7 +1678,7 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBanException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchBanException(msg.toString());
 	}
 
 	/**
@@ -1701,11 +1706,12 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message boards ban
-	 * @throws NoSuchBanException if a matching message boards ban could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchBanException if a matching message boards ban could not be found
 	 */
 	@Override
 	public MBBan findByGroupId_Last(long groupId,
-		OrderByComparator<MBBan> orderByComparator) throws NoSuchBanException {
+		OrderByComparator<MBBan> orderByComparator)
+		throws com.liferay.portlet.messageboards.exception.NoSuchBanException {
 		MBBan mbBan = fetchByGroupId_Last(groupId, orderByComparator);
 
 		if (mbBan != null) {
@@ -1721,7 +1727,7 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBanException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchBanException(msg.toString());
 	}
 
 	/**
@@ -1757,11 +1763,12 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message boards ban
-	 * @throws NoSuchBanException if a message boards ban with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchBanException if a message boards ban with the primary key could not be found
 	 */
 	@Override
 	public MBBan[] findByGroupId_PrevAndNext(long banId, long groupId,
-		OrderByComparator<MBBan> orderByComparator) throws NoSuchBanException {
+		OrderByComparator<MBBan> orderByComparator)
+		throws com.liferay.portlet.messageboards.exception.NoSuchBanException {
 		MBBan mbBan = findByPrimaryKey(banId);
 
 		Session session = null;
@@ -2149,11 +2156,12 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message boards ban
-	 * @throws NoSuchBanException if a matching message boards ban could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchBanException if a matching message boards ban could not be found
 	 */
 	@Override
 	public MBBan findByUserId_First(long userId,
-		OrderByComparator<MBBan> orderByComparator) throws NoSuchBanException {
+		OrderByComparator<MBBan> orderByComparator)
+		throws com.liferay.portlet.messageboards.exception.NoSuchBanException {
 		MBBan mbBan = fetchByUserId_First(userId, orderByComparator);
 
 		if (mbBan != null) {
@@ -2169,7 +2177,7 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBanException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchBanException(msg.toString());
 	}
 
 	/**
@@ -2197,11 +2205,12 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message boards ban
-	 * @throws NoSuchBanException if a matching message boards ban could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchBanException if a matching message boards ban could not be found
 	 */
 	@Override
 	public MBBan findByUserId_Last(long userId,
-		OrderByComparator<MBBan> orderByComparator) throws NoSuchBanException {
+		OrderByComparator<MBBan> orderByComparator)
+		throws com.liferay.portlet.messageboards.exception.NoSuchBanException {
 		MBBan mbBan = fetchByUserId_Last(userId, orderByComparator);
 
 		if (mbBan != null) {
@@ -2217,7 +2226,7 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBanException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchBanException(msg.toString());
 	}
 
 	/**
@@ -2253,11 +2262,12 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message boards ban
-	 * @throws NoSuchBanException if a message boards ban with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchBanException if a message boards ban with the primary key could not be found
 	 */
 	@Override
 	public MBBan[] findByUserId_PrevAndNext(long banId, long userId,
-		OrderByComparator<MBBan> orderByComparator) throws NoSuchBanException {
+		OrderByComparator<MBBan> orderByComparator)
+		throws com.liferay.portlet.messageboards.exception.NoSuchBanException {
 		MBBan mbBan = findByPrimaryKey(banId);
 
 		Session session = null;
@@ -2647,11 +2657,12 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 	 * @param banUserId the ban user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message boards ban
-	 * @throws NoSuchBanException if a matching message boards ban could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchBanException if a matching message boards ban could not be found
 	 */
 	@Override
 	public MBBan findByBanUserId_First(long banUserId,
-		OrderByComparator<MBBan> orderByComparator) throws NoSuchBanException {
+		OrderByComparator<MBBan> orderByComparator)
+		throws com.liferay.portlet.messageboards.exception.NoSuchBanException {
 		MBBan mbBan = fetchByBanUserId_First(banUserId, orderByComparator);
 
 		if (mbBan != null) {
@@ -2667,7 +2678,7 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBanException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchBanException(msg.toString());
 	}
 
 	/**
@@ -2695,11 +2706,12 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 	 * @param banUserId the ban user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message boards ban
-	 * @throws NoSuchBanException if a matching message boards ban could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchBanException if a matching message boards ban could not be found
 	 */
 	@Override
 	public MBBan findByBanUserId_Last(long banUserId,
-		OrderByComparator<MBBan> orderByComparator) throws NoSuchBanException {
+		OrderByComparator<MBBan> orderByComparator)
+		throws com.liferay.portlet.messageboards.exception.NoSuchBanException {
 		MBBan mbBan = fetchByBanUserId_Last(banUserId, orderByComparator);
 
 		if (mbBan != null) {
@@ -2715,7 +2727,7 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBanException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchBanException(msg.toString());
 	}
 
 	/**
@@ -2751,11 +2763,12 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 	 * @param banUserId the ban user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message boards ban
-	 * @throws NoSuchBanException if a message boards ban with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchBanException if a message boards ban with the primary key could not be found
 	 */
 	@Override
 	public MBBan[] findByBanUserId_PrevAndNext(long banId, long banUserId,
-		OrderByComparator<MBBan> orderByComparator) throws NoSuchBanException {
+		OrderByComparator<MBBan> orderByComparator)
+		throws com.liferay.portlet.messageboards.exception.NoSuchBanException {
 		MBBan mbBan = findByPrimaryKey(banId);
 
 		Session session = null;
@@ -2966,16 +2979,16 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 			new String[] { Long.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the message boards ban where groupId = &#63; and banUserId = &#63; or throws a {@link NoSuchBanException} if it could not be found.
+	 * Returns the message boards ban where groupId = &#63; and banUserId = &#63; or throws a {@link com.liferay.portlet.messageboards.exception.NoSuchBanException} if it could not be found.
 	 *
 	 * @param groupId the group ID
 	 * @param banUserId the ban user ID
 	 * @return the matching message boards ban
-	 * @throws NoSuchBanException if a matching message boards ban could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchBanException if a matching message boards ban could not be found
 	 */
 	@Override
 	public MBBan findByG_B(long groupId, long banUserId)
-		throws NoSuchBanException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchBanException {
 		MBBan mbBan = fetchByG_B(groupId, banUserId);
 
 		if (mbBan == null) {
@@ -2995,7 +3008,7 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchBanException(msg.toString());
+			throw new com.liferay.portlet.messageboards.exception.NoSuchBanException(msg.toString());
 		}
 
 		return mbBan;
@@ -3113,7 +3126,7 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 	 */
 	@Override
 	public MBBan removeByG_B(long groupId, long banUserId)
-		throws NoSuchBanException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchBanException {
 		MBBan mbBan = findByG_B(groupId, banUserId);
 
 		return remove(mbBan);
@@ -3379,10 +3392,11 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 	 *
 	 * @param banId the primary key of the message boards ban
 	 * @return the message boards ban that was removed
-	 * @throws NoSuchBanException if a message boards ban with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchBanException if a message boards ban with the primary key could not be found
 	 */
 	@Override
-	public MBBan remove(long banId) throws NoSuchBanException {
+	public MBBan remove(long banId)
+		throws com.liferay.portlet.messageboards.exception.NoSuchBanException {
 		return remove((Serializable)banId);
 	}
 
@@ -3391,10 +3405,11 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 	 *
 	 * @param primaryKey the primary key of the message boards ban
 	 * @return the message boards ban that was removed
-	 * @throws NoSuchBanException if a message boards ban with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchBanException if a message boards ban with the primary key could not be found
 	 */
 	@Override
-	public MBBan remove(Serializable primaryKey) throws NoSuchBanException {
+	public MBBan remove(Serializable primaryKey)
+		throws com.liferay.portlet.messageboards.exception.NoSuchBanException {
 		Session session = null;
 
 		try {
@@ -3407,13 +3422,13 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchBanException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portlet.messageboards.exception.NoSuchBanException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(mbBan);
 		}
-		catch (NoSuchBanException nsee) {
+		catch (com.liferay.portlet.messageboards.exception.NoSuchBanException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -3643,11 +3658,11 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 	 *
 	 * @param primaryKey the primary key of the message boards ban
 	 * @return the message boards ban
-	 * @throws NoSuchBanException if a message boards ban with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchBanException if a message boards ban with the primary key could not be found
 	 */
 	@Override
 	public MBBan findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchBanException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchBanException {
 		MBBan mbBan = fetchByPrimaryKey(primaryKey);
 
 		if (mbBan == null) {
@@ -3655,7 +3670,7 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchBanException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portlet.messageboards.exception.NoSuchBanException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -3663,14 +3678,15 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 	}
 
 	/**
-	 * Returns the message boards ban with the primary key or throws a {@link NoSuchBanException} if it could not be found.
+	 * Returns the message boards ban with the primary key or throws a {@link com.liferay.portlet.messageboards.exception.NoSuchBanException} if it could not be found.
 	 *
 	 * @param banId the primary key of the message boards ban
 	 * @return the message boards ban
-	 * @throws NoSuchBanException if a message boards ban with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchBanException if a message boards ban with the primary key could not be found
 	 */
 	@Override
-	public MBBan findByPrimaryKey(long banId) throws NoSuchBanException {
+	public MBBan findByPrimaryKey(long banId)
+		throws com.liferay.portlet.messageboards.exception.NoSuchBanException {
 		return findByPrimaryKey((Serializable)banId);
 	}
 

@@ -53,7 +53,6 @@ import com.liferay.portal.service.persistence.impl.PersistenceNestedSetsTreeMana
 import com.liferay.portal.service.persistence.impl.TableMapper;
 import com.liferay.portal.service.persistence.impl.TableMapperFactory;
 
-import com.liferay.portlet.asset.exception.NoSuchCategoryException;
 import com.liferay.portlet.asset.model.AssetCategory;
 import com.liferay.portlet.asset.model.impl.AssetCategoryImpl;
 import com.liferay.portlet.asset.model.impl.AssetCategoryModelImpl;
@@ -340,12 +339,12 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching asset category
-	 * @throws NoSuchCategoryException if a matching asset category could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a matching asset category could not be found
 	 */
 	@Override
 	public AssetCategory findByUuid_First(String uuid,
 		OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = fetchByUuid_First(uuid, orderByComparator);
 
 		if (assetCategory != null) {
@@ -361,7 +360,7 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchCategoryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchCategoryException(msg.toString());
 	}
 
 	/**
@@ -389,12 +388,12 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching asset category
-	 * @throws NoSuchCategoryException if a matching asset category could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a matching asset category could not be found
 	 */
 	@Override
 	public AssetCategory findByUuid_Last(String uuid,
 		OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = fetchByUuid_Last(uuid, orderByComparator);
 
 		if (assetCategory != null) {
@@ -410,7 +409,7 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchCategoryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchCategoryException(msg.toString());
 	}
 
 	/**
@@ -446,12 +445,12 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset category
-	 * @throws NoSuchCategoryException if a asset category with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a asset category with the primary key could not be found
 	 */
 	@Override
 	public AssetCategory[] findByUuid_PrevAndNext(long categoryId, String uuid,
 		OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = findByPrimaryKey(categoryId);
 
 		Session session = null;
@@ -692,16 +691,16 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 			new String[] { String.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the asset category where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchCategoryException} if it could not be found.
+	 * Returns the asset category where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.portlet.asset.exception.NoSuchCategoryException} if it could not be found.
 	 *
 	 * @param uuid the uuid
 	 * @param groupId the group ID
 	 * @return the matching asset category
-	 * @throws NoSuchCategoryException if a matching asset category could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a matching asset category could not be found
 	 */
 	@Override
 	public AssetCategory findByUUID_G(String uuid, long groupId)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = fetchByUUID_G(uuid, groupId);
 
 		if (assetCategory == null) {
@@ -721,7 +720,7 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchCategoryException(msg.toString());
+			throw new com.liferay.portlet.asset.exception.NoSuchCategoryException(msg.toString());
 		}
 
 		return assetCategory;
@@ -854,7 +853,7 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 */
 	@Override
 	public AssetCategory removeByUUID_G(String uuid, long groupId)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = findByUUID_G(uuid, groupId);
 
 		return remove(assetCategory);
@@ -1158,12 +1157,12 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching asset category
-	 * @throws NoSuchCategoryException if a matching asset category could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a matching asset category could not be found
 	 */
 	@Override
 	public AssetCategory findByUuid_C_First(String uuid, long companyId,
 		OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = fetchByUuid_C_First(uuid, companyId,
 				orderByComparator);
 
@@ -1183,7 +1182,7 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchCategoryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchCategoryException(msg.toString());
 	}
 
 	/**
@@ -1214,12 +1213,12 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching asset category
-	 * @throws NoSuchCategoryException if a matching asset category could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a matching asset category could not be found
 	 */
 	@Override
 	public AssetCategory findByUuid_C_Last(String uuid, long companyId,
 		OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = fetchByUuid_C_Last(uuid, companyId,
 				orderByComparator);
 
@@ -1239,7 +1238,7 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchCategoryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchCategoryException(msg.toString());
 	}
 
 	/**
@@ -1277,13 +1276,13 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset category
-	 * @throws NoSuchCategoryException if a asset category with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a asset category with the primary key could not be found
 	 */
 	@Override
 	public AssetCategory[] findByUuid_C_PrevAndNext(long categoryId,
 		String uuid, long companyId,
 		OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = findByPrimaryKey(categoryId);
 
 		Session session = null;
@@ -1715,12 +1714,12 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching asset category
-	 * @throws NoSuchCategoryException if a matching asset category could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a matching asset category could not be found
 	 */
 	@Override
 	public AssetCategory findByGroupId_First(long groupId,
 		OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = fetchByGroupId_First(groupId,
 				orderByComparator);
 
@@ -1737,7 +1736,7 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchCategoryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchCategoryException(msg.toString());
 	}
 
 	/**
@@ -1766,12 +1765,12 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching asset category
-	 * @throws NoSuchCategoryException if a matching asset category could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a matching asset category could not be found
 	 */
 	@Override
 	public AssetCategory findByGroupId_Last(long groupId,
 		OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = fetchByGroupId_Last(groupId,
 				orderByComparator);
 
@@ -1788,7 +1787,7 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchCategoryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchCategoryException(msg.toString());
 	}
 
 	/**
@@ -1824,12 +1823,12 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset category
-	 * @throws NoSuchCategoryException if a asset category with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a asset category with the primary key could not be found
 	 */
 	@Override
 	public AssetCategory[] findByGroupId_PrevAndNext(long categoryId,
 		long groupId, OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = findByPrimaryKey(categoryId);
 
 		Session session = null;
@@ -2095,12 +2094,12 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset category
-	 * @throws NoSuchCategoryException if a asset category with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a asset category with the primary key could not be found
 	 */
 	@Override
 	public AssetCategory[] filterFindByGroupId_PrevAndNext(long categoryId,
 		long groupId, OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByGroupId_PrevAndNext(categoryId, groupId,
 				orderByComparator);
@@ -2587,12 +2586,12 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param parentCategoryId the parent category ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching asset category
-	 * @throws NoSuchCategoryException if a matching asset category could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a matching asset category could not be found
 	 */
 	@Override
 	public AssetCategory findByParentCategoryId_First(long parentCategoryId,
 		OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = fetchByParentCategoryId_First(parentCategoryId,
 				orderByComparator);
 
@@ -2609,7 +2608,7 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchCategoryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchCategoryException(msg.toString());
 	}
 
 	/**
@@ -2638,12 +2637,12 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param parentCategoryId the parent category ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching asset category
-	 * @throws NoSuchCategoryException if a matching asset category could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a matching asset category could not be found
 	 */
 	@Override
 	public AssetCategory findByParentCategoryId_Last(long parentCategoryId,
 		OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = fetchByParentCategoryId_Last(parentCategoryId,
 				orderByComparator);
 
@@ -2660,7 +2659,7 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchCategoryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchCategoryException(msg.toString());
 	}
 
 	/**
@@ -2696,13 +2695,13 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param parentCategoryId the parent category ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset category
-	 * @throws NoSuchCategoryException if a asset category with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a asset category with the primary key could not be found
 	 */
 	@Override
 	public AssetCategory[] findByParentCategoryId_PrevAndNext(long categoryId,
 		long parentCategoryId,
 		OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = findByPrimaryKey(categoryId);
 
 		Session session = null;
@@ -3102,12 +3101,12 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param vocabularyId the vocabulary ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching asset category
-	 * @throws NoSuchCategoryException if a matching asset category could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a matching asset category could not be found
 	 */
 	@Override
 	public AssetCategory findByVocabularyId_First(long vocabularyId,
 		OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = fetchByVocabularyId_First(vocabularyId,
 				orderByComparator);
 
@@ -3124,7 +3123,7 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchCategoryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchCategoryException(msg.toString());
 	}
 
 	/**
@@ -3153,12 +3152,12 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param vocabularyId the vocabulary ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching asset category
-	 * @throws NoSuchCategoryException if a matching asset category could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a matching asset category could not be found
 	 */
 	@Override
 	public AssetCategory findByVocabularyId_Last(long vocabularyId,
 		OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = fetchByVocabularyId_Last(vocabularyId,
 				orderByComparator);
 
@@ -3175,7 +3174,7 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchCategoryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchCategoryException(msg.toString());
 	}
 
 	/**
@@ -3211,12 +3210,12 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param vocabularyId the vocabulary ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset category
-	 * @throws NoSuchCategoryException if a asset category with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a asset category with the primary key could not be found
 	 */
 	@Override
 	public AssetCategory[] findByVocabularyId_PrevAndNext(long categoryId,
 		long vocabularyId, OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = findByPrimaryKey(categoryId);
 
 		Session session = null;
@@ -3629,12 +3628,12 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param vocabularyId the vocabulary ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching asset category
-	 * @throws NoSuchCategoryException if a matching asset category could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a matching asset category could not be found
 	 */
 	@Override
 	public AssetCategory findByG_V_First(long groupId, long vocabularyId,
 		OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = fetchByG_V_First(groupId, vocabularyId,
 				orderByComparator);
 
@@ -3654,7 +3653,7 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchCategoryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchCategoryException(msg.toString());
 	}
 
 	/**
@@ -3685,12 +3684,12 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param vocabularyId the vocabulary ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching asset category
-	 * @throws NoSuchCategoryException if a matching asset category could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a matching asset category could not be found
 	 */
 	@Override
 	public AssetCategory findByG_V_Last(long groupId, long vocabularyId,
 		OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = fetchByG_V_Last(groupId, vocabularyId,
 				orderByComparator);
 
@@ -3710,7 +3709,7 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchCategoryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchCategoryException(msg.toString());
 	}
 
 	/**
@@ -3748,12 +3747,12 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param vocabularyId the vocabulary ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset category
-	 * @throws NoSuchCategoryException if a asset category with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a asset category with the primary key could not be found
 	 */
 	@Override
 	public AssetCategory[] findByG_V_PrevAndNext(long categoryId, long groupId,
 		long vocabularyId, OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = findByPrimaryKey(categoryId);
 
 		Session session = null;
@@ -4032,13 +4031,13 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param vocabularyId the vocabulary ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset category
-	 * @throws NoSuchCategoryException if a asset category with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a asset category with the primary key could not be found
 	 */
 	@Override
 	public AssetCategory[] filterFindByG_V_PrevAndNext(long categoryId,
 		long groupId, long vocabularyId,
 		OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_V_PrevAndNext(categoryId, groupId, vocabularyId,
 				orderByComparator);
@@ -5065,12 +5064,12 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param name the name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching asset category
-	 * @throws NoSuchCategoryException if a matching asset category could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a matching asset category could not be found
 	 */
 	@Override
 	public AssetCategory findByP_N_First(long parentCategoryId, String name,
 		OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = fetchByP_N_First(parentCategoryId, name,
 				orderByComparator);
 
@@ -5090,7 +5089,7 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchCategoryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchCategoryException(msg.toString());
 	}
 
 	/**
@@ -5121,12 +5120,12 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param name the name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching asset category
-	 * @throws NoSuchCategoryException if a matching asset category could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a matching asset category could not be found
 	 */
 	@Override
 	public AssetCategory findByP_N_Last(long parentCategoryId, String name,
 		OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = fetchByP_N_Last(parentCategoryId, name,
 				orderByComparator);
 
@@ -5146,7 +5145,7 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchCategoryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchCategoryException(msg.toString());
 	}
 
 	/**
@@ -5184,13 +5183,13 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param name the name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset category
-	 * @throws NoSuchCategoryException if a asset category with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a asset category with the primary key could not be found
 	 */
 	@Override
 	public AssetCategory[] findByP_N_PrevAndNext(long categoryId,
 		long parentCategoryId, String name,
 		OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = findByPrimaryKey(categoryId);
 
 		Session session = null;
@@ -5643,12 +5642,12 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param vocabularyId the vocabulary ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching asset category
-	 * @throws NoSuchCategoryException if a matching asset category could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a matching asset category could not be found
 	 */
 	@Override
 	public AssetCategory findByP_V_First(long parentCategoryId,
 		long vocabularyId, OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = fetchByP_V_First(parentCategoryId,
 				vocabularyId, orderByComparator);
 
@@ -5668,7 +5667,7 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchCategoryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchCategoryException(msg.toString());
 	}
 
 	/**
@@ -5699,12 +5698,12 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param vocabularyId the vocabulary ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching asset category
-	 * @throws NoSuchCategoryException if a matching asset category could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a matching asset category could not be found
 	 */
 	@Override
 	public AssetCategory findByP_V_Last(long parentCategoryId,
 		long vocabularyId, OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = fetchByP_V_Last(parentCategoryId,
 				vocabularyId, orderByComparator);
 
@@ -5724,7 +5723,7 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchCategoryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchCategoryException(msg.toString());
 	}
 
 	/**
@@ -5762,13 +5761,13 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param vocabularyId the vocabulary ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset category
-	 * @throws NoSuchCategoryException if a asset category with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a asset category with the primary key could not be found
 	 */
 	@Override
 	public AssetCategory[] findByP_V_PrevAndNext(long categoryId,
 		long parentCategoryId, long vocabularyId,
 		OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = findByPrimaryKey(categoryId);
 
 		Session session = null;
@@ -6200,12 +6199,12 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param vocabularyId the vocabulary ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching asset category
-	 * @throws NoSuchCategoryException if a matching asset category could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a matching asset category could not be found
 	 */
 	@Override
 	public AssetCategory findByN_V_First(String name, long vocabularyId,
 		OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = fetchByN_V_First(name, vocabularyId,
 				orderByComparator);
 
@@ -6225,7 +6224,7 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchCategoryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchCategoryException(msg.toString());
 	}
 
 	/**
@@ -6256,12 +6255,12 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param vocabularyId the vocabulary ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching asset category
-	 * @throws NoSuchCategoryException if a matching asset category could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a matching asset category could not be found
 	 */
 	@Override
 	public AssetCategory findByN_V_Last(String name, long vocabularyId,
 		OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = fetchByN_V_Last(name, vocabularyId,
 				orderByComparator);
 
@@ -6281,7 +6280,7 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchCategoryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchCategoryException(msg.toString());
 	}
 
 	/**
@@ -6319,12 +6318,12 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param vocabularyId the vocabulary ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset category
-	 * @throws NoSuchCategoryException if a asset category with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a asset category with the primary key could not be found
 	 */
 	@Override
 	public AssetCategory[] findByN_V_PrevAndNext(long categoryId, String name,
 		long vocabularyId, OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = findByPrimaryKey(categoryId);
 
 		Session session = null;
@@ -6793,12 +6792,12 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param vocabularyId the vocabulary ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching asset category
-	 * @throws NoSuchCategoryException if a matching asset category could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a matching asset category could not be found
 	 */
 	@Override
 	public AssetCategory findByG_P_V_First(long groupId, long parentCategoryId,
 		long vocabularyId, OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = fetchByG_P_V_First(groupId,
 				parentCategoryId, vocabularyId, orderByComparator);
 
@@ -6821,7 +6820,7 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchCategoryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchCategoryException(msg.toString());
 	}
 
 	/**
@@ -6855,12 +6854,12 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param vocabularyId the vocabulary ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching asset category
-	 * @throws NoSuchCategoryException if a matching asset category could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a matching asset category could not be found
 	 */
 	@Override
 	public AssetCategory findByG_P_V_Last(long groupId, long parentCategoryId,
 		long vocabularyId, OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = fetchByG_P_V_Last(groupId,
 				parentCategoryId, vocabularyId, orderByComparator);
 
@@ -6883,7 +6882,7 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchCategoryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchCategoryException(msg.toString());
 	}
 
 	/**
@@ -6923,13 +6922,13 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param vocabularyId the vocabulary ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset category
-	 * @throws NoSuchCategoryException if a asset category with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a asset category with the primary key could not be found
 	 */
 	@Override
 	public AssetCategory[] findByG_P_V_PrevAndNext(long categoryId,
 		long groupId, long parentCategoryId, long vocabularyId,
 		OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = findByPrimaryKey(categoryId);
 
 		Session session = null;
@@ -7224,13 +7223,13 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param vocabularyId the vocabulary ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset category
-	 * @throws NoSuchCategoryException if a asset category with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a asset category with the primary key could not be found
 	 */
 	@Override
 	public AssetCategory[] filterFindByG_P_V_PrevAndNext(long categoryId,
 		long groupId, long parentCategoryId, long vocabularyId,
 		OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_P_V_PrevAndNext(categoryId, groupId,
 				parentCategoryId, vocabularyId, orderByComparator);
@@ -7788,12 +7787,12 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param vocabularyId the vocabulary ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching asset category
-	 * @throws NoSuchCategoryException if a matching asset category could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a matching asset category could not be found
 	 */
 	@Override
 	public AssetCategory findByG_LikeN_V_First(long groupId, String name,
 		long vocabularyId, OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = fetchByG_LikeN_V_First(groupId, name,
 				vocabularyId, orderByComparator);
 
@@ -7816,7 +7815,7 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchCategoryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchCategoryException(msg.toString());
 	}
 
 	/**
@@ -7849,12 +7848,12 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param vocabularyId the vocabulary ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching asset category
-	 * @throws NoSuchCategoryException if a matching asset category could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a matching asset category could not be found
 	 */
 	@Override
 	public AssetCategory findByG_LikeN_V_Last(long groupId, String name,
 		long vocabularyId, OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = fetchByG_LikeN_V_Last(groupId, name,
 				vocabularyId, orderByComparator);
 
@@ -7877,7 +7876,7 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchCategoryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchCategoryException(msg.toString());
 	}
 
 	/**
@@ -7917,13 +7916,13 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param vocabularyId the vocabulary ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset category
-	 * @throws NoSuchCategoryException if a asset category with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a asset category with the primary key could not be found
 	 */
 	@Override
 	public AssetCategory[] findByG_LikeN_V_PrevAndNext(long categoryId,
 		long groupId, String name, long vocabularyId,
 		OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = findByPrimaryKey(categoryId);
 
 		Session session = null;
@@ -8246,13 +8245,13 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param vocabularyId the vocabulary ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset category
-	 * @throws NoSuchCategoryException if a asset category with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a asset category with the primary key could not be found
 	 */
 	@Override
 	public AssetCategory[] filterFindByG_LikeN_V_PrevAndNext(long categoryId,
 		long groupId, String name, long vocabularyId,
 		OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_LikeN_V_PrevAndNext(categoryId, groupId, name,
 				vocabularyId, orderByComparator);
@@ -9229,17 +9228,18 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 			});
 
 	/**
-	 * Returns the asset category where parentCategoryId = &#63; and name = &#63; and vocabularyId = &#63; or throws a {@link NoSuchCategoryException} if it could not be found.
+	 * Returns the asset category where parentCategoryId = &#63; and name = &#63; and vocabularyId = &#63; or throws a {@link com.liferay.portlet.asset.exception.NoSuchCategoryException} if it could not be found.
 	 *
 	 * @param parentCategoryId the parent category ID
 	 * @param name the name
 	 * @param vocabularyId the vocabulary ID
 	 * @return the matching asset category
-	 * @throws NoSuchCategoryException if a matching asset category could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a matching asset category could not be found
 	 */
 	@Override
 	public AssetCategory findByP_N_V(long parentCategoryId, String name,
-		long vocabularyId) throws NoSuchCategoryException {
+		long vocabularyId)
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = fetchByP_N_V(parentCategoryId, name,
 				vocabularyId);
 
@@ -9263,7 +9263,7 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchCategoryException(msg.toString());
+			throw new com.liferay.portlet.asset.exception.NoSuchCategoryException(msg.toString());
 		}
 
 		return assetCategory;
@@ -9406,7 +9406,8 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 */
 	@Override
 	public AssetCategory removeByP_N_V(long parentCategoryId, String name,
-		long vocabularyId) throws NoSuchCategoryException {
+		long vocabularyId)
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = findByP_N_V(parentCategoryId, name,
 				vocabularyId);
 
@@ -9754,13 +9755,13 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param vocabularyId the vocabulary ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching asset category
-	 * @throws NoSuchCategoryException if a matching asset category could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a matching asset category could not be found
 	 */
 	@Override
 	public AssetCategory findByG_P_N_V_First(long groupId,
 		long parentCategoryId, String name, long vocabularyId,
 		OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = fetchByG_P_N_V_First(groupId,
 				parentCategoryId, name, vocabularyId, orderByComparator);
 
@@ -9786,7 +9787,7 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchCategoryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchCategoryException(msg.toString());
 	}
 
 	/**
@@ -9822,13 +9823,13 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param vocabularyId the vocabulary ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching asset category
-	 * @throws NoSuchCategoryException if a matching asset category could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a matching asset category could not be found
 	 */
 	@Override
 	public AssetCategory findByG_P_N_V_Last(long groupId,
 		long parentCategoryId, String name, long vocabularyId,
 		OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = fetchByG_P_N_V_Last(groupId,
 				parentCategoryId, name, vocabularyId, orderByComparator);
 
@@ -9854,7 +9855,7 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchCategoryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchCategoryException(msg.toString());
 	}
 
 	/**
@@ -9897,13 +9898,13 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param vocabularyId the vocabulary ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset category
-	 * @throws NoSuchCategoryException if a asset category with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a asset category with the primary key could not be found
 	 */
 	@Override
 	public AssetCategory[] findByG_P_N_V_PrevAndNext(long categoryId,
 		long groupId, long parentCategoryId, String name, long vocabularyId,
 		OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = findByPrimaryKey(categoryId);
 
 		Session session = null;
@@ -10241,13 +10242,13 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 * @param vocabularyId the vocabulary ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset category
-	 * @throws NoSuchCategoryException if a asset category with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a asset category with the primary key could not be found
 	 */
 	@Override
 	public AssetCategory[] filterFindByG_P_N_V_PrevAndNext(long categoryId,
 		long groupId, long parentCategoryId, String name, long vocabularyId,
 		OrderByComparator<AssetCategory> orderByComparator)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_P_N_V_PrevAndNext(categoryId, groupId,
 				parentCategoryId, name, vocabularyId, orderByComparator);
@@ -10854,10 +10855,11 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 *
 	 * @param categoryId the primary key of the asset category
 	 * @return the asset category that was removed
-	 * @throws NoSuchCategoryException if a asset category with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a asset category with the primary key could not be found
 	 */
 	@Override
-	public AssetCategory remove(long categoryId) throws NoSuchCategoryException {
+	public AssetCategory remove(long categoryId)
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		return remove((Serializable)categoryId);
 	}
 
@@ -10866,11 +10868,11 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 *
 	 * @param primaryKey the primary key of the asset category
 	 * @return the asset category that was removed
-	 * @throws NoSuchCategoryException if a asset category with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a asset category with the primary key could not be found
 	 */
 	@Override
 	public AssetCategory remove(Serializable primaryKey)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		Session session = null;
 
 		try {
@@ -10884,13 +10886,13 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchCategoryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portlet.asset.exception.NoSuchCategoryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(assetCategory);
 		}
-		catch (NoSuchCategoryException nsee) {
+		catch (com.liferay.portlet.asset.exception.NoSuchCategoryException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -11304,11 +11306,11 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	 *
 	 * @param primaryKey the primary key of the asset category
 	 * @return the asset category
-	 * @throws NoSuchCategoryException if a asset category with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a asset category with the primary key could not be found
 	 */
 	@Override
 	public AssetCategory findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		AssetCategory assetCategory = fetchByPrimaryKey(primaryKey);
 
 		if (assetCategory == null) {
@@ -11316,7 +11318,7 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchCategoryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portlet.asset.exception.NoSuchCategoryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -11324,15 +11326,15 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	}
 
 	/**
-	 * Returns the asset category with the primary key or throws a {@link NoSuchCategoryException} if it could not be found.
+	 * Returns the asset category with the primary key or throws a {@link com.liferay.portlet.asset.exception.NoSuchCategoryException} if it could not be found.
 	 *
 	 * @param categoryId the primary key of the asset category
 	 * @return the asset category
-	 * @throws NoSuchCategoryException if a asset category with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchCategoryException if a asset category with the primary key could not be found
 	 */
 	@Override
 	public AssetCategory findByPrimaryKey(long categoryId)
-		throws NoSuchCategoryException {
+		throws com.liferay.portlet.asset.exception.NoSuchCategoryException {
 		return findByPrimaryKey((Serializable)categoryId);
 	}
 

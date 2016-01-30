@@ -105,7 +105,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByUuid_First(java.lang.String uuid,
 		com.liferay.portal.kernel.util.OrderByComparator<BlogsEntry> orderByComparator)
@@ -127,7 +127,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByUuid_Last(java.lang.String uuid,
 		com.liferay.portal.kernel.util.OrderByComparator<BlogsEntry> orderByComparator)
@@ -150,7 +150,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry[] findByUuid_PrevAndNext(long entryId,
 		java.lang.String uuid,
@@ -173,12 +173,12 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	public int countByUuid(java.lang.String uuid);
 
 	/**
-	* Returns the blogs entry where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchEntryException} if it could not be found.
+	* Returns the blogs entry where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.portlet.blogs.exception.NoSuchEntryException} if it could not be found.
 	*
 	* @param uuid the uuid
 	* @param groupId the group ID
 	* @return the matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByUUID_G(java.lang.String uuid, long groupId)
 		throws com.liferay.portlet.blogs.exception.NoSuchEntryException;
@@ -293,7 +293,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByUuid_C_First(java.lang.String uuid, long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<BlogsEntry> orderByComparator)
@@ -318,7 +318,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByUuid_C_Last(java.lang.String uuid, long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<BlogsEntry> orderByComparator)
@@ -343,7 +343,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry[] findByUuid_C_PrevAndNext(long entryId,
 		java.lang.String uuid, long companyId,
@@ -432,7 +432,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByGroupId_First(long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<BlogsEntry> orderByComparator)
@@ -454,7 +454,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByGroupId_Last(long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<BlogsEntry> orderByComparator)
@@ -477,7 +477,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry[] findByGroupId_PrevAndNext(long entryId, long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<BlogsEntry> orderByComparator)
@@ -530,7 +530,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry[] filterFindByGroupId_PrevAndNext(long entryId,
 		long groupId,
@@ -625,7 +625,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByCompanyId_First(long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<BlogsEntry> orderByComparator)
@@ -647,7 +647,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByCompanyId_Last(long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<BlogsEntry> orderByComparator)
@@ -670,7 +670,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry[] findByCompanyId_PrevAndNext(long entryId,
 		long companyId,
@@ -693,12 +693,12 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	public int countByCompanyId(long companyId);
 
 	/**
-	* Returns the blogs entry where groupId = &#63; and urlTitle = &#63; or throws a {@link NoSuchEntryException} if it could not be found.
+	* Returns the blogs entry where groupId = &#63; and urlTitle = &#63; or throws a {@link com.liferay.portlet.blogs.exception.NoSuchEntryException} if it could not be found.
 	*
 	* @param groupId the group ID
 	* @param urlTitle the url title
 	* @return the matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByG_UT(long groupId, java.lang.String urlTitle)
 		throws com.liferay.portlet.blogs.exception.NoSuchEntryException;
@@ -813,7 +813,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param displayDate the display date
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByG_LtD_First(long groupId,
 		java.util.Date displayDate,
@@ -839,7 +839,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param displayDate the display date
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByG_LtD_Last(long groupId,
 		java.util.Date displayDate,
@@ -866,7 +866,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param displayDate the display date
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry[] findByG_LtD_PrevAndNext(long entryId, long groupId,
 		java.util.Date displayDate,
@@ -925,7 +925,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param displayDate the display date
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry[] filterFindByG_LtD_PrevAndNext(long entryId,
 		long groupId, java.util.Date displayDate,
@@ -1028,7 +1028,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByG_S_First(long groupId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<BlogsEntry> orderByComparator)
@@ -1052,7 +1052,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByG_S_Last(long groupId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<BlogsEntry> orderByComparator)
@@ -1077,7 +1077,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry[] findByG_S_PrevAndNext(long entryId, long groupId,
 		int status,
@@ -1135,7 +1135,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry[] filterFindByG_S_PrevAndNext(long entryId, long groupId,
 		int status,
@@ -1238,7 +1238,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByG_NotS_First(long groupId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<BlogsEntry> orderByComparator)
@@ -1262,7 +1262,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByG_NotS_Last(long groupId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<BlogsEntry> orderByComparator)
@@ -1287,7 +1287,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry[] findByG_NotS_PrevAndNext(long entryId, long groupId,
 		int status,
@@ -1346,7 +1346,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry[] filterFindByG_NotS_PrevAndNext(long entryId,
 		long groupId, int status,
@@ -1449,7 +1449,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByC_U_First(long companyId, long userId,
 		com.liferay.portal.kernel.util.OrderByComparator<BlogsEntry> orderByComparator)
@@ -1473,7 +1473,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByC_U_Last(long companyId, long userId,
 		com.liferay.portal.kernel.util.OrderByComparator<BlogsEntry> orderByComparator)
@@ -1498,7 +1498,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry[] findByC_U_PrevAndNext(long entryId, long companyId,
 		long userId,
@@ -1593,7 +1593,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param displayDate the display date
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByC_LtD_First(long companyId,
 		java.util.Date displayDate,
@@ -1619,7 +1619,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param displayDate the display date
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByC_LtD_Last(long companyId,
 		java.util.Date displayDate,
@@ -1646,7 +1646,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param displayDate the display date
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry[] findByC_LtD_PrevAndNext(long entryId, long companyId,
 		java.util.Date displayDate,
@@ -1740,7 +1740,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByC_S_First(long companyId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<BlogsEntry> orderByComparator)
@@ -1764,7 +1764,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByC_S_Last(long companyId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<BlogsEntry> orderByComparator)
@@ -1789,7 +1789,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry[] findByC_S_PrevAndNext(long entryId, long companyId,
 		int status,
@@ -1883,7 +1883,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByC_NotS_First(long companyId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<BlogsEntry> orderByComparator)
@@ -1907,7 +1907,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByC_NotS_Last(long companyId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<BlogsEntry> orderByComparator)
@@ -1932,7 +1932,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry[] findByC_NotS_PrevAndNext(long entryId, long companyId,
 		int status,
@@ -2027,7 +2027,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByLtD_S_First(java.util.Date displayDate, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<BlogsEntry> orderByComparator)
@@ -2052,7 +2052,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByLtD_S_Last(java.util.Date displayDate, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<BlogsEntry> orderByComparator)
@@ -2077,7 +2077,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry[] findByLtD_S_PrevAndNext(long entryId,
 		java.util.Date displayDate, int status,
@@ -2177,7 +2177,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param displayDate the display date
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByG_U_LtD_First(long groupId, long userId,
 		java.util.Date displayDate,
@@ -2205,7 +2205,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param displayDate the display date
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByG_U_LtD_Last(long groupId, long userId,
 		java.util.Date displayDate,
@@ -2234,7 +2234,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param displayDate the display date
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry[] findByG_U_LtD_PrevAndNext(long entryId, long groupId,
 		long userId, java.util.Date displayDate,
@@ -2297,7 +2297,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param displayDate the display date
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry[] filterFindByG_U_LtD_PrevAndNext(long entryId,
 		long groupId, long userId, java.util.Date displayDate,
@@ -2412,7 +2412,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByG_U_S_First(long groupId, long userId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<BlogsEntry> orderByComparator)
@@ -2438,7 +2438,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByG_U_S_Last(long groupId, long userId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<BlogsEntry> orderByComparator)
@@ -2465,7 +2465,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry[] findByG_U_S_PrevAndNext(long entryId, long groupId,
 		long userId, int status,
@@ -2528,7 +2528,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry[] filterFindByG_U_S_PrevAndNext(long entryId,
 		long groupId, long userId, int status,
@@ -2779,7 +2779,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByG_U_NotS_First(long groupId, long userId,
 		int status,
@@ -2807,7 +2807,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByG_U_NotS_Last(long groupId, long userId,
 		int status,
@@ -2836,7 +2836,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry[] findByG_U_NotS_PrevAndNext(long entryId, long groupId,
 		long userId, int status,
@@ -2899,7 +2899,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry[] filterFindByG_U_NotS_PrevAndNext(long entryId,
 		long groupId, long userId, int status,
@@ -3011,7 +3011,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByG_LtD_S_First(long groupId,
 		java.util.Date displayDate, int status,
@@ -3039,7 +3039,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByG_LtD_S_Last(long groupId,
 		java.util.Date displayDate, int status,
@@ -3068,7 +3068,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry[] findByG_LtD_S_PrevAndNext(long entryId, long groupId,
 		java.util.Date displayDate, int status,
@@ -3131,7 +3131,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry[] filterFindByG_LtD_S_PrevAndNext(long entryId,
 		long groupId, java.util.Date displayDate, int status,
@@ -3246,7 +3246,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByG_LtD_NotS_First(long groupId,
 		java.util.Date displayDate, int status,
@@ -3274,7 +3274,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByG_LtD_NotS_Last(long groupId,
 		java.util.Date displayDate, int status,
@@ -3303,7 +3303,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry[] findByG_LtD_NotS_PrevAndNext(long entryId,
 		long groupId, java.util.Date displayDate, int status,
@@ -3366,7 +3366,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry[] filterFindByG_LtD_NotS_PrevAndNext(long entryId,
 		long groupId, java.util.Date displayDate, int status,
@@ -3481,7 +3481,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByC_U_S_First(long companyId, long userId,
 		int status,
@@ -3509,7 +3509,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByC_U_S_Last(long companyId, long userId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<BlogsEntry> orderByComparator)
@@ -3537,7 +3537,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry[] findByC_U_S_PrevAndNext(long entryId, long companyId,
 		long userId, int status,
@@ -3639,7 +3639,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByC_U_NotS_First(long companyId, long userId,
 		int status,
@@ -3667,7 +3667,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByC_U_NotS_Last(long companyId, long userId,
 		int status,
@@ -3696,7 +3696,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry[] findByC_U_NotS_PrevAndNext(long entryId,
 		long companyId, long userId, int status,
@@ -3798,7 +3798,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByC_LtD_S_First(long companyId,
 		java.util.Date displayDate, int status,
@@ -3826,7 +3826,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByC_LtD_S_Last(long companyId,
 		java.util.Date displayDate, int status,
@@ -3855,7 +3855,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry[] findByC_LtD_S_PrevAndNext(long entryId, long companyId,
 		java.util.Date displayDate, int status,
@@ -3959,7 +3959,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByC_LtD_NotS_First(long companyId,
 		java.util.Date displayDate, int status,
@@ -3987,7 +3987,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByC_LtD_NotS_Last(long companyId,
 		java.util.Date displayDate, int status,
@@ -4016,7 +4016,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry[] findByC_LtD_NotS_PrevAndNext(long entryId,
 		long companyId, java.util.Date displayDate, int status,
@@ -4127,7 +4127,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByG_U_LtD_S_First(long groupId, long userId,
 		java.util.Date displayDate, int status,
@@ -4157,7 +4157,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByG_U_LtD_S_Last(long groupId, long userId,
 		java.util.Date displayDate, int status,
@@ -4188,7 +4188,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry[] findByG_U_LtD_S_PrevAndNext(long entryId, long groupId,
 		long userId, java.util.Date displayDate, int status,
@@ -4256,7 +4256,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry[] filterFindByG_U_LtD_S_PrevAndNext(long entryId,
 		long groupId, long userId, java.util.Date displayDate, int status,
@@ -4381,7 +4381,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByG_U_LtD_NotS_First(long groupId, long userId,
 		java.util.Date displayDate, int status,
@@ -4411,7 +4411,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching blogs entry
-	* @throws NoSuchEntryException if a matching blogs entry could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	*/
 	public BlogsEntry findByG_U_LtD_NotS_Last(long groupId, long userId,
 		java.util.Date displayDate, int status,
@@ -4442,7 +4442,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry[] findByG_U_LtD_NotS_PrevAndNext(long entryId,
 		long groupId, long userId, java.util.Date displayDate, int status,
@@ -4510,7 +4510,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry[] filterFindByG_U_LtD_NotS_PrevAndNext(long entryId,
 		long groupId, long userId, java.util.Date displayDate, int status,
@@ -4579,7 +4579,7 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	*
 	* @param entryId the primary key of the blogs entry
 	* @return the blogs entry that was removed
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry remove(long entryId)
 		throws com.liferay.portlet.blogs.exception.NoSuchEntryException;
@@ -4587,11 +4587,11 @@ public interface BlogsEntryPersistence extends BasePersistence<BlogsEntry> {
 	public BlogsEntry updateImpl(BlogsEntry blogsEntry);
 
 	/**
-	* Returns the blogs entry with the primary key or throws a {@link NoSuchEntryException} if it could not be found.
+	* Returns the blogs entry with the primary key or throws a {@link com.liferay.portlet.blogs.exception.NoSuchEntryException} if it could not be found.
 	*
 	* @param entryId the primary key of the blogs entry
 	* @return the blogs entry
-	* @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	* @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	*/
 	public BlogsEntry findByPrimaryKey(long entryId)
 		throws com.liferay.portlet.blogs.exception.NoSuchEntryException;

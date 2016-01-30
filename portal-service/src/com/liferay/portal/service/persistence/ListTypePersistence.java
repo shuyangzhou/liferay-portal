@@ -103,7 +103,7 @@ public interface ListTypePersistence extends BasePersistence<ListType> {
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching list type
-	* @throws NoSuchListTypeException if a matching list type could not be found
+	* @throws com.liferay.portal.exception.NoSuchListTypeException if a matching list type could not be found
 	*/
 	public ListType findByType_First(java.lang.String type,
 		com.liferay.portal.kernel.util.OrderByComparator<ListType> orderByComparator)
@@ -125,7 +125,7 @@ public interface ListTypePersistence extends BasePersistence<ListType> {
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching list type
-	* @throws NoSuchListTypeException if a matching list type could not be found
+	* @throws com.liferay.portal.exception.NoSuchListTypeException if a matching list type could not be found
 	*/
 	public ListType findByType_Last(java.lang.String type,
 		com.liferay.portal.kernel.util.OrderByComparator<ListType> orderByComparator)
@@ -148,7 +148,7 @@ public interface ListTypePersistence extends BasePersistence<ListType> {
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next list type
-	* @throws NoSuchListTypeException if a list type with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchListTypeException if a list type with the primary key could not be found
 	*/
 	public ListType[] findByType_PrevAndNext(long listTypeId,
 		java.lang.String type,
@@ -171,12 +171,12 @@ public interface ListTypePersistence extends BasePersistence<ListType> {
 	public int countByType(java.lang.String type);
 
 	/**
-	* Returns the list type where name = &#63; and type = &#63; or throws a {@link NoSuchListTypeException} if it could not be found.
+	* Returns the list type where name = &#63; and type = &#63; or throws a {@link com.liferay.portal.exception.NoSuchListTypeException} if it could not be found.
 	*
 	* @param name the name
 	* @param type the type
 	* @return the matching list type
-	* @throws NoSuchListTypeException if a matching list type could not be found
+	* @throws com.liferay.portal.exception.NoSuchListTypeException if a matching list type could not be found
 	*/
 	public ListType findByN_T(java.lang.String name, java.lang.String type)
 		throws com.liferay.portal.exception.NoSuchListTypeException;
@@ -247,7 +247,7 @@ public interface ListTypePersistence extends BasePersistence<ListType> {
 	*
 	* @param listTypeId the primary key of the list type
 	* @return the list type that was removed
-	* @throws NoSuchListTypeException if a list type with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchListTypeException if a list type with the primary key could not be found
 	*/
 	public ListType remove(long listTypeId)
 		throws com.liferay.portal.exception.NoSuchListTypeException;
@@ -255,11 +255,11 @@ public interface ListTypePersistence extends BasePersistence<ListType> {
 	public ListType updateImpl(ListType listType);
 
 	/**
-	* Returns the list type with the primary key or throws a {@link NoSuchListTypeException} if it could not be found.
+	* Returns the list type with the primary key or throws a {@link com.liferay.portal.exception.NoSuchListTypeException} if it could not be found.
 	*
 	* @param listTypeId the primary key of the list type
 	* @return the list type
-	* @throws NoSuchListTypeException if a list type with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchListTypeException if a list type with the primary key could not be found
 	*/
 	public ListType findByPrimaryKey(long listTypeId)
 		throws com.liferay.portal.exception.NoSuchListTypeException;

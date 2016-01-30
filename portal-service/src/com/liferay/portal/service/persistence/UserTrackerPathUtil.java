@@ -185,7 +185,7 @@ public class UserTrackerPathUtil {
 	* @param userTrackerId the user tracker ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user tracker path
-	* @throws NoSuchUserTrackerPathException if a matching user tracker path could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserTrackerPathException if a matching user tracker path could not be found
 	*/
 	public static UserTrackerPath findByUserTrackerId_First(
 		long userTrackerId, OrderByComparator<UserTrackerPath> orderByComparator)
@@ -213,7 +213,7 @@ public class UserTrackerPathUtil {
 	* @param userTrackerId the user tracker ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user tracker path
-	* @throws NoSuchUserTrackerPathException if a matching user tracker path could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserTrackerPathException if a matching user tracker path could not be found
 	*/
 	public static UserTrackerPath findByUserTrackerId_Last(long userTrackerId,
 		OrderByComparator<UserTrackerPath> orderByComparator)
@@ -242,7 +242,7 @@ public class UserTrackerPathUtil {
 	* @param userTrackerId the user tracker ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user tracker path
-	* @throws NoSuchUserTrackerPathException if a user tracker path with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserTrackerPathException if a user tracker path with the primary key could not be found
 	*/
 	public static UserTrackerPath[] findByUserTrackerId_PrevAndNext(
 		long userTrackerPathId, long userTrackerId,
@@ -305,7 +305,7 @@ public class UserTrackerPathUtil {
 	*
 	* @param userTrackerPathId the primary key of the user tracker path
 	* @return the user tracker path that was removed
-	* @throws NoSuchUserTrackerPathException if a user tracker path with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserTrackerPathException if a user tracker path with the primary key could not be found
 	*/
 	public static UserTrackerPath remove(long userTrackerPathId)
 		throws com.liferay.portal.exception.NoSuchUserTrackerPathException {
@@ -317,11 +317,11 @@ public class UserTrackerPathUtil {
 	}
 
 	/**
-	* Returns the user tracker path with the primary key or throws a {@link NoSuchUserTrackerPathException} if it could not be found.
+	* Returns the user tracker path with the primary key or throws a {@link com.liferay.portal.exception.NoSuchUserTrackerPathException} if it could not be found.
 	*
 	* @param userTrackerPathId the primary key of the user tracker path
 	* @return the user tracker path
-	* @throws NoSuchUserTrackerPathException if a user tracker path with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserTrackerPathException if a user tracker path with the primary key could not be found
 	*/
 	public static UserTrackerPath findByPrimaryKey(long userTrackerPathId)
 		throws com.liferay.portal.exception.NoSuchUserTrackerPathException {

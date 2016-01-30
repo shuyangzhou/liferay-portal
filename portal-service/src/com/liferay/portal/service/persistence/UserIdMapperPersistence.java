@@ -103,7 +103,7 @@ public interface UserIdMapperPersistence extends BasePersistence<UserIdMapper> {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user ID mapper
-	* @throws NoSuchUserIdMapperException if a matching user ID mapper could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserIdMapperException if a matching user ID mapper could not be found
 	*/
 	public UserIdMapper findByUserId_First(long userId,
 		com.liferay.portal.kernel.util.OrderByComparator<UserIdMapper> orderByComparator)
@@ -125,7 +125,7 @@ public interface UserIdMapperPersistence extends BasePersistence<UserIdMapper> {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user ID mapper
-	* @throws NoSuchUserIdMapperException if a matching user ID mapper could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserIdMapperException if a matching user ID mapper could not be found
 	*/
 	public UserIdMapper findByUserId_Last(long userId,
 		com.liferay.portal.kernel.util.OrderByComparator<UserIdMapper> orderByComparator)
@@ -148,7 +148,7 @@ public interface UserIdMapperPersistence extends BasePersistence<UserIdMapper> {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user ID mapper
-	* @throws NoSuchUserIdMapperException if a user ID mapper with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserIdMapperException if a user ID mapper with the primary key could not be found
 	*/
 	public UserIdMapper[] findByUserId_PrevAndNext(long userIdMapperId,
 		long userId,
@@ -171,12 +171,12 @@ public interface UserIdMapperPersistence extends BasePersistence<UserIdMapper> {
 	public int countByUserId(long userId);
 
 	/**
-	* Returns the user ID mapper where userId = &#63; and type = &#63; or throws a {@link NoSuchUserIdMapperException} if it could not be found.
+	* Returns the user ID mapper where userId = &#63; and type = &#63; or throws a {@link com.liferay.portal.exception.NoSuchUserIdMapperException} if it could not be found.
 	*
 	* @param userId the user ID
 	* @param type the type
 	* @return the matching user ID mapper
-	* @throws NoSuchUserIdMapperException if a matching user ID mapper could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserIdMapperException if a matching user ID mapper could not be found
 	*/
 	public UserIdMapper findByU_T(long userId, java.lang.String type)
 		throws com.liferay.portal.exception.NoSuchUserIdMapperException;
@@ -221,12 +221,12 @@ public interface UserIdMapperPersistence extends BasePersistence<UserIdMapper> {
 	public int countByU_T(long userId, java.lang.String type);
 
 	/**
-	* Returns the user ID mapper where type = &#63; and externalUserId = &#63; or throws a {@link NoSuchUserIdMapperException} if it could not be found.
+	* Returns the user ID mapper where type = &#63; and externalUserId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchUserIdMapperException} if it could not be found.
 	*
 	* @param type the type
 	* @param externalUserId the external user ID
 	* @return the matching user ID mapper
-	* @throws NoSuchUserIdMapperException if a matching user ID mapper could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserIdMapperException if a matching user ID mapper could not be found
 	*/
 	public UserIdMapper findByT_E(java.lang.String type,
 		java.lang.String externalUserId)
@@ -300,7 +300,7 @@ public interface UserIdMapperPersistence extends BasePersistence<UserIdMapper> {
 	*
 	* @param userIdMapperId the primary key of the user ID mapper
 	* @return the user ID mapper that was removed
-	* @throws NoSuchUserIdMapperException if a user ID mapper with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserIdMapperException if a user ID mapper with the primary key could not be found
 	*/
 	public UserIdMapper remove(long userIdMapperId)
 		throws com.liferay.portal.exception.NoSuchUserIdMapperException;
@@ -308,11 +308,11 @@ public interface UserIdMapperPersistence extends BasePersistence<UserIdMapper> {
 	public UserIdMapper updateImpl(UserIdMapper userIdMapper);
 
 	/**
-	* Returns the user ID mapper with the primary key or throws a {@link NoSuchUserIdMapperException} if it could not be found.
+	* Returns the user ID mapper with the primary key or throws a {@link com.liferay.portal.exception.NoSuchUserIdMapperException} if it could not be found.
 	*
 	* @param userIdMapperId the primary key of the user ID mapper
 	* @return the user ID mapper
-	* @throws NoSuchUserIdMapperException if a user ID mapper with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserIdMapperException if a user ID mapper with the primary key could not be found
 	*/
 	public UserIdMapper findByPrimaryKey(long userIdMapperId)
 		throws com.liferay.portal.exception.NoSuchUserIdMapperException;

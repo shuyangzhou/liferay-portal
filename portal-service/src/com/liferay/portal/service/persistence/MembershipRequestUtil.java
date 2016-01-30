@@ -184,7 +184,7 @@ public class MembershipRequestUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching membership request
-	* @throws NoSuchMembershipRequestException if a matching membership request could not be found
+	* @throws com.liferay.portal.exception.NoSuchMembershipRequestException if a matching membership request could not be found
 	*/
 	public static MembershipRequest findByGroupId_First(long groupId,
 		OrderByComparator<MembershipRequest> orderByComparator)
@@ -210,7 +210,7 @@ public class MembershipRequestUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching membership request
-	* @throws NoSuchMembershipRequestException if a matching membership request could not be found
+	* @throws com.liferay.portal.exception.NoSuchMembershipRequestException if a matching membership request could not be found
 	*/
 	public static MembershipRequest findByGroupId_Last(long groupId,
 		OrderByComparator<MembershipRequest> orderByComparator)
@@ -237,7 +237,7 @@ public class MembershipRequestUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next membership request
-	* @throws NoSuchMembershipRequestException if a membership request with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchMembershipRequestException if a membership request with the primary key could not be found
 	*/
 	public static MembershipRequest[] findByGroupId_PrevAndNext(
 		long membershipRequestId, long groupId,
@@ -341,7 +341,7 @@ public class MembershipRequestUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching membership request
-	* @throws NoSuchMembershipRequestException if a matching membership request could not be found
+	* @throws com.liferay.portal.exception.NoSuchMembershipRequestException if a matching membership request could not be found
 	*/
 	public static MembershipRequest findByUserId_First(long userId,
 		OrderByComparator<MembershipRequest> orderByComparator)
@@ -367,7 +367,7 @@ public class MembershipRequestUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching membership request
-	* @throws NoSuchMembershipRequestException if a matching membership request could not be found
+	* @throws com.liferay.portal.exception.NoSuchMembershipRequestException if a matching membership request could not be found
 	*/
 	public static MembershipRequest findByUserId_Last(long userId,
 		OrderByComparator<MembershipRequest> orderByComparator)
@@ -394,7 +394,7 @@ public class MembershipRequestUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next membership request
-	* @throws NoSuchMembershipRequestException if a membership request with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchMembershipRequestException if a membership request with the primary key could not be found
 	*/
 	public static MembershipRequest[] findByUserId_PrevAndNext(
 		long membershipRequestId, long userId,
@@ -505,7 +505,7 @@ public class MembershipRequestUtil {
 	* @param statusId the status ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching membership request
-	* @throws NoSuchMembershipRequestException if a matching membership request could not be found
+	* @throws com.liferay.portal.exception.NoSuchMembershipRequestException if a matching membership request could not be found
 	*/
 	public static MembershipRequest findByG_S_First(long groupId,
 		long statusId, OrderByComparator<MembershipRequest> orderByComparator)
@@ -535,7 +535,7 @@ public class MembershipRequestUtil {
 	* @param statusId the status ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching membership request
-	* @throws NoSuchMembershipRequestException if a matching membership request could not be found
+	* @throws com.liferay.portal.exception.NoSuchMembershipRequestException if a matching membership request could not be found
 	*/
 	public static MembershipRequest findByG_S_Last(long groupId, long statusId,
 		OrderByComparator<MembershipRequest> orderByComparator)
@@ -566,7 +566,7 @@ public class MembershipRequestUtil {
 	* @param statusId the status ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next membership request
-	* @throws NoSuchMembershipRequestException if a membership request with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchMembershipRequestException if a membership request with the primary key could not be found
 	*/
 	public static MembershipRequest[] findByG_S_PrevAndNext(
 		long membershipRequestId, long groupId, long statusId,
@@ -687,7 +687,7 @@ public class MembershipRequestUtil {
 	* @param statusId the status ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching membership request
-	* @throws NoSuchMembershipRequestException if a matching membership request could not be found
+	* @throws com.liferay.portal.exception.NoSuchMembershipRequestException if a matching membership request could not be found
 	*/
 	public static MembershipRequest findByG_U_S_First(long groupId,
 		long userId, long statusId,
@@ -723,7 +723,7 @@ public class MembershipRequestUtil {
 	* @param statusId the status ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching membership request
-	* @throws NoSuchMembershipRequestException if a matching membership request could not be found
+	* @throws com.liferay.portal.exception.NoSuchMembershipRequestException if a matching membership request could not be found
 	*/
 	public static MembershipRequest findByG_U_S_Last(long groupId, long userId,
 		long statusId, OrderByComparator<MembershipRequest> orderByComparator)
@@ -759,7 +759,7 @@ public class MembershipRequestUtil {
 	* @param statusId the status ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next membership request
-	* @throws NoSuchMembershipRequestException if a membership request with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchMembershipRequestException if a membership request with the primary key could not be found
 	*/
 	public static MembershipRequest[] findByG_U_S_PrevAndNext(
 		long membershipRequestId, long groupId, long userId, long statusId,
@@ -826,7 +826,7 @@ public class MembershipRequestUtil {
 	*
 	* @param membershipRequestId the primary key of the membership request
 	* @return the membership request that was removed
-	* @throws NoSuchMembershipRequestException if a membership request with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchMembershipRequestException if a membership request with the primary key could not be found
 	*/
 	public static MembershipRequest remove(long membershipRequestId)
 		throws com.liferay.portal.exception.NoSuchMembershipRequestException {
@@ -839,11 +839,11 @@ public class MembershipRequestUtil {
 	}
 
 	/**
-	* Returns the membership request with the primary key or throws a {@link NoSuchMembershipRequestException} if it could not be found.
+	* Returns the membership request with the primary key or throws a {@link com.liferay.portal.exception.NoSuchMembershipRequestException} if it could not be found.
 	*
 	* @param membershipRequestId the primary key of the membership request
 	* @return the membership request
-	* @throws NoSuchMembershipRequestException if a membership request with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchMembershipRequestException if a membership request with the primary key could not be found
 	*/
 	public static MembershipRequest findByPrimaryKey(long membershipRequestId)
 		throws com.liferay.portal.exception.NoSuchMembershipRequestException {

@@ -182,7 +182,7 @@ public class SocialRequestUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching social request
-	* @throws NoSuchRequestException if a matching social request could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRequestException if a matching social request could not be found
 	*/
 	public static SocialRequest findByUuid_First(java.lang.String uuid,
 		OrderByComparator<SocialRequest> orderByComparator)
@@ -208,7 +208,7 @@ public class SocialRequestUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching social request
-	* @throws NoSuchRequestException if a matching social request could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRequestException if a matching social request could not be found
 	*/
 	public static SocialRequest findByUuid_Last(java.lang.String uuid,
 		OrderByComparator<SocialRequest> orderByComparator)
@@ -235,7 +235,7 @@ public class SocialRequestUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next social request
-	* @throws NoSuchRequestException if a social request with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRequestException if a social request with the primary key could not be found
 	*/
 	public static SocialRequest[] findByUuid_PrevAndNext(long requestId,
 		java.lang.String uuid,
@@ -265,12 +265,12 @@ public class SocialRequestUtil {
 	}
 
 	/**
-	* Returns the social request where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchRequestException} if it could not be found.
+	* Returns the social request where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.portlet.social.exception.NoSuchRequestException} if it could not be found.
 	*
 	* @param uuid the uuid
 	* @param groupId the group ID
 	* @return the matching social request
-	* @throws NoSuchRequestException if a matching social request could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRequestException if a matching social request could not be found
 	*/
 	public static SocialRequest findByUUID_G(java.lang.String uuid, long groupId)
 		throws com.liferay.portlet.social.exception.NoSuchRequestException {
@@ -408,7 +408,7 @@ public class SocialRequestUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching social request
-	* @throws NoSuchRequestException if a matching social request could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRequestException if a matching social request could not be found
 	*/
 	public static SocialRequest findByUuid_C_First(java.lang.String uuid,
 		long companyId, OrderByComparator<SocialRequest> orderByComparator)
@@ -438,7 +438,7 @@ public class SocialRequestUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching social request
-	* @throws NoSuchRequestException if a matching social request could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRequestException if a matching social request could not be found
 	*/
 	public static SocialRequest findByUuid_C_Last(java.lang.String uuid,
 		long companyId, OrderByComparator<SocialRequest> orderByComparator)
@@ -469,7 +469,7 @@ public class SocialRequestUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next social request
-	* @throws NoSuchRequestException if a social request with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRequestException if a social request with the primary key could not be found
 	*/
 	public static SocialRequest[] findByUuid_C_PrevAndNext(long requestId,
 		java.lang.String uuid, long companyId,
@@ -575,7 +575,7 @@ public class SocialRequestUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching social request
-	* @throws NoSuchRequestException if a matching social request could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRequestException if a matching social request could not be found
 	*/
 	public static SocialRequest findByCompanyId_First(long companyId,
 		OrderByComparator<SocialRequest> orderByComparator)
@@ -603,7 +603,7 @@ public class SocialRequestUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching social request
-	* @throws NoSuchRequestException if a matching social request could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRequestException if a matching social request could not be found
 	*/
 	public static SocialRequest findByCompanyId_Last(long companyId,
 		OrderByComparator<SocialRequest> orderByComparator)
@@ -632,7 +632,7 @@ public class SocialRequestUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next social request
-	* @throws NoSuchRequestException if a social request with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRequestException if a social request with the primary key could not be found
 	*/
 	public static SocialRequest[] findByCompanyId_PrevAndNext(long requestId,
 		long companyId, OrderByComparator<SocialRequest> orderByComparator)
@@ -735,7 +735,7 @@ public class SocialRequestUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching social request
-	* @throws NoSuchRequestException if a matching social request could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRequestException if a matching social request could not be found
 	*/
 	public static SocialRequest findByUserId_First(long userId,
 		OrderByComparator<SocialRequest> orderByComparator)
@@ -761,7 +761,7 @@ public class SocialRequestUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching social request
-	* @throws NoSuchRequestException if a matching social request could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRequestException if a matching social request could not be found
 	*/
 	public static SocialRequest findByUserId_Last(long userId,
 		OrderByComparator<SocialRequest> orderByComparator)
@@ -788,7 +788,7 @@ public class SocialRequestUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next social request
-	* @throws NoSuchRequestException if a social request with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRequestException if a social request with the primary key could not be found
 	*/
 	public static SocialRequest[] findByUserId_PrevAndNext(long requestId,
 		long userId, OrderByComparator<SocialRequest> orderByComparator)
@@ -894,7 +894,7 @@ public class SocialRequestUtil {
 	* @param receiverUserId the receiver user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching social request
-	* @throws NoSuchRequestException if a matching social request could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRequestException if a matching social request could not be found
 	*/
 	public static SocialRequest findByReceiverUserId_First(
 		long receiverUserId, OrderByComparator<SocialRequest> orderByComparator)
@@ -923,7 +923,7 @@ public class SocialRequestUtil {
 	* @param receiverUserId the receiver user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching social request
-	* @throws NoSuchRequestException if a matching social request could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRequestException if a matching social request could not be found
 	*/
 	public static SocialRequest findByReceiverUserId_Last(long receiverUserId,
 		OrderByComparator<SocialRequest> orderByComparator)
@@ -952,7 +952,7 @@ public class SocialRequestUtil {
 	* @param receiverUserId the receiver user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next social request
-	* @throws NoSuchRequestException if a social request with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRequestException if a social request with the primary key could not be found
 	*/
 	public static SocialRequest[] findByReceiverUserId_PrevAndNext(
 		long requestId, long receiverUserId,
@@ -1061,7 +1061,7 @@ public class SocialRequestUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching social request
-	* @throws NoSuchRequestException if a matching social request could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRequestException if a matching social request could not be found
 	*/
 	public static SocialRequest findByU_S_First(long userId, int status,
 		OrderByComparator<SocialRequest> orderByComparator)
@@ -1091,7 +1091,7 @@ public class SocialRequestUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching social request
-	* @throws NoSuchRequestException if a matching social request could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRequestException if a matching social request could not be found
 	*/
 	public static SocialRequest findByU_S_Last(long userId, int status,
 		OrderByComparator<SocialRequest> orderByComparator)
@@ -1121,7 +1121,7 @@ public class SocialRequestUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next social request
-	* @throws NoSuchRequestException if a social request with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRequestException if a social request with the primary key could not be found
 	*/
 	public static SocialRequest[] findByU_S_PrevAndNext(long requestId,
 		long userId, int status,
@@ -1233,7 +1233,7 @@ public class SocialRequestUtil {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching social request
-	* @throws NoSuchRequestException if a matching social request could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRequestException if a matching social request could not be found
 	*/
 	public static SocialRequest findByC_C_First(long classNameId, long classPK,
 		OrderByComparator<SocialRequest> orderByComparator)
@@ -1263,7 +1263,7 @@ public class SocialRequestUtil {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching social request
-	* @throws NoSuchRequestException if a matching social request could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRequestException if a matching social request could not be found
 	*/
 	public static SocialRequest findByC_C_Last(long classNameId, long classPK,
 		OrderByComparator<SocialRequest> orderByComparator)
@@ -1294,7 +1294,7 @@ public class SocialRequestUtil {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next social request
-	* @throws NoSuchRequestException if a social request with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRequestException if a social request with the primary key could not be found
 	*/
 	public static SocialRequest[] findByC_C_PrevAndNext(long requestId,
 		long classNameId, long classPK,
@@ -1408,7 +1408,7 @@ public class SocialRequestUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching social request
-	* @throws NoSuchRequestException if a matching social request could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRequestException if a matching social request could not be found
 	*/
 	public static SocialRequest findByR_S_First(long receiverUserId,
 		int status, OrderByComparator<SocialRequest> orderByComparator)
@@ -1438,7 +1438,7 @@ public class SocialRequestUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching social request
-	* @throws NoSuchRequestException if a matching social request could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRequestException if a matching social request could not be found
 	*/
 	public static SocialRequest findByR_S_Last(long receiverUserId, int status,
 		OrderByComparator<SocialRequest> orderByComparator)
@@ -1469,7 +1469,7 @@ public class SocialRequestUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next social request
-	* @throws NoSuchRequestException if a social request with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRequestException if a social request with the primary key could not be found
 	*/
 	public static SocialRequest[] findByR_S_PrevAndNext(long requestId,
 		long receiverUserId, int status,
@@ -1502,7 +1502,7 @@ public class SocialRequestUtil {
 	}
 
 	/**
-	* Returns the social request where userId = &#63; and classNameId = &#63; and classPK = &#63; and type = &#63; and receiverUserId = &#63; or throws a {@link NoSuchRequestException} if it could not be found.
+	* Returns the social request where userId = &#63; and classNameId = &#63; and classPK = &#63; and type = &#63; and receiverUserId = &#63; or throws a {@link com.liferay.portlet.social.exception.NoSuchRequestException} if it could not be found.
 	*
 	* @param userId the user ID
 	* @param classNameId the class name ID
@@ -1510,7 +1510,7 @@ public class SocialRequestUtil {
 	* @param type the type
 	* @param receiverUserId the receiver user ID
 	* @return the matching social request
-	* @throws NoSuchRequestException if a matching social request could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRequestException if a matching social request could not be found
 	*/
 	public static SocialRequest findByU_C_C_T_R(long userId, long classNameId,
 		long classPK, int type, long receiverUserId)
@@ -1691,7 +1691,7 @@ public class SocialRequestUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching social request
-	* @throws NoSuchRequestException if a matching social request could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRequestException if a matching social request could not be found
 	*/
 	public static SocialRequest findByU_C_C_T_S_First(long userId,
 		long classNameId, long classPK, int type, int status,
@@ -1731,7 +1731,7 @@ public class SocialRequestUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching social request
-	* @throws NoSuchRequestException if a matching social request could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRequestException if a matching social request could not be found
 	*/
 	public static SocialRequest findByU_C_C_T_S_Last(long userId,
 		long classNameId, long classPK, int type, int status,
@@ -1772,7 +1772,7 @@ public class SocialRequestUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next social request
-	* @throws NoSuchRequestException if a social request with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRequestException if a social request with the primary key could not be found
 	*/
 	public static SocialRequest[] findByU_C_C_T_S_PrevAndNext(long requestId,
 		long userId, long classNameId, long classPK, int type, int status,
@@ -1917,7 +1917,7 @@ public class SocialRequestUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching social request
-	* @throws NoSuchRequestException if a matching social request could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRequestException if a matching social request could not be found
 	*/
 	public static SocialRequest findByC_C_T_R_S_First(long classNameId,
 		long classPK, int type, long receiverUserId, int status,
@@ -1957,7 +1957,7 @@ public class SocialRequestUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching social request
-	* @throws NoSuchRequestException if a matching social request could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRequestException if a matching social request could not be found
 	*/
 	public static SocialRequest findByC_C_T_R_S_Last(long classNameId,
 		long classPK, int type, long receiverUserId, int status,
@@ -1998,7 +1998,7 @@ public class SocialRequestUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next social request
-	* @throws NoSuchRequestException if a social request with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRequestException if a social request with the primary key could not be found
 	*/
 	public static SocialRequest[] findByC_C_T_R_S_PrevAndNext(long requestId,
 		long classNameId, long classPK, int type, long receiverUserId,
@@ -2075,7 +2075,7 @@ public class SocialRequestUtil {
 	*
 	* @param requestId the primary key of the social request
 	* @return the social request that was removed
-	* @throws NoSuchRequestException if a social request with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRequestException if a social request with the primary key could not be found
 	*/
 	public static SocialRequest remove(long requestId)
 		throws com.liferay.portlet.social.exception.NoSuchRequestException {
@@ -2087,11 +2087,11 @@ public class SocialRequestUtil {
 	}
 
 	/**
-	* Returns the social request with the primary key or throws a {@link NoSuchRequestException} if it could not be found.
+	* Returns the social request with the primary key or throws a {@link com.liferay.portlet.social.exception.NoSuchRequestException} if it could not be found.
 	*
 	* @param requestId the primary key of the social request
 	* @return the social request
-	* @throws NoSuchRequestException if a social request with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRequestException if a social request with the primary key could not be found
 	*/
 	public static SocialRequest findByPrimaryKey(long requestId)
 		throws com.liferay.portlet.social.exception.NoSuchRequestException {

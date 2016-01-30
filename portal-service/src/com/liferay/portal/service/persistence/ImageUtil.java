@@ -176,7 +176,7 @@ public class ImageUtil {
 	* @param size the size
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching image
-	* @throws NoSuchImageException if a matching image could not be found
+	* @throws com.liferay.portal.exception.NoSuchImageException if a matching image could not be found
 	*/
 	public static Image findByLtSize_First(int size,
 		OrderByComparator<Image> orderByComparator)
@@ -202,7 +202,7 @@ public class ImageUtil {
 	* @param size the size
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching image
-	* @throws NoSuchImageException if a matching image could not be found
+	* @throws com.liferay.portal.exception.NoSuchImageException if a matching image could not be found
 	*/
 	public static Image findByLtSize_Last(int size,
 		OrderByComparator<Image> orderByComparator)
@@ -229,7 +229,7 @@ public class ImageUtil {
 	* @param size the size
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next image
-	* @throws NoSuchImageException if a image with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchImageException if a image with the primary key could not be found
 	*/
 	public static Image[] findByLtSize_PrevAndNext(long imageId, int size,
 		OrderByComparator<Image> orderByComparator)
@@ -290,7 +290,7 @@ public class ImageUtil {
 	*
 	* @param imageId the primary key of the image
 	* @return the image that was removed
-	* @throws NoSuchImageException if a image with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchImageException if a image with the primary key could not be found
 	*/
 	public static Image remove(long imageId)
 		throws com.liferay.portal.exception.NoSuchImageException {
@@ -302,11 +302,11 @@ public class ImageUtil {
 	}
 
 	/**
-	* Returns the image with the primary key or throws a {@link NoSuchImageException} if it could not be found.
+	* Returns the image with the primary key or throws a {@link com.liferay.portal.exception.NoSuchImageException} if it could not be found.
 	*
 	* @param imageId the primary key of the image
 	* @return the image
-	* @throws NoSuchImageException if a image with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchImageException if a image with the primary key could not be found
 	*/
 	public static Image findByPrimaryKey(long imageId)
 		throws com.liferay.portal.exception.NoSuchImageException {

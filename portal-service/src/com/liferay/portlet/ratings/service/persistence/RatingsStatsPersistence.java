@@ -41,12 +41,12 @@ public interface RatingsStatsPersistence extends BasePersistence<RatingsStats> {
 	 */
 
 	/**
-	* Returns the ratings stats where classNameId = &#63; and classPK = &#63; or throws a {@link NoSuchStatsException} if it could not be found.
+	* Returns the ratings stats where classNameId = &#63; and classPK = &#63; or throws a {@link com.liferay.portlet.ratings.exception.NoSuchStatsException} if it could not be found.
 	*
 	* @param classNameId the class name ID
 	* @param classPK the class p k
 	* @return the matching ratings stats
-	* @throws NoSuchStatsException if a matching ratings stats could not be found
+	* @throws com.liferay.portlet.ratings.exception.NoSuchStatsException if a matching ratings stats could not be found
 	*/
 	public RatingsStats findByC_C(long classNameId, long classPK)
 		throws com.liferay.portlet.ratings.exception.NoSuchStatsException;
@@ -117,7 +117,7 @@ public interface RatingsStatsPersistence extends BasePersistence<RatingsStats> {
 	*
 	* @param statsId the primary key of the ratings stats
 	* @return the ratings stats that was removed
-	* @throws NoSuchStatsException if a ratings stats with the primary key could not be found
+	* @throws com.liferay.portlet.ratings.exception.NoSuchStatsException if a ratings stats with the primary key could not be found
 	*/
 	public RatingsStats remove(long statsId)
 		throws com.liferay.portlet.ratings.exception.NoSuchStatsException;
@@ -125,11 +125,11 @@ public interface RatingsStatsPersistence extends BasePersistence<RatingsStats> {
 	public RatingsStats updateImpl(RatingsStats ratingsStats);
 
 	/**
-	* Returns the ratings stats with the primary key or throws a {@link NoSuchStatsException} if it could not be found.
+	* Returns the ratings stats with the primary key or throws a {@link com.liferay.portlet.ratings.exception.NoSuchStatsException} if it could not be found.
 	*
 	* @param statsId the primary key of the ratings stats
 	* @return the ratings stats
-	* @throws NoSuchStatsException if a ratings stats with the primary key could not be found
+	* @throws com.liferay.portlet.ratings.exception.NoSuchStatsException if a ratings stats with the primary key could not be found
 	*/
 	public RatingsStats findByPrimaryKey(long statsId)
 		throws com.liferay.portlet.ratings.exception.NoSuchStatsException;

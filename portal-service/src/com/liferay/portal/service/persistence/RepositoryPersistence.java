@@ -103,7 +103,7 @@ public interface RepositoryPersistence extends BasePersistence<Repository> {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching repository
-	* @throws NoSuchRepositoryException if a matching repository could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryException if a matching repository could not be found
 	*/
 	public Repository findByUuid_First(java.lang.String uuid,
 		com.liferay.portal.kernel.util.OrderByComparator<Repository> orderByComparator)
@@ -125,7 +125,7 @@ public interface RepositoryPersistence extends BasePersistence<Repository> {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching repository
-	* @throws NoSuchRepositoryException if a matching repository could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryException if a matching repository could not be found
 	*/
 	public Repository findByUuid_Last(java.lang.String uuid,
 		com.liferay.portal.kernel.util.OrderByComparator<Repository> orderByComparator)
@@ -148,7 +148,7 @@ public interface RepositoryPersistence extends BasePersistence<Repository> {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next repository
-	* @throws NoSuchRepositoryException if a repository with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryException if a repository with the primary key could not be found
 	*/
 	public Repository[] findByUuid_PrevAndNext(long repositoryId,
 		java.lang.String uuid,
@@ -171,12 +171,12 @@ public interface RepositoryPersistence extends BasePersistence<Repository> {
 	public int countByUuid(java.lang.String uuid);
 
 	/**
-	* Returns the repository where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchRepositoryException} if it could not be found.
+	* Returns the repository where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchRepositoryException} if it could not be found.
 	*
 	* @param uuid the uuid
 	* @param groupId the group ID
 	* @return the matching repository
-	* @throws NoSuchRepositoryException if a matching repository could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryException if a matching repository could not be found
 	*/
 	public Repository findByUUID_G(java.lang.String uuid, long groupId)
 		throws com.liferay.portal.exception.NoSuchRepositoryException;
@@ -291,7 +291,7 @@ public interface RepositoryPersistence extends BasePersistence<Repository> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching repository
-	* @throws NoSuchRepositoryException if a matching repository could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryException if a matching repository could not be found
 	*/
 	public Repository findByUuid_C_First(java.lang.String uuid, long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<Repository> orderByComparator)
@@ -316,7 +316,7 @@ public interface RepositoryPersistence extends BasePersistence<Repository> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching repository
-	* @throws NoSuchRepositoryException if a matching repository could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryException if a matching repository could not be found
 	*/
 	public Repository findByUuid_C_Last(java.lang.String uuid, long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<Repository> orderByComparator)
@@ -341,7 +341,7 @@ public interface RepositoryPersistence extends BasePersistence<Repository> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next repository
-	* @throws NoSuchRepositoryException if a repository with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryException if a repository with the primary key could not be found
 	*/
 	public Repository[] findByUuid_C_PrevAndNext(long repositoryId,
 		java.lang.String uuid, long companyId,
@@ -430,7 +430,7 @@ public interface RepositoryPersistence extends BasePersistence<Repository> {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching repository
-	* @throws NoSuchRepositoryException if a matching repository could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryException if a matching repository could not be found
 	*/
 	public Repository findByGroupId_First(long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<Repository> orderByComparator)
@@ -452,7 +452,7 @@ public interface RepositoryPersistence extends BasePersistence<Repository> {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching repository
-	* @throws NoSuchRepositoryException if a matching repository could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryException if a matching repository could not be found
 	*/
 	public Repository findByGroupId_Last(long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<Repository> orderByComparator)
@@ -475,7 +475,7 @@ public interface RepositoryPersistence extends BasePersistence<Repository> {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next repository
-	* @throws NoSuchRepositoryException if a repository with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryException if a repository with the primary key could not be found
 	*/
 	public Repository[] findByGroupId_PrevAndNext(long repositoryId,
 		long groupId,
@@ -498,13 +498,13 @@ public interface RepositoryPersistence extends BasePersistence<Repository> {
 	public int countByGroupId(long groupId);
 
 	/**
-	* Returns the repository where groupId = &#63; and name = &#63; and portletId = &#63; or throws a {@link NoSuchRepositoryException} if it could not be found.
+	* Returns the repository where groupId = &#63; and name = &#63; and portletId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchRepositoryException} if it could not be found.
 	*
 	* @param groupId the group ID
 	* @param name the name
 	* @param portletId the portlet ID
 	* @return the matching repository
-	* @throws NoSuchRepositoryException if a matching repository could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryException if a matching repository could not be found
 	*/
 	public Repository findByG_N_P(long groupId, java.lang.String name,
 		java.lang.String portletId)
@@ -583,7 +583,7 @@ public interface RepositoryPersistence extends BasePersistence<Repository> {
 	*
 	* @param repositoryId the primary key of the repository
 	* @return the repository that was removed
-	* @throws NoSuchRepositoryException if a repository with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryException if a repository with the primary key could not be found
 	*/
 	public Repository remove(long repositoryId)
 		throws com.liferay.portal.exception.NoSuchRepositoryException;
@@ -591,11 +591,11 @@ public interface RepositoryPersistence extends BasePersistence<Repository> {
 	public Repository updateImpl(Repository repository);
 
 	/**
-	* Returns the repository with the primary key or throws a {@link NoSuchRepositoryException} if it could not be found.
+	* Returns the repository with the primary key or throws a {@link com.liferay.portal.exception.NoSuchRepositoryException} if it could not be found.
 	*
 	* @param repositoryId the primary key of the repository
 	* @return the repository
-	* @throws NoSuchRepositoryException if a repository with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryException if a repository with the primary key could not be found
 	*/
 	public Repository findByPrimaryKey(long repositoryId)
 		throws com.liferay.portal.exception.NoSuchRepositoryException;

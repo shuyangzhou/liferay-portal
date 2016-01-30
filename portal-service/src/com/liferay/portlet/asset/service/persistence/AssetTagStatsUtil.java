@@ -181,7 +181,7 @@ public class AssetTagStatsUtil {
 	* @param tagId the tag ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching asset tag stats
-	* @throws NoSuchTagStatsException if a matching asset tag stats could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchTagStatsException if a matching asset tag stats could not be found
 	*/
 	public static AssetTagStats findByTagId_First(long tagId,
 		OrderByComparator<AssetTagStats> orderByComparator)
@@ -207,7 +207,7 @@ public class AssetTagStatsUtil {
 	* @param tagId the tag ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching asset tag stats
-	* @throws NoSuchTagStatsException if a matching asset tag stats could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchTagStatsException if a matching asset tag stats could not be found
 	*/
 	public static AssetTagStats findByTagId_Last(long tagId,
 		OrderByComparator<AssetTagStats> orderByComparator)
@@ -234,7 +234,7 @@ public class AssetTagStatsUtil {
 	* @param tagId the tag ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next asset tag stats
-	* @throws NoSuchTagStatsException if a asset tag stats with the primary key could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchTagStatsException if a asset tag stats with the primary key could not be found
 	*/
 	public static AssetTagStats[] findByTagId_PrevAndNext(long tagStatsId,
 		long tagId, OrderByComparator<AssetTagStats> orderByComparator)
@@ -336,7 +336,7 @@ public class AssetTagStatsUtil {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching asset tag stats
-	* @throws NoSuchTagStatsException if a matching asset tag stats could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchTagStatsException if a matching asset tag stats could not be found
 	*/
 	public static AssetTagStats findByClassNameId_First(long classNameId,
 		OrderByComparator<AssetTagStats> orderByComparator)
@@ -364,7 +364,7 @@ public class AssetTagStatsUtil {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching asset tag stats
-	* @throws NoSuchTagStatsException if a matching asset tag stats could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchTagStatsException if a matching asset tag stats could not be found
 	*/
 	public static AssetTagStats findByClassNameId_Last(long classNameId,
 		OrderByComparator<AssetTagStats> orderByComparator)
@@ -393,7 +393,7 @@ public class AssetTagStatsUtil {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next asset tag stats
-	* @throws NoSuchTagStatsException if a asset tag stats with the primary key could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchTagStatsException if a asset tag stats with the primary key could not be found
 	*/
 	public static AssetTagStats[] findByClassNameId_PrevAndNext(
 		long tagStatsId, long classNameId,
@@ -424,12 +424,12 @@ public class AssetTagStatsUtil {
 	}
 
 	/**
-	* Returns the asset tag stats where tagId = &#63; and classNameId = &#63; or throws a {@link NoSuchTagStatsException} if it could not be found.
+	* Returns the asset tag stats where tagId = &#63; and classNameId = &#63; or throws a {@link com.liferay.portlet.asset.exception.NoSuchTagStatsException} if it could not be found.
 	*
 	* @param tagId the tag ID
 	* @param classNameId the class name ID
 	* @return the matching asset tag stats
-	* @throws NoSuchTagStatsException if a matching asset tag stats could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchTagStatsException if a matching asset tag stats could not be found
 	*/
 	public static AssetTagStats findByT_C(long tagId, long classNameId)
 		throws com.liferay.portlet.asset.exception.NoSuchTagStatsException {
@@ -516,7 +516,7 @@ public class AssetTagStatsUtil {
 	*
 	* @param tagStatsId the primary key of the asset tag stats
 	* @return the asset tag stats that was removed
-	* @throws NoSuchTagStatsException if a asset tag stats with the primary key could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchTagStatsException if a asset tag stats with the primary key could not be found
 	*/
 	public static AssetTagStats remove(long tagStatsId)
 		throws com.liferay.portlet.asset.exception.NoSuchTagStatsException {
@@ -528,11 +528,11 @@ public class AssetTagStatsUtil {
 	}
 
 	/**
-	* Returns the asset tag stats with the primary key or throws a {@link NoSuchTagStatsException} if it could not be found.
+	* Returns the asset tag stats with the primary key or throws a {@link com.liferay.portlet.asset.exception.NoSuchTagStatsException} if it could not be found.
 	*
 	* @param tagStatsId the primary key of the asset tag stats
 	* @return the asset tag stats
-	* @throws NoSuchTagStatsException if a asset tag stats with the primary key could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchTagStatsException if a asset tag stats with the primary key could not be found
 	*/
 	public static AssetTagStats findByPrimaryKey(long tagStatsId)
 		throws com.liferay.portlet.asset.exception.NoSuchTagStatsException {

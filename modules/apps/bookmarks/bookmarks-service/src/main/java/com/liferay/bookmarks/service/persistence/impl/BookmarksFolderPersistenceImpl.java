@@ -16,7 +16,6 @@ package com.liferay.bookmarks.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.bookmarks.exception.NoSuchFolderException;
 import com.liferay.bookmarks.model.BookmarksFolder;
 import com.liferay.bookmarks.model.impl.BookmarksFolderImpl;
 import com.liferay.bookmarks.model.impl.BookmarksFolderModelImpl;
@@ -296,12 +295,12 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * @param resourceBlockId the resource block ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching bookmarks folder
-	 * @throws NoSuchFolderException if a matching bookmarks folder could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a matching bookmarks folder could not be found
 	 */
 	@Override
 	public BookmarksFolder findByResourceBlockId_First(long resourceBlockId,
 		OrderByComparator<BookmarksFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		BookmarksFolder bookmarksFolder = fetchByResourceBlockId_First(resourceBlockId,
 				orderByComparator);
 
@@ -318,7 +317,7 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -347,12 +346,12 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * @param resourceBlockId the resource block ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching bookmarks folder
-	 * @throws NoSuchFolderException if a matching bookmarks folder could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a matching bookmarks folder could not be found
 	 */
 	@Override
 	public BookmarksFolder findByResourceBlockId_Last(long resourceBlockId,
 		OrderByComparator<BookmarksFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		BookmarksFolder bookmarksFolder = fetchByResourceBlockId_Last(resourceBlockId,
 				orderByComparator);
 
@@ -369,7 +368,7 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -405,13 +404,13 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * @param resourceBlockId the resource block ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next bookmarks folder
-	 * @throws NoSuchFolderException if a bookmarks folder with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a bookmarks folder with the primary key could not be found
 	 */
 	@Override
 	public BookmarksFolder[] findByResourceBlockId_PrevAndNext(long folderId,
 		long resourceBlockId,
 		OrderByComparator<BookmarksFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		BookmarksFolder bookmarksFolder = findByPrimaryKey(folderId);
 
 		Session session = null;
@@ -818,12 +817,12 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching bookmarks folder
-	 * @throws NoSuchFolderException if a matching bookmarks folder could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a matching bookmarks folder could not be found
 	 */
 	@Override
 	public BookmarksFolder findByUuid_First(String uuid,
 		OrderByComparator<BookmarksFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		BookmarksFolder bookmarksFolder = fetchByUuid_First(uuid,
 				orderByComparator);
 
@@ -840,7 +839,7 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -868,12 +867,12 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching bookmarks folder
-	 * @throws NoSuchFolderException if a matching bookmarks folder could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a matching bookmarks folder could not be found
 	 */
 	@Override
 	public BookmarksFolder findByUuid_Last(String uuid,
 		OrderByComparator<BookmarksFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		BookmarksFolder bookmarksFolder = fetchByUuid_Last(uuid,
 				orderByComparator);
 
@@ -890,7 +889,7 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -926,12 +925,12 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next bookmarks folder
-	 * @throws NoSuchFolderException if a bookmarks folder with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a bookmarks folder with the primary key could not be found
 	 */
 	@Override
 	public BookmarksFolder[] findByUuid_PrevAndNext(long folderId, String uuid,
 		OrderByComparator<BookmarksFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		BookmarksFolder bookmarksFolder = findByPrimaryKey(folderId);
 
 		Session session = null;
@@ -1173,16 +1172,16 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 			new String[] { String.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the bookmarks folder where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchFolderException} if it could not be found.
+	 * Returns the bookmarks folder where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.bookmarks.exception.NoSuchFolderException} if it could not be found.
 	 *
 	 * @param uuid the uuid
 	 * @param groupId the group ID
 	 * @return the matching bookmarks folder
-	 * @throws NoSuchFolderException if a matching bookmarks folder could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a matching bookmarks folder could not be found
 	 */
 	@Override
 	public BookmarksFolder findByUUID_G(String uuid, long groupId)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		BookmarksFolder bookmarksFolder = fetchByUUID_G(uuid, groupId);
 
 		if (bookmarksFolder == null) {
@@ -1202,7 +1201,7 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchFolderException(msg.toString());
+			throw new com.liferay.bookmarks.exception.NoSuchFolderException(msg.toString());
 		}
 
 		return bookmarksFolder;
@@ -1335,7 +1334,7 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 */
 	@Override
 	public BookmarksFolder removeByUUID_G(String uuid, long groupId)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		BookmarksFolder bookmarksFolder = findByUUID_G(uuid, groupId);
 
 		return remove(bookmarksFolder);
@@ -1641,12 +1640,12 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching bookmarks folder
-	 * @throws NoSuchFolderException if a matching bookmarks folder could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a matching bookmarks folder could not be found
 	 */
 	@Override
 	public BookmarksFolder findByUuid_C_First(String uuid, long companyId,
 		OrderByComparator<BookmarksFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		BookmarksFolder bookmarksFolder = fetchByUuid_C_First(uuid, companyId,
 				orderByComparator);
 
@@ -1666,7 +1665,7 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -1697,12 +1696,12 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching bookmarks folder
-	 * @throws NoSuchFolderException if a matching bookmarks folder could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a matching bookmarks folder could not be found
 	 */
 	@Override
 	public BookmarksFolder findByUuid_C_Last(String uuid, long companyId,
 		OrderByComparator<BookmarksFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		BookmarksFolder bookmarksFolder = fetchByUuid_C_Last(uuid, companyId,
 				orderByComparator);
 
@@ -1722,7 +1721,7 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -1760,13 +1759,13 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next bookmarks folder
-	 * @throws NoSuchFolderException if a bookmarks folder with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a bookmarks folder with the primary key could not be found
 	 */
 	@Override
 	public BookmarksFolder[] findByUuid_C_PrevAndNext(long folderId,
 		String uuid, long companyId,
 		OrderByComparator<BookmarksFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		BookmarksFolder bookmarksFolder = findByPrimaryKey(folderId);
 
 		Session session = null;
@@ -2200,12 +2199,12 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching bookmarks folder
-	 * @throws NoSuchFolderException if a matching bookmarks folder could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a matching bookmarks folder could not be found
 	 */
 	@Override
 	public BookmarksFolder findByGroupId_First(long groupId,
 		OrderByComparator<BookmarksFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		BookmarksFolder bookmarksFolder = fetchByGroupId_First(groupId,
 				orderByComparator);
 
@@ -2222,7 +2221,7 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -2251,12 +2250,12 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching bookmarks folder
-	 * @throws NoSuchFolderException if a matching bookmarks folder could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a matching bookmarks folder could not be found
 	 */
 	@Override
 	public BookmarksFolder findByGroupId_Last(long groupId,
 		OrderByComparator<BookmarksFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		BookmarksFolder bookmarksFolder = fetchByGroupId_Last(groupId,
 				orderByComparator);
 
@@ -2273,7 +2272,7 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -2309,12 +2308,12 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next bookmarks folder
-	 * @throws NoSuchFolderException if a bookmarks folder with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a bookmarks folder with the primary key could not be found
 	 */
 	@Override
 	public BookmarksFolder[] findByGroupId_PrevAndNext(long folderId,
 		long groupId, OrderByComparator<BookmarksFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		BookmarksFolder bookmarksFolder = findByPrimaryKey(folderId);
 
 		Session session = null;
@@ -2554,12 +2553,12 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next bookmarks folder
-	 * @throws NoSuchFolderException if a bookmarks folder with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a bookmarks folder with the primary key could not be found
 	 */
 	@Override
 	public BookmarksFolder[] filterFindByGroupId_PrevAndNext(long folderId,
 		long groupId, OrderByComparator<BookmarksFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByGroupId_PrevAndNext(folderId, groupId,
 				orderByComparator);
@@ -3009,12 +3008,12 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching bookmarks folder
-	 * @throws NoSuchFolderException if a matching bookmarks folder could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a matching bookmarks folder could not be found
 	 */
 	@Override
 	public BookmarksFolder findByCompanyId_First(long companyId,
 		OrderByComparator<BookmarksFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		BookmarksFolder bookmarksFolder = fetchByCompanyId_First(companyId,
 				orderByComparator);
 
@@ -3031,7 +3030,7 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -3060,12 +3059,12 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching bookmarks folder
-	 * @throws NoSuchFolderException if a matching bookmarks folder could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a matching bookmarks folder could not be found
 	 */
 	@Override
 	public BookmarksFolder findByCompanyId_Last(long companyId,
 		OrderByComparator<BookmarksFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		BookmarksFolder bookmarksFolder = fetchByCompanyId_Last(companyId,
 				orderByComparator);
 
@@ -3082,7 +3081,7 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -3118,12 +3117,12 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next bookmarks folder
-	 * @throws NoSuchFolderException if a bookmarks folder with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a bookmarks folder with the primary key could not be found
 	 */
 	@Override
 	public BookmarksFolder[] findByCompanyId_PrevAndNext(long folderId,
 		long companyId, OrderByComparator<BookmarksFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		BookmarksFolder bookmarksFolder = findByPrimaryKey(folderId);
 
 		Session session = null;
@@ -3533,12 +3532,12 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * @param parentFolderId the parent folder ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching bookmarks folder
-	 * @throws NoSuchFolderException if a matching bookmarks folder could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a matching bookmarks folder could not be found
 	 */
 	@Override
 	public BookmarksFolder findByG_P_First(long groupId, long parentFolderId,
 		OrderByComparator<BookmarksFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		BookmarksFolder bookmarksFolder = fetchByG_P_First(groupId,
 				parentFolderId, orderByComparator);
 
@@ -3558,7 +3557,7 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -3589,12 +3588,12 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * @param parentFolderId the parent folder ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching bookmarks folder
-	 * @throws NoSuchFolderException if a matching bookmarks folder could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a matching bookmarks folder could not be found
 	 */
 	@Override
 	public BookmarksFolder findByG_P_Last(long groupId, long parentFolderId,
 		OrderByComparator<BookmarksFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		BookmarksFolder bookmarksFolder = fetchByG_P_Last(groupId,
 				parentFolderId, orderByComparator);
 
@@ -3614,7 +3613,7 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -3652,13 +3651,13 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * @param parentFolderId the parent folder ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next bookmarks folder
-	 * @throws NoSuchFolderException if a bookmarks folder with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a bookmarks folder with the primary key could not be found
 	 */
 	@Override
 	public BookmarksFolder[] findByG_P_PrevAndNext(long folderId, long groupId,
 		long parentFolderId,
 		OrderByComparator<BookmarksFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		BookmarksFolder bookmarksFolder = findByPrimaryKey(folderId);
 
 		Session session = null;
@@ -3913,13 +3912,13 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * @param parentFolderId the parent folder ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next bookmarks folder
-	 * @throws NoSuchFolderException if a bookmarks folder with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a bookmarks folder with the primary key could not be found
 	 */
 	@Override
 	public BookmarksFolder[] filterFindByG_P_PrevAndNext(long folderId,
 		long groupId, long parentFolderId,
 		OrderByComparator<BookmarksFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_P_PrevAndNext(folderId, groupId, parentFolderId,
 				orderByComparator);
@@ -4383,12 +4382,12 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching bookmarks folder
-	 * @throws NoSuchFolderException if a matching bookmarks folder could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a matching bookmarks folder could not be found
 	 */
 	@Override
 	public BookmarksFolder findByC_NotS_First(long companyId, int status,
 		OrderByComparator<BookmarksFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		BookmarksFolder bookmarksFolder = fetchByC_NotS_First(companyId,
 				status, orderByComparator);
 
@@ -4408,7 +4407,7 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -4439,12 +4438,12 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching bookmarks folder
-	 * @throws NoSuchFolderException if a matching bookmarks folder could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a matching bookmarks folder could not be found
 	 */
 	@Override
 	public BookmarksFolder findByC_NotS_Last(long companyId, int status,
 		OrderByComparator<BookmarksFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		BookmarksFolder bookmarksFolder = fetchByC_NotS_Last(companyId, status,
 				orderByComparator);
 
@@ -4464,7 +4463,7 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -4502,13 +4501,13 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next bookmarks folder
-	 * @throws NoSuchFolderException if a bookmarks folder with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a bookmarks folder with the primary key could not be found
 	 */
 	@Override
 	public BookmarksFolder[] findByC_NotS_PrevAndNext(long folderId,
 		long companyId, int status,
 		OrderByComparator<BookmarksFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		BookmarksFolder bookmarksFolder = findByPrimaryKey(folderId);
 
 		Session session = null;
@@ -4949,12 +4948,12 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching bookmarks folder
-	 * @throws NoSuchFolderException if a matching bookmarks folder could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a matching bookmarks folder could not be found
 	 */
 	@Override
 	public BookmarksFolder findByG_P_S_First(long groupId, long parentFolderId,
 		int status, OrderByComparator<BookmarksFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		BookmarksFolder bookmarksFolder = fetchByG_P_S_First(groupId,
 				parentFolderId, status, orderByComparator);
 
@@ -4977,7 +4976,7 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -5011,12 +5010,12 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching bookmarks folder
-	 * @throws NoSuchFolderException if a matching bookmarks folder could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a matching bookmarks folder could not be found
 	 */
 	@Override
 	public BookmarksFolder findByG_P_S_Last(long groupId, long parentFolderId,
 		int status, OrderByComparator<BookmarksFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		BookmarksFolder bookmarksFolder = fetchByG_P_S_Last(groupId,
 				parentFolderId, status, orderByComparator);
 
@@ -5039,7 +5038,7 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -5079,13 +5078,13 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next bookmarks folder
-	 * @throws NoSuchFolderException if a bookmarks folder with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a bookmarks folder with the primary key could not be found
 	 */
 	@Override
 	public BookmarksFolder[] findByG_P_S_PrevAndNext(long folderId,
 		long groupId, long parentFolderId, int status,
 		OrderByComparator<BookmarksFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		BookmarksFolder bookmarksFolder = findByPrimaryKey(folderId);
 
 		Session session = null;
@@ -5354,13 +5353,13 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next bookmarks folder
-	 * @throws NoSuchFolderException if a bookmarks folder with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a bookmarks folder with the primary key could not be found
 	 */
 	@Override
 	public BookmarksFolder[] filterFindByG_P_S_PrevAndNext(long folderId,
 		long groupId, long parentFolderId, int status,
 		OrderByComparator<BookmarksFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_P_S_PrevAndNext(folderId, groupId, parentFolderId,
 				status, orderByComparator);
@@ -5859,13 +5858,13 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching bookmarks folder
-	 * @throws NoSuchFolderException if a matching bookmarks folder could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a matching bookmarks folder could not be found
 	 */
 	@Override
 	public BookmarksFolder findByG_P_NotS_First(long groupId,
 		long parentFolderId, int status,
 		OrderByComparator<BookmarksFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		BookmarksFolder bookmarksFolder = fetchByG_P_NotS_First(groupId,
 				parentFolderId, status, orderByComparator);
 
@@ -5888,7 +5887,7 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -5922,13 +5921,13 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching bookmarks folder
-	 * @throws NoSuchFolderException if a matching bookmarks folder could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a matching bookmarks folder could not be found
 	 */
 	@Override
 	public BookmarksFolder findByG_P_NotS_Last(long groupId,
 		long parentFolderId, int status,
 		OrderByComparator<BookmarksFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		BookmarksFolder bookmarksFolder = fetchByG_P_NotS_Last(groupId,
 				parentFolderId, status, orderByComparator);
 
@@ -5951,7 +5950,7 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -5992,13 +5991,13 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next bookmarks folder
-	 * @throws NoSuchFolderException if a bookmarks folder with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a bookmarks folder with the primary key could not be found
 	 */
 	@Override
 	public BookmarksFolder[] findByG_P_NotS_PrevAndNext(long folderId,
 		long groupId, long parentFolderId, int status,
 		OrderByComparator<BookmarksFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		BookmarksFolder bookmarksFolder = findByPrimaryKey(folderId);
 
 		Session session = null;
@@ -6267,13 +6266,13 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next bookmarks folder
-	 * @throws NoSuchFolderException if a bookmarks folder with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a bookmarks folder with the primary key could not be found
 	 */
 	@Override
 	public BookmarksFolder[] filterFindByG_P_NotS_PrevAndNext(long folderId,
 		long groupId, long parentFolderId, int status,
 		OrderByComparator<BookmarksFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_P_NotS_PrevAndNext(folderId, groupId,
 				parentFolderId, status, orderByComparator);
@@ -6787,13 +6786,13 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching bookmarks folder
-	 * @throws NoSuchFolderException if a matching bookmarks folder could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a matching bookmarks folder could not be found
 	 */
 	@Override
 	public BookmarksFolder findByF_C_P_NotS_First(long folderId,
 		long companyId, long parentFolderId, int status,
 		OrderByComparator<BookmarksFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		BookmarksFolder bookmarksFolder = fetchByF_C_P_NotS_First(folderId,
 				companyId, parentFolderId, status, orderByComparator);
 
@@ -6819,7 +6818,7 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -6855,13 +6854,13 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching bookmarks folder
-	 * @throws NoSuchFolderException if a matching bookmarks folder could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a matching bookmarks folder could not be found
 	 */
 	@Override
 	public BookmarksFolder findByF_C_P_NotS_Last(long folderId, long companyId,
 		long parentFolderId, int status,
 		OrderByComparator<BookmarksFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		BookmarksFolder bookmarksFolder = fetchByF_C_P_NotS_Last(folderId,
 				companyId, parentFolderId, status, orderByComparator);
 
@@ -6887,7 +6886,7 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -7180,10 +7179,11 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 *
 	 * @param folderId the primary key of the bookmarks folder
 	 * @return the bookmarks folder that was removed
-	 * @throws NoSuchFolderException if a bookmarks folder with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a bookmarks folder with the primary key could not be found
 	 */
 	@Override
-	public BookmarksFolder remove(long folderId) throws NoSuchFolderException {
+	public BookmarksFolder remove(long folderId)
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		return remove((Serializable)folderId);
 	}
 
@@ -7192,11 +7192,11 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 *
 	 * @param primaryKey the primary key of the bookmarks folder
 	 * @return the bookmarks folder that was removed
-	 * @throws NoSuchFolderException if a bookmarks folder with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a bookmarks folder with the primary key could not be found
 	 */
 	@Override
 	public BookmarksFolder remove(Serializable primaryKey)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		Session session = null;
 
 		try {
@@ -7210,13 +7210,13 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchFolderException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.bookmarks.exception.NoSuchFolderException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(bookmarksFolder);
 		}
-		catch (NoSuchFolderException nsee) {
+		catch (com.liferay.bookmarks.exception.NoSuchFolderException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -7511,11 +7511,11 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 *
 	 * @param primaryKey the primary key of the bookmarks folder
 	 * @return the bookmarks folder
-	 * @throws NoSuchFolderException if a bookmarks folder with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a bookmarks folder with the primary key could not be found
 	 */
 	@Override
 	public BookmarksFolder findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		BookmarksFolder bookmarksFolder = fetchByPrimaryKey(primaryKey);
 
 		if (bookmarksFolder == null) {
@@ -7523,7 +7523,7 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchFolderException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.bookmarks.exception.NoSuchFolderException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -7531,15 +7531,15 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	}
 
 	/**
-	 * Returns the bookmarks folder with the primary key or throws a {@link NoSuchFolderException} if it could not be found.
+	 * Returns the bookmarks folder with the primary key or throws a {@link com.liferay.bookmarks.exception.NoSuchFolderException} if it could not be found.
 	 *
 	 * @param folderId the primary key of the bookmarks folder
 	 * @return the bookmarks folder
-	 * @throws NoSuchFolderException if a bookmarks folder with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchFolderException if a bookmarks folder with the primary key could not be found
 	 */
 	@Override
 	public BookmarksFolder findByPrimaryKey(long folderId)
-		throws NoSuchFolderException {
+		throws com.liferay.bookmarks.exception.NoSuchFolderException {
 		return findByPrimaryKey((Serializable)folderId);
 	}
 

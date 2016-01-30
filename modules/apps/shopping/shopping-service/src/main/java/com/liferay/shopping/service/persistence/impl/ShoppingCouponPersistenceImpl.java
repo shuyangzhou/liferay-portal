@@ -38,7 +38,6 @@ import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
-import com.liferay.shopping.exception.NoSuchCouponException;
 import com.liferay.shopping.model.ShoppingCoupon;
 import com.liferay.shopping.model.impl.ShoppingCouponImpl;
 import com.liferay.shopping.model.impl.ShoppingCouponModelImpl;
@@ -284,12 +283,12 @@ public class ShoppingCouponPersistenceImpl extends BasePersistenceImpl<ShoppingC
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching shopping coupon
-	 * @throws NoSuchCouponException if a matching shopping coupon could not be found
+	 * @throws com.liferay.shopping.exception.NoSuchCouponException if a matching shopping coupon could not be found
 	 */
 	@Override
 	public ShoppingCoupon findByGroupId_First(long groupId,
 		OrderByComparator<ShoppingCoupon> orderByComparator)
-		throws NoSuchCouponException {
+		throws com.liferay.shopping.exception.NoSuchCouponException {
 		ShoppingCoupon shoppingCoupon = fetchByGroupId_First(groupId,
 				orderByComparator);
 
@@ -306,7 +305,7 @@ public class ShoppingCouponPersistenceImpl extends BasePersistenceImpl<ShoppingC
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchCouponException(msg.toString());
+		throw new com.liferay.shopping.exception.NoSuchCouponException(msg.toString());
 	}
 
 	/**
@@ -335,12 +334,12 @@ public class ShoppingCouponPersistenceImpl extends BasePersistenceImpl<ShoppingC
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching shopping coupon
-	 * @throws NoSuchCouponException if a matching shopping coupon could not be found
+	 * @throws com.liferay.shopping.exception.NoSuchCouponException if a matching shopping coupon could not be found
 	 */
 	@Override
 	public ShoppingCoupon findByGroupId_Last(long groupId,
 		OrderByComparator<ShoppingCoupon> orderByComparator)
-		throws NoSuchCouponException {
+		throws com.liferay.shopping.exception.NoSuchCouponException {
 		ShoppingCoupon shoppingCoupon = fetchByGroupId_Last(groupId,
 				orderByComparator);
 
@@ -357,7 +356,7 @@ public class ShoppingCouponPersistenceImpl extends BasePersistenceImpl<ShoppingC
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchCouponException(msg.toString());
+		throw new com.liferay.shopping.exception.NoSuchCouponException(msg.toString());
 	}
 
 	/**
@@ -393,12 +392,12 @@ public class ShoppingCouponPersistenceImpl extends BasePersistenceImpl<ShoppingC
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next shopping coupon
-	 * @throws NoSuchCouponException if a shopping coupon with the primary key could not be found
+	 * @throws com.liferay.shopping.exception.NoSuchCouponException if a shopping coupon with the primary key could not be found
 	 */
 	@Override
 	public ShoppingCoupon[] findByGroupId_PrevAndNext(long couponId,
 		long groupId, OrderByComparator<ShoppingCoupon> orderByComparator)
-		throws NoSuchCouponException {
+		throws com.liferay.shopping.exception.NoSuchCouponException {
 		ShoppingCoupon shoppingCoupon = findByPrimaryKey(couponId);
 
 		Session session = null;
@@ -608,14 +607,15 @@ public class ShoppingCouponPersistenceImpl extends BasePersistenceImpl<ShoppingC
 			new String[] { String.class.getName() });
 
 	/**
-	 * Returns the shopping coupon where code = &#63; or throws a {@link NoSuchCouponException} if it could not be found.
+	 * Returns the shopping coupon where code = &#63; or throws a {@link com.liferay.shopping.exception.NoSuchCouponException} if it could not be found.
 	 *
 	 * @param code the code
 	 * @return the matching shopping coupon
-	 * @throws NoSuchCouponException if a matching shopping coupon could not be found
+	 * @throws com.liferay.shopping.exception.NoSuchCouponException if a matching shopping coupon could not be found
 	 */
 	@Override
-	public ShoppingCoupon findByCode(String code) throws NoSuchCouponException {
+	public ShoppingCoupon findByCode(String code)
+		throws com.liferay.shopping.exception.NoSuchCouponException {
 		ShoppingCoupon shoppingCoupon = fetchByCode(code);
 
 		if (shoppingCoupon == null) {
@@ -632,7 +632,7 @@ public class ShoppingCouponPersistenceImpl extends BasePersistenceImpl<ShoppingC
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchCouponException(msg.toString());
+			throw new com.liferay.shopping.exception.NoSuchCouponException(msg.toString());
 		}
 
 		return shoppingCoupon;
@@ -755,7 +755,7 @@ public class ShoppingCouponPersistenceImpl extends BasePersistenceImpl<ShoppingC
 	 */
 	@Override
 	public ShoppingCoupon removeByCode(String code)
-		throws NoSuchCouponException {
+		throws com.liferay.shopping.exception.NoSuchCouponException {
 		ShoppingCoupon shoppingCoupon = findByCode(code);
 
 		return remove(shoppingCoupon);
@@ -979,10 +979,11 @@ public class ShoppingCouponPersistenceImpl extends BasePersistenceImpl<ShoppingC
 	 *
 	 * @param couponId the primary key of the shopping coupon
 	 * @return the shopping coupon that was removed
-	 * @throws NoSuchCouponException if a shopping coupon with the primary key could not be found
+	 * @throws com.liferay.shopping.exception.NoSuchCouponException if a shopping coupon with the primary key could not be found
 	 */
 	@Override
-	public ShoppingCoupon remove(long couponId) throws NoSuchCouponException {
+	public ShoppingCoupon remove(long couponId)
+		throws com.liferay.shopping.exception.NoSuchCouponException {
 		return remove((Serializable)couponId);
 	}
 
@@ -991,11 +992,11 @@ public class ShoppingCouponPersistenceImpl extends BasePersistenceImpl<ShoppingC
 	 *
 	 * @param primaryKey the primary key of the shopping coupon
 	 * @return the shopping coupon that was removed
-	 * @throws NoSuchCouponException if a shopping coupon with the primary key could not be found
+	 * @throws com.liferay.shopping.exception.NoSuchCouponException if a shopping coupon with the primary key could not be found
 	 */
 	@Override
 	public ShoppingCoupon remove(Serializable primaryKey)
-		throws NoSuchCouponException {
+		throws com.liferay.shopping.exception.NoSuchCouponException {
 		Session session = null;
 
 		try {
@@ -1009,13 +1010,13 @@ public class ShoppingCouponPersistenceImpl extends BasePersistenceImpl<ShoppingC
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchCouponException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.shopping.exception.NoSuchCouponException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(shoppingCoupon);
 		}
-		catch (NoSuchCouponException nsee) {
+		catch (com.liferay.shopping.exception.NoSuchCouponException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -1184,11 +1185,11 @@ public class ShoppingCouponPersistenceImpl extends BasePersistenceImpl<ShoppingC
 	 *
 	 * @param primaryKey the primary key of the shopping coupon
 	 * @return the shopping coupon
-	 * @throws NoSuchCouponException if a shopping coupon with the primary key could not be found
+	 * @throws com.liferay.shopping.exception.NoSuchCouponException if a shopping coupon with the primary key could not be found
 	 */
 	@Override
 	public ShoppingCoupon findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchCouponException {
+		throws com.liferay.shopping.exception.NoSuchCouponException {
 		ShoppingCoupon shoppingCoupon = fetchByPrimaryKey(primaryKey);
 
 		if (shoppingCoupon == null) {
@@ -1196,7 +1197,7 @@ public class ShoppingCouponPersistenceImpl extends BasePersistenceImpl<ShoppingC
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchCouponException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.shopping.exception.NoSuchCouponException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -1204,15 +1205,15 @@ public class ShoppingCouponPersistenceImpl extends BasePersistenceImpl<ShoppingC
 	}
 
 	/**
-	 * Returns the shopping coupon with the primary key or throws a {@link NoSuchCouponException} if it could not be found.
+	 * Returns the shopping coupon with the primary key or throws a {@link com.liferay.shopping.exception.NoSuchCouponException} if it could not be found.
 	 *
 	 * @param couponId the primary key of the shopping coupon
 	 * @return the shopping coupon
-	 * @throws NoSuchCouponException if a shopping coupon with the primary key could not be found
+	 * @throws com.liferay.shopping.exception.NoSuchCouponException if a shopping coupon with the primary key could not be found
 	 */
 	@Override
 	public ShoppingCoupon findByPrimaryKey(long couponId)
-		throws NoSuchCouponException {
+		throws com.liferay.shopping.exception.NoSuchCouponException {
 		return findByPrimaryKey((Serializable)couponId);
 	}
 

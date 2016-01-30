@@ -39,7 +39,6 @@ import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
-import com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException;
 import com.liferay.portlet.documentlibrary.model.DLFileEntryMetadata;
 import com.liferay.portlet.documentlibrary.model.impl.DLFileEntryMetadataImpl;
 import com.liferay.portlet.documentlibrary.model.impl.DLFileEntryMetadataModelImpl;
@@ -296,12 +295,12 @@ public class DLFileEntryMetadataPersistenceImpl extends BasePersistenceImpl<DLFi
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library file entry metadata
-	 * @throws NoSuchFileEntryMetadataException if a matching document library file entry metadata could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException if a matching document library file entry metadata could not be found
 	 */
 	@Override
 	public DLFileEntryMetadata findByUuid_First(String uuid,
 		OrderByComparator<DLFileEntryMetadata> orderByComparator)
-		throws NoSuchFileEntryMetadataException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException {
 		DLFileEntryMetadata dlFileEntryMetadata = fetchByUuid_First(uuid,
 				orderByComparator);
 
@@ -318,7 +317,7 @@ public class DLFileEntryMetadataPersistenceImpl extends BasePersistenceImpl<DLFi
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileEntryMetadataException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException(msg.toString());
 	}
 
 	/**
@@ -347,12 +346,12 @@ public class DLFileEntryMetadataPersistenceImpl extends BasePersistenceImpl<DLFi
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library file entry metadata
-	 * @throws NoSuchFileEntryMetadataException if a matching document library file entry metadata could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException if a matching document library file entry metadata could not be found
 	 */
 	@Override
 	public DLFileEntryMetadata findByUuid_Last(String uuid,
 		OrderByComparator<DLFileEntryMetadata> orderByComparator)
-		throws NoSuchFileEntryMetadataException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException {
 		DLFileEntryMetadata dlFileEntryMetadata = fetchByUuid_Last(uuid,
 				orderByComparator);
 
@@ -369,7 +368,7 @@ public class DLFileEntryMetadataPersistenceImpl extends BasePersistenceImpl<DLFi
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileEntryMetadataException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException(msg.toString());
 	}
 
 	/**
@@ -405,13 +404,13 @@ public class DLFileEntryMetadataPersistenceImpl extends BasePersistenceImpl<DLFi
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library file entry metadata
-	 * @throws NoSuchFileEntryMetadataException if a document library file entry metadata with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException if a document library file entry metadata with the primary key could not be found
 	 */
 	@Override
 	public DLFileEntryMetadata[] findByUuid_PrevAndNext(
 		long fileEntryMetadataId, String uuid,
 		OrderByComparator<DLFileEntryMetadata> orderByComparator)
-		throws NoSuchFileEntryMetadataException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException {
 		DLFileEntryMetadata dlFileEntryMetadata = findByPrimaryKey(fileEntryMetadataId);
 
 		Session session = null;
@@ -866,12 +865,12 @@ public class DLFileEntryMetadataPersistenceImpl extends BasePersistenceImpl<DLFi
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library file entry metadata
-	 * @throws NoSuchFileEntryMetadataException if a matching document library file entry metadata could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException if a matching document library file entry metadata could not be found
 	 */
 	@Override
 	public DLFileEntryMetadata findByUuid_C_First(String uuid, long companyId,
 		OrderByComparator<DLFileEntryMetadata> orderByComparator)
-		throws NoSuchFileEntryMetadataException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException {
 		DLFileEntryMetadata dlFileEntryMetadata = fetchByUuid_C_First(uuid,
 				companyId, orderByComparator);
 
@@ -891,7 +890,7 @@ public class DLFileEntryMetadataPersistenceImpl extends BasePersistenceImpl<DLFi
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileEntryMetadataException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException(msg.toString());
 	}
 
 	/**
@@ -922,12 +921,12 @@ public class DLFileEntryMetadataPersistenceImpl extends BasePersistenceImpl<DLFi
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library file entry metadata
-	 * @throws NoSuchFileEntryMetadataException if a matching document library file entry metadata could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException if a matching document library file entry metadata could not be found
 	 */
 	@Override
 	public DLFileEntryMetadata findByUuid_C_Last(String uuid, long companyId,
 		OrderByComparator<DLFileEntryMetadata> orderByComparator)
-		throws NoSuchFileEntryMetadataException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException {
 		DLFileEntryMetadata dlFileEntryMetadata = fetchByUuid_C_Last(uuid,
 				companyId, orderByComparator);
 
@@ -947,7 +946,7 @@ public class DLFileEntryMetadataPersistenceImpl extends BasePersistenceImpl<DLFi
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileEntryMetadataException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException(msg.toString());
 	}
 
 	/**
@@ -985,13 +984,13 @@ public class DLFileEntryMetadataPersistenceImpl extends BasePersistenceImpl<DLFi
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library file entry metadata
-	 * @throws NoSuchFileEntryMetadataException if a document library file entry metadata with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException if a document library file entry metadata with the primary key could not be found
 	 */
 	@Override
 	public DLFileEntryMetadata[] findByUuid_C_PrevAndNext(
 		long fileEntryMetadataId, String uuid, long companyId,
 		OrderByComparator<DLFileEntryMetadata> orderByComparator)
-		throws NoSuchFileEntryMetadataException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException {
 		DLFileEntryMetadata dlFileEntryMetadata = findByPrimaryKey(fileEntryMetadataId);
 
 		Session session = null;
@@ -1430,12 +1429,12 @@ public class DLFileEntryMetadataPersistenceImpl extends BasePersistenceImpl<DLFi
 	 * @param fileEntryId the file entry ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library file entry metadata
-	 * @throws NoSuchFileEntryMetadataException if a matching document library file entry metadata could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException if a matching document library file entry metadata could not be found
 	 */
 	@Override
 	public DLFileEntryMetadata findByFileEntryId_First(long fileEntryId,
 		OrderByComparator<DLFileEntryMetadata> orderByComparator)
-		throws NoSuchFileEntryMetadataException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException {
 		DLFileEntryMetadata dlFileEntryMetadata = fetchByFileEntryId_First(fileEntryId,
 				orderByComparator);
 
@@ -1452,7 +1451,7 @@ public class DLFileEntryMetadataPersistenceImpl extends BasePersistenceImpl<DLFi
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileEntryMetadataException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException(msg.toString());
 	}
 
 	/**
@@ -1481,12 +1480,12 @@ public class DLFileEntryMetadataPersistenceImpl extends BasePersistenceImpl<DLFi
 	 * @param fileEntryId the file entry ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library file entry metadata
-	 * @throws NoSuchFileEntryMetadataException if a matching document library file entry metadata could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException if a matching document library file entry metadata could not be found
 	 */
 	@Override
 	public DLFileEntryMetadata findByFileEntryId_Last(long fileEntryId,
 		OrderByComparator<DLFileEntryMetadata> orderByComparator)
-		throws NoSuchFileEntryMetadataException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException {
 		DLFileEntryMetadata dlFileEntryMetadata = fetchByFileEntryId_Last(fileEntryId,
 				orderByComparator);
 
@@ -1503,7 +1502,7 @@ public class DLFileEntryMetadataPersistenceImpl extends BasePersistenceImpl<DLFi
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileEntryMetadataException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException(msg.toString());
 	}
 
 	/**
@@ -1539,13 +1538,13 @@ public class DLFileEntryMetadataPersistenceImpl extends BasePersistenceImpl<DLFi
 	 * @param fileEntryId the file entry ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library file entry metadata
-	 * @throws NoSuchFileEntryMetadataException if a document library file entry metadata with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException if a document library file entry metadata with the primary key could not be found
 	 */
 	@Override
 	public DLFileEntryMetadata[] findByFileEntryId_PrevAndNext(
 		long fileEntryMetadataId, long fileEntryId,
 		OrderByComparator<DLFileEntryMetadata> orderByComparator)
-		throws NoSuchFileEntryMetadataException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException {
 		DLFileEntryMetadata dlFileEntryMetadata = findByPrimaryKey(fileEntryMetadataId);
 
 		Session session = null;
@@ -1948,12 +1947,12 @@ public class DLFileEntryMetadataPersistenceImpl extends BasePersistenceImpl<DLFi
 	 * @param fileVersionId the file version ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library file entry metadata
-	 * @throws NoSuchFileEntryMetadataException if a matching document library file entry metadata could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException if a matching document library file entry metadata could not be found
 	 */
 	@Override
 	public DLFileEntryMetadata findByFileVersionId_First(long fileVersionId,
 		OrderByComparator<DLFileEntryMetadata> orderByComparator)
-		throws NoSuchFileEntryMetadataException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException {
 		DLFileEntryMetadata dlFileEntryMetadata = fetchByFileVersionId_First(fileVersionId,
 				orderByComparator);
 
@@ -1970,7 +1969,7 @@ public class DLFileEntryMetadataPersistenceImpl extends BasePersistenceImpl<DLFi
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileEntryMetadataException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException(msg.toString());
 	}
 
 	/**
@@ -1999,12 +1998,12 @@ public class DLFileEntryMetadataPersistenceImpl extends BasePersistenceImpl<DLFi
 	 * @param fileVersionId the file version ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library file entry metadata
-	 * @throws NoSuchFileEntryMetadataException if a matching document library file entry metadata could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException if a matching document library file entry metadata could not be found
 	 */
 	@Override
 	public DLFileEntryMetadata findByFileVersionId_Last(long fileVersionId,
 		OrderByComparator<DLFileEntryMetadata> orderByComparator)
-		throws NoSuchFileEntryMetadataException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException {
 		DLFileEntryMetadata dlFileEntryMetadata = fetchByFileVersionId_Last(fileVersionId,
 				orderByComparator);
 
@@ -2021,7 +2020,7 @@ public class DLFileEntryMetadataPersistenceImpl extends BasePersistenceImpl<DLFi
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileEntryMetadataException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException(msg.toString());
 	}
 
 	/**
@@ -2057,13 +2056,13 @@ public class DLFileEntryMetadataPersistenceImpl extends BasePersistenceImpl<DLFi
 	 * @param fileVersionId the file version ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library file entry metadata
-	 * @throws NoSuchFileEntryMetadataException if a document library file entry metadata with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException if a document library file entry metadata with the primary key could not be found
 	 */
 	@Override
 	public DLFileEntryMetadata[] findByFileVersionId_PrevAndNext(
 		long fileEntryMetadataId, long fileVersionId,
 		OrderByComparator<DLFileEntryMetadata> orderByComparator)
-		throws NoSuchFileEntryMetadataException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException {
 		DLFileEntryMetadata dlFileEntryMetadata = findByPrimaryKey(fileEntryMetadataId);
 
 		Session session = null;
@@ -2277,16 +2276,16 @@ public class DLFileEntryMetadataPersistenceImpl extends BasePersistenceImpl<DLFi
 			new String[] { Long.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the document library file entry metadata where DDMStructureId = &#63; and fileVersionId = &#63; or throws a {@link NoSuchFileEntryMetadataException} if it could not be found.
+	 * Returns the document library file entry metadata where DDMStructureId = &#63; and fileVersionId = &#63; or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException} if it could not be found.
 	 *
 	 * @param DDMStructureId the d d m structure ID
 	 * @param fileVersionId the file version ID
 	 * @return the matching document library file entry metadata
-	 * @throws NoSuchFileEntryMetadataException if a matching document library file entry metadata could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException if a matching document library file entry metadata could not be found
 	 */
 	@Override
 	public DLFileEntryMetadata findByD_F(long DDMStructureId, long fileVersionId)
-		throws NoSuchFileEntryMetadataException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException {
 		DLFileEntryMetadata dlFileEntryMetadata = fetchByD_F(DDMStructureId,
 				fileVersionId);
 
@@ -2307,7 +2306,7 @@ public class DLFileEntryMetadataPersistenceImpl extends BasePersistenceImpl<DLFi
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchFileEntryMetadataException(msg.toString());
+			throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException(msg.toString());
 		}
 
 		return dlFileEntryMetadata;
@@ -2426,7 +2425,8 @@ public class DLFileEntryMetadataPersistenceImpl extends BasePersistenceImpl<DLFi
 	 */
 	@Override
 	public DLFileEntryMetadata removeByD_F(long DDMStructureId,
-		long fileVersionId) throws NoSuchFileEntryMetadataException {
+		long fileVersionId)
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException {
 		DLFileEntryMetadata dlFileEntryMetadata = findByD_F(DDMStructureId,
 				fileVersionId);
 
@@ -2662,11 +2662,11 @@ public class DLFileEntryMetadataPersistenceImpl extends BasePersistenceImpl<DLFi
 	 *
 	 * @param fileEntryMetadataId the primary key of the document library file entry metadata
 	 * @return the document library file entry metadata that was removed
-	 * @throws NoSuchFileEntryMetadataException if a document library file entry metadata with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException if a document library file entry metadata with the primary key could not be found
 	 */
 	@Override
 	public DLFileEntryMetadata remove(long fileEntryMetadataId)
-		throws NoSuchFileEntryMetadataException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException {
 		return remove((Serializable)fileEntryMetadataId);
 	}
 
@@ -2675,11 +2675,11 @@ public class DLFileEntryMetadataPersistenceImpl extends BasePersistenceImpl<DLFi
 	 *
 	 * @param primaryKey the primary key of the document library file entry metadata
 	 * @return the document library file entry metadata that was removed
-	 * @throws NoSuchFileEntryMetadataException if a document library file entry metadata with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException if a document library file entry metadata with the primary key could not be found
 	 */
 	@Override
 	public DLFileEntryMetadata remove(Serializable primaryKey)
-		throws NoSuchFileEntryMetadataException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException {
 		Session session = null;
 
 		try {
@@ -2693,13 +2693,13 @@ public class DLFileEntryMetadataPersistenceImpl extends BasePersistenceImpl<DLFi
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchFileEntryMetadataException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(dlFileEntryMetadata);
 		}
-		catch (NoSuchFileEntryMetadataException nsee) {
+		catch (com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -2904,11 +2904,11 @@ public class DLFileEntryMetadataPersistenceImpl extends BasePersistenceImpl<DLFi
 	 *
 	 * @param primaryKey the primary key of the document library file entry metadata
 	 * @return the document library file entry metadata
-	 * @throws NoSuchFileEntryMetadataException if a document library file entry metadata with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException if a document library file entry metadata with the primary key could not be found
 	 */
 	@Override
 	public DLFileEntryMetadata findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchFileEntryMetadataException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException {
 		DLFileEntryMetadata dlFileEntryMetadata = fetchByPrimaryKey(primaryKey);
 
 		if (dlFileEntryMetadata == null) {
@@ -2916,7 +2916,7 @@ public class DLFileEntryMetadataPersistenceImpl extends BasePersistenceImpl<DLFi
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchFileEntryMetadataException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -2924,15 +2924,15 @@ public class DLFileEntryMetadataPersistenceImpl extends BasePersistenceImpl<DLFi
 	}
 
 	/**
-	 * Returns the document library file entry metadata with the primary key or throws a {@link NoSuchFileEntryMetadataException} if it could not be found.
+	 * Returns the document library file entry metadata with the primary key or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException} if it could not be found.
 	 *
 	 * @param fileEntryMetadataId the primary key of the document library file entry metadata
 	 * @return the document library file entry metadata
-	 * @throws NoSuchFileEntryMetadataException if a document library file entry metadata with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException if a document library file entry metadata with the primary key could not be found
 	 */
 	@Override
 	public DLFileEntryMetadata findByPrimaryKey(long fileEntryMetadataId)
-		throws NoSuchFileEntryMetadataException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryMetadataException {
 		return findByPrimaryKey((Serializable)fileEntryMetadataId);
 	}
 

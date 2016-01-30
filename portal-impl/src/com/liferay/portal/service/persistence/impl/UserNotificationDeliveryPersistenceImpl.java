@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchUserNotificationDeliveryException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -281,12 +280,12 @@ public class UserNotificationDeliveryPersistenceImpl extends BasePersistenceImpl
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user notification delivery
-	 * @throws NoSuchUserNotificationDeliveryException if a matching user notification delivery could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationDeliveryException if a matching user notification delivery could not be found
 	 */
 	@Override
 	public UserNotificationDelivery findByUserId_First(long userId,
 		OrderByComparator<UserNotificationDelivery> orderByComparator)
-		throws NoSuchUserNotificationDeliveryException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationDeliveryException {
 		UserNotificationDelivery userNotificationDelivery = fetchByUserId_First(userId,
 				orderByComparator);
 
@@ -303,7 +302,7 @@ public class UserNotificationDeliveryPersistenceImpl extends BasePersistenceImpl
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserNotificationDeliveryException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserNotificationDeliveryException(msg.toString());
 	}
 
 	/**
@@ -332,12 +331,12 @@ public class UserNotificationDeliveryPersistenceImpl extends BasePersistenceImpl
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user notification delivery
-	 * @throws NoSuchUserNotificationDeliveryException if a matching user notification delivery could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationDeliveryException if a matching user notification delivery could not be found
 	 */
 	@Override
 	public UserNotificationDelivery findByUserId_Last(long userId,
 		OrderByComparator<UserNotificationDelivery> orderByComparator)
-		throws NoSuchUserNotificationDeliveryException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationDeliveryException {
 		UserNotificationDelivery userNotificationDelivery = fetchByUserId_Last(userId,
 				orderByComparator);
 
@@ -354,7 +353,7 @@ public class UserNotificationDeliveryPersistenceImpl extends BasePersistenceImpl
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserNotificationDeliveryException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserNotificationDeliveryException(msg.toString());
 	}
 
 	/**
@@ -390,13 +389,13 @@ public class UserNotificationDeliveryPersistenceImpl extends BasePersistenceImpl
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user notification delivery
-	 * @throws NoSuchUserNotificationDeliveryException if a user notification delivery with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationDeliveryException if a user notification delivery with the primary key could not be found
 	 */
 	@Override
 	public UserNotificationDelivery[] findByUserId_PrevAndNext(
 		long userNotificationDeliveryId, long userId,
 		OrderByComparator<UserNotificationDelivery> orderByComparator)
-		throws NoSuchUserNotificationDeliveryException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationDeliveryException {
 		UserNotificationDelivery userNotificationDelivery = findByPrimaryKey(userNotificationDeliveryId);
 
 		Session session = null;
@@ -621,7 +620,7 @@ public class UserNotificationDeliveryPersistenceImpl extends BasePersistenceImpl
 			});
 
 	/**
-	 * Returns the user notification delivery where userId = &#63; and portletId = &#63; and classNameId = &#63; and notificationType = &#63; and deliveryType = &#63; or throws a {@link NoSuchUserNotificationDeliveryException} if it could not be found.
+	 * Returns the user notification delivery where userId = &#63; and portletId = &#63; and classNameId = &#63; and notificationType = &#63; and deliveryType = &#63; or throws a {@link com.liferay.portal.exception.NoSuchUserNotificationDeliveryException} if it could not be found.
 	 *
 	 * @param userId the user ID
 	 * @param portletId the portlet ID
@@ -629,12 +628,13 @@ public class UserNotificationDeliveryPersistenceImpl extends BasePersistenceImpl
 	 * @param notificationType the notification type
 	 * @param deliveryType the delivery type
 	 * @return the matching user notification delivery
-	 * @throws NoSuchUserNotificationDeliveryException if a matching user notification delivery could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationDeliveryException if a matching user notification delivery could not be found
 	 */
 	@Override
 	public UserNotificationDelivery findByU_P_C_N_D(long userId,
 		String portletId, long classNameId, int notificationType,
-		int deliveryType) throws NoSuchUserNotificationDeliveryException {
+		int deliveryType)
+		throws com.liferay.portal.exception.NoSuchUserNotificationDeliveryException {
 		UserNotificationDelivery userNotificationDelivery = fetchByU_P_C_N_D(userId,
 				portletId, classNameId, notificationType, deliveryType);
 
@@ -664,7 +664,7 @@ public class UserNotificationDeliveryPersistenceImpl extends BasePersistenceImpl
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchUserNotificationDeliveryException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchUserNotificationDeliveryException(msg.toString());
 		}
 
 		return userNotificationDelivery;
@@ -834,7 +834,8 @@ public class UserNotificationDeliveryPersistenceImpl extends BasePersistenceImpl
 	@Override
 	public UserNotificationDelivery removeByU_P_C_N_D(long userId,
 		String portletId, long classNameId, int notificationType,
-		int deliveryType) throws NoSuchUserNotificationDeliveryException {
+		int deliveryType)
+		throws com.liferay.portal.exception.NoSuchUserNotificationDeliveryException {
 		UserNotificationDelivery userNotificationDelivery = findByU_P_C_N_D(userId,
 				portletId, classNameId, notificationType, deliveryType);
 
@@ -1122,11 +1123,11 @@ public class UserNotificationDeliveryPersistenceImpl extends BasePersistenceImpl
 	 *
 	 * @param userNotificationDeliveryId the primary key of the user notification delivery
 	 * @return the user notification delivery that was removed
-	 * @throws NoSuchUserNotificationDeliveryException if a user notification delivery with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationDeliveryException if a user notification delivery with the primary key could not be found
 	 */
 	@Override
 	public UserNotificationDelivery remove(long userNotificationDeliveryId)
-		throws NoSuchUserNotificationDeliveryException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationDeliveryException {
 		return remove((Serializable)userNotificationDeliveryId);
 	}
 
@@ -1135,11 +1136,11 @@ public class UserNotificationDeliveryPersistenceImpl extends BasePersistenceImpl
 	 *
 	 * @param primaryKey the primary key of the user notification delivery
 	 * @return the user notification delivery that was removed
-	 * @throws NoSuchUserNotificationDeliveryException if a user notification delivery with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationDeliveryException if a user notification delivery with the primary key could not be found
 	 */
 	@Override
 	public UserNotificationDelivery remove(Serializable primaryKey)
-		throws NoSuchUserNotificationDeliveryException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationDeliveryException {
 		Session session = null;
 
 		try {
@@ -1153,13 +1154,13 @@ public class UserNotificationDeliveryPersistenceImpl extends BasePersistenceImpl
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchUserNotificationDeliveryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchUserNotificationDeliveryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(userNotificationDelivery);
 		}
-		catch (NoSuchUserNotificationDeliveryException nsee) {
+		catch (com.liferay.portal.exception.NoSuchUserNotificationDeliveryException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -1302,11 +1303,11 @@ public class UserNotificationDeliveryPersistenceImpl extends BasePersistenceImpl
 	 *
 	 * @param primaryKey the primary key of the user notification delivery
 	 * @return the user notification delivery
-	 * @throws NoSuchUserNotificationDeliveryException if a user notification delivery with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationDeliveryException if a user notification delivery with the primary key could not be found
 	 */
 	@Override
 	public UserNotificationDelivery findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchUserNotificationDeliveryException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationDeliveryException {
 		UserNotificationDelivery userNotificationDelivery = fetchByPrimaryKey(primaryKey);
 
 		if (userNotificationDelivery == null) {
@@ -1314,7 +1315,7 @@ public class UserNotificationDeliveryPersistenceImpl extends BasePersistenceImpl
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchUserNotificationDeliveryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchUserNotificationDeliveryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -1322,16 +1323,16 @@ public class UserNotificationDeliveryPersistenceImpl extends BasePersistenceImpl
 	}
 
 	/**
-	 * Returns the user notification delivery with the primary key or throws a {@link NoSuchUserNotificationDeliveryException} if it could not be found.
+	 * Returns the user notification delivery with the primary key or throws a {@link com.liferay.portal.exception.NoSuchUserNotificationDeliveryException} if it could not be found.
 	 *
 	 * @param userNotificationDeliveryId the primary key of the user notification delivery
 	 * @return the user notification delivery
-	 * @throws NoSuchUserNotificationDeliveryException if a user notification delivery with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserNotificationDeliveryException if a user notification delivery with the primary key could not be found
 	 */
 	@Override
 	public UserNotificationDelivery findByPrimaryKey(
 		long userNotificationDeliveryId)
-		throws NoSuchUserNotificationDeliveryException {
+		throws com.liferay.portal.exception.NoSuchUserNotificationDeliveryException {
 		return findByPrimaryKey((Serializable)userNotificationDeliveryId);
 	}
 

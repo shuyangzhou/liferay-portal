@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchImageException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -261,11 +260,12 @@ public class ImagePersistenceImpl extends BasePersistenceImpl<Image>
 	 * @param size the size
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching image
-	 * @throws NoSuchImageException if a matching image could not be found
+	 * @throws com.liferay.portal.exception.NoSuchImageException if a matching image could not be found
 	 */
 	@Override
 	public Image findByLtSize_First(int size,
-		OrderByComparator<Image> orderByComparator) throws NoSuchImageException {
+		OrderByComparator<Image> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchImageException {
 		Image image = fetchByLtSize_First(size, orderByComparator);
 
 		if (image != null) {
@@ -281,7 +281,7 @@ public class ImagePersistenceImpl extends BasePersistenceImpl<Image>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchImageException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchImageException(msg.toString());
 	}
 
 	/**
@@ -309,11 +309,12 @@ public class ImagePersistenceImpl extends BasePersistenceImpl<Image>
 	 * @param size the size
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching image
-	 * @throws NoSuchImageException if a matching image could not be found
+	 * @throws com.liferay.portal.exception.NoSuchImageException if a matching image could not be found
 	 */
 	@Override
 	public Image findByLtSize_Last(int size,
-		OrderByComparator<Image> orderByComparator) throws NoSuchImageException {
+		OrderByComparator<Image> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchImageException {
 		Image image = fetchByLtSize_Last(size, orderByComparator);
 
 		if (image != null) {
@@ -329,7 +330,7 @@ public class ImagePersistenceImpl extends BasePersistenceImpl<Image>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchImageException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchImageException(msg.toString());
 	}
 
 	/**
@@ -365,11 +366,12 @@ public class ImagePersistenceImpl extends BasePersistenceImpl<Image>
 	 * @param size the size
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next image
-	 * @throws NoSuchImageException if a image with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchImageException if a image with the primary key could not be found
 	 */
 	@Override
 	public Image[] findByLtSize_PrevAndNext(long imageId, int size,
-		OrderByComparator<Image> orderByComparator) throws NoSuchImageException {
+		OrderByComparator<Image> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchImageException {
 		Image image = findByPrimaryKey(imageId);
 
 		Session session = null;
@@ -669,10 +671,11 @@ public class ImagePersistenceImpl extends BasePersistenceImpl<Image>
 	 *
 	 * @param imageId the primary key of the image
 	 * @return the image that was removed
-	 * @throws NoSuchImageException if a image with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchImageException if a image with the primary key could not be found
 	 */
 	@Override
-	public Image remove(long imageId) throws NoSuchImageException {
+	public Image remove(long imageId)
+		throws com.liferay.portal.exception.NoSuchImageException {
 		return remove((Serializable)imageId);
 	}
 
@@ -681,10 +684,11 @@ public class ImagePersistenceImpl extends BasePersistenceImpl<Image>
 	 *
 	 * @param primaryKey the primary key of the image
 	 * @return the image that was removed
-	 * @throws NoSuchImageException if a image with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchImageException if a image with the primary key could not be found
 	 */
 	@Override
-	public Image remove(Serializable primaryKey) throws NoSuchImageException {
+	public Image remove(Serializable primaryKey)
+		throws com.liferay.portal.exception.NoSuchImageException {
 		Session session = null;
 
 		try {
@@ -697,13 +701,13 @@ public class ImagePersistenceImpl extends BasePersistenceImpl<Image>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchImageException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchImageException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(image);
 		}
-		catch (NoSuchImageException nsee) {
+		catch (com.liferay.portal.exception.NoSuchImageException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -814,11 +818,11 @@ public class ImagePersistenceImpl extends BasePersistenceImpl<Image>
 	 *
 	 * @param primaryKey the primary key of the image
 	 * @return the image
-	 * @throws NoSuchImageException if a image with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchImageException if a image with the primary key could not be found
 	 */
 	@Override
 	public Image findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchImageException {
+		throws com.liferay.portal.exception.NoSuchImageException {
 		Image image = fetchByPrimaryKey(primaryKey);
 
 		if (image == null) {
@@ -826,7 +830,7 @@ public class ImagePersistenceImpl extends BasePersistenceImpl<Image>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchImageException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchImageException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -834,14 +838,15 @@ public class ImagePersistenceImpl extends BasePersistenceImpl<Image>
 	}
 
 	/**
-	 * Returns the image with the primary key or throws a {@link NoSuchImageException} if it could not be found.
+	 * Returns the image with the primary key or throws a {@link com.liferay.portal.exception.NoSuchImageException} if it could not be found.
 	 *
 	 * @param imageId the primary key of the image
 	 * @return the image
-	 * @throws NoSuchImageException if a image with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchImageException if a image with the primary key could not be found
 	 */
 	@Override
-	public Image findByPrimaryKey(long imageId) throws NoSuchImageException {
+	public Image findByPrimaryKey(long imageId)
+		throws com.liferay.portal.exception.NoSuchImageException {
 		return findByPrimaryKey((Serializable)imageId);
 	}
 

@@ -182,7 +182,7 @@ public class MBMessageUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByUuid_First(java.lang.String uuid,
 		OrderByComparator<MBMessage> orderByComparator)
@@ -208,7 +208,7 @@ public class MBMessageUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByUuid_Last(java.lang.String uuid,
 		OrderByComparator<MBMessage> orderByComparator)
@@ -235,7 +235,7 @@ public class MBMessageUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] findByUuid_PrevAndNext(long messageId,
 		java.lang.String uuid, OrderByComparator<MBMessage> orderByComparator)
@@ -264,12 +264,12 @@ public class MBMessageUtil {
 	}
 
 	/**
-	* Returns the message-boards message where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchMessageException} if it could not be found.
+	* Returns the message-boards message where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.portlet.messageboards.exception.NoSuchMessageException} if it could not be found.
 	*
 	* @param uuid the uuid
 	* @param groupId the group ID
 	* @return the matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByUUID_G(java.lang.String uuid, long groupId)
 		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
@@ -405,7 +405,7 @@ public class MBMessageUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByUuid_C_First(java.lang.String uuid,
 		long companyId, OrderByComparator<MBMessage> orderByComparator)
@@ -435,7 +435,7 @@ public class MBMessageUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByUuid_C_Last(java.lang.String uuid,
 		long companyId, OrderByComparator<MBMessage> orderByComparator)
@@ -466,7 +466,7 @@ public class MBMessageUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] findByUuid_C_PrevAndNext(long messageId,
 		java.lang.String uuid, long companyId,
@@ -571,7 +571,7 @@ public class MBMessageUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByGroupId_First(long groupId,
 		OrderByComparator<MBMessage> orderByComparator)
@@ -597,7 +597,7 @@ public class MBMessageUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByGroupId_Last(long groupId,
 		OrderByComparator<MBMessage> orderByComparator)
@@ -624,7 +624,7 @@ public class MBMessageUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] findByGroupId_PrevAndNext(long messageId,
 		long groupId, OrderByComparator<MBMessage> orderByComparator)
@@ -687,7 +687,7 @@ public class MBMessageUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] filterFindByGroupId_PrevAndNext(long messageId,
 		long groupId, OrderByComparator<MBMessage> orderByComparator)
@@ -800,7 +800,7 @@ public class MBMessageUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByCompanyId_First(long companyId,
 		OrderByComparator<MBMessage> orderByComparator)
@@ -828,7 +828,7 @@ public class MBMessageUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByCompanyId_Last(long companyId,
 		OrderByComparator<MBMessage> orderByComparator)
@@ -857,7 +857,7 @@ public class MBMessageUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] findByCompanyId_PrevAndNext(long messageId,
 		long companyId, OrderByComparator<MBMessage> orderByComparator)
@@ -959,7 +959,7 @@ public class MBMessageUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByUserId_First(long userId,
 		OrderByComparator<MBMessage> orderByComparator)
@@ -985,7 +985,7 @@ public class MBMessageUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByUserId_Last(long userId,
 		OrderByComparator<MBMessage> orderByComparator)
@@ -1012,7 +1012,7 @@ public class MBMessageUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] findByUserId_PrevAndNext(long messageId,
 		long userId, OrderByComparator<MBMessage> orderByComparator)
@@ -1115,7 +1115,7 @@ public class MBMessageUtil {
 	* @param threadId the thread ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByThreadId_First(long threadId,
 		OrderByComparator<MBMessage> orderByComparator)
@@ -1142,7 +1142,7 @@ public class MBMessageUtil {
 	* @param threadId the thread ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByThreadId_Last(long threadId,
 		OrderByComparator<MBMessage> orderByComparator)
@@ -1169,7 +1169,7 @@ public class MBMessageUtil {
 	* @param threadId the thread ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] findByThreadId_PrevAndNext(long messageId,
 		long threadId, OrderByComparator<MBMessage> orderByComparator)
@@ -1272,7 +1272,7 @@ public class MBMessageUtil {
 	* @param threadId the thread ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByThreadReplies_First(long threadId,
 		OrderByComparator<MBMessage> orderByComparator)
@@ -1300,7 +1300,7 @@ public class MBMessageUtil {
 	* @param threadId the thread ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByThreadReplies_Last(long threadId,
 		OrderByComparator<MBMessage> orderByComparator)
@@ -1329,7 +1329,7 @@ public class MBMessageUtil {
 	* @param threadId the thread ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] findByThreadReplies_PrevAndNext(long messageId,
 		long threadId, OrderByComparator<MBMessage> orderByComparator)
@@ -1437,7 +1437,7 @@ public class MBMessageUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByG_U_First(long groupId, long userId,
 		OrderByComparator<MBMessage> orderByComparator)
@@ -1467,7 +1467,7 @@ public class MBMessageUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByG_U_Last(long groupId, long userId,
 		OrderByComparator<MBMessage> orderByComparator)
@@ -1498,7 +1498,7 @@ public class MBMessageUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] findByG_U_PrevAndNext(long messageId,
 		long groupId, long userId,
@@ -1567,7 +1567,7 @@ public class MBMessageUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] filterFindByG_U_PrevAndNext(long messageId,
 		long groupId, long userId,
@@ -1689,7 +1689,7 @@ public class MBMessageUtil {
 	* @param categoryId the category ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByG_C_First(long groupId, long categoryId,
 		OrderByComparator<MBMessage> orderByComparator)
@@ -1719,7 +1719,7 @@ public class MBMessageUtil {
 	* @param categoryId the category ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByG_C_Last(long groupId, long categoryId,
 		OrderByComparator<MBMessage> orderByComparator)
@@ -1750,7 +1750,7 @@ public class MBMessageUtil {
 	* @param categoryId the category ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] findByG_C_PrevAndNext(long messageId,
 		long groupId, long categoryId,
@@ -1820,7 +1820,7 @@ public class MBMessageUtil {
 	* @param categoryId the category ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] filterFindByG_C_PrevAndNext(long messageId,
 		long groupId, long categoryId,
@@ -1942,7 +1942,7 @@ public class MBMessageUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByG_S_First(long groupId, int status,
 		OrderByComparator<MBMessage> orderByComparator)
@@ -1972,7 +1972,7 @@ public class MBMessageUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByG_S_Last(long groupId, int status,
 		OrderByComparator<MBMessage> orderByComparator)
@@ -2003,7 +2003,7 @@ public class MBMessageUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] findByG_S_PrevAndNext(long messageId,
 		long groupId, int status, OrderByComparator<MBMessage> orderByComparator)
@@ -2071,7 +2071,7 @@ public class MBMessageUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] filterFindByG_S_PrevAndNext(long messageId,
 		long groupId, int status, OrderByComparator<MBMessage> orderByComparator)
@@ -2192,7 +2192,7 @@ public class MBMessageUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByC_S_First(long companyId, int status,
 		OrderByComparator<MBMessage> orderByComparator)
@@ -2222,7 +2222,7 @@ public class MBMessageUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByC_S_Last(long companyId, int status,
 		OrderByComparator<MBMessage> orderByComparator)
@@ -2253,7 +2253,7 @@ public class MBMessageUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] findByC_S_PrevAndNext(long messageId,
 		long companyId, int status,
@@ -2364,7 +2364,7 @@ public class MBMessageUtil {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByU_C_First(long userId, long classNameId,
 		OrderByComparator<MBMessage> orderByComparator)
@@ -2394,7 +2394,7 @@ public class MBMessageUtil {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByU_C_Last(long userId, long classNameId,
 		OrderByComparator<MBMessage> orderByComparator)
@@ -2425,7 +2425,7 @@ public class MBMessageUtil {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] findByU_C_PrevAndNext(long messageId,
 		long userId, long classNameId,
@@ -2625,7 +2625,7 @@ public class MBMessageUtil {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByC_C_First(long classNameId, long classPK,
 		OrderByComparator<MBMessage> orderByComparator)
@@ -2655,7 +2655,7 @@ public class MBMessageUtil {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByC_C_Last(long classNameId, long classPK,
 		OrderByComparator<MBMessage> orderByComparator)
@@ -2686,7 +2686,7 @@ public class MBMessageUtil {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] findByC_C_PrevAndNext(long messageId,
 		long classNameId, long classPK,
@@ -2800,7 +2800,7 @@ public class MBMessageUtil {
 	* @param parentMessageId the parent message ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByT_P_First(long threadId,
 		long parentMessageId, OrderByComparator<MBMessage> orderByComparator)
@@ -2831,7 +2831,7 @@ public class MBMessageUtil {
 	* @param parentMessageId the parent message ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByT_P_Last(long threadId, long parentMessageId,
 		OrderByComparator<MBMessage> orderByComparator)
@@ -2862,7 +2862,7 @@ public class MBMessageUtil {
 	* @param parentMessageId the parent message ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] findByT_P_PrevAndNext(long messageId,
 		long threadId, long parentMessageId,
@@ -2973,7 +2973,7 @@ public class MBMessageUtil {
 	* @param answer the answer
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByT_A_First(long threadId, boolean answer,
 		OrderByComparator<MBMessage> orderByComparator)
@@ -3003,7 +3003,7 @@ public class MBMessageUtil {
 	* @param answer the answer
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByT_A_Last(long threadId, boolean answer,
 		OrderByComparator<MBMessage> orderByComparator)
@@ -3034,7 +3034,7 @@ public class MBMessageUtil {
 	* @param answer the answer
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] findByT_A_PrevAndNext(long messageId,
 		long threadId, boolean answer,
@@ -3145,7 +3145,7 @@ public class MBMessageUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByT_S_First(long threadId, int status,
 		OrderByComparator<MBMessage> orderByComparator)
@@ -3175,7 +3175,7 @@ public class MBMessageUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByT_S_Last(long threadId, int status,
 		OrderByComparator<MBMessage> orderByComparator)
@@ -3206,7 +3206,7 @@ public class MBMessageUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] findByT_S_PrevAndNext(long messageId,
 		long threadId, int status,
@@ -3317,7 +3317,7 @@ public class MBMessageUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByTR_S_First(long threadId, int status,
 		OrderByComparator<MBMessage> orderByComparator)
@@ -3347,7 +3347,7 @@ public class MBMessageUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByTR_S_Last(long threadId, int status,
 		OrderByComparator<MBMessage> orderByComparator)
@@ -3378,7 +3378,7 @@ public class MBMessageUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] findByTR_S_PrevAndNext(long messageId,
 		long threadId, int status,
@@ -3498,7 +3498,7 @@ public class MBMessageUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByG_U_S_First(long groupId, long userId,
 		int status, OrderByComparator<MBMessage> orderByComparator)
@@ -3531,7 +3531,7 @@ public class MBMessageUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByG_U_S_Last(long groupId, long userId,
 		int status, OrderByComparator<MBMessage> orderByComparator)
@@ -3564,7 +3564,7 @@ public class MBMessageUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] findByG_U_S_PrevAndNext(long messageId,
 		long groupId, long userId, int status,
@@ -3640,7 +3640,7 @@ public class MBMessageUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] filterFindByG_U_S_PrevAndNext(long messageId,
 		long groupId, long userId, int status,
@@ -3775,7 +3775,7 @@ public class MBMessageUtil {
 	* @param threadId the thread ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByG_C_T_First(long groupId, long categoryId,
 		long threadId, OrderByComparator<MBMessage> orderByComparator)
@@ -3809,7 +3809,7 @@ public class MBMessageUtil {
 	* @param threadId the thread ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByG_C_T_Last(long groupId, long categoryId,
 		long threadId, OrderByComparator<MBMessage> orderByComparator)
@@ -3844,7 +3844,7 @@ public class MBMessageUtil {
 	* @param threadId the thread ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] findByG_C_T_PrevAndNext(long messageId,
 		long groupId, long categoryId, long threadId,
@@ -3920,7 +3920,7 @@ public class MBMessageUtil {
 	* @param threadId the thread ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] filterFindByG_C_T_PrevAndNext(long messageId,
 		long groupId, long categoryId, long threadId,
@@ -4057,7 +4057,7 @@ public class MBMessageUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByG_C_S_First(long groupId, long categoryId,
 		int status, OrderByComparator<MBMessage> orderByComparator)
@@ -4091,7 +4091,7 @@ public class MBMessageUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByG_C_S_Last(long groupId, long categoryId,
 		int status, OrderByComparator<MBMessage> orderByComparator)
@@ -4126,7 +4126,7 @@ public class MBMessageUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] findByG_C_S_PrevAndNext(long messageId,
 		long groupId, long categoryId, int status,
@@ -4202,7 +4202,7 @@ public class MBMessageUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] filterFindByG_C_S_PrevAndNext(long messageId,
 		long groupId, long categoryId, int status,
@@ -4338,7 +4338,7 @@ public class MBMessageUtil {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByU_C_C_First(long userId, long classNameId,
 		long classPK, OrderByComparator<MBMessage> orderByComparator)
@@ -4372,7 +4372,7 @@ public class MBMessageUtil {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByU_C_C_Last(long userId, long classNameId,
 		long classPK, OrderByComparator<MBMessage> orderByComparator)
@@ -4407,7 +4407,7 @@ public class MBMessageUtil {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] findByU_C_C_PrevAndNext(long messageId,
 		long userId, long classNameId, long classPK,
@@ -4530,7 +4530,7 @@ public class MBMessageUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByU_C_S_First(long userId, long classNameId,
 		int status, OrderByComparator<MBMessage> orderByComparator)
@@ -4564,7 +4564,7 @@ public class MBMessageUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByU_C_S_Last(long userId, long classNameId,
 		int status, OrderByComparator<MBMessage> orderByComparator)
@@ -4599,7 +4599,7 @@ public class MBMessageUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] findByU_C_S_PrevAndNext(long messageId,
 		long userId, long classNameId, int status,
@@ -4819,7 +4819,7 @@ public class MBMessageUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByC_C_S_First(long classNameId, long classPK,
 		int status, OrderByComparator<MBMessage> orderByComparator)
@@ -4853,7 +4853,7 @@ public class MBMessageUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByC_C_S_Last(long classNameId, long classPK,
 		int status, OrderByComparator<MBMessage> orderByComparator)
@@ -4888,7 +4888,7 @@ public class MBMessageUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] findByC_C_S_PrevAndNext(long messageId,
 		long classNameId, long classPK, int status,
@@ -5018,7 +5018,7 @@ public class MBMessageUtil {
 	* @param answer the answer
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByG_C_T_A_First(long groupId, long categoryId,
 		long threadId, boolean answer,
@@ -5056,7 +5056,7 @@ public class MBMessageUtil {
 	* @param answer the answer
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByG_C_T_A_Last(long groupId, long categoryId,
 		long threadId, boolean answer,
@@ -5095,7 +5095,7 @@ public class MBMessageUtil {
 	* @param answer the answer
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] findByG_C_T_A_PrevAndNext(long messageId,
 		long groupId, long categoryId, long threadId, boolean answer,
@@ -5177,7 +5177,7 @@ public class MBMessageUtil {
 	* @param answer the answer
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] filterFindByG_C_T_A_PrevAndNext(long messageId,
 		long groupId, long categoryId, long threadId, boolean answer,
@@ -5327,7 +5327,7 @@ public class MBMessageUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByG_C_T_S_First(long groupId, long categoryId,
 		long threadId, int status,
@@ -5365,7 +5365,7 @@ public class MBMessageUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByG_C_T_S_Last(long groupId, long categoryId,
 		long threadId, int status,
@@ -5404,7 +5404,7 @@ public class MBMessageUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] findByG_C_T_S_PrevAndNext(long messageId,
 		long groupId, long categoryId, long threadId, int status,
@@ -5486,7 +5486,7 @@ public class MBMessageUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] filterFindByG_C_T_S_PrevAndNext(long messageId,
 		long groupId, long categoryId, long threadId, int status,
@@ -5636,7 +5636,7 @@ public class MBMessageUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByU_C_C_S_First(long userId, long classNameId,
 		long classPK, int status, OrderByComparator<MBMessage> orderByComparator)
@@ -5672,7 +5672,7 @@ public class MBMessageUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message-boards message
-	* @throws NoSuchMessageException if a matching message-boards message could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	*/
 	public static MBMessage findByU_C_C_S_Last(long userId, long classNameId,
 		long classPK, int status, OrderByComparator<MBMessage> orderByComparator)
@@ -5709,7 +5709,7 @@ public class MBMessageUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage[] findByU_C_C_S_PrevAndNext(long messageId,
 		long userId, long classNameId, long classPK, int status,
@@ -5781,7 +5781,7 @@ public class MBMessageUtil {
 	*
 	* @param messageId the primary key of the message-boards message
 	* @return the message-boards message that was removed
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage remove(long messageId)
 		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
@@ -5793,11 +5793,11 @@ public class MBMessageUtil {
 	}
 
 	/**
-	* Returns the message-boards message with the primary key or throws a {@link NoSuchMessageException} if it could not be found.
+	* Returns the message-boards message with the primary key or throws a {@link com.liferay.portlet.messageboards.exception.NoSuchMessageException} if it could not be found.
 	*
 	* @param messageId the primary key of the message-boards message
 	* @return the message-boards message
-	* @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	*/
 	public static MBMessage findByPrimaryKey(long messageId)
 		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {

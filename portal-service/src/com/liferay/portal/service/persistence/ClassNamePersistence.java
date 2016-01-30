@@ -39,11 +39,11 @@ public interface ClassNamePersistence extends BasePersistence<ClassName> {
 	 */
 
 	/**
-	* Returns the class name where value = &#63; or throws a {@link NoSuchClassNameException} if it could not be found.
+	* Returns the class name where value = &#63; or throws a {@link com.liferay.portal.exception.NoSuchClassNameException} if it could not be found.
 	*
 	* @param value the value
 	* @return the matching class name
-	* @throws NoSuchClassNameException if a matching class name could not be found
+	* @throws com.liferay.portal.exception.NoSuchClassNameException if a matching class name could not be found
 	*/
 	public ClassName findByValue(java.lang.String value)
 		throws com.liferay.portal.exception.NoSuchClassNameException;
@@ -110,7 +110,7 @@ public interface ClassNamePersistence extends BasePersistence<ClassName> {
 	*
 	* @param classNameId the primary key of the class name
 	* @return the class name that was removed
-	* @throws NoSuchClassNameException if a class name with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchClassNameException if a class name with the primary key could not be found
 	*/
 	public ClassName remove(long classNameId)
 		throws com.liferay.portal.exception.NoSuchClassNameException;
@@ -118,11 +118,11 @@ public interface ClassNamePersistence extends BasePersistence<ClassName> {
 	public ClassName updateImpl(ClassName className);
 
 	/**
-	* Returns the class name with the primary key or throws a {@link NoSuchClassNameException} if it could not be found.
+	* Returns the class name with the primary key or throws a {@link com.liferay.portal.exception.NoSuchClassNameException} if it could not be found.
 	*
 	* @param classNameId the primary key of the class name
 	* @return the class name
-	* @throws NoSuchClassNameException if a class name with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchClassNameException if a class name with the primary key could not be found
 	*/
 	public ClassName findByPrimaryKey(long classNameId)
 		throws com.liferay.portal.exception.NoSuchClassNameException;

@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchBrowserTrackerException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -98,15 +97,15 @@ public class BrowserTrackerPersistenceImpl extends BasePersistenceImpl<BrowserTr
 			new String[] { Long.class.getName() });
 
 	/**
-	 * Returns the browser tracker where userId = &#63; or throws a {@link NoSuchBrowserTrackerException} if it could not be found.
+	 * Returns the browser tracker where userId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchBrowserTrackerException} if it could not be found.
 	 *
 	 * @param userId the user ID
 	 * @return the matching browser tracker
-	 * @throws NoSuchBrowserTrackerException if a matching browser tracker could not be found
+	 * @throws com.liferay.portal.exception.NoSuchBrowserTrackerException if a matching browser tracker could not be found
 	 */
 	@Override
 	public BrowserTracker findByUserId(long userId)
-		throws NoSuchBrowserTrackerException {
+		throws com.liferay.portal.exception.NoSuchBrowserTrackerException {
 		BrowserTracker browserTracker = fetchByUserId(userId);
 
 		if (browserTracker == null) {
@@ -123,7 +122,7 @@ public class BrowserTrackerPersistenceImpl extends BasePersistenceImpl<BrowserTr
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchBrowserTrackerException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchBrowserTrackerException(msg.toString());
 		}
 
 		return browserTracker;
@@ -231,7 +230,7 @@ public class BrowserTrackerPersistenceImpl extends BasePersistenceImpl<BrowserTr
 	 */
 	@Override
 	public BrowserTracker removeByUserId(long userId)
-		throws NoSuchBrowserTrackerException {
+		throws com.liferay.portal.exception.NoSuchBrowserTrackerException {
 		BrowserTracker browserTracker = findByUserId(userId);
 
 		return remove(browserTracker);
@@ -439,11 +438,11 @@ public class BrowserTrackerPersistenceImpl extends BasePersistenceImpl<BrowserTr
 	 *
 	 * @param browserTrackerId the primary key of the browser tracker
 	 * @return the browser tracker that was removed
-	 * @throws NoSuchBrowserTrackerException if a browser tracker with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchBrowserTrackerException if a browser tracker with the primary key could not be found
 	 */
 	@Override
 	public BrowserTracker remove(long browserTrackerId)
-		throws NoSuchBrowserTrackerException {
+		throws com.liferay.portal.exception.NoSuchBrowserTrackerException {
 		return remove((Serializable)browserTrackerId);
 	}
 
@@ -452,11 +451,11 @@ public class BrowserTrackerPersistenceImpl extends BasePersistenceImpl<BrowserTr
 	 *
 	 * @param primaryKey the primary key of the browser tracker
 	 * @return the browser tracker that was removed
-	 * @throws NoSuchBrowserTrackerException if a browser tracker with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchBrowserTrackerException if a browser tracker with the primary key could not be found
 	 */
 	@Override
 	public BrowserTracker remove(Serializable primaryKey)
-		throws NoSuchBrowserTrackerException {
+		throws com.liferay.portal.exception.NoSuchBrowserTrackerException {
 		Session session = null;
 
 		try {
@@ -470,13 +469,13 @@ public class BrowserTrackerPersistenceImpl extends BasePersistenceImpl<BrowserTr
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchBrowserTrackerException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchBrowserTrackerException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(browserTracker);
 		}
-		catch (NoSuchBrowserTrackerException nsee) {
+		catch (com.liferay.portal.exception.NoSuchBrowserTrackerException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -590,11 +589,11 @@ public class BrowserTrackerPersistenceImpl extends BasePersistenceImpl<BrowserTr
 	 *
 	 * @param primaryKey the primary key of the browser tracker
 	 * @return the browser tracker
-	 * @throws NoSuchBrowserTrackerException if a browser tracker with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchBrowserTrackerException if a browser tracker with the primary key could not be found
 	 */
 	@Override
 	public BrowserTracker findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchBrowserTrackerException {
+		throws com.liferay.portal.exception.NoSuchBrowserTrackerException {
 		BrowserTracker browserTracker = fetchByPrimaryKey(primaryKey);
 
 		if (browserTracker == null) {
@@ -602,7 +601,7 @@ public class BrowserTrackerPersistenceImpl extends BasePersistenceImpl<BrowserTr
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchBrowserTrackerException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchBrowserTrackerException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -610,15 +609,15 @@ public class BrowserTrackerPersistenceImpl extends BasePersistenceImpl<BrowserTr
 	}
 
 	/**
-	 * Returns the browser tracker with the primary key or throws a {@link NoSuchBrowserTrackerException} if it could not be found.
+	 * Returns the browser tracker with the primary key or throws a {@link com.liferay.portal.exception.NoSuchBrowserTrackerException} if it could not be found.
 	 *
 	 * @param browserTrackerId the primary key of the browser tracker
 	 * @return the browser tracker
-	 * @throws NoSuchBrowserTrackerException if a browser tracker with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchBrowserTrackerException if a browser tracker with the primary key could not be found
 	 */
 	@Override
 	public BrowserTracker findByPrimaryKey(long browserTrackerId)
-		throws NoSuchBrowserTrackerException {
+		throws com.liferay.portal.exception.NoSuchBrowserTrackerException {
 		return findByPrimaryKey((Serializable)browserTrackerId);
 	}
 

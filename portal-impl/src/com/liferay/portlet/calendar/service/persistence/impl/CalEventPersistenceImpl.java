@@ -50,7 +50,6 @@ import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
-import com.liferay.portlet.calendar.exception.NoSuchEventException;
 import com.liferay.portlet.calendar.model.CalEvent;
 import com.liferay.portlet.calendar.model.impl.CalEventImpl;
 import com.liferay.portlet.calendar.model.impl.CalEventModelImpl;
@@ -308,12 +307,12 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching cal event
-	 * @throws NoSuchEventException if a matching cal event could not be found
+	 * @throws com.liferay.portlet.calendar.exception.NoSuchEventException if a matching cal event could not be found
 	 */
 	@Override
 	public CalEvent findByUuid_First(String uuid,
 		OrderByComparator<CalEvent> orderByComparator)
-		throws NoSuchEventException {
+		throws com.liferay.portlet.calendar.exception.NoSuchEventException {
 		CalEvent calEvent = fetchByUuid_First(uuid, orderByComparator);
 
 		if (calEvent != null) {
@@ -329,7 +328,7 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEventException(msg.toString());
+		throw new com.liferay.portlet.calendar.exception.NoSuchEventException(msg.toString());
 	}
 
 	/**
@@ -357,12 +356,12 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching cal event
-	 * @throws NoSuchEventException if a matching cal event could not be found
+	 * @throws com.liferay.portlet.calendar.exception.NoSuchEventException if a matching cal event could not be found
 	 */
 	@Override
 	public CalEvent findByUuid_Last(String uuid,
 		OrderByComparator<CalEvent> orderByComparator)
-		throws NoSuchEventException {
+		throws com.liferay.portlet.calendar.exception.NoSuchEventException {
 		CalEvent calEvent = fetchByUuid_Last(uuid, orderByComparator);
 
 		if (calEvent != null) {
@@ -378,7 +377,7 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEventException(msg.toString());
+		throw new com.liferay.portlet.calendar.exception.NoSuchEventException(msg.toString());
 	}
 
 	/**
@@ -414,12 +413,12 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next cal event
-	 * @throws NoSuchEventException if a cal event with the primary key could not be found
+	 * @throws com.liferay.portlet.calendar.exception.NoSuchEventException if a cal event with the primary key could not be found
 	 */
 	@Override
 	public CalEvent[] findByUuid_PrevAndNext(long eventId, String uuid,
 		OrderByComparator<CalEvent> orderByComparator)
-		throws NoSuchEventException {
+		throws com.liferay.portlet.calendar.exception.NoSuchEventException {
 		CalEvent calEvent = findByPrimaryKey(eventId);
 
 		Session session = null;
@@ -660,16 +659,16 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 			new String[] { String.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the cal event where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchEventException} if it could not be found.
+	 * Returns the cal event where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.portlet.calendar.exception.NoSuchEventException} if it could not be found.
 	 *
 	 * @param uuid the uuid
 	 * @param groupId the group ID
 	 * @return the matching cal event
-	 * @throws NoSuchEventException if a matching cal event could not be found
+	 * @throws com.liferay.portlet.calendar.exception.NoSuchEventException if a matching cal event could not be found
 	 */
 	@Override
 	public CalEvent findByUUID_G(String uuid, long groupId)
-		throws NoSuchEventException {
+		throws com.liferay.portlet.calendar.exception.NoSuchEventException {
 		CalEvent calEvent = fetchByUUID_G(uuid, groupId);
 
 		if (calEvent == null) {
@@ -689,7 +688,7 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchEventException(msg.toString());
+			throw new com.liferay.portlet.calendar.exception.NoSuchEventException(msg.toString());
 		}
 
 		return calEvent;
@@ -822,7 +821,7 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 	 */
 	@Override
 	public CalEvent removeByUUID_G(String uuid, long groupId)
-		throws NoSuchEventException {
+		throws com.liferay.portlet.calendar.exception.NoSuchEventException {
 		CalEvent calEvent = findByUUID_G(uuid, groupId);
 
 		return remove(calEvent);
@@ -1125,12 +1124,12 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching cal event
-	 * @throws NoSuchEventException if a matching cal event could not be found
+	 * @throws com.liferay.portlet.calendar.exception.NoSuchEventException if a matching cal event could not be found
 	 */
 	@Override
 	public CalEvent findByUuid_C_First(String uuid, long companyId,
 		OrderByComparator<CalEvent> orderByComparator)
-		throws NoSuchEventException {
+		throws com.liferay.portlet.calendar.exception.NoSuchEventException {
 		CalEvent calEvent = fetchByUuid_C_First(uuid, companyId,
 				orderByComparator);
 
@@ -1150,7 +1149,7 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEventException(msg.toString());
+		throw new com.liferay.portlet.calendar.exception.NoSuchEventException(msg.toString());
 	}
 
 	/**
@@ -1181,12 +1180,12 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching cal event
-	 * @throws NoSuchEventException if a matching cal event could not be found
+	 * @throws com.liferay.portlet.calendar.exception.NoSuchEventException if a matching cal event could not be found
 	 */
 	@Override
 	public CalEvent findByUuid_C_Last(String uuid, long companyId,
 		OrderByComparator<CalEvent> orderByComparator)
-		throws NoSuchEventException {
+		throws com.liferay.portlet.calendar.exception.NoSuchEventException {
 		CalEvent calEvent = fetchByUuid_C_Last(uuid, companyId,
 				orderByComparator);
 
@@ -1206,7 +1205,7 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEventException(msg.toString());
+		throw new com.liferay.portlet.calendar.exception.NoSuchEventException(msg.toString());
 	}
 
 	/**
@@ -1244,12 +1243,12 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next cal event
-	 * @throws NoSuchEventException if a cal event with the primary key could not be found
+	 * @throws com.liferay.portlet.calendar.exception.NoSuchEventException if a cal event with the primary key could not be found
 	 */
 	@Override
 	public CalEvent[] findByUuid_C_PrevAndNext(long eventId, String uuid,
 		long companyId, OrderByComparator<CalEvent> orderByComparator)
-		throws NoSuchEventException {
+		throws com.liferay.portlet.calendar.exception.NoSuchEventException {
 		CalEvent calEvent = findByPrimaryKey(eventId);
 
 		Session session = null;
@@ -1680,12 +1679,12 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching cal event
-	 * @throws NoSuchEventException if a matching cal event could not be found
+	 * @throws com.liferay.portlet.calendar.exception.NoSuchEventException if a matching cal event could not be found
 	 */
 	@Override
 	public CalEvent findByGroupId_First(long groupId,
 		OrderByComparator<CalEvent> orderByComparator)
-		throws NoSuchEventException {
+		throws com.liferay.portlet.calendar.exception.NoSuchEventException {
 		CalEvent calEvent = fetchByGroupId_First(groupId, orderByComparator);
 
 		if (calEvent != null) {
@@ -1701,7 +1700,7 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEventException(msg.toString());
+		throw new com.liferay.portlet.calendar.exception.NoSuchEventException(msg.toString());
 	}
 
 	/**
@@ -1729,12 +1728,12 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching cal event
-	 * @throws NoSuchEventException if a matching cal event could not be found
+	 * @throws com.liferay.portlet.calendar.exception.NoSuchEventException if a matching cal event could not be found
 	 */
 	@Override
 	public CalEvent findByGroupId_Last(long groupId,
 		OrderByComparator<CalEvent> orderByComparator)
-		throws NoSuchEventException {
+		throws com.liferay.portlet.calendar.exception.NoSuchEventException {
 		CalEvent calEvent = fetchByGroupId_Last(groupId, orderByComparator);
 
 		if (calEvent != null) {
@@ -1750,7 +1749,7 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEventException(msg.toString());
+		throw new com.liferay.portlet.calendar.exception.NoSuchEventException(msg.toString());
 	}
 
 	/**
@@ -1786,12 +1785,12 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next cal event
-	 * @throws NoSuchEventException if a cal event with the primary key could not be found
+	 * @throws com.liferay.portlet.calendar.exception.NoSuchEventException if a cal event with the primary key could not be found
 	 */
 	@Override
 	public CalEvent[] findByGroupId_PrevAndNext(long eventId, long groupId,
 		OrderByComparator<CalEvent> orderByComparator)
-		throws NoSuchEventException {
+		throws com.liferay.portlet.calendar.exception.NoSuchEventException {
 		CalEvent calEvent = findByPrimaryKey(eventId);
 
 		Session session = null;
@@ -2183,12 +2182,12 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching cal event
-	 * @throws NoSuchEventException if a matching cal event could not be found
+	 * @throws com.liferay.portlet.calendar.exception.NoSuchEventException if a matching cal event could not be found
 	 */
 	@Override
 	public CalEvent findByCompanyId_First(long companyId,
 		OrderByComparator<CalEvent> orderByComparator)
-		throws NoSuchEventException {
+		throws com.liferay.portlet.calendar.exception.NoSuchEventException {
 		CalEvent calEvent = fetchByCompanyId_First(companyId, orderByComparator);
 
 		if (calEvent != null) {
@@ -2204,7 +2203,7 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEventException(msg.toString());
+		throw new com.liferay.portlet.calendar.exception.NoSuchEventException(msg.toString());
 	}
 
 	/**
@@ -2232,12 +2231,12 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching cal event
-	 * @throws NoSuchEventException if a matching cal event could not be found
+	 * @throws com.liferay.portlet.calendar.exception.NoSuchEventException if a matching cal event could not be found
 	 */
 	@Override
 	public CalEvent findByCompanyId_Last(long companyId,
 		OrderByComparator<CalEvent> orderByComparator)
-		throws NoSuchEventException {
+		throws com.liferay.portlet.calendar.exception.NoSuchEventException {
 		CalEvent calEvent = fetchByCompanyId_Last(companyId, orderByComparator);
 
 		if (calEvent != null) {
@@ -2253,7 +2252,7 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEventException(msg.toString());
+		throw new com.liferay.portlet.calendar.exception.NoSuchEventException(msg.toString());
 	}
 
 	/**
@@ -2289,12 +2288,12 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next cal event
-	 * @throws NoSuchEventException if a cal event with the primary key could not be found
+	 * @throws com.liferay.portlet.calendar.exception.NoSuchEventException if a cal event with the primary key could not be found
 	 */
 	@Override
 	public CalEvent[] findByCompanyId_PrevAndNext(long eventId, long companyId,
 		OrderByComparator<CalEvent> orderByComparator)
-		throws NoSuchEventException {
+		throws com.liferay.portlet.calendar.exception.NoSuchEventException {
 		CalEvent calEvent = findByPrimaryKey(eventId);
 
 		Session session = null;
@@ -2671,12 +2670,12 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 	 * @param remindBy the remind by
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching cal event
-	 * @throws NoSuchEventException if a matching cal event could not be found
+	 * @throws com.liferay.portlet.calendar.exception.NoSuchEventException if a matching cal event could not be found
 	 */
 	@Override
 	public CalEvent findByNotRemindBy_First(int remindBy,
 		OrderByComparator<CalEvent> orderByComparator)
-		throws NoSuchEventException {
+		throws com.liferay.portlet.calendar.exception.NoSuchEventException {
 		CalEvent calEvent = fetchByNotRemindBy_First(remindBy, orderByComparator);
 
 		if (calEvent != null) {
@@ -2692,7 +2691,7 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEventException(msg.toString());
+		throw new com.liferay.portlet.calendar.exception.NoSuchEventException(msg.toString());
 	}
 
 	/**
@@ -2721,12 +2720,12 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 	 * @param remindBy the remind by
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching cal event
-	 * @throws NoSuchEventException if a matching cal event could not be found
+	 * @throws com.liferay.portlet.calendar.exception.NoSuchEventException if a matching cal event could not be found
 	 */
 	@Override
 	public CalEvent findByNotRemindBy_Last(int remindBy,
 		OrderByComparator<CalEvent> orderByComparator)
-		throws NoSuchEventException {
+		throws com.liferay.portlet.calendar.exception.NoSuchEventException {
 		CalEvent calEvent = fetchByNotRemindBy_Last(remindBy, orderByComparator);
 
 		if (calEvent != null) {
@@ -2742,7 +2741,7 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEventException(msg.toString());
+		throw new com.liferay.portlet.calendar.exception.NoSuchEventException(msg.toString());
 	}
 
 	/**
@@ -2778,12 +2777,12 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 	 * @param remindBy the remind by
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next cal event
-	 * @throws NoSuchEventException if a cal event with the primary key could not be found
+	 * @throws com.liferay.portlet.calendar.exception.NoSuchEventException if a cal event with the primary key could not be found
 	 */
 	@Override
 	public CalEvent[] findByNotRemindBy_PrevAndNext(long eventId, int remindBy,
 		OrderByComparator<CalEvent> orderByComparator)
-		throws NoSuchEventException {
+		throws com.liferay.portlet.calendar.exception.NoSuchEventException {
 		CalEvent calEvent = findByPrimaryKey(eventId);
 
 		Session session = null;
@@ -3208,12 +3207,12 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 	 * @param type the type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching cal event
-	 * @throws NoSuchEventException if a matching cal event could not be found
+	 * @throws com.liferay.portlet.calendar.exception.NoSuchEventException if a matching cal event could not be found
 	 */
 	@Override
 	public CalEvent findByG_T_First(long groupId, String type,
 		OrderByComparator<CalEvent> orderByComparator)
-		throws NoSuchEventException {
+		throws com.liferay.portlet.calendar.exception.NoSuchEventException {
 		CalEvent calEvent = fetchByG_T_First(groupId, type, orderByComparator);
 
 		if (calEvent != null) {
@@ -3232,7 +3231,7 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEventException(msg.toString());
+		throw new com.liferay.portlet.calendar.exception.NoSuchEventException(msg.toString());
 	}
 
 	/**
@@ -3262,12 +3261,12 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 	 * @param type the type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching cal event
-	 * @throws NoSuchEventException if a matching cal event could not be found
+	 * @throws com.liferay.portlet.calendar.exception.NoSuchEventException if a matching cal event could not be found
 	 */
 	@Override
 	public CalEvent findByG_T_Last(long groupId, String type,
 		OrderByComparator<CalEvent> orderByComparator)
-		throws NoSuchEventException {
+		throws com.liferay.portlet.calendar.exception.NoSuchEventException {
 		CalEvent calEvent = fetchByG_T_Last(groupId, type, orderByComparator);
 
 		if (calEvent != null) {
@@ -3286,7 +3285,7 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEventException(msg.toString());
+		throw new com.liferay.portlet.calendar.exception.NoSuchEventException(msg.toString());
 	}
 
 	/**
@@ -3324,12 +3323,12 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 	 * @param type the type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next cal event
-	 * @throws NoSuchEventException if a cal event with the primary key could not be found
+	 * @throws com.liferay.portlet.calendar.exception.NoSuchEventException if a cal event with the primary key could not be found
 	 */
 	@Override
 	public CalEvent[] findByG_T_PrevAndNext(long eventId, long groupId,
 		String type, OrderByComparator<CalEvent> orderByComparator)
-		throws NoSuchEventException {
+		throws com.liferay.portlet.calendar.exception.NoSuchEventException {
 		CalEvent calEvent = findByPrimaryKey(eventId);
 
 		Session session = null;
@@ -4088,12 +4087,12 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 	 * @param repeating the repeating
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching cal event
-	 * @throws NoSuchEventException if a matching cal event could not be found
+	 * @throws com.liferay.portlet.calendar.exception.NoSuchEventException if a matching cal event could not be found
 	 */
 	@Override
 	public CalEvent findByG_R_First(long groupId, boolean repeating,
 		OrderByComparator<CalEvent> orderByComparator)
-		throws NoSuchEventException {
+		throws com.liferay.portlet.calendar.exception.NoSuchEventException {
 		CalEvent calEvent = fetchByG_R_First(groupId, repeating,
 				orderByComparator);
 
@@ -4113,7 +4112,7 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEventException(msg.toString());
+		throw new com.liferay.portlet.calendar.exception.NoSuchEventException(msg.toString());
 	}
 
 	/**
@@ -4144,12 +4143,12 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 	 * @param repeating the repeating
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching cal event
-	 * @throws NoSuchEventException if a matching cal event could not be found
+	 * @throws com.liferay.portlet.calendar.exception.NoSuchEventException if a matching cal event could not be found
 	 */
 	@Override
 	public CalEvent findByG_R_Last(long groupId, boolean repeating,
 		OrderByComparator<CalEvent> orderByComparator)
-		throws NoSuchEventException {
+		throws com.liferay.portlet.calendar.exception.NoSuchEventException {
 		CalEvent calEvent = fetchByG_R_Last(groupId, repeating,
 				orderByComparator);
 
@@ -4169,7 +4168,7 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEventException(msg.toString());
+		throw new com.liferay.portlet.calendar.exception.NoSuchEventException(msg.toString());
 	}
 
 	/**
@@ -4207,12 +4206,12 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 	 * @param repeating the repeating
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next cal event
-	 * @throws NoSuchEventException if a cal event with the primary key could not be found
+	 * @throws com.liferay.portlet.calendar.exception.NoSuchEventException if a cal event with the primary key could not be found
 	 */
 	@Override
 	public CalEvent[] findByG_R_PrevAndNext(long eventId, long groupId,
 		boolean repeating, OrderByComparator<CalEvent> orderByComparator)
-		throws NoSuchEventException {
+		throws com.liferay.portlet.calendar.exception.NoSuchEventException {
 		CalEvent calEvent = findByPrimaryKey(eventId);
 
 		Session session = null;
@@ -4672,12 +4671,12 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 	 * @param repeating the repeating
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching cal event
-	 * @throws NoSuchEventException if a matching cal event could not be found
+	 * @throws com.liferay.portlet.calendar.exception.NoSuchEventException if a matching cal event could not be found
 	 */
 	@Override
 	public CalEvent findByG_T_R_First(long groupId, String type,
 		boolean repeating, OrderByComparator<CalEvent> orderByComparator)
-		throws NoSuchEventException {
+		throws com.liferay.portlet.calendar.exception.NoSuchEventException {
 		CalEvent calEvent = fetchByG_T_R_First(groupId, type, repeating,
 				orderByComparator);
 
@@ -4700,7 +4699,7 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEventException(msg.toString());
+		throw new com.liferay.portlet.calendar.exception.NoSuchEventException(msg.toString());
 	}
 
 	/**
@@ -4733,12 +4732,12 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 	 * @param repeating the repeating
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching cal event
-	 * @throws NoSuchEventException if a matching cal event could not be found
+	 * @throws com.liferay.portlet.calendar.exception.NoSuchEventException if a matching cal event could not be found
 	 */
 	@Override
 	public CalEvent findByG_T_R_Last(long groupId, String type,
 		boolean repeating, OrderByComparator<CalEvent> orderByComparator)
-		throws NoSuchEventException {
+		throws com.liferay.portlet.calendar.exception.NoSuchEventException {
 		CalEvent calEvent = fetchByG_T_R_Last(groupId, type, repeating,
 				orderByComparator);
 
@@ -4761,7 +4760,7 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEventException(msg.toString());
+		throw new com.liferay.portlet.calendar.exception.NoSuchEventException(msg.toString());
 	}
 
 	/**
@@ -4801,13 +4800,13 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 	 * @param repeating the repeating
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next cal event
-	 * @throws NoSuchEventException if a cal event with the primary key could not be found
+	 * @throws com.liferay.portlet.calendar.exception.NoSuchEventException if a cal event with the primary key could not be found
 	 */
 	@Override
 	public CalEvent[] findByG_T_R_PrevAndNext(long eventId, long groupId,
 		String type, boolean repeating,
 		OrderByComparator<CalEvent> orderByComparator)
-		throws NoSuchEventException {
+		throws com.liferay.portlet.calendar.exception.NoSuchEventException {
 		CalEvent calEvent = findByPrimaryKey(eventId);
 
 		Session session = null;
@@ -5562,10 +5561,11 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 	 *
 	 * @param eventId the primary key of the cal event
 	 * @return the cal event that was removed
-	 * @throws NoSuchEventException if a cal event with the primary key could not be found
+	 * @throws com.liferay.portlet.calendar.exception.NoSuchEventException if a cal event with the primary key could not be found
 	 */
 	@Override
-	public CalEvent remove(long eventId) throws NoSuchEventException {
+	public CalEvent remove(long eventId)
+		throws com.liferay.portlet.calendar.exception.NoSuchEventException {
 		return remove((Serializable)eventId);
 	}
 
@@ -5574,10 +5574,11 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 	 *
 	 * @param primaryKey the primary key of the cal event
 	 * @return the cal event that was removed
-	 * @throws NoSuchEventException if a cal event with the primary key could not be found
+	 * @throws com.liferay.portlet.calendar.exception.NoSuchEventException if a cal event with the primary key could not be found
 	 */
 	@Override
-	public CalEvent remove(Serializable primaryKey) throws NoSuchEventException {
+	public CalEvent remove(Serializable primaryKey)
+		throws com.liferay.portlet.calendar.exception.NoSuchEventException {
 		Session session = null;
 
 		try {
@@ -5591,13 +5592,13 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchEventException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portlet.calendar.exception.NoSuchEventException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(calEvent);
 		}
-		catch (NoSuchEventException nsee) {
+		catch (com.liferay.portlet.calendar.exception.NoSuchEventException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -5924,11 +5925,11 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 	 *
 	 * @param primaryKey the primary key of the cal event
 	 * @return the cal event
-	 * @throws NoSuchEventException if a cal event with the primary key could not be found
+	 * @throws com.liferay.portlet.calendar.exception.NoSuchEventException if a cal event with the primary key could not be found
 	 */
 	@Override
 	public CalEvent findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchEventException {
+		throws com.liferay.portlet.calendar.exception.NoSuchEventException {
 		CalEvent calEvent = fetchByPrimaryKey(primaryKey);
 
 		if (calEvent == null) {
@@ -5936,7 +5937,7 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchEventException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portlet.calendar.exception.NoSuchEventException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -5944,14 +5945,15 @@ public class CalEventPersistenceImpl extends BasePersistenceImpl<CalEvent>
 	}
 
 	/**
-	 * Returns the cal event with the primary key or throws a {@link NoSuchEventException} if it could not be found.
+	 * Returns the cal event with the primary key or throws a {@link com.liferay.portlet.calendar.exception.NoSuchEventException} if it could not be found.
 	 *
 	 * @param eventId the primary key of the cal event
 	 * @return the cal event
-	 * @throws NoSuchEventException if a cal event with the primary key could not be found
+	 * @throws com.liferay.portlet.calendar.exception.NoSuchEventException if a cal event with the primary key could not be found
 	 */
 	@Override
-	public CalEvent findByPrimaryKey(long eventId) throws NoSuchEventException {
+	public CalEvent findByPrimaryKey(long eventId)
+		throws com.liferay.portlet.calendar.exception.NoSuchEventException {
 		return findByPrimaryKey((Serializable)eventId);
 	}
 

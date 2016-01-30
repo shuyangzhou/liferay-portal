@@ -37,7 +37,6 @@ import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
-import com.liferay.portlet.expando.exception.NoSuchRowException;
 import com.liferay.portlet.expando.model.ExpandoRow;
 import com.liferay.portlet.expando.model.impl.ExpandoRowImpl;
 import com.liferay.portlet.expando.model.impl.ExpandoRowModelImpl;
@@ -277,12 +276,12 @@ public class ExpandoRowPersistenceImpl extends BasePersistenceImpl<ExpandoRow>
 	 * @param tableId the table ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching expando row
-	 * @throws NoSuchRowException if a matching expando row could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchRowException if a matching expando row could not be found
 	 */
 	@Override
 	public ExpandoRow findByTableId_First(long tableId,
 		OrderByComparator<ExpandoRow> orderByComparator)
-		throws NoSuchRowException {
+		throws com.liferay.portlet.expando.exception.NoSuchRowException {
 		ExpandoRow expandoRow = fetchByTableId_First(tableId, orderByComparator);
 
 		if (expandoRow != null) {
@@ -298,7 +297,7 @@ public class ExpandoRowPersistenceImpl extends BasePersistenceImpl<ExpandoRow>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRowException(msg.toString());
+		throw new com.liferay.portlet.expando.exception.NoSuchRowException(msg.toString());
 	}
 
 	/**
@@ -326,12 +325,12 @@ public class ExpandoRowPersistenceImpl extends BasePersistenceImpl<ExpandoRow>
 	 * @param tableId the table ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching expando row
-	 * @throws NoSuchRowException if a matching expando row could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchRowException if a matching expando row could not be found
 	 */
 	@Override
 	public ExpandoRow findByTableId_Last(long tableId,
 		OrderByComparator<ExpandoRow> orderByComparator)
-		throws NoSuchRowException {
+		throws com.liferay.portlet.expando.exception.NoSuchRowException {
 		ExpandoRow expandoRow = fetchByTableId_Last(tableId, orderByComparator);
 
 		if (expandoRow != null) {
@@ -347,7 +346,7 @@ public class ExpandoRowPersistenceImpl extends BasePersistenceImpl<ExpandoRow>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRowException(msg.toString());
+		throw new com.liferay.portlet.expando.exception.NoSuchRowException(msg.toString());
 	}
 
 	/**
@@ -383,12 +382,12 @@ public class ExpandoRowPersistenceImpl extends BasePersistenceImpl<ExpandoRow>
 	 * @param tableId the table ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next expando row
-	 * @throws NoSuchRowException if a expando row with the primary key could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchRowException if a expando row with the primary key could not be found
 	 */
 	@Override
 	public ExpandoRow[] findByTableId_PrevAndNext(long rowId, long tableId,
 		OrderByComparator<ExpandoRow> orderByComparator)
-		throws NoSuchRowException {
+		throws com.liferay.portlet.expando.exception.NoSuchRowException {
 		ExpandoRow expandoRow = findByPrimaryKey(rowId);
 
 		Session session = null;
@@ -777,12 +776,12 @@ public class ExpandoRowPersistenceImpl extends BasePersistenceImpl<ExpandoRow>
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching expando row
-	 * @throws NoSuchRowException if a matching expando row could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchRowException if a matching expando row could not be found
 	 */
 	@Override
 	public ExpandoRow findByClassPK_First(long classPK,
 		OrderByComparator<ExpandoRow> orderByComparator)
-		throws NoSuchRowException {
+		throws com.liferay.portlet.expando.exception.NoSuchRowException {
 		ExpandoRow expandoRow = fetchByClassPK_First(classPK, orderByComparator);
 
 		if (expandoRow != null) {
@@ -798,7 +797,7 @@ public class ExpandoRowPersistenceImpl extends BasePersistenceImpl<ExpandoRow>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRowException(msg.toString());
+		throw new com.liferay.portlet.expando.exception.NoSuchRowException(msg.toString());
 	}
 
 	/**
@@ -826,12 +825,12 @@ public class ExpandoRowPersistenceImpl extends BasePersistenceImpl<ExpandoRow>
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching expando row
-	 * @throws NoSuchRowException if a matching expando row could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchRowException if a matching expando row could not be found
 	 */
 	@Override
 	public ExpandoRow findByClassPK_Last(long classPK,
 		OrderByComparator<ExpandoRow> orderByComparator)
-		throws NoSuchRowException {
+		throws com.liferay.portlet.expando.exception.NoSuchRowException {
 		ExpandoRow expandoRow = fetchByClassPK_Last(classPK, orderByComparator);
 
 		if (expandoRow != null) {
@@ -847,7 +846,7 @@ public class ExpandoRowPersistenceImpl extends BasePersistenceImpl<ExpandoRow>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRowException(msg.toString());
+		throw new com.liferay.portlet.expando.exception.NoSuchRowException(msg.toString());
 	}
 
 	/**
@@ -883,12 +882,12 @@ public class ExpandoRowPersistenceImpl extends BasePersistenceImpl<ExpandoRow>
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next expando row
-	 * @throws NoSuchRowException if a expando row with the primary key could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchRowException if a expando row with the primary key could not be found
 	 */
 	@Override
 	public ExpandoRow[] findByClassPK_PrevAndNext(long rowId, long classPK,
 		OrderByComparator<ExpandoRow> orderByComparator)
-		throws NoSuchRowException {
+		throws com.liferay.portlet.expando.exception.NoSuchRowException {
 		ExpandoRow expandoRow = findByPrimaryKey(rowId);
 
 		Session session = null;
@@ -1099,16 +1098,16 @@ public class ExpandoRowPersistenceImpl extends BasePersistenceImpl<ExpandoRow>
 			new String[] { Long.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the expando row where tableId = &#63; and classPK = &#63; or throws a {@link NoSuchRowException} if it could not be found.
+	 * Returns the expando row where tableId = &#63; and classPK = &#63; or throws a {@link com.liferay.portlet.expando.exception.NoSuchRowException} if it could not be found.
 	 *
 	 * @param tableId the table ID
 	 * @param classPK the class p k
 	 * @return the matching expando row
-	 * @throws NoSuchRowException if a matching expando row could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchRowException if a matching expando row could not be found
 	 */
 	@Override
 	public ExpandoRow findByT_C(long tableId, long classPK)
-		throws NoSuchRowException {
+		throws com.liferay.portlet.expando.exception.NoSuchRowException {
 		ExpandoRow expandoRow = fetchByT_C(tableId, classPK);
 
 		if (expandoRow == null) {
@@ -1128,7 +1127,7 @@ public class ExpandoRowPersistenceImpl extends BasePersistenceImpl<ExpandoRow>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchRowException(msg.toString());
+			throw new com.liferay.portlet.expando.exception.NoSuchRowException(msg.toString());
 		}
 
 		return expandoRow;
@@ -1246,7 +1245,7 @@ public class ExpandoRowPersistenceImpl extends BasePersistenceImpl<ExpandoRow>
 	 */
 	@Override
 	public ExpandoRow removeByT_C(long tableId, long classPK)
-		throws NoSuchRowException {
+		throws com.liferay.portlet.expando.exception.NoSuchRowException {
 		ExpandoRow expandoRow = findByT_C(tableId, classPK);
 
 		return remove(expandoRow);
@@ -1472,10 +1471,11 @@ public class ExpandoRowPersistenceImpl extends BasePersistenceImpl<ExpandoRow>
 	 *
 	 * @param rowId the primary key of the expando row
 	 * @return the expando row that was removed
-	 * @throws NoSuchRowException if a expando row with the primary key could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchRowException if a expando row with the primary key could not be found
 	 */
 	@Override
-	public ExpandoRow remove(long rowId) throws NoSuchRowException {
+	public ExpandoRow remove(long rowId)
+		throws com.liferay.portlet.expando.exception.NoSuchRowException {
 		return remove((Serializable)rowId);
 	}
 
@@ -1484,10 +1484,11 @@ public class ExpandoRowPersistenceImpl extends BasePersistenceImpl<ExpandoRow>
 	 *
 	 * @param primaryKey the primary key of the expando row
 	 * @return the expando row that was removed
-	 * @throws NoSuchRowException if a expando row with the primary key could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchRowException if a expando row with the primary key could not be found
 	 */
 	@Override
-	public ExpandoRow remove(Serializable primaryKey) throws NoSuchRowException {
+	public ExpandoRow remove(Serializable primaryKey)
+		throws com.liferay.portlet.expando.exception.NoSuchRowException {
 		Session session = null;
 
 		try {
@@ -1501,13 +1502,13 @@ public class ExpandoRowPersistenceImpl extends BasePersistenceImpl<ExpandoRow>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchRowException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portlet.expando.exception.NoSuchRowException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(expandoRow);
 		}
-		catch (NoSuchRowException nsee) {
+		catch (com.liferay.portlet.expando.exception.NoSuchRowException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -1656,11 +1657,11 @@ public class ExpandoRowPersistenceImpl extends BasePersistenceImpl<ExpandoRow>
 	 *
 	 * @param primaryKey the primary key of the expando row
 	 * @return the expando row
-	 * @throws NoSuchRowException if a expando row with the primary key could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchRowException if a expando row with the primary key could not be found
 	 */
 	@Override
 	public ExpandoRow findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchRowException {
+		throws com.liferay.portlet.expando.exception.NoSuchRowException {
 		ExpandoRow expandoRow = fetchByPrimaryKey(primaryKey);
 
 		if (expandoRow == null) {
@@ -1668,7 +1669,7 @@ public class ExpandoRowPersistenceImpl extends BasePersistenceImpl<ExpandoRow>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchRowException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portlet.expando.exception.NoSuchRowException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -1676,14 +1677,15 @@ public class ExpandoRowPersistenceImpl extends BasePersistenceImpl<ExpandoRow>
 	}
 
 	/**
-	 * Returns the expando row with the primary key or throws a {@link NoSuchRowException} if it could not be found.
+	 * Returns the expando row with the primary key or throws a {@link com.liferay.portlet.expando.exception.NoSuchRowException} if it could not be found.
 	 *
 	 * @param rowId the primary key of the expando row
 	 * @return the expando row
-	 * @throws NoSuchRowException if a expando row with the primary key could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchRowException if a expando row with the primary key could not be found
 	 */
 	@Override
-	public ExpandoRow findByPrimaryKey(long rowId) throws NoSuchRowException {
+	public ExpandoRow findByPrimaryKey(long rowId)
+		throws com.liferay.portlet.expando.exception.NoSuchRowException {
 		return findByPrimaryKey((Serializable)rowId);
 	}
 
