@@ -43,7 +43,6 @@ import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.service.persistence.impl.TableMapper;
 import com.liferay.portal.service.persistence.impl.TableMapperFactory;
 
-import com.liferay.portlet.asset.exception.NoSuchEntryException;
 import com.liferay.portlet.asset.model.AssetEntry;
 import com.liferay.portlet.asset.model.impl.AssetEntryImpl;
 import com.liferay.portlet.asset.model.impl.AssetEntryModelImpl;
@@ -288,12 +287,12 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching asset entry
-	 * @throws NoSuchEntryException if a matching asset entry could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchEntryException if a matching asset entry could not be found
 	 */
 	@Override
 	public AssetEntry findByGroupId_First(long groupId,
 		OrderByComparator<AssetEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.asset.exception.NoSuchEntryException {
 		AssetEntry assetEntry = fetchByGroupId_First(groupId, orderByComparator);
 
 		if (assetEntry != null) {
@@ -309,7 +308,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -337,12 +336,12 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching asset entry
-	 * @throws NoSuchEntryException if a matching asset entry could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchEntryException if a matching asset entry could not be found
 	 */
 	@Override
 	public AssetEntry findByGroupId_Last(long groupId,
 		OrderByComparator<AssetEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.asset.exception.NoSuchEntryException {
 		AssetEntry assetEntry = fetchByGroupId_Last(groupId, orderByComparator);
 
 		if (assetEntry != null) {
@@ -358,7 +357,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -394,12 +393,12 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset entry
-	 * @throws NoSuchEntryException if a asset entry with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchEntryException if a asset entry with the primary key could not be found
 	 */
 	@Override
 	public AssetEntry[] findByGroupId_PrevAndNext(long entryId, long groupId,
 		OrderByComparator<AssetEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.asset.exception.NoSuchEntryException {
 		AssetEntry assetEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -790,12 +789,12 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching asset entry
-	 * @throws NoSuchEntryException if a matching asset entry could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchEntryException if a matching asset entry could not be found
 	 */
 	@Override
 	public AssetEntry findByCompanyId_First(long companyId,
 		OrderByComparator<AssetEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.asset.exception.NoSuchEntryException {
 		AssetEntry assetEntry = fetchByCompanyId_First(companyId,
 				orderByComparator);
 
@@ -812,7 +811,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -841,12 +840,12 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching asset entry
-	 * @throws NoSuchEntryException if a matching asset entry could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchEntryException if a matching asset entry could not be found
 	 */
 	@Override
 	public AssetEntry findByCompanyId_Last(long companyId,
 		OrderByComparator<AssetEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.asset.exception.NoSuchEntryException {
 		AssetEntry assetEntry = fetchByCompanyId_Last(companyId,
 				orderByComparator);
 
@@ -863,7 +862,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -899,12 +898,12 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset entry
-	 * @throws NoSuchEntryException if a asset entry with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchEntryException if a asset entry with the primary key could not be found
 	 */
 	@Override
 	public AssetEntry[] findByCompanyId_PrevAndNext(long entryId,
 		long companyId, OrderByComparator<AssetEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.asset.exception.NoSuchEntryException {
 		AssetEntry assetEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -1293,12 +1292,12 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 * @param visible the visible
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching asset entry
-	 * @throws NoSuchEntryException if a matching asset entry could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchEntryException if a matching asset entry could not be found
 	 */
 	@Override
 	public AssetEntry findByVisible_First(boolean visible,
 		OrderByComparator<AssetEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.asset.exception.NoSuchEntryException {
 		AssetEntry assetEntry = fetchByVisible_First(visible, orderByComparator);
 
 		if (assetEntry != null) {
@@ -1314,7 +1313,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -1342,12 +1341,12 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 * @param visible the visible
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching asset entry
-	 * @throws NoSuchEntryException if a matching asset entry could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchEntryException if a matching asset entry could not be found
 	 */
 	@Override
 	public AssetEntry findByVisible_Last(boolean visible,
 		OrderByComparator<AssetEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.asset.exception.NoSuchEntryException {
 		AssetEntry assetEntry = fetchByVisible_Last(visible, orderByComparator);
 
 		if (assetEntry != null) {
@@ -1363,7 +1362,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -1399,12 +1398,12 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 * @param visible the visible
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset entry
-	 * @throws NoSuchEntryException if a asset entry with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchEntryException if a asset entry with the primary key could not be found
 	 */
 	@Override
 	public AssetEntry[] findByVisible_PrevAndNext(long entryId,
 		boolean visible, OrderByComparator<AssetEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.asset.exception.NoSuchEntryException {
 		AssetEntry assetEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -1809,12 +1808,12 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 * @param publishDate the publish date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching asset entry
-	 * @throws NoSuchEntryException if a matching asset entry could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchEntryException if a matching asset entry could not be found
 	 */
 	@Override
 	public AssetEntry findByPublishDate_First(Date publishDate,
 		OrderByComparator<AssetEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.asset.exception.NoSuchEntryException {
 		AssetEntry assetEntry = fetchByPublishDate_First(publishDate,
 				orderByComparator);
 
@@ -1831,7 +1830,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -1860,12 +1859,12 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 * @param publishDate the publish date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching asset entry
-	 * @throws NoSuchEntryException if a matching asset entry could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchEntryException if a matching asset entry could not be found
 	 */
 	@Override
 	public AssetEntry findByPublishDate_Last(Date publishDate,
 		OrderByComparator<AssetEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.asset.exception.NoSuchEntryException {
 		AssetEntry assetEntry = fetchByPublishDate_Last(publishDate,
 				orderByComparator);
 
@@ -1882,7 +1881,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -1918,12 +1917,12 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 * @param publishDate the publish date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset entry
-	 * @throws NoSuchEntryException if a asset entry with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchEntryException if a asset entry with the primary key could not be found
 	 */
 	@Override
 	public AssetEntry[] findByPublishDate_PrevAndNext(long entryId,
 		Date publishDate, OrderByComparator<AssetEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.asset.exception.NoSuchEntryException {
 		AssetEntry assetEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -2355,12 +2354,12 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 * @param expirationDate the expiration date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching asset entry
-	 * @throws NoSuchEntryException if a matching asset entry could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchEntryException if a matching asset entry could not be found
 	 */
 	@Override
 	public AssetEntry findByExpirationDate_First(Date expirationDate,
 		OrderByComparator<AssetEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.asset.exception.NoSuchEntryException {
 		AssetEntry assetEntry = fetchByExpirationDate_First(expirationDate,
 				orderByComparator);
 
@@ -2377,7 +2376,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -2406,12 +2405,12 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 * @param expirationDate the expiration date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching asset entry
-	 * @throws NoSuchEntryException if a matching asset entry could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchEntryException if a matching asset entry could not be found
 	 */
 	@Override
 	public AssetEntry findByExpirationDate_Last(Date expirationDate,
 		OrderByComparator<AssetEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.asset.exception.NoSuchEntryException {
 		AssetEntry assetEntry = fetchByExpirationDate_Last(expirationDate,
 				orderByComparator);
 
@@ -2428,7 +2427,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -2464,12 +2463,12 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 * @param expirationDate the expiration date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset entry
-	 * @throws NoSuchEntryException if a asset entry with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchEntryException if a asset entry with the primary key could not be found
 	 */
 	@Override
 	public AssetEntry[] findByExpirationDate_PrevAndNext(long entryId,
 		Date expirationDate, OrderByComparator<AssetEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.asset.exception.NoSuchEntryException {
 		AssetEntry assetEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -2898,12 +2897,12 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 * @param layoutUuid the layout uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching asset entry
-	 * @throws NoSuchEntryException if a matching asset entry could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchEntryException if a matching asset entry could not be found
 	 */
 	@Override
 	public AssetEntry findByLayoutUuid_First(String layoutUuid,
 		OrderByComparator<AssetEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.asset.exception.NoSuchEntryException {
 		AssetEntry assetEntry = fetchByLayoutUuid_First(layoutUuid,
 				orderByComparator);
 
@@ -2920,7 +2919,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -2949,12 +2948,12 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 * @param layoutUuid the layout uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching asset entry
-	 * @throws NoSuchEntryException if a matching asset entry could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchEntryException if a matching asset entry could not be found
 	 */
 	@Override
 	public AssetEntry findByLayoutUuid_Last(String layoutUuid,
 		OrderByComparator<AssetEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.asset.exception.NoSuchEntryException {
 		AssetEntry assetEntry = fetchByLayoutUuid_Last(layoutUuid,
 				orderByComparator);
 
@@ -2971,7 +2970,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -3007,12 +3006,12 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 * @param layoutUuid the layout uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset entry
-	 * @throws NoSuchEntryException if a asset entry with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchEntryException if a asset entry with the primary key could not be found
 	 */
 	@Override
 	public AssetEntry[] findByLayoutUuid_PrevAndNext(long entryId,
 		String layoutUuid, OrderByComparator<AssetEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.asset.exception.NoSuchEntryException {
 		AssetEntry assetEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -3253,16 +3252,16 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 			new String[] { Long.class.getName(), String.class.getName() });
 
 	/**
-	 * Returns the asset entry where groupId = &#63; and classUuid = &#63; or throws a {@link NoSuchEntryException} if it could not be found.
+	 * Returns the asset entry where groupId = &#63; and classUuid = &#63; or throws a {@link com.liferay.portlet.asset.exception.NoSuchEntryException} if it could not be found.
 	 *
 	 * @param groupId the group ID
 	 * @param classUuid the class uuid
 	 * @return the matching asset entry
-	 * @throws NoSuchEntryException if a matching asset entry could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchEntryException if a matching asset entry could not be found
 	 */
 	@Override
 	public AssetEntry findByG_CU(long groupId, String classUuid)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.asset.exception.NoSuchEntryException {
 		AssetEntry assetEntry = fetchByG_CU(groupId, classUuid);
 
 		if (assetEntry == null) {
@@ -3282,7 +3281,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchEntryException(msg.toString());
+			throw new com.liferay.portlet.asset.exception.NoSuchEntryException(msg.toString());
 		}
 
 		return assetEntry;
@@ -3422,7 +3421,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 */
 	@Override
 	public AssetEntry removeByG_CU(long groupId, String classUuid)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.asset.exception.NoSuchEntryException {
 		AssetEntry assetEntry = findByG_CU(groupId, classUuid);
 
 		return remove(assetEntry);
@@ -3514,16 +3513,16 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 			new String[] { Long.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the asset entry where classNameId = &#63; and classPK = &#63; or throws a {@link NoSuchEntryException} if it could not be found.
+	 * Returns the asset entry where classNameId = &#63; and classPK = &#63; or throws a {@link com.liferay.portlet.asset.exception.NoSuchEntryException} if it could not be found.
 	 *
 	 * @param classNameId the class name ID
 	 * @param classPK the class p k
 	 * @return the matching asset entry
-	 * @throws NoSuchEntryException if a matching asset entry could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchEntryException if a matching asset entry could not be found
 	 */
 	@Override
 	public AssetEntry findByC_C(long classNameId, long classPK)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.asset.exception.NoSuchEntryException {
 		AssetEntry assetEntry = fetchByC_C(classNameId, classPK);
 
 		if (assetEntry == null) {
@@ -3543,7 +3542,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchEntryException(msg.toString());
+			throw new com.liferay.portlet.asset.exception.NoSuchEntryException(msg.toString());
 		}
 
 		return assetEntry;
@@ -3661,7 +3660,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 */
 	@Override
 	public AssetEntry removeByC_C(long classNameId, long classPK)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.asset.exception.NoSuchEntryException {
 		AssetEntry assetEntry = findByC_C(classNameId, classPK);
 
 		return remove(assetEntry);
@@ -3933,10 +3932,11 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 *
 	 * @param entryId the primary key of the asset entry
 	 * @return the asset entry that was removed
-	 * @throws NoSuchEntryException if a asset entry with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchEntryException if a asset entry with the primary key could not be found
 	 */
 	@Override
-	public AssetEntry remove(long entryId) throws NoSuchEntryException {
+	public AssetEntry remove(long entryId)
+		throws com.liferay.portlet.asset.exception.NoSuchEntryException {
 		return remove((Serializable)entryId);
 	}
 
@@ -3945,11 +3945,11 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 *
 	 * @param primaryKey the primary key of the asset entry
 	 * @return the asset entry that was removed
-	 * @throws NoSuchEntryException if a asset entry with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchEntryException if a asset entry with the primary key could not be found
 	 */
 	@Override
 	public AssetEntry remove(Serializable primaryKey)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.asset.exception.NoSuchEntryException {
 		Session session = null;
 
 		try {
@@ -3963,13 +3963,13 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portlet.asset.exception.NoSuchEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(assetEntry);
 		}
-		catch (NoSuchEntryException nsee) {
+		catch (com.liferay.portlet.asset.exception.NoSuchEntryException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -4236,11 +4236,11 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 *
 	 * @param primaryKey the primary key of the asset entry
 	 * @return the asset entry
-	 * @throws NoSuchEntryException if a asset entry with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchEntryException if a asset entry with the primary key could not be found
 	 */
 	@Override
 	public AssetEntry findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.asset.exception.NoSuchEntryException {
 		AssetEntry assetEntry = fetchByPrimaryKey(primaryKey);
 
 		if (assetEntry == null) {
@@ -4248,7 +4248,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portlet.asset.exception.NoSuchEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -4256,15 +4256,15 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	}
 
 	/**
-	 * Returns the asset entry with the primary key or throws a {@link NoSuchEntryException} if it could not be found.
+	 * Returns the asset entry with the primary key or throws a {@link com.liferay.portlet.asset.exception.NoSuchEntryException} if it could not be found.
 	 *
 	 * @param entryId the primary key of the asset entry
 	 * @return the asset entry
-	 * @throws NoSuchEntryException if a asset entry with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchEntryException if a asset entry with the primary key could not be found
 	 */
 	@Override
 	public AssetEntry findByPrimaryKey(long entryId)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.asset.exception.NoSuchEntryException {
 		return findByPrimaryKey((Serializable)entryId);
 	}
 

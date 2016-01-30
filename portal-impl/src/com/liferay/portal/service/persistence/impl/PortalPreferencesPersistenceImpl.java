@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchPreferencesException;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
@@ -98,16 +97,16 @@ public class PortalPreferencesPersistenceImpl extends BasePersistenceImpl<Portal
 			new String[] { Long.class.getName(), Integer.class.getName() });
 
 	/**
-	 * Returns the portal preferences where ownerId = &#63; and ownerType = &#63; or throws a {@link NoSuchPreferencesException} if it could not be found.
+	 * Returns the portal preferences where ownerId = &#63; and ownerType = &#63; or throws a {@link com.liferay.portal.exception.NoSuchPreferencesException} if it could not be found.
 	 *
 	 * @param ownerId the owner ID
 	 * @param ownerType the owner type
 	 * @return the matching portal preferences
-	 * @throws NoSuchPreferencesException if a matching portal preferences could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPreferencesException if a matching portal preferences could not be found
 	 */
 	@Override
 	public PortalPreferences findByO_O(long ownerId, int ownerType)
-		throws NoSuchPreferencesException {
+		throws com.liferay.portal.exception.NoSuchPreferencesException {
 		PortalPreferences portalPreferences = fetchByO_O(ownerId, ownerType);
 
 		if (portalPreferences == null) {
@@ -127,7 +126,7 @@ public class PortalPreferencesPersistenceImpl extends BasePersistenceImpl<Portal
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchPreferencesException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchPreferencesException(msg.toString());
 		}
 
 		return portalPreferences;
@@ -252,7 +251,7 @@ public class PortalPreferencesPersistenceImpl extends BasePersistenceImpl<Portal
 	 */
 	@Override
 	public PortalPreferences removeByO_O(long ownerId, int ownerType)
-		throws NoSuchPreferencesException {
+		throws com.liferay.portal.exception.NoSuchPreferencesException {
 		PortalPreferences portalPreferences = findByO_O(ownerId, ownerType);
 
 		return remove(portalPreferences);
@@ -479,11 +478,11 @@ public class PortalPreferencesPersistenceImpl extends BasePersistenceImpl<Portal
 	 *
 	 * @param portalPreferencesId the primary key of the portal preferences
 	 * @return the portal preferences that was removed
-	 * @throws NoSuchPreferencesException if a portal preferences with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPreferencesException if a portal preferences with the primary key could not be found
 	 */
 	@Override
 	public PortalPreferences remove(long portalPreferencesId)
-		throws NoSuchPreferencesException {
+		throws com.liferay.portal.exception.NoSuchPreferencesException {
 		return remove((Serializable)portalPreferencesId);
 	}
 
@@ -492,11 +491,11 @@ public class PortalPreferencesPersistenceImpl extends BasePersistenceImpl<Portal
 	 *
 	 * @param primaryKey the primary key of the portal preferences
 	 * @return the portal preferences that was removed
-	 * @throws NoSuchPreferencesException if a portal preferences with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPreferencesException if a portal preferences with the primary key could not be found
 	 */
 	@Override
 	public PortalPreferences remove(Serializable primaryKey)
-		throws NoSuchPreferencesException {
+		throws com.liferay.portal.exception.NoSuchPreferencesException {
 		Session session = null;
 
 		try {
@@ -510,13 +509,13 @@ public class PortalPreferencesPersistenceImpl extends BasePersistenceImpl<Portal
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchPreferencesException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchPreferencesException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(portalPreferences);
 		}
-		catch (NoSuchPreferencesException nsee) {
+		catch (com.liferay.portal.exception.NoSuchPreferencesException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -631,11 +630,11 @@ public class PortalPreferencesPersistenceImpl extends BasePersistenceImpl<Portal
 	 *
 	 * @param primaryKey the primary key of the portal preferences
 	 * @return the portal preferences
-	 * @throws NoSuchPreferencesException if a portal preferences with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPreferencesException if a portal preferences with the primary key could not be found
 	 */
 	@Override
 	public PortalPreferences findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchPreferencesException {
+		throws com.liferay.portal.exception.NoSuchPreferencesException {
 		PortalPreferences portalPreferences = fetchByPrimaryKey(primaryKey);
 
 		if (portalPreferences == null) {
@@ -643,7 +642,7 @@ public class PortalPreferencesPersistenceImpl extends BasePersistenceImpl<Portal
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchPreferencesException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchPreferencesException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -651,15 +650,15 @@ public class PortalPreferencesPersistenceImpl extends BasePersistenceImpl<Portal
 	}
 
 	/**
-	 * Returns the portal preferences with the primary key or throws a {@link NoSuchPreferencesException} if it could not be found.
+	 * Returns the portal preferences with the primary key or throws a {@link com.liferay.portal.exception.NoSuchPreferencesException} if it could not be found.
 	 *
 	 * @param portalPreferencesId the primary key of the portal preferences
 	 * @return the portal preferences
-	 * @throws NoSuchPreferencesException if a portal preferences with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPreferencesException if a portal preferences with the primary key could not be found
 	 */
 	@Override
 	public PortalPreferences findByPrimaryKey(long portalPreferencesId)
-		throws NoSuchPreferencesException {
+		throws com.liferay.portal.exception.NoSuchPreferencesException {
 		return findByPrimaryKey((Serializable)portalPreferencesId);
 	}
 

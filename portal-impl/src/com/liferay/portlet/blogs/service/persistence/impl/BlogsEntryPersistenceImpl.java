@@ -52,7 +52,6 @@ import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
-import com.liferay.portlet.blogs.exception.NoSuchEntryException;
 import com.liferay.portlet.blogs.model.BlogsEntry;
 import com.liferay.portlet.blogs.model.impl.BlogsEntryImpl;
 import com.liferay.portlet.blogs.model.impl.BlogsEntryModelImpl;
@@ -311,12 +310,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByUuid_First(String uuid,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByUuid_First(uuid, orderByComparator);
 
 		if (blogsEntry != null) {
@@ -332,7 +331,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -360,12 +359,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByUuid_Last(String uuid,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByUuid_Last(uuid, orderByComparator);
 
 		if (blogsEntry != null) {
@@ -381,7 +380,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -417,12 +416,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry[] findByUuid_PrevAndNext(long entryId, String uuid,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -663,16 +662,16 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 			new String[] { String.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the blogs entry where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchEntryException} if it could not be found.
+	 * Returns the blogs entry where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.portlet.blogs.exception.NoSuchEntryException} if it could not be found.
 	 *
 	 * @param uuid the uuid
 	 * @param groupId the group ID
 	 * @return the matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByUUID_G(String uuid, long groupId)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByUUID_G(uuid, groupId);
 
 		if (blogsEntry == null) {
@@ -692,7 +691,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchEntryException(msg.toString());
+			throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 		}
 
 		return blogsEntry;
@@ -825,7 +824,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 */
 	@Override
 	public BlogsEntry removeByUUID_G(String uuid, long groupId)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = findByUUID_G(uuid, groupId);
 
 		return remove(blogsEntry);
@@ -1128,12 +1127,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByUuid_C_First(String uuid, long companyId,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByUuid_C_First(uuid, companyId,
 				orderByComparator);
 
@@ -1153,7 +1152,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -1184,12 +1183,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByUuid_C_Last(String uuid, long companyId,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByUuid_C_Last(uuid, companyId,
 				orderByComparator);
 
@@ -1209,7 +1208,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -1247,12 +1246,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry[] findByUuid_C_PrevAndNext(long entryId, String uuid,
 		long companyId, OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -1684,12 +1683,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByGroupId_First(long groupId,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByGroupId_First(groupId, orderByComparator);
 
 		if (blogsEntry != null) {
@@ -1705,7 +1704,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -1733,12 +1732,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByGroupId_Last(long groupId,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByGroupId_Last(groupId, orderByComparator);
 
 		if (blogsEntry != null) {
@@ -1754,7 +1753,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -1790,12 +1789,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry[] findByGroupId_PrevAndNext(long entryId, long groupId,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -2059,12 +2058,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry[] filterFindByGroupId_PrevAndNext(long entryId,
 		long groupId, OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByGroupId_PrevAndNext(entryId, groupId, orderByComparator);
 		}
@@ -2544,12 +2543,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByCompanyId_First(long companyId,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByCompanyId_First(companyId,
 				orderByComparator);
 
@@ -2566,7 +2565,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -2595,12 +2594,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByCompanyId_Last(long companyId,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByCompanyId_Last(companyId,
 				orderByComparator);
 
@@ -2617,7 +2616,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -2653,12 +2652,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry[] findByCompanyId_PrevAndNext(long entryId,
 		long companyId, OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -2869,16 +2868,16 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 			new String[] { Long.class.getName(), String.class.getName() });
 
 	/**
-	 * Returns the blogs entry where groupId = &#63; and urlTitle = &#63; or throws a {@link NoSuchEntryException} if it could not be found.
+	 * Returns the blogs entry where groupId = &#63; and urlTitle = &#63; or throws a {@link com.liferay.portlet.blogs.exception.NoSuchEntryException} if it could not be found.
 	 *
 	 * @param groupId the group ID
 	 * @param urlTitle the url title
 	 * @return the matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByG_UT(long groupId, String urlTitle)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByG_UT(groupId, urlTitle);
 
 		if (blogsEntry == null) {
@@ -2898,7 +2897,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchEntryException(msg.toString());
+			throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 		}
 
 		return blogsEntry;
@@ -3031,7 +3030,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 */
 	@Override
 	public BlogsEntry removeByG_UT(long groupId, String urlTitle)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = findByG_UT(groupId, urlTitle);
 
 		return remove(blogsEntry);
@@ -3316,12 +3315,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param displayDate the display date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByG_LtD_First(long groupId, Date displayDate,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByG_LtD_First(groupId, displayDate,
 				orderByComparator);
 
@@ -3341,7 +3340,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -3372,12 +3371,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param displayDate the display date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByG_LtD_Last(long groupId, Date displayDate,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByG_LtD_Last(groupId, displayDate,
 				orderByComparator);
 
@@ -3397,7 +3396,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -3435,12 +3434,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param displayDate the display date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry[] findByG_LtD_PrevAndNext(long entryId, long groupId,
 		Date displayDate, OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -3740,13 +3739,13 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param displayDate the display date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry[] filterFindByG_LtD_PrevAndNext(long entryId,
 		long groupId, Date displayDate,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_LtD_PrevAndNext(entryId, groupId, displayDate,
 				orderByComparator);
@@ -4291,12 +4290,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByG_S_First(long groupId, int status,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByG_S_First(groupId, status,
 				orderByComparator);
 
@@ -4316,7 +4315,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -4347,12 +4346,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByG_S_Last(long groupId, int status,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByG_S_Last(groupId, status,
 				orderByComparator);
 
@@ -4372,7 +4371,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -4410,12 +4409,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry[] findByG_S_PrevAndNext(long entryId, long groupId,
 		int status, OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -4692,12 +4691,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry[] filterFindByG_S_PrevAndNext(long entryId, long groupId,
 		int status, OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_S_PrevAndNext(entryId, groupId, status,
 				orderByComparator);
@@ -5188,12 +5187,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByG_NotS_First(long groupId, int status,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByG_NotS_First(groupId, status,
 				orderByComparator);
 
@@ -5213,7 +5212,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -5244,12 +5243,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByG_NotS_Last(long groupId, int status,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByG_NotS_Last(groupId, status,
 				orderByComparator);
 
@@ -5269,7 +5268,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -5307,12 +5306,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry[] findByG_NotS_PrevAndNext(long entryId, long groupId,
 		int status, OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -5589,13 +5588,13 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry[] filterFindByG_NotS_PrevAndNext(long entryId,
 		long groupId, int status,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_NotS_PrevAndNext(entryId, groupId, status,
 				orderByComparator);
@@ -6106,12 +6105,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByC_U_First(long companyId, long userId,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByC_U_First(companyId, userId,
 				orderByComparator);
 
@@ -6131,7 +6130,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -6162,12 +6161,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByC_U_Last(long companyId, long userId,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByC_U_Last(companyId, userId,
 				orderByComparator);
 
@@ -6187,7 +6186,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -6225,12 +6224,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry[] findByC_U_PrevAndNext(long entryId, long companyId,
 		long userId, OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -6645,12 +6644,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param displayDate the display date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByC_LtD_First(long companyId, Date displayDate,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByC_LtD_First(companyId, displayDate,
 				orderByComparator);
 
@@ -6670,7 +6669,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -6701,12 +6700,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param displayDate the display date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByC_LtD_Last(long companyId, Date displayDate,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByC_LtD_Last(companyId, displayDate,
 				orderByComparator);
 
@@ -6726,7 +6725,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -6764,12 +6763,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param displayDate the display date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry[] findByC_LtD_PrevAndNext(long entryId, long companyId,
 		Date displayDate, OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -7210,12 +7209,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByC_S_First(long companyId, int status,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByC_S_First(companyId, status,
 				orderByComparator);
 
@@ -7235,7 +7234,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -7266,12 +7265,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByC_S_Last(long companyId, int status,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByC_S_Last(companyId, status,
 				orderByComparator);
 
@@ -7291,7 +7290,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -7329,12 +7328,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry[] findByC_S_PrevAndNext(long entryId, long companyId,
 		int status, OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -7737,12 +7736,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByC_NotS_First(long companyId, int status,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByC_NotS_First(companyId, status,
 				orderByComparator);
 
@@ -7762,7 +7761,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -7793,12 +7792,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByC_NotS_Last(long companyId, int status,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByC_NotS_Last(companyId, status,
 				orderByComparator);
 
@@ -7818,7 +7817,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -7856,12 +7855,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry[] findByC_NotS_PrevAndNext(long entryId, long companyId,
 		int status, OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -8276,12 +8275,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByLtD_S_First(Date displayDate, int status,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByLtD_S_First(displayDate, status,
 				orderByComparator);
 
@@ -8301,7 +8300,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -8332,12 +8331,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByLtD_S_Last(Date displayDate, int status,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByLtD_S_Last(displayDate, status,
 				orderByComparator);
 
@@ -8357,7 +8356,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -8395,12 +8394,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry[] findByLtD_S_PrevAndNext(long entryId, Date displayDate,
 		int status, OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -8853,12 +8852,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param displayDate the display date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByG_U_LtD_First(long groupId, long userId,
 		Date displayDate, OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByG_U_LtD_First(groupId, userId,
 				displayDate, orderByComparator);
 
@@ -8881,7 +8880,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -8914,12 +8913,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param displayDate the display date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByG_U_LtD_Last(long groupId, long userId,
 		Date displayDate, OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByG_U_LtD_Last(groupId, userId,
 				displayDate, orderByComparator);
 
@@ -8942,7 +8941,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -8982,13 +8981,13 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param displayDate the display date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry[] findByG_U_LtD_PrevAndNext(long entryId, long groupId,
 		long userId, Date displayDate,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -9303,13 +9302,13 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param displayDate the display date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry[] filterFindByG_U_LtD_PrevAndNext(long entryId,
 		long groupId, long userId, Date displayDate,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_U_LtD_PrevAndNext(entryId, groupId, userId,
 				displayDate, orderByComparator);
@@ -9896,12 +9895,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByG_U_S_First(long groupId, long userId, int status,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByG_U_S_First(groupId, userId, status,
 				orderByComparator);
 
@@ -9924,7 +9923,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -9957,12 +9956,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByG_U_S_Last(long groupId, long userId, int status,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByG_U_S_Last(groupId, userId, status,
 				orderByComparator);
 
@@ -9985,7 +9984,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -10025,12 +10024,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry[] findByG_U_S_PrevAndNext(long entryId, long groupId,
 		long userId, int status, OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -10322,13 +10321,13 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry[] filterFindByG_U_S_PrevAndNext(long entryId,
 		long groupId, long userId, int status,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_U_S_PrevAndNext(entryId, groupId, userId, status,
 				orderByComparator);
@@ -11387,12 +11386,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByG_U_NotS_First(long groupId, long userId,
 		int status, OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByG_U_NotS_First(groupId, userId, status,
 				orderByComparator);
 
@@ -11415,7 +11414,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -11448,12 +11447,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByG_U_NotS_Last(long groupId, long userId,
 		int status, OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByG_U_NotS_Last(groupId, userId, status,
 				orderByComparator);
 
@@ -11476,7 +11475,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -11516,12 +11515,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry[] findByG_U_NotS_PrevAndNext(long entryId, long groupId,
 		long userId, int status, OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -11813,13 +11812,13 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry[] filterFindByG_U_NotS_PrevAndNext(long entryId,
 		long groupId, long userId, int status,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_U_NotS_PrevAndNext(entryId, groupId, userId, status,
 				orderByComparator);
@@ -12360,12 +12359,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByG_LtD_S_First(long groupId, Date displayDate,
 		int status, OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByG_LtD_S_First(groupId, displayDate,
 				status, orderByComparator);
 
@@ -12388,7 +12387,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -12421,12 +12420,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByG_LtD_S_Last(long groupId, Date displayDate,
 		int status, OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByG_LtD_S_Last(groupId, displayDate,
 				status, orderByComparator);
 
@@ -12449,7 +12448,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -12489,13 +12488,13 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry[] findByG_LtD_S_PrevAndNext(long entryId, long groupId,
 		Date displayDate, int status,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -12810,13 +12809,13 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry[] filterFindByG_LtD_S_PrevAndNext(long entryId,
 		long groupId, Date displayDate, int status,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_LtD_S_PrevAndNext(entryId, groupId, displayDate,
 				status, orderByComparator);
@@ -13393,12 +13392,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByG_LtD_NotS_First(long groupId, Date displayDate,
 		int status, OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByG_LtD_NotS_First(groupId, displayDate,
 				status, orderByComparator);
 
@@ -13421,7 +13420,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -13454,12 +13453,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByG_LtD_NotS_Last(long groupId, Date displayDate,
 		int status, OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByG_LtD_NotS_Last(groupId, displayDate,
 				status, orderByComparator);
 
@@ -13482,7 +13481,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -13522,13 +13521,13 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry[] findByG_LtD_NotS_PrevAndNext(long entryId,
 		long groupId, Date displayDate, int status,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -13843,13 +13842,13 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry[] filterFindByG_LtD_NotS_PrevAndNext(long entryId,
 		long groupId, Date displayDate, int status,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_LtD_NotS_PrevAndNext(entryId, groupId, displayDate,
 				status, orderByComparator);
@@ -14432,12 +14431,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByC_U_S_First(long companyId, long userId,
 		int status, OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByC_U_S_First(companyId, userId, status,
 				orderByComparator);
 
@@ -14460,7 +14459,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -14493,12 +14492,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByC_U_S_Last(long companyId, long userId, int status,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByC_U_S_Last(companyId, userId, status,
 				orderByComparator);
 
@@ -14521,7 +14520,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -14561,12 +14560,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry[] findByC_U_S_PrevAndNext(long entryId, long companyId,
 		long userId, int status, OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -14998,12 +14997,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByC_U_NotS_First(long companyId, long userId,
 		int status, OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByC_U_NotS_First(companyId, userId,
 				status, orderByComparator);
 
@@ -15026,7 +15025,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -15059,12 +15058,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByC_U_NotS_Last(long companyId, long userId,
 		int status, OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByC_U_NotS_Last(companyId, userId, status,
 				orderByComparator);
 
@@ -15087,7 +15086,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -15127,13 +15126,13 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry[] findByC_U_NotS_PrevAndNext(long entryId,
 		long companyId, long userId, int status,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -15576,12 +15575,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByC_LtD_S_First(long companyId, Date displayDate,
 		int status, OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByC_LtD_S_First(companyId, displayDate,
 				status, orderByComparator);
 
@@ -15604,7 +15603,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -15637,12 +15636,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByC_LtD_S_Last(long companyId, Date displayDate,
 		int status, OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByC_LtD_S_Last(companyId, displayDate,
 				status, orderByComparator);
 
@@ -15665,7 +15664,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -15705,13 +15704,13 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry[] findByC_LtD_S_PrevAndNext(long entryId, long companyId,
 		Date displayDate, int status,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -16179,12 +16178,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByC_LtD_NotS_First(long companyId, Date displayDate,
 		int status, OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByC_LtD_NotS_First(companyId, displayDate,
 				status, orderByComparator);
 
@@ -16207,7 +16206,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -16240,12 +16239,12 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByC_LtD_NotS_Last(long companyId, Date displayDate,
 		int status, OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByC_LtD_NotS_Last(companyId, displayDate,
 				status, orderByComparator);
 
@@ -16268,7 +16267,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -16308,13 +16307,13 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry[] findByC_LtD_NotS_PrevAndNext(long entryId,
 		long companyId, Date displayDate, int status,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -16793,13 +16792,13 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByG_U_LtD_S_First(long groupId, long userId,
 		Date displayDate, int status,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByG_U_LtD_S_First(groupId, userId,
 				displayDate, status, orderByComparator);
 
@@ -16825,7 +16824,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -16861,13 +16860,13 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByG_U_LtD_S_Last(long groupId, long userId,
 		Date displayDate, int status,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByG_U_LtD_S_Last(groupId, userId,
 				displayDate, status, orderByComparator);
 
@@ -16893,7 +16892,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -16936,13 +16935,13 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry[] findByG_U_LtD_S_PrevAndNext(long entryId, long groupId,
 		long userId, Date displayDate, int status,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -17270,13 +17269,13 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry[] filterFindByG_U_LtD_S_PrevAndNext(long entryId,
 		long groupId, long userId, Date displayDate, int status,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_U_LtD_S_PrevAndNext(entryId, groupId, userId,
 				displayDate, status, orderByComparator);
@@ -17886,13 +17885,13 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByG_U_LtD_NotS_First(long groupId, long userId,
 		Date displayDate, int status,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByG_U_LtD_NotS_First(groupId, userId,
 				displayDate, status, orderByComparator);
 
@@ -17918,7 +17917,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -17954,13 +17953,13 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching blogs entry
-	 * @throws NoSuchEntryException if a matching blogs entry could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a matching blogs entry could not be found
 	 */
 	@Override
 	public BlogsEntry findByG_U_LtD_NotS_Last(long groupId, long userId,
 		Date displayDate, int status,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByG_U_LtD_NotS_Last(groupId, userId,
 				displayDate, status, orderByComparator);
 
@@ -17986,7 +17985,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -18029,13 +18028,13 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry[] findByG_U_LtD_NotS_PrevAndNext(long entryId,
 		long groupId, long userId, Date displayDate, int status,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -18365,13 +18364,13 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry[] filterFindByG_U_LtD_NotS_PrevAndNext(long entryId,
 		long groupId, long userId, Date displayDate, int status,
 		OrderByComparator<BlogsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_U_LtD_NotS_PrevAndNext(entryId, groupId, userId,
 				displayDate, status, orderByComparator);
@@ -18957,10 +18956,11 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 *
 	 * @param entryId the primary key of the blogs entry
 	 * @return the blogs entry that was removed
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
-	public BlogsEntry remove(long entryId) throws NoSuchEntryException {
+	public BlogsEntry remove(long entryId)
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		return remove((Serializable)entryId);
 	}
 
@@ -18969,11 +18969,11 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 *
 	 * @param primaryKey the primary key of the blogs entry
 	 * @return the blogs entry that was removed
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry remove(Serializable primaryKey)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		Session session = null;
 
 		try {
@@ -18987,13 +18987,13 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(blogsEntry);
 		}
-		catch (NoSuchEntryException nsee) {
+		catch (com.liferay.portlet.blogs.exception.NoSuchEntryException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -19372,11 +19372,11 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	 *
 	 * @param primaryKey the primary key of the blogs entry
 	 * @return the blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		BlogsEntry blogsEntry = fetchByPrimaryKey(primaryKey);
 
 		if (blogsEntry == null) {
@@ -19384,7 +19384,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portlet.blogs.exception.NoSuchEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -19392,15 +19392,15 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	}
 
 	/**
-	 * Returns the blogs entry with the primary key or throws a {@link NoSuchEntryException} if it could not be found.
+	 * Returns the blogs entry with the primary key or throws a {@link com.liferay.portlet.blogs.exception.NoSuchEntryException} if it could not be found.
 	 *
 	 * @param entryId the primary key of the blogs entry
 	 * @return the blogs entry
-	 * @throws NoSuchEntryException if a blogs entry with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchEntryException if a blogs entry with the primary key could not be found
 	 */
 	@Override
 	public BlogsEntry findByPrimaryKey(long entryId)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.blogs.exception.NoSuchEntryException {
 		return findByPrimaryKey((Serializable)entryId);
 	}
 

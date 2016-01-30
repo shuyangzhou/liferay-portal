@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -334,13 +333,13 @@ public class WorkflowInstanceLinkPersistenceImpl extends BasePersistenceImpl<Wor
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching workflow instance link
-	 * @throws NoSuchWorkflowInstanceLinkException if a matching workflow instance link could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException if a matching workflow instance link could not be found
 	 */
 	@Override
 	public WorkflowInstanceLink findByG_C_C_C_First(long groupId,
 		long companyId, long classNameId, long classPK,
 		OrderByComparator<WorkflowInstanceLink> orderByComparator)
-		throws NoSuchWorkflowInstanceLinkException {
+		throws com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException {
 		WorkflowInstanceLink workflowInstanceLink = fetchByG_C_C_C_First(groupId,
 				companyId, classNameId, classPK, orderByComparator);
 
@@ -366,7 +365,7 @@ public class WorkflowInstanceLinkPersistenceImpl extends BasePersistenceImpl<Wor
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchWorkflowInstanceLinkException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException(msg.toString());
 	}
 
 	/**
@@ -402,13 +401,13 @@ public class WorkflowInstanceLinkPersistenceImpl extends BasePersistenceImpl<Wor
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching workflow instance link
-	 * @throws NoSuchWorkflowInstanceLinkException if a matching workflow instance link could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException if a matching workflow instance link could not be found
 	 */
 	@Override
 	public WorkflowInstanceLink findByG_C_C_C_Last(long groupId,
 		long companyId, long classNameId, long classPK,
 		OrderByComparator<WorkflowInstanceLink> orderByComparator)
-		throws NoSuchWorkflowInstanceLinkException {
+		throws com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException {
 		WorkflowInstanceLink workflowInstanceLink = fetchByG_C_C_C_Last(groupId,
 				companyId, classNameId, classPK, orderByComparator);
 
@@ -434,7 +433,7 @@ public class WorkflowInstanceLinkPersistenceImpl extends BasePersistenceImpl<Wor
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchWorkflowInstanceLinkException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException(msg.toString());
 	}
 
 	/**
@@ -477,14 +476,14 @@ public class WorkflowInstanceLinkPersistenceImpl extends BasePersistenceImpl<Wor
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next workflow instance link
-	 * @throws NoSuchWorkflowInstanceLinkException if a workflow instance link with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException if a workflow instance link with the primary key could not be found
 	 */
 	@Override
 	public WorkflowInstanceLink[] findByG_C_C_C_PrevAndNext(
 		long workflowInstanceLinkId, long groupId, long companyId,
 		long classNameId, long classPK,
 		OrderByComparator<WorkflowInstanceLink> orderByComparator)
-		throws NoSuchWorkflowInstanceLinkException {
+		throws com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException {
 		WorkflowInstanceLink workflowInstanceLink = findByPrimaryKey(workflowInstanceLinkId);
 
 		Session session = null;
@@ -831,11 +830,11 @@ public class WorkflowInstanceLinkPersistenceImpl extends BasePersistenceImpl<Wor
 	 *
 	 * @param workflowInstanceLinkId the primary key of the workflow instance link
 	 * @return the workflow instance link that was removed
-	 * @throws NoSuchWorkflowInstanceLinkException if a workflow instance link with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException if a workflow instance link with the primary key could not be found
 	 */
 	@Override
 	public WorkflowInstanceLink remove(long workflowInstanceLinkId)
-		throws NoSuchWorkflowInstanceLinkException {
+		throws com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException {
 		return remove((Serializable)workflowInstanceLinkId);
 	}
 
@@ -844,11 +843,11 @@ public class WorkflowInstanceLinkPersistenceImpl extends BasePersistenceImpl<Wor
 	 *
 	 * @param primaryKey the primary key of the workflow instance link
 	 * @return the workflow instance link that was removed
-	 * @throws NoSuchWorkflowInstanceLinkException if a workflow instance link with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException if a workflow instance link with the primary key could not be found
 	 */
 	@Override
 	public WorkflowInstanceLink remove(Serializable primaryKey)
-		throws NoSuchWorkflowInstanceLinkException {
+		throws com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException {
 		Session session = null;
 
 		try {
@@ -862,13 +861,13 @@ public class WorkflowInstanceLinkPersistenceImpl extends BasePersistenceImpl<Wor
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchWorkflowInstanceLinkException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(workflowInstanceLink);
 		}
-		catch (NoSuchWorkflowInstanceLinkException nsee) {
+		catch (com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -1039,11 +1038,11 @@ public class WorkflowInstanceLinkPersistenceImpl extends BasePersistenceImpl<Wor
 	 *
 	 * @param primaryKey the primary key of the workflow instance link
 	 * @return the workflow instance link
-	 * @throws NoSuchWorkflowInstanceLinkException if a workflow instance link with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException if a workflow instance link with the primary key could not be found
 	 */
 	@Override
 	public WorkflowInstanceLink findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchWorkflowInstanceLinkException {
+		throws com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException {
 		WorkflowInstanceLink workflowInstanceLink = fetchByPrimaryKey(primaryKey);
 
 		if (workflowInstanceLink == null) {
@@ -1051,7 +1050,7 @@ public class WorkflowInstanceLinkPersistenceImpl extends BasePersistenceImpl<Wor
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchWorkflowInstanceLinkException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -1059,15 +1058,15 @@ public class WorkflowInstanceLinkPersistenceImpl extends BasePersistenceImpl<Wor
 	}
 
 	/**
-	 * Returns the workflow instance link with the primary key or throws a {@link NoSuchWorkflowInstanceLinkException} if it could not be found.
+	 * Returns the workflow instance link with the primary key or throws a {@link com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException} if it could not be found.
 	 *
 	 * @param workflowInstanceLinkId the primary key of the workflow instance link
 	 * @return the workflow instance link
-	 * @throws NoSuchWorkflowInstanceLinkException if a workflow instance link with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException if a workflow instance link with the primary key could not be found
 	 */
 	@Override
 	public WorkflowInstanceLink findByPrimaryKey(long workflowInstanceLinkId)
-		throws NoSuchWorkflowInstanceLinkException {
+		throws com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException {
 		return findByPrimaryKey((Serializable)workflowInstanceLinkId);
 	}
 

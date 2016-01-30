@@ -107,11 +107,11 @@ public class CompanyUtil {
 	}
 
 	/**
-	* Returns the company where webId = &#63; or throws a {@link NoSuchCompanyException} if it could not be found.
+	* Returns the company where webId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchCompanyException} if it could not be found.
 	*
 	* @param webId the web ID
 	* @return the matching company
-	* @throws NoSuchCompanyException if a matching company could not be found
+	* @throws com.liferay.portal.exception.NoSuchCompanyException if a matching company could not be found
 	*/
 	public static Company findByWebId(java.lang.String webId)
 		throws com.liferay.portal.exception.NoSuchCompanyException {
@@ -162,11 +162,11 @@ public class CompanyUtil {
 	}
 
 	/**
-	* Returns the company where mx = &#63; or throws a {@link NoSuchCompanyException} if it could not be found.
+	* Returns the company where mx = &#63; or throws a {@link com.liferay.portal.exception.NoSuchCompanyException} if it could not be found.
 	*
 	* @param mx the mx
 	* @return the matching company
-	* @throws NoSuchCompanyException if a matching company could not be found
+	* @throws com.liferay.portal.exception.NoSuchCompanyException if a matching company could not be found
 	*/
 	public static Company findByMx(java.lang.String mx)
 		throws com.liferay.portal.exception.NoSuchCompanyException {
@@ -217,11 +217,11 @@ public class CompanyUtil {
 	}
 
 	/**
-	* Returns the company where logoId = &#63; or throws a {@link NoSuchCompanyException} if it could not be found.
+	* Returns the company where logoId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchCompanyException} if it could not be found.
 	*
 	* @param logoId the logo ID
 	* @return the matching company
-	* @throws NoSuchCompanyException if a matching company could not be found
+	* @throws com.liferay.portal.exception.NoSuchCompanyException if a matching company could not be found
 	*/
 	public static Company findByLogoId(long logoId)
 		throws com.liferay.portal.exception.NoSuchCompanyException {
@@ -343,7 +343,7 @@ public class CompanyUtil {
 	* @param system the system
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching company
-	* @throws NoSuchCompanyException if a matching company could not be found
+	* @throws com.liferay.portal.exception.NoSuchCompanyException if a matching company could not be found
 	*/
 	public static Company findBySystem_First(boolean system,
 		OrderByComparator<Company> orderByComparator)
@@ -369,7 +369,7 @@ public class CompanyUtil {
 	* @param system the system
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching company
-	* @throws NoSuchCompanyException if a matching company could not be found
+	* @throws com.liferay.portal.exception.NoSuchCompanyException if a matching company could not be found
 	*/
 	public static Company findBySystem_Last(boolean system,
 		OrderByComparator<Company> orderByComparator)
@@ -396,7 +396,7 @@ public class CompanyUtil {
 	* @param system the system
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next company
-	* @throws NoSuchCompanyException if a company with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchCompanyException if a company with the primary key could not be found
 	*/
 	public static Company[] findBySystem_PrevAndNext(long companyId,
 		boolean system, OrderByComparator<Company> orderByComparator)
@@ -458,7 +458,7 @@ public class CompanyUtil {
 	*
 	* @param companyId the primary key of the company
 	* @return the company that was removed
-	* @throws NoSuchCompanyException if a company with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchCompanyException if a company with the primary key could not be found
 	*/
 	public static Company remove(long companyId)
 		throws com.liferay.portal.exception.NoSuchCompanyException {
@@ -470,11 +470,11 @@ public class CompanyUtil {
 	}
 
 	/**
-	* Returns the company with the primary key or throws a {@link NoSuchCompanyException} if it could not be found.
+	* Returns the company with the primary key or throws a {@link com.liferay.portal.exception.NoSuchCompanyException} if it could not be found.
 	*
 	* @param companyId the primary key of the company
 	* @return the company
-	* @throws NoSuchCompanyException if a company with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchCompanyException if a company with the primary key could not be found
 	*/
 	public static Company findByPrimaryKey(long companyId)
 		throws com.liferay.portal.exception.NoSuchCompanyException {

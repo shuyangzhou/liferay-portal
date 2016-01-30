@@ -178,7 +178,7 @@ public class UserUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user
-	* @throws NoSuchUserException if a matching user could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	*/
 	public static User findByUuid_First(java.lang.String uuid,
 		OrderByComparator<User> orderByComparator)
@@ -204,7 +204,7 @@ public class UserUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user
-	* @throws NoSuchUserException if a matching user could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	*/
 	public static User findByUuid_Last(java.lang.String uuid,
 		OrderByComparator<User> orderByComparator)
@@ -231,7 +231,7 @@ public class UserUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user
-	* @throws NoSuchUserException if a user with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a user with the primary key could not be found
 	*/
 	public static User[] findByUuid_PrevAndNext(long userId,
 		java.lang.String uuid, OrderByComparator<User> orderByComparator)
@@ -339,7 +339,7 @@ public class UserUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user
-	* @throws NoSuchUserException if a matching user could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	*/
 	public static User findByUuid_C_First(java.lang.String uuid,
 		long companyId, OrderByComparator<User> orderByComparator)
@@ -369,7 +369,7 @@ public class UserUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user
-	* @throws NoSuchUserException if a matching user could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	*/
 	public static User findByUuid_C_Last(java.lang.String uuid, long companyId,
 		OrderByComparator<User> orderByComparator)
@@ -400,7 +400,7 @@ public class UserUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user
-	* @throws NoSuchUserException if a user with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a user with the primary key could not be found
 	*/
 	public static User[] findByUuid_C_PrevAndNext(long userId,
 		java.lang.String uuid, long companyId,
@@ -505,7 +505,7 @@ public class UserUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user
-	* @throws NoSuchUserException if a matching user could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	*/
 	public static User findByCompanyId_First(long companyId,
 		OrderByComparator<User> orderByComparator)
@@ -533,7 +533,7 @@ public class UserUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user
-	* @throws NoSuchUserException if a matching user could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	*/
 	public static User findByCompanyId_Last(long companyId,
 		OrderByComparator<User> orderByComparator)
@@ -562,7 +562,7 @@ public class UserUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user
-	* @throws NoSuchUserException if a user with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a user with the primary key could not be found
 	*/
 	public static User[] findByCompanyId_PrevAndNext(long userId,
 		long companyId, OrderByComparator<User> orderByComparator)
@@ -592,11 +592,11 @@ public class UserUtil {
 	}
 
 	/**
-	* Returns the user where contactId = &#63; or throws a {@link NoSuchUserException} if it could not be found.
+	* Returns the user where contactId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchUserException} if it could not be found.
 	*
 	* @param contactId the contact ID
 	* @return the matching user
-	* @throws NoSuchUserException if a matching user could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	*/
 	public static User findByContactId(long contactId)
 		throws com.liferay.portal.exception.NoSuchUserException {
@@ -721,7 +721,7 @@ public class UserUtil {
 	* @param emailAddress the email address
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user
-	* @throws NoSuchUserException if a matching user could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	*/
 	public static User findByEmailAddress_First(java.lang.String emailAddress,
 		OrderByComparator<User> orderByComparator)
@@ -749,7 +749,7 @@ public class UserUtil {
 	* @param emailAddress the email address
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user
-	* @throws NoSuchUserException if a matching user could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	*/
 	public static User findByEmailAddress_Last(java.lang.String emailAddress,
 		OrderByComparator<User> orderByComparator)
@@ -778,7 +778,7 @@ public class UserUtil {
 	* @param emailAddress the email address
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user
-	* @throws NoSuchUserException if a user with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a user with the primary key could not be found
 	*/
 	public static User[] findByEmailAddress_PrevAndNext(long userId,
 		java.lang.String emailAddress, OrderByComparator<User> orderByComparator)
@@ -808,11 +808,11 @@ public class UserUtil {
 	}
 
 	/**
-	* Returns the user where portraitId = &#63; or throws a {@link NoSuchUserException} if it could not be found.
+	* Returns the user where portraitId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchUserException} if it could not be found.
 	*
 	* @param portraitId the portrait ID
 	* @return the matching user
-	* @throws NoSuchUserException if a matching user could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	*/
 	public static User findByPortraitId(long portraitId)
 		throws com.liferay.portal.exception.NoSuchUserException {
@@ -863,12 +863,12 @@ public class UserUtil {
 	}
 
 	/**
-	* Returns the user where companyId = &#63; and userId = &#63; or throws a {@link NoSuchUserException} if it could not be found.
+	* Returns the user where companyId = &#63; and userId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchUserException} if it could not be found.
 	*
 	* @param companyId the company ID
 	* @param userId the user ID
 	* @return the matching user
-	* @throws NoSuchUserException if a matching user could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	*/
 	public static User findByC_U(long companyId, long userId)
 		throws com.liferay.portal.exception.NoSuchUserException {
@@ -1004,7 +1004,7 @@ public class UserUtil {
 	* @param createDate the create date
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user
-	* @throws NoSuchUserException if a matching user could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	*/
 	public static User findByC_CD_First(long companyId,
 		java.util.Date createDate, OrderByComparator<User> orderByComparator)
@@ -1034,7 +1034,7 @@ public class UserUtil {
 	* @param createDate the create date
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user
-	* @throws NoSuchUserException if a matching user could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	*/
 	public static User findByC_CD_Last(long companyId,
 		java.util.Date createDate, OrderByComparator<User> orderByComparator)
@@ -1065,7 +1065,7 @@ public class UserUtil {
 	* @param createDate the create date
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user
-	* @throws NoSuchUserException if a user with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a user with the primary key could not be found
 	*/
 	public static User[] findByC_CD_PrevAndNext(long userId, long companyId,
 		java.util.Date createDate, OrderByComparator<User> orderByComparator)
@@ -1178,7 +1178,7 @@ public class UserUtil {
 	* @param modifiedDate the modified date
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user
-	* @throws NoSuchUserException if a matching user could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	*/
 	public static User findByC_MD_First(long companyId,
 		java.util.Date modifiedDate, OrderByComparator<User> orderByComparator)
@@ -1208,7 +1208,7 @@ public class UserUtil {
 	* @param modifiedDate the modified date
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user
-	* @throws NoSuchUserException if a matching user could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	*/
 	public static User findByC_MD_Last(long companyId,
 		java.util.Date modifiedDate, OrderByComparator<User> orderByComparator)
@@ -1239,7 +1239,7 @@ public class UserUtil {
 	* @param modifiedDate the modified date
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user
-	* @throws NoSuchUserException if a user with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a user with the primary key could not be found
 	*/
 	public static User[] findByC_MD_PrevAndNext(long userId, long companyId,
 		java.util.Date modifiedDate, OrderByComparator<User> orderByComparator)
@@ -1271,12 +1271,12 @@ public class UserUtil {
 	}
 
 	/**
-	* Returns the user where companyId = &#63; and defaultUser = &#63; or throws a {@link NoSuchUserException} if it could not be found.
+	* Returns the user where companyId = &#63; and defaultUser = &#63; or throws a {@link com.liferay.portal.exception.NoSuchUserException} if it could not be found.
 	*
 	* @param companyId the company ID
 	* @param defaultUser the default user
 	* @return the matching user
-	* @throws NoSuchUserException if a matching user could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	*/
 	public static User findByC_DU(long companyId, boolean defaultUser)
 		throws com.liferay.portal.exception.NoSuchUserException {
@@ -1332,12 +1332,12 @@ public class UserUtil {
 	}
 
 	/**
-	* Returns the user where companyId = &#63; and screenName = &#63; or throws a {@link NoSuchUserException} if it could not be found.
+	* Returns the user where companyId = &#63; and screenName = &#63; or throws a {@link com.liferay.portal.exception.NoSuchUserException} if it could not be found.
 	*
 	* @param companyId the company ID
 	* @param screenName the screen name
 	* @return the matching user
-	* @throws NoSuchUserException if a matching user could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	*/
 	public static User findByC_SN(long companyId, java.lang.String screenName)
 		throws com.liferay.portal.exception.NoSuchUserException {
@@ -1393,12 +1393,12 @@ public class UserUtil {
 	}
 
 	/**
-	* Returns the user where companyId = &#63; and emailAddress = &#63; or throws a {@link NoSuchUserException} if it could not be found.
+	* Returns the user where companyId = &#63; and emailAddress = &#63; or throws a {@link com.liferay.portal.exception.NoSuchUserException} if it could not be found.
 	*
 	* @param companyId the company ID
 	* @param emailAddress the email address
 	* @return the matching user
-	* @throws NoSuchUserException if a matching user could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	*/
 	public static User findByC_EA(long companyId, java.lang.String emailAddress)
 		throws com.liferay.portal.exception.NoSuchUserException {
@@ -1455,12 +1455,12 @@ public class UserUtil {
 	}
 
 	/**
-	* Returns the user where companyId = &#63; and facebookId = &#63; or throws a {@link NoSuchUserException} if it could not be found.
+	* Returns the user where companyId = &#63; and facebookId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchUserException} if it could not be found.
 	*
 	* @param companyId the company ID
 	* @param facebookId the facebook ID
 	* @return the matching user
-	* @throws NoSuchUserException if a matching user could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	*/
 	public static User findByC_FID(long companyId, long facebookId)
 		throws com.liferay.portal.exception.NoSuchUserException {
@@ -1516,12 +1516,12 @@ public class UserUtil {
 	}
 
 	/**
-	* Returns the user where companyId = &#63; and openId = &#63; or throws a {@link NoSuchUserException} if it could not be found.
+	* Returns the user where companyId = &#63; and openId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchUserException} if it could not be found.
 	*
 	* @param companyId the company ID
 	* @param openId the open ID
 	* @return the matching user
-	* @throws NoSuchUserException if a matching user could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	*/
 	public static User findByC_O(long companyId, java.lang.String openId)
 		throws com.liferay.portal.exception.NoSuchUserException {
@@ -1654,7 +1654,7 @@ public class UserUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user
-	* @throws NoSuchUserException if a matching user could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	*/
 	public static User findByC_S_First(long companyId, int status,
 		OrderByComparator<User> orderByComparator)
@@ -1684,7 +1684,7 @@ public class UserUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user
-	* @throws NoSuchUserException if a matching user could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	*/
 	public static User findByC_S_Last(long companyId, int status,
 		OrderByComparator<User> orderByComparator)
@@ -1715,7 +1715,7 @@ public class UserUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user
-	* @throws NoSuchUserException if a user with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a user with the primary key could not be found
 	*/
 	public static User[] findByC_S_PrevAndNext(long userId, long companyId,
 		int status, OrderByComparator<User> orderByComparator)
@@ -1838,7 +1838,7 @@ public class UserUtil {
 	* @param modifiedDate the modified date
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user
-	* @throws NoSuchUserException if a matching user could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	*/
 	public static User findByC_CD_MD_First(long companyId,
 		java.util.Date createDate, java.util.Date modifiedDate,
@@ -1874,7 +1874,7 @@ public class UserUtil {
 	* @param modifiedDate the modified date
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user
-	* @throws NoSuchUserException if a matching user could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	*/
 	public static User findByC_CD_MD_Last(long companyId,
 		java.util.Date createDate, java.util.Date modifiedDate,
@@ -1911,7 +1911,7 @@ public class UserUtil {
 	* @param modifiedDate the modified date
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user
-	* @throws NoSuchUserException if a user with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a user with the primary key could not be found
 	*/
 	public static User[] findByC_CD_MD_PrevAndNext(long userId, long companyId,
 		java.util.Date createDate, java.util.Date modifiedDate,
@@ -2036,7 +2036,7 @@ public class UserUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user
-	* @throws NoSuchUserException if a matching user could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	*/
 	public static User findByC_DU_S_First(long companyId, boolean defaultUser,
 		int status, OrderByComparator<User> orderByComparator)
@@ -2070,7 +2070,7 @@ public class UserUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user
-	* @throws NoSuchUserException if a matching user could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	*/
 	public static User findByC_DU_S_Last(long companyId, boolean defaultUser,
 		int status, OrderByComparator<User> orderByComparator)
@@ -2105,7 +2105,7 @@ public class UserUtil {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user
-	* @throws NoSuchUserException if a user with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a user with the primary key could not be found
 	*/
 	public static User[] findByC_DU_S_PrevAndNext(long userId, long companyId,
 		boolean defaultUser, int status,
@@ -2174,7 +2174,7 @@ public class UserUtil {
 	*
 	* @param userId the primary key of the user
 	* @return the user that was removed
-	* @throws NoSuchUserException if a user with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a user with the primary key could not be found
 	*/
 	public static User remove(long userId)
 		throws com.liferay.portal.exception.NoSuchUserException {
@@ -2186,11 +2186,11 @@ public class UserUtil {
 	}
 
 	/**
-	* Returns the user with the primary key or throws a {@link NoSuchUserException} if it could not be found.
+	* Returns the user with the primary key or throws a {@link com.liferay.portal.exception.NoSuchUserException} if it could not be found.
 	*
 	* @param userId the primary key of the user
 	* @return the user
-	* @throws NoSuchUserException if a user with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserException if a user with the primary key could not be found
 	*/
 	public static User findByPrimaryKey(long userId)
 		throws com.liferay.portal.exception.NoSuchUserException {

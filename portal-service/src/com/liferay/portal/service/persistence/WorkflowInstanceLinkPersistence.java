@@ -119,7 +119,7 @@ public interface WorkflowInstanceLinkPersistence extends BasePersistence<Workflo
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching workflow instance link
-	* @throws NoSuchWorkflowInstanceLinkException if a matching workflow instance link could not be found
+	* @throws com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException if a matching workflow instance link could not be found
 	*/
 	public WorkflowInstanceLink findByG_C_C_C_First(long groupId,
 		long companyId, long classNameId, long classPK,
@@ -149,7 +149,7 @@ public interface WorkflowInstanceLinkPersistence extends BasePersistence<Workflo
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching workflow instance link
-	* @throws NoSuchWorkflowInstanceLinkException if a matching workflow instance link could not be found
+	* @throws com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException if a matching workflow instance link could not be found
 	*/
 	public WorkflowInstanceLink findByG_C_C_C_Last(long groupId,
 		long companyId, long classNameId, long classPK,
@@ -180,7 +180,7 @@ public interface WorkflowInstanceLinkPersistence extends BasePersistence<Workflo
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next workflow instance link
-	* @throws NoSuchWorkflowInstanceLinkException if a workflow instance link with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException if a workflow instance link with the primary key could not be found
 	*/
 	public WorkflowInstanceLink[] findByG_C_C_C_PrevAndNext(
 		long workflowInstanceLinkId, long groupId, long companyId,
@@ -239,7 +239,7 @@ public interface WorkflowInstanceLinkPersistence extends BasePersistence<Workflo
 	*
 	* @param workflowInstanceLinkId the primary key of the workflow instance link
 	* @return the workflow instance link that was removed
-	* @throws NoSuchWorkflowInstanceLinkException if a workflow instance link with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException if a workflow instance link with the primary key could not be found
 	*/
 	public WorkflowInstanceLink remove(long workflowInstanceLinkId)
 		throws com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException;
@@ -248,11 +248,11 @@ public interface WorkflowInstanceLinkPersistence extends BasePersistence<Workflo
 		WorkflowInstanceLink workflowInstanceLink);
 
 	/**
-	* Returns the workflow instance link with the primary key or throws a {@link NoSuchWorkflowInstanceLinkException} if it could not be found.
+	* Returns the workflow instance link with the primary key or throws a {@link com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException} if it could not be found.
 	*
 	* @param workflowInstanceLinkId the primary key of the workflow instance link
 	* @return the workflow instance link
-	* @throws NoSuchWorkflowInstanceLinkException if a workflow instance link with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException if a workflow instance link with the primary key could not be found
 	*/
 	public WorkflowInstanceLink findByPrimaryKey(long workflowInstanceLinkId)
 		throws com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException;

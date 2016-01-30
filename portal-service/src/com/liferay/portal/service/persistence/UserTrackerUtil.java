@@ -182,7 +182,7 @@ public class UserTrackerUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user tracker
-	* @throws NoSuchUserTrackerException if a matching user tracker could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserTrackerException if a matching user tracker could not be found
 	*/
 	public static UserTracker findByCompanyId_First(long companyId,
 		OrderByComparator<UserTracker> orderByComparator)
@@ -210,7 +210,7 @@ public class UserTrackerUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user tracker
-	* @throws NoSuchUserTrackerException if a matching user tracker could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserTrackerException if a matching user tracker could not be found
 	*/
 	public static UserTracker findByCompanyId_Last(long companyId,
 		OrderByComparator<UserTracker> orderByComparator)
@@ -239,7 +239,7 @@ public class UserTrackerUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user tracker
-	* @throws NoSuchUserTrackerException if a user tracker with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserTrackerException if a user tracker with the primary key could not be found
 	*/
 	public static UserTracker[] findByCompanyId_PrevAndNext(
 		long userTrackerId, long companyId,
@@ -342,7 +342,7 @@ public class UserTrackerUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user tracker
-	* @throws NoSuchUserTrackerException if a matching user tracker could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserTrackerException if a matching user tracker could not be found
 	*/
 	public static UserTracker findByUserId_First(long userId,
 		OrderByComparator<UserTracker> orderByComparator)
@@ -368,7 +368,7 @@ public class UserTrackerUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user tracker
-	* @throws NoSuchUserTrackerException if a matching user tracker could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserTrackerException if a matching user tracker could not be found
 	*/
 	public static UserTracker findByUserId_Last(long userId,
 		OrderByComparator<UserTracker> orderByComparator)
@@ -395,7 +395,7 @@ public class UserTrackerUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user tracker
-	* @throws NoSuchUserTrackerException if a user tracker with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserTrackerException if a user tracker with the primary key could not be found
 	*/
 	public static UserTracker[] findByUserId_PrevAndNext(long userTrackerId,
 		long userId, OrderByComparator<UserTracker> orderByComparator)
@@ -500,7 +500,7 @@ public class UserTrackerUtil {
 	* @param sessionId the session ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user tracker
-	* @throws NoSuchUserTrackerException if a matching user tracker could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserTrackerException if a matching user tracker could not be found
 	*/
 	public static UserTracker findBySessionId_First(
 		java.lang.String sessionId,
@@ -530,7 +530,7 @@ public class UserTrackerUtil {
 	* @param sessionId the session ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user tracker
-	* @throws NoSuchUserTrackerException if a matching user tracker could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserTrackerException if a matching user tracker could not be found
 	*/
 	public static UserTracker findBySessionId_Last(java.lang.String sessionId,
 		OrderByComparator<UserTracker> orderByComparator)
@@ -560,7 +560,7 @@ public class UserTrackerUtil {
 	* @param sessionId the session ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user tracker
-	* @throws NoSuchUserTrackerException if a user tracker with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserTrackerException if a user tracker with the primary key could not be found
 	*/
 	public static UserTracker[] findBySessionId_PrevAndNext(
 		long userTrackerId, java.lang.String sessionId,
@@ -623,7 +623,7 @@ public class UserTrackerUtil {
 	*
 	* @param userTrackerId the primary key of the user tracker
 	* @return the user tracker that was removed
-	* @throws NoSuchUserTrackerException if a user tracker with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserTrackerException if a user tracker with the primary key could not be found
 	*/
 	public static UserTracker remove(long userTrackerId)
 		throws com.liferay.portal.exception.NoSuchUserTrackerException {
@@ -635,11 +635,11 @@ public class UserTrackerUtil {
 	}
 
 	/**
-	* Returns the user tracker with the primary key or throws a {@link NoSuchUserTrackerException} if it could not be found.
+	* Returns the user tracker with the primary key or throws a {@link com.liferay.portal.exception.NoSuchUserTrackerException} if it could not be found.
 	*
 	* @param userTrackerId the primary key of the user tracker
 	* @return the user tracker
-	* @throws NoSuchUserTrackerException if a user tracker with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserTrackerException if a user tracker with the primary key could not be found
 	*/
 	public static UserTracker findByPrimaryKey(long userTrackerId)
 		throws com.liferay.portal.exception.NoSuchUserTrackerException {

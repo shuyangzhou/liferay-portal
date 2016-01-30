@@ -182,7 +182,7 @@ public class OrgLaborUtil {
 	* @param organizationId the organization ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching org labor
-	* @throws NoSuchOrgLaborException if a matching org labor could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrgLaborException if a matching org labor could not be found
 	*/
 	public static OrgLabor findByOrganizationId_First(long organizationId,
 		OrderByComparator<OrgLabor> orderByComparator)
@@ -211,7 +211,7 @@ public class OrgLaborUtil {
 	* @param organizationId the organization ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching org labor
-	* @throws NoSuchOrgLaborException if a matching org labor could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrgLaborException if a matching org labor could not be found
 	*/
 	public static OrgLabor findByOrganizationId_Last(long organizationId,
 		OrderByComparator<OrgLabor> orderByComparator)
@@ -240,7 +240,7 @@ public class OrgLaborUtil {
 	* @param organizationId the organization ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next org labor
-	* @throws NoSuchOrgLaborException if a org labor with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrgLaborException if a org labor with the primary key could not be found
 	*/
 	public static OrgLabor[] findByOrganizationId_PrevAndNext(long orgLaborId,
 		long organizationId, OrderByComparator<OrgLabor> orderByComparator)
@@ -302,7 +302,7 @@ public class OrgLaborUtil {
 	*
 	* @param orgLaborId the primary key of the org labor
 	* @return the org labor that was removed
-	* @throws NoSuchOrgLaborException if a org labor with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrgLaborException if a org labor with the primary key could not be found
 	*/
 	public static OrgLabor remove(long orgLaborId)
 		throws com.liferay.portal.exception.NoSuchOrgLaborException {
@@ -314,11 +314,11 @@ public class OrgLaborUtil {
 	}
 
 	/**
-	* Returns the org labor with the primary key or throws a {@link NoSuchOrgLaborException} if it could not be found.
+	* Returns the org labor with the primary key or throws a {@link com.liferay.portal.exception.NoSuchOrgLaborException} if it could not be found.
 	*
 	* @param orgLaborId the primary key of the org labor
 	* @return the org labor
-	* @throws NoSuchOrgLaborException if a org labor with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrgLaborException if a org labor with the primary key could not be found
 	*/
 	public static OrgLabor findByPrimaryKey(long orgLaborId)
 		throws com.liferay.portal.exception.NoSuchOrgLaborException {

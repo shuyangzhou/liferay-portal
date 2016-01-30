@@ -187,7 +187,7 @@ public class AnnouncementsDeliveryUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching announcements delivery
-	* @throws NoSuchDeliveryException if a matching announcements delivery could not be found
+	* @throws com.liferay.announcements.kernel.exception.NoSuchDeliveryException if a matching announcements delivery could not be found
 	*/
 	public static AnnouncementsDelivery findByUserId_First(long userId,
 		OrderByComparator<AnnouncementsDelivery> orderByComparator)
@@ -213,7 +213,7 @@ public class AnnouncementsDeliveryUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching announcements delivery
-	* @throws NoSuchDeliveryException if a matching announcements delivery could not be found
+	* @throws com.liferay.announcements.kernel.exception.NoSuchDeliveryException if a matching announcements delivery could not be found
 	*/
 	public static AnnouncementsDelivery findByUserId_Last(long userId,
 		OrderByComparator<AnnouncementsDelivery> orderByComparator)
@@ -240,7 +240,7 @@ public class AnnouncementsDeliveryUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next announcements delivery
-	* @throws NoSuchDeliveryException if a announcements delivery with the primary key could not be found
+	* @throws com.liferay.announcements.kernel.exception.NoSuchDeliveryException if a announcements delivery with the primary key could not be found
 	*/
 	public static AnnouncementsDelivery[] findByUserId_PrevAndNext(
 		long deliveryId, long userId,
@@ -271,12 +271,12 @@ public class AnnouncementsDeliveryUtil {
 	}
 
 	/**
-	* Returns the announcements delivery where userId = &#63; and type = &#63; or throws a {@link com.liferay.portlet.announcements.exception.NoSuchDeliveryException} if it could not be found.
+	* Returns the announcements delivery where userId = &#63; and type = &#63; or throws a {@link com.liferay.announcements.kernel.exception.NoSuchDeliveryException} if it could not be found.
 	*
 	* @param userId the user ID
 	* @param type the type
 	* @return the matching announcements delivery
-	* @throws NoSuchDeliveryException if a matching announcements delivery could not be found
+	* @throws com.liferay.announcements.kernel.exception.NoSuchDeliveryException if a matching announcements delivery could not be found
 	*/
 	public static AnnouncementsDelivery findByU_T(long userId,
 		java.lang.String type)
@@ -367,7 +367,7 @@ public class AnnouncementsDeliveryUtil {
 	*
 	* @param deliveryId the primary key of the announcements delivery
 	* @return the announcements delivery that was removed
-	* @throws NoSuchDeliveryException if a announcements delivery with the primary key could not be found
+	* @throws com.liferay.announcements.kernel.exception.NoSuchDeliveryException if a announcements delivery with the primary key could not be found
 	*/
 	public static AnnouncementsDelivery remove(long deliveryId)
 		throws com.liferay.announcements.kernel.exception.NoSuchDeliveryException {
@@ -380,11 +380,11 @@ public class AnnouncementsDeliveryUtil {
 	}
 
 	/**
-	* Returns the announcements delivery with the primary key or throws a {@link NoSuchDeliveryException} if it could not be found.
+	* Returns the announcements delivery with the primary key or throws a {@link com.liferay.announcements.kernel.exception.NoSuchDeliveryException} if it could not be found.
 	*
 	* @param deliveryId the primary key of the announcements delivery
 	* @return the announcements delivery
-	* @throws NoSuchDeliveryException if a announcements delivery with the primary key could not be found
+	* @throws com.liferay.announcements.kernel.exception.NoSuchDeliveryException if a announcements delivery with the primary key could not be found
 	*/
 	public static AnnouncementsDelivery findByPrimaryKey(long deliveryId)
 		throws com.liferay.announcements.kernel.exception.NoSuchDeliveryException {

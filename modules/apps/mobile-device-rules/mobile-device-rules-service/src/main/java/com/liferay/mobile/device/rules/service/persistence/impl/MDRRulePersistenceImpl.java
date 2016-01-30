@@ -16,7 +16,6 @@ package com.liferay.mobile.device.rules.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.mobile.device.rules.exception.NoSuchRuleException;
 import com.liferay.mobile.device.rules.model.MDRRule;
 import com.liferay.mobile.device.rules.model.impl.MDRRuleImpl;
 import com.liferay.mobile.device.rules.model.impl.MDRRuleModelImpl;
@@ -293,12 +292,12 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching m d r rule
-	 * @throws NoSuchRuleException if a matching m d r rule could not be found
+	 * @throws com.liferay.mobile.device.rules.exception.NoSuchRuleException if a matching m d r rule could not be found
 	 */
 	@Override
 	public MDRRule findByUuid_First(String uuid,
 		OrderByComparator<MDRRule> orderByComparator)
-		throws NoSuchRuleException {
+		throws com.liferay.mobile.device.rules.exception.NoSuchRuleException {
 		MDRRule mdrRule = fetchByUuid_First(uuid, orderByComparator);
 
 		if (mdrRule != null) {
@@ -314,7 +313,7 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRuleException(msg.toString());
+		throw new com.liferay.mobile.device.rules.exception.NoSuchRuleException(msg.toString());
 	}
 
 	/**
@@ -342,12 +341,12 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching m d r rule
-	 * @throws NoSuchRuleException if a matching m d r rule could not be found
+	 * @throws com.liferay.mobile.device.rules.exception.NoSuchRuleException if a matching m d r rule could not be found
 	 */
 	@Override
 	public MDRRule findByUuid_Last(String uuid,
 		OrderByComparator<MDRRule> orderByComparator)
-		throws NoSuchRuleException {
+		throws com.liferay.mobile.device.rules.exception.NoSuchRuleException {
 		MDRRule mdrRule = fetchByUuid_Last(uuid, orderByComparator);
 
 		if (mdrRule != null) {
@@ -363,7 +362,7 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRuleException(msg.toString());
+		throw new com.liferay.mobile.device.rules.exception.NoSuchRuleException(msg.toString());
 	}
 
 	/**
@@ -399,12 +398,12 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next m d r rule
-	 * @throws NoSuchRuleException if a m d r rule with the primary key could not be found
+	 * @throws com.liferay.mobile.device.rules.exception.NoSuchRuleException if a m d r rule with the primary key could not be found
 	 */
 	@Override
 	public MDRRule[] findByUuid_PrevAndNext(long ruleId, String uuid,
 		OrderByComparator<MDRRule> orderByComparator)
-		throws NoSuchRuleException {
+		throws com.liferay.mobile.device.rules.exception.NoSuchRuleException {
 		MDRRule mdrRule = findByPrimaryKey(ruleId);
 
 		Session session = null;
@@ -645,16 +644,16 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 			new String[] { String.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the m d r rule where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchRuleException} if it could not be found.
+	 * Returns the m d r rule where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.mobile.device.rules.exception.NoSuchRuleException} if it could not be found.
 	 *
 	 * @param uuid the uuid
 	 * @param groupId the group ID
 	 * @return the matching m d r rule
-	 * @throws NoSuchRuleException if a matching m d r rule could not be found
+	 * @throws com.liferay.mobile.device.rules.exception.NoSuchRuleException if a matching m d r rule could not be found
 	 */
 	@Override
 	public MDRRule findByUUID_G(String uuid, long groupId)
-		throws NoSuchRuleException {
+		throws com.liferay.mobile.device.rules.exception.NoSuchRuleException {
 		MDRRule mdrRule = fetchByUUID_G(uuid, groupId);
 
 		if (mdrRule == null) {
@@ -674,7 +673,7 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchRuleException(msg.toString());
+			throw new com.liferay.mobile.device.rules.exception.NoSuchRuleException(msg.toString());
 		}
 
 		return mdrRule;
@@ -807,7 +806,7 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 	 */
 	@Override
 	public MDRRule removeByUUID_G(String uuid, long groupId)
-		throws NoSuchRuleException {
+		throws com.liferay.mobile.device.rules.exception.NoSuchRuleException {
 		MDRRule mdrRule = findByUUID_G(uuid, groupId);
 
 		return remove(mdrRule);
@@ -1109,12 +1108,12 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching m d r rule
-	 * @throws NoSuchRuleException if a matching m d r rule could not be found
+	 * @throws com.liferay.mobile.device.rules.exception.NoSuchRuleException if a matching m d r rule could not be found
 	 */
 	@Override
 	public MDRRule findByUuid_C_First(String uuid, long companyId,
 		OrderByComparator<MDRRule> orderByComparator)
-		throws NoSuchRuleException {
+		throws com.liferay.mobile.device.rules.exception.NoSuchRuleException {
 		MDRRule mdrRule = fetchByUuid_C_First(uuid, companyId, orderByComparator);
 
 		if (mdrRule != null) {
@@ -1133,7 +1132,7 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRuleException(msg.toString());
+		throw new com.liferay.mobile.device.rules.exception.NoSuchRuleException(msg.toString());
 	}
 
 	/**
@@ -1164,12 +1163,12 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching m d r rule
-	 * @throws NoSuchRuleException if a matching m d r rule could not be found
+	 * @throws com.liferay.mobile.device.rules.exception.NoSuchRuleException if a matching m d r rule could not be found
 	 */
 	@Override
 	public MDRRule findByUuid_C_Last(String uuid, long companyId,
 		OrderByComparator<MDRRule> orderByComparator)
-		throws NoSuchRuleException {
+		throws com.liferay.mobile.device.rules.exception.NoSuchRuleException {
 		MDRRule mdrRule = fetchByUuid_C_Last(uuid, companyId, orderByComparator);
 
 		if (mdrRule != null) {
@@ -1188,7 +1187,7 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRuleException(msg.toString());
+		throw new com.liferay.mobile.device.rules.exception.NoSuchRuleException(msg.toString());
 	}
 
 	/**
@@ -1226,12 +1225,12 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next m d r rule
-	 * @throws NoSuchRuleException if a m d r rule with the primary key could not be found
+	 * @throws com.liferay.mobile.device.rules.exception.NoSuchRuleException if a m d r rule with the primary key could not be found
 	 */
 	@Override
 	public MDRRule[] findByUuid_C_PrevAndNext(long ruleId, String uuid,
 		long companyId, OrderByComparator<MDRRule> orderByComparator)
-		throws NoSuchRuleException {
+		throws com.liferay.mobile.device.rules.exception.NoSuchRuleException {
 		MDRRule mdrRule = findByPrimaryKey(ruleId);
 
 		Session session = null;
@@ -1665,12 +1664,12 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 	 * @param ruleGroupId the rule group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching m d r rule
-	 * @throws NoSuchRuleException if a matching m d r rule could not be found
+	 * @throws com.liferay.mobile.device.rules.exception.NoSuchRuleException if a matching m d r rule could not be found
 	 */
 	@Override
 	public MDRRule findByRuleGroupId_First(long ruleGroupId,
 		OrderByComparator<MDRRule> orderByComparator)
-		throws NoSuchRuleException {
+		throws com.liferay.mobile.device.rules.exception.NoSuchRuleException {
 		MDRRule mdrRule = fetchByRuleGroupId_First(ruleGroupId,
 				orderByComparator);
 
@@ -1687,7 +1686,7 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRuleException(msg.toString());
+		throw new com.liferay.mobile.device.rules.exception.NoSuchRuleException(msg.toString());
 	}
 
 	/**
@@ -1716,12 +1715,12 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 	 * @param ruleGroupId the rule group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching m d r rule
-	 * @throws NoSuchRuleException if a matching m d r rule could not be found
+	 * @throws com.liferay.mobile.device.rules.exception.NoSuchRuleException if a matching m d r rule could not be found
 	 */
 	@Override
 	public MDRRule findByRuleGroupId_Last(long ruleGroupId,
 		OrderByComparator<MDRRule> orderByComparator)
-		throws NoSuchRuleException {
+		throws com.liferay.mobile.device.rules.exception.NoSuchRuleException {
 		MDRRule mdrRule = fetchByRuleGroupId_Last(ruleGroupId, orderByComparator);
 
 		if (mdrRule != null) {
@@ -1737,7 +1736,7 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRuleException(msg.toString());
+		throw new com.liferay.mobile.device.rules.exception.NoSuchRuleException(msg.toString());
 	}
 
 	/**
@@ -1773,12 +1772,12 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 	 * @param ruleGroupId the rule group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next m d r rule
-	 * @throws NoSuchRuleException if a m d r rule with the primary key could not be found
+	 * @throws com.liferay.mobile.device.rules.exception.NoSuchRuleException if a m d r rule with the primary key could not be found
 	 */
 	@Override
 	public MDRRule[] findByRuleGroupId_PrevAndNext(long ruleId,
 		long ruleGroupId, OrderByComparator<MDRRule> orderByComparator)
-		throws NoSuchRuleException {
+		throws com.liferay.mobile.device.rules.exception.NoSuchRuleException {
 		MDRRule mdrRule = findByPrimaryKey(ruleId);
 
 		Session session = null;
@@ -2138,10 +2137,11 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 	 *
 	 * @param ruleId the primary key of the m d r rule
 	 * @return the m d r rule that was removed
-	 * @throws NoSuchRuleException if a m d r rule with the primary key could not be found
+	 * @throws com.liferay.mobile.device.rules.exception.NoSuchRuleException if a m d r rule with the primary key could not be found
 	 */
 	@Override
-	public MDRRule remove(long ruleId) throws NoSuchRuleException {
+	public MDRRule remove(long ruleId)
+		throws com.liferay.mobile.device.rules.exception.NoSuchRuleException {
 		return remove((Serializable)ruleId);
 	}
 
@@ -2150,10 +2150,11 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 	 *
 	 * @param primaryKey the primary key of the m d r rule
 	 * @return the m d r rule that was removed
-	 * @throws NoSuchRuleException if a m d r rule with the primary key could not be found
+	 * @throws com.liferay.mobile.device.rules.exception.NoSuchRuleException if a m d r rule with the primary key could not be found
 	 */
 	@Override
-	public MDRRule remove(Serializable primaryKey) throws NoSuchRuleException {
+	public MDRRule remove(Serializable primaryKey)
+		throws com.liferay.mobile.device.rules.exception.NoSuchRuleException {
 		Session session = null;
 
 		try {
@@ -2166,13 +2167,13 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchRuleException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.mobile.device.rules.exception.NoSuchRuleException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(mdrRule);
 		}
-		catch (NoSuchRuleException nsee) {
+		catch (com.liferay.mobile.device.rules.exception.NoSuchRuleException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -2377,11 +2378,11 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 	 *
 	 * @param primaryKey the primary key of the m d r rule
 	 * @return the m d r rule
-	 * @throws NoSuchRuleException if a m d r rule with the primary key could not be found
+	 * @throws com.liferay.mobile.device.rules.exception.NoSuchRuleException if a m d r rule with the primary key could not be found
 	 */
 	@Override
 	public MDRRule findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchRuleException {
+		throws com.liferay.mobile.device.rules.exception.NoSuchRuleException {
 		MDRRule mdrRule = fetchByPrimaryKey(primaryKey);
 
 		if (mdrRule == null) {
@@ -2389,7 +2390,7 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchRuleException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.mobile.device.rules.exception.NoSuchRuleException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -2397,14 +2398,15 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 	}
 
 	/**
-	 * Returns the m d r rule with the primary key or throws a {@link NoSuchRuleException} if it could not be found.
+	 * Returns the m d r rule with the primary key or throws a {@link com.liferay.mobile.device.rules.exception.NoSuchRuleException} if it could not be found.
 	 *
 	 * @param ruleId the primary key of the m d r rule
 	 * @return the m d r rule
-	 * @throws NoSuchRuleException if a m d r rule with the primary key could not be found
+	 * @throws com.liferay.mobile.device.rules.exception.NoSuchRuleException if a m d r rule with the primary key could not be found
 	 */
 	@Override
-	public MDRRule findByPrimaryKey(long ruleId) throws NoSuchRuleException {
+	public MDRRule findByPrimaryKey(long ruleId)
+		throws com.liferay.mobile.device.rules.exception.NoSuchRuleException {
 		return findByPrimaryKey((Serializable)ruleId);
 	}
 

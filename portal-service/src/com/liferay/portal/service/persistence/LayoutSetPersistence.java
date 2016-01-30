@@ -103,7 +103,7 @@ public interface LayoutSetPersistence extends BasePersistence<LayoutSet> {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching layout set
-	* @throws NoSuchLayoutSetException if a matching layout set could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetException if a matching layout set could not be found
 	*/
 	public LayoutSet findByGroupId_First(long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<LayoutSet> orderByComparator)
@@ -125,7 +125,7 @@ public interface LayoutSetPersistence extends BasePersistence<LayoutSet> {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching layout set
-	* @throws NoSuchLayoutSetException if a matching layout set could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetException if a matching layout set could not be found
 	*/
 	public LayoutSet findByGroupId_Last(long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<LayoutSet> orderByComparator)
@@ -148,7 +148,7 @@ public interface LayoutSetPersistence extends BasePersistence<LayoutSet> {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next layout set
-	* @throws NoSuchLayoutSetException if a layout set with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetException if a layout set with the primary key could not be found
 	*/
 	public LayoutSet[] findByGroupId_PrevAndNext(long layoutSetId,
 		long groupId,
@@ -236,7 +236,7 @@ public interface LayoutSetPersistence extends BasePersistence<LayoutSet> {
 	* @param layoutSetPrototypeUuid the layout set prototype uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching layout set
-	* @throws NoSuchLayoutSetException if a matching layout set could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetException if a matching layout set could not be found
 	*/
 	public LayoutSet findByLayoutSetPrototypeUuid_First(
 		java.lang.String layoutSetPrototypeUuid,
@@ -260,7 +260,7 @@ public interface LayoutSetPersistence extends BasePersistence<LayoutSet> {
 	* @param layoutSetPrototypeUuid the layout set prototype uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching layout set
-	* @throws NoSuchLayoutSetException if a matching layout set could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetException if a matching layout set could not be found
 	*/
 	public LayoutSet findByLayoutSetPrototypeUuid_Last(
 		java.lang.String layoutSetPrototypeUuid,
@@ -285,7 +285,7 @@ public interface LayoutSetPersistence extends BasePersistence<LayoutSet> {
 	* @param layoutSetPrototypeUuid the layout set prototype uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next layout set
-	* @throws NoSuchLayoutSetException if a layout set with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetException if a layout set with the primary key could not be found
 	*/
 	public LayoutSet[] findByLayoutSetPrototypeUuid_PrevAndNext(
 		long layoutSetId, java.lang.String layoutSetPrototypeUuid,
@@ -310,12 +310,12 @@ public interface LayoutSetPersistence extends BasePersistence<LayoutSet> {
 		java.lang.String layoutSetPrototypeUuid);
 
 	/**
-	* Returns the layout set where groupId = &#63; and privateLayout = &#63; or throws a {@link NoSuchLayoutSetException} if it could not be found.
+	* Returns the layout set where groupId = &#63; and privateLayout = &#63; or throws a {@link com.liferay.portal.exception.NoSuchLayoutSetException} if it could not be found.
 	*
 	* @param groupId the group ID
 	* @param privateLayout the private layout
 	* @return the matching layout set
-	* @throws NoSuchLayoutSetException if a matching layout set could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetException if a matching layout set could not be found
 	*/
 	public LayoutSet findByG_P(long groupId, boolean privateLayout)
 		throws com.liferay.portal.exception.NoSuchLayoutSetException;
@@ -386,7 +386,7 @@ public interface LayoutSetPersistence extends BasePersistence<LayoutSet> {
 	*
 	* @param layoutSetId the primary key of the layout set
 	* @return the layout set that was removed
-	* @throws NoSuchLayoutSetException if a layout set with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetException if a layout set with the primary key could not be found
 	*/
 	public LayoutSet remove(long layoutSetId)
 		throws com.liferay.portal.exception.NoSuchLayoutSetException;
@@ -394,11 +394,11 @@ public interface LayoutSetPersistence extends BasePersistence<LayoutSet> {
 	public LayoutSet updateImpl(LayoutSet layoutSet);
 
 	/**
-	* Returns the layout set with the primary key or throws a {@link NoSuchLayoutSetException} if it could not be found.
+	* Returns the layout set with the primary key or throws a {@link com.liferay.portal.exception.NoSuchLayoutSetException} if it could not be found.
 	*
 	* @param layoutSetId the primary key of the layout set
 	* @return the layout set
-	* @throws NoSuchLayoutSetException if a layout set with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetException if a layout set with the primary key could not be found
 	*/
 	public LayoutSet findByPrimaryKey(long layoutSetId)
 		throws com.liferay.portal.exception.NoSuchLayoutSetException;

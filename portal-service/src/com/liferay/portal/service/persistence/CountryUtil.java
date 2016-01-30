@@ -107,11 +107,11 @@ public class CountryUtil {
 	}
 
 	/**
-	* Returns the country where name = &#63; or throws a {@link NoSuchCountryException} if it could not be found.
+	* Returns the country where name = &#63; or throws a {@link com.liferay.portal.exception.NoSuchCountryException} if it could not be found.
 	*
 	* @param name the name
 	* @return the matching country
-	* @throws NoSuchCountryException if a matching country could not be found
+	* @throws com.liferay.portal.exception.NoSuchCountryException if a matching country could not be found
 	*/
 	public static Country findByName(java.lang.String name)
 		throws com.liferay.portal.exception.NoSuchCountryException {
@@ -162,11 +162,11 @@ public class CountryUtil {
 	}
 
 	/**
-	* Returns the country where a2 = &#63; or throws a {@link NoSuchCountryException} if it could not be found.
+	* Returns the country where a2 = &#63; or throws a {@link com.liferay.portal.exception.NoSuchCountryException} if it could not be found.
 	*
 	* @param a2 the a2
 	* @return the matching country
-	* @throws NoSuchCountryException if a matching country could not be found
+	* @throws com.liferay.portal.exception.NoSuchCountryException if a matching country could not be found
 	*/
 	public static Country findByA2(java.lang.String a2)
 		throws com.liferay.portal.exception.NoSuchCountryException {
@@ -217,11 +217,11 @@ public class CountryUtil {
 	}
 
 	/**
-	* Returns the country where a3 = &#63; or throws a {@link NoSuchCountryException} if it could not be found.
+	* Returns the country where a3 = &#63; or throws a {@link com.liferay.portal.exception.NoSuchCountryException} if it could not be found.
 	*
 	* @param a3 the a3
 	* @return the matching country
-	* @throws NoSuchCountryException if a matching country could not be found
+	* @throws com.liferay.portal.exception.NoSuchCountryException if a matching country could not be found
 	*/
 	public static Country findByA3(java.lang.String a3)
 		throws com.liferay.portal.exception.NoSuchCountryException {
@@ -344,7 +344,7 @@ public class CountryUtil {
 	* @param active the active
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching country
-	* @throws NoSuchCountryException if a matching country could not be found
+	* @throws com.liferay.portal.exception.NoSuchCountryException if a matching country could not be found
 	*/
 	public static Country findByActive_First(boolean active,
 		OrderByComparator<Country> orderByComparator)
@@ -370,7 +370,7 @@ public class CountryUtil {
 	* @param active the active
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching country
-	* @throws NoSuchCountryException if a matching country could not be found
+	* @throws com.liferay.portal.exception.NoSuchCountryException if a matching country could not be found
 	*/
 	public static Country findByActive_Last(boolean active,
 		OrderByComparator<Country> orderByComparator)
@@ -397,7 +397,7 @@ public class CountryUtil {
 	* @param active the active
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next country
-	* @throws NoSuchCountryException if a country with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchCountryException if a country with the primary key could not be found
 	*/
 	public static Country[] findByActive_PrevAndNext(long countryId,
 		boolean active, OrderByComparator<Country> orderByComparator)
@@ -459,7 +459,7 @@ public class CountryUtil {
 	*
 	* @param countryId the primary key of the country
 	* @return the country that was removed
-	* @throws NoSuchCountryException if a country with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchCountryException if a country with the primary key could not be found
 	*/
 	public static Country remove(long countryId)
 		throws com.liferay.portal.exception.NoSuchCountryException {
@@ -471,11 +471,11 @@ public class CountryUtil {
 	}
 
 	/**
-	* Returns the country with the primary key or throws a {@link NoSuchCountryException} if it could not be found.
+	* Returns the country with the primary key or throws a {@link com.liferay.portal.exception.NoSuchCountryException} if it could not be found.
 	*
 	* @param countryId the primary key of the country
 	* @return the country
-	* @throws NoSuchCountryException if a country with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchCountryException if a country with the primary key could not be found
 	*/
 	public static Country findByPrimaryKey(long countryId)
 		throws com.liferay.portal.exception.NoSuchCountryException {

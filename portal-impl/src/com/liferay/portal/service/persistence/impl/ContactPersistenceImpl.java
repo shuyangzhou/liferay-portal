@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchContactException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -279,12 +278,12 @@ public class ContactPersistenceImpl extends BasePersistenceImpl<Contact>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching contact
-	 * @throws NoSuchContactException if a matching contact could not be found
+	 * @throws com.liferay.portal.exception.NoSuchContactException if a matching contact could not be found
 	 */
 	@Override
 	public Contact findByCompanyId_First(long companyId,
 		OrderByComparator<Contact> orderByComparator)
-		throws NoSuchContactException {
+		throws com.liferay.portal.exception.NoSuchContactException {
 		Contact contact = fetchByCompanyId_First(companyId, orderByComparator);
 
 		if (contact != null) {
@@ -300,7 +299,7 @@ public class ContactPersistenceImpl extends BasePersistenceImpl<Contact>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchContactException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchContactException(msg.toString());
 	}
 
 	/**
@@ -328,12 +327,12 @@ public class ContactPersistenceImpl extends BasePersistenceImpl<Contact>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching contact
-	 * @throws NoSuchContactException if a matching contact could not be found
+	 * @throws com.liferay.portal.exception.NoSuchContactException if a matching contact could not be found
 	 */
 	@Override
 	public Contact findByCompanyId_Last(long companyId,
 		OrderByComparator<Contact> orderByComparator)
-		throws NoSuchContactException {
+		throws com.liferay.portal.exception.NoSuchContactException {
 		Contact contact = fetchByCompanyId_Last(companyId, orderByComparator);
 
 		if (contact != null) {
@@ -349,7 +348,7 @@ public class ContactPersistenceImpl extends BasePersistenceImpl<Contact>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchContactException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchContactException(msg.toString());
 	}
 
 	/**
@@ -385,12 +384,12 @@ public class ContactPersistenceImpl extends BasePersistenceImpl<Contact>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next contact
-	 * @throws NoSuchContactException if a contact with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchContactException if a contact with the primary key could not be found
 	 */
 	@Override
 	public Contact[] findByCompanyId_PrevAndNext(long contactId,
 		long companyId, OrderByComparator<Contact> orderByComparator)
-		throws NoSuchContactException {
+		throws com.liferay.portal.exception.NoSuchContactException {
 		Contact contact = findByPrimaryKey(contactId);
 
 		Session session = null;
@@ -780,12 +779,12 @@ public class ContactPersistenceImpl extends BasePersistenceImpl<Contact>
 	 * @param accountId the account ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching contact
-	 * @throws NoSuchContactException if a matching contact could not be found
+	 * @throws com.liferay.portal.exception.NoSuchContactException if a matching contact could not be found
 	 */
 	@Override
 	public Contact findByAccountId_First(long accountId,
 		OrderByComparator<Contact> orderByComparator)
-		throws NoSuchContactException {
+		throws com.liferay.portal.exception.NoSuchContactException {
 		Contact contact = fetchByAccountId_First(accountId, orderByComparator);
 
 		if (contact != null) {
@@ -801,7 +800,7 @@ public class ContactPersistenceImpl extends BasePersistenceImpl<Contact>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchContactException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchContactException(msg.toString());
 	}
 
 	/**
@@ -829,12 +828,12 @@ public class ContactPersistenceImpl extends BasePersistenceImpl<Contact>
 	 * @param accountId the account ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching contact
-	 * @throws NoSuchContactException if a matching contact could not be found
+	 * @throws com.liferay.portal.exception.NoSuchContactException if a matching contact could not be found
 	 */
 	@Override
 	public Contact findByAccountId_Last(long accountId,
 		OrderByComparator<Contact> orderByComparator)
-		throws NoSuchContactException {
+		throws com.liferay.portal.exception.NoSuchContactException {
 		Contact contact = fetchByAccountId_Last(accountId, orderByComparator);
 
 		if (contact != null) {
@@ -850,7 +849,7 @@ public class ContactPersistenceImpl extends BasePersistenceImpl<Contact>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchContactException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchContactException(msg.toString());
 	}
 
 	/**
@@ -886,12 +885,12 @@ public class ContactPersistenceImpl extends BasePersistenceImpl<Contact>
 	 * @param accountId the account ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next contact
-	 * @throws NoSuchContactException if a contact with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchContactException if a contact with the primary key could not be found
 	 */
 	@Override
 	public Contact[] findByAccountId_PrevAndNext(long contactId,
 		long accountId, OrderByComparator<Contact> orderByComparator)
-		throws NoSuchContactException {
+		throws com.liferay.portal.exception.NoSuchContactException {
 		Contact contact = findByPrimaryKey(contactId);
 
 		Session session = null;
@@ -1297,12 +1296,12 @@ public class ContactPersistenceImpl extends BasePersistenceImpl<Contact>
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching contact
-	 * @throws NoSuchContactException if a matching contact could not be found
+	 * @throws com.liferay.portal.exception.NoSuchContactException if a matching contact could not be found
 	 */
 	@Override
 	public Contact findByC_C_First(long classNameId, long classPK,
 		OrderByComparator<Contact> orderByComparator)
-		throws NoSuchContactException {
+		throws com.liferay.portal.exception.NoSuchContactException {
 		Contact contact = fetchByC_C_First(classNameId, classPK,
 				orderByComparator);
 
@@ -1322,7 +1321,7 @@ public class ContactPersistenceImpl extends BasePersistenceImpl<Contact>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchContactException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchContactException(msg.toString());
 	}
 
 	/**
@@ -1353,12 +1352,12 @@ public class ContactPersistenceImpl extends BasePersistenceImpl<Contact>
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching contact
-	 * @throws NoSuchContactException if a matching contact could not be found
+	 * @throws com.liferay.portal.exception.NoSuchContactException if a matching contact could not be found
 	 */
 	@Override
 	public Contact findByC_C_Last(long classNameId, long classPK,
 		OrderByComparator<Contact> orderByComparator)
-		throws NoSuchContactException {
+		throws com.liferay.portal.exception.NoSuchContactException {
 		Contact contact = fetchByC_C_Last(classNameId, classPK,
 				orderByComparator);
 
@@ -1378,7 +1377,7 @@ public class ContactPersistenceImpl extends BasePersistenceImpl<Contact>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchContactException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchContactException(msg.toString());
 	}
 
 	/**
@@ -1416,12 +1415,12 @@ public class ContactPersistenceImpl extends BasePersistenceImpl<Contact>
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next contact
-	 * @throws NoSuchContactException if a contact with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchContactException if a contact with the primary key could not be found
 	 */
 	@Override
 	public Contact[] findByC_C_PrevAndNext(long contactId, long classNameId,
 		long classPK, OrderByComparator<Contact> orderByComparator)
-		throws NoSuchContactException {
+		throws com.liferay.portal.exception.NoSuchContactException {
 		Contact contact = findByPrimaryKey(contactId);
 
 		Session session = null;
@@ -1733,10 +1732,11 @@ public class ContactPersistenceImpl extends BasePersistenceImpl<Contact>
 	 *
 	 * @param contactId the primary key of the contact
 	 * @return the contact that was removed
-	 * @throws NoSuchContactException if a contact with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchContactException if a contact with the primary key could not be found
 	 */
 	@Override
-	public Contact remove(long contactId) throws NoSuchContactException {
+	public Contact remove(long contactId)
+		throws com.liferay.portal.exception.NoSuchContactException {
 		return remove((Serializable)contactId);
 	}
 
@@ -1745,11 +1745,11 @@ public class ContactPersistenceImpl extends BasePersistenceImpl<Contact>
 	 *
 	 * @param primaryKey the primary key of the contact
 	 * @return the contact that was removed
-	 * @throws NoSuchContactException if a contact with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchContactException if a contact with the primary key could not be found
 	 */
 	@Override
 	public Contact remove(Serializable primaryKey)
-		throws NoSuchContactException {
+		throws com.liferay.portal.exception.NoSuchContactException {
 		Session session = null;
 
 		try {
@@ -1762,13 +1762,13 @@ public class ContactPersistenceImpl extends BasePersistenceImpl<Contact>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchContactException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchContactException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(contact);
 		}
-		catch (NoSuchContactException nsee) {
+		catch (com.liferay.portal.exception.NoSuchContactException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -1981,11 +1981,11 @@ public class ContactPersistenceImpl extends BasePersistenceImpl<Contact>
 	 *
 	 * @param primaryKey the primary key of the contact
 	 * @return the contact
-	 * @throws NoSuchContactException if a contact with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchContactException if a contact with the primary key could not be found
 	 */
 	@Override
 	public Contact findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchContactException {
+		throws com.liferay.portal.exception.NoSuchContactException {
 		Contact contact = fetchByPrimaryKey(primaryKey);
 
 		if (contact == null) {
@@ -1993,7 +1993,7 @@ public class ContactPersistenceImpl extends BasePersistenceImpl<Contact>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchContactException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchContactException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -2001,15 +2001,15 @@ public class ContactPersistenceImpl extends BasePersistenceImpl<Contact>
 	}
 
 	/**
-	 * Returns the contact with the primary key or throws a {@link NoSuchContactException} if it could not be found.
+	 * Returns the contact with the primary key or throws a {@link com.liferay.portal.exception.NoSuchContactException} if it could not be found.
 	 *
 	 * @param contactId the primary key of the contact
 	 * @return the contact
-	 * @throws NoSuchContactException if a contact with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchContactException if a contact with the primary key could not be found
 	 */
 	@Override
 	public Contact findByPrimaryKey(long contactId)
-		throws NoSuchContactException {
+		throws com.liferay.portal.exception.NoSuchContactException {
 		return findByPrimaryKey((Serializable)contactId);
 	}
 

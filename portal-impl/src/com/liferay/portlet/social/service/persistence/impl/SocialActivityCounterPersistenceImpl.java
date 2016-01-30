@@ -38,7 +38,6 @@ import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
-import com.liferay.portlet.social.exception.NoSuchActivityCounterException;
 import com.liferay.portlet.social.model.SocialActivityCounter;
 import com.liferay.portlet.social.model.impl.SocialActivityCounterImpl;
 import com.liferay.portlet.social.model.impl.SocialActivityCounterModelImpl;
@@ -283,12 +282,12 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching social activity counter
-	 * @throws NoSuchActivityCounterException if a matching social activity counter could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityCounterException if a matching social activity counter could not be found
 	 */
 	@Override
 	public SocialActivityCounter findByGroupId_First(long groupId,
 		OrderByComparator<SocialActivityCounter> orderByComparator)
-		throws NoSuchActivityCounterException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityCounterException {
 		SocialActivityCounter socialActivityCounter = fetchByGroupId_First(groupId,
 				orderByComparator);
 
@@ -305,7 +304,7 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityCounterException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityCounterException(msg.toString());
 	}
 
 	/**
@@ -334,12 +333,12 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching social activity counter
-	 * @throws NoSuchActivityCounterException if a matching social activity counter could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityCounterException if a matching social activity counter could not be found
 	 */
 	@Override
 	public SocialActivityCounter findByGroupId_Last(long groupId,
 		OrderByComparator<SocialActivityCounter> orderByComparator)
-		throws NoSuchActivityCounterException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityCounterException {
 		SocialActivityCounter socialActivityCounter = fetchByGroupId_Last(groupId,
 				orderByComparator);
 
@@ -356,7 +355,7 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityCounterException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityCounterException(msg.toString());
 	}
 
 	/**
@@ -392,13 +391,13 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next social activity counter
-	 * @throws NoSuchActivityCounterException if a social activity counter with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityCounterException if a social activity counter with the primary key could not be found
 	 */
 	@Override
 	public SocialActivityCounter[] findByGroupId_PrevAndNext(
 		long activityCounterId, long groupId,
 		OrderByComparator<SocialActivityCounter> orderByComparator)
-		throws NoSuchActivityCounterException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityCounterException {
 		SocialActivityCounter socialActivityCounter = findByPrimaryKey(activityCounterId);
 
 		Session session = null;
@@ -809,12 +808,12 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching social activity counter
-	 * @throws NoSuchActivityCounterException if a matching social activity counter could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityCounterException if a matching social activity counter could not be found
 	 */
 	@Override
 	public SocialActivityCounter findByC_C_First(long classNameId,
 		long classPK, OrderByComparator<SocialActivityCounter> orderByComparator)
-		throws NoSuchActivityCounterException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityCounterException {
 		SocialActivityCounter socialActivityCounter = fetchByC_C_First(classNameId,
 				classPK, orderByComparator);
 
@@ -834,7 +833,7 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityCounterException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityCounterException(msg.toString());
 	}
 
 	/**
@@ -865,12 +864,12 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching social activity counter
-	 * @throws NoSuchActivityCounterException if a matching social activity counter could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityCounterException if a matching social activity counter could not be found
 	 */
 	@Override
 	public SocialActivityCounter findByC_C_Last(long classNameId, long classPK,
 		OrderByComparator<SocialActivityCounter> orderByComparator)
-		throws NoSuchActivityCounterException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityCounterException {
 		SocialActivityCounter socialActivityCounter = fetchByC_C_Last(classNameId,
 				classPK, orderByComparator);
 
@@ -890,7 +889,7 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityCounterException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityCounterException(msg.toString());
 	}
 
 	/**
@@ -928,13 +927,13 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next social activity counter
-	 * @throws NoSuchActivityCounterException if a social activity counter with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityCounterException if a social activity counter with the primary key could not be found
 	 */
 	@Override
 	public SocialActivityCounter[] findByC_C_PrevAndNext(
 		long activityCounterId, long classNameId, long classPK,
 		OrderByComparator<SocialActivityCounter> orderByComparator)
-		throws NoSuchActivityCounterException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityCounterException {
 		SocialActivityCounter socialActivityCounter = findByPrimaryKey(activityCounterId);
 
 		Session session = null;
@@ -1389,13 +1388,13 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 	 * @param ownerType the owner type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching social activity counter
-	 * @throws NoSuchActivityCounterException if a matching social activity counter could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityCounterException if a matching social activity counter could not be found
 	 */
 	@Override
 	public SocialActivityCounter findByG_C_C_O_First(long groupId,
 		long classNameId, long classPK, int ownerType,
 		OrderByComparator<SocialActivityCounter> orderByComparator)
-		throws NoSuchActivityCounterException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityCounterException {
 		SocialActivityCounter socialActivityCounter = fetchByG_C_C_O_First(groupId,
 				classNameId, classPK, ownerType, orderByComparator);
 
@@ -1421,7 +1420,7 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityCounterException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityCounterException(msg.toString());
 	}
 
 	/**
@@ -1457,13 +1456,13 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 	 * @param ownerType the owner type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching social activity counter
-	 * @throws NoSuchActivityCounterException if a matching social activity counter could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityCounterException if a matching social activity counter could not be found
 	 */
 	@Override
 	public SocialActivityCounter findByG_C_C_O_Last(long groupId,
 		long classNameId, long classPK, int ownerType,
 		OrderByComparator<SocialActivityCounter> orderByComparator)
-		throws NoSuchActivityCounterException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityCounterException {
 		SocialActivityCounter socialActivityCounter = fetchByG_C_C_O_Last(groupId,
 				classNameId, classPK, ownerType, orderByComparator);
 
@@ -1489,7 +1488,7 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityCounterException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityCounterException(msg.toString());
 	}
 
 	/**
@@ -1532,14 +1531,14 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 	 * @param ownerType the owner type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next social activity counter
-	 * @throws NoSuchActivityCounterException if a social activity counter with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityCounterException if a social activity counter with the primary key could not be found
 	 */
 	@Override
 	public SocialActivityCounter[] findByG_C_C_O_PrevAndNext(
 		long activityCounterId, long groupId, long classNameId, long classPK,
 		int ownerType,
 		OrderByComparator<SocialActivityCounter> orderByComparator)
-		throws NoSuchActivityCounterException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityCounterException {
 		SocialActivityCounter socialActivityCounter = findByPrimaryKey(activityCounterId);
 
 		Session session = null;
@@ -1805,7 +1804,7 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 			});
 
 	/**
-	 * Returns the social activity counter where groupId = &#63; and classNameId = &#63; and classPK = &#63; and name = &#63; and ownerType = &#63; and startPeriod = &#63; or throws a {@link NoSuchActivityCounterException} if it could not be found.
+	 * Returns the social activity counter where groupId = &#63; and classNameId = &#63; and classPK = &#63; and name = &#63; and ownerType = &#63; and startPeriod = &#63; or throws a {@link com.liferay.portlet.social.exception.NoSuchActivityCounterException} if it could not be found.
 	 *
 	 * @param groupId the group ID
 	 * @param classNameId the class name ID
@@ -1814,12 +1813,13 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 	 * @param ownerType the owner type
 	 * @param startPeriod the start period
 	 * @return the matching social activity counter
-	 * @throws NoSuchActivityCounterException if a matching social activity counter could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityCounterException if a matching social activity counter could not be found
 	 */
 	@Override
 	public SocialActivityCounter findByG_C_C_N_O_S(long groupId,
 		long classNameId, long classPK, String name, int ownerType,
-		int startPeriod) throws NoSuchActivityCounterException {
+		int startPeriod)
+		throws com.liferay.portlet.social.exception.NoSuchActivityCounterException {
 		SocialActivityCounter socialActivityCounter = fetchByG_C_C_N_O_S(groupId,
 				classNameId, classPK, name, ownerType, startPeriod);
 
@@ -1852,7 +1852,7 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchActivityCounterException(msg.toString());
+			throw new com.liferay.portlet.social.exception.NoSuchActivityCounterException(msg.toString());
 		}
 
 		return socialActivityCounter;
@@ -2029,7 +2029,8 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 	@Override
 	public SocialActivityCounter removeByG_C_C_N_O_S(long groupId,
 		long classNameId, long classPK, String name, int ownerType,
-		int startPeriod) throws NoSuchActivityCounterException {
+		int startPeriod)
+		throws com.liferay.portlet.social.exception.NoSuchActivityCounterException {
 		SocialActivityCounter socialActivityCounter = findByG_C_C_N_O_S(groupId,
 				classNameId, classPK, name, ownerType, startPeriod);
 
@@ -2162,7 +2163,7 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 			});
 
 	/**
-	 * Returns the social activity counter where groupId = &#63; and classNameId = &#63; and classPK = &#63; and name = &#63; and ownerType = &#63; and endPeriod = &#63; or throws a {@link NoSuchActivityCounterException} if it could not be found.
+	 * Returns the social activity counter where groupId = &#63; and classNameId = &#63; and classPK = &#63; and name = &#63; and ownerType = &#63; and endPeriod = &#63; or throws a {@link com.liferay.portlet.social.exception.NoSuchActivityCounterException} if it could not be found.
 	 *
 	 * @param groupId the group ID
 	 * @param classNameId the class name ID
@@ -2171,12 +2172,13 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 	 * @param ownerType the owner type
 	 * @param endPeriod the end period
 	 * @return the matching social activity counter
-	 * @throws NoSuchActivityCounterException if a matching social activity counter could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityCounterException if a matching social activity counter could not be found
 	 */
 	@Override
 	public SocialActivityCounter findByG_C_C_N_O_E(long groupId,
 		long classNameId, long classPK, String name, int ownerType,
-		int endPeriod) throws NoSuchActivityCounterException {
+		int endPeriod)
+		throws com.liferay.portlet.social.exception.NoSuchActivityCounterException {
 		SocialActivityCounter socialActivityCounter = fetchByG_C_C_N_O_E(groupId,
 				classNameId, classPK, name, ownerType, endPeriod);
 
@@ -2209,7 +2211,7 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchActivityCounterException(msg.toString());
+			throw new com.liferay.portlet.social.exception.NoSuchActivityCounterException(msg.toString());
 		}
 
 		return socialActivityCounter;
@@ -2386,7 +2388,8 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 	@Override
 	public SocialActivityCounter removeByG_C_C_N_O_E(long groupId,
 		long classNameId, long classPK, String name, int ownerType,
-		int endPeriod) throws NoSuchActivityCounterException {
+		int endPeriod)
+		throws com.liferay.portlet.social.exception.NoSuchActivityCounterException {
 		SocialActivityCounter socialActivityCounter = findByG_C_C_N_O_E(groupId,
 				classNameId, classPK, name, ownerType, endPeriod);
 
@@ -2751,11 +2754,11 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 	 *
 	 * @param activityCounterId the primary key of the social activity counter
 	 * @return the social activity counter that was removed
-	 * @throws NoSuchActivityCounterException if a social activity counter with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityCounterException if a social activity counter with the primary key could not be found
 	 */
 	@Override
 	public SocialActivityCounter remove(long activityCounterId)
-		throws NoSuchActivityCounterException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityCounterException {
 		return remove((Serializable)activityCounterId);
 	}
 
@@ -2764,11 +2767,11 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 	 *
 	 * @param primaryKey the primary key of the social activity counter
 	 * @return the social activity counter that was removed
-	 * @throws NoSuchActivityCounterException if a social activity counter with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityCounterException if a social activity counter with the primary key could not be found
 	 */
 	@Override
 	public SocialActivityCounter remove(Serializable primaryKey)
-		throws NoSuchActivityCounterException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityCounterException {
 		Session session = null;
 
 		try {
@@ -2782,13 +2785,13 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchActivityCounterException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portlet.social.exception.NoSuchActivityCounterException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(socialActivityCounter);
 		}
-		catch (NoSuchActivityCounterException nsee) {
+		catch (com.liferay.portlet.social.exception.NoSuchActivityCounterException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -2978,11 +2981,11 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 	 *
 	 * @param primaryKey the primary key of the social activity counter
 	 * @return the social activity counter
-	 * @throws NoSuchActivityCounterException if a social activity counter with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityCounterException if a social activity counter with the primary key could not be found
 	 */
 	@Override
 	public SocialActivityCounter findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchActivityCounterException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityCounterException {
 		SocialActivityCounter socialActivityCounter = fetchByPrimaryKey(primaryKey);
 
 		if (socialActivityCounter == null) {
@@ -2990,7 +2993,7 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchActivityCounterException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portlet.social.exception.NoSuchActivityCounterException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -2998,15 +3001,15 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 	}
 
 	/**
-	 * Returns the social activity counter with the primary key or throws a {@link NoSuchActivityCounterException} if it could not be found.
+	 * Returns the social activity counter with the primary key or throws a {@link com.liferay.portlet.social.exception.NoSuchActivityCounterException} if it could not be found.
 	 *
 	 * @param activityCounterId the primary key of the social activity counter
 	 * @return the social activity counter
-	 * @throws NoSuchActivityCounterException if a social activity counter with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityCounterException if a social activity counter with the primary key could not be found
 	 */
 	@Override
 	public SocialActivityCounter findByPrimaryKey(long activityCounterId)
-		throws NoSuchActivityCounterException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityCounterException {
 		return findByPrimaryKey((Serializable)activityCounterId);
 	}
 

@@ -103,7 +103,7 @@ public interface RecentLayoutBranchPersistence extends BasePersistence<RecentLay
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching recent layout branch
-	* @throws NoSuchRecentLayoutBranchException if a matching recent layout branch could not be found
+	* @throws com.liferay.portal.exception.NoSuchRecentLayoutBranchException if a matching recent layout branch could not be found
 	*/
 	public RecentLayoutBranch findByGroupId_First(long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<RecentLayoutBranch> orderByComparator)
@@ -125,7 +125,7 @@ public interface RecentLayoutBranchPersistence extends BasePersistence<RecentLay
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching recent layout branch
-	* @throws NoSuchRecentLayoutBranchException if a matching recent layout branch could not be found
+	* @throws com.liferay.portal.exception.NoSuchRecentLayoutBranchException if a matching recent layout branch could not be found
 	*/
 	public RecentLayoutBranch findByGroupId_Last(long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<RecentLayoutBranch> orderByComparator)
@@ -148,7 +148,7 @@ public interface RecentLayoutBranchPersistence extends BasePersistence<RecentLay
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next recent layout branch
-	* @throws NoSuchRecentLayoutBranchException if a recent layout branch with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRecentLayoutBranchException if a recent layout branch with the primary key could not be found
 	*/
 	public RecentLayoutBranch[] findByGroupId_PrevAndNext(
 		long recentLayoutBranchId, long groupId,
@@ -235,7 +235,7 @@ public interface RecentLayoutBranchPersistence extends BasePersistence<RecentLay
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching recent layout branch
-	* @throws NoSuchRecentLayoutBranchException if a matching recent layout branch could not be found
+	* @throws com.liferay.portal.exception.NoSuchRecentLayoutBranchException if a matching recent layout branch could not be found
 	*/
 	public RecentLayoutBranch findByUserId_First(long userId,
 		com.liferay.portal.kernel.util.OrderByComparator<RecentLayoutBranch> orderByComparator)
@@ -257,7 +257,7 @@ public interface RecentLayoutBranchPersistence extends BasePersistence<RecentLay
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching recent layout branch
-	* @throws NoSuchRecentLayoutBranchException if a matching recent layout branch could not be found
+	* @throws com.liferay.portal.exception.NoSuchRecentLayoutBranchException if a matching recent layout branch could not be found
 	*/
 	public RecentLayoutBranch findByUserId_Last(long userId,
 		com.liferay.portal.kernel.util.OrderByComparator<RecentLayoutBranch> orderByComparator)
@@ -280,7 +280,7 @@ public interface RecentLayoutBranchPersistence extends BasePersistence<RecentLay
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next recent layout branch
-	* @throws NoSuchRecentLayoutBranchException if a recent layout branch with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRecentLayoutBranchException if a recent layout branch with the primary key could not be found
 	*/
 	public RecentLayoutBranch[] findByUserId_PrevAndNext(
 		long recentLayoutBranchId, long userId,
@@ -368,7 +368,7 @@ public interface RecentLayoutBranchPersistence extends BasePersistence<RecentLay
 	* @param layoutBranchId the layout branch ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching recent layout branch
-	* @throws NoSuchRecentLayoutBranchException if a matching recent layout branch could not be found
+	* @throws com.liferay.portal.exception.NoSuchRecentLayoutBranchException if a matching recent layout branch could not be found
 	*/
 	public RecentLayoutBranch findByLayoutBranchId_First(long layoutBranchId,
 		com.liferay.portal.kernel.util.OrderByComparator<RecentLayoutBranch> orderByComparator)
@@ -390,7 +390,7 @@ public interface RecentLayoutBranchPersistence extends BasePersistence<RecentLay
 	* @param layoutBranchId the layout branch ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching recent layout branch
-	* @throws NoSuchRecentLayoutBranchException if a matching recent layout branch could not be found
+	* @throws com.liferay.portal.exception.NoSuchRecentLayoutBranchException if a matching recent layout branch could not be found
 	*/
 	public RecentLayoutBranch findByLayoutBranchId_Last(long layoutBranchId,
 		com.liferay.portal.kernel.util.OrderByComparator<RecentLayoutBranch> orderByComparator)
@@ -413,7 +413,7 @@ public interface RecentLayoutBranchPersistence extends BasePersistence<RecentLay
 	* @param layoutBranchId the layout branch ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next recent layout branch
-	* @throws NoSuchRecentLayoutBranchException if a recent layout branch with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRecentLayoutBranchException if a recent layout branch with the primary key could not be found
 	*/
 	public RecentLayoutBranch[] findByLayoutBranchId_PrevAndNext(
 		long recentLayoutBranchId, long layoutBranchId,
@@ -436,13 +436,13 @@ public interface RecentLayoutBranchPersistence extends BasePersistence<RecentLay
 	public int countByLayoutBranchId(long layoutBranchId);
 
 	/**
-	* Returns the recent layout branch where userId = &#63; and layoutSetBranchId = &#63; and plid = &#63; or throws a {@link NoSuchRecentLayoutBranchException} if it could not be found.
+	* Returns the recent layout branch where userId = &#63; and layoutSetBranchId = &#63; and plid = &#63; or throws a {@link com.liferay.portal.exception.NoSuchRecentLayoutBranchException} if it could not be found.
 	*
 	* @param userId the user ID
 	* @param layoutSetBranchId the layout set branch ID
 	* @param plid the plid
 	* @return the matching recent layout branch
-	* @throws NoSuchRecentLayoutBranchException if a matching recent layout branch could not be found
+	* @throws com.liferay.portal.exception.NoSuchRecentLayoutBranchException if a matching recent layout branch could not be found
 	*/
 	public RecentLayoutBranch findByU_L_P(long userId, long layoutSetBranchId,
 		long plid)
@@ -521,7 +521,7 @@ public interface RecentLayoutBranchPersistence extends BasePersistence<RecentLay
 	*
 	* @param recentLayoutBranchId the primary key of the recent layout branch
 	* @return the recent layout branch that was removed
-	* @throws NoSuchRecentLayoutBranchException if a recent layout branch with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRecentLayoutBranchException if a recent layout branch with the primary key could not be found
 	*/
 	public RecentLayoutBranch remove(long recentLayoutBranchId)
 		throws com.liferay.portal.exception.NoSuchRecentLayoutBranchException;
@@ -529,11 +529,11 @@ public interface RecentLayoutBranchPersistence extends BasePersistence<RecentLay
 	public RecentLayoutBranch updateImpl(RecentLayoutBranch recentLayoutBranch);
 
 	/**
-	* Returns the recent layout branch with the primary key or throws a {@link NoSuchRecentLayoutBranchException} if it could not be found.
+	* Returns the recent layout branch with the primary key or throws a {@link com.liferay.portal.exception.NoSuchRecentLayoutBranchException} if it could not be found.
 	*
 	* @param recentLayoutBranchId the primary key of the recent layout branch
 	* @return the recent layout branch
-	* @throws NoSuchRecentLayoutBranchException if a recent layout branch with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRecentLayoutBranchException if a recent layout branch with the primary key could not be found
 	*/
 	public RecentLayoutBranch findByPrimaryKey(long recentLayoutBranchId)
 		throws com.liferay.portal.exception.NoSuchRecentLayoutBranchException;

@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchLayoutSetPrototypeException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -300,12 +299,12 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching layout set prototype
-	 * @throws NoSuchLayoutSetPrototypeException if a matching layout set prototype could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a matching layout set prototype could not be found
 	 */
 	@Override
 	public LayoutSetPrototype findByUuid_First(String uuid,
 		OrderByComparator<LayoutSetPrototype> orderByComparator)
-		throws NoSuchLayoutSetPrototypeException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException {
 		LayoutSetPrototype layoutSetPrototype = fetchByUuid_First(uuid,
 				orderByComparator);
 
@@ -322,7 +321,7 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutSetPrototypeException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutSetPrototypeException(msg.toString());
 	}
 
 	/**
@@ -350,12 +349,12 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching layout set prototype
-	 * @throws NoSuchLayoutSetPrototypeException if a matching layout set prototype could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a matching layout set prototype could not be found
 	 */
 	@Override
 	public LayoutSetPrototype findByUuid_Last(String uuid,
 		OrderByComparator<LayoutSetPrototype> orderByComparator)
-		throws NoSuchLayoutSetPrototypeException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException {
 		LayoutSetPrototype layoutSetPrototype = fetchByUuid_Last(uuid,
 				orderByComparator);
 
@@ -372,7 +371,7 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutSetPrototypeException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutSetPrototypeException(msg.toString());
 	}
 
 	/**
@@ -408,13 +407,13 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next layout set prototype
-	 * @throws NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
 	 */
 	@Override
 	public LayoutSetPrototype[] findByUuid_PrevAndNext(
 		long layoutSetPrototypeId, String uuid,
 		OrderByComparator<LayoutSetPrototype> orderByComparator)
-		throws NoSuchLayoutSetPrototypeException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException {
 		LayoutSetPrototype layoutSetPrototype = findByPrimaryKey(layoutSetPrototypeId);
 
 		Session session = null;
@@ -708,13 +707,13 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next layout set prototype
-	 * @throws NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
 	 */
 	@Override
 	public LayoutSetPrototype[] filterFindByUuid_PrevAndNext(
 		long layoutSetPrototypeId, String uuid,
 		OrderByComparator<LayoutSetPrototype> orderByComparator)
-		throws NoSuchLayoutSetPrototypeException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException {
 		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByUuid_PrevAndNext(layoutSetPrototypeId, uuid,
 				orderByComparator);
@@ -1274,12 +1273,12 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching layout set prototype
-	 * @throws NoSuchLayoutSetPrototypeException if a matching layout set prototype could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a matching layout set prototype could not be found
 	 */
 	@Override
 	public LayoutSetPrototype findByUuid_C_First(String uuid, long companyId,
 		OrderByComparator<LayoutSetPrototype> orderByComparator)
-		throws NoSuchLayoutSetPrototypeException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException {
 		LayoutSetPrototype layoutSetPrototype = fetchByUuid_C_First(uuid,
 				companyId, orderByComparator);
 
@@ -1299,7 +1298,7 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutSetPrototypeException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutSetPrototypeException(msg.toString());
 	}
 
 	/**
@@ -1330,12 +1329,12 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching layout set prototype
-	 * @throws NoSuchLayoutSetPrototypeException if a matching layout set prototype could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a matching layout set prototype could not be found
 	 */
 	@Override
 	public LayoutSetPrototype findByUuid_C_Last(String uuid, long companyId,
 		OrderByComparator<LayoutSetPrototype> orderByComparator)
-		throws NoSuchLayoutSetPrototypeException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException {
 		LayoutSetPrototype layoutSetPrototype = fetchByUuid_C_Last(uuid,
 				companyId, orderByComparator);
 
@@ -1355,7 +1354,7 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutSetPrototypeException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutSetPrototypeException(msg.toString());
 	}
 
 	/**
@@ -1393,13 +1392,13 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next layout set prototype
-	 * @throws NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
 	 */
 	@Override
 	public LayoutSetPrototype[] findByUuid_C_PrevAndNext(
 		long layoutSetPrototypeId, String uuid, long companyId,
 		OrderByComparator<LayoutSetPrototype> orderByComparator)
-		throws NoSuchLayoutSetPrototypeException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException {
 		LayoutSetPrototype layoutSetPrototype = findByPrimaryKey(layoutSetPrototypeId);
 
 		Session session = null;
@@ -1708,13 +1707,13 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next layout set prototype
-	 * @throws NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
 	 */
 	@Override
 	public LayoutSetPrototype[] filterFindByUuid_C_PrevAndNext(
 		long layoutSetPrototypeId, String uuid, long companyId,
 		OrderByComparator<LayoutSetPrototype> orderByComparator)
-		throws NoSuchLayoutSetPrototypeException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException {
 		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByUuid_C_PrevAndNext(layoutSetPrototypeId, uuid,
 				companyId, orderByComparator);
@@ -2262,12 +2261,12 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching layout set prototype
-	 * @throws NoSuchLayoutSetPrototypeException if a matching layout set prototype could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a matching layout set prototype could not be found
 	 */
 	@Override
 	public LayoutSetPrototype findByCompanyId_First(long companyId,
 		OrderByComparator<LayoutSetPrototype> orderByComparator)
-		throws NoSuchLayoutSetPrototypeException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException {
 		LayoutSetPrototype layoutSetPrototype = fetchByCompanyId_First(companyId,
 				orderByComparator);
 
@@ -2284,7 +2283,7 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutSetPrototypeException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutSetPrototypeException(msg.toString());
 	}
 
 	/**
@@ -2313,12 +2312,12 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching layout set prototype
-	 * @throws NoSuchLayoutSetPrototypeException if a matching layout set prototype could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a matching layout set prototype could not be found
 	 */
 	@Override
 	public LayoutSetPrototype findByCompanyId_Last(long companyId,
 		OrderByComparator<LayoutSetPrototype> orderByComparator)
-		throws NoSuchLayoutSetPrototypeException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException {
 		LayoutSetPrototype layoutSetPrototype = fetchByCompanyId_Last(companyId,
 				orderByComparator);
 
@@ -2335,7 +2334,7 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutSetPrototypeException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutSetPrototypeException(msg.toString());
 	}
 
 	/**
@@ -2371,13 +2370,13 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next layout set prototype
-	 * @throws NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
 	 */
 	@Override
 	public LayoutSetPrototype[] findByCompanyId_PrevAndNext(
 		long layoutSetPrototypeId, long companyId,
 		OrderByComparator<LayoutSetPrototype> orderByComparator)
-		throws NoSuchLayoutSetPrototypeException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException {
 		LayoutSetPrototype layoutSetPrototype = findByPrimaryKey(layoutSetPrototypeId);
 
 		Session session = null;
@@ -2645,13 +2644,13 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next layout set prototype
-	 * @throws NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
 	 */
 	@Override
 	public LayoutSetPrototype[] filterFindByCompanyId_PrevAndNext(
 		long layoutSetPrototypeId, long companyId,
 		OrderByComparator<LayoutSetPrototype> orderByComparator)
-		throws NoSuchLayoutSetPrototypeException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException {
 		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByCompanyId_PrevAndNext(layoutSetPrototypeId, companyId,
 				orderByComparator);
@@ -3149,12 +3148,12 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 	 * @param active the active
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching layout set prototype
-	 * @throws NoSuchLayoutSetPrototypeException if a matching layout set prototype could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a matching layout set prototype could not be found
 	 */
 	@Override
 	public LayoutSetPrototype findByC_A_First(long companyId, boolean active,
 		OrderByComparator<LayoutSetPrototype> orderByComparator)
-		throws NoSuchLayoutSetPrototypeException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException {
 		LayoutSetPrototype layoutSetPrototype = fetchByC_A_First(companyId,
 				active, orderByComparator);
 
@@ -3174,7 +3173,7 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutSetPrototypeException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutSetPrototypeException(msg.toString());
 	}
 
 	/**
@@ -3205,12 +3204,12 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 	 * @param active the active
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching layout set prototype
-	 * @throws NoSuchLayoutSetPrototypeException if a matching layout set prototype could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a matching layout set prototype could not be found
 	 */
 	@Override
 	public LayoutSetPrototype findByC_A_Last(long companyId, boolean active,
 		OrderByComparator<LayoutSetPrototype> orderByComparator)
-		throws NoSuchLayoutSetPrototypeException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException {
 		LayoutSetPrototype layoutSetPrototype = fetchByC_A_Last(companyId,
 				active, orderByComparator);
 
@@ -3230,7 +3229,7 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutSetPrototypeException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutSetPrototypeException(msg.toString());
 	}
 
 	/**
@@ -3268,13 +3267,13 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 	 * @param active the active
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next layout set prototype
-	 * @throws NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
 	 */
 	@Override
 	public LayoutSetPrototype[] findByC_A_PrevAndNext(
 		long layoutSetPrototypeId, long companyId, boolean active,
 		OrderByComparator<LayoutSetPrototype> orderByComparator)
-		throws NoSuchLayoutSetPrototypeException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException {
 		LayoutSetPrototype layoutSetPrototype = findByPrimaryKey(layoutSetPrototypeId);
 
 		Session session = null;
@@ -3555,13 +3554,13 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 	 * @param active the active
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next layout set prototype
-	 * @throws NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
 	 */
 	@Override
 	public LayoutSetPrototype[] filterFindByC_A_PrevAndNext(
 		long layoutSetPrototypeId, long companyId, boolean active,
 		OrderByComparator<LayoutSetPrototype> orderByComparator)
-		throws NoSuchLayoutSetPrototypeException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException {
 		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByC_A_PrevAndNext(layoutSetPrototypeId, companyId,
 				active, orderByComparator);
@@ -3975,11 +3974,11 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 	 *
 	 * @param layoutSetPrototypeId the primary key of the layout set prototype
 	 * @return the layout set prototype that was removed
-	 * @throws NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
 	 */
 	@Override
 	public LayoutSetPrototype remove(long layoutSetPrototypeId)
-		throws NoSuchLayoutSetPrototypeException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException {
 		return remove((Serializable)layoutSetPrototypeId);
 	}
 
@@ -3988,11 +3987,11 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 	 *
 	 * @param primaryKey the primary key of the layout set prototype
 	 * @return the layout set prototype that was removed
-	 * @throws NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
 	 */
 	@Override
 	public LayoutSetPrototype remove(Serializable primaryKey)
-		throws NoSuchLayoutSetPrototypeException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException {
 		Session session = null;
 
 		try {
@@ -4006,13 +4005,13 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchLayoutSetPrototypeException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchLayoutSetPrototypeException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(layoutSetPrototype);
 		}
-		catch (NoSuchLayoutSetPrototypeException nsee) {
+		catch (com.liferay.portal.exception.NoSuchLayoutSetPrototypeException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -4240,11 +4239,11 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 	 *
 	 * @param primaryKey the primary key of the layout set prototype
 	 * @return the layout set prototype
-	 * @throws NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
 	 */
 	@Override
 	public LayoutSetPrototype findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchLayoutSetPrototypeException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException {
 		LayoutSetPrototype layoutSetPrototype = fetchByPrimaryKey(primaryKey);
 
 		if (layoutSetPrototype == null) {
@@ -4252,7 +4251,7 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchLayoutSetPrototypeException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchLayoutSetPrototypeException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -4260,15 +4259,15 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 	}
 
 	/**
-	 * Returns the layout set prototype with the primary key or throws a {@link NoSuchLayoutSetPrototypeException} if it could not be found.
+	 * Returns the layout set prototype with the primary key or throws a {@link com.liferay.portal.exception.NoSuchLayoutSetPrototypeException} if it could not be found.
 	 *
 	 * @param layoutSetPrototypeId the primary key of the layout set prototype
 	 * @return the layout set prototype
-	 * @throws NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
 	 */
 	@Override
 	public LayoutSetPrototype findByPrimaryKey(long layoutSetPrototypeId)
-		throws NoSuchLayoutSetPrototypeException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException {
 		return findByPrimaryKey((Serializable)layoutSetPrototypeId);
 	}
 

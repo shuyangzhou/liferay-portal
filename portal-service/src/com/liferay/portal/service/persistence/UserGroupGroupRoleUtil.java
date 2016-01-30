@@ -185,7 +185,7 @@ public class UserGroupGroupRoleUtil {
 	* @param userGroupId the user group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user group group role
-	* @throws NoSuchUserGroupGroupRoleException if a matching user group group role could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupGroupRoleException if a matching user group group role could not be found
 	*/
 	public static UserGroupGroupRole findByUserGroupId_First(long userGroupId,
 		OrderByComparator<UserGroupGroupRole> orderByComparator)
@@ -214,7 +214,7 @@ public class UserGroupGroupRoleUtil {
 	* @param userGroupId the user group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user group group role
-	* @throws NoSuchUserGroupGroupRoleException if a matching user group group role could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupGroupRoleException if a matching user group group role could not be found
 	*/
 	public static UserGroupGroupRole findByUserGroupId_Last(long userGroupId,
 		OrderByComparator<UserGroupGroupRole> orderByComparator)
@@ -243,7 +243,7 @@ public class UserGroupGroupRoleUtil {
 	* @param userGroupId the user group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user group group role
-	* @throws NoSuchUserGroupGroupRoleException if a user group group role with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupGroupRoleException if a user group group role with the primary key could not be found
 	*/
 	public static UserGroupGroupRole[] findByUserGroupId_PrevAndNext(
 		com.liferay.portal.service.persistence.UserGroupGroupRolePK userGroupGroupRolePK,
@@ -350,7 +350,7 @@ public class UserGroupGroupRoleUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user group group role
-	* @throws NoSuchUserGroupGroupRoleException if a matching user group group role could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupGroupRoleException if a matching user group group role could not be found
 	*/
 	public static UserGroupGroupRole findByGroupId_First(long groupId,
 		OrderByComparator<UserGroupGroupRole> orderByComparator)
@@ -376,7 +376,7 @@ public class UserGroupGroupRoleUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user group group role
-	* @throws NoSuchUserGroupGroupRoleException if a matching user group group role could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupGroupRoleException if a matching user group group role could not be found
 	*/
 	public static UserGroupGroupRole findByGroupId_Last(long groupId,
 		OrderByComparator<UserGroupGroupRole> orderByComparator)
@@ -403,7 +403,7 @@ public class UserGroupGroupRoleUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user group group role
-	* @throws NoSuchUserGroupGroupRoleException if a user group group role with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupGroupRoleException if a user group group role with the primary key could not be found
 	*/
 	public static UserGroupGroupRole[] findByGroupId_PrevAndNext(
 		com.liferay.portal.service.persistence.UserGroupGroupRolePK userGroupGroupRolePK,
@@ -507,7 +507,7 @@ public class UserGroupGroupRoleUtil {
 	* @param roleId the role ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user group group role
-	* @throws NoSuchUserGroupGroupRoleException if a matching user group group role could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupGroupRoleException if a matching user group group role could not be found
 	*/
 	public static UserGroupGroupRole findByRoleId_First(long roleId,
 		OrderByComparator<UserGroupGroupRole> orderByComparator)
@@ -533,7 +533,7 @@ public class UserGroupGroupRoleUtil {
 	* @param roleId the role ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user group group role
-	* @throws NoSuchUserGroupGroupRoleException if a matching user group group role could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupGroupRoleException if a matching user group group role could not be found
 	*/
 	public static UserGroupGroupRole findByRoleId_Last(long roleId,
 		OrderByComparator<UserGroupGroupRole> orderByComparator)
@@ -560,7 +560,7 @@ public class UserGroupGroupRoleUtil {
 	* @param roleId the role ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user group group role
-	* @throws NoSuchUserGroupGroupRoleException if a user group group role with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupGroupRoleException if a user group group role with the primary key could not be found
 	*/
 	public static UserGroupGroupRole[] findByRoleId_PrevAndNext(
 		com.liferay.portal.service.persistence.UserGroupGroupRolePK userGroupGroupRolePK,
@@ -673,7 +673,7 @@ public class UserGroupGroupRoleUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user group group role
-	* @throws NoSuchUserGroupGroupRoleException if a matching user group group role could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupGroupRoleException if a matching user group group role could not be found
 	*/
 	public static UserGroupGroupRole findByU_G_First(long userGroupId,
 		long groupId, OrderByComparator<UserGroupGroupRole> orderByComparator)
@@ -703,7 +703,7 @@ public class UserGroupGroupRoleUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user group group role
-	* @throws NoSuchUserGroupGroupRoleException if a matching user group group role could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupGroupRoleException if a matching user group group role could not be found
 	*/
 	public static UserGroupGroupRole findByU_G_Last(long userGroupId,
 		long groupId, OrderByComparator<UserGroupGroupRole> orderByComparator)
@@ -734,7 +734,7 @@ public class UserGroupGroupRoleUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user group group role
-	* @throws NoSuchUserGroupGroupRoleException if a user group group role with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupGroupRoleException if a user group group role with the primary key could not be found
 	*/
 	public static UserGroupGroupRole[] findByU_G_PrevAndNext(
 		com.liferay.portal.service.persistence.UserGroupGroupRolePK userGroupGroupRolePK,
@@ -848,7 +848,7 @@ public class UserGroupGroupRoleUtil {
 	* @param roleId the role ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user group group role
-	* @throws NoSuchUserGroupGroupRoleException if a matching user group group role could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupGroupRoleException if a matching user group group role could not be found
 	*/
 	public static UserGroupGroupRole findByG_R_First(long groupId, long roleId,
 		OrderByComparator<UserGroupGroupRole> orderByComparator)
@@ -878,7 +878,7 @@ public class UserGroupGroupRoleUtil {
 	* @param roleId the role ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user group group role
-	* @throws NoSuchUserGroupGroupRoleException if a matching user group group role could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupGroupRoleException if a matching user group group role could not be found
 	*/
 	public static UserGroupGroupRole findByG_R_Last(long groupId, long roleId,
 		OrderByComparator<UserGroupGroupRole> orderByComparator)
@@ -909,7 +909,7 @@ public class UserGroupGroupRoleUtil {
 	* @param roleId the role ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user group group role
-	* @throws NoSuchUserGroupGroupRoleException if a user group group role with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupGroupRoleException if a user group group role with the primary key could not be found
 	*/
 	public static UserGroupGroupRole[] findByG_R_PrevAndNext(
 		com.liferay.portal.service.persistence.UserGroupGroupRolePK userGroupGroupRolePK,
@@ -976,7 +976,7 @@ public class UserGroupGroupRoleUtil {
 	*
 	* @param userGroupGroupRolePK the primary key of the user group group role
 	* @return the user group group role that was removed
-	* @throws NoSuchUserGroupGroupRoleException if a user group group role with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupGroupRoleException if a user group group role with the primary key could not be found
 	*/
 	public static UserGroupGroupRole remove(
 		com.liferay.portal.service.persistence.UserGroupGroupRolePK userGroupGroupRolePK)
@@ -990,11 +990,11 @@ public class UserGroupGroupRoleUtil {
 	}
 
 	/**
-	* Returns the user group group role with the primary key or throws a {@link NoSuchUserGroupGroupRoleException} if it could not be found.
+	* Returns the user group group role with the primary key or throws a {@link com.liferay.portal.exception.NoSuchUserGroupGroupRoleException} if it could not be found.
 	*
 	* @param userGroupGroupRolePK the primary key of the user group group role
 	* @return the user group group role
-	* @throws NoSuchUserGroupGroupRoleException if a user group group role with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupGroupRoleException if a user group group role with the primary key could not be found
 	*/
 	public static UserGroupGroupRole findByPrimaryKey(
 		com.liferay.portal.service.persistence.UserGroupGroupRolePK userGroupGroupRolePK)

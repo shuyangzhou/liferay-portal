@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchEmailAddressException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -295,12 +294,12 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching email address
-	 * @throws NoSuchEmailAddressException if a matching email address could not be found
+	 * @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	 */
 	@Override
 	public EmailAddress findByUuid_First(String uuid,
 		OrderByComparator<EmailAddress> orderByComparator)
-		throws NoSuchEmailAddressException {
+		throws com.liferay.portal.exception.NoSuchEmailAddressException {
 		EmailAddress emailAddress = fetchByUuid_First(uuid, orderByComparator);
 
 		if (emailAddress != null) {
@@ -316,7 +315,7 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEmailAddressException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchEmailAddressException(msg.toString());
 	}
 
 	/**
@@ -344,12 +343,12 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching email address
-	 * @throws NoSuchEmailAddressException if a matching email address could not be found
+	 * @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	 */
 	@Override
 	public EmailAddress findByUuid_Last(String uuid,
 		OrderByComparator<EmailAddress> orderByComparator)
-		throws NoSuchEmailAddressException {
+		throws com.liferay.portal.exception.NoSuchEmailAddressException {
 		EmailAddress emailAddress = fetchByUuid_Last(uuid, orderByComparator);
 
 		if (emailAddress != null) {
@@ -365,7 +364,7 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEmailAddressException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchEmailAddressException(msg.toString());
 	}
 
 	/**
@@ -401,12 +400,12 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next email address
-	 * @throws NoSuchEmailAddressException if a email address with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchEmailAddressException if a email address with the primary key could not be found
 	 */
 	@Override
 	public EmailAddress[] findByUuid_PrevAndNext(long emailAddressId,
 		String uuid, OrderByComparator<EmailAddress> orderByComparator)
-		throws NoSuchEmailAddressException {
+		throws com.liferay.portal.exception.NoSuchEmailAddressException {
 		EmailAddress emailAddress = findByPrimaryKey(emailAddressId);
 
 		Session session = null;
@@ -857,12 +856,12 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching email address
-	 * @throws NoSuchEmailAddressException if a matching email address could not be found
+	 * @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	 */
 	@Override
 	public EmailAddress findByUuid_C_First(String uuid, long companyId,
 		OrderByComparator<EmailAddress> orderByComparator)
-		throws NoSuchEmailAddressException {
+		throws com.liferay.portal.exception.NoSuchEmailAddressException {
 		EmailAddress emailAddress = fetchByUuid_C_First(uuid, companyId,
 				orderByComparator);
 
@@ -882,7 +881,7 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEmailAddressException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchEmailAddressException(msg.toString());
 	}
 
 	/**
@@ -913,12 +912,12 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching email address
-	 * @throws NoSuchEmailAddressException if a matching email address could not be found
+	 * @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	 */
 	@Override
 	public EmailAddress findByUuid_C_Last(String uuid, long companyId,
 		OrderByComparator<EmailAddress> orderByComparator)
-		throws NoSuchEmailAddressException {
+		throws com.liferay.portal.exception.NoSuchEmailAddressException {
 		EmailAddress emailAddress = fetchByUuid_C_Last(uuid, companyId,
 				orderByComparator);
 
@@ -938,7 +937,7 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEmailAddressException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchEmailAddressException(msg.toString());
 	}
 
 	/**
@@ -976,13 +975,13 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next email address
-	 * @throws NoSuchEmailAddressException if a email address with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchEmailAddressException if a email address with the primary key could not be found
 	 */
 	@Override
 	public EmailAddress[] findByUuid_C_PrevAndNext(long emailAddressId,
 		String uuid, long companyId,
 		OrderByComparator<EmailAddress> orderByComparator)
-		throws NoSuchEmailAddressException {
+		throws com.liferay.portal.exception.NoSuchEmailAddressException {
 		EmailAddress emailAddress = findByPrimaryKey(emailAddressId);
 
 		Session session = null;
@@ -1415,12 +1414,12 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching email address
-	 * @throws NoSuchEmailAddressException if a matching email address could not be found
+	 * @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	 */
 	@Override
 	public EmailAddress findByCompanyId_First(long companyId,
 		OrderByComparator<EmailAddress> orderByComparator)
-		throws NoSuchEmailAddressException {
+		throws com.liferay.portal.exception.NoSuchEmailAddressException {
 		EmailAddress emailAddress = fetchByCompanyId_First(companyId,
 				orderByComparator);
 
@@ -1437,7 +1436,7 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEmailAddressException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchEmailAddressException(msg.toString());
 	}
 
 	/**
@@ -1466,12 +1465,12 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching email address
-	 * @throws NoSuchEmailAddressException if a matching email address could not be found
+	 * @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	 */
 	@Override
 	public EmailAddress findByCompanyId_Last(long companyId,
 		OrderByComparator<EmailAddress> orderByComparator)
-		throws NoSuchEmailAddressException {
+		throws com.liferay.portal.exception.NoSuchEmailAddressException {
 		EmailAddress emailAddress = fetchByCompanyId_Last(companyId,
 				orderByComparator);
 
@@ -1488,7 +1487,7 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEmailAddressException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchEmailAddressException(msg.toString());
 	}
 
 	/**
@@ -1524,12 +1523,12 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next email address
-	 * @throws NoSuchEmailAddressException if a email address with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchEmailAddressException if a email address with the primary key could not be found
 	 */
 	@Override
 	public EmailAddress[] findByCompanyId_PrevAndNext(long emailAddressId,
 		long companyId, OrderByComparator<EmailAddress> orderByComparator)
-		throws NoSuchEmailAddressException {
+		throws com.liferay.portal.exception.NoSuchEmailAddressException {
 		EmailAddress emailAddress = findByPrimaryKey(emailAddressId);
 
 		Session session = null;
@@ -1919,12 +1918,12 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching email address
-	 * @throws NoSuchEmailAddressException if a matching email address could not be found
+	 * @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	 */
 	@Override
 	public EmailAddress findByUserId_First(long userId,
 		OrderByComparator<EmailAddress> orderByComparator)
-		throws NoSuchEmailAddressException {
+		throws com.liferay.portal.exception.NoSuchEmailAddressException {
 		EmailAddress emailAddress = fetchByUserId_First(userId,
 				orderByComparator);
 
@@ -1941,7 +1940,7 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEmailAddressException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchEmailAddressException(msg.toString());
 	}
 
 	/**
@@ -1969,12 +1968,12 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching email address
-	 * @throws NoSuchEmailAddressException if a matching email address could not be found
+	 * @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	 */
 	@Override
 	public EmailAddress findByUserId_Last(long userId,
 		OrderByComparator<EmailAddress> orderByComparator)
-		throws NoSuchEmailAddressException {
+		throws com.liferay.portal.exception.NoSuchEmailAddressException {
 		EmailAddress emailAddress = fetchByUserId_Last(userId, orderByComparator);
 
 		if (emailAddress != null) {
@@ -1990,7 +1989,7 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEmailAddressException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchEmailAddressException(msg.toString());
 	}
 
 	/**
@@ -2026,12 +2025,12 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next email address
-	 * @throws NoSuchEmailAddressException if a email address with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchEmailAddressException if a email address with the primary key could not be found
 	 */
 	@Override
 	public EmailAddress[] findByUserId_PrevAndNext(long emailAddressId,
 		long userId, OrderByComparator<EmailAddress> orderByComparator)
-		throws NoSuchEmailAddressException {
+		throws com.liferay.portal.exception.NoSuchEmailAddressException {
 		EmailAddress emailAddress = findByPrimaryKey(emailAddressId);
 
 		Session session = null;
@@ -2438,12 +2437,12 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching email address
-	 * @throws NoSuchEmailAddressException if a matching email address could not be found
+	 * @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	 */
 	@Override
 	public EmailAddress findByC_C_First(long companyId, long classNameId,
 		OrderByComparator<EmailAddress> orderByComparator)
-		throws NoSuchEmailAddressException {
+		throws com.liferay.portal.exception.NoSuchEmailAddressException {
 		EmailAddress emailAddress = fetchByC_C_First(companyId, classNameId,
 				orderByComparator);
 
@@ -2463,7 +2462,7 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEmailAddressException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchEmailAddressException(msg.toString());
 	}
 
 	/**
@@ -2494,12 +2493,12 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching email address
-	 * @throws NoSuchEmailAddressException if a matching email address could not be found
+	 * @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	 */
 	@Override
 	public EmailAddress findByC_C_Last(long companyId, long classNameId,
 		OrderByComparator<EmailAddress> orderByComparator)
-		throws NoSuchEmailAddressException {
+		throws com.liferay.portal.exception.NoSuchEmailAddressException {
 		EmailAddress emailAddress = fetchByC_C_Last(companyId, classNameId,
 				orderByComparator);
 
@@ -2519,7 +2518,7 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEmailAddressException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchEmailAddressException(msg.toString());
 	}
 
 	/**
@@ -2557,13 +2556,13 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next email address
-	 * @throws NoSuchEmailAddressException if a email address with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchEmailAddressException if a email address with the primary key could not be found
 	 */
 	@Override
 	public EmailAddress[] findByC_C_PrevAndNext(long emailAddressId,
 		long companyId, long classNameId,
 		OrderByComparator<EmailAddress> orderByComparator)
-		throws NoSuchEmailAddressException {
+		throws com.liferay.portal.exception.NoSuchEmailAddressException {
 		EmailAddress emailAddress = findByPrimaryKey(emailAddressId);
 
 		Session session = null;
@@ -2999,12 +2998,12 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching email address
-	 * @throws NoSuchEmailAddressException if a matching email address could not be found
+	 * @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	 */
 	@Override
 	public EmailAddress findByC_C_C_First(long companyId, long classNameId,
 		long classPK, OrderByComparator<EmailAddress> orderByComparator)
-		throws NoSuchEmailAddressException {
+		throws com.liferay.portal.exception.NoSuchEmailAddressException {
 		EmailAddress emailAddress = fetchByC_C_C_First(companyId, classNameId,
 				classPK, orderByComparator);
 
@@ -3027,7 +3026,7 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEmailAddressException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchEmailAddressException(msg.toString());
 	}
 
 	/**
@@ -3060,12 +3059,12 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching email address
-	 * @throws NoSuchEmailAddressException if a matching email address could not be found
+	 * @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	 */
 	@Override
 	public EmailAddress findByC_C_C_Last(long companyId, long classNameId,
 		long classPK, OrderByComparator<EmailAddress> orderByComparator)
-		throws NoSuchEmailAddressException {
+		throws com.liferay.portal.exception.NoSuchEmailAddressException {
 		EmailAddress emailAddress = fetchByC_C_C_Last(companyId, classNameId,
 				classPK, orderByComparator);
 
@@ -3088,7 +3087,7 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEmailAddressException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchEmailAddressException(msg.toString());
 	}
 
 	/**
@@ -3128,13 +3127,13 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next email address
-	 * @throws NoSuchEmailAddressException if a email address with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchEmailAddressException if a email address with the primary key could not be found
 	 */
 	@Override
 	public EmailAddress[] findByC_C_C_PrevAndNext(long emailAddressId,
 		long companyId, long classNameId, long classPK,
 		OrderByComparator<EmailAddress> orderByComparator)
-		throws NoSuchEmailAddressException {
+		throws com.liferay.portal.exception.NoSuchEmailAddressException {
 		EmailAddress emailAddress = findByPrimaryKey(emailAddressId);
 
 		Session session = null;
@@ -3598,13 +3597,13 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 	 * @param primary the primary
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching email address
-	 * @throws NoSuchEmailAddressException if a matching email address could not be found
+	 * @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	 */
 	@Override
 	public EmailAddress findByC_C_C_P_First(long companyId, long classNameId,
 		long classPK, boolean primary,
 		OrderByComparator<EmailAddress> orderByComparator)
-		throws NoSuchEmailAddressException {
+		throws com.liferay.portal.exception.NoSuchEmailAddressException {
 		EmailAddress emailAddress = fetchByC_C_C_P_First(companyId,
 				classNameId, classPK, primary, orderByComparator);
 
@@ -3630,7 +3629,7 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEmailAddressException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchEmailAddressException(msg.toString());
 	}
 
 	/**
@@ -3666,13 +3665,13 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 	 * @param primary the primary
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching email address
-	 * @throws NoSuchEmailAddressException if a matching email address could not be found
+	 * @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	 */
 	@Override
 	public EmailAddress findByC_C_C_P_Last(long companyId, long classNameId,
 		long classPK, boolean primary,
 		OrderByComparator<EmailAddress> orderByComparator)
-		throws NoSuchEmailAddressException {
+		throws com.liferay.portal.exception.NoSuchEmailAddressException {
 		EmailAddress emailAddress = fetchByC_C_C_P_Last(companyId, classNameId,
 				classPK, primary, orderByComparator);
 
@@ -3698,7 +3697,7 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEmailAddressException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchEmailAddressException(msg.toString());
 	}
 
 	/**
@@ -3741,13 +3740,13 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 	 * @param primary the primary
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next email address
-	 * @throws NoSuchEmailAddressException if a email address with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchEmailAddressException if a email address with the primary key could not be found
 	 */
 	@Override
 	public EmailAddress[] findByC_C_C_P_PrevAndNext(long emailAddressId,
 		long companyId, long classNameId, long classPK, boolean primary,
 		OrderByComparator<EmailAddress> orderByComparator)
-		throws NoSuchEmailAddressException {
+		throws com.liferay.portal.exception.NoSuchEmailAddressException {
 		EmailAddress emailAddress = findByPrimaryKey(emailAddressId);
 
 		Session session = null;
@@ -4093,11 +4092,11 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 	 *
 	 * @param emailAddressId the primary key of the email address
 	 * @return the email address that was removed
-	 * @throws NoSuchEmailAddressException if a email address with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchEmailAddressException if a email address with the primary key could not be found
 	 */
 	@Override
 	public EmailAddress remove(long emailAddressId)
-		throws NoSuchEmailAddressException {
+		throws com.liferay.portal.exception.NoSuchEmailAddressException {
 		return remove((Serializable)emailAddressId);
 	}
 
@@ -4106,11 +4105,11 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 	 *
 	 * @param primaryKey the primary key of the email address
 	 * @return the email address that was removed
-	 * @throws NoSuchEmailAddressException if a email address with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchEmailAddressException if a email address with the primary key could not be found
 	 */
 	@Override
 	public EmailAddress remove(Serializable primaryKey)
-		throws NoSuchEmailAddressException {
+		throws com.liferay.portal.exception.NoSuchEmailAddressException {
 		Session session = null;
 
 		try {
@@ -4124,13 +4123,13 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchEmailAddressException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchEmailAddressException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(emailAddress);
 		}
-		catch (NoSuchEmailAddressException nsee) {
+		catch (com.liferay.portal.exception.NoSuchEmailAddressException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -4420,11 +4419,11 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 	 *
 	 * @param primaryKey the primary key of the email address
 	 * @return the email address
-	 * @throws NoSuchEmailAddressException if a email address with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchEmailAddressException if a email address with the primary key could not be found
 	 */
 	@Override
 	public EmailAddress findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchEmailAddressException {
+		throws com.liferay.portal.exception.NoSuchEmailAddressException {
 		EmailAddress emailAddress = fetchByPrimaryKey(primaryKey);
 
 		if (emailAddress == null) {
@@ -4432,7 +4431,7 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchEmailAddressException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchEmailAddressException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -4440,15 +4439,15 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 	}
 
 	/**
-	 * Returns the email address with the primary key or throws a {@link NoSuchEmailAddressException} if it could not be found.
+	 * Returns the email address with the primary key or throws a {@link com.liferay.portal.exception.NoSuchEmailAddressException} if it could not be found.
 	 *
 	 * @param emailAddressId the primary key of the email address
 	 * @return the email address
-	 * @throws NoSuchEmailAddressException if a email address with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchEmailAddressException if a email address with the primary key could not be found
 	 */
 	@Override
 	public EmailAddress findByPrimaryKey(long emailAddressId)
-		throws NoSuchEmailAddressException {
+		throws com.liferay.portal.exception.NoSuchEmailAddressException {
 		return findByPrimaryKey((Serializable)emailAddressId);
 	}
 

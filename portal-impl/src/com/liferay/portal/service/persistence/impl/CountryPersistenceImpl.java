@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchCountryException;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
@@ -95,14 +94,15 @@ public class CountryPersistenceImpl extends BasePersistenceImpl<Country>
 			new String[] { String.class.getName() });
 
 	/**
-	 * Returns the country where name = &#63; or throws a {@link NoSuchCountryException} if it could not be found.
+	 * Returns the country where name = &#63; or throws a {@link com.liferay.portal.exception.NoSuchCountryException} if it could not be found.
 	 *
 	 * @param name the name
 	 * @return the matching country
-	 * @throws NoSuchCountryException if a matching country could not be found
+	 * @throws com.liferay.portal.exception.NoSuchCountryException if a matching country could not be found
 	 */
 	@Override
-	public Country findByName(String name) throws NoSuchCountryException {
+	public Country findByName(String name)
+		throws com.liferay.portal.exception.NoSuchCountryException {
 		Country country = fetchByName(name);
 
 		if (country == null) {
@@ -119,7 +119,7 @@ public class CountryPersistenceImpl extends BasePersistenceImpl<Country>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchCountryException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchCountryException(msg.toString());
 		}
 
 		return country;
@@ -241,7 +241,8 @@ public class CountryPersistenceImpl extends BasePersistenceImpl<Country>
 	 * @return the country that was removed
 	 */
 	@Override
-	public Country removeByName(String name) throws NoSuchCountryException {
+	public Country removeByName(String name)
+		throws com.liferay.portal.exception.NoSuchCountryException {
 		Country country = findByName(name);
 
 		return remove(country);
@@ -326,14 +327,15 @@ public class CountryPersistenceImpl extends BasePersistenceImpl<Country>
 			new String[] { String.class.getName() });
 
 	/**
-	 * Returns the country where a2 = &#63; or throws a {@link NoSuchCountryException} if it could not be found.
+	 * Returns the country where a2 = &#63; or throws a {@link com.liferay.portal.exception.NoSuchCountryException} if it could not be found.
 	 *
 	 * @param a2 the a2
 	 * @return the matching country
-	 * @throws NoSuchCountryException if a matching country could not be found
+	 * @throws com.liferay.portal.exception.NoSuchCountryException if a matching country could not be found
 	 */
 	@Override
-	public Country findByA2(String a2) throws NoSuchCountryException {
+	public Country findByA2(String a2)
+		throws com.liferay.portal.exception.NoSuchCountryException {
 		Country country = fetchByA2(a2);
 
 		if (country == null) {
@@ -350,7 +352,7 @@ public class CountryPersistenceImpl extends BasePersistenceImpl<Country>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchCountryException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchCountryException(msg.toString());
 		}
 
 		return country;
@@ -472,7 +474,8 @@ public class CountryPersistenceImpl extends BasePersistenceImpl<Country>
 	 * @return the country that was removed
 	 */
 	@Override
-	public Country removeByA2(String a2) throws NoSuchCountryException {
+	public Country removeByA2(String a2)
+		throws com.liferay.portal.exception.NoSuchCountryException {
 		Country country = findByA2(a2);
 
 		return remove(country);
@@ -557,14 +560,15 @@ public class CountryPersistenceImpl extends BasePersistenceImpl<Country>
 			new String[] { String.class.getName() });
 
 	/**
-	 * Returns the country where a3 = &#63; or throws a {@link NoSuchCountryException} if it could not be found.
+	 * Returns the country where a3 = &#63; or throws a {@link com.liferay.portal.exception.NoSuchCountryException} if it could not be found.
 	 *
 	 * @param a3 the a3
 	 * @return the matching country
-	 * @throws NoSuchCountryException if a matching country could not be found
+	 * @throws com.liferay.portal.exception.NoSuchCountryException if a matching country could not be found
 	 */
 	@Override
-	public Country findByA3(String a3) throws NoSuchCountryException {
+	public Country findByA3(String a3)
+		throws com.liferay.portal.exception.NoSuchCountryException {
 		Country country = fetchByA3(a3);
 
 		if (country == null) {
@@ -581,7 +585,7 @@ public class CountryPersistenceImpl extends BasePersistenceImpl<Country>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchCountryException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchCountryException(msg.toString());
 		}
 
 		return country;
@@ -703,7 +707,8 @@ public class CountryPersistenceImpl extends BasePersistenceImpl<Country>
 	 * @return the country that was removed
 	 */
 	@Override
-	public Country removeByA3(String a3) throws NoSuchCountryException {
+	public Country removeByA3(String a3)
+		throws com.liferay.portal.exception.NoSuchCountryException {
 		Country country = findByA3(a3);
 
 		return remove(country);
@@ -967,12 +972,12 @@ public class CountryPersistenceImpl extends BasePersistenceImpl<Country>
 	 * @param active the active
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching country
-	 * @throws NoSuchCountryException if a matching country could not be found
+	 * @throws com.liferay.portal.exception.NoSuchCountryException if a matching country could not be found
 	 */
 	@Override
 	public Country findByActive_First(boolean active,
 		OrderByComparator<Country> orderByComparator)
-		throws NoSuchCountryException {
+		throws com.liferay.portal.exception.NoSuchCountryException {
 		Country country = fetchByActive_First(active, orderByComparator);
 
 		if (country != null) {
@@ -988,7 +993,7 @@ public class CountryPersistenceImpl extends BasePersistenceImpl<Country>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchCountryException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchCountryException(msg.toString());
 	}
 
 	/**
@@ -1016,12 +1021,12 @@ public class CountryPersistenceImpl extends BasePersistenceImpl<Country>
 	 * @param active the active
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching country
-	 * @throws NoSuchCountryException if a matching country could not be found
+	 * @throws com.liferay.portal.exception.NoSuchCountryException if a matching country could not be found
 	 */
 	@Override
 	public Country findByActive_Last(boolean active,
 		OrderByComparator<Country> orderByComparator)
-		throws NoSuchCountryException {
+		throws com.liferay.portal.exception.NoSuchCountryException {
 		Country country = fetchByActive_Last(active, orderByComparator);
 
 		if (country != null) {
@@ -1037,7 +1042,7 @@ public class CountryPersistenceImpl extends BasePersistenceImpl<Country>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchCountryException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchCountryException(msg.toString());
 	}
 
 	/**
@@ -1073,12 +1078,12 @@ public class CountryPersistenceImpl extends BasePersistenceImpl<Country>
 	 * @param active the active
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next country
-	 * @throws NoSuchCountryException if a country with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchCountryException if a country with the primary key could not be found
 	 */
 	@Override
 	public Country[] findByActive_PrevAndNext(long countryId, boolean active,
 		OrderByComparator<Country> orderByComparator)
-		throws NoSuchCountryException {
+		throws com.liferay.portal.exception.NoSuchCountryException {
 		Country country = findByPrimaryKey(countryId);
 
 		Session session = null;
@@ -1486,10 +1491,11 @@ public class CountryPersistenceImpl extends BasePersistenceImpl<Country>
 	 *
 	 * @param countryId the primary key of the country
 	 * @return the country that was removed
-	 * @throws NoSuchCountryException if a country with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchCountryException if a country with the primary key could not be found
 	 */
 	@Override
-	public Country remove(long countryId) throws NoSuchCountryException {
+	public Country remove(long countryId)
+		throws com.liferay.portal.exception.NoSuchCountryException {
 		return remove((Serializable)countryId);
 	}
 
@@ -1498,11 +1504,11 @@ public class CountryPersistenceImpl extends BasePersistenceImpl<Country>
 	 *
 	 * @param primaryKey the primary key of the country
 	 * @return the country that was removed
-	 * @throws NoSuchCountryException if a country with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchCountryException if a country with the primary key could not be found
 	 */
 	@Override
 	public Country remove(Serializable primaryKey)
-		throws NoSuchCountryException {
+		throws com.liferay.portal.exception.NoSuchCountryException {
 		Session session = null;
 
 		try {
@@ -1515,13 +1521,13 @@ public class CountryPersistenceImpl extends BasePersistenceImpl<Country>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchCountryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchCountryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(country);
 		}
-		catch (NoSuchCountryException nsee) {
+		catch (com.liferay.portal.exception.NoSuchCountryException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -1657,11 +1663,11 @@ public class CountryPersistenceImpl extends BasePersistenceImpl<Country>
 	 *
 	 * @param primaryKey the primary key of the country
 	 * @return the country
-	 * @throws NoSuchCountryException if a country with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchCountryException if a country with the primary key could not be found
 	 */
 	@Override
 	public Country findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchCountryException {
+		throws com.liferay.portal.exception.NoSuchCountryException {
 		Country country = fetchByPrimaryKey(primaryKey);
 
 		if (country == null) {
@@ -1669,7 +1675,7 @@ public class CountryPersistenceImpl extends BasePersistenceImpl<Country>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchCountryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchCountryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -1677,15 +1683,15 @@ public class CountryPersistenceImpl extends BasePersistenceImpl<Country>
 	}
 
 	/**
-	 * Returns the country with the primary key or throws a {@link NoSuchCountryException} if it could not be found.
+	 * Returns the country with the primary key or throws a {@link com.liferay.portal.exception.NoSuchCountryException} if it could not be found.
 	 *
 	 * @param countryId the primary key of the country
 	 * @return the country
-	 * @throws NoSuchCountryException if a country with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchCountryException if a country with the primary key could not be found
 	 */
 	@Override
 	public Country findByPrimaryKey(long countryId)
-		throws NoSuchCountryException {
+		throws com.liferay.portal.exception.NoSuchCountryException {
 		return findByPrimaryKey((Serializable)countryId);
 	}
 

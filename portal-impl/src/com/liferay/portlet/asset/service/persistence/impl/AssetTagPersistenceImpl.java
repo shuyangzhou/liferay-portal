@@ -48,7 +48,6 @@ import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.service.persistence.impl.TableMapper;
 import com.liferay.portal.service.persistence.impl.TableMapperFactory;
 
-import com.liferay.portlet.asset.exception.NoSuchTagException;
 import com.liferay.portlet.asset.model.AssetTag;
 import com.liferay.portlet.asset.model.impl.AssetTagImpl;
 import com.liferay.portlet.asset.model.impl.AssetTagModelImpl;
@@ -304,12 +303,12 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching asset tag
-	 * @throws NoSuchTagException if a matching asset tag could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchTagException if a matching asset tag could not be found
 	 */
 	@Override
 	public AssetTag findByUuid_First(String uuid,
 		OrderByComparator<AssetTag> orderByComparator)
-		throws NoSuchTagException {
+		throws com.liferay.portlet.asset.exception.NoSuchTagException {
 		AssetTag assetTag = fetchByUuid_First(uuid, orderByComparator);
 
 		if (assetTag != null) {
@@ -325,7 +324,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchTagException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchTagException(msg.toString());
 	}
 
 	/**
@@ -353,12 +352,12 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching asset tag
-	 * @throws NoSuchTagException if a matching asset tag could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchTagException if a matching asset tag could not be found
 	 */
 	@Override
 	public AssetTag findByUuid_Last(String uuid,
 		OrderByComparator<AssetTag> orderByComparator)
-		throws NoSuchTagException {
+		throws com.liferay.portlet.asset.exception.NoSuchTagException {
 		AssetTag assetTag = fetchByUuid_Last(uuid, orderByComparator);
 
 		if (assetTag != null) {
@@ -374,7 +373,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchTagException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchTagException(msg.toString());
 	}
 
 	/**
@@ -410,12 +409,12 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset tag
-	 * @throws NoSuchTagException if a asset tag with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchTagException if a asset tag with the primary key could not be found
 	 */
 	@Override
 	public AssetTag[] findByUuid_PrevAndNext(long tagId, String uuid,
 		OrderByComparator<AssetTag> orderByComparator)
-		throws NoSuchTagException {
+		throws com.liferay.portlet.asset.exception.NoSuchTagException {
 		AssetTag assetTag = findByPrimaryKey(tagId);
 
 		Session session = null;
@@ -656,16 +655,16 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 			new String[] { String.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the asset tag where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchTagException} if it could not be found.
+	 * Returns the asset tag where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.portlet.asset.exception.NoSuchTagException} if it could not be found.
 	 *
 	 * @param uuid the uuid
 	 * @param groupId the group ID
 	 * @return the matching asset tag
-	 * @throws NoSuchTagException if a matching asset tag could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchTagException if a matching asset tag could not be found
 	 */
 	@Override
 	public AssetTag findByUUID_G(String uuid, long groupId)
-		throws NoSuchTagException {
+		throws com.liferay.portlet.asset.exception.NoSuchTagException {
 		AssetTag assetTag = fetchByUUID_G(uuid, groupId);
 
 		if (assetTag == null) {
@@ -685,7 +684,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchTagException(msg.toString());
+			throw new com.liferay.portlet.asset.exception.NoSuchTagException(msg.toString());
 		}
 
 		return assetTag;
@@ -818,7 +817,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 */
 	@Override
 	public AssetTag removeByUUID_G(String uuid, long groupId)
-		throws NoSuchTagException {
+		throws com.liferay.portlet.asset.exception.NoSuchTagException {
 		AssetTag assetTag = findByUUID_G(uuid, groupId);
 
 		return remove(assetTag);
@@ -1120,12 +1119,12 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching asset tag
-	 * @throws NoSuchTagException if a matching asset tag could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchTagException if a matching asset tag could not be found
 	 */
 	@Override
 	public AssetTag findByUuid_C_First(String uuid, long companyId,
 		OrderByComparator<AssetTag> orderByComparator)
-		throws NoSuchTagException {
+		throws com.liferay.portlet.asset.exception.NoSuchTagException {
 		AssetTag assetTag = fetchByUuid_C_First(uuid, companyId,
 				orderByComparator);
 
@@ -1145,7 +1144,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchTagException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchTagException(msg.toString());
 	}
 
 	/**
@@ -1176,12 +1175,12 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching asset tag
-	 * @throws NoSuchTagException if a matching asset tag could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchTagException if a matching asset tag could not be found
 	 */
 	@Override
 	public AssetTag findByUuid_C_Last(String uuid, long companyId,
 		OrderByComparator<AssetTag> orderByComparator)
-		throws NoSuchTagException {
+		throws com.liferay.portlet.asset.exception.NoSuchTagException {
 		AssetTag assetTag = fetchByUuid_C_Last(uuid, companyId,
 				orderByComparator);
 
@@ -1201,7 +1200,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchTagException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchTagException(msg.toString());
 	}
 
 	/**
@@ -1239,12 +1238,12 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset tag
-	 * @throws NoSuchTagException if a asset tag with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchTagException if a asset tag with the primary key could not be found
 	 */
 	@Override
 	public AssetTag[] findByUuid_C_PrevAndNext(long tagId, String uuid,
 		long companyId, OrderByComparator<AssetTag> orderByComparator)
-		throws NoSuchTagException {
+		throws com.liferay.portlet.asset.exception.NoSuchTagException {
 		AssetTag assetTag = findByPrimaryKey(tagId);
 
 		Session session = null;
@@ -1678,12 +1677,12 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching asset tag
-	 * @throws NoSuchTagException if a matching asset tag could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchTagException if a matching asset tag could not be found
 	 */
 	@Override
 	public AssetTag findByGroupId_First(long groupId,
 		OrderByComparator<AssetTag> orderByComparator)
-		throws NoSuchTagException {
+		throws com.liferay.portlet.asset.exception.NoSuchTagException {
 		AssetTag assetTag = fetchByGroupId_First(groupId, orderByComparator);
 
 		if (assetTag != null) {
@@ -1699,7 +1698,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchTagException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchTagException(msg.toString());
 	}
 
 	/**
@@ -1727,12 +1726,12 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching asset tag
-	 * @throws NoSuchTagException if a matching asset tag could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchTagException if a matching asset tag could not be found
 	 */
 	@Override
 	public AssetTag findByGroupId_Last(long groupId,
 		OrderByComparator<AssetTag> orderByComparator)
-		throws NoSuchTagException {
+		throws com.liferay.portlet.asset.exception.NoSuchTagException {
 		AssetTag assetTag = fetchByGroupId_Last(groupId, orderByComparator);
 
 		if (assetTag != null) {
@@ -1748,7 +1747,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchTagException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchTagException(msg.toString());
 	}
 
 	/**
@@ -1784,12 +1783,12 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset tag
-	 * @throws NoSuchTagException if a asset tag with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchTagException if a asset tag with the primary key could not be found
 	 */
 	@Override
 	public AssetTag[] findByGroupId_PrevAndNext(long tagId, long groupId,
 		OrderByComparator<AssetTag> orderByComparator)
-		throws NoSuchTagException {
+		throws com.liferay.portlet.asset.exception.NoSuchTagException {
 		AssetTag assetTag = findByPrimaryKey(tagId);
 
 		Session session = null;
@@ -2053,12 +2052,12 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset tag
-	 * @throws NoSuchTagException if a asset tag with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchTagException if a asset tag with the primary key could not be found
 	 */
 	@Override
 	public AssetTag[] filterFindByGroupId_PrevAndNext(long tagId, long groupId,
 		OrderByComparator<AssetTag> orderByComparator)
-		throws NoSuchTagException {
+		throws com.liferay.portlet.asset.exception.NoSuchTagException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByGroupId_PrevAndNext(tagId, groupId, orderByComparator);
 		}
@@ -2812,16 +2811,16 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 			new String[] { Long.class.getName(), String.class.getName() });
 
 	/**
-	 * Returns the asset tag where groupId = &#63; and name = &#63; or throws a {@link NoSuchTagException} if it could not be found.
+	 * Returns the asset tag where groupId = &#63; and name = &#63; or throws a {@link com.liferay.portlet.asset.exception.NoSuchTagException} if it could not be found.
 	 *
 	 * @param groupId the group ID
 	 * @param name the name
 	 * @return the matching asset tag
-	 * @throws NoSuchTagException if a matching asset tag could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchTagException if a matching asset tag could not be found
 	 */
 	@Override
 	public AssetTag findByG_N(long groupId, String name)
-		throws NoSuchTagException {
+		throws com.liferay.portlet.asset.exception.NoSuchTagException {
 		AssetTag assetTag = fetchByG_N(groupId, name);
 
 		if (assetTag == null) {
@@ -2841,7 +2840,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchTagException(msg.toString());
+			throw new com.liferay.portlet.asset.exception.NoSuchTagException(msg.toString());
 		}
 
 		return assetTag;
@@ -2974,7 +2973,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 */
 	@Override
 	public AssetTag removeByG_N(long groupId, String name)
-		throws NoSuchTagException {
+		throws com.liferay.portlet.asset.exception.NoSuchTagException {
 		AssetTag assetTag = findByG_N(groupId, name);
 
 		return remove(assetTag);
@@ -3258,12 +3257,12 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 * @param name the name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching asset tag
-	 * @throws NoSuchTagException if a matching asset tag could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchTagException if a matching asset tag could not be found
 	 */
 	@Override
 	public AssetTag findByG_LikeN_First(long groupId, String name,
 		OrderByComparator<AssetTag> orderByComparator)
-		throws NoSuchTagException {
+		throws com.liferay.portlet.asset.exception.NoSuchTagException {
 		AssetTag assetTag = fetchByG_LikeN_First(groupId, name,
 				orderByComparator);
 
@@ -3283,7 +3282,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchTagException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchTagException(msg.toString());
 	}
 
 	/**
@@ -3314,12 +3313,12 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 * @param name the name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching asset tag
-	 * @throws NoSuchTagException if a matching asset tag could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchTagException if a matching asset tag could not be found
 	 */
 	@Override
 	public AssetTag findByG_LikeN_Last(long groupId, String name,
 		OrderByComparator<AssetTag> orderByComparator)
-		throws NoSuchTagException {
+		throws com.liferay.portlet.asset.exception.NoSuchTagException {
 		AssetTag assetTag = fetchByG_LikeN_Last(groupId, name, orderByComparator);
 
 		if (assetTag != null) {
@@ -3338,7 +3337,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchTagException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchTagException(msg.toString());
 	}
 
 	/**
@@ -3376,12 +3375,12 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 * @param name the name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset tag
-	 * @throws NoSuchTagException if a asset tag with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchTagException if a asset tag with the primary key could not be found
 	 */
 	@Override
 	public AssetTag[] findByG_LikeN_PrevAndNext(long tagId, long groupId,
 		String name, OrderByComparator<AssetTag> orderByComparator)
-		throws NoSuchTagException {
+		throws com.liferay.portlet.asset.exception.NoSuchTagException {
 		AssetTag assetTag = findByPrimaryKey(tagId);
 
 		Session session = null;
@@ -3686,12 +3685,12 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 * @param name the name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset tag
-	 * @throws NoSuchTagException if a asset tag with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchTagException if a asset tag with the primary key could not be found
 	 */
 	@Override
 	public AssetTag[] filterFindByG_LikeN_PrevAndNext(long tagId, long groupId,
 		String name, OrderByComparator<AssetTag> orderByComparator)
-		throws NoSuchTagException {
+		throws com.liferay.portlet.asset.exception.NoSuchTagException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_LikeN_PrevAndNext(tagId, groupId, name,
 				orderByComparator);
@@ -4801,10 +4800,11 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 *
 	 * @param tagId the primary key of the asset tag
 	 * @return the asset tag that was removed
-	 * @throws NoSuchTagException if a asset tag with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchTagException if a asset tag with the primary key could not be found
 	 */
 	@Override
-	public AssetTag remove(long tagId) throws NoSuchTagException {
+	public AssetTag remove(long tagId)
+		throws com.liferay.portlet.asset.exception.NoSuchTagException {
 		return remove((Serializable)tagId);
 	}
 
@@ -4813,10 +4813,11 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 *
 	 * @param primaryKey the primary key of the asset tag
 	 * @return the asset tag that was removed
-	 * @throws NoSuchTagException if a asset tag with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchTagException if a asset tag with the primary key could not be found
 	 */
 	@Override
-	public AssetTag remove(Serializable primaryKey) throws NoSuchTagException {
+	public AssetTag remove(Serializable primaryKey)
+		throws com.liferay.portlet.asset.exception.NoSuchTagException {
 		Session session = null;
 
 		try {
@@ -4830,13 +4831,13 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchTagException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portlet.asset.exception.NoSuchTagException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(assetTag);
 		}
-		catch (NoSuchTagException nsee) {
+		catch (com.liferay.portlet.asset.exception.NoSuchTagException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -5040,11 +5041,11 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 *
 	 * @param primaryKey the primary key of the asset tag
 	 * @return the asset tag
-	 * @throws NoSuchTagException if a asset tag with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchTagException if a asset tag with the primary key could not be found
 	 */
 	@Override
 	public AssetTag findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchTagException {
+		throws com.liferay.portlet.asset.exception.NoSuchTagException {
 		AssetTag assetTag = fetchByPrimaryKey(primaryKey);
 
 		if (assetTag == null) {
@@ -5052,7 +5053,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchTagException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portlet.asset.exception.NoSuchTagException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -5060,14 +5061,15 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	}
 
 	/**
-	 * Returns the asset tag with the primary key or throws a {@link NoSuchTagException} if it could not be found.
+	 * Returns the asset tag with the primary key or throws a {@link com.liferay.portlet.asset.exception.NoSuchTagException} if it could not be found.
 	 *
 	 * @param tagId the primary key of the asset tag
 	 * @return the asset tag
-	 * @throws NoSuchTagException if a asset tag with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchTagException if a asset tag with the primary key could not be found
 	 */
 	@Override
-	public AssetTag findByPrimaryKey(long tagId) throws NoSuchTagException {
+	public AssetTag findByPrimaryKey(long tagId)
+		throws com.liferay.portlet.asset.exception.NoSuchTagException {
 		return findByPrimaryKey((Serializable)tagId);
 	}
 

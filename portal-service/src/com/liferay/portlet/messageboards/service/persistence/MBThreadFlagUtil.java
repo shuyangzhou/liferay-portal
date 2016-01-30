@@ -182,7 +182,7 @@ public class MBThreadFlagUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message boards thread flag
-	* @throws NoSuchThreadFlagException if a matching message boards thread flag could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchThreadFlagException if a matching message boards thread flag could not be found
 	*/
 	public static MBThreadFlag findByUuid_First(java.lang.String uuid,
 		OrderByComparator<MBThreadFlag> orderByComparator)
@@ -208,7 +208,7 @@ public class MBThreadFlagUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message boards thread flag
-	* @throws NoSuchThreadFlagException if a matching message boards thread flag could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchThreadFlagException if a matching message boards thread flag could not be found
 	*/
 	public static MBThreadFlag findByUuid_Last(java.lang.String uuid,
 		OrderByComparator<MBThreadFlag> orderByComparator)
@@ -235,7 +235,7 @@ public class MBThreadFlagUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message boards thread flag
-	* @throws NoSuchThreadFlagException if a message boards thread flag with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchThreadFlagException if a message boards thread flag with the primary key could not be found
 	*/
 	public static MBThreadFlag[] findByUuid_PrevAndNext(long threadFlagId,
 		java.lang.String uuid, OrderByComparator<MBThreadFlag> orderByComparator)
@@ -264,12 +264,12 @@ public class MBThreadFlagUtil {
 	}
 
 	/**
-	* Returns the message boards thread flag where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchThreadFlagException} if it could not be found.
+	* Returns the message boards thread flag where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.portlet.messageboards.exception.NoSuchThreadFlagException} if it could not be found.
 	*
 	* @param uuid the uuid
 	* @param groupId the group ID
 	* @return the matching message boards thread flag
-	* @throws NoSuchThreadFlagException if a matching message boards thread flag could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchThreadFlagException if a matching message boards thread flag could not be found
 	*/
 	public static MBThreadFlag findByUUID_G(java.lang.String uuid, long groupId)
 		throws com.liferay.portlet.messageboards.exception.NoSuchThreadFlagException {
@@ -406,7 +406,7 @@ public class MBThreadFlagUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message boards thread flag
-	* @throws NoSuchThreadFlagException if a matching message boards thread flag could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchThreadFlagException if a matching message boards thread flag could not be found
 	*/
 	public static MBThreadFlag findByUuid_C_First(java.lang.String uuid,
 		long companyId, OrderByComparator<MBThreadFlag> orderByComparator)
@@ -436,7 +436,7 @@ public class MBThreadFlagUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message boards thread flag
-	* @throws NoSuchThreadFlagException if a matching message boards thread flag could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchThreadFlagException if a matching message boards thread flag could not be found
 	*/
 	public static MBThreadFlag findByUuid_C_Last(java.lang.String uuid,
 		long companyId, OrderByComparator<MBThreadFlag> orderByComparator)
@@ -467,7 +467,7 @@ public class MBThreadFlagUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message boards thread flag
-	* @throws NoSuchThreadFlagException if a message boards thread flag with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchThreadFlagException if a message boards thread flag with the primary key could not be found
 	*/
 	public static MBThreadFlag[] findByUuid_C_PrevAndNext(long threadFlagId,
 		java.lang.String uuid, long companyId,
@@ -573,7 +573,7 @@ public class MBThreadFlagUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message boards thread flag
-	* @throws NoSuchThreadFlagException if a matching message boards thread flag could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchThreadFlagException if a matching message boards thread flag could not be found
 	*/
 	public static MBThreadFlag findByUserId_First(long userId,
 		OrderByComparator<MBThreadFlag> orderByComparator)
@@ -599,7 +599,7 @@ public class MBThreadFlagUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message boards thread flag
-	* @throws NoSuchThreadFlagException if a matching message boards thread flag could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchThreadFlagException if a matching message boards thread flag could not be found
 	*/
 	public static MBThreadFlag findByUserId_Last(long userId,
 		OrderByComparator<MBThreadFlag> orderByComparator)
@@ -626,7 +626,7 @@ public class MBThreadFlagUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message boards thread flag
-	* @throws NoSuchThreadFlagException if a message boards thread flag with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchThreadFlagException if a message boards thread flag with the primary key could not be found
 	*/
 	public static MBThreadFlag[] findByUserId_PrevAndNext(long threadFlagId,
 		long userId, OrderByComparator<MBThreadFlag> orderByComparator)
@@ -729,7 +729,7 @@ public class MBThreadFlagUtil {
 	* @param threadId the thread ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message boards thread flag
-	* @throws NoSuchThreadFlagException if a matching message boards thread flag could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchThreadFlagException if a matching message boards thread flag could not be found
 	*/
 	public static MBThreadFlag findByThreadId_First(long threadId,
 		OrderByComparator<MBThreadFlag> orderByComparator)
@@ -756,7 +756,7 @@ public class MBThreadFlagUtil {
 	* @param threadId the thread ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message boards thread flag
-	* @throws NoSuchThreadFlagException if a matching message boards thread flag could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchThreadFlagException if a matching message boards thread flag could not be found
 	*/
 	public static MBThreadFlag findByThreadId_Last(long threadId,
 		OrderByComparator<MBThreadFlag> orderByComparator)
@@ -783,7 +783,7 @@ public class MBThreadFlagUtil {
 	* @param threadId the thread ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message boards thread flag
-	* @throws NoSuchThreadFlagException if a message boards thread flag with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchThreadFlagException if a message boards thread flag with the primary key could not be found
 	*/
 	public static MBThreadFlag[] findByThreadId_PrevAndNext(long threadFlagId,
 		long threadId, OrderByComparator<MBThreadFlag> orderByComparator)
@@ -813,12 +813,12 @@ public class MBThreadFlagUtil {
 	}
 
 	/**
-	* Returns the message boards thread flag where userId = &#63; and threadId = &#63; or throws a {@link NoSuchThreadFlagException} if it could not be found.
+	* Returns the message boards thread flag where userId = &#63; and threadId = &#63; or throws a {@link com.liferay.portlet.messageboards.exception.NoSuchThreadFlagException} if it could not be found.
 	*
 	* @param userId the user ID
 	* @param threadId the thread ID
 	* @return the matching message boards thread flag
-	* @throws NoSuchThreadFlagException if a matching message boards thread flag could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchThreadFlagException if a matching message boards thread flag could not be found
 	*/
 	public static MBThreadFlag findByU_T(long userId, long threadId)
 		throws com.liferay.portlet.messageboards.exception.NoSuchThreadFlagException {
@@ -905,7 +905,7 @@ public class MBThreadFlagUtil {
 	*
 	* @param threadFlagId the primary key of the message boards thread flag
 	* @return the message boards thread flag that was removed
-	* @throws NoSuchThreadFlagException if a message boards thread flag with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchThreadFlagException if a message boards thread flag with the primary key could not be found
 	*/
 	public static MBThreadFlag remove(long threadFlagId)
 		throws com.liferay.portlet.messageboards.exception.NoSuchThreadFlagException {
@@ -917,11 +917,11 @@ public class MBThreadFlagUtil {
 	}
 
 	/**
-	* Returns the message boards thread flag with the primary key or throws a {@link NoSuchThreadFlagException} if it could not be found.
+	* Returns the message boards thread flag with the primary key or throws a {@link com.liferay.portlet.messageboards.exception.NoSuchThreadFlagException} if it could not be found.
 	*
 	* @param threadFlagId the primary key of the message boards thread flag
 	* @return the message boards thread flag
-	* @throws NoSuchThreadFlagException if a message boards thread flag with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchThreadFlagException if a message boards thread flag with the primary key could not be found
 	*/
 	public static MBThreadFlag findByPrimaryKey(long threadFlagId)
 		throws com.liferay.portlet.messageboards.exception.NoSuchThreadFlagException {

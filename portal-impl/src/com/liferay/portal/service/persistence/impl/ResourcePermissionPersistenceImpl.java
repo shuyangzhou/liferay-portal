@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchResourcePermissionException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -288,12 +287,12 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 	 * @param scope the scope
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching resource permission
-	 * @throws NoSuchResourcePermissionException if a matching resource permission could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a matching resource permission could not be found
 	 */
 	@Override
 	public ResourcePermission findByScope_First(int scope,
 		OrderByComparator<ResourcePermission> orderByComparator)
-		throws NoSuchResourcePermissionException {
+		throws com.liferay.portal.exception.NoSuchResourcePermissionException {
 		ResourcePermission resourcePermission = fetchByScope_First(scope,
 				orderByComparator);
 
@@ -310,7 +309,7 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchResourcePermissionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchResourcePermissionException(msg.toString());
 	}
 
 	/**
@@ -339,12 +338,12 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 	 * @param scope the scope
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching resource permission
-	 * @throws NoSuchResourcePermissionException if a matching resource permission could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a matching resource permission could not be found
 	 */
 	@Override
 	public ResourcePermission findByScope_Last(int scope,
 		OrderByComparator<ResourcePermission> orderByComparator)
-		throws NoSuchResourcePermissionException {
+		throws com.liferay.portal.exception.NoSuchResourcePermissionException {
 		ResourcePermission resourcePermission = fetchByScope_Last(scope,
 				orderByComparator);
 
@@ -361,7 +360,7 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchResourcePermissionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchResourcePermissionException(msg.toString());
 	}
 
 	/**
@@ -397,13 +396,13 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 	 * @param scope the scope
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next resource permission
-	 * @throws NoSuchResourcePermissionException if a resource permission with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a resource permission with the primary key could not be found
 	 */
 	@Override
 	public ResourcePermission[] findByScope_PrevAndNext(
 		long resourcePermissionId, int scope,
 		OrderByComparator<ResourcePermission> orderByComparator)
-		throws NoSuchResourcePermissionException {
+		throws com.liferay.portal.exception.NoSuchResourcePermissionException {
 		ResourcePermission resourcePermission = findByPrimaryKey(resourcePermissionId);
 
 		Session session = null;
@@ -1052,12 +1051,12 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 	 * @param roleId the role ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching resource permission
-	 * @throws NoSuchResourcePermissionException if a matching resource permission could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a matching resource permission could not be found
 	 */
 	@Override
 	public ResourcePermission findByRoleId_First(long roleId,
 		OrderByComparator<ResourcePermission> orderByComparator)
-		throws NoSuchResourcePermissionException {
+		throws com.liferay.portal.exception.NoSuchResourcePermissionException {
 		ResourcePermission resourcePermission = fetchByRoleId_First(roleId,
 				orderByComparator);
 
@@ -1074,7 +1073,7 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchResourcePermissionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchResourcePermissionException(msg.toString());
 	}
 
 	/**
@@ -1103,12 +1102,12 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 	 * @param roleId the role ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching resource permission
-	 * @throws NoSuchResourcePermissionException if a matching resource permission could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a matching resource permission could not be found
 	 */
 	@Override
 	public ResourcePermission findByRoleId_Last(long roleId,
 		OrderByComparator<ResourcePermission> orderByComparator)
-		throws NoSuchResourcePermissionException {
+		throws com.liferay.portal.exception.NoSuchResourcePermissionException {
 		ResourcePermission resourcePermission = fetchByRoleId_Last(roleId,
 				orderByComparator);
 
@@ -1125,7 +1124,7 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchResourcePermissionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchResourcePermissionException(msg.toString());
 	}
 
 	/**
@@ -1161,13 +1160,13 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 	 * @param roleId the role ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next resource permission
-	 * @throws NoSuchResourcePermissionException if a resource permission with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a resource permission with the primary key could not be found
 	 */
 	@Override
 	public ResourcePermission[] findByRoleId_PrevAndNext(
 		long resourcePermissionId, long roleId,
 		OrderByComparator<ResourcePermission> orderByComparator)
-		throws NoSuchResourcePermissionException {
+		throws com.liferay.portal.exception.NoSuchResourcePermissionException {
 		ResourcePermission resourcePermission = findByPrimaryKey(resourcePermissionId);
 
 		Session session = null;
@@ -1580,12 +1579,12 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 	 * @param primKey the prim key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching resource permission
-	 * @throws NoSuchResourcePermissionException if a matching resource permission could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a matching resource permission could not be found
 	 */
 	@Override
 	public ResourcePermission findByC_LikeP_First(long companyId,
 		String primKey, OrderByComparator<ResourcePermission> orderByComparator)
-		throws NoSuchResourcePermissionException {
+		throws com.liferay.portal.exception.NoSuchResourcePermissionException {
 		ResourcePermission resourcePermission = fetchByC_LikeP_First(companyId,
 				primKey, orderByComparator);
 
@@ -1605,7 +1604,7 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchResourcePermissionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchResourcePermissionException(msg.toString());
 	}
 
 	/**
@@ -1636,12 +1635,12 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 	 * @param primKey the prim key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching resource permission
-	 * @throws NoSuchResourcePermissionException if a matching resource permission could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a matching resource permission could not be found
 	 */
 	@Override
 	public ResourcePermission findByC_LikeP_Last(long companyId,
 		String primKey, OrderByComparator<ResourcePermission> orderByComparator)
-		throws NoSuchResourcePermissionException {
+		throws com.liferay.portal.exception.NoSuchResourcePermissionException {
 		ResourcePermission resourcePermission = fetchByC_LikeP_Last(companyId,
 				primKey, orderByComparator);
 
@@ -1661,7 +1660,7 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchResourcePermissionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchResourcePermissionException(msg.toString());
 	}
 
 	/**
@@ -1699,13 +1698,13 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 	 * @param primKey the prim key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next resource permission
-	 * @throws NoSuchResourcePermissionException if a resource permission with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a resource permission with the primary key could not be found
 	 */
 	@Override
 	public ResourcePermission[] findByC_LikeP_PrevAndNext(
 		long resourcePermissionId, long companyId, String primKey,
 		OrderByComparator<ResourcePermission> orderByComparator)
-		throws NoSuchResourcePermissionException {
+		throws com.liferay.portal.exception.NoSuchResourcePermissionException {
 		ResourcePermission resourcePermission = findByPrimaryKey(resourcePermissionId);
 
 		Session session = null;
@@ -2190,12 +2189,12 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 	 * @param scope the scope
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching resource permission
-	 * @throws NoSuchResourcePermissionException if a matching resource permission could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a matching resource permission could not be found
 	 */
 	@Override
 	public ResourcePermission findByC_N_S_First(long companyId, String name,
 		int scope, OrderByComparator<ResourcePermission> orderByComparator)
-		throws NoSuchResourcePermissionException {
+		throws com.liferay.portal.exception.NoSuchResourcePermissionException {
 		ResourcePermission resourcePermission = fetchByC_N_S_First(companyId,
 				name, scope, orderByComparator);
 
@@ -2218,7 +2217,7 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchResourcePermissionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchResourcePermissionException(msg.toString());
 	}
 
 	/**
@@ -2251,12 +2250,12 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 	 * @param scope the scope
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching resource permission
-	 * @throws NoSuchResourcePermissionException if a matching resource permission could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a matching resource permission could not be found
 	 */
 	@Override
 	public ResourcePermission findByC_N_S_Last(long companyId, String name,
 		int scope, OrderByComparator<ResourcePermission> orderByComparator)
-		throws NoSuchResourcePermissionException {
+		throws com.liferay.portal.exception.NoSuchResourcePermissionException {
 		ResourcePermission resourcePermission = fetchByC_N_S_Last(companyId,
 				name, scope, orderByComparator);
 
@@ -2279,7 +2278,7 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchResourcePermissionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchResourcePermissionException(msg.toString());
 	}
 
 	/**
@@ -2319,13 +2318,13 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 	 * @param scope the scope
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next resource permission
-	 * @throws NoSuchResourcePermissionException if a resource permission with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a resource permission with the primary key could not be found
 	 */
 	@Override
 	public ResourcePermission[] findByC_N_S_PrevAndNext(
 		long resourcePermissionId, long companyId, String name, int scope,
 		OrderByComparator<ResourcePermission> orderByComparator)
-		throws NoSuchResourcePermissionException {
+		throws com.liferay.portal.exception.NoSuchResourcePermissionException {
 		ResourcePermission resourcePermission = findByPrimaryKey(resourcePermissionId);
 
 		Session session = null;
@@ -2848,13 +2847,13 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 	 * @param primKey the prim key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching resource permission
-	 * @throws NoSuchResourcePermissionException if a matching resource permission could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a matching resource permission could not be found
 	 */
 	@Override
 	public ResourcePermission findByC_N_S_P_First(long companyId, String name,
 		int scope, String primKey,
 		OrderByComparator<ResourcePermission> orderByComparator)
-		throws NoSuchResourcePermissionException {
+		throws com.liferay.portal.exception.NoSuchResourcePermissionException {
 		ResourcePermission resourcePermission = fetchByC_N_S_P_First(companyId,
 				name, scope, primKey, orderByComparator);
 
@@ -2880,7 +2879,7 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchResourcePermissionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchResourcePermissionException(msg.toString());
 	}
 
 	/**
@@ -2916,13 +2915,13 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 	 * @param primKey the prim key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching resource permission
-	 * @throws NoSuchResourcePermissionException if a matching resource permission could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a matching resource permission could not be found
 	 */
 	@Override
 	public ResourcePermission findByC_N_S_P_Last(long companyId, String name,
 		int scope, String primKey,
 		OrderByComparator<ResourcePermission> orderByComparator)
-		throws NoSuchResourcePermissionException {
+		throws com.liferay.portal.exception.NoSuchResourcePermissionException {
 		ResourcePermission resourcePermission = fetchByC_N_S_P_Last(companyId,
 				name, scope, primKey, orderByComparator);
 
@@ -2948,7 +2947,7 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchResourcePermissionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchResourcePermissionException(msg.toString());
 	}
 
 	/**
@@ -2991,13 +2990,13 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 	 * @param primKey the prim key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next resource permission
-	 * @throws NoSuchResourcePermissionException if a resource permission with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a resource permission with the primary key could not be found
 	 */
 	@Override
 	public ResourcePermission[] findByC_N_S_P_PrevAndNext(
 		long resourcePermissionId, long companyId, String name, int scope,
 		String primKey, OrderByComparator<ResourcePermission> orderByComparator)
-		throws NoSuchResourcePermissionException {
+		throws com.liferay.portal.exception.NoSuchResourcePermissionException {
 		ResourcePermission resourcePermission = findByPrimaryKey(resourcePermissionId);
 
 		Session session = null;
@@ -3629,7 +3628,7 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 	}
 
 	/**
-	 * Returns the resource permission where companyId = &#63; and name = &#63; and scope = &#63; and primKey = &#63; and roleId = &#63; or throws a {@link NoSuchResourcePermissionException} if it could not be found.
+	 * Returns the resource permission where companyId = &#63; and name = &#63; and scope = &#63; and primKey = &#63; and roleId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchResourcePermissionException} if it could not be found.
 	 *
 	 * @param companyId the company ID
 	 * @param name the name
@@ -3637,12 +3636,12 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 	 * @param primKey the prim key
 	 * @param roleId the role ID
 	 * @return the matching resource permission
-	 * @throws NoSuchResourcePermissionException if a matching resource permission could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a matching resource permission could not be found
 	 */
 	@Override
 	public ResourcePermission findByC_N_S_P_R(long companyId, String name,
 		int scope, String primKey, long roleId)
-		throws NoSuchResourcePermissionException {
+		throws com.liferay.portal.exception.NoSuchResourcePermissionException {
 		ResourcePermission resourcePermission = fetchByC_N_S_P_R(companyId,
 				name, scope, primKey, roleId);
 
@@ -3672,7 +3671,7 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchResourcePermissionException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchResourcePermissionException(msg.toString());
 		}
 
 		return resourcePermission;
@@ -3852,7 +3851,7 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 	@Override
 	public ResourcePermission removeByC_N_S_P_R(long companyId, String name,
 		int scope, String primKey, long roleId)
-		throws NoSuchResourcePermissionException {
+		throws com.liferay.portal.exception.NoSuchResourcePermissionException {
 		ResourcePermission resourcePermission = findByC_N_S_P_R(companyId,
 				name, scope, primKey, roleId);
 
@@ -4392,14 +4391,14 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 	 * @param viewActionId the view action ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching resource permission
-	 * @throws NoSuchResourcePermissionException if a matching resource permission could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a matching resource permission could not be found
 	 */
 	@Override
 	public ResourcePermission findByC_N_S_P_R_V_First(long companyId,
 		String name, int scope, long primKeyId, long roleId,
 		boolean viewActionId,
 		OrderByComparator<ResourcePermission> orderByComparator)
-		throws NoSuchResourcePermissionException {
+		throws com.liferay.portal.exception.NoSuchResourcePermissionException {
 		ResourcePermission resourcePermission = fetchByC_N_S_P_R_V_First(companyId,
 				name, scope, primKeyId, roleId, viewActionId, orderByComparator);
 
@@ -4431,7 +4430,7 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchResourcePermissionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchResourcePermissionException(msg.toString());
 	}
 
 	/**
@@ -4472,14 +4471,14 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 	 * @param viewActionId the view action ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching resource permission
-	 * @throws NoSuchResourcePermissionException if a matching resource permission could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a matching resource permission could not be found
 	 */
 	@Override
 	public ResourcePermission findByC_N_S_P_R_V_Last(long companyId,
 		String name, int scope, long primKeyId, long roleId,
 		boolean viewActionId,
 		OrderByComparator<ResourcePermission> orderByComparator)
-		throws NoSuchResourcePermissionException {
+		throws com.liferay.portal.exception.NoSuchResourcePermissionException {
 		ResourcePermission resourcePermission = fetchByC_N_S_P_R_V_Last(companyId,
 				name, scope, primKeyId, roleId, viewActionId, orderByComparator);
 
@@ -4511,7 +4510,7 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchResourcePermissionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchResourcePermissionException(msg.toString());
 	}
 
 	/**
@@ -4561,14 +4560,14 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 	 * @param viewActionId the view action ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next resource permission
-	 * @throws NoSuchResourcePermissionException if a resource permission with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a resource permission with the primary key could not be found
 	 */
 	@Override
 	public ResourcePermission[] findByC_N_S_P_R_V_PrevAndNext(
 		long resourcePermissionId, long companyId, String name, int scope,
 		long primKeyId, long roleId, boolean viewActionId,
 		OrderByComparator<ResourcePermission> orderByComparator)
-		throws NoSuchResourcePermissionException {
+		throws com.liferay.portal.exception.NoSuchResourcePermissionException {
 		ResourcePermission resourcePermission = findByPrimaryKey(resourcePermissionId);
 
 		Session session = null;
@@ -5423,11 +5422,11 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 	 *
 	 * @param resourcePermissionId the primary key of the resource permission
 	 * @return the resource permission that was removed
-	 * @throws NoSuchResourcePermissionException if a resource permission with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a resource permission with the primary key could not be found
 	 */
 	@Override
 	public ResourcePermission remove(long resourcePermissionId)
-		throws NoSuchResourcePermissionException {
+		throws com.liferay.portal.exception.NoSuchResourcePermissionException {
 		return remove((Serializable)resourcePermissionId);
 	}
 
@@ -5436,11 +5435,11 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 	 *
 	 * @param primaryKey the primary key of the resource permission
 	 * @return the resource permission that was removed
-	 * @throws NoSuchResourcePermissionException if a resource permission with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a resource permission with the primary key could not be found
 	 */
 	@Override
 	public ResourcePermission remove(Serializable primaryKey)
-		throws NoSuchResourcePermissionException {
+		throws com.liferay.portal.exception.NoSuchResourcePermissionException {
 		Session session = null;
 
 		try {
@@ -5454,13 +5453,13 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchResourcePermissionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchResourcePermissionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(resourcePermission);
 		}
-		catch (NoSuchResourcePermissionException nsee) {
+		catch (com.liferay.portal.exception.NoSuchResourcePermissionException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -5722,11 +5721,11 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 	 *
 	 * @param primaryKey the primary key of the resource permission
 	 * @return the resource permission
-	 * @throws NoSuchResourcePermissionException if a resource permission with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a resource permission with the primary key could not be found
 	 */
 	@Override
 	public ResourcePermission findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchResourcePermissionException {
+		throws com.liferay.portal.exception.NoSuchResourcePermissionException {
 		ResourcePermission resourcePermission = fetchByPrimaryKey(primaryKey);
 
 		if (resourcePermission == null) {
@@ -5734,7 +5733,7 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchResourcePermissionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchResourcePermissionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -5742,15 +5741,15 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 	}
 
 	/**
-	 * Returns the resource permission with the primary key or throws a {@link NoSuchResourcePermissionException} if it could not be found.
+	 * Returns the resource permission with the primary key or throws a {@link com.liferay.portal.exception.NoSuchResourcePermissionException} if it could not be found.
 	 *
 	 * @param resourcePermissionId the primary key of the resource permission
 	 * @return the resource permission
-	 * @throws NoSuchResourcePermissionException if a resource permission with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a resource permission with the primary key could not be found
 	 */
 	@Override
 	public ResourcePermission findByPrimaryKey(long resourcePermissionId)
-		throws NoSuchResourcePermissionException {
+		throws com.liferay.portal.exception.NoSuchResourcePermissionException {
 		return findByPrimaryKey((Serializable)resourcePermissionId);
 	}
 

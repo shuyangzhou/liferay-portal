@@ -105,7 +105,7 @@ public interface SocialRelationPersistence extends BasePersistence<SocialRelatio
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching social relation
-	* @throws NoSuchRelationException if a matching social relation could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	*/
 	public SocialRelation findByUuid_First(java.lang.String uuid,
 		com.liferay.portal.kernel.util.OrderByComparator<SocialRelation> orderByComparator)
@@ -127,7 +127,7 @@ public interface SocialRelationPersistence extends BasePersistence<SocialRelatio
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching social relation
-	* @throws NoSuchRelationException if a matching social relation could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	*/
 	public SocialRelation findByUuid_Last(java.lang.String uuid,
 		com.liferay.portal.kernel.util.OrderByComparator<SocialRelation> orderByComparator)
@@ -150,7 +150,7 @@ public interface SocialRelationPersistence extends BasePersistence<SocialRelatio
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next social relation
-	* @throws NoSuchRelationException if a social relation with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRelationException if a social relation with the primary key could not be found
 	*/
 	public SocialRelation[] findByUuid_PrevAndNext(long relationId,
 		java.lang.String uuid,
@@ -243,7 +243,7 @@ public interface SocialRelationPersistence extends BasePersistence<SocialRelatio
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching social relation
-	* @throws NoSuchRelationException if a matching social relation could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	*/
 	public SocialRelation findByUuid_C_First(java.lang.String uuid,
 		long companyId,
@@ -269,7 +269,7 @@ public interface SocialRelationPersistence extends BasePersistence<SocialRelatio
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching social relation
-	* @throws NoSuchRelationException if a matching social relation could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	*/
 	public SocialRelation findByUuid_C_Last(java.lang.String uuid,
 		long companyId,
@@ -296,7 +296,7 @@ public interface SocialRelationPersistence extends BasePersistence<SocialRelatio
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next social relation
-	* @throws NoSuchRelationException if a social relation with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRelationException if a social relation with the primary key could not be found
 	*/
 	public SocialRelation[] findByUuid_C_PrevAndNext(long relationId,
 		java.lang.String uuid, long companyId,
@@ -385,7 +385,7 @@ public interface SocialRelationPersistence extends BasePersistence<SocialRelatio
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching social relation
-	* @throws NoSuchRelationException if a matching social relation could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	*/
 	public SocialRelation findByCompanyId_First(long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<SocialRelation> orderByComparator)
@@ -407,7 +407,7 @@ public interface SocialRelationPersistence extends BasePersistence<SocialRelatio
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching social relation
-	* @throws NoSuchRelationException if a matching social relation could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	*/
 	public SocialRelation findByCompanyId_Last(long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<SocialRelation> orderByComparator)
@@ -430,7 +430,7 @@ public interface SocialRelationPersistence extends BasePersistence<SocialRelatio
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next social relation
-	* @throws NoSuchRelationException if a social relation with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRelationException if a social relation with the primary key could not be found
 	*/
 	public SocialRelation[] findByCompanyId_PrevAndNext(long relationId,
 		long companyId,
@@ -517,7 +517,7 @@ public interface SocialRelationPersistence extends BasePersistence<SocialRelatio
 	* @param userId1 the user id1
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching social relation
-	* @throws NoSuchRelationException if a matching social relation could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	*/
 	public SocialRelation findByUserId1_First(long userId1,
 		com.liferay.portal.kernel.util.OrderByComparator<SocialRelation> orderByComparator)
@@ -539,7 +539,7 @@ public interface SocialRelationPersistence extends BasePersistence<SocialRelatio
 	* @param userId1 the user id1
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching social relation
-	* @throws NoSuchRelationException if a matching social relation could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	*/
 	public SocialRelation findByUserId1_Last(long userId1,
 		com.liferay.portal.kernel.util.OrderByComparator<SocialRelation> orderByComparator)
@@ -562,7 +562,7 @@ public interface SocialRelationPersistence extends BasePersistence<SocialRelatio
 	* @param userId1 the user id1
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next social relation
-	* @throws NoSuchRelationException if a social relation with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRelationException if a social relation with the primary key could not be found
 	*/
 	public SocialRelation[] findByUserId1_PrevAndNext(long relationId,
 		long userId1,
@@ -649,7 +649,7 @@ public interface SocialRelationPersistence extends BasePersistence<SocialRelatio
 	* @param userId2 the user id2
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching social relation
-	* @throws NoSuchRelationException if a matching social relation could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	*/
 	public SocialRelation findByUserId2_First(long userId2,
 		com.liferay.portal.kernel.util.OrderByComparator<SocialRelation> orderByComparator)
@@ -671,7 +671,7 @@ public interface SocialRelationPersistence extends BasePersistence<SocialRelatio
 	* @param userId2 the user id2
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching social relation
-	* @throws NoSuchRelationException if a matching social relation could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	*/
 	public SocialRelation findByUserId2_Last(long userId2,
 		com.liferay.portal.kernel.util.OrderByComparator<SocialRelation> orderByComparator)
@@ -694,7 +694,7 @@ public interface SocialRelationPersistence extends BasePersistence<SocialRelatio
 	* @param userId2 the user id2
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next social relation
-	* @throws NoSuchRelationException if a social relation with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRelationException if a social relation with the primary key could not be found
 	*/
 	public SocialRelation[] findByUserId2_PrevAndNext(long relationId,
 		long userId2,
@@ -781,7 +781,7 @@ public interface SocialRelationPersistence extends BasePersistence<SocialRelatio
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching social relation
-	* @throws NoSuchRelationException if a matching social relation could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	*/
 	public SocialRelation findByType_First(int type,
 		com.liferay.portal.kernel.util.OrderByComparator<SocialRelation> orderByComparator)
@@ -803,7 +803,7 @@ public interface SocialRelationPersistence extends BasePersistence<SocialRelatio
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching social relation
-	* @throws NoSuchRelationException if a matching social relation could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	*/
 	public SocialRelation findByType_Last(int type,
 		com.liferay.portal.kernel.util.OrderByComparator<SocialRelation> orderByComparator)
@@ -826,7 +826,7 @@ public interface SocialRelationPersistence extends BasePersistence<SocialRelatio
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next social relation
-	* @throws NoSuchRelationException if a social relation with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRelationException if a social relation with the primary key could not be found
 	*/
 	public SocialRelation[] findByType_PrevAndNext(long relationId, int type,
 		com.liferay.portal.kernel.util.OrderByComparator<SocialRelation> orderByComparator)
@@ -917,7 +917,7 @@ public interface SocialRelationPersistence extends BasePersistence<SocialRelatio
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching social relation
-	* @throws NoSuchRelationException if a matching social relation could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	*/
 	public SocialRelation findByC_T_First(long companyId, int type,
 		com.liferay.portal.kernel.util.OrderByComparator<SocialRelation> orderByComparator)
@@ -941,7 +941,7 @@ public interface SocialRelationPersistence extends BasePersistence<SocialRelatio
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching social relation
-	* @throws NoSuchRelationException if a matching social relation could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	*/
 	public SocialRelation findByC_T_Last(long companyId, int type,
 		com.liferay.portal.kernel.util.OrderByComparator<SocialRelation> orderByComparator)
@@ -966,7 +966,7 @@ public interface SocialRelationPersistence extends BasePersistence<SocialRelatio
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next social relation
-	* @throws NoSuchRelationException if a social relation with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRelationException if a social relation with the primary key could not be found
 	*/
 	public SocialRelation[] findByC_T_PrevAndNext(long relationId,
 		long companyId, int type,
@@ -1060,7 +1060,7 @@ public interface SocialRelationPersistence extends BasePersistence<SocialRelatio
 	* @param userId2 the user id2
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching social relation
-	* @throws NoSuchRelationException if a matching social relation could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	*/
 	public SocialRelation findByU1_U2_First(long userId1, long userId2,
 		com.liferay.portal.kernel.util.OrderByComparator<SocialRelation> orderByComparator)
@@ -1084,7 +1084,7 @@ public interface SocialRelationPersistence extends BasePersistence<SocialRelatio
 	* @param userId2 the user id2
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching social relation
-	* @throws NoSuchRelationException if a matching social relation could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	*/
 	public SocialRelation findByU1_U2_Last(long userId1, long userId2,
 		com.liferay.portal.kernel.util.OrderByComparator<SocialRelation> orderByComparator)
@@ -1109,7 +1109,7 @@ public interface SocialRelationPersistence extends BasePersistence<SocialRelatio
 	* @param userId2 the user id2
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next social relation
-	* @throws NoSuchRelationException if a social relation with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRelationException if a social relation with the primary key could not be found
 	*/
 	public SocialRelation[] findByU1_U2_PrevAndNext(long relationId,
 		long userId1, long userId2,
@@ -1203,7 +1203,7 @@ public interface SocialRelationPersistence extends BasePersistence<SocialRelatio
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching social relation
-	* @throws NoSuchRelationException if a matching social relation could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	*/
 	public SocialRelation findByU1_T_First(long userId1, int type,
 		com.liferay.portal.kernel.util.OrderByComparator<SocialRelation> orderByComparator)
@@ -1227,7 +1227,7 @@ public interface SocialRelationPersistence extends BasePersistence<SocialRelatio
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching social relation
-	* @throws NoSuchRelationException if a matching social relation could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	*/
 	public SocialRelation findByU1_T_Last(long userId1, int type,
 		com.liferay.portal.kernel.util.OrderByComparator<SocialRelation> orderByComparator)
@@ -1252,7 +1252,7 @@ public interface SocialRelationPersistence extends BasePersistence<SocialRelatio
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next social relation
-	* @throws NoSuchRelationException if a social relation with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRelationException if a social relation with the primary key could not be found
 	*/
 	public SocialRelation[] findByU1_T_PrevAndNext(long relationId,
 		long userId1, int type,
@@ -1346,7 +1346,7 @@ public interface SocialRelationPersistence extends BasePersistence<SocialRelatio
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching social relation
-	* @throws NoSuchRelationException if a matching social relation could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	*/
 	public SocialRelation findByU2_T_First(long userId2, int type,
 		com.liferay.portal.kernel.util.OrderByComparator<SocialRelation> orderByComparator)
@@ -1370,7 +1370,7 @@ public interface SocialRelationPersistence extends BasePersistence<SocialRelatio
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching social relation
-	* @throws NoSuchRelationException if a matching social relation could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	*/
 	public SocialRelation findByU2_T_Last(long userId2, int type,
 		com.liferay.portal.kernel.util.OrderByComparator<SocialRelation> orderByComparator)
@@ -1395,7 +1395,7 @@ public interface SocialRelationPersistence extends BasePersistence<SocialRelatio
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next social relation
-	* @throws NoSuchRelationException if a social relation with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRelationException if a social relation with the primary key could not be found
 	*/
 	public SocialRelation[] findByU2_T_PrevAndNext(long relationId,
 		long userId2, int type,
@@ -1420,13 +1420,13 @@ public interface SocialRelationPersistence extends BasePersistence<SocialRelatio
 	public int countByU2_T(long userId2, int type);
 
 	/**
-	* Returns the social relation where userId1 = &#63; and userId2 = &#63; and type = &#63; or throws a {@link NoSuchRelationException} if it could not be found.
+	* Returns the social relation where userId1 = &#63; and userId2 = &#63; and type = &#63; or throws a {@link com.liferay.portlet.social.exception.NoSuchRelationException} if it could not be found.
 	*
 	* @param userId1 the user id1
 	* @param userId2 the user id2
 	* @param type the type
 	* @return the matching social relation
-	* @throws NoSuchRelationException if a matching social relation could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	*/
 	public SocialRelation findByU1_U2_T(long userId1, long userId2, int type)
 		throws com.liferay.portlet.social.exception.NoSuchRelationException;
@@ -1501,7 +1501,7 @@ public interface SocialRelationPersistence extends BasePersistence<SocialRelatio
 	*
 	* @param relationId the primary key of the social relation
 	* @return the social relation that was removed
-	* @throws NoSuchRelationException if a social relation with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRelationException if a social relation with the primary key could not be found
 	*/
 	public SocialRelation remove(long relationId)
 		throws com.liferay.portlet.social.exception.NoSuchRelationException;
@@ -1509,11 +1509,11 @@ public interface SocialRelationPersistence extends BasePersistence<SocialRelatio
 	public SocialRelation updateImpl(SocialRelation socialRelation);
 
 	/**
-	* Returns the social relation with the primary key or throws a {@link NoSuchRelationException} if it could not be found.
+	* Returns the social relation with the primary key or throws a {@link com.liferay.portlet.social.exception.NoSuchRelationException} if it could not be found.
 	*
 	* @param relationId the primary key of the social relation
 	* @return the social relation
-	* @throws NoSuchRelationException if a social relation with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchRelationException if a social relation with the primary key could not be found
 	*/
 	public SocialRelation findByPrimaryKey(long relationId)
 		throws com.liferay.portlet.social.exception.NoSuchRelationException;
