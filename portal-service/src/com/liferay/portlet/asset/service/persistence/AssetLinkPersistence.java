@@ -104,7 +104,7 @@ public interface AssetLinkPersistence extends BasePersistence<AssetLink> {
 	* @param entryId1 the entry id1
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching asset link
-	* @throws NoSuchLinkException if a matching asset link could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchLinkException if a matching asset link could not be found
 	*/
 	public AssetLink findByE1_First(long entryId1,
 		com.liferay.portal.kernel.util.OrderByComparator<AssetLink> orderByComparator)
@@ -126,7 +126,7 @@ public interface AssetLinkPersistence extends BasePersistence<AssetLink> {
 	* @param entryId1 the entry id1
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching asset link
-	* @throws NoSuchLinkException if a matching asset link could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchLinkException if a matching asset link could not be found
 	*/
 	public AssetLink findByE1_Last(long entryId1,
 		com.liferay.portal.kernel.util.OrderByComparator<AssetLink> orderByComparator)
@@ -149,7 +149,7 @@ public interface AssetLinkPersistence extends BasePersistence<AssetLink> {
 	* @param entryId1 the entry id1
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next asset link
-	* @throws NoSuchLinkException if a asset link with the primary key could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchLinkException if a asset link with the primary key could not be found
 	*/
 	public AssetLink[] findByE1_PrevAndNext(long linkId, long entryId1,
 		com.liferay.portal.kernel.util.OrderByComparator<AssetLink> orderByComparator)
@@ -234,7 +234,7 @@ public interface AssetLinkPersistence extends BasePersistence<AssetLink> {
 	* @param entryId2 the entry id2
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching asset link
-	* @throws NoSuchLinkException if a matching asset link could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchLinkException if a matching asset link could not be found
 	*/
 	public AssetLink findByE2_First(long entryId2,
 		com.liferay.portal.kernel.util.OrderByComparator<AssetLink> orderByComparator)
@@ -256,7 +256,7 @@ public interface AssetLinkPersistence extends BasePersistence<AssetLink> {
 	* @param entryId2 the entry id2
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching asset link
-	* @throws NoSuchLinkException if a matching asset link could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchLinkException if a matching asset link could not be found
 	*/
 	public AssetLink findByE2_Last(long entryId2,
 		com.liferay.portal.kernel.util.OrderByComparator<AssetLink> orderByComparator)
@@ -279,7 +279,7 @@ public interface AssetLinkPersistence extends BasePersistence<AssetLink> {
 	* @param entryId2 the entry id2
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next asset link
-	* @throws NoSuchLinkException if a asset link with the primary key could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchLinkException if a asset link with the primary key could not be found
 	*/
 	public AssetLink[] findByE2_PrevAndNext(long linkId, long entryId2,
 		com.liferay.portal.kernel.util.OrderByComparator<AssetLink> orderByComparator)
@@ -370,7 +370,7 @@ public interface AssetLinkPersistence extends BasePersistence<AssetLink> {
 	* @param entryId2 the entry id2
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching asset link
-	* @throws NoSuchLinkException if a matching asset link could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchLinkException if a matching asset link could not be found
 	*/
 	public AssetLink findByE_E_First(long entryId1, long entryId2,
 		com.liferay.portal.kernel.util.OrderByComparator<AssetLink> orderByComparator)
@@ -394,7 +394,7 @@ public interface AssetLinkPersistence extends BasePersistence<AssetLink> {
 	* @param entryId2 the entry id2
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching asset link
-	* @throws NoSuchLinkException if a matching asset link could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchLinkException if a matching asset link could not be found
 	*/
 	public AssetLink findByE_E_Last(long entryId1, long entryId2,
 		com.liferay.portal.kernel.util.OrderByComparator<AssetLink> orderByComparator)
@@ -419,7 +419,7 @@ public interface AssetLinkPersistence extends BasePersistence<AssetLink> {
 	* @param entryId2 the entry id2
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next asset link
-	* @throws NoSuchLinkException if a asset link with the primary key could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchLinkException if a asset link with the primary key could not be found
 	*/
 	public AssetLink[] findByE_E_PrevAndNext(long linkId, long entryId1,
 		long entryId2,
@@ -513,7 +513,7 @@ public interface AssetLinkPersistence extends BasePersistence<AssetLink> {
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching asset link
-	* @throws NoSuchLinkException if a matching asset link could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchLinkException if a matching asset link could not be found
 	*/
 	public AssetLink findByE1_T_First(long entryId1, int type,
 		com.liferay.portal.kernel.util.OrderByComparator<AssetLink> orderByComparator)
@@ -537,7 +537,7 @@ public interface AssetLinkPersistence extends BasePersistence<AssetLink> {
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching asset link
-	* @throws NoSuchLinkException if a matching asset link could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchLinkException if a matching asset link could not be found
 	*/
 	public AssetLink findByE1_T_Last(long entryId1, int type,
 		com.liferay.portal.kernel.util.OrderByComparator<AssetLink> orderByComparator)
@@ -562,7 +562,7 @@ public interface AssetLinkPersistence extends BasePersistence<AssetLink> {
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next asset link
-	* @throws NoSuchLinkException if a asset link with the primary key could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchLinkException if a asset link with the primary key could not be found
 	*/
 	public AssetLink[] findByE1_T_PrevAndNext(long linkId, long entryId1,
 		int type,
@@ -656,7 +656,7 @@ public interface AssetLinkPersistence extends BasePersistence<AssetLink> {
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching asset link
-	* @throws NoSuchLinkException if a matching asset link could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchLinkException if a matching asset link could not be found
 	*/
 	public AssetLink findByE2_T_First(long entryId2, int type,
 		com.liferay.portal.kernel.util.OrderByComparator<AssetLink> orderByComparator)
@@ -680,7 +680,7 @@ public interface AssetLinkPersistence extends BasePersistence<AssetLink> {
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching asset link
-	* @throws NoSuchLinkException if a matching asset link could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchLinkException if a matching asset link could not be found
 	*/
 	public AssetLink findByE2_T_Last(long entryId2, int type,
 		com.liferay.portal.kernel.util.OrderByComparator<AssetLink> orderByComparator)
@@ -705,7 +705,7 @@ public interface AssetLinkPersistence extends BasePersistence<AssetLink> {
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next asset link
-	* @throws NoSuchLinkException if a asset link with the primary key could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchLinkException if a asset link with the primary key could not be found
 	*/
 	public AssetLink[] findByE2_T_PrevAndNext(long linkId, long entryId2,
 		int type,
@@ -730,13 +730,13 @@ public interface AssetLinkPersistence extends BasePersistence<AssetLink> {
 	public int countByE2_T(long entryId2, int type);
 
 	/**
-	* Returns the asset link where entryId1 = &#63; and entryId2 = &#63; and type = &#63; or throws a {@link NoSuchLinkException} if it could not be found.
+	* Returns the asset link where entryId1 = &#63; and entryId2 = &#63; and type = &#63; or throws a {@link com.liferay.portlet.asset.exception.NoSuchLinkException} if it could not be found.
 	*
 	* @param entryId1 the entry id1
 	* @param entryId2 the entry id2
 	* @param type the type
 	* @return the matching asset link
-	* @throws NoSuchLinkException if a matching asset link could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchLinkException if a matching asset link could not be found
 	*/
 	public AssetLink findByE_E_T(long entryId1, long entryId2, int type)
 		throws com.liferay.portlet.asset.exception.NoSuchLinkException;
@@ -811,7 +811,7 @@ public interface AssetLinkPersistence extends BasePersistence<AssetLink> {
 	*
 	* @param linkId the primary key of the asset link
 	* @return the asset link that was removed
-	* @throws NoSuchLinkException if a asset link with the primary key could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchLinkException if a asset link with the primary key could not be found
 	*/
 	public AssetLink remove(long linkId)
 		throws com.liferay.portlet.asset.exception.NoSuchLinkException;
@@ -819,11 +819,11 @@ public interface AssetLinkPersistence extends BasePersistence<AssetLink> {
 	public AssetLink updateImpl(AssetLink assetLink);
 
 	/**
-	* Returns the asset link with the primary key or throws a {@link NoSuchLinkException} if it could not be found.
+	* Returns the asset link with the primary key or throws a {@link com.liferay.portlet.asset.exception.NoSuchLinkException} if it could not be found.
 	*
 	* @param linkId the primary key of the asset link
 	* @return the asset link
-	* @throws NoSuchLinkException if a asset link with the primary key could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchLinkException if a asset link with the primary key could not be found
 	*/
 	public AssetLink findByPrimaryKey(long linkId)
 		throws com.liferay.portlet.asset.exception.NoSuchLinkException;

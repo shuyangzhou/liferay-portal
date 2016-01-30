@@ -40,7 +40,6 @@ import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
-import com.liferay.portlet.documentlibrary.exception.NoSuchContentException;
 import com.liferay.portlet.documentlibrary.model.DLContent;
 import com.liferay.portlet.documentlibrary.model.impl.DLContentImpl;
 import com.liferay.portlet.documentlibrary.model.impl.DLContentModelImpl;
@@ -298,12 +297,12 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 	 * @param repositoryId the repository ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library content
-	 * @throws NoSuchContentException if a matching document library content could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException if a matching document library content could not be found
 	 */
 	@Override
 	public DLContent findByC_R_First(long companyId, long repositoryId,
 		OrderByComparator<DLContent> orderByComparator)
-		throws NoSuchContentException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException {
 		DLContent dlContent = fetchByC_R_First(companyId, repositoryId,
 				orderByComparator);
 
@@ -323,7 +322,7 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchContentException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchContentException(msg.toString());
 	}
 
 	/**
@@ -354,12 +353,12 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 	 * @param repositoryId the repository ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library content
-	 * @throws NoSuchContentException if a matching document library content could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException if a matching document library content could not be found
 	 */
 	@Override
 	public DLContent findByC_R_Last(long companyId, long repositoryId,
 		OrderByComparator<DLContent> orderByComparator)
-		throws NoSuchContentException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException {
 		DLContent dlContent = fetchByC_R_Last(companyId, repositoryId,
 				orderByComparator);
 
@@ -379,7 +378,7 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchContentException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchContentException(msg.toString());
 	}
 
 	/**
@@ -417,12 +416,12 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 	 * @param repositoryId the repository ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library content
-	 * @throws NoSuchContentException if a document library content with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException if a document library content with the primary key could not be found
 	 */
 	@Override
 	public DLContent[] findByC_R_PrevAndNext(long contentId, long companyId,
 		long repositoryId, OrderByComparator<DLContent> orderByComparator)
-		throws NoSuchContentException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException {
 		DLContent dlContent = findByPrimaryKey(contentId);
 
 		Session session = null;
@@ -875,12 +874,12 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 	 * @param path the path
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library content
-	 * @throws NoSuchContentException if a matching document library content could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException if a matching document library content could not be found
 	 */
 	@Override
 	public DLContent findByC_R_P_First(long companyId, long repositoryId,
 		String path, OrderByComparator<DLContent> orderByComparator)
-		throws NoSuchContentException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException {
 		DLContent dlContent = fetchByC_R_P_First(companyId, repositoryId, path,
 				orderByComparator);
 
@@ -903,7 +902,7 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchContentException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchContentException(msg.toString());
 	}
 
 	/**
@@ -936,12 +935,12 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 	 * @param path the path
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library content
-	 * @throws NoSuchContentException if a matching document library content could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException if a matching document library content could not be found
 	 */
 	@Override
 	public DLContent findByC_R_P_Last(long companyId, long repositoryId,
 		String path, OrderByComparator<DLContent> orderByComparator)
-		throws NoSuchContentException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException {
 		DLContent dlContent = fetchByC_R_P_Last(companyId, repositoryId, path,
 				orderByComparator);
 
@@ -964,7 +963,7 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchContentException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchContentException(msg.toString());
 	}
 
 	/**
@@ -1004,13 +1003,13 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 	 * @param path the path
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library content
-	 * @throws NoSuchContentException if a document library content with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException if a document library content with the primary key could not be found
 	 */
 	@Override
 	public DLContent[] findByC_R_P_PrevAndNext(long contentId, long companyId,
 		long repositoryId, String path,
 		OrderByComparator<DLContent> orderByComparator)
-		throws NoSuchContentException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException {
 		DLContent dlContent = findByPrimaryKey(contentId);
 
 		Session session = null;
@@ -1489,12 +1488,12 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 	 * @param path the path
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library content
-	 * @throws NoSuchContentException if a matching document library content could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException if a matching document library content could not be found
 	 */
 	@Override
 	public DLContent findByC_R_LikeP_First(long companyId, long repositoryId,
 		String path, OrderByComparator<DLContent> orderByComparator)
-		throws NoSuchContentException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException {
 		DLContent dlContent = fetchByC_R_LikeP_First(companyId, repositoryId,
 				path, orderByComparator);
 
@@ -1517,7 +1516,7 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchContentException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchContentException(msg.toString());
 	}
 
 	/**
@@ -1550,12 +1549,12 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 	 * @param path the path
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library content
-	 * @throws NoSuchContentException if a matching document library content could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException if a matching document library content could not be found
 	 */
 	@Override
 	public DLContent findByC_R_LikeP_Last(long companyId, long repositoryId,
 		String path, OrderByComparator<DLContent> orderByComparator)
-		throws NoSuchContentException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException {
 		DLContent dlContent = fetchByC_R_LikeP_Last(companyId, repositoryId,
 				path, orderByComparator);
 
@@ -1578,7 +1577,7 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchContentException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchContentException(msg.toString());
 	}
 
 	/**
@@ -1618,13 +1617,13 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 	 * @param path the path
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library content
-	 * @throws NoSuchContentException if a document library content with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException if a document library content with the primary key could not be found
 	 */
 	@Override
 	public DLContent[] findByC_R_LikeP_PrevAndNext(long contentId,
 		long companyId, long repositoryId, String path,
 		OrderByComparator<DLContent> orderByComparator)
-		throws NoSuchContentException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException {
 		DLContent dlContent = findByPrimaryKey(contentId);
 
 		Session session = null;
@@ -1895,18 +1894,19 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 			});
 
 	/**
-	 * Returns the document library content where companyId = &#63; and repositoryId = &#63; and path = &#63; and version = &#63; or throws a {@link NoSuchContentException} if it could not be found.
+	 * Returns the document library content where companyId = &#63; and repositoryId = &#63; and path = &#63; and version = &#63; or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchContentException} if it could not be found.
 	 *
 	 * @param companyId the company ID
 	 * @param repositoryId the repository ID
 	 * @param path the path
 	 * @param version the version
 	 * @return the matching document library content
-	 * @throws NoSuchContentException if a matching document library content could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException if a matching document library content could not be found
 	 */
 	@Override
 	public DLContent findByC_R_P_V(long companyId, long repositoryId,
-		String path, String version) throws NoSuchContentException {
+		String path, String version)
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException {
 		DLContent dlContent = fetchByC_R_P_V(companyId, repositoryId, path,
 				version);
 
@@ -1933,7 +1933,7 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchContentException(msg.toString());
+			throw new com.liferay.portlet.documentlibrary.exception.NoSuchContentException(msg.toString());
 		}
 
 		return dlContent;
@@ -2103,7 +2103,8 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 	 */
 	@Override
 	public DLContent removeByC_R_P_V(long companyId, long repositoryId,
-		String path, String version) throws NoSuchContentException {
+		String path, String version)
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException {
 		DLContent dlContent = findByC_R_P_V(companyId, repositoryId, path,
 				version);
 
@@ -2385,10 +2386,11 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 	 *
 	 * @param contentId the primary key of the document library content
 	 * @return the document library content that was removed
-	 * @throws NoSuchContentException if a document library content with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException if a document library content with the primary key could not be found
 	 */
 	@Override
-	public DLContent remove(long contentId) throws NoSuchContentException {
+	public DLContent remove(long contentId)
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException {
 		return remove((Serializable)contentId);
 	}
 
@@ -2397,11 +2399,11 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 	 *
 	 * @param primaryKey the primary key of the document library content
 	 * @return the document library content that was removed
-	 * @throws NoSuchContentException if a document library content with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException if a document library content with the primary key could not be found
 	 */
 	@Override
 	public DLContent remove(Serializable primaryKey)
-		throws NoSuchContentException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException {
 		Session session = null;
 
 		try {
@@ -2415,13 +2417,13 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchContentException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portlet.documentlibrary.exception.NoSuchContentException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(dlContent);
 		}
-		catch (NoSuchContentException nsee) {
+		catch (com.liferay.portlet.documentlibrary.exception.NoSuchContentException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -2587,11 +2589,11 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 	 *
 	 * @param primaryKey the primary key of the document library content
 	 * @return the document library content
-	 * @throws NoSuchContentException if a document library content with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException if a document library content with the primary key could not be found
 	 */
 	@Override
 	public DLContent findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchContentException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException {
 		DLContent dlContent = fetchByPrimaryKey(primaryKey);
 
 		if (dlContent == null) {
@@ -2599,7 +2601,7 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchContentException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portlet.documentlibrary.exception.NoSuchContentException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -2607,15 +2609,15 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 	}
 
 	/**
-	 * Returns the document library content with the primary key or throws a {@link NoSuchContentException} if it could not be found.
+	 * Returns the document library content with the primary key or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchContentException} if it could not be found.
 	 *
 	 * @param contentId the primary key of the document library content
 	 * @return the document library content
-	 * @throws NoSuchContentException if a document library content with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException if a document library content with the primary key could not be found
 	 */
 	@Override
 	public DLContent findByPrimaryKey(long contentId)
-		throws NoSuchContentException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException {
 		return findByPrimaryKey((Serializable)contentId);
 	}
 

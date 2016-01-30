@@ -187,7 +187,7 @@ public class AssetCategoryPropertyUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching asset category property
-	* @throws NoSuchCategoryPropertyException if a matching asset category property could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchCategoryPropertyException if a matching asset category property could not be found
 	*/
 	public static AssetCategoryProperty findByCompanyId_First(long companyId,
 		OrderByComparator<AssetCategoryProperty> orderByComparator)
@@ -215,7 +215,7 @@ public class AssetCategoryPropertyUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching asset category property
-	* @throws NoSuchCategoryPropertyException if a matching asset category property could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchCategoryPropertyException if a matching asset category property could not be found
 	*/
 	public static AssetCategoryProperty findByCompanyId_Last(long companyId,
 		OrderByComparator<AssetCategoryProperty> orderByComparator)
@@ -244,7 +244,7 @@ public class AssetCategoryPropertyUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next asset category property
-	* @throws NoSuchCategoryPropertyException if a asset category property with the primary key could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchCategoryPropertyException if a asset category property with the primary key could not be found
 	*/
 	public static AssetCategoryProperty[] findByCompanyId_PrevAndNext(
 		long categoryPropertyId, long companyId,
@@ -350,7 +350,7 @@ public class AssetCategoryPropertyUtil {
 	* @param categoryId the category ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching asset category property
-	* @throws NoSuchCategoryPropertyException if a matching asset category property could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchCategoryPropertyException if a matching asset category property could not be found
 	*/
 	public static AssetCategoryProperty findByCategoryId_First(
 		long categoryId,
@@ -380,7 +380,7 @@ public class AssetCategoryPropertyUtil {
 	* @param categoryId the category ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching asset category property
-	* @throws NoSuchCategoryPropertyException if a matching asset category property could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchCategoryPropertyException if a matching asset category property could not be found
 	*/
 	public static AssetCategoryProperty findByCategoryId_Last(long categoryId,
 		OrderByComparator<AssetCategoryProperty> orderByComparator)
@@ -410,7 +410,7 @@ public class AssetCategoryPropertyUtil {
 	* @param categoryId the category ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next asset category property
-	* @throws NoSuchCategoryPropertyException if a asset category property with the primary key could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchCategoryPropertyException if a asset category property with the primary key could not be found
 	*/
 	public static AssetCategoryProperty[] findByCategoryId_PrevAndNext(
 		long categoryPropertyId, long categoryId,
@@ -522,7 +522,7 @@ public class AssetCategoryPropertyUtil {
 	* @param key the key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching asset category property
-	* @throws NoSuchCategoryPropertyException if a matching asset category property could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchCategoryPropertyException if a matching asset category property could not be found
 	*/
 	public static AssetCategoryProperty findByC_K_First(long companyId,
 		java.lang.String key,
@@ -554,7 +554,7 @@ public class AssetCategoryPropertyUtil {
 	* @param key the key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching asset category property
-	* @throws NoSuchCategoryPropertyException if a matching asset category property could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchCategoryPropertyException if a matching asset category property could not be found
 	*/
 	public static AssetCategoryProperty findByC_K_Last(long companyId,
 		java.lang.String key,
@@ -586,7 +586,7 @@ public class AssetCategoryPropertyUtil {
 	* @param key the key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next asset category property
-	* @throws NoSuchCategoryPropertyException if a asset category property with the primary key could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchCategoryPropertyException if a asset category property with the primary key could not be found
 	*/
 	public static AssetCategoryProperty[] findByC_K_PrevAndNext(
 		long categoryPropertyId, long companyId, java.lang.String key,
@@ -619,12 +619,12 @@ public class AssetCategoryPropertyUtil {
 	}
 
 	/**
-	* Returns the asset category property where categoryId = &#63; and key = &#63; or throws a {@link NoSuchCategoryPropertyException} if it could not be found.
+	* Returns the asset category property where categoryId = &#63; and key = &#63; or throws a {@link com.liferay.portlet.asset.exception.NoSuchCategoryPropertyException} if it could not be found.
 	*
 	* @param categoryId the category ID
 	* @param key the key
 	* @return the matching asset category property
-	* @throws NoSuchCategoryPropertyException if a matching asset category property could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchCategoryPropertyException if a matching asset category property could not be found
 	*/
 	public static AssetCategoryProperty findByCA_K(long categoryId,
 		java.lang.String key)
@@ -715,7 +715,7 @@ public class AssetCategoryPropertyUtil {
 	*
 	* @param categoryPropertyId the primary key of the asset category property
 	* @return the asset category property that was removed
-	* @throws NoSuchCategoryPropertyException if a asset category property with the primary key could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchCategoryPropertyException if a asset category property with the primary key could not be found
 	*/
 	public static AssetCategoryProperty remove(long categoryPropertyId)
 		throws com.liferay.portlet.asset.exception.NoSuchCategoryPropertyException {
@@ -728,11 +728,11 @@ public class AssetCategoryPropertyUtil {
 	}
 
 	/**
-	* Returns the asset category property with the primary key or throws a {@link NoSuchCategoryPropertyException} if it could not be found.
+	* Returns the asset category property with the primary key or throws a {@link com.liferay.portlet.asset.exception.NoSuchCategoryPropertyException} if it could not be found.
 	*
 	* @param categoryPropertyId the primary key of the asset category property
 	* @return the asset category property
-	* @throws NoSuchCategoryPropertyException if a asset category property with the primary key could not be found
+	* @throws com.liferay.portlet.asset.exception.NoSuchCategoryPropertyException if a asset category property with the primary key could not be found
 	*/
 	public static AssetCategoryProperty findByPrimaryKey(
 		long categoryPropertyId)

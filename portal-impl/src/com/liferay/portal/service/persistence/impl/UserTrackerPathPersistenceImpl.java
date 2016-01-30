@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchUserTrackerPathException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -289,12 +288,12 @@ public class UserTrackerPathPersistenceImpl extends BasePersistenceImpl<UserTrac
 	 * @param userTrackerId the user tracker ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user tracker path
-	 * @throws NoSuchUserTrackerPathException if a matching user tracker path could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserTrackerPathException if a matching user tracker path could not be found
 	 */
 	@Override
 	public UserTrackerPath findByUserTrackerId_First(long userTrackerId,
 		OrderByComparator<UserTrackerPath> orderByComparator)
-		throws NoSuchUserTrackerPathException {
+		throws com.liferay.portal.exception.NoSuchUserTrackerPathException {
 		UserTrackerPath userTrackerPath = fetchByUserTrackerId_First(userTrackerId,
 				orderByComparator);
 
@@ -311,7 +310,7 @@ public class UserTrackerPathPersistenceImpl extends BasePersistenceImpl<UserTrac
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserTrackerPathException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserTrackerPathException(msg.toString());
 	}
 
 	/**
@@ -340,12 +339,12 @@ public class UserTrackerPathPersistenceImpl extends BasePersistenceImpl<UserTrac
 	 * @param userTrackerId the user tracker ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user tracker path
-	 * @throws NoSuchUserTrackerPathException if a matching user tracker path could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserTrackerPathException if a matching user tracker path could not be found
 	 */
 	@Override
 	public UserTrackerPath findByUserTrackerId_Last(long userTrackerId,
 		OrderByComparator<UserTrackerPath> orderByComparator)
-		throws NoSuchUserTrackerPathException {
+		throws com.liferay.portal.exception.NoSuchUserTrackerPathException {
 		UserTrackerPath userTrackerPath = fetchByUserTrackerId_Last(userTrackerId,
 				orderByComparator);
 
@@ -362,7 +361,7 @@ public class UserTrackerPathPersistenceImpl extends BasePersistenceImpl<UserTrac
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserTrackerPathException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserTrackerPathException(msg.toString());
 	}
 
 	/**
@@ -398,13 +397,13 @@ public class UserTrackerPathPersistenceImpl extends BasePersistenceImpl<UserTrac
 	 * @param userTrackerId the user tracker ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user tracker path
-	 * @throws NoSuchUserTrackerPathException if a user tracker path with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserTrackerPathException if a user tracker path with the primary key could not be found
 	 */
 	@Override
 	public UserTrackerPath[] findByUserTrackerId_PrevAndNext(
 		long userTrackerPathId, long userTrackerId,
 		OrderByComparator<UserTrackerPath> orderByComparator)
-		throws NoSuchUserTrackerPathException {
+		throws com.liferay.portal.exception.NoSuchUserTrackerPathException {
 		UserTrackerPath userTrackerPath = findByPrimaryKey(userTrackerPathId);
 
 		Session session = null;
@@ -708,11 +707,11 @@ public class UserTrackerPathPersistenceImpl extends BasePersistenceImpl<UserTrac
 	 *
 	 * @param userTrackerPathId the primary key of the user tracker path
 	 * @return the user tracker path that was removed
-	 * @throws NoSuchUserTrackerPathException if a user tracker path with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserTrackerPathException if a user tracker path with the primary key could not be found
 	 */
 	@Override
 	public UserTrackerPath remove(long userTrackerPathId)
-		throws NoSuchUserTrackerPathException {
+		throws com.liferay.portal.exception.NoSuchUserTrackerPathException {
 		return remove((Serializable)userTrackerPathId);
 	}
 
@@ -721,11 +720,11 @@ public class UserTrackerPathPersistenceImpl extends BasePersistenceImpl<UserTrac
 	 *
 	 * @param primaryKey the primary key of the user tracker path
 	 * @return the user tracker path that was removed
-	 * @throws NoSuchUserTrackerPathException if a user tracker path with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserTrackerPathException if a user tracker path with the primary key could not be found
 	 */
 	@Override
 	public UserTrackerPath remove(Serializable primaryKey)
-		throws NoSuchUserTrackerPathException {
+		throws com.liferay.portal.exception.NoSuchUserTrackerPathException {
 		Session session = null;
 
 		try {
@@ -739,13 +738,13 @@ public class UserTrackerPathPersistenceImpl extends BasePersistenceImpl<UserTrac
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchUserTrackerPathException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchUserTrackerPathException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(userTrackerPath);
 		}
-		catch (NoSuchUserTrackerPathException nsee) {
+		catch (com.liferay.portal.exception.NoSuchUserTrackerPathException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -878,11 +877,11 @@ public class UserTrackerPathPersistenceImpl extends BasePersistenceImpl<UserTrac
 	 *
 	 * @param primaryKey the primary key of the user tracker path
 	 * @return the user tracker path
-	 * @throws NoSuchUserTrackerPathException if a user tracker path with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserTrackerPathException if a user tracker path with the primary key could not be found
 	 */
 	@Override
 	public UserTrackerPath findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchUserTrackerPathException {
+		throws com.liferay.portal.exception.NoSuchUserTrackerPathException {
 		UserTrackerPath userTrackerPath = fetchByPrimaryKey(primaryKey);
 
 		if (userTrackerPath == null) {
@@ -890,7 +889,7 @@ public class UserTrackerPathPersistenceImpl extends BasePersistenceImpl<UserTrac
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchUserTrackerPathException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchUserTrackerPathException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -898,15 +897,15 @@ public class UserTrackerPathPersistenceImpl extends BasePersistenceImpl<UserTrac
 	}
 
 	/**
-	 * Returns the user tracker path with the primary key or throws a {@link NoSuchUserTrackerPathException} if it could not be found.
+	 * Returns the user tracker path with the primary key or throws a {@link com.liferay.portal.exception.NoSuchUserTrackerPathException} if it could not be found.
 	 *
 	 * @param userTrackerPathId the primary key of the user tracker path
 	 * @return the user tracker path
-	 * @throws NoSuchUserTrackerPathException if a user tracker path with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserTrackerPathException if a user tracker path with the primary key could not be found
 	 */
 	@Override
 	public UserTrackerPath findByPrimaryKey(long userTrackerPathId)
-		throws NoSuchUserTrackerPathException {
+		throws com.liferay.portal.exception.NoSuchUserTrackerPathException {
 		return findByPrimaryKey((Serializable)userTrackerPathId);
 	}
 

@@ -37,7 +37,6 @@ import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.spring.extender.service.ServiceReference;
-import com.liferay.portal.workflow.kaleo.exception.NoSuchLogException;
 import com.liferay.portal.workflow.kaleo.model.KaleoLog;
 import com.liferay.portal.workflow.kaleo.model.impl.KaleoLogImpl;
 import com.liferay.portal.workflow.kaleo.model.impl.KaleoLogModelImpl;
@@ -279,12 +278,12 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching kaleo log
-	 * @throws NoSuchLogException if a matching kaleo log could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException if a matching kaleo log could not be found
 	 */
 	@Override
 	public KaleoLog findByCompanyId_First(long companyId,
 		OrderByComparator<KaleoLog> orderByComparator)
-		throws NoSuchLogException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException {
 		KaleoLog kaleoLog = fetchByCompanyId_First(companyId, orderByComparator);
 
 		if (kaleoLog != null) {
@@ -300,7 +299,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLogException(msg.toString());
+		throw new com.liferay.portal.workflow.kaleo.exception.NoSuchLogException(msg.toString());
 	}
 
 	/**
@@ -328,12 +327,12 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching kaleo log
-	 * @throws NoSuchLogException if a matching kaleo log could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException if a matching kaleo log could not be found
 	 */
 	@Override
 	public KaleoLog findByCompanyId_Last(long companyId,
 		OrderByComparator<KaleoLog> orderByComparator)
-		throws NoSuchLogException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException {
 		KaleoLog kaleoLog = fetchByCompanyId_Last(companyId, orderByComparator);
 
 		if (kaleoLog != null) {
@@ -349,7 +348,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLogException(msg.toString());
+		throw new com.liferay.portal.workflow.kaleo.exception.NoSuchLogException(msg.toString());
 	}
 
 	/**
@@ -385,12 +384,12 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next kaleo log
-	 * @throws NoSuchLogException if a kaleo log with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException if a kaleo log with the primary key could not be found
 	 */
 	@Override
 	public KaleoLog[] findByCompanyId_PrevAndNext(long kaleoLogId,
 		long companyId, OrderByComparator<KaleoLog> orderByComparator)
-		throws NoSuchLogException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException {
 		KaleoLog kaleoLog = findByPrimaryKey(kaleoLogId);
 
 		Session session = null;
@@ -787,12 +786,12 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 * @param kaleoDefinitionId the kaleo definition ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching kaleo log
-	 * @throws NoSuchLogException if a matching kaleo log could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException if a matching kaleo log could not be found
 	 */
 	@Override
 	public KaleoLog findByKaleoDefinitionId_First(long kaleoDefinitionId,
 		OrderByComparator<KaleoLog> orderByComparator)
-		throws NoSuchLogException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException {
 		KaleoLog kaleoLog = fetchByKaleoDefinitionId_First(kaleoDefinitionId,
 				orderByComparator);
 
@@ -809,7 +808,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLogException(msg.toString());
+		throw new com.liferay.portal.workflow.kaleo.exception.NoSuchLogException(msg.toString());
 	}
 
 	/**
@@ -838,12 +837,12 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 * @param kaleoDefinitionId the kaleo definition ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching kaleo log
-	 * @throws NoSuchLogException if a matching kaleo log could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException if a matching kaleo log could not be found
 	 */
 	@Override
 	public KaleoLog findByKaleoDefinitionId_Last(long kaleoDefinitionId,
 		OrderByComparator<KaleoLog> orderByComparator)
-		throws NoSuchLogException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException {
 		KaleoLog kaleoLog = fetchByKaleoDefinitionId_Last(kaleoDefinitionId,
 				orderByComparator);
 
@@ -860,7 +859,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLogException(msg.toString());
+		throw new com.liferay.portal.workflow.kaleo.exception.NoSuchLogException(msg.toString());
 	}
 
 	/**
@@ -896,12 +895,12 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 * @param kaleoDefinitionId the kaleo definition ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next kaleo log
-	 * @throws NoSuchLogException if a kaleo log with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException if a kaleo log with the primary key could not be found
 	 */
 	@Override
 	public KaleoLog[] findByKaleoDefinitionId_PrevAndNext(long kaleoLogId,
 		long kaleoDefinitionId, OrderByComparator<KaleoLog> orderByComparator)
-		throws NoSuchLogException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException {
 		KaleoLog kaleoLog = findByPrimaryKey(kaleoLogId);
 
 		Session session = null;
@@ -1299,12 +1298,12 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 * @param kaleoInstanceId the kaleo instance ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching kaleo log
-	 * @throws NoSuchLogException if a matching kaleo log could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException if a matching kaleo log could not be found
 	 */
 	@Override
 	public KaleoLog findByKaleoInstanceId_First(long kaleoInstanceId,
 		OrderByComparator<KaleoLog> orderByComparator)
-		throws NoSuchLogException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException {
 		KaleoLog kaleoLog = fetchByKaleoInstanceId_First(kaleoInstanceId,
 				orderByComparator);
 
@@ -1321,7 +1320,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLogException(msg.toString());
+		throw new com.liferay.portal.workflow.kaleo.exception.NoSuchLogException(msg.toString());
 	}
 
 	/**
@@ -1350,12 +1349,12 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 * @param kaleoInstanceId the kaleo instance ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching kaleo log
-	 * @throws NoSuchLogException if a matching kaleo log could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException if a matching kaleo log could not be found
 	 */
 	@Override
 	public KaleoLog findByKaleoInstanceId_Last(long kaleoInstanceId,
 		OrderByComparator<KaleoLog> orderByComparator)
-		throws NoSuchLogException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException {
 		KaleoLog kaleoLog = fetchByKaleoInstanceId_Last(kaleoInstanceId,
 				orderByComparator);
 
@@ -1372,7 +1371,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLogException(msg.toString());
+		throw new com.liferay.portal.workflow.kaleo.exception.NoSuchLogException(msg.toString());
 	}
 
 	/**
@@ -1408,12 +1407,12 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 * @param kaleoInstanceId the kaleo instance ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next kaleo log
-	 * @throws NoSuchLogException if a kaleo log with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException if a kaleo log with the primary key could not be found
 	 */
 	@Override
 	public KaleoLog[] findByKaleoInstanceId_PrevAndNext(long kaleoLogId,
 		long kaleoInstanceId, OrderByComparator<KaleoLog> orderByComparator)
-		throws NoSuchLogException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException {
 		KaleoLog kaleoLog = findByPrimaryKey(kaleoLogId);
 
 		Session session = null;
@@ -1818,13 +1817,13 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 * @param kaleoTaskInstanceTokenId the kaleo task instance token ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching kaleo log
-	 * @throws NoSuchLogException if a matching kaleo log could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException if a matching kaleo log could not be found
 	 */
 	@Override
 	public KaleoLog findByKaleoTaskInstanceTokenId_First(
 		long kaleoTaskInstanceTokenId,
 		OrderByComparator<KaleoLog> orderByComparator)
-		throws NoSuchLogException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException {
 		KaleoLog kaleoLog = fetchByKaleoTaskInstanceTokenId_First(kaleoTaskInstanceTokenId,
 				orderByComparator);
 
@@ -1841,7 +1840,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLogException(msg.toString());
+		throw new com.liferay.portal.workflow.kaleo.exception.NoSuchLogException(msg.toString());
 	}
 
 	/**
@@ -1871,13 +1870,13 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 * @param kaleoTaskInstanceTokenId the kaleo task instance token ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching kaleo log
-	 * @throws NoSuchLogException if a matching kaleo log could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException if a matching kaleo log could not be found
 	 */
 	@Override
 	public KaleoLog findByKaleoTaskInstanceTokenId_Last(
 		long kaleoTaskInstanceTokenId,
 		OrderByComparator<KaleoLog> orderByComparator)
-		throws NoSuchLogException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException {
 		KaleoLog kaleoLog = fetchByKaleoTaskInstanceTokenId_Last(kaleoTaskInstanceTokenId,
 				orderByComparator);
 
@@ -1894,7 +1893,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLogException(msg.toString());
+		throw new com.liferay.portal.workflow.kaleo.exception.NoSuchLogException(msg.toString());
 	}
 
 	/**
@@ -1931,13 +1930,13 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 * @param kaleoTaskInstanceTokenId the kaleo task instance token ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next kaleo log
-	 * @throws NoSuchLogException if a kaleo log with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException if a kaleo log with the primary key could not be found
 	 */
 	@Override
 	public KaleoLog[] findByKaleoTaskInstanceTokenId_PrevAndNext(
 		long kaleoLogId, long kaleoTaskInstanceTokenId,
 		OrderByComparator<KaleoLog> orderByComparator)
-		throws NoSuchLogException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException {
 		KaleoLog kaleoLog = findByPrimaryKey(kaleoLogId);
 
 		Session session = null;
@@ -2360,12 +2359,12 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 * @param type the type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching kaleo log
-	 * @throws NoSuchLogException if a matching kaleo log could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException if a matching kaleo log could not be found
 	 */
 	@Override
 	public KaleoLog findByKITI_T_First(long kaleoInstanceTokenId, String type,
 		OrderByComparator<KaleoLog> orderByComparator)
-		throws NoSuchLogException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException {
 		KaleoLog kaleoLog = fetchByKITI_T_First(kaleoInstanceTokenId, type,
 				orderByComparator);
 
@@ -2385,7 +2384,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLogException(msg.toString());
+		throw new com.liferay.portal.workflow.kaleo.exception.NoSuchLogException(msg.toString());
 	}
 
 	/**
@@ -2416,12 +2415,12 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 * @param type the type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching kaleo log
-	 * @throws NoSuchLogException if a matching kaleo log could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException if a matching kaleo log could not be found
 	 */
 	@Override
 	public KaleoLog findByKITI_T_Last(long kaleoInstanceTokenId, String type,
 		OrderByComparator<KaleoLog> orderByComparator)
-		throws NoSuchLogException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException {
 		KaleoLog kaleoLog = fetchByKITI_T_Last(kaleoInstanceTokenId, type,
 				orderByComparator);
 
@@ -2441,7 +2440,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLogException(msg.toString());
+		throw new com.liferay.portal.workflow.kaleo.exception.NoSuchLogException(msg.toString());
 	}
 
 	/**
@@ -2479,13 +2478,13 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 * @param type the type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next kaleo log
-	 * @throws NoSuchLogException if a kaleo log with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException if a kaleo log with the primary key could not be found
 	 */
 	@Override
 	public KaleoLog[] findByKITI_T_PrevAndNext(long kaleoLogId,
 		long kaleoInstanceTokenId, String type,
 		OrderByComparator<KaleoLog> orderByComparator)
-		throws NoSuchLogException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException {
 		KaleoLog kaleoLog = findByPrimaryKey(kaleoLogId);
 
 		Session session = null;
@@ -3001,13 +3000,13 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 * @param type the type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching kaleo log
-	 * @throws NoSuchLogException if a matching kaleo log could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException if a matching kaleo log could not be found
 	 */
 	@Override
 	public KaleoLog findByKCN_KCPK_KITI_T_First(String kaleoClassName,
 		long kaleoClassPK, long kaleoInstanceTokenId, String type,
 		OrderByComparator<KaleoLog> orderByComparator)
-		throws NoSuchLogException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException {
 		KaleoLog kaleoLog = fetchByKCN_KCPK_KITI_T_First(kaleoClassName,
 				kaleoClassPK, kaleoInstanceTokenId, type, orderByComparator);
 
@@ -3033,7 +3032,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLogException(msg.toString());
+		throw new com.liferay.portal.workflow.kaleo.exception.NoSuchLogException(msg.toString());
 	}
 
 	/**
@@ -3070,13 +3069,13 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 * @param type the type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching kaleo log
-	 * @throws NoSuchLogException if a matching kaleo log could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException if a matching kaleo log could not be found
 	 */
 	@Override
 	public KaleoLog findByKCN_KCPK_KITI_T_Last(String kaleoClassName,
 		long kaleoClassPK, long kaleoInstanceTokenId, String type,
 		OrderByComparator<KaleoLog> orderByComparator)
-		throws NoSuchLogException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException {
 		KaleoLog kaleoLog = fetchByKCN_KCPK_KITI_T_Last(kaleoClassName,
 				kaleoClassPK, kaleoInstanceTokenId, type, orderByComparator);
 
@@ -3102,7 +3101,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLogException(msg.toString());
+		throw new com.liferay.portal.workflow.kaleo.exception.NoSuchLogException(msg.toString());
 	}
 
 	/**
@@ -3147,13 +3146,13 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 * @param type the type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next kaleo log
-	 * @throws NoSuchLogException if a kaleo log with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException if a kaleo log with the primary key could not be found
 	 */
 	@Override
 	public KaleoLog[] findByKCN_KCPK_KITI_T_PrevAndNext(long kaleoLogId,
 		String kaleoClassName, long kaleoClassPK, long kaleoInstanceTokenId,
 		String type, OrderByComparator<KaleoLog> orderByComparator)
-		throws NoSuchLogException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException {
 		KaleoLog kaleoLog = findByPrimaryKey(kaleoLogId);
 
 		Session session = null;
@@ -3556,10 +3555,11 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 *
 	 * @param kaleoLogId the primary key of the kaleo log
 	 * @return the kaleo log that was removed
-	 * @throws NoSuchLogException if a kaleo log with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException if a kaleo log with the primary key could not be found
 	 */
 	@Override
-	public KaleoLog remove(long kaleoLogId) throws NoSuchLogException {
+	public KaleoLog remove(long kaleoLogId)
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException {
 		return remove((Serializable)kaleoLogId);
 	}
 
@@ -3568,10 +3568,11 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 *
 	 * @param primaryKey the primary key of the kaleo log
 	 * @return the kaleo log that was removed
-	 * @throws NoSuchLogException if a kaleo log with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException if a kaleo log with the primary key could not be found
 	 */
 	@Override
-	public KaleoLog remove(Serializable primaryKey) throws NoSuchLogException {
+	public KaleoLog remove(Serializable primaryKey)
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException {
 		Session session = null;
 
 		try {
@@ -3585,13 +3586,13 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchLogException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.workflow.kaleo.exception.NoSuchLogException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(kaleoLog);
 		}
-		catch (NoSuchLogException nsee) {
+		catch (com.liferay.portal.workflow.kaleo.exception.NoSuchLogException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -3874,11 +3875,11 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 *
 	 * @param primaryKey the primary key of the kaleo log
 	 * @return the kaleo log
-	 * @throws NoSuchLogException if a kaleo log with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException if a kaleo log with the primary key could not be found
 	 */
 	@Override
 	public KaleoLog findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchLogException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException {
 		KaleoLog kaleoLog = fetchByPrimaryKey(primaryKey);
 
 		if (kaleoLog == null) {
@@ -3886,7 +3887,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchLogException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.workflow.kaleo.exception.NoSuchLogException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -3894,14 +3895,15 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	}
 
 	/**
-	 * Returns the kaleo log with the primary key or throws a {@link NoSuchLogException} if it could not be found.
+	 * Returns the kaleo log with the primary key or throws a {@link com.liferay.portal.workflow.kaleo.exception.NoSuchLogException} if it could not be found.
 	 *
 	 * @param kaleoLogId the primary key of the kaleo log
 	 * @return the kaleo log
-	 * @throws NoSuchLogException if a kaleo log with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException if a kaleo log with the primary key could not be found
 	 */
 	@Override
-	public KaleoLog findByPrimaryKey(long kaleoLogId) throws NoSuchLogException {
+	public KaleoLog findByPrimaryKey(long kaleoLogId)
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchLogException {
 		return findByPrimaryKey((Serializable)kaleoLogId);
 	}
 

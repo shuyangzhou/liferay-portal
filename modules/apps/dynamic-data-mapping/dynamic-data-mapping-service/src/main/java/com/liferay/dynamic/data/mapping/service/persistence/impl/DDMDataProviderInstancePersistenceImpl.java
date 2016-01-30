@@ -16,7 +16,6 @@ package com.liferay.dynamic.data.mapping.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException;
 import com.liferay.dynamic.data.mapping.model.DDMDataProviderInstance;
 import com.liferay.dynamic.data.mapping.model.impl.DDMDataProviderInstanceImpl;
 import com.liferay.dynamic.data.mapping.model.impl.DDMDataProviderInstanceModelImpl;
@@ -304,12 +303,12 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching d d m data provider instance
-	 * @throws NoSuchDataProviderInstanceException if a matching d d m data provider instance could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException if a matching d d m data provider instance could not be found
 	 */
 	@Override
 	public DDMDataProviderInstance findByUuid_First(String uuid,
 		OrderByComparator<DDMDataProviderInstance> orderByComparator)
-		throws NoSuchDataProviderInstanceException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException {
 		DDMDataProviderInstance ddmDataProviderInstance = fetchByUuid_First(uuid,
 				orderByComparator);
 
@@ -326,7 +325,7 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchDataProviderInstanceException(msg.toString());
+		throw new com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException(msg.toString());
 	}
 
 	/**
@@ -355,12 +354,12 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching d d m data provider instance
-	 * @throws NoSuchDataProviderInstanceException if a matching d d m data provider instance could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException if a matching d d m data provider instance could not be found
 	 */
 	@Override
 	public DDMDataProviderInstance findByUuid_Last(String uuid,
 		OrderByComparator<DDMDataProviderInstance> orderByComparator)
-		throws NoSuchDataProviderInstanceException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException {
 		DDMDataProviderInstance ddmDataProviderInstance = fetchByUuid_Last(uuid,
 				orderByComparator);
 
@@ -377,7 +376,7 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchDataProviderInstanceException(msg.toString());
+		throw new com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException(msg.toString());
 	}
 
 	/**
@@ -413,13 +412,13 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next d d m data provider instance
-	 * @throws NoSuchDataProviderInstanceException if a d d m data provider instance with the primary key could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException if a d d m data provider instance with the primary key could not be found
 	 */
 	@Override
 	public DDMDataProviderInstance[] findByUuid_PrevAndNext(
 		long dataProviderInstanceId, String uuid,
 		OrderByComparator<DDMDataProviderInstance> orderByComparator)
-		throws NoSuchDataProviderInstanceException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException {
 		DDMDataProviderInstance ddmDataProviderInstance = findByPrimaryKey(dataProviderInstanceId);
 
 		Session session = null;
@@ -662,16 +661,16 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 			new String[] { String.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the d d m data provider instance where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchDataProviderInstanceException} if it could not be found.
+	 * Returns the d d m data provider instance where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException} if it could not be found.
 	 *
 	 * @param uuid the uuid
 	 * @param groupId the group ID
 	 * @return the matching d d m data provider instance
-	 * @throws NoSuchDataProviderInstanceException if a matching d d m data provider instance could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException if a matching d d m data provider instance could not be found
 	 */
 	@Override
 	public DDMDataProviderInstance findByUUID_G(String uuid, long groupId)
-		throws NoSuchDataProviderInstanceException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException {
 		DDMDataProviderInstance ddmDataProviderInstance = fetchByUUID_G(uuid,
 				groupId);
 
@@ -692,7 +691,7 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchDataProviderInstanceException(msg.toString());
+			throw new com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException(msg.toString());
 		}
 
 		return ddmDataProviderInstance;
@@ -825,7 +824,7 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 	 */
 	@Override
 	public DDMDataProviderInstance removeByUUID_G(String uuid, long groupId)
-		throws NoSuchDataProviderInstanceException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException {
 		DDMDataProviderInstance ddmDataProviderInstance = findByUUID_G(uuid,
 				groupId);
 
@@ -1133,13 +1132,13 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching d d m data provider instance
-	 * @throws NoSuchDataProviderInstanceException if a matching d d m data provider instance could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException if a matching d d m data provider instance could not be found
 	 */
 	@Override
 	public DDMDataProviderInstance findByUuid_C_First(String uuid,
 		long companyId,
 		OrderByComparator<DDMDataProviderInstance> orderByComparator)
-		throws NoSuchDataProviderInstanceException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException {
 		DDMDataProviderInstance ddmDataProviderInstance = fetchByUuid_C_First(uuid,
 				companyId, orderByComparator);
 
@@ -1159,7 +1158,7 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchDataProviderInstanceException(msg.toString());
+		throw new com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException(msg.toString());
 	}
 
 	/**
@@ -1191,13 +1190,13 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching d d m data provider instance
-	 * @throws NoSuchDataProviderInstanceException if a matching d d m data provider instance could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException if a matching d d m data provider instance could not be found
 	 */
 	@Override
 	public DDMDataProviderInstance findByUuid_C_Last(String uuid,
 		long companyId,
 		OrderByComparator<DDMDataProviderInstance> orderByComparator)
-		throws NoSuchDataProviderInstanceException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException {
 		DDMDataProviderInstance ddmDataProviderInstance = fetchByUuid_C_Last(uuid,
 				companyId, orderByComparator);
 
@@ -1217,7 +1216,7 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchDataProviderInstanceException(msg.toString());
+		throw new com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException(msg.toString());
 	}
 
 	/**
@@ -1256,13 +1255,13 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next d d m data provider instance
-	 * @throws NoSuchDataProviderInstanceException if a d d m data provider instance with the primary key could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException if a d d m data provider instance with the primary key could not be found
 	 */
 	@Override
 	public DDMDataProviderInstance[] findByUuid_C_PrevAndNext(
 		long dataProviderInstanceId, String uuid, long companyId,
 		OrderByComparator<DDMDataProviderInstance> orderByComparator)
-		throws NoSuchDataProviderInstanceException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException {
 		DDMDataProviderInstance ddmDataProviderInstance = findByPrimaryKey(dataProviderInstanceId);
 
 		Session session = null;
@@ -1703,12 +1702,12 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching d d m data provider instance
-	 * @throws NoSuchDataProviderInstanceException if a matching d d m data provider instance could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException if a matching d d m data provider instance could not be found
 	 */
 	@Override
 	public DDMDataProviderInstance findByGroupId_First(long groupId,
 		OrderByComparator<DDMDataProviderInstance> orderByComparator)
-		throws NoSuchDataProviderInstanceException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException {
 		DDMDataProviderInstance ddmDataProviderInstance = fetchByGroupId_First(groupId,
 				orderByComparator);
 
@@ -1725,7 +1724,7 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchDataProviderInstanceException(msg.toString());
+		throw new com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException(msg.toString());
 	}
 
 	/**
@@ -1754,12 +1753,12 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching d d m data provider instance
-	 * @throws NoSuchDataProviderInstanceException if a matching d d m data provider instance could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException if a matching d d m data provider instance could not be found
 	 */
 	@Override
 	public DDMDataProviderInstance findByGroupId_Last(long groupId,
 		OrderByComparator<DDMDataProviderInstance> orderByComparator)
-		throws NoSuchDataProviderInstanceException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException {
 		DDMDataProviderInstance ddmDataProviderInstance = fetchByGroupId_Last(groupId,
 				orderByComparator);
 
@@ -1776,7 +1775,7 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchDataProviderInstanceException(msg.toString());
+		throw new com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException(msg.toString());
 	}
 
 	/**
@@ -1812,13 +1811,13 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next d d m data provider instance
-	 * @throws NoSuchDataProviderInstanceException if a d d m data provider instance with the primary key could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException if a d d m data provider instance with the primary key could not be found
 	 */
 	@Override
 	public DDMDataProviderInstance[] findByGroupId_PrevAndNext(
 		long dataProviderInstanceId, long groupId,
 		OrderByComparator<DDMDataProviderInstance> orderByComparator)
-		throws NoSuchDataProviderInstanceException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException {
 		DDMDataProviderInstance ddmDataProviderInstance = findByPrimaryKey(dataProviderInstanceId);
 
 		Session session = null;
@@ -2089,13 +2088,13 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next d d m data provider instance
-	 * @throws NoSuchDataProviderInstanceException if a d d m data provider instance with the primary key could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException if a d d m data provider instance with the primary key could not be found
 	 */
 	@Override
 	public DDMDataProviderInstance[] filterFindByGroupId_PrevAndNext(
 		long dataProviderInstanceId, long groupId,
 		OrderByComparator<DDMDataProviderInstance> orderByComparator)
-		throws NoSuchDataProviderInstanceException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByGroupId_PrevAndNext(dataProviderInstanceId, groupId,
 				orderByComparator);
@@ -3046,12 +3045,12 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching d d m data provider instance
-	 * @throws NoSuchDataProviderInstanceException if a matching d d m data provider instance could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException if a matching d d m data provider instance could not be found
 	 */
 	@Override
 	public DDMDataProviderInstance findByCompanyId_First(long companyId,
 		OrderByComparator<DDMDataProviderInstance> orderByComparator)
-		throws NoSuchDataProviderInstanceException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException {
 		DDMDataProviderInstance ddmDataProviderInstance = fetchByCompanyId_First(companyId,
 				orderByComparator);
 
@@ -3068,7 +3067,7 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchDataProviderInstanceException(msg.toString());
+		throw new com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException(msg.toString());
 	}
 
 	/**
@@ -3097,12 +3096,12 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching d d m data provider instance
-	 * @throws NoSuchDataProviderInstanceException if a matching d d m data provider instance could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException if a matching d d m data provider instance could not be found
 	 */
 	@Override
 	public DDMDataProviderInstance findByCompanyId_Last(long companyId,
 		OrderByComparator<DDMDataProviderInstance> orderByComparator)
-		throws NoSuchDataProviderInstanceException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException {
 		DDMDataProviderInstance ddmDataProviderInstance = fetchByCompanyId_Last(companyId,
 				orderByComparator);
 
@@ -3119,7 +3118,7 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchDataProviderInstanceException(msg.toString());
+		throw new com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException(msg.toString());
 	}
 
 	/**
@@ -3155,13 +3154,13 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next d d m data provider instance
-	 * @throws NoSuchDataProviderInstanceException if a d d m data provider instance with the primary key could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException if a d d m data provider instance with the primary key could not be found
 	 */
 	@Override
 	public DDMDataProviderInstance[] findByCompanyId_PrevAndNext(
 		long dataProviderInstanceId, long companyId,
 		OrderByComparator<DDMDataProviderInstance> orderByComparator)
-		throws NoSuchDataProviderInstanceException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException {
 		DDMDataProviderInstance ddmDataProviderInstance = findByPrimaryKey(dataProviderInstanceId);
 
 		Session session = null;
@@ -3537,11 +3536,11 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 	 *
 	 * @param dataProviderInstanceId the primary key of the d d m data provider instance
 	 * @return the d d m data provider instance that was removed
-	 * @throws NoSuchDataProviderInstanceException if a d d m data provider instance with the primary key could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException if a d d m data provider instance with the primary key could not be found
 	 */
 	@Override
 	public DDMDataProviderInstance remove(long dataProviderInstanceId)
-		throws NoSuchDataProviderInstanceException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException {
 		return remove((Serializable)dataProviderInstanceId);
 	}
 
@@ -3550,11 +3549,11 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 	 *
 	 * @param primaryKey the primary key of the d d m data provider instance
 	 * @return the d d m data provider instance that was removed
-	 * @throws NoSuchDataProviderInstanceException if a d d m data provider instance with the primary key could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException if a d d m data provider instance with the primary key could not be found
 	 */
 	@Override
 	public DDMDataProviderInstance remove(Serializable primaryKey)
-		throws NoSuchDataProviderInstanceException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException {
 		Session session = null;
 
 		try {
@@ -3568,13 +3567,13 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchDataProviderInstanceException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(ddmDataProviderInstance);
 		}
-		catch (NoSuchDataProviderInstanceException nsee) {
+		catch (com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -3807,11 +3806,11 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 	 *
 	 * @param primaryKey the primary key of the d d m data provider instance
 	 * @return the d d m data provider instance
-	 * @throws NoSuchDataProviderInstanceException if a d d m data provider instance with the primary key could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException if a d d m data provider instance with the primary key could not be found
 	 */
 	@Override
 	public DDMDataProviderInstance findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchDataProviderInstanceException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException {
 		DDMDataProviderInstance ddmDataProviderInstance = fetchByPrimaryKey(primaryKey);
 
 		if (ddmDataProviderInstance == null) {
@@ -3819,7 +3818,7 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchDataProviderInstanceException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -3827,15 +3826,15 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 	}
 
 	/**
-	 * Returns the d d m data provider instance with the primary key or throws a {@link NoSuchDataProviderInstanceException} if it could not be found.
+	 * Returns the d d m data provider instance with the primary key or throws a {@link com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException} if it could not be found.
 	 *
 	 * @param dataProviderInstanceId the primary key of the d d m data provider instance
 	 * @return the d d m data provider instance
-	 * @throws NoSuchDataProviderInstanceException if a d d m data provider instance with the primary key could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException if a d d m data provider instance with the primary key could not be found
 	 */
 	@Override
 	public DDMDataProviderInstance findByPrimaryKey(long dataProviderInstanceId)
-		throws NoSuchDataProviderInstanceException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchDataProviderInstanceException {
 		return findByPrimaryKey((Serializable)dataProviderInstanceId);
 	}
 

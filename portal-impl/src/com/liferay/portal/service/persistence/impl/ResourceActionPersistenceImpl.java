@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchResourceActionException;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
@@ -291,12 +290,12 @@ public class ResourceActionPersistenceImpl extends BasePersistenceImpl<ResourceA
 	 * @param name the name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching resource action
-	 * @throws NoSuchResourceActionException if a matching resource action could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceActionException if a matching resource action could not be found
 	 */
 	@Override
 	public ResourceAction findByName_First(String name,
 		OrderByComparator<ResourceAction> orderByComparator)
-		throws NoSuchResourceActionException {
+		throws com.liferay.portal.exception.NoSuchResourceActionException {
 		ResourceAction resourceAction = fetchByName_First(name,
 				orderByComparator);
 
@@ -313,7 +312,7 @@ public class ResourceActionPersistenceImpl extends BasePersistenceImpl<ResourceA
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchResourceActionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchResourceActionException(msg.toString());
 	}
 
 	/**
@@ -341,12 +340,12 @@ public class ResourceActionPersistenceImpl extends BasePersistenceImpl<ResourceA
 	 * @param name the name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching resource action
-	 * @throws NoSuchResourceActionException if a matching resource action could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceActionException if a matching resource action could not be found
 	 */
 	@Override
 	public ResourceAction findByName_Last(String name,
 		OrderByComparator<ResourceAction> orderByComparator)
-		throws NoSuchResourceActionException {
+		throws com.liferay.portal.exception.NoSuchResourceActionException {
 		ResourceAction resourceAction = fetchByName_Last(name, orderByComparator);
 
 		if (resourceAction != null) {
@@ -362,7 +361,7 @@ public class ResourceActionPersistenceImpl extends BasePersistenceImpl<ResourceA
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchResourceActionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchResourceActionException(msg.toString());
 	}
 
 	/**
@@ -398,12 +397,12 @@ public class ResourceActionPersistenceImpl extends BasePersistenceImpl<ResourceA
 	 * @param name the name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next resource action
-	 * @throws NoSuchResourceActionException if a resource action with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceActionException if a resource action with the primary key could not be found
 	 */
 	@Override
 	public ResourceAction[] findByName_PrevAndNext(long resourceActionId,
 		String name, OrderByComparator<ResourceAction> orderByComparator)
-		throws NoSuchResourceActionException {
+		throws com.liferay.portal.exception.NoSuchResourceActionException {
 		ResourceAction resourceAction = findByPrimaryKey(resourceActionId);
 
 		Session session = null;
@@ -644,16 +643,16 @@ public class ResourceActionPersistenceImpl extends BasePersistenceImpl<ResourceA
 			new String[] { String.class.getName(), String.class.getName() });
 
 	/**
-	 * Returns the resource action where name = &#63; and actionId = &#63; or throws a {@link NoSuchResourceActionException} if it could not be found.
+	 * Returns the resource action where name = &#63; and actionId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchResourceActionException} if it could not be found.
 	 *
 	 * @param name the name
 	 * @param actionId the action ID
 	 * @return the matching resource action
-	 * @throws NoSuchResourceActionException if a matching resource action could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceActionException if a matching resource action could not be found
 	 */
 	@Override
 	public ResourceAction findByN_A(String name, String actionId)
-		throws NoSuchResourceActionException {
+		throws com.liferay.portal.exception.NoSuchResourceActionException {
 		ResourceAction resourceAction = fetchByN_A(name, actionId);
 
 		if (resourceAction == null) {
@@ -673,7 +672,7 @@ public class ResourceActionPersistenceImpl extends BasePersistenceImpl<ResourceA
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchResourceActionException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchResourceActionException(msg.toString());
 		}
 
 		return resourceAction;
@@ -821,7 +820,7 @@ public class ResourceActionPersistenceImpl extends BasePersistenceImpl<ResourceA
 	 */
 	@Override
 	public ResourceAction removeByN_A(String name, String actionId)
-		throws NoSuchResourceActionException {
+		throws com.liferay.portal.exception.NoSuchResourceActionException {
 		ResourceAction resourceAction = findByN_A(name, actionId);
 
 		return remove(resourceAction);
@@ -1078,11 +1077,11 @@ public class ResourceActionPersistenceImpl extends BasePersistenceImpl<ResourceA
 	 *
 	 * @param resourceActionId the primary key of the resource action
 	 * @return the resource action that was removed
-	 * @throws NoSuchResourceActionException if a resource action with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceActionException if a resource action with the primary key could not be found
 	 */
 	@Override
 	public ResourceAction remove(long resourceActionId)
-		throws NoSuchResourceActionException {
+		throws com.liferay.portal.exception.NoSuchResourceActionException {
 		return remove((Serializable)resourceActionId);
 	}
 
@@ -1091,11 +1090,11 @@ public class ResourceActionPersistenceImpl extends BasePersistenceImpl<ResourceA
 	 *
 	 * @param primaryKey the primary key of the resource action
 	 * @return the resource action that was removed
-	 * @throws NoSuchResourceActionException if a resource action with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceActionException if a resource action with the primary key could not be found
 	 */
 	@Override
 	public ResourceAction remove(Serializable primaryKey)
-		throws NoSuchResourceActionException {
+		throws com.liferay.portal.exception.NoSuchResourceActionException {
 		Session session = null;
 
 		try {
@@ -1109,13 +1108,13 @@ public class ResourceActionPersistenceImpl extends BasePersistenceImpl<ResourceA
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchResourceActionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchResourceActionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(resourceAction);
 		}
-		catch (NoSuchResourceActionException nsee) {
+		catch (com.liferay.portal.exception.NoSuchResourceActionException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -1248,11 +1247,11 @@ public class ResourceActionPersistenceImpl extends BasePersistenceImpl<ResourceA
 	 *
 	 * @param primaryKey the primary key of the resource action
 	 * @return the resource action
-	 * @throws NoSuchResourceActionException if a resource action with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceActionException if a resource action with the primary key could not be found
 	 */
 	@Override
 	public ResourceAction findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchResourceActionException {
+		throws com.liferay.portal.exception.NoSuchResourceActionException {
 		ResourceAction resourceAction = fetchByPrimaryKey(primaryKey);
 
 		if (resourceAction == null) {
@@ -1260,7 +1259,7 @@ public class ResourceActionPersistenceImpl extends BasePersistenceImpl<ResourceA
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchResourceActionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchResourceActionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -1268,15 +1267,15 @@ public class ResourceActionPersistenceImpl extends BasePersistenceImpl<ResourceA
 	}
 
 	/**
-	 * Returns the resource action with the primary key or throws a {@link NoSuchResourceActionException} if it could not be found.
+	 * Returns the resource action with the primary key or throws a {@link com.liferay.portal.exception.NoSuchResourceActionException} if it could not be found.
 	 *
 	 * @param resourceActionId the primary key of the resource action
 	 * @return the resource action
-	 * @throws NoSuchResourceActionException if a resource action with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceActionException if a resource action with the primary key could not be found
 	 */
 	@Override
 	public ResourceAction findByPrimaryKey(long resourceActionId)
-		throws NoSuchResourceActionException {
+		throws com.liferay.portal.exception.NoSuchResourceActionException {
 		return findByPrimaryKey((Serializable)resourceActionId);
 	}
 

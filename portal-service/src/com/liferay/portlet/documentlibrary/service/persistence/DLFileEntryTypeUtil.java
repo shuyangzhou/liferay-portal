@@ -183,7 +183,7 @@ public class DLFileEntryTypeUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library file entry type
-	* @throws NoSuchFileEntryTypeException if a matching document library file entry type could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException if a matching document library file entry type could not be found
 	*/
 	public static DLFileEntryType findByUuid_First(java.lang.String uuid,
 		OrderByComparator<DLFileEntryType> orderByComparator)
@@ -209,7 +209,7 @@ public class DLFileEntryTypeUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library file entry type
-	* @throws NoSuchFileEntryTypeException if a matching document library file entry type could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException if a matching document library file entry type could not be found
 	*/
 	public static DLFileEntryType findByUuid_Last(java.lang.String uuid,
 		OrderByComparator<DLFileEntryType> orderByComparator)
@@ -236,7 +236,7 @@ public class DLFileEntryTypeUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library file entry type
-	* @throws NoSuchFileEntryTypeException if a document library file entry type with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException if a document library file entry type with the primary key could not be found
 	*/
 	public static DLFileEntryType[] findByUuid_PrevAndNext(
 		long fileEntryTypeId, java.lang.String uuid,
@@ -267,12 +267,12 @@ public class DLFileEntryTypeUtil {
 	}
 
 	/**
-	* Returns the document library file entry type where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchFileEntryTypeException} if it could not be found.
+	* Returns the document library file entry type where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException} if it could not be found.
 	*
 	* @param uuid the uuid
 	* @param groupId the group ID
 	* @return the matching document library file entry type
-	* @throws NoSuchFileEntryTypeException if a matching document library file entry type could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException if a matching document library file entry type could not be found
 	*/
 	public static DLFileEntryType findByUUID_G(java.lang.String uuid,
 		long groupId)
@@ -411,7 +411,7 @@ public class DLFileEntryTypeUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library file entry type
-	* @throws NoSuchFileEntryTypeException if a matching document library file entry type could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException if a matching document library file entry type could not be found
 	*/
 	public static DLFileEntryType findByUuid_C_First(java.lang.String uuid,
 		long companyId, OrderByComparator<DLFileEntryType> orderByComparator)
@@ -441,7 +441,7 @@ public class DLFileEntryTypeUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library file entry type
-	* @throws NoSuchFileEntryTypeException if a matching document library file entry type could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException if a matching document library file entry type could not be found
 	*/
 	public static DLFileEntryType findByUuid_C_Last(java.lang.String uuid,
 		long companyId, OrderByComparator<DLFileEntryType> orderByComparator)
@@ -472,7 +472,7 @@ public class DLFileEntryTypeUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library file entry type
-	* @throws NoSuchFileEntryTypeException if a document library file entry type with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException if a document library file entry type with the primary key could not be found
 	*/
 	public static DLFileEntryType[] findByUuid_C_PrevAndNext(
 		long fileEntryTypeId, java.lang.String uuid, long companyId,
@@ -578,7 +578,7 @@ public class DLFileEntryTypeUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library file entry type
-	* @throws NoSuchFileEntryTypeException if a matching document library file entry type could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException if a matching document library file entry type could not be found
 	*/
 	public static DLFileEntryType findByGroupId_First(long groupId,
 		OrderByComparator<DLFileEntryType> orderByComparator)
@@ -604,7 +604,7 @@ public class DLFileEntryTypeUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library file entry type
-	* @throws NoSuchFileEntryTypeException if a matching document library file entry type could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException if a matching document library file entry type could not be found
 	*/
 	public static DLFileEntryType findByGroupId_Last(long groupId,
 		OrderByComparator<DLFileEntryType> orderByComparator)
@@ -631,7 +631,7 @@ public class DLFileEntryTypeUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library file entry type
-	* @throws NoSuchFileEntryTypeException if a document library file entry type with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException if a document library file entry type with the primary key could not be found
 	*/
 	public static DLFileEntryType[] findByGroupId_PrevAndNext(
 		long fileEntryTypeId, long groupId,
@@ -695,7 +695,7 @@ public class DLFileEntryTypeUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library file entry type
-	* @throws NoSuchFileEntryTypeException if a document library file entry type with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException if a document library file entry type with the primary key could not be found
 	*/
 	public static DLFileEntryType[] filterFindByGroupId_PrevAndNext(
 		long fileEntryTypeId, long groupId,
@@ -875,12 +875,12 @@ public class DLFileEntryTypeUtil {
 	}
 
 	/**
-	* Returns the document library file entry type where groupId = &#63; and fileEntryTypeKey = &#63; or throws a {@link NoSuchFileEntryTypeException} if it could not be found.
+	* Returns the document library file entry type where groupId = &#63; and fileEntryTypeKey = &#63; or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException} if it could not be found.
 	*
 	* @param groupId the group ID
 	* @param fileEntryTypeKey the file entry type key
 	* @return the matching document library file entry type
-	* @throws NoSuchFileEntryTypeException if a matching document library file entry type could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException if a matching document library file entry type could not be found
 	*/
 	public static DLFileEntryType findByG_F(long groupId,
 		java.lang.String fileEntryTypeKey)
@@ -971,7 +971,7 @@ public class DLFileEntryTypeUtil {
 	*
 	* @param fileEntryTypeId the primary key of the document library file entry type
 	* @return the document library file entry type that was removed
-	* @throws NoSuchFileEntryTypeException if a document library file entry type with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException if a document library file entry type with the primary key could not be found
 	*/
 	public static DLFileEntryType remove(long fileEntryTypeId)
 		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException {
@@ -983,11 +983,11 @@ public class DLFileEntryTypeUtil {
 	}
 
 	/**
-	* Returns the document library file entry type with the primary key or throws a {@link NoSuchFileEntryTypeException} if it could not be found.
+	* Returns the document library file entry type with the primary key or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException} if it could not be found.
 	*
 	* @param fileEntryTypeId the primary key of the document library file entry type
 	* @return the document library file entry type
-	* @throws NoSuchFileEntryTypeException if a document library file entry type with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException if a document library file entry type with the primary key could not be found
 	*/
 	public static DLFileEntryType findByPrimaryKey(long fileEntryTypeId)
 		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException {

@@ -35,7 +35,6 @@ import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.spring.extender.service.ServiceReference;
-import com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException;
 import com.liferay.portal.workflow.kaleo.model.KaleoNotificationRecipient;
 import com.liferay.portal.workflow.kaleo.model.impl.KaleoNotificationRecipientImpl;
 import com.liferay.portal.workflow.kaleo.model.impl.KaleoNotificationRecipientModelImpl;
@@ -287,12 +286,12 @@ public class KaleoNotificationRecipientPersistenceImpl
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching kaleo notification recipient
-	 * @throws NoSuchNotificationRecipientException if a matching kaleo notification recipient could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException if a matching kaleo notification recipient could not be found
 	 */
 	@Override
 	public KaleoNotificationRecipient findByCompanyId_First(long companyId,
 		OrderByComparator<KaleoNotificationRecipient> orderByComparator)
-		throws NoSuchNotificationRecipientException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException {
 		KaleoNotificationRecipient kaleoNotificationRecipient = fetchByCompanyId_First(companyId,
 				orderByComparator);
 
@@ -309,7 +308,7 @@ public class KaleoNotificationRecipientPersistenceImpl
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchNotificationRecipientException(msg.toString());
+		throw new com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException(msg.toString());
 	}
 
 	/**
@@ -338,12 +337,12 @@ public class KaleoNotificationRecipientPersistenceImpl
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching kaleo notification recipient
-	 * @throws NoSuchNotificationRecipientException if a matching kaleo notification recipient could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException if a matching kaleo notification recipient could not be found
 	 */
 	@Override
 	public KaleoNotificationRecipient findByCompanyId_Last(long companyId,
 		OrderByComparator<KaleoNotificationRecipient> orderByComparator)
-		throws NoSuchNotificationRecipientException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException {
 		KaleoNotificationRecipient kaleoNotificationRecipient = fetchByCompanyId_Last(companyId,
 				orderByComparator);
 
@@ -360,7 +359,7 @@ public class KaleoNotificationRecipientPersistenceImpl
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchNotificationRecipientException(msg.toString());
+		throw new com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException(msg.toString());
 	}
 
 	/**
@@ -396,13 +395,13 @@ public class KaleoNotificationRecipientPersistenceImpl
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next kaleo notification recipient
-	 * @throws NoSuchNotificationRecipientException if a kaleo notification recipient with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException if a kaleo notification recipient with the primary key could not be found
 	 */
 	@Override
 	public KaleoNotificationRecipient[] findByCompanyId_PrevAndNext(
 		long kaleoNotificationRecipientId, long companyId,
 		OrderByComparator<KaleoNotificationRecipient> orderByComparator)
-		throws NoSuchNotificationRecipientException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException {
 		KaleoNotificationRecipient kaleoNotificationRecipient = findByPrimaryKey(kaleoNotificationRecipientId);
 
 		Session session = null;
@@ -808,13 +807,13 @@ public class KaleoNotificationRecipientPersistenceImpl
 	 * @param kaleoDefinitionId the kaleo definition ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching kaleo notification recipient
-	 * @throws NoSuchNotificationRecipientException if a matching kaleo notification recipient could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException if a matching kaleo notification recipient could not be found
 	 */
 	@Override
 	public KaleoNotificationRecipient findByKaleoDefinitionId_First(
 		long kaleoDefinitionId,
 		OrderByComparator<KaleoNotificationRecipient> orderByComparator)
-		throws NoSuchNotificationRecipientException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException {
 		KaleoNotificationRecipient kaleoNotificationRecipient = fetchByKaleoDefinitionId_First(kaleoDefinitionId,
 				orderByComparator);
 
@@ -831,7 +830,7 @@ public class KaleoNotificationRecipientPersistenceImpl
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchNotificationRecipientException(msg.toString());
+		throw new com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException(msg.toString());
 	}
 
 	/**
@@ -861,13 +860,13 @@ public class KaleoNotificationRecipientPersistenceImpl
 	 * @param kaleoDefinitionId the kaleo definition ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching kaleo notification recipient
-	 * @throws NoSuchNotificationRecipientException if a matching kaleo notification recipient could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException if a matching kaleo notification recipient could not be found
 	 */
 	@Override
 	public KaleoNotificationRecipient findByKaleoDefinitionId_Last(
 		long kaleoDefinitionId,
 		OrderByComparator<KaleoNotificationRecipient> orderByComparator)
-		throws NoSuchNotificationRecipientException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException {
 		KaleoNotificationRecipient kaleoNotificationRecipient = fetchByKaleoDefinitionId_Last(kaleoDefinitionId,
 				orderByComparator);
 
@@ -884,7 +883,7 @@ public class KaleoNotificationRecipientPersistenceImpl
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchNotificationRecipientException(msg.toString());
+		throw new com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException(msg.toString());
 	}
 
 	/**
@@ -921,13 +920,13 @@ public class KaleoNotificationRecipientPersistenceImpl
 	 * @param kaleoDefinitionId the kaleo definition ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next kaleo notification recipient
-	 * @throws NoSuchNotificationRecipientException if a kaleo notification recipient with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException if a kaleo notification recipient with the primary key could not be found
 	 */
 	@Override
 	public KaleoNotificationRecipient[] findByKaleoDefinitionId_PrevAndNext(
 		long kaleoNotificationRecipientId, long kaleoDefinitionId,
 		OrderByComparator<KaleoNotificationRecipient> orderByComparator)
-		throws NoSuchNotificationRecipientException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException {
 		KaleoNotificationRecipient kaleoNotificationRecipient = findByPrimaryKey(kaleoNotificationRecipientId);
 
 		Session session = null;
@@ -1335,13 +1334,13 @@ public class KaleoNotificationRecipientPersistenceImpl
 	 * @param kaleoNotificationId the kaleo notification ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching kaleo notification recipient
-	 * @throws NoSuchNotificationRecipientException if a matching kaleo notification recipient could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException if a matching kaleo notification recipient could not be found
 	 */
 	@Override
 	public KaleoNotificationRecipient findByKaleoNotificationId_First(
 		long kaleoNotificationId,
 		OrderByComparator<KaleoNotificationRecipient> orderByComparator)
-		throws NoSuchNotificationRecipientException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException {
 		KaleoNotificationRecipient kaleoNotificationRecipient = fetchByKaleoNotificationId_First(kaleoNotificationId,
 				orderByComparator);
 
@@ -1358,7 +1357,7 @@ public class KaleoNotificationRecipientPersistenceImpl
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchNotificationRecipientException(msg.toString());
+		throw new com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException(msg.toString());
 	}
 
 	/**
@@ -1388,13 +1387,13 @@ public class KaleoNotificationRecipientPersistenceImpl
 	 * @param kaleoNotificationId the kaleo notification ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching kaleo notification recipient
-	 * @throws NoSuchNotificationRecipientException if a matching kaleo notification recipient could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException if a matching kaleo notification recipient could not be found
 	 */
 	@Override
 	public KaleoNotificationRecipient findByKaleoNotificationId_Last(
 		long kaleoNotificationId,
 		OrderByComparator<KaleoNotificationRecipient> orderByComparator)
-		throws NoSuchNotificationRecipientException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException {
 		KaleoNotificationRecipient kaleoNotificationRecipient = fetchByKaleoNotificationId_Last(kaleoNotificationId,
 				orderByComparator);
 
@@ -1411,7 +1410,7 @@ public class KaleoNotificationRecipientPersistenceImpl
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchNotificationRecipientException(msg.toString());
+		throw new com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException(msg.toString());
 	}
 
 	/**
@@ -1448,13 +1447,13 @@ public class KaleoNotificationRecipientPersistenceImpl
 	 * @param kaleoNotificationId the kaleo notification ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next kaleo notification recipient
-	 * @throws NoSuchNotificationRecipientException if a kaleo notification recipient with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException if a kaleo notification recipient with the primary key could not be found
 	 */
 	@Override
 	public KaleoNotificationRecipient[] findByKaleoNotificationId_PrevAndNext(
 		long kaleoNotificationRecipientId, long kaleoNotificationId,
 		OrderByComparator<KaleoNotificationRecipient> orderByComparator)
-		throws NoSuchNotificationRecipientException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException {
 		KaleoNotificationRecipient kaleoNotificationRecipient = findByPrimaryKey(kaleoNotificationRecipientId);
 
 		Session session = null;
@@ -1770,11 +1769,11 @@ public class KaleoNotificationRecipientPersistenceImpl
 	 *
 	 * @param kaleoNotificationRecipientId the primary key of the kaleo notification recipient
 	 * @return the kaleo notification recipient that was removed
-	 * @throws NoSuchNotificationRecipientException if a kaleo notification recipient with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException if a kaleo notification recipient with the primary key could not be found
 	 */
 	@Override
 	public KaleoNotificationRecipient remove(long kaleoNotificationRecipientId)
-		throws NoSuchNotificationRecipientException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException {
 		return remove((Serializable)kaleoNotificationRecipientId);
 	}
 
@@ -1783,11 +1782,11 @@ public class KaleoNotificationRecipientPersistenceImpl
 	 *
 	 * @param primaryKey the primary key of the kaleo notification recipient
 	 * @return the kaleo notification recipient that was removed
-	 * @throws NoSuchNotificationRecipientException if a kaleo notification recipient with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException if a kaleo notification recipient with the primary key could not be found
 	 */
 	@Override
 	public KaleoNotificationRecipient remove(Serializable primaryKey)
-		throws NoSuchNotificationRecipientException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException {
 		Session session = null;
 
 		try {
@@ -1801,13 +1800,13 @@ public class KaleoNotificationRecipientPersistenceImpl
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchNotificationRecipientException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(kaleoNotificationRecipient);
 		}
-		catch (NoSuchNotificationRecipientException nsee) {
+		catch (com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -2022,11 +2021,11 @@ public class KaleoNotificationRecipientPersistenceImpl
 	 *
 	 * @param primaryKey the primary key of the kaleo notification recipient
 	 * @return the kaleo notification recipient
-	 * @throws NoSuchNotificationRecipientException if a kaleo notification recipient with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException if a kaleo notification recipient with the primary key could not be found
 	 */
 	@Override
 	public KaleoNotificationRecipient findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchNotificationRecipientException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException {
 		KaleoNotificationRecipient kaleoNotificationRecipient = fetchByPrimaryKey(primaryKey);
 
 		if (kaleoNotificationRecipient == null) {
@@ -2034,7 +2033,7 @@ public class KaleoNotificationRecipientPersistenceImpl
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchNotificationRecipientException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -2042,16 +2041,16 @@ public class KaleoNotificationRecipientPersistenceImpl
 	}
 
 	/**
-	 * Returns the kaleo notification recipient with the primary key or throws a {@link NoSuchNotificationRecipientException} if it could not be found.
+	 * Returns the kaleo notification recipient with the primary key or throws a {@link com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException} if it could not be found.
 	 *
 	 * @param kaleoNotificationRecipientId the primary key of the kaleo notification recipient
 	 * @return the kaleo notification recipient
-	 * @throws NoSuchNotificationRecipientException if a kaleo notification recipient with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException if a kaleo notification recipient with the primary key could not be found
 	 */
 	@Override
 	public KaleoNotificationRecipient findByPrimaryKey(
 		long kaleoNotificationRecipientId)
-		throws NoSuchNotificationRecipientException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchNotificationRecipientException {
 		return findByPrimaryKey((Serializable)kaleoNotificationRecipientId);
 	}
 

@@ -36,7 +36,6 @@ import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.spring.extender.service.ServiceReference;
-import com.liferay.portal.workflow.kaleo.exception.NoSuchTimerException;
 import com.liferay.portal.workflow.kaleo.model.KaleoTimer;
 import com.liferay.portal.workflow.kaleo.model.impl.KaleoTimerImpl;
 import com.liferay.portal.workflow.kaleo.model.impl.KaleoTimerModelImpl;
@@ -313,12 +312,12 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 	 * @param kaleoClassPK the kaleo class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching kaleo timer
-	 * @throws NoSuchTimerException if a matching kaleo timer could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchTimerException if a matching kaleo timer could not be found
 	 */
 	@Override
 	public KaleoTimer findByKCN_KCPK_First(String kaleoClassName,
 		long kaleoClassPK, OrderByComparator<KaleoTimer> orderByComparator)
-		throws NoSuchTimerException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchTimerException {
 		KaleoTimer kaleoTimer = fetchByKCN_KCPK_First(kaleoClassName,
 				kaleoClassPK, orderByComparator);
 
@@ -338,7 +337,7 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchTimerException(msg.toString());
+		throw new com.liferay.portal.workflow.kaleo.exception.NoSuchTimerException(msg.toString());
 	}
 
 	/**
@@ -369,12 +368,12 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 	 * @param kaleoClassPK the kaleo class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching kaleo timer
-	 * @throws NoSuchTimerException if a matching kaleo timer could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchTimerException if a matching kaleo timer could not be found
 	 */
 	@Override
 	public KaleoTimer findByKCN_KCPK_Last(String kaleoClassName,
 		long kaleoClassPK, OrderByComparator<KaleoTimer> orderByComparator)
-		throws NoSuchTimerException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchTimerException {
 		KaleoTimer kaleoTimer = fetchByKCN_KCPK_Last(kaleoClassName,
 				kaleoClassPK, orderByComparator);
 
@@ -394,7 +393,7 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchTimerException(msg.toString());
+		throw new com.liferay.portal.workflow.kaleo.exception.NoSuchTimerException(msg.toString());
 	}
 
 	/**
@@ -432,13 +431,13 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 	 * @param kaleoClassPK the kaleo class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next kaleo timer
-	 * @throws NoSuchTimerException if a kaleo timer with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchTimerException if a kaleo timer with the primary key could not be found
 	 */
 	@Override
 	public KaleoTimer[] findByKCN_KCPK_PrevAndNext(long kaleoTimerId,
 		String kaleoClassName, long kaleoClassPK,
 		OrderByComparator<KaleoTimer> orderByComparator)
-		throws NoSuchTimerException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchTimerException {
 		KaleoTimer kaleoTimer = findByPrimaryKey(kaleoTimerId);
 
 		Session session = null;
@@ -926,13 +925,13 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 	 * @param blocking the blocking
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching kaleo timer
-	 * @throws NoSuchTimerException if a matching kaleo timer could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchTimerException if a matching kaleo timer could not be found
 	 */
 	@Override
 	public KaleoTimer findByKCN_KCPK_Blocking_First(String kaleoClassName,
 		long kaleoClassPK, boolean blocking,
 		OrderByComparator<KaleoTimer> orderByComparator)
-		throws NoSuchTimerException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchTimerException {
 		KaleoTimer kaleoTimer = fetchByKCN_KCPK_Blocking_First(kaleoClassName,
 				kaleoClassPK, blocking, orderByComparator);
 
@@ -955,7 +954,7 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchTimerException(msg.toString());
+		throw new com.liferay.portal.workflow.kaleo.exception.NoSuchTimerException(msg.toString());
 	}
 
 	/**
@@ -989,13 +988,13 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 	 * @param blocking the blocking
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching kaleo timer
-	 * @throws NoSuchTimerException if a matching kaleo timer could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchTimerException if a matching kaleo timer could not be found
 	 */
 	@Override
 	public KaleoTimer findByKCN_KCPK_Blocking_Last(String kaleoClassName,
 		long kaleoClassPK, boolean blocking,
 		OrderByComparator<KaleoTimer> orderByComparator)
-		throws NoSuchTimerException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchTimerException {
 		KaleoTimer kaleoTimer = fetchByKCN_KCPK_Blocking_Last(kaleoClassName,
 				kaleoClassPK, blocking, orderByComparator);
 
@@ -1018,7 +1017,7 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchTimerException(msg.toString());
+		throw new com.liferay.portal.workflow.kaleo.exception.NoSuchTimerException(msg.toString());
 	}
 
 	/**
@@ -1060,13 +1059,13 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 	 * @param blocking the blocking
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next kaleo timer
-	 * @throws NoSuchTimerException if a kaleo timer with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchTimerException if a kaleo timer with the primary key could not be found
 	 */
 	@Override
 	public KaleoTimer[] findByKCN_KCPK_Blocking_PrevAndNext(long kaleoTimerId,
 		String kaleoClassName, long kaleoClassPK, boolean blocking,
 		OrderByComparator<KaleoTimer> orderByComparator)
-		throws NoSuchTimerException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchTimerException {
 		KaleoTimer kaleoTimer = findByPrimaryKey(kaleoTimerId);
 
 		Session session = null;
@@ -1431,10 +1430,11 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 	 *
 	 * @param kaleoTimerId the primary key of the kaleo timer
 	 * @return the kaleo timer that was removed
-	 * @throws NoSuchTimerException if a kaleo timer with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchTimerException if a kaleo timer with the primary key could not be found
 	 */
 	@Override
-	public KaleoTimer remove(long kaleoTimerId) throws NoSuchTimerException {
+	public KaleoTimer remove(long kaleoTimerId)
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchTimerException {
 		return remove((Serializable)kaleoTimerId);
 	}
 
@@ -1443,11 +1443,11 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 	 *
 	 * @param primaryKey the primary key of the kaleo timer
 	 * @return the kaleo timer that was removed
-	 * @throws NoSuchTimerException if a kaleo timer with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchTimerException if a kaleo timer with the primary key could not be found
 	 */
 	@Override
 	public KaleoTimer remove(Serializable primaryKey)
-		throws NoSuchTimerException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchTimerException {
 		Session session = null;
 
 		try {
@@ -1461,13 +1461,13 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchTimerException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.workflow.kaleo.exception.NoSuchTimerException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(kaleoTimer);
 		}
-		catch (NoSuchTimerException nsee) {
+		catch (com.liferay.portal.workflow.kaleo.exception.NoSuchTimerException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -1659,11 +1659,11 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 	 *
 	 * @param primaryKey the primary key of the kaleo timer
 	 * @return the kaleo timer
-	 * @throws NoSuchTimerException if a kaleo timer with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchTimerException if a kaleo timer with the primary key could not be found
 	 */
 	@Override
 	public KaleoTimer findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchTimerException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchTimerException {
 		KaleoTimer kaleoTimer = fetchByPrimaryKey(primaryKey);
 
 		if (kaleoTimer == null) {
@@ -1671,7 +1671,7 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchTimerException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.workflow.kaleo.exception.NoSuchTimerException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -1679,15 +1679,15 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 	}
 
 	/**
-	 * Returns the kaleo timer with the primary key or throws a {@link NoSuchTimerException} if it could not be found.
+	 * Returns the kaleo timer with the primary key or throws a {@link com.liferay.portal.workflow.kaleo.exception.NoSuchTimerException} if it could not be found.
 	 *
 	 * @param kaleoTimerId the primary key of the kaleo timer
 	 * @return the kaleo timer
-	 * @throws NoSuchTimerException if a kaleo timer with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchTimerException if a kaleo timer with the primary key could not be found
 	 */
 	@Override
 	public KaleoTimer findByPrimaryKey(long kaleoTimerId)
-		throws NoSuchTimerException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchTimerException {
 		return findByPrimaryKey((Serializable)kaleoTimerId);
 	}
 

@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchLayoutSetBranchException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -287,12 +286,12 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching layout set branch
-	 * @throws NoSuchLayoutSetBranchException if a matching layout set branch could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetBranchException if a matching layout set branch could not be found
 	 */
 	@Override
 	public LayoutSetBranch findByGroupId_First(long groupId,
 		OrderByComparator<LayoutSetBranch> orderByComparator)
-		throws NoSuchLayoutSetBranchException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetBranchException {
 		LayoutSetBranch layoutSetBranch = fetchByGroupId_First(groupId,
 				orderByComparator);
 
@@ -309,7 +308,7 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutSetBranchException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutSetBranchException(msg.toString());
 	}
 
 	/**
@@ -338,12 +337,12 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching layout set branch
-	 * @throws NoSuchLayoutSetBranchException if a matching layout set branch could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetBranchException if a matching layout set branch could not be found
 	 */
 	@Override
 	public LayoutSetBranch findByGroupId_Last(long groupId,
 		OrderByComparator<LayoutSetBranch> orderByComparator)
-		throws NoSuchLayoutSetBranchException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetBranchException {
 		LayoutSetBranch layoutSetBranch = fetchByGroupId_Last(groupId,
 				orderByComparator);
 
@@ -360,7 +359,7 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutSetBranchException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutSetBranchException(msg.toString());
 	}
 
 	/**
@@ -396,12 +395,12 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next layout set branch
-	 * @throws NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
 	 */
 	@Override
 	public LayoutSetBranch[] findByGroupId_PrevAndNext(long layoutSetBranchId,
 		long groupId, OrderByComparator<LayoutSetBranch> orderByComparator)
-		throws NoSuchLayoutSetBranchException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetBranchException {
 		LayoutSetBranch layoutSetBranch = findByPrimaryKey(layoutSetBranchId);
 
 		Session session = null;
@@ -667,13 +666,13 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next layout set branch
-	 * @throws NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
 	 */
 	@Override
 	public LayoutSetBranch[] filterFindByGroupId_PrevAndNext(
 		long layoutSetBranchId, long groupId,
 		OrderByComparator<LayoutSetBranch> orderByComparator)
-		throws NoSuchLayoutSetBranchException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetBranchException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByGroupId_PrevAndNext(layoutSetBranchId, groupId,
 				orderByComparator);
@@ -1171,12 +1170,12 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 	 * @param privateLayout the private layout
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching layout set branch
-	 * @throws NoSuchLayoutSetBranchException if a matching layout set branch could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetBranchException if a matching layout set branch could not be found
 	 */
 	@Override
 	public LayoutSetBranch findByG_P_First(long groupId, boolean privateLayout,
 		OrderByComparator<LayoutSetBranch> orderByComparator)
-		throws NoSuchLayoutSetBranchException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetBranchException {
 		LayoutSetBranch layoutSetBranch = fetchByG_P_First(groupId,
 				privateLayout, orderByComparator);
 
@@ -1196,7 +1195,7 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutSetBranchException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutSetBranchException(msg.toString());
 	}
 
 	/**
@@ -1228,12 +1227,12 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 	 * @param privateLayout the private layout
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching layout set branch
-	 * @throws NoSuchLayoutSetBranchException if a matching layout set branch could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetBranchException if a matching layout set branch could not be found
 	 */
 	@Override
 	public LayoutSetBranch findByG_P_Last(long groupId, boolean privateLayout,
 		OrderByComparator<LayoutSetBranch> orderByComparator)
-		throws NoSuchLayoutSetBranchException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetBranchException {
 		LayoutSetBranch layoutSetBranch = fetchByG_P_Last(groupId,
 				privateLayout, orderByComparator);
 
@@ -1253,7 +1252,7 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutSetBranchException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutSetBranchException(msg.toString());
 	}
 
 	/**
@@ -1291,13 +1290,13 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 	 * @param privateLayout the private layout
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next layout set branch
-	 * @throws NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
 	 */
 	@Override
 	public LayoutSetBranch[] findByG_P_PrevAndNext(long layoutSetBranchId,
 		long groupId, boolean privateLayout,
 		OrderByComparator<LayoutSetBranch> orderByComparator)
-		throws NoSuchLayoutSetBranchException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetBranchException {
 		LayoutSetBranch layoutSetBranch = findByPrimaryKey(layoutSetBranchId);
 
 		Session session = null;
@@ -1578,13 +1577,13 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 	 * @param privateLayout the private layout
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next layout set branch
-	 * @throws NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
 	 */
 	@Override
 	public LayoutSetBranch[] filterFindByG_P_PrevAndNext(
 		long layoutSetBranchId, long groupId, boolean privateLayout,
 		OrderByComparator<LayoutSetBranch> orderByComparator)
-		throws NoSuchLayoutSetBranchException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetBranchException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_P_PrevAndNext(layoutSetBranchId, groupId,
 				privateLayout, orderByComparator);
@@ -1907,17 +1906,18 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 			});
 
 	/**
-	 * Returns the layout set branch where groupId = &#63; and privateLayout = &#63; and name = &#63; or throws a {@link NoSuchLayoutSetBranchException} if it could not be found.
+	 * Returns the layout set branch where groupId = &#63; and privateLayout = &#63; and name = &#63; or throws a {@link com.liferay.portal.exception.NoSuchLayoutSetBranchException} if it could not be found.
 	 *
 	 * @param groupId the group ID
 	 * @param privateLayout the private layout
 	 * @param name the name
 	 * @return the matching layout set branch
-	 * @throws NoSuchLayoutSetBranchException if a matching layout set branch could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetBranchException if a matching layout set branch could not be found
 	 */
 	@Override
 	public LayoutSetBranch findByG_P_N(long groupId, boolean privateLayout,
-		String name) throws NoSuchLayoutSetBranchException {
+		String name)
+		throws com.liferay.portal.exception.NoSuchLayoutSetBranchException {
 		LayoutSetBranch layoutSetBranch = fetchByG_P_N(groupId, privateLayout,
 				name);
 
@@ -1941,7 +1941,7 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchLayoutSetBranchException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchLayoutSetBranchException(msg.toString());
 		}
 
 		return layoutSetBranch;
@@ -2084,7 +2084,8 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 	 */
 	@Override
 	public LayoutSetBranch removeByG_P_N(long groupId, boolean privateLayout,
-		String name) throws NoSuchLayoutSetBranchException {
+		String name)
+		throws com.liferay.portal.exception.NoSuchLayoutSetBranchException {
 		LayoutSetBranch layoutSetBranch = findByG_P_N(groupId, privateLayout,
 				name);
 
@@ -2402,13 +2403,13 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 	 * @param master the master
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching layout set branch
-	 * @throws NoSuchLayoutSetBranchException if a matching layout set branch could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetBranchException if a matching layout set branch could not be found
 	 */
 	@Override
 	public LayoutSetBranch findByG_P_M_First(long groupId,
 		boolean privateLayout, boolean master,
 		OrderByComparator<LayoutSetBranch> orderByComparator)
-		throws NoSuchLayoutSetBranchException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetBranchException {
 		LayoutSetBranch layoutSetBranch = fetchByG_P_M_First(groupId,
 				privateLayout, master, orderByComparator);
 
@@ -2431,7 +2432,7 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutSetBranchException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutSetBranchException(msg.toString());
 	}
 
 	/**
@@ -2465,13 +2466,13 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 	 * @param master the master
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching layout set branch
-	 * @throws NoSuchLayoutSetBranchException if a matching layout set branch could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetBranchException if a matching layout set branch could not be found
 	 */
 	@Override
 	public LayoutSetBranch findByG_P_M_Last(long groupId,
 		boolean privateLayout, boolean master,
 		OrderByComparator<LayoutSetBranch> orderByComparator)
-		throws NoSuchLayoutSetBranchException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetBranchException {
 		LayoutSetBranch layoutSetBranch = fetchByG_P_M_Last(groupId,
 				privateLayout, master, orderByComparator);
 
@@ -2494,7 +2495,7 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutSetBranchException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutSetBranchException(msg.toString());
 	}
 
 	/**
@@ -2535,13 +2536,13 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 	 * @param master the master
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next layout set branch
-	 * @throws NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
 	 */
 	@Override
 	public LayoutSetBranch[] findByG_P_M_PrevAndNext(long layoutSetBranchId,
 		long groupId, boolean privateLayout, boolean master,
 		OrderByComparator<LayoutSetBranch> orderByComparator)
-		throws NoSuchLayoutSetBranchException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetBranchException {
 		LayoutSetBranch layoutSetBranch = findByPrimaryKey(layoutSetBranchId);
 
 		Session session = null;
@@ -2836,13 +2837,13 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 	 * @param master the master
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next layout set branch
-	 * @throws NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
 	 */
 	@Override
 	public LayoutSetBranch[] filterFindByG_P_M_PrevAndNext(
 		long layoutSetBranchId, long groupId, boolean privateLayout,
 		boolean master, OrderByComparator<LayoutSetBranch> orderByComparator)
-		throws NoSuchLayoutSetBranchException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetBranchException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_P_M_PrevAndNext(layoutSetBranchId, groupId,
 				privateLayout, master, orderByComparator);
@@ -3335,11 +3336,11 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 	 *
 	 * @param layoutSetBranchId the primary key of the layout set branch
 	 * @return the layout set branch that was removed
-	 * @throws NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
 	 */
 	@Override
 	public LayoutSetBranch remove(long layoutSetBranchId)
-		throws NoSuchLayoutSetBranchException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetBranchException {
 		return remove((Serializable)layoutSetBranchId);
 	}
 
@@ -3348,11 +3349,11 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 	 *
 	 * @param primaryKey the primary key of the layout set branch
 	 * @return the layout set branch that was removed
-	 * @throws NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
 	 */
 	@Override
 	public LayoutSetBranch remove(Serializable primaryKey)
-		throws NoSuchLayoutSetBranchException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetBranchException {
 		Session session = null;
 
 		try {
@@ -3366,13 +3367,13 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchLayoutSetBranchException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchLayoutSetBranchException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(layoutSetBranch);
 		}
-		catch (NoSuchLayoutSetBranchException nsee) {
+		catch (com.liferay.portal.exception.NoSuchLayoutSetBranchException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -3588,11 +3589,11 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 	 *
 	 * @param primaryKey the primary key of the layout set branch
 	 * @return the layout set branch
-	 * @throws NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
 	 */
 	@Override
 	public LayoutSetBranch findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchLayoutSetBranchException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetBranchException {
 		LayoutSetBranch layoutSetBranch = fetchByPrimaryKey(primaryKey);
 
 		if (layoutSetBranch == null) {
@@ -3600,7 +3601,7 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchLayoutSetBranchException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchLayoutSetBranchException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -3608,15 +3609,15 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 	}
 
 	/**
-	 * Returns the layout set branch with the primary key or throws a {@link NoSuchLayoutSetBranchException} if it could not be found.
+	 * Returns the layout set branch with the primary key or throws a {@link com.liferay.portal.exception.NoSuchLayoutSetBranchException} if it could not be found.
 	 *
 	 * @param layoutSetBranchId the primary key of the layout set branch
 	 * @return the layout set branch
-	 * @throws NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutSetBranchException if a layout set branch with the primary key could not be found
 	 */
 	@Override
 	public LayoutSetBranch findByPrimaryKey(long layoutSetBranchId)
-		throws NoSuchLayoutSetBranchException {
+		throws com.liferay.portal.exception.NoSuchLayoutSetBranchException {
 		return findByPrimaryKey((Serializable)layoutSetBranchId);
 	}
 

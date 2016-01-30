@@ -16,7 +16,6 @@ package com.liferay.portlet.announcements.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.announcements.kernel.exception.NoSuchEntryException;
 import com.liferay.announcements.kernel.model.AnnouncementsEntry;
 import com.liferay.announcements.kernel.service.persistence.AnnouncementsEntryPersistence;
 
@@ -311,12 +310,12 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching announcements entry
-	 * @throws NoSuchEntryException if a matching announcements entry could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchEntryException if a matching announcements entry could not be found
 	 */
 	@Override
 	public AnnouncementsEntry findByUuid_First(String uuid,
 		OrderByComparator<AnnouncementsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.announcements.kernel.exception.NoSuchEntryException {
 		AnnouncementsEntry announcementsEntry = fetchByUuid_First(uuid,
 				orderByComparator);
 
@@ -333,7 +332,7 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.announcements.kernel.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -361,12 +360,12 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching announcements entry
-	 * @throws NoSuchEntryException if a matching announcements entry could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchEntryException if a matching announcements entry could not be found
 	 */
 	@Override
 	public AnnouncementsEntry findByUuid_Last(String uuid,
 		OrderByComparator<AnnouncementsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.announcements.kernel.exception.NoSuchEntryException {
 		AnnouncementsEntry announcementsEntry = fetchByUuid_Last(uuid,
 				orderByComparator);
 
@@ -383,7 +382,7 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.announcements.kernel.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -419,12 +418,12 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next announcements entry
-	 * @throws NoSuchEntryException if a announcements entry with the primary key could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchEntryException if a announcements entry with the primary key could not be found
 	 */
 	@Override
 	public AnnouncementsEntry[] findByUuid_PrevAndNext(long entryId,
 		String uuid, OrderByComparator<AnnouncementsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.announcements.kernel.exception.NoSuchEntryException {
 		AnnouncementsEntry announcementsEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -718,12 +717,12 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next announcements entry
-	 * @throws NoSuchEntryException if a announcements entry with the primary key could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchEntryException if a announcements entry with the primary key could not be found
 	 */
 	@Override
 	public AnnouncementsEntry[] filterFindByUuid_PrevAndNext(long entryId,
 		String uuid, OrderByComparator<AnnouncementsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.announcements.kernel.exception.NoSuchEntryException {
 		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByUuid_PrevAndNext(entryId, uuid, orderByComparator);
 		}
@@ -1284,12 +1283,12 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching announcements entry
-	 * @throws NoSuchEntryException if a matching announcements entry could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchEntryException if a matching announcements entry could not be found
 	 */
 	@Override
 	public AnnouncementsEntry findByUuid_C_First(String uuid, long companyId,
 		OrderByComparator<AnnouncementsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.announcements.kernel.exception.NoSuchEntryException {
 		AnnouncementsEntry announcementsEntry = fetchByUuid_C_First(uuid,
 				companyId, orderByComparator);
 
@@ -1309,7 +1308,7 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.announcements.kernel.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -1340,12 +1339,12 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching announcements entry
-	 * @throws NoSuchEntryException if a matching announcements entry could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchEntryException if a matching announcements entry could not be found
 	 */
 	@Override
 	public AnnouncementsEntry findByUuid_C_Last(String uuid, long companyId,
 		OrderByComparator<AnnouncementsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.announcements.kernel.exception.NoSuchEntryException {
 		AnnouncementsEntry announcementsEntry = fetchByUuid_C_Last(uuid,
 				companyId, orderByComparator);
 
@@ -1365,7 +1364,7 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.announcements.kernel.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -1403,13 +1402,13 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next announcements entry
-	 * @throws NoSuchEntryException if a announcements entry with the primary key could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchEntryException if a announcements entry with the primary key could not be found
 	 */
 	@Override
 	public AnnouncementsEntry[] findByUuid_C_PrevAndNext(long entryId,
 		String uuid, long companyId,
 		OrderByComparator<AnnouncementsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.announcements.kernel.exception.NoSuchEntryException {
 		AnnouncementsEntry announcementsEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -1718,13 +1717,13 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next announcements entry
-	 * @throws NoSuchEntryException if a announcements entry with the primary key could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchEntryException if a announcements entry with the primary key could not be found
 	 */
 	@Override
 	public AnnouncementsEntry[] filterFindByUuid_C_PrevAndNext(long entryId,
 		String uuid, long companyId,
 		OrderByComparator<AnnouncementsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.announcements.kernel.exception.NoSuchEntryException {
 		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByUuid_C_PrevAndNext(entryId, uuid, companyId,
 				orderByComparator);
@@ -2271,12 +2270,12 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching announcements entry
-	 * @throws NoSuchEntryException if a matching announcements entry could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchEntryException if a matching announcements entry could not be found
 	 */
 	@Override
 	public AnnouncementsEntry findByUserId_First(long userId,
 		OrderByComparator<AnnouncementsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.announcements.kernel.exception.NoSuchEntryException {
 		AnnouncementsEntry announcementsEntry = fetchByUserId_First(userId,
 				orderByComparator);
 
@@ -2293,7 +2292,7 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.announcements.kernel.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -2322,12 +2321,12 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching announcements entry
-	 * @throws NoSuchEntryException if a matching announcements entry could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchEntryException if a matching announcements entry could not be found
 	 */
 	@Override
 	public AnnouncementsEntry findByUserId_Last(long userId,
 		OrderByComparator<AnnouncementsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.announcements.kernel.exception.NoSuchEntryException {
 		AnnouncementsEntry announcementsEntry = fetchByUserId_Last(userId,
 				orderByComparator);
 
@@ -2344,7 +2343,7 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.announcements.kernel.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -2380,12 +2379,12 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next announcements entry
-	 * @throws NoSuchEntryException if a announcements entry with the primary key could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchEntryException if a announcements entry with the primary key could not be found
 	 */
 	@Override
 	public AnnouncementsEntry[] findByUserId_PrevAndNext(long entryId,
 		long userId, OrderByComparator<AnnouncementsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.announcements.kernel.exception.NoSuchEntryException {
 		AnnouncementsEntry announcementsEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -2652,12 +2651,12 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next announcements entry
-	 * @throws NoSuchEntryException if a announcements entry with the primary key could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchEntryException if a announcements entry with the primary key could not be found
 	 */
 	@Override
 	public AnnouncementsEntry[] filterFindByUserId_PrevAndNext(long entryId,
 		long userId, OrderByComparator<AnnouncementsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.announcements.kernel.exception.NoSuchEntryException {
 		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByUserId_PrevAndNext(entryId, userId, orderByComparator);
 		}
@@ -3157,12 +3156,12 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching announcements entry
-	 * @throws NoSuchEntryException if a matching announcements entry could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchEntryException if a matching announcements entry could not be found
 	 */
 	@Override
 	public AnnouncementsEntry findByC_C_First(long classNameId, long classPK,
 		OrderByComparator<AnnouncementsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.announcements.kernel.exception.NoSuchEntryException {
 		AnnouncementsEntry announcementsEntry = fetchByC_C_First(classNameId,
 				classPK, orderByComparator);
 
@@ -3182,7 +3181,7 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.announcements.kernel.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -3213,12 +3212,12 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching announcements entry
-	 * @throws NoSuchEntryException if a matching announcements entry could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchEntryException if a matching announcements entry could not be found
 	 */
 	@Override
 	public AnnouncementsEntry findByC_C_Last(long classNameId, long classPK,
 		OrderByComparator<AnnouncementsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.announcements.kernel.exception.NoSuchEntryException {
 		AnnouncementsEntry announcementsEntry = fetchByC_C_Last(classNameId,
 				classPK, orderByComparator);
 
@@ -3238,7 +3237,7 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.announcements.kernel.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -3276,13 +3275,13 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next announcements entry
-	 * @throws NoSuchEntryException if a announcements entry with the primary key could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchEntryException if a announcements entry with the primary key could not be found
 	 */
 	@Override
 	public AnnouncementsEntry[] findByC_C_PrevAndNext(long entryId,
 		long classNameId, long classPK,
 		OrderByComparator<AnnouncementsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.announcements.kernel.exception.NoSuchEntryException {
 		AnnouncementsEntry announcementsEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -3563,13 +3562,13 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next announcements entry
-	 * @throws NoSuchEntryException if a announcements entry with the primary key could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchEntryException if a announcements entry with the primary key could not be found
 	 */
 	@Override
 	public AnnouncementsEntry[] filterFindByC_C_PrevAndNext(long entryId,
 		long classNameId, long classPK,
 		OrderByComparator<AnnouncementsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.announcements.kernel.exception.NoSuchEntryException {
 		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByC_C_PrevAndNext(entryId, classNameId, classPK,
 				orderByComparator);
@@ -4105,12 +4104,12 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 	 * @param alert the alert
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching announcements entry
-	 * @throws NoSuchEntryException if a matching announcements entry could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchEntryException if a matching announcements entry could not be found
 	 */
 	@Override
 	public AnnouncementsEntry findByC_C_A_First(long classNameId, long classPK,
 		boolean alert, OrderByComparator<AnnouncementsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.announcements.kernel.exception.NoSuchEntryException {
 		AnnouncementsEntry announcementsEntry = fetchByC_C_A_First(classNameId,
 				classPK, alert, orderByComparator);
 
@@ -4133,7 +4132,7 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.announcements.kernel.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -4167,12 +4166,12 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 	 * @param alert the alert
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching announcements entry
-	 * @throws NoSuchEntryException if a matching announcements entry could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchEntryException if a matching announcements entry could not be found
 	 */
 	@Override
 	public AnnouncementsEntry findByC_C_A_Last(long classNameId, long classPK,
 		boolean alert, OrderByComparator<AnnouncementsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.announcements.kernel.exception.NoSuchEntryException {
 		AnnouncementsEntry announcementsEntry = fetchByC_C_A_Last(classNameId,
 				classPK, alert, orderByComparator);
 
@@ -4195,7 +4194,7 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.announcements.kernel.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -4235,13 +4234,13 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 	 * @param alert the alert
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next announcements entry
-	 * @throws NoSuchEntryException if a announcements entry with the primary key could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchEntryException if a announcements entry with the primary key could not be found
 	 */
 	@Override
 	public AnnouncementsEntry[] findByC_C_A_PrevAndNext(long entryId,
 		long classNameId, long classPK, boolean alert,
 		OrderByComparator<AnnouncementsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.announcements.kernel.exception.NoSuchEntryException {
 		AnnouncementsEntry announcementsEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -4535,13 +4534,13 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 	 * @param alert the alert
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next announcements entry
-	 * @throws NoSuchEntryException if a announcements entry with the primary key could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchEntryException if a announcements entry with the primary key could not be found
 	 */
 	@Override
 	public AnnouncementsEntry[] filterFindByC_C_A_PrevAndNext(long entryId,
 		long classNameId, long classPK, boolean alert,
 		OrderByComparator<AnnouncementsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.announcements.kernel.exception.NoSuchEntryException {
 		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByC_C_A_PrevAndNext(entryId, classNameId, classPK,
 				alert, orderByComparator);
@@ -4972,10 +4971,11 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 	 *
 	 * @param entryId the primary key of the announcements entry
 	 * @return the announcements entry that was removed
-	 * @throws NoSuchEntryException if a announcements entry with the primary key could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchEntryException if a announcements entry with the primary key could not be found
 	 */
 	@Override
-	public AnnouncementsEntry remove(long entryId) throws NoSuchEntryException {
+	public AnnouncementsEntry remove(long entryId)
+		throws com.liferay.announcements.kernel.exception.NoSuchEntryException {
 		return remove((Serializable)entryId);
 	}
 
@@ -4984,11 +4984,11 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 	 *
 	 * @param primaryKey the primary key of the announcements entry
 	 * @return the announcements entry that was removed
-	 * @throws NoSuchEntryException if a announcements entry with the primary key could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchEntryException if a announcements entry with the primary key could not be found
 	 */
 	@Override
 	public AnnouncementsEntry remove(Serializable primaryKey)
-		throws NoSuchEntryException {
+		throws com.liferay.announcements.kernel.exception.NoSuchEntryException {
 		Session session = null;
 
 		try {
@@ -5002,13 +5002,13 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.announcements.kernel.exception.NoSuchEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(announcementsEntry);
 		}
-		catch (NoSuchEntryException nsee) {
+		catch (com.liferay.announcements.kernel.exception.NoSuchEntryException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -5289,11 +5289,11 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 	 *
 	 * @param primaryKey the primary key of the announcements entry
 	 * @return the announcements entry
-	 * @throws NoSuchEntryException if a announcements entry with the primary key could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchEntryException if a announcements entry with the primary key could not be found
 	 */
 	@Override
 	public AnnouncementsEntry findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchEntryException {
+		throws com.liferay.announcements.kernel.exception.NoSuchEntryException {
 		AnnouncementsEntry announcementsEntry = fetchByPrimaryKey(primaryKey);
 
 		if (announcementsEntry == null) {
@@ -5301,7 +5301,7 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.announcements.kernel.exception.NoSuchEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -5309,15 +5309,15 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 	}
 
 	/**
-	 * Returns the announcements entry with the primary key or throws a {@link NoSuchEntryException} if it could not be found.
+	 * Returns the announcements entry with the primary key or throws a {@link com.liferay.announcements.kernel.exception.NoSuchEntryException} if it could not be found.
 	 *
 	 * @param entryId the primary key of the announcements entry
 	 * @return the announcements entry
-	 * @throws NoSuchEntryException if a announcements entry with the primary key could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchEntryException if a announcements entry with the primary key could not be found
 	 */
 	@Override
 	public AnnouncementsEntry findByPrimaryKey(long entryId)
-		throws NoSuchEntryException {
+		throws com.liferay.announcements.kernel.exception.NoSuchEntryException {
 		return findByPrimaryKey((Serializable)entryId);
 	}
 

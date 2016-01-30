@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchLayoutRevisionException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -294,13 +293,13 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	 * @param layoutSetBranchId the layout set branch ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching layout revision
-	 * @throws NoSuchLayoutRevisionException if a matching layout revision could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a matching layout revision could not be found
 	 */
 	@Override
 	public LayoutRevision findByLayoutSetBranchId_First(
 		long layoutSetBranchId,
 		OrderByComparator<LayoutRevision> orderByComparator)
-		throws NoSuchLayoutRevisionException {
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		LayoutRevision layoutRevision = fetchByLayoutSetBranchId_First(layoutSetBranchId,
 				orderByComparator);
 
@@ -317,7 +316,7 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutRevisionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutRevisionException(msg.toString());
 	}
 
 	/**
@@ -347,12 +346,12 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	 * @param layoutSetBranchId the layout set branch ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching layout revision
-	 * @throws NoSuchLayoutRevisionException if a matching layout revision could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a matching layout revision could not be found
 	 */
 	@Override
 	public LayoutRevision findByLayoutSetBranchId_Last(long layoutSetBranchId,
 		OrderByComparator<LayoutRevision> orderByComparator)
-		throws NoSuchLayoutRevisionException {
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		LayoutRevision layoutRevision = fetchByLayoutSetBranchId_Last(layoutSetBranchId,
 				orderByComparator);
 
@@ -369,7 +368,7 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutRevisionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutRevisionException(msg.toString());
 	}
 
 	/**
@@ -406,13 +405,13 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	 * @param layoutSetBranchId the layout set branch ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next layout revision
-	 * @throws NoSuchLayoutRevisionException if a layout revision with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a layout revision with the primary key could not be found
 	 */
 	@Override
 	public LayoutRevision[] findByLayoutSetBranchId_PrevAndNext(
 		long layoutRevisionId, long layoutSetBranchId,
 		OrderByComparator<LayoutRevision> orderByComparator)
-		throws NoSuchLayoutRevisionException {
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		LayoutRevision layoutRevision = findByPrimaryKey(layoutRevisionId);
 
 		Session session = null;
@@ -804,12 +803,12 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	 * @param plid the plid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching layout revision
-	 * @throws NoSuchLayoutRevisionException if a matching layout revision could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a matching layout revision could not be found
 	 */
 	@Override
 	public LayoutRevision findByPlid_First(long plid,
 		OrderByComparator<LayoutRevision> orderByComparator)
-		throws NoSuchLayoutRevisionException {
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		LayoutRevision layoutRevision = fetchByPlid_First(plid,
 				orderByComparator);
 
@@ -826,7 +825,7 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutRevisionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutRevisionException(msg.toString());
 	}
 
 	/**
@@ -854,12 +853,12 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	 * @param plid the plid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching layout revision
-	 * @throws NoSuchLayoutRevisionException if a matching layout revision could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a matching layout revision could not be found
 	 */
 	@Override
 	public LayoutRevision findByPlid_Last(long plid,
 		OrderByComparator<LayoutRevision> orderByComparator)
-		throws NoSuchLayoutRevisionException {
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		LayoutRevision layoutRevision = fetchByPlid_Last(plid, orderByComparator);
 
 		if (layoutRevision != null) {
@@ -875,7 +874,7 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutRevisionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutRevisionException(msg.toString());
 	}
 
 	/**
@@ -911,12 +910,12 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	 * @param plid the plid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next layout revision
-	 * @throws NoSuchLayoutRevisionException if a layout revision with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a layout revision with the primary key could not be found
 	 */
 	@Override
 	public LayoutRevision[] findByPlid_PrevAndNext(long layoutRevisionId,
 		long plid, OrderByComparator<LayoutRevision> orderByComparator)
-		throws NoSuchLayoutRevisionException {
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		LayoutRevision layoutRevision = findByPrimaryKey(layoutRevisionId);
 
 		Session session = null;
@@ -1326,12 +1325,12 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	 * @param head the head
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching layout revision
-	 * @throws NoSuchLayoutRevisionException if a matching layout revision could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a matching layout revision could not be found
 	 */
 	@Override
 	public LayoutRevision findByL_H_First(long layoutSetBranchId, boolean head,
 		OrderByComparator<LayoutRevision> orderByComparator)
-		throws NoSuchLayoutRevisionException {
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		LayoutRevision layoutRevision = fetchByL_H_First(layoutSetBranchId,
 				head, orderByComparator);
 
@@ -1351,7 +1350,7 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutRevisionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutRevisionException(msg.toString());
 	}
 
 	/**
@@ -1382,12 +1381,12 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	 * @param head the head
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching layout revision
-	 * @throws NoSuchLayoutRevisionException if a matching layout revision could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a matching layout revision could not be found
 	 */
 	@Override
 	public LayoutRevision findByL_H_Last(long layoutSetBranchId, boolean head,
 		OrderByComparator<LayoutRevision> orderByComparator)
-		throws NoSuchLayoutRevisionException {
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		LayoutRevision layoutRevision = fetchByL_H_Last(layoutSetBranchId,
 				head, orderByComparator);
 
@@ -1407,7 +1406,7 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutRevisionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutRevisionException(msg.toString());
 	}
 
 	/**
@@ -1445,13 +1444,13 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	 * @param head the head
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next layout revision
-	 * @throws NoSuchLayoutRevisionException if a layout revision with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a layout revision with the primary key could not be found
 	 */
 	@Override
 	public LayoutRevision[] findByL_H_PrevAndNext(long layoutRevisionId,
 		long layoutSetBranchId, boolean head,
 		OrderByComparator<LayoutRevision> orderByComparator)
-		throws NoSuchLayoutRevisionException {
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		LayoutRevision layoutRevision = findByPrimaryKey(layoutRevisionId);
 
 		Session session = null;
@@ -1872,12 +1871,12 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	 * @param plid the plid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching layout revision
-	 * @throws NoSuchLayoutRevisionException if a matching layout revision could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a matching layout revision could not be found
 	 */
 	@Override
 	public LayoutRevision findByL_P_First(long layoutSetBranchId, long plid,
 		OrderByComparator<LayoutRevision> orderByComparator)
-		throws NoSuchLayoutRevisionException {
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		LayoutRevision layoutRevision = fetchByL_P_First(layoutSetBranchId,
 				plid, orderByComparator);
 
@@ -1897,7 +1896,7 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutRevisionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutRevisionException(msg.toString());
 	}
 
 	/**
@@ -1928,12 +1927,12 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	 * @param plid the plid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching layout revision
-	 * @throws NoSuchLayoutRevisionException if a matching layout revision could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a matching layout revision could not be found
 	 */
 	@Override
 	public LayoutRevision findByL_P_Last(long layoutSetBranchId, long plid,
 		OrderByComparator<LayoutRevision> orderByComparator)
-		throws NoSuchLayoutRevisionException {
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		LayoutRevision layoutRevision = fetchByL_P_Last(layoutSetBranchId,
 				plid, orderByComparator);
 
@@ -1953,7 +1952,7 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutRevisionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutRevisionException(msg.toString());
 	}
 
 	/**
@@ -1991,13 +1990,13 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	 * @param plid the plid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next layout revision
-	 * @throws NoSuchLayoutRevisionException if a layout revision with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a layout revision with the primary key could not be found
 	 */
 	@Override
 	public LayoutRevision[] findByL_P_PrevAndNext(long layoutRevisionId,
 		long layoutSetBranchId, long plid,
 		OrderByComparator<LayoutRevision> orderByComparator)
-		throws NoSuchLayoutRevisionException {
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		LayoutRevision layoutRevision = findByPrimaryKey(layoutRevisionId);
 
 		Session session = null;
@@ -2418,12 +2417,12 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching layout revision
-	 * @throws NoSuchLayoutRevisionException if a matching layout revision could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a matching layout revision could not be found
 	 */
 	@Override
 	public LayoutRevision findByL_S_First(long layoutSetBranchId, int status,
 		OrderByComparator<LayoutRevision> orderByComparator)
-		throws NoSuchLayoutRevisionException {
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		LayoutRevision layoutRevision = fetchByL_S_First(layoutSetBranchId,
 				status, orderByComparator);
 
@@ -2443,7 +2442,7 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutRevisionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutRevisionException(msg.toString());
 	}
 
 	/**
@@ -2474,12 +2473,12 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching layout revision
-	 * @throws NoSuchLayoutRevisionException if a matching layout revision could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a matching layout revision could not be found
 	 */
 	@Override
 	public LayoutRevision findByL_S_Last(long layoutSetBranchId, int status,
 		OrderByComparator<LayoutRevision> orderByComparator)
-		throws NoSuchLayoutRevisionException {
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		LayoutRevision layoutRevision = fetchByL_S_Last(layoutSetBranchId,
 				status, orderByComparator);
 
@@ -2499,7 +2498,7 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutRevisionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutRevisionException(msg.toString());
 	}
 
 	/**
@@ -2537,13 +2536,13 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next layout revision
-	 * @throws NoSuchLayoutRevisionException if a layout revision with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a layout revision with the primary key could not be found
 	 */
 	@Override
 	public LayoutRevision[] findByL_S_PrevAndNext(long layoutRevisionId,
 		long layoutSetBranchId, int status,
 		OrderByComparator<LayoutRevision> orderByComparator)
-		throws NoSuchLayoutRevisionException {
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		LayoutRevision layoutRevision = findByPrimaryKey(layoutRevisionId);
 
 		Session session = null;
@@ -2957,12 +2956,12 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	 * @param plid the plid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching layout revision
-	 * @throws NoSuchLayoutRevisionException if a matching layout revision could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a matching layout revision could not be found
 	 */
 	@Override
 	public LayoutRevision findByH_P_First(boolean head, long plid,
 		OrderByComparator<LayoutRevision> orderByComparator)
-		throws NoSuchLayoutRevisionException {
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		LayoutRevision layoutRevision = fetchByH_P_First(head, plid,
 				orderByComparator);
 
@@ -2982,7 +2981,7 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutRevisionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutRevisionException(msg.toString());
 	}
 
 	/**
@@ -3013,12 +3012,12 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	 * @param plid the plid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching layout revision
-	 * @throws NoSuchLayoutRevisionException if a matching layout revision could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a matching layout revision could not be found
 	 */
 	@Override
 	public LayoutRevision findByH_P_Last(boolean head, long plid,
 		OrderByComparator<LayoutRevision> orderByComparator)
-		throws NoSuchLayoutRevisionException {
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		LayoutRevision layoutRevision = fetchByH_P_Last(head, plid,
 				orderByComparator);
 
@@ -3038,7 +3037,7 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutRevisionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutRevisionException(msg.toString());
 	}
 
 	/**
@@ -3076,13 +3075,13 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	 * @param plid the plid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next layout revision
-	 * @throws NoSuchLayoutRevisionException if a layout revision with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a layout revision with the primary key could not be found
 	 */
 	@Override
 	public LayoutRevision[] findByH_P_PrevAndNext(long layoutRevisionId,
 		boolean head, long plid,
 		OrderByComparator<LayoutRevision> orderByComparator)
-		throws NoSuchLayoutRevisionException {
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		LayoutRevision layoutRevision = findByPrimaryKey(layoutRevisionId);
 
 		Session session = null;
@@ -3481,12 +3480,12 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching layout revision
-	 * @throws NoSuchLayoutRevisionException if a matching layout revision could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a matching layout revision could not be found
 	 */
 	@Override
 	public LayoutRevision findByP_NotS_First(long plid, int status,
 		OrderByComparator<LayoutRevision> orderByComparator)
-		throws NoSuchLayoutRevisionException {
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		LayoutRevision layoutRevision = fetchByP_NotS_First(plid, status,
 				orderByComparator);
 
@@ -3506,7 +3505,7 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutRevisionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutRevisionException(msg.toString());
 	}
 
 	/**
@@ -3537,12 +3536,12 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching layout revision
-	 * @throws NoSuchLayoutRevisionException if a matching layout revision could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a matching layout revision could not be found
 	 */
 	@Override
 	public LayoutRevision findByP_NotS_Last(long plid, int status,
 		OrderByComparator<LayoutRevision> orderByComparator)
-		throws NoSuchLayoutRevisionException {
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		LayoutRevision layoutRevision = fetchByP_NotS_Last(plid, status,
 				orderByComparator);
 
@@ -3562,7 +3561,7 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutRevisionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutRevisionException(msg.toString());
 	}
 
 	/**
@@ -3600,13 +3599,13 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next layout revision
-	 * @throws NoSuchLayoutRevisionException if a layout revision with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a layout revision with the primary key could not be found
 	 */
 	@Override
 	public LayoutRevision[] findByP_NotS_PrevAndNext(long layoutRevisionId,
 		long plid, int status,
 		OrderByComparator<LayoutRevision> orderByComparator)
-		throws NoSuchLayoutRevisionException {
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		LayoutRevision layoutRevision = findByPrimaryKey(layoutRevisionId);
 
 		Session session = null;
@@ -4045,13 +4044,13 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	 * @param plid the plid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching layout revision
-	 * @throws NoSuchLayoutRevisionException if a matching layout revision could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a matching layout revision could not be found
 	 */
 	@Override
 	public LayoutRevision findByL_L_P_First(long layoutSetBranchId,
 		long layoutBranchId, long plid,
 		OrderByComparator<LayoutRevision> orderByComparator)
-		throws NoSuchLayoutRevisionException {
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		LayoutRevision layoutRevision = fetchByL_L_P_First(layoutSetBranchId,
 				layoutBranchId, plid, orderByComparator);
 
@@ -4074,7 +4073,7 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutRevisionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutRevisionException(msg.toString());
 	}
 
 	/**
@@ -4108,13 +4107,13 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	 * @param plid the plid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching layout revision
-	 * @throws NoSuchLayoutRevisionException if a matching layout revision could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a matching layout revision could not be found
 	 */
 	@Override
 	public LayoutRevision findByL_L_P_Last(long layoutSetBranchId,
 		long layoutBranchId, long plid,
 		OrderByComparator<LayoutRevision> orderByComparator)
-		throws NoSuchLayoutRevisionException {
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		LayoutRevision layoutRevision = fetchByL_L_P_Last(layoutSetBranchId,
 				layoutBranchId, plid, orderByComparator);
 
@@ -4137,7 +4136,7 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutRevisionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutRevisionException(msg.toString());
 	}
 
 	/**
@@ -4178,13 +4177,13 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	 * @param plid the plid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next layout revision
-	 * @throws NoSuchLayoutRevisionException if a layout revision with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a layout revision with the primary key could not be found
 	 */
 	@Override
 	public LayoutRevision[] findByL_L_P_PrevAndNext(long layoutRevisionId,
 		long layoutSetBranchId, long layoutBranchId, long plid,
 		OrderByComparator<LayoutRevision> orderByComparator)
-		throws NoSuchLayoutRevisionException {
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		LayoutRevision layoutRevision = findByPrimaryKey(layoutRevisionId);
 
 		Session session = null;
@@ -4643,13 +4642,13 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	 * @param plid the plid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching layout revision
-	 * @throws NoSuchLayoutRevisionException if a matching layout revision could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a matching layout revision could not be found
 	 */
 	@Override
 	public LayoutRevision findByL_P_P_First(long layoutSetBranchId,
 		long parentLayoutRevisionId, long plid,
 		OrderByComparator<LayoutRevision> orderByComparator)
-		throws NoSuchLayoutRevisionException {
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		LayoutRevision layoutRevision = fetchByL_P_P_First(layoutSetBranchId,
 				parentLayoutRevisionId, plid, orderByComparator);
 
@@ -4672,7 +4671,7 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutRevisionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutRevisionException(msg.toString());
 	}
 
 	/**
@@ -4706,13 +4705,13 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	 * @param plid the plid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching layout revision
-	 * @throws NoSuchLayoutRevisionException if a matching layout revision could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a matching layout revision could not be found
 	 */
 	@Override
 	public LayoutRevision findByL_P_P_Last(long layoutSetBranchId,
 		long parentLayoutRevisionId, long plid,
 		OrderByComparator<LayoutRevision> orderByComparator)
-		throws NoSuchLayoutRevisionException {
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		LayoutRevision layoutRevision = fetchByL_P_P_Last(layoutSetBranchId,
 				parentLayoutRevisionId, plid, orderByComparator);
 
@@ -4735,7 +4734,7 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutRevisionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutRevisionException(msg.toString());
 	}
 
 	/**
@@ -4777,13 +4776,13 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	 * @param plid the plid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next layout revision
-	 * @throws NoSuchLayoutRevisionException if a layout revision with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a layout revision with the primary key could not be found
 	 */
 	@Override
 	public LayoutRevision[] findByL_P_P_PrevAndNext(long layoutRevisionId,
 		long layoutSetBranchId, long parentLayoutRevisionId, long plid,
 		OrderByComparator<LayoutRevision> orderByComparator)
-		throws NoSuchLayoutRevisionException {
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		LayoutRevision layoutRevision = findByPrimaryKey(layoutRevisionId);
 
 		Session session = null;
@@ -5031,17 +5030,18 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 			});
 
 	/**
-	 * Returns the layout revision where layoutSetBranchId = &#63; and head = &#63; and plid = &#63; or throws a {@link NoSuchLayoutRevisionException} if it could not be found.
+	 * Returns the layout revision where layoutSetBranchId = &#63; and head = &#63; and plid = &#63; or throws a {@link com.liferay.portal.exception.NoSuchLayoutRevisionException} if it could not be found.
 	 *
 	 * @param layoutSetBranchId the layout set branch ID
 	 * @param head the head
 	 * @param plid the plid
 	 * @return the matching layout revision
-	 * @throws NoSuchLayoutRevisionException if a matching layout revision could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a matching layout revision could not be found
 	 */
 	@Override
 	public LayoutRevision findByL_H_P(long layoutSetBranchId, boolean head,
-		long plid) throws NoSuchLayoutRevisionException {
+		long plid)
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		LayoutRevision layoutRevision = fetchByL_H_P(layoutSetBranchId, head,
 				plid);
 
@@ -5065,7 +5065,7 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchLayoutRevisionException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchLayoutRevisionException(msg.toString());
 		}
 
 		return layoutRevision;
@@ -5200,7 +5200,8 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	 */
 	@Override
 	public LayoutRevision removeByL_H_P(long layoutSetBranchId, boolean head,
-		long plid) throws NoSuchLayoutRevisionException {
+		long plid)
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		LayoutRevision layoutRevision = findByL_H_P(layoutSetBranchId, head,
 				plid);
 
@@ -5502,12 +5503,12 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching layout revision
-	 * @throws NoSuchLayoutRevisionException if a matching layout revision could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a matching layout revision could not be found
 	 */
 	@Override
 	public LayoutRevision findByL_P_S_First(long layoutSetBranchId, long plid,
 		int status, OrderByComparator<LayoutRevision> orderByComparator)
-		throws NoSuchLayoutRevisionException {
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		LayoutRevision layoutRevision = fetchByL_P_S_First(layoutSetBranchId,
 				plid, status, orderByComparator);
 
@@ -5530,7 +5531,7 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutRevisionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutRevisionException(msg.toString());
 	}
 
 	/**
@@ -5563,12 +5564,12 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching layout revision
-	 * @throws NoSuchLayoutRevisionException if a matching layout revision could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a matching layout revision could not be found
 	 */
 	@Override
 	public LayoutRevision findByL_P_S_Last(long layoutSetBranchId, long plid,
 		int status, OrderByComparator<LayoutRevision> orderByComparator)
-		throws NoSuchLayoutRevisionException {
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		LayoutRevision layoutRevision = fetchByL_P_S_Last(layoutSetBranchId,
 				plid, status, orderByComparator);
 
@@ -5591,7 +5592,7 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutRevisionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutRevisionException(msg.toString());
 	}
 
 	/**
@@ -5631,13 +5632,13 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next layout revision
-	 * @throws NoSuchLayoutRevisionException if a layout revision with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a layout revision with the primary key could not be found
 	 */
 	@Override
 	public LayoutRevision[] findByL_P_S_PrevAndNext(long layoutRevisionId,
 		long layoutSetBranchId, long plid, int status,
 		OrderByComparator<LayoutRevision> orderByComparator)
-		throws NoSuchLayoutRevisionException {
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		LayoutRevision layoutRevision = findByPrimaryKey(layoutRevisionId);
 
 		Session session = null;
@@ -6028,11 +6029,11 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	 *
 	 * @param layoutRevisionId the primary key of the layout revision
 	 * @return the layout revision that was removed
-	 * @throws NoSuchLayoutRevisionException if a layout revision with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a layout revision with the primary key could not be found
 	 */
 	@Override
 	public LayoutRevision remove(long layoutRevisionId)
-		throws NoSuchLayoutRevisionException {
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		return remove((Serializable)layoutRevisionId);
 	}
 
@@ -6041,11 +6042,11 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	 *
 	 * @param primaryKey the primary key of the layout revision
 	 * @return the layout revision that was removed
-	 * @throws NoSuchLayoutRevisionException if a layout revision with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a layout revision with the primary key could not be found
 	 */
 	@Override
 	public LayoutRevision remove(Serializable primaryKey)
-		throws NoSuchLayoutRevisionException {
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		Session session = null;
 
 		try {
@@ -6059,13 +6060,13 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchLayoutRevisionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchLayoutRevisionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(layoutRevision);
 		}
-		catch (NoSuchLayoutRevisionException nsee) {
+		catch (com.liferay.portal.exception.NoSuchLayoutRevisionException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -6421,11 +6422,11 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	 *
 	 * @param primaryKey the primary key of the layout revision
 	 * @return the layout revision
-	 * @throws NoSuchLayoutRevisionException if a layout revision with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a layout revision with the primary key could not be found
 	 */
 	@Override
 	public LayoutRevision findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchLayoutRevisionException {
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		LayoutRevision layoutRevision = fetchByPrimaryKey(primaryKey);
 
 		if (layoutRevision == null) {
@@ -6433,7 +6434,7 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchLayoutRevisionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchLayoutRevisionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -6441,15 +6442,15 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	}
 
 	/**
-	 * Returns the layout revision with the primary key or throws a {@link NoSuchLayoutRevisionException} if it could not be found.
+	 * Returns the layout revision with the primary key or throws a {@link com.liferay.portal.exception.NoSuchLayoutRevisionException} if it could not be found.
 	 *
 	 * @param layoutRevisionId the primary key of the layout revision
 	 * @return the layout revision
-	 * @throws NoSuchLayoutRevisionException if a layout revision with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutRevisionException if a layout revision with the primary key could not be found
 	 */
 	@Override
 	public LayoutRevision findByPrimaryKey(long layoutRevisionId)
-		throws NoSuchLayoutRevisionException {
+		throws com.liferay.portal.exception.NoSuchLayoutRevisionException {
 		return findByPrimaryKey((Serializable)layoutRevisionId);
 	}
 

@@ -183,7 +183,7 @@ public class TrashVersionUtil {
 	* @param entryId the entry ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching trash version
-	* @throws NoSuchVersionException if a matching trash version could not be found
+	* @throws com.liferay.portlet.trash.exception.NoSuchVersionException if a matching trash version could not be found
 	*/
 	public static TrashVersion findByEntryId_First(long entryId,
 		OrderByComparator<TrashVersion> orderByComparator)
@@ -209,7 +209,7 @@ public class TrashVersionUtil {
 	* @param entryId the entry ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching trash version
-	* @throws NoSuchVersionException if a matching trash version could not be found
+	* @throws com.liferay.portlet.trash.exception.NoSuchVersionException if a matching trash version could not be found
 	*/
 	public static TrashVersion findByEntryId_Last(long entryId,
 		OrderByComparator<TrashVersion> orderByComparator)
@@ -236,7 +236,7 @@ public class TrashVersionUtil {
 	* @param entryId the entry ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next trash version
-	* @throws NoSuchVersionException if a trash version with the primary key could not be found
+	* @throws com.liferay.portlet.trash.exception.NoSuchVersionException if a trash version with the primary key could not be found
 	*/
 	public static TrashVersion[] findByEntryId_PrevAndNext(long versionId,
 		long entryId, OrderByComparator<TrashVersion> orderByComparator)
@@ -345,7 +345,7 @@ public class TrashVersionUtil {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching trash version
-	* @throws NoSuchVersionException if a matching trash version could not be found
+	* @throws com.liferay.portlet.trash.exception.NoSuchVersionException if a matching trash version could not be found
 	*/
 	public static TrashVersion findByE_C_First(long entryId, long classNameId,
 		OrderByComparator<TrashVersion> orderByComparator)
@@ -375,7 +375,7 @@ public class TrashVersionUtil {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching trash version
-	* @throws NoSuchVersionException if a matching trash version could not be found
+	* @throws com.liferay.portlet.trash.exception.NoSuchVersionException if a matching trash version could not be found
 	*/
 	public static TrashVersion findByE_C_Last(long entryId, long classNameId,
 		OrderByComparator<TrashVersion> orderByComparator)
@@ -406,7 +406,7 @@ public class TrashVersionUtil {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next trash version
-	* @throws NoSuchVersionException if a trash version with the primary key could not be found
+	* @throws com.liferay.portlet.trash.exception.NoSuchVersionException if a trash version with the primary key could not be found
 	*/
 	public static TrashVersion[] findByE_C_PrevAndNext(long versionId,
 		long entryId, long classNameId,
@@ -439,12 +439,12 @@ public class TrashVersionUtil {
 	}
 
 	/**
-	* Returns the trash version where classNameId = &#63; and classPK = &#63; or throws a {@link NoSuchVersionException} if it could not be found.
+	* Returns the trash version where classNameId = &#63; and classPK = &#63; or throws a {@link com.liferay.portlet.trash.exception.NoSuchVersionException} if it could not be found.
 	*
 	* @param classNameId the class name ID
 	* @param classPK the class p k
 	* @return the matching trash version
-	* @throws NoSuchVersionException if a matching trash version could not be found
+	* @throws com.liferay.portlet.trash.exception.NoSuchVersionException if a matching trash version could not be found
 	*/
 	public static TrashVersion findByC_C(long classNameId, long classPK)
 		throws com.liferay.portlet.trash.exception.NoSuchVersionException {
@@ -532,7 +532,7 @@ public class TrashVersionUtil {
 	*
 	* @param versionId the primary key of the trash version
 	* @return the trash version that was removed
-	* @throws NoSuchVersionException if a trash version with the primary key could not be found
+	* @throws com.liferay.portlet.trash.exception.NoSuchVersionException if a trash version with the primary key could not be found
 	*/
 	public static TrashVersion remove(long versionId)
 		throws com.liferay.portlet.trash.exception.NoSuchVersionException {
@@ -544,11 +544,11 @@ public class TrashVersionUtil {
 	}
 
 	/**
-	* Returns the trash version with the primary key or throws a {@link NoSuchVersionException} if it could not be found.
+	* Returns the trash version with the primary key or throws a {@link com.liferay.portlet.trash.exception.NoSuchVersionException} if it could not be found.
 	*
 	* @param versionId the primary key of the trash version
 	* @return the trash version
-	* @throws NoSuchVersionException if a trash version with the primary key could not be found
+	* @throws com.liferay.portlet.trash.exception.NoSuchVersionException if a trash version with the primary key could not be found
 	*/
 	public static TrashVersion findByPrimaryKey(long versionId)
 		throws com.liferay.portlet.trash.exception.NoSuchVersionException {

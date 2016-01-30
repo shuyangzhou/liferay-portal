@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchPluginSettingException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -283,12 +282,12 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching plugin setting
-	 * @throws NoSuchPluginSettingException if a matching plugin setting could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPluginSettingException if a matching plugin setting could not be found
 	 */
 	@Override
 	public PluginSetting findByCompanyId_First(long companyId,
 		OrderByComparator<PluginSetting> orderByComparator)
-		throws NoSuchPluginSettingException {
+		throws com.liferay.portal.exception.NoSuchPluginSettingException {
 		PluginSetting pluginSetting = fetchByCompanyId_First(companyId,
 				orderByComparator);
 
@@ -305,7 +304,7 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchPluginSettingException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchPluginSettingException(msg.toString());
 	}
 
 	/**
@@ -334,12 +333,12 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching plugin setting
-	 * @throws NoSuchPluginSettingException if a matching plugin setting could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPluginSettingException if a matching plugin setting could not be found
 	 */
 	@Override
 	public PluginSetting findByCompanyId_Last(long companyId,
 		OrderByComparator<PluginSetting> orderByComparator)
-		throws NoSuchPluginSettingException {
+		throws com.liferay.portal.exception.NoSuchPluginSettingException {
 		PluginSetting pluginSetting = fetchByCompanyId_Last(companyId,
 				orderByComparator);
 
@@ -356,7 +355,7 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchPluginSettingException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchPluginSettingException(msg.toString());
 	}
 
 	/**
@@ -392,12 +391,12 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next plugin setting
-	 * @throws NoSuchPluginSettingException if a plugin setting with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPluginSettingException if a plugin setting with the primary key could not be found
 	 */
 	@Override
 	public PluginSetting[] findByCompanyId_PrevAndNext(long pluginSettingId,
 		long companyId, OrderByComparator<PluginSetting> orderByComparator)
-		throws NoSuchPluginSettingException {
+		throws com.liferay.portal.exception.NoSuchPluginSettingException {
 		PluginSetting pluginSetting = findByPrimaryKey(pluginSettingId);
 
 		Session session = null;
@@ -615,17 +614,18 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 			});
 
 	/**
-	 * Returns the plugin setting where companyId = &#63; and pluginId = &#63; and pluginType = &#63; or throws a {@link NoSuchPluginSettingException} if it could not be found.
+	 * Returns the plugin setting where companyId = &#63; and pluginId = &#63; and pluginType = &#63; or throws a {@link com.liferay.portal.exception.NoSuchPluginSettingException} if it could not be found.
 	 *
 	 * @param companyId the company ID
 	 * @param pluginId the plugin ID
 	 * @param pluginType the plugin type
 	 * @return the matching plugin setting
-	 * @throws NoSuchPluginSettingException if a matching plugin setting could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPluginSettingException if a matching plugin setting could not be found
 	 */
 	@Override
 	public PluginSetting findByC_I_T(long companyId, String pluginId,
-		String pluginType) throws NoSuchPluginSettingException {
+		String pluginType)
+		throws com.liferay.portal.exception.NoSuchPluginSettingException {
 		PluginSetting pluginSetting = fetchByC_I_T(companyId, pluginId,
 				pluginType);
 
@@ -649,7 +649,7 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchPluginSettingException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchPluginSettingException(msg.toString());
 		}
 
 		return pluginSetting;
@@ -807,7 +807,8 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	 */
 	@Override
 	public PluginSetting removeByC_I_T(long companyId, String pluginId,
-		String pluginType) throws NoSuchPluginSettingException {
+		String pluginType)
+		throws com.liferay.portal.exception.NoSuchPluginSettingException {
 		PluginSetting pluginSetting = findByC_I_T(companyId, pluginId,
 				pluginType);
 
@@ -1079,11 +1080,11 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	 *
 	 * @param pluginSettingId the primary key of the plugin setting
 	 * @return the plugin setting that was removed
-	 * @throws NoSuchPluginSettingException if a plugin setting with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPluginSettingException if a plugin setting with the primary key could not be found
 	 */
 	@Override
 	public PluginSetting remove(long pluginSettingId)
-		throws NoSuchPluginSettingException {
+		throws com.liferay.portal.exception.NoSuchPluginSettingException {
 		return remove((Serializable)pluginSettingId);
 	}
 
@@ -1092,11 +1093,11 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	 *
 	 * @param primaryKey the primary key of the plugin setting
 	 * @return the plugin setting that was removed
-	 * @throws NoSuchPluginSettingException if a plugin setting with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPluginSettingException if a plugin setting with the primary key could not be found
 	 */
 	@Override
 	public PluginSetting remove(Serializable primaryKey)
-		throws NoSuchPluginSettingException {
+		throws com.liferay.portal.exception.NoSuchPluginSettingException {
 		Session session = null;
 
 		try {
@@ -1110,13 +1111,13 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchPluginSettingException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchPluginSettingException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(pluginSetting);
 		}
-		catch (NoSuchPluginSettingException nsee) {
+		catch (com.liferay.portal.exception.NoSuchPluginSettingException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -1251,11 +1252,11 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	 *
 	 * @param primaryKey the primary key of the plugin setting
 	 * @return the plugin setting
-	 * @throws NoSuchPluginSettingException if a plugin setting with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPluginSettingException if a plugin setting with the primary key could not be found
 	 */
 	@Override
 	public PluginSetting findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchPluginSettingException {
+		throws com.liferay.portal.exception.NoSuchPluginSettingException {
 		PluginSetting pluginSetting = fetchByPrimaryKey(primaryKey);
 
 		if (pluginSetting == null) {
@@ -1263,7 +1264,7 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchPluginSettingException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchPluginSettingException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -1271,15 +1272,15 @@ public class PluginSettingPersistenceImpl extends BasePersistenceImpl<PluginSett
 	}
 
 	/**
-	 * Returns the plugin setting with the primary key or throws a {@link NoSuchPluginSettingException} if it could not be found.
+	 * Returns the plugin setting with the primary key or throws a {@link com.liferay.portal.exception.NoSuchPluginSettingException} if it could not be found.
 	 *
 	 * @param pluginSettingId the primary key of the plugin setting
 	 * @return the plugin setting
-	 * @throws NoSuchPluginSettingException if a plugin setting with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPluginSettingException if a plugin setting with the primary key could not be found
 	 */
 	@Override
 	public PluginSetting findByPrimaryKey(long pluginSettingId)
-		throws NoSuchPluginSettingException {
+		throws com.liferay.portal.exception.NoSuchPluginSettingException {
 		return findByPrimaryKey((Serializable)pluginSettingId);
 	}
 

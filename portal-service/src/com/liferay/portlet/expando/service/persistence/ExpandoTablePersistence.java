@@ -111,7 +111,7 @@ public interface ExpandoTablePersistence extends BasePersistence<ExpandoTable> {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching expando table
-	* @throws NoSuchTableException if a matching expando table could not be found
+	* @throws com.liferay.portlet.expando.exception.NoSuchTableException if a matching expando table could not be found
 	*/
 	public ExpandoTable findByC_C_First(long companyId, long classNameId,
 		com.liferay.portal.kernel.util.OrderByComparator<ExpandoTable> orderByComparator)
@@ -135,7 +135,7 @@ public interface ExpandoTablePersistence extends BasePersistence<ExpandoTable> {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching expando table
-	* @throws NoSuchTableException if a matching expando table could not be found
+	* @throws com.liferay.portlet.expando.exception.NoSuchTableException if a matching expando table could not be found
 	*/
 	public ExpandoTable findByC_C_Last(long companyId, long classNameId,
 		com.liferay.portal.kernel.util.OrderByComparator<ExpandoTable> orderByComparator)
@@ -160,7 +160,7 @@ public interface ExpandoTablePersistence extends BasePersistence<ExpandoTable> {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next expando table
-	* @throws NoSuchTableException if a expando table with the primary key could not be found
+	* @throws com.liferay.portlet.expando.exception.NoSuchTableException if a expando table with the primary key could not be found
 	*/
 	public ExpandoTable[] findByC_C_PrevAndNext(long tableId, long companyId,
 		long classNameId,
@@ -185,13 +185,13 @@ public interface ExpandoTablePersistence extends BasePersistence<ExpandoTable> {
 	public int countByC_C(long companyId, long classNameId);
 
 	/**
-	* Returns the expando table where companyId = &#63; and classNameId = &#63; and name = &#63; or throws a {@link NoSuchTableException} if it could not be found.
+	* Returns the expando table where companyId = &#63; and classNameId = &#63; and name = &#63; or throws a {@link com.liferay.portlet.expando.exception.NoSuchTableException} if it could not be found.
 	*
 	* @param companyId the company ID
 	* @param classNameId the class name ID
 	* @param name the name
 	* @return the matching expando table
-	* @throws NoSuchTableException if a matching expando table could not be found
+	* @throws com.liferay.portlet.expando.exception.NoSuchTableException if a matching expando table could not be found
 	*/
 	public ExpandoTable findByC_C_N(long companyId, long classNameId,
 		java.lang.String name)
@@ -270,7 +270,7 @@ public interface ExpandoTablePersistence extends BasePersistence<ExpandoTable> {
 	*
 	* @param tableId the primary key of the expando table
 	* @return the expando table that was removed
-	* @throws NoSuchTableException if a expando table with the primary key could not be found
+	* @throws com.liferay.portlet.expando.exception.NoSuchTableException if a expando table with the primary key could not be found
 	*/
 	public ExpandoTable remove(long tableId)
 		throws com.liferay.portlet.expando.exception.NoSuchTableException;
@@ -278,11 +278,11 @@ public interface ExpandoTablePersistence extends BasePersistence<ExpandoTable> {
 	public ExpandoTable updateImpl(ExpandoTable expandoTable);
 
 	/**
-	* Returns the expando table with the primary key or throws a {@link NoSuchTableException} if it could not be found.
+	* Returns the expando table with the primary key or throws a {@link com.liferay.portlet.expando.exception.NoSuchTableException} if it could not be found.
 	*
 	* @param tableId the primary key of the expando table
 	* @return the expando table
-	* @throws NoSuchTableException if a expando table with the primary key could not be found
+	* @throws com.liferay.portlet.expando.exception.NoSuchTableException if a expando table with the primary key could not be found
 	*/
 	public ExpandoTable findByPrimaryKey(long tableId)
 		throws com.liferay.portlet.expando.exception.NoSuchTableException;

@@ -41,7 +41,6 @@ import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
-import com.liferay.portlet.messageboards.exception.NoSuchDiscussionException;
 import com.liferay.portlet.messageboards.model.MBDiscussion;
 import com.liferay.portlet.messageboards.model.impl.MBDiscussionImpl;
 import com.liferay.portlet.messageboards.model.impl.MBDiscussionModelImpl;
@@ -295,12 +294,12 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message boards discussion
-	 * @throws NoSuchDiscussionException if a matching message boards discussion could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException if a matching message boards discussion could not be found
 	 */
 	@Override
 	public MBDiscussion findByUuid_First(String uuid,
 		OrderByComparator<MBDiscussion> orderByComparator)
-		throws NoSuchDiscussionException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException {
 		MBDiscussion mbDiscussion = fetchByUuid_First(uuid, orderByComparator);
 
 		if (mbDiscussion != null) {
@@ -316,7 +315,7 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchDiscussionException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchDiscussionException(msg.toString());
 	}
 
 	/**
@@ -344,12 +343,12 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message boards discussion
-	 * @throws NoSuchDiscussionException if a matching message boards discussion could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException if a matching message boards discussion could not be found
 	 */
 	@Override
 	public MBDiscussion findByUuid_Last(String uuid,
 		OrderByComparator<MBDiscussion> orderByComparator)
-		throws NoSuchDiscussionException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException {
 		MBDiscussion mbDiscussion = fetchByUuid_Last(uuid, orderByComparator);
 
 		if (mbDiscussion != null) {
@@ -365,7 +364,7 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchDiscussionException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchDiscussionException(msg.toString());
 	}
 
 	/**
@@ -401,12 +400,12 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message boards discussion
-	 * @throws NoSuchDiscussionException if a message boards discussion with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException if a message boards discussion with the primary key could not be found
 	 */
 	@Override
 	public MBDiscussion[] findByUuid_PrevAndNext(long discussionId,
 		String uuid, OrderByComparator<MBDiscussion> orderByComparator)
-		throws NoSuchDiscussionException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException {
 		MBDiscussion mbDiscussion = findByPrimaryKey(discussionId);
 
 		Session session = null;
@@ -647,16 +646,16 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 			new String[] { String.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the message boards discussion where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchDiscussionException} if it could not be found.
+	 * Returns the message boards discussion where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.portlet.messageboards.exception.NoSuchDiscussionException} if it could not be found.
 	 *
 	 * @param uuid the uuid
 	 * @param groupId the group ID
 	 * @return the matching message boards discussion
-	 * @throws NoSuchDiscussionException if a matching message boards discussion could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException if a matching message boards discussion could not be found
 	 */
 	@Override
 	public MBDiscussion findByUUID_G(String uuid, long groupId)
-		throws NoSuchDiscussionException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException {
 		MBDiscussion mbDiscussion = fetchByUUID_G(uuid, groupId);
 
 		if (mbDiscussion == null) {
@@ -676,7 +675,7 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchDiscussionException(msg.toString());
+			throw new com.liferay.portlet.messageboards.exception.NoSuchDiscussionException(msg.toString());
 		}
 
 		return mbDiscussion;
@@ -809,7 +808,7 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 	 */
 	@Override
 	public MBDiscussion removeByUUID_G(String uuid, long groupId)
-		throws NoSuchDiscussionException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException {
 		MBDiscussion mbDiscussion = findByUUID_G(uuid, groupId);
 
 		return remove(mbDiscussion);
@@ -1110,12 +1109,12 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message boards discussion
-	 * @throws NoSuchDiscussionException if a matching message boards discussion could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException if a matching message boards discussion could not be found
 	 */
 	@Override
 	public MBDiscussion findByUuid_C_First(String uuid, long companyId,
 		OrderByComparator<MBDiscussion> orderByComparator)
-		throws NoSuchDiscussionException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException {
 		MBDiscussion mbDiscussion = fetchByUuid_C_First(uuid, companyId,
 				orderByComparator);
 
@@ -1135,7 +1134,7 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchDiscussionException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchDiscussionException(msg.toString());
 	}
 
 	/**
@@ -1166,12 +1165,12 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message boards discussion
-	 * @throws NoSuchDiscussionException if a matching message boards discussion could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException if a matching message boards discussion could not be found
 	 */
 	@Override
 	public MBDiscussion findByUuid_C_Last(String uuid, long companyId,
 		OrderByComparator<MBDiscussion> orderByComparator)
-		throws NoSuchDiscussionException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException {
 		MBDiscussion mbDiscussion = fetchByUuid_C_Last(uuid, companyId,
 				orderByComparator);
 
@@ -1191,7 +1190,7 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchDiscussionException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchDiscussionException(msg.toString());
 	}
 
 	/**
@@ -1229,13 +1228,13 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message boards discussion
-	 * @throws NoSuchDiscussionException if a message boards discussion with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException if a message boards discussion with the primary key could not be found
 	 */
 	@Override
 	public MBDiscussion[] findByUuid_C_PrevAndNext(long discussionId,
 		String uuid, long companyId,
 		OrderByComparator<MBDiscussion> orderByComparator)
-		throws NoSuchDiscussionException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException {
 		MBDiscussion mbDiscussion = findByPrimaryKey(discussionId);
 
 		Session session = null;
@@ -1669,12 +1668,12 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message boards discussion
-	 * @throws NoSuchDiscussionException if a matching message boards discussion could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException if a matching message boards discussion could not be found
 	 */
 	@Override
 	public MBDiscussion findByClassNameId_First(long classNameId,
 		OrderByComparator<MBDiscussion> orderByComparator)
-		throws NoSuchDiscussionException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException {
 		MBDiscussion mbDiscussion = fetchByClassNameId_First(classNameId,
 				orderByComparator);
 
@@ -1691,7 +1690,7 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchDiscussionException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchDiscussionException(msg.toString());
 	}
 
 	/**
@@ -1720,12 +1719,12 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message boards discussion
-	 * @throws NoSuchDiscussionException if a matching message boards discussion could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException if a matching message boards discussion could not be found
 	 */
 	@Override
 	public MBDiscussion findByClassNameId_Last(long classNameId,
 		OrderByComparator<MBDiscussion> orderByComparator)
-		throws NoSuchDiscussionException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException {
 		MBDiscussion mbDiscussion = fetchByClassNameId_Last(classNameId,
 				orderByComparator);
 
@@ -1742,7 +1741,7 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchDiscussionException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchDiscussionException(msg.toString());
 	}
 
 	/**
@@ -1778,12 +1777,12 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message boards discussion
-	 * @throws NoSuchDiscussionException if a message boards discussion with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException if a message boards discussion with the primary key could not be found
 	 */
 	@Override
 	public MBDiscussion[] findByClassNameId_PrevAndNext(long discussionId,
 		long classNameId, OrderByComparator<MBDiscussion> orderByComparator)
-		throws NoSuchDiscussionException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException {
 		MBDiscussion mbDiscussion = findByPrimaryKey(discussionId);
 
 		Session session = null;
@@ -1993,15 +1992,15 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 			new String[] { Long.class.getName() });
 
 	/**
-	 * Returns the message boards discussion where threadId = &#63; or throws a {@link NoSuchDiscussionException} if it could not be found.
+	 * Returns the message boards discussion where threadId = &#63; or throws a {@link com.liferay.portlet.messageboards.exception.NoSuchDiscussionException} if it could not be found.
 	 *
 	 * @param threadId the thread ID
 	 * @return the matching message boards discussion
-	 * @throws NoSuchDiscussionException if a matching message boards discussion could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException if a matching message boards discussion could not be found
 	 */
 	@Override
 	public MBDiscussion findByThreadId(long threadId)
-		throws NoSuchDiscussionException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException {
 		MBDiscussion mbDiscussion = fetchByThreadId(threadId);
 
 		if (mbDiscussion == null) {
@@ -2018,7 +2017,7 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchDiscussionException(msg.toString());
+			throw new com.liferay.portlet.messageboards.exception.NoSuchDiscussionException(msg.toString());
 		}
 
 		return mbDiscussion;
@@ -2127,7 +2126,7 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 	 */
 	@Override
 	public MBDiscussion removeByThreadId(long threadId)
-		throws NoSuchDiscussionException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException {
 		MBDiscussion mbDiscussion = findByThreadId(threadId);
 
 		return remove(mbDiscussion);
@@ -2197,16 +2196,16 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 			new String[] { Long.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the message boards discussion where classNameId = &#63; and classPK = &#63; or throws a {@link NoSuchDiscussionException} if it could not be found.
+	 * Returns the message boards discussion where classNameId = &#63; and classPK = &#63; or throws a {@link com.liferay.portlet.messageboards.exception.NoSuchDiscussionException} if it could not be found.
 	 *
 	 * @param classNameId the class name ID
 	 * @param classPK the class p k
 	 * @return the matching message boards discussion
-	 * @throws NoSuchDiscussionException if a matching message boards discussion could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException if a matching message boards discussion could not be found
 	 */
 	@Override
 	public MBDiscussion findByC_C(long classNameId, long classPK)
-		throws NoSuchDiscussionException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException {
 		MBDiscussion mbDiscussion = fetchByC_C(classNameId, classPK);
 
 		if (mbDiscussion == null) {
@@ -2226,7 +2225,7 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchDiscussionException(msg.toString());
+			throw new com.liferay.portlet.messageboards.exception.NoSuchDiscussionException(msg.toString());
 		}
 
 		return mbDiscussion;
@@ -2344,7 +2343,7 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 	 */
 	@Override
 	public MBDiscussion removeByC_C(long classNameId, long classPK)
-		throws NoSuchDiscussionException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException {
 		MBDiscussion mbDiscussion = findByC_C(classNameId, classPK);
 
 		return remove(mbDiscussion);
@@ -2654,11 +2653,11 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 	 *
 	 * @param discussionId the primary key of the message boards discussion
 	 * @return the message boards discussion that was removed
-	 * @throws NoSuchDiscussionException if a message boards discussion with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException if a message boards discussion with the primary key could not be found
 	 */
 	@Override
 	public MBDiscussion remove(long discussionId)
-		throws NoSuchDiscussionException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException {
 		return remove((Serializable)discussionId);
 	}
 
@@ -2667,11 +2666,11 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 	 *
 	 * @param primaryKey the primary key of the message boards discussion
 	 * @return the message boards discussion that was removed
-	 * @throws NoSuchDiscussionException if a message boards discussion with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException if a message boards discussion with the primary key could not be found
 	 */
 	@Override
 	public MBDiscussion remove(Serializable primaryKey)
-		throws NoSuchDiscussionException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException {
 		Session session = null;
 
 		try {
@@ -2685,13 +2684,13 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchDiscussionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portlet.messageboards.exception.NoSuchDiscussionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(mbDiscussion);
 		}
-		catch (NoSuchDiscussionException nsee) {
+		catch (com.liferay.portlet.messageboards.exception.NoSuchDiscussionException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -2897,11 +2896,11 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 	 *
 	 * @param primaryKey the primary key of the message boards discussion
 	 * @return the message boards discussion
-	 * @throws NoSuchDiscussionException if a message boards discussion with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException if a message boards discussion with the primary key could not be found
 	 */
 	@Override
 	public MBDiscussion findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchDiscussionException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException {
 		MBDiscussion mbDiscussion = fetchByPrimaryKey(primaryKey);
 
 		if (mbDiscussion == null) {
@@ -2909,7 +2908,7 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchDiscussionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portlet.messageboards.exception.NoSuchDiscussionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -2917,15 +2916,15 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 	}
 
 	/**
-	 * Returns the message boards discussion with the primary key or throws a {@link NoSuchDiscussionException} if it could not be found.
+	 * Returns the message boards discussion with the primary key or throws a {@link com.liferay.portlet.messageboards.exception.NoSuchDiscussionException} if it could not be found.
 	 *
 	 * @param discussionId the primary key of the message boards discussion
 	 * @return the message boards discussion
-	 * @throws NoSuchDiscussionException if a message boards discussion with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException if a message boards discussion with the primary key could not be found
 	 */
 	@Override
 	public MBDiscussion findByPrimaryKey(long discussionId)
-		throws NoSuchDiscussionException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchDiscussionException {
 		return findByPrimaryKey((Serializable)discussionId);
 	}
 

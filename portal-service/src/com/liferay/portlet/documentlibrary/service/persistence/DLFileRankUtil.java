@@ -182,7 +182,7 @@ public class DLFileRankUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library file rank
-	* @throws NoSuchFileRankException if a matching document library file rank could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException if a matching document library file rank could not be found
 	*/
 	public static DLFileRank findByUserId_First(long userId,
 		OrderByComparator<DLFileRank> orderByComparator)
@@ -208,7 +208,7 @@ public class DLFileRankUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library file rank
-	* @throws NoSuchFileRankException if a matching document library file rank could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException if a matching document library file rank could not be found
 	*/
 	public static DLFileRank findByUserId_Last(long userId,
 		OrderByComparator<DLFileRank> orderByComparator)
@@ -235,7 +235,7 @@ public class DLFileRankUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library file rank
-	* @throws NoSuchFileRankException if a document library file rank with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException if a document library file rank with the primary key could not be found
 	*/
 	public static DLFileRank[] findByUserId_PrevAndNext(long fileRankId,
 		long userId, OrderByComparator<DLFileRank> orderByComparator)
@@ -338,7 +338,7 @@ public class DLFileRankUtil {
 	* @param fileEntryId the file entry ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library file rank
-	* @throws NoSuchFileRankException if a matching document library file rank could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException if a matching document library file rank could not be found
 	*/
 	public static DLFileRank findByFileEntryId_First(long fileEntryId,
 		OrderByComparator<DLFileRank> orderByComparator)
@@ -366,7 +366,7 @@ public class DLFileRankUtil {
 	* @param fileEntryId the file entry ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library file rank
-	* @throws NoSuchFileRankException if a matching document library file rank could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException if a matching document library file rank could not be found
 	*/
 	public static DLFileRank findByFileEntryId_Last(long fileEntryId,
 		OrderByComparator<DLFileRank> orderByComparator)
@@ -395,7 +395,7 @@ public class DLFileRankUtil {
 	* @param fileEntryId the file entry ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library file rank
-	* @throws NoSuchFileRankException if a document library file rank with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException if a document library file rank with the primary key could not be found
 	*/
 	public static DLFileRank[] findByFileEntryId_PrevAndNext(long fileRankId,
 		long fileEntryId, OrderByComparator<DLFileRank> orderByComparator)
@@ -503,7 +503,7 @@ public class DLFileRankUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library file rank
-	* @throws NoSuchFileRankException if a matching document library file rank could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException if a matching document library file rank could not be found
 	*/
 	public static DLFileRank findByG_U_First(long groupId, long userId,
 		OrderByComparator<DLFileRank> orderByComparator)
@@ -533,7 +533,7 @@ public class DLFileRankUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library file rank
-	* @throws NoSuchFileRankException if a matching document library file rank could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException if a matching document library file rank could not be found
 	*/
 	public static DLFileRank findByG_U_Last(long groupId, long userId,
 		OrderByComparator<DLFileRank> orderByComparator)
@@ -564,7 +564,7 @@ public class DLFileRankUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library file rank
-	* @throws NoSuchFileRankException if a document library file rank with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException if a document library file rank with the primary key could not be found
 	*/
 	public static DLFileRank[] findByG_U_PrevAndNext(long fileRankId,
 		long groupId, long userId,
@@ -684,7 +684,7 @@ public class DLFileRankUtil {
 	* @param active the active
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library file rank
-	* @throws NoSuchFileRankException if a matching document library file rank could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException if a matching document library file rank could not be found
 	*/
 	public static DLFileRank findByG_U_A_First(long groupId, long userId,
 		boolean active, OrderByComparator<DLFileRank> orderByComparator)
@@ -717,7 +717,7 @@ public class DLFileRankUtil {
 	* @param active the active
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library file rank
-	* @throws NoSuchFileRankException if a matching document library file rank could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException if a matching document library file rank could not be found
 	*/
 	public static DLFileRank findByG_U_A_Last(long groupId, long userId,
 		boolean active, OrderByComparator<DLFileRank> orderByComparator)
@@ -750,7 +750,7 @@ public class DLFileRankUtil {
 	* @param active the active
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library file rank
-	* @throws NoSuchFileRankException if a document library file rank with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException if a document library file rank with the primary key could not be found
 	*/
 	public static DLFileRank[] findByG_U_A_PrevAndNext(long fileRankId,
 		long groupId, long userId, boolean active,
@@ -785,13 +785,13 @@ public class DLFileRankUtil {
 	}
 
 	/**
-	* Returns the document library file rank where companyId = &#63; and userId = &#63; and fileEntryId = &#63; or throws a {@link NoSuchFileRankException} if it could not be found.
+	* Returns the document library file rank where companyId = &#63; and userId = &#63; and fileEntryId = &#63; or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException} if it could not be found.
 	*
 	* @param companyId the company ID
 	* @param userId the user ID
 	* @param fileEntryId the file entry ID
 	* @return the matching document library file rank
-	* @throws NoSuchFileRankException if a matching document library file rank could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException if a matching document library file rank could not be found
 	*/
 	public static DLFileRank findByC_U_F(long companyId, long userId,
 		long fileEntryId)
@@ -887,7 +887,7 @@ public class DLFileRankUtil {
 	*
 	* @param fileRankId the primary key of the document library file rank
 	* @return the document library file rank that was removed
-	* @throws NoSuchFileRankException if a document library file rank with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException if a document library file rank with the primary key could not be found
 	*/
 	public static DLFileRank remove(long fileRankId)
 		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException {
@@ -899,11 +899,11 @@ public class DLFileRankUtil {
 	}
 
 	/**
-	* Returns the document library file rank with the primary key or throws a {@link NoSuchFileRankException} if it could not be found.
+	* Returns the document library file rank with the primary key or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException} if it could not be found.
 	*
 	* @param fileRankId the primary key of the document library file rank
 	* @return the document library file rank
-	* @throws NoSuchFileRankException if a document library file rank with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException if a document library file rank with the primary key could not be found
 	*/
 	public static DLFileRank findByPrimaryKey(long fileRankId)
 		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException {

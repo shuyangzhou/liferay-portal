@@ -16,7 +16,6 @@ package com.liferay.dynamic.data.mapping.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException;
 import com.liferay.dynamic.data.mapping.model.DDMStorageLink;
 import com.liferay.dynamic.data.mapping.model.impl.DDMStorageLinkImpl;
 import com.liferay.dynamic.data.mapping.model.impl.DDMStorageLinkModelImpl;
@@ -294,12 +293,12 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching d d m storage link
-	 * @throws NoSuchStorageLinkException if a matching d d m storage link could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException if a matching d d m storage link could not be found
 	 */
 	@Override
 	public DDMStorageLink findByUuid_First(String uuid,
 		OrderByComparator<DDMStorageLink> orderByComparator)
-		throws NoSuchStorageLinkException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException {
 		DDMStorageLink ddmStorageLink = fetchByUuid_First(uuid,
 				orderByComparator);
 
@@ -316,7 +315,7 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchStorageLinkException(msg.toString());
+		throw new com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException(msg.toString());
 	}
 
 	/**
@@ -344,12 +343,12 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching d d m storage link
-	 * @throws NoSuchStorageLinkException if a matching d d m storage link could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException if a matching d d m storage link could not be found
 	 */
 	@Override
 	public DDMStorageLink findByUuid_Last(String uuid,
 		OrderByComparator<DDMStorageLink> orderByComparator)
-		throws NoSuchStorageLinkException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException {
 		DDMStorageLink ddmStorageLink = fetchByUuid_Last(uuid, orderByComparator);
 
 		if (ddmStorageLink != null) {
@@ -365,7 +364,7 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchStorageLinkException(msg.toString());
+		throw new com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException(msg.toString());
 	}
 
 	/**
@@ -401,12 +400,12 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next d d m storage link
-	 * @throws NoSuchStorageLinkException if a d d m storage link with the primary key could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException if a d d m storage link with the primary key could not be found
 	 */
 	@Override
 	public DDMStorageLink[] findByUuid_PrevAndNext(long storageLinkId,
 		String uuid, OrderByComparator<DDMStorageLink> orderByComparator)
-		throws NoSuchStorageLinkException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException {
 		DDMStorageLink ddmStorageLink = findByPrimaryKey(storageLinkId);
 
 		Session session = null;
@@ -859,12 +858,12 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching d d m storage link
-	 * @throws NoSuchStorageLinkException if a matching d d m storage link could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException if a matching d d m storage link could not be found
 	 */
 	@Override
 	public DDMStorageLink findByUuid_C_First(String uuid, long companyId,
 		OrderByComparator<DDMStorageLink> orderByComparator)
-		throws NoSuchStorageLinkException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException {
 		DDMStorageLink ddmStorageLink = fetchByUuid_C_First(uuid, companyId,
 				orderByComparator);
 
@@ -884,7 +883,7 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchStorageLinkException(msg.toString());
+		throw new com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException(msg.toString());
 	}
 
 	/**
@@ -915,12 +914,12 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching d d m storage link
-	 * @throws NoSuchStorageLinkException if a matching d d m storage link could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException if a matching d d m storage link could not be found
 	 */
 	@Override
 	public DDMStorageLink findByUuid_C_Last(String uuid, long companyId,
 		OrderByComparator<DDMStorageLink> orderByComparator)
-		throws NoSuchStorageLinkException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException {
 		DDMStorageLink ddmStorageLink = fetchByUuid_C_Last(uuid, companyId,
 				orderByComparator);
 
@@ -940,7 +939,7 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchStorageLinkException(msg.toString());
+		throw new com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException(msg.toString());
 	}
 
 	/**
@@ -978,13 +977,13 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next d d m storage link
-	 * @throws NoSuchStorageLinkException if a d d m storage link with the primary key could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException if a d d m storage link with the primary key could not be found
 	 */
 	@Override
 	public DDMStorageLink[] findByUuid_C_PrevAndNext(long storageLinkId,
 		String uuid, long companyId,
 		OrderByComparator<DDMStorageLink> orderByComparator)
-		throws NoSuchStorageLinkException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException {
 		DDMStorageLink ddmStorageLink = findByPrimaryKey(storageLinkId);
 
 		Session session = null;
@@ -1235,15 +1234,15 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 			new String[] { Long.class.getName() });
 
 	/**
-	 * Returns the d d m storage link where classPK = &#63; or throws a {@link NoSuchStorageLinkException} if it could not be found.
+	 * Returns the d d m storage link where classPK = &#63; or throws a {@link com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException} if it could not be found.
 	 *
 	 * @param classPK the class p k
 	 * @return the matching d d m storage link
-	 * @throws NoSuchStorageLinkException if a matching d d m storage link could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException if a matching d d m storage link could not be found
 	 */
 	@Override
 	public DDMStorageLink findByClassPK(long classPK)
-		throws NoSuchStorageLinkException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException {
 		DDMStorageLink ddmStorageLink = fetchByClassPK(classPK);
 
 		if (ddmStorageLink == null) {
@@ -1260,7 +1259,7 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchStorageLinkException(msg.toString());
+			throw new com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException(msg.toString());
 		}
 
 		return ddmStorageLink;
@@ -1369,7 +1368,7 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 	 */
 	@Override
 	public DDMStorageLink removeByClassPK(long classPK)
-		throws NoSuchStorageLinkException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException {
 		DDMStorageLink ddmStorageLink = findByClassPK(classPK);
 
 		return remove(ddmStorageLink);
@@ -1623,12 +1622,12 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 	 * @param structureId the structure ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching d d m storage link
-	 * @throws NoSuchStorageLinkException if a matching d d m storage link could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException if a matching d d m storage link could not be found
 	 */
 	@Override
 	public DDMStorageLink findByStructureId_First(long structureId,
 		OrderByComparator<DDMStorageLink> orderByComparator)
-		throws NoSuchStorageLinkException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException {
 		DDMStorageLink ddmStorageLink = fetchByStructureId_First(structureId,
 				orderByComparator);
 
@@ -1645,7 +1644,7 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchStorageLinkException(msg.toString());
+		throw new com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException(msg.toString());
 	}
 
 	/**
@@ -1674,12 +1673,12 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 	 * @param structureId the structure ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching d d m storage link
-	 * @throws NoSuchStorageLinkException if a matching d d m storage link could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException if a matching d d m storage link could not be found
 	 */
 	@Override
 	public DDMStorageLink findByStructureId_Last(long structureId,
 		OrderByComparator<DDMStorageLink> orderByComparator)
-		throws NoSuchStorageLinkException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException {
 		DDMStorageLink ddmStorageLink = fetchByStructureId_Last(structureId,
 				orderByComparator);
 
@@ -1696,7 +1695,7 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchStorageLinkException(msg.toString());
+		throw new com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException(msg.toString());
 	}
 
 	/**
@@ -1732,12 +1731,12 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 	 * @param structureId the structure ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next d d m storage link
-	 * @throws NoSuchStorageLinkException if a d d m storage link with the primary key could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException if a d d m storage link with the primary key could not be found
 	 */
 	@Override
 	public DDMStorageLink[] findByStructureId_PrevAndNext(long storageLinkId,
 		long structureId, OrderByComparator<DDMStorageLink> orderByComparator)
-		throws NoSuchStorageLinkException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException {
 		DDMStorageLink ddmStorageLink = findByPrimaryKey(storageLinkId);
 
 		Session session = null;
@@ -2092,11 +2091,11 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 	 *
 	 * @param storageLinkId the primary key of the d d m storage link
 	 * @return the d d m storage link that was removed
-	 * @throws NoSuchStorageLinkException if a d d m storage link with the primary key could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException if a d d m storage link with the primary key could not be found
 	 */
 	@Override
 	public DDMStorageLink remove(long storageLinkId)
-		throws NoSuchStorageLinkException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException {
 		return remove((Serializable)storageLinkId);
 	}
 
@@ -2105,11 +2104,11 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 	 *
 	 * @param primaryKey the primary key of the d d m storage link
 	 * @return the d d m storage link that was removed
-	 * @throws NoSuchStorageLinkException if a d d m storage link with the primary key could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException if a d d m storage link with the primary key could not be found
 	 */
 	@Override
 	public DDMStorageLink remove(Serializable primaryKey)
-		throws NoSuchStorageLinkException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException {
 		Session session = null;
 
 		try {
@@ -2123,13 +2122,13 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchStorageLinkException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(ddmStorageLink);
 		}
-		catch (NoSuchStorageLinkException nsee) {
+		catch (com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -2307,11 +2306,11 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 	 *
 	 * @param primaryKey the primary key of the d d m storage link
 	 * @return the d d m storage link
-	 * @throws NoSuchStorageLinkException if a d d m storage link with the primary key could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException if a d d m storage link with the primary key could not be found
 	 */
 	@Override
 	public DDMStorageLink findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchStorageLinkException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException {
 		DDMStorageLink ddmStorageLink = fetchByPrimaryKey(primaryKey);
 
 		if (ddmStorageLink == null) {
@@ -2319,7 +2318,7 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchStorageLinkException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -2327,15 +2326,15 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 	}
 
 	/**
-	 * Returns the d d m storage link with the primary key or throws a {@link NoSuchStorageLinkException} if it could not be found.
+	 * Returns the d d m storage link with the primary key or throws a {@link com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException} if it could not be found.
 	 *
 	 * @param storageLinkId the primary key of the d d m storage link
 	 * @return the d d m storage link
-	 * @throws NoSuchStorageLinkException if a d d m storage link with the primary key could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException if a d d m storage link with the primary key could not be found
 	 */
 	@Override
 	public DDMStorageLink findByPrimaryKey(long storageLinkId)
-		throws NoSuchStorageLinkException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException {
 		return findByPrimaryKey((Serializable)storageLinkId);
 	}
 

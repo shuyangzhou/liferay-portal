@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -290,12 +289,12 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching workflow definition link
-	 * @throws NoSuchWorkflowDefinitionLinkException if a matching workflow definition link could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException if a matching workflow definition link could not be found
 	 */
 	@Override
 	public WorkflowDefinitionLink findByCompanyId_First(long companyId,
 		OrderByComparator<WorkflowDefinitionLink> orderByComparator)
-		throws NoSuchWorkflowDefinitionLinkException {
+		throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException {
 		WorkflowDefinitionLink workflowDefinitionLink = fetchByCompanyId_First(companyId,
 				orderByComparator);
 
@@ -312,7 +311,7 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchWorkflowDefinitionLinkException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException(msg.toString());
 	}
 
 	/**
@@ -341,12 +340,12 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching workflow definition link
-	 * @throws NoSuchWorkflowDefinitionLinkException if a matching workflow definition link could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException if a matching workflow definition link could not be found
 	 */
 	@Override
 	public WorkflowDefinitionLink findByCompanyId_Last(long companyId,
 		OrderByComparator<WorkflowDefinitionLink> orderByComparator)
-		throws NoSuchWorkflowDefinitionLinkException {
+		throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException {
 		WorkflowDefinitionLink workflowDefinitionLink = fetchByCompanyId_Last(companyId,
 				orderByComparator);
 
@@ -363,7 +362,7 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchWorkflowDefinitionLinkException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException(msg.toString());
 	}
 
 	/**
@@ -399,13 +398,13 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next workflow definition link
-	 * @throws NoSuchWorkflowDefinitionLinkException if a workflow definition link with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException if a workflow definition link with the primary key could not be found
 	 */
 	@Override
 	public WorkflowDefinitionLink[] findByCompanyId_PrevAndNext(
 		long workflowDefinitionLinkId, long companyId,
 		OrderByComparator<WorkflowDefinitionLink> orderByComparator)
-		throws NoSuchWorkflowDefinitionLinkException {
+		throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException {
 		WorkflowDefinitionLink workflowDefinitionLink = findByPrimaryKey(workflowDefinitionLinkId);
 
 		Session session = null;
@@ -834,13 +833,13 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching workflow definition link
-	 * @throws NoSuchWorkflowDefinitionLinkException if a matching workflow definition link could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException if a matching workflow definition link could not be found
 	 */
 	@Override
 	public WorkflowDefinitionLink findByG_C_C_First(long groupId,
 		long companyId, long classNameId,
 		OrderByComparator<WorkflowDefinitionLink> orderByComparator)
-		throws NoSuchWorkflowDefinitionLinkException {
+		throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException {
 		WorkflowDefinitionLink workflowDefinitionLink = fetchByG_C_C_First(groupId,
 				companyId, classNameId, orderByComparator);
 
@@ -863,7 +862,7 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchWorkflowDefinitionLinkException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException(msg.toString());
 	}
 
 	/**
@@ -897,13 +896,13 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching workflow definition link
-	 * @throws NoSuchWorkflowDefinitionLinkException if a matching workflow definition link could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException if a matching workflow definition link could not be found
 	 */
 	@Override
 	public WorkflowDefinitionLink findByG_C_C_Last(long groupId,
 		long companyId, long classNameId,
 		OrderByComparator<WorkflowDefinitionLink> orderByComparator)
-		throws NoSuchWorkflowDefinitionLinkException {
+		throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException {
 		WorkflowDefinitionLink workflowDefinitionLink = fetchByG_C_C_Last(groupId,
 				companyId, classNameId, orderByComparator);
 
@@ -926,7 +925,7 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchWorkflowDefinitionLinkException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException(msg.toString());
 	}
 
 	/**
@@ -967,14 +966,14 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next workflow definition link
-	 * @throws NoSuchWorkflowDefinitionLinkException if a workflow definition link with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException if a workflow definition link with the primary key could not be found
 	 */
 	@Override
 	public WorkflowDefinitionLink[] findByG_C_C_PrevAndNext(
 		long workflowDefinitionLinkId, long groupId, long companyId,
 		long classNameId,
 		OrderByComparator<WorkflowDefinitionLink> orderByComparator)
-		throws NoSuchWorkflowDefinitionLinkException {
+		throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException {
 		WorkflowDefinitionLink workflowDefinitionLink = findByPrimaryKey(workflowDefinitionLinkId);
 
 		Session session = null;
@@ -1450,13 +1449,13 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 	 * @param workflowDefinitionVersion the workflow definition version
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching workflow definition link
-	 * @throws NoSuchWorkflowDefinitionLinkException if a matching workflow definition link could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException if a matching workflow definition link could not be found
 	 */
 	@Override
 	public WorkflowDefinitionLink findByC_W_W_First(long companyId,
 		String workflowDefinitionName, int workflowDefinitionVersion,
 		OrderByComparator<WorkflowDefinitionLink> orderByComparator)
-		throws NoSuchWorkflowDefinitionLinkException {
+		throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException {
 		WorkflowDefinitionLink workflowDefinitionLink = fetchByC_W_W_First(companyId,
 				workflowDefinitionName, workflowDefinitionVersion,
 				orderByComparator);
@@ -1480,7 +1479,7 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchWorkflowDefinitionLinkException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException(msg.toString());
 	}
 
 	/**
@@ -1515,13 +1514,13 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 	 * @param workflowDefinitionVersion the workflow definition version
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching workflow definition link
-	 * @throws NoSuchWorkflowDefinitionLinkException if a matching workflow definition link could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException if a matching workflow definition link could not be found
 	 */
 	@Override
 	public WorkflowDefinitionLink findByC_W_W_Last(long companyId,
 		String workflowDefinitionName, int workflowDefinitionVersion,
 		OrderByComparator<WorkflowDefinitionLink> orderByComparator)
-		throws NoSuchWorkflowDefinitionLinkException {
+		throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException {
 		WorkflowDefinitionLink workflowDefinitionLink = fetchByC_W_W_Last(companyId,
 				workflowDefinitionName, workflowDefinitionVersion,
 				orderByComparator);
@@ -1545,7 +1544,7 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchWorkflowDefinitionLinkException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException(msg.toString());
 	}
 
 	/**
@@ -1588,14 +1587,14 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 	 * @param workflowDefinitionVersion the workflow definition version
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next workflow definition link
-	 * @throws NoSuchWorkflowDefinitionLinkException if a workflow definition link with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException if a workflow definition link with the primary key could not be found
 	 */
 	@Override
 	public WorkflowDefinitionLink[] findByC_W_W_PrevAndNext(
 		long workflowDefinitionLinkId, long companyId,
 		String workflowDefinitionName, int workflowDefinitionVersion,
 		OrderByComparator<WorkflowDefinitionLink> orderByComparator)
-		throws NoSuchWorkflowDefinitionLinkException {
+		throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException {
 		WorkflowDefinitionLink workflowDefinitionLink = findByPrimaryKey(workflowDefinitionLinkId);
 
 		Session session = null;
@@ -1878,7 +1877,7 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 			});
 
 	/**
-	 * Returns the workflow definition link where groupId = &#63; and companyId = &#63; and classNameId = &#63; and classPK = &#63; and typePK = &#63; or throws a {@link NoSuchWorkflowDefinitionLinkException} if it could not be found.
+	 * Returns the workflow definition link where groupId = &#63; and companyId = &#63; and classNameId = &#63; and classPK = &#63; and typePK = &#63; or throws a {@link com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException} if it could not be found.
 	 *
 	 * @param groupId the group ID
 	 * @param companyId the company ID
@@ -1886,12 +1885,12 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 	 * @param classPK the class p k
 	 * @param typePK the type p k
 	 * @return the matching workflow definition link
-	 * @throws NoSuchWorkflowDefinitionLinkException if a matching workflow definition link could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException if a matching workflow definition link could not be found
 	 */
 	@Override
 	public WorkflowDefinitionLink findByG_C_C_C_T(long groupId, long companyId,
 		long classNameId, long classPK, long typePK)
-		throws NoSuchWorkflowDefinitionLinkException {
+		throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException {
 		WorkflowDefinitionLink workflowDefinitionLink = fetchByG_C_C_C_T(groupId,
 				companyId, classNameId, classPK, typePK);
 
@@ -1921,7 +1920,7 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchWorkflowDefinitionLinkException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException(msg.toString());
 		}
 
 		return workflowDefinitionLink;
@@ -2080,7 +2079,7 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 	@Override
 	public WorkflowDefinitionLink removeByG_C_C_C_T(long groupId,
 		long companyId, long classNameId, long classPK, long typePK)
-		throws NoSuchWorkflowDefinitionLinkException {
+		throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException {
 		WorkflowDefinitionLink workflowDefinitionLink = findByG_C_C_C_T(groupId,
 				companyId, classNameId, classPK, typePK);
 
@@ -2351,11 +2350,11 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 	 *
 	 * @param workflowDefinitionLinkId the primary key of the workflow definition link
 	 * @return the workflow definition link that was removed
-	 * @throws NoSuchWorkflowDefinitionLinkException if a workflow definition link with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException if a workflow definition link with the primary key could not be found
 	 */
 	@Override
 	public WorkflowDefinitionLink remove(long workflowDefinitionLinkId)
-		throws NoSuchWorkflowDefinitionLinkException {
+		throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException {
 		return remove((Serializable)workflowDefinitionLinkId);
 	}
 
@@ -2364,11 +2363,11 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 	 *
 	 * @param primaryKey the primary key of the workflow definition link
 	 * @return the workflow definition link that was removed
-	 * @throws NoSuchWorkflowDefinitionLinkException if a workflow definition link with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException if a workflow definition link with the primary key could not be found
 	 */
 	@Override
 	public WorkflowDefinitionLink remove(Serializable primaryKey)
-		throws NoSuchWorkflowDefinitionLinkException {
+		throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException {
 		Session session = null;
 
 		try {
@@ -2382,13 +2381,13 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchWorkflowDefinitionLinkException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(workflowDefinitionLink);
 		}
-		catch (NoSuchWorkflowDefinitionLinkException nsee) {
+		catch (com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -2605,11 +2604,11 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 	 *
 	 * @param primaryKey the primary key of the workflow definition link
 	 * @return the workflow definition link
-	 * @throws NoSuchWorkflowDefinitionLinkException if a workflow definition link with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException if a workflow definition link with the primary key could not be found
 	 */
 	@Override
 	public WorkflowDefinitionLink findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchWorkflowDefinitionLinkException {
+		throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException {
 		WorkflowDefinitionLink workflowDefinitionLink = fetchByPrimaryKey(primaryKey);
 
 		if (workflowDefinitionLink == null) {
@@ -2617,7 +2616,7 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchWorkflowDefinitionLinkException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -2625,16 +2624,16 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 	}
 
 	/**
-	 * Returns the workflow definition link with the primary key or throws a {@link NoSuchWorkflowDefinitionLinkException} if it could not be found.
+	 * Returns the workflow definition link with the primary key or throws a {@link com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException} if it could not be found.
 	 *
 	 * @param workflowDefinitionLinkId the primary key of the workflow definition link
 	 * @return the workflow definition link
-	 * @throws NoSuchWorkflowDefinitionLinkException if a workflow definition link with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException if a workflow definition link with the primary key could not be found
 	 */
 	@Override
 	public WorkflowDefinitionLink findByPrimaryKey(
 		long workflowDefinitionLinkId)
-		throws NoSuchWorkflowDefinitionLinkException {
+		throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException {
 		return findByPrimaryKey((Serializable)workflowDefinitionLinkId);
 	}
 

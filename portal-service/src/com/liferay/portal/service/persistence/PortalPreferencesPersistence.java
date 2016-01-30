@@ -39,12 +39,12 @@ public interface PortalPreferencesPersistence extends BasePersistence<PortalPref
 	 */
 
 	/**
-	* Returns the portal preferences where ownerId = &#63; and ownerType = &#63; or throws a {@link NoSuchPreferencesException} if it could not be found.
+	* Returns the portal preferences where ownerId = &#63; and ownerType = &#63; or throws a {@link com.liferay.portal.exception.NoSuchPreferencesException} if it could not be found.
 	*
 	* @param ownerId the owner ID
 	* @param ownerType the owner type
 	* @return the matching portal preferences
-	* @throws NoSuchPreferencesException if a matching portal preferences could not be found
+	* @throws com.liferay.portal.exception.NoSuchPreferencesException if a matching portal preferences could not be found
 	*/
 	public PortalPreferences findByO_O(long ownerId, int ownerType)
 		throws com.liferay.portal.exception.NoSuchPreferencesException;
@@ -116,7 +116,7 @@ public interface PortalPreferencesPersistence extends BasePersistence<PortalPref
 	*
 	* @param portalPreferencesId the primary key of the portal preferences
 	* @return the portal preferences that was removed
-	* @throws NoSuchPreferencesException if a portal preferences with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPreferencesException if a portal preferences with the primary key could not be found
 	*/
 	public PortalPreferences remove(long portalPreferencesId)
 		throws com.liferay.portal.exception.NoSuchPreferencesException;
@@ -124,11 +124,11 @@ public interface PortalPreferencesPersistence extends BasePersistence<PortalPref
 	public PortalPreferences updateImpl(PortalPreferences portalPreferences);
 
 	/**
-	* Returns the portal preferences with the primary key or throws a {@link NoSuchPreferencesException} if it could not be found.
+	* Returns the portal preferences with the primary key or throws a {@link com.liferay.portal.exception.NoSuchPreferencesException} if it could not be found.
 	*
 	* @param portalPreferencesId the primary key of the portal preferences
 	* @return the portal preferences
-	* @throws NoSuchPreferencesException if a portal preferences with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPreferencesException if a portal preferences with the primary key could not be found
 	*/
 	public PortalPreferences findByPrimaryKey(long portalPreferencesId)
 		throws com.liferay.portal.exception.NoSuchPreferencesException;

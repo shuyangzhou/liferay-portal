@@ -182,7 +182,7 @@ public class PluginSettingUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching plugin setting
-	* @throws NoSuchPluginSettingException if a matching plugin setting could not be found
+	* @throws com.liferay.portal.exception.NoSuchPluginSettingException if a matching plugin setting could not be found
 	*/
 	public static PluginSetting findByCompanyId_First(long companyId,
 		OrderByComparator<PluginSetting> orderByComparator)
@@ -210,7 +210,7 @@ public class PluginSettingUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching plugin setting
-	* @throws NoSuchPluginSettingException if a matching plugin setting could not be found
+	* @throws com.liferay.portal.exception.NoSuchPluginSettingException if a matching plugin setting could not be found
 	*/
 	public static PluginSetting findByCompanyId_Last(long companyId,
 		OrderByComparator<PluginSetting> orderByComparator)
@@ -239,7 +239,7 @@ public class PluginSettingUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next plugin setting
-	* @throws NoSuchPluginSettingException if a plugin setting with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPluginSettingException if a plugin setting with the primary key could not be found
 	*/
 	public static PluginSetting[] findByCompanyId_PrevAndNext(
 		long pluginSettingId, long companyId,
@@ -270,13 +270,13 @@ public class PluginSettingUtil {
 	}
 
 	/**
-	* Returns the plugin setting where companyId = &#63; and pluginId = &#63; and pluginType = &#63; or throws a {@link NoSuchPluginSettingException} if it could not be found.
+	* Returns the plugin setting where companyId = &#63; and pluginId = &#63; and pluginType = &#63; or throws a {@link com.liferay.portal.exception.NoSuchPluginSettingException} if it could not be found.
 	*
 	* @param companyId the company ID
 	* @param pluginId the plugin ID
 	* @param pluginType the plugin type
 	* @return the matching plugin setting
-	* @throws NoSuchPluginSettingException if a matching plugin setting could not be found
+	* @throws com.liferay.portal.exception.NoSuchPluginSettingException if a matching plugin setting could not be found
 	*/
 	public static PluginSetting findByC_I_T(long companyId,
 		java.lang.String pluginId, java.lang.String pluginType)
@@ -374,7 +374,7 @@ public class PluginSettingUtil {
 	*
 	* @param pluginSettingId the primary key of the plugin setting
 	* @return the plugin setting that was removed
-	* @throws NoSuchPluginSettingException if a plugin setting with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPluginSettingException if a plugin setting with the primary key could not be found
 	*/
 	public static PluginSetting remove(long pluginSettingId)
 		throws com.liferay.portal.exception.NoSuchPluginSettingException {
@@ -386,11 +386,11 @@ public class PluginSettingUtil {
 	}
 
 	/**
-	* Returns the plugin setting with the primary key or throws a {@link NoSuchPluginSettingException} if it could not be found.
+	* Returns the plugin setting with the primary key or throws a {@link com.liferay.portal.exception.NoSuchPluginSettingException} if it could not be found.
 	*
 	* @param pluginSettingId the primary key of the plugin setting
 	* @return the plugin setting
-	* @throws NoSuchPluginSettingException if a plugin setting with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPluginSettingException if a plugin setting with the primary key could not be found
 	*/
 	public static PluginSetting findByPrimaryKey(long pluginSettingId)
 		throws com.liferay.portal.exception.NoSuchPluginSettingException {

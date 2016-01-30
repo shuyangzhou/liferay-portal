@@ -103,7 +103,7 @@ public interface EmailAddressPersistence extends BasePersistence<EmailAddress> {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching email address
-	* @throws NoSuchEmailAddressException if a matching email address could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	*/
 	public EmailAddress findByUuid_First(java.lang.String uuid,
 		com.liferay.portal.kernel.util.OrderByComparator<EmailAddress> orderByComparator)
@@ -125,7 +125,7 @@ public interface EmailAddressPersistence extends BasePersistence<EmailAddress> {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching email address
-	* @throws NoSuchEmailAddressException if a matching email address could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	*/
 	public EmailAddress findByUuid_Last(java.lang.String uuid,
 		com.liferay.portal.kernel.util.OrderByComparator<EmailAddress> orderByComparator)
@@ -148,7 +148,7 @@ public interface EmailAddressPersistence extends BasePersistence<EmailAddress> {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next email address
-	* @throws NoSuchEmailAddressException if a email address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a email address with the primary key could not be found
 	*/
 	public EmailAddress[] findByUuid_PrevAndNext(long emailAddressId,
 		java.lang.String uuid,
@@ -241,7 +241,7 @@ public interface EmailAddressPersistence extends BasePersistence<EmailAddress> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching email address
-	* @throws NoSuchEmailAddressException if a matching email address could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	*/
 	public EmailAddress findByUuid_C_First(java.lang.String uuid,
 		long companyId,
@@ -267,7 +267,7 @@ public interface EmailAddressPersistence extends BasePersistence<EmailAddress> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching email address
-	* @throws NoSuchEmailAddressException if a matching email address could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	*/
 	public EmailAddress findByUuid_C_Last(java.lang.String uuid,
 		long companyId,
@@ -294,7 +294,7 @@ public interface EmailAddressPersistence extends BasePersistence<EmailAddress> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next email address
-	* @throws NoSuchEmailAddressException if a email address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a email address with the primary key could not be found
 	*/
 	public EmailAddress[] findByUuid_C_PrevAndNext(long emailAddressId,
 		java.lang.String uuid, long companyId,
@@ -383,7 +383,7 @@ public interface EmailAddressPersistence extends BasePersistence<EmailAddress> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching email address
-	* @throws NoSuchEmailAddressException if a matching email address could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	*/
 	public EmailAddress findByCompanyId_First(long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<EmailAddress> orderByComparator)
@@ -405,7 +405,7 @@ public interface EmailAddressPersistence extends BasePersistence<EmailAddress> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching email address
-	* @throws NoSuchEmailAddressException if a matching email address could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	*/
 	public EmailAddress findByCompanyId_Last(long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<EmailAddress> orderByComparator)
@@ -428,7 +428,7 @@ public interface EmailAddressPersistence extends BasePersistence<EmailAddress> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next email address
-	* @throws NoSuchEmailAddressException if a email address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a email address with the primary key could not be found
 	*/
 	public EmailAddress[] findByCompanyId_PrevAndNext(long emailAddressId,
 		long companyId,
@@ -515,7 +515,7 @@ public interface EmailAddressPersistence extends BasePersistence<EmailAddress> {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching email address
-	* @throws NoSuchEmailAddressException if a matching email address could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	*/
 	public EmailAddress findByUserId_First(long userId,
 		com.liferay.portal.kernel.util.OrderByComparator<EmailAddress> orderByComparator)
@@ -537,7 +537,7 @@ public interface EmailAddressPersistence extends BasePersistence<EmailAddress> {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching email address
-	* @throws NoSuchEmailAddressException if a matching email address could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	*/
 	public EmailAddress findByUserId_Last(long userId,
 		com.liferay.portal.kernel.util.OrderByComparator<EmailAddress> orderByComparator)
@@ -560,7 +560,7 @@ public interface EmailAddressPersistence extends BasePersistence<EmailAddress> {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next email address
-	* @throws NoSuchEmailAddressException if a email address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a email address with the primary key could not be found
 	*/
 	public EmailAddress[] findByUserId_PrevAndNext(long emailAddressId,
 		long userId,
@@ -653,7 +653,7 @@ public interface EmailAddressPersistence extends BasePersistence<EmailAddress> {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching email address
-	* @throws NoSuchEmailAddressException if a matching email address could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	*/
 	public EmailAddress findByC_C_First(long companyId, long classNameId,
 		com.liferay.portal.kernel.util.OrderByComparator<EmailAddress> orderByComparator)
@@ -677,7 +677,7 @@ public interface EmailAddressPersistence extends BasePersistence<EmailAddress> {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching email address
-	* @throws NoSuchEmailAddressException if a matching email address could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	*/
 	public EmailAddress findByC_C_Last(long companyId, long classNameId,
 		com.liferay.portal.kernel.util.OrderByComparator<EmailAddress> orderByComparator)
@@ -702,7 +702,7 @@ public interface EmailAddressPersistence extends BasePersistence<EmailAddress> {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next email address
-	* @throws NoSuchEmailAddressException if a email address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a email address with the primary key could not be found
 	*/
 	public EmailAddress[] findByC_C_PrevAndNext(long emailAddressId,
 		long companyId, long classNameId,
@@ -802,7 +802,7 @@ public interface EmailAddressPersistence extends BasePersistence<EmailAddress> {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching email address
-	* @throws NoSuchEmailAddressException if a matching email address could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	*/
 	public EmailAddress findByC_C_C_First(long companyId, long classNameId,
 		long classPK,
@@ -830,7 +830,7 @@ public interface EmailAddressPersistence extends BasePersistence<EmailAddress> {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching email address
-	* @throws NoSuchEmailAddressException if a matching email address could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	*/
 	public EmailAddress findByC_C_C_Last(long companyId, long classNameId,
 		long classPK,
@@ -859,7 +859,7 @@ public interface EmailAddressPersistence extends BasePersistence<EmailAddress> {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next email address
-	* @throws NoSuchEmailAddressException if a email address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a email address with the primary key could not be found
 	*/
 	public EmailAddress[] findByC_C_C_PrevAndNext(long emailAddressId,
 		long companyId, long classNameId, long classPK,
@@ -966,7 +966,7 @@ public interface EmailAddressPersistence extends BasePersistence<EmailAddress> {
 	* @param primary the primary
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching email address
-	* @throws NoSuchEmailAddressException if a matching email address could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	*/
 	public EmailAddress findByC_C_C_P_First(long companyId, long classNameId,
 		long classPK, boolean primary,
@@ -996,7 +996,7 @@ public interface EmailAddressPersistence extends BasePersistence<EmailAddress> {
 	* @param primary the primary
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching email address
-	* @throws NoSuchEmailAddressException if a matching email address could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	*/
 	public EmailAddress findByC_C_C_P_Last(long companyId, long classNameId,
 		long classPK, boolean primary,
@@ -1027,7 +1027,7 @@ public interface EmailAddressPersistence extends BasePersistence<EmailAddress> {
 	* @param primary the primary
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next email address
-	* @throws NoSuchEmailAddressException if a email address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a email address with the primary key could not be found
 	*/
 	public EmailAddress[] findByC_C_C_P_PrevAndNext(long emailAddressId,
 		long companyId, long classNameId, long classPK, boolean primary,
@@ -1084,7 +1084,7 @@ public interface EmailAddressPersistence extends BasePersistence<EmailAddress> {
 	*
 	* @param emailAddressId the primary key of the email address
 	* @return the email address that was removed
-	* @throws NoSuchEmailAddressException if a email address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a email address with the primary key could not be found
 	*/
 	public EmailAddress remove(long emailAddressId)
 		throws com.liferay.portal.exception.NoSuchEmailAddressException;
@@ -1092,11 +1092,11 @@ public interface EmailAddressPersistence extends BasePersistence<EmailAddress> {
 	public EmailAddress updateImpl(EmailAddress emailAddress);
 
 	/**
-	* Returns the email address with the primary key or throws a {@link NoSuchEmailAddressException} if it could not be found.
+	* Returns the email address with the primary key or throws a {@link com.liferay.portal.exception.NoSuchEmailAddressException} if it could not be found.
 	*
 	* @param emailAddressId the primary key of the email address
 	* @return the email address
-	* @throws NoSuchEmailAddressException if a email address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a email address with the primary key could not be found
 	*/
 	public EmailAddress findByPrimaryKey(long emailAddressId)
 		throws com.liferay.portal.exception.NoSuchEmailAddressException;

@@ -105,7 +105,7 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message boards category
-	* @throws NoSuchCategoryException if a matching message boards category could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a matching message boards category could not be found
 	*/
 	public MBCategory findByUuid_First(java.lang.String uuid,
 		com.liferay.portal.kernel.util.OrderByComparator<MBCategory> orderByComparator)
@@ -127,7 +127,7 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message boards category
-	* @throws NoSuchCategoryException if a matching message boards category could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a matching message boards category could not be found
 	*/
 	public MBCategory findByUuid_Last(java.lang.String uuid,
 		com.liferay.portal.kernel.util.OrderByComparator<MBCategory> orderByComparator)
@@ -150,7 +150,7 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message boards category
-	* @throws NoSuchCategoryException if a message boards category with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a message boards category with the primary key could not be found
 	*/
 	public MBCategory[] findByUuid_PrevAndNext(long categoryId,
 		java.lang.String uuid,
@@ -173,12 +173,12 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	public int countByUuid(java.lang.String uuid);
 
 	/**
-	* Returns the message boards category where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchCategoryException} if it could not be found.
+	* Returns the message boards category where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.portlet.messageboards.exception.NoSuchCategoryException} if it could not be found.
 	*
 	* @param uuid the uuid
 	* @param groupId the group ID
 	* @return the matching message boards category
-	* @throws NoSuchCategoryException if a matching message boards category could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a matching message boards category could not be found
 	*/
 	public MBCategory findByUUID_G(java.lang.String uuid, long groupId)
 		throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException;
@@ -293,7 +293,7 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message boards category
-	* @throws NoSuchCategoryException if a matching message boards category could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a matching message boards category could not be found
 	*/
 	public MBCategory findByUuid_C_First(java.lang.String uuid, long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<MBCategory> orderByComparator)
@@ -318,7 +318,7 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message boards category
-	* @throws NoSuchCategoryException if a matching message boards category could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a matching message boards category could not be found
 	*/
 	public MBCategory findByUuid_C_Last(java.lang.String uuid, long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<MBCategory> orderByComparator)
@@ -343,7 +343,7 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message boards category
-	* @throws NoSuchCategoryException if a message boards category with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a message boards category with the primary key could not be found
 	*/
 	public MBCategory[] findByUuid_C_PrevAndNext(long categoryId,
 		java.lang.String uuid, long companyId,
@@ -432,7 +432,7 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message boards category
-	* @throws NoSuchCategoryException if a matching message boards category could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a matching message boards category could not be found
 	*/
 	public MBCategory findByGroupId_First(long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<MBCategory> orderByComparator)
@@ -454,7 +454,7 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message boards category
-	* @throws NoSuchCategoryException if a matching message boards category could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a matching message boards category could not be found
 	*/
 	public MBCategory findByGroupId_Last(long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<MBCategory> orderByComparator)
@@ -477,7 +477,7 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message boards category
-	* @throws NoSuchCategoryException if a message boards category with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a message boards category with the primary key could not be found
 	*/
 	public MBCategory[] findByGroupId_PrevAndNext(long categoryId,
 		long groupId,
@@ -531,7 +531,7 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message boards category
-	* @throws NoSuchCategoryException if a message boards category with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a message boards category with the primary key could not be found
 	*/
 	public MBCategory[] filterFindByGroupId_PrevAndNext(long categoryId,
 		long groupId,
@@ -626,7 +626,7 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message boards category
-	* @throws NoSuchCategoryException if a matching message boards category could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a matching message boards category could not be found
 	*/
 	public MBCategory findByCompanyId_First(long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<MBCategory> orderByComparator)
@@ -648,7 +648,7 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message boards category
-	* @throws NoSuchCategoryException if a matching message boards category could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a matching message boards category could not be found
 	*/
 	public MBCategory findByCompanyId_Last(long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<MBCategory> orderByComparator)
@@ -671,7 +671,7 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message boards category
-	* @throws NoSuchCategoryException if a message boards category with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a message boards category with the primary key could not be found
 	*/
 	public MBCategory[] findByCompanyId_PrevAndNext(long categoryId,
 		long companyId,
@@ -764,7 +764,7 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	* @param parentCategoryId the parent category ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message boards category
-	* @throws NoSuchCategoryException if a matching message boards category could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a matching message boards category could not be found
 	*/
 	public MBCategory findByG_P_First(long groupId, long parentCategoryId,
 		com.liferay.portal.kernel.util.OrderByComparator<MBCategory> orderByComparator)
@@ -788,7 +788,7 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	* @param parentCategoryId the parent category ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message boards category
-	* @throws NoSuchCategoryException if a matching message boards category could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a matching message boards category could not be found
 	*/
 	public MBCategory findByG_P_Last(long groupId, long parentCategoryId,
 		com.liferay.portal.kernel.util.OrderByComparator<MBCategory> orderByComparator)
@@ -813,7 +813,7 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	* @param parentCategoryId the parent category ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message boards category
-	* @throws NoSuchCategoryException if a message boards category with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a message boards category with the primary key could not be found
 	*/
 	public MBCategory[] findByG_P_PrevAndNext(long categoryId, long groupId,
 		long parentCategoryId,
@@ -872,7 +872,7 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	* @param parentCategoryId the parent category ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message boards category
-	* @throws NoSuchCategoryException if a message boards category with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a message boards category with the primary key could not be found
 	*/
 	public MBCategory[] filterFindByG_P_PrevAndNext(long categoryId,
 		long groupId, long parentCategoryId,
@@ -1105,7 +1105,7 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message boards category
-	* @throws NoSuchCategoryException if a matching message boards category could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a matching message boards category could not be found
 	*/
 	public MBCategory findByG_S_First(long groupId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<MBCategory> orderByComparator)
@@ -1129,7 +1129,7 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message boards category
-	* @throws NoSuchCategoryException if a matching message boards category could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a matching message boards category could not be found
 	*/
 	public MBCategory findByG_S_Last(long groupId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<MBCategory> orderByComparator)
@@ -1154,7 +1154,7 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message boards category
-	* @throws NoSuchCategoryException if a message boards category with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a message boards category with the primary key could not be found
 	*/
 	public MBCategory[] findByG_S_PrevAndNext(long categoryId, long groupId,
 		int status,
@@ -1212,7 +1212,7 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message boards category
-	* @throws NoSuchCategoryException if a message boards category with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a message boards category with the primary key could not be found
 	*/
 	public MBCategory[] filterFindByG_S_PrevAndNext(long categoryId,
 		long groupId, int status,
@@ -1315,7 +1315,7 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message boards category
-	* @throws NoSuchCategoryException if a matching message boards category could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a matching message boards category could not be found
 	*/
 	public MBCategory findByC_S_First(long companyId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<MBCategory> orderByComparator)
@@ -1339,7 +1339,7 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message boards category
-	* @throws NoSuchCategoryException if a matching message boards category could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a matching message boards category could not be found
 	*/
 	public MBCategory findByC_S_Last(long companyId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<MBCategory> orderByComparator)
@@ -1364,7 +1364,7 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message boards category
-	* @throws NoSuchCategoryException if a message boards category with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a message boards category with the primary key could not be found
 	*/
 	public MBCategory[] findByC_S_PrevAndNext(long categoryId, long companyId,
 		int status,
@@ -1464,7 +1464,7 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	* @param parentCategoryId the parent category ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message boards category
-	* @throws NoSuchCategoryException if a matching message boards category could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a matching message boards category could not be found
 	*/
 	public MBCategory findByNotC_G_P_First(long categoryId, long groupId,
 		long parentCategoryId,
@@ -1492,7 +1492,7 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	* @param parentCategoryId the parent category ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message boards category
-	* @throws NoSuchCategoryException if a matching message boards category could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a matching message boards category could not be found
 	*/
 	public MBCategory findByNotC_G_P_Last(long categoryId, long groupId,
 		long parentCategoryId,
@@ -1808,7 +1808,7 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message boards category
-	* @throws NoSuchCategoryException if a matching message boards category could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a matching message boards category could not be found
 	*/
 	public MBCategory findByG_P_S_First(long groupId, long parentCategoryId,
 		int status,
@@ -1836,7 +1836,7 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message boards category
-	* @throws NoSuchCategoryException if a matching message boards category could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a matching message boards category could not be found
 	*/
 	public MBCategory findByG_P_S_Last(long groupId, long parentCategoryId,
 		int status,
@@ -1865,7 +1865,7 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message boards category
-	* @throws NoSuchCategoryException if a message boards category with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a message boards category with the primary key could not be found
 	*/
 	public MBCategory[] findByG_P_S_PrevAndNext(long categoryId, long groupId,
 		long parentCategoryId, int status,
@@ -1928,7 +1928,7 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next message boards category
-	* @throws NoSuchCategoryException if a message boards category with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a message boards category with the primary key could not be found
 	*/
 	public MBCategory[] filterFindByG_P_S_PrevAndNext(long categoryId,
 		long groupId, long parentCategoryId, int status,
@@ -2186,7 +2186,7 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching message boards category
-	* @throws NoSuchCategoryException if a matching message boards category could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a matching message boards category could not be found
 	*/
 	public MBCategory findByNotC_G_P_S_First(long categoryId, long groupId,
 		long parentCategoryId, int status,
@@ -2216,7 +2216,7 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching message boards category
-	* @throws NoSuchCategoryException if a matching message boards category could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a matching message boards category could not be found
 	*/
 	public MBCategory findByNotC_G_P_S_Last(long categoryId, long groupId,
 		long parentCategoryId, int status,
@@ -2501,7 +2501,7 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	*
 	* @param categoryId the primary key of the message boards category
 	* @return the message boards category that was removed
-	* @throws NoSuchCategoryException if a message boards category with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a message boards category with the primary key could not be found
 	*/
 	public MBCategory remove(long categoryId)
 		throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException;
@@ -2509,11 +2509,11 @@ public interface MBCategoryPersistence extends BasePersistence<MBCategory> {
 	public MBCategory updateImpl(MBCategory mbCategory);
 
 	/**
-	* Returns the message boards category with the primary key or throws a {@link NoSuchCategoryException} if it could not be found.
+	* Returns the message boards category with the primary key or throws a {@link com.liferay.portlet.messageboards.exception.NoSuchCategoryException} if it could not be found.
 	*
 	* @param categoryId the primary key of the message boards category
 	* @return the message boards category
-	* @throws NoSuchCategoryException if a message boards category with the primary key could not be found
+	* @throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException if a message boards category with the primary key could not be found
 	*/
 	public MBCategory findByPrimaryKey(long categoryId)
 		throws com.liferay.portlet.messageboards.exception.NoSuchCategoryException;

@@ -190,7 +190,7 @@ public class ResourceBlockUtil {
 	* @param name the name
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching resource block
-	* @throws NoSuchResourceBlockException if a matching resource block could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourceBlockException if a matching resource block could not be found
 	*/
 	public static ResourceBlock findByC_N_First(long companyId,
 		java.lang.String name,
@@ -222,7 +222,7 @@ public class ResourceBlockUtil {
 	* @param name the name
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching resource block
-	* @throws NoSuchResourceBlockException if a matching resource block could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourceBlockException if a matching resource block could not be found
 	*/
 	public static ResourceBlock findByC_N_Last(long companyId,
 		java.lang.String name,
@@ -255,7 +255,7 @@ public class ResourceBlockUtil {
 	* @param name the name
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next resource block
-	* @throws NoSuchResourceBlockException if a resource block with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourceBlockException if a resource block with the primary key could not be found
 	*/
 	public static ResourceBlock[] findByC_N_PrevAndNext(long resourceBlockId,
 		long companyId, java.lang.String name,
@@ -375,7 +375,7 @@ public class ResourceBlockUtil {
 	* @param name the name
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching resource block
-	* @throws NoSuchResourceBlockException if a matching resource block could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourceBlockException if a matching resource block could not be found
 	*/
 	public static ResourceBlock findByC_G_N_First(long companyId, long groupId,
 		java.lang.String name,
@@ -411,7 +411,7 @@ public class ResourceBlockUtil {
 	* @param name the name
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching resource block
-	* @throws NoSuchResourceBlockException if a matching resource block could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourceBlockException if a matching resource block could not be found
 	*/
 	public static ResourceBlock findByC_G_N_Last(long companyId, long groupId,
 		java.lang.String name,
@@ -447,7 +447,7 @@ public class ResourceBlockUtil {
 	* @param name the name
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next resource block
-	* @throws NoSuchResourceBlockException if a resource block with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourceBlockException if a resource block with the primary key could not be found
 	*/
 	public static ResourceBlock[] findByC_G_N_PrevAndNext(
 		long resourceBlockId, long companyId, long groupId,
@@ -485,14 +485,14 @@ public class ResourceBlockUtil {
 	}
 
 	/**
-	* Returns the resource block where companyId = &#63; and groupId = &#63; and name = &#63; and permissionsHash = &#63; or throws a {@link NoSuchResourceBlockException} if it could not be found.
+	* Returns the resource block where companyId = &#63; and groupId = &#63; and name = &#63; and permissionsHash = &#63; or throws a {@link com.liferay.portal.exception.NoSuchResourceBlockException} if it could not be found.
 	*
 	* @param companyId the company ID
 	* @param groupId the group ID
 	* @param name the name
 	* @param permissionsHash the permissions hash
 	* @return the matching resource block
-	* @throws NoSuchResourceBlockException if a matching resource block could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourceBlockException if a matching resource block could not be found
 	*/
 	public static ResourceBlock findByC_G_N_P(long companyId, long groupId,
 		java.lang.String name, java.lang.String permissionsHash)
@@ -598,7 +598,7 @@ public class ResourceBlockUtil {
 	*
 	* @param resourceBlockId the primary key of the resource block
 	* @return the resource block that was removed
-	* @throws NoSuchResourceBlockException if a resource block with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourceBlockException if a resource block with the primary key could not be found
 	*/
 	public static ResourceBlock remove(long resourceBlockId)
 		throws com.liferay.portal.exception.NoSuchResourceBlockException {
@@ -610,11 +610,11 @@ public class ResourceBlockUtil {
 	}
 
 	/**
-	* Returns the resource block with the primary key or throws a {@link NoSuchResourceBlockException} if it could not be found.
+	* Returns the resource block with the primary key or throws a {@link com.liferay.portal.exception.NoSuchResourceBlockException} if it could not be found.
 	*
 	* @param resourceBlockId the primary key of the resource block
 	* @return the resource block
-	* @throws NoSuchResourceBlockException if a resource block with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourceBlockException if a resource block with the primary key could not be found
 	*/
 	public static ResourceBlock findByPrimaryKey(long resourceBlockId)
 		throws com.liferay.portal.exception.NoSuchResourceBlockException {

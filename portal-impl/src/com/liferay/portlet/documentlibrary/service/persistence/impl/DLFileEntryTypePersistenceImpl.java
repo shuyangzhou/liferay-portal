@@ -47,7 +47,6 @@ import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.service.persistence.impl.TableMapper;
 import com.liferay.portal.service.persistence.impl.TableMapperFactory;
 
-import com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException;
 import com.liferay.portlet.documentlibrary.model.DLFileEntryType;
 import com.liferay.portlet.documentlibrary.model.impl.DLFileEntryTypeImpl;
 import com.liferay.portlet.documentlibrary.model.impl.DLFileEntryTypeModelImpl;
@@ -307,12 +306,12 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library file entry type
-	 * @throws NoSuchFileEntryTypeException if a matching document library file entry type could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException if a matching document library file entry type could not be found
 	 */
 	@Override
 	public DLFileEntryType findByUuid_First(String uuid,
 		OrderByComparator<DLFileEntryType> orderByComparator)
-		throws NoSuchFileEntryTypeException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException {
 		DLFileEntryType dlFileEntryType = fetchByUuid_First(uuid,
 				orderByComparator);
 
@@ -329,7 +328,7 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileEntryTypeException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException(msg.toString());
 	}
 
 	/**
@@ -357,12 +356,12 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library file entry type
-	 * @throws NoSuchFileEntryTypeException if a matching document library file entry type could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException if a matching document library file entry type could not be found
 	 */
 	@Override
 	public DLFileEntryType findByUuid_Last(String uuid,
 		OrderByComparator<DLFileEntryType> orderByComparator)
-		throws NoSuchFileEntryTypeException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException {
 		DLFileEntryType dlFileEntryType = fetchByUuid_Last(uuid,
 				orderByComparator);
 
@@ -379,7 +378,7 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileEntryTypeException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException(msg.toString());
 	}
 
 	/**
@@ -415,12 +414,12 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library file entry type
-	 * @throws NoSuchFileEntryTypeException if a document library file entry type with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException if a document library file entry type with the primary key could not be found
 	 */
 	@Override
 	public DLFileEntryType[] findByUuid_PrevAndNext(long fileEntryTypeId,
 		String uuid, OrderByComparator<DLFileEntryType> orderByComparator)
-		throws NoSuchFileEntryTypeException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException {
 		DLFileEntryType dlFileEntryType = findByPrimaryKey(fileEntryTypeId);
 
 		Session session = null;
@@ -662,16 +661,16 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 			new String[] { String.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the document library file entry type where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchFileEntryTypeException} if it could not be found.
+	 * Returns the document library file entry type where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException} if it could not be found.
 	 *
 	 * @param uuid the uuid
 	 * @param groupId the group ID
 	 * @return the matching document library file entry type
-	 * @throws NoSuchFileEntryTypeException if a matching document library file entry type could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException if a matching document library file entry type could not be found
 	 */
 	@Override
 	public DLFileEntryType findByUUID_G(String uuid, long groupId)
-		throws NoSuchFileEntryTypeException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException {
 		DLFileEntryType dlFileEntryType = fetchByUUID_G(uuid, groupId);
 
 		if (dlFileEntryType == null) {
@@ -691,7 +690,7 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchFileEntryTypeException(msg.toString());
+			throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException(msg.toString());
 		}
 
 		return dlFileEntryType;
@@ -824,7 +823,7 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	 */
 	@Override
 	public DLFileEntryType removeByUUID_G(String uuid, long groupId)
-		throws NoSuchFileEntryTypeException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException {
 		DLFileEntryType dlFileEntryType = findByUUID_G(uuid, groupId);
 
 		return remove(dlFileEntryType);
@@ -1128,12 +1127,12 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library file entry type
-	 * @throws NoSuchFileEntryTypeException if a matching document library file entry type could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException if a matching document library file entry type could not be found
 	 */
 	@Override
 	public DLFileEntryType findByUuid_C_First(String uuid, long companyId,
 		OrderByComparator<DLFileEntryType> orderByComparator)
-		throws NoSuchFileEntryTypeException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException {
 		DLFileEntryType dlFileEntryType = fetchByUuid_C_First(uuid, companyId,
 				orderByComparator);
 
@@ -1153,7 +1152,7 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileEntryTypeException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException(msg.toString());
 	}
 
 	/**
@@ -1184,12 +1183,12 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library file entry type
-	 * @throws NoSuchFileEntryTypeException if a matching document library file entry type could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException if a matching document library file entry type could not be found
 	 */
 	@Override
 	public DLFileEntryType findByUuid_C_Last(String uuid, long companyId,
 		OrderByComparator<DLFileEntryType> orderByComparator)
-		throws NoSuchFileEntryTypeException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException {
 		DLFileEntryType dlFileEntryType = fetchByUuid_C_Last(uuid, companyId,
 				orderByComparator);
 
@@ -1209,7 +1208,7 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileEntryTypeException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException(msg.toString());
 	}
 
 	/**
@@ -1247,13 +1246,13 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library file entry type
-	 * @throws NoSuchFileEntryTypeException if a document library file entry type with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException if a document library file entry type with the primary key could not be found
 	 */
 	@Override
 	public DLFileEntryType[] findByUuid_C_PrevAndNext(long fileEntryTypeId,
 		String uuid, long companyId,
 		OrderByComparator<DLFileEntryType> orderByComparator)
-		throws NoSuchFileEntryTypeException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException {
 		DLFileEntryType dlFileEntryType = findByPrimaryKey(fileEntryTypeId);
 
 		Session session = null;
@@ -1689,12 +1688,12 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library file entry type
-	 * @throws NoSuchFileEntryTypeException if a matching document library file entry type could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException if a matching document library file entry type could not be found
 	 */
 	@Override
 	public DLFileEntryType findByGroupId_First(long groupId,
 		OrderByComparator<DLFileEntryType> orderByComparator)
-		throws NoSuchFileEntryTypeException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException {
 		DLFileEntryType dlFileEntryType = fetchByGroupId_First(groupId,
 				orderByComparator);
 
@@ -1711,7 +1710,7 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileEntryTypeException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException(msg.toString());
 	}
 
 	/**
@@ -1740,12 +1739,12 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library file entry type
-	 * @throws NoSuchFileEntryTypeException if a matching document library file entry type could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException if a matching document library file entry type could not be found
 	 */
 	@Override
 	public DLFileEntryType findByGroupId_Last(long groupId,
 		OrderByComparator<DLFileEntryType> orderByComparator)
-		throws NoSuchFileEntryTypeException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException {
 		DLFileEntryType dlFileEntryType = fetchByGroupId_Last(groupId,
 				orderByComparator);
 
@@ -1762,7 +1761,7 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileEntryTypeException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException(msg.toString());
 	}
 
 	/**
@@ -1798,12 +1797,12 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library file entry type
-	 * @throws NoSuchFileEntryTypeException if a document library file entry type with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException if a document library file entry type with the primary key could not be found
 	 */
 	@Override
 	public DLFileEntryType[] findByGroupId_PrevAndNext(long fileEntryTypeId,
 		long groupId, OrderByComparator<DLFileEntryType> orderByComparator)
-		throws NoSuchFileEntryTypeException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException {
 		DLFileEntryType dlFileEntryType = findByPrimaryKey(fileEntryTypeId);
 
 		Session session = null;
@@ -2069,13 +2068,13 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library file entry type
-	 * @throws NoSuchFileEntryTypeException if a document library file entry type with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException if a document library file entry type with the primary key could not be found
 	 */
 	@Override
 	public DLFileEntryType[] filterFindByGroupId_PrevAndNext(
 		long fileEntryTypeId, long groupId,
 		OrderByComparator<DLFileEntryType> orderByComparator)
-		throws NoSuchFileEntryTypeException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByGroupId_PrevAndNext(fileEntryTypeId, groupId,
 				orderByComparator);
@@ -2834,16 +2833,16 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 			new String[] { Long.class.getName(), String.class.getName() });
 
 	/**
-	 * Returns the document library file entry type where groupId = &#63; and fileEntryTypeKey = &#63; or throws a {@link NoSuchFileEntryTypeException} if it could not be found.
+	 * Returns the document library file entry type where groupId = &#63; and fileEntryTypeKey = &#63; or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException} if it could not be found.
 	 *
 	 * @param groupId the group ID
 	 * @param fileEntryTypeKey the file entry type key
 	 * @return the matching document library file entry type
-	 * @throws NoSuchFileEntryTypeException if a matching document library file entry type could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException if a matching document library file entry type could not be found
 	 */
 	@Override
 	public DLFileEntryType findByG_F(long groupId, String fileEntryTypeKey)
-		throws NoSuchFileEntryTypeException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException {
 		DLFileEntryType dlFileEntryType = fetchByG_F(groupId, fileEntryTypeKey);
 
 		if (dlFileEntryType == null) {
@@ -2863,7 +2862,7 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchFileEntryTypeException(msg.toString());
+			throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException(msg.toString());
 		}
 
 		return dlFileEntryType;
@@ -2998,7 +2997,7 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	 */
 	@Override
 	public DLFileEntryType removeByG_F(long groupId, String fileEntryTypeKey)
-		throws NoSuchFileEntryTypeException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException {
 		DLFileEntryType dlFileEntryType = findByG_F(groupId, fileEntryTypeKey);
 
 		return remove(dlFileEntryType);
@@ -3294,11 +3293,11 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	 *
 	 * @param fileEntryTypeId the primary key of the document library file entry type
 	 * @return the document library file entry type that was removed
-	 * @throws NoSuchFileEntryTypeException if a document library file entry type with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException if a document library file entry type with the primary key could not be found
 	 */
 	@Override
 	public DLFileEntryType remove(long fileEntryTypeId)
-		throws NoSuchFileEntryTypeException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException {
 		return remove((Serializable)fileEntryTypeId);
 	}
 
@@ -3307,11 +3306,11 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	 *
 	 * @param primaryKey the primary key of the document library file entry type
 	 * @return the document library file entry type that was removed
-	 * @throws NoSuchFileEntryTypeException if a document library file entry type with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException if a document library file entry type with the primary key could not be found
 	 */
 	@Override
 	public DLFileEntryType remove(Serializable primaryKey)
-		throws NoSuchFileEntryTypeException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException {
 		Session session = null;
 
 		try {
@@ -3325,13 +3324,13 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchFileEntryTypeException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(dlFileEntryType);
 		}
-		catch (NoSuchFileEntryTypeException nsee) {
+		catch (com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -3540,11 +3539,11 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	 *
 	 * @param primaryKey the primary key of the document library file entry type
 	 * @return the document library file entry type
-	 * @throws NoSuchFileEntryTypeException if a document library file entry type with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException if a document library file entry type with the primary key could not be found
 	 */
 	@Override
 	public DLFileEntryType findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchFileEntryTypeException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException {
 		DLFileEntryType dlFileEntryType = fetchByPrimaryKey(primaryKey);
 
 		if (dlFileEntryType == null) {
@@ -3552,7 +3551,7 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchFileEntryTypeException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -3560,15 +3559,15 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	}
 
 	/**
-	 * Returns the document library file entry type with the primary key or throws a {@link NoSuchFileEntryTypeException} if it could not be found.
+	 * Returns the document library file entry type with the primary key or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException} if it could not be found.
 	 *
 	 * @param fileEntryTypeId the primary key of the document library file entry type
 	 * @return the document library file entry type
-	 * @throws NoSuchFileEntryTypeException if a document library file entry type with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException if a document library file entry type with the primary key could not be found
 	 */
 	@Override
 	public DLFileEntryType findByPrimaryKey(long fileEntryTypeId)
-		throws NoSuchFileEntryTypeException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException {
 		return findByPrimaryKey((Serializable)fileEntryTypeId);
 	}
 

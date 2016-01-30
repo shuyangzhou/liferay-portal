@@ -103,7 +103,7 @@ public interface AddressPersistence extends BasePersistence<Address> {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching address
-	* @throws NoSuchAddressException if a matching address could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	*/
 	public Address findByUuid_First(java.lang.String uuid,
 		com.liferay.portal.kernel.util.OrderByComparator<Address> orderByComparator)
@@ -125,7 +125,7 @@ public interface AddressPersistence extends BasePersistence<Address> {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching address
-	* @throws NoSuchAddressException if a matching address could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	*/
 	public Address findByUuid_Last(java.lang.String uuid,
 		com.liferay.portal.kernel.util.OrderByComparator<Address> orderByComparator)
@@ -148,7 +148,7 @@ public interface AddressPersistence extends BasePersistence<Address> {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next address
-	* @throws NoSuchAddressException if a address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a address with the primary key could not be found
 	*/
 	public Address[] findByUuid_PrevAndNext(long addressId,
 		java.lang.String uuid,
@@ -241,7 +241,7 @@ public interface AddressPersistence extends BasePersistence<Address> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching address
-	* @throws NoSuchAddressException if a matching address could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	*/
 	public Address findByUuid_C_First(java.lang.String uuid, long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<Address> orderByComparator)
@@ -265,7 +265,7 @@ public interface AddressPersistence extends BasePersistence<Address> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching address
-	* @throws NoSuchAddressException if a matching address could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	*/
 	public Address findByUuid_C_Last(java.lang.String uuid, long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<Address> orderByComparator)
@@ -290,7 +290,7 @@ public interface AddressPersistence extends BasePersistence<Address> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next address
-	* @throws NoSuchAddressException if a address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a address with the primary key could not be found
 	*/
 	public Address[] findByUuid_C_PrevAndNext(long addressId,
 		java.lang.String uuid, long companyId,
@@ -379,7 +379,7 @@ public interface AddressPersistence extends BasePersistence<Address> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching address
-	* @throws NoSuchAddressException if a matching address could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	*/
 	public Address findByCompanyId_First(long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<Address> orderByComparator)
@@ -401,7 +401,7 @@ public interface AddressPersistence extends BasePersistence<Address> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching address
-	* @throws NoSuchAddressException if a matching address could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	*/
 	public Address findByCompanyId_Last(long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<Address> orderByComparator)
@@ -424,7 +424,7 @@ public interface AddressPersistence extends BasePersistence<Address> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next address
-	* @throws NoSuchAddressException if a address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a address with the primary key could not be found
 	*/
 	public Address[] findByCompanyId_PrevAndNext(long addressId,
 		long companyId,
@@ -510,7 +510,7 @@ public interface AddressPersistence extends BasePersistence<Address> {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching address
-	* @throws NoSuchAddressException if a matching address could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	*/
 	public Address findByUserId_First(long userId,
 		com.liferay.portal.kernel.util.OrderByComparator<Address> orderByComparator)
@@ -532,7 +532,7 @@ public interface AddressPersistence extends BasePersistence<Address> {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching address
-	* @throws NoSuchAddressException if a matching address could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	*/
 	public Address findByUserId_Last(long userId,
 		com.liferay.portal.kernel.util.OrderByComparator<Address> orderByComparator)
@@ -555,7 +555,7 @@ public interface AddressPersistence extends BasePersistence<Address> {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next address
-	* @throws NoSuchAddressException if a address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a address with the primary key could not be found
 	*/
 	public Address[] findByUserId_PrevAndNext(long addressId, long userId,
 		com.liferay.portal.kernel.util.OrderByComparator<Address> orderByComparator)
@@ -646,7 +646,7 @@ public interface AddressPersistence extends BasePersistence<Address> {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching address
-	* @throws NoSuchAddressException if a matching address could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	*/
 	public Address findByC_C_First(long companyId, long classNameId,
 		com.liferay.portal.kernel.util.OrderByComparator<Address> orderByComparator)
@@ -670,7 +670,7 @@ public interface AddressPersistence extends BasePersistence<Address> {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching address
-	* @throws NoSuchAddressException if a matching address could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	*/
 	public Address findByC_C_Last(long companyId, long classNameId,
 		com.liferay.portal.kernel.util.OrderByComparator<Address> orderByComparator)
@@ -695,7 +695,7 @@ public interface AddressPersistence extends BasePersistence<Address> {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next address
-	* @throws NoSuchAddressException if a address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a address with the primary key could not be found
 	*/
 	public Address[] findByC_C_PrevAndNext(long addressId, long companyId,
 		long classNameId,
@@ -795,7 +795,7 @@ public interface AddressPersistence extends BasePersistence<Address> {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching address
-	* @throws NoSuchAddressException if a matching address could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	*/
 	public Address findByC_C_C_First(long companyId, long classNameId,
 		long classPK,
@@ -823,7 +823,7 @@ public interface AddressPersistence extends BasePersistence<Address> {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching address
-	* @throws NoSuchAddressException if a matching address could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	*/
 	public Address findByC_C_C_Last(long companyId, long classNameId,
 		long classPK,
@@ -852,7 +852,7 @@ public interface AddressPersistence extends BasePersistence<Address> {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next address
-	* @throws NoSuchAddressException if a address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a address with the primary key could not be found
 	*/
 	public Address[] findByC_C_C_PrevAndNext(long addressId, long companyId,
 		long classNameId, long classPK,
@@ -959,7 +959,7 @@ public interface AddressPersistence extends BasePersistence<Address> {
 	* @param mailing the mailing
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching address
-	* @throws NoSuchAddressException if a matching address could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	*/
 	public Address findByC_C_C_M_First(long companyId, long classNameId,
 		long classPK, boolean mailing,
@@ -989,7 +989,7 @@ public interface AddressPersistence extends BasePersistence<Address> {
 	* @param mailing the mailing
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching address
-	* @throws NoSuchAddressException if a matching address could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	*/
 	public Address findByC_C_C_M_Last(long companyId, long classNameId,
 		long classPK, boolean mailing,
@@ -1020,7 +1020,7 @@ public interface AddressPersistence extends BasePersistence<Address> {
 	* @param mailing the mailing
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next address
-	* @throws NoSuchAddressException if a address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a address with the primary key could not be found
 	*/
 	public Address[] findByC_C_C_M_PrevAndNext(long addressId, long companyId,
 		long classNameId, long classPK, boolean mailing,
@@ -1131,7 +1131,7 @@ public interface AddressPersistence extends BasePersistence<Address> {
 	* @param primary the primary
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching address
-	* @throws NoSuchAddressException if a matching address could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	*/
 	public Address findByC_C_C_P_First(long companyId, long classNameId,
 		long classPK, boolean primary,
@@ -1161,7 +1161,7 @@ public interface AddressPersistence extends BasePersistence<Address> {
 	* @param primary the primary
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching address
-	* @throws NoSuchAddressException if a matching address could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	*/
 	public Address findByC_C_C_P_Last(long companyId, long classNameId,
 		long classPK, boolean primary,
@@ -1192,7 +1192,7 @@ public interface AddressPersistence extends BasePersistence<Address> {
 	* @param primary the primary
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next address
-	* @throws NoSuchAddressException if a address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a address with the primary key could not be found
 	*/
 	public Address[] findByC_C_C_P_PrevAndNext(long addressId, long companyId,
 		long classNameId, long classPK, boolean primary,
@@ -1249,7 +1249,7 @@ public interface AddressPersistence extends BasePersistence<Address> {
 	*
 	* @param addressId the primary key of the address
 	* @return the address that was removed
-	* @throws NoSuchAddressException if a address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a address with the primary key could not be found
 	*/
 	public Address remove(long addressId)
 		throws com.liferay.portal.exception.NoSuchAddressException;
@@ -1257,11 +1257,11 @@ public interface AddressPersistence extends BasePersistence<Address> {
 	public Address updateImpl(Address address);
 
 	/**
-	* Returns the address with the primary key or throws a {@link NoSuchAddressException} if it could not be found.
+	* Returns the address with the primary key or throws a {@link com.liferay.portal.exception.NoSuchAddressException} if it could not be found.
 	*
 	* @param addressId the primary key of the address
 	* @return the address
-	* @throws NoSuchAddressException if a address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a address with the primary key could not be found
 	*/
 	public Address findByPrimaryKey(long addressId)
 		throws com.liferay.portal.exception.NoSuchAddressException;

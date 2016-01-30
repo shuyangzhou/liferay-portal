@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchResourceBlockPermissionException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -290,13 +289,13 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 	 * @param resourceBlockId the resource block ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching resource block permission
-	 * @throws NoSuchResourceBlockPermissionException if a matching resource block permission could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException if a matching resource block permission could not be found
 	 */
 	@Override
 	public ResourceBlockPermission findByResourceBlockId_First(
 		long resourceBlockId,
 		OrderByComparator<ResourceBlockPermission> orderByComparator)
-		throws NoSuchResourceBlockPermissionException {
+		throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException {
 		ResourceBlockPermission resourceBlockPermission = fetchByResourceBlockId_First(resourceBlockId,
 				orderByComparator);
 
@@ -313,7 +312,7 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchResourceBlockPermissionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchResourceBlockPermissionException(msg.toString());
 	}
 
 	/**
@@ -343,13 +342,13 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 	 * @param resourceBlockId the resource block ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching resource block permission
-	 * @throws NoSuchResourceBlockPermissionException if a matching resource block permission could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException if a matching resource block permission could not be found
 	 */
 	@Override
 	public ResourceBlockPermission findByResourceBlockId_Last(
 		long resourceBlockId,
 		OrderByComparator<ResourceBlockPermission> orderByComparator)
-		throws NoSuchResourceBlockPermissionException {
+		throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException {
 		ResourceBlockPermission resourceBlockPermission = fetchByResourceBlockId_Last(resourceBlockId,
 				orderByComparator);
 
@@ -366,7 +365,7 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchResourceBlockPermissionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchResourceBlockPermissionException(msg.toString());
 	}
 
 	/**
@@ -403,13 +402,13 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 	 * @param resourceBlockId the resource block ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next resource block permission
-	 * @throws NoSuchResourceBlockPermissionException if a resource block permission with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException if a resource block permission with the primary key could not be found
 	 */
 	@Override
 	public ResourceBlockPermission[] findByResourceBlockId_PrevAndNext(
 		long resourceBlockPermissionId, long resourceBlockId,
 		OrderByComparator<ResourceBlockPermission> orderByComparator)
-		throws NoSuchResourceBlockPermissionException {
+		throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException {
 		ResourceBlockPermission resourceBlockPermission = findByPrimaryKey(resourceBlockPermissionId);
 
 		Session session = null;
@@ -806,12 +805,12 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 	 * @param roleId the role ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching resource block permission
-	 * @throws NoSuchResourceBlockPermissionException if a matching resource block permission could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException if a matching resource block permission could not be found
 	 */
 	@Override
 	public ResourceBlockPermission findByRoleId_First(long roleId,
 		OrderByComparator<ResourceBlockPermission> orderByComparator)
-		throws NoSuchResourceBlockPermissionException {
+		throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException {
 		ResourceBlockPermission resourceBlockPermission = fetchByRoleId_First(roleId,
 				orderByComparator);
 
@@ -828,7 +827,7 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchResourceBlockPermissionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchResourceBlockPermissionException(msg.toString());
 	}
 
 	/**
@@ -857,12 +856,12 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 	 * @param roleId the role ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching resource block permission
-	 * @throws NoSuchResourceBlockPermissionException if a matching resource block permission could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException if a matching resource block permission could not be found
 	 */
 	@Override
 	public ResourceBlockPermission findByRoleId_Last(long roleId,
 		OrderByComparator<ResourceBlockPermission> orderByComparator)
-		throws NoSuchResourceBlockPermissionException {
+		throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException {
 		ResourceBlockPermission resourceBlockPermission = fetchByRoleId_Last(roleId,
 				orderByComparator);
 
@@ -879,7 +878,7 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchResourceBlockPermissionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchResourceBlockPermissionException(msg.toString());
 	}
 
 	/**
@@ -915,13 +914,13 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 	 * @param roleId the role ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next resource block permission
-	 * @throws NoSuchResourceBlockPermissionException if a resource block permission with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException if a resource block permission with the primary key could not be found
 	 */
 	@Override
 	public ResourceBlockPermission[] findByRoleId_PrevAndNext(
 		long resourceBlockPermissionId, long roleId,
 		OrderByComparator<ResourceBlockPermission> orderByComparator)
-		throws NoSuchResourceBlockPermissionException {
+		throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException {
 		ResourceBlockPermission resourceBlockPermission = findByPrimaryKey(resourceBlockPermissionId);
 
 		Session session = null;
@@ -1134,16 +1133,16 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 			new String[] { Long.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the resource block permission where resourceBlockId = &#63; and roleId = &#63; or throws a {@link NoSuchResourceBlockPermissionException} if it could not be found.
+	 * Returns the resource block permission where resourceBlockId = &#63; and roleId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchResourceBlockPermissionException} if it could not be found.
 	 *
 	 * @param resourceBlockId the resource block ID
 	 * @param roleId the role ID
 	 * @return the matching resource block permission
-	 * @throws NoSuchResourceBlockPermissionException if a matching resource block permission could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException if a matching resource block permission could not be found
 	 */
 	@Override
 	public ResourceBlockPermission findByR_R(long resourceBlockId, long roleId)
-		throws NoSuchResourceBlockPermissionException {
+		throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException {
 		ResourceBlockPermission resourceBlockPermission = fetchByR_R(resourceBlockId,
 				roleId);
 
@@ -1164,7 +1163,7 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchResourceBlockPermissionException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchResourceBlockPermissionException(msg.toString());
 		}
 
 		return resourceBlockPermission;
@@ -1282,7 +1281,7 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 	 */
 	@Override
 	public ResourceBlockPermission removeByR_R(long resourceBlockId, long roleId)
-		throws NoSuchResourceBlockPermissionException {
+		throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException {
 		ResourceBlockPermission resourceBlockPermission = findByR_R(resourceBlockId,
 				roleId);
 
@@ -1518,11 +1517,11 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 	 *
 	 * @param resourceBlockPermissionId the primary key of the resource block permission
 	 * @return the resource block permission that was removed
-	 * @throws NoSuchResourceBlockPermissionException if a resource block permission with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException if a resource block permission with the primary key could not be found
 	 */
 	@Override
 	public ResourceBlockPermission remove(long resourceBlockPermissionId)
-		throws NoSuchResourceBlockPermissionException {
+		throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException {
 		return remove((Serializable)resourceBlockPermissionId);
 	}
 
@@ -1531,11 +1530,11 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 	 *
 	 * @param primaryKey the primary key of the resource block permission
 	 * @return the resource block permission that was removed
-	 * @throws NoSuchResourceBlockPermissionException if a resource block permission with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException if a resource block permission with the primary key could not be found
 	 */
 	@Override
 	public ResourceBlockPermission remove(Serializable primaryKey)
-		throws NoSuchResourceBlockPermissionException {
+		throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException {
 		Session session = null;
 
 		try {
@@ -1549,13 +1548,13 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchResourceBlockPermissionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchResourceBlockPermissionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(resourceBlockPermission);
 		}
-		catch (NoSuchResourceBlockPermissionException nsee) {
+		catch (com.liferay.portal.exception.NoSuchResourceBlockPermissionException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -1714,11 +1713,11 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 	 *
 	 * @param primaryKey the primary key of the resource block permission
 	 * @return the resource block permission
-	 * @throws NoSuchResourceBlockPermissionException if a resource block permission with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException if a resource block permission with the primary key could not be found
 	 */
 	@Override
 	public ResourceBlockPermission findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchResourceBlockPermissionException {
+		throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException {
 		ResourceBlockPermission resourceBlockPermission = fetchByPrimaryKey(primaryKey);
 
 		if (resourceBlockPermission == null) {
@@ -1726,7 +1725,7 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchResourceBlockPermissionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchResourceBlockPermissionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -1734,16 +1733,16 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 	}
 
 	/**
-	 * Returns the resource block permission with the primary key or throws a {@link NoSuchResourceBlockPermissionException} if it could not be found.
+	 * Returns the resource block permission with the primary key or throws a {@link com.liferay.portal.exception.NoSuchResourceBlockPermissionException} if it could not be found.
 	 *
 	 * @param resourceBlockPermissionId the primary key of the resource block permission
 	 * @return the resource block permission
-	 * @throws NoSuchResourceBlockPermissionException if a resource block permission with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException if a resource block permission with the primary key could not be found
 	 */
 	@Override
 	public ResourceBlockPermission findByPrimaryKey(
 		long resourceBlockPermissionId)
-		throws NoSuchResourceBlockPermissionException {
+		throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException {
 		return findByPrimaryKey((Serializable)resourceBlockPermissionId);
 	}
 

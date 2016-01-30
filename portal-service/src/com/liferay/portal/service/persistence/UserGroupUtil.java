@@ -181,7 +181,7 @@ public class UserGroupUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user group
-	* @throws NoSuchUserGroupException if a matching user group could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupException if a matching user group could not be found
 	*/
 	public static UserGroup findByUuid_First(java.lang.String uuid,
 		OrderByComparator<UserGroup> orderByComparator)
@@ -207,7 +207,7 @@ public class UserGroupUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user group
-	* @throws NoSuchUserGroupException if a matching user group could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupException if a matching user group could not be found
 	*/
 	public static UserGroup findByUuid_Last(java.lang.String uuid,
 		OrderByComparator<UserGroup> orderByComparator)
@@ -234,7 +234,7 @@ public class UserGroupUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user group
-	* @throws NoSuchUserGroupException if a user group with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupException if a user group with the primary key could not be found
 	*/
 	public static UserGroup[] findByUuid_PrevAndNext(long userGroupId,
 		java.lang.String uuid, OrderByComparator<UserGroup> orderByComparator)
@@ -296,7 +296,7 @@ public class UserGroupUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user group
-	* @throws NoSuchUserGroupException if a user group with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupException if a user group with the primary key could not be found
 	*/
 	public static UserGroup[] filterFindByUuid_PrevAndNext(long userGroupId,
 		java.lang.String uuid, OrderByComparator<UserGroup> orderByComparator)
@@ -417,7 +417,7 @@ public class UserGroupUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user group
-	* @throws NoSuchUserGroupException if a matching user group could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupException if a matching user group could not be found
 	*/
 	public static UserGroup findByUuid_C_First(java.lang.String uuid,
 		long companyId, OrderByComparator<UserGroup> orderByComparator)
@@ -447,7 +447,7 @@ public class UserGroupUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user group
-	* @throws NoSuchUserGroupException if a matching user group could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupException if a matching user group could not be found
 	*/
 	public static UserGroup findByUuid_C_Last(java.lang.String uuid,
 		long companyId, OrderByComparator<UserGroup> orderByComparator)
@@ -478,7 +478,7 @@ public class UserGroupUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user group
-	* @throws NoSuchUserGroupException if a user group with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupException if a user group with the primary key could not be found
 	*/
 	public static UserGroup[] findByUuid_C_PrevAndNext(long userGroupId,
 		java.lang.String uuid, long companyId,
@@ -549,7 +549,7 @@ public class UserGroupUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user group
-	* @throws NoSuchUserGroupException if a user group with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupException if a user group with the primary key could not be found
 	*/
 	public static UserGroup[] filterFindByUuid_C_PrevAndNext(long userGroupId,
 		java.lang.String uuid, long companyId,
@@ -666,7 +666,7 @@ public class UserGroupUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user group
-	* @throws NoSuchUserGroupException if a matching user group could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupException if a matching user group could not be found
 	*/
 	public static UserGroup findByCompanyId_First(long companyId,
 		OrderByComparator<UserGroup> orderByComparator)
@@ -694,7 +694,7 @@ public class UserGroupUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user group
-	* @throws NoSuchUserGroupException if a matching user group could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupException if a matching user group could not be found
 	*/
 	public static UserGroup findByCompanyId_Last(long companyId,
 		OrderByComparator<UserGroup> orderByComparator)
@@ -723,7 +723,7 @@ public class UserGroupUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user group
-	* @throws NoSuchUserGroupException if a user group with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupException if a user group with the primary key could not be found
 	*/
 	public static UserGroup[] findByCompanyId_PrevAndNext(long userGroupId,
 		long companyId, OrderByComparator<UserGroup> orderByComparator)
@@ -787,7 +787,7 @@ public class UserGroupUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user group
-	* @throws NoSuchUserGroupException if a user group with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupException if a user group with the primary key could not be found
 	*/
 	public static UserGroup[] filterFindByCompanyId_PrevAndNext(
 		long userGroupId, long companyId,
@@ -911,7 +911,7 @@ public class UserGroupUtil {
 	* @param parentUserGroupId the parent user group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user group
-	* @throws NoSuchUserGroupException if a matching user group could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupException if a matching user group could not be found
 	*/
 	public static UserGroup findByC_P_First(long companyId,
 		long parentUserGroupId, OrderByComparator<UserGroup> orderByComparator)
@@ -943,7 +943,7 @@ public class UserGroupUtil {
 	* @param parentUserGroupId the parent user group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user group
-	* @throws NoSuchUserGroupException if a matching user group could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupException if a matching user group could not be found
 	*/
 	public static UserGroup findByC_P_Last(long companyId,
 		long parentUserGroupId, OrderByComparator<UserGroup> orderByComparator)
@@ -976,7 +976,7 @@ public class UserGroupUtil {
 	* @param parentUserGroupId the parent user group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user group
-	* @throws NoSuchUserGroupException if a user group with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupException if a user group with the primary key could not be found
 	*/
 	public static UserGroup[] findByC_P_PrevAndNext(long userGroupId,
 		long companyId, long parentUserGroupId,
@@ -1048,7 +1048,7 @@ public class UserGroupUtil {
 	* @param parentUserGroupId the parent user group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user group
-	* @throws NoSuchUserGroupException if a user group with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupException if a user group with the primary key could not be found
 	*/
 	public static UserGroup[] filterFindByC_P_PrevAndNext(long userGroupId,
 		long companyId, long parentUserGroupId,
@@ -1092,12 +1092,12 @@ public class UserGroupUtil {
 	}
 
 	/**
-	* Returns the user group where companyId = &#63; and name = &#63; or throws a {@link NoSuchUserGroupException} if it could not be found.
+	* Returns the user group where companyId = &#63; and name = &#63; or throws a {@link com.liferay.portal.exception.NoSuchUserGroupException} if it could not be found.
 	*
 	* @param companyId the company ID
 	* @param name the name
 	* @return the matching user group
-	* @throws NoSuchUserGroupException if a matching user group could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupException if a matching user group could not be found
 	*/
 	public static UserGroup findByC_N(long companyId, java.lang.String name)
 		throws com.liferay.portal.exception.NoSuchUserGroupException {
@@ -1184,7 +1184,7 @@ public class UserGroupUtil {
 	*
 	* @param userGroupId the primary key of the user group
 	* @return the user group that was removed
-	* @throws NoSuchUserGroupException if a user group with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupException if a user group with the primary key could not be found
 	*/
 	public static UserGroup remove(long userGroupId)
 		throws com.liferay.portal.exception.NoSuchUserGroupException {
@@ -1196,11 +1196,11 @@ public class UserGroupUtil {
 	}
 
 	/**
-	* Returns the user group with the primary key or throws a {@link NoSuchUserGroupException} if it could not be found.
+	* Returns the user group with the primary key or throws a {@link com.liferay.portal.exception.NoSuchUserGroupException} if it could not be found.
 	*
 	* @param userGroupId the primary key of the user group
 	* @return the user group
-	* @throws NoSuchUserGroupException if a user group with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserGroupException if a user group with the primary key could not be found
 	*/
 	public static UserGroup findByPrimaryKey(long userGroupId)
 		throws com.liferay.portal.exception.NoSuchUserGroupException {
