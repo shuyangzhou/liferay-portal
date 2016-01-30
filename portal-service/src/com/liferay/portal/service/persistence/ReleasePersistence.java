@@ -39,11 +39,11 @@ public interface ReleasePersistence extends BasePersistence<Release> {
 	 */
 
 	/**
-	* Returns the release where servletContextName = &#63; or throws a {@link NoSuchReleaseException} if it could not be found.
+	* Returns the release where servletContextName = &#63; or throws a {@link com.liferay.portal.exception.NoSuchReleaseException} if it could not be found.
 	*
 	* @param servletContextName the servlet context name
 	* @return the matching release
-	* @throws NoSuchReleaseException if a matching release could not be found
+	* @throws com.liferay.portal.exception.NoSuchReleaseException if a matching release could not be found
 	*/
 	public Release findByServletContextName(java.lang.String servletContextName)
 		throws com.liferay.portal.exception.NoSuchReleaseException;
@@ -112,7 +112,7 @@ public interface ReleasePersistence extends BasePersistence<Release> {
 	*
 	* @param releaseId the primary key of the release
 	* @return the release that was removed
-	* @throws NoSuchReleaseException if a release with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchReleaseException if a release with the primary key could not be found
 	*/
 	public Release remove(long releaseId)
 		throws com.liferay.portal.exception.NoSuchReleaseException;
@@ -120,11 +120,11 @@ public interface ReleasePersistence extends BasePersistence<Release> {
 	public Release updateImpl(Release release);
 
 	/**
-	* Returns the release with the primary key or throws a {@link NoSuchReleaseException} if it could not be found.
+	* Returns the release with the primary key or throws a {@link com.liferay.portal.exception.NoSuchReleaseException} if it could not be found.
 	*
 	* @param releaseId the primary key of the release
 	* @return the release
-	* @throws NoSuchReleaseException if a release with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchReleaseException if a release with the primary key could not be found
 	*/
 	public Release findByPrimaryKey(long releaseId)
 		throws com.liferay.portal.exception.NoSuchReleaseException;

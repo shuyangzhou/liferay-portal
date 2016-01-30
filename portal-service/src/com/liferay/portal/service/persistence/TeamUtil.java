@@ -178,7 +178,7 @@ public class TeamUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching team
-	* @throws NoSuchTeamException if a matching team could not be found
+	* @throws com.liferay.portal.exception.NoSuchTeamException if a matching team could not be found
 	*/
 	public static Team findByUuid_First(java.lang.String uuid,
 		OrderByComparator<Team> orderByComparator)
@@ -204,7 +204,7 @@ public class TeamUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching team
-	* @throws NoSuchTeamException if a matching team could not be found
+	* @throws com.liferay.portal.exception.NoSuchTeamException if a matching team could not be found
 	*/
 	public static Team findByUuid_Last(java.lang.String uuid,
 		OrderByComparator<Team> orderByComparator)
@@ -231,7 +231,7 @@ public class TeamUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next team
-	* @throws NoSuchTeamException if a team with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchTeamException if a team with the primary key could not be found
 	*/
 	public static Team[] findByUuid_PrevAndNext(long teamId,
 		java.lang.String uuid, OrderByComparator<Team> orderByComparator)
@@ -260,12 +260,12 @@ public class TeamUtil {
 	}
 
 	/**
-	* Returns the team where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchTeamException} if it could not be found.
+	* Returns the team where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchTeamException} if it could not be found.
 	*
 	* @param uuid the uuid
 	* @param groupId the group ID
 	* @return the matching team
-	* @throws NoSuchTeamException if a matching team could not be found
+	* @throws com.liferay.portal.exception.NoSuchTeamException if a matching team could not be found
 	*/
 	public static Team findByUUID_G(java.lang.String uuid, long groupId)
 		throws com.liferay.portal.exception.NoSuchTeamException {
@@ -399,7 +399,7 @@ public class TeamUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching team
-	* @throws NoSuchTeamException if a matching team could not be found
+	* @throws com.liferay.portal.exception.NoSuchTeamException if a matching team could not be found
 	*/
 	public static Team findByUuid_C_First(java.lang.String uuid,
 		long companyId, OrderByComparator<Team> orderByComparator)
@@ -429,7 +429,7 @@ public class TeamUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching team
-	* @throws NoSuchTeamException if a matching team could not be found
+	* @throws com.liferay.portal.exception.NoSuchTeamException if a matching team could not be found
 	*/
 	public static Team findByUuid_C_Last(java.lang.String uuid, long companyId,
 		OrderByComparator<Team> orderByComparator)
@@ -460,7 +460,7 @@ public class TeamUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next team
-	* @throws NoSuchTeamException if a team with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchTeamException if a team with the primary key could not be found
 	*/
 	public static Team[] findByUuid_C_PrevAndNext(long teamId,
 		java.lang.String uuid, long companyId,
@@ -564,7 +564,7 @@ public class TeamUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching team
-	* @throws NoSuchTeamException if a matching team could not be found
+	* @throws com.liferay.portal.exception.NoSuchTeamException if a matching team could not be found
 	*/
 	public static Team findByGroupId_First(long groupId,
 		OrderByComparator<Team> orderByComparator)
@@ -590,7 +590,7 @@ public class TeamUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching team
-	* @throws NoSuchTeamException if a matching team could not be found
+	* @throws com.liferay.portal.exception.NoSuchTeamException if a matching team could not be found
 	*/
 	public static Team findByGroupId_Last(long groupId,
 		OrderByComparator<Team> orderByComparator)
@@ -617,7 +617,7 @@ public class TeamUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next team
-	* @throws NoSuchTeamException if a team with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchTeamException if a team with the primary key could not be found
 	*/
 	public static Team[] findByGroupId_PrevAndNext(long teamId, long groupId,
 		OrderByComparator<Team> orderByComparator)
@@ -679,7 +679,7 @@ public class TeamUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next team
-	* @throws NoSuchTeamException if a team with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchTeamException if a team with the primary key could not be found
 	*/
 	public static Team[] filterFindByGroupId_PrevAndNext(long teamId,
 		long groupId, OrderByComparator<Team> orderByComparator)
@@ -719,12 +719,12 @@ public class TeamUtil {
 	}
 
 	/**
-	* Returns the team where groupId = &#63; and name = &#63; or throws a {@link NoSuchTeamException} if it could not be found.
+	* Returns the team where groupId = &#63; and name = &#63; or throws a {@link com.liferay.portal.exception.NoSuchTeamException} if it could not be found.
 	*
 	* @param groupId the group ID
 	* @param name the name
 	* @return the matching team
-	* @throws NoSuchTeamException if a matching team could not be found
+	* @throws com.liferay.portal.exception.NoSuchTeamException if a matching team could not be found
 	*/
 	public static Team findByG_N(long groupId, java.lang.String name)
 		throws com.liferay.portal.exception.NoSuchTeamException {
@@ -811,7 +811,7 @@ public class TeamUtil {
 	*
 	* @param teamId the primary key of the team
 	* @return the team that was removed
-	* @throws NoSuchTeamException if a team with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchTeamException if a team with the primary key could not be found
 	*/
 	public static Team remove(long teamId)
 		throws com.liferay.portal.exception.NoSuchTeamException {
@@ -823,11 +823,11 @@ public class TeamUtil {
 	}
 
 	/**
-	* Returns the team with the primary key or throws a {@link NoSuchTeamException} if it could not be found.
+	* Returns the team with the primary key or throws a {@link com.liferay.portal.exception.NoSuchTeamException} if it could not be found.
 	*
 	* @param teamId the primary key of the team
 	* @return the team
-	* @throws NoSuchTeamException if a team with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchTeamException if a team with the primary key could not be found
 	*/
 	public static Team findByPrimaryKey(long teamId)
 		throws com.liferay.portal.exception.NoSuchTeamException {

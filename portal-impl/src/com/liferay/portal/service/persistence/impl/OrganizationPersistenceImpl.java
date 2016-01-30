@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchOrganizationException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -301,12 +300,12 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching organization
-	 * @throws NoSuchOrganizationException if a matching organization could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrganizationException if a matching organization could not be found
 	 */
 	@Override
 	public Organization findByUuid_First(String uuid,
 		OrderByComparator<Organization> orderByComparator)
-		throws NoSuchOrganizationException {
+		throws com.liferay.portal.exception.NoSuchOrganizationException {
 		Organization organization = fetchByUuid_First(uuid, orderByComparator);
 
 		if (organization != null) {
@@ -322,7 +321,7 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchOrganizationException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchOrganizationException(msg.toString());
 	}
 
 	/**
@@ -350,12 +349,12 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching organization
-	 * @throws NoSuchOrganizationException if a matching organization could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrganizationException if a matching organization could not be found
 	 */
 	@Override
 	public Organization findByUuid_Last(String uuid,
 		OrderByComparator<Organization> orderByComparator)
-		throws NoSuchOrganizationException {
+		throws com.liferay.portal.exception.NoSuchOrganizationException {
 		Organization organization = fetchByUuid_Last(uuid, orderByComparator);
 
 		if (organization != null) {
@@ -371,7 +370,7 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchOrganizationException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchOrganizationException(msg.toString());
 	}
 
 	/**
@@ -407,12 +406,12 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next organization
-	 * @throws NoSuchOrganizationException if a organization with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrganizationException if a organization with the primary key could not be found
 	 */
 	@Override
 	public Organization[] findByUuid_PrevAndNext(long organizationId,
 		String uuid, OrderByComparator<Organization> orderByComparator)
-		throws NoSuchOrganizationException {
+		throws com.liferay.portal.exception.NoSuchOrganizationException {
 		Organization organization = findByPrimaryKey(organizationId);
 
 		Session session = null;
@@ -704,12 +703,12 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next organization
-	 * @throws NoSuchOrganizationException if a organization with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrganizationException if a organization with the primary key could not be found
 	 */
 	@Override
 	public Organization[] filterFindByUuid_PrevAndNext(long organizationId,
 		String uuid, OrderByComparator<Organization> orderByComparator)
-		throws NoSuchOrganizationException {
+		throws com.liferay.portal.exception.NoSuchOrganizationException {
 		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByUuid_PrevAndNext(organizationId, uuid,
 				orderByComparator);
@@ -1265,12 +1264,12 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching organization
-	 * @throws NoSuchOrganizationException if a matching organization could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrganizationException if a matching organization could not be found
 	 */
 	@Override
 	public Organization findByUuid_C_First(String uuid, long companyId,
 		OrderByComparator<Organization> orderByComparator)
-		throws NoSuchOrganizationException {
+		throws com.liferay.portal.exception.NoSuchOrganizationException {
 		Organization organization = fetchByUuid_C_First(uuid, companyId,
 				orderByComparator);
 
@@ -1290,7 +1289,7 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchOrganizationException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchOrganizationException(msg.toString());
 	}
 
 	/**
@@ -1321,12 +1320,12 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching organization
-	 * @throws NoSuchOrganizationException if a matching organization could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrganizationException if a matching organization could not be found
 	 */
 	@Override
 	public Organization findByUuid_C_Last(String uuid, long companyId,
 		OrderByComparator<Organization> orderByComparator)
-		throws NoSuchOrganizationException {
+		throws com.liferay.portal.exception.NoSuchOrganizationException {
 		Organization organization = fetchByUuid_C_Last(uuid, companyId,
 				orderByComparator);
 
@@ -1346,7 +1345,7 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchOrganizationException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchOrganizationException(msg.toString());
 	}
 
 	/**
@@ -1384,13 +1383,13 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next organization
-	 * @throws NoSuchOrganizationException if a organization with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrganizationException if a organization with the primary key could not be found
 	 */
 	@Override
 	public Organization[] findByUuid_C_PrevAndNext(long organizationId,
 		String uuid, long companyId,
 		OrderByComparator<Organization> orderByComparator)
-		throws NoSuchOrganizationException {
+		throws com.liferay.portal.exception.NoSuchOrganizationException {
 		Organization organization = findByPrimaryKey(organizationId);
 
 		Session session = null;
@@ -1696,13 +1695,13 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next organization
-	 * @throws NoSuchOrganizationException if a organization with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrganizationException if a organization with the primary key could not be found
 	 */
 	@Override
 	public Organization[] filterFindByUuid_C_PrevAndNext(long organizationId,
 		String uuid, long companyId,
 		OrderByComparator<Organization> orderByComparator)
-		throws NoSuchOrganizationException {
+		throws com.liferay.portal.exception.NoSuchOrganizationException {
 		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByUuid_C_PrevAndNext(organizationId, uuid, companyId,
 				orderByComparator);
@@ -2245,12 +2244,12 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching organization
-	 * @throws NoSuchOrganizationException if a matching organization could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrganizationException if a matching organization could not be found
 	 */
 	@Override
 	public Organization findByCompanyId_First(long companyId,
 		OrderByComparator<Organization> orderByComparator)
-		throws NoSuchOrganizationException {
+		throws com.liferay.portal.exception.NoSuchOrganizationException {
 		Organization organization = fetchByCompanyId_First(companyId,
 				orderByComparator);
 
@@ -2267,7 +2266,7 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchOrganizationException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchOrganizationException(msg.toString());
 	}
 
 	/**
@@ -2296,12 +2295,12 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching organization
-	 * @throws NoSuchOrganizationException if a matching organization could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrganizationException if a matching organization could not be found
 	 */
 	@Override
 	public Organization findByCompanyId_Last(long companyId,
 		OrderByComparator<Organization> orderByComparator)
-		throws NoSuchOrganizationException {
+		throws com.liferay.portal.exception.NoSuchOrganizationException {
 		Organization organization = fetchByCompanyId_Last(companyId,
 				orderByComparator);
 
@@ -2318,7 +2317,7 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchOrganizationException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchOrganizationException(msg.toString());
 	}
 
 	/**
@@ -2354,12 +2353,12 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next organization
-	 * @throws NoSuchOrganizationException if a organization with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrganizationException if a organization with the primary key could not be found
 	 */
 	@Override
 	public Organization[] findByCompanyId_PrevAndNext(long organizationId,
 		long companyId, OrderByComparator<Organization> orderByComparator)
-		throws NoSuchOrganizationException {
+		throws com.liferay.portal.exception.NoSuchOrganizationException {
 		Organization organization = findByPrimaryKey(organizationId);
 
 		Session session = null;
@@ -2625,13 +2624,13 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next organization
-	 * @throws NoSuchOrganizationException if a organization with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrganizationException if a organization with the primary key could not be found
 	 */
 	@Override
 	public Organization[] filterFindByCompanyId_PrevAndNext(
 		long organizationId, long companyId,
 		OrderByComparator<Organization> orderByComparator)
-		throws NoSuchOrganizationException {
+		throws com.liferay.portal.exception.NoSuchOrganizationException {
 		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByCompanyId_PrevAndNext(organizationId, companyId,
 				orderByComparator);
@@ -3111,12 +3110,12 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching organization
-	 * @throws NoSuchOrganizationException if a matching organization could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrganizationException if a matching organization could not be found
 	 */
 	@Override
 	public Organization findByLocations_First(long companyId,
 		OrderByComparator<Organization> orderByComparator)
-		throws NoSuchOrganizationException {
+		throws com.liferay.portal.exception.NoSuchOrganizationException {
 		Organization organization = fetchByLocations_First(companyId,
 				orderByComparator);
 
@@ -3133,7 +3132,7 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchOrganizationException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchOrganizationException(msg.toString());
 	}
 
 	/**
@@ -3162,12 +3161,12 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching organization
-	 * @throws NoSuchOrganizationException if a matching organization could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrganizationException if a matching organization could not be found
 	 */
 	@Override
 	public Organization findByLocations_Last(long companyId,
 		OrderByComparator<Organization> orderByComparator)
-		throws NoSuchOrganizationException {
+		throws com.liferay.portal.exception.NoSuchOrganizationException {
 		Organization organization = fetchByLocations_Last(companyId,
 				orderByComparator);
 
@@ -3184,7 +3183,7 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchOrganizationException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchOrganizationException(msg.toString());
 	}
 
 	/**
@@ -3220,12 +3219,12 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next organization
-	 * @throws NoSuchOrganizationException if a organization with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrganizationException if a organization with the primary key could not be found
 	 */
 	@Override
 	public Organization[] findByLocations_PrevAndNext(long organizationId,
 		long companyId, OrderByComparator<Organization> orderByComparator)
-		throws NoSuchOrganizationException {
+		throws com.liferay.portal.exception.NoSuchOrganizationException {
 		Organization organization = findByPrimaryKey(organizationId);
 
 		Session session = null;
@@ -3491,13 +3490,13 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next organization
-	 * @throws NoSuchOrganizationException if a organization with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrganizationException if a organization with the primary key could not be found
 	 */
 	@Override
 	public Organization[] filterFindByLocations_PrevAndNext(
 		long organizationId, long companyId,
 		OrderByComparator<Organization> orderByComparator)
-		throws NoSuchOrganizationException {
+		throws com.liferay.portal.exception.NoSuchOrganizationException {
 		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByLocations_PrevAndNext(organizationId, companyId,
 				orderByComparator);
@@ -3995,13 +3994,13 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @param parentOrganizationId the parent organization ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching organization
-	 * @throws NoSuchOrganizationException if a matching organization could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrganizationException if a matching organization could not be found
 	 */
 	@Override
 	public Organization findByC_P_First(long companyId,
 		long parentOrganizationId,
 		OrderByComparator<Organization> orderByComparator)
-		throws NoSuchOrganizationException {
+		throws com.liferay.portal.exception.NoSuchOrganizationException {
 		Organization organization = fetchByC_P_First(companyId,
 				parentOrganizationId, orderByComparator);
 
@@ -4021,7 +4020,7 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchOrganizationException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchOrganizationException(msg.toString());
 	}
 
 	/**
@@ -4053,13 +4052,13 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @param parentOrganizationId the parent organization ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching organization
-	 * @throws NoSuchOrganizationException if a matching organization could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrganizationException if a matching organization could not be found
 	 */
 	@Override
 	public Organization findByC_P_Last(long companyId,
 		long parentOrganizationId,
 		OrderByComparator<Organization> orderByComparator)
-		throws NoSuchOrganizationException {
+		throws com.liferay.portal.exception.NoSuchOrganizationException {
 		Organization organization = fetchByC_P_Last(companyId,
 				parentOrganizationId, orderByComparator);
 
@@ -4079,7 +4078,7 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchOrganizationException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchOrganizationException(msg.toString());
 	}
 
 	/**
@@ -4118,13 +4117,13 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @param parentOrganizationId the parent organization ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next organization
-	 * @throws NoSuchOrganizationException if a organization with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrganizationException if a organization with the primary key could not be found
 	 */
 	@Override
 	public Organization[] findByC_P_PrevAndNext(long organizationId,
 		long companyId, long parentOrganizationId,
 		OrderByComparator<Organization> orderByComparator)
-		throws NoSuchOrganizationException {
+		throws com.liferay.portal.exception.NoSuchOrganizationException {
 		Organization organization = findByPrimaryKey(organizationId);
 
 		Session session = null;
@@ -4405,13 +4404,13 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @param parentOrganizationId the parent organization ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next organization
-	 * @throws NoSuchOrganizationException if a organization with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrganizationException if a organization with the primary key could not be found
 	 */
 	@Override
 	public Organization[] filterFindByC_P_PrevAndNext(long organizationId,
 		long companyId, long parentOrganizationId,
 		OrderByComparator<Organization> orderByComparator)
-		throws NoSuchOrganizationException {
+		throws com.liferay.portal.exception.NoSuchOrganizationException {
 		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByC_P_PrevAndNext(organizationId, companyId,
 				parentOrganizationId, orderByComparator);
@@ -4924,12 +4923,12 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @param treePath the tree path
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching organization
-	 * @throws NoSuchOrganizationException if a matching organization could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrganizationException if a matching organization could not be found
 	 */
 	@Override
 	public Organization findByC_T_First(long companyId, String treePath,
 		OrderByComparator<Organization> orderByComparator)
-		throws NoSuchOrganizationException {
+		throws com.liferay.portal.exception.NoSuchOrganizationException {
 		Organization organization = fetchByC_T_First(companyId, treePath,
 				orderByComparator);
 
@@ -4949,7 +4948,7 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchOrganizationException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchOrganizationException(msg.toString());
 	}
 
 	/**
@@ -4980,12 +4979,12 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @param treePath the tree path
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching organization
-	 * @throws NoSuchOrganizationException if a matching organization could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrganizationException if a matching organization could not be found
 	 */
 	@Override
 	public Organization findByC_T_Last(long companyId, String treePath,
 		OrderByComparator<Organization> orderByComparator)
-		throws NoSuchOrganizationException {
+		throws com.liferay.portal.exception.NoSuchOrganizationException {
 		Organization organization = fetchByC_T_Last(companyId, treePath,
 				orderByComparator);
 
@@ -5005,7 +5004,7 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchOrganizationException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchOrganizationException(msg.toString());
 	}
 
 	/**
@@ -5043,13 +5042,13 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @param treePath the tree path
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next organization
-	 * @throws NoSuchOrganizationException if a organization with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrganizationException if a organization with the primary key could not be found
 	 */
 	@Override
 	public Organization[] findByC_T_PrevAndNext(long organizationId,
 		long companyId, String treePath,
 		OrderByComparator<Organization> orderByComparator)
-		throws NoSuchOrganizationException {
+		throws com.liferay.portal.exception.NoSuchOrganizationException {
 		Organization organization = findByPrimaryKey(organizationId);
 
 		Session session = null;
@@ -5355,13 +5354,13 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @param treePath the tree path
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next organization
-	 * @throws NoSuchOrganizationException if a organization with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrganizationException if a organization with the primary key could not be found
 	 */
 	@Override
 	public Organization[] filterFindByC_T_PrevAndNext(long organizationId,
 		long companyId, String treePath,
 		OrderByComparator<Organization> orderByComparator)
-		throws NoSuchOrganizationException {
+		throws com.liferay.portal.exception.NoSuchOrganizationException {
 		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByC_T_PrevAndNext(organizationId, companyId, treePath,
 				orderByComparator);
@@ -5720,16 +5719,16 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 			new String[] { Long.class.getName(), String.class.getName() });
 
 	/**
-	 * Returns the organization where companyId = &#63; and name = &#63; or throws a {@link NoSuchOrganizationException} if it could not be found.
+	 * Returns the organization where companyId = &#63; and name = &#63; or throws a {@link com.liferay.portal.exception.NoSuchOrganizationException} if it could not be found.
 	 *
 	 * @param companyId the company ID
 	 * @param name the name
 	 * @return the matching organization
-	 * @throws NoSuchOrganizationException if a matching organization could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrganizationException if a matching organization could not be found
 	 */
 	@Override
 	public Organization findByC_N(long companyId, String name)
-		throws NoSuchOrganizationException {
+		throws com.liferay.portal.exception.NoSuchOrganizationException {
 		Organization organization = fetchByC_N(companyId, name);
 
 		if (organization == null) {
@@ -5749,7 +5748,7 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchOrganizationException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchOrganizationException(msg.toString());
 		}
 
 		return organization;
@@ -5882,7 +5881,7 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 */
 	@Override
 	public Organization removeByC_N(long companyId, String name)
-		throws NoSuchOrganizationException {
+		throws com.liferay.portal.exception.NoSuchOrganizationException {
 		Organization organization = findByC_N(companyId, name);
 
 		return remove(organization);
@@ -6171,13 +6170,13 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @param parentOrganizationId the parent organization ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching organization
-	 * @throws NoSuchOrganizationException if a matching organization could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrganizationException if a matching organization could not be found
 	 */
 	@Override
 	public Organization findByO_C_P_First(long organizationId, long companyId,
 		long parentOrganizationId,
 		OrderByComparator<Organization> orderByComparator)
-		throws NoSuchOrganizationException {
+		throws com.liferay.portal.exception.NoSuchOrganizationException {
 		Organization organization = fetchByO_C_P_First(organizationId,
 				companyId, parentOrganizationId, orderByComparator);
 
@@ -6200,7 +6199,7 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchOrganizationException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchOrganizationException(msg.toString());
 	}
 
 	/**
@@ -6234,13 +6233,13 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @param parentOrganizationId the parent organization ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching organization
-	 * @throws NoSuchOrganizationException if a matching organization could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrganizationException if a matching organization could not be found
 	 */
 	@Override
 	public Organization findByO_C_P_Last(long organizationId, long companyId,
 		long parentOrganizationId,
 		OrderByComparator<Organization> orderByComparator)
-		throws NoSuchOrganizationException {
+		throws com.liferay.portal.exception.NoSuchOrganizationException {
 		Organization organization = fetchByO_C_P_Last(organizationId,
 				companyId, parentOrganizationId, orderByComparator);
 
@@ -6263,7 +6262,7 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchOrganizationException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchOrganizationException(msg.toString());
 	}
 
 	/**
@@ -6746,11 +6745,11 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 *
 	 * @param organizationId the primary key of the organization
 	 * @return the organization that was removed
-	 * @throws NoSuchOrganizationException if a organization with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrganizationException if a organization with the primary key could not be found
 	 */
 	@Override
 	public Organization remove(long organizationId)
-		throws NoSuchOrganizationException {
+		throws com.liferay.portal.exception.NoSuchOrganizationException {
 		return remove((Serializable)organizationId);
 	}
 
@@ -6759,11 +6758,11 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 *
 	 * @param primaryKey the primary key of the organization
 	 * @return the organization that was removed
-	 * @throws NoSuchOrganizationException if a organization with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrganizationException if a organization with the primary key could not be found
 	 */
 	@Override
 	public Organization remove(Serializable primaryKey)
-		throws NoSuchOrganizationException {
+		throws com.liferay.portal.exception.NoSuchOrganizationException {
 		Session session = null;
 
 		try {
@@ -6777,13 +6776,13 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchOrganizationException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchOrganizationException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(organization);
 		}
-		catch (NoSuchOrganizationException nsee) {
+		catch (com.liferay.portal.exception.NoSuchOrganizationException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -7037,11 +7036,11 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 *
 	 * @param primaryKey the primary key of the organization
 	 * @return the organization
-	 * @throws NoSuchOrganizationException if a organization with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrganizationException if a organization with the primary key could not be found
 	 */
 	@Override
 	public Organization findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchOrganizationException {
+		throws com.liferay.portal.exception.NoSuchOrganizationException {
 		Organization organization = fetchByPrimaryKey(primaryKey);
 
 		if (organization == null) {
@@ -7049,7 +7048,7 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchOrganizationException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchOrganizationException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -7057,15 +7056,15 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	}
 
 	/**
-	 * Returns the organization with the primary key or throws a {@link NoSuchOrganizationException} if it could not be found.
+	 * Returns the organization with the primary key or throws a {@link com.liferay.portal.exception.NoSuchOrganizationException} if it could not be found.
 	 *
 	 * @param organizationId the primary key of the organization
 	 * @return the organization
-	 * @throws NoSuchOrganizationException if a organization with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrganizationException if a organization with the primary key could not be found
 	 */
 	@Override
 	public Organization findByPrimaryKey(long organizationId)
-		throws NoSuchOrganizationException {
+		throws com.liferay.portal.exception.NoSuchOrganizationException {
 		return findByPrimaryKey((Serializable)organizationId);
 	}
 

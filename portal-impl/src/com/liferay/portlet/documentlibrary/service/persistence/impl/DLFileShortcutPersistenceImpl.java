@@ -43,7 +43,6 @@ import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
-import com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException;
 import com.liferay.portlet.documentlibrary.model.DLFileShortcut;
 import com.liferay.portlet.documentlibrary.model.impl.DLFileShortcutImpl;
 import com.liferay.portlet.documentlibrary.model.impl.DLFileShortcutModelImpl;
@@ -301,12 +300,12 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library file shortcut
-	 * @throws NoSuchFileShortcutException if a matching document library file shortcut could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException if a matching document library file shortcut could not be found
 	 */
 	@Override
 	public DLFileShortcut findByUuid_First(String uuid,
 		OrderByComparator<DLFileShortcut> orderByComparator)
-		throws NoSuchFileShortcutException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException {
 		DLFileShortcut dlFileShortcut = fetchByUuid_First(uuid,
 				orderByComparator);
 
@@ -323,7 +322,7 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileShortcutException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException(msg.toString());
 	}
 
 	/**
@@ -351,12 +350,12 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library file shortcut
-	 * @throws NoSuchFileShortcutException if a matching document library file shortcut could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException if a matching document library file shortcut could not be found
 	 */
 	@Override
 	public DLFileShortcut findByUuid_Last(String uuid,
 		OrderByComparator<DLFileShortcut> orderByComparator)
-		throws NoSuchFileShortcutException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException {
 		DLFileShortcut dlFileShortcut = fetchByUuid_Last(uuid, orderByComparator);
 
 		if (dlFileShortcut != null) {
@@ -372,7 +371,7 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileShortcutException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException(msg.toString());
 	}
 
 	/**
@@ -408,12 +407,12 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library file shortcut
-	 * @throws NoSuchFileShortcutException if a document library file shortcut with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException if a document library file shortcut with the primary key could not be found
 	 */
 	@Override
 	public DLFileShortcut[] findByUuid_PrevAndNext(long fileShortcutId,
 		String uuid, OrderByComparator<DLFileShortcut> orderByComparator)
-		throws NoSuchFileShortcutException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException {
 		DLFileShortcut dlFileShortcut = findByPrimaryKey(fileShortcutId);
 
 		Session session = null;
@@ -655,16 +654,16 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 			new String[] { String.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the document library file shortcut where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchFileShortcutException} if it could not be found.
+	 * Returns the document library file shortcut where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException} if it could not be found.
 	 *
 	 * @param uuid the uuid
 	 * @param groupId the group ID
 	 * @return the matching document library file shortcut
-	 * @throws NoSuchFileShortcutException if a matching document library file shortcut could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException if a matching document library file shortcut could not be found
 	 */
 	@Override
 	public DLFileShortcut findByUUID_G(String uuid, long groupId)
-		throws NoSuchFileShortcutException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException {
 		DLFileShortcut dlFileShortcut = fetchByUUID_G(uuid, groupId);
 
 		if (dlFileShortcut == null) {
@@ -684,7 +683,7 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchFileShortcutException(msg.toString());
+			throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException(msg.toString());
 		}
 
 		return dlFileShortcut;
@@ -817,7 +816,7 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 	 */
 	@Override
 	public DLFileShortcut removeByUUID_G(String uuid, long groupId)
-		throws NoSuchFileShortcutException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException {
 		DLFileShortcut dlFileShortcut = findByUUID_G(uuid, groupId);
 
 		return remove(dlFileShortcut);
@@ -1121,12 +1120,12 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library file shortcut
-	 * @throws NoSuchFileShortcutException if a matching document library file shortcut could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException if a matching document library file shortcut could not be found
 	 */
 	@Override
 	public DLFileShortcut findByUuid_C_First(String uuid, long companyId,
 		OrderByComparator<DLFileShortcut> orderByComparator)
-		throws NoSuchFileShortcutException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException {
 		DLFileShortcut dlFileShortcut = fetchByUuid_C_First(uuid, companyId,
 				orderByComparator);
 
@@ -1146,7 +1145,7 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileShortcutException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException(msg.toString());
 	}
 
 	/**
@@ -1177,12 +1176,12 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library file shortcut
-	 * @throws NoSuchFileShortcutException if a matching document library file shortcut could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException if a matching document library file shortcut could not be found
 	 */
 	@Override
 	public DLFileShortcut findByUuid_C_Last(String uuid, long companyId,
 		OrderByComparator<DLFileShortcut> orderByComparator)
-		throws NoSuchFileShortcutException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException {
 		DLFileShortcut dlFileShortcut = fetchByUuid_C_Last(uuid, companyId,
 				orderByComparator);
 
@@ -1202,7 +1201,7 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileShortcutException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException(msg.toString());
 	}
 
 	/**
@@ -1240,13 +1239,13 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library file shortcut
-	 * @throws NoSuchFileShortcutException if a document library file shortcut with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException if a document library file shortcut with the primary key could not be found
 	 */
 	@Override
 	public DLFileShortcut[] findByUuid_C_PrevAndNext(long fileShortcutId,
 		String uuid, long companyId,
 		OrderByComparator<DLFileShortcut> orderByComparator)
-		throws NoSuchFileShortcutException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException {
 		DLFileShortcut dlFileShortcut = findByPrimaryKey(fileShortcutId);
 
 		Session session = null;
@@ -1681,12 +1680,12 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library file shortcut
-	 * @throws NoSuchFileShortcutException if a matching document library file shortcut could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException if a matching document library file shortcut could not be found
 	 */
 	@Override
 	public DLFileShortcut findByCompanyId_First(long companyId,
 		OrderByComparator<DLFileShortcut> orderByComparator)
-		throws NoSuchFileShortcutException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException {
 		DLFileShortcut dlFileShortcut = fetchByCompanyId_First(companyId,
 				orderByComparator);
 
@@ -1703,7 +1702,7 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileShortcutException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException(msg.toString());
 	}
 
 	/**
@@ -1732,12 +1731,12 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library file shortcut
-	 * @throws NoSuchFileShortcutException if a matching document library file shortcut could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException if a matching document library file shortcut could not be found
 	 */
 	@Override
 	public DLFileShortcut findByCompanyId_Last(long companyId,
 		OrderByComparator<DLFileShortcut> orderByComparator)
-		throws NoSuchFileShortcutException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException {
 		DLFileShortcut dlFileShortcut = fetchByCompanyId_Last(companyId,
 				orderByComparator);
 
@@ -1754,7 +1753,7 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileShortcutException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException(msg.toString());
 	}
 
 	/**
@@ -1790,12 +1789,12 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library file shortcut
-	 * @throws NoSuchFileShortcutException if a document library file shortcut with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException if a document library file shortcut with the primary key could not be found
 	 */
 	@Override
 	public DLFileShortcut[] findByCompanyId_PrevAndNext(long fileShortcutId,
 		long companyId, OrderByComparator<DLFileShortcut> orderByComparator)
-		throws NoSuchFileShortcutException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException {
 		DLFileShortcut dlFileShortcut = findByPrimaryKey(fileShortcutId);
 
 		Session session = null;
@@ -2195,12 +2194,12 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 	 * @param toFileEntryId the to file entry ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library file shortcut
-	 * @throws NoSuchFileShortcutException if a matching document library file shortcut could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException if a matching document library file shortcut could not be found
 	 */
 	@Override
 	public DLFileShortcut findByToFileEntryId_First(long toFileEntryId,
 		OrderByComparator<DLFileShortcut> orderByComparator)
-		throws NoSuchFileShortcutException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException {
 		DLFileShortcut dlFileShortcut = fetchByToFileEntryId_First(toFileEntryId,
 				orderByComparator);
 
@@ -2217,7 +2216,7 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileShortcutException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException(msg.toString());
 	}
 
 	/**
@@ -2246,12 +2245,12 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 	 * @param toFileEntryId the to file entry ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library file shortcut
-	 * @throws NoSuchFileShortcutException if a matching document library file shortcut could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException if a matching document library file shortcut could not be found
 	 */
 	@Override
 	public DLFileShortcut findByToFileEntryId_Last(long toFileEntryId,
 		OrderByComparator<DLFileShortcut> orderByComparator)
-		throws NoSuchFileShortcutException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException {
 		DLFileShortcut dlFileShortcut = fetchByToFileEntryId_Last(toFileEntryId,
 				orderByComparator);
 
@@ -2268,7 +2267,7 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileShortcutException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException(msg.toString());
 	}
 
 	/**
@@ -2304,13 +2303,13 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 	 * @param toFileEntryId the to file entry ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library file shortcut
-	 * @throws NoSuchFileShortcutException if a document library file shortcut with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException if a document library file shortcut with the primary key could not be found
 	 */
 	@Override
 	public DLFileShortcut[] findByToFileEntryId_PrevAndNext(
 		long fileShortcutId, long toFileEntryId,
 		OrderByComparator<DLFileShortcut> orderByComparator)
-		throws NoSuchFileShortcutException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException {
 		DLFileShortcut dlFileShortcut = findByPrimaryKey(fileShortcutId);
 
 		Session session = null;
@@ -2718,12 +2717,12 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 	 * @param folderId the folder ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library file shortcut
-	 * @throws NoSuchFileShortcutException if a matching document library file shortcut could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException if a matching document library file shortcut could not be found
 	 */
 	@Override
 	public DLFileShortcut findByG_F_First(long groupId, long folderId,
 		OrderByComparator<DLFileShortcut> orderByComparator)
-		throws NoSuchFileShortcutException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException {
 		DLFileShortcut dlFileShortcut = fetchByG_F_First(groupId, folderId,
 				orderByComparator);
 
@@ -2743,7 +2742,7 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileShortcutException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException(msg.toString());
 	}
 
 	/**
@@ -2774,12 +2773,12 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 	 * @param folderId the folder ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library file shortcut
-	 * @throws NoSuchFileShortcutException if a matching document library file shortcut could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException if a matching document library file shortcut could not be found
 	 */
 	@Override
 	public DLFileShortcut findByG_F_Last(long groupId, long folderId,
 		OrderByComparator<DLFileShortcut> orderByComparator)
-		throws NoSuchFileShortcutException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException {
 		DLFileShortcut dlFileShortcut = fetchByG_F_Last(groupId, folderId,
 				orderByComparator);
 
@@ -2799,7 +2798,7 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileShortcutException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException(msg.toString());
 	}
 
 	/**
@@ -2837,13 +2836,13 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 	 * @param folderId the folder ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library file shortcut
-	 * @throws NoSuchFileShortcutException if a document library file shortcut with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException if a document library file shortcut with the primary key could not be found
 	 */
 	@Override
 	public DLFileShortcut[] findByG_F_PrevAndNext(long fileShortcutId,
 		long groupId, long folderId,
 		OrderByComparator<DLFileShortcut> orderByComparator)
-		throws NoSuchFileShortcutException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException {
 		DLFileShortcut dlFileShortcut = findByPrimaryKey(fileShortcutId);
 
 		Session session = null;
@@ -3121,13 +3120,13 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 	 * @param folderId the folder ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library file shortcut
-	 * @throws NoSuchFileShortcutException if a document library file shortcut with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException if a document library file shortcut with the primary key could not be found
 	 */
 	@Override
 	public DLFileShortcut[] filterFindByG_F_PrevAndNext(long fileShortcutId,
 		long groupId, long folderId,
 		OrderByComparator<DLFileShortcut> orderByComparator)
-		throws NoSuchFileShortcutException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_F_PrevAndNext(fileShortcutId, groupId, folderId,
 				orderByComparator);
@@ -3625,12 +3624,12 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library file shortcut
-	 * @throws NoSuchFileShortcutException if a matching document library file shortcut could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException if a matching document library file shortcut could not be found
 	 */
 	@Override
 	public DLFileShortcut findByC_NotS_First(long companyId, int status,
 		OrderByComparator<DLFileShortcut> orderByComparator)
-		throws NoSuchFileShortcutException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException {
 		DLFileShortcut dlFileShortcut = fetchByC_NotS_First(companyId, status,
 				orderByComparator);
 
@@ -3650,7 +3649,7 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileShortcutException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException(msg.toString());
 	}
 
 	/**
@@ -3681,12 +3680,12 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library file shortcut
-	 * @throws NoSuchFileShortcutException if a matching document library file shortcut could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException if a matching document library file shortcut could not be found
 	 */
 	@Override
 	public DLFileShortcut findByC_NotS_Last(long companyId, int status,
 		OrderByComparator<DLFileShortcut> orderByComparator)
-		throws NoSuchFileShortcutException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException {
 		DLFileShortcut dlFileShortcut = fetchByC_NotS_Last(companyId, status,
 				orderByComparator);
 
@@ -3706,7 +3705,7 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileShortcutException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException(msg.toString());
 	}
 
 	/**
@@ -3744,13 +3743,13 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library file shortcut
-	 * @throws NoSuchFileShortcutException if a document library file shortcut with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException if a document library file shortcut with the primary key could not be found
 	 */
 	@Override
 	public DLFileShortcut[] findByC_NotS_PrevAndNext(long fileShortcutId,
 		long companyId, int status,
 		OrderByComparator<DLFileShortcut> orderByComparator)
-		throws NoSuchFileShortcutException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException {
 		DLFileShortcut dlFileShortcut = findByPrimaryKey(fileShortcutId);
 
 		Session session = null;
@@ -4190,12 +4189,12 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 	 * @param active the active
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library file shortcut
-	 * @throws NoSuchFileShortcutException if a matching document library file shortcut could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException if a matching document library file shortcut could not be found
 	 */
 	@Override
 	public DLFileShortcut findByG_F_A_First(long groupId, long folderId,
 		boolean active, OrderByComparator<DLFileShortcut> orderByComparator)
-		throws NoSuchFileShortcutException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException {
 		DLFileShortcut dlFileShortcut = fetchByG_F_A_First(groupId, folderId,
 				active, orderByComparator);
 
@@ -4218,7 +4217,7 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileShortcutException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException(msg.toString());
 	}
 
 	/**
@@ -4251,12 +4250,12 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 	 * @param active the active
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library file shortcut
-	 * @throws NoSuchFileShortcutException if a matching document library file shortcut could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException if a matching document library file shortcut could not be found
 	 */
 	@Override
 	public DLFileShortcut findByG_F_A_Last(long groupId, long folderId,
 		boolean active, OrderByComparator<DLFileShortcut> orderByComparator)
-		throws NoSuchFileShortcutException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException {
 		DLFileShortcut dlFileShortcut = fetchByG_F_A_Last(groupId, folderId,
 				active, orderByComparator);
 
@@ -4279,7 +4278,7 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileShortcutException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException(msg.toString());
 	}
 
 	/**
@@ -4319,13 +4318,13 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 	 * @param active the active
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library file shortcut
-	 * @throws NoSuchFileShortcutException if a document library file shortcut with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException if a document library file shortcut with the primary key could not be found
 	 */
 	@Override
 	public DLFileShortcut[] findByG_F_A_PrevAndNext(long fileShortcutId,
 		long groupId, long folderId, boolean active,
 		OrderByComparator<DLFileShortcut> orderByComparator)
-		throws NoSuchFileShortcutException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException {
 		DLFileShortcut dlFileShortcut = findByPrimaryKey(fileShortcutId);
 
 		Session session = null;
@@ -4619,13 +4618,13 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 	 * @param active the active
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library file shortcut
-	 * @throws NoSuchFileShortcutException if a document library file shortcut with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException if a document library file shortcut with the primary key could not be found
 	 */
 	@Override
 	public DLFileShortcut[] filterFindByG_F_A_PrevAndNext(long fileShortcutId,
 		long groupId, long folderId, boolean active,
 		OrderByComparator<DLFileShortcut> orderByComparator)
-		throws NoSuchFileShortcutException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_F_A_PrevAndNext(fileShortcutId, groupId, folderId,
 				active, orderByComparator);
@@ -5188,13 +5187,13 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library file shortcut
-	 * @throws NoSuchFileShortcutException if a matching document library file shortcut could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException if a matching document library file shortcut could not be found
 	 */
 	@Override
 	public DLFileShortcut findByG_F_A_S_First(long groupId, long folderId,
 		boolean active, int status,
 		OrderByComparator<DLFileShortcut> orderByComparator)
-		throws NoSuchFileShortcutException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException {
 		DLFileShortcut dlFileShortcut = fetchByG_F_A_S_First(groupId, folderId,
 				active, status, orderByComparator);
 
@@ -5220,7 +5219,7 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileShortcutException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException(msg.toString());
 	}
 
 	/**
@@ -5256,13 +5255,13 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library file shortcut
-	 * @throws NoSuchFileShortcutException if a matching document library file shortcut could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException if a matching document library file shortcut could not be found
 	 */
 	@Override
 	public DLFileShortcut findByG_F_A_S_Last(long groupId, long folderId,
 		boolean active, int status,
 		OrderByComparator<DLFileShortcut> orderByComparator)
-		throws NoSuchFileShortcutException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException {
 		DLFileShortcut dlFileShortcut = fetchByG_F_A_S_Last(groupId, folderId,
 				active, status, orderByComparator);
 
@@ -5288,7 +5287,7 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileShortcutException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException(msg.toString());
 	}
 
 	/**
@@ -5331,13 +5330,13 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library file shortcut
-	 * @throws NoSuchFileShortcutException if a document library file shortcut with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException if a document library file shortcut with the primary key could not be found
 	 */
 	@Override
 	public DLFileShortcut[] findByG_F_A_S_PrevAndNext(long fileShortcutId,
 		long groupId, long folderId, boolean active, int status,
 		OrderByComparator<DLFileShortcut> orderByComparator)
-		throws NoSuchFileShortcutException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException {
 		DLFileShortcut dlFileShortcut = findByPrimaryKey(fileShortcutId);
 
 		Session session = null;
@@ -5644,13 +5643,13 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library file shortcut
-	 * @throws NoSuchFileShortcutException if a document library file shortcut with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException if a document library file shortcut with the primary key could not be found
 	 */
 	@Override
 	public DLFileShortcut[] filterFindByG_F_A_S_PrevAndNext(
 		long fileShortcutId, long groupId, long folderId, boolean active,
 		int status, OrderByComparator<DLFileShortcut> orderByComparator)
-		throws NoSuchFileShortcutException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_F_A_S_PrevAndNext(fileShortcutId, groupId, folderId,
 				active, status, orderByComparator);
@@ -6157,11 +6156,11 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 	 *
 	 * @param fileShortcutId the primary key of the document library file shortcut
 	 * @return the document library file shortcut that was removed
-	 * @throws NoSuchFileShortcutException if a document library file shortcut with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException if a document library file shortcut with the primary key could not be found
 	 */
 	@Override
 	public DLFileShortcut remove(long fileShortcutId)
-		throws NoSuchFileShortcutException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException {
 		return remove((Serializable)fileShortcutId);
 	}
 
@@ -6170,11 +6169,11 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 	 *
 	 * @param primaryKey the primary key of the document library file shortcut
 	 * @return the document library file shortcut that was removed
-	 * @throws NoSuchFileShortcutException if a document library file shortcut with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException if a document library file shortcut with the primary key could not be found
 	 */
 	@Override
 	public DLFileShortcut remove(Serializable primaryKey)
-		throws NoSuchFileShortcutException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException {
 		Session session = null;
 
 		try {
@@ -6188,13 +6187,13 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchFileShortcutException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(dlFileShortcut);
 		}
-		catch (NoSuchFileShortcutException nsee) {
+		catch (com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -6495,11 +6494,11 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 	 *
 	 * @param primaryKey the primary key of the document library file shortcut
 	 * @return the document library file shortcut
-	 * @throws NoSuchFileShortcutException if a document library file shortcut with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException if a document library file shortcut with the primary key could not be found
 	 */
 	@Override
 	public DLFileShortcut findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchFileShortcutException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException {
 		DLFileShortcut dlFileShortcut = fetchByPrimaryKey(primaryKey);
 
 		if (dlFileShortcut == null) {
@@ -6507,7 +6506,7 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchFileShortcutException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -6515,15 +6514,15 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 	}
 
 	/**
-	 * Returns the document library file shortcut with the primary key or throws a {@link NoSuchFileShortcutException} if it could not be found.
+	 * Returns the document library file shortcut with the primary key or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException} if it could not be found.
 	 *
 	 * @param fileShortcutId the primary key of the document library file shortcut
 	 * @return the document library file shortcut
-	 * @throws NoSuchFileShortcutException if a document library file shortcut with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException if a document library file shortcut with the primary key could not be found
 	 */
 	@Override
 	public DLFileShortcut findByPrimaryKey(long fileShortcutId)
-		throws NoSuchFileShortcutException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException {
 		return findByPrimaryKey((Serializable)fileShortcutId);
 	}
 

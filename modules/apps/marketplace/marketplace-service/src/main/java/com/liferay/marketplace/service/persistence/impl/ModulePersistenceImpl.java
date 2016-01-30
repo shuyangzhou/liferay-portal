@@ -16,7 +16,6 @@ package com.liferay.marketplace.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.marketplace.exception.NoSuchModuleException;
 import com.liferay.marketplace.model.Module;
 import com.liferay.marketplace.model.impl.ModuleImpl;
 import com.liferay.marketplace.model.impl.ModuleModelImpl;
@@ -288,12 +287,12 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching module
-	 * @throws NoSuchModuleException if a matching module could not be found
+	 * @throws com.liferay.marketplace.exception.NoSuchModuleException if a matching module could not be found
 	 */
 	@Override
 	public Module findByUuid_First(String uuid,
 		OrderByComparator<Module> orderByComparator)
-		throws NoSuchModuleException {
+		throws com.liferay.marketplace.exception.NoSuchModuleException {
 		Module module = fetchByUuid_First(uuid, orderByComparator);
 
 		if (module != null) {
@@ -309,7 +308,7 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchModuleException(msg.toString());
+		throw new com.liferay.marketplace.exception.NoSuchModuleException(msg.toString());
 	}
 
 	/**
@@ -337,12 +336,12 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching module
-	 * @throws NoSuchModuleException if a matching module could not be found
+	 * @throws com.liferay.marketplace.exception.NoSuchModuleException if a matching module could not be found
 	 */
 	@Override
 	public Module findByUuid_Last(String uuid,
 		OrderByComparator<Module> orderByComparator)
-		throws NoSuchModuleException {
+		throws com.liferay.marketplace.exception.NoSuchModuleException {
 		Module module = fetchByUuid_Last(uuid, orderByComparator);
 
 		if (module != null) {
@@ -358,7 +357,7 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchModuleException(msg.toString());
+		throw new com.liferay.marketplace.exception.NoSuchModuleException(msg.toString());
 	}
 
 	/**
@@ -393,12 +392,12 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next module
-	 * @throws NoSuchModuleException if a module with the primary key could not be found
+	 * @throws com.liferay.marketplace.exception.NoSuchModuleException if a module with the primary key could not be found
 	 */
 	@Override
 	public Module[] findByUuid_PrevAndNext(long moduleId, String uuid,
 		OrderByComparator<Module> orderByComparator)
-		throws NoSuchModuleException {
+		throws com.liferay.marketplace.exception.NoSuchModuleException {
 		Module module = findByPrimaryKey(moduleId);
 
 		Session session = null;
@@ -815,12 +814,12 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 	 * @param appId the app ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching module
-	 * @throws NoSuchModuleException if a matching module could not be found
+	 * @throws com.liferay.marketplace.exception.NoSuchModuleException if a matching module could not be found
 	 */
 	@Override
 	public Module findByAppId_First(long appId,
 		OrderByComparator<Module> orderByComparator)
-		throws NoSuchModuleException {
+		throws com.liferay.marketplace.exception.NoSuchModuleException {
 		Module module = fetchByAppId_First(appId, orderByComparator);
 
 		if (module != null) {
@@ -836,7 +835,7 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchModuleException(msg.toString());
+		throw new com.liferay.marketplace.exception.NoSuchModuleException(msg.toString());
 	}
 
 	/**
@@ -864,12 +863,12 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 	 * @param appId the app ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching module
-	 * @throws NoSuchModuleException if a matching module could not be found
+	 * @throws com.liferay.marketplace.exception.NoSuchModuleException if a matching module could not be found
 	 */
 	@Override
 	public Module findByAppId_Last(long appId,
 		OrderByComparator<Module> orderByComparator)
-		throws NoSuchModuleException {
+		throws com.liferay.marketplace.exception.NoSuchModuleException {
 		Module module = fetchByAppId_Last(appId, orderByComparator);
 
 		if (module != null) {
@@ -885,7 +884,7 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchModuleException(msg.toString());
+		throw new com.liferay.marketplace.exception.NoSuchModuleException(msg.toString());
 	}
 
 	/**
@@ -921,12 +920,12 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 	 * @param appId the app ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next module
-	 * @throws NoSuchModuleException if a module with the primary key could not be found
+	 * @throws com.liferay.marketplace.exception.NoSuchModuleException if a module with the primary key could not be found
 	 */
 	@Override
 	public Module[] findByAppId_PrevAndNext(long moduleId, long appId,
 		OrderByComparator<Module> orderByComparator)
-		throws NoSuchModuleException {
+		throws com.liferay.marketplace.exception.NoSuchModuleException {
 		Module module = findByPrimaryKey(moduleId);
 
 		Session session = null;
@@ -1339,12 +1338,12 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 	 * @param bundleSymbolicName the bundle symbolic name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching module
-	 * @throws NoSuchModuleException if a matching module could not be found
+	 * @throws com.liferay.marketplace.exception.NoSuchModuleException if a matching module could not be found
 	 */
 	@Override
 	public Module findByBundleSymbolicName_First(String bundleSymbolicName,
 		OrderByComparator<Module> orderByComparator)
-		throws NoSuchModuleException {
+		throws com.liferay.marketplace.exception.NoSuchModuleException {
 		Module module = fetchByBundleSymbolicName_First(bundleSymbolicName,
 				orderByComparator);
 
@@ -1361,7 +1360,7 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchModuleException(msg.toString());
+		throw new com.liferay.marketplace.exception.NoSuchModuleException(msg.toString());
 	}
 
 	/**
@@ -1390,12 +1389,12 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 	 * @param bundleSymbolicName the bundle symbolic name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching module
-	 * @throws NoSuchModuleException if a matching module could not be found
+	 * @throws com.liferay.marketplace.exception.NoSuchModuleException if a matching module could not be found
 	 */
 	@Override
 	public Module findByBundleSymbolicName_Last(String bundleSymbolicName,
 		OrderByComparator<Module> orderByComparator)
-		throws NoSuchModuleException {
+		throws com.liferay.marketplace.exception.NoSuchModuleException {
 		Module module = fetchByBundleSymbolicName_Last(bundleSymbolicName,
 				orderByComparator);
 
@@ -1412,7 +1411,7 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchModuleException(msg.toString());
+		throw new com.liferay.marketplace.exception.NoSuchModuleException(msg.toString());
 	}
 
 	/**
@@ -1448,12 +1447,12 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 	 * @param bundleSymbolicName the bundle symbolic name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next module
-	 * @throws NoSuchModuleException if a module with the primary key could not be found
+	 * @throws com.liferay.marketplace.exception.NoSuchModuleException if a module with the primary key could not be found
 	 */
 	@Override
 	public Module[] findByBundleSymbolicName_PrevAndNext(long moduleId,
 		String bundleSymbolicName, OrderByComparator<Module> orderByComparator)
-		throws NoSuchModuleException {
+		throws com.liferay.marketplace.exception.NoSuchModuleException {
 		Module module = findByPrimaryKey(moduleId);
 
 		Session session = null;
@@ -1892,12 +1891,12 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 	 * @param contextName the context name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching module
-	 * @throws NoSuchModuleException if a matching module could not be found
+	 * @throws com.liferay.marketplace.exception.NoSuchModuleException if a matching module could not be found
 	 */
 	@Override
 	public Module findByContextName_First(String contextName,
 		OrderByComparator<Module> orderByComparator)
-		throws NoSuchModuleException {
+		throws com.liferay.marketplace.exception.NoSuchModuleException {
 		Module module = fetchByContextName_First(contextName, orderByComparator);
 
 		if (module != null) {
@@ -1913,7 +1912,7 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchModuleException(msg.toString());
+		throw new com.liferay.marketplace.exception.NoSuchModuleException(msg.toString());
 	}
 
 	/**
@@ -1942,12 +1941,12 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 	 * @param contextName the context name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching module
-	 * @throws NoSuchModuleException if a matching module could not be found
+	 * @throws com.liferay.marketplace.exception.NoSuchModuleException if a matching module could not be found
 	 */
 	@Override
 	public Module findByContextName_Last(String contextName,
 		OrderByComparator<Module> orderByComparator)
-		throws NoSuchModuleException {
+		throws com.liferay.marketplace.exception.NoSuchModuleException {
 		Module module = fetchByContextName_Last(contextName, orderByComparator);
 
 		if (module != null) {
@@ -1963,7 +1962,7 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchModuleException(msg.toString());
+		throw new com.liferay.marketplace.exception.NoSuchModuleException(msg.toString());
 	}
 
 	/**
@@ -1999,12 +1998,12 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 	 * @param contextName the context name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next module
-	 * @throws NoSuchModuleException if a module with the primary key could not be found
+	 * @throws com.liferay.marketplace.exception.NoSuchModuleException if a module with the primary key could not be found
 	 */
 	@Override
 	public Module[] findByContextName_PrevAndNext(long moduleId,
 		String contextName, OrderByComparator<Module> orderByComparator)
-		throws NoSuchModuleException {
+		throws com.liferay.marketplace.exception.NoSuchModuleException {
 		Module module = findByPrimaryKey(moduleId);
 
 		Session session = null;
@@ -2245,16 +2244,16 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 			new String[] { Long.class.getName(), String.class.getName() });
 
 	/**
-	 * Returns the module where appId = &#63; and contextName = &#63; or throws a {@link NoSuchModuleException} if it could not be found.
+	 * Returns the module where appId = &#63; and contextName = &#63; or throws a {@link com.liferay.marketplace.exception.NoSuchModuleException} if it could not be found.
 	 *
 	 * @param appId the app ID
 	 * @param contextName the context name
 	 * @return the matching module
-	 * @throws NoSuchModuleException if a matching module could not be found
+	 * @throws com.liferay.marketplace.exception.NoSuchModuleException if a matching module could not be found
 	 */
 	@Override
 	public Module findByA_CN(long appId, String contextName)
-		throws NoSuchModuleException {
+		throws com.liferay.marketplace.exception.NoSuchModuleException {
 		Module module = fetchByA_CN(appId, contextName);
 
 		if (module == null) {
@@ -2274,7 +2273,7 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchModuleException(msg.toString());
+			throw new com.liferay.marketplace.exception.NoSuchModuleException(msg.toString());
 		}
 
 		return module;
@@ -2414,7 +2413,7 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 	 */
 	@Override
 	public Module removeByA_CN(long appId, String contextName)
-		throws NoSuchModuleException {
+		throws com.liferay.marketplace.exception.NoSuchModuleException {
 		Module module = findByA_CN(appId, contextName);
 
 		return remove(module);
@@ -2513,17 +2512,18 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 			});
 
 	/**
-	 * Returns the module where appId = &#63; and bundleSymbolicName = &#63; and bundleVersion = &#63; or throws a {@link NoSuchModuleException} if it could not be found.
+	 * Returns the module where appId = &#63; and bundleSymbolicName = &#63; and bundleVersion = &#63; or throws a {@link com.liferay.marketplace.exception.NoSuchModuleException} if it could not be found.
 	 *
 	 * @param appId the app ID
 	 * @param bundleSymbolicName the bundle symbolic name
 	 * @param bundleVersion the bundle version
 	 * @return the matching module
-	 * @throws NoSuchModuleException if a matching module could not be found
+	 * @throws com.liferay.marketplace.exception.NoSuchModuleException if a matching module could not be found
 	 */
 	@Override
 	public Module findByA_BSN_BV(long appId, String bundleSymbolicName,
-		String bundleVersion) throws NoSuchModuleException {
+		String bundleVersion)
+		throws com.liferay.marketplace.exception.NoSuchModuleException {
 		Module module = fetchByA_BSN_BV(appId, bundleSymbolicName, bundleVersion);
 
 		if (module == null) {
@@ -2546,7 +2546,7 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchModuleException(msg.toString());
+			throw new com.liferay.marketplace.exception.NoSuchModuleException(msg.toString());
 		}
 
 		return module;
@@ -2716,7 +2716,8 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 	 */
 	@Override
 	public Module removeByA_BSN_BV(long appId, String bundleSymbolicName,
-		String bundleVersion) throws NoSuchModuleException {
+		String bundleVersion)
+		throws com.liferay.marketplace.exception.NoSuchModuleException {
 		Module module = findByA_BSN_BV(appId, bundleSymbolicName, bundleVersion);
 
 		return remove(module);
@@ -3032,10 +3033,11 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 	 *
 	 * @param moduleId the primary key of the module
 	 * @return the module that was removed
-	 * @throws NoSuchModuleException if a module with the primary key could not be found
+	 * @throws com.liferay.marketplace.exception.NoSuchModuleException if a module with the primary key could not be found
 	 */
 	@Override
-	public Module remove(long moduleId) throws NoSuchModuleException {
+	public Module remove(long moduleId)
+		throws com.liferay.marketplace.exception.NoSuchModuleException {
 		return remove((Serializable)moduleId);
 	}
 
@@ -3044,10 +3046,11 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 	 *
 	 * @param primaryKey the primary key of the module
 	 * @return the module that was removed
-	 * @throws NoSuchModuleException if a module with the primary key could not be found
+	 * @throws com.liferay.marketplace.exception.NoSuchModuleException if a module with the primary key could not be found
 	 */
 	@Override
-	public Module remove(Serializable primaryKey) throws NoSuchModuleException {
+	public Module remove(Serializable primaryKey)
+		throws com.liferay.marketplace.exception.NoSuchModuleException {
 		Session session = null;
 
 		try {
@@ -3060,13 +3063,13 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchModuleException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.marketplace.exception.NoSuchModuleException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(module);
 		}
-		catch (NoSuchModuleException nsee) {
+		catch (com.liferay.marketplace.exception.NoSuchModuleException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -3254,11 +3257,11 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 	 *
 	 * @param primaryKey the primary key of the module
 	 * @return the module
-	 * @throws NoSuchModuleException if a module with the primary key could not be found
+	 * @throws com.liferay.marketplace.exception.NoSuchModuleException if a module with the primary key could not be found
 	 */
 	@Override
 	public Module findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchModuleException {
+		throws com.liferay.marketplace.exception.NoSuchModuleException {
 		Module module = fetchByPrimaryKey(primaryKey);
 
 		if (module == null) {
@@ -3266,7 +3269,7 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchModuleException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.marketplace.exception.NoSuchModuleException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -3274,14 +3277,15 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 	}
 
 	/**
-	 * Returns the module with the primary key or throws a {@link NoSuchModuleException} if it could not be found.
+	 * Returns the module with the primary key or throws a {@link com.liferay.marketplace.exception.NoSuchModuleException} if it could not be found.
 	 *
 	 * @param moduleId the primary key of the module
 	 * @return the module
-	 * @throws NoSuchModuleException if a module with the primary key could not be found
+	 * @throws com.liferay.marketplace.exception.NoSuchModuleException if a module with the primary key could not be found
 	 */
 	@Override
-	public Module findByPrimaryKey(long moduleId) throws NoSuchModuleException {
+	public Module findByPrimaryKey(long moduleId)
+		throws com.liferay.marketplace.exception.NoSuchModuleException {
 		return findByPrimaryKey((Serializable)moduleId);
 	}
 

@@ -105,7 +105,7 @@ public interface AnnouncementsDeliveryPersistence extends BasePersistence<Announ
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching announcements delivery
-	* @throws NoSuchDeliveryException if a matching announcements delivery could not be found
+	* @throws com.liferay.announcements.kernel.exception.NoSuchDeliveryException if a matching announcements delivery could not be found
 	*/
 	public AnnouncementsDelivery findByUserId_First(long userId,
 		com.liferay.portal.kernel.util.OrderByComparator<AnnouncementsDelivery> orderByComparator)
@@ -127,7 +127,7 @@ public interface AnnouncementsDeliveryPersistence extends BasePersistence<Announ
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching announcements delivery
-	* @throws NoSuchDeliveryException if a matching announcements delivery could not be found
+	* @throws com.liferay.announcements.kernel.exception.NoSuchDeliveryException if a matching announcements delivery could not be found
 	*/
 	public AnnouncementsDelivery findByUserId_Last(long userId,
 		com.liferay.portal.kernel.util.OrderByComparator<AnnouncementsDelivery> orderByComparator)
@@ -150,7 +150,7 @@ public interface AnnouncementsDeliveryPersistence extends BasePersistence<Announ
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next announcements delivery
-	* @throws NoSuchDeliveryException if a announcements delivery with the primary key could not be found
+	* @throws com.liferay.announcements.kernel.exception.NoSuchDeliveryException if a announcements delivery with the primary key could not be found
 	*/
 	public AnnouncementsDelivery[] findByUserId_PrevAndNext(long deliveryId,
 		long userId,
@@ -173,12 +173,12 @@ public interface AnnouncementsDeliveryPersistence extends BasePersistence<Announ
 	public int countByUserId(long userId);
 
 	/**
-	* Returns the announcements delivery where userId = &#63; and type = &#63; or throws a {@link com.liferay.portlet.announcements.exception.NoSuchDeliveryException} if it could not be found.
+	* Returns the announcements delivery where userId = &#63; and type = &#63; or throws a {@link com.liferay.announcements.kernel.exception.NoSuchDeliveryException} if it could not be found.
 	*
 	* @param userId the user ID
 	* @param type the type
 	* @return the matching announcements delivery
-	* @throws NoSuchDeliveryException if a matching announcements delivery could not be found
+	* @throws com.liferay.announcements.kernel.exception.NoSuchDeliveryException if a matching announcements delivery could not be found
 	*/
 	public AnnouncementsDelivery findByU_T(long userId, java.lang.String type)
 		throws com.liferay.announcements.kernel.exception.NoSuchDeliveryException;
@@ -250,7 +250,7 @@ public interface AnnouncementsDeliveryPersistence extends BasePersistence<Announ
 	*
 	* @param deliveryId the primary key of the announcements delivery
 	* @return the announcements delivery that was removed
-	* @throws NoSuchDeliveryException if a announcements delivery with the primary key could not be found
+	* @throws com.liferay.announcements.kernel.exception.NoSuchDeliveryException if a announcements delivery with the primary key could not be found
 	*/
 	public AnnouncementsDelivery remove(long deliveryId)
 		throws com.liferay.announcements.kernel.exception.NoSuchDeliveryException;
@@ -259,11 +259,11 @@ public interface AnnouncementsDeliveryPersistence extends BasePersistence<Announ
 		AnnouncementsDelivery announcementsDelivery);
 
 	/**
-	* Returns the announcements delivery with the primary key or throws a {@link NoSuchDeliveryException} if it could not be found.
+	* Returns the announcements delivery with the primary key or throws a {@link com.liferay.announcements.kernel.exception.NoSuchDeliveryException} if it could not be found.
 	*
 	* @param deliveryId the primary key of the announcements delivery
 	* @return the announcements delivery
-	* @throws NoSuchDeliveryException if a announcements delivery with the primary key could not be found
+	* @throws com.liferay.announcements.kernel.exception.NoSuchDeliveryException if a announcements delivery with the primary key could not be found
 	*/
 	public AnnouncementsDelivery findByPrimaryKey(long deliveryId)
 		throws com.liferay.announcements.kernel.exception.NoSuchDeliveryException;

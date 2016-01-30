@@ -182,7 +182,7 @@ public class UserIdMapperUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user ID mapper
-	* @throws NoSuchUserIdMapperException if a matching user ID mapper could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserIdMapperException if a matching user ID mapper could not be found
 	*/
 	public static UserIdMapper findByUserId_First(long userId,
 		OrderByComparator<UserIdMapper> orderByComparator)
@@ -208,7 +208,7 @@ public class UserIdMapperUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user ID mapper
-	* @throws NoSuchUserIdMapperException if a matching user ID mapper could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserIdMapperException if a matching user ID mapper could not be found
 	*/
 	public static UserIdMapper findByUserId_Last(long userId,
 		OrderByComparator<UserIdMapper> orderByComparator)
@@ -235,7 +235,7 @@ public class UserIdMapperUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user ID mapper
-	* @throws NoSuchUserIdMapperException if a user ID mapper with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserIdMapperException if a user ID mapper with the primary key could not be found
 	*/
 	public static UserIdMapper[] findByUserId_PrevAndNext(long userIdMapperId,
 		long userId, OrderByComparator<UserIdMapper> orderByComparator)
@@ -265,12 +265,12 @@ public class UserIdMapperUtil {
 	}
 
 	/**
-	* Returns the user ID mapper where userId = &#63; and type = &#63; or throws a {@link NoSuchUserIdMapperException} if it could not be found.
+	* Returns the user ID mapper where userId = &#63; and type = &#63; or throws a {@link com.liferay.portal.exception.NoSuchUserIdMapperException} if it could not be found.
 	*
 	* @param userId the user ID
 	* @param type the type
 	* @return the matching user ID mapper
-	* @throws NoSuchUserIdMapperException if a matching user ID mapper could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserIdMapperException if a matching user ID mapper could not be found
 	*/
 	public static UserIdMapper findByU_T(long userId, java.lang.String type)
 		throws com.liferay.portal.exception.NoSuchUserIdMapperException {
@@ -325,12 +325,12 @@ public class UserIdMapperUtil {
 	}
 
 	/**
-	* Returns the user ID mapper where type = &#63; and externalUserId = &#63; or throws a {@link NoSuchUserIdMapperException} if it could not be found.
+	* Returns the user ID mapper where type = &#63; and externalUserId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchUserIdMapperException} if it could not be found.
 	*
 	* @param type the type
 	* @param externalUserId the external user ID
 	* @return the matching user ID mapper
-	* @throws NoSuchUserIdMapperException if a matching user ID mapper could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserIdMapperException if a matching user ID mapper could not be found
 	*/
 	public static UserIdMapper findByT_E(java.lang.String type,
 		java.lang.String externalUserId)
@@ -422,7 +422,7 @@ public class UserIdMapperUtil {
 	*
 	* @param userIdMapperId the primary key of the user ID mapper
 	* @return the user ID mapper that was removed
-	* @throws NoSuchUserIdMapperException if a user ID mapper with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserIdMapperException if a user ID mapper with the primary key could not be found
 	*/
 	public static UserIdMapper remove(long userIdMapperId)
 		throws com.liferay.portal.exception.NoSuchUserIdMapperException {
@@ -434,11 +434,11 @@ public class UserIdMapperUtil {
 	}
 
 	/**
-	* Returns the user ID mapper with the primary key or throws a {@link NoSuchUserIdMapperException} if it could not be found.
+	* Returns the user ID mapper with the primary key or throws a {@link com.liferay.portal.exception.NoSuchUserIdMapperException} if it could not be found.
 	*
 	* @param userIdMapperId the primary key of the user ID mapper
 	* @return the user ID mapper
-	* @throws NoSuchUserIdMapperException if a user ID mapper with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserIdMapperException if a user ID mapper with the primary key could not be found
 	*/
 	public static UserIdMapper findByPrimaryKey(long userIdMapperId)
 		throws com.liferay.portal.exception.NoSuchUserIdMapperException {

@@ -108,7 +108,7 @@ public interface PortletItemPersistence extends BasePersistence<PortletItem> {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching portlet item
-	* @throws NoSuchPortletItemException if a matching portlet item could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletItemException if a matching portlet item could not be found
 	*/
 	public PortletItem findByG_C_First(long groupId, long classNameId,
 		com.liferay.portal.kernel.util.OrderByComparator<PortletItem> orderByComparator)
@@ -132,7 +132,7 @@ public interface PortletItemPersistence extends BasePersistence<PortletItem> {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching portlet item
-	* @throws NoSuchPortletItemException if a matching portlet item could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletItemException if a matching portlet item could not be found
 	*/
 	public PortletItem findByG_C_Last(long groupId, long classNameId,
 		com.liferay.portal.kernel.util.OrderByComparator<PortletItem> orderByComparator)
@@ -157,7 +157,7 @@ public interface PortletItemPersistence extends BasePersistence<PortletItem> {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next portlet item
-	* @throws NoSuchPortletItemException if a portlet item with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletItemException if a portlet item with the primary key could not be found
 	*/
 	public PortletItem[] findByG_C_PrevAndNext(long portletItemId,
 		long groupId, long classNameId,
@@ -257,7 +257,7 @@ public interface PortletItemPersistence extends BasePersistence<PortletItem> {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching portlet item
-	* @throws NoSuchPortletItemException if a matching portlet item could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletItemException if a matching portlet item could not be found
 	*/
 	public PortletItem findByG_P_C_First(long groupId,
 		java.lang.String portletId, long classNameId,
@@ -285,7 +285,7 @@ public interface PortletItemPersistence extends BasePersistence<PortletItem> {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching portlet item
-	* @throws NoSuchPortletItemException if a matching portlet item could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletItemException if a matching portlet item could not be found
 	*/
 	public PortletItem findByG_P_C_Last(long groupId,
 		java.lang.String portletId, long classNameId,
@@ -314,7 +314,7 @@ public interface PortletItemPersistence extends BasePersistence<PortletItem> {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next portlet item
-	* @throws NoSuchPortletItemException if a portlet item with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletItemException if a portlet item with the primary key could not be found
 	*/
 	public PortletItem[] findByG_P_C_PrevAndNext(long portletItemId,
 		long groupId, java.lang.String portletId, long classNameId,
@@ -343,14 +343,14 @@ public interface PortletItemPersistence extends BasePersistence<PortletItem> {
 		long classNameId);
 
 	/**
-	* Returns the portlet item where groupId = &#63; and name = &#63; and portletId = &#63; and classNameId = &#63; or throws a {@link NoSuchPortletItemException} if it could not be found.
+	* Returns the portlet item where groupId = &#63; and name = &#63; and portletId = &#63; and classNameId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchPortletItemException} if it could not be found.
 	*
 	* @param groupId the group ID
 	* @param name the name
 	* @param portletId the portlet ID
 	* @param classNameId the class name ID
 	* @return the matching portlet item
-	* @throws NoSuchPortletItemException if a matching portlet item could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletItemException if a matching portlet item could not be found
 	*/
 	public PortletItem findByG_N_P_C(long groupId, java.lang.String name,
 		java.lang.String portletId, long classNameId)
@@ -433,7 +433,7 @@ public interface PortletItemPersistence extends BasePersistence<PortletItem> {
 	*
 	* @param portletItemId the primary key of the portlet item
 	* @return the portlet item that was removed
-	* @throws NoSuchPortletItemException if a portlet item with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletItemException if a portlet item with the primary key could not be found
 	*/
 	public PortletItem remove(long portletItemId)
 		throws com.liferay.portal.exception.NoSuchPortletItemException;
@@ -441,11 +441,11 @@ public interface PortletItemPersistence extends BasePersistence<PortletItem> {
 	public PortletItem updateImpl(PortletItem portletItem);
 
 	/**
-	* Returns the portlet item with the primary key or throws a {@link NoSuchPortletItemException} if it could not be found.
+	* Returns the portlet item with the primary key or throws a {@link com.liferay.portal.exception.NoSuchPortletItemException} if it could not be found.
 	*
 	* @param portletItemId the primary key of the portlet item
 	* @return the portlet item
-	* @throws NoSuchPortletItemException if a portlet item with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletItemException if a portlet item with the primary key could not be found
 	*/
 	public PortletItem findByPrimaryKey(long portletItemId)
 		throws com.liferay.portal.exception.NoSuchPortletItemException;

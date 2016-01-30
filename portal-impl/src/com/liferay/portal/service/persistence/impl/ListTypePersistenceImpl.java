@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchListTypeException;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
@@ -288,12 +287,12 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 	 * @param type the type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching list type
-	 * @throws NoSuchListTypeException if a matching list type could not be found
+	 * @throws com.liferay.portal.exception.NoSuchListTypeException if a matching list type could not be found
 	 */
 	@Override
 	public ListType findByType_First(String type,
 		OrderByComparator<ListType> orderByComparator)
-		throws NoSuchListTypeException {
+		throws com.liferay.portal.exception.NoSuchListTypeException {
 		ListType listType = fetchByType_First(type, orderByComparator);
 
 		if (listType != null) {
@@ -309,7 +308,7 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchListTypeException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchListTypeException(msg.toString());
 	}
 
 	/**
@@ -337,12 +336,12 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 	 * @param type the type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching list type
-	 * @throws NoSuchListTypeException if a matching list type could not be found
+	 * @throws com.liferay.portal.exception.NoSuchListTypeException if a matching list type could not be found
 	 */
 	@Override
 	public ListType findByType_Last(String type,
 		OrderByComparator<ListType> orderByComparator)
-		throws NoSuchListTypeException {
+		throws com.liferay.portal.exception.NoSuchListTypeException {
 		ListType listType = fetchByType_Last(type, orderByComparator);
 
 		if (listType != null) {
@@ -358,7 +357,7 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchListTypeException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchListTypeException(msg.toString());
 	}
 
 	/**
@@ -394,12 +393,12 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 	 * @param type the type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next list type
-	 * @throws NoSuchListTypeException if a list type with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchListTypeException if a list type with the primary key could not be found
 	 */
 	@Override
 	public ListType[] findByType_PrevAndNext(long listTypeId, String type,
 		OrderByComparator<ListType> orderByComparator)
-		throws NoSuchListTypeException {
+		throws com.liferay.portal.exception.NoSuchListTypeException {
 		ListType listType = findByPrimaryKey(listTypeId);
 
 		Session session = null;
@@ -640,16 +639,16 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 			new String[] { String.class.getName(), String.class.getName() });
 
 	/**
-	 * Returns the list type where name = &#63; and type = &#63; or throws a {@link NoSuchListTypeException} if it could not be found.
+	 * Returns the list type where name = &#63; and type = &#63; or throws a {@link com.liferay.portal.exception.NoSuchListTypeException} if it could not be found.
 	 *
 	 * @param name the name
 	 * @param type the type
 	 * @return the matching list type
-	 * @throws NoSuchListTypeException if a matching list type could not be found
+	 * @throws com.liferay.portal.exception.NoSuchListTypeException if a matching list type could not be found
 	 */
 	@Override
 	public ListType findByN_T(String name, String type)
-		throws NoSuchListTypeException {
+		throws com.liferay.portal.exception.NoSuchListTypeException {
 		ListType listType = fetchByN_T(name, type);
 
 		if (listType == null) {
@@ -669,7 +668,7 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchListTypeException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchListTypeException(msg.toString());
 		}
 
 		return listType;
@@ -824,7 +823,7 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 	 */
 	@Override
 	public ListType removeByN_T(String name, String type)
-		throws NoSuchListTypeException {
+		throws com.liferay.portal.exception.NoSuchListTypeException {
 		ListType listType = findByN_T(name, type);
 
 		return remove(listType);
@@ -1074,10 +1073,11 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 	 *
 	 * @param listTypeId the primary key of the list type
 	 * @return the list type that was removed
-	 * @throws NoSuchListTypeException if a list type with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchListTypeException if a list type with the primary key could not be found
 	 */
 	@Override
-	public ListType remove(long listTypeId) throws NoSuchListTypeException {
+	public ListType remove(long listTypeId)
+		throws com.liferay.portal.exception.NoSuchListTypeException {
 		return remove((Serializable)listTypeId);
 	}
 
@@ -1086,11 +1086,11 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 	 *
 	 * @param primaryKey the primary key of the list type
 	 * @return the list type that was removed
-	 * @throws NoSuchListTypeException if a list type with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchListTypeException if a list type with the primary key could not be found
 	 */
 	@Override
 	public ListType remove(Serializable primaryKey)
-		throws NoSuchListTypeException {
+		throws com.liferay.portal.exception.NoSuchListTypeException {
 		Session session = null;
 
 		try {
@@ -1104,13 +1104,13 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchListTypeException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchListTypeException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(listType);
 		}
-		catch (NoSuchListTypeException nsee) {
+		catch (com.liferay.portal.exception.NoSuchListTypeException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -1239,11 +1239,11 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 	 *
 	 * @param primaryKey the primary key of the list type
 	 * @return the list type
-	 * @throws NoSuchListTypeException if a list type with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchListTypeException if a list type with the primary key could not be found
 	 */
 	@Override
 	public ListType findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchListTypeException {
+		throws com.liferay.portal.exception.NoSuchListTypeException {
 		ListType listType = fetchByPrimaryKey(primaryKey);
 
 		if (listType == null) {
@@ -1251,7 +1251,7 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchListTypeException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchListTypeException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -1259,15 +1259,15 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 	}
 
 	/**
-	 * Returns the list type with the primary key or throws a {@link NoSuchListTypeException} if it could not be found.
+	 * Returns the list type with the primary key or throws a {@link com.liferay.portal.exception.NoSuchListTypeException} if it could not be found.
 	 *
 	 * @param listTypeId the primary key of the list type
 	 * @return the list type
-	 * @throws NoSuchListTypeException if a list type with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchListTypeException if a list type with the primary key could not be found
 	 */
 	@Override
 	public ListType findByPrimaryKey(long listTypeId)
-		throws NoSuchListTypeException {
+		throws com.liferay.portal.exception.NoSuchListTypeException {
 		return findByPrimaryKey((Serializable)listTypeId);
 	}
 

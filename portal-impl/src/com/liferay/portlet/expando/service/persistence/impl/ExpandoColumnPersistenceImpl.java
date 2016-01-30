@@ -42,7 +42,6 @@ import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
-import com.liferay.portlet.expando.exception.NoSuchColumnException;
 import com.liferay.portlet.expando.model.ExpandoColumn;
 import com.liferay.portlet.expando.model.impl.ExpandoColumnImpl;
 import com.liferay.portlet.expando.model.impl.ExpandoColumnModelImpl;
@@ -288,12 +287,12 @@ public class ExpandoColumnPersistenceImpl extends BasePersistenceImpl<ExpandoCol
 	 * @param tableId the table ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching expando column
-	 * @throws NoSuchColumnException if a matching expando column could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchColumnException if a matching expando column could not be found
 	 */
 	@Override
 	public ExpandoColumn findByTableId_First(long tableId,
 		OrderByComparator<ExpandoColumn> orderByComparator)
-		throws NoSuchColumnException {
+		throws com.liferay.portlet.expando.exception.NoSuchColumnException {
 		ExpandoColumn expandoColumn = fetchByTableId_First(tableId,
 				orderByComparator);
 
@@ -310,7 +309,7 @@ public class ExpandoColumnPersistenceImpl extends BasePersistenceImpl<ExpandoCol
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchColumnException(msg.toString());
+		throw new com.liferay.portlet.expando.exception.NoSuchColumnException(msg.toString());
 	}
 
 	/**
@@ -339,12 +338,12 @@ public class ExpandoColumnPersistenceImpl extends BasePersistenceImpl<ExpandoCol
 	 * @param tableId the table ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching expando column
-	 * @throws NoSuchColumnException if a matching expando column could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchColumnException if a matching expando column could not be found
 	 */
 	@Override
 	public ExpandoColumn findByTableId_Last(long tableId,
 		OrderByComparator<ExpandoColumn> orderByComparator)
-		throws NoSuchColumnException {
+		throws com.liferay.portlet.expando.exception.NoSuchColumnException {
 		ExpandoColumn expandoColumn = fetchByTableId_Last(tableId,
 				orderByComparator);
 
@@ -361,7 +360,7 @@ public class ExpandoColumnPersistenceImpl extends BasePersistenceImpl<ExpandoCol
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchColumnException(msg.toString());
+		throw new com.liferay.portlet.expando.exception.NoSuchColumnException(msg.toString());
 	}
 
 	/**
@@ -397,12 +396,12 @@ public class ExpandoColumnPersistenceImpl extends BasePersistenceImpl<ExpandoCol
 	 * @param tableId the table ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next expando column
-	 * @throws NoSuchColumnException if a expando column with the primary key could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchColumnException if a expando column with the primary key could not be found
 	 */
 	@Override
 	public ExpandoColumn[] findByTableId_PrevAndNext(long columnId,
 		long tableId, OrderByComparator<ExpandoColumn> orderByComparator)
-		throws NoSuchColumnException {
+		throws com.liferay.portlet.expando.exception.NoSuchColumnException {
 		ExpandoColumn expandoColumn = findByPrimaryKey(columnId);
 
 		Session session = null;
@@ -668,12 +667,12 @@ public class ExpandoColumnPersistenceImpl extends BasePersistenceImpl<ExpandoCol
 	 * @param tableId the table ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next expando column
-	 * @throws NoSuchColumnException if a expando column with the primary key could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchColumnException if a expando column with the primary key could not be found
 	 */
 	@Override
 	public ExpandoColumn[] filterFindByTableId_PrevAndNext(long columnId,
 		long tableId, OrderByComparator<ExpandoColumn> orderByComparator)
-		throws NoSuchColumnException {
+		throws com.liferay.portlet.expando.exception.NoSuchColumnException {
 		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByTableId_PrevAndNext(columnId, tableId,
 				orderByComparator);
@@ -1220,16 +1219,16 @@ public class ExpandoColumnPersistenceImpl extends BasePersistenceImpl<ExpandoCol
 	}
 
 	/**
-	 * Returns the expando column where tableId = &#63; and name = &#63; or throws a {@link NoSuchColumnException} if it could not be found.
+	 * Returns the expando column where tableId = &#63; and name = &#63; or throws a {@link com.liferay.portlet.expando.exception.NoSuchColumnException} if it could not be found.
 	 *
 	 * @param tableId the table ID
 	 * @param name the name
 	 * @return the matching expando column
-	 * @throws NoSuchColumnException if a matching expando column could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchColumnException if a matching expando column could not be found
 	 */
 	@Override
 	public ExpandoColumn findByT_N(long tableId, String name)
-		throws NoSuchColumnException {
+		throws com.liferay.portlet.expando.exception.NoSuchColumnException {
 		ExpandoColumn expandoColumn = fetchByT_N(tableId, name);
 
 		if (expandoColumn == null) {
@@ -1249,7 +1248,7 @@ public class ExpandoColumnPersistenceImpl extends BasePersistenceImpl<ExpandoCol
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchColumnException(msg.toString());
+			throw new com.liferay.portlet.expando.exception.NoSuchColumnException(msg.toString());
 		}
 
 		return expandoColumn;
@@ -1382,7 +1381,7 @@ public class ExpandoColumnPersistenceImpl extends BasePersistenceImpl<ExpandoCol
 	 */
 	@Override
 	public ExpandoColumn removeByT_N(long tableId, String name)
-		throws NoSuchColumnException {
+		throws com.liferay.portlet.expando.exception.NoSuchColumnException {
 		ExpandoColumn expandoColumn = findByT_N(tableId, name);
 
 		return remove(expandoColumn);
@@ -1878,10 +1877,11 @@ public class ExpandoColumnPersistenceImpl extends BasePersistenceImpl<ExpandoCol
 	 *
 	 * @param columnId the primary key of the expando column
 	 * @return the expando column that was removed
-	 * @throws NoSuchColumnException if a expando column with the primary key could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchColumnException if a expando column with the primary key could not be found
 	 */
 	@Override
-	public ExpandoColumn remove(long columnId) throws NoSuchColumnException {
+	public ExpandoColumn remove(long columnId)
+		throws com.liferay.portlet.expando.exception.NoSuchColumnException {
 		return remove((Serializable)columnId);
 	}
 
@@ -1890,11 +1890,11 @@ public class ExpandoColumnPersistenceImpl extends BasePersistenceImpl<ExpandoCol
 	 *
 	 * @param primaryKey the primary key of the expando column
 	 * @return the expando column that was removed
-	 * @throws NoSuchColumnException if a expando column with the primary key could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchColumnException if a expando column with the primary key could not be found
 	 */
 	@Override
 	public ExpandoColumn remove(Serializable primaryKey)
-		throws NoSuchColumnException {
+		throws com.liferay.portlet.expando.exception.NoSuchColumnException {
 		Session session = null;
 
 		try {
@@ -1908,13 +1908,13 @@ public class ExpandoColumnPersistenceImpl extends BasePersistenceImpl<ExpandoCol
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchColumnException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portlet.expando.exception.NoSuchColumnException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(expandoColumn);
 		}
-		catch (NoSuchColumnException nsee) {
+		catch (com.liferay.portlet.expando.exception.NoSuchColumnException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -2070,11 +2070,11 @@ public class ExpandoColumnPersistenceImpl extends BasePersistenceImpl<ExpandoCol
 	 *
 	 * @param primaryKey the primary key of the expando column
 	 * @return the expando column
-	 * @throws NoSuchColumnException if a expando column with the primary key could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchColumnException if a expando column with the primary key could not be found
 	 */
 	@Override
 	public ExpandoColumn findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchColumnException {
+		throws com.liferay.portlet.expando.exception.NoSuchColumnException {
 		ExpandoColumn expandoColumn = fetchByPrimaryKey(primaryKey);
 
 		if (expandoColumn == null) {
@@ -2082,7 +2082,7 @@ public class ExpandoColumnPersistenceImpl extends BasePersistenceImpl<ExpandoCol
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchColumnException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portlet.expando.exception.NoSuchColumnException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -2090,15 +2090,15 @@ public class ExpandoColumnPersistenceImpl extends BasePersistenceImpl<ExpandoCol
 	}
 
 	/**
-	 * Returns the expando column with the primary key or throws a {@link NoSuchColumnException} if it could not be found.
+	 * Returns the expando column with the primary key or throws a {@link com.liferay.portlet.expando.exception.NoSuchColumnException} if it could not be found.
 	 *
 	 * @param columnId the primary key of the expando column
 	 * @return the expando column
-	 * @throws NoSuchColumnException if a expando column with the primary key could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchColumnException if a expando column with the primary key could not be found
 	 */
 	@Override
 	public ExpandoColumn findByPrimaryKey(long columnId)
-		throws NoSuchColumnException {
+		throws com.liferay.portlet.expando.exception.NoSuchColumnException {
 		return findByPrimaryKey((Serializable)columnId);
 	}
 

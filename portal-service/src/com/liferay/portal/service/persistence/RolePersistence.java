@@ -103,7 +103,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching role
-	* @throws NoSuchRoleException if a matching role could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a matching role could not be found
 	*/
 	public Role findByUuid_First(java.lang.String uuid,
 		com.liferay.portal.kernel.util.OrderByComparator<Role> orderByComparator)
@@ -125,7 +125,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching role
-	* @throws NoSuchRoleException if a matching role could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a matching role could not be found
 	*/
 	public Role findByUuid_Last(java.lang.String uuid,
 		com.liferay.portal.kernel.util.OrderByComparator<Role> orderByComparator)
@@ -148,7 +148,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next role
-	* @throws NoSuchRoleException if a role with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a role with the primary key could not be found
 	*/
 	public Role[] findByUuid_PrevAndNext(long roleId, java.lang.String uuid,
 		com.liferay.portal.kernel.util.OrderByComparator<Role> orderByComparator)
@@ -201,7 +201,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next role
-	* @throws NoSuchRoleException if a role with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a role with the primary key could not be found
 	*/
 	public Role[] filterFindByUuid_PrevAndNext(long roleId,
 		java.lang.String uuid,
@@ -302,7 +302,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching role
-	* @throws NoSuchRoleException if a matching role could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a matching role could not be found
 	*/
 	public Role findByUuid_C_First(java.lang.String uuid, long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<Role> orderByComparator)
@@ -326,7 +326,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching role
-	* @throws NoSuchRoleException if a matching role could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a matching role could not be found
 	*/
 	public Role findByUuid_C_Last(java.lang.String uuid, long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<Role> orderByComparator)
@@ -351,7 +351,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next role
-	* @throws NoSuchRoleException if a role with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a role with the primary key could not be found
 	*/
 	public Role[] findByUuid_C_PrevAndNext(long roleId, java.lang.String uuid,
 		long companyId,
@@ -410,7 +410,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next role
-	* @throws NoSuchRoleException if a role with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a role with the primary key could not be found
 	*/
 	public Role[] filterFindByUuid_C_PrevAndNext(long roleId,
 		java.lang.String uuid, long companyId,
@@ -508,7 +508,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching role
-	* @throws NoSuchRoleException if a matching role could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a matching role could not be found
 	*/
 	public Role findByCompanyId_First(long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<Role> orderByComparator)
@@ -530,7 +530,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching role
-	* @throws NoSuchRoleException if a matching role could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a matching role could not be found
 	*/
 	public Role findByCompanyId_Last(long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<Role> orderByComparator)
@@ -553,7 +553,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next role
-	* @throws NoSuchRoleException if a role with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a role with the primary key could not be found
 	*/
 	public Role[] findByCompanyId_PrevAndNext(long roleId, long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<Role> orderByComparator)
@@ -606,7 +606,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next role
-	* @throws NoSuchRoleException if a role with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a role with the primary key could not be found
 	*/
 	public Role[] filterFindByCompanyId_PrevAndNext(long roleId,
 		long companyId,
@@ -701,7 +701,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param name the name
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching role
-	* @throws NoSuchRoleException if a matching role could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a matching role could not be found
 	*/
 	public Role findByName_First(java.lang.String name,
 		com.liferay.portal.kernel.util.OrderByComparator<Role> orderByComparator)
@@ -723,7 +723,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param name the name
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching role
-	* @throws NoSuchRoleException if a matching role could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a matching role could not be found
 	*/
 	public Role findByName_Last(java.lang.String name,
 		com.liferay.portal.kernel.util.OrderByComparator<Role> orderByComparator)
@@ -746,7 +746,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param name the name
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next role
-	* @throws NoSuchRoleException if a role with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a role with the primary key could not be found
 	*/
 	public Role[] findByName_PrevAndNext(long roleId, java.lang.String name,
 		com.liferay.portal.kernel.util.OrderByComparator<Role> orderByComparator)
@@ -799,7 +799,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param name the name
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next role
-	* @throws NoSuchRoleException if a role with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a role with the primary key could not be found
 	*/
 	public Role[] filterFindByName_PrevAndNext(long roleId,
 		java.lang.String name,
@@ -891,7 +891,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching role
-	* @throws NoSuchRoleException if a matching role could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a matching role could not be found
 	*/
 	public Role findByType_First(int type,
 		com.liferay.portal.kernel.util.OrderByComparator<Role> orderByComparator)
@@ -913,7 +913,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching role
-	* @throws NoSuchRoleException if a matching role could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a matching role could not be found
 	*/
 	public Role findByType_Last(int type,
 		com.liferay.portal.kernel.util.OrderByComparator<Role> orderByComparator)
@@ -936,7 +936,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next role
-	* @throws NoSuchRoleException if a role with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a role with the primary key could not be found
 	*/
 	public Role[] findByType_PrevAndNext(long roleId, int type,
 		com.liferay.portal.kernel.util.OrderByComparator<Role> orderByComparator)
@@ -987,7 +987,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next role
-	* @throws NoSuchRoleException if a role with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a role with the primary key could not be found
 	*/
 	public Role[] filterFindByType_PrevAndNext(long roleId, int type,
 		com.liferay.portal.kernel.util.OrderByComparator<Role> orderByComparator)
@@ -1081,7 +1081,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param subtype the subtype
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching role
-	* @throws NoSuchRoleException if a matching role could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a matching role could not be found
 	*/
 	public Role findBySubtype_First(java.lang.String subtype,
 		com.liferay.portal.kernel.util.OrderByComparator<Role> orderByComparator)
@@ -1103,7 +1103,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param subtype the subtype
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching role
-	* @throws NoSuchRoleException if a matching role could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a matching role could not be found
 	*/
 	public Role findBySubtype_Last(java.lang.String subtype,
 		com.liferay.portal.kernel.util.OrderByComparator<Role> orderByComparator)
@@ -1126,7 +1126,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param subtype the subtype
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next role
-	* @throws NoSuchRoleException if a role with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a role with the primary key could not be found
 	*/
 	public Role[] findBySubtype_PrevAndNext(long roleId,
 		java.lang.String subtype,
@@ -1180,7 +1180,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param subtype the subtype
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next role
-	* @throws NoSuchRoleException if a role with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a role with the primary key could not be found
 	*/
 	public Role[] filterFindBySubtype_PrevAndNext(long roleId,
 		java.lang.String subtype,
@@ -1211,12 +1211,12 @@ public interface RolePersistence extends BasePersistence<Role> {
 	public int filterCountBySubtype(java.lang.String subtype);
 
 	/**
-	* Returns the role where companyId = &#63; and name = &#63; or throws a {@link NoSuchRoleException} if it could not be found.
+	* Returns the role where companyId = &#63; and name = &#63; or throws a {@link com.liferay.portal.exception.NoSuchRoleException} if it could not be found.
 	*
 	* @param companyId the company ID
 	* @param name the name
 	* @return the matching role
-	* @throws NoSuchRoleException if a matching role could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a matching role could not be found
 	*/
 	public Role findByC_N(long companyId, java.lang.String name)
 		throws com.liferay.portal.exception.NoSuchRoleException;
@@ -1330,7 +1330,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching role
-	* @throws NoSuchRoleException if a matching role could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a matching role could not be found
 	*/
 	public Role findByC_T_First(long companyId, int type,
 		com.liferay.portal.kernel.util.OrderByComparator<Role> orderByComparator)
@@ -1354,7 +1354,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching role
-	* @throws NoSuchRoleException if a matching role could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a matching role could not be found
 	*/
 	public Role findByC_T_Last(long companyId, int type,
 		com.liferay.portal.kernel.util.OrderByComparator<Role> orderByComparator)
@@ -1379,7 +1379,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next role
-	* @throws NoSuchRoleException if a role with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a role with the primary key could not be found
 	*/
 	public Role[] findByC_T_PrevAndNext(long roleId, long companyId, int type,
 		com.liferay.portal.kernel.util.OrderByComparator<Role> orderByComparator)
@@ -1436,7 +1436,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next role
-	* @throws NoSuchRoleException if a role with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a role with the primary key could not be found
 	*/
 	public Role[] filterFindByC_T_PrevAndNext(long roleId, long companyId,
 		int type,
@@ -1667,7 +1667,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param subtype the subtype
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching role
-	* @throws NoSuchRoleException if a matching role could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a matching role could not be found
 	*/
 	public Role findByT_S_First(int type, java.lang.String subtype,
 		com.liferay.portal.kernel.util.OrderByComparator<Role> orderByComparator)
@@ -1691,7 +1691,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param subtype the subtype
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching role
-	* @throws NoSuchRoleException if a matching role could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a matching role could not be found
 	*/
 	public Role findByT_S_Last(int type, java.lang.String subtype,
 		com.liferay.portal.kernel.util.OrderByComparator<Role> orderByComparator)
@@ -1716,7 +1716,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param subtype the subtype
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next role
-	* @throws NoSuchRoleException if a role with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a role with the primary key could not be found
 	*/
 	public Role[] findByT_S_PrevAndNext(long roleId, int type,
 		java.lang.String subtype,
@@ -1775,7 +1775,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param subtype the subtype
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next role
-	* @throws NoSuchRoleException if a role with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a role with the primary key could not be found
 	*/
 	public Role[] filterFindByT_S_PrevAndNext(long roleId, int type,
 		java.lang.String subtype,
@@ -1809,13 +1809,13 @@ public interface RolePersistence extends BasePersistence<Role> {
 	public int filterCountByT_S(int type, java.lang.String subtype);
 
 	/**
-	* Returns the role where companyId = &#63; and classNameId = &#63; and classPK = &#63; or throws a {@link NoSuchRoleException} if it could not be found.
+	* Returns the role where companyId = &#63; and classNameId = &#63; and classPK = &#63; or throws a {@link com.liferay.portal.exception.NoSuchRoleException} if it could not be found.
 	*
 	* @param companyId the company ID
 	* @param classNameId the class name ID
 	* @param classPK the class p k
 	* @return the matching role
-	* @throws NoSuchRoleException if a matching role could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a matching role could not be found
 	*/
 	public Role findByC_C_C(long companyId, long classNameId, long classPK)
 		throws com.liferay.portal.exception.NoSuchRoleException;
@@ -1890,7 +1890,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	*
 	* @param roleId the primary key of the role
 	* @return the role that was removed
-	* @throws NoSuchRoleException if a role with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a role with the primary key could not be found
 	*/
 	public Role remove(long roleId)
 		throws com.liferay.portal.exception.NoSuchRoleException;
@@ -1898,11 +1898,11 @@ public interface RolePersistence extends BasePersistence<Role> {
 	public Role updateImpl(Role role);
 
 	/**
-	* Returns the role with the primary key or throws a {@link NoSuchRoleException} if it could not be found.
+	* Returns the role with the primary key or throws a {@link com.liferay.portal.exception.NoSuchRoleException} if it could not be found.
 	*
 	* @param roleId the primary key of the role
 	* @return the role
-	* @throws NoSuchRoleException if a role with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRoleException if a role with the primary key could not be found
 	*/
 	public Role findByPrimaryKey(long roleId)
 		throws com.liferay.portal.exception.NoSuchRoleException;

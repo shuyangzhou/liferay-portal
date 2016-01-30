@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchClusterGroupException;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
@@ -182,11 +181,11 @@ public class ClusterGroupPersistenceImpl extends BasePersistenceImpl<ClusterGrou
 	 *
 	 * @param clusterGroupId the primary key of the cluster group
 	 * @return the cluster group that was removed
-	 * @throws NoSuchClusterGroupException if a cluster group with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchClusterGroupException if a cluster group with the primary key could not be found
 	 */
 	@Override
 	public ClusterGroup remove(long clusterGroupId)
-		throws NoSuchClusterGroupException {
+		throws com.liferay.portal.exception.NoSuchClusterGroupException {
 		return remove((Serializable)clusterGroupId);
 	}
 
@@ -195,11 +194,11 @@ public class ClusterGroupPersistenceImpl extends BasePersistenceImpl<ClusterGrou
 	 *
 	 * @param primaryKey the primary key of the cluster group
 	 * @return the cluster group that was removed
-	 * @throws NoSuchClusterGroupException if a cluster group with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchClusterGroupException if a cluster group with the primary key could not be found
 	 */
 	@Override
 	public ClusterGroup remove(Serializable primaryKey)
-		throws NoSuchClusterGroupException {
+		throws com.liferay.portal.exception.NoSuchClusterGroupException {
 		Session session = null;
 
 		try {
@@ -213,13 +212,13 @@ public class ClusterGroupPersistenceImpl extends BasePersistenceImpl<ClusterGrou
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchClusterGroupException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchClusterGroupException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(clusterGroup);
 		}
-		catch (NoSuchClusterGroupException nsee) {
+		catch (com.liferay.portal.exception.NoSuchClusterGroupException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -328,11 +327,11 @@ public class ClusterGroupPersistenceImpl extends BasePersistenceImpl<ClusterGrou
 	 *
 	 * @param primaryKey the primary key of the cluster group
 	 * @return the cluster group
-	 * @throws NoSuchClusterGroupException if a cluster group with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchClusterGroupException if a cluster group with the primary key could not be found
 	 */
 	@Override
 	public ClusterGroup findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchClusterGroupException {
+		throws com.liferay.portal.exception.NoSuchClusterGroupException {
 		ClusterGroup clusterGroup = fetchByPrimaryKey(primaryKey);
 
 		if (clusterGroup == null) {
@@ -340,7 +339,7 @@ public class ClusterGroupPersistenceImpl extends BasePersistenceImpl<ClusterGrou
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchClusterGroupException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchClusterGroupException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -348,15 +347,15 @@ public class ClusterGroupPersistenceImpl extends BasePersistenceImpl<ClusterGrou
 	}
 
 	/**
-	 * Returns the cluster group with the primary key or throws a {@link NoSuchClusterGroupException} if it could not be found.
+	 * Returns the cluster group with the primary key or throws a {@link com.liferay.portal.exception.NoSuchClusterGroupException} if it could not be found.
 	 *
 	 * @param clusterGroupId the primary key of the cluster group
 	 * @return the cluster group
-	 * @throws NoSuchClusterGroupException if a cluster group with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchClusterGroupException if a cluster group with the primary key could not be found
 	 */
 	@Override
 	public ClusterGroup findByPrimaryKey(long clusterGroupId)
-		throws NoSuchClusterGroupException {
+		throws com.liferay.portal.exception.NoSuchClusterGroupException {
 		return findByPrimaryKey((Serializable)clusterGroupId);
 	}
 

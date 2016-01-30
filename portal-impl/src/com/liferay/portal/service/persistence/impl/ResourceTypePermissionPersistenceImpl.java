@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchResourceTypePermissionException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -281,12 +280,12 @@ public class ResourceTypePermissionPersistenceImpl extends BasePersistenceImpl<R
 	 * @param roleId the role ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching resource type permission
-	 * @throws NoSuchResourceTypePermissionException if a matching resource type permission could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceTypePermissionException if a matching resource type permission could not be found
 	 */
 	@Override
 	public ResourceTypePermission findByRoleId_First(long roleId,
 		OrderByComparator<ResourceTypePermission> orderByComparator)
-		throws NoSuchResourceTypePermissionException {
+		throws com.liferay.portal.exception.NoSuchResourceTypePermissionException {
 		ResourceTypePermission resourceTypePermission = fetchByRoleId_First(roleId,
 				orderByComparator);
 
@@ -303,7 +302,7 @@ public class ResourceTypePermissionPersistenceImpl extends BasePersistenceImpl<R
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchResourceTypePermissionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchResourceTypePermissionException(msg.toString());
 	}
 
 	/**
@@ -332,12 +331,12 @@ public class ResourceTypePermissionPersistenceImpl extends BasePersistenceImpl<R
 	 * @param roleId the role ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching resource type permission
-	 * @throws NoSuchResourceTypePermissionException if a matching resource type permission could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceTypePermissionException if a matching resource type permission could not be found
 	 */
 	@Override
 	public ResourceTypePermission findByRoleId_Last(long roleId,
 		OrderByComparator<ResourceTypePermission> orderByComparator)
-		throws NoSuchResourceTypePermissionException {
+		throws com.liferay.portal.exception.NoSuchResourceTypePermissionException {
 		ResourceTypePermission resourceTypePermission = fetchByRoleId_Last(roleId,
 				orderByComparator);
 
@@ -354,7 +353,7 @@ public class ResourceTypePermissionPersistenceImpl extends BasePersistenceImpl<R
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchResourceTypePermissionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchResourceTypePermissionException(msg.toString());
 	}
 
 	/**
@@ -390,13 +389,13 @@ public class ResourceTypePermissionPersistenceImpl extends BasePersistenceImpl<R
 	 * @param roleId the role ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next resource type permission
-	 * @throws NoSuchResourceTypePermissionException if a resource type permission with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceTypePermissionException if a resource type permission with the primary key could not be found
 	 */
 	@Override
 	public ResourceTypePermission[] findByRoleId_PrevAndNext(
 		long resourceTypePermissionId, long roleId,
 		OrderByComparator<ResourceTypePermission> orderByComparator)
-		throws NoSuchResourceTypePermissionException {
+		throws com.liferay.portal.exception.NoSuchResourceTypePermissionException {
 		ResourceTypePermission resourceTypePermission = findByPrimaryKey(resourceTypePermissionId);
 
 		Session session = null;
@@ -841,13 +840,13 @@ public class ResourceTypePermissionPersistenceImpl extends BasePersistenceImpl<R
 	 * @param roleId the role ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching resource type permission
-	 * @throws NoSuchResourceTypePermissionException if a matching resource type permission could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceTypePermissionException if a matching resource type permission could not be found
 	 */
 	@Override
 	public ResourceTypePermission findByC_N_R_First(long companyId,
 		String name, long roleId,
 		OrderByComparator<ResourceTypePermission> orderByComparator)
-		throws NoSuchResourceTypePermissionException {
+		throws com.liferay.portal.exception.NoSuchResourceTypePermissionException {
 		ResourceTypePermission resourceTypePermission = fetchByC_N_R_First(companyId,
 				name, roleId, orderByComparator);
 
@@ -870,7 +869,7 @@ public class ResourceTypePermissionPersistenceImpl extends BasePersistenceImpl<R
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchResourceTypePermissionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchResourceTypePermissionException(msg.toString());
 	}
 
 	/**
@@ -904,12 +903,12 @@ public class ResourceTypePermissionPersistenceImpl extends BasePersistenceImpl<R
 	 * @param roleId the role ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching resource type permission
-	 * @throws NoSuchResourceTypePermissionException if a matching resource type permission could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceTypePermissionException if a matching resource type permission could not be found
 	 */
 	@Override
 	public ResourceTypePermission findByC_N_R_Last(long companyId, String name,
 		long roleId, OrderByComparator<ResourceTypePermission> orderByComparator)
-		throws NoSuchResourceTypePermissionException {
+		throws com.liferay.portal.exception.NoSuchResourceTypePermissionException {
 		ResourceTypePermission resourceTypePermission = fetchByC_N_R_Last(companyId,
 				name, roleId, orderByComparator);
 
@@ -932,7 +931,7 @@ public class ResourceTypePermissionPersistenceImpl extends BasePersistenceImpl<R
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchResourceTypePermissionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchResourceTypePermissionException(msg.toString());
 	}
 
 	/**
@@ -973,13 +972,13 @@ public class ResourceTypePermissionPersistenceImpl extends BasePersistenceImpl<R
 	 * @param roleId the role ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next resource type permission
-	 * @throws NoSuchResourceTypePermissionException if a resource type permission with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceTypePermissionException if a resource type permission with the primary key could not be found
 	 */
 	@Override
 	public ResourceTypePermission[] findByC_N_R_PrevAndNext(
 		long resourceTypePermissionId, long companyId, String name,
 		long roleId, OrderByComparator<ResourceTypePermission> orderByComparator)
-		throws NoSuchResourceTypePermissionException {
+		throws com.liferay.portal.exception.NoSuchResourceTypePermissionException {
 		ResourceTypePermission resourceTypePermission = findByPrimaryKey(resourceTypePermissionId);
 
 		Session session = null;
@@ -1254,18 +1253,19 @@ public class ResourceTypePermissionPersistenceImpl extends BasePersistenceImpl<R
 			});
 
 	/**
-	 * Returns the resource type permission where companyId = &#63; and groupId = &#63; and name = &#63; and roleId = &#63; or throws a {@link NoSuchResourceTypePermissionException} if it could not be found.
+	 * Returns the resource type permission where companyId = &#63; and groupId = &#63; and name = &#63; and roleId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchResourceTypePermissionException} if it could not be found.
 	 *
 	 * @param companyId the company ID
 	 * @param groupId the group ID
 	 * @param name the name
 	 * @param roleId the role ID
 	 * @return the matching resource type permission
-	 * @throws NoSuchResourceTypePermissionException if a matching resource type permission could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceTypePermissionException if a matching resource type permission could not be found
 	 */
 	@Override
 	public ResourceTypePermission findByC_G_N_R(long companyId, long groupId,
-		String name, long roleId) throws NoSuchResourceTypePermissionException {
+		String name, long roleId)
+		throws com.liferay.portal.exception.NoSuchResourceTypePermissionException {
 		ResourceTypePermission resourceTypePermission = fetchByC_G_N_R(companyId,
 				groupId, name, roleId);
 
@@ -1292,7 +1292,7 @@ public class ResourceTypePermissionPersistenceImpl extends BasePersistenceImpl<R
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchResourceTypePermissionException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchResourceTypePermissionException(msg.toString());
 		}
 
 		return resourceTypePermission;
@@ -1445,7 +1445,8 @@ public class ResourceTypePermissionPersistenceImpl extends BasePersistenceImpl<R
 	 */
 	@Override
 	public ResourceTypePermission removeByC_G_N_R(long companyId, long groupId,
-		String name, long roleId) throws NoSuchResourceTypePermissionException {
+		String name, long roleId)
+		throws com.liferay.portal.exception.NoSuchResourceTypePermissionException {
 		ResourceTypePermission resourceTypePermission = findByC_G_N_R(companyId,
 				groupId, name, roleId);
 
@@ -1719,11 +1720,11 @@ public class ResourceTypePermissionPersistenceImpl extends BasePersistenceImpl<R
 	 *
 	 * @param resourceTypePermissionId the primary key of the resource type permission
 	 * @return the resource type permission that was removed
-	 * @throws NoSuchResourceTypePermissionException if a resource type permission with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceTypePermissionException if a resource type permission with the primary key could not be found
 	 */
 	@Override
 	public ResourceTypePermission remove(long resourceTypePermissionId)
-		throws NoSuchResourceTypePermissionException {
+		throws com.liferay.portal.exception.NoSuchResourceTypePermissionException {
 		return remove((Serializable)resourceTypePermissionId);
 	}
 
@@ -1732,11 +1733,11 @@ public class ResourceTypePermissionPersistenceImpl extends BasePersistenceImpl<R
 	 *
 	 * @param primaryKey the primary key of the resource type permission
 	 * @return the resource type permission that was removed
-	 * @throws NoSuchResourceTypePermissionException if a resource type permission with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceTypePermissionException if a resource type permission with the primary key could not be found
 	 */
 	@Override
 	public ResourceTypePermission remove(Serializable primaryKey)
-		throws NoSuchResourceTypePermissionException {
+		throws com.liferay.portal.exception.NoSuchResourceTypePermissionException {
 		Session session = null;
 
 		try {
@@ -1750,13 +1751,13 @@ public class ResourceTypePermissionPersistenceImpl extends BasePersistenceImpl<R
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchResourceTypePermissionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchResourceTypePermissionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(resourceTypePermission);
 		}
-		catch (NoSuchResourceTypePermissionException nsee) {
+		catch (com.liferay.portal.exception.NoSuchResourceTypePermissionException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -1918,11 +1919,11 @@ public class ResourceTypePermissionPersistenceImpl extends BasePersistenceImpl<R
 	 *
 	 * @param primaryKey the primary key of the resource type permission
 	 * @return the resource type permission
-	 * @throws NoSuchResourceTypePermissionException if a resource type permission with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceTypePermissionException if a resource type permission with the primary key could not be found
 	 */
 	@Override
 	public ResourceTypePermission findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchResourceTypePermissionException {
+		throws com.liferay.portal.exception.NoSuchResourceTypePermissionException {
 		ResourceTypePermission resourceTypePermission = fetchByPrimaryKey(primaryKey);
 
 		if (resourceTypePermission == null) {
@@ -1930,7 +1931,7 @@ public class ResourceTypePermissionPersistenceImpl extends BasePersistenceImpl<R
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchResourceTypePermissionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchResourceTypePermissionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -1938,16 +1939,16 @@ public class ResourceTypePermissionPersistenceImpl extends BasePersistenceImpl<R
 	}
 
 	/**
-	 * Returns the resource type permission with the primary key or throws a {@link NoSuchResourceTypePermissionException} if it could not be found.
+	 * Returns the resource type permission with the primary key or throws a {@link com.liferay.portal.exception.NoSuchResourceTypePermissionException} if it could not be found.
 	 *
 	 * @param resourceTypePermissionId the primary key of the resource type permission
 	 * @return the resource type permission
-	 * @throws NoSuchResourceTypePermissionException if a resource type permission with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceTypePermissionException if a resource type permission with the primary key could not be found
 	 */
 	@Override
 	public ResourceTypePermission findByPrimaryKey(
 		long resourceTypePermissionId)
-		throws NoSuchResourceTypePermissionException {
+		throws com.liferay.portal.exception.NoSuchResourceTypePermissionException {
 		return findByPrimaryKey((Serializable)resourceTypePermissionId);
 	}
 

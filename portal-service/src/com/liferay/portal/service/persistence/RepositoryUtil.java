@@ -181,7 +181,7 @@ public class RepositoryUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching repository
-	* @throws NoSuchRepositoryException if a matching repository could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryException if a matching repository could not be found
 	*/
 	public static Repository findByUuid_First(java.lang.String uuid,
 		OrderByComparator<Repository> orderByComparator)
@@ -207,7 +207,7 @@ public class RepositoryUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching repository
-	* @throws NoSuchRepositoryException if a matching repository could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryException if a matching repository could not be found
 	*/
 	public static Repository findByUuid_Last(java.lang.String uuid,
 		OrderByComparator<Repository> orderByComparator)
@@ -234,7 +234,7 @@ public class RepositoryUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next repository
-	* @throws NoSuchRepositoryException if a repository with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryException if a repository with the primary key could not be found
 	*/
 	public static Repository[] findByUuid_PrevAndNext(long repositoryId,
 		java.lang.String uuid, OrderByComparator<Repository> orderByComparator)
@@ -263,12 +263,12 @@ public class RepositoryUtil {
 	}
 
 	/**
-	* Returns the repository where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchRepositoryException} if it could not be found.
+	* Returns the repository where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchRepositoryException} if it could not be found.
 	*
 	* @param uuid the uuid
 	* @param groupId the group ID
 	* @return the matching repository
-	* @throws NoSuchRepositoryException if a matching repository could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryException if a matching repository could not be found
 	*/
 	public static Repository findByUUID_G(java.lang.String uuid, long groupId)
 		throws com.liferay.portal.exception.NoSuchRepositoryException {
@@ -404,7 +404,7 @@ public class RepositoryUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching repository
-	* @throws NoSuchRepositoryException if a matching repository could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryException if a matching repository could not be found
 	*/
 	public static Repository findByUuid_C_First(java.lang.String uuid,
 		long companyId, OrderByComparator<Repository> orderByComparator)
@@ -434,7 +434,7 @@ public class RepositoryUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching repository
-	* @throws NoSuchRepositoryException if a matching repository could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryException if a matching repository could not be found
 	*/
 	public static Repository findByUuid_C_Last(java.lang.String uuid,
 		long companyId, OrderByComparator<Repository> orderByComparator)
@@ -465,7 +465,7 @@ public class RepositoryUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next repository
-	* @throws NoSuchRepositoryException if a repository with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryException if a repository with the primary key could not be found
 	*/
 	public static Repository[] findByUuid_C_PrevAndNext(long repositoryId,
 		java.lang.String uuid, long companyId,
@@ -571,7 +571,7 @@ public class RepositoryUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching repository
-	* @throws NoSuchRepositoryException if a matching repository could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryException if a matching repository could not be found
 	*/
 	public static Repository findByGroupId_First(long groupId,
 		OrderByComparator<Repository> orderByComparator)
@@ -597,7 +597,7 @@ public class RepositoryUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching repository
-	* @throws NoSuchRepositoryException if a matching repository could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryException if a matching repository could not be found
 	*/
 	public static Repository findByGroupId_Last(long groupId,
 		OrderByComparator<Repository> orderByComparator)
@@ -624,7 +624,7 @@ public class RepositoryUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next repository
-	* @throws NoSuchRepositoryException if a repository with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryException if a repository with the primary key could not be found
 	*/
 	public static Repository[] findByGroupId_PrevAndNext(long repositoryId,
 		long groupId, OrderByComparator<Repository> orderByComparator)
@@ -654,13 +654,13 @@ public class RepositoryUtil {
 	}
 
 	/**
-	* Returns the repository where groupId = &#63; and name = &#63; and portletId = &#63; or throws a {@link NoSuchRepositoryException} if it could not be found.
+	* Returns the repository where groupId = &#63; and name = &#63; and portletId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchRepositoryException} if it could not be found.
 	*
 	* @param groupId the group ID
 	* @param name the name
 	* @param portletId the portlet ID
 	* @return the matching repository
-	* @throws NoSuchRepositoryException if a matching repository could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryException if a matching repository could not be found
 	*/
 	public static Repository findByG_N_P(long groupId, java.lang.String name,
 		java.lang.String portletId)
@@ -756,7 +756,7 @@ public class RepositoryUtil {
 	*
 	* @param repositoryId the primary key of the repository
 	* @return the repository that was removed
-	* @throws NoSuchRepositoryException if a repository with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryException if a repository with the primary key could not be found
 	*/
 	public static Repository remove(long repositoryId)
 		throws com.liferay.portal.exception.NoSuchRepositoryException {
@@ -768,11 +768,11 @@ public class RepositoryUtil {
 	}
 
 	/**
-	* Returns the repository with the primary key or throws a {@link NoSuchRepositoryException} if it could not be found.
+	* Returns the repository with the primary key or throws a {@link com.liferay.portal.exception.NoSuchRepositoryException} if it could not be found.
 	*
 	* @param repositoryId the primary key of the repository
 	* @return the repository
-	* @throws NoSuchRepositoryException if a repository with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryException if a repository with the primary key could not be found
 	*/
 	public static Repository findByPrimaryKey(long repositoryId)
 		throws com.liferay.portal.exception.NoSuchRepositoryException {

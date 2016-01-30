@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchAddressException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -294,12 +293,12 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching address
-	 * @throws NoSuchAddressException if a matching address could not be found
+	 * @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	 */
 	@Override
 	public Address findByUuid_First(String uuid,
 		OrderByComparator<Address> orderByComparator)
-		throws NoSuchAddressException {
+		throws com.liferay.portal.exception.NoSuchAddressException {
 		Address address = fetchByUuid_First(uuid, orderByComparator);
 
 		if (address != null) {
@@ -315,7 +314,7 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchAddressException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchAddressException(msg.toString());
 	}
 
 	/**
@@ -343,12 +342,12 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching address
-	 * @throws NoSuchAddressException if a matching address could not be found
+	 * @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	 */
 	@Override
 	public Address findByUuid_Last(String uuid,
 		OrderByComparator<Address> orderByComparator)
-		throws NoSuchAddressException {
+		throws com.liferay.portal.exception.NoSuchAddressException {
 		Address address = fetchByUuid_Last(uuid, orderByComparator);
 
 		if (address != null) {
@@ -364,7 +363,7 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchAddressException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchAddressException(msg.toString());
 	}
 
 	/**
@@ -400,12 +399,12 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next address
-	 * @throws NoSuchAddressException if a address with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchAddressException if a address with the primary key could not be found
 	 */
 	@Override
 	public Address[] findByUuid_PrevAndNext(long addressId, String uuid,
 		OrderByComparator<Address> orderByComparator)
-		throws NoSuchAddressException {
+		throws com.liferay.portal.exception.NoSuchAddressException {
 		Address address = findByPrimaryKey(addressId);
 
 		Session session = null;
@@ -856,12 +855,12 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching address
-	 * @throws NoSuchAddressException if a matching address could not be found
+	 * @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	 */
 	@Override
 	public Address findByUuid_C_First(String uuid, long companyId,
 		OrderByComparator<Address> orderByComparator)
-		throws NoSuchAddressException {
+		throws com.liferay.portal.exception.NoSuchAddressException {
 		Address address = fetchByUuid_C_First(uuid, companyId, orderByComparator);
 
 		if (address != null) {
@@ -880,7 +879,7 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchAddressException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchAddressException(msg.toString());
 	}
 
 	/**
@@ -911,12 +910,12 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching address
-	 * @throws NoSuchAddressException if a matching address could not be found
+	 * @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	 */
 	@Override
 	public Address findByUuid_C_Last(String uuid, long companyId,
 		OrderByComparator<Address> orderByComparator)
-		throws NoSuchAddressException {
+		throws com.liferay.portal.exception.NoSuchAddressException {
 		Address address = fetchByUuid_C_Last(uuid, companyId, orderByComparator);
 
 		if (address != null) {
@@ -935,7 +934,7 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchAddressException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchAddressException(msg.toString());
 	}
 
 	/**
@@ -973,12 +972,12 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next address
-	 * @throws NoSuchAddressException if a address with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchAddressException if a address with the primary key could not be found
 	 */
 	@Override
 	public Address[] findByUuid_C_PrevAndNext(long addressId, String uuid,
 		long companyId, OrderByComparator<Address> orderByComparator)
-		throws NoSuchAddressException {
+		throws com.liferay.portal.exception.NoSuchAddressException {
 		Address address = findByPrimaryKey(addressId);
 
 		Session session = null;
@@ -1410,12 +1409,12 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching address
-	 * @throws NoSuchAddressException if a matching address could not be found
+	 * @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	 */
 	@Override
 	public Address findByCompanyId_First(long companyId,
 		OrderByComparator<Address> orderByComparator)
-		throws NoSuchAddressException {
+		throws com.liferay.portal.exception.NoSuchAddressException {
 		Address address = fetchByCompanyId_First(companyId, orderByComparator);
 
 		if (address != null) {
@@ -1431,7 +1430,7 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchAddressException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchAddressException(msg.toString());
 	}
 
 	/**
@@ -1459,12 +1458,12 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching address
-	 * @throws NoSuchAddressException if a matching address could not be found
+	 * @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	 */
 	@Override
 	public Address findByCompanyId_Last(long companyId,
 		OrderByComparator<Address> orderByComparator)
-		throws NoSuchAddressException {
+		throws com.liferay.portal.exception.NoSuchAddressException {
 		Address address = fetchByCompanyId_Last(companyId, orderByComparator);
 
 		if (address != null) {
@@ -1480,7 +1479,7 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchAddressException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchAddressException(msg.toString());
 	}
 
 	/**
@@ -1516,12 +1515,12 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next address
-	 * @throws NoSuchAddressException if a address with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchAddressException if a address with the primary key could not be found
 	 */
 	@Override
 	public Address[] findByCompanyId_PrevAndNext(long addressId,
 		long companyId, OrderByComparator<Address> orderByComparator)
-		throws NoSuchAddressException {
+		throws com.liferay.portal.exception.NoSuchAddressException {
 		Address address = findByPrimaryKey(addressId);
 
 		Session session = null;
@@ -1910,12 +1909,12 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching address
-	 * @throws NoSuchAddressException if a matching address could not be found
+	 * @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	 */
 	@Override
 	public Address findByUserId_First(long userId,
 		OrderByComparator<Address> orderByComparator)
-		throws NoSuchAddressException {
+		throws com.liferay.portal.exception.NoSuchAddressException {
 		Address address = fetchByUserId_First(userId, orderByComparator);
 
 		if (address != null) {
@@ -1931,7 +1930,7 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchAddressException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchAddressException(msg.toString());
 	}
 
 	/**
@@ -1959,12 +1958,12 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching address
-	 * @throws NoSuchAddressException if a matching address could not be found
+	 * @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	 */
 	@Override
 	public Address findByUserId_Last(long userId,
 		OrderByComparator<Address> orderByComparator)
-		throws NoSuchAddressException {
+		throws com.liferay.portal.exception.NoSuchAddressException {
 		Address address = fetchByUserId_Last(userId, orderByComparator);
 
 		if (address != null) {
@@ -1980,7 +1979,7 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchAddressException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchAddressException(msg.toString());
 	}
 
 	/**
@@ -2016,12 +2015,12 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next address
-	 * @throws NoSuchAddressException if a address with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchAddressException if a address with the primary key could not be found
 	 */
 	@Override
 	public Address[] findByUserId_PrevAndNext(long addressId, long userId,
 		OrderByComparator<Address> orderByComparator)
-		throws NoSuchAddressException {
+		throws com.liferay.portal.exception.NoSuchAddressException {
 		Address address = findByPrimaryKey(addressId);
 
 		Session session = null;
@@ -2428,12 +2427,12 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching address
-	 * @throws NoSuchAddressException if a matching address could not be found
+	 * @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	 */
 	@Override
 	public Address findByC_C_First(long companyId, long classNameId,
 		OrderByComparator<Address> orderByComparator)
-		throws NoSuchAddressException {
+		throws com.liferay.portal.exception.NoSuchAddressException {
 		Address address = fetchByC_C_First(companyId, classNameId,
 				orderByComparator);
 
@@ -2453,7 +2452,7 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchAddressException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchAddressException(msg.toString());
 	}
 
 	/**
@@ -2484,12 +2483,12 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching address
-	 * @throws NoSuchAddressException if a matching address could not be found
+	 * @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	 */
 	@Override
 	public Address findByC_C_Last(long companyId, long classNameId,
 		OrderByComparator<Address> orderByComparator)
-		throws NoSuchAddressException {
+		throws com.liferay.portal.exception.NoSuchAddressException {
 		Address address = fetchByC_C_Last(companyId, classNameId,
 				orderByComparator);
 
@@ -2509,7 +2508,7 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchAddressException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchAddressException(msg.toString());
 	}
 
 	/**
@@ -2547,12 +2546,12 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next address
-	 * @throws NoSuchAddressException if a address with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchAddressException if a address with the primary key could not be found
 	 */
 	@Override
 	public Address[] findByC_C_PrevAndNext(long addressId, long companyId,
 		long classNameId, OrderByComparator<Address> orderByComparator)
-		throws NoSuchAddressException {
+		throws com.liferay.portal.exception.NoSuchAddressException {
 		Address address = findByPrimaryKey(addressId);
 
 		Session session = null;
@@ -2987,12 +2986,12 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching address
-	 * @throws NoSuchAddressException if a matching address could not be found
+	 * @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	 */
 	@Override
 	public Address findByC_C_C_First(long companyId, long classNameId,
 		long classPK, OrderByComparator<Address> orderByComparator)
-		throws NoSuchAddressException {
+		throws com.liferay.portal.exception.NoSuchAddressException {
 		Address address = fetchByC_C_C_First(companyId, classNameId, classPK,
 				orderByComparator);
 
@@ -3015,7 +3014,7 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchAddressException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchAddressException(msg.toString());
 	}
 
 	/**
@@ -3048,12 +3047,12 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching address
-	 * @throws NoSuchAddressException if a matching address could not be found
+	 * @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	 */
 	@Override
 	public Address findByC_C_C_Last(long companyId, long classNameId,
 		long classPK, OrderByComparator<Address> orderByComparator)
-		throws NoSuchAddressException {
+		throws com.liferay.portal.exception.NoSuchAddressException {
 		Address address = fetchByC_C_C_Last(companyId, classNameId, classPK,
 				orderByComparator);
 
@@ -3076,7 +3075,7 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchAddressException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchAddressException(msg.toString());
 	}
 
 	/**
@@ -3116,13 +3115,13 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next address
-	 * @throws NoSuchAddressException if a address with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchAddressException if a address with the primary key could not be found
 	 */
 	@Override
 	public Address[] findByC_C_C_PrevAndNext(long addressId, long companyId,
 		long classNameId, long classPK,
 		OrderByComparator<Address> orderByComparator)
-		throws NoSuchAddressException {
+		throws com.liferay.portal.exception.NoSuchAddressException {
 		Address address = findByPrimaryKey(addressId);
 
 		Session session = null;
@@ -3584,13 +3583,13 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 	 * @param mailing the mailing
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching address
-	 * @throws NoSuchAddressException if a matching address could not be found
+	 * @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	 */
 	@Override
 	public Address findByC_C_C_M_First(long companyId, long classNameId,
 		long classPK, boolean mailing,
 		OrderByComparator<Address> orderByComparator)
-		throws NoSuchAddressException {
+		throws com.liferay.portal.exception.NoSuchAddressException {
 		Address address = fetchByC_C_C_M_First(companyId, classNameId, classPK,
 				mailing, orderByComparator);
 
@@ -3616,7 +3615,7 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchAddressException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchAddressException(msg.toString());
 	}
 
 	/**
@@ -3652,13 +3651,13 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 	 * @param mailing the mailing
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching address
-	 * @throws NoSuchAddressException if a matching address could not be found
+	 * @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	 */
 	@Override
 	public Address findByC_C_C_M_Last(long companyId, long classNameId,
 		long classPK, boolean mailing,
 		OrderByComparator<Address> orderByComparator)
-		throws NoSuchAddressException {
+		throws com.liferay.portal.exception.NoSuchAddressException {
 		Address address = fetchByC_C_C_M_Last(companyId, classNameId, classPK,
 				mailing, orderByComparator);
 
@@ -3684,7 +3683,7 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchAddressException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchAddressException(msg.toString());
 	}
 
 	/**
@@ -3727,13 +3726,13 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 	 * @param mailing the mailing
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next address
-	 * @throws NoSuchAddressException if a address with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchAddressException if a address with the primary key could not be found
 	 */
 	@Override
 	public Address[] findByC_C_C_M_PrevAndNext(long addressId, long companyId,
 		long classNameId, long classPK, boolean mailing,
 		OrderByComparator<Address> orderByComparator)
-		throws NoSuchAddressException {
+		throws com.liferay.portal.exception.NoSuchAddressException {
 		Address address = findByPrimaryKey(addressId);
 
 		Session session = null;
@@ -4211,13 +4210,13 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 	 * @param primary the primary
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching address
-	 * @throws NoSuchAddressException if a matching address could not be found
+	 * @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	 */
 	@Override
 	public Address findByC_C_C_P_First(long companyId, long classNameId,
 		long classPK, boolean primary,
 		OrderByComparator<Address> orderByComparator)
-		throws NoSuchAddressException {
+		throws com.liferay.portal.exception.NoSuchAddressException {
 		Address address = fetchByC_C_C_P_First(companyId, classNameId, classPK,
 				primary, orderByComparator);
 
@@ -4243,7 +4242,7 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchAddressException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchAddressException(msg.toString());
 	}
 
 	/**
@@ -4279,13 +4278,13 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 	 * @param primary the primary
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching address
-	 * @throws NoSuchAddressException if a matching address could not be found
+	 * @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	 */
 	@Override
 	public Address findByC_C_C_P_Last(long companyId, long classNameId,
 		long classPK, boolean primary,
 		OrderByComparator<Address> orderByComparator)
-		throws NoSuchAddressException {
+		throws com.liferay.portal.exception.NoSuchAddressException {
 		Address address = fetchByC_C_C_P_Last(companyId, classNameId, classPK,
 				primary, orderByComparator);
 
@@ -4311,7 +4310,7 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchAddressException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchAddressException(msg.toString());
 	}
 
 	/**
@@ -4354,13 +4353,13 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 	 * @param primary the primary
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next address
-	 * @throws NoSuchAddressException if a address with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchAddressException if a address with the primary key could not be found
 	 */
 	@Override
 	public Address[] findByC_C_C_P_PrevAndNext(long addressId, long companyId,
 		long classNameId, long classPK, boolean primary,
 		OrderByComparator<Address> orderByComparator)
-		throws NoSuchAddressException {
+		throws com.liferay.portal.exception.NoSuchAddressException {
 		Address address = findByPrimaryKey(addressId);
 
 		Session session = null;
@@ -4703,10 +4702,11 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 	 *
 	 * @param addressId the primary key of the address
 	 * @return the address that was removed
-	 * @throws NoSuchAddressException if a address with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchAddressException if a address with the primary key could not be found
 	 */
 	@Override
-	public Address remove(long addressId) throws NoSuchAddressException {
+	public Address remove(long addressId)
+		throws com.liferay.portal.exception.NoSuchAddressException {
 		return remove((Serializable)addressId);
 	}
 
@@ -4715,11 +4715,11 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 	 *
 	 * @param primaryKey the primary key of the address
 	 * @return the address that was removed
-	 * @throws NoSuchAddressException if a address with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchAddressException if a address with the primary key could not be found
 	 */
 	@Override
 	public Address remove(Serializable primaryKey)
-		throws NoSuchAddressException {
+		throws com.liferay.portal.exception.NoSuchAddressException {
 		Session session = null;
 
 		try {
@@ -4732,13 +4732,13 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchAddressException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchAddressException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(address);
 		}
-		catch (NoSuchAddressException nsee) {
+		catch (com.liferay.portal.exception.NoSuchAddressException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -5057,11 +5057,11 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 	 *
 	 * @param primaryKey the primary key of the address
 	 * @return the address
-	 * @throws NoSuchAddressException if a address with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchAddressException if a address with the primary key could not be found
 	 */
 	@Override
 	public Address findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchAddressException {
+		throws com.liferay.portal.exception.NoSuchAddressException {
 		Address address = fetchByPrimaryKey(primaryKey);
 
 		if (address == null) {
@@ -5069,7 +5069,7 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchAddressException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchAddressException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -5077,15 +5077,15 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 	}
 
 	/**
-	 * Returns the address with the primary key or throws a {@link NoSuchAddressException} if it could not be found.
+	 * Returns the address with the primary key or throws a {@link com.liferay.portal.exception.NoSuchAddressException} if it could not be found.
 	 *
 	 * @param addressId the primary key of the address
 	 * @return the address
-	 * @throws NoSuchAddressException if a address with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchAddressException if a address with the primary key could not be found
 	 */
 	@Override
 	public Address findByPrimaryKey(long addressId)
-		throws NoSuchAddressException {
+		throws com.liferay.portal.exception.NoSuchAddressException {
 		return findByPrimaryKey((Serializable)addressId);
 	}
 

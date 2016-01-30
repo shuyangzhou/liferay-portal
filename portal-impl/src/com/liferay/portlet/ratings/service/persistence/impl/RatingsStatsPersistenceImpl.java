@@ -36,7 +36,6 @@ import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
-import com.liferay.portlet.ratings.exception.NoSuchStatsException;
 import com.liferay.portlet.ratings.model.RatingsStats;
 import com.liferay.portlet.ratings.model.impl.RatingsStatsImpl;
 import com.liferay.portlet.ratings.model.impl.RatingsStatsModelImpl;
@@ -98,16 +97,16 @@ public class RatingsStatsPersistenceImpl extends BasePersistenceImpl<RatingsStat
 			new String[] { Long.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the ratings stats where classNameId = &#63; and classPK = &#63; or throws a {@link NoSuchStatsException} if it could not be found.
+	 * Returns the ratings stats where classNameId = &#63; and classPK = &#63; or throws a {@link com.liferay.portlet.ratings.exception.NoSuchStatsException} if it could not be found.
 	 *
 	 * @param classNameId the class name ID
 	 * @param classPK the class p k
 	 * @return the matching ratings stats
-	 * @throws NoSuchStatsException if a matching ratings stats could not be found
+	 * @throws com.liferay.portlet.ratings.exception.NoSuchStatsException if a matching ratings stats could not be found
 	 */
 	@Override
 	public RatingsStats findByC_C(long classNameId, long classPK)
-		throws NoSuchStatsException {
+		throws com.liferay.portlet.ratings.exception.NoSuchStatsException {
 		RatingsStats ratingsStats = fetchByC_C(classNameId, classPK);
 
 		if (ratingsStats == null) {
@@ -127,7 +126,7 @@ public class RatingsStatsPersistenceImpl extends BasePersistenceImpl<RatingsStat
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchStatsException(msg.toString());
+			throw new com.liferay.portlet.ratings.exception.NoSuchStatsException(msg.toString());
 		}
 
 		return ratingsStats;
@@ -245,7 +244,7 @@ public class RatingsStatsPersistenceImpl extends BasePersistenceImpl<RatingsStat
 	 */
 	@Override
 	public RatingsStats removeByC_C(long classNameId, long classPK)
-		throws NoSuchStatsException {
+		throws com.liferay.portlet.ratings.exception.NoSuchStatsException {
 		RatingsStats ratingsStats = findByC_C(classNameId, classPK);
 
 		return remove(ratingsStats);
@@ -472,10 +471,11 @@ public class RatingsStatsPersistenceImpl extends BasePersistenceImpl<RatingsStat
 	 *
 	 * @param statsId the primary key of the ratings stats
 	 * @return the ratings stats that was removed
-	 * @throws NoSuchStatsException if a ratings stats with the primary key could not be found
+	 * @throws com.liferay.portlet.ratings.exception.NoSuchStatsException if a ratings stats with the primary key could not be found
 	 */
 	@Override
-	public RatingsStats remove(long statsId) throws NoSuchStatsException {
+	public RatingsStats remove(long statsId)
+		throws com.liferay.portlet.ratings.exception.NoSuchStatsException {
 		return remove((Serializable)statsId);
 	}
 
@@ -484,11 +484,11 @@ public class RatingsStatsPersistenceImpl extends BasePersistenceImpl<RatingsStat
 	 *
 	 * @param primaryKey the primary key of the ratings stats
 	 * @return the ratings stats that was removed
-	 * @throws NoSuchStatsException if a ratings stats with the primary key could not be found
+	 * @throws com.liferay.portlet.ratings.exception.NoSuchStatsException if a ratings stats with the primary key could not be found
 	 */
 	@Override
 	public RatingsStats remove(Serializable primaryKey)
-		throws NoSuchStatsException {
+		throws com.liferay.portlet.ratings.exception.NoSuchStatsException {
 		Session session = null;
 
 		try {
@@ -502,13 +502,13 @@ public class RatingsStatsPersistenceImpl extends BasePersistenceImpl<RatingsStat
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchStatsException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portlet.ratings.exception.NoSuchStatsException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(ratingsStats);
 		}
-		catch (NoSuchStatsException nsee) {
+		catch (com.liferay.portlet.ratings.exception.NoSuchStatsException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -624,11 +624,11 @@ public class RatingsStatsPersistenceImpl extends BasePersistenceImpl<RatingsStat
 	 *
 	 * @param primaryKey the primary key of the ratings stats
 	 * @return the ratings stats
-	 * @throws NoSuchStatsException if a ratings stats with the primary key could not be found
+	 * @throws com.liferay.portlet.ratings.exception.NoSuchStatsException if a ratings stats with the primary key could not be found
 	 */
 	@Override
 	public RatingsStats findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchStatsException {
+		throws com.liferay.portlet.ratings.exception.NoSuchStatsException {
 		RatingsStats ratingsStats = fetchByPrimaryKey(primaryKey);
 
 		if (ratingsStats == null) {
@@ -636,7 +636,7 @@ public class RatingsStatsPersistenceImpl extends BasePersistenceImpl<RatingsStat
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchStatsException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portlet.ratings.exception.NoSuchStatsException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -644,15 +644,15 @@ public class RatingsStatsPersistenceImpl extends BasePersistenceImpl<RatingsStat
 	}
 
 	/**
-	 * Returns the ratings stats with the primary key or throws a {@link NoSuchStatsException} if it could not be found.
+	 * Returns the ratings stats with the primary key or throws a {@link com.liferay.portlet.ratings.exception.NoSuchStatsException} if it could not be found.
 	 *
 	 * @param statsId the primary key of the ratings stats
 	 * @return the ratings stats
-	 * @throws NoSuchStatsException if a ratings stats with the primary key could not be found
+	 * @throws com.liferay.portlet.ratings.exception.NoSuchStatsException if a ratings stats with the primary key could not be found
 	 */
 	@Override
 	public RatingsStats findByPrimaryKey(long statsId)
-		throws NoSuchStatsException {
+		throws com.liferay.portlet.ratings.exception.NoSuchStatsException {
 		return findByPrimaryKey((Serializable)statsId);
 	}
 

@@ -42,7 +42,6 @@ import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
-import com.liferay.service.access.policy.exception.NoSuchEntryException;
 import com.liferay.service.access.policy.model.SAPEntry;
 import com.liferay.service.access.policy.model.impl.SAPEntryImpl;
 import com.liferay.service.access.policy.model.impl.SAPEntryModelImpl;
@@ -295,12 +294,12 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching s a p entry
-	 * @throws NoSuchEntryException if a matching s a p entry could not be found
+	 * @throws com.liferay.service.access.policy.exception.NoSuchEntryException if a matching s a p entry could not be found
 	 */
 	@Override
 	public SAPEntry findByUuid_First(String uuid,
 		OrderByComparator<SAPEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.service.access.policy.exception.NoSuchEntryException {
 		SAPEntry sapEntry = fetchByUuid_First(uuid, orderByComparator);
 
 		if (sapEntry != null) {
@@ -316,7 +315,7 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.service.access.policy.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -344,12 +343,12 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching s a p entry
-	 * @throws NoSuchEntryException if a matching s a p entry could not be found
+	 * @throws com.liferay.service.access.policy.exception.NoSuchEntryException if a matching s a p entry could not be found
 	 */
 	@Override
 	public SAPEntry findByUuid_Last(String uuid,
 		OrderByComparator<SAPEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.service.access.policy.exception.NoSuchEntryException {
 		SAPEntry sapEntry = fetchByUuid_Last(uuid, orderByComparator);
 
 		if (sapEntry != null) {
@@ -365,7 +364,7 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.service.access.policy.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -401,12 +400,12 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next s a p entry
-	 * @throws NoSuchEntryException if a s a p entry with the primary key could not be found
+	 * @throws com.liferay.service.access.policy.exception.NoSuchEntryException if a s a p entry with the primary key could not be found
 	 */
 	@Override
 	public SAPEntry[] findByUuid_PrevAndNext(long sapEntryId, String uuid,
 		OrderByComparator<SAPEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.service.access.policy.exception.NoSuchEntryException {
 		SAPEntry sapEntry = findByPrimaryKey(sapEntryId);
 
 		Session session = null;
@@ -696,12 +695,12 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next s a p entry
-	 * @throws NoSuchEntryException if a s a p entry with the primary key could not be found
+	 * @throws com.liferay.service.access.policy.exception.NoSuchEntryException if a s a p entry with the primary key could not be found
 	 */
 	@Override
 	public SAPEntry[] filterFindByUuid_PrevAndNext(long sapEntryId,
 		String uuid, OrderByComparator<SAPEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.service.access.policy.exception.NoSuchEntryException {
 		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByUuid_PrevAndNext(sapEntryId, uuid, orderByComparator);
 		}
@@ -1253,12 +1252,12 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching s a p entry
-	 * @throws NoSuchEntryException if a matching s a p entry could not be found
+	 * @throws com.liferay.service.access.policy.exception.NoSuchEntryException if a matching s a p entry could not be found
 	 */
 	@Override
 	public SAPEntry findByUuid_C_First(String uuid, long companyId,
 		OrderByComparator<SAPEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.service.access.policy.exception.NoSuchEntryException {
 		SAPEntry sapEntry = fetchByUuid_C_First(uuid, companyId,
 				orderByComparator);
 
@@ -1278,7 +1277,7 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.service.access.policy.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -1309,12 +1308,12 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching s a p entry
-	 * @throws NoSuchEntryException if a matching s a p entry could not be found
+	 * @throws com.liferay.service.access.policy.exception.NoSuchEntryException if a matching s a p entry could not be found
 	 */
 	@Override
 	public SAPEntry findByUuid_C_Last(String uuid, long companyId,
 		OrderByComparator<SAPEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.service.access.policy.exception.NoSuchEntryException {
 		SAPEntry sapEntry = fetchByUuid_C_Last(uuid, companyId,
 				orderByComparator);
 
@@ -1334,7 +1333,7 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.service.access.policy.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -1372,12 +1371,12 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next s a p entry
-	 * @throws NoSuchEntryException if a s a p entry with the primary key could not be found
+	 * @throws com.liferay.service.access.policy.exception.NoSuchEntryException if a s a p entry with the primary key could not be found
 	 */
 	@Override
 	public SAPEntry[] findByUuid_C_PrevAndNext(long sapEntryId, String uuid,
 		long companyId, OrderByComparator<SAPEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.service.access.policy.exception.NoSuchEntryException {
 		SAPEntry sapEntry = findByPrimaryKey(sapEntryId);
 
 		Session session = null;
@@ -1681,13 +1680,13 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next s a p entry
-	 * @throws NoSuchEntryException if a s a p entry with the primary key could not be found
+	 * @throws com.liferay.service.access.policy.exception.NoSuchEntryException if a s a p entry with the primary key could not be found
 	 */
 	@Override
 	public SAPEntry[] filterFindByUuid_C_PrevAndNext(long sapEntryId,
 		String uuid, long companyId,
 		OrderByComparator<SAPEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.service.access.policy.exception.NoSuchEntryException {
 		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByUuid_C_PrevAndNext(sapEntryId, uuid, companyId,
 				orderByComparator);
@@ -2226,12 +2225,12 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching s a p entry
-	 * @throws NoSuchEntryException if a matching s a p entry could not be found
+	 * @throws com.liferay.service.access.policy.exception.NoSuchEntryException if a matching s a p entry could not be found
 	 */
 	@Override
 	public SAPEntry findByCompanyId_First(long companyId,
 		OrderByComparator<SAPEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.service.access.policy.exception.NoSuchEntryException {
 		SAPEntry sapEntry = fetchByCompanyId_First(companyId, orderByComparator);
 
 		if (sapEntry != null) {
@@ -2247,7 +2246,7 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.service.access.policy.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -2275,12 +2274,12 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching s a p entry
-	 * @throws NoSuchEntryException if a matching s a p entry could not be found
+	 * @throws com.liferay.service.access.policy.exception.NoSuchEntryException if a matching s a p entry could not be found
 	 */
 	@Override
 	public SAPEntry findByCompanyId_Last(long companyId,
 		OrderByComparator<SAPEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.service.access.policy.exception.NoSuchEntryException {
 		SAPEntry sapEntry = fetchByCompanyId_Last(companyId, orderByComparator);
 
 		if (sapEntry != null) {
@@ -2296,7 +2295,7 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.service.access.policy.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -2332,12 +2331,12 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next s a p entry
-	 * @throws NoSuchEntryException if a s a p entry with the primary key could not be found
+	 * @throws com.liferay.service.access.policy.exception.NoSuchEntryException if a s a p entry with the primary key could not be found
 	 */
 	@Override
 	public SAPEntry[] findByCompanyId_PrevAndNext(long sapEntryId,
 		long companyId, OrderByComparator<SAPEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.service.access.policy.exception.NoSuchEntryException {
 		SAPEntry sapEntry = findByPrimaryKey(sapEntryId);
 
 		Session session = null;
@@ -2601,12 +2600,12 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next s a p entry
-	 * @throws NoSuchEntryException if a s a p entry with the primary key could not be found
+	 * @throws com.liferay.service.access.policy.exception.NoSuchEntryException if a s a p entry with the primary key could not be found
 	 */
 	@Override
 	public SAPEntry[] filterFindByCompanyId_PrevAndNext(long sapEntryId,
 		long companyId, OrderByComparator<SAPEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.service.access.policy.exception.NoSuchEntryException {
 		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByCompanyId_PrevAndNext(sapEntryId, companyId,
 				orderByComparator);
@@ -3098,12 +3097,12 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 	 * @param defaultSAPEntry the default s a p entry
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching s a p entry
-	 * @throws NoSuchEntryException if a matching s a p entry could not be found
+	 * @throws com.liferay.service.access.policy.exception.NoSuchEntryException if a matching s a p entry could not be found
 	 */
 	@Override
 	public SAPEntry findByC_D_First(long companyId, boolean defaultSAPEntry,
 		OrderByComparator<SAPEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.service.access.policy.exception.NoSuchEntryException {
 		SAPEntry sapEntry = fetchByC_D_First(companyId, defaultSAPEntry,
 				orderByComparator);
 
@@ -3123,7 +3122,7 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.service.access.policy.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -3154,12 +3153,12 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 	 * @param defaultSAPEntry the default s a p entry
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching s a p entry
-	 * @throws NoSuchEntryException if a matching s a p entry could not be found
+	 * @throws com.liferay.service.access.policy.exception.NoSuchEntryException if a matching s a p entry could not be found
 	 */
 	@Override
 	public SAPEntry findByC_D_Last(long companyId, boolean defaultSAPEntry,
 		OrderByComparator<SAPEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.service.access.policy.exception.NoSuchEntryException {
 		SAPEntry sapEntry = fetchByC_D_Last(companyId, defaultSAPEntry,
 				orderByComparator);
 
@@ -3179,7 +3178,7 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.service.access.policy.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -3217,12 +3216,12 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 	 * @param defaultSAPEntry the default s a p entry
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next s a p entry
-	 * @throws NoSuchEntryException if a s a p entry with the primary key could not be found
+	 * @throws com.liferay.service.access.policy.exception.NoSuchEntryException if a s a p entry with the primary key could not be found
 	 */
 	@Override
 	public SAPEntry[] findByC_D_PrevAndNext(long sapEntryId, long companyId,
 		boolean defaultSAPEntry, OrderByComparator<SAPEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.service.access.policy.exception.NoSuchEntryException {
 		SAPEntry sapEntry = findByPrimaryKey(sapEntryId);
 
 		Session session = null;
@@ -3501,13 +3500,13 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 	 * @param defaultSAPEntry the default s a p entry
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next s a p entry
-	 * @throws NoSuchEntryException if a s a p entry with the primary key could not be found
+	 * @throws com.liferay.service.access.policy.exception.NoSuchEntryException if a s a p entry with the primary key could not be found
 	 */
 	@Override
 	public SAPEntry[] filterFindByC_D_PrevAndNext(long sapEntryId,
 		long companyId, boolean defaultSAPEntry,
 		OrderByComparator<SAPEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.service.access.policy.exception.NoSuchEntryException {
 		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByC_D_PrevAndNext(sapEntryId, companyId,
 				defaultSAPEntry, orderByComparator);
@@ -3820,16 +3819,16 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 			new String[] { Long.class.getName(), String.class.getName() });
 
 	/**
-	 * Returns the s a p entry where companyId = &#63; and name = &#63; or throws a {@link NoSuchEntryException} if it could not be found.
+	 * Returns the s a p entry where companyId = &#63; and name = &#63; or throws a {@link com.liferay.service.access.policy.exception.NoSuchEntryException} if it could not be found.
 	 *
 	 * @param companyId the company ID
 	 * @param name the name
 	 * @return the matching s a p entry
-	 * @throws NoSuchEntryException if a matching s a p entry could not be found
+	 * @throws com.liferay.service.access.policy.exception.NoSuchEntryException if a matching s a p entry could not be found
 	 */
 	@Override
 	public SAPEntry findByC_N(long companyId, String name)
-		throws NoSuchEntryException {
+		throws com.liferay.service.access.policy.exception.NoSuchEntryException {
 		SAPEntry sapEntry = fetchByC_N(companyId, name);
 
 		if (sapEntry == null) {
@@ -3849,7 +3848,7 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchEntryException(msg.toString());
+			throw new com.liferay.service.access.policy.exception.NoSuchEntryException(msg.toString());
 		}
 
 		return sapEntry;
@@ -3989,7 +3988,7 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 	 */
 	@Override
 	public SAPEntry removeByC_N(long companyId, String name)
-		throws NoSuchEntryException {
+		throws com.liferay.service.access.policy.exception.NoSuchEntryException {
 		SAPEntry sapEntry = findByC_N(companyId, name);
 
 		return remove(sapEntry);
@@ -4232,10 +4231,11 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 	 *
 	 * @param sapEntryId the primary key of the s a p entry
 	 * @return the s a p entry that was removed
-	 * @throws NoSuchEntryException if a s a p entry with the primary key could not be found
+	 * @throws com.liferay.service.access.policy.exception.NoSuchEntryException if a s a p entry with the primary key could not be found
 	 */
 	@Override
-	public SAPEntry remove(long sapEntryId) throws NoSuchEntryException {
+	public SAPEntry remove(long sapEntryId)
+		throws com.liferay.service.access.policy.exception.NoSuchEntryException {
 		return remove((Serializable)sapEntryId);
 	}
 
@@ -4244,10 +4244,11 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 	 *
 	 * @param primaryKey the primary key of the s a p entry
 	 * @return the s a p entry that was removed
-	 * @throws NoSuchEntryException if a s a p entry with the primary key could not be found
+	 * @throws com.liferay.service.access.policy.exception.NoSuchEntryException if a s a p entry with the primary key could not be found
 	 */
 	@Override
-	public SAPEntry remove(Serializable primaryKey) throws NoSuchEntryException {
+	public SAPEntry remove(Serializable primaryKey)
+		throws com.liferay.service.access.policy.exception.NoSuchEntryException {
 		Session session = null;
 
 		try {
@@ -4261,13 +4262,13 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.service.access.policy.exception.NoSuchEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(sapEntry);
 		}
-		catch (NoSuchEntryException nsee) {
+		catch (com.liferay.service.access.policy.exception.NoSuchEntryException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -4491,11 +4492,11 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 	 *
 	 * @param primaryKey the primary key of the s a p entry
 	 * @return the s a p entry
-	 * @throws NoSuchEntryException if a s a p entry with the primary key could not be found
+	 * @throws com.liferay.service.access.policy.exception.NoSuchEntryException if a s a p entry with the primary key could not be found
 	 */
 	@Override
 	public SAPEntry findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchEntryException {
+		throws com.liferay.service.access.policy.exception.NoSuchEntryException {
 		SAPEntry sapEntry = fetchByPrimaryKey(primaryKey);
 
 		if (sapEntry == null) {
@@ -4503,7 +4504,7 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.service.access.policy.exception.NoSuchEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -4511,15 +4512,15 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 	}
 
 	/**
-	 * Returns the s a p entry with the primary key or throws a {@link NoSuchEntryException} if it could not be found.
+	 * Returns the s a p entry with the primary key or throws a {@link com.liferay.service.access.policy.exception.NoSuchEntryException} if it could not be found.
 	 *
 	 * @param sapEntryId the primary key of the s a p entry
 	 * @return the s a p entry
-	 * @throws NoSuchEntryException if a s a p entry with the primary key could not be found
+	 * @throws com.liferay.service.access.policy.exception.NoSuchEntryException if a s a p entry with the primary key could not be found
 	 */
 	@Override
 	public SAPEntry findByPrimaryKey(long sapEntryId)
-		throws NoSuchEntryException {
+		throws com.liferay.service.access.policy.exception.NoSuchEntryException {
 		return findByPrimaryKey((Serializable)sapEntryId);
 	}
 

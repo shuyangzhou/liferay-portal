@@ -189,7 +189,7 @@ public class DLContentUtil {
 	* @param repositoryId the repository ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library content
-	* @throws NoSuchContentException if a matching document library content could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException if a matching document library content could not be found
 	*/
 	public static DLContent findByC_R_First(long companyId, long repositoryId,
 		OrderByComparator<DLContent> orderByComparator)
@@ -219,7 +219,7 @@ public class DLContentUtil {
 	* @param repositoryId the repository ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library content
-	* @throws NoSuchContentException if a matching document library content could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException if a matching document library content could not be found
 	*/
 	public static DLContent findByC_R_Last(long companyId, long repositoryId,
 		OrderByComparator<DLContent> orderByComparator)
@@ -250,7 +250,7 @@ public class DLContentUtil {
 	* @param repositoryId the repository ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library content
-	* @throws NoSuchContentException if a document library content with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException if a document library content with the primary key could not be found
 	*/
 	public static DLContent[] findByC_R_PrevAndNext(long contentId,
 		long companyId, long repositoryId,
@@ -371,7 +371,7 @@ public class DLContentUtil {
 	* @param path the path
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library content
-	* @throws NoSuchContentException if a matching document library content could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException if a matching document library content could not be found
 	*/
 	public static DLContent findByC_R_P_First(long companyId,
 		long repositoryId, java.lang.String path,
@@ -407,7 +407,7 @@ public class DLContentUtil {
 	* @param path the path
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library content
-	* @throws NoSuchContentException if a matching document library content could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException if a matching document library content could not be found
 	*/
 	public static DLContent findByC_R_P_Last(long companyId, long repositoryId,
 		java.lang.String path, OrderByComparator<DLContent> orderByComparator)
@@ -443,7 +443,7 @@ public class DLContentUtil {
 	* @param path the path
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library content
-	* @throws NoSuchContentException if a document library content with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException if a document library content with the primary key could not be found
 	*/
 	public static DLContent[] findByC_R_P_PrevAndNext(long contentId,
 		long companyId, long repositoryId, java.lang.String path,
@@ -568,7 +568,7 @@ public class DLContentUtil {
 	* @param path the path
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library content
-	* @throws NoSuchContentException if a matching document library content could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException if a matching document library content could not be found
 	*/
 	public static DLContent findByC_R_LikeP_First(long companyId,
 		long repositoryId, java.lang.String path,
@@ -604,7 +604,7 @@ public class DLContentUtil {
 	* @param path the path
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library content
-	* @throws NoSuchContentException if a matching document library content could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException if a matching document library content could not be found
 	*/
 	public static DLContent findByC_R_LikeP_Last(long companyId,
 		long repositoryId, java.lang.String path,
@@ -641,7 +641,7 @@ public class DLContentUtil {
 	* @param path the path
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library content
-	* @throws NoSuchContentException if a document library content with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException if a document library content with the primary key could not be found
 	*/
 	public static DLContent[] findByC_R_LikeP_PrevAndNext(long contentId,
 		long companyId, long repositoryId, java.lang.String path,
@@ -678,14 +678,14 @@ public class DLContentUtil {
 	}
 
 	/**
-	* Returns the document library content where companyId = &#63; and repositoryId = &#63; and path = &#63; and version = &#63; or throws a {@link NoSuchContentException} if it could not be found.
+	* Returns the document library content where companyId = &#63; and repositoryId = &#63; and path = &#63; and version = &#63; or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchContentException} if it could not be found.
 	*
 	* @param companyId the company ID
 	* @param repositoryId the repository ID
 	* @param path the path
 	* @param version the version
 	* @return the matching document library content
-	* @throws NoSuchContentException if a matching document library content could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException if a matching document library content could not be found
 	*/
 	public static DLContent findByC_R_P_V(long companyId, long repositoryId,
 		java.lang.String path, java.lang.String version)
@@ -791,7 +791,7 @@ public class DLContentUtil {
 	*
 	* @param contentId the primary key of the document library content
 	* @return the document library content that was removed
-	* @throws NoSuchContentException if a document library content with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException if a document library content with the primary key could not be found
 	*/
 	public static DLContent remove(long contentId)
 		throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException {
@@ -803,11 +803,11 @@ public class DLContentUtil {
 	}
 
 	/**
-	* Returns the document library content with the primary key or throws a {@link NoSuchContentException} if it could not be found.
+	* Returns the document library content with the primary key or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchContentException} if it could not be found.
 	*
 	* @param contentId the primary key of the document library content
 	* @return the document library content
-	* @throws NoSuchContentException if a document library content with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException if a document library content with the primary key could not be found
 	*/
 	public static DLContent findByPrimaryKey(long contentId)
 		throws com.liferay.portlet.documentlibrary.exception.NoSuchContentException {

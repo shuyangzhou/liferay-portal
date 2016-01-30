@@ -181,7 +181,7 @@ public class OrganizationUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching organization
-	* @throws NoSuchOrganizationException if a matching organization could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrganizationException if a matching organization could not be found
 	*/
 	public static Organization findByUuid_First(java.lang.String uuid,
 		OrderByComparator<Organization> orderByComparator)
@@ -207,7 +207,7 @@ public class OrganizationUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching organization
-	* @throws NoSuchOrganizationException if a matching organization could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrganizationException if a matching organization could not be found
 	*/
 	public static Organization findByUuid_Last(java.lang.String uuid,
 		OrderByComparator<Organization> orderByComparator)
@@ -234,7 +234,7 @@ public class OrganizationUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next organization
-	* @throws NoSuchOrganizationException if a organization with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrganizationException if a organization with the primary key could not be found
 	*/
 	public static Organization[] findByUuid_PrevAndNext(long organizationId,
 		java.lang.String uuid, OrderByComparator<Organization> orderByComparator)
@@ -297,7 +297,7 @@ public class OrganizationUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next organization
-	* @throws NoSuchOrganizationException if a organization with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrganizationException if a organization with the primary key could not be found
 	*/
 	public static Organization[] filterFindByUuid_PrevAndNext(
 		long organizationId, java.lang.String uuid,
@@ -419,7 +419,7 @@ public class OrganizationUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching organization
-	* @throws NoSuchOrganizationException if a matching organization could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrganizationException if a matching organization could not be found
 	*/
 	public static Organization findByUuid_C_First(java.lang.String uuid,
 		long companyId, OrderByComparator<Organization> orderByComparator)
@@ -449,7 +449,7 @@ public class OrganizationUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching organization
-	* @throws NoSuchOrganizationException if a matching organization could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrganizationException if a matching organization could not be found
 	*/
 	public static Organization findByUuid_C_Last(java.lang.String uuid,
 		long companyId, OrderByComparator<Organization> orderByComparator)
@@ -480,7 +480,7 @@ public class OrganizationUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next organization
-	* @throws NoSuchOrganizationException if a organization with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrganizationException if a organization with the primary key could not be found
 	*/
 	public static Organization[] findByUuid_C_PrevAndNext(long organizationId,
 		java.lang.String uuid, long companyId,
@@ -551,7 +551,7 @@ public class OrganizationUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next organization
-	* @throws NoSuchOrganizationException if a organization with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrganizationException if a organization with the primary key could not be found
 	*/
 	public static Organization[] filterFindByUuid_C_PrevAndNext(
 		long organizationId, java.lang.String uuid, long companyId,
@@ -668,7 +668,7 @@ public class OrganizationUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching organization
-	* @throws NoSuchOrganizationException if a matching organization could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrganizationException if a matching organization could not be found
 	*/
 	public static Organization findByCompanyId_First(long companyId,
 		OrderByComparator<Organization> orderByComparator)
@@ -696,7 +696,7 @@ public class OrganizationUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching organization
-	* @throws NoSuchOrganizationException if a matching organization could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrganizationException if a matching organization could not be found
 	*/
 	public static Organization findByCompanyId_Last(long companyId,
 		OrderByComparator<Organization> orderByComparator)
@@ -725,7 +725,7 @@ public class OrganizationUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next organization
-	* @throws NoSuchOrganizationException if a organization with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrganizationException if a organization with the primary key could not be found
 	*/
 	public static Organization[] findByCompanyId_PrevAndNext(
 		long organizationId, long companyId,
@@ -790,7 +790,7 @@ public class OrganizationUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next organization
-	* @throws NoSuchOrganizationException if a organization with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrganizationException if a organization with the primary key could not be found
 	*/
 	public static Organization[] filterFindByCompanyId_PrevAndNext(
 		long organizationId, long companyId,
@@ -904,7 +904,7 @@ public class OrganizationUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching organization
-	* @throws NoSuchOrganizationException if a matching organization could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrganizationException if a matching organization could not be found
 	*/
 	public static Organization findByLocations_First(long companyId,
 		OrderByComparator<Organization> orderByComparator)
@@ -932,7 +932,7 @@ public class OrganizationUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching organization
-	* @throws NoSuchOrganizationException if a matching organization could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrganizationException if a matching organization could not be found
 	*/
 	public static Organization findByLocations_Last(long companyId,
 		OrderByComparator<Organization> orderByComparator)
@@ -961,7 +961,7 @@ public class OrganizationUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next organization
-	* @throws NoSuchOrganizationException if a organization with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrganizationException if a organization with the primary key could not be found
 	*/
 	public static Organization[] findByLocations_PrevAndNext(
 		long organizationId, long companyId,
@@ -1026,7 +1026,7 @@ public class OrganizationUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next organization
-	* @throws NoSuchOrganizationException if a organization with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrganizationException if a organization with the primary key could not be found
 	*/
 	public static Organization[] filterFindByLocations_PrevAndNext(
 		long organizationId, long companyId,
@@ -1150,7 +1150,7 @@ public class OrganizationUtil {
 	* @param parentOrganizationId the parent organization ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching organization
-	* @throws NoSuchOrganizationException if a matching organization could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrganizationException if a matching organization could not be found
 	*/
 	public static Organization findByC_P_First(long companyId,
 		long parentOrganizationId,
@@ -1184,7 +1184,7 @@ public class OrganizationUtil {
 	* @param parentOrganizationId the parent organization ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching organization
-	* @throws NoSuchOrganizationException if a matching organization could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrganizationException if a matching organization could not be found
 	*/
 	public static Organization findByC_P_Last(long companyId,
 		long parentOrganizationId,
@@ -1219,7 +1219,7 @@ public class OrganizationUtil {
 	* @param parentOrganizationId the parent organization ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next organization
-	* @throws NoSuchOrganizationException if a organization with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrganizationException if a organization with the primary key could not be found
 	*/
 	public static Organization[] findByC_P_PrevAndNext(long organizationId,
 		long companyId, long parentOrganizationId,
@@ -1291,7 +1291,7 @@ public class OrganizationUtil {
 	* @param parentOrganizationId the parent organization ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next organization
-	* @throws NoSuchOrganizationException if a organization with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrganizationException if a organization with the primary key could not be found
 	*/
 	public static Organization[] filterFindByC_P_PrevAndNext(
 		long organizationId, long companyId, long parentOrganizationId,
@@ -1416,7 +1416,7 @@ public class OrganizationUtil {
 	* @param treePath the tree path
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching organization
-	* @throws NoSuchOrganizationException if a matching organization could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrganizationException if a matching organization could not be found
 	*/
 	public static Organization findByC_T_First(long companyId,
 		java.lang.String treePath,
@@ -1448,7 +1448,7 @@ public class OrganizationUtil {
 	* @param treePath the tree path
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching organization
-	* @throws NoSuchOrganizationException if a matching organization could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrganizationException if a matching organization could not be found
 	*/
 	public static Organization findByC_T_Last(long companyId,
 		java.lang.String treePath,
@@ -1481,7 +1481,7 @@ public class OrganizationUtil {
 	* @param treePath the tree path
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next organization
-	* @throws NoSuchOrganizationException if a organization with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrganizationException if a organization with the primary key could not be found
 	*/
 	public static Organization[] findByC_T_PrevAndNext(long organizationId,
 		long companyId, java.lang.String treePath,
@@ -1552,7 +1552,7 @@ public class OrganizationUtil {
 	* @param treePath the tree path
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next organization
-	* @throws NoSuchOrganizationException if a organization with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrganizationException if a organization with the primary key could not be found
 	*/
 	public static Organization[] filterFindByC_T_PrevAndNext(
 		long organizationId, long companyId, java.lang.String treePath,
@@ -1596,12 +1596,12 @@ public class OrganizationUtil {
 	}
 
 	/**
-	* Returns the organization where companyId = &#63; and name = &#63; or throws a {@link NoSuchOrganizationException} if it could not be found.
+	* Returns the organization where companyId = &#63; and name = &#63; or throws a {@link com.liferay.portal.exception.NoSuchOrganizationException} if it could not be found.
 	*
 	* @param companyId the company ID
 	* @param name the name
 	* @return the matching organization
-	* @throws NoSuchOrganizationException if a matching organization could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrganizationException if a matching organization could not be found
 	*/
 	public static Organization findByC_N(long companyId, java.lang.String name)
 		throws com.liferay.portal.exception.NoSuchOrganizationException {
@@ -1747,7 +1747,7 @@ public class OrganizationUtil {
 	* @param parentOrganizationId the parent organization ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching organization
-	* @throws NoSuchOrganizationException if a matching organization could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrganizationException if a matching organization could not be found
 	*/
 	public static Organization findByO_C_P_First(long organizationId,
 		long companyId, long parentOrganizationId,
@@ -1783,7 +1783,7 @@ public class OrganizationUtil {
 	* @param parentOrganizationId the parent organization ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching organization
-	* @throws NoSuchOrganizationException if a matching organization could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrganizationException if a matching organization could not be found
 	*/
 	public static Organization findByO_C_P_Last(long organizationId,
 		long companyId, long parentOrganizationId,
@@ -1945,7 +1945,7 @@ public class OrganizationUtil {
 	*
 	* @param organizationId the primary key of the organization
 	* @return the organization that was removed
-	* @throws NoSuchOrganizationException if a organization with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrganizationException if a organization with the primary key could not be found
 	*/
 	public static Organization remove(long organizationId)
 		throws com.liferay.portal.exception.NoSuchOrganizationException {
@@ -1957,11 +1957,11 @@ public class OrganizationUtil {
 	}
 
 	/**
-	* Returns the organization with the primary key or throws a {@link NoSuchOrganizationException} if it could not be found.
+	* Returns the organization with the primary key or throws a {@link com.liferay.portal.exception.NoSuchOrganizationException} if it could not be found.
 	*
 	* @param organizationId the primary key of the organization
 	* @return the organization
-	* @throws NoSuchOrganizationException if a organization with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchOrganizationException if a organization with the primary key could not be found
 	*/
 	public static Organization findByPrimaryKey(long organizationId)
 		throws com.liferay.portal.exception.NoSuchOrganizationException {

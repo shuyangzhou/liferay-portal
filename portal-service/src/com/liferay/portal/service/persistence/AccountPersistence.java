@@ -65,7 +65,7 @@ public interface AccountPersistence extends BasePersistence<Account> {
 	*
 	* @param accountId the primary key of the account
 	* @return the account that was removed
-	* @throws NoSuchAccountException if a account with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchAccountException if a account with the primary key could not be found
 	*/
 	public Account remove(long accountId)
 		throws com.liferay.portal.exception.NoSuchAccountException;
@@ -73,11 +73,11 @@ public interface AccountPersistence extends BasePersistence<Account> {
 	public Account updateImpl(Account account);
 
 	/**
-	* Returns the account with the primary key or throws a {@link NoSuchAccountException} if it could not be found.
+	* Returns the account with the primary key or throws a {@link com.liferay.portal.exception.NoSuchAccountException} if it could not be found.
 	*
 	* @param accountId the primary key of the account
 	* @return the account
-	* @throws NoSuchAccountException if a account with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchAccountException if a account with the primary key could not be found
 	*/
 	public Account findByPrimaryKey(long accountId)
 		throws com.liferay.portal.exception.NoSuchAccountException;

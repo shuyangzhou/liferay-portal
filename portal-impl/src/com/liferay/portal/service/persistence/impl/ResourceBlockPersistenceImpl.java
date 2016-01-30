@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchResourceBlockException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -310,12 +309,12 @@ public class ResourceBlockPersistenceImpl extends BasePersistenceImpl<ResourceBl
 	 * @param name the name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching resource block
-	 * @throws NoSuchResourceBlockException if a matching resource block could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceBlockException if a matching resource block could not be found
 	 */
 	@Override
 	public ResourceBlock findByC_N_First(long companyId, String name,
 		OrderByComparator<ResourceBlock> orderByComparator)
-		throws NoSuchResourceBlockException {
+		throws com.liferay.portal.exception.NoSuchResourceBlockException {
 		ResourceBlock resourceBlock = fetchByC_N_First(companyId, name,
 				orderByComparator);
 
@@ -335,7 +334,7 @@ public class ResourceBlockPersistenceImpl extends BasePersistenceImpl<ResourceBl
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchResourceBlockException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchResourceBlockException(msg.toString());
 	}
 
 	/**
@@ -366,12 +365,12 @@ public class ResourceBlockPersistenceImpl extends BasePersistenceImpl<ResourceBl
 	 * @param name the name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching resource block
-	 * @throws NoSuchResourceBlockException if a matching resource block could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceBlockException if a matching resource block could not be found
 	 */
 	@Override
 	public ResourceBlock findByC_N_Last(long companyId, String name,
 		OrderByComparator<ResourceBlock> orderByComparator)
-		throws NoSuchResourceBlockException {
+		throws com.liferay.portal.exception.NoSuchResourceBlockException {
 		ResourceBlock resourceBlock = fetchByC_N_Last(companyId, name,
 				orderByComparator);
 
@@ -391,7 +390,7 @@ public class ResourceBlockPersistenceImpl extends BasePersistenceImpl<ResourceBl
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchResourceBlockException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchResourceBlockException(msg.toString());
 	}
 
 	/**
@@ -429,13 +428,13 @@ public class ResourceBlockPersistenceImpl extends BasePersistenceImpl<ResourceBl
 	 * @param name the name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next resource block
-	 * @throws NoSuchResourceBlockException if a resource block with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceBlockException if a resource block with the primary key could not be found
 	 */
 	@Override
 	public ResourceBlock[] findByC_N_PrevAndNext(long resourceBlockId,
 		long companyId, String name,
 		OrderByComparator<ResourceBlock> orderByComparator)
-		throws NoSuchResourceBlockException {
+		throws com.liferay.portal.exception.NoSuchResourceBlockException {
 		ResourceBlock resourceBlock = findByPrimaryKey(resourceBlockId);
 
 		Session session = null;
@@ -919,12 +918,12 @@ public class ResourceBlockPersistenceImpl extends BasePersistenceImpl<ResourceBl
 	 * @param name the name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching resource block
-	 * @throws NoSuchResourceBlockException if a matching resource block could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceBlockException if a matching resource block could not be found
 	 */
 	@Override
 	public ResourceBlock findByC_G_N_First(long companyId, long groupId,
 		String name, OrderByComparator<ResourceBlock> orderByComparator)
-		throws NoSuchResourceBlockException {
+		throws com.liferay.portal.exception.NoSuchResourceBlockException {
 		ResourceBlock resourceBlock = fetchByC_G_N_First(companyId, groupId,
 				name, orderByComparator);
 
@@ -947,7 +946,7 @@ public class ResourceBlockPersistenceImpl extends BasePersistenceImpl<ResourceBl
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchResourceBlockException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchResourceBlockException(msg.toString());
 	}
 
 	/**
@@ -980,12 +979,12 @@ public class ResourceBlockPersistenceImpl extends BasePersistenceImpl<ResourceBl
 	 * @param name the name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching resource block
-	 * @throws NoSuchResourceBlockException if a matching resource block could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceBlockException if a matching resource block could not be found
 	 */
 	@Override
 	public ResourceBlock findByC_G_N_Last(long companyId, long groupId,
 		String name, OrderByComparator<ResourceBlock> orderByComparator)
-		throws NoSuchResourceBlockException {
+		throws com.liferay.portal.exception.NoSuchResourceBlockException {
 		ResourceBlock resourceBlock = fetchByC_G_N_Last(companyId, groupId,
 				name, orderByComparator);
 
@@ -1008,7 +1007,7 @@ public class ResourceBlockPersistenceImpl extends BasePersistenceImpl<ResourceBl
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchResourceBlockException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchResourceBlockException(msg.toString());
 	}
 
 	/**
@@ -1048,13 +1047,13 @@ public class ResourceBlockPersistenceImpl extends BasePersistenceImpl<ResourceBl
 	 * @param name the name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next resource block
-	 * @throws NoSuchResourceBlockException if a resource block with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceBlockException if a resource block with the primary key could not be found
 	 */
 	@Override
 	public ResourceBlock[] findByC_G_N_PrevAndNext(long resourceBlockId,
 		long companyId, long groupId, String name,
 		OrderByComparator<ResourceBlock> orderByComparator)
-		throws NoSuchResourceBlockException {
+		throws com.liferay.portal.exception.NoSuchResourceBlockException {
 		ResourceBlock resourceBlock = findByPrimaryKey(resourceBlockId);
 
 		Session session = null;
@@ -1326,19 +1325,19 @@ public class ResourceBlockPersistenceImpl extends BasePersistenceImpl<ResourceBl
 			});
 
 	/**
-	 * Returns the resource block where companyId = &#63; and groupId = &#63; and name = &#63; and permissionsHash = &#63; or throws a {@link NoSuchResourceBlockException} if it could not be found.
+	 * Returns the resource block where companyId = &#63; and groupId = &#63; and name = &#63; and permissionsHash = &#63; or throws a {@link com.liferay.portal.exception.NoSuchResourceBlockException} if it could not be found.
 	 *
 	 * @param companyId the company ID
 	 * @param groupId the group ID
 	 * @param name the name
 	 * @param permissionsHash the permissions hash
 	 * @return the matching resource block
-	 * @throws NoSuchResourceBlockException if a matching resource block could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceBlockException if a matching resource block could not be found
 	 */
 	@Override
 	public ResourceBlock findByC_G_N_P(long companyId, long groupId,
 		String name, String permissionsHash)
-		throws NoSuchResourceBlockException {
+		throws com.liferay.portal.exception.NoSuchResourceBlockException {
 		ResourceBlock resourceBlock = fetchByC_G_N_P(companyId, groupId, name,
 				permissionsHash);
 
@@ -1365,7 +1364,7 @@ public class ResourceBlockPersistenceImpl extends BasePersistenceImpl<ResourceBl
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchResourceBlockException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchResourceBlockException(msg.toString());
 		}
 
 		return resourceBlock;
@@ -1538,7 +1537,7 @@ public class ResourceBlockPersistenceImpl extends BasePersistenceImpl<ResourceBl
 	@Override
 	public ResourceBlock removeByC_G_N_P(long companyId, long groupId,
 		String name, String permissionsHash)
-		throws NoSuchResourceBlockException {
+		throws com.liferay.portal.exception.NoSuchResourceBlockException {
 		ResourceBlock resourceBlock = findByC_G_N_P(companyId, groupId, name,
 				permissionsHash);
 
@@ -1823,11 +1822,11 @@ public class ResourceBlockPersistenceImpl extends BasePersistenceImpl<ResourceBl
 	 *
 	 * @param resourceBlockId the primary key of the resource block
 	 * @return the resource block that was removed
-	 * @throws NoSuchResourceBlockException if a resource block with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceBlockException if a resource block with the primary key could not be found
 	 */
 	@Override
 	public ResourceBlock remove(long resourceBlockId)
-		throws NoSuchResourceBlockException {
+		throws com.liferay.portal.exception.NoSuchResourceBlockException {
 		return remove((Serializable)resourceBlockId);
 	}
 
@@ -1836,11 +1835,11 @@ public class ResourceBlockPersistenceImpl extends BasePersistenceImpl<ResourceBl
 	 *
 	 * @param primaryKey the primary key of the resource block
 	 * @return the resource block that was removed
-	 * @throws NoSuchResourceBlockException if a resource block with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceBlockException if a resource block with the primary key could not be found
 	 */
 	@Override
 	public ResourceBlock remove(Serializable primaryKey)
-		throws NoSuchResourceBlockException {
+		throws com.liferay.portal.exception.NoSuchResourceBlockException {
 		Session session = null;
 
 		try {
@@ -1854,13 +1853,13 @@ public class ResourceBlockPersistenceImpl extends BasePersistenceImpl<ResourceBl
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchResourceBlockException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchResourceBlockException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(resourceBlock);
 		}
-		catch (NoSuchResourceBlockException nsee) {
+		catch (com.liferay.portal.exception.NoSuchResourceBlockException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -2022,11 +2021,11 @@ public class ResourceBlockPersistenceImpl extends BasePersistenceImpl<ResourceBl
 	 *
 	 * @param primaryKey the primary key of the resource block
 	 * @return the resource block
-	 * @throws NoSuchResourceBlockException if a resource block with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceBlockException if a resource block with the primary key could not be found
 	 */
 	@Override
 	public ResourceBlock findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchResourceBlockException {
+		throws com.liferay.portal.exception.NoSuchResourceBlockException {
 		ResourceBlock resourceBlock = fetchByPrimaryKey(primaryKey);
 
 		if (resourceBlock == null) {
@@ -2034,7 +2033,7 @@ public class ResourceBlockPersistenceImpl extends BasePersistenceImpl<ResourceBl
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchResourceBlockException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchResourceBlockException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -2042,15 +2041,15 @@ public class ResourceBlockPersistenceImpl extends BasePersistenceImpl<ResourceBl
 	}
 
 	/**
-	 * Returns the resource block with the primary key or throws a {@link NoSuchResourceBlockException} if it could not be found.
+	 * Returns the resource block with the primary key or throws a {@link com.liferay.portal.exception.NoSuchResourceBlockException} if it could not be found.
 	 *
 	 * @param resourceBlockId the primary key of the resource block
 	 * @return the resource block
-	 * @throws NoSuchResourceBlockException if a resource block with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchResourceBlockException if a resource block with the primary key could not be found
 	 */
 	@Override
 	public ResourceBlock findByPrimaryKey(long resourceBlockId)
-		throws NoSuchResourceBlockException {
+		throws com.liferay.portal.exception.NoSuchResourceBlockException {
 		return findByPrimaryKey((Serializable)resourceBlockId);
 	}
 

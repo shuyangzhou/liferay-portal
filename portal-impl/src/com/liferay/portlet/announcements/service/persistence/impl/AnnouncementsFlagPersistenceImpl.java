@@ -16,7 +16,6 @@ package com.liferay.portlet.announcements.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.announcements.kernel.exception.NoSuchFlagException;
 import com.liferay.announcements.kernel.model.AnnouncementsFlag;
 import com.liferay.announcements.kernel.service.persistence.AnnouncementsFlagPersistence;
 
@@ -284,12 +283,12 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 	 * @param entryId the entry ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching announcements flag
-	 * @throws NoSuchFlagException if a matching announcements flag could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchFlagException if a matching announcements flag could not be found
 	 */
 	@Override
 	public AnnouncementsFlag findByEntryId_First(long entryId,
 		OrderByComparator<AnnouncementsFlag> orderByComparator)
-		throws NoSuchFlagException {
+		throws com.liferay.announcements.kernel.exception.NoSuchFlagException {
 		AnnouncementsFlag announcementsFlag = fetchByEntryId_First(entryId,
 				orderByComparator);
 
@@ -306,7 +305,7 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFlagException(msg.toString());
+		throw new com.liferay.announcements.kernel.exception.NoSuchFlagException(msg.toString());
 	}
 
 	/**
@@ -335,12 +334,12 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 	 * @param entryId the entry ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching announcements flag
-	 * @throws NoSuchFlagException if a matching announcements flag could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchFlagException if a matching announcements flag could not be found
 	 */
 	@Override
 	public AnnouncementsFlag findByEntryId_Last(long entryId,
 		OrderByComparator<AnnouncementsFlag> orderByComparator)
-		throws NoSuchFlagException {
+		throws com.liferay.announcements.kernel.exception.NoSuchFlagException {
 		AnnouncementsFlag announcementsFlag = fetchByEntryId_Last(entryId,
 				orderByComparator);
 
@@ -357,7 +356,7 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFlagException(msg.toString());
+		throw new com.liferay.announcements.kernel.exception.NoSuchFlagException(msg.toString());
 	}
 
 	/**
@@ -393,12 +392,12 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 	 * @param entryId the entry ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next announcements flag
-	 * @throws NoSuchFlagException if a announcements flag with the primary key could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchFlagException if a announcements flag with the primary key could not be found
 	 */
 	@Override
 	public AnnouncementsFlag[] findByEntryId_PrevAndNext(long flagId,
 		long entryId, OrderByComparator<AnnouncementsFlag> orderByComparator)
-		throws NoSuchFlagException {
+		throws com.liferay.announcements.kernel.exception.NoSuchFlagException {
 		AnnouncementsFlag announcementsFlag = findByPrimaryKey(flagId);
 
 		Session session = null;
@@ -617,17 +616,17 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 			});
 
 	/**
-	 * Returns the announcements flag where userId = &#63; and entryId = &#63; and value = &#63; or throws a {@link com.liferay.portlet.announcements.exception.NoSuchFlagException} if it could not be found.
+	 * Returns the announcements flag where userId = &#63; and entryId = &#63; and value = &#63; or throws a {@link com.liferay.announcements.kernel.exception.NoSuchFlagException} if it could not be found.
 	 *
 	 * @param userId the user ID
 	 * @param entryId the entry ID
 	 * @param value the value
 	 * @return the matching announcements flag
-	 * @throws NoSuchFlagException if a matching announcements flag could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchFlagException if a matching announcements flag could not be found
 	 */
 	@Override
 	public AnnouncementsFlag findByU_E_V(long userId, long entryId, int value)
-		throws NoSuchFlagException {
+		throws com.liferay.announcements.kernel.exception.NoSuchFlagException {
 		AnnouncementsFlag announcementsFlag = fetchByU_E_V(userId, entryId,
 				value);
 
@@ -651,7 +650,7 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchFlagException(msg.toString());
+			throw new com.liferay.announcements.kernel.exception.NoSuchFlagException(msg.toString());
 		}
 
 		return announcementsFlag;
@@ -778,7 +777,7 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 	 */
 	@Override
 	public AnnouncementsFlag removeByU_E_V(long userId, long entryId, int value)
-		throws NoSuchFlagException {
+		throws com.liferay.announcements.kernel.exception.NoSuchFlagException {
 		AnnouncementsFlag announcementsFlag = findByU_E_V(userId, entryId, value);
 
 		return remove(announcementsFlag);
@@ -1018,10 +1017,11 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 	 *
 	 * @param flagId the primary key of the announcements flag
 	 * @return the announcements flag that was removed
-	 * @throws NoSuchFlagException if a announcements flag with the primary key could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchFlagException if a announcements flag with the primary key could not be found
 	 */
 	@Override
-	public AnnouncementsFlag remove(long flagId) throws NoSuchFlagException {
+	public AnnouncementsFlag remove(long flagId)
+		throws com.liferay.announcements.kernel.exception.NoSuchFlagException {
 		return remove((Serializable)flagId);
 	}
 
@@ -1030,11 +1030,11 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 	 *
 	 * @param primaryKey the primary key of the announcements flag
 	 * @return the announcements flag that was removed
-	 * @throws NoSuchFlagException if a announcements flag with the primary key could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchFlagException if a announcements flag with the primary key could not be found
 	 */
 	@Override
 	public AnnouncementsFlag remove(Serializable primaryKey)
-		throws NoSuchFlagException {
+		throws com.liferay.announcements.kernel.exception.NoSuchFlagException {
 		Session session = null;
 
 		try {
@@ -1048,13 +1048,13 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchFlagException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.announcements.kernel.exception.NoSuchFlagException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(announcementsFlag);
 		}
-		catch (NoSuchFlagException nsee) {
+		catch (com.liferay.announcements.kernel.exception.NoSuchFlagException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -1189,11 +1189,11 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 	 *
 	 * @param primaryKey the primary key of the announcements flag
 	 * @return the announcements flag
-	 * @throws NoSuchFlagException if a announcements flag with the primary key could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchFlagException if a announcements flag with the primary key could not be found
 	 */
 	@Override
 	public AnnouncementsFlag findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchFlagException {
+		throws com.liferay.announcements.kernel.exception.NoSuchFlagException {
 		AnnouncementsFlag announcementsFlag = fetchByPrimaryKey(primaryKey);
 
 		if (announcementsFlag == null) {
@@ -1201,7 +1201,7 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchFlagException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.announcements.kernel.exception.NoSuchFlagException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -1209,15 +1209,15 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 	}
 
 	/**
-	 * Returns the announcements flag with the primary key or throws a {@link NoSuchFlagException} if it could not be found.
+	 * Returns the announcements flag with the primary key or throws a {@link com.liferay.announcements.kernel.exception.NoSuchFlagException} if it could not be found.
 	 *
 	 * @param flagId the primary key of the announcements flag
 	 * @return the announcements flag
-	 * @throws NoSuchFlagException if a announcements flag with the primary key could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchFlagException if a announcements flag with the primary key could not be found
 	 */
 	@Override
 	public AnnouncementsFlag findByPrimaryKey(long flagId)
-		throws NoSuchFlagException {
+		throws com.liferay.announcements.kernel.exception.NoSuchFlagException {
 		return findByPrimaryKey((Serializable)flagId);
 	}
 

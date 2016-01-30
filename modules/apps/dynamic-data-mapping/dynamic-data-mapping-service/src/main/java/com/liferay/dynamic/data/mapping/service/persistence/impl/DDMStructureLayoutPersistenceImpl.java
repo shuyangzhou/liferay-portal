@@ -16,7 +16,6 @@ package com.liferay.dynamic.data.mapping.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException;
 import com.liferay.dynamic.data.mapping.model.DDMStructureLayout;
 import com.liferay.dynamic.data.mapping.model.impl.DDMStructureLayoutImpl;
 import com.liferay.dynamic.data.mapping.model.impl.DDMStructureLayoutModelImpl;
@@ -297,12 +296,12 @@ public class DDMStructureLayoutPersistenceImpl extends BasePersistenceImpl<DDMSt
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching d d m structure layout
-	 * @throws NoSuchStructureLayoutException if a matching d d m structure layout could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException if a matching d d m structure layout could not be found
 	 */
 	@Override
 	public DDMStructureLayout findByUuid_First(String uuid,
 		OrderByComparator<DDMStructureLayout> orderByComparator)
-		throws NoSuchStructureLayoutException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException {
 		DDMStructureLayout ddmStructureLayout = fetchByUuid_First(uuid,
 				orderByComparator);
 
@@ -319,7 +318,7 @@ public class DDMStructureLayoutPersistenceImpl extends BasePersistenceImpl<DDMSt
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchStructureLayoutException(msg.toString());
+		throw new com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException(msg.toString());
 	}
 
 	/**
@@ -347,12 +346,12 @@ public class DDMStructureLayoutPersistenceImpl extends BasePersistenceImpl<DDMSt
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching d d m structure layout
-	 * @throws NoSuchStructureLayoutException if a matching d d m structure layout could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException if a matching d d m structure layout could not be found
 	 */
 	@Override
 	public DDMStructureLayout findByUuid_Last(String uuid,
 		OrderByComparator<DDMStructureLayout> orderByComparator)
-		throws NoSuchStructureLayoutException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException {
 		DDMStructureLayout ddmStructureLayout = fetchByUuid_Last(uuid,
 				orderByComparator);
 
@@ -369,7 +368,7 @@ public class DDMStructureLayoutPersistenceImpl extends BasePersistenceImpl<DDMSt
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchStructureLayoutException(msg.toString());
+		throw new com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException(msg.toString());
 	}
 
 	/**
@@ -405,12 +404,12 @@ public class DDMStructureLayoutPersistenceImpl extends BasePersistenceImpl<DDMSt
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next d d m structure layout
-	 * @throws NoSuchStructureLayoutException if a d d m structure layout with the primary key could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException if a d d m structure layout with the primary key could not be found
 	 */
 	@Override
 	public DDMStructureLayout[] findByUuid_PrevAndNext(long structureLayoutId,
 		String uuid, OrderByComparator<DDMStructureLayout> orderByComparator)
-		throws NoSuchStructureLayoutException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException {
 		DDMStructureLayout ddmStructureLayout = findByPrimaryKey(structureLayoutId);
 
 		Session session = null;
@@ -653,16 +652,16 @@ public class DDMStructureLayoutPersistenceImpl extends BasePersistenceImpl<DDMSt
 			new String[] { String.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the d d m structure layout where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchStructureLayoutException} if it could not be found.
+	 * Returns the d d m structure layout where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException} if it could not be found.
 	 *
 	 * @param uuid the uuid
 	 * @param groupId the group ID
 	 * @return the matching d d m structure layout
-	 * @throws NoSuchStructureLayoutException if a matching d d m structure layout could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException if a matching d d m structure layout could not be found
 	 */
 	@Override
 	public DDMStructureLayout findByUUID_G(String uuid, long groupId)
-		throws NoSuchStructureLayoutException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException {
 		DDMStructureLayout ddmStructureLayout = fetchByUUID_G(uuid, groupId);
 
 		if (ddmStructureLayout == null) {
@@ -682,7 +681,7 @@ public class DDMStructureLayoutPersistenceImpl extends BasePersistenceImpl<DDMSt
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchStructureLayoutException(msg.toString());
+			throw new com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException(msg.toString());
 		}
 
 		return ddmStructureLayout;
@@ -815,7 +814,7 @@ public class DDMStructureLayoutPersistenceImpl extends BasePersistenceImpl<DDMSt
 	 */
 	@Override
 	public DDMStructureLayout removeByUUID_G(String uuid, long groupId)
-		throws NoSuchStructureLayoutException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException {
 		DDMStructureLayout ddmStructureLayout = findByUUID_G(uuid, groupId);
 
 		return remove(ddmStructureLayout);
@@ -1120,12 +1119,12 @@ public class DDMStructureLayoutPersistenceImpl extends BasePersistenceImpl<DDMSt
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching d d m structure layout
-	 * @throws NoSuchStructureLayoutException if a matching d d m structure layout could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException if a matching d d m structure layout could not be found
 	 */
 	@Override
 	public DDMStructureLayout findByUuid_C_First(String uuid, long companyId,
 		OrderByComparator<DDMStructureLayout> orderByComparator)
-		throws NoSuchStructureLayoutException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException {
 		DDMStructureLayout ddmStructureLayout = fetchByUuid_C_First(uuid,
 				companyId, orderByComparator);
 
@@ -1145,7 +1144,7 @@ public class DDMStructureLayoutPersistenceImpl extends BasePersistenceImpl<DDMSt
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchStructureLayoutException(msg.toString());
+		throw new com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException(msg.toString());
 	}
 
 	/**
@@ -1176,12 +1175,12 @@ public class DDMStructureLayoutPersistenceImpl extends BasePersistenceImpl<DDMSt
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching d d m structure layout
-	 * @throws NoSuchStructureLayoutException if a matching d d m structure layout could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException if a matching d d m structure layout could not be found
 	 */
 	@Override
 	public DDMStructureLayout findByUuid_C_Last(String uuid, long companyId,
 		OrderByComparator<DDMStructureLayout> orderByComparator)
-		throws NoSuchStructureLayoutException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException {
 		DDMStructureLayout ddmStructureLayout = fetchByUuid_C_Last(uuid,
 				companyId, orderByComparator);
 
@@ -1201,7 +1200,7 @@ public class DDMStructureLayoutPersistenceImpl extends BasePersistenceImpl<DDMSt
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchStructureLayoutException(msg.toString());
+		throw new com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException(msg.toString());
 	}
 
 	/**
@@ -1239,13 +1238,13 @@ public class DDMStructureLayoutPersistenceImpl extends BasePersistenceImpl<DDMSt
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next d d m structure layout
-	 * @throws NoSuchStructureLayoutException if a d d m structure layout with the primary key could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException if a d d m structure layout with the primary key could not be found
 	 */
 	@Override
 	public DDMStructureLayout[] findByUuid_C_PrevAndNext(
 		long structureLayoutId, String uuid, long companyId,
 		OrderByComparator<DDMStructureLayout> orderByComparator)
-		throws NoSuchStructureLayoutException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException {
 		DDMStructureLayout ddmStructureLayout = findByPrimaryKey(structureLayoutId);
 
 		Session session = null;
@@ -1497,15 +1496,15 @@ public class DDMStructureLayoutPersistenceImpl extends BasePersistenceImpl<DDMSt
 			"countByStructureVersionId", new String[] { Long.class.getName() });
 
 	/**
-	 * Returns the d d m structure layout where structureVersionId = &#63; or throws a {@link NoSuchStructureLayoutException} if it could not be found.
+	 * Returns the d d m structure layout where structureVersionId = &#63; or throws a {@link com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException} if it could not be found.
 	 *
 	 * @param structureVersionId the structure version ID
 	 * @return the matching d d m structure layout
-	 * @throws NoSuchStructureLayoutException if a matching d d m structure layout could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException if a matching d d m structure layout could not be found
 	 */
 	@Override
 	public DDMStructureLayout findByStructureVersionId(long structureVersionId)
-		throws NoSuchStructureLayoutException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException {
 		DDMStructureLayout ddmStructureLayout = fetchByStructureVersionId(structureVersionId);
 
 		if (ddmStructureLayout == null) {
@@ -1522,7 +1521,7 @@ public class DDMStructureLayoutPersistenceImpl extends BasePersistenceImpl<DDMSt
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchStructureLayoutException(msg.toString());
+			throw new com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException(msg.toString());
 		}
 
 		return ddmStructureLayout;
@@ -1632,7 +1631,8 @@ public class DDMStructureLayoutPersistenceImpl extends BasePersistenceImpl<DDMSt
 	 */
 	@Override
 	public DDMStructureLayout removeByStructureVersionId(
-		long structureVersionId) throws NoSuchStructureLayoutException {
+		long structureVersionId)
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException {
 		DDMStructureLayout ddmStructureLayout = findByStructureVersionId(structureVersionId);
 
 		return remove(ddmStructureLayout);
@@ -1902,11 +1902,11 @@ public class DDMStructureLayoutPersistenceImpl extends BasePersistenceImpl<DDMSt
 	 *
 	 * @param structureLayoutId the primary key of the d d m structure layout
 	 * @return the d d m structure layout that was removed
-	 * @throws NoSuchStructureLayoutException if a d d m structure layout with the primary key could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException if a d d m structure layout with the primary key could not be found
 	 */
 	@Override
 	public DDMStructureLayout remove(long structureLayoutId)
-		throws NoSuchStructureLayoutException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException {
 		return remove((Serializable)structureLayoutId);
 	}
 
@@ -1915,11 +1915,11 @@ public class DDMStructureLayoutPersistenceImpl extends BasePersistenceImpl<DDMSt
 	 *
 	 * @param primaryKey the primary key of the d d m structure layout
 	 * @return the d d m structure layout that was removed
-	 * @throws NoSuchStructureLayoutException if a d d m structure layout with the primary key could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException if a d d m structure layout with the primary key could not be found
 	 */
 	@Override
 	public DDMStructureLayout remove(Serializable primaryKey)
-		throws NoSuchStructureLayoutException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException {
 		Session session = null;
 
 		try {
@@ -1933,13 +1933,13 @@ public class DDMStructureLayoutPersistenceImpl extends BasePersistenceImpl<DDMSt
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchStructureLayoutException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(ddmStructureLayout);
 		}
-		catch (NoSuchStructureLayoutException nsee) {
+		catch (com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -2130,11 +2130,11 @@ public class DDMStructureLayoutPersistenceImpl extends BasePersistenceImpl<DDMSt
 	 *
 	 * @param primaryKey the primary key of the d d m structure layout
 	 * @return the d d m structure layout
-	 * @throws NoSuchStructureLayoutException if a d d m structure layout with the primary key could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException if a d d m structure layout with the primary key could not be found
 	 */
 	@Override
 	public DDMStructureLayout findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchStructureLayoutException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException {
 		DDMStructureLayout ddmStructureLayout = fetchByPrimaryKey(primaryKey);
 
 		if (ddmStructureLayout == null) {
@@ -2142,7 +2142,7 @@ public class DDMStructureLayoutPersistenceImpl extends BasePersistenceImpl<DDMSt
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchStructureLayoutException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -2150,15 +2150,15 @@ public class DDMStructureLayoutPersistenceImpl extends BasePersistenceImpl<DDMSt
 	}
 
 	/**
-	 * Returns the d d m structure layout with the primary key or throws a {@link NoSuchStructureLayoutException} if it could not be found.
+	 * Returns the d d m structure layout with the primary key or throws a {@link com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException} if it could not be found.
 	 *
 	 * @param structureLayoutId the primary key of the d d m structure layout
 	 * @return the d d m structure layout
-	 * @throws NoSuchStructureLayoutException if a d d m structure layout with the primary key could not be found
+	 * @throws com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException if a d d m structure layout with the primary key could not be found
 	 */
 	@Override
 	public DDMStructureLayout findByPrimaryKey(long structureLayoutId)
-		throws NoSuchStructureLayoutException {
+		throws com.liferay.dynamic.data.mapping.exception.NoSuchStructureLayoutException {
 		return findByPrimaryKey((Serializable)structureLayoutId);
 	}
 

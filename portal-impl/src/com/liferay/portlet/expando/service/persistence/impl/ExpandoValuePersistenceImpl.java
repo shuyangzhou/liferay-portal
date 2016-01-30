@@ -38,7 +38,6 @@ import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
-import com.liferay.portlet.expando.exception.NoSuchValueException;
 import com.liferay.portlet.expando.model.ExpandoValue;
 import com.liferay.portlet.expando.model.impl.ExpandoValueImpl;
 import com.liferay.portlet.expando.model.impl.ExpandoValueModelImpl;
@@ -280,12 +279,12 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	 * @param tableId the table ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching expando value
-	 * @throws NoSuchValueException if a matching expando value could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchValueException if a matching expando value could not be found
 	 */
 	@Override
 	public ExpandoValue findByTableId_First(long tableId,
 		OrderByComparator<ExpandoValue> orderByComparator)
-		throws NoSuchValueException {
+		throws com.liferay.portlet.expando.exception.NoSuchValueException {
 		ExpandoValue expandoValue = fetchByTableId_First(tableId,
 				orderByComparator);
 
@@ -302,7 +301,7 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchValueException(msg.toString());
+		throw new com.liferay.portlet.expando.exception.NoSuchValueException(msg.toString());
 	}
 
 	/**
@@ -330,12 +329,12 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	 * @param tableId the table ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching expando value
-	 * @throws NoSuchValueException if a matching expando value could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchValueException if a matching expando value could not be found
 	 */
 	@Override
 	public ExpandoValue findByTableId_Last(long tableId,
 		OrderByComparator<ExpandoValue> orderByComparator)
-		throws NoSuchValueException {
+		throws com.liferay.portlet.expando.exception.NoSuchValueException {
 		ExpandoValue expandoValue = fetchByTableId_Last(tableId,
 				orderByComparator);
 
@@ -352,7 +351,7 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchValueException(msg.toString());
+		throw new com.liferay.portlet.expando.exception.NoSuchValueException(msg.toString());
 	}
 
 	/**
@@ -388,12 +387,12 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	 * @param tableId the table ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next expando value
-	 * @throws NoSuchValueException if a expando value with the primary key could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchValueException if a expando value with the primary key could not be found
 	 */
 	@Override
 	public ExpandoValue[] findByTableId_PrevAndNext(long valueId, long tableId,
 		OrderByComparator<ExpandoValue> orderByComparator)
-		throws NoSuchValueException {
+		throws com.liferay.portlet.expando.exception.NoSuchValueException {
 		ExpandoValue expandoValue = findByPrimaryKey(valueId);
 
 		Session session = null;
@@ -785,12 +784,12 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	 * @param columnId the column ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching expando value
-	 * @throws NoSuchValueException if a matching expando value could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchValueException if a matching expando value could not be found
 	 */
 	@Override
 	public ExpandoValue findByColumnId_First(long columnId,
 		OrderByComparator<ExpandoValue> orderByComparator)
-		throws NoSuchValueException {
+		throws com.liferay.portlet.expando.exception.NoSuchValueException {
 		ExpandoValue expandoValue = fetchByColumnId_First(columnId,
 				orderByComparator);
 
@@ -807,7 +806,7 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchValueException(msg.toString());
+		throw new com.liferay.portlet.expando.exception.NoSuchValueException(msg.toString());
 	}
 
 	/**
@@ -836,12 +835,12 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	 * @param columnId the column ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching expando value
-	 * @throws NoSuchValueException if a matching expando value could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchValueException if a matching expando value could not be found
 	 */
 	@Override
 	public ExpandoValue findByColumnId_Last(long columnId,
 		OrderByComparator<ExpandoValue> orderByComparator)
-		throws NoSuchValueException {
+		throws com.liferay.portlet.expando.exception.NoSuchValueException {
 		ExpandoValue expandoValue = fetchByColumnId_Last(columnId,
 				orderByComparator);
 
@@ -858,7 +857,7 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchValueException(msg.toString());
+		throw new com.liferay.portlet.expando.exception.NoSuchValueException(msg.toString());
 	}
 
 	/**
@@ -894,12 +893,12 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	 * @param columnId the column ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next expando value
-	 * @throws NoSuchValueException if a expando value with the primary key could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchValueException if a expando value with the primary key could not be found
 	 */
 	@Override
 	public ExpandoValue[] findByColumnId_PrevAndNext(long valueId,
 		long columnId, OrderByComparator<ExpandoValue> orderByComparator)
-		throws NoSuchValueException {
+		throws com.liferay.portlet.expando.exception.NoSuchValueException {
 		ExpandoValue expandoValue = findByPrimaryKey(valueId);
 
 		Session session = null;
@@ -1289,12 +1288,12 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	 * @param rowId the row ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching expando value
-	 * @throws NoSuchValueException if a matching expando value could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchValueException if a matching expando value could not be found
 	 */
 	@Override
 	public ExpandoValue findByRowId_First(long rowId,
 		OrderByComparator<ExpandoValue> orderByComparator)
-		throws NoSuchValueException {
+		throws com.liferay.portlet.expando.exception.NoSuchValueException {
 		ExpandoValue expandoValue = fetchByRowId_First(rowId, orderByComparator);
 
 		if (expandoValue != null) {
@@ -1310,7 +1309,7 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchValueException(msg.toString());
+		throw new com.liferay.portlet.expando.exception.NoSuchValueException(msg.toString());
 	}
 
 	/**
@@ -1338,12 +1337,12 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	 * @param rowId the row ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching expando value
-	 * @throws NoSuchValueException if a matching expando value could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchValueException if a matching expando value could not be found
 	 */
 	@Override
 	public ExpandoValue findByRowId_Last(long rowId,
 		OrderByComparator<ExpandoValue> orderByComparator)
-		throws NoSuchValueException {
+		throws com.liferay.portlet.expando.exception.NoSuchValueException {
 		ExpandoValue expandoValue = fetchByRowId_Last(rowId, orderByComparator);
 
 		if (expandoValue != null) {
@@ -1359,7 +1358,7 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchValueException(msg.toString());
+		throw new com.liferay.portlet.expando.exception.NoSuchValueException(msg.toString());
 	}
 
 	/**
@@ -1395,12 +1394,12 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	 * @param rowId the row ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next expando value
-	 * @throws NoSuchValueException if a expando value with the primary key could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchValueException if a expando value with the primary key could not be found
 	 */
 	@Override
 	public ExpandoValue[] findByRowId_PrevAndNext(long valueId, long rowId,
 		OrderByComparator<ExpandoValue> orderByComparator)
-		throws NoSuchValueException {
+		throws com.liferay.portlet.expando.exception.NoSuchValueException {
 		ExpandoValue expandoValue = findByPrimaryKey(valueId);
 
 		Session session = null;
@@ -1806,12 +1805,12 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	 * @param columnId the column ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching expando value
-	 * @throws NoSuchValueException if a matching expando value could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchValueException if a matching expando value could not be found
 	 */
 	@Override
 	public ExpandoValue findByT_C_First(long tableId, long columnId,
 		OrderByComparator<ExpandoValue> orderByComparator)
-		throws NoSuchValueException {
+		throws com.liferay.portlet.expando.exception.NoSuchValueException {
 		ExpandoValue expandoValue = fetchByT_C_First(tableId, columnId,
 				orderByComparator);
 
@@ -1831,7 +1830,7 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchValueException(msg.toString());
+		throw new com.liferay.portlet.expando.exception.NoSuchValueException(msg.toString());
 	}
 
 	/**
@@ -1862,12 +1861,12 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	 * @param columnId the column ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching expando value
-	 * @throws NoSuchValueException if a matching expando value could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchValueException if a matching expando value could not be found
 	 */
 	@Override
 	public ExpandoValue findByT_C_Last(long tableId, long columnId,
 		OrderByComparator<ExpandoValue> orderByComparator)
-		throws NoSuchValueException {
+		throws com.liferay.portlet.expando.exception.NoSuchValueException {
 		ExpandoValue expandoValue = fetchByT_C_Last(tableId, columnId,
 				orderByComparator);
 
@@ -1887,7 +1886,7 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchValueException(msg.toString());
+		throw new com.liferay.portlet.expando.exception.NoSuchValueException(msg.toString());
 	}
 
 	/**
@@ -1925,12 +1924,12 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	 * @param columnId the column ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next expando value
-	 * @throws NoSuchValueException if a expando value with the primary key could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchValueException if a expando value with the primary key could not be found
 	 */
 	@Override
 	public ExpandoValue[] findByT_C_PrevAndNext(long valueId, long tableId,
 		long columnId, OrderByComparator<ExpandoValue> orderByComparator)
-		throws NoSuchValueException {
+		throws com.liferay.portlet.expando.exception.NoSuchValueException {
 		ExpandoValue expandoValue = findByPrimaryKey(valueId);
 
 		Session session = null;
@@ -2347,12 +2346,12 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	 * @param rowId the row ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching expando value
-	 * @throws NoSuchValueException if a matching expando value could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchValueException if a matching expando value could not be found
 	 */
 	@Override
 	public ExpandoValue findByT_R_First(long tableId, long rowId,
 		OrderByComparator<ExpandoValue> orderByComparator)
-		throws NoSuchValueException {
+		throws com.liferay.portlet.expando.exception.NoSuchValueException {
 		ExpandoValue expandoValue = fetchByT_R_First(tableId, rowId,
 				orderByComparator);
 
@@ -2372,7 +2371,7 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchValueException(msg.toString());
+		throw new com.liferay.portlet.expando.exception.NoSuchValueException(msg.toString());
 	}
 
 	/**
@@ -2403,12 +2402,12 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	 * @param rowId the row ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching expando value
-	 * @throws NoSuchValueException if a matching expando value could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchValueException if a matching expando value could not be found
 	 */
 	@Override
 	public ExpandoValue findByT_R_Last(long tableId, long rowId,
 		OrderByComparator<ExpandoValue> orderByComparator)
-		throws NoSuchValueException {
+		throws com.liferay.portlet.expando.exception.NoSuchValueException {
 		ExpandoValue expandoValue = fetchByT_R_Last(tableId, rowId,
 				orderByComparator);
 
@@ -2428,7 +2427,7 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchValueException(msg.toString());
+		throw new com.liferay.portlet.expando.exception.NoSuchValueException(msg.toString());
 	}
 
 	/**
@@ -2466,12 +2465,12 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	 * @param rowId the row ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next expando value
-	 * @throws NoSuchValueException if a expando value with the primary key could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchValueException if a expando value with the primary key could not be found
 	 */
 	@Override
 	public ExpandoValue[] findByT_R_PrevAndNext(long valueId, long tableId,
 		long rowId, OrderByComparator<ExpandoValue> orderByComparator)
-		throws NoSuchValueException {
+		throws com.liferay.portlet.expando.exception.NoSuchValueException {
 		ExpandoValue expandoValue = findByPrimaryKey(valueId);
 
 		Session session = null;
@@ -2889,12 +2888,12 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching expando value
-	 * @throws NoSuchValueException if a matching expando value could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchValueException if a matching expando value could not be found
 	 */
 	@Override
 	public ExpandoValue findByT_CPK_First(long tableId, long classPK,
 		OrderByComparator<ExpandoValue> orderByComparator)
-		throws NoSuchValueException {
+		throws com.liferay.portlet.expando.exception.NoSuchValueException {
 		ExpandoValue expandoValue = fetchByT_CPK_First(tableId, classPK,
 				orderByComparator);
 
@@ -2914,7 +2913,7 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchValueException(msg.toString());
+		throw new com.liferay.portlet.expando.exception.NoSuchValueException(msg.toString());
 	}
 
 	/**
@@ -2945,12 +2944,12 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching expando value
-	 * @throws NoSuchValueException if a matching expando value could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchValueException if a matching expando value could not be found
 	 */
 	@Override
 	public ExpandoValue findByT_CPK_Last(long tableId, long classPK,
 		OrderByComparator<ExpandoValue> orderByComparator)
-		throws NoSuchValueException {
+		throws com.liferay.portlet.expando.exception.NoSuchValueException {
 		ExpandoValue expandoValue = fetchByT_CPK_Last(tableId, classPK,
 				orderByComparator);
 
@@ -2970,7 +2969,7 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchValueException(msg.toString());
+		throw new com.liferay.portlet.expando.exception.NoSuchValueException(msg.toString());
 	}
 
 	/**
@@ -3008,12 +3007,12 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next expando value
-	 * @throws NoSuchValueException if a expando value with the primary key could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchValueException if a expando value with the primary key could not be found
 	 */
 	@Override
 	public ExpandoValue[] findByT_CPK_PrevAndNext(long valueId, long tableId,
 		long classPK, OrderByComparator<ExpandoValue> orderByComparator)
-		throws NoSuchValueException {
+		throws com.liferay.portlet.expando.exception.NoSuchValueException {
 		ExpandoValue expandoValue = findByPrimaryKey(valueId);
 
 		Session session = null;
@@ -3235,16 +3234,16 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 			new String[] { Long.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the expando value where columnId = &#63; and rowId = &#63; or throws a {@link NoSuchValueException} if it could not be found.
+	 * Returns the expando value where columnId = &#63; and rowId = &#63; or throws a {@link com.liferay.portlet.expando.exception.NoSuchValueException} if it could not be found.
 	 *
 	 * @param columnId the column ID
 	 * @param rowId the row ID
 	 * @return the matching expando value
-	 * @throws NoSuchValueException if a matching expando value could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchValueException if a matching expando value could not be found
 	 */
 	@Override
 	public ExpandoValue findByC_R(long columnId, long rowId)
-		throws NoSuchValueException {
+		throws com.liferay.portlet.expando.exception.NoSuchValueException {
 		ExpandoValue expandoValue = fetchByC_R(columnId, rowId);
 
 		if (expandoValue == null) {
@@ -3264,7 +3263,7 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchValueException(msg.toString());
+			throw new com.liferay.portlet.expando.exception.NoSuchValueException(msg.toString());
 		}
 
 		return expandoValue;
@@ -3382,7 +3381,7 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	 */
 	@Override
 	public ExpandoValue removeByC_R(long columnId, long rowId)
-		throws NoSuchValueException {
+		throws com.liferay.portlet.expando.exception.NoSuchValueException {
 		ExpandoValue expandoValue = findByC_R(columnId, rowId);
 
 		return remove(expandoValue);
@@ -3656,12 +3655,12 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching expando value
-	 * @throws NoSuchValueException if a matching expando value could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchValueException if a matching expando value could not be found
 	 */
 	@Override
 	public ExpandoValue findByC_C_First(long classNameId, long classPK,
 		OrderByComparator<ExpandoValue> orderByComparator)
-		throws NoSuchValueException {
+		throws com.liferay.portlet.expando.exception.NoSuchValueException {
 		ExpandoValue expandoValue = fetchByC_C_First(classNameId, classPK,
 				orderByComparator);
 
@@ -3681,7 +3680,7 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchValueException(msg.toString());
+		throw new com.liferay.portlet.expando.exception.NoSuchValueException(msg.toString());
 	}
 
 	/**
@@ -3712,12 +3711,12 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching expando value
-	 * @throws NoSuchValueException if a matching expando value could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchValueException if a matching expando value could not be found
 	 */
 	@Override
 	public ExpandoValue findByC_C_Last(long classNameId, long classPK,
 		OrderByComparator<ExpandoValue> orderByComparator)
-		throws NoSuchValueException {
+		throws com.liferay.portlet.expando.exception.NoSuchValueException {
 		ExpandoValue expandoValue = fetchByC_C_Last(classNameId, classPK,
 				orderByComparator);
 
@@ -3737,7 +3736,7 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchValueException(msg.toString());
+		throw new com.liferay.portlet.expando.exception.NoSuchValueException(msg.toString());
 	}
 
 	/**
@@ -3775,12 +3774,12 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next expando value
-	 * @throws NoSuchValueException if a expando value with the primary key could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchValueException if a expando value with the primary key could not be found
 	 */
 	@Override
 	public ExpandoValue[] findByC_C_PrevAndNext(long valueId, long classNameId,
 		long classPK, OrderByComparator<ExpandoValue> orderByComparator)
-		throws NoSuchValueException {
+		throws com.liferay.portlet.expando.exception.NoSuchValueException {
 		ExpandoValue expandoValue = findByPrimaryKey(valueId);
 
 		Session session = null;
@@ -4007,17 +4006,17 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 			});
 
 	/**
-	 * Returns the expando value where tableId = &#63; and columnId = &#63; and classPK = &#63; or throws a {@link NoSuchValueException} if it could not be found.
+	 * Returns the expando value where tableId = &#63; and columnId = &#63; and classPK = &#63; or throws a {@link com.liferay.portlet.expando.exception.NoSuchValueException} if it could not be found.
 	 *
 	 * @param tableId the table ID
 	 * @param columnId the column ID
 	 * @param classPK the class p k
 	 * @return the matching expando value
-	 * @throws NoSuchValueException if a matching expando value could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchValueException if a matching expando value could not be found
 	 */
 	@Override
 	public ExpandoValue findByT_C_C(long tableId, long columnId, long classPK)
-		throws NoSuchValueException {
+		throws com.liferay.portlet.expando.exception.NoSuchValueException {
 		ExpandoValue expandoValue = fetchByT_C_C(tableId, columnId, classPK);
 
 		if (expandoValue == null) {
@@ -4040,7 +4039,7 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchValueException(msg.toString());
+			throw new com.liferay.portlet.expando.exception.NoSuchValueException(msg.toString());
 		}
 
 		return expandoValue;
@@ -4167,7 +4166,7 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	 */
 	@Override
 	public ExpandoValue removeByT_C_C(long tableId, long columnId, long classPK)
-		throws NoSuchValueException {
+		throws com.liferay.portlet.expando.exception.NoSuchValueException {
 		ExpandoValue expandoValue = findByT_C_C(tableId, columnId, classPK);
 
 		return remove(expandoValue);
@@ -4480,12 +4479,12 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	 * @param data the data
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching expando value
-	 * @throws NoSuchValueException if a matching expando value could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchValueException if a matching expando value could not be found
 	 */
 	@Override
 	public ExpandoValue findByT_C_D_First(long tableId, long columnId,
 		String data, OrderByComparator<ExpandoValue> orderByComparator)
-		throws NoSuchValueException {
+		throws com.liferay.portlet.expando.exception.NoSuchValueException {
 		ExpandoValue expandoValue = fetchByT_C_D_First(tableId, columnId, data,
 				orderByComparator);
 
@@ -4508,7 +4507,7 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchValueException(msg.toString());
+		throw new com.liferay.portlet.expando.exception.NoSuchValueException(msg.toString());
 	}
 
 	/**
@@ -4541,12 +4540,12 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	 * @param data the data
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching expando value
-	 * @throws NoSuchValueException if a matching expando value could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchValueException if a matching expando value could not be found
 	 */
 	@Override
 	public ExpandoValue findByT_C_D_Last(long tableId, long columnId,
 		String data, OrderByComparator<ExpandoValue> orderByComparator)
-		throws NoSuchValueException {
+		throws com.liferay.portlet.expando.exception.NoSuchValueException {
 		ExpandoValue expandoValue = fetchByT_C_D_Last(tableId, columnId, data,
 				orderByComparator);
 
@@ -4569,7 +4568,7 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchValueException(msg.toString());
+		throw new com.liferay.portlet.expando.exception.NoSuchValueException(msg.toString());
 	}
 
 	/**
@@ -4609,13 +4608,13 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	 * @param data the data
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next expando value
-	 * @throws NoSuchValueException if a expando value with the primary key could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchValueException if a expando value with the primary key could not be found
 	 */
 	@Override
 	public ExpandoValue[] findByT_C_D_PrevAndNext(long valueId, long tableId,
 		long columnId, String data,
 		OrderByComparator<ExpandoValue> orderByComparator)
-		throws NoSuchValueException {
+		throws com.liferay.portlet.expando.exception.NoSuchValueException {
 		ExpandoValue expandoValue = findByPrimaryKey(valueId);
 
 		Session session = null;
@@ -5080,10 +5079,11 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	 *
 	 * @param valueId the primary key of the expando value
 	 * @return the expando value that was removed
-	 * @throws NoSuchValueException if a expando value with the primary key could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchValueException if a expando value with the primary key could not be found
 	 */
 	@Override
-	public ExpandoValue remove(long valueId) throws NoSuchValueException {
+	public ExpandoValue remove(long valueId)
+		throws com.liferay.portlet.expando.exception.NoSuchValueException {
 		return remove((Serializable)valueId);
 	}
 
@@ -5092,11 +5092,11 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	 *
 	 * @param primaryKey the primary key of the expando value
 	 * @return the expando value that was removed
-	 * @throws NoSuchValueException if a expando value with the primary key could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchValueException if a expando value with the primary key could not be found
 	 */
 	@Override
 	public ExpandoValue remove(Serializable primaryKey)
-		throws NoSuchValueException {
+		throws com.liferay.portlet.expando.exception.NoSuchValueException {
 		Session session = null;
 
 		try {
@@ -5110,13 +5110,13 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchValueException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portlet.expando.exception.NoSuchValueException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(expandoValue);
 		}
-		catch (NoSuchValueException nsee) {
+		catch (com.liferay.portlet.expando.exception.NoSuchValueException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -5393,11 +5393,11 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	 *
 	 * @param primaryKey the primary key of the expando value
 	 * @return the expando value
-	 * @throws NoSuchValueException if a expando value with the primary key could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchValueException if a expando value with the primary key could not be found
 	 */
 	@Override
 	public ExpandoValue findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchValueException {
+		throws com.liferay.portlet.expando.exception.NoSuchValueException {
 		ExpandoValue expandoValue = fetchByPrimaryKey(primaryKey);
 
 		if (expandoValue == null) {
@@ -5405,7 +5405,7 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchValueException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portlet.expando.exception.NoSuchValueException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -5413,15 +5413,15 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	}
 
 	/**
-	 * Returns the expando value with the primary key or throws a {@link NoSuchValueException} if it could not be found.
+	 * Returns the expando value with the primary key or throws a {@link com.liferay.portlet.expando.exception.NoSuchValueException} if it could not be found.
 	 *
 	 * @param valueId the primary key of the expando value
 	 * @return the expando value
-	 * @throws NoSuchValueException if a expando value with the primary key could not be found
+	 * @throws com.liferay.portlet.expando.exception.NoSuchValueException if a expando value with the primary key could not be found
 	 */
 	@Override
 	public ExpandoValue findByPrimaryKey(long valueId)
-		throws NoSuchValueException {
+		throws com.liferay.portlet.expando.exception.NoSuchValueException {
 		return findByPrimaryKey((Serializable)valueId);
 	}
 

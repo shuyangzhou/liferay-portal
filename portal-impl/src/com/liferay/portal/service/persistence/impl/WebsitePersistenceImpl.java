@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchWebsiteException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -294,12 +293,12 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching website
-	 * @throws NoSuchWebsiteException if a matching website could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWebsiteException if a matching website could not be found
 	 */
 	@Override
 	public Website findByUuid_First(String uuid,
 		OrderByComparator<Website> orderByComparator)
-		throws NoSuchWebsiteException {
+		throws com.liferay.portal.exception.NoSuchWebsiteException {
 		Website website = fetchByUuid_First(uuid, orderByComparator);
 
 		if (website != null) {
@@ -315,7 +314,7 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchWebsiteException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchWebsiteException(msg.toString());
 	}
 
 	/**
@@ -343,12 +342,12 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching website
-	 * @throws NoSuchWebsiteException if a matching website could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWebsiteException if a matching website could not be found
 	 */
 	@Override
 	public Website findByUuid_Last(String uuid,
 		OrderByComparator<Website> orderByComparator)
-		throws NoSuchWebsiteException {
+		throws com.liferay.portal.exception.NoSuchWebsiteException {
 		Website website = fetchByUuid_Last(uuid, orderByComparator);
 
 		if (website != null) {
@@ -364,7 +363,7 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchWebsiteException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchWebsiteException(msg.toString());
 	}
 
 	/**
@@ -400,12 +399,12 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next website
-	 * @throws NoSuchWebsiteException if a website with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWebsiteException if a website with the primary key could not be found
 	 */
 	@Override
 	public Website[] findByUuid_PrevAndNext(long websiteId, String uuid,
 		OrderByComparator<Website> orderByComparator)
-		throws NoSuchWebsiteException {
+		throws com.liferay.portal.exception.NoSuchWebsiteException {
 		Website website = findByPrimaryKey(websiteId);
 
 		Session session = null;
@@ -856,12 +855,12 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching website
-	 * @throws NoSuchWebsiteException if a matching website could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWebsiteException if a matching website could not be found
 	 */
 	@Override
 	public Website findByUuid_C_First(String uuid, long companyId,
 		OrderByComparator<Website> orderByComparator)
-		throws NoSuchWebsiteException {
+		throws com.liferay.portal.exception.NoSuchWebsiteException {
 		Website website = fetchByUuid_C_First(uuid, companyId, orderByComparator);
 
 		if (website != null) {
@@ -880,7 +879,7 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchWebsiteException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchWebsiteException(msg.toString());
 	}
 
 	/**
@@ -911,12 +910,12 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching website
-	 * @throws NoSuchWebsiteException if a matching website could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWebsiteException if a matching website could not be found
 	 */
 	@Override
 	public Website findByUuid_C_Last(String uuid, long companyId,
 		OrderByComparator<Website> orderByComparator)
-		throws NoSuchWebsiteException {
+		throws com.liferay.portal.exception.NoSuchWebsiteException {
 		Website website = fetchByUuid_C_Last(uuid, companyId, orderByComparator);
 
 		if (website != null) {
@@ -935,7 +934,7 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchWebsiteException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchWebsiteException(msg.toString());
 	}
 
 	/**
@@ -973,12 +972,12 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next website
-	 * @throws NoSuchWebsiteException if a website with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWebsiteException if a website with the primary key could not be found
 	 */
 	@Override
 	public Website[] findByUuid_C_PrevAndNext(long websiteId, String uuid,
 		long companyId, OrderByComparator<Website> orderByComparator)
-		throws NoSuchWebsiteException {
+		throws com.liferay.portal.exception.NoSuchWebsiteException {
 		Website website = findByPrimaryKey(websiteId);
 
 		Session session = null;
@@ -1410,12 +1409,12 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching website
-	 * @throws NoSuchWebsiteException if a matching website could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWebsiteException if a matching website could not be found
 	 */
 	@Override
 	public Website findByCompanyId_First(long companyId,
 		OrderByComparator<Website> orderByComparator)
-		throws NoSuchWebsiteException {
+		throws com.liferay.portal.exception.NoSuchWebsiteException {
 		Website website = fetchByCompanyId_First(companyId, orderByComparator);
 
 		if (website != null) {
@@ -1431,7 +1430,7 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchWebsiteException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchWebsiteException(msg.toString());
 	}
 
 	/**
@@ -1459,12 +1458,12 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching website
-	 * @throws NoSuchWebsiteException if a matching website could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWebsiteException if a matching website could not be found
 	 */
 	@Override
 	public Website findByCompanyId_Last(long companyId,
 		OrderByComparator<Website> orderByComparator)
-		throws NoSuchWebsiteException {
+		throws com.liferay.portal.exception.NoSuchWebsiteException {
 		Website website = fetchByCompanyId_Last(companyId, orderByComparator);
 
 		if (website != null) {
@@ -1480,7 +1479,7 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchWebsiteException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchWebsiteException(msg.toString());
 	}
 
 	/**
@@ -1516,12 +1515,12 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next website
-	 * @throws NoSuchWebsiteException if a website with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWebsiteException if a website with the primary key could not be found
 	 */
 	@Override
 	public Website[] findByCompanyId_PrevAndNext(long websiteId,
 		long companyId, OrderByComparator<Website> orderByComparator)
-		throws NoSuchWebsiteException {
+		throws com.liferay.portal.exception.NoSuchWebsiteException {
 		Website website = findByPrimaryKey(websiteId);
 
 		Session session = null;
@@ -1910,12 +1909,12 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching website
-	 * @throws NoSuchWebsiteException if a matching website could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWebsiteException if a matching website could not be found
 	 */
 	@Override
 	public Website findByUserId_First(long userId,
 		OrderByComparator<Website> orderByComparator)
-		throws NoSuchWebsiteException {
+		throws com.liferay.portal.exception.NoSuchWebsiteException {
 		Website website = fetchByUserId_First(userId, orderByComparator);
 
 		if (website != null) {
@@ -1931,7 +1930,7 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchWebsiteException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchWebsiteException(msg.toString());
 	}
 
 	/**
@@ -1959,12 +1958,12 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching website
-	 * @throws NoSuchWebsiteException if a matching website could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWebsiteException if a matching website could not be found
 	 */
 	@Override
 	public Website findByUserId_Last(long userId,
 		OrderByComparator<Website> orderByComparator)
-		throws NoSuchWebsiteException {
+		throws com.liferay.portal.exception.NoSuchWebsiteException {
 		Website website = fetchByUserId_Last(userId, orderByComparator);
 
 		if (website != null) {
@@ -1980,7 +1979,7 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchWebsiteException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchWebsiteException(msg.toString());
 	}
 
 	/**
@@ -2016,12 +2015,12 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next website
-	 * @throws NoSuchWebsiteException if a website with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWebsiteException if a website with the primary key could not be found
 	 */
 	@Override
 	public Website[] findByUserId_PrevAndNext(long websiteId, long userId,
 		OrderByComparator<Website> orderByComparator)
-		throws NoSuchWebsiteException {
+		throws com.liferay.portal.exception.NoSuchWebsiteException {
 		Website website = findByPrimaryKey(websiteId);
 
 		Session session = null;
@@ -2428,12 +2427,12 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching website
-	 * @throws NoSuchWebsiteException if a matching website could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWebsiteException if a matching website could not be found
 	 */
 	@Override
 	public Website findByC_C_First(long companyId, long classNameId,
 		OrderByComparator<Website> orderByComparator)
-		throws NoSuchWebsiteException {
+		throws com.liferay.portal.exception.NoSuchWebsiteException {
 		Website website = fetchByC_C_First(companyId, classNameId,
 				orderByComparator);
 
@@ -2453,7 +2452,7 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchWebsiteException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchWebsiteException(msg.toString());
 	}
 
 	/**
@@ -2484,12 +2483,12 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching website
-	 * @throws NoSuchWebsiteException if a matching website could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWebsiteException if a matching website could not be found
 	 */
 	@Override
 	public Website findByC_C_Last(long companyId, long classNameId,
 		OrderByComparator<Website> orderByComparator)
-		throws NoSuchWebsiteException {
+		throws com.liferay.portal.exception.NoSuchWebsiteException {
 		Website website = fetchByC_C_Last(companyId, classNameId,
 				orderByComparator);
 
@@ -2509,7 +2508,7 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchWebsiteException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchWebsiteException(msg.toString());
 	}
 
 	/**
@@ -2547,12 +2546,12 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next website
-	 * @throws NoSuchWebsiteException if a website with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWebsiteException if a website with the primary key could not be found
 	 */
 	@Override
 	public Website[] findByC_C_PrevAndNext(long websiteId, long companyId,
 		long classNameId, OrderByComparator<Website> orderByComparator)
-		throws NoSuchWebsiteException {
+		throws com.liferay.portal.exception.NoSuchWebsiteException {
 		Website website = findByPrimaryKey(websiteId);
 
 		Session session = null;
@@ -2987,12 +2986,12 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching website
-	 * @throws NoSuchWebsiteException if a matching website could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWebsiteException if a matching website could not be found
 	 */
 	@Override
 	public Website findByC_C_C_First(long companyId, long classNameId,
 		long classPK, OrderByComparator<Website> orderByComparator)
-		throws NoSuchWebsiteException {
+		throws com.liferay.portal.exception.NoSuchWebsiteException {
 		Website website = fetchByC_C_C_First(companyId, classNameId, classPK,
 				orderByComparator);
 
@@ -3015,7 +3014,7 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchWebsiteException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchWebsiteException(msg.toString());
 	}
 
 	/**
@@ -3048,12 +3047,12 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching website
-	 * @throws NoSuchWebsiteException if a matching website could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWebsiteException if a matching website could not be found
 	 */
 	@Override
 	public Website findByC_C_C_Last(long companyId, long classNameId,
 		long classPK, OrderByComparator<Website> orderByComparator)
-		throws NoSuchWebsiteException {
+		throws com.liferay.portal.exception.NoSuchWebsiteException {
 		Website website = fetchByC_C_C_Last(companyId, classNameId, classPK,
 				orderByComparator);
 
@@ -3076,7 +3075,7 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchWebsiteException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchWebsiteException(msg.toString());
 	}
 
 	/**
@@ -3116,13 +3115,13 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next website
-	 * @throws NoSuchWebsiteException if a website with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWebsiteException if a website with the primary key could not be found
 	 */
 	@Override
 	public Website[] findByC_C_C_PrevAndNext(long websiteId, long companyId,
 		long classNameId, long classPK,
 		OrderByComparator<Website> orderByComparator)
-		throws NoSuchWebsiteException {
+		throws com.liferay.portal.exception.NoSuchWebsiteException {
 		Website website = findByPrimaryKey(websiteId);
 
 		Session session = null;
@@ -3584,13 +3583,13 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	 * @param primary the primary
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching website
-	 * @throws NoSuchWebsiteException if a matching website could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWebsiteException if a matching website could not be found
 	 */
 	@Override
 	public Website findByC_C_C_P_First(long companyId, long classNameId,
 		long classPK, boolean primary,
 		OrderByComparator<Website> orderByComparator)
-		throws NoSuchWebsiteException {
+		throws com.liferay.portal.exception.NoSuchWebsiteException {
 		Website website = fetchByC_C_C_P_First(companyId, classNameId, classPK,
 				primary, orderByComparator);
 
@@ -3616,7 +3615,7 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchWebsiteException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchWebsiteException(msg.toString());
 	}
 
 	/**
@@ -3652,13 +3651,13 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	 * @param primary the primary
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching website
-	 * @throws NoSuchWebsiteException if a matching website could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWebsiteException if a matching website could not be found
 	 */
 	@Override
 	public Website findByC_C_C_P_Last(long companyId, long classNameId,
 		long classPK, boolean primary,
 		OrderByComparator<Website> orderByComparator)
-		throws NoSuchWebsiteException {
+		throws com.liferay.portal.exception.NoSuchWebsiteException {
 		Website website = fetchByC_C_C_P_Last(companyId, classNameId, classPK,
 				primary, orderByComparator);
 
@@ -3684,7 +3683,7 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchWebsiteException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchWebsiteException(msg.toString());
 	}
 
 	/**
@@ -3727,13 +3726,13 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	 * @param primary the primary
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next website
-	 * @throws NoSuchWebsiteException if a website with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWebsiteException if a website with the primary key could not be found
 	 */
 	@Override
 	public Website[] findByC_C_C_P_PrevAndNext(long websiteId, long companyId,
 		long classNameId, long classPK, boolean primary,
 		OrderByComparator<Website> orderByComparator)
-		throws NoSuchWebsiteException {
+		throws com.liferay.portal.exception.NoSuchWebsiteException {
 		Website website = findByPrimaryKey(websiteId);
 
 		Session session = null;
@@ -4076,10 +4075,11 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	 *
 	 * @param websiteId the primary key of the website
 	 * @return the website that was removed
-	 * @throws NoSuchWebsiteException if a website with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWebsiteException if a website with the primary key could not be found
 	 */
 	@Override
-	public Website remove(long websiteId) throws NoSuchWebsiteException {
+	public Website remove(long websiteId)
+		throws com.liferay.portal.exception.NoSuchWebsiteException {
 		return remove((Serializable)websiteId);
 	}
 
@@ -4088,11 +4088,11 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	 *
 	 * @param primaryKey the primary key of the website
 	 * @return the website that was removed
-	 * @throws NoSuchWebsiteException if a website with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWebsiteException if a website with the primary key could not be found
 	 */
 	@Override
 	public Website remove(Serializable primaryKey)
-		throws NoSuchWebsiteException {
+		throws com.liferay.portal.exception.NoSuchWebsiteException {
 		Session session = null;
 
 		try {
@@ -4105,13 +4105,13 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchWebsiteException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchWebsiteException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(website);
 		}
-		catch (NoSuchWebsiteException nsee) {
+		catch (com.liferay.portal.exception.NoSuchWebsiteException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -4399,11 +4399,11 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	 *
 	 * @param primaryKey the primary key of the website
 	 * @return the website
-	 * @throws NoSuchWebsiteException if a website with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWebsiteException if a website with the primary key could not be found
 	 */
 	@Override
 	public Website findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchWebsiteException {
+		throws com.liferay.portal.exception.NoSuchWebsiteException {
 		Website website = fetchByPrimaryKey(primaryKey);
 
 		if (website == null) {
@@ -4411,7 +4411,7 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchWebsiteException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchWebsiteException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -4419,15 +4419,15 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	}
 
 	/**
-	 * Returns the website with the primary key or throws a {@link NoSuchWebsiteException} if it could not be found.
+	 * Returns the website with the primary key or throws a {@link com.liferay.portal.exception.NoSuchWebsiteException} if it could not be found.
 	 *
 	 * @param websiteId the primary key of the website
 	 * @return the website
-	 * @throws NoSuchWebsiteException if a website with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWebsiteException if a website with the primary key could not be found
 	 */
 	@Override
 	public Website findByPrimaryKey(long websiteId)
-		throws NoSuchWebsiteException {
+		throws com.liferay.portal.exception.NoSuchWebsiteException {
 		return findByPrimaryKey((Serializable)websiteId);
 	}
 

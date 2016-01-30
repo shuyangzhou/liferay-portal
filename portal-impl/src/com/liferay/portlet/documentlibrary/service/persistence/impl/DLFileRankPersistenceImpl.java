@@ -38,7 +38,6 @@ import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
-import com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException;
 import com.liferay.portlet.documentlibrary.model.DLFileRank;
 import com.liferay.portlet.documentlibrary.model.impl.DLFileRankImpl;
 import com.liferay.portlet.documentlibrary.model.impl.DLFileRankModelImpl;
@@ -279,12 +278,12 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library file rank
-	 * @throws NoSuchFileRankException if a matching document library file rank could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException if a matching document library file rank could not be found
 	 */
 	@Override
 	public DLFileRank findByUserId_First(long userId,
 		OrderByComparator<DLFileRank> orderByComparator)
-		throws NoSuchFileRankException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException {
 		DLFileRank dlFileRank = fetchByUserId_First(userId, orderByComparator);
 
 		if (dlFileRank != null) {
@@ -300,7 +299,7 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileRankException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException(msg.toString());
 	}
 
 	/**
@@ -328,12 +327,12 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library file rank
-	 * @throws NoSuchFileRankException if a matching document library file rank could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException if a matching document library file rank could not be found
 	 */
 	@Override
 	public DLFileRank findByUserId_Last(long userId,
 		OrderByComparator<DLFileRank> orderByComparator)
-		throws NoSuchFileRankException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException {
 		DLFileRank dlFileRank = fetchByUserId_Last(userId, orderByComparator);
 
 		if (dlFileRank != null) {
@@ -349,7 +348,7 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileRankException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException(msg.toString());
 	}
 
 	/**
@@ -385,12 +384,12 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library file rank
-	 * @throws NoSuchFileRankException if a document library file rank with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException if a document library file rank with the primary key could not be found
 	 */
 	@Override
 	public DLFileRank[] findByUserId_PrevAndNext(long fileRankId, long userId,
 		OrderByComparator<DLFileRank> orderByComparator)
-		throws NoSuchFileRankException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException {
 		DLFileRank dlFileRank = findByPrimaryKey(fileRankId);
 
 		Session session = null;
@@ -784,12 +783,12 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 	 * @param fileEntryId the file entry ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library file rank
-	 * @throws NoSuchFileRankException if a matching document library file rank could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException if a matching document library file rank could not be found
 	 */
 	@Override
 	public DLFileRank findByFileEntryId_First(long fileEntryId,
 		OrderByComparator<DLFileRank> orderByComparator)
-		throws NoSuchFileRankException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException {
 		DLFileRank dlFileRank = fetchByFileEntryId_First(fileEntryId,
 				orderByComparator);
 
@@ -806,7 +805,7 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileRankException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException(msg.toString());
 	}
 
 	/**
@@ -835,12 +834,12 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 	 * @param fileEntryId the file entry ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library file rank
-	 * @throws NoSuchFileRankException if a matching document library file rank could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException if a matching document library file rank could not be found
 	 */
 	@Override
 	public DLFileRank findByFileEntryId_Last(long fileEntryId,
 		OrderByComparator<DLFileRank> orderByComparator)
-		throws NoSuchFileRankException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException {
 		DLFileRank dlFileRank = fetchByFileEntryId_Last(fileEntryId,
 				orderByComparator);
 
@@ -857,7 +856,7 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileRankException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException(msg.toString());
 	}
 
 	/**
@@ -893,12 +892,12 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 	 * @param fileEntryId the file entry ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library file rank
-	 * @throws NoSuchFileRankException if a document library file rank with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException if a document library file rank with the primary key could not be found
 	 */
 	@Override
 	public DLFileRank[] findByFileEntryId_PrevAndNext(long fileRankId,
 		long fileEntryId, OrderByComparator<DLFileRank> orderByComparator)
-		throws NoSuchFileRankException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException {
 		DLFileRank dlFileRank = findByPrimaryKey(fileRankId);
 
 		Session session = null;
@@ -1304,12 +1303,12 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library file rank
-	 * @throws NoSuchFileRankException if a matching document library file rank could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException if a matching document library file rank could not be found
 	 */
 	@Override
 	public DLFileRank findByG_U_First(long groupId, long userId,
 		OrderByComparator<DLFileRank> orderByComparator)
-		throws NoSuchFileRankException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException {
 		DLFileRank dlFileRank = fetchByG_U_First(groupId, userId,
 				orderByComparator);
 
@@ -1329,7 +1328,7 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileRankException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException(msg.toString());
 	}
 
 	/**
@@ -1360,12 +1359,12 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library file rank
-	 * @throws NoSuchFileRankException if a matching document library file rank could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException if a matching document library file rank could not be found
 	 */
 	@Override
 	public DLFileRank findByG_U_Last(long groupId, long userId,
 		OrderByComparator<DLFileRank> orderByComparator)
-		throws NoSuchFileRankException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException {
 		DLFileRank dlFileRank = fetchByG_U_Last(groupId, userId,
 				orderByComparator);
 
@@ -1385,7 +1384,7 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileRankException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException(msg.toString());
 	}
 
 	/**
@@ -1423,12 +1422,12 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library file rank
-	 * @throws NoSuchFileRankException if a document library file rank with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException if a document library file rank with the primary key could not be found
 	 */
 	@Override
 	public DLFileRank[] findByG_U_PrevAndNext(long fileRankId, long groupId,
 		long userId, OrderByComparator<DLFileRank> orderByComparator)
-		throws NoSuchFileRankException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException {
 		DLFileRank dlFileRank = findByPrimaryKey(fileRankId);
 
 		Session session = null;
@@ -1867,12 +1866,12 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 	 * @param active the active
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library file rank
-	 * @throws NoSuchFileRankException if a matching document library file rank could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException if a matching document library file rank could not be found
 	 */
 	@Override
 	public DLFileRank findByG_U_A_First(long groupId, long userId,
 		boolean active, OrderByComparator<DLFileRank> orderByComparator)
-		throws NoSuchFileRankException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException {
 		DLFileRank dlFileRank = fetchByG_U_A_First(groupId, userId, active,
 				orderByComparator);
 
@@ -1895,7 +1894,7 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileRankException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException(msg.toString());
 	}
 
 	/**
@@ -1928,12 +1927,12 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 	 * @param active the active
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library file rank
-	 * @throws NoSuchFileRankException if a matching document library file rank could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException if a matching document library file rank could not be found
 	 */
 	@Override
 	public DLFileRank findByG_U_A_Last(long groupId, long userId,
 		boolean active, OrderByComparator<DLFileRank> orderByComparator)
-		throws NoSuchFileRankException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException {
 		DLFileRank dlFileRank = fetchByG_U_A_Last(groupId, userId, active,
 				orderByComparator);
 
@@ -1956,7 +1955,7 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFileRankException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException(msg.toString());
 	}
 
 	/**
@@ -1996,13 +1995,13 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 	 * @param active the active
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library file rank
-	 * @throws NoSuchFileRankException if a document library file rank with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException if a document library file rank with the primary key could not be found
 	 */
 	@Override
 	public DLFileRank[] findByG_U_A_PrevAndNext(long fileRankId, long groupId,
 		long userId, boolean active,
 		OrderByComparator<DLFileRank> orderByComparator)
-		throws NoSuchFileRankException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException {
 		DLFileRank dlFileRank = findByPrimaryKey(fileRankId);
 
 		Session session = null;
@@ -2240,17 +2239,17 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 			});
 
 	/**
-	 * Returns the document library file rank where companyId = &#63; and userId = &#63; and fileEntryId = &#63; or throws a {@link NoSuchFileRankException} if it could not be found.
+	 * Returns the document library file rank where companyId = &#63; and userId = &#63; and fileEntryId = &#63; or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException} if it could not be found.
 	 *
 	 * @param companyId the company ID
 	 * @param userId the user ID
 	 * @param fileEntryId the file entry ID
 	 * @return the matching document library file rank
-	 * @throws NoSuchFileRankException if a matching document library file rank could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException if a matching document library file rank could not be found
 	 */
 	@Override
 	public DLFileRank findByC_U_F(long companyId, long userId, long fileEntryId)
-		throws NoSuchFileRankException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException {
 		DLFileRank dlFileRank = fetchByC_U_F(companyId, userId, fileEntryId);
 
 		if (dlFileRank == null) {
@@ -2273,7 +2272,7 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchFileRankException(msg.toString());
+			throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException(msg.toString());
 		}
 
 		return dlFileRank;
@@ -2407,7 +2406,8 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 	 */
 	@Override
 	public DLFileRank removeByC_U_F(long companyId, long userId,
-		long fileEntryId) throws NoSuchFileRankException {
+		long fileEntryId)
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException {
 		DLFileRank dlFileRank = findByC_U_F(companyId, userId, fileEntryId);
 
 		return remove(dlFileRank);
@@ -2645,10 +2645,11 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 	 *
 	 * @param fileRankId the primary key of the document library file rank
 	 * @return the document library file rank that was removed
-	 * @throws NoSuchFileRankException if a document library file rank with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException if a document library file rank with the primary key could not be found
 	 */
 	@Override
-	public DLFileRank remove(long fileRankId) throws NoSuchFileRankException {
+	public DLFileRank remove(long fileRankId)
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException {
 		return remove((Serializable)fileRankId);
 	}
 
@@ -2657,11 +2658,11 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 	 *
 	 * @param primaryKey the primary key of the document library file rank
 	 * @return the document library file rank that was removed
-	 * @throws NoSuchFileRankException if a document library file rank with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException if a document library file rank with the primary key could not be found
 	 */
 	@Override
 	public DLFileRank remove(Serializable primaryKey)
-		throws NoSuchFileRankException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException {
 		Session session = null;
 
 		try {
@@ -2675,13 +2676,13 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchFileRankException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(dlFileRank);
 		}
-		catch (NoSuchFileRankException nsee) {
+		catch (com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -2876,11 +2877,11 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 	 *
 	 * @param primaryKey the primary key of the document library file rank
 	 * @return the document library file rank
-	 * @throws NoSuchFileRankException if a document library file rank with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException if a document library file rank with the primary key could not be found
 	 */
 	@Override
 	public DLFileRank findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchFileRankException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException {
 		DLFileRank dlFileRank = fetchByPrimaryKey(primaryKey);
 
 		if (dlFileRank == null) {
@@ -2888,7 +2889,7 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchFileRankException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -2896,15 +2897,15 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 	}
 
 	/**
-	 * Returns the document library file rank with the primary key or throws a {@link NoSuchFileRankException} if it could not be found.
+	 * Returns the document library file rank with the primary key or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException} if it could not be found.
 	 *
 	 * @param fileRankId the primary key of the document library file rank
 	 * @return the document library file rank
-	 * @throws NoSuchFileRankException if a document library file rank with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException if a document library file rank with the primary key could not be found
 	 */
 	@Override
 	public DLFileRank findByPrimaryKey(long fileRankId)
-		throws NoSuchFileRankException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException {
 		return findByPrimaryKey((Serializable)fileRankId);
 	}
 

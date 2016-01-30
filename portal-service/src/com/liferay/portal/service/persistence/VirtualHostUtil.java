@@ -109,11 +109,11 @@ public class VirtualHostUtil {
 	}
 
 	/**
-	* Returns the virtual host where hostname = &#63; or throws a {@link NoSuchVirtualHostException} if it could not be found.
+	* Returns the virtual host where hostname = &#63; or throws a {@link com.liferay.portal.exception.NoSuchVirtualHostException} if it could not be found.
 	*
 	* @param hostname the hostname
 	* @return the matching virtual host
-	* @throws NoSuchVirtualHostException if a matching virtual host could not be found
+	* @throws com.liferay.portal.exception.NoSuchVirtualHostException if a matching virtual host could not be found
 	*/
 	public static VirtualHost findByHostname(java.lang.String hostname)
 		throws com.liferay.portal.exception.NoSuchVirtualHostException {
@@ -164,12 +164,12 @@ public class VirtualHostUtil {
 	}
 
 	/**
-	* Returns the virtual host where companyId = &#63; and layoutSetId = &#63; or throws a {@link NoSuchVirtualHostException} if it could not be found.
+	* Returns the virtual host where companyId = &#63; and layoutSetId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchVirtualHostException} if it could not be found.
 	*
 	* @param companyId the company ID
 	* @param layoutSetId the layout set ID
 	* @return the matching virtual host
-	* @throws NoSuchVirtualHostException if a matching virtual host could not be found
+	* @throws com.liferay.portal.exception.NoSuchVirtualHostException if a matching virtual host could not be found
 	*/
 	public static VirtualHost findByC_L(long companyId, long layoutSetId)
 		throws com.liferay.portal.exception.NoSuchVirtualHostException {
@@ -257,7 +257,7 @@ public class VirtualHostUtil {
 	*
 	* @param virtualHostId the primary key of the virtual host
 	* @return the virtual host that was removed
-	* @throws NoSuchVirtualHostException if a virtual host with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchVirtualHostException if a virtual host with the primary key could not be found
 	*/
 	public static VirtualHost remove(long virtualHostId)
 		throws com.liferay.portal.exception.NoSuchVirtualHostException {
@@ -269,11 +269,11 @@ public class VirtualHostUtil {
 	}
 
 	/**
-	* Returns the virtual host with the primary key or throws a {@link NoSuchVirtualHostException} if it could not be found.
+	* Returns the virtual host with the primary key or throws a {@link com.liferay.portal.exception.NoSuchVirtualHostException} if it could not be found.
 	*
 	* @param virtualHostId the primary key of the virtual host
 	* @return the virtual host
-	* @throws NoSuchVirtualHostException if a virtual host with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchVirtualHostException if a virtual host with the primary key could not be found
 	*/
 	public static VirtualHost findByPrimaryKey(long virtualHostId)
 		throws com.liferay.portal.exception.NoSuchVirtualHostException {

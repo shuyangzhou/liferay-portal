@@ -16,7 +16,6 @@ package com.liferay.bookmarks.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.bookmarks.exception.NoSuchEntryException;
 import com.liferay.bookmarks.model.BookmarksEntry;
 import com.liferay.bookmarks.model.impl.BookmarksEntryImpl;
 import com.liferay.bookmarks.model.impl.BookmarksEntryModelImpl;
@@ -299,12 +298,12 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param resourceBlockId the resource block ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching bookmarks entry
-	 * @throws NoSuchEntryException if a matching bookmarks entry could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a matching bookmarks entry could not be found
 	 */
 	@Override
 	public BookmarksEntry findByResourceBlockId_First(long resourceBlockId,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = fetchByResourceBlockId_First(resourceBlockId,
 				orderByComparator);
 
@@ -321,7 +320,7 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -350,12 +349,12 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param resourceBlockId the resource block ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching bookmarks entry
-	 * @throws NoSuchEntryException if a matching bookmarks entry could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a matching bookmarks entry could not be found
 	 */
 	@Override
 	public BookmarksEntry findByResourceBlockId_Last(long resourceBlockId,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = fetchByResourceBlockId_Last(resourceBlockId,
 				orderByComparator);
 
@@ -372,7 +371,7 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -408,13 +407,13 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param resourceBlockId the resource block ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next bookmarks entry
-	 * @throws NoSuchEntryException if a bookmarks entry with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a bookmarks entry with the primary key could not be found
 	 */
 	@Override
 	public BookmarksEntry[] findByResourceBlockId_PrevAndNext(long entryId,
 		long resourceBlockId,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -821,12 +820,12 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching bookmarks entry
-	 * @throws NoSuchEntryException if a matching bookmarks entry could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a matching bookmarks entry could not be found
 	 */
 	@Override
 	public BookmarksEntry findByUuid_First(String uuid,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = fetchByUuid_First(uuid,
 				orderByComparator);
 
@@ -843,7 +842,7 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -871,12 +870,12 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching bookmarks entry
-	 * @throws NoSuchEntryException if a matching bookmarks entry could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a matching bookmarks entry could not be found
 	 */
 	@Override
 	public BookmarksEntry findByUuid_Last(String uuid,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = fetchByUuid_Last(uuid, orderByComparator);
 
 		if (bookmarksEntry != null) {
@@ -892,7 +891,7 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -928,12 +927,12 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next bookmarks entry
-	 * @throws NoSuchEntryException if a bookmarks entry with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a bookmarks entry with the primary key could not be found
 	 */
 	@Override
 	public BookmarksEntry[] findByUuid_PrevAndNext(long entryId, String uuid,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -1175,16 +1174,16 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 			new String[] { String.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the bookmarks entry where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchEntryException} if it could not be found.
+	 * Returns the bookmarks entry where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.bookmarks.exception.NoSuchEntryException} if it could not be found.
 	 *
 	 * @param uuid the uuid
 	 * @param groupId the group ID
 	 * @return the matching bookmarks entry
-	 * @throws NoSuchEntryException if a matching bookmarks entry could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a matching bookmarks entry could not be found
 	 */
 	@Override
 	public BookmarksEntry findByUUID_G(String uuid, long groupId)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = fetchByUUID_G(uuid, groupId);
 
 		if (bookmarksEntry == null) {
@@ -1204,7 +1203,7 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchEntryException(msg.toString());
+			throw new com.liferay.bookmarks.exception.NoSuchEntryException(msg.toString());
 		}
 
 		return bookmarksEntry;
@@ -1337,7 +1336,7 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 */
 	@Override
 	public BookmarksEntry removeByUUID_G(String uuid, long groupId)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = findByUUID_G(uuid, groupId);
 
 		return remove(bookmarksEntry);
@@ -1643,12 +1642,12 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching bookmarks entry
-	 * @throws NoSuchEntryException if a matching bookmarks entry could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a matching bookmarks entry could not be found
 	 */
 	@Override
 	public BookmarksEntry findByUuid_C_First(String uuid, long companyId,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = fetchByUuid_C_First(uuid, companyId,
 				orderByComparator);
 
@@ -1668,7 +1667,7 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -1699,12 +1698,12 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching bookmarks entry
-	 * @throws NoSuchEntryException if a matching bookmarks entry could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a matching bookmarks entry could not be found
 	 */
 	@Override
 	public BookmarksEntry findByUuid_C_Last(String uuid, long companyId,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = fetchByUuid_C_Last(uuid, companyId,
 				orderByComparator);
 
@@ -1724,7 +1723,7 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -1762,12 +1761,12 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next bookmarks entry
-	 * @throws NoSuchEntryException if a bookmarks entry with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a bookmarks entry with the primary key could not be found
 	 */
 	@Override
 	public BookmarksEntry[] findByUuid_C_PrevAndNext(long entryId, String uuid,
 		long companyId, OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -2204,12 +2203,12 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching bookmarks entry
-	 * @throws NoSuchEntryException if a matching bookmarks entry could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a matching bookmarks entry could not be found
 	 */
 	@Override
 	public BookmarksEntry findByCompanyId_First(long companyId,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = fetchByCompanyId_First(companyId,
 				orderByComparator);
 
@@ -2226,7 +2225,7 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -2255,12 +2254,12 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching bookmarks entry
-	 * @throws NoSuchEntryException if a matching bookmarks entry could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a matching bookmarks entry could not be found
 	 */
 	@Override
 	public BookmarksEntry findByCompanyId_Last(long companyId,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = fetchByCompanyId_Last(companyId,
 				orderByComparator);
 
@@ -2277,7 +2276,7 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -2313,12 +2312,12 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next bookmarks entry
-	 * @throws NoSuchEntryException if a bookmarks entry with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a bookmarks entry with the primary key could not be found
 	 */
 	@Override
 	public BookmarksEntry[] findByCompanyId_PrevAndNext(long entryId,
 		long companyId, OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -2731,12 +2730,12 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param folderId the folder ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching bookmarks entry
-	 * @throws NoSuchEntryException if a matching bookmarks entry could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a matching bookmarks entry could not be found
 	 */
 	@Override
 	public BookmarksEntry findByG_F_First(long groupId, long folderId,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = fetchByG_F_First(groupId, folderId,
 				orderByComparator);
 
@@ -2756,7 +2755,7 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -2787,12 +2786,12 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param folderId the folder ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching bookmarks entry
-	 * @throws NoSuchEntryException if a matching bookmarks entry could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a matching bookmarks entry could not be found
 	 */
 	@Override
 	public BookmarksEntry findByG_F_Last(long groupId, long folderId,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = fetchByG_F_Last(groupId, folderId,
 				orderByComparator);
 
@@ -2812,7 +2811,7 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -2850,12 +2849,12 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param folderId the folder ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next bookmarks entry
-	 * @throws NoSuchEntryException if a bookmarks entry with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a bookmarks entry with the primary key could not be found
 	 */
 	@Override
 	public BookmarksEntry[] findByG_F_PrevAndNext(long entryId, long groupId,
 		long folderId, OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -3107,13 +3106,13 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param folderId the folder ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next bookmarks entry
-	 * @throws NoSuchEntryException if a bookmarks entry with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a bookmarks entry with the primary key could not be found
 	 */
 	@Override
 	public BookmarksEntry[] filterFindByG_F_PrevAndNext(long entryId,
 		long groupId, long folderId,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_F_PrevAndNext(entryId, groupId, folderId,
 				orderByComparator);
@@ -4060,12 +4059,12 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching bookmarks entry
-	 * @throws NoSuchEntryException if a matching bookmarks entry could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a matching bookmarks entry could not be found
 	 */
 	@Override
 	public BookmarksEntry findByG_S_First(long groupId, int status,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = fetchByG_S_First(groupId, status,
 				orderByComparator);
 
@@ -4085,7 +4084,7 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -4116,12 +4115,12 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching bookmarks entry
-	 * @throws NoSuchEntryException if a matching bookmarks entry could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a matching bookmarks entry could not be found
 	 */
 	@Override
 	public BookmarksEntry findByG_S_Last(long groupId, int status,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = fetchByG_S_Last(groupId, status,
 				orderByComparator);
 
@@ -4141,7 +4140,7 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -4179,12 +4178,12 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next bookmarks entry
-	 * @throws NoSuchEntryException if a bookmarks entry with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a bookmarks entry with the primary key could not be found
 	 */
 	@Override
 	public BookmarksEntry[] findByG_S_PrevAndNext(long entryId, long groupId,
 		int status, OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -4436,13 +4435,13 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next bookmarks entry
-	 * @throws NoSuchEntryException if a bookmarks entry with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a bookmarks entry with the primary key could not be found
 	 */
 	@Override
 	public BookmarksEntry[] filterFindByG_S_PrevAndNext(long entryId,
 		long groupId, int status,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_S_PrevAndNext(entryId, groupId, status,
 				orderByComparator);
@@ -4901,12 +4900,12 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching bookmarks entry
-	 * @throws NoSuchEntryException if a matching bookmarks entry could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a matching bookmarks entry could not be found
 	 */
 	@Override
 	public BookmarksEntry findByG_NotS_First(long groupId, int status,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = fetchByG_NotS_First(groupId, status,
 				orderByComparator);
 
@@ -4926,7 +4925,7 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -4957,12 +4956,12 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching bookmarks entry
-	 * @throws NoSuchEntryException if a matching bookmarks entry could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a matching bookmarks entry could not be found
 	 */
 	@Override
 	public BookmarksEntry findByG_NotS_Last(long groupId, int status,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = fetchByG_NotS_Last(groupId, status,
 				orderByComparator);
 
@@ -4982,7 +4981,7 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -5020,13 +5019,13 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next bookmarks entry
-	 * @throws NoSuchEntryException if a bookmarks entry with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a bookmarks entry with the primary key could not be found
 	 */
 	@Override
 	public BookmarksEntry[] findByG_NotS_PrevAndNext(long entryId,
 		long groupId, int status,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -5278,13 +5277,13 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next bookmarks entry
-	 * @throws NoSuchEntryException if a bookmarks entry with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a bookmarks entry with the primary key could not be found
 	 */
 	@Override
 	public BookmarksEntry[] filterFindByG_NotS_PrevAndNext(long entryId,
 		long groupId, int status,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_NotS_PrevAndNext(entryId, groupId, status,
 				orderByComparator);
@@ -5748,12 +5747,12 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching bookmarks entry
-	 * @throws NoSuchEntryException if a matching bookmarks entry could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a matching bookmarks entry could not be found
 	 */
 	@Override
 	public BookmarksEntry findByC_NotS_First(long companyId, int status,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = fetchByC_NotS_First(companyId, status,
 				orderByComparator);
 
@@ -5773,7 +5772,7 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -5804,12 +5803,12 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching bookmarks entry
-	 * @throws NoSuchEntryException if a matching bookmarks entry could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a matching bookmarks entry could not be found
 	 */
 	@Override
 	public BookmarksEntry findByC_NotS_Last(long companyId, int status,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = fetchByC_NotS_Last(companyId, status,
 				orderByComparator);
 
@@ -5829,7 +5828,7 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -5867,13 +5866,13 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next bookmarks entry
-	 * @throws NoSuchEntryException if a bookmarks entry with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a bookmarks entry with the primary key could not be found
 	 */
 	@Override
 	public BookmarksEntry[] findByC_NotS_PrevAndNext(long entryId,
 		long companyId, int status,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -6315,12 +6314,12 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching bookmarks entry
-	 * @throws NoSuchEntryException if a matching bookmarks entry could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a matching bookmarks entry could not be found
 	 */
 	@Override
 	public BookmarksEntry findByG_U_S_First(long groupId, long userId,
 		int status, OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = fetchByG_U_S_First(groupId, userId,
 				status, orderByComparator);
 
@@ -6343,7 +6342,7 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -6376,12 +6375,12 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching bookmarks entry
-	 * @throws NoSuchEntryException if a matching bookmarks entry could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a matching bookmarks entry could not be found
 	 */
 	@Override
 	public BookmarksEntry findByG_U_S_Last(long groupId, long userId,
 		int status, OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = fetchByG_U_S_Last(groupId, userId,
 				status, orderByComparator);
 
@@ -6404,7 +6403,7 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -6444,13 +6443,13 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next bookmarks entry
-	 * @throws NoSuchEntryException if a bookmarks entry with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a bookmarks entry with the primary key could not be found
 	 */
 	@Override
 	public BookmarksEntry[] findByG_U_S_PrevAndNext(long entryId, long groupId,
 		long userId, int status,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -6717,13 +6716,13 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next bookmarks entry
-	 * @throws NoSuchEntryException if a bookmarks entry with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a bookmarks entry with the primary key could not be found
 	 */
 	@Override
 	public BookmarksEntry[] filterFindByG_U_S_PrevAndNext(long entryId,
 		long groupId, long userId, int status,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_U_S_PrevAndNext(entryId, groupId, userId, status,
 				orderByComparator);
@@ -7220,12 +7219,12 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching bookmarks entry
-	 * @throws NoSuchEntryException if a matching bookmarks entry could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a matching bookmarks entry could not be found
 	 */
 	@Override
 	public BookmarksEntry findByG_U_NotS_First(long groupId, long userId,
 		int status, OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = fetchByG_U_NotS_First(groupId, userId,
 				status, orderByComparator);
 
@@ -7248,7 +7247,7 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -7281,12 +7280,12 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching bookmarks entry
-	 * @throws NoSuchEntryException if a matching bookmarks entry could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a matching bookmarks entry could not be found
 	 */
 	@Override
 	public BookmarksEntry findByG_U_NotS_Last(long groupId, long userId,
 		int status, OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = fetchByG_U_NotS_Last(groupId, userId,
 				status, orderByComparator);
 
@@ -7309,7 +7308,7 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -7349,13 +7348,13 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next bookmarks entry
-	 * @throws NoSuchEntryException if a bookmarks entry with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a bookmarks entry with the primary key could not be found
 	 */
 	@Override
 	public BookmarksEntry[] findByG_U_NotS_PrevAndNext(long entryId,
 		long groupId, long userId, int status,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -7622,13 +7621,13 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next bookmarks entry
-	 * @throws NoSuchEntryException if a bookmarks entry with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a bookmarks entry with the primary key could not be found
 	 */
 	@Override
 	public BookmarksEntry[] filterFindByG_U_NotS_PrevAndNext(long entryId,
 		long groupId, long userId, int status,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_U_NotS_PrevAndNext(entryId, groupId, userId, status,
 				orderByComparator);
@@ -8151,12 +8150,12 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching bookmarks entry
-	 * @throws NoSuchEntryException if a matching bookmarks entry could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a matching bookmarks entry could not be found
 	 */
 	@Override
 	public BookmarksEntry findByG_F_S_First(long groupId, long folderId,
 		int status, OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = fetchByG_F_S_First(groupId, folderId,
 				status, orderByComparator);
 
@@ -8179,7 +8178,7 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -8212,12 +8211,12 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching bookmarks entry
-	 * @throws NoSuchEntryException if a matching bookmarks entry could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a matching bookmarks entry could not be found
 	 */
 	@Override
 	public BookmarksEntry findByG_F_S_Last(long groupId, long folderId,
 		int status, OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = fetchByG_F_S_Last(groupId, folderId,
 				status, orderByComparator);
 
@@ -8240,7 +8239,7 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -8280,13 +8279,13 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next bookmarks entry
-	 * @throws NoSuchEntryException if a bookmarks entry with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a bookmarks entry with the primary key could not be found
 	 */
 	@Override
 	public BookmarksEntry[] findByG_F_S_PrevAndNext(long entryId, long groupId,
 		long folderId, int status,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -8553,13 +8552,13 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next bookmarks entry
-	 * @throws NoSuchEntryException if a bookmarks entry with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a bookmarks entry with the primary key could not be found
 	 */
 	@Override
 	public BookmarksEntry[] filterFindByG_F_S_PrevAndNext(long entryId,
 		long groupId, long folderId, int status,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_F_S_PrevAndNext(entryId, groupId, folderId, status,
 				orderByComparator);
@@ -9568,12 +9567,12 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching bookmarks entry
-	 * @throws NoSuchEntryException if a matching bookmarks entry could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a matching bookmarks entry could not be found
 	 */
 	@Override
 	public BookmarksEntry findByG_F_NotS_First(long groupId, long folderId,
 		int status, OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = fetchByG_F_NotS_First(groupId,
 				folderId, status, orderByComparator);
 
@@ -9596,7 +9595,7 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -9629,12 +9628,12 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching bookmarks entry
-	 * @throws NoSuchEntryException if a matching bookmarks entry could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a matching bookmarks entry could not be found
 	 */
 	@Override
 	public BookmarksEntry findByG_F_NotS_Last(long groupId, long folderId,
 		int status, OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = fetchByG_F_NotS_Last(groupId, folderId,
 				status, orderByComparator);
 
@@ -9657,7 +9656,7 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -9697,13 +9696,13 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next bookmarks entry
-	 * @throws NoSuchEntryException if a bookmarks entry with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a bookmarks entry with the primary key could not be found
 	 */
 	@Override
 	public BookmarksEntry[] findByG_F_NotS_PrevAndNext(long entryId,
 		long groupId, long folderId, int status,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -9970,13 +9969,13 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next bookmarks entry
-	 * @throws NoSuchEntryException if a bookmarks entry with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a bookmarks entry with the primary key could not be found
 	 */
 	@Override
 	public BookmarksEntry[] filterFindByG_F_NotS_PrevAndNext(long entryId,
 		long groupId, long folderId, int status,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_F_NotS_PrevAndNext(entryId, groupId, folderId,
 				status, orderByComparator);
@@ -11023,13 +11022,13 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching bookmarks entry
-	 * @throws NoSuchEntryException if a matching bookmarks entry could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a matching bookmarks entry could not be found
 	 */
 	@Override
 	public BookmarksEntry findByG_U_F_S_First(long groupId, long userId,
 		long folderId, int status,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = fetchByG_U_F_S_First(groupId, userId,
 				folderId, status, orderByComparator);
 
@@ -11055,7 +11054,7 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -11091,13 +11090,13 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching bookmarks entry
-	 * @throws NoSuchEntryException if a matching bookmarks entry could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a matching bookmarks entry could not be found
 	 */
 	@Override
 	public BookmarksEntry findByG_U_F_S_Last(long groupId, long userId,
 		long folderId, int status,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = fetchByG_U_F_S_Last(groupId, userId,
 				folderId, status, orderByComparator);
 
@@ -11123,7 +11122,7 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.bookmarks.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -11166,13 +11165,13 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next bookmarks entry
-	 * @throws NoSuchEntryException if a bookmarks entry with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a bookmarks entry with the primary key could not be found
 	 */
 	@Override
 	public BookmarksEntry[] findByG_U_F_S_PrevAndNext(long entryId,
 		long groupId, long userId, long folderId, int status,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -11453,13 +11452,13 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next bookmarks entry
-	 * @throws NoSuchEntryException if a bookmarks entry with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a bookmarks entry with the primary key could not be found
 	 */
 	@Override
 	public BookmarksEntry[] filterFindByG_U_F_S_PrevAndNext(long entryId,
 		long groupId, long userId, long folderId, int status,
 		OrderByComparator<BookmarksEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_U_F_S_PrevAndNext(entryId, groupId, userId,
 				folderId, status, orderByComparator);
@@ -12473,10 +12472,11 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 *
 	 * @param entryId the primary key of the bookmarks entry
 	 * @return the bookmarks entry that was removed
-	 * @throws NoSuchEntryException if a bookmarks entry with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a bookmarks entry with the primary key could not be found
 	 */
 	@Override
-	public BookmarksEntry remove(long entryId) throws NoSuchEntryException {
+	public BookmarksEntry remove(long entryId)
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		return remove((Serializable)entryId);
 	}
 
@@ -12485,11 +12485,11 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 *
 	 * @param primaryKey the primary key of the bookmarks entry
 	 * @return the bookmarks entry that was removed
-	 * @throws NoSuchEntryException if a bookmarks entry with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a bookmarks entry with the primary key could not be found
 	 */
 	@Override
 	public BookmarksEntry remove(Serializable primaryKey)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		Session session = null;
 
 		try {
@@ -12503,13 +12503,13 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.bookmarks.exception.NoSuchEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(bookmarksEntry);
 		}
-		catch (NoSuchEntryException nsee) {
+		catch (com.liferay.bookmarks.exception.NoSuchEntryException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -12857,11 +12857,11 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 *
 	 * @param primaryKey the primary key of the bookmarks entry
 	 * @return the bookmarks entry
-	 * @throws NoSuchEntryException if a bookmarks entry with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a bookmarks entry with the primary key could not be found
 	 */
 	@Override
 	public BookmarksEntry findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		BookmarksEntry bookmarksEntry = fetchByPrimaryKey(primaryKey);
 
 		if (bookmarksEntry == null) {
@@ -12869,7 +12869,7 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.bookmarks.exception.NoSuchEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -12877,15 +12877,15 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	}
 
 	/**
-	 * Returns the bookmarks entry with the primary key or throws a {@link NoSuchEntryException} if it could not be found.
+	 * Returns the bookmarks entry with the primary key or throws a {@link com.liferay.bookmarks.exception.NoSuchEntryException} if it could not be found.
 	 *
 	 * @param entryId the primary key of the bookmarks entry
 	 * @return the bookmarks entry
-	 * @throws NoSuchEntryException if a bookmarks entry with the primary key could not be found
+	 * @throws com.liferay.bookmarks.exception.NoSuchEntryException if a bookmarks entry with the primary key could not be found
 	 */
 	@Override
 	public BookmarksEntry findByPrimaryKey(long entryId)
-		throws NoSuchEntryException {
+		throws com.liferay.bookmarks.exception.NoSuchEntryException {
 		return findByPrimaryKey((Serializable)entryId);
 	}
 
