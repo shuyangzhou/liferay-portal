@@ -178,7 +178,7 @@ public class PhoneUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching phone
-	* @throws NoSuchPhoneException if a matching phone could not be found
+	* @throws com.liferay.portal.exception.NoSuchPhoneException if a matching phone could not be found
 	*/
 	public static Phone findByUuid_First(java.lang.String uuid,
 		OrderByComparator<Phone> orderByComparator)
@@ -204,7 +204,7 @@ public class PhoneUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching phone
-	* @throws NoSuchPhoneException if a matching phone could not be found
+	* @throws com.liferay.portal.exception.NoSuchPhoneException if a matching phone could not be found
 	*/
 	public static Phone findByUuid_Last(java.lang.String uuid,
 		OrderByComparator<Phone> orderByComparator)
@@ -231,7 +231,7 @@ public class PhoneUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next phone
-	* @throws NoSuchPhoneException if a phone with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPhoneException if a phone with the primary key could not be found
 	*/
 	public static Phone[] findByUuid_PrevAndNext(long phoneId,
 		java.lang.String uuid, OrderByComparator<Phone> orderByComparator)
@@ -339,7 +339,7 @@ public class PhoneUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching phone
-	* @throws NoSuchPhoneException if a matching phone could not be found
+	* @throws com.liferay.portal.exception.NoSuchPhoneException if a matching phone could not be found
 	*/
 	public static Phone findByUuid_C_First(java.lang.String uuid,
 		long companyId, OrderByComparator<Phone> orderByComparator)
@@ -369,7 +369,7 @@ public class PhoneUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching phone
-	* @throws NoSuchPhoneException if a matching phone could not be found
+	* @throws com.liferay.portal.exception.NoSuchPhoneException if a matching phone could not be found
 	*/
 	public static Phone findByUuid_C_Last(java.lang.String uuid,
 		long companyId, OrderByComparator<Phone> orderByComparator)
@@ -400,7 +400,7 @@ public class PhoneUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next phone
-	* @throws NoSuchPhoneException if a phone with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPhoneException if a phone with the primary key could not be found
 	*/
 	public static Phone[] findByUuid_C_PrevAndNext(long phoneId,
 		java.lang.String uuid, long companyId,
@@ -505,7 +505,7 @@ public class PhoneUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching phone
-	* @throws NoSuchPhoneException if a matching phone could not be found
+	* @throws com.liferay.portal.exception.NoSuchPhoneException if a matching phone could not be found
 	*/
 	public static Phone findByCompanyId_First(long companyId,
 		OrderByComparator<Phone> orderByComparator)
@@ -533,7 +533,7 @@ public class PhoneUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching phone
-	* @throws NoSuchPhoneException if a matching phone could not be found
+	* @throws com.liferay.portal.exception.NoSuchPhoneException if a matching phone could not be found
 	*/
 	public static Phone findByCompanyId_Last(long companyId,
 		OrderByComparator<Phone> orderByComparator)
@@ -562,7 +562,7 @@ public class PhoneUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next phone
-	* @throws NoSuchPhoneException if a phone with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPhoneException if a phone with the primary key could not be found
 	*/
 	public static Phone[] findByCompanyId_PrevAndNext(long phoneId,
 		long companyId, OrderByComparator<Phone> orderByComparator)
@@ -663,7 +663,7 @@ public class PhoneUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching phone
-	* @throws NoSuchPhoneException if a matching phone could not be found
+	* @throws com.liferay.portal.exception.NoSuchPhoneException if a matching phone could not be found
 	*/
 	public static Phone findByUserId_First(long userId,
 		OrderByComparator<Phone> orderByComparator)
@@ -689,7 +689,7 @@ public class PhoneUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching phone
-	* @throws NoSuchPhoneException if a matching phone could not be found
+	* @throws com.liferay.portal.exception.NoSuchPhoneException if a matching phone could not be found
 	*/
 	public static Phone findByUserId_Last(long userId,
 		OrderByComparator<Phone> orderByComparator)
@@ -716,7 +716,7 @@ public class PhoneUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next phone
-	* @throws NoSuchPhoneException if a phone with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPhoneException if a phone with the primary key could not be found
 	*/
 	public static Phone[] findByUserId_PrevAndNext(long phoneId, long userId,
 		OrderByComparator<Phone> orderByComparator)
@@ -824,7 +824,7 @@ public class PhoneUtil {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching phone
-	* @throws NoSuchPhoneException if a matching phone could not be found
+	* @throws com.liferay.portal.exception.NoSuchPhoneException if a matching phone could not be found
 	*/
 	public static Phone findByC_C_First(long companyId, long classNameId,
 		OrderByComparator<Phone> orderByComparator)
@@ -854,7 +854,7 @@ public class PhoneUtil {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching phone
-	* @throws NoSuchPhoneException if a matching phone could not be found
+	* @throws com.liferay.portal.exception.NoSuchPhoneException if a matching phone could not be found
 	*/
 	public static Phone findByC_C_Last(long companyId, long classNameId,
 		OrderByComparator<Phone> orderByComparator)
@@ -885,7 +885,7 @@ public class PhoneUtil {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next phone
-	* @throws NoSuchPhoneException if a phone with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPhoneException if a phone with the primary key could not be found
 	*/
 	public static Phone[] findByC_C_PrevAndNext(long phoneId, long companyId,
 		long classNameId, OrderByComparator<Phone> orderByComparator)
@@ -1004,7 +1004,7 @@ public class PhoneUtil {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching phone
-	* @throws NoSuchPhoneException if a matching phone could not be found
+	* @throws com.liferay.portal.exception.NoSuchPhoneException if a matching phone could not be found
 	*/
 	public static Phone findByC_C_C_First(long companyId, long classNameId,
 		long classPK, OrderByComparator<Phone> orderByComparator)
@@ -1038,7 +1038,7 @@ public class PhoneUtil {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching phone
-	* @throws NoSuchPhoneException if a matching phone could not be found
+	* @throws com.liferay.portal.exception.NoSuchPhoneException if a matching phone could not be found
 	*/
 	public static Phone findByC_C_C_Last(long companyId, long classNameId,
 		long classPK, OrderByComparator<Phone> orderByComparator)
@@ -1073,7 +1073,7 @@ public class PhoneUtil {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next phone
-	* @throws NoSuchPhoneException if a phone with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPhoneException if a phone with the primary key could not be found
 	*/
 	public static Phone[] findByC_C_C_PrevAndNext(long phoneId, long companyId,
 		long classNameId, long classPK,
@@ -1204,7 +1204,7 @@ public class PhoneUtil {
 	* @param primary the primary
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching phone
-	* @throws NoSuchPhoneException if a matching phone could not be found
+	* @throws com.liferay.portal.exception.NoSuchPhoneException if a matching phone could not be found
 	*/
 	public static Phone findByC_C_C_P_First(long companyId, long classNameId,
 		long classPK, boolean primary,
@@ -1242,7 +1242,7 @@ public class PhoneUtil {
 	* @param primary the primary
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching phone
-	* @throws NoSuchPhoneException if a matching phone could not be found
+	* @throws com.liferay.portal.exception.NoSuchPhoneException if a matching phone could not be found
 	*/
 	public static Phone findByC_C_C_P_Last(long companyId, long classNameId,
 		long classPK, boolean primary,
@@ -1281,7 +1281,7 @@ public class PhoneUtil {
 	* @param primary the primary
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next phone
-	* @throws NoSuchPhoneException if a phone with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPhoneException if a phone with the primary key could not be found
 	*/
 	public static Phone[] findByC_C_C_P_PrevAndNext(long phoneId,
 		long companyId, long classNameId, long classPK, boolean primary,
@@ -1354,7 +1354,7 @@ public class PhoneUtil {
 	*
 	* @param phoneId the primary key of the phone
 	* @return the phone that was removed
-	* @throws NoSuchPhoneException if a phone with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPhoneException if a phone with the primary key could not be found
 	*/
 	public static Phone remove(long phoneId)
 		throws com.liferay.portal.exception.NoSuchPhoneException {
@@ -1366,11 +1366,11 @@ public class PhoneUtil {
 	}
 
 	/**
-	* Returns the phone with the primary key or throws a {@link NoSuchPhoneException} if it could not be found.
+	* Returns the phone with the primary key or throws a {@link com.liferay.portal.exception.NoSuchPhoneException} if it could not be found.
 	*
 	* @param phoneId the primary key of the phone
 	* @return the phone
-	* @throws NoSuchPhoneException if a phone with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPhoneException if a phone with the primary key could not be found
 	*/
 	public static Phone findByPrimaryKey(long phoneId)
 		throws com.liferay.portal.exception.NoSuchPhoneException {

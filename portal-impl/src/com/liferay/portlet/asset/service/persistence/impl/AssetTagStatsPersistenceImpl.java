@@ -36,7 +36,6 @@ import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
-import com.liferay.portlet.asset.exception.NoSuchTagStatsException;
 import com.liferay.portlet.asset.model.AssetTagStats;
 import com.liferay.portlet.asset.model.impl.AssetTagStatsImpl;
 import com.liferay.portlet.asset.model.impl.AssetTagStatsModelImpl;
@@ -279,12 +278,12 @@ public class AssetTagStatsPersistenceImpl extends BasePersistenceImpl<AssetTagSt
 	 * @param tagId the tag ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching asset tag stats
-	 * @throws NoSuchTagStatsException if a matching asset tag stats could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchTagStatsException if a matching asset tag stats could not be found
 	 */
 	@Override
 	public AssetTagStats findByTagId_First(long tagId,
 		OrderByComparator<AssetTagStats> orderByComparator)
-		throws NoSuchTagStatsException {
+		throws com.liferay.portlet.asset.exception.NoSuchTagStatsException {
 		AssetTagStats assetTagStats = fetchByTagId_First(tagId,
 				orderByComparator);
 
@@ -301,7 +300,7 @@ public class AssetTagStatsPersistenceImpl extends BasePersistenceImpl<AssetTagSt
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchTagStatsException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchTagStatsException(msg.toString());
 	}
 
 	/**
@@ -329,12 +328,12 @@ public class AssetTagStatsPersistenceImpl extends BasePersistenceImpl<AssetTagSt
 	 * @param tagId the tag ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching asset tag stats
-	 * @throws NoSuchTagStatsException if a matching asset tag stats could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchTagStatsException if a matching asset tag stats could not be found
 	 */
 	@Override
 	public AssetTagStats findByTagId_Last(long tagId,
 		OrderByComparator<AssetTagStats> orderByComparator)
-		throws NoSuchTagStatsException {
+		throws com.liferay.portlet.asset.exception.NoSuchTagStatsException {
 		AssetTagStats assetTagStats = fetchByTagId_Last(tagId, orderByComparator);
 
 		if (assetTagStats != null) {
@@ -350,7 +349,7 @@ public class AssetTagStatsPersistenceImpl extends BasePersistenceImpl<AssetTagSt
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchTagStatsException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchTagStatsException(msg.toString());
 	}
 
 	/**
@@ -386,12 +385,12 @@ public class AssetTagStatsPersistenceImpl extends BasePersistenceImpl<AssetTagSt
 	 * @param tagId the tag ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset tag stats
-	 * @throws NoSuchTagStatsException if a asset tag stats with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchTagStatsException if a asset tag stats with the primary key could not be found
 	 */
 	@Override
 	public AssetTagStats[] findByTagId_PrevAndNext(long tagStatsId, long tagId,
 		OrderByComparator<AssetTagStats> orderByComparator)
-		throws NoSuchTagStatsException {
+		throws com.liferay.portlet.asset.exception.NoSuchTagStatsException {
 		AssetTagStats assetTagStats = findByPrimaryKey(tagStatsId);
 
 		Session session = null;
@@ -786,12 +785,12 @@ public class AssetTagStatsPersistenceImpl extends BasePersistenceImpl<AssetTagSt
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching asset tag stats
-	 * @throws NoSuchTagStatsException if a matching asset tag stats could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchTagStatsException if a matching asset tag stats could not be found
 	 */
 	@Override
 	public AssetTagStats findByClassNameId_First(long classNameId,
 		OrderByComparator<AssetTagStats> orderByComparator)
-		throws NoSuchTagStatsException {
+		throws com.liferay.portlet.asset.exception.NoSuchTagStatsException {
 		AssetTagStats assetTagStats = fetchByClassNameId_First(classNameId,
 				orderByComparator);
 
@@ -808,7 +807,7 @@ public class AssetTagStatsPersistenceImpl extends BasePersistenceImpl<AssetTagSt
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchTagStatsException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchTagStatsException(msg.toString());
 	}
 
 	/**
@@ -837,12 +836,12 @@ public class AssetTagStatsPersistenceImpl extends BasePersistenceImpl<AssetTagSt
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching asset tag stats
-	 * @throws NoSuchTagStatsException if a matching asset tag stats could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchTagStatsException if a matching asset tag stats could not be found
 	 */
 	@Override
 	public AssetTagStats findByClassNameId_Last(long classNameId,
 		OrderByComparator<AssetTagStats> orderByComparator)
-		throws NoSuchTagStatsException {
+		throws com.liferay.portlet.asset.exception.NoSuchTagStatsException {
 		AssetTagStats assetTagStats = fetchByClassNameId_Last(classNameId,
 				orderByComparator);
 
@@ -859,7 +858,7 @@ public class AssetTagStatsPersistenceImpl extends BasePersistenceImpl<AssetTagSt
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchTagStatsException(msg.toString());
+		throw new com.liferay.portlet.asset.exception.NoSuchTagStatsException(msg.toString());
 	}
 
 	/**
@@ -895,12 +894,12 @@ public class AssetTagStatsPersistenceImpl extends BasePersistenceImpl<AssetTagSt
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next asset tag stats
-	 * @throws NoSuchTagStatsException if a asset tag stats with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchTagStatsException if a asset tag stats with the primary key could not be found
 	 */
 	@Override
 	public AssetTagStats[] findByClassNameId_PrevAndNext(long tagStatsId,
 		long classNameId, OrderByComparator<AssetTagStats> orderByComparator)
-		throws NoSuchTagStatsException {
+		throws com.liferay.portlet.asset.exception.NoSuchTagStatsException {
 		AssetTagStats assetTagStats = findByPrimaryKey(tagStatsId);
 
 		Session session = null;
@@ -1111,16 +1110,16 @@ public class AssetTagStatsPersistenceImpl extends BasePersistenceImpl<AssetTagSt
 			new String[] { Long.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the asset tag stats where tagId = &#63; and classNameId = &#63; or throws a {@link NoSuchTagStatsException} if it could not be found.
+	 * Returns the asset tag stats where tagId = &#63; and classNameId = &#63; or throws a {@link com.liferay.portlet.asset.exception.NoSuchTagStatsException} if it could not be found.
 	 *
 	 * @param tagId the tag ID
 	 * @param classNameId the class name ID
 	 * @return the matching asset tag stats
-	 * @throws NoSuchTagStatsException if a matching asset tag stats could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchTagStatsException if a matching asset tag stats could not be found
 	 */
 	@Override
 	public AssetTagStats findByT_C(long tagId, long classNameId)
-		throws NoSuchTagStatsException {
+		throws com.liferay.portlet.asset.exception.NoSuchTagStatsException {
 		AssetTagStats assetTagStats = fetchByT_C(tagId, classNameId);
 
 		if (assetTagStats == null) {
@@ -1140,7 +1139,7 @@ public class AssetTagStatsPersistenceImpl extends BasePersistenceImpl<AssetTagSt
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchTagStatsException(msg.toString());
+			throw new com.liferay.portlet.asset.exception.NoSuchTagStatsException(msg.toString());
 		}
 
 		return assetTagStats;
@@ -1258,7 +1257,7 @@ public class AssetTagStatsPersistenceImpl extends BasePersistenceImpl<AssetTagSt
 	 */
 	@Override
 	public AssetTagStats removeByT_C(long tagId, long classNameId)
-		throws NoSuchTagStatsException {
+		throws com.liferay.portlet.asset.exception.NoSuchTagStatsException {
 		AssetTagStats assetTagStats = findByT_C(tagId, classNameId);
 
 		return remove(assetTagStats);
@@ -1486,10 +1485,11 @@ public class AssetTagStatsPersistenceImpl extends BasePersistenceImpl<AssetTagSt
 	 *
 	 * @param tagStatsId the primary key of the asset tag stats
 	 * @return the asset tag stats that was removed
-	 * @throws NoSuchTagStatsException if a asset tag stats with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchTagStatsException if a asset tag stats with the primary key could not be found
 	 */
 	@Override
-	public AssetTagStats remove(long tagStatsId) throws NoSuchTagStatsException {
+	public AssetTagStats remove(long tagStatsId)
+		throws com.liferay.portlet.asset.exception.NoSuchTagStatsException {
 		return remove((Serializable)tagStatsId);
 	}
 
@@ -1498,11 +1498,11 @@ public class AssetTagStatsPersistenceImpl extends BasePersistenceImpl<AssetTagSt
 	 *
 	 * @param primaryKey the primary key of the asset tag stats
 	 * @return the asset tag stats that was removed
-	 * @throws NoSuchTagStatsException if a asset tag stats with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchTagStatsException if a asset tag stats with the primary key could not be found
 	 */
 	@Override
 	public AssetTagStats remove(Serializable primaryKey)
-		throws NoSuchTagStatsException {
+		throws com.liferay.portlet.asset.exception.NoSuchTagStatsException {
 		Session session = null;
 
 		try {
@@ -1516,13 +1516,13 @@ public class AssetTagStatsPersistenceImpl extends BasePersistenceImpl<AssetTagSt
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchTagStatsException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portlet.asset.exception.NoSuchTagStatsException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(assetTagStats);
 		}
-		catch (NoSuchTagStatsException nsee) {
+		catch (com.liferay.portlet.asset.exception.NoSuchTagStatsException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -1672,11 +1672,11 @@ public class AssetTagStatsPersistenceImpl extends BasePersistenceImpl<AssetTagSt
 	 *
 	 * @param primaryKey the primary key of the asset tag stats
 	 * @return the asset tag stats
-	 * @throws NoSuchTagStatsException if a asset tag stats with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchTagStatsException if a asset tag stats with the primary key could not be found
 	 */
 	@Override
 	public AssetTagStats findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchTagStatsException {
+		throws com.liferay.portlet.asset.exception.NoSuchTagStatsException {
 		AssetTagStats assetTagStats = fetchByPrimaryKey(primaryKey);
 
 		if (assetTagStats == null) {
@@ -1684,7 +1684,7 @@ public class AssetTagStatsPersistenceImpl extends BasePersistenceImpl<AssetTagSt
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchTagStatsException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portlet.asset.exception.NoSuchTagStatsException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -1692,15 +1692,15 @@ public class AssetTagStatsPersistenceImpl extends BasePersistenceImpl<AssetTagSt
 	}
 
 	/**
-	 * Returns the asset tag stats with the primary key or throws a {@link NoSuchTagStatsException} if it could not be found.
+	 * Returns the asset tag stats with the primary key or throws a {@link com.liferay.portlet.asset.exception.NoSuchTagStatsException} if it could not be found.
 	 *
 	 * @param tagStatsId the primary key of the asset tag stats
 	 * @return the asset tag stats
-	 * @throws NoSuchTagStatsException if a asset tag stats with the primary key could not be found
+	 * @throws com.liferay.portlet.asset.exception.NoSuchTagStatsException if a asset tag stats with the primary key could not be found
 	 */
 	@Override
 	public AssetTagStats findByPrimaryKey(long tagStatsId)
-		throws NoSuchTagStatsException {
+		throws com.liferay.portlet.asset.exception.NoSuchTagStatsException {
 		return findByPrimaryKey((Serializable)tagStatsId);
 	}
 

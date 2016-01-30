@@ -180,7 +180,7 @@ public class ContactUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching contact
-	* @throws NoSuchContactException if a matching contact could not be found
+	* @throws com.liferay.portal.exception.NoSuchContactException if a matching contact could not be found
 	*/
 	public static Contact findByCompanyId_First(long companyId,
 		OrderByComparator<Contact> orderByComparator)
@@ -208,7 +208,7 @@ public class ContactUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching contact
-	* @throws NoSuchContactException if a matching contact could not be found
+	* @throws com.liferay.portal.exception.NoSuchContactException if a matching contact could not be found
 	*/
 	public static Contact findByCompanyId_Last(long companyId,
 		OrderByComparator<Contact> orderByComparator)
@@ -237,7 +237,7 @@ public class ContactUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next contact
-	* @throws NoSuchContactException if a contact with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchContactException if a contact with the primary key could not be found
 	*/
 	public static Contact[] findByCompanyId_PrevAndNext(long contactId,
 		long companyId, OrderByComparator<Contact> orderByComparator)
@@ -340,7 +340,7 @@ public class ContactUtil {
 	* @param accountId the account ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching contact
-	* @throws NoSuchContactException if a matching contact could not be found
+	* @throws com.liferay.portal.exception.NoSuchContactException if a matching contact could not be found
 	*/
 	public static Contact findByAccountId_First(long accountId,
 		OrderByComparator<Contact> orderByComparator)
@@ -368,7 +368,7 @@ public class ContactUtil {
 	* @param accountId the account ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching contact
-	* @throws NoSuchContactException if a matching contact could not be found
+	* @throws com.liferay.portal.exception.NoSuchContactException if a matching contact could not be found
 	*/
 	public static Contact findByAccountId_Last(long accountId,
 		OrderByComparator<Contact> orderByComparator)
@@ -397,7 +397,7 @@ public class ContactUtil {
 	* @param accountId the account ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next contact
-	* @throws NoSuchContactException if a contact with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchContactException if a contact with the primary key could not be found
 	*/
 	public static Contact[] findByAccountId_PrevAndNext(long contactId,
 		long accountId, OrderByComparator<Contact> orderByComparator)
@@ -506,7 +506,7 @@ public class ContactUtil {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching contact
-	* @throws NoSuchContactException if a matching contact could not be found
+	* @throws com.liferay.portal.exception.NoSuchContactException if a matching contact could not be found
 	*/
 	public static Contact findByC_C_First(long classNameId, long classPK,
 		OrderByComparator<Contact> orderByComparator)
@@ -536,7 +536,7 @@ public class ContactUtil {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching contact
-	* @throws NoSuchContactException if a matching contact could not be found
+	* @throws com.liferay.portal.exception.NoSuchContactException if a matching contact could not be found
 	*/
 	public static Contact findByC_C_Last(long classNameId, long classPK,
 		OrderByComparator<Contact> orderByComparator)
@@ -567,7 +567,7 @@ public class ContactUtil {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next contact
-	* @throws NoSuchContactException if a contact with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchContactException if a contact with the primary key could not be found
 	*/
 	public static Contact[] findByC_C_PrevAndNext(long contactId,
 		long classNameId, long classPK,
@@ -632,7 +632,7 @@ public class ContactUtil {
 	*
 	* @param contactId the primary key of the contact
 	* @return the contact that was removed
-	* @throws NoSuchContactException if a contact with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchContactException if a contact with the primary key could not be found
 	*/
 	public static Contact remove(long contactId)
 		throws com.liferay.portal.exception.NoSuchContactException {
@@ -644,11 +644,11 @@ public class ContactUtil {
 	}
 
 	/**
-	* Returns the contact with the primary key or throws a {@link NoSuchContactException} if it could not be found.
+	* Returns the contact with the primary key or throws a {@link com.liferay.portal.exception.NoSuchContactException} if it could not be found.
 	*
 	* @param contactId the primary key of the contact
 	* @return the contact
-	* @throws NoSuchContactException if a contact with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchContactException if a contact with the primary key could not be found
 	*/
 	public static Contact findByPrimaryKey(long contactId)
 		throws com.liferay.portal.exception.NoSuchContactException {

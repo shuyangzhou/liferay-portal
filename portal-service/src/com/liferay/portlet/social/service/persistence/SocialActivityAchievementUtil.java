@@ -188,7 +188,7 @@ public class SocialActivityAchievementUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching social activity achievement
-	* @throws NoSuchActivityAchievementException if a matching social activity achievement could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a matching social activity achievement could not be found
 	*/
 	public static SocialActivityAchievement findByGroupId_First(long groupId,
 		OrderByComparator<SocialActivityAchievement> orderByComparator)
@@ -214,7 +214,7 @@ public class SocialActivityAchievementUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching social activity achievement
-	* @throws NoSuchActivityAchievementException if a matching social activity achievement could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a matching social activity achievement could not be found
 	*/
 	public static SocialActivityAchievement findByGroupId_Last(long groupId,
 		OrderByComparator<SocialActivityAchievement> orderByComparator)
@@ -241,7 +241,7 @@ public class SocialActivityAchievementUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next social activity achievement
-	* @throws NoSuchActivityAchievementException if a social activity achievement with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a social activity achievement with the primary key could not be found
 	*/
 	public static SocialActivityAchievement[] findByGroupId_PrevAndNext(
 		long activityAchievementId, long groupId,
@@ -353,7 +353,7 @@ public class SocialActivityAchievementUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching social activity achievement
-	* @throws NoSuchActivityAchievementException if a matching social activity achievement could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a matching social activity achievement could not be found
 	*/
 	public static SocialActivityAchievement findByG_U_First(long groupId,
 		long userId,
@@ -385,7 +385,7 @@ public class SocialActivityAchievementUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching social activity achievement
-	* @throws NoSuchActivityAchievementException if a matching social activity achievement could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a matching social activity achievement could not be found
 	*/
 	public static SocialActivityAchievement findByG_U_Last(long groupId,
 		long userId,
@@ -418,7 +418,7 @@ public class SocialActivityAchievementUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next social activity achievement
-	* @throws NoSuchActivityAchievementException if a social activity achievement with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a social activity achievement with the primary key could not be found
 	*/
 	public static SocialActivityAchievement[] findByG_U_PrevAndNext(
 		long activityAchievementId, long groupId, long userId,
@@ -532,7 +532,7 @@ public class SocialActivityAchievementUtil {
 	* @param name the name
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching social activity achievement
-	* @throws NoSuchActivityAchievementException if a matching social activity achievement could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a matching social activity achievement could not be found
 	*/
 	public static SocialActivityAchievement findByG_N_First(long groupId,
 		java.lang.String name,
@@ -563,7 +563,7 @@ public class SocialActivityAchievementUtil {
 	* @param name the name
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching social activity achievement
-	* @throws NoSuchActivityAchievementException if a matching social activity achievement could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a matching social activity achievement could not be found
 	*/
 	public static SocialActivityAchievement findByG_N_Last(long groupId,
 		java.lang.String name,
@@ -594,7 +594,7 @@ public class SocialActivityAchievementUtil {
 	* @param name the name
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next social activity achievement
-	* @throws NoSuchActivityAchievementException if a social activity achievement with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a social activity achievement with the primary key could not be found
 	*/
 	public static SocialActivityAchievement[] findByG_N_PrevAndNext(
 		long activityAchievementId, long groupId, java.lang.String name,
@@ -709,7 +709,7 @@ public class SocialActivityAchievementUtil {
 	* @param firstInGroup the first in group
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching social activity achievement
-	* @throws NoSuchActivityAchievementException if a matching social activity achievement could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a matching social activity achievement could not be found
 	*/
 	public static SocialActivityAchievement findByG_F_First(long groupId,
 		boolean firstInGroup,
@@ -741,7 +741,7 @@ public class SocialActivityAchievementUtil {
 	* @param firstInGroup the first in group
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching social activity achievement
-	* @throws NoSuchActivityAchievementException if a matching social activity achievement could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a matching social activity achievement could not be found
 	*/
 	public static SocialActivityAchievement findByG_F_Last(long groupId,
 		boolean firstInGroup,
@@ -774,7 +774,7 @@ public class SocialActivityAchievementUtil {
 	* @param firstInGroup the first in group
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next social activity achievement
-	* @throws NoSuchActivityAchievementException if a social activity achievement with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a social activity achievement with the primary key could not be found
 	*/
 	public static SocialActivityAchievement[] findByG_F_PrevAndNext(
 		long activityAchievementId, long groupId, boolean firstInGroup,
@@ -807,13 +807,13 @@ public class SocialActivityAchievementUtil {
 	}
 
 	/**
-	* Returns the social activity achievement where groupId = &#63; and userId = &#63; and name = &#63; or throws a {@link NoSuchActivityAchievementException} if it could not be found.
+	* Returns the social activity achievement where groupId = &#63; and userId = &#63; and name = &#63; or throws a {@link com.liferay.portlet.social.exception.NoSuchActivityAchievementException} if it could not be found.
 	*
 	* @param groupId the group ID
 	* @param userId the user ID
 	* @param name the name
 	* @return the matching social activity achievement
-	* @throws NoSuchActivityAchievementException if a matching social activity achievement could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a matching social activity achievement could not be found
 	*/
 	public static SocialActivityAchievement findByG_U_N(long groupId,
 		long userId, java.lang.String name)
@@ -965,7 +965,7 @@ public class SocialActivityAchievementUtil {
 	* @param firstInGroup the first in group
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching social activity achievement
-	* @throws NoSuchActivityAchievementException if a matching social activity achievement could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a matching social activity achievement could not be found
 	*/
 	public static SocialActivityAchievement findByG_U_F_First(long groupId,
 		long userId, boolean firstInGroup,
@@ -1001,7 +1001,7 @@ public class SocialActivityAchievementUtil {
 	* @param firstInGroup the first in group
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching social activity achievement
-	* @throws NoSuchActivityAchievementException if a matching social activity achievement could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a matching social activity achievement could not be found
 	*/
 	public static SocialActivityAchievement findByG_U_F_Last(long groupId,
 		long userId, boolean firstInGroup,
@@ -1038,7 +1038,7 @@ public class SocialActivityAchievementUtil {
 	* @param firstInGroup the first in group
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next social activity achievement
-	* @throws NoSuchActivityAchievementException if a social activity achievement with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a social activity achievement with the primary key could not be found
 	*/
 	public static SocialActivityAchievement[] findByG_U_F_PrevAndNext(
 		long activityAchievementId, long groupId, long userId,
@@ -1110,7 +1110,7 @@ public class SocialActivityAchievementUtil {
 	*
 	* @param activityAchievementId the primary key of the social activity achievement
 	* @return the social activity achievement that was removed
-	* @throws NoSuchActivityAchievementException if a social activity achievement with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a social activity achievement with the primary key could not be found
 	*/
 	public static SocialActivityAchievement remove(long activityAchievementId)
 		throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException {
@@ -1123,11 +1123,11 @@ public class SocialActivityAchievementUtil {
 	}
 
 	/**
-	* Returns the social activity achievement with the primary key or throws a {@link NoSuchActivityAchievementException} if it could not be found.
+	* Returns the social activity achievement with the primary key or throws a {@link com.liferay.portlet.social.exception.NoSuchActivityAchievementException} if it could not be found.
 	*
 	* @param activityAchievementId the primary key of the social activity achievement
 	* @return the social activity achievement
-	* @throws NoSuchActivityAchievementException if a social activity achievement with the primary key could not be found
+	* @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a social activity achievement with the primary key could not be found
 	*/
 	public static SocialActivityAchievement findByPrimaryKey(
 		long activityAchievementId)

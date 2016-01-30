@@ -36,7 +36,6 @@ import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
-import com.liferay.portlet.trash.exception.NoSuchVersionException;
 import com.liferay.portlet.trash.model.TrashVersion;
 import com.liferay.portlet.trash.model.impl.TrashVersionImpl;
 import com.liferay.portlet.trash.model.impl.TrashVersionModelImpl;
@@ -276,12 +275,12 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 	 * @param entryId the entry ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching trash version
-	 * @throws NoSuchVersionException if a matching trash version could not be found
+	 * @throws com.liferay.portlet.trash.exception.NoSuchVersionException if a matching trash version could not be found
 	 */
 	@Override
 	public TrashVersion findByEntryId_First(long entryId,
 		OrderByComparator<TrashVersion> orderByComparator)
-		throws NoSuchVersionException {
+		throws com.liferay.portlet.trash.exception.NoSuchVersionException {
 		TrashVersion trashVersion = fetchByEntryId_First(entryId,
 				orderByComparator);
 
@@ -298,7 +297,7 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchVersionException(msg.toString());
+		throw new com.liferay.portlet.trash.exception.NoSuchVersionException(msg.toString());
 	}
 
 	/**
@@ -326,12 +325,12 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 	 * @param entryId the entry ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching trash version
-	 * @throws NoSuchVersionException if a matching trash version could not be found
+	 * @throws com.liferay.portlet.trash.exception.NoSuchVersionException if a matching trash version could not be found
 	 */
 	@Override
 	public TrashVersion findByEntryId_Last(long entryId,
 		OrderByComparator<TrashVersion> orderByComparator)
-		throws NoSuchVersionException {
+		throws com.liferay.portlet.trash.exception.NoSuchVersionException {
 		TrashVersion trashVersion = fetchByEntryId_Last(entryId,
 				orderByComparator);
 
@@ -348,7 +347,7 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchVersionException(msg.toString());
+		throw new com.liferay.portlet.trash.exception.NoSuchVersionException(msg.toString());
 	}
 
 	/**
@@ -384,12 +383,12 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 	 * @param entryId the entry ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next trash version
-	 * @throws NoSuchVersionException if a trash version with the primary key could not be found
+	 * @throws com.liferay.portlet.trash.exception.NoSuchVersionException if a trash version with the primary key could not be found
 	 */
 	@Override
 	public TrashVersion[] findByEntryId_PrevAndNext(long versionId,
 		long entryId, OrderByComparator<TrashVersion> orderByComparator)
-		throws NoSuchVersionException {
+		throws com.liferay.portlet.trash.exception.NoSuchVersionException {
 		TrashVersion trashVersion = findByPrimaryKey(versionId);
 
 		Session session = null;
@@ -795,12 +794,12 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching trash version
-	 * @throws NoSuchVersionException if a matching trash version could not be found
+	 * @throws com.liferay.portlet.trash.exception.NoSuchVersionException if a matching trash version could not be found
 	 */
 	@Override
 	public TrashVersion findByE_C_First(long entryId, long classNameId,
 		OrderByComparator<TrashVersion> orderByComparator)
-		throws NoSuchVersionException {
+		throws com.liferay.portlet.trash.exception.NoSuchVersionException {
 		TrashVersion trashVersion = fetchByE_C_First(entryId, classNameId,
 				orderByComparator);
 
@@ -820,7 +819,7 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchVersionException(msg.toString());
+		throw new com.liferay.portlet.trash.exception.NoSuchVersionException(msg.toString());
 	}
 
 	/**
@@ -851,12 +850,12 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching trash version
-	 * @throws NoSuchVersionException if a matching trash version could not be found
+	 * @throws com.liferay.portlet.trash.exception.NoSuchVersionException if a matching trash version could not be found
 	 */
 	@Override
 	public TrashVersion findByE_C_Last(long entryId, long classNameId,
 		OrderByComparator<TrashVersion> orderByComparator)
-		throws NoSuchVersionException {
+		throws com.liferay.portlet.trash.exception.NoSuchVersionException {
 		TrashVersion trashVersion = fetchByE_C_Last(entryId, classNameId,
 				orderByComparator);
 
@@ -876,7 +875,7 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchVersionException(msg.toString());
+		throw new com.liferay.portlet.trash.exception.NoSuchVersionException(msg.toString());
 	}
 
 	/**
@@ -914,12 +913,12 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next trash version
-	 * @throws NoSuchVersionException if a trash version with the primary key could not be found
+	 * @throws com.liferay.portlet.trash.exception.NoSuchVersionException if a trash version with the primary key could not be found
 	 */
 	@Override
 	public TrashVersion[] findByE_C_PrevAndNext(long versionId, long entryId,
 		long classNameId, OrderByComparator<TrashVersion> orderByComparator)
-		throws NoSuchVersionException {
+		throws com.liferay.portlet.trash.exception.NoSuchVersionException {
 		TrashVersion trashVersion = findByPrimaryKey(versionId);
 
 		Session session = null;
@@ -1141,16 +1140,16 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 			new String[] { Long.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the trash version where classNameId = &#63; and classPK = &#63; or throws a {@link NoSuchVersionException} if it could not be found.
+	 * Returns the trash version where classNameId = &#63; and classPK = &#63; or throws a {@link com.liferay.portlet.trash.exception.NoSuchVersionException} if it could not be found.
 	 *
 	 * @param classNameId the class name ID
 	 * @param classPK the class p k
 	 * @return the matching trash version
-	 * @throws NoSuchVersionException if a matching trash version could not be found
+	 * @throws com.liferay.portlet.trash.exception.NoSuchVersionException if a matching trash version could not be found
 	 */
 	@Override
 	public TrashVersion findByC_C(long classNameId, long classPK)
-		throws NoSuchVersionException {
+		throws com.liferay.portlet.trash.exception.NoSuchVersionException {
 		TrashVersion trashVersion = fetchByC_C(classNameId, classPK);
 
 		if (trashVersion == null) {
@@ -1170,7 +1169,7 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchVersionException(msg.toString());
+			throw new com.liferay.portlet.trash.exception.NoSuchVersionException(msg.toString());
 		}
 
 		return trashVersion;
@@ -1288,7 +1287,7 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 	 */
 	@Override
 	public TrashVersion removeByC_C(long classNameId, long classPK)
-		throws NoSuchVersionException {
+		throws com.liferay.portlet.trash.exception.NoSuchVersionException {
 		TrashVersion trashVersion = findByC_C(classNameId, classPK);
 
 		return remove(trashVersion);
@@ -1515,10 +1514,11 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 	 *
 	 * @param versionId the primary key of the trash version
 	 * @return the trash version that was removed
-	 * @throws NoSuchVersionException if a trash version with the primary key could not be found
+	 * @throws com.liferay.portlet.trash.exception.NoSuchVersionException if a trash version with the primary key could not be found
 	 */
 	@Override
-	public TrashVersion remove(long versionId) throws NoSuchVersionException {
+	public TrashVersion remove(long versionId)
+		throws com.liferay.portlet.trash.exception.NoSuchVersionException {
 		return remove((Serializable)versionId);
 	}
 
@@ -1527,11 +1527,11 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 	 *
 	 * @param primaryKey the primary key of the trash version
 	 * @return the trash version that was removed
-	 * @throws NoSuchVersionException if a trash version with the primary key could not be found
+	 * @throws com.liferay.portlet.trash.exception.NoSuchVersionException if a trash version with the primary key could not be found
 	 */
 	@Override
 	public TrashVersion remove(Serializable primaryKey)
-		throws NoSuchVersionException {
+		throws com.liferay.portlet.trash.exception.NoSuchVersionException {
 		Session session = null;
 
 		try {
@@ -1545,13 +1545,13 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchVersionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portlet.trash.exception.NoSuchVersionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(trashVersion);
 		}
-		catch (NoSuchVersionException nsee) {
+		catch (com.liferay.portlet.trash.exception.NoSuchVersionException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -1707,11 +1707,11 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 	 *
 	 * @param primaryKey the primary key of the trash version
 	 * @return the trash version
-	 * @throws NoSuchVersionException if a trash version with the primary key could not be found
+	 * @throws com.liferay.portlet.trash.exception.NoSuchVersionException if a trash version with the primary key could not be found
 	 */
 	@Override
 	public TrashVersion findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchVersionException {
+		throws com.liferay.portlet.trash.exception.NoSuchVersionException {
 		TrashVersion trashVersion = fetchByPrimaryKey(primaryKey);
 
 		if (trashVersion == null) {
@@ -1719,7 +1719,7 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchVersionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portlet.trash.exception.NoSuchVersionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -1727,15 +1727,15 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 	}
 
 	/**
-	 * Returns the trash version with the primary key or throws a {@link NoSuchVersionException} if it could not be found.
+	 * Returns the trash version with the primary key or throws a {@link com.liferay.portlet.trash.exception.NoSuchVersionException} if it could not be found.
 	 *
 	 * @param versionId the primary key of the trash version
 	 * @return the trash version
-	 * @throws NoSuchVersionException if a trash version with the primary key could not be found
+	 * @throws com.liferay.portlet.trash.exception.NoSuchVersionException if a trash version with the primary key could not be found
 	 */
 	@Override
 	public TrashVersion findByPrimaryKey(long versionId)
-		throws NoSuchVersionException {
+		throws com.liferay.portlet.trash.exception.NoSuchVersionException {
 		return findByPrimaryKey((Serializable)versionId);
 	}
 

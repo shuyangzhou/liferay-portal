@@ -105,7 +105,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library folder
-	* @throws NoSuchFolderException if a matching document library folder could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	*/
 	public DLFolder findByUuid_First(java.lang.String uuid,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFolder> orderByComparator)
@@ -127,7 +127,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library folder
-	* @throws NoSuchFolderException if a matching document library folder could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	*/
 	public DLFolder findByUuid_Last(java.lang.String uuid,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFolder> orderByComparator)
@@ -150,7 +150,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library folder
-	* @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	*/
 	public DLFolder[] findByUuid_PrevAndNext(long folderId,
 		java.lang.String uuid,
@@ -173,12 +173,12 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	public int countByUuid(java.lang.String uuid);
 
 	/**
-	* Returns the document library folder where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchFolderException} if it could not be found.
+	* Returns the document library folder where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchFolderException} if it could not be found.
 	*
 	* @param uuid the uuid
 	* @param groupId the group ID
 	* @return the matching document library folder
-	* @throws NoSuchFolderException if a matching document library folder could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	*/
 	public DLFolder findByUUID_G(java.lang.String uuid, long groupId)
 		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException;
@@ -293,7 +293,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library folder
-	* @throws NoSuchFolderException if a matching document library folder could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	*/
 	public DLFolder findByUuid_C_First(java.lang.String uuid, long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFolder> orderByComparator)
@@ -317,7 +317,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library folder
-	* @throws NoSuchFolderException if a matching document library folder could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	*/
 	public DLFolder findByUuid_C_Last(java.lang.String uuid, long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFolder> orderByComparator)
@@ -342,7 +342,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library folder
-	* @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	*/
 	public DLFolder[] findByUuid_C_PrevAndNext(long folderId,
 		java.lang.String uuid, long companyId,
@@ -431,7 +431,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library folder
-	* @throws NoSuchFolderException if a matching document library folder could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	*/
 	public DLFolder findByGroupId_First(long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFolder> orderByComparator)
@@ -453,7 +453,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library folder
-	* @throws NoSuchFolderException if a matching document library folder could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	*/
 	public DLFolder findByGroupId_Last(long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFolder> orderByComparator)
@@ -476,7 +476,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library folder
-	* @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	*/
 	public DLFolder[] findByGroupId_PrevAndNext(long folderId, long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFolder> orderByComparator)
@@ -529,7 +529,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library folder
-	* @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	*/
 	public DLFolder[] filterFindByGroupId_PrevAndNext(long folderId,
 		long groupId,
@@ -624,7 +624,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library folder
-	* @throws NoSuchFolderException if a matching document library folder could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	*/
 	public DLFolder findByCompanyId_First(long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFolder> orderByComparator)
@@ -646,7 +646,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library folder
-	* @throws NoSuchFolderException if a matching document library folder could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	*/
 	public DLFolder findByCompanyId_Last(long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFolder> orderByComparator)
@@ -669,7 +669,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library folder
-	* @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	*/
 	public DLFolder[] findByCompanyId_PrevAndNext(long folderId,
 		long companyId,
@@ -756,7 +756,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param repositoryId the repository ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library folder
-	* @throws NoSuchFolderException if a matching document library folder could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	*/
 	public DLFolder findByRepositoryId_First(long repositoryId,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFolder> orderByComparator)
@@ -778,7 +778,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param repositoryId the repository ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library folder
-	* @throws NoSuchFolderException if a matching document library folder could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	*/
 	public DLFolder findByRepositoryId_Last(long repositoryId,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFolder> orderByComparator)
@@ -801,7 +801,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param repositoryId the repository ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library folder
-	* @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	*/
 	public DLFolder[] findByRepositoryId_PrevAndNext(long folderId,
 		long repositoryId,
@@ -893,7 +893,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param parentFolderId the parent folder ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library folder
-	* @throws NoSuchFolderException if a matching document library folder could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	*/
 	public DLFolder findByG_P_First(long groupId, long parentFolderId,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFolder> orderByComparator)
@@ -917,7 +917,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param parentFolderId the parent folder ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library folder
-	* @throws NoSuchFolderException if a matching document library folder could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	*/
 	public DLFolder findByG_P_Last(long groupId, long parentFolderId,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFolder> orderByComparator)
@@ -942,7 +942,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param parentFolderId the parent folder ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library folder
-	* @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	*/
 	public DLFolder[] findByG_P_PrevAndNext(long folderId, long groupId,
 		long parentFolderId,
@@ -1001,7 +1001,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param parentFolderId the parent folder ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library folder
-	* @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	*/
 	public DLFolder[] filterFindByG_P_PrevAndNext(long folderId, long groupId,
 		long parentFolderId,
@@ -1104,7 +1104,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library folder
-	* @throws NoSuchFolderException if a matching document library folder could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	*/
 	public DLFolder findByC_NotS_First(long companyId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFolder> orderByComparator)
@@ -1128,7 +1128,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library folder
-	* @throws NoSuchFolderException if a matching document library folder could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	*/
 	public DLFolder findByC_NotS_Last(long companyId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFolder> orderByComparator)
@@ -1153,7 +1153,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library folder
-	* @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	*/
 	public DLFolder[] findByC_NotS_PrevAndNext(long folderId, long companyId,
 		int status,
@@ -1178,12 +1178,12 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	public int countByC_NotS(long companyId, int status);
 
 	/**
-	* Returns the document library folder where repositoryId = &#63; and mountPoint = &#63; or throws a {@link NoSuchFolderException} if it could not be found.
+	* Returns the document library folder where repositoryId = &#63; and mountPoint = &#63; or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchFolderException} if it could not be found.
 	*
 	* @param repositoryId the repository ID
 	* @param mountPoint the mount point
 	* @return the matching document library folder
-	* @throws NoSuchFolderException if a matching document library folder could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	*/
 	public DLFolder findByR_M(long repositoryId, boolean mountPoint)
 		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException;
@@ -1298,7 +1298,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param parentFolderId the parent folder ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library folder
-	* @throws NoSuchFolderException if a matching document library folder could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	*/
 	public DLFolder findByR_P_First(long repositoryId, long parentFolderId,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFolder> orderByComparator)
@@ -1322,7 +1322,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param parentFolderId the parent folder ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library folder
-	* @throws NoSuchFolderException if a matching document library folder could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	*/
 	public DLFolder findByR_P_Last(long repositoryId, long parentFolderId,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFolder> orderByComparator)
@@ -1347,7 +1347,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param parentFolderId the parent folder ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library folder
-	* @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	*/
 	public DLFolder[] findByR_P_PrevAndNext(long folderId, long repositoryId,
 		long parentFolderId,
@@ -1442,7 +1442,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param name the name
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library folder
-	* @throws NoSuchFolderException if a matching document library folder could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	*/
 	public DLFolder findByP_N_First(long parentFolderId, java.lang.String name,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFolder> orderByComparator)
@@ -1467,7 +1467,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param name the name
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library folder
-	* @throws NoSuchFolderException if a matching document library folder could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	*/
 	public DLFolder findByP_N_Last(long parentFolderId, java.lang.String name,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFolder> orderByComparator)
@@ -1492,7 +1492,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param name the name
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library folder
-	* @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	*/
 	public DLFolder[] findByP_N_PrevAndNext(long folderId, long parentFolderId,
 		java.lang.String name,
@@ -1592,7 +1592,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param parentFolderId the parent folder ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library folder
-	* @throws NoSuchFolderException if a matching document library folder could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	*/
 	public DLFolder findByG_M_P_First(long groupId, boolean mountPoint,
 		long parentFolderId,
@@ -1620,7 +1620,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param parentFolderId the parent folder ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library folder
-	* @throws NoSuchFolderException if a matching document library folder could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	*/
 	public DLFolder findByG_M_P_Last(long groupId, boolean mountPoint,
 		long parentFolderId,
@@ -1649,7 +1649,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param parentFolderId the parent folder ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library folder
-	* @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	*/
 	public DLFolder[] findByG_M_P_PrevAndNext(long folderId, long groupId,
 		boolean mountPoint, long parentFolderId,
@@ -1712,7 +1712,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param parentFolderId the parent folder ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library folder
-	* @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	*/
 	public DLFolder[] filterFindByG_M_P_PrevAndNext(long folderId,
 		long groupId, boolean mountPoint, long parentFolderId,
@@ -1752,13 +1752,13 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 		long parentFolderId);
 
 	/**
-	* Returns the document library folder where groupId = &#63; and parentFolderId = &#63; and name = &#63; or throws a {@link NoSuchFolderException} if it could not be found.
+	* Returns the document library folder where groupId = &#63; and parentFolderId = &#63; and name = &#63; or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchFolderException} if it could not be found.
 	*
 	* @param groupId the group ID
 	* @param parentFolderId the parent folder ID
 	* @param name the name
 	* @return the matching document library folder
-	* @throws NoSuchFolderException if a matching document library folder could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	*/
 	public DLFolder findByG_P_N(long groupId, long parentFolderId,
 		java.lang.String name)
@@ -1891,7 +1891,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library folder
-	* @throws NoSuchFolderException if a matching document library folder could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	*/
 	public DLFolder findByF_C_P_NotS_First(long folderId, long companyId,
 		long parentFolderId, int status,
@@ -1921,7 +1921,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library folder
-	* @throws NoSuchFolderException if a matching document library folder could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	*/
 	public DLFolder findByF_C_P_NotS_Last(long folderId, long companyId,
 		long parentFolderId, int status,
@@ -2049,7 +2049,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param hidden the hidden
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library folder
-	* @throws NoSuchFolderException if a matching document library folder could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	*/
 	public DLFolder findByG_M_P_H_First(long groupId, boolean mountPoint,
 		long parentFolderId, boolean hidden,
@@ -2079,7 +2079,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param hidden the hidden
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library folder
-	* @throws NoSuchFolderException if a matching document library folder could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	*/
 	public DLFolder findByG_M_P_H_Last(long groupId, boolean mountPoint,
 		long parentFolderId, boolean hidden,
@@ -2110,7 +2110,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param hidden the hidden
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library folder
-	* @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	*/
 	public DLFolder[] findByG_M_P_H_PrevAndNext(long folderId, long groupId,
 		boolean mountPoint, long parentFolderId, boolean hidden,
@@ -2179,7 +2179,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param hidden the hidden
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library folder
-	* @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	*/
 	public DLFolder[] filterFindByG_M_P_H_PrevAndNext(long folderId,
 		long groupId, boolean mountPoint, long parentFolderId, boolean hidden,
@@ -2305,7 +2305,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param hidden the hidden
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library folder
-	* @throws NoSuchFolderException if a matching document library folder could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	*/
 	public DLFolder findByG_M_T_H_First(long groupId, boolean mountPoint,
 		java.lang.String treePath, boolean hidden,
@@ -2335,7 +2335,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param hidden the hidden
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library folder
-	* @throws NoSuchFolderException if a matching document library folder could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	*/
 	public DLFolder findByG_M_T_H_Last(long groupId, boolean mountPoint,
 		java.lang.String treePath, boolean hidden,
@@ -2366,7 +2366,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param hidden the hidden
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library folder
-	* @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	*/
 	public DLFolder[] findByG_M_T_H_PrevAndNext(long folderId, long groupId,
 		boolean mountPoint, java.lang.String treePath, boolean hidden,
@@ -2435,7 +2435,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param hidden the hidden
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library folder
-	* @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	*/
 	public DLFolder[] filterFindByG_M_T_H_PrevAndNext(long folderId,
 		long groupId, boolean mountPoint, java.lang.String treePath,
@@ -2559,7 +2559,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library folder
-	* @throws NoSuchFolderException if a matching document library folder could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	*/
 	public DLFolder findByG_P_H_S_First(long groupId, long parentFolderId,
 		boolean hidden, int status,
@@ -2589,7 +2589,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library folder
-	* @throws NoSuchFolderException if a matching document library folder could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	*/
 	public DLFolder findByG_P_H_S_Last(long groupId, long parentFolderId,
 		boolean hidden, int status,
@@ -2620,7 +2620,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library folder
-	* @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	*/
 	public DLFolder[] findByG_P_H_S_PrevAndNext(long folderId, long groupId,
 		long parentFolderId, boolean hidden, int status,
@@ -2687,7 +2687,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library folder
-	* @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	*/
 	public DLFolder[] filterFindByG_P_H_S_PrevAndNext(long folderId,
 		long groupId, long parentFolderId, boolean hidden, int status,
@@ -2818,7 +2818,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library folder
-	* @throws NoSuchFolderException if a matching document library folder could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	*/
 	public DLFolder findByG_M_P_H_S_First(long groupId, boolean mountPoint,
 		long parentFolderId, boolean hidden, int status,
@@ -2850,7 +2850,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library folder
-	* @throws NoSuchFolderException if a matching document library folder could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	*/
 	public DLFolder findByG_M_P_H_S_Last(long groupId, boolean mountPoint,
 		long parentFolderId, boolean hidden, int status,
@@ -2883,7 +2883,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library folder
-	* @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	*/
 	public DLFolder[] findByG_M_P_H_S_PrevAndNext(long folderId, long groupId,
 		boolean mountPoint, long parentFolderId, boolean hidden, int status,
@@ -2956,7 +2956,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library folder
-	* @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	*/
 	public DLFolder[] filterFindByG_M_P_H_S_PrevAndNext(long folderId,
 		long groupId, boolean mountPoint, long parentFolderId, boolean hidden,
@@ -3029,7 +3029,7 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	*
 	* @param folderId the primary key of the document library folder
 	* @return the document library folder that was removed
-	* @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	*/
 	public DLFolder remove(long folderId)
 		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException;
@@ -3037,11 +3037,11 @@ public interface DLFolderPersistence extends BasePersistence<DLFolder> {
 	public DLFolder updateImpl(DLFolder dlFolder);
 
 	/**
-	* Returns the document library folder with the primary key or throws a {@link NoSuchFolderException} if it could not be found.
+	* Returns the document library folder with the primary key or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchFolderException} if it could not be found.
 	*
 	* @param folderId the primary key of the document library folder
 	* @return the document library folder
-	* @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	*/
 	public DLFolder findByPrimaryKey(long folderId)
 		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException;

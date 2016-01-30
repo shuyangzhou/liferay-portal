@@ -52,7 +52,6 @@ import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
-import com.liferay.portlet.messageboards.exception.NoSuchMessageException;
 import com.liferay.portlet.messageboards.model.MBMessage;
 import com.liferay.portlet.messageboards.model.impl.MBMessageImpl;
 import com.liferay.portlet.messageboards.model.impl.MBMessageModelImpl;
@@ -308,12 +307,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByUuid_First(String uuid,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByUuid_First(uuid, orderByComparator);
 
 		if (mbMessage != null) {
@@ -329,7 +328,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -357,12 +356,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByUuid_Last(String uuid,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByUuid_Last(uuid, orderByComparator);
 
 		if (mbMessage != null) {
@@ -378,7 +377,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -414,12 +413,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] findByUuid_PrevAndNext(long messageId, String uuid,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = findByPrimaryKey(messageId);
 
 		Session session = null;
@@ -660,16 +659,16 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 			new String[] { String.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the message-boards message where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchMessageException} if it could not be found.
+	 * Returns the message-boards message where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.portlet.messageboards.exception.NoSuchMessageException} if it could not be found.
 	 *
 	 * @param uuid the uuid
 	 * @param groupId the group ID
 	 * @return the matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByUUID_G(String uuid, long groupId)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByUUID_G(uuid, groupId);
 
 		if (mbMessage == null) {
@@ -689,7 +688,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchMessageException(msg.toString());
+			throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 		}
 
 		return mbMessage;
@@ -822,7 +821,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 */
 	@Override
 	public MBMessage removeByUUID_G(String uuid, long groupId)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = findByUUID_G(uuid, groupId);
 
 		return remove(mbMessage);
@@ -1124,12 +1123,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByUuid_C_First(String uuid, long companyId,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByUuid_C_First(uuid, companyId,
 				orderByComparator);
 
@@ -1149,7 +1148,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -1180,12 +1179,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByUuid_C_Last(String uuid, long companyId,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByUuid_C_Last(uuid, companyId,
 				orderByComparator);
 
@@ -1205,7 +1204,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -1243,12 +1242,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] findByUuid_C_PrevAndNext(long messageId, String uuid,
 		long companyId, OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = findByPrimaryKey(messageId);
 
 		Session session = null;
@@ -1679,12 +1678,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByGroupId_First(long groupId,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByGroupId_First(groupId, orderByComparator);
 
 		if (mbMessage != null) {
@@ -1700,7 +1699,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -1728,12 +1727,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByGroupId_Last(long groupId,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByGroupId_Last(groupId, orderByComparator);
 
 		if (mbMessage != null) {
@@ -1749,7 +1748,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -1785,12 +1784,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] findByGroupId_PrevAndNext(long messageId, long groupId,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = findByPrimaryKey(messageId);
 
 		Session session = null;
@@ -2054,12 +2053,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] filterFindByGroupId_PrevAndNext(long messageId,
 		long groupId, OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByGroupId_PrevAndNext(messageId, groupId,
 				orderByComparator);
@@ -2539,12 +2538,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByCompanyId_First(long companyId,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByCompanyId_First(companyId,
 				orderByComparator);
 
@@ -2561,7 +2560,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -2590,12 +2589,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByCompanyId_Last(long companyId,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByCompanyId_Last(companyId, orderByComparator);
 
 		if (mbMessage != null) {
@@ -2611,7 +2610,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -2647,12 +2646,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] findByCompanyId_PrevAndNext(long messageId,
 		long companyId, OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = findByPrimaryKey(messageId);
 
 		Session session = null;
@@ -3042,12 +3041,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByUserId_First(long userId,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByUserId_First(userId, orderByComparator);
 
 		if (mbMessage != null) {
@@ -3063,7 +3062,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -3091,12 +3090,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByUserId_Last(long userId,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByUserId_Last(userId, orderByComparator);
 
 		if (mbMessage != null) {
@@ -3112,7 +3111,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -3148,12 +3147,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] findByUserId_PrevAndNext(long messageId, long userId,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = findByPrimaryKey(messageId);
 
 		Session session = null;
@@ -3544,12 +3543,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param threadId the thread ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByThreadId_First(long threadId,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByThreadId_First(threadId, orderByComparator);
 
 		if (mbMessage != null) {
@@ -3565,7 +3564,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -3593,12 +3592,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param threadId the thread ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByThreadId_Last(long threadId,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByThreadId_Last(threadId, orderByComparator);
 
 		if (mbMessage != null) {
@@ -3614,7 +3613,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -3650,12 +3649,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param threadId the thread ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] findByThreadId_PrevAndNext(long messageId,
 		long threadId, OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = findByPrimaryKey(messageId);
 
 		Session session = null;
@@ -4047,12 +4046,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param threadId the thread ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByThreadReplies_First(long threadId,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByThreadReplies_First(threadId,
 				orderByComparator);
 
@@ -4069,7 +4068,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -4098,12 +4097,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param threadId the thread ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByThreadReplies_Last(long threadId,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByThreadReplies_Last(threadId,
 				orderByComparator);
 
@@ -4120,7 +4119,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -4156,12 +4155,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param threadId the thread ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] findByThreadReplies_PrevAndNext(long messageId,
 		long threadId, OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = findByPrimaryKey(messageId);
 
 		Session session = null;
@@ -4567,12 +4566,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByG_U_First(long groupId, long userId,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByG_U_First(groupId, userId,
 				orderByComparator);
 
@@ -4592,7 +4591,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -4623,12 +4622,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByG_U_Last(long groupId, long userId,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByG_U_Last(groupId, userId, orderByComparator);
 
 		if (mbMessage != null) {
@@ -4647,7 +4646,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -4685,12 +4684,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] findByG_U_PrevAndNext(long messageId, long groupId,
 		long userId, OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = findByPrimaryKey(messageId);
 
 		Session session = null;
@@ -4967,13 +4966,13 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] filterFindByG_U_PrevAndNext(long messageId,
 		long groupId, long userId,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_U_PrevAndNext(messageId, groupId, userId,
 				orderByComparator);
@@ -5484,12 +5483,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param categoryId the category ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByG_C_First(long groupId, long categoryId,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByG_C_First(groupId, categoryId,
 				orderByComparator);
 
@@ -5509,7 +5508,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -5540,12 +5539,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param categoryId the category ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByG_C_Last(long groupId, long categoryId,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByG_C_Last(groupId, categoryId,
 				orderByComparator);
 
@@ -5565,7 +5564,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -5603,12 +5602,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param categoryId the category ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] findByG_C_PrevAndNext(long messageId, long groupId,
 		long categoryId, OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = findByPrimaryKey(messageId);
 
 		Session session = null;
@@ -5885,13 +5884,13 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param categoryId the category ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] filterFindByG_C_PrevAndNext(long messageId,
 		long groupId, long categoryId,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_C_PrevAndNext(messageId, groupId, categoryId,
 				orderByComparator);
@@ -6401,12 +6400,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByG_S_First(long groupId, int status,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByG_S_First(groupId, status,
 				orderByComparator);
 
@@ -6426,7 +6425,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -6457,12 +6456,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByG_S_Last(long groupId, int status,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByG_S_Last(groupId, status, orderByComparator);
 
 		if (mbMessage != null) {
@@ -6481,7 +6480,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -6519,12 +6518,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] findByG_S_PrevAndNext(long messageId, long groupId,
 		int status, OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = findByPrimaryKey(messageId);
 
 		Session session = null;
@@ -6801,12 +6800,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] filterFindByG_S_PrevAndNext(long messageId,
 		long groupId, int status, OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_S_PrevAndNext(messageId, groupId, status,
 				orderByComparator);
@@ -7316,12 +7315,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByC_S_First(long companyId, int status,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByC_S_First(companyId, status,
 				orderByComparator);
 
@@ -7341,7 +7340,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -7372,12 +7371,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByC_S_Last(long companyId, int status,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByC_S_Last(companyId, status,
 				orderByComparator);
 
@@ -7397,7 +7396,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -7435,12 +7434,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] findByC_S_PrevAndNext(long messageId, long companyId,
 		int status, OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = findByPrimaryKey(messageId);
 
 		Session session = null;
@@ -7862,12 +7861,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByU_C_First(long userId, long classNameId,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByU_C_First(userId, classNameId,
 				orderByComparator);
 
@@ -7887,7 +7886,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -7918,12 +7917,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByU_C_Last(long userId, long classNameId,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByU_C_Last(userId, classNameId,
 				orderByComparator);
 
@@ -7943,7 +7942,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -7981,12 +7980,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] findByU_C_PrevAndNext(long messageId, long userId,
 		long classNameId, OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = findByPrimaryKey(messageId);
 
 		Session session = null;
@@ -8685,12 +8684,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByC_C_First(long classNameId, long classPK,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByC_C_First(classNameId, classPK,
 				orderByComparator);
 
@@ -8710,7 +8709,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -8741,12 +8740,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByC_C_Last(long classNameId, long classPK,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByC_C_Last(classNameId, classPK,
 				orderByComparator);
 
@@ -8766,7 +8765,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -8804,12 +8803,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] findByC_C_PrevAndNext(long messageId, long classNameId,
 		long classPK, OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = findByPrimaryKey(messageId);
 
 		Session session = null;
@@ -9227,12 +9226,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param parentMessageId the parent message ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByT_P_First(long threadId, long parentMessageId,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByT_P_First(threadId, parentMessageId,
 				orderByComparator);
 
@@ -9252,7 +9251,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -9283,12 +9282,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param parentMessageId the parent message ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByT_P_Last(long threadId, long parentMessageId,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByT_P_Last(threadId, parentMessageId,
 				orderByComparator);
 
@@ -9308,7 +9307,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -9346,12 +9345,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param parentMessageId the parent message ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] findByT_P_PrevAndNext(long messageId, long threadId,
 		long parentMessageId, OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = findByPrimaryKey(messageId);
 
 		Session session = null;
@@ -9768,12 +9767,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param answer the answer
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByT_A_First(long threadId, boolean answer,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByT_A_First(threadId, answer,
 				orderByComparator);
 
@@ -9793,7 +9792,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -9824,12 +9823,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param answer the answer
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByT_A_Last(long threadId, boolean answer,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByT_A_Last(threadId, answer,
 				orderByComparator);
 
@@ -9849,7 +9848,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -9887,12 +9886,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param answer the answer
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] findByT_A_PrevAndNext(long messageId, long threadId,
 		boolean answer, OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = findByPrimaryKey(messageId);
 
 		Session session = null;
@@ -10309,12 +10308,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByT_S_First(long threadId, int status,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByT_S_First(threadId, status,
 				orderByComparator);
 
@@ -10334,7 +10333,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -10365,12 +10364,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByT_S_Last(long threadId, int status,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByT_S_Last(threadId, status,
 				orderByComparator);
 
@@ -10390,7 +10389,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -10428,12 +10427,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] findByT_S_PrevAndNext(long messageId, long threadId,
 		int status, OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = findByPrimaryKey(messageId);
 
 		Session session = null;
@@ -10850,12 +10849,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByTR_S_First(long threadId, int status,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByTR_S_First(threadId, status,
 				orderByComparator);
 
@@ -10875,7 +10874,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -10906,12 +10905,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByTR_S_Last(long threadId, int status,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByTR_S_Last(threadId, status,
 				orderByComparator);
 
@@ -10931,7 +10930,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -10969,12 +10968,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] findByTR_S_PrevAndNext(long messageId, long threadId,
 		int status, OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = findByPrimaryKey(messageId);
 
 		Session session = null;
@@ -11410,12 +11409,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByG_U_S_First(long groupId, long userId, int status,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByG_U_S_First(groupId, userId, status,
 				orderByComparator);
 
@@ -11438,7 +11437,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -11471,12 +11470,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByG_U_S_Last(long groupId, long userId, int status,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByG_U_S_Last(groupId, userId, status,
 				orderByComparator);
 
@@ -11499,7 +11498,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -11539,12 +11538,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] findByG_U_S_PrevAndNext(long messageId, long groupId,
 		long userId, int status, OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = findByPrimaryKey(messageId);
 
 		Session session = null;
@@ -11836,13 +11835,13 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] filterFindByG_U_S_PrevAndNext(long messageId,
 		long groupId, long userId, int status,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_U_S_PrevAndNext(messageId, groupId, userId, status,
 				orderByComparator);
@@ -12387,12 +12386,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param threadId the thread ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByG_C_T_First(long groupId, long categoryId,
 		long threadId, OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByG_C_T_First(groupId, categoryId, threadId,
 				orderByComparator);
 
@@ -12415,7 +12414,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -12448,12 +12447,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param threadId the thread ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByG_C_T_Last(long groupId, long categoryId,
 		long threadId, OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByG_C_T_Last(groupId, categoryId, threadId,
 				orderByComparator);
 
@@ -12476,7 +12475,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -12516,13 +12515,13 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param threadId the thread ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] findByG_C_T_PrevAndNext(long messageId, long groupId,
 		long categoryId, long threadId,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = findByPrimaryKey(messageId);
 
 		Session session = null;
@@ -12814,13 +12813,13 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param threadId the thread ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] filterFindByG_C_T_PrevAndNext(long messageId,
 		long groupId, long categoryId, long threadId,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_C_T_PrevAndNext(messageId, groupId, categoryId,
 				threadId, orderByComparator);
@@ -13367,12 +13366,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByG_C_S_First(long groupId, long categoryId,
 		int status, OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByG_C_S_First(groupId, categoryId, status,
 				orderByComparator);
 
@@ -13395,7 +13394,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -13428,12 +13427,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByG_C_S_Last(long groupId, long categoryId,
 		int status, OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByG_C_S_Last(groupId, categoryId, status,
 				orderByComparator);
 
@@ -13456,7 +13455,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -13496,13 +13495,13 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] findByG_C_S_PrevAndNext(long messageId, long groupId,
 		long categoryId, int status,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = findByPrimaryKey(messageId);
 
 		Session session = null;
@@ -13794,13 +13793,13 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] filterFindByG_C_S_PrevAndNext(long messageId,
 		long groupId, long categoryId, int status,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_C_S_PrevAndNext(messageId, groupId, categoryId,
 				status, orderByComparator);
@@ -14345,12 +14344,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByU_C_C_First(long userId, long classNameId,
 		long classPK, OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByU_C_C_First(userId, classNameId, classPK,
 				orderByComparator);
 
@@ -14373,7 +14372,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -14406,12 +14405,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByU_C_C_Last(long userId, long classNameId,
 		long classPK, OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByU_C_C_Last(userId, classNameId, classPK,
 				orderByComparator);
 
@@ -14434,7 +14433,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -14474,13 +14473,13 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] findByU_C_C_PrevAndNext(long messageId, long userId,
 		long classNameId, long classPK,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = findByPrimaryKey(messageId);
 
 		Session session = null;
@@ -14936,12 +14935,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByU_C_S_First(long userId, long classNameId,
 		int status, OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByU_C_S_First(userId, classNameId, status,
 				orderByComparator);
 
@@ -14964,7 +14963,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -14997,12 +14996,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByU_C_S_Last(long userId, long classNameId,
 		int status, OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByU_C_S_Last(userId, classNameId, status,
 				orderByComparator);
 
@@ -15025,7 +15024,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -15065,13 +15064,13 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] findByU_C_S_PrevAndNext(long messageId, long userId,
 		long classNameId, int status,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = findByPrimaryKey(messageId);
 
 		Session session = null;
@@ -15825,12 +15824,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByC_C_S_First(long classNameId, long classPK,
 		int status, OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByC_C_S_First(classNameId, classPK, status,
 				orderByComparator);
 
@@ -15853,7 +15852,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -15886,12 +15885,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByC_C_S_Last(long classNameId, long classPK,
 		int status, OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByC_C_S_Last(classNameId, classPK, status,
 				orderByComparator);
 
@@ -15914,7 +15913,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -15954,13 +15953,13 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] findByC_C_S_PrevAndNext(long messageId,
 		long classNameId, long classPK, int status,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = findByPrimaryKey(messageId);
 
 		Session session = null;
@@ -16423,13 +16422,13 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param answer the answer
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByG_C_T_A_First(long groupId, long categoryId,
 		long threadId, boolean answer,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByG_C_T_A_First(groupId, categoryId,
 				threadId, answer, orderByComparator);
 
@@ -16455,7 +16454,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -16491,13 +16490,13 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param answer the answer
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByG_C_T_A_Last(long groupId, long categoryId,
 		long threadId, boolean answer,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByG_C_T_A_Last(groupId, categoryId,
 				threadId, answer, orderByComparator);
 
@@ -16523,7 +16522,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -16566,13 +16565,13 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param answer the answer
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] findByG_C_T_A_PrevAndNext(long messageId, long groupId,
 		long categoryId, long threadId, boolean answer,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = findByPrimaryKey(messageId);
 
 		Session session = null;
@@ -16878,13 +16877,13 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param answer the answer
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] filterFindByG_C_T_A_PrevAndNext(long messageId,
 		long groupId, long categoryId, long threadId, boolean answer,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_C_T_A_PrevAndNext(messageId, groupId, categoryId,
 				threadId, answer, orderByComparator);
@@ -17467,13 +17466,13 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByG_C_T_S_First(long groupId, long categoryId,
 		long threadId, int status,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByG_C_T_S_First(groupId, categoryId,
 				threadId, status, orderByComparator);
 
@@ -17499,7 +17498,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -17535,13 +17534,13 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByG_C_T_S_Last(long groupId, long categoryId,
 		long threadId, int status,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByG_C_T_S_Last(groupId, categoryId,
 				threadId, status, orderByComparator);
 
@@ -17567,7 +17566,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -17610,13 +17609,13 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] findByG_C_T_S_PrevAndNext(long messageId, long groupId,
 		long categoryId, long threadId, int status,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = findByPrimaryKey(messageId);
 
 		Session session = null;
@@ -17922,13 +17921,13 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] filterFindByG_C_T_S_PrevAndNext(long messageId,
 		long groupId, long categoryId, long threadId, int status,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_C_T_S_PrevAndNext(messageId, groupId, categoryId,
 				threadId, status, orderByComparator);
@@ -18511,12 +18510,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByU_C_C_S_First(long userId, long classNameId,
 		long classPK, int status, OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByU_C_C_S_First(userId, classNameId,
 				classPK, status, orderByComparator);
 
@@ -18542,7 +18541,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -18577,12 +18576,12 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching message-boards message
-	 * @throws NoSuchMessageException if a matching message-boards message could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a matching message-boards message could not be found
 	 */
 	@Override
 	public MBMessage findByU_C_C_S_Last(long userId, long classNameId,
 		long classPK, int status, OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByU_C_C_S_Last(userId, classNameId, classPK,
 				status, orderByComparator);
 
@@ -18608,7 +18607,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMessageException(msg.toString());
+		throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(msg.toString());
 	}
 
 	/**
@@ -18650,13 +18649,13 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage[] findByU_C_C_S_PrevAndNext(long messageId, long userId,
 		long classNameId, long classPK, int status,
 		OrderByComparator<MBMessage> orderByComparator)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = findByPrimaryKey(messageId);
 
 		Session session = null;
@@ -19055,10 +19054,11 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 *
 	 * @param messageId the primary key of the message-boards message
 	 * @return the message-boards message that was removed
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
-	public MBMessage remove(long messageId) throws NoSuchMessageException {
+	public MBMessage remove(long messageId)
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		return remove((Serializable)messageId);
 	}
 
@@ -19067,11 +19067,11 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 *
 	 * @param primaryKey the primary key of the message-boards message
 	 * @return the message-boards message that was removed
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage remove(Serializable primaryKey)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		Session session = null;
 
 		try {
@@ -19085,13 +19085,13 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchMessageException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(mbMessage);
 		}
-		catch (NoSuchMessageException nsee) {
+		catch (com.liferay.portlet.messageboards.exception.NoSuchMessageException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -19828,11 +19828,11 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	 *
 	 * @param primaryKey the primary key of the message-boards message
 	 * @return the message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		MBMessage mbMessage = fetchByPrimaryKey(primaryKey);
 
 		if (mbMessage == null) {
@@ -19840,7 +19840,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchMessageException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portlet.messageboards.exception.NoSuchMessageException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -19848,15 +19848,15 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	}
 
 	/**
-	 * Returns the message-boards message with the primary key or throws a {@link NoSuchMessageException} if it could not be found.
+	 * Returns the message-boards message with the primary key or throws a {@link com.liferay.portlet.messageboards.exception.NoSuchMessageException} if it could not be found.
 	 *
 	 * @param messageId the primary key of the message-boards message
 	 * @return the message-boards message
-	 * @throws NoSuchMessageException if a message-boards message with the primary key could not be found
+	 * @throws com.liferay.portlet.messageboards.exception.NoSuchMessageException if a message-boards message with the primary key could not be found
 	 */
 	@Override
 	public MBMessage findByPrimaryKey(long messageId)
-		throws NoSuchMessageException {
+		throws com.liferay.portlet.messageboards.exception.NoSuchMessageException {
 		return findByPrimaryKey((Serializable)messageId);
 	}
 

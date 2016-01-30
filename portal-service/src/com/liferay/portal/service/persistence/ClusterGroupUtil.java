@@ -141,7 +141,7 @@ public class ClusterGroupUtil {
 	*
 	* @param clusterGroupId the primary key of the cluster group
 	* @return the cluster group that was removed
-	* @throws NoSuchClusterGroupException if a cluster group with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchClusterGroupException if a cluster group with the primary key could not be found
 	*/
 	public static ClusterGroup remove(long clusterGroupId)
 		throws com.liferay.portal.exception.NoSuchClusterGroupException {
@@ -153,11 +153,11 @@ public class ClusterGroupUtil {
 	}
 
 	/**
-	* Returns the cluster group with the primary key or throws a {@link NoSuchClusterGroupException} if it could not be found.
+	* Returns the cluster group with the primary key or throws a {@link com.liferay.portal.exception.NoSuchClusterGroupException} if it could not be found.
 	*
 	* @param clusterGroupId the primary key of the cluster group
 	* @return the cluster group
-	* @throws NoSuchClusterGroupException if a cluster group with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchClusterGroupException if a cluster group with the primary key could not be found
 	*/
 	public static ClusterGroup findByPrimaryKey(long clusterGroupId)
 		throws com.liferay.portal.exception.NoSuchClusterGroupException {

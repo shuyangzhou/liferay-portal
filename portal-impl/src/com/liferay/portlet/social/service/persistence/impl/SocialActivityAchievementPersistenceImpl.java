@@ -37,7 +37,6 @@ import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
-import com.liferay.portlet.social.exception.NoSuchActivityAchievementException;
 import com.liferay.portlet.social.model.SocialActivityAchievement;
 import com.liferay.portlet.social.model.impl.SocialActivityAchievementImpl;
 import com.liferay.portlet.social.model.impl.SocialActivityAchievementModelImpl;
@@ -286,12 +285,12 @@ public class SocialActivityAchievementPersistenceImpl
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching social activity achievement
-	 * @throws NoSuchActivityAchievementException if a matching social activity achievement could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a matching social activity achievement could not be found
 	 */
 	@Override
 	public SocialActivityAchievement findByGroupId_First(long groupId,
 		OrderByComparator<SocialActivityAchievement> orderByComparator)
-		throws NoSuchActivityAchievementException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException {
 		SocialActivityAchievement socialActivityAchievement = fetchByGroupId_First(groupId,
 				orderByComparator);
 
@@ -308,7 +307,7 @@ public class SocialActivityAchievementPersistenceImpl
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityAchievementException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityAchievementException(msg.toString());
 	}
 
 	/**
@@ -337,12 +336,12 @@ public class SocialActivityAchievementPersistenceImpl
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching social activity achievement
-	 * @throws NoSuchActivityAchievementException if a matching social activity achievement could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a matching social activity achievement could not be found
 	 */
 	@Override
 	public SocialActivityAchievement findByGroupId_Last(long groupId,
 		OrderByComparator<SocialActivityAchievement> orderByComparator)
-		throws NoSuchActivityAchievementException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException {
 		SocialActivityAchievement socialActivityAchievement = fetchByGroupId_Last(groupId,
 				orderByComparator);
 
@@ -359,7 +358,7 @@ public class SocialActivityAchievementPersistenceImpl
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityAchievementException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityAchievementException(msg.toString());
 	}
 
 	/**
@@ -395,13 +394,13 @@ public class SocialActivityAchievementPersistenceImpl
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next social activity achievement
-	 * @throws NoSuchActivityAchievementException if a social activity achievement with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a social activity achievement with the primary key could not be found
 	 */
 	@Override
 	public SocialActivityAchievement[] findByGroupId_PrevAndNext(
 		long activityAchievementId, long groupId,
 		OrderByComparator<SocialActivityAchievement> orderByComparator)
-		throws NoSuchActivityAchievementException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException {
 		SocialActivityAchievement socialActivityAchievement = findByPrimaryKey(activityAchievementId);
 
 		Session session = null;
@@ -813,12 +812,12 @@ public class SocialActivityAchievementPersistenceImpl
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching social activity achievement
-	 * @throws NoSuchActivityAchievementException if a matching social activity achievement could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a matching social activity achievement could not be found
 	 */
 	@Override
 	public SocialActivityAchievement findByG_U_First(long groupId, long userId,
 		OrderByComparator<SocialActivityAchievement> orderByComparator)
-		throws NoSuchActivityAchievementException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException {
 		SocialActivityAchievement socialActivityAchievement = fetchByG_U_First(groupId,
 				userId, orderByComparator);
 
@@ -838,7 +837,7 @@ public class SocialActivityAchievementPersistenceImpl
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityAchievementException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityAchievementException(msg.toString());
 	}
 
 	/**
@@ -870,12 +869,12 @@ public class SocialActivityAchievementPersistenceImpl
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching social activity achievement
-	 * @throws NoSuchActivityAchievementException if a matching social activity achievement could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a matching social activity achievement could not be found
 	 */
 	@Override
 	public SocialActivityAchievement findByG_U_Last(long groupId, long userId,
 		OrderByComparator<SocialActivityAchievement> orderByComparator)
-		throws NoSuchActivityAchievementException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException {
 		SocialActivityAchievement socialActivityAchievement = fetchByG_U_Last(groupId,
 				userId, orderByComparator);
 
@@ -895,7 +894,7 @@ public class SocialActivityAchievementPersistenceImpl
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityAchievementException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityAchievementException(msg.toString());
 	}
 
 	/**
@@ -933,13 +932,13 @@ public class SocialActivityAchievementPersistenceImpl
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next social activity achievement
-	 * @throws NoSuchActivityAchievementException if a social activity achievement with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a social activity achievement with the primary key could not be found
 	 */
 	@Override
 	public SocialActivityAchievement[] findByG_U_PrevAndNext(
 		long activityAchievementId, long groupId, long userId,
 		OrderByComparator<SocialActivityAchievement> orderByComparator)
-		throws NoSuchActivityAchievementException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException {
 		SocialActivityAchievement socialActivityAchievement = findByPrimaryKey(activityAchievementId);
 
 		Session session = null;
@@ -1377,12 +1376,12 @@ public class SocialActivityAchievementPersistenceImpl
 	 * @param name the name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching social activity achievement
-	 * @throws NoSuchActivityAchievementException if a matching social activity achievement could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a matching social activity achievement could not be found
 	 */
 	@Override
 	public SocialActivityAchievement findByG_N_First(long groupId, String name,
 		OrderByComparator<SocialActivityAchievement> orderByComparator)
-		throws NoSuchActivityAchievementException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException {
 		SocialActivityAchievement socialActivityAchievement = fetchByG_N_First(groupId,
 				name, orderByComparator);
 
@@ -1402,7 +1401,7 @@ public class SocialActivityAchievementPersistenceImpl
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityAchievementException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityAchievementException(msg.toString());
 	}
 
 	/**
@@ -1434,12 +1433,12 @@ public class SocialActivityAchievementPersistenceImpl
 	 * @param name the name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching social activity achievement
-	 * @throws NoSuchActivityAchievementException if a matching social activity achievement could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a matching social activity achievement could not be found
 	 */
 	@Override
 	public SocialActivityAchievement findByG_N_Last(long groupId, String name,
 		OrderByComparator<SocialActivityAchievement> orderByComparator)
-		throws NoSuchActivityAchievementException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException {
 		SocialActivityAchievement socialActivityAchievement = fetchByG_N_Last(groupId,
 				name, orderByComparator);
 
@@ -1459,7 +1458,7 @@ public class SocialActivityAchievementPersistenceImpl
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityAchievementException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityAchievementException(msg.toString());
 	}
 
 	/**
@@ -1497,13 +1496,13 @@ public class SocialActivityAchievementPersistenceImpl
 	 * @param name the name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next social activity achievement
-	 * @throws NoSuchActivityAchievementException if a social activity achievement with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a social activity achievement with the primary key could not be found
 	 */
 	@Override
 	public SocialActivityAchievement[] findByG_N_PrevAndNext(
 		long activityAchievementId, long groupId, String name,
 		OrderByComparator<SocialActivityAchievement> orderByComparator)
-		throws NoSuchActivityAchievementException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException {
 		SocialActivityAchievement socialActivityAchievement = findByPrimaryKey(activityAchievementId);
 
 		Session session = null;
@@ -1958,13 +1957,13 @@ public class SocialActivityAchievementPersistenceImpl
 	 * @param firstInGroup the first in group
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching social activity achievement
-	 * @throws NoSuchActivityAchievementException if a matching social activity achievement could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a matching social activity achievement could not be found
 	 */
 	@Override
 	public SocialActivityAchievement findByG_F_First(long groupId,
 		boolean firstInGroup,
 		OrderByComparator<SocialActivityAchievement> orderByComparator)
-		throws NoSuchActivityAchievementException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException {
 		SocialActivityAchievement socialActivityAchievement = fetchByG_F_First(groupId,
 				firstInGroup, orderByComparator);
 
@@ -1984,7 +1983,7 @@ public class SocialActivityAchievementPersistenceImpl
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityAchievementException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityAchievementException(msg.toString());
 	}
 
 	/**
@@ -2016,13 +2015,13 @@ public class SocialActivityAchievementPersistenceImpl
 	 * @param firstInGroup the first in group
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching social activity achievement
-	 * @throws NoSuchActivityAchievementException if a matching social activity achievement could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a matching social activity achievement could not be found
 	 */
 	@Override
 	public SocialActivityAchievement findByG_F_Last(long groupId,
 		boolean firstInGroup,
 		OrderByComparator<SocialActivityAchievement> orderByComparator)
-		throws NoSuchActivityAchievementException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException {
 		SocialActivityAchievement socialActivityAchievement = fetchByG_F_Last(groupId,
 				firstInGroup, orderByComparator);
 
@@ -2042,7 +2041,7 @@ public class SocialActivityAchievementPersistenceImpl
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityAchievementException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityAchievementException(msg.toString());
 	}
 
 	/**
@@ -2081,13 +2080,13 @@ public class SocialActivityAchievementPersistenceImpl
 	 * @param firstInGroup the first in group
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next social activity achievement
-	 * @throws NoSuchActivityAchievementException if a social activity achievement with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a social activity achievement with the primary key could not be found
 	 */
 	@Override
 	public SocialActivityAchievement[] findByG_F_PrevAndNext(
 		long activityAchievementId, long groupId, boolean firstInGroup,
 		OrderByComparator<SocialActivityAchievement> orderByComparator)
-		throws NoSuchActivityAchievementException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException {
 		SocialActivityAchievement socialActivityAchievement = findByPrimaryKey(activityAchievementId);
 
 		Session session = null;
@@ -2321,17 +2320,18 @@ public class SocialActivityAchievementPersistenceImpl
 			});
 
 	/**
-	 * Returns the social activity achievement where groupId = &#63; and userId = &#63; and name = &#63; or throws a {@link NoSuchActivityAchievementException} if it could not be found.
+	 * Returns the social activity achievement where groupId = &#63; and userId = &#63; and name = &#63; or throws a {@link com.liferay.portlet.social.exception.NoSuchActivityAchievementException} if it could not be found.
 	 *
 	 * @param groupId the group ID
 	 * @param userId the user ID
 	 * @param name the name
 	 * @return the matching social activity achievement
-	 * @throws NoSuchActivityAchievementException if a matching social activity achievement could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a matching social activity achievement could not be found
 	 */
 	@Override
 	public SocialActivityAchievement findByG_U_N(long groupId, long userId,
-		String name) throws NoSuchActivityAchievementException {
+		String name)
+		throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException {
 		SocialActivityAchievement socialActivityAchievement = fetchByG_U_N(groupId,
 				userId, name);
 
@@ -2355,7 +2355,7 @@ public class SocialActivityAchievementPersistenceImpl
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchActivityAchievementException(msg.toString());
+			throw new com.liferay.portlet.social.exception.NoSuchActivityAchievementException(msg.toString());
 		}
 
 		return socialActivityAchievement;
@@ -2498,7 +2498,8 @@ public class SocialActivityAchievementPersistenceImpl
 	 */
 	@Override
 	public SocialActivityAchievement removeByG_U_N(long groupId, long userId,
-		String name) throws NoSuchActivityAchievementException {
+		String name)
+		throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException {
 		SocialActivityAchievement socialActivityAchievement = findByG_U_N(groupId,
 				userId, name);
 
@@ -2816,13 +2817,13 @@ public class SocialActivityAchievementPersistenceImpl
 	 * @param firstInGroup the first in group
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching social activity achievement
-	 * @throws NoSuchActivityAchievementException if a matching social activity achievement could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a matching social activity achievement could not be found
 	 */
 	@Override
 	public SocialActivityAchievement findByG_U_F_First(long groupId,
 		long userId, boolean firstInGroup,
 		OrderByComparator<SocialActivityAchievement> orderByComparator)
-		throws NoSuchActivityAchievementException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException {
 		SocialActivityAchievement socialActivityAchievement = fetchByG_U_F_First(groupId,
 				userId, firstInGroup, orderByComparator);
 
@@ -2845,7 +2846,7 @@ public class SocialActivityAchievementPersistenceImpl
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityAchievementException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityAchievementException(msg.toString());
 	}
 
 	/**
@@ -2879,13 +2880,13 @@ public class SocialActivityAchievementPersistenceImpl
 	 * @param firstInGroup the first in group
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching social activity achievement
-	 * @throws NoSuchActivityAchievementException if a matching social activity achievement could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a matching social activity achievement could not be found
 	 */
 	@Override
 	public SocialActivityAchievement findByG_U_F_Last(long groupId,
 		long userId, boolean firstInGroup,
 		OrderByComparator<SocialActivityAchievement> orderByComparator)
-		throws NoSuchActivityAchievementException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException {
 		SocialActivityAchievement socialActivityAchievement = fetchByG_U_F_Last(groupId,
 				userId, firstInGroup, orderByComparator);
 
@@ -2908,7 +2909,7 @@ public class SocialActivityAchievementPersistenceImpl
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityAchievementException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityAchievementException(msg.toString());
 	}
 
 	/**
@@ -2949,14 +2950,14 @@ public class SocialActivityAchievementPersistenceImpl
 	 * @param firstInGroup the first in group
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next social activity achievement
-	 * @throws NoSuchActivityAchievementException if a social activity achievement with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a social activity achievement with the primary key could not be found
 	 */
 	@Override
 	public SocialActivityAchievement[] findByG_U_F_PrevAndNext(
 		long activityAchievementId, long groupId, long userId,
 		boolean firstInGroup,
 		OrderByComparator<SocialActivityAchievement> orderByComparator)
-		throws NoSuchActivityAchievementException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException {
 		SocialActivityAchievement socialActivityAchievement = findByPrimaryKey(activityAchievementId);
 
 		Session session = null;
@@ -3358,11 +3359,11 @@ public class SocialActivityAchievementPersistenceImpl
 	 *
 	 * @param activityAchievementId the primary key of the social activity achievement
 	 * @return the social activity achievement that was removed
-	 * @throws NoSuchActivityAchievementException if a social activity achievement with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a social activity achievement with the primary key could not be found
 	 */
 	@Override
 	public SocialActivityAchievement remove(long activityAchievementId)
-		throws NoSuchActivityAchievementException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException {
 		return remove((Serializable)activityAchievementId);
 	}
 
@@ -3371,11 +3372,11 @@ public class SocialActivityAchievementPersistenceImpl
 	 *
 	 * @param primaryKey the primary key of the social activity achievement
 	 * @return the social activity achievement that was removed
-	 * @throws NoSuchActivityAchievementException if a social activity achievement with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a social activity achievement with the primary key could not be found
 	 */
 	@Override
 	public SocialActivityAchievement remove(Serializable primaryKey)
-		throws NoSuchActivityAchievementException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException {
 		Session session = null;
 
 		try {
@@ -3389,13 +3390,13 @@ public class SocialActivityAchievementPersistenceImpl
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchActivityAchievementException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portlet.social.exception.NoSuchActivityAchievementException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(socialActivityAchievement);
 		}
-		catch (NoSuchActivityAchievementException nsee) {
+		catch (com.liferay.portlet.social.exception.NoSuchActivityAchievementException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -3623,11 +3624,11 @@ public class SocialActivityAchievementPersistenceImpl
 	 *
 	 * @param primaryKey the primary key of the social activity achievement
 	 * @return the social activity achievement
-	 * @throws NoSuchActivityAchievementException if a social activity achievement with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a social activity achievement with the primary key could not be found
 	 */
 	@Override
 	public SocialActivityAchievement findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchActivityAchievementException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException {
 		SocialActivityAchievement socialActivityAchievement = fetchByPrimaryKey(primaryKey);
 
 		if (socialActivityAchievement == null) {
@@ -3635,7 +3636,7 @@ public class SocialActivityAchievementPersistenceImpl
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchActivityAchievementException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portlet.social.exception.NoSuchActivityAchievementException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -3643,15 +3644,16 @@ public class SocialActivityAchievementPersistenceImpl
 	}
 
 	/**
-	 * Returns the social activity achievement with the primary key or throws a {@link NoSuchActivityAchievementException} if it could not be found.
+	 * Returns the social activity achievement with the primary key or throws a {@link com.liferay.portlet.social.exception.NoSuchActivityAchievementException} if it could not be found.
 	 *
 	 * @param activityAchievementId the primary key of the social activity achievement
 	 * @return the social activity achievement
-	 * @throws NoSuchActivityAchievementException if a social activity achievement with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException if a social activity achievement with the primary key could not be found
 	 */
 	@Override
 	public SocialActivityAchievement findByPrimaryKey(
-		long activityAchievementId) throws NoSuchActivityAchievementException {
+		long activityAchievementId)
+		throws com.liferay.portlet.social.exception.NoSuchActivityAchievementException {
 		return findByPrimaryKey((Serializable)activityAchievementId);
 	}
 

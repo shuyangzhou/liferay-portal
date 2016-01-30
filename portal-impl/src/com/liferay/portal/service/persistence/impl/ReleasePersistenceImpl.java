@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchReleaseException;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
@@ -99,15 +98,15 @@ public class ReleasePersistenceImpl extends BasePersistenceImpl<Release>
 			"countByServletContextName", new String[] { String.class.getName() });
 
 	/**
-	 * Returns the release where servletContextName = &#63; or throws a {@link NoSuchReleaseException} if it could not be found.
+	 * Returns the release where servletContextName = &#63; or throws a {@link com.liferay.portal.exception.NoSuchReleaseException} if it could not be found.
 	 *
 	 * @param servletContextName the servlet context name
 	 * @return the matching release
-	 * @throws NoSuchReleaseException if a matching release could not be found
+	 * @throws com.liferay.portal.exception.NoSuchReleaseException if a matching release could not be found
 	 */
 	@Override
 	public Release findByServletContextName(String servletContextName)
-		throws NoSuchReleaseException {
+		throws com.liferay.portal.exception.NoSuchReleaseException {
 		Release release = fetchByServletContextName(servletContextName);
 
 		if (release == null) {
@@ -124,7 +123,7 @@ public class ReleasePersistenceImpl extends BasePersistenceImpl<Release>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchReleaseException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchReleaseException(msg.toString());
 		}
 
 		return release;
@@ -251,7 +250,7 @@ public class ReleasePersistenceImpl extends BasePersistenceImpl<Release>
 	 */
 	@Override
 	public Release removeByServletContextName(String servletContextName)
-		throws NoSuchReleaseException {
+		throws com.liferay.portal.exception.NoSuchReleaseException {
 		Release release = findByServletContextName(servletContextName);
 
 		return remove(release);
@@ -479,10 +478,11 @@ public class ReleasePersistenceImpl extends BasePersistenceImpl<Release>
 	 *
 	 * @param releaseId the primary key of the release
 	 * @return the release that was removed
-	 * @throws NoSuchReleaseException if a release with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchReleaseException if a release with the primary key could not be found
 	 */
 	@Override
-	public Release remove(long releaseId) throws NoSuchReleaseException {
+	public Release remove(long releaseId)
+		throws com.liferay.portal.exception.NoSuchReleaseException {
 		return remove((Serializable)releaseId);
 	}
 
@@ -491,11 +491,11 @@ public class ReleasePersistenceImpl extends BasePersistenceImpl<Release>
 	 *
 	 * @param primaryKey the primary key of the release
 	 * @return the release that was removed
-	 * @throws NoSuchReleaseException if a release with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchReleaseException if a release with the primary key could not be found
 	 */
 	@Override
 	public Release remove(Serializable primaryKey)
-		throws NoSuchReleaseException {
+		throws com.liferay.portal.exception.NoSuchReleaseException {
 		Session session = null;
 
 		try {
@@ -508,13 +508,13 @@ public class ReleasePersistenceImpl extends BasePersistenceImpl<Release>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchReleaseException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchReleaseException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(release);
 		}
-		catch (NoSuchReleaseException nsee) {
+		catch (com.liferay.portal.exception.NoSuchReleaseException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -655,11 +655,11 @@ public class ReleasePersistenceImpl extends BasePersistenceImpl<Release>
 	 *
 	 * @param primaryKey the primary key of the release
 	 * @return the release
-	 * @throws NoSuchReleaseException if a release with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchReleaseException if a release with the primary key could not be found
 	 */
 	@Override
 	public Release findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchReleaseException {
+		throws com.liferay.portal.exception.NoSuchReleaseException {
 		Release release = fetchByPrimaryKey(primaryKey);
 
 		if (release == null) {
@@ -667,7 +667,7 @@ public class ReleasePersistenceImpl extends BasePersistenceImpl<Release>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchReleaseException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchReleaseException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -675,15 +675,15 @@ public class ReleasePersistenceImpl extends BasePersistenceImpl<Release>
 	}
 
 	/**
-	 * Returns the release with the primary key or throws a {@link NoSuchReleaseException} if it could not be found.
+	 * Returns the release with the primary key or throws a {@link com.liferay.portal.exception.NoSuchReleaseException} if it could not be found.
 	 *
 	 * @param releaseId the primary key of the release
 	 * @return the release
-	 * @throws NoSuchReleaseException if a release with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchReleaseException if a release with the primary key could not be found
 	 */
 	@Override
 	public Release findByPrimaryKey(long releaseId)
-		throws NoSuchReleaseException {
+		throws com.liferay.portal.exception.NoSuchReleaseException {
 		return findByPrimaryKey((Serializable)releaseId);
 	}
 

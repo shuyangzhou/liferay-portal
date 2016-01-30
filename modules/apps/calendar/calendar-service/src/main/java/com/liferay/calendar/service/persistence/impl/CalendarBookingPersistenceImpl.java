@@ -16,7 +16,6 @@ package com.liferay.calendar.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.calendar.exception.NoSuchBookingException;
 import com.liferay.calendar.model.CalendarBooking;
 import com.liferay.calendar.model.impl.CalendarBookingImpl;
 import com.liferay.calendar.model.impl.CalendarBookingModelImpl;
@@ -298,12 +297,12 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 	 * @param resourceBlockId the resource block ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching calendar booking
-	 * @throws NoSuchBookingException if a matching calendar booking could not be found
+	 * @throws com.liferay.calendar.exception.NoSuchBookingException if a matching calendar booking could not be found
 	 */
 	@Override
 	public CalendarBooking findByResourceBlockId_First(long resourceBlockId,
 		OrderByComparator<CalendarBooking> orderByComparator)
-		throws NoSuchBookingException {
+		throws com.liferay.calendar.exception.NoSuchBookingException {
 		CalendarBooking calendarBooking = fetchByResourceBlockId_First(resourceBlockId,
 				orderByComparator);
 
@@ -320,7 +319,7 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBookingException(msg.toString());
+		throw new com.liferay.calendar.exception.NoSuchBookingException(msg.toString());
 	}
 
 	/**
@@ -349,12 +348,12 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 	 * @param resourceBlockId the resource block ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching calendar booking
-	 * @throws NoSuchBookingException if a matching calendar booking could not be found
+	 * @throws com.liferay.calendar.exception.NoSuchBookingException if a matching calendar booking could not be found
 	 */
 	@Override
 	public CalendarBooking findByResourceBlockId_Last(long resourceBlockId,
 		OrderByComparator<CalendarBooking> orderByComparator)
-		throws NoSuchBookingException {
+		throws com.liferay.calendar.exception.NoSuchBookingException {
 		CalendarBooking calendarBooking = fetchByResourceBlockId_Last(resourceBlockId,
 				orderByComparator);
 
@@ -371,7 +370,7 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBookingException(msg.toString());
+		throw new com.liferay.calendar.exception.NoSuchBookingException(msg.toString());
 	}
 
 	/**
@@ -407,13 +406,13 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 	 * @param resourceBlockId the resource block ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next calendar booking
-	 * @throws NoSuchBookingException if a calendar booking with the primary key could not be found
+	 * @throws com.liferay.calendar.exception.NoSuchBookingException if a calendar booking with the primary key could not be found
 	 */
 	@Override
 	public CalendarBooking[] findByResourceBlockId_PrevAndNext(
 		long calendarBookingId, long resourceBlockId,
 		OrderByComparator<CalendarBooking> orderByComparator)
-		throws NoSuchBookingException {
+		throws com.liferay.calendar.exception.NoSuchBookingException {
 		CalendarBooking calendarBooking = findByPrimaryKey(calendarBookingId);
 
 		Session session = null;
@@ -820,12 +819,12 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching calendar booking
-	 * @throws NoSuchBookingException if a matching calendar booking could not be found
+	 * @throws com.liferay.calendar.exception.NoSuchBookingException if a matching calendar booking could not be found
 	 */
 	@Override
 	public CalendarBooking findByUuid_First(String uuid,
 		OrderByComparator<CalendarBooking> orderByComparator)
-		throws NoSuchBookingException {
+		throws com.liferay.calendar.exception.NoSuchBookingException {
 		CalendarBooking calendarBooking = fetchByUuid_First(uuid,
 				orderByComparator);
 
@@ -842,7 +841,7 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBookingException(msg.toString());
+		throw new com.liferay.calendar.exception.NoSuchBookingException(msg.toString());
 	}
 
 	/**
@@ -870,12 +869,12 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching calendar booking
-	 * @throws NoSuchBookingException if a matching calendar booking could not be found
+	 * @throws com.liferay.calendar.exception.NoSuchBookingException if a matching calendar booking could not be found
 	 */
 	@Override
 	public CalendarBooking findByUuid_Last(String uuid,
 		OrderByComparator<CalendarBooking> orderByComparator)
-		throws NoSuchBookingException {
+		throws com.liferay.calendar.exception.NoSuchBookingException {
 		CalendarBooking calendarBooking = fetchByUuid_Last(uuid,
 				orderByComparator);
 
@@ -892,7 +891,7 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBookingException(msg.toString());
+		throw new com.liferay.calendar.exception.NoSuchBookingException(msg.toString());
 	}
 
 	/**
@@ -928,12 +927,12 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next calendar booking
-	 * @throws NoSuchBookingException if a calendar booking with the primary key could not be found
+	 * @throws com.liferay.calendar.exception.NoSuchBookingException if a calendar booking with the primary key could not be found
 	 */
 	@Override
 	public CalendarBooking[] findByUuid_PrevAndNext(long calendarBookingId,
 		String uuid, OrderByComparator<CalendarBooking> orderByComparator)
-		throws NoSuchBookingException {
+		throws com.liferay.calendar.exception.NoSuchBookingException {
 		CalendarBooking calendarBooking = findByPrimaryKey(calendarBookingId);
 
 		Session session = null;
@@ -1175,16 +1174,16 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 			new String[] { String.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the calendar booking where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchBookingException} if it could not be found.
+	 * Returns the calendar booking where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.calendar.exception.NoSuchBookingException} if it could not be found.
 	 *
 	 * @param uuid the uuid
 	 * @param groupId the group ID
 	 * @return the matching calendar booking
-	 * @throws NoSuchBookingException if a matching calendar booking could not be found
+	 * @throws com.liferay.calendar.exception.NoSuchBookingException if a matching calendar booking could not be found
 	 */
 	@Override
 	public CalendarBooking findByUUID_G(String uuid, long groupId)
-		throws NoSuchBookingException {
+		throws com.liferay.calendar.exception.NoSuchBookingException {
 		CalendarBooking calendarBooking = fetchByUUID_G(uuid, groupId);
 
 		if (calendarBooking == null) {
@@ -1204,7 +1203,7 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchBookingException(msg.toString());
+			throw new com.liferay.calendar.exception.NoSuchBookingException(msg.toString());
 		}
 
 		return calendarBooking;
@@ -1337,7 +1336,7 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 	 */
 	@Override
 	public CalendarBooking removeByUUID_G(String uuid, long groupId)
-		throws NoSuchBookingException {
+		throws com.liferay.calendar.exception.NoSuchBookingException {
 		CalendarBooking calendarBooking = findByUUID_G(uuid, groupId);
 
 		return remove(calendarBooking);
@@ -1643,12 +1642,12 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching calendar booking
-	 * @throws NoSuchBookingException if a matching calendar booking could not be found
+	 * @throws com.liferay.calendar.exception.NoSuchBookingException if a matching calendar booking could not be found
 	 */
 	@Override
 	public CalendarBooking findByUuid_C_First(String uuid, long companyId,
 		OrderByComparator<CalendarBooking> orderByComparator)
-		throws NoSuchBookingException {
+		throws com.liferay.calendar.exception.NoSuchBookingException {
 		CalendarBooking calendarBooking = fetchByUuid_C_First(uuid, companyId,
 				orderByComparator);
 
@@ -1668,7 +1667,7 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBookingException(msg.toString());
+		throw new com.liferay.calendar.exception.NoSuchBookingException(msg.toString());
 	}
 
 	/**
@@ -1699,12 +1698,12 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching calendar booking
-	 * @throws NoSuchBookingException if a matching calendar booking could not be found
+	 * @throws com.liferay.calendar.exception.NoSuchBookingException if a matching calendar booking could not be found
 	 */
 	@Override
 	public CalendarBooking findByUuid_C_Last(String uuid, long companyId,
 		OrderByComparator<CalendarBooking> orderByComparator)
-		throws NoSuchBookingException {
+		throws com.liferay.calendar.exception.NoSuchBookingException {
 		CalendarBooking calendarBooking = fetchByUuid_C_Last(uuid, companyId,
 				orderByComparator);
 
@@ -1724,7 +1723,7 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBookingException(msg.toString());
+		throw new com.liferay.calendar.exception.NoSuchBookingException(msg.toString());
 	}
 
 	/**
@@ -1762,13 +1761,13 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next calendar booking
-	 * @throws NoSuchBookingException if a calendar booking with the primary key could not be found
+	 * @throws com.liferay.calendar.exception.NoSuchBookingException if a calendar booking with the primary key could not be found
 	 */
 	@Override
 	public CalendarBooking[] findByUuid_C_PrevAndNext(long calendarBookingId,
 		String uuid, long companyId,
 		OrderByComparator<CalendarBooking> orderByComparator)
-		throws NoSuchBookingException {
+		throws com.liferay.calendar.exception.NoSuchBookingException {
 		CalendarBooking calendarBooking = findByPrimaryKey(calendarBookingId);
 
 		Session session = null;
@@ -2205,12 +2204,12 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 	 * @param calendarId the calendar ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching calendar booking
-	 * @throws NoSuchBookingException if a matching calendar booking could not be found
+	 * @throws com.liferay.calendar.exception.NoSuchBookingException if a matching calendar booking could not be found
 	 */
 	@Override
 	public CalendarBooking findByCalendarId_First(long calendarId,
 		OrderByComparator<CalendarBooking> orderByComparator)
-		throws NoSuchBookingException {
+		throws com.liferay.calendar.exception.NoSuchBookingException {
 		CalendarBooking calendarBooking = fetchByCalendarId_First(calendarId,
 				orderByComparator);
 
@@ -2227,7 +2226,7 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBookingException(msg.toString());
+		throw new com.liferay.calendar.exception.NoSuchBookingException(msg.toString());
 	}
 
 	/**
@@ -2256,12 +2255,12 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 	 * @param calendarId the calendar ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching calendar booking
-	 * @throws NoSuchBookingException if a matching calendar booking could not be found
+	 * @throws com.liferay.calendar.exception.NoSuchBookingException if a matching calendar booking could not be found
 	 */
 	@Override
 	public CalendarBooking findByCalendarId_Last(long calendarId,
 		OrderByComparator<CalendarBooking> orderByComparator)
-		throws NoSuchBookingException {
+		throws com.liferay.calendar.exception.NoSuchBookingException {
 		CalendarBooking calendarBooking = fetchByCalendarId_Last(calendarId,
 				orderByComparator);
 
@@ -2278,7 +2277,7 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBookingException(msg.toString());
+		throw new com.liferay.calendar.exception.NoSuchBookingException(msg.toString());
 	}
 
 	/**
@@ -2314,13 +2313,13 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 	 * @param calendarId the calendar ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next calendar booking
-	 * @throws NoSuchBookingException if a calendar booking with the primary key could not be found
+	 * @throws com.liferay.calendar.exception.NoSuchBookingException if a calendar booking with the primary key could not be found
 	 */
 	@Override
 	public CalendarBooking[] findByCalendarId_PrevAndNext(
 		long calendarBookingId, long calendarId,
 		OrderByComparator<CalendarBooking> orderByComparator)
-		throws NoSuchBookingException {
+		throws com.liferay.calendar.exception.NoSuchBookingException {
 		CalendarBooking calendarBooking = findByPrimaryKey(calendarBookingId);
 
 		Session session = null;
@@ -2724,13 +2723,13 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 	 * @param calendarResourceId the calendar resource ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching calendar booking
-	 * @throws NoSuchBookingException if a matching calendar booking could not be found
+	 * @throws com.liferay.calendar.exception.NoSuchBookingException if a matching calendar booking could not be found
 	 */
 	@Override
 	public CalendarBooking findByCalendarResourceId_First(
 		long calendarResourceId,
 		OrderByComparator<CalendarBooking> orderByComparator)
-		throws NoSuchBookingException {
+		throws com.liferay.calendar.exception.NoSuchBookingException {
 		CalendarBooking calendarBooking = fetchByCalendarResourceId_First(calendarResourceId,
 				orderByComparator);
 
@@ -2747,7 +2746,7 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBookingException(msg.toString());
+		throw new com.liferay.calendar.exception.NoSuchBookingException(msg.toString());
 	}
 
 	/**
@@ -2777,13 +2776,13 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 	 * @param calendarResourceId the calendar resource ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching calendar booking
-	 * @throws NoSuchBookingException if a matching calendar booking could not be found
+	 * @throws com.liferay.calendar.exception.NoSuchBookingException if a matching calendar booking could not be found
 	 */
 	@Override
 	public CalendarBooking findByCalendarResourceId_Last(
 		long calendarResourceId,
 		OrderByComparator<CalendarBooking> orderByComparator)
-		throws NoSuchBookingException {
+		throws com.liferay.calendar.exception.NoSuchBookingException {
 		CalendarBooking calendarBooking = fetchByCalendarResourceId_Last(calendarResourceId,
 				orderByComparator);
 
@@ -2800,7 +2799,7 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBookingException(msg.toString());
+		throw new com.liferay.calendar.exception.NoSuchBookingException(msg.toString());
 	}
 
 	/**
@@ -2837,13 +2836,13 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 	 * @param calendarResourceId the calendar resource ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next calendar booking
-	 * @throws NoSuchBookingException if a calendar booking with the primary key could not be found
+	 * @throws com.liferay.calendar.exception.NoSuchBookingException if a calendar booking with the primary key could not be found
 	 */
 	@Override
 	public CalendarBooking[] findByCalendarResourceId_PrevAndNext(
 		long calendarBookingId, long calendarResourceId,
 		OrderByComparator<CalendarBooking> orderByComparator)
-		throws NoSuchBookingException {
+		throws com.liferay.calendar.exception.NoSuchBookingException {
 		CalendarBooking calendarBooking = findByPrimaryKey(calendarBookingId);
 
 		Session session = null;
@@ -3253,13 +3252,13 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 	 * @param parentCalendarBookingId the parent calendar booking ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching calendar booking
-	 * @throws NoSuchBookingException if a matching calendar booking could not be found
+	 * @throws com.liferay.calendar.exception.NoSuchBookingException if a matching calendar booking could not be found
 	 */
 	@Override
 	public CalendarBooking findByParentCalendarBookingId_First(
 		long parentCalendarBookingId,
 		OrderByComparator<CalendarBooking> orderByComparator)
-		throws NoSuchBookingException {
+		throws com.liferay.calendar.exception.NoSuchBookingException {
 		CalendarBooking calendarBooking = fetchByParentCalendarBookingId_First(parentCalendarBookingId,
 				orderByComparator);
 
@@ -3276,7 +3275,7 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBookingException(msg.toString());
+		throw new com.liferay.calendar.exception.NoSuchBookingException(msg.toString());
 	}
 
 	/**
@@ -3306,13 +3305,13 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 	 * @param parentCalendarBookingId the parent calendar booking ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching calendar booking
-	 * @throws NoSuchBookingException if a matching calendar booking could not be found
+	 * @throws com.liferay.calendar.exception.NoSuchBookingException if a matching calendar booking could not be found
 	 */
 	@Override
 	public CalendarBooking findByParentCalendarBookingId_Last(
 		long parentCalendarBookingId,
 		OrderByComparator<CalendarBooking> orderByComparator)
-		throws NoSuchBookingException {
+		throws com.liferay.calendar.exception.NoSuchBookingException {
 		CalendarBooking calendarBooking = fetchByParentCalendarBookingId_Last(parentCalendarBookingId,
 				orderByComparator);
 
@@ -3329,7 +3328,7 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBookingException(msg.toString());
+		throw new com.liferay.calendar.exception.NoSuchBookingException(msg.toString());
 	}
 
 	/**
@@ -3366,13 +3365,13 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 	 * @param parentCalendarBookingId the parent calendar booking ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next calendar booking
-	 * @throws NoSuchBookingException if a calendar booking with the primary key could not be found
+	 * @throws com.liferay.calendar.exception.NoSuchBookingException if a calendar booking with the primary key could not be found
 	 */
 	@Override
 	public CalendarBooking[] findByParentCalendarBookingId_PrevAndNext(
 		long calendarBookingId, long parentCalendarBookingId,
 		OrderByComparator<CalendarBooking> orderByComparator)
-		throws NoSuchBookingException {
+		throws com.liferay.calendar.exception.NoSuchBookingException {
 		CalendarBooking calendarBooking = findByPrimaryKey(calendarBookingId);
 
 		Session session = null;
@@ -3588,16 +3587,17 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 			new String[] { Long.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the calendar booking where calendarId = &#63; and parentCalendarBookingId = &#63; or throws a {@link NoSuchBookingException} if it could not be found.
+	 * Returns the calendar booking where calendarId = &#63; and parentCalendarBookingId = &#63; or throws a {@link com.liferay.calendar.exception.NoSuchBookingException} if it could not be found.
 	 *
 	 * @param calendarId the calendar ID
 	 * @param parentCalendarBookingId the parent calendar booking ID
 	 * @return the matching calendar booking
-	 * @throws NoSuchBookingException if a matching calendar booking could not be found
+	 * @throws com.liferay.calendar.exception.NoSuchBookingException if a matching calendar booking could not be found
 	 */
 	@Override
 	public CalendarBooking findByC_P(long calendarId,
-		long parentCalendarBookingId) throws NoSuchBookingException {
+		long parentCalendarBookingId)
+		throws com.liferay.calendar.exception.NoSuchBookingException {
 		CalendarBooking calendarBooking = fetchByC_P(calendarId,
 				parentCalendarBookingId);
 
@@ -3618,7 +3618,7 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchBookingException(msg.toString());
+			throw new com.liferay.calendar.exception.NoSuchBookingException(msg.toString());
 		}
 
 		return calendarBooking;
@@ -3737,7 +3737,8 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 	 */
 	@Override
 	public CalendarBooking removeByC_P(long calendarId,
-		long parentCalendarBookingId) throws NoSuchBookingException {
+		long parentCalendarBookingId)
+		throws com.liferay.calendar.exception.NoSuchBookingException {
 		CalendarBooking calendarBooking = findByC_P(calendarId,
 				parentCalendarBookingId);
 
@@ -3814,16 +3815,16 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 			new String[] { Long.class.getName(), String.class.getName() });
 
 	/**
-	 * Returns the calendar booking where calendarId = &#63; and vEventUid = &#63; or throws a {@link NoSuchBookingException} if it could not be found.
+	 * Returns the calendar booking where calendarId = &#63; and vEventUid = &#63; or throws a {@link com.liferay.calendar.exception.NoSuchBookingException} if it could not be found.
 	 *
 	 * @param calendarId the calendar ID
 	 * @param vEventUid the v event uid
 	 * @return the matching calendar booking
-	 * @throws NoSuchBookingException if a matching calendar booking could not be found
+	 * @throws com.liferay.calendar.exception.NoSuchBookingException if a matching calendar booking could not be found
 	 */
 	@Override
 	public CalendarBooking findByC_V(long calendarId, String vEventUid)
-		throws NoSuchBookingException {
+		throws com.liferay.calendar.exception.NoSuchBookingException {
 		CalendarBooking calendarBooking = fetchByC_V(calendarId, vEventUid);
 
 		if (calendarBooking == null) {
@@ -3843,7 +3844,7 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchBookingException(msg.toString());
+			throw new com.liferay.calendar.exception.NoSuchBookingException(msg.toString());
 		}
 
 		return calendarBooking;
@@ -3976,7 +3977,7 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 	 */
 	@Override
 	public CalendarBooking removeByC_V(long calendarId, String vEventUid)
-		throws NoSuchBookingException {
+		throws com.liferay.calendar.exception.NoSuchBookingException {
 		CalendarBooking calendarBooking = findByC_V(calendarId, vEventUid);
 
 		return remove(calendarBooking);
@@ -4271,12 +4272,12 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching calendar booking
-	 * @throws NoSuchBookingException if a matching calendar booking could not be found
+	 * @throws com.liferay.calendar.exception.NoSuchBookingException if a matching calendar booking could not be found
 	 */
 	@Override
 	public CalendarBooking findByC_S_First(long calendarId, int status,
 		OrderByComparator<CalendarBooking> orderByComparator)
-		throws NoSuchBookingException {
+		throws com.liferay.calendar.exception.NoSuchBookingException {
 		CalendarBooking calendarBooking = fetchByC_S_First(calendarId, status,
 				orderByComparator);
 
@@ -4296,7 +4297,7 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBookingException(msg.toString());
+		throw new com.liferay.calendar.exception.NoSuchBookingException(msg.toString());
 	}
 
 	/**
@@ -4327,12 +4328,12 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching calendar booking
-	 * @throws NoSuchBookingException if a matching calendar booking could not be found
+	 * @throws com.liferay.calendar.exception.NoSuchBookingException if a matching calendar booking could not be found
 	 */
 	@Override
 	public CalendarBooking findByC_S_Last(long calendarId, int status,
 		OrderByComparator<CalendarBooking> orderByComparator)
-		throws NoSuchBookingException {
+		throws com.liferay.calendar.exception.NoSuchBookingException {
 		CalendarBooking calendarBooking = fetchByC_S_Last(calendarId, status,
 				orderByComparator);
 
@@ -4352,7 +4353,7 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBookingException(msg.toString());
+		throw new com.liferay.calendar.exception.NoSuchBookingException(msg.toString());
 	}
 
 	/**
@@ -4390,13 +4391,13 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next calendar booking
-	 * @throws NoSuchBookingException if a calendar booking with the primary key could not be found
+	 * @throws com.liferay.calendar.exception.NoSuchBookingException if a calendar booking with the primary key could not be found
 	 */
 	@Override
 	public CalendarBooking[] findByC_S_PrevAndNext(long calendarBookingId,
 		long calendarId, int status,
 		OrderByComparator<CalendarBooking> orderByComparator)
-		throws NoSuchBookingException {
+		throws com.liferay.calendar.exception.NoSuchBookingException {
 		CalendarBooking calendarBooking = findByPrimaryKey(calendarBookingId);
 
 		Session session = null;
@@ -5102,12 +5103,12 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching calendar booking
-	 * @throws NoSuchBookingException if a matching calendar booking could not be found
+	 * @throws com.liferay.calendar.exception.NoSuchBookingException if a matching calendar booking could not be found
 	 */
 	@Override
 	public CalendarBooking findByP_S_First(long parentCalendarBookingId,
 		int status, OrderByComparator<CalendarBooking> orderByComparator)
-		throws NoSuchBookingException {
+		throws com.liferay.calendar.exception.NoSuchBookingException {
 		CalendarBooking calendarBooking = fetchByP_S_First(parentCalendarBookingId,
 				status, orderByComparator);
 
@@ -5127,7 +5128,7 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBookingException(msg.toString());
+		throw new com.liferay.calendar.exception.NoSuchBookingException(msg.toString());
 	}
 
 	/**
@@ -5158,12 +5159,12 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching calendar booking
-	 * @throws NoSuchBookingException if a matching calendar booking could not be found
+	 * @throws com.liferay.calendar.exception.NoSuchBookingException if a matching calendar booking could not be found
 	 */
 	@Override
 	public CalendarBooking findByP_S_Last(long parentCalendarBookingId,
 		int status, OrderByComparator<CalendarBooking> orderByComparator)
-		throws NoSuchBookingException {
+		throws com.liferay.calendar.exception.NoSuchBookingException {
 		CalendarBooking calendarBooking = fetchByP_S_Last(parentCalendarBookingId,
 				status, orderByComparator);
 
@@ -5183,7 +5184,7 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBookingException(msg.toString());
+		throw new com.liferay.calendar.exception.NoSuchBookingException(msg.toString());
 	}
 
 	/**
@@ -5221,13 +5222,13 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next calendar booking
-	 * @throws NoSuchBookingException if a calendar booking with the primary key could not be found
+	 * @throws com.liferay.calendar.exception.NoSuchBookingException if a calendar booking with the primary key could not be found
 	 */
 	@Override
 	public CalendarBooking[] findByP_S_PrevAndNext(long calendarBookingId,
 		long parentCalendarBookingId, int status,
 		OrderByComparator<CalendarBooking> orderByComparator)
-		throws NoSuchBookingException {
+		throws com.liferay.calendar.exception.NoSuchBookingException {
 		CalendarBooking calendarBooking = findByPrimaryKey(calendarBookingId);
 
 		Session session = null;
@@ -5702,11 +5703,11 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 	 *
 	 * @param calendarBookingId the primary key of the calendar booking
 	 * @return the calendar booking that was removed
-	 * @throws NoSuchBookingException if a calendar booking with the primary key could not be found
+	 * @throws com.liferay.calendar.exception.NoSuchBookingException if a calendar booking with the primary key could not be found
 	 */
 	@Override
 	public CalendarBooking remove(long calendarBookingId)
-		throws NoSuchBookingException {
+		throws com.liferay.calendar.exception.NoSuchBookingException {
 		return remove((Serializable)calendarBookingId);
 	}
 
@@ -5715,11 +5716,11 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 	 *
 	 * @param primaryKey the primary key of the calendar booking
 	 * @return the calendar booking that was removed
-	 * @throws NoSuchBookingException if a calendar booking with the primary key could not be found
+	 * @throws com.liferay.calendar.exception.NoSuchBookingException if a calendar booking with the primary key could not be found
 	 */
 	@Override
 	public CalendarBooking remove(Serializable primaryKey)
-		throws NoSuchBookingException {
+		throws com.liferay.calendar.exception.NoSuchBookingException {
 		Session session = null;
 
 		try {
@@ -5733,13 +5734,13 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchBookingException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.calendar.exception.NoSuchBookingException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(calendarBooking);
 		}
-		catch (NoSuchBookingException nsee) {
+		catch (com.liferay.calendar.exception.NoSuchBookingException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -6068,11 +6069,11 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 	 *
 	 * @param primaryKey the primary key of the calendar booking
 	 * @return the calendar booking
-	 * @throws NoSuchBookingException if a calendar booking with the primary key could not be found
+	 * @throws com.liferay.calendar.exception.NoSuchBookingException if a calendar booking with the primary key could not be found
 	 */
 	@Override
 	public CalendarBooking findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchBookingException {
+		throws com.liferay.calendar.exception.NoSuchBookingException {
 		CalendarBooking calendarBooking = fetchByPrimaryKey(primaryKey);
 
 		if (calendarBooking == null) {
@@ -6080,7 +6081,7 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchBookingException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.calendar.exception.NoSuchBookingException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -6088,15 +6089,15 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 	}
 
 	/**
-	 * Returns the calendar booking with the primary key or throws a {@link NoSuchBookingException} if it could not be found.
+	 * Returns the calendar booking with the primary key or throws a {@link com.liferay.calendar.exception.NoSuchBookingException} if it could not be found.
 	 *
 	 * @param calendarBookingId the primary key of the calendar booking
 	 * @return the calendar booking
-	 * @throws NoSuchBookingException if a calendar booking with the primary key could not be found
+	 * @throws com.liferay.calendar.exception.NoSuchBookingException if a calendar booking with the primary key could not be found
 	 */
 	@Override
 	public CalendarBooking findByPrimaryKey(long calendarBookingId)
-		throws NoSuchBookingException {
+		throws com.liferay.calendar.exception.NoSuchBookingException {
 		return findByPrimaryKey((Serializable)calendarBookingId);
 	}
 

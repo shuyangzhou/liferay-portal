@@ -41,7 +41,6 @@ import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
-import com.liferay.portlet.ratings.exception.NoSuchEntryException;
 import com.liferay.portlet.ratings.model.RatingsEntry;
 import com.liferay.portlet.ratings.model.impl.RatingsEntryImpl;
 import com.liferay.portlet.ratings.model.impl.RatingsEntryModelImpl;
@@ -295,12 +294,12 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching ratings entry
-	 * @throws NoSuchEntryException if a matching ratings entry could not be found
+	 * @throws com.liferay.portlet.ratings.exception.NoSuchEntryException if a matching ratings entry could not be found
 	 */
 	@Override
 	public RatingsEntry findByUuid_First(String uuid,
 		OrderByComparator<RatingsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.ratings.exception.NoSuchEntryException {
 		RatingsEntry ratingsEntry = fetchByUuid_First(uuid, orderByComparator);
 
 		if (ratingsEntry != null) {
@@ -316,7 +315,7 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.ratings.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -344,12 +343,12 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching ratings entry
-	 * @throws NoSuchEntryException if a matching ratings entry could not be found
+	 * @throws com.liferay.portlet.ratings.exception.NoSuchEntryException if a matching ratings entry could not be found
 	 */
 	@Override
 	public RatingsEntry findByUuid_Last(String uuid,
 		OrderByComparator<RatingsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.ratings.exception.NoSuchEntryException {
 		RatingsEntry ratingsEntry = fetchByUuid_Last(uuid, orderByComparator);
 
 		if (ratingsEntry != null) {
@@ -365,7 +364,7 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.ratings.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -401,12 +400,12 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next ratings entry
-	 * @throws NoSuchEntryException if a ratings entry with the primary key could not be found
+	 * @throws com.liferay.portlet.ratings.exception.NoSuchEntryException if a ratings entry with the primary key could not be found
 	 */
 	@Override
 	public RatingsEntry[] findByUuid_PrevAndNext(long entryId, String uuid,
 		OrderByComparator<RatingsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.ratings.exception.NoSuchEntryException {
 		RatingsEntry ratingsEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -856,12 +855,12 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching ratings entry
-	 * @throws NoSuchEntryException if a matching ratings entry could not be found
+	 * @throws com.liferay.portlet.ratings.exception.NoSuchEntryException if a matching ratings entry could not be found
 	 */
 	@Override
 	public RatingsEntry findByUuid_C_First(String uuid, long companyId,
 		OrderByComparator<RatingsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.ratings.exception.NoSuchEntryException {
 		RatingsEntry ratingsEntry = fetchByUuid_C_First(uuid, companyId,
 				orderByComparator);
 
@@ -881,7 +880,7 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.ratings.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -912,12 +911,12 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching ratings entry
-	 * @throws NoSuchEntryException if a matching ratings entry could not be found
+	 * @throws com.liferay.portlet.ratings.exception.NoSuchEntryException if a matching ratings entry could not be found
 	 */
 	@Override
 	public RatingsEntry findByUuid_C_Last(String uuid, long companyId,
 		OrderByComparator<RatingsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.ratings.exception.NoSuchEntryException {
 		RatingsEntry ratingsEntry = fetchByUuid_C_Last(uuid, companyId,
 				orderByComparator);
 
@@ -937,7 +936,7 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.ratings.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -975,12 +974,12 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next ratings entry
-	 * @throws NoSuchEntryException if a ratings entry with the primary key could not be found
+	 * @throws com.liferay.portlet.ratings.exception.NoSuchEntryException if a ratings entry with the primary key could not be found
 	 */
 	@Override
 	public RatingsEntry[] findByUuid_C_PrevAndNext(long entryId, String uuid,
 		long companyId, OrderByComparator<RatingsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.ratings.exception.NoSuchEntryException {
 		RatingsEntry ratingsEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -1427,12 +1426,12 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching ratings entry
-	 * @throws NoSuchEntryException if a matching ratings entry could not be found
+	 * @throws com.liferay.portlet.ratings.exception.NoSuchEntryException if a matching ratings entry could not be found
 	 */
 	@Override
 	public RatingsEntry findByC_C_First(long classNameId, long classPK,
 		OrderByComparator<RatingsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.ratings.exception.NoSuchEntryException {
 		RatingsEntry ratingsEntry = fetchByC_C_First(classNameId, classPK,
 				orderByComparator);
 
@@ -1452,7 +1451,7 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.ratings.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -1483,12 +1482,12 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching ratings entry
-	 * @throws NoSuchEntryException if a matching ratings entry could not be found
+	 * @throws com.liferay.portlet.ratings.exception.NoSuchEntryException if a matching ratings entry could not be found
 	 */
 	@Override
 	public RatingsEntry findByC_C_Last(long classNameId, long classPK,
 		OrderByComparator<RatingsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.ratings.exception.NoSuchEntryException {
 		RatingsEntry ratingsEntry = fetchByC_C_Last(classNameId, classPK,
 				orderByComparator);
 
@@ -1508,7 +1507,7 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.ratings.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -1546,12 +1545,12 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next ratings entry
-	 * @throws NoSuchEntryException if a ratings entry with the primary key could not be found
+	 * @throws com.liferay.portlet.ratings.exception.NoSuchEntryException if a ratings entry with the primary key could not be found
 	 */
 	@Override
 	public RatingsEntry[] findByC_C_PrevAndNext(long entryId, long classNameId,
 		long classPK, OrderByComparator<RatingsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.ratings.exception.NoSuchEntryException {
 		RatingsEntry ratingsEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -1778,17 +1777,17 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 			});
 
 	/**
-	 * Returns the ratings entry where userId = &#63; and classNameId = &#63; and classPK = &#63; or throws a {@link NoSuchEntryException} if it could not be found.
+	 * Returns the ratings entry where userId = &#63; and classNameId = &#63; and classPK = &#63; or throws a {@link com.liferay.portlet.ratings.exception.NoSuchEntryException} if it could not be found.
 	 *
 	 * @param userId the user ID
 	 * @param classNameId the class name ID
 	 * @param classPK the class p k
 	 * @return the matching ratings entry
-	 * @throws NoSuchEntryException if a matching ratings entry could not be found
+	 * @throws com.liferay.portlet.ratings.exception.NoSuchEntryException if a matching ratings entry could not be found
 	 */
 	@Override
 	public RatingsEntry findByU_C_C(long userId, long classNameId, long classPK)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.ratings.exception.NoSuchEntryException {
 		RatingsEntry ratingsEntry = fetchByU_C_C(userId, classNameId, classPK);
 
 		if (ratingsEntry == null) {
@@ -1811,7 +1810,7 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchEntryException(msg.toString());
+			throw new com.liferay.portlet.ratings.exception.NoSuchEntryException(msg.toString());
 		}
 
 		return ratingsEntry;
@@ -1938,7 +1937,8 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 	 */
 	@Override
 	public RatingsEntry removeByU_C_C(long userId, long classNameId,
-		long classPK) throws NoSuchEntryException {
+		long classPK)
+		throws com.liferay.portlet.ratings.exception.NoSuchEntryException {
 		RatingsEntry ratingsEntry = findByU_C_C(userId, classNameId, classPK);
 
 		return remove(ratingsEntry);
@@ -2236,12 +2236,12 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 	 * @param score the score
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching ratings entry
-	 * @throws NoSuchEntryException if a matching ratings entry could not be found
+	 * @throws com.liferay.portlet.ratings.exception.NoSuchEntryException if a matching ratings entry could not be found
 	 */
 	@Override
 	public RatingsEntry findByC_C_S_First(long classNameId, long classPK,
 		double score, OrderByComparator<RatingsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.ratings.exception.NoSuchEntryException {
 		RatingsEntry ratingsEntry = fetchByC_C_S_First(classNameId, classPK,
 				score, orderByComparator);
 
@@ -2264,7 +2264,7 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.ratings.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -2297,12 +2297,12 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 	 * @param score the score
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching ratings entry
-	 * @throws NoSuchEntryException if a matching ratings entry could not be found
+	 * @throws com.liferay.portlet.ratings.exception.NoSuchEntryException if a matching ratings entry could not be found
 	 */
 	@Override
 	public RatingsEntry findByC_C_S_Last(long classNameId, long classPK,
 		double score, OrderByComparator<RatingsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.ratings.exception.NoSuchEntryException {
 		RatingsEntry ratingsEntry = fetchByC_C_S_Last(classNameId, classPK,
 				score, orderByComparator);
 
@@ -2325,7 +2325,7 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchEntryException(msg.toString());
+		throw new com.liferay.portlet.ratings.exception.NoSuchEntryException(msg.toString());
 	}
 
 	/**
@@ -2365,13 +2365,13 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 	 * @param score the score
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next ratings entry
-	 * @throws NoSuchEntryException if a ratings entry with the primary key could not be found
+	 * @throws com.liferay.portlet.ratings.exception.NoSuchEntryException if a ratings entry with the primary key could not be found
 	 */
 	@Override
 	public RatingsEntry[] findByC_C_S_PrevAndNext(long entryId,
 		long classNameId, long classPK, double score,
 		OrderByComparator<RatingsEntry> orderByComparator)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.ratings.exception.NoSuchEntryException {
 		RatingsEntry ratingsEntry = findByPrimaryKey(entryId);
 
 		Session session = null;
@@ -2765,10 +2765,11 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 	 *
 	 * @param entryId the primary key of the ratings entry
 	 * @return the ratings entry that was removed
-	 * @throws NoSuchEntryException if a ratings entry with the primary key could not be found
+	 * @throws com.liferay.portlet.ratings.exception.NoSuchEntryException if a ratings entry with the primary key could not be found
 	 */
 	@Override
-	public RatingsEntry remove(long entryId) throws NoSuchEntryException {
+	public RatingsEntry remove(long entryId)
+		throws com.liferay.portlet.ratings.exception.NoSuchEntryException {
 		return remove((Serializable)entryId);
 	}
 
@@ -2777,11 +2778,11 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 	 *
 	 * @param primaryKey the primary key of the ratings entry
 	 * @return the ratings entry that was removed
-	 * @throws NoSuchEntryException if a ratings entry with the primary key could not be found
+	 * @throws com.liferay.portlet.ratings.exception.NoSuchEntryException if a ratings entry with the primary key could not be found
 	 */
 	@Override
 	public RatingsEntry remove(Serializable primaryKey)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.ratings.exception.NoSuchEntryException {
 		Session session = null;
 
 		try {
@@ -2795,13 +2796,13 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portlet.ratings.exception.NoSuchEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(ratingsEntry);
 		}
-		catch (NoSuchEntryException nsee) {
+		catch (com.liferay.portlet.ratings.exception.NoSuchEntryException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -3032,11 +3033,11 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 	 *
 	 * @param primaryKey the primary key of the ratings entry
 	 * @return the ratings entry
-	 * @throws NoSuchEntryException if a ratings entry with the primary key could not be found
+	 * @throws com.liferay.portlet.ratings.exception.NoSuchEntryException if a ratings entry with the primary key could not be found
 	 */
 	@Override
 	public RatingsEntry findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.ratings.exception.NoSuchEntryException {
 		RatingsEntry ratingsEntry = fetchByPrimaryKey(primaryKey);
 
 		if (ratingsEntry == null) {
@@ -3044,7 +3045,7 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portlet.ratings.exception.NoSuchEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -3052,15 +3053,15 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 	}
 
 	/**
-	 * Returns the ratings entry with the primary key or throws a {@link NoSuchEntryException} if it could not be found.
+	 * Returns the ratings entry with the primary key or throws a {@link com.liferay.portlet.ratings.exception.NoSuchEntryException} if it could not be found.
 	 *
 	 * @param entryId the primary key of the ratings entry
 	 * @return the ratings entry
-	 * @throws NoSuchEntryException if a ratings entry with the primary key could not be found
+	 * @throws com.liferay.portlet.ratings.exception.NoSuchEntryException if a ratings entry with the primary key could not be found
 	 */
 	@Override
 	public RatingsEntry findByPrimaryKey(long entryId)
-		throws NoSuchEntryException {
+		throws com.liferay.portlet.ratings.exception.NoSuchEntryException {
 		return findByPrimaryKey((Serializable)entryId);
 	}
 

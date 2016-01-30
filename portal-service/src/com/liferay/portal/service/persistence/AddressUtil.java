@@ -179,7 +179,7 @@ public class AddressUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching address
-	* @throws NoSuchAddressException if a matching address could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	*/
 	public static Address findByUuid_First(java.lang.String uuid,
 		OrderByComparator<Address> orderByComparator)
@@ -205,7 +205,7 @@ public class AddressUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching address
-	* @throws NoSuchAddressException if a matching address could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	*/
 	public static Address findByUuid_Last(java.lang.String uuid,
 		OrderByComparator<Address> orderByComparator)
@@ -232,7 +232,7 @@ public class AddressUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next address
-	* @throws NoSuchAddressException if a address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a address with the primary key could not be found
 	*/
 	public static Address[] findByUuid_PrevAndNext(long addressId,
 		java.lang.String uuid, OrderByComparator<Address> orderByComparator)
@@ -341,7 +341,7 @@ public class AddressUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching address
-	* @throws NoSuchAddressException if a matching address could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	*/
 	public static Address findByUuid_C_First(java.lang.String uuid,
 		long companyId, OrderByComparator<Address> orderByComparator)
@@ -371,7 +371,7 @@ public class AddressUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching address
-	* @throws NoSuchAddressException if a matching address could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	*/
 	public static Address findByUuid_C_Last(java.lang.String uuid,
 		long companyId, OrderByComparator<Address> orderByComparator)
@@ -402,7 +402,7 @@ public class AddressUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next address
-	* @throws NoSuchAddressException if a address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a address with the primary key could not be found
 	*/
 	public static Address[] findByUuid_C_PrevAndNext(long addressId,
 		java.lang.String uuid, long companyId,
@@ -508,7 +508,7 @@ public class AddressUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching address
-	* @throws NoSuchAddressException if a matching address could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	*/
 	public static Address findByCompanyId_First(long companyId,
 		OrderByComparator<Address> orderByComparator)
@@ -536,7 +536,7 @@ public class AddressUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching address
-	* @throws NoSuchAddressException if a matching address could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	*/
 	public static Address findByCompanyId_Last(long companyId,
 		OrderByComparator<Address> orderByComparator)
@@ -565,7 +565,7 @@ public class AddressUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next address
-	* @throws NoSuchAddressException if a address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a address with the primary key could not be found
 	*/
 	public static Address[] findByCompanyId_PrevAndNext(long addressId,
 		long companyId, OrderByComparator<Address> orderByComparator)
@@ -666,7 +666,7 @@ public class AddressUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching address
-	* @throws NoSuchAddressException if a matching address could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	*/
 	public static Address findByUserId_First(long userId,
 		OrderByComparator<Address> orderByComparator)
@@ -692,7 +692,7 @@ public class AddressUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching address
-	* @throws NoSuchAddressException if a matching address could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	*/
 	public static Address findByUserId_Last(long userId,
 		OrderByComparator<Address> orderByComparator)
@@ -719,7 +719,7 @@ public class AddressUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next address
-	* @throws NoSuchAddressException if a address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a address with the primary key could not be found
 	*/
 	public static Address[] findByUserId_PrevAndNext(long addressId,
 		long userId, OrderByComparator<Address> orderByComparator)
@@ -828,7 +828,7 @@ public class AddressUtil {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching address
-	* @throws NoSuchAddressException if a matching address could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	*/
 	public static Address findByC_C_First(long companyId, long classNameId,
 		OrderByComparator<Address> orderByComparator)
@@ -858,7 +858,7 @@ public class AddressUtil {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching address
-	* @throws NoSuchAddressException if a matching address could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	*/
 	public static Address findByC_C_Last(long companyId, long classNameId,
 		OrderByComparator<Address> orderByComparator)
@@ -889,7 +889,7 @@ public class AddressUtil {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next address
-	* @throws NoSuchAddressException if a address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a address with the primary key could not be found
 	*/
 	public static Address[] findByC_C_PrevAndNext(long addressId,
 		long companyId, long classNameId,
@@ -1009,7 +1009,7 @@ public class AddressUtil {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching address
-	* @throws NoSuchAddressException if a matching address could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	*/
 	public static Address findByC_C_C_First(long companyId, long classNameId,
 		long classPK, OrderByComparator<Address> orderByComparator)
@@ -1043,7 +1043,7 @@ public class AddressUtil {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching address
-	* @throws NoSuchAddressException if a matching address could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	*/
 	public static Address findByC_C_C_Last(long companyId, long classNameId,
 		long classPK, OrderByComparator<Address> orderByComparator)
@@ -1078,7 +1078,7 @@ public class AddressUtil {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next address
-	* @throws NoSuchAddressException if a address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a address with the primary key could not be found
 	*/
 	public static Address[] findByC_C_C_PrevAndNext(long addressId,
 		long companyId, long classNameId, long classPK,
@@ -1209,7 +1209,7 @@ public class AddressUtil {
 	* @param mailing the mailing
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching address
-	* @throws NoSuchAddressException if a matching address could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	*/
 	public static Address findByC_C_C_M_First(long companyId, long classNameId,
 		long classPK, boolean mailing,
@@ -1247,7 +1247,7 @@ public class AddressUtil {
 	* @param mailing the mailing
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching address
-	* @throws NoSuchAddressException if a matching address could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	*/
 	public static Address findByC_C_C_M_Last(long companyId, long classNameId,
 		long classPK, boolean mailing,
@@ -1286,7 +1286,7 @@ public class AddressUtil {
 	* @param mailing the mailing
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next address
-	* @throws NoSuchAddressException if a address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a address with the primary key could not be found
 	*/
 	public static Address[] findByC_C_C_M_PrevAndNext(long addressId,
 		long companyId, long classNameId, long classPK, boolean mailing,
@@ -1421,7 +1421,7 @@ public class AddressUtil {
 	* @param primary the primary
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching address
-	* @throws NoSuchAddressException if a matching address could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	*/
 	public static Address findByC_C_C_P_First(long companyId, long classNameId,
 		long classPK, boolean primary,
@@ -1459,7 +1459,7 @@ public class AddressUtil {
 	* @param primary the primary
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching address
-	* @throws NoSuchAddressException if a matching address could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a matching address could not be found
 	*/
 	public static Address findByC_C_C_P_Last(long companyId, long classNameId,
 		long classPK, boolean primary,
@@ -1498,7 +1498,7 @@ public class AddressUtil {
 	* @param primary the primary
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next address
-	* @throws NoSuchAddressException if a address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a address with the primary key could not be found
 	*/
 	public static Address[] findByC_C_C_P_PrevAndNext(long addressId,
 		long companyId, long classNameId, long classPK, boolean primary,
@@ -1571,7 +1571,7 @@ public class AddressUtil {
 	*
 	* @param addressId the primary key of the address
 	* @return the address that was removed
-	* @throws NoSuchAddressException if a address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a address with the primary key could not be found
 	*/
 	public static Address remove(long addressId)
 		throws com.liferay.portal.exception.NoSuchAddressException {
@@ -1583,11 +1583,11 @@ public class AddressUtil {
 	}
 
 	/**
-	* Returns the address with the primary key or throws a {@link NoSuchAddressException} if it could not be found.
+	* Returns the address with the primary key or throws a {@link com.liferay.portal.exception.NoSuchAddressException} if it could not be found.
 	*
 	* @param addressId the primary key of the address
 	* @return the address
-	* @throws NoSuchAddressException if a address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchAddressException if a address with the primary key could not be found
 	*/
 	public static Address findByPrimaryKey(long addressId)
 		throws com.liferay.portal.exception.NoSuchAddressException {

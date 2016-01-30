@@ -186,7 +186,7 @@ public class RecentLayoutSetBranchUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching recent layout set branch
-	* @throws NoSuchRecentLayoutSetBranchException if a matching recent layout set branch could not be found
+	* @throws com.liferay.portal.exception.NoSuchRecentLayoutSetBranchException if a matching recent layout set branch could not be found
 	*/
 	public static RecentLayoutSetBranch findByGroupId_First(long groupId,
 		OrderByComparator<RecentLayoutSetBranch> orderByComparator)
@@ -212,7 +212,7 @@ public class RecentLayoutSetBranchUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching recent layout set branch
-	* @throws NoSuchRecentLayoutSetBranchException if a matching recent layout set branch could not be found
+	* @throws com.liferay.portal.exception.NoSuchRecentLayoutSetBranchException if a matching recent layout set branch could not be found
 	*/
 	public static RecentLayoutSetBranch findByGroupId_Last(long groupId,
 		OrderByComparator<RecentLayoutSetBranch> orderByComparator)
@@ -239,7 +239,7 @@ public class RecentLayoutSetBranchUtil {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next recent layout set branch
-	* @throws NoSuchRecentLayoutSetBranchException if a recent layout set branch with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRecentLayoutSetBranchException if a recent layout set branch with the primary key could not be found
 	*/
 	public static RecentLayoutSetBranch[] findByGroupId_PrevAndNext(
 		long recentLayoutSetBranchId, long groupId,
@@ -345,7 +345,7 @@ public class RecentLayoutSetBranchUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching recent layout set branch
-	* @throws NoSuchRecentLayoutSetBranchException if a matching recent layout set branch could not be found
+	* @throws com.liferay.portal.exception.NoSuchRecentLayoutSetBranchException if a matching recent layout set branch could not be found
 	*/
 	public static RecentLayoutSetBranch findByUserId_First(long userId,
 		OrderByComparator<RecentLayoutSetBranch> orderByComparator)
@@ -371,7 +371,7 @@ public class RecentLayoutSetBranchUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching recent layout set branch
-	* @throws NoSuchRecentLayoutSetBranchException if a matching recent layout set branch could not be found
+	* @throws com.liferay.portal.exception.NoSuchRecentLayoutSetBranchException if a matching recent layout set branch could not be found
 	*/
 	public static RecentLayoutSetBranch findByUserId_Last(long userId,
 		OrderByComparator<RecentLayoutSetBranch> orderByComparator)
@@ -398,7 +398,7 @@ public class RecentLayoutSetBranchUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next recent layout set branch
-	* @throws NoSuchRecentLayoutSetBranchException if a recent layout set branch with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRecentLayoutSetBranchException if a recent layout set branch with the primary key could not be found
 	*/
 	public static RecentLayoutSetBranch[] findByUserId_PrevAndNext(
 		long recentLayoutSetBranchId, long userId,
@@ -507,7 +507,7 @@ public class RecentLayoutSetBranchUtil {
 	* @param layoutSetBranchId the layout set branch ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching recent layout set branch
-	* @throws NoSuchRecentLayoutSetBranchException if a matching recent layout set branch could not be found
+	* @throws com.liferay.portal.exception.NoSuchRecentLayoutSetBranchException if a matching recent layout set branch could not be found
 	*/
 	public static RecentLayoutSetBranch findByLayoutSetBranchId_First(
 		long layoutSetBranchId,
@@ -539,7 +539,7 @@ public class RecentLayoutSetBranchUtil {
 	* @param layoutSetBranchId the layout set branch ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching recent layout set branch
-	* @throws NoSuchRecentLayoutSetBranchException if a matching recent layout set branch could not be found
+	* @throws com.liferay.portal.exception.NoSuchRecentLayoutSetBranchException if a matching recent layout set branch could not be found
 	*/
 	public static RecentLayoutSetBranch findByLayoutSetBranchId_Last(
 		long layoutSetBranchId,
@@ -572,7 +572,7 @@ public class RecentLayoutSetBranchUtil {
 	* @param layoutSetBranchId the layout set branch ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next recent layout set branch
-	* @throws NoSuchRecentLayoutSetBranchException if a recent layout set branch with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRecentLayoutSetBranchException if a recent layout set branch with the primary key could not be found
 	*/
 	public static RecentLayoutSetBranch[] findByLayoutSetBranchId_PrevAndNext(
 		long recentLayoutSetBranchId, long layoutSetBranchId,
@@ -603,12 +603,12 @@ public class RecentLayoutSetBranchUtil {
 	}
 
 	/**
-	* Returns the recent layout set branch where userId = &#63; and layoutSetId = &#63; or throws a {@link NoSuchRecentLayoutSetBranchException} if it could not be found.
+	* Returns the recent layout set branch where userId = &#63; and layoutSetId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchRecentLayoutSetBranchException} if it could not be found.
 	*
 	* @param userId the user ID
 	* @param layoutSetId the layout set ID
 	* @return the matching recent layout set branch
-	* @throws NoSuchRecentLayoutSetBranchException if a matching recent layout set branch could not be found
+	* @throws com.liferay.portal.exception.NoSuchRecentLayoutSetBranchException if a matching recent layout set branch could not be found
 	*/
 	public static RecentLayoutSetBranch findByU_L(long userId, long layoutSetId)
 		throws com.liferay.portal.exception.NoSuchRecentLayoutSetBranchException {
@@ -698,7 +698,7 @@ public class RecentLayoutSetBranchUtil {
 	*
 	* @param recentLayoutSetBranchId the primary key of the recent layout set branch
 	* @return the recent layout set branch that was removed
-	* @throws NoSuchRecentLayoutSetBranchException if a recent layout set branch with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRecentLayoutSetBranchException if a recent layout set branch with the primary key could not be found
 	*/
 	public static RecentLayoutSetBranch remove(long recentLayoutSetBranchId)
 		throws com.liferay.portal.exception.NoSuchRecentLayoutSetBranchException {
@@ -711,11 +711,11 @@ public class RecentLayoutSetBranchUtil {
 	}
 
 	/**
-	* Returns the recent layout set branch with the primary key or throws a {@link NoSuchRecentLayoutSetBranchException} if it could not be found.
+	* Returns the recent layout set branch with the primary key or throws a {@link com.liferay.portal.exception.NoSuchRecentLayoutSetBranchException} if it could not be found.
 	*
 	* @param recentLayoutSetBranchId the primary key of the recent layout set branch
 	* @return the recent layout set branch
-	* @throws NoSuchRecentLayoutSetBranchException if a recent layout set branch with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRecentLayoutSetBranchException if a recent layout set branch with the primary key could not be found
 	*/
 	public static RecentLayoutSetBranch findByPrimaryKey(
 		long recentLayoutSetBranchId)

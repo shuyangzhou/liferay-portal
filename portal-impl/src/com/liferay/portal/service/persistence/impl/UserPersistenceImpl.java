@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchUserException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -301,11 +300,12 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user
-	 * @throws NoSuchUserException if a matching user could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	 */
 	@Override
 	public User findByUuid_First(String uuid,
-		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
+		OrderByComparator<User> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = fetchByUuid_First(uuid, orderByComparator);
 
 		if (user != null) {
@@ -321,7 +321,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserException(msg.toString());
 	}
 
 	/**
@@ -349,11 +349,12 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user
-	 * @throws NoSuchUserException if a matching user could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	 */
 	@Override
 	public User findByUuid_Last(String uuid,
-		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
+		OrderByComparator<User> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = fetchByUuid_Last(uuid, orderByComparator);
 
 		if (user != null) {
@@ -369,7 +370,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserException(msg.toString());
 	}
 
 	/**
@@ -404,11 +405,12 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user
-	 * @throws NoSuchUserException if a user with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a user with the primary key could not be found
 	 */
 	@Override
 	public User[] findByUuid_PrevAndNext(long userId, String uuid,
-		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
+		OrderByComparator<User> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = findByPrimaryKey(userId);
 
 		Session session = null;
@@ -857,11 +859,12 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user
-	 * @throws NoSuchUserException if a matching user could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	 */
 	@Override
 	public User findByUuid_C_First(String uuid, long companyId,
-		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
+		OrderByComparator<User> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = fetchByUuid_C_First(uuid, companyId, orderByComparator);
 
 		if (user != null) {
@@ -880,7 +883,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserException(msg.toString());
 	}
 
 	/**
@@ -910,11 +913,12 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user
-	 * @throws NoSuchUserException if a matching user could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	 */
 	@Override
 	public User findByUuid_C_Last(String uuid, long companyId,
-		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
+		OrderByComparator<User> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = fetchByUuid_C_Last(uuid, companyId, orderByComparator);
 
 		if (user != null) {
@@ -933,7 +937,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserException(msg.toString());
 	}
 
 	/**
@@ -971,12 +975,12 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user
-	 * @throws NoSuchUserException if a user with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a user with the primary key could not be found
 	 */
 	@Override
 	public User[] findByUuid_C_PrevAndNext(long userId, String uuid,
 		long companyId, OrderByComparator<User> orderByComparator)
-		throws NoSuchUserException {
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = findByPrimaryKey(userId);
 
 		Session session = null;
@@ -1407,11 +1411,12 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user
-	 * @throws NoSuchUserException if a matching user could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	 */
 	@Override
 	public User findByCompanyId_First(long companyId,
-		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
+		OrderByComparator<User> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = fetchByCompanyId_First(companyId, orderByComparator);
 
 		if (user != null) {
@@ -1427,7 +1432,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserException(msg.toString());
 	}
 
 	/**
@@ -1455,11 +1460,12 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user
-	 * @throws NoSuchUserException if a matching user could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	 */
 	@Override
 	public User findByCompanyId_Last(long companyId,
-		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
+		OrderByComparator<User> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = fetchByCompanyId_Last(companyId, orderByComparator);
 
 		if (user != null) {
@@ -1475,7 +1481,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserException(msg.toString());
 	}
 
 	/**
@@ -1511,11 +1517,12 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user
-	 * @throws NoSuchUserException if a user with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a user with the primary key could not be found
 	 */
 	@Override
 	public User[] findByCompanyId_PrevAndNext(long userId, long companyId,
-		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
+		OrderByComparator<User> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = findByPrimaryKey(userId);
 
 		Session session = null;
@@ -1725,14 +1732,15 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 			new String[] { Long.class.getName() });
 
 	/**
-	 * Returns the user where contactId = &#63; or throws a {@link NoSuchUserException} if it could not be found.
+	 * Returns the user where contactId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchUserException} if it could not be found.
 	 *
 	 * @param contactId the contact ID
 	 * @return the matching user
-	 * @throws NoSuchUserException if a matching user could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	 */
 	@Override
-	public User findByContactId(long contactId) throws NoSuchUserException {
+	public User findByContactId(long contactId)
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = fetchByContactId(contactId);
 
 		if (user == null) {
@@ -1749,7 +1757,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchUserException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchUserException(msg.toString());
 		}
 
 		return user;
@@ -1857,7 +1865,8 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @return the user that was removed
 	 */
 	@Override
-	public User removeByContactId(long contactId) throws NoSuchUserException {
+	public User removeByContactId(long contactId)
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = findByContactId(contactId);
 
 		return remove(user);
@@ -2126,11 +2135,12 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param emailAddress the email address
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user
-	 * @throws NoSuchUserException if a matching user could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	 */
 	@Override
 	public User findByEmailAddress_First(String emailAddress,
-		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
+		OrderByComparator<User> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = fetchByEmailAddress_First(emailAddress, orderByComparator);
 
 		if (user != null) {
@@ -2146,7 +2156,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserException(msg.toString());
 	}
 
 	/**
@@ -2175,11 +2185,12 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param emailAddress the email address
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user
-	 * @throws NoSuchUserException if a matching user could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	 */
 	@Override
 	public User findByEmailAddress_Last(String emailAddress,
-		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
+		OrderByComparator<User> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = fetchByEmailAddress_Last(emailAddress, orderByComparator);
 
 		if (user != null) {
@@ -2195,7 +2206,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserException(msg.toString());
 	}
 
 	/**
@@ -2231,12 +2242,12 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param emailAddress the email address
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user
-	 * @throws NoSuchUserException if a user with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a user with the primary key could not be found
 	 */
 	@Override
 	public User[] findByEmailAddress_PrevAndNext(long userId,
 		String emailAddress, OrderByComparator<User> orderByComparator)
-		throws NoSuchUserException {
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = findByPrimaryKey(userId);
 
 		Session session = null;
@@ -2476,14 +2487,15 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 			new String[] { Long.class.getName() });
 
 	/**
-	 * Returns the user where portraitId = &#63; or throws a {@link NoSuchUserException} if it could not be found.
+	 * Returns the user where portraitId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchUserException} if it could not be found.
 	 *
 	 * @param portraitId the portrait ID
 	 * @return the matching user
-	 * @throws NoSuchUserException if a matching user could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	 */
 	@Override
-	public User findByPortraitId(long portraitId) throws NoSuchUserException {
+	public User findByPortraitId(long portraitId)
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = fetchByPortraitId(portraitId);
 
 		if (user == null) {
@@ -2500,7 +2512,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchUserException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchUserException(msg.toString());
 		}
 
 		return user;
@@ -2615,7 +2627,8 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @return the user that was removed
 	 */
 	@Override
-	public User removeByPortraitId(long portraitId) throws NoSuchUserException {
+	public User removeByPortraitId(long portraitId)
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = findByPortraitId(portraitId);
 
 		return remove(user);
@@ -2685,16 +2698,16 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 			new String[] { Long.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the user where companyId = &#63; and userId = &#63; or throws a {@link NoSuchUserException} if it could not be found.
+	 * Returns the user where companyId = &#63; and userId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchUserException} if it could not be found.
 	 *
 	 * @param companyId the company ID
 	 * @param userId the user ID
 	 * @return the matching user
-	 * @throws NoSuchUserException if a matching user could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	 */
 	@Override
 	public User findByC_U(long companyId, long userId)
-		throws NoSuchUserException {
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = fetchByC_U(companyId, userId);
 
 		if (user == null) {
@@ -2714,7 +2727,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchUserException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchUserException(msg.toString());
 		}
 
 		return user;
@@ -2832,7 +2845,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 */
 	@Override
 	public User removeByC_U(long companyId, long userId)
-		throws NoSuchUserException {
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = findByC_U(companyId, userId);
 
 		return remove(user);
@@ -3114,11 +3127,12 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param createDate the create date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user
-	 * @throws NoSuchUserException if a matching user could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	 */
 	@Override
 	public User findByC_CD_First(long companyId, Date createDate,
-		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
+		OrderByComparator<User> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = fetchByC_CD_First(companyId, createDate, orderByComparator);
 
 		if (user != null) {
@@ -3137,7 +3151,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserException(msg.toString());
 	}
 
 	/**
@@ -3168,11 +3182,12 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param createDate the create date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user
-	 * @throws NoSuchUserException if a matching user could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	 */
 	@Override
 	public User findByC_CD_Last(long companyId, Date createDate,
-		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
+		OrderByComparator<User> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = fetchByC_CD_Last(companyId, createDate, orderByComparator);
 
 		if (user != null) {
@@ -3191,7 +3206,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserException(msg.toString());
 	}
 
 	/**
@@ -3229,12 +3244,12 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param createDate the create date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user
-	 * @throws NoSuchUserException if a user with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a user with the primary key could not be found
 	 */
 	@Override
 	public User[] findByC_CD_PrevAndNext(long userId, long companyId,
 		Date createDate, OrderByComparator<User> orderByComparator)
-		throws NoSuchUserException {
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = findByPrimaryKey(userId);
 
 		Session session = null;
@@ -3686,11 +3701,12 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param modifiedDate the modified date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user
-	 * @throws NoSuchUserException if a matching user could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	 */
 	@Override
 	public User findByC_MD_First(long companyId, Date modifiedDate,
-		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
+		OrderByComparator<User> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = fetchByC_MD_First(companyId, modifiedDate, orderByComparator);
 
 		if (user != null) {
@@ -3709,7 +3725,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserException(msg.toString());
 	}
 
 	/**
@@ -3740,11 +3756,12 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param modifiedDate the modified date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user
-	 * @throws NoSuchUserException if a matching user could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	 */
 	@Override
 	public User findByC_MD_Last(long companyId, Date modifiedDate,
-		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
+		OrderByComparator<User> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = fetchByC_MD_Last(companyId, modifiedDate, orderByComparator);
 
 		if (user != null) {
@@ -3763,7 +3780,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserException(msg.toString());
 	}
 
 	/**
@@ -3801,12 +3818,12 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param modifiedDate the modified date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user
-	 * @throws NoSuchUserException if a user with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a user with the primary key could not be found
 	 */
 	@Override
 	public User[] findByC_MD_PrevAndNext(long userId, long companyId,
 		Date modifiedDate, OrderByComparator<User> orderByComparator)
-		throws NoSuchUserException {
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = findByPrimaryKey(userId);
 
 		Session session = null;
@@ -4051,16 +4068,16 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 			new String[] { Long.class.getName(), Boolean.class.getName() });
 
 	/**
-	 * Returns the user where companyId = &#63; and defaultUser = &#63; or throws a {@link NoSuchUserException} if it could not be found.
+	 * Returns the user where companyId = &#63; and defaultUser = &#63; or throws a {@link com.liferay.portal.exception.NoSuchUserException} if it could not be found.
 	 *
 	 * @param companyId the company ID
 	 * @param defaultUser the default user
 	 * @return the matching user
-	 * @throws NoSuchUserException if a matching user could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	 */
 	@Override
 	public User findByC_DU(long companyId, boolean defaultUser)
-		throws NoSuchUserException {
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = fetchByC_DU(companyId, defaultUser);
 
 		if (user == null) {
@@ -4080,7 +4097,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchUserException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchUserException(msg.toString());
 		}
 
 		return user;
@@ -4205,7 +4222,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 */
 	@Override
 	public User removeByC_DU(long companyId, boolean defaultUser)
-		throws NoSuchUserException {
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = findByC_DU(companyId, defaultUser);
 
 		return remove(user);
@@ -4281,16 +4298,16 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 			new String[] { Long.class.getName(), String.class.getName() });
 
 	/**
-	 * Returns the user where companyId = &#63; and screenName = &#63; or throws a {@link NoSuchUserException} if it could not be found.
+	 * Returns the user where companyId = &#63; and screenName = &#63; or throws a {@link com.liferay.portal.exception.NoSuchUserException} if it could not be found.
 	 *
 	 * @param companyId the company ID
 	 * @param screenName the screen name
 	 * @return the matching user
-	 * @throws NoSuchUserException if a matching user could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	 */
 	@Override
 	public User findByC_SN(long companyId, String screenName)
-		throws NoSuchUserException {
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = fetchByC_SN(companyId, screenName);
 
 		if (user == null) {
@@ -4310,7 +4327,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchUserException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchUserException(msg.toString());
 		}
 
 		return user;
@@ -4443,7 +4460,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 */
 	@Override
 	public User removeByC_SN(long companyId, String screenName)
-		throws NoSuchUserException {
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = findByC_SN(companyId, screenName);
 
 		return remove(user);
@@ -4535,16 +4552,16 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 			new String[] { Long.class.getName(), String.class.getName() });
 
 	/**
-	 * Returns the user where companyId = &#63; and emailAddress = &#63; or throws a {@link NoSuchUserException} if it could not be found.
+	 * Returns the user where companyId = &#63; and emailAddress = &#63; or throws a {@link com.liferay.portal.exception.NoSuchUserException} if it could not be found.
 	 *
 	 * @param companyId the company ID
 	 * @param emailAddress the email address
 	 * @return the matching user
-	 * @throws NoSuchUserException if a matching user could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	 */
 	@Override
 	public User findByC_EA(long companyId, String emailAddress)
-		throws NoSuchUserException {
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = fetchByC_EA(companyId, emailAddress);
 
 		if (user == null) {
@@ -4564,7 +4581,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchUserException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchUserException(msg.toString());
 		}
 
 		return user;
@@ -4697,7 +4714,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 */
 	@Override
 	public User removeByC_EA(long companyId, String emailAddress)
-		throws NoSuchUserException {
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = findByC_EA(companyId, emailAddress);
 
 		return remove(user);
@@ -4789,16 +4806,16 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 			new String[] { Long.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the user where companyId = &#63; and facebookId = &#63; or throws a {@link NoSuchUserException} if it could not be found.
+	 * Returns the user where companyId = &#63; and facebookId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchUserException} if it could not be found.
 	 *
 	 * @param companyId the company ID
 	 * @param facebookId the facebook ID
 	 * @return the matching user
-	 * @throws NoSuchUserException if a matching user could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	 */
 	@Override
 	public User findByC_FID(long companyId, long facebookId)
-		throws NoSuchUserException {
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = fetchByC_FID(companyId, facebookId);
 
 		if (user == null) {
@@ -4818,7 +4835,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchUserException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchUserException(msg.toString());
 		}
 
 		return user;
@@ -4943,7 +4960,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 */
 	@Override
 	public User removeByC_FID(long companyId, long facebookId)
-		throws NoSuchUserException {
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = findByC_FID(companyId, facebookId);
 
 		return remove(user);
@@ -5019,16 +5036,16 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 			new String[] { Long.class.getName(), String.class.getName() });
 
 	/**
-	 * Returns the user where companyId = &#63; and openId = &#63; or throws a {@link NoSuchUserException} if it could not be found.
+	 * Returns the user where companyId = &#63; and openId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchUserException} if it could not be found.
 	 *
 	 * @param companyId the company ID
 	 * @param openId the open ID
 	 * @return the matching user
-	 * @throws NoSuchUserException if a matching user could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	 */
 	@Override
 	public User findByC_O(long companyId, String openId)
-		throws NoSuchUserException {
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = fetchByC_O(companyId, openId);
 
 		if (user == null) {
@@ -5048,7 +5065,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchUserException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchUserException(msg.toString());
 		}
 
 		return user;
@@ -5188,7 +5205,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 */
 	@Override
 	public User removeByC_O(long companyId, String openId)
-		throws NoSuchUserException {
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = findByC_O(companyId, openId);
 
 		return remove(user);
@@ -5472,11 +5489,12 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user
-	 * @throws NoSuchUserException if a matching user could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	 */
 	@Override
 	public User findByC_S_First(long companyId, int status,
-		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
+		OrderByComparator<User> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = fetchByC_S_First(companyId, status, orderByComparator);
 
 		if (user != null) {
@@ -5495,7 +5513,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserException(msg.toString());
 	}
 
 	/**
@@ -5525,11 +5543,12 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user
-	 * @throws NoSuchUserException if a matching user could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	 */
 	@Override
 	public User findByC_S_Last(long companyId, int status,
-		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
+		OrderByComparator<User> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = fetchByC_S_Last(companyId, status, orderByComparator);
 
 		if (user != null) {
@@ -5548,7 +5567,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserException(msg.toString());
 	}
 
 	/**
@@ -5586,12 +5605,12 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user
-	 * @throws NoSuchUserException if a user with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a user with the primary key could not be found
 	 */
 	@Override
 	public User[] findByC_S_PrevAndNext(long userId, long companyId,
 		int status, OrderByComparator<User> orderByComparator)
-		throws NoSuchUserException {
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = findByPrimaryKey(userId);
 
 		Session session = null;
@@ -6050,12 +6069,12 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param modifiedDate the modified date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user
-	 * @throws NoSuchUserException if a matching user could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	 */
 	@Override
 	public User findByC_CD_MD_First(long companyId, Date createDate,
 		Date modifiedDate, OrderByComparator<User> orderByComparator)
-		throws NoSuchUserException {
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = fetchByC_CD_MD_First(companyId, createDate, modifiedDate,
 				orderByComparator);
 
@@ -6078,7 +6097,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserException(msg.toString());
 	}
 
 	/**
@@ -6111,12 +6130,12 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param modifiedDate the modified date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user
-	 * @throws NoSuchUserException if a matching user could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	 */
 	@Override
 	public User findByC_CD_MD_Last(long companyId, Date createDate,
 		Date modifiedDate, OrderByComparator<User> orderByComparator)
-		throws NoSuchUserException {
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = fetchByC_CD_MD_Last(companyId, createDate, modifiedDate,
 				orderByComparator);
 
@@ -6139,7 +6158,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserException(msg.toString());
 	}
 
 	/**
@@ -6179,12 +6198,13 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param modifiedDate the modified date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user
-	 * @throws NoSuchUserException if a user with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a user with the primary key could not be found
 	 */
 	@Override
 	public User[] findByC_CD_MD_PrevAndNext(long userId, long companyId,
 		Date createDate, Date modifiedDate,
-		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
+		OrderByComparator<User> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = findByPrimaryKey(userId);
 
 		Session session = null;
@@ -6680,12 +6700,12 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user
-	 * @throws NoSuchUserException if a matching user could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	 */
 	@Override
 	public User findByC_DU_S_First(long companyId, boolean defaultUser,
 		int status, OrderByComparator<User> orderByComparator)
-		throws NoSuchUserException {
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = fetchByC_DU_S_First(companyId, defaultUser, status,
 				orderByComparator);
 
@@ -6708,7 +6728,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserException(msg.toString());
 	}
 
 	/**
@@ -6741,12 +6761,12 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user
-	 * @throws NoSuchUserException if a matching user could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a matching user could not be found
 	 */
 	@Override
 	public User findByC_DU_S_Last(long companyId, boolean defaultUser,
 		int status, OrderByComparator<User> orderByComparator)
-		throws NoSuchUserException {
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = fetchByC_DU_S_Last(companyId, defaultUser, status,
 				orderByComparator);
 
@@ -6769,7 +6789,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserException(msg.toString());
 	}
 
 	/**
@@ -6809,12 +6829,13 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user
-	 * @throws NoSuchUserException if a user with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a user with the primary key could not be found
 	 */
 	@Override
 	public User[] findByC_DU_S_PrevAndNext(long userId, long companyId,
 		boolean defaultUser, int status,
-		OrderByComparator<User> orderByComparator) throws NoSuchUserException {
+		OrderByComparator<User> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = findByPrimaryKey(userId);
 
 		Session session = null;
@@ -7471,10 +7492,11 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param userId the primary key of the user
 	 * @return the user that was removed
-	 * @throws NoSuchUserException if a user with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a user with the primary key could not be found
 	 */
 	@Override
-	public User remove(long userId) throws NoSuchUserException {
+	public User remove(long userId)
+		throws com.liferay.portal.exception.NoSuchUserException {
 		return remove((Serializable)userId);
 	}
 
@@ -7483,10 +7505,11 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param primaryKey the primary key of the user
 	 * @return the user that was removed
-	 * @throws NoSuchUserException if a user with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a user with the primary key could not be found
 	 */
 	@Override
-	public User remove(Serializable primaryKey) throws NoSuchUserException {
+	public User remove(Serializable primaryKey)
+		throws com.liferay.portal.exception.NoSuchUserException {
 		Session session = null;
 
 		try {
@@ -7499,13 +7522,13 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchUserException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchUserException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(user);
 		}
-		catch (NoSuchUserException nsee) {
+		catch (com.liferay.portal.exception.NoSuchUserException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -7870,11 +7893,11 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	 *
 	 * @param primaryKey the primary key of the user
 	 * @return the user
-	 * @throws NoSuchUserException if a user with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a user with the primary key could not be found
 	 */
 	@Override
 	public User findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchUserException {
+		throws com.liferay.portal.exception.NoSuchUserException {
 		User user = fetchByPrimaryKey(primaryKey);
 
 		if (user == null) {
@@ -7882,7 +7905,7 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchUserException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchUserException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -7890,14 +7913,15 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	}
 
 	/**
-	 * Returns the user with the primary key or throws a {@link NoSuchUserException} if it could not be found.
+	 * Returns the user with the primary key or throws a {@link com.liferay.portal.exception.NoSuchUserException} if it could not be found.
 	 *
 	 * @param userId the primary key of the user
 	 * @return the user
-	 * @throws NoSuchUserException if a user with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserException if a user with the primary key could not be found
 	 */
 	@Override
-	public User findByPrimaryKey(long userId) throws NoSuchUserException {
+	public User findByPrimaryKey(long userId)
+		throws com.liferay.portal.exception.NoSuchUserException {
 		return findByPrimaryKey((Serializable)userId);
 	}
 

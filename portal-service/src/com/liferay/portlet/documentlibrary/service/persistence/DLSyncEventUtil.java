@@ -184,7 +184,7 @@ public class DLSyncEventUtil {
 	* @param modifiedTime the modified time
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching d l sync event
-	* @throws NoSuchSyncEventException if a matching d l sync event could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchSyncEventException if a matching d l sync event could not be found
 	*/
 	public static DLSyncEvent findByModifiedTime_First(long modifiedTime,
 		OrderByComparator<DLSyncEvent> orderByComparator)
@@ -212,7 +212,7 @@ public class DLSyncEventUtil {
 	* @param modifiedTime the modified time
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching d l sync event
-	* @throws NoSuchSyncEventException if a matching d l sync event could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchSyncEventException if a matching d l sync event could not be found
 	*/
 	public static DLSyncEvent findByModifiedTime_Last(long modifiedTime,
 		OrderByComparator<DLSyncEvent> orderByComparator)
@@ -241,7 +241,7 @@ public class DLSyncEventUtil {
 	* @param modifiedTime the modified time
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next d l sync event
-	* @throws NoSuchSyncEventException if a d l sync event with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchSyncEventException if a d l sync event with the primary key could not be found
 	*/
 	public static DLSyncEvent[] findByModifiedTime_PrevAndNext(
 		long syncEventId, long modifiedTime,
@@ -272,11 +272,11 @@ public class DLSyncEventUtil {
 	}
 
 	/**
-	* Returns the d l sync event where typePK = &#63; or throws a {@link NoSuchSyncEventException} if it could not be found.
+	* Returns the d l sync event where typePK = &#63; or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchSyncEventException} if it could not be found.
 	*
 	* @param typePK the type p k
 	* @return the matching d l sync event
-	* @throws NoSuchSyncEventException if a matching d l sync event could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchSyncEventException if a matching d l sync event could not be found
 	*/
 	public static DLSyncEvent findByTypePK(long typePK)
 		throws com.liferay.portlet.documentlibrary.exception.NoSuchSyncEventException {
@@ -359,7 +359,7 @@ public class DLSyncEventUtil {
 	*
 	* @param syncEventId the primary key of the d l sync event
 	* @return the d l sync event that was removed
-	* @throws NoSuchSyncEventException if a d l sync event with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchSyncEventException if a d l sync event with the primary key could not be found
 	*/
 	public static DLSyncEvent remove(long syncEventId)
 		throws com.liferay.portlet.documentlibrary.exception.NoSuchSyncEventException {
@@ -371,11 +371,11 @@ public class DLSyncEventUtil {
 	}
 
 	/**
-	* Returns the d l sync event with the primary key or throws a {@link NoSuchSyncEventException} if it could not be found.
+	* Returns the d l sync event with the primary key or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchSyncEventException} if it could not be found.
 	*
 	* @param syncEventId the primary key of the d l sync event
 	* @return the d l sync event
-	* @throws NoSuchSyncEventException if a d l sync event with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchSyncEventException if a d l sync event with the primary key could not be found
 	*/
 	public static DLSyncEvent findByPrimaryKey(long syncEventId)
 		throws com.liferay.portlet.documentlibrary.exception.NoSuchSyncEventException {

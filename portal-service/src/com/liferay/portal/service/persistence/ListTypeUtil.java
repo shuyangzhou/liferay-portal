@@ -180,7 +180,7 @@ public class ListTypeUtil {
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching list type
-	* @throws NoSuchListTypeException if a matching list type could not be found
+	* @throws com.liferay.portal.exception.NoSuchListTypeException if a matching list type could not be found
 	*/
 	public static ListType findByType_First(java.lang.String type,
 		OrderByComparator<ListType> orderByComparator)
@@ -206,7 +206,7 @@ public class ListTypeUtil {
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching list type
-	* @throws NoSuchListTypeException if a matching list type could not be found
+	* @throws com.liferay.portal.exception.NoSuchListTypeException if a matching list type could not be found
 	*/
 	public static ListType findByType_Last(java.lang.String type,
 		OrderByComparator<ListType> orderByComparator)
@@ -233,7 +233,7 @@ public class ListTypeUtil {
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next list type
-	* @throws NoSuchListTypeException if a list type with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchListTypeException if a list type with the primary key could not be found
 	*/
 	public static ListType[] findByType_PrevAndNext(long listTypeId,
 		java.lang.String type, OrderByComparator<ListType> orderByComparator)
@@ -262,12 +262,12 @@ public class ListTypeUtil {
 	}
 
 	/**
-	* Returns the list type where name = &#63; and type = &#63; or throws a {@link NoSuchListTypeException} if it could not be found.
+	* Returns the list type where name = &#63; and type = &#63; or throws a {@link com.liferay.portal.exception.NoSuchListTypeException} if it could not be found.
 	*
 	* @param name the name
 	* @param type the type
 	* @return the matching list type
-	* @throws NoSuchListTypeException if a matching list type could not be found
+	* @throws com.liferay.portal.exception.NoSuchListTypeException if a matching list type could not be found
 	*/
 	public static ListType findByN_T(java.lang.String name,
 		java.lang.String type)
@@ -357,7 +357,7 @@ public class ListTypeUtil {
 	*
 	* @param listTypeId the primary key of the list type
 	* @return the list type that was removed
-	* @throws NoSuchListTypeException if a list type with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchListTypeException if a list type with the primary key could not be found
 	*/
 	public static ListType remove(long listTypeId)
 		throws com.liferay.portal.exception.NoSuchListTypeException {
@@ -369,11 +369,11 @@ public class ListTypeUtil {
 	}
 
 	/**
-	* Returns the list type with the primary key or throws a {@link NoSuchListTypeException} if it could not be found.
+	* Returns the list type with the primary key or throws a {@link com.liferay.portal.exception.NoSuchListTypeException} if it could not be found.
 	*
 	* @param listTypeId the primary key of the list type
 	* @return the list type
-	* @throws NoSuchListTypeException if a list type with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchListTypeException if a list type with the primary key could not be found
 	*/
 	public static ListType findByPrimaryKey(long listTypeId)
 		throws com.liferay.portal.exception.NoSuchListTypeException {

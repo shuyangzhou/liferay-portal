@@ -105,7 +105,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library file entry
-	* @throws NoSuchFileEntryException if a matching document library file entry could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a matching document library file entry could not be found
 	*/
 	public DLFileEntry findByUuid_First(java.lang.String uuid,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFileEntry> orderByComparator)
@@ -127,7 +127,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library file entry
-	* @throws NoSuchFileEntryException if a matching document library file entry could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a matching document library file entry could not be found
 	*/
 	public DLFileEntry findByUuid_Last(java.lang.String uuid,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFileEntry> orderByComparator)
@@ -150,7 +150,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library file entry
-	* @throws NoSuchFileEntryException if a document library file entry with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a document library file entry with the primary key could not be found
 	*/
 	public DLFileEntry[] findByUuid_PrevAndNext(long fileEntryId,
 		java.lang.String uuid,
@@ -173,12 +173,12 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	public int countByUuid(java.lang.String uuid);
 
 	/**
-	* Returns the document library file entry where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchFileEntryException} if it could not be found.
+	* Returns the document library file entry where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException} if it could not be found.
 	*
 	* @param uuid the uuid
 	* @param groupId the group ID
 	* @return the matching document library file entry
-	* @throws NoSuchFileEntryException if a matching document library file entry could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a matching document library file entry could not be found
 	*/
 	public DLFileEntry findByUUID_G(java.lang.String uuid, long groupId)
 		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException;
@@ -293,7 +293,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library file entry
-	* @throws NoSuchFileEntryException if a matching document library file entry could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a matching document library file entry could not be found
 	*/
 	public DLFileEntry findByUuid_C_First(java.lang.String uuid,
 		long companyId,
@@ -319,7 +319,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library file entry
-	* @throws NoSuchFileEntryException if a matching document library file entry could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a matching document library file entry could not be found
 	*/
 	public DLFileEntry findByUuid_C_Last(java.lang.String uuid, long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFileEntry> orderByComparator)
@@ -345,7 +345,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library file entry
-	* @throws NoSuchFileEntryException if a document library file entry with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a document library file entry with the primary key could not be found
 	*/
 	public DLFileEntry[] findByUuid_C_PrevAndNext(long fileEntryId,
 		java.lang.String uuid, long companyId,
@@ -434,7 +434,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library file entry
-	* @throws NoSuchFileEntryException if a matching document library file entry could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a matching document library file entry could not be found
 	*/
 	public DLFileEntry findByGroupId_First(long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFileEntry> orderByComparator)
@@ -456,7 +456,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library file entry
-	* @throws NoSuchFileEntryException if a matching document library file entry could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a matching document library file entry could not be found
 	*/
 	public DLFileEntry findByGroupId_Last(long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFileEntry> orderByComparator)
@@ -479,7 +479,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library file entry
-	* @throws NoSuchFileEntryException if a document library file entry with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a document library file entry with the primary key could not be found
 	*/
 	public DLFileEntry[] findByGroupId_PrevAndNext(long fileEntryId,
 		long groupId,
@@ -533,7 +533,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library file entry
-	* @throws NoSuchFileEntryException if a document library file entry with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a document library file entry with the primary key could not be found
 	*/
 	public DLFileEntry[] filterFindByGroupId_PrevAndNext(long fileEntryId,
 		long groupId,
@@ -628,7 +628,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library file entry
-	* @throws NoSuchFileEntryException if a matching document library file entry could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a matching document library file entry could not be found
 	*/
 	public DLFileEntry findByCompanyId_First(long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFileEntry> orderByComparator)
@@ -650,7 +650,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library file entry
-	* @throws NoSuchFileEntryException if a matching document library file entry could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a matching document library file entry could not be found
 	*/
 	public DLFileEntry findByCompanyId_Last(long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFileEntry> orderByComparator)
@@ -673,7 +673,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library file entry
-	* @throws NoSuchFileEntryException if a document library file entry with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a document library file entry with the primary key could not be found
 	*/
 	public DLFileEntry[] findByCompanyId_PrevAndNext(long fileEntryId,
 		long companyId,
@@ -760,7 +760,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param repositoryId the repository ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library file entry
-	* @throws NoSuchFileEntryException if a matching document library file entry could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a matching document library file entry could not be found
 	*/
 	public DLFileEntry findByRepositoryId_First(long repositoryId,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFileEntry> orderByComparator)
@@ -782,7 +782,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param repositoryId the repository ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library file entry
-	* @throws NoSuchFileEntryException if a matching document library file entry could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a matching document library file entry could not be found
 	*/
 	public DLFileEntry findByRepositoryId_Last(long repositoryId,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFileEntry> orderByComparator)
@@ -805,7 +805,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param repositoryId the repository ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library file entry
-	* @throws NoSuchFileEntryException if a document library file entry with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a document library file entry with the primary key could not be found
 	*/
 	public DLFileEntry[] findByRepositoryId_PrevAndNext(long fileEntryId,
 		long repositoryId,
@@ -892,7 +892,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param mimeType the mime type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library file entry
-	* @throws NoSuchFileEntryException if a matching document library file entry could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a matching document library file entry could not be found
 	*/
 	public DLFileEntry findByMimeType_First(java.lang.String mimeType,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFileEntry> orderByComparator)
@@ -914,7 +914,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param mimeType the mime type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library file entry
-	* @throws NoSuchFileEntryException if a matching document library file entry could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a matching document library file entry could not be found
 	*/
 	public DLFileEntry findByMimeType_Last(java.lang.String mimeType,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFileEntry> orderByComparator)
@@ -937,7 +937,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param mimeType the mime type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library file entry
-	* @throws NoSuchFileEntryException if a document library file entry with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a document library file entry with the primary key could not be found
 	*/
 	public DLFileEntry[] findByMimeType_PrevAndNext(long fileEntryId,
 		java.lang.String mimeType,
@@ -1025,7 +1025,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param fileEntryTypeId the file entry type ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library file entry
-	* @throws NoSuchFileEntryException if a matching document library file entry could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a matching document library file entry could not be found
 	*/
 	public DLFileEntry findByFileEntryTypeId_First(long fileEntryTypeId,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFileEntry> orderByComparator)
@@ -1047,7 +1047,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param fileEntryTypeId the file entry type ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library file entry
-	* @throws NoSuchFileEntryException if a matching document library file entry could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a matching document library file entry could not be found
 	*/
 	public DLFileEntry findByFileEntryTypeId_Last(long fileEntryTypeId,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFileEntry> orderByComparator)
@@ -1070,7 +1070,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param fileEntryTypeId the file entry type ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library file entry
-	* @throws NoSuchFileEntryException if a document library file entry with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a document library file entry with the primary key could not be found
 	*/
 	public DLFileEntry[] findByFileEntryTypeId_PrevAndNext(long fileEntryId,
 		long fileEntryTypeId,
@@ -1162,7 +1162,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library file entry
-	* @throws NoSuchFileEntryException if a matching document library file entry could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a matching document library file entry could not be found
 	*/
 	public DLFileEntry findByG_U_First(long groupId, long userId,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFileEntry> orderByComparator)
@@ -1186,7 +1186,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library file entry
-	* @throws NoSuchFileEntryException if a matching document library file entry could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a matching document library file entry could not be found
 	*/
 	public DLFileEntry findByG_U_Last(long groupId, long userId,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFileEntry> orderByComparator)
@@ -1211,7 +1211,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library file entry
-	* @throws NoSuchFileEntryException if a document library file entry with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a document library file entry with the primary key could not be found
 	*/
 	public DLFileEntry[] findByG_U_PrevAndNext(long fileEntryId, long groupId,
 		long userId,
@@ -1269,7 +1269,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library file entry
-	* @throws NoSuchFileEntryException if a document library file entry with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a document library file entry with the primary key could not be found
 	*/
 	public DLFileEntry[] filterFindByG_U_PrevAndNext(long fileEntryId,
 		long groupId, long userId,
@@ -1372,7 +1372,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param folderId the folder ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library file entry
-	* @throws NoSuchFileEntryException if a matching document library file entry could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a matching document library file entry could not be found
 	*/
 	public DLFileEntry findByG_F_First(long groupId, long folderId,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFileEntry> orderByComparator)
@@ -1396,7 +1396,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param folderId the folder ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library file entry
-	* @throws NoSuchFileEntryException if a matching document library file entry could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a matching document library file entry could not be found
 	*/
 	public DLFileEntry findByG_F_Last(long groupId, long folderId,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFileEntry> orderByComparator)
@@ -1421,7 +1421,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param folderId the folder ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library file entry
-	* @throws NoSuchFileEntryException if a document library file entry with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a document library file entry with the primary key could not be found
 	*/
 	public DLFileEntry[] findByG_F_PrevAndNext(long fileEntryId, long groupId,
 		long folderId,
@@ -1480,7 +1480,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param folderId the folder ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library file entry
-	* @throws NoSuchFileEntryException if a document library file entry with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a document library file entry with the primary key could not be found
 	*/
 	public DLFileEntry[] filterFindByG_F_PrevAndNext(long fileEntryId,
 		long groupId, long folderId,
@@ -1713,7 +1713,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param folderId the folder ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library file entry
-	* @throws NoSuchFileEntryException if a matching document library file entry could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a matching document library file entry could not be found
 	*/
 	public DLFileEntry findByR_F_First(long repositoryId, long folderId,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFileEntry> orderByComparator)
@@ -1737,7 +1737,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param folderId the folder ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library file entry
-	* @throws NoSuchFileEntryException if a matching document library file entry could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a matching document library file entry could not be found
 	*/
 	public DLFileEntry findByR_F_Last(long repositoryId, long folderId,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFileEntry> orderByComparator)
@@ -1762,7 +1762,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param folderId the folder ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library file entry
-	* @throws NoSuchFileEntryException if a document library file entry with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a document library file entry with the primary key could not be found
 	*/
 	public DLFileEntry[] findByR_F_PrevAndNext(long fileEntryId,
 		long repositoryId, long folderId,
@@ -1857,7 +1857,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param name the name
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library file entry
-	* @throws NoSuchFileEntryException if a matching document library file entry could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a matching document library file entry could not be found
 	*/
 	public DLFileEntry findByF_N_First(long folderId, java.lang.String name,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFileEntry> orderByComparator)
@@ -1881,7 +1881,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param name the name
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library file entry
-	* @throws NoSuchFileEntryException if a matching document library file entry could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a matching document library file entry could not be found
 	*/
 	public DLFileEntry findByF_N_Last(long folderId, java.lang.String name,
 		com.liferay.portal.kernel.util.OrderByComparator<DLFileEntry> orderByComparator)
@@ -1906,7 +1906,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param name the name
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library file entry
-	* @throws NoSuchFileEntryException if a document library file entry with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a document library file entry with the primary key could not be found
 	*/
 	public DLFileEntry[] findByF_N_PrevAndNext(long fileEntryId, long folderId,
 		java.lang.String name,
@@ -2006,7 +2006,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param folderId the folder ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library file entry
-	* @throws NoSuchFileEntryException if a matching document library file entry could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a matching document library file entry could not be found
 	*/
 	public DLFileEntry findByG_U_F_First(long groupId, long userId,
 		long folderId,
@@ -2034,7 +2034,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param folderId the folder ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library file entry
-	* @throws NoSuchFileEntryException if a matching document library file entry could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a matching document library file entry could not be found
 	*/
 	public DLFileEntry findByG_U_F_Last(long groupId, long userId,
 		long folderId,
@@ -2063,7 +2063,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param folderId the folder ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library file entry
-	* @throws NoSuchFileEntryException if a document library file entry with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a document library file entry with the primary key could not be found
 	*/
 	public DLFileEntry[] findByG_U_F_PrevAndNext(long fileEntryId,
 		long groupId, long userId, long folderId,
@@ -2126,7 +2126,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param folderId the folder ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library file entry
-	* @throws NoSuchFileEntryException if a document library file entry with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a document library file entry with the primary key could not be found
 	*/
 	public DLFileEntry[] filterFindByG_U_F_PrevAndNext(long fileEntryId,
 		long groupId, long userId, long folderId,
@@ -2302,13 +2302,13 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	public int filterCountByG_U_F(long groupId, long userId, long[] folderIds);
 
 	/**
-	* Returns the document library file entry where groupId = &#63; and folderId = &#63; and name = &#63; or throws a {@link NoSuchFileEntryException} if it could not be found.
+	* Returns the document library file entry where groupId = &#63; and folderId = &#63; and name = &#63; or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException} if it could not be found.
 	*
 	* @param groupId the group ID
 	* @param folderId the folder ID
 	* @param name the name
 	* @return the matching document library file entry
-	* @throws NoSuchFileEntryException if a matching document library file entry could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a matching document library file entry could not be found
 	*/
 	public DLFileEntry findByG_F_N(long groupId, long folderId,
 		java.lang.String name)
@@ -2360,13 +2360,13 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	public int countByG_F_N(long groupId, long folderId, java.lang.String name);
 
 	/**
-	* Returns the document library file entry where groupId = &#63; and folderId = &#63; and fileName = &#63; or throws a {@link NoSuchFileEntryException} if it could not be found.
+	* Returns the document library file entry where groupId = &#63; and folderId = &#63; and fileName = &#63; or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException} if it could not be found.
 	*
 	* @param groupId the group ID
 	* @param folderId the folder ID
 	* @param fileName the file name
 	* @return the matching document library file entry
-	* @throws NoSuchFileEntryException if a matching document library file entry could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a matching document library file entry could not be found
 	*/
 	public DLFileEntry findByG_F_FN(long groupId, long folderId,
 		java.lang.String fileName)
@@ -2419,13 +2419,13 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 		java.lang.String fileName);
 
 	/**
-	* Returns the document library file entry where groupId = &#63; and folderId = &#63; and title = &#63; or throws a {@link NoSuchFileEntryException} if it could not be found.
+	* Returns the document library file entry where groupId = &#63; and folderId = &#63; and title = &#63; or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException} if it could not be found.
 	*
 	* @param groupId the group ID
 	* @param folderId the folder ID
 	* @param title the title
 	* @return the matching document library file entry
-	* @throws NoSuchFileEntryException if a matching document library file entry could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a matching document library file entry could not be found
 	*/
 	public DLFileEntry findByG_F_T(long groupId, long folderId,
 		java.lang.String title)
@@ -2552,7 +2552,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param fileEntryTypeId the file entry type ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching document library file entry
-	* @throws NoSuchFileEntryException if a matching document library file entry could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a matching document library file entry could not be found
 	*/
 	public DLFileEntry findByG_F_F_First(long groupId, long folderId,
 		long fileEntryTypeId,
@@ -2580,7 +2580,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param fileEntryTypeId the file entry type ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching document library file entry
-	* @throws NoSuchFileEntryException if a matching document library file entry could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a matching document library file entry could not be found
 	*/
 	public DLFileEntry findByG_F_F_Last(long groupId, long folderId,
 		long fileEntryTypeId,
@@ -2609,7 +2609,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param fileEntryTypeId the file entry type ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library file entry
-	* @throws NoSuchFileEntryException if a document library file entry with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a document library file entry with the primary key could not be found
 	*/
 	public DLFileEntry[] findByG_F_F_PrevAndNext(long fileEntryId,
 		long groupId, long folderId, long fileEntryTypeId,
@@ -2672,7 +2672,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	* @param fileEntryTypeId the file entry type ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next document library file entry
-	* @throws NoSuchFileEntryException if a document library file entry with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a document library file entry with the primary key could not be found
 	*/
 	public DLFileEntry[] filterFindByG_F_F_PrevAndNext(long fileEntryId,
 		long groupId, long folderId, long fileEntryTypeId,
@@ -2876,7 +2876,7 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	*
 	* @param fileEntryId the primary key of the document library file entry
 	* @return the document library file entry that was removed
-	* @throws NoSuchFileEntryException if a document library file entry with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a document library file entry with the primary key could not be found
 	*/
 	public DLFileEntry remove(long fileEntryId)
 		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException;
@@ -2884,11 +2884,11 @@ public interface DLFileEntryPersistence extends BasePersistence<DLFileEntry> {
 	public DLFileEntry updateImpl(DLFileEntry dlFileEntry);
 
 	/**
-	* Returns the document library file entry with the primary key or throws a {@link NoSuchFileEntryException} if it could not be found.
+	* Returns the document library file entry with the primary key or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException} if it could not be found.
 	*
 	* @param fileEntryId the primary key of the document library file entry
 	* @return the document library file entry
-	* @throws NoSuchFileEntryException if a document library file entry with the primary key could not be found
+	* @throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException if a document library file entry with the primary key could not be found
 	*/
 	public DLFileEntry findByPrimaryKey(long fileEntryId)
 		throws com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException;

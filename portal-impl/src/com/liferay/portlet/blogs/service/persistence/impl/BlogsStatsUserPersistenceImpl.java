@@ -37,7 +37,6 @@ import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
-import com.liferay.portlet.blogs.exception.NoSuchStatsUserException;
 import com.liferay.portlet.blogs.model.BlogsStatsUser;
 import com.liferay.portlet.blogs.model.impl.BlogsStatsUserImpl;
 import com.liferay.portlet.blogs.model.impl.BlogsStatsUserModelImpl;
@@ -285,12 +284,12 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching blogs stats user
-	 * @throws NoSuchStatsUserException if a matching blogs stats user could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException if a matching blogs stats user could not be found
 	 */
 	@Override
 	public BlogsStatsUser findByGroupId_First(long groupId,
 		OrderByComparator<BlogsStatsUser> orderByComparator)
-		throws NoSuchStatsUserException {
+		throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException {
 		BlogsStatsUser blogsStatsUser = fetchByGroupId_First(groupId,
 				orderByComparator);
 
@@ -307,7 +306,7 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchStatsUserException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchStatsUserException(msg.toString());
 	}
 
 	/**
@@ -336,12 +335,12 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching blogs stats user
-	 * @throws NoSuchStatsUserException if a matching blogs stats user could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException if a matching blogs stats user could not be found
 	 */
 	@Override
 	public BlogsStatsUser findByGroupId_Last(long groupId,
 		OrderByComparator<BlogsStatsUser> orderByComparator)
-		throws NoSuchStatsUserException {
+		throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException {
 		BlogsStatsUser blogsStatsUser = fetchByGroupId_Last(groupId,
 				orderByComparator);
 
@@ -358,7 +357,7 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchStatsUserException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchStatsUserException(msg.toString());
 	}
 
 	/**
@@ -394,12 +393,12 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs stats user
-	 * @throws NoSuchStatsUserException if a blogs stats user with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException if a blogs stats user with the primary key could not be found
 	 */
 	@Override
 	public BlogsStatsUser[] findByGroupId_PrevAndNext(long statsUserId,
 		long groupId, OrderByComparator<BlogsStatsUser> orderByComparator)
-		throws NoSuchStatsUserException {
+		throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException {
 		BlogsStatsUser blogsStatsUser = findByPrimaryKey(statsUserId);
 
 		Session session = null;
@@ -791,12 +790,12 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching blogs stats user
-	 * @throws NoSuchStatsUserException if a matching blogs stats user could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException if a matching blogs stats user could not be found
 	 */
 	@Override
 	public BlogsStatsUser findByUserId_First(long userId,
 		OrderByComparator<BlogsStatsUser> orderByComparator)
-		throws NoSuchStatsUserException {
+		throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException {
 		BlogsStatsUser blogsStatsUser = fetchByUserId_First(userId,
 				orderByComparator);
 
@@ -813,7 +812,7 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchStatsUserException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchStatsUserException(msg.toString());
 	}
 
 	/**
@@ -841,12 +840,12 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching blogs stats user
-	 * @throws NoSuchStatsUserException if a matching blogs stats user could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException if a matching blogs stats user could not be found
 	 */
 	@Override
 	public BlogsStatsUser findByUserId_Last(long userId,
 		OrderByComparator<BlogsStatsUser> orderByComparator)
-		throws NoSuchStatsUserException {
+		throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException {
 		BlogsStatsUser blogsStatsUser = fetchByUserId_Last(userId,
 				orderByComparator);
 
@@ -863,7 +862,7 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchStatsUserException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchStatsUserException(msg.toString());
 	}
 
 	/**
@@ -899,12 +898,12 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs stats user
-	 * @throws NoSuchStatsUserException if a blogs stats user with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException if a blogs stats user with the primary key could not be found
 	 */
 	@Override
 	public BlogsStatsUser[] findByUserId_PrevAndNext(long statsUserId,
 		long userId, OrderByComparator<BlogsStatsUser> orderByComparator)
-		throws NoSuchStatsUserException {
+		throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException {
 		BlogsStatsUser blogsStatsUser = findByPrimaryKey(statsUserId);
 
 		Session session = null;
@@ -1115,16 +1114,16 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 			new String[] { Long.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the blogs stats user where groupId = &#63; and userId = &#63; or throws a {@link NoSuchStatsUserException} if it could not be found.
+	 * Returns the blogs stats user where groupId = &#63; and userId = &#63; or throws a {@link com.liferay.portlet.blogs.exception.NoSuchStatsUserException} if it could not be found.
 	 *
 	 * @param groupId the group ID
 	 * @param userId the user ID
 	 * @return the matching blogs stats user
-	 * @throws NoSuchStatsUserException if a matching blogs stats user could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException if a matching blogs stats user could not be found
 	 */
 	@Override
 	public BlogsStatsUser findByG_U(long groupId, long userId)
-		throws NoSuchStatsUserException {
+		throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException {
 		BlogsStatsUser blogsStatsUser = fetchByG_U(groupId, userId);
 
 		if (blogsStatsUser == null) {
@@ -1144,7 +1143,7 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchStatsUserException(msg.toString());
+			throw new com.liferay.portlet.blogs.exception.NoSuchStatsUserException(msg.toString());
 		}
 
 		return blogsStatsUser;
@@ -1262,7 +1261,7 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 	 */
 	@Override
 	public BlogsStatsUser removeByG_U(long groupId, long userId)
-		throws NoSuchStatsUserException {
+		throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException {
 		BlogsStatsUser blogsStatsUser = findByG_U(groupId, userId);
 
 		return remove(blogsStatsUser);
@@ -1521,12 +1520,12 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 	 * @param entryCount the entry count
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching blogs stats user
-	 * @throws NoSuchStatsUserException if a matching blogs stats user could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException if a matching blogs stats user could not be found
 	 */
 	@Override
 	public BlogsStatsUser findByG_NotE_First(long groupId, int entryCount,
 		OrderByComparator<BlogsStatsUser> orderByComparator)
-		throws NoSuchStatsUserException {
+		throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException {
 		BlogsStatsUser blogsStatsUser = fetchByG_NotE_First(groupId,
 				entryCount, orderByComparator);
 
@@ -1546,7 +1545,7 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchStatsUserException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchStatsUserException(msg.toString());
 	}
 
 	/**
@@ -1577,12 +1576,12 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 	 * @param entryCount the entry count
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching blogs stats user
-	 * @throws NoSuchStatsUserException if a matching blogs stats user could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException if a matching blogs stats user could not be found
 	 */
 	@Override
 	public BlogsStatsUser findByG_NotE_Last(long groupId, int entryCount,
 		OrderByComparator<BlogsStatsUser> orderByComparator)
-		throws NoSuchStatsUserException {
+		throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException {
 		BlogsStatsUser blogsStatsUser = fetchByG_NotE_Last(groupId, entryCount,
 				orderByComparator);
 
@@ -1602,7 +1601,7 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchStatsUserException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchStatsUserException(msg.toString());
 	}
 
 	/**
@@ -1640,13 +1639,13 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 	 * @param entryCount the entry count
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs stats user
-	 * @throws NoSuchStatsUserException if a blogs stats user with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException if a blogs stats user with the primary key could not be found
 	 */
 	@Override
 	public BlogsStatsUser[] findByG_NotE_PrevAndNext(long statsUserId,
 		long groupId, int entryCount,
 		OrderByComparator<BlogsStatsUser> orderByComparator)
-		throws NoSuchStatsUserException {
+		throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException {
 		BlogsStatsUser blogsStatsUser = findByPrimaryKey(statsUserId);
 
 		Session session = null;
@@ -2051,12 +2050,12 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 	 * @param entryCount the entry count
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching blogs stats user
-	 * @throws NoSuchStatsUserException if a matching blogs stats user could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException if a matching blogs stats user could not be found
 	 */
 	@Override
 	public BlogsStatsUser findByC_NotE_First(long companyId, int entryCount,
 		OrderByComparator<BlogsStatsUser> orderByComparator)
-		throws NoSuchStatsUserException {
+		throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException {
 		BlogsStatsUser blogsStatsUser = fetchByC_NotE_First(companyId,
 				entryCount, orderByComparator);
 
@@ -2076,7 +2075,7 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchStatsUserException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchStatsUserException(msg.toString());
 	}
 
 	/**
@@ -2107,12 +2106,12 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 	 * @param entryCount the entry count
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching blogs stats user
-	 * @throws NoSuchStatsUserException if a matching blogs stats user could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException if a matching blogs stats user could not be found
 	 */
 	@Override
 	public BlogsStatsUser findByC_NotE_Last(long companyId, int entryCount,
 		OrderByComparator<BlogsStatsUser> orderByComparator)
-		throws NoSuchStatsUserException {
+		throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException {
 		BlogsStatsUser blogsStatsUser = fetchByC_NotE_Last(companyId,
 				entryCount, orderByComparator);
 
@@ -2132,7 +2131,7 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchStatsUserException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchStatsUserException(msg.toString());
 	}
 
 	/**
@@ -2170,13 +2169,13 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 	 * @param entryCount the entry count
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs stats user
-	 * @throws NoSuchStatsUserException if a blogs stats user with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException if a blogs stats user with the primary key could not be found
 	 */
 	@Override
 	public BlogsStatsUser[] findByC_NotE_PrevAndNext(long statsUserId,
 		long companyId, int entryCount,
 		OrderByComparator<BlogsStatsUser> orderByComparator)
-		throws NoSuchStatsUserException {
+		throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException {
 		BlogsStatsUser blogsStatsUser = findByPrimaryKey(statsUserId);
 
 		Session session = null;
@@ -2609,12 +2608,12 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 	 * @param lastPostDate the last post date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching blogs stats user
-	 * @throws NoSuchStatsUserException if a matching blogs stats user could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException if a matching blogs stats user could not be found
 	 */
 	@Override
 	public BlogsStatsUser findByU_L_First(long userId, Date lastPostDate,
 		OrderByComparator<BlogsStatsUser> orderByComparator)
-		throws NoSuchStatsUserException {
+		throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException {
 		BlogsStatsUser blogsStatsUser = fetchByU_L_First(userId, lastPostDate,
 				orderByComparator);
 
@@ -2634,7 +2633,7 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchStatsUserException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchStatsUserException(msg.toString());
 	}
 
 	/**
@@ -2665,12 +2664,12 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 	 * @param lastPostDate the last post date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching blogs stats user
-	 * @throws NoSuchStatsUserException if a matching blogs stats user could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException if a matching blogs stats user could not be found
 	 */
 	@Override
 	public BlogsStatsUser findByU_L_Last(long userId, Date lastPostDate,
 		OrderByComparator<BlogsStatsUser> orderByComparator)
-		throws NoSuchStatsUserException {
+		throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException {
 		BlogsStatsUser blogsStatsUser = fetchByU_L_Last(userId, lastPostDate,
 				orderByComparator);
 
@@ -2690,7 +2689,7 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchStatsUserException(msg.toString());
+		throw new com.liferay.portlet.blogs.exception.NoSuchStatsUserException(msg.toString());
 	}
 
 	/**
@@ -2728,13 +2727,13 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 	 * @param lastPostDate the last post date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next blogs stats user
-	 * @throws NoSuchStatsUserException if a blogs stats user with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException if a blogs stats user with the primary key could not be found
 	 */
 	@Override
 	public BlogsStatsUser[] findByU_L_PrevAndNext(long statsUserId,
 		long userId, Date lastPostDate,
 		OrderByComparator<BlogsStatsUser> orderByComparator)
-		throws NoSuchStatsUserException {
+		throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException {
 		BlogsStatsUser blogsStatsUser = findByPrimaryKey(statsUserId);
 
 		Session session = null;
@@ -3130,11 +3129,11 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 	 *
 	 * @param statsUserId the primary key of the blogs stats user
 	 * @return the blogs stats user that was removed
-	 * @throws NoSuchStatsUserException if a blogs stats user with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException if a blogs stats user with the primary key could not be found
 	 */
 	@Override
 	public BlogsStatsUser remove(long statsUserId)
-		throws NoSuchStatsUserException {
+		throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException {
 		return remove((Serializable)statsUserId);
 	}
 
@@ -3143,11 +3142,11 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 	 *
 	 * @param primaryKey the primary key of the blogs stats user
 	 * @return the blogs stats user that was removed
-	 * @throws NoSuchStatsUserException if a blogs stats user with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException if a blogs stats user with the primary key could not be found
 	 */
 	@Override
 	public BlogsStatsUser remove(Serializable primaryKey)
-		throws NoSuchStatsUserException {
+		throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException {
 		Session session = null;
 
 		try {
@@ -3161,13 +3160,13 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchStatsUserException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portlet.blogs.exception.NoSuchStatsUserException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(blogsStatsUser);
 		}
-		catch (NoSuchStatsUserException nsee) {
+		catch (com.liferay.portlet.blogs.exception.NoSuchStatsUserException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -3342,11 +3341,11 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 	 *
 	 * @param primaryKey the primary key of the blogs stats user
 	 * @return the blogs stats user
-	 * @throws NoSuchStatsUserException if a blogs stats user with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException if a blogs stats user with the primary key could not be found
 	 */
 	@Override
 	public BlogsStatsUser findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchStatsUserException {
+		throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException {
 		BlogsStatsUser blogsStatsUser = fetchByPrimaryKey(primaryKey);
 
 		if (blogsStatsUser == null) {
@@ -3354,7 +3353,7 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchStatsUserException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portlet.blogs.exception.NoSuchStatsUserException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -3362,15 +3361,15 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 	}
 
 	/**
-	 * Returns the blogs stats user with the primary key or throws a {@link NoSuchStatsUserException} if it could not be found.
+	 * Returns the blogs stats user with the primary key or throws a {@link com.liferay.portlet.blogs.exception.NoSuchStatsUserException} if it could not be found.
 	 *
 	 * @param statsUserId the primary key of the blogs stats user
 	 * @return the blogs stats user
-	 * @throws NoSuchStatsUserException if a blogs stats user with the primary key could not be found
+	 * @throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException if a blogs stats user with the primary key could not be found
 	 */
 	@Override
 	public BlogsStatsUser findByPrimaryKey(long statsUserId)
-		throws NoSuchStatsUserException {
+		throws com.liferay.portlet.blogs.exception.NoSuchStatsUserException {
 		return findByPrimaryKey((Serializable)statsUserId);
 	}
 

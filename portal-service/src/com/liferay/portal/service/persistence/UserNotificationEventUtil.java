@@ -185,7 +185,7 @@ public class UserNotificationEventUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user notification event
-	* @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	*/
 	public static UserNotificationEvent findByUuid_First(
 		java.lang.String uuid,
@@ -213,7 +213,7 @@ public class UserNotificationEventUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user notification event
-	* @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	*/
 	public static UserNotificationEvent findByUuid_Last(java.lang.String uuid,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
@@ -241,7 +241,7 @@ public class UserNotificationEventUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user notification event
-	* @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	*/
 	public static UserNotificationEvent[] findByUuid_PrevAndNext(
 		long userNotificationEventId, java.lang.String uuid,
@@ -353,7 +353,7 @@ public class UserNotificationEventUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user notification event
-	* @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	*/
 	public static UserNotificationEvent findByUuid_C_First(
 		java.lang.String uuid, long companyId,
@@ -385,7 +385,7 @@ public class UserNotificationEventUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user notification event
-	* @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	*/
 	public static UserNotificationEvent findByUuid_C_Last(
 		java.lang.String uuid, long companyId,
@@ -418,7 +418,7 @@ public class UserNotificationEventUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user notification event
-	* @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	*/
 	public static UserNotificationEvent[] findByUuid_C_PrevAndNext(
 		long userNotificationEventId, java.lang.String uuid, long companyId,
@@ -526,7 +526,7 @@ public class UserNotificationEventUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user notification event
-	* @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	*/
 	public static UserNotificationEvent findByUserId_First(long userId,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
@@ -552,7 +552,7 @@ public class UserNotificationEventUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user notification event
-	* @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	*/
 	public static UserNotificationEvent findByUserId_Last(long userId,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
@@ -579,7 +579,7 @@ public class UserNotificationEventUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user notification event
-	* @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	*/
 	public static UserNotificationEvent[] findByUserId_PrevAndNext(
 		long userNotificationEventId, long userId,
@@ -684,7 +684,7 @@ public class UserNotificationEventUtil {
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user notification event
-	* @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	*/
 	public static UserNotificationEvent findByType_First(
 		java.lang.String type,
@@ -712,7 +712,7 @@ public class UserNotificationEventUtil {
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user notification event
-	* @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	*/
 	public static UserNotificationEvent findByType_Last(java.lang.String type,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
@@ -740,7 +740,7 @@ public class UserNotificationEventUtil {
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user notification event
-	* @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	*/
 	public static UserNotificationEvent[] findByType_PrevAndNext(
 		long userNotificationEventId, java.lang.String type,
@@ -853,7 +853,7 @@ public class UserNotificationEventUtil {
 	* @param deliveryType the delivery type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user notification event
-	* @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	*/
 	public static UserNotificationEvent findByU_DT_First(long userId,
 		int deliveryType,
@@ -885,7 +885,7 @@ public class UserNotificationEventUtil {
 	* @param deliveryType the delivery type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user notification event
-	* @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	*/
 	public static UserNotificationEvent findByU_DT_Last(long userId,
 		int deliveryType,
@@ -918,7 +918,7 @@ public class UserNotificationEventUtil {
 	* @param deliveryType the delivery type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user notification event
-	* @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	*/
 	public static UserNotificationEvent[] findByU_DT_PrevAndNext(
 		long userNotificationEventId, long userId, int deliveryType,
@@ -1032,7 +1032,7 @@ public class UserNotificationEventUtil {
 	* @param delivered the delivered
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user notification event
-	* @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	*/
 	public static UserNotificationEvent findByU_D_First(long userId,
 		boolean delivered,
@@ -1064,7 +1064,7 @@ public class UserNotificationEventUtil {
 	* @param delivered the delivered
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user notification event
-	* @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	*/
 	public static UserNotificationEvent findByU_D_Last(long userId,
 		boolean delivered,
@@ -1097,7 +1097,7 @@ public class UserNotificationEventUtil {
 	* @param delivered the delivered
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user notification event
-	* @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	*/
 	public static UserNotificationEvent[] findByU_D_PrevAndNext(
 		long userNotificationEventId, long userId, boolean delivered,
@@ -1211,7 +1211,7 @@ public class UserNotificationEventUtil {
 	* @param archived the archived
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user notification event
-	* @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	*/
 	public static UserNotificationEvent findByU_A_First(long userId,
 		boolean archived,
@@ -1243,7 +1243,7 @@ public class UserNotificationEventUtil {
 	* @param archived the archived
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user notification event
-	* @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	*/
 	public static UserNotificationEvent findByU_A_Last(long userId,
 		boolean archived,
@@ -1276,7 +1276,7 @@ public class UserNotificationEventUtil {
 	* @param archived the archived
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user notification event
-	* @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	*/
 	public static UserNotificationEvent[] findByU_A_PrevAndNext(
 		long userNotificationEventId, long userId, boolean archived,
@@ -1397,7 +1397,7 @@ public class UserNotificationEventUtil {
 	* @param delivered the delivered
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user notification event
-	* @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	*/
 	public static UserNotificationEvent findByU_DT_D_First(long userId,
 		int deliveryType, boolean delivered,
@@ -1433,7 +1433,7 @@ public class UserNotificationEventUtil {
 	* @param delivered the delivered
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user notification event
-	* @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	*/
 	public static UserNotificationEvent findByU_DT_D_Last(long userId,
 		int deliveryType, boolean delivered,
@@ -1470,7 +1470,7 @@ public class UserNotificationEventUtil {
 	* @param delivered the delivered
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user notification event
-	* @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	*/
 	public static UserNotificationEvent[] findByU_DT_D_PrevAndNext(
 		long userNotificationEventId, long userId, int deliveryType,
@@ -1596,7 +1596,7 @@ public class UserNotificationEventUtil {
 	* @param archived the archived
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user notification event
-	* @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	*/
 	public static UserNotificationEvent findByU_DT_A_First(long userId,
 		int deliveryType, boolean archived,
@@ -1632,7 +1632,7 @@ public class UserNotificationEventUtil {
 	* @param archived the archived
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user notification event
-	* @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	*/
 	public static UserNotificationEvent findByU_DT_A_Last(long userId,
 		int deliveryType, boolean archived,
@@ -1669,7 +1669,7 @@ public class UserNotificationEventUtil {
 	* @param archived the archived
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user notification event
-	* @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	*/
 	public static UserNotificationEvent[] findByU_DT_A_PrevAndNext(
 		long userNotificationEventId, long userId, int deliveryType,
@@ -1795,7 +1795,7 @@ public class UserNotificationEventUtil {
 	* @param actionRequired the action required
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user notification event
-	* @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	*/
 	public static UserNotificationEvent findByU_D_A_First(long userId,
 		boolean delivered, boolean actionRequired,
@@ -1831,7 +1831,7 @@ public class UserNotificationEventUtil {
 	* @param actionRequired the action required
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user notification event
-	* @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	*/
 	public static UserNotificationEvent findByU_D_A_Last(long userId,
 		boolean delivered, boolean actionRequired,
@@ -1868,7 +1868,7 @@ public class UserNotificationEventUtil {
 	* @param actionRequired the action required
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user notification event
-	* @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	*/
 	public static UserNotificationEvent[] findByU_D_A_PrevAndNext(
 		long userNotificationEventId, long userId, boolean delivered,
@@ -1994,7 +1994,7 @@ public class UserNotificationEventUtil {
 	* @param archived the archived
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user notification event
-	* @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	*/
 	public static UserNotificationEvent findByU_A_A_First(long userId,
 		boolean actionRequired, boolean archived,
@@ -2030,7 +2030,7 @@ public class UserNotificationEventUtil {
 	* @param archived the archived
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user notification event
-	* @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	*/
 	public static UserNotificationEvent findByU_A_A_Last(long userId,
 		boolean actionRequired, boolean archived,
@@ -2067,7 +2067,7 @@ public class UserNotificationEventUtil {
 	* @param archived the archived
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user notification event
-	* @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	*/
 	public static UserNotificationEvent[] findByU_A_A_PrevAndNext(
 		long userNotificationEventId, long userId, boolean actionRequired,
@@ -2201,7 +2201,7 @@ public class UserNotificationEventUtil {
 	* @param delivered the delivered
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user notification event
-	* @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	*/
 	public static UserNotificationEvent findByU_T_DT_D_First(long userId,
 		java.lang.String type, int deliveryType, boolean delivered,
@@ -2239,7 +2239,7 @@ public class UserNotificationEventUtil {
 	* @param delivered the delivered
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user notification event
-	* @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	*/
 	public static UserNotificationEvent findByU_T_DT_D_Last(long userId,
 		java.lang.String type, int deliveryType, boolean delivered,
@@ -2278,7 +2278,7 @@ public class UserNotificationEventUtil {
 	* @param delivered the delivered
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user notification event
-	* @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	*/
 	public static UserNotificationEvent[] findByU_T_DT_D_PrevAndNext(
 		long userNotificationEventId, long userId, java.lang.String type,
@@ -2416,7 +2416,7 @@ public class UserNotificationEventUtil {
 	* @param actionRequired the action required
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user notification event
-	* @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	*/
 	public static UserNotificationEvent findByU_DT_D_A_First(long userId,
 		int deliveryType, boolean delivered, boolean actionRequired,
@@ -2454,7 +2454,7 @@ public class UserNotificationEventUtil {
 	* @param actionRequired the action required
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user notification event
-	* @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	*/
 	public static UserNotificationEvent findByU_DT_D_A_Last(long userId,
 		int deliveryType, boolean delivered, boolean actionRequired,
@@ -2493,7 +2493,7 @@ public class UserNotificationEventUtil {
 	* @param actionRequired the action required
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user notification event
-	* @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	*/
 	public static UserNotificationEvent[] findByU_DT_D_A_PrevAndNext(
 		long userNotificationEventId, long userId, int deliveryType,
@@ -2633,7 +2633,7 @@ public class UserNotificationEventUtil {
 	* @param archived the archived
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching user notification event
-	* @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	*/
 	public static UserNotificationEvent findByU_DT_A_A_First(long userId,
 		int deliveryType, boolean actionRequired, boolean archived,
@@ -2671,7 +2671,7 @@ public class UserNotificationEventUtil {
 	* @param archived the archived
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching user notification event
-	* @throws NoSuchUserNotificationEventException if a matching user notification event could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a matching user notification event could not be found
 	*/
 	public static UserNotificationEvent findByU_DT_A_A_Last(long userId,
 		int deliveryType, boolean actionRequired, boolean archived,
@@ -2710,7 +2710,7 @@ public class UserNotificationEventUtil {
 	* @param archived the archived
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next user notification event
-	* @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	*/
 	public static UserNotificationEvent[] findByU_DT_A_A_PrevAndNext(
 		long userNotificationEventId, long userId, int deliveryType,
@@ -2786,7 +2786,7 @@ public class UserNotificationEventUtil {
 	*
 	* @param userNotificationEventId the primary key of the user notification event
 	* @return the user notification event that was removed
-	* @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	*/
 	public static UserNotificationEvent remove(long userNotificationEventId)
 		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
@@ -2799,11 +2799,11 @@ public class UserNotificationEventUtil {
 	}
 
 	/**
-	* Returns the user notification event with the primary key or throws a {@link NoSuchUserNotificationEventException} if it could not be found.
+	* Returns the user notification event with the primary key or throws a {@link com.liferay.portal.exception.NoSuchUserNotificationEventException} if it could not be found.
 	*
 	* @param userNotificationEventId the primary key of the user notification event
 	* @return the user notification event
-	* @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	*/
 	public static UserNotificationEvent findByPrimaryKey(
 		long userNotificationEventId)

@@ -36,7 +36,6 @@ import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.spring.extender.service.ServiceReference;
-import com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException;
 import com.liferay.portal.workflow.kaleo.model.KaleoInstance;
 import com.liferay.portal.workflow.kaleo.model.impl.KaleoInstanceImpl;
 import com.liferay.portal.workflow.kaleo.model.impl.KaleoInstanceModelImpl;
@@ -285,12 +284,12 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching kaleo instance
-	 * @throws NoSuchInstanceException if a matching kaleo instance could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException if a matching kaleo instance could not be found
 	 */
 	@Override
 	public KaleoInstance findByCompanyId_First(long companyId,
 		OrderByComparator<KaleoInstance> orderByComparator)
-		throws NoSuchInstanceException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException {
 		KaleoInstance kaleoInstance = fetchByCompanyId_First(companyId,
 				orderByComparator);
 
@@ -307,7 +306,7 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchInstanceException(msg.toString());
+		throw new com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException(msg.toString());
 	}
 
 	/**
@@ -336,12 +335,12 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching kaleo instance
-	 * @throws NoSuchInstanceException if a matching kaleo instance could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException if a matching kaleo instance could not be found
 	 */
 	@Override
 	public KaleoInstance findByCompanyId_Last(long companyId,
 		OrderByComparator<KaleoInstance> orderByComparator)
-		throws NoSuchInstanceException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException {
 		KaleoInstance kaleoInstance = fetchByCompanyId_Last(companyId,
 				orderByComparator);
 
@@ -358,7 +357,7 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchInstanceException(msg.toString());
+		throw new com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException(msg.toString());
 	}
 
 	/**
@@ -394,12 +393,12 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next kaleo instance
-	 * @throws NoSuchInstanceException if a kaleo instance with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException if a kaleo instance with the primary key could not be found
 	 */
 	@Override
 	public KaleoInstance[] findByCompanyId_PrevAndNext(long kaleoInstanceId,
 		long companyId, OrderByComparator<KaleoInstance> orderByComparator)
-		throws NoSuchInstanceException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException {
 		KaleoInstance kaleoInstance = findByPrimaryKey(kaleoInstanceId);
 
 		Session session = null;
@@ -797,12 +796,12 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 	 * @param kaleoDefinitionId the kaleo definition ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching kaleo instance
-	 * @throws NoSuchInstanceException if a matching kaleo instance could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException if a matching kaleo instance could not be found
 	 */
 	@Override
 	public KaleoInstance findByKaleoDefinitionId_First(long kaleoDefinitionId,
 		OrderByComparator<KaleoInstance> orderByComparator)
-		throws NoSuchInstanceException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException {
 		KaleoInstance kaleoInstance = fetchByKaleoDefinitionId_First(kaleoDefinitionId,
 				orderByComparator);
 
@@ -819,7 +818,7 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchInstanceException(msg.toString());
+		throw new com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException(msg.toString());
 	}
 
 	/**
@@ -849,12 +848,12 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 	 * @param kaleoDefinitionId the kaleo definition ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching kaleo instance
-	 * @throws NoSuchInstanceException if a matching kaleo instance could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException if a matching kaleo instance could not be found
 	 */
 	@Override
 	public KaleoInstance findByKaleoDefinitionId_Last(long kaleoDefinitionId,
 		OrderByComparator<KaleoInstance> orderByComparator)
-		throws NoSuchInstanceException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException {
 		KaleoInstance kaleoInstance = fetchByKaleoDefinitionId_Last(kaleoDefinitionId,
 				orderByComparator);
 
@@ -871,7 +870,7 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchInstanceException(msg.toString());
+		throw new com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException(msg.toString());
 	}
 
 	/**
@@ -907,13 +906,13 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 	 * @param kaleoDefinitionId the kaleo definition ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next kaleo instance
-	 * @throws NoSuchInstanceException if a kaleo instance with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException if a kaleo instance with the primary key could not be found
 	 */
 	@Override
 	public KaleoInstance[] findByKaleoDefinitionId_PrevAndNext(
 		long kaleoInstanceId, long kaleoDefinitionId,
 		OrderByComparator<KaleoInstance> orderByComparator)
-		throws NoSuchInstanceException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException {
 		KaleoInstance kaleoInstance = findByPrimaryKey(kaleoInstanceId);
 
 		Session session = null;
@@ -1321,12 +1320,12 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching kaleo instance
-	 * @throws NoSuchInstanceException if a matching kaleo instance could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException if a matching kaleo instance could not be found
 	 */
 	@Override
 	public KaleoInstance findByC_U_First(long companyId, long userId,
 		OrderByComparator<KaleoInstance> orderByComparator)
-		throws NoSuchInstanceException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException {
 		KaleoInstance kaleoInstance = fetchByC_U_First(companyId, userId,
 				orderByComparator);
 
@@ -1346,7 +1345,7 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchInstanceException(msg.toString());
+		throw new com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException(msg.toString());
 	}
 
 	/**
@@ -1377,12 +1376,12 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching kaleo instance
-	 * @throws NoSuchInstanceException if a matching kaleo instance could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException if a matching kaleo instance could not be found
 	 */
 	@Override
 	public KaleoInstance findByC_U_Last(long companyId, long userId,
 		OrderByComparator<KaleoInstance> orderByComparator)
-		throws NoSuchInstanceException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException {
 		KaleoInstance kaleoInstance = fetchByC_U_Last(companyId, userId,
 				orderByComparator);
 
@@ -1402,7 +1401,7 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchInstanceException(msg.toString());
+		throw new com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException(msg.toString());
 	}
 
 	/**
@@ -1440,13 +1439,13 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next kaleo instance
-	 * @throws NoSuchInstanceException if a kaleo instance with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException if a kaleo instance with the primary key could not be found
 	 */
 	@Override
 	public KaleoInstance[] findByC_U_PrevAndNext(long kaleoInstanceId,
 		long companyId, long userId,
 		OrderByComparator<KaleoInstance> orderByComparator)
-		throws NoSuchInstanceException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException {
 		KaleoInstance kaleoInstance = findByPrimaryKey(kaleoInstanceId);
 
 		Session session = null;
@@ -1868,12 +1867,12 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 	 * @param completed the completed
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching kaleo instance
-	 * @throws NoSuchInstanceException if a matching kaleo instance could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException if a matching kaleo instance could not be found
 	 */
 	@Override
 	public KaleoInstance findByKDI_C_First(long kaleoDefinitionId,
 		boolean completed, OrderByComparator<KaleoInstance> orderByComparator)
-		throws NoSuchInstanceException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException {
 		KaleoInstance kaleoInstance = fetchByKDI_C_First(kaleoDefinitionId,
 				completed, orderByComparator);
 
@@ -1893,7 +1892,7 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchInstanceException(msg.toString());
+		throw new com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException(msg.toString());
 	}
 
 	/**
@@ -1924,12 +1923,12 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 	 * @param completed the completed
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching kaleo instance
-	 * @throws NoSuchInstanceException if a matching kaleo instance could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException if a matching kaleo instance could not be found
 	 */
 	@Override
 	public KaleoInstance findByKDI_C_Last(long kaleoDefinitionId,
 		boolean completed, OrderByComparator<KaleoInstance> orderByComparator)
-		throws NoSuchInstanceException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException {
 		KaleoInstance kaleoInstance = fetchByKDI_C_Last(kaleoDefinitionId,
 				completed, orderByComparator);
 
@@ -1949,7 +1948,7 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchInstanceException(msg.toString());
+		throw new com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException(msg.toString());
 	}
 
 	/**
@@ -1987,13 +1986,13 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 	 * @param completed the completed
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next kaleo instance
-	 * @throws NoSuchInstanceException if a kaleo instance with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException if a kaleo instance with the primary key could not be found
 	 */
 	@Override
 	public KaleoInstance[] findByKDI_C_PrevAndNext(long kaleoInstanceId,
 		long kaleoDefinitionId, boolean completed,
 		OrderByComparator<KaleoInstance> orderByComparator)
-		throws NoSuchInstanceException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException {
 		KaleoInstance kaleoInstance = findByPrimaryKey(kaleoInstanceId);
 
 		Session session = null;
@@ -2428,12 +2427,12 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching kaleo instance
-	 * @throws NoSuchInstanceException if a matching kaleo instance could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException if a matching kaleo instance could not be found
 	 */
 	@Override
 	public KaleoInstance findByCN_CPK_First(String className, long classPK,
 		OrderByComparator<KaleoInstance> orderByComparator)
-		throws NoSuchInstanceException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException {
 		KaleoInstance kaleoInstance = fetchByCN_CPK_First(className, classPK,
 				orderByComparator);
 
@@ -2453,7 +2452,7 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchInstanceException(msg.toString());
+		throw new com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException(msg.toString());
 	}
 
 	/**
@@ -2484,12 +2483,12 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching kaleo instance
-	 * @throws NoSuchInstanceException if a matching kaleo instance could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException if a matching kaleo instance could not be found
 	 */
 	@Override
 	public KaleoInstance findByCN_CPK_Last(String className, long classPK,
 		OrderByComparator<KaleoInstance> orderByComparator)
-		throws NoSuchInstanceException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException {
 		KaleoInstance kaleoInstance = fetchByCN_CPK_Last(className, classPK,
 				orderByComparator);
 
@@ -2509,7 +2508,7 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchInstanceException(msg.toString());
+		throw new com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException(msg.toString());
 	}
 
 	/**
@@ -2547,13 +2546,13 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next kaleo instance
-	 * @throws NoSuchInstanceException if a kaleo instance with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException if a kaleo instance with the primary key could not be found
 	 */
 	@Override
 	public KaleoInstance[] findByCN_CPK_PrevAndNext(long kaleoInstanceId,
 		String className, long classPK,
 		OrderByComparator<KaleoInstance> orderByComparator)
-		throws NoSuchInstanceException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException {
 		KaleoInstance kaleoInstance = findByPrimaryKey(kaleoInstanceId);
 
 		Session session = null;
@@ -3074,13 +3073,13 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 	 * @param completionDate the completion date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching kaleo instance
-	 * @throws NoSuchInstanceException if a matching kaleo instance could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException if a matching kaleo instance could not be found
 	 */
 	@Override
 	public KaleoInstance findByC_KDN_KDV_CD_First(long companyId,
 		String kaleoDefinitionName, int kaleoDefinitionVersion,
 		Date completionDate, OrderByComparator<KaleoInstance> orderByComparator)
-		throws NoSuchInstanceException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException {
 		KaleoInstance kaleoInstance = fetchByC_KDN_KDV_CD_First(companyId,
 				kaleoDefinitionName, kaleoDefinitionVersion, completionDate,
 				orderByComparator);
@@ -3107,7 +3106,7 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchInstanceException(msg.toString());
+		throw new com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException(msg.toString());
 	}
 
 	/**
@@ -3144,13 +3143,13 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 	 * @param completionDate the completion date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching kaleo instance
-	 * @throws NoSuchInstanceException if a matching kaleo instance could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException if a matching kaleo instance could not be found
 	 */
 	@Override
 	public KaleoInstance findByC_KDN_KDV_CD_Last(long companyId,
 		String kaleoDefinitionName, int kaleoDefinitionVersion,
 		Date completionDate, OrderByComparator<KaleoInstance> orderByComparator)
-		throws NoSuchInstanceException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException {
 		KaleoInstance kaleoInstance = fetchByC_KDN_KDV_CD_Last(companyId,
 				kaleoDefinitionName, kaleoDefinitionVersion, completionDate,
 				orderByComparator);
@@ -3177,7 +3176,7 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchInstanceException(msg.toString());
+		throw new com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException(msg.toString());
 	}
 
 	/**
@@ -3222,14 +3221,14 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 	 * @param completionDate the completion date
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next kaleo instance
-	 * @throws NoSuchInstanceException if a kaleo instance with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException if a kaleo instance with the primary key could not be found
 	 */
 	@Override
 	public KaleoInstance[] findByC_KDN_KDV_CD_PrevAndNext(
 		long kaleoInstanceId, long companyId, String kaleoDefinitionName,
 		int kaleoDefinitionVersion, Date completionDate,
 		OrderByComparator<KaleoInstance> orderByComparator)
-		throws NoSuchInstanceException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException {
 		KaleoInstance kaleoInstance = findByPrimaryKey(kaleoInstanceId);
 
 		Session session = null;
@@ -3633,11 +3632,11 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 	 *
 	 * @param kaleoInstanceId the primary key of the kaleo instance
 	 * @return the kaleo instance that was removed
-	 * @throws NoSuchInstanceException if a kaleo instance with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException if a kaleo instance with the primary key could not be found
 	 */
 	@Override
 	public KaleoInstance remove(long kaleoInstanceId)
-		throws NoSuchInstanceException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException {
 		return remove((Serializable)kaleoInstanceId);
 	}
 
@@ -3646,11 +3645,11 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 	 *
 	 * @param primaryKey the primary key of the kaleo instance
 	 * @return the kaleo instance that was removed
-	 * @throws NoSuchInstanceException if a kaleo instance with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException if a kaleo instance with the primary key could not be found
 	 */
 	@Override
 	public KaleoInstance remove(Serializable primaryKey)
-		throws NoSuchInstanceException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException {
 		Session session = null;
 
 		try {
@@ -3664,13 +3663,13 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchInstanceException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(kaleoInstance);
 		}
-		catch (NoSuchInstanceException nsee) {
+		catch (com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -3943,11 +3942,11 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 	 *
 	 * @param primaryKey the primary key of the kaleo instance
 	 * @return the kaleo instance
-	 * @throws NoSuchInstanceException if a kaleo instance with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException if a kaleo instance with the primary key could not be found
 	 */
 	@Override
 	public KaleoInstance findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchInstanceException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException {
 		KaleoInstance kaleoInstance = fetchByPrimaryKey(primaryKey);
 
 		if (kaleoInstance == null) {
@@ -3955,7 +3954,7 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchInstanceException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -3963,15 +3962,15 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 	}
 
 	/**
-	 * Returns the kaleo instance with the primary key or throws a {@link NoSuchInstanceException} if it could not be found.
+	 * Returns the kaleo instance with the primary key or throws a {@link com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException} if it could not be found.
 	 *
 	 * @param kaleoInstanceId the primary key of the kaleo instance
 	 * @return the kaleo instance
-	 * @throws NoSuchInstanceException if a kaleo instance with the primary key could not be found
+	 * @throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException if a kaleo instance with the primary key could not be found
 	 */
 	@Override
 	public KaleoInstance findByPrimaryKey(long kaleoInstanceId)
-		throws NoSuchInstanceException {
+		throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException {
 		return findByPrimaryKey((Serializable)kaleoInstanceId);
 	}
 

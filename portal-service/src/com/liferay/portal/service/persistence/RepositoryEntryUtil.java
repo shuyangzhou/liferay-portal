@@ -182,7 +182,7 @@ public class RepositoryEntryUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching repository entry
-	* @throws NoSuchRepositoryEntryException if a matching repository entry could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryEntryException if a matching repository entry could not be found
 	*/
 	public static RepositoryEntry findByUuid_First(java.lang.String uuid,
 		OrderByComparator<RepositoryEntry> orderByComparator)
@@ -208,7 +208,7 @@ public class RepositoryEntryUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching repository entry
-	* @throws NoSuchRepositoryEntryException if a matching repository entry could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryEntryException if a matching repository entry could not be found
 	*/
 	public static RepositoryEntry findByUuid_Last(java.lang.String uuid,
 		OrderByComparator<RepositoryEntry> orderByComparator)
@@ -235,7 +235,7 @@ public class RepositoryEntryUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next repository entry
-	* @throws NoSuchRepositoryEntryException if a repository entry with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryEntryException if a repository entry with the primary key could not be found
 	*/
 	public static RepositoryEntry[] findByUuid_PrevAndNext(
 		long repositoryEntryId, java.lang.String uuid,
@@ -266,12 +266,12 @@ public class RepositoryEntryUtil {
 	}
 
 	/**
-	* Returns the repository entry where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchRepositoryEntryException} if it could not be found.
+	* Returns the repository entry where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchRepositoryEntryException} if it could not be found.
 	*
 	* @param uuid the uuid
 	* @param groupId the group ID
 	* @return the matching repository entry
-	* @throws NoSuchRepositoryEntryException if a matching repository entry could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryEntryException if a matching repository entry could not be found
 	*/
 	public static RepositoryEntry findByUUID_G(java.lang.String uuid,
 		long groupId)
@@ -410,7 +410,7 @@ public class RepositoryEntryUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching repository entry
-	* @throws NoSuchRepositoryEntryException if a matching repository entry could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryEntryException if a matching repository entry could not be found
 	*/
 	public static RepositoryEntry findByUuid_C_First(java.lang.String uuid,
 		long companyId, OrderByComparator<RepositoryEntry> orderByComparator)
@@ -440,7 +440,7 @@ public class RepositoryEntryUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching repository entry
-	* @throws NoSuchRepositoryEntryException if a matching repository entry could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryEntryException if a matching repository entry could not be found
 	*/
 	public static RepositoryEntry findByUuid_C_Last(java.lang.String uuid,
 		long companyId, OrderByComparator<RepositoryEntry> orderByComparator)
@@ -471,7 +471,7 @@ public class RepositoryEntryUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next repository entry
-	* @throws NoSuchRepositoryEntryException if a repository entry with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryEntryException if a repository entry with the primary key could not be found
 	*/
 	public static RepositoryEntry[] findByUuid_C_PrevAndNext(
 		long repositoryEntryId, java.lang.String uuid, long companyId,
@@ -579,7 +579,7 @@ public class RepositoryEntryUtil {
 	* @param repositoryId the repository ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching repository entry
-	* @throws NoSuchRepositoryEntryException if a matching repository entry could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryEntryException if a matching repository entry could not be found
 	*/
 	public static RepositoryEntry findByRepositoryId_First(long repositoryId,
 		OrderByComparator<RepositoryEntry> orderByComparator)
@@ -607,7 +607,7 @@ public class RepositoryEntryUtil {
 	* @param repositoryId the repository ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching repository entry
-	* @throws NoSuchRepositoryEntryException if a matching repository entry could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryEntryException if a matching repository entry could not be found
 	*/
 	public static RepositoryEntry findByRepositoryId_Last(long repositoryId,
 		OrderByComparator<RepositoryEntry> orderByComparator)
@@ -636,7 +636,7 @@ public class RepositoryEntryUtil {
 	* @param repositoryId the repository ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next repository entry
-	* @throws NoSuchRepositoryEntryException if a repository entry with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryEntryException if a repository entry with the primary key could not be found
 	*/
 	public static RepositoryEntry[] findByRepositoryId_PrevAndNext(
 		long repositoryEntryId, long repositoryId,
@@ -667,12 +667,12 @@ public class RepositoryEntryUtil {
 	}
 
 	/**
-	* Returns the repository entry where repositoryId = &#63; and mappedId = &#63; or throws a {@link NoSuchRepositoryEntryException} if it could not be found.
+	* Returns the repository entry where repositoryId = &#63; and mappedId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchRepositoryEntryException} if it could not be found.
 	*
 	* @param repositoryId the repository ID
 	* @param mappedId the mapped ID
 	* @return the matching repository entry
-	* @throws NoSuchRepositoryEntryException if a matching repository entry could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryEntryException if a matching repository entry could not be found
 	*/
 	public static RepositoryEntry findByR_M(long repositoryId,
 		java.lang.String mappedId)
@@ -763,7 +763,7 @@ public class RepositoryEntryUtil {
 	*
 	* @param repositoryEntryId the primary key of the repository entry
 	* @return the repository entry that was removed
-	* @throws NoSuchRepositoryEntryException if a repository entry with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryEntryException if a repository entry with the primary key could not be found
 	*/
 	public static RepositoryEntry remove(long repositoryEntryId)
 		throws com.liferay.portal.exception.NoSuchRepositoryEntryException {
@@ -775,11 +775,11 @@ public class RepositoryEntryUtil {
 	}
 
 	/**
-	* Returns the repository entry with the primary key or throws a {@link NoSuchRepositoryEntryException} if it could not be found.
+	* Returns the repository entry with the primary key or throws a {@link com.liferay.portal.exception.NoSuchRepositoryEntryException} if it could not be found.
 	*
 	* @param repositoryEntryId the primary key of the repository entry
 	* @return the repository entry
-	* @throws NoSuchRepositoryEntryException if a repository entry with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRepositoryEntryException if a repository entry with the primary key could not be found
 	*/
 	public static RepositoryEntry findByPrimaryKey(long repositoryEntryId)
 		throws com.liferay.portal.exception.NoSuchRepositoryEntryException {

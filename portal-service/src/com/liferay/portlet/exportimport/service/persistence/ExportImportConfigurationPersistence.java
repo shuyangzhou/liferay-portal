@@ -105,7 +105,7 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching export import configuration
-	* @throws NoSuchConfigurationException if a matching export import configuration could not be found
+	* @throws com.liferay.portlet.exportimport.exception.NoSuchConfigurationException if a matching export import configuration could not be found
 	*/
 	public ExportImportConfiguration findByGroupId_First(long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<ExportImportConfiguration> orderByComparator)
@@ -127,7 +127,7 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching export import configuration
-	* @throws NoSuchConfigurationException if a matching export import configuration could not be found
+	* @throws com.liferay.portlet.exportimport.exception.NoSuchConfigurationException if a matching export import configuration could not be found
 	*/
 	public ExportImportConfiguration findByGroupId_Last(long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<ExportImportConfiguration> orderByComparator)
@@ -150,7 +150,7 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next export import configuration
-	* @throws NoSuchConfigurationException if a export import configuration with the primary key could not be found
+	* @throws com.liferay.portlet.exportimport.exception.NoSuchConfigurationException if a export import configuration with the primary key could not be found
 	*/
 	public ExportImportConfiguration[] findByGroupId_PrevAndNext(
 		long exportImportConfigurationId, long groupId,
@@ -238,7 +238,7 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching export import configuration
-	* @throws NoSuchConfigurationException if a matching export import configuration could not be found
+	* @throws com.liferay.portlet.exportimport.exception.NoSuchConfigurationException if a matching export import configuration could not be found
 	*/
 	public ExportImportConfiguration findByCompanyId_First(long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<ExportImportConfiguration> orderByComparator)
@@ -260,7 +260,7 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching export import configuration
-	* @throws NoSuchConfigurationException if a matching export import configuration could not be found
+	* @throws com.liferay.portlet.exportimport.exception.NoSuchConfigurationException if a matching export import configuration could not be found
 	*/
 	public ExportImportConfiguration findByCompanyId_Last(long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<ExportImportConfiguration> orderByComparator)
@@ -283,7 +283,7 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next export import configuration
-	* @throws NoSuchConfigurationException if a export import configuration with the primary key could not be found
+	* @throws com.liferay.portlet.exportimport.exception.NoSuchConfigurationException if a export import configuration with the primary key could not be found
 	*/
 	public ExportImportConfiguration[] findByCompanyId_PrevAndNext(
 		long exportImportConfigurationId, long companyId,
@@ -376,7 +376,7 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching export import configuration
-	* @throws NoSuchConfigurationException if a matching export import configuration could not be found
+	* @throws com.liferay.portlet.exportimport.exception.NoSuchConfigurationException if a matching export import configuration could not be found
 	*/
 	public ExportImportConfiguration findByG_T_First(long groupId, int type,
 		com.liferay.portal.kernel.util.OrderByComparator<ExportImportConfiguration> orderByComparator)
@@ -400,7 +400,7 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching export import configuration
-	* @throws NoSuchConfigurationException if a matching export import configuration could not be found
+	* @throws com.liferay.portlet.exportimport.exception.NoSuchConfigurationException if a matching export import configuration could not be found
 	*/
 	public ExportImportConfiguration findByG_T_Last(long groupId, int type,
 		com.liferay.portal.kernel.util.OrderByComparator<ExportImportConfiguration> orderByComparator)
@@ -425,7 +425,7 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 	* @param type the type
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next export import configuration
-	* @throws NoSuchConfigurationException if a export import configuration with the primary key could not be found
+	* @throws com.liferay.portlet.exportimport.exception.NoSuchConfigurationException if a export import configuration with the primary key could not be found
 	*/
 	public ExportImportConfiguration[] findByG_T_PrevAndNext(
 		long exportImportConfigurationId, long groupId, int type,
@@ -520,7 +520,7 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching export import configuration
-	* @throws NoSuchConfigurationException if a matching export import configuration could not be found
+	* @throws com.liferay.portlet.exportimport.exception.NoSuchConfigurationException if a matching export import configuration could not be found
 	*/
 	public ExportImportConfiguration findByG_S_First(long groupId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<ExportImportConfiguration> orderByComparator)
@@ -544,7 +544,7 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching export import configuration
-	* @throws NoSuchConfigurationException if a matching export import configuration could not be found
+	* @throws com.liferay.portlet.exportimport.exception.NoSuchConfigurationException if a matching export import configuration could not be found
 	*/
 	public ExportImportConfiguration findByG_S_Last(long groupId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<ExportImportConfiguration> orderByComparator)
@@ -569,7 +569,7 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next export import configuration
-	* @throws NoSuchConfigurationException if a export import configuration with the primary key could not be found
+	* @throws com.liferay.portlet.exportimport.exception.NoSuchConfigurationException if a export import configuration with the primary key could not be found
 	*/
 	public ExportImportConfiguration[] findByG_S_PrevAndNext(
 		long exportImportConfigurationId, long groupId, int status,
@@ -669,7 +669,7 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching export import configuration
-	* @throws NoSuchConfigurationException if a matching export import configuration could not be found
+	* @throws com.liferay.portlet.exportimport.exception.NoSuchConfigurationException if a matching export import configuration could not be found
 	*/
 	public ExportImportConfiguration findByG_T_S_First(long groupId, int type,
 		int status,
@@ -697,7 +697,7 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching export import configuration
-	* @throws NoSuchConfigurationException if a matching export import configuration could not be found
+	* @throws com.liferay.portlet.exportimport.exception.NoSuchConfigurationException if a matching export import configuration could not be found
 	*/
 	public ExportImportConfiguration findByG_T_S_Last(long groupId, int type,
 		int status,
@@ -726,7 +726,7 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 	* @param status the status
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next export import configuration
-	* @throws NoSuchConfigurationException if a export import configuration with the primary key could not be found
+	* @throws com.liferay.portlet.exportimport.exception.NoSuchConfigurationException if a export import configuration with the primary key could not be found
 	*/
 	public ExportImportConfiguration[] findByG_T_S_PrevAndNext(
 		long exportImportConfigurationId, long groupId, int type, int status,
@@ -780,7 +780,7 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 	*
 	* @param exportImportConfigurationId the primary key of the export import configuration
 	* @return the export import configuration that was removed
-	* @throws NoSuchConfigurationException if a export import configuration with the primary key could not be found
+	* @throws com.liferay.portlet.exportimport.exception.NoSuchConfigurationException if a export import configuration with the primary key could not be found
 	*/
 	public ExportImportConfiguration remove(long exportImportConfigurationId)
 		throws com.liferay.portlet.exportimport.exception.NoSuchConfigurationException;
@@ -789,11 +789,11 @@ public interface ExportImportConfigurationPersistence extends BasePersistence<Ex
 		ExportImportConfiguration exportImportConfiguration);
 
 	/**
-	* Returns the export import configuration with the primary key or throws a {@link NoSuchConfigurationException} if it could not be found.
+	* Returns the export import configuration with the primary key or throws a {@link com.liferay.portlet.exportimport.exception.NoSuchConfigurationException} if it could not be found.
 	*
 	* @param exportImportConfigurationId the primary key of the export import configuration
 	* @return the export import configuration
-	* @throws NoSuchConfigurationException if a export import configuration with the primary key could not be found
+	* @throws com.liferay.portlet.exportimport.exception.NoSuchConfigurationException if a export import configuration with the primary key could not be found
 	*/
 	public ExportImportConfiguration findByPrimaryKey(
 		long exportImportConfigurationId)

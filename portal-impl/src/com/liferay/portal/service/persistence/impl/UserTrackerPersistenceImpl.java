@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchUserTrackerException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -278,12 +277,12 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user tracker
-	 * @throws NoSuchUserTrackerException if a matching user tracker could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserTrackerException if a matching user tracker could not be found
 	 */
 	@Override
 	public UserTracker findByCompanyId_First(long companyId,
 		OrderByComparator<UserTracker> orderByComparator)
-		throws NoSuchUserTrackerException {
+		throws com.liferay.portal.exception.NoSuchUserTrackerException {
 		UserTracker userTracker = fetchByCompanyId_First(companyId,
 				orderByComparator);
 
@@ -300,7 +299,7 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserTrackerException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserTrackerException(msg.toString());
 	}
 
 	/**
@@ -329,12 +328,12 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user tracker
-	 * @throws NoSuchUserTrackerException if a matching user tracker could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserTrackerException if a matching user tracker could not be found
 	 */
 	@Override
 	public UserTracker findByCompanyId_Last(long companyId,
 		OrderByComparator<UserTracker> orderByComparator)
-		throws NoSuchUserTrackerException {
+		throws com.liferay.portal.exception.NoSuchUserTrackerException {
 		UserTracker userTracker = fetchByCompanyId_Last(companyId,
 				orderByComparator);
 
@@ -351,7 +350,7 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserTrackerException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserTrackerException(msg.toString());
 	}
 
 	/**
@@ -387,12 +386,12 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user tracker
-	 * @throws NoSuchUserTrackerException if a user tracker with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserTrackerException if a user tracker with the primary key could not be found
 	 */
 	@Override
 	public UserTracker[] findByCompanyId_PrevAndNext(long userTrackerId,
 		long companyId, OrderByComparator<UserTracker> orderByComparator)
-		throws NoSuchUserTrackerException {
+		throws com.liferay.portal.exception.NoSuchUserTrackerException {
 		UserTracker userTracker = findByPrimaryKey(userTrackerId);
 
 		Session session = null;
@@ -781,12 +780,12 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user tracker
-	 * @throws NoSuchUserTrackerException if a matching user tracker could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserTrackerException if a matching user tracker could not be found
 	 */
 	@Override
 	public UserTracker findByUserId_First(long userId,
 		OrderByComparator<UserTracker> orderByComparator)
-		throws NoSuchUserTrackerException {
+		throws com.liferay.portal.exception.NoSuchUserTrackerException {
 		UserTracker userTracker = fetchByUserId_First(userId, orderByComparator);
 
 		if (userTracker != null) {
@@ -802,7 +801,7 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserTrackerException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserTrackerException(msg.toString());
 	}
 
 	/**
@@ -830,12 +829,12 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user tracker
-	 * @throws NoSuchUserTrackerException if a matching user tracker could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserTrackerException if a matching user tracker could not be found
 	 */
 	@Override
 	public UserTracker findByUserId_Last(long userId,
 		OrderByComparator<UserTracker> orderByComparator)
-		throws NoSuchUserTrackerException {
+		throws com.liferay.portal.exception.NoSuchUserTrackerException {
 		UserTracker userTracker = fetchByUserId_Last(userId, orderByComparator);
 
 		if (userTracker != null) {
@@ -851,7 +850,7 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserTrackerException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserTrackerException(msg.toString());
 	}
 
 	/**
@@ -887,12 +886,12 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user tracker
-	 * @throws NoSuchUserTrackerException if a user tracker with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserTrackerException if a user tracker with the primary key could not be found
 	 */
 	@Override
 	public UserTracker[] findByUserId_PrevAndNext(long userTrackerId,
 		long userId, OrderByComparator<UserTracker> orderByComparator)
-		throws NoSuchUserTrackerException {
+		throws com.liferay.portal.exception.NoSuchUserTrackerException {
 		UserTracker userTracker = findByPrimaryKey(userTrackerId);
 
 		Session session = null;
@@ -1298,12 +1297,12 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 	 * @param sessionId the session ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching user tracker
-	 * @throws NoSuchUserTrackerException if a matching user tracker could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserTrackerException if a matching user tracker could not be found
 	 */
 	@Override
 	public UserTracker findBySessionId_First(String sessionId,
 		OrderByComparator<UserTracker> orderByComparator)
-		throws NoSuchUserTrackerException {
+		throws com.liferay.portal.exception.NoSuchUserTrackerException {
 		UserTracker userTracker = fetchBySessionId_First(sessionId,
 				orderByComparator);
 
@@ -1320,7 +1319,7 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserTrackerException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserTrackerException(msg.toString());
 	}
 
 	/**
@@ -1349,12 +1348,12 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 	 * @param sessionId the session ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching user tracker
-	 * @throws NoSuchUserTrackerException if a matching user tracker could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserTrackerException if a matching user tracker could not be found
 	 */
 	@Override
 	public UserTracker findBySessionId_Last(String sessionId,
 		OrderByComparator<UserTracker> orderByComparator)
-		throws NoSuchUserTrackerException {
+		throws com.liferay.portal.exception.NoSuchUserTrackerException {
 		UserTracker userTracker = fetchBySessionId_Last(sessionId,
 				orderByComparator);
 
@@ -1371,7 +1370,7 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchUserTrackerException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchUserTrackerException(msg.toString());
 	}
 
 	/**
@@ -1407,12 +1406,12 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 	 * @param sessionId the session ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next user tracker
-	 * @throws NoSuchUserTrackerException if a user tracker with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserTrackerException if a user tracker with the primary key could not be found
 	 */
 	@Override
 	public UserTracker[] findBySessionId_PrevAndNext(long userTrackerId,
 		String sessionId, OrderByComparator<UserTracker> orderByComparator)
-		throws NoSuchUserTrackerException {
+		throws com.liferay.portal.exception.NoSuchUserTrackerException {
 		UserTracker userTracker = findByPrimaryKey(userTrackerId);
 
 		Session session = null;
@@ -1744,11 +1743,11 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 	 *
 	 * @param userTrackerId the primary key of the user tracker
 	 * @return the user tracker that was removed
-	 * @throws NoSuchUserTrackerException if a user tracker with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserTrackerException if a user tracker with the primary key could not be found
 	 */
 	@Override
 	public UserTracker remove(long userTrackerId)
-		throws NoSuchUserTrackerException {
+		throws com.liferay.portal.exception.NoSuchUserTrackerException {
 		return remove((Serializable)userTrackerId);
 	}
 
@@ -1757,11 +1756,11 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 	 *
 	 * @param primaryKey the primary key of the user tracker
 	 * @return the user tracker that was removed
-	 * @throws NoSuchUserTrackerException if a user tracker with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserTrackerException if a user tracker with the primary key could not be found
 	 */
 	@Override
 	public UserTracker remove(Serializable primaryKey)
-		throws NoSuchUserTrackerException {
+		throws com.liferay.portal.exception.NoSuchUserTrackerException {
 		Session session = null;
 
 		try {
@@ -1775,13 +1774,13 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchUserTrackerException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchUserTrackerException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(userTracker);
 		}
-		catch (NoSuchUserTrackerException nsee) {
+		catch (com.liferay.portal.exception.NoSuchUserTrackerException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -1949,11 +1948,11 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 	 *
 	 * @param primaryKey the primary key of the user tracker
 	 * @return the user tracker
-	 * @throws NoSuchUserTrackerException if a user tracker with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserTrackerException if a user tracker with the primary key could not be found
 	 */
 	@Override
 	public UserTracker findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchUserTrackerException {
+		throws com.liferay.portal.exception.NoSuchUserTrackerException {
 		UserTracker userTracker = fetchByPrimaryKey(primaryKey);
 
 		if (userTracker == null) {
@@ -1961,7 +1960,7 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchUserTrackerException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchUserTrackerException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -1969,15 +1968,15 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 	}
 
 	/**
-	 * Returns the user tracker with the primary key or throws a {@link NoSuchUserTrackerException} if it could not be found.
+	 * Returns the user tracker with the primary key or throws a {@link com.liferay.portal.exception.NoSuchUserTrackerException} if it could not be found.
 	 *
 	 * @param userTrackerId the primary key of the user tracker
 	 * @return the user tracker
-	 * @throws NoSuchUserTrackerException if a user tracker with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchUserTrackerException if a user tracker with the primary key could not be found
 	 */
 	@Override
 	public UserTracker findByPrimaryKey(long userTrackerId)
-		throws NoSuchUserTrackerException {
+		throws com.liferay.portal.exception.NoSuchUserTrackerException {
 		return findByPrimaryKey((Serializable)userTrackerId);
 	}
 

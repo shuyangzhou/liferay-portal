@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchClassNameException;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
@@ -94,14 +93,15 @@ public class ClassNamePersistenceImpl extends BasePersistenceImpl<ClassName>
 			new String[] { String.class.getName() });
 
 	/**
-	 * Returns the class name where value = &#63; or throws a {@link NoSuchClassNameException} if it could not be found.
+	 * Returns the class name where value = &#63; or throws a {@link com.liferay.portal.exception.NoSuchClassNameException} if it could not be found.
 	 *
 	 * @param value the value
 	 * @return the matching class name
-	 * @throws NoSuchClassNameException if a matching class name could not be found
+	 * @throws com.liferay.portal.exception.NoSuchClassNameException if a matching class name could not be found
 	 */
 	@Override
-	public ClassName findByValue(String value) throws NoSuchClassNameException {
+	public ClassName findByValue(String value)
+		throws com.liferay.portal.exception.NoSuchClassNameException {
 		ClassName className = fetchByValue(value);
 
 		if (className == null) {
@@ -118,7 +118,7 @@ public class ClassNamePersistenceImpl extends BasePersistenceImpl<ClassName>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchClassNameException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchClassNameException(msg.toString());
 		}
 
 		return className;
@@ -241,7 +241,7 @@ public class ClassNamePersistenceImpl extends BasePersistenceImpl<ClassName>
 	 */
 	@Override
 	public ClassName removeByValue(String value)
-		throws NoSuchClassNameException {
+		throws com.liferay.portal.exception.NoSuchClassNameException {
 		ClassName className = findByValue(value);
 
 		return remove(className);
@@ -461,10 +461,11 @@ public class ClassNamePersistenceImpl extends BasePersistenceImpl<ClassName>
 	 *
 	 * @param classNameId the primary key of the class name
 	 * @return the class name that was removed
-	 * @throws NoSuchClassNameException if a class name with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchClassNameException if a class name with the primary key could not be found
 	 */
 	@Override
-	public ClassName remove(long classNameId) throws NoSuchClassNameException {
+	public ClassName remove(long classNameId)
+		throws com.liferay.portal.exception.NoSuchClassNameException {
 		return remove((Serializable)classNameId);
 	}
 
@@ -473,11 +474,11 @@ public class ClassNamePersistenceImpl extends BasePersistenceImpl<ClassName>
 	 *
 	 * @param primaryKey the primary key of the class name
 	 * @return the class name that was removed
-	 * @throws NoSuchClassNameException if a class name with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchClassNameException if a class name with the primary key could not be found
 	 */
 	@Override
 	public ClassName remove(Serializable primaryKey)
-		throws NoSuchClassNameException {
+		throws com.liferay.portal.exception.NoSuchClassNameException {
 		Session session = null;
 
 		try {
@@ -491,13 +492,13 @@ public class ClassNamePersistenceImpl extends BasePersistenceImpl<ClassName>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchClassNameException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchClassNameException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(className);
 		}
-		catch (NoSuchClassNameException nsee) {
+		catch (com.liferay.portal.exception.NoSuchClassNameException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -608,11 +609,11 @@ public class ClassNamePersistenceImpl extends BasePersistenceImpl<ClassName>
 	 *
 	 * @param primaryKey the primary key of the class name
 	 * @return the class name
-	 * @throws NoSuchClassNameException if a class name with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchClassNameException if a class name with the primary key could not be found
 	 */
 	@Override
 	public ClassName findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchClassNameException {
+		throws com.liferay.portal.exception.NoSuchClassNameException {
 		ClassName className = fetchByPrimaryKey(primaryKey);
 
 		if (className == null) {
@@ -620,7 +621,7 @@ public class ClassNamePersistenceImpl extends BasePersistenceImpl<ClassName>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchClassNameException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchClassNameException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -628,15 +629,15 @@ public class ClassNamePersistenceImpl extends BasePersistenceImpl<ClassName>
 	}
 
 	/**
-	 * Returns the class name with the primary key or throws a {@link NoSuchClassNameException} if it could not be found.
+	 * Returns the class name with the primary key or throws a {@link com.liferay.portal.exception.NoSuchClassNameException} if it could not be found.
 	 *
 	 * @param classNameId the primary key of the class name
 	 * @return the class name
-	 * @throws NoSuchClassNameException if a class name with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchClassNameException if a class name with the primary key could not be found
 	 */
 	@Override
 	public ClassName findByPrimaryKey(long classNameId)
-		throws NoSuchClassNameException {
+		throws com.liferay.portal.exception.NoSuchClassNameException {
 		return findByPrimaryKey((Serializable)classNameId);
 	}
 

@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchPhoneException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -294,11 +293,12 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching phone
-	 * @throws NoSuchPhoneException if a matching phone could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPhoneException if a matching phone could not be found
 	 */
 	@Override
 	public Phone findByUuid_First(String uuid,
-		OrderByComparator<Phone> orderByComparator) throws NoSuchPhoneException {
+		OrderByComparator<Phone> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchPhoneException {
 		Phone phone = fetchByUuid_First(uuid, orderByComparator);
 
 		if (phone != null) {
@@ -314,7 +314,7 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchPhoneException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchPhoneException(msg.toString());
 	}
 
 	/**
@@ -342,11 +342,12 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching phone
-	 * @throws NoSuchPhoneException if a matching phone could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPhoneException if a matching phone could not be found
 	 */
 	@Override
 	public Phone findByUuid_Last(String uuid,
-		OrderByComparator<Phone> orderByComparator) throws NoSuchPhoneException {
+		OrderByComparator<Phone> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchPhoneException {
 		Phone phone = fetchByUuid_Last(uuid, orderByComparator);
 
 		if (phone != null) {
@@ -362,7 +363,7 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchPhoneException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchPhoneException(msg.toString());
 	}
 
 	/**
@@ -397,11 +398,12 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next phone
-	 * @throws NoSuchPhoneException if a phone with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPhoneException if a phone with the primary key could not be found
 	 */
 	@Override
 	public Phone[] findByUuid_PrevAndNext(long phoneId, String uuid,
-		OrderByComparator<Phone> orderByComparator) throws NoSuchPhoneException {
+		OrderByComparator<Phone> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchPhoneException {
 		Phone phone = findByPrimaryKey(phoneId);
 
 		Session session = null;
@@ -852,11 +854,12 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching phone
-	 * @throws NoSuchPhoneException if a matching phone could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPhoneException if a matching phone could not be found
 	 */
 	@Override
 	public Phone findByUuid_C_First(String uuid, long companyId,
-		OrderByComparator<Phone> orderByComparator) throws NoSuchPhoneException {
+		OrderByComparator<Phone> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchPhoneException {
 		Phone phone = fetchByUuid_C_First(uuid, companyId, orderByComparator);
 
 		if (phone != null) {
@@ -875,7 +878,7 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchPhoneException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchPhoneException(msg.toString());
 	}
 
 	/**
@@ -905,11 +908,12 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching phone
-	 * @throws NoSuchPhoneException if a matching phone could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPhoneException if a matching phone could not be found
 	 */
 	@Override
 	public Phone findByUuid_C_Last(String uuid, long companyId,
-		OrderByComparator<Phone> orderByComparator) throws NoSuchPhoneException {
+		OrderByComparator<Phone> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchPhoneException {
 		Phone phone = fetchByUuid_C_Last(uuid, companyId, orderByComparator);
 
 		if (phone != null) {
@@ -928,7 +932,7 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchPhoneException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchPhoneException(msg.toString());
 	}
 
 	/**
@@ -966,12 +970,12 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next phone
-	 * @throws NoSuchPhoneException if a phone with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPhoneException if a phone with the primary key could not be found
 	 */
 	@Override
 	public Phone[] findByUuid_C_PrevAndNext(long phoneId, String uuid,
 		long companyId, OrderByComparator<Phone> orderByComparator)
-		throws NoSuchPhoneException {
+		throws com.liferay.portal.exception.NoSuchPhoneException {
 		Phone phone = findByPrimaryKey(phoneId);
 
 		Session session = null;
@@ -1403,11 +1407,12 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching phone
-	 * @throws NoSuchPhoneException if a matching phone could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPhoneException if a matching phone could not be found
 	 */
 	@Override
 	public Phone findByCompanyId_First(long companyId,
-		OrderByComparator<Phone> orderByComparator) throws NoSuchPhoneException {
+		OrderByComparator<Phone> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchPhoneException {
 		Phone phone = fetchByCompanyId_First(companyId, orderByComparator);
 
 		if (phone != null) {
@@ -1423,7 +1428,7 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchPhoneException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchPhoneException(msg.toString());
 	}
 
 	/**
@@ -1451,11 +1456,12 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching phone
-	 * @throws NoSuchPhoneException if a matching phone could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPhoneException if a matching phone could not be found
 	 */
 	@Override
 	public Phone findByCompanyId_Last(long companyId,
-		OrderByComparator<Phone> orderByComparator) throws NoSuchPhoneException {
+		OrderByComparator<Phone> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchPhoneException {
 		Phone phone = fetchByCompanyId_Last(companyId, orderByComparator);
 
 		if (phone != null) {
@@ -1471,7 +1477,7 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchPhoneException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchPhoneException(msg.toString());
 	}
 
 	/**
@@ -1507,11 +1513,12 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next phone
-	 * @throws NoSuchPhoneException if a phone with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPhoneException if a phone with the primary key could not be found
 	 */
 	@Override
 	public Phone[] findByCompanyId_PrevAndNext(long phoneId, long companyId,
-		OrderByComparator<Phone> orderByComparator) throws NoSuchPhoneException {
+		OrderByComparator<Phone> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchPhoneException {
 		Phone phone = findByPrimaryKey(phoneId);
 
 		Session session = null;
@@ -1900,11 +1907,12 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching phone
-	 * @throws NoSuchPhoneException if a matching phone could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPhoneException if a matching phone could not be found
 	 */
 	@Override
 	public Phone findByUserId_First(long userId,
-		OrderByComparator<Phone> orderByComparator) throws NoSuchPhoneException {
+		OrderByComparator<Phone> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchPhoneException {
 		Phone phone = fetchByUserId_First(userId, orderByComparator);
 
 		if (phone != null) {
@@ -1920,7 +1928,7 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchPhoneException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchPhoneException(msg.toString());
 	}
 
 	/**
@@ -1948,11 +1956,12 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching phone
-	 * @throws NoSuchPhoneException if a matching phone could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPhoneException if a matching phone could not be found
 	 */
 	@Override
 	public Phone findByUserId_Last(long userId,
-		OrderByComparator<Phone> orderByComparator) throws NoSuchPhoneException {
+		OrderByComparator<Phone> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchPhoneException {
 		Phone phone = fetchByUserId_Last(userId, orderByComparator);
 
 		if (phone != null) {
@@ -1968,7 +1977,7 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchPhoneException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchPhoneException(msg.toString());
 	}
 
 	/**
@@ -2004,11 +2013,12 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next phone
-	 * @throws NoSuchPhoneException if a phone with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPhoneException if a phone with the primary key could not be found
 	 */
 	@Override
 	public Phone[] findByUserId_PrevAndNext(long phoneId, long userId,
-		OrderByComparator<Phone> orderByComparator) throws NoSuchPhoneException {
+		OrderByComparator<Phone> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchPhoneException {
 		Phone phone = findByPrimaryKey(phoneId);
 
 		Session session = null;
@@ -2415,11 +2425,12 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching phone
-	 * @throws NoSuchPhoneException if a matching phone could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPhoneException if a matching phone could not be found
 	 */
 	@Override
 	public Phone findByC_C_First(long companyId, long classNameId,
-		OrderByComparator<Phone> orderByComparator) throws NoSuchPhoneException {
+		OrderByComparator<Phone> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchPhoneException {
 		Phone phone = fetchByC_C_First(companyId, classNameId, orderByComparator);
 
 		if (phone != null) {
@@ -2438,7 +2449,7 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchPhoneException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchPhoneException(msg.toString());
 	}
 
 	/**
@@ -2469,11 +2480,12 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching phone
-	 * @throws NoSuchPhoneException if a matching phone could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPhoneException if a matching phone could not be found
 	 */
 	@Override
 	public Phone findByC_C_Last(long companyId, long classNameId,
-		OrderByComparator<Phone> orderByComparator) throws NoSuchPhoneException {
+		OrderByComparator<Phone> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchPhoneException {
 		Phone phone = fetchByC_C_Last(companyId, classNameId, orderByComparator);
 
 		if (phone != null) {
@@ -2492,7 +2504,7 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchPhoneException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchPhoneException(msg.toString());
 	}
 
 	/**
@@ -2530,12 +2542,12 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next phone
-	 * @throws NoSuchPhoneException if a phone with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPhoneException if a phone with the primary key could not be found
 	 */
 	@Override
 	public Phone[] findByC_C_PrevAndNext(long phoneId, long companyId,
 		long classNameId, OrderByComparator<Phone> orderByComparator)
-		throws NoSuchPhoneException {
+		throws com.liferay.portal.exception.NoSuchPhoneException {
 		Phone phone = findByPrimaryKey(phoneId);
 
 		Session session = null;
@@ -2970,12 +2982,12 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching phone
-	 * @throws NoSuchPhoneException if a matching phone could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPhoneException if a matching phone could not be found
 	 */
 	@Override
 	public Phone findByC_C_C_First(long companyId, long classNameId,
 		long classPK, OrderByComparator<Phone> orderByComparator)
-		throws NoSuchPhoneException {
+		throws com.liferay.portal.exception.NoSuchPhoneException {
 		Phone phone = fetchByC_C_C_First(companyId, classNameId, classPK,
 				orderByComparator);
 
@@ -2998,7 +3010,7 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchPhoneException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchPhoneException(msg.toString());
 	}
 
 	/**
@@ -3031,12 +3043,12 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching phone
-	 * @throws NoSuchPhoneException if a matching phone could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPhoneException if a matching phone could not be found
 	 */
 	@Override
 	public Phone findByC_C_C_Last(long companyId, long classNameId,
 		long classPK, OrderByComparator<Phone> orderByComparator)
-		throws NoSuchPhoneException {
+		throws com.liferay.portal.exception.NoSuchPhoneException {
 		Phone phone = fetchByC_C_C_Last(companyId, classNameId, classPK,
 				orderByComparator);
 
@@ -3059,7 +3071,7 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchPhoneException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchPhoneException(msg.toString());
 	}
 
 	/**
@@ -3099,12 +3111,13 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next phone
-	 * @throws NoSuchPhoneException if a phone with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPhoneException if a phone with the primary key could not be found
 	 */
 	@Override
 	public Phone[] findByC_C_C_PrevAndNext(long phoneId, long companyId,
 		long classNameId, long classPK,
-		OrderByComparator<Phone> orderByComparator) throws NoSuchPhoneException {
+		OrderByComparator<Phone> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchPhoneException {
 		Phone phone = findByPrimaryKey(phoneId);
 
 		Session session = null;
@@ -3566,12 +3579,13 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 	 * @param primary the primary
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching phone
-	 * @throws NoSuchPhoneException if a matching phone could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPhoneException if a matching phone could not be found
 	 */
 	@Override
 	public Phone findByC_C_C_P_First(long companyId, long classNameId,
 		long classPK, boolean primary,
-		OrderByComparator<Phone> orderByComparator) throws NoSuchPhoneException {
+		OrderByComparator<Phone> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchPhoneException {
 		Phone phone = fetchByC_C_C_P_First(companyId, classNameId, classPK,
 				primary, orderByComparator);
 
@@ -3597,7 +3611,7 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchPhoneException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchPhoneException(msg.toString());
 	}
 
 	/**
@@ -3633,12 +3647,13 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 	 * @param primary the primary
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching phone
-	 * @throws NoSuchPhoneException if a matching phone could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPhoneException if a matching phone could not be found
 	 */
 	@Override
 	public Phone findByC_C_C_P_Last(long companyId, long classNameId,
 		long classPK, boolean primary,
-		OrderByComparator<Phone> orderByComparator) throws NoSuchPhoneException {
+		OrderByComparator<Phone> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchPhoneException {
 		Phone phone = fetchByC_C_C_P_Last(companyId, classNameId, classPK,
 				primary, orderByComparator);
 
@@ -3664,7 +3679,7 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchPhoneException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchPhoneException(msg.toString());
 	}
 
 	/**
@@ -3707,12 +3722,13 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 	 * @param primary the primary
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next phone
-	 * @throws NoSuchPhoneException if a phone with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPhoneException if a phone with the primary key could not be found
 	 */
 	@Override
 	public Phone[] findByC_C_C_P_PrevAndNext(long phoneId, long companyId,
 		long classNameId, long classPK, boolean primary,
-		OrderByComparator<Phone> orderByComparator) throws NoSuchPhoneException {
+		OrderByComparator<Phone> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchPhoneException {
 		Phone phone = findByPrimaryKey(phoneId);
 
 		Session session = null;
@@ -4054,10 +4070,11 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 	 *
 	 * @param phoneId the primary key of the phone
 	 * @return the phone that was removed
-	 * @throws NoSuchPhoneException if a phone with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPhoneException if a phone with the primary key could not be found
 	 */
 	@Override
-	public Phone remove(long phoneId) throws NoSuchPhoneException {
+	public Phone remove(long phoneId)
+		throws com.liferay.portal.exception.NoSuchPhoneException {
 		return remove((Serializable)phoneId);
 	}
 
@@ -4066,10 +4083,11 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 	 *
 	 * @param primaryKey the primary key of the phone
 	 * @return the phone that was removed
-	 * @throws NoSuchPhoneException if a phone with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPhoneException if a phone with the primary key could not be found
 	 */
 	@Override
-	public Phone remove(Serializable primaryKey) throws NoSuchPhoneException {
+	public Phone remove(Serializable primaryKey)
+		throws com.liferay.portal.exception.NoSuchPhoneException {
 		Session session = null;
 
 		try {
@@ -4082,13 +4100,13 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchPhoneException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchPhoneException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(phone);
 		}
-		catch (NoSuchPhoneException nsee) {
+		catch (com.liferay.portal.exception.NoSuchPhoneException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -4372,11 +4390,11 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 	 *
 	 * @param primaryKey the primary key of the phone
 	 * @return the phone
-	 * @throws NoSuchPhoneException if a phone with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPhoneException if a phone with the primary key could not be found
 	 */
 	@Override
 	public Phone findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchPhoneException {
+		throws com.liferay.portal.exception.NoSuchPhoneException {
 		Phone phone = fetchByPrimaryKey(primaryKey);
 
 		if (phone == null) {
@@ -4384,7 +4402,7 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchPhoneException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchPhoneException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -4392,14 +4410,15 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 	}
 
 	/**
-	 * Returns the phone with the primary key or throws a {@link NoSuchPhoneException} if it could not be found.
+	 * Returns the phone with the primary key or throws a {@link com.liferay.portal.exception.NoSuchPhoneException} if it could not be found.
 	 *
 	 * @param phoneId the primary key of the phone
 	 * @return the phone
-	 * @throws NoSuchPhoneException if a phone with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchPhoneException if a phone with the primary key could not be found
 	 */
 	@Override
-	public Phone findByPrimaryKey(long phoneId) throws NoSuchPhoneException {
+	public Phone findByPrimaryKey(long phoneId)
+		throws com.liferay.portal.exception.NoSuchPhoneException {
 		return findByPrimaryKey((Serializable)phoneId);
 	}
 

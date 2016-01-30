@@ -16,7 +16,6 @@ package com.liferay.dynamic.data.lists.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.dynamic.data.lists.exception.NoSuchRecordException;
 import com.liferay.dynamic.data.lists.model.DDLRecord;
 import com.liferay.dynamic.data.lists.model.impl.DDLRecordImpl;
 import com.liferay.dynamic.data.lists.model.impl.DDLRecordModelImpl;
@@ -293,12 +292,12 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching d d l record
-	 * @throws NoSuchRecordException if a matching d d l record could not be found
+	 * @throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException if a matching d d l record could not be found
 	 */
 	@Override
 	public DDLRecord findByUuid_First(String uuid,
 		OrderByComparator<DDLRecord> orderByComparator)
-		throws NoSuchRecordException {
+		throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException {
 		DDLRecord ddlRecord = fetchByUuid_First(uuid, orderByComparator);
 
 		if (ddlRecord != null) {
@@ -314,7 +313,7 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRecordException(msg.toString());
+		throw new com.liferay.dynamic.data.lists.exception.NoSuchRecordException(msg.toString());
 	}
 
 	/**
@@ -342,12 +341,12 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching d d l record
-	 * @throws NoSuchRecordException if a matching d d l record could not be found
+	 * @throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException if a matching d d l record could not be found
 	 */
 	@Override
 	public DDLRecord findByUuid_Last(String uuid,
 		OrderByComparator<DDLRecord> orderByComparator)
-		throws NoSuchRecordException {
+		throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException {
 		DDLRecord ddlRecord = fetchByUuid_Last(uuid, orderByComparator);
 
 		if (ddlRecord != null) {
@@ -363,7 +362,7 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRecordException(msg.toString());
+		throw new com.liferay.dynamic.data.lists.exception.NoSuchRecordException(msg.toString());
 	}
 
 	/**
@@ -399,12 +398,12 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next d d l record
-	 * @throws NoSuchRecordException if a d d l record with the primary key could not be found
+	 * @throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException if a d d l record with the primary key could not be found
 	 */
 	@Override
 	public DDLRecord[] findByUuid_PrevAndNext(long recordId, String uuid,
 		OrderByComparator<DDLRecord> orderByComparator)
-		throws NoSuchRecordException {
+		throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException {
 		DDLRecord ddlRecord = findByPrimaryKey(recordId);
 
 		Session session = null;
@@ -645,16 +644,16 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 			new String[] { String.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the d d l record where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchRecordException} if it could not be found.
+	 * Returns the d d l record where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.dynamic.data.lists.exception.NoSuchRecordException} if it could not be found.
 	 *
 	 * @param uuid the uuid
 	 * @param groupId the group ID
 	 * @return the matching d d l record
-	 * @throws NoSuchRecordException if a matching d d l record could not be found
+	 * @throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException if a matching d d l record could not be found
 	 */
 	@Override
 	public DDLRecord findByUUID_G(String uuid, long groupId)
-		throws NoSuchRecordException {
+		throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException {
 		DDLRecord ddlRecord = fetchByUUID_G(uuid, groupId);
 
 		if (ddlRecord == null) {
@@ -674,7 +673,7 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchRecordException(msg.toString());
+			throw new com.liferay.dynamic.data.lists.exception.NoSuchRecordException(msg.toString());
 		}
 
 		return ddlRecord;
@@ -807,7 +806,7 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 	 */
 	@Override
 	public DDLRecord removeByUUID_G(String uuid, long groupId)
-		throws NoSuchRecordException {
+		throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException {
 		DDLRecord ddlRecord = findByUUID_G(uuid, groupId);
 
 		return remove(ddlRecord);
@@ -1108,12 +1107,12 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching d d l record
-	 * @throws NoSuchRecordException if a matching d d l record could not be found
+	 * @throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException if a matching d d l record could not be found
 	 */
 	@Override
 	public DDLRecord findByUuid_C_First(String uuid, long companyId,
 		OrderByComparator<DDLRecord> orderByComparator)
-		throws NoSuchRecordException {
+		throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException {
 		DDLRecord ddlRecord = fetchByUuid_C_First(uuid, companyId,
 				orderByComparator);
 
@@ -1133,7 +1132,7 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRecordException(msg.toString());
+		throw new com.liferay.dynamic.data.lists.exception.NoSuchRecordException(msg.toString());
 	}
 
 	/**
@@ -1164,12 +1163,12 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching d d l record
-	 * @throws NoSuchRecordException if a matching d d l record could not be found
+	 * @throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException if a matching d d l record could not be found
 	 */
 	@Override
 	public DDLRecord findByUuid_C_Last(String uuid, long companyId,
 		OrderByComparator<DDLRecord> orderByComparator)
-		throws NoSuchRecordException {
+		throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException {
 		DDLRecord ddlRecord = fetchByUuid_C_Last(uuid, companyId,
 				orderByComparator);
 
@@ -1189,7 +1188,7 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRecordException(msg.toString());
+		throw new com.liferay.dynamic.data.lists.exception.NoSuchRecordException(msg.toString());
 	}
 
 	/**
@@ -1227,12 +1226,12 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next d d l record
-	 * @throws NoSuchRecordException if a d d l record with the primary key could not be found
+	 * @throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException if a d d l record with the primary key could not be found
 	 */
 	@Override
 	public DDLRecord[] findByUuid_C_PrevAndNext(long recordId, String uuid,
 		long companyId, OrderByComparator<DDLRecord> orderByComparator)
-		throws NoSuchRecordException {
+		throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException {
 		DDLRecord ddlRecord = findByPrimaryKey(recordId);
 
 		Session session = null;
@@ -1664,12 +1663,12 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching d d l record
-	 * @throws NoSuchRecordException if a matching d d l record could not be found
+	 * @throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException if a matching d d l record could not be found
 	 */
 	@Override
 	public DDLRecord findByCompanyId_First(long companyId,
 		OrderByComparator<DDLRecord> orderByComparator)
-		throws NoSuchRecordException {
+		throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException {
 		DDLRecord ddlRecord = fetchByCompanyId_First(companyId,
 				orderByComparator);
 
@@ -1686,7 +1685,7 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRecordException(msg.toString());
+		throw new com.liferay.dynamic.data.lists.exception.NoSuchRecordException(msg.toString());
 	}
 
 	/**
@@ -1715,12 +1714,12 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching d d l record
-	 * @throws NoSuchRecordException if a matching d d l record could not be found
+	 * @throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException if a matching d d l record could not be found
 	 */
 	@Override
 	public DDLRecord findByCompanyId_Last(long companyId,
 		OrderByComparator<DDLRecord> orderByComparator)
-		throws NoSuchRecordException {
+		throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException {
 		DDLRecord ddlRecord = fetchByCompanyId_Last(companyId, orderByComparator);
 
 		if (ddlRecord != null) {
@@ -1736,7 +1735,7 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRecordException(msg.toString());
+		throw new com.liferay.dynamic.data.lists.exception.NoSuchRecordException(msg.toString());
 	}
 
 	/**
@@ -1772,12 +1771,12 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next d d l record
-	 * @throws NoSuchRecordException if a d d l record with the primary key could not be found
+	 * @throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException if a d d l record with the primary key could not be found
 	 */
 	@Override
 	public DDLRecord[] findByCompanyId_PrevAndNext(long recordId,
 		long companyId, OrderByComparator<DDLRecord> orderByComparator)
-		throws NoSuchRecordException {
+		throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException {
 		DDLRecord ddlRecord = findByPrimaryKey(recordId);
 
 		Session session = null;
@@ -2170,12 +2169,12 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 	 * @param recordSetId the record set ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching d d l record
-	 * @throws NoSuchRecordException if a matching d d l record could not be found
+	 * @throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException if a matching d d l record could not be found
 	 */
 	@Override
 	public DDLRecord findByRecordSetId_First(long recordSetId,
 		OrderByComparator<DDLRecord> orderByComparator)
-		throws NoSuchRecordException {
+		throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException {
 		DDLRecord ddlRecord = fetchByRecordSetId_First(recordSetId,
 				orderByComparator);
 
@@ -2192,7 +2191,7 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRecordException(msg.toString());
+		throw new com.liferay.dynamic.data.lists.exception.NoSuchRecordException(msg.toString());
 	}
 
 	/**
@@ -2221,12 +2220,12 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 	 * @param recordSetId the record set ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching d d l record
-	 * @throws NoSuchRecordException if a matching d d l record could not be found
+	 * @throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException if a matching d d l record could not be found
 	 */
 	@Override
 	public DDLRecord findByRecordSetId_Last(long recordSetId,
 		OrderByComparator<DDLRecord> orderByComparator)
-		throws NoSuchRecordException {
+		throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException {
 		DDLRecord ddlRecord = fetchByRecordSetId_Last(recordSetId,
 				orderByComparator);
 
@@ -2243,7 +2242,7 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRecordException(msg.toString());
+		throw new com.liferay.dynamic.data.lists.exception.NoSuchRecordException(msg.toString());
 	}
 
 	/**
@@ -2279,12 +2278,12 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 	 * @param recordSetId the record set ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next d d l record
-	 * @throws NoSuchRecordException if a d d l record with the primary key could not be found
+	 * @throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException if a d d l record with the primary key could not be found
 	 */
 	@Override
 	public DDLRecord[] findByRecordSetId_PrevAndNext(long recordId,
 		long recordSetId, OrderByComparator<DDLRecord> orderByComparator)
-		throws NoSuchRecordException {
+		throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException {
 		DDLRecord ddlRecord = findByPrimaryKey(recordId);
 
 		Session session = null;
@@ -2690,12 +2689,12 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching d d l record
-	 * @throws NoSuchRecordException if a matching d d l record could not be found
+	 * @throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException if a matching d d l record could not be found
 	 */
 	@Override
 	public DDLRecord findByR_U_First(long recordSetId, long userId,
 		OrderByComparator<DDLRecord> orderByComparator)
-		throws NoSuchRecordException {
+		throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException {
 		DDLRecord ddlRecord = fetchByR_U_First(recordSetId, userId,
 				orderByComparator);
 
@@ -2715,7 +2714,7 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRecordException(msg.toString());
+		throw new com.liferay.dynamic.data.lists.exception.NoSuchRecordException(msg.toString());
 	}
 
 	/**
@@ -2746,12 +2745,12 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching d d l record
-	 * @throws NoSuchRecordException if a matching d d l record could not be found
+	 * @throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException if a matching d d l record could not be found
 	 */
 	@Override
 	public DDLRecord findByR_U_Last(long recordSetId, long userId,
 		OrderByComparator<DDLRecord> orderByComparator)
-		throws NoSuchRecordException {
+		throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException {
 		DDLRecord ddlRecord = fetchByR_U_Last(recordSetId, userId,
 				orderByComparator);
 
@@ -2771,7 +2770,7 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRecordException(msg.toString());
+		throw new com.liferay.dynamic.data.lists.exception.NoSuchRecordException(msg.toString());
 	}
 
 	/**
@@ -2809,12 +2808,12 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next d d l record
-	 * @throws NoSuchRecordException if a d d l record with the primary key could not be found
+	 * @throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException if a d d l record with the primary key could not be found
 	 */
 	@Override
 	public DDLRecord[] findByR_U_PrevAndNext(long recordId, long recordSetId,
 		long userId, OrderByComparator<DDLRecord> orderByComparator)
-		throws NoSuchRecordException {
+		throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException {
 		DDLRecord ddlRecord = findByPrimaryKey(recordId);
 
 		Session session = null;
@@ -3188,10 +3187,11 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 	 *
 	 * @param recordId the primary key of the d d l record
 	 * @return the d d l record that was removed
-	 * @throws NoSuchRecordException if a d d l record with the primary key could not be found
+	 * @throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException if a d d l record with the primary key could not be found
 	 */
 	@Override
-	public DDLRecord remove(long recordId) throws NoSuchRecordException {
+	public DDLRecord remove(long recordId)
+		throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException {
 		return remove((Serializable)recordId);
 	}
 
@@ -3200,11 +3200,11 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 	 *
 	 * @param primaryKey the primary key of the d d l record
 	 * @return the d d l record that was removed
-	 * @throws NoSuchRecordException if a d d l record with the primary key could not be found
+	 * @throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException if a d d l record with the primary key could not be found
 	 */
 	@Override
 	public DDLRecord remove(Serializable primaryKey)
-		throws NoSuchRecordException {
+		throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException {
 		Session session = null;
 
 		try {
@@ -3218,13 +3218,13 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchRecordException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.dynamic.data.lists.exception.NoSuchRecordException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(ddlRecord);
 		}
-		catch (NoSuchRecordException nsee) {
+		catch (com.liferay.dynamic.data.lists.exception.NoSuchRecordException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -3470,11 +3470,11 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 	 *
 	 * @param primaryKey the primary key of the d d l record
 	 * @return the d d l record
-	 * @throws NoSuchRecordException if a d d l record with the primary key could not be found
+	 * @throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException if a d d l record with the primary key could not be found
 	 */
 	@Override
 	public DDLRecord findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchRecordException {
+		throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException {
 		DDLRecord ddlRecord = fetchByPrimaryKey(primaryKey);
 
 		if (ddlRecord == null) {
@@ -3482,7 +3482,7 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchRecordException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.dynamic.data.lists.exception.NoSuchRecordException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -3490,15 +3490,15 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 	}
 
 	/**
-	 * Returns the d d l record with the primary key or throws a {@link NoSuchRecordException} if it could not be found.
+	 * Returns the d d l record with the primary key or throws a {@link com.liferay.dynamic.data.lists.exception.NoSuchRecordException} if it could not be found.
 	 *
 	 * @param recordId the primary key of the d d l record
 	 * @return the d d l record
-	 * @throws NoSuchRecordException if a d d l record with the primary key could not be found
+	 * @throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException if a d d l record with the primary key could not be found
 	 */
 	@Override
 	public DDLRecord findByPrimaryKey(long recordId)
-		throws NoSuchRecordException {
+		throws com.liferay.dynamic.data.lists.exception.NoSuchRecordException {
 		return findByPrimaryKey((Serializable)recordId);
 	}
 

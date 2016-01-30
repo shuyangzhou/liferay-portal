@@ -103,7 +103,7 @@ public interface LayoutFriendlyURLPersistence extends BasePersistence<LayoutFrie
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching layout friendly u r l
-	* @throws NoSuchLayoutFriendlyURLException if a matching layout friendly u r l could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutFriendlyURLException if a matching layout friendly u r l could not be found
 	*/
 	public LayoutFriendlyURL findByUuid_First(java.lang.String uuid,
 		com.liferay.portal.kernel.util.OrderByComparator<LayoutFriendlyURL> orderByComparator)
@@ -125,7 +125,7 @@ public interface LayoutFriendlyURLPersistence extends BasePersistence<LayoutFrie
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching layout friendly u r l
-	* @throws NoSuchLayoutFriendlyURLException if a matching layout friendly u r l could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutFriendlyURLException if a matching layout friendly u r l could not be found
 	*/
 	public LayoutFriendlyURL findByUuid_Last(java.lang.String uuid,
 		com.liferay.portal.kernel.util.OrderByComparator<LayoutFriendlyURL> orderByComparator)
@@ -148,7 +148,7 @@ public interface LayoutFriendlyURLPersistence extends BasePersistence<LayoutFrie
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next layout friendly u r l
-	* @throws NoSuchLayoutFriendlyURLException if a layout friendly u r l with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutFriendlyURLException if a layout friendly u r l with the primary key could not be found
 	*/
 	public LayoutFriendlyURL[] findByUuid_PrevAndNext(
 		long layoutFriendlyURLId, java.lang.String uuid,
@@ -171,12 +171,12 @@ public interface LayoutFriendlyURLPersistence extends BasePersistence<LayoutFrie
 	public int countByUuid(java.lang.String uuid);
 
 	/**
-	* Returns the layout friendly u r l where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchLayoutFriendlyURLException} if it could not be found.
+	* Returns the layout friendly u r l where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchLayoutFriendlyURLException} if it could not be found.
 	*
 	* @param uuid the uuid
 	* @param groupId the group ID
 	* @return the matching layout friendly u r l
-	* @throws NoSuchLayoutFriendlyURLException if a matching layout friendly u r l could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutFriendlyURLException if a matching layout friendly u r l could not be found
 	*/
 	public LayoutFriendlyURL findByUUID_G(java.lang.String uuid, long groupId)
 		throws com.liferay.portal.exception.NoSuchLayoutFriendlyURLException;
@@ -291,7 +291,7 @@ public interface LayoutFriendlyURLPersistence extends BasePersistence<LayoutFrie
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching layout friendly u r l
-	* @throws NoSuchLayoutFriendlyURLException if a matching layout friendly u r l could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutFriendlyURLException if a matching layout friendly u r l could not be found
 	*/
 	public LayoutFriendlyURL findByUuid_C_First(java.lang.String uuid,
 		long companyId,
@@ -317,7 +317,7 @@ public interface LayoutFriendlyURLPersistence extends BasePersistence<LayoutFrie
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching layout friendly u r l
-	* @throws NoSuchLayoutFriendlyURLException if a matching layout friendly u r l could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutFriendlyURLException if a matching layout friendly u r l could not be found
 	*/
 	public LayoutFriendlyURL findByUuid_C_Last(java.lang.String uuid,
 		long companyId,
@@ -344,7 +344,7 @@ public interface LayoutFriendlyURLPersistence extends BasePersistence<LayoutFrie
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next layout friendly u r l
-	* @throws NoSuchLayoutFriendlyURLException if a layout friendly u r l with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutFriendlyURLException if a layout friendly u r l with the primary key could not be found
 	*/
 	public LayoutFriendlyURL[] findByUuid_C_PrevAndNext(
 		long layoutFriendlyURLId, java.lang.String uuid, long companyId,
@@ -433,7 +433,7 @@ public interface LayoutFriendlyURLPersistence extends BasePersistence<LayoutFrie
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching layout friendly u r l
-	* @throws NoSuchLayoutFriendlyURLException if a matching layout friendly u r l could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutFriendlyURLException if a matching layout friendly u r l could not be found
 	*/
 	public LayoutFriendlyURL findByGroupId_First(long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<LayoutFriendlyURL> orderByComparator)
@@ -455,7 +455,7 @@ public interface LayoutFriendlyURLPersistence extends BasePersistence<LayoutFrie
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching layout friendly u r l
-	* @throws NoSuchLayoutFriendlyURLException if a matching layout friendly u r l could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutFriendlyURLException if a matching layout friendly u r l could not be found
 	*/
 	public LayoutFriendlyURL findByGroupId_Last(long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<LayoutFriendlyURL> orderByComparator)
@@ -478,7 +478,7 @@ public interface LayoutFriendlyURLPersistence extends BasePersistence<LayoutFrie
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next layout friendly u r l
-	* @throws NoSuchLayoutFriendlyURLException if a layout friendly u r l with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutFriendlyURLException if a layout friendly u r l with the primary key could not be found
 	*/
 	public LayoutFriendlyURL[] findByGroupId_PrevAndNext(
 		long layoutFriendlyURLId, long groupId,
@@ -565,7 +565,7 @@ public interface LayoutFriendlyURLPersistence extends BasePersistence<LayoutFrie
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching layout friendly u r l
-	* @throws NoSuchLayoutFriendlyURLException if a matching layout friendly u r l could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutFriendlyURLException if a matching layout friendly u r l could not be found
 	*/
 	public LayoutFriendlyURL findByCompanyId_First(long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<LayoutFriendlyURL> orderByComparator)
@@ -587,7 +587,7 @@ public interface LayoutFriendlyURLPersistence extends BasePersistence<LayoutFrie
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching layout friendly u r l
-	* @throws NoSuchLayoutFriendlyURLException if a matching layout friendly u r l could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutFriendlyURLException if a matching layout friendly u r l could not be found
 	*/
 	public LayoutFriendlyURL findByCompanyId_Last(long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<LayoutFriendlyURL> orderByComparator)
@@ -610,7 +610,7 @@ public interface LayoutFriendlyURLPersistence extends BasePersistence<LayoutFrie
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next layout friendly u r l
-	* @throws NoSuchLayoutFriendlyURLException if a layout friendly u r l with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutFriendlyURLException if a layout friendly u r l with the primary key could not be found
 	*/
 	public LayoutFriendlyURL[] findByCompanyId_PrevAndNext(
 		long layoutFriendlyURLId, long companyId,
@@ -697,7 +697,7 @@ public interface LayoutFriendlyURLPersistence extends BasePersistence<LayoutFrie
 	* @param plid the plid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching layout friendly u r l
-	* @throws NoSuchLayoutFriendlyURLException if a matching layout friendly u r l could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutFriendlyURLException if a matching layout friendly u r l could not be found
 	*/
 	public LayoutFriendlyURL findByPlid_First(long plid,
 		com.liferay.portal.kernel.util.OrderByComparator<LayoutFriendlyURL> orderByComparator)
@@ -719,7 +719,7 @@ public interface LayoutFriendlyURLPersistence extends BasePersistence<LayoutFrie
 	* @param plid the plid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching layout friendly u r l
-	* @throws NoSuchLayoutFriendlyURLException if a matching layout friendly u r l could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutFriendlyURLException if a matching layout friendly u r l could not be found
 	*/
 	public LayoutFriendlyURL findByPlid_Last(long plid,
 		com.liferay.portal.kernel.util.OrderByComparator<LayoutFriendlyURL> orderByComparator)
@@ -742,7 +742,7 @@ public interface LayoutFriendlyURLPersistence extends BasePersistence<LayoutFrie
 	* @param plid the plid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next layout friendly u r l
-	* @throws NoSuchLayoutFriendlyURLException if a layout friendly u r l with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutFriendlyURLException if a layout friendly u r l with the primary key could not be found
 	*/
 	public LayoutFriendlyURL[] findByPlid_PrevAndNext(
 		long layoutFriendlyURLId, long plid,
@@ -835,7 +835,7 @@ public interface LayoutFriendlyURLPersistence extends BasePersistence<LayoutFrie
 	* @param friendlyURL the friendly u r l
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching layout friendly u r l
-	* @throws NoSuchLayoutFriendlyURLException if a matching layout friendly u r l could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutFriendlyURLException if a matching layout friendly u r l could not be found
 	*/
 	public LayoutFriendlyURL findByP_F_First(long plid,
 		java.lang.String friendlyURL,
@@ -861,7 +861,7 @@ public interface LayoutFriendlyURLPersistence extends BasePersistence<LayoutFrie
 	* @param friendlyURL the friendly u r l
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching layout friendly u r l
-	* @throws NoSuchLayoutFriendlyURLException if a matching layout friendly u r l could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutFriendlyURLException if a matching layout friendly u r l could not be found
 	*/
 	public LayoutFriendlyURL findByP_F_Last(long plid,
 		java.lang.String friendlyURL,
@@ -888,7 +888,7 @@ public interface LayoutFriendlyURLPersistence extends BasePersistence<LayoutFrie
 	* @param friendlyURL the friendly u r l
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next layout friendly u r l
-	* @throws NoSuchLayoutFriendlyURLException if a layout friendly u r l with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutFriendlyURLException if a layout friendly u r l with the primary key could not be found
 	*/
 	public LayoutFriendlyURL[] findByP_F_PrevAndNext(long layoutFriendlyURLId,
 		long plid, java.lang.String friendlyURL,
@@ -913,12 +913,12 @@ public interface LayoutFriendlyURLPersistence extends BasePersistence<LayoutFrie
 	public int countByP_F(long plid, java.lang.String friendlyURL);
 
 	/**
-	* Returns the layout friendly u r l where plid = &#63; and languageId = &#63; or throws a {@link NoSuchLayoutFriendlyURLException} if it could not be found.
+	* Returns the layout friendly u r l where plid = &#63; and languageId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchLayoutFriendlyURLException} if it could not be found.
 	*
 	* @param plid the plid
 	* @param languageId the language ID
 	* @return the matching layout friendly u r l
-	* @throws NoSuchLayoutFriendlyURLException if a matching layout friendly u r l could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutFriendlyURLException if a matching layout friendly u r l could not be found
 	*/
 	public LayoutFriendlyURL findByP_L(long plid, java.lang.String languageId)
 		throws com.liferay.portal.exception.NoSuchLayoutFriendlyURLException;
@@ -1040,7 +1040,7 @@ public interface LayoutFriendlyURLPersistence extends BasePersistence<LayoutFrie
 	* @param friendlyURL the friendly u r l
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching layout friendly u r l
-	* @throws NoSuchLayoutFriendlyURLException if a matching layout friendly u r l could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutFriendlyURLException if a matching layout friendly u r l could not be found
 	*/
 	public LayoutFriendlyURL findByG_P_F_First(long groupId,
 		boolean privateLayout, java.lang.String friendlyURL,
@@ -1068,7 +1068,7 @@ public interface LayoutFriendlyURLPersistence extends BasePersistence<LayoutFrie
 	* @param friendlyURL the friendly u r l
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching layout friendly u r l
-	* @throws NoSuchLayoutFriendlyURLException if a matching layout friendly u r l could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutFriendlyURLException if a matching layout friendly u r l could not be found
 	*/
 	public LayoutFriendlyURL findByG_P_F_Last(long groupId,
 		boolean privateLayout, java.lang.String friendlyURL,
@@ -1097,7 +1097,7 @@ public interface LayoutFriendlyURLPersistence extends BasePersistence<LayoutFrie
 	* @param friendlyURL the friendly u r l
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next layout friendly u r l
-	* @throws NoSuchLayoutFriendlyURLException if a layout friendly u r l with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutFriendlyURLException if a layout friendly u r l with the primary key could not be found
 	*/
 	public LayoutFriendlyURL[] findByG_P_F_PrevAndNext(
 		long layoutFriendlyURLId, long groupId, boolean privateLayout,
@@ -1127,14 +1127,14 @@ public interface LayoutFriendlyURLPersistence extends BasePersistence<LayoutFrie
 		java.lang.String friendlyURL);
 
 	/**
-	* Returns the layout friendly u r l where groupId = &#63; and privateLayout = &#63; and friendlyURL = &#63; and languageId = &#63; or throws a {@link NoSuchLayoutFriendlyURLException} if it could not be found.
+	* Returns the layout friendly u r l where groupId = &#63; and privateLayout = &#63; and friendlyURL = &#63; and languageId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchLayoutFriendlyURLException} if it could not be found.
 	*
 	* @param groupId the group ID
 	* @param privateLayout the private layout
 	* @param friendlyURL the friendly u r l
 	* @param languageId the language ID
 	* @return the matching layout friendly u r l
-	* @throws NoSuchLayoutFriendlyURLException if a matching layout friendly u r l could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutFriendlyURLException if a matching layout friendly u r l could not be found
 	*/
 	public LayoutFriendlyURL findByG_P_F_L(long groupId, boolean privateLayout,
 		java.lang.String friendlyURL, java.lang.String languageId)
@@ -1221,7 +1221,7 @@ public interface LayoutFriendlyURLPersistence extends BasePersistence<LayoutFrie
 	*
 	* @param layoutFriendlyURLId the primary key of the layout friendly u r l
 	* @return the layout friendly u r l that was removed
-	* @throws NoSuchLayoutFriendlyURLException if a layout friendly u r l with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutFriendlyURLException if a layout friendly u r l with the primary key could not be found
 	*/
 	public LayoutFriendlyURL remove(long layoutFriendlyURLId)
 		throws com.liferay.portal.exception.NoSuchLayoutFriendlyURLException;
@@ -1229,11 +1229,11 @@ public interface LayoutFriendlyURLPersistence extends BasePersistence<LayoutFrie
 	public LayoutFriendlyURL updateImpl(LayoutFriendlyURL layoutFriendlyURL);
 
 	/**
-	* Returns the layout friendly u r l with the primary key or throws a {@link NoSuchLayoutFriendlyURLException} if it could not be found.
+	* Returns the layout friendly u r l with the primary key or throws a {@link com.liferay.portal.exception.NoSuchLayoutFriendlyURLException} if it could not be found.
 	*
 	* @param layoutFriendlyURLId the primary key of the layout friendly u r l
 	* @return the layout friendly u r l
-	* @throws NoSuchLayoutFriendlyURLException if a layout friendly u r l with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutFriendlyURLException if a layout friendly u r l with the primary key could not be found
 	*/
 	public LayoutFriendlyURL findByPrimaryKey(long layoutFriendlyURLId)
 		throws com.liferay.portal.exception.NoSuchLayoutFriendlyURLException;

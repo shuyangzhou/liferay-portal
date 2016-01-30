@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchTeamException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -298,11 +297,12 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching team
-	 * @throws NoSuchTeamException if a matching team could not be found
+	 * @throws com.liferay.portal.exception.NoSuchTeamException if a matching team could not be found
 	 */
 	@Override
 	public Team findByUuid_First(String uuid,
-		OrderByComparator<Team> orderByComparator) throws NoSuchTeamException {
+		OrderByComparator<Team> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchTeamException {
 		Team team = fetchByUuid_First(uuid, orderByComparator);
 
 		if (team != null) {
@@ -318,7 +318,7 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchTeamException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchTeamException(msg.toString());
 	}
 
 	/**
@@ -346,11 +346,12 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching team
-	 * @throws NoSuchTeamException if a matching team could not be found
+	 * @throws com.liferay.portal.exception.NoSuchTeamException if a matching team could not be found
 	 */
 	@Override
 	public Team findByUuid_Last(String uuid,
-		OrderByComparator<Team> orderByComparator) throws NoSuchTeamException {
+		OrderByComparator<Team> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchTeamException {
 		Team team = fetchByUuid_Last(uuid, orderByComparator);
 
 		if (team != null) {
@@ -366,7 +367,7 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchTeamException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchTeamException(msg.toString());
 	}
 
 	/**
@@ -401,11 +402,12 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next team
-	 * @throws NoSuchTeamException if a team with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchTeamException if a team with the primary key could not be found
 	 */
 	@Override
 	public Team[] findByUuid_PrevAndNext(long teamId, String uuid,
-		OrderByComparator<Team> orderByComparator) throws NoSuchTeamException {
+		OrderByComparator<Team> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchTeamException {
 		Team team = findByPrimaryKey(teamId);
 
 		Session session = null;
@@ -645,16 +647,16 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 			new String[] { String.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the team where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchTeamException} if it could not be found.
+	 * Returns the team where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchTeamException} if it could not be found.
 	 *
 	 * @param uuid the uuid
 	 * @param groupId the group ID
 	 * @return the matching team
-	 * @throws NoSuchTeamException if a matching team could not be found
+	 * @throws com.liferay.portal.exception.NoSuchTeamException if a matching team could not be found
 	 */
 	@Override
 	public Team findByUUID_G(String uuid, long groupId)
-		throws NoSuchTeamException {
+		throws com.liferay.portal.exception.NoSuchTeamException {
 		Team team = fetchByUUID_G(uuid, groupId);
 
 		if (team == null) {
@@ -674,7 +676,7 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchTeamException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchTeamException(msg.toString());
 		}
 
 		return team;
@@ -807,7 +809,7 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 	 */
 	@Override
 	public Team removeByUUID_G(String uuid, long groupId)
-		throws NoSuchTeamException {
+		throws com.liferay.portal.exception.NoSuchTeamException {
 		Team team = findByUUID_G(uuid, groupId);
 
 		return remove(team);
@@ -1109,11 +1111,12 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching team
-	 * @throws NoSuchTeamException if a matching team could not be found
+	 * @throws com.liferay.portal.exception.NoSuchTeamException if a matching team could not be found
 	 */
 	@Override
 	public Team findByUuid_C_First(String uuid, long companyId,
-		OrderByComparator<Team> orderByComparator) throws NoSuchTeamException {
+		OrderByComparator<Team> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchTeamException {
 		Team team = fetchByUuid_C_First(uuid, companyId, orderByComparator);
 
 		if (team != null) {
@@ -1132,7 +1135,7 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchTeamException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchTeamException(msg.toString());
 	}
 
 	/**
@@ -1162,11 +1165,12 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching team
-	 * @throws NoSuchTeamException if a matching team could not be found
+	 * @throws com.liferay.portal.exception.NoSuchTeamException if a matching team could not be found
 	 */
 	@Override
 	public Team findByUuid_C_Last(String uuid, long companyId,
-		OrderByComparator<Team> orderByComparator) throws NoSuchTeamException {
+		OrderByComparator<Team> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchTeamException {
 		Team team = fetchByUuid_C_Last(uuid, companyId, orderByComparator);
 
 		if (team != null) {
@@ -1185,7 +1189,7 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchTeamException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchTeamException(msg.toString());
 	}
 
 	/**
@@ -1223,12 +1227,12 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next team
-	 * @throws NoSuchTeamException if a team with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchTeamException if a team with the primary key could not be found
 	 */
 	@Override
 	public Team[] findByUuid_C_PrevAndNext(long teamId, String uuid,
 		long companyId, OrderByComparator<Team> orderByComparator)
-		throws NoSuchTeamException {
+		throws com.liferay.portal.exception.NoSuchTeamException {
 		Team team = findByPrimaryKey(teamId);
 
 		Session session = null;
@@ -1658,11 +1662,12 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching team
-	 * @throws NoSuchTeamException if a matching team could not be found
+	 * @throws com.liferay.portal.exception.NoSuchTeamException if a matching team could not be found
 	 */
 	@Override
 	public Team findByGroupId_First(long groupId,
-		OrderByComparator<Team> orderByComparator) throws NoSuchTeamException {
+		OrderByComparator<Team> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchTeamException {
 		Team team = fetchByGroupId_First(groupId, orderByComparator);
 
 		if (team != null) {
@@ -1678,7 +1683,7 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchTeamException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchTeamException(msg.toString());
 	}
 
 	/**
@@ -1706,11 +1711,12 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching team
-	 * @throws NoSuchTeamException if a matching team could not be found
+	 * @throws com.liferay.portal.exception.NoSuchTeamException if a matching team could not be found
 	 */
 	@Override
 	public Team findByGroupId_Last(long groupId,
-		OrderByComparator<Team> orderByComparator) throws NoSuchTeamException {
+		OrderByComparator<Team> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchTeamException {
 		Team team = fetchByGroupId_Last(groupId, orderByComparator);
 
 		if (team != null) {
@@ -1726,7 +1732,7 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchTeamException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchTeamException(msg.toString());
 	}
 
 	/**
@@ -1762,11 +1768,12 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next team
-	 * @throws NoSuchTeamException if a team with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchTeamException if a team with the primary key could not be found
 	 */
 	@Override
 	public Team[] findByGroupId_PrevAndNext(long teamId, long groupId,
-		OrderByComparator<Team> orderByComparator) throws NoSuchTeamException {
+		OrderByComparator<Team> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchTeamException {
 		Team team = findByPrimaryKey(teamId);
 
 		Session session = null;
@@ -2030,11 +2037,12 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next team
-	 * @throws NoSuchTeamException if a team with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchTeamException if a team with the primary key could not be found
 	 */
 	@Override
 	public Team[] filterFindByGroupId_PrevAndNext(long teamId, long groupId,
-		OrderByComparator<Team> orderByComparator) throws NoSuchTeamException {
+		OrderByComparator<Team> orderByComparator)
+		throws com.liferay.portal.exception.NoSuchTeamException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByGroupId_PrevAndNext(teamId, groupId, orderByComparator);
 		}
@@ -2332,15 +2340,16 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 			new String[] { Long.class.getName(), String.class.getName() });
 
 	/**
-	 * Returns the team where groupId = &#63; and name = &#63; or throws a {@link NoSuchTeamException} if it could not be found.
+	 * Returns the team where groupId = &#63; and name = &#63; or throws a {@link com.liferay.portal.exception.NoSuchTeamException} if it could not be found.
 	 *
 	 * @param groupId the group ID
 	 * @param name the name
 	 * @return the matching team
-	 * @throws NoSuchTeamException if a matching team could not be found
+	 * @throws com.liferay.portal.exception.NoSuchTeamException if a matching team could not be found
 	 */
 	@Override
-	public Team findByG_N(long groupId, String name) throws NoSuchTeamException {
+	public Team findByG_N(long groupId, String name)
+		throws com.liferay.portal.exception.NoSuchTeamException {
 		Team team = fetchByG_N(groupId, name);
 
 		if (team == null) {
@@ -2360,7 +2369,7 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchTeamException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchTeamException(msg.toString());
 		}
 
 		return team;
@@ -2492,7 +2501,7 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 	 */
 	@Override
 	public Team removeByG_N(long groupId, String name)
-		throws NoSuchTeamException {
+		throws com.liferay.portal.exception.NoSuchTeamException {
 		Team team = findByG_N(groupId, name);
 
 		return remove(team);
@@ -2771,10 +2780,11 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 	 *
 	 * @param teamId the primary key of the team
 	 * @return the team that was removed
-	 * @throws NoSuchTeamException if a team with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchTeamException if a team with the primary key could not be found
 	 */
 	@Override
-	public Team remove(long teamId) throws NoSuchTeamException {
+	public Team remove(long teamId)
+		throws com.liferay.portal.exception.NoSuchTeamException {
 		return remove((Serializable)teamId);
 	}
 
@@ -2783,10 +2793,11 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 	 *
 	 * @param primaryKey the primary key of the team
 	 * @return the team that was removed
-	 * @throws NoSuchTeamException if a team with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchTeamException if a team with the primary key could not be found
 	 */
 	@Override
-	public Team remove(Serializable primaryKey) throws NoSuchTeamException {
+	public Team remove(Serializable primaryKey)
+		throws com.liferay.portal.exception.NoSuchTeamException {
 		Session session = null;
 
 		try {
@@ -2799,13 +2810,13 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchTeamException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchTeamException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(team);
 		}
-		catch (NoSuchTeamException nsee) {
+		catch (com.liferay.portal.exception.NoSuchTeamException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -3008,11 +3019,11 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 	 *
 	 * @param primaryKey the primary key of the team
 	 * @return the team
-	 * @throws NoSuchTeamException if a team with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchTeamException if a team with the primary key could not be found
 	 */
 	@Override
 	public Team findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchTeamException {
+		throws com.liferay.portal.exception.NoSuchTeamException {
 		Team team = fetchByPrimaryKey(primaryKey);
 
 		if (team == null) {
@@ -3020,7 +3031,7 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchTeamException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchTeamException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -3028,14 +3039,15 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 	}
 
 	/**
-	 * Returns the team with the primary key or throws a {@link NoSuchTeamException} if it could not be found.
+	 * Returns the team with the primary key or throws a {@link com.liferay.portal.exception.NoSuchTeamException} if it could not be found.
 	 *
 	 * @param teamId the primary key of the team
 	 * @return the team
-	 * @throws NoSuchTeamException if a team with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchTeamException if a team with the primary key could not be found
 	 */
 	@Override
-	public Team findByPrimaryKey(long teamId) throws NoSuchTeamException {
+	public Team findByPrimaryKey(long teamId)
+		throws com.liferay.portal.exception.NoSuchTeamException {
 		return findByPrimaryKey((Serializable)teamId);
 	}
 

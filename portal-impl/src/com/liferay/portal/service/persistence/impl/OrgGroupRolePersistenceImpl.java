@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchOrgGroupRoleException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -274,12 +273,12 @@ public class OrgGroupRolePersistenceImpl extends BasePersistenceImpl<OrgGroupRol
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching org group role
-	 * @throws NoSuchOrgGroupRoleException if a matching org group role could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrgGroupRoleException if a matching org group role could not be found
 	 */
 	@Override
 	public OrgGroupRole findByGroupId_First(long groupId,
 		OrderByComparator<OrgGroupRole> orderByComparator)
-		throws NoSuchOrgGroupRoleException {
+		throws com.liferay.portal.exception.NoSuchOrgGroupRoleException {
 		OrgGroupRole orgGroupRole = fetchByGroupId_First(groupId,
 				orderByComparator);
 
@@ -296,7 +295,7 @@ public class OrgGroupRolePersistenceImpl extends BasePersistenceImpl<OrgGroupRol
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchOrgGroupRoleException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchOrgGroupRoleException(msg.toString());
 	}
 
 	/**
@@ -324,12 +323,12 @@ public class OrgGroupRolePersistenceImpl extends BasePersistenceImpl<OrgGroupRol
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching org group role
-	 * @throws NoSuchOrgGroupRoleException if a matching org group role could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrgGroupRoleException if a matching org group role could not be found
 	 */
 	@Override
 	public OrgGroupRole findByGroupId_Last(long groupId,
 		OrderByComparator<OrgGroupRole> orderByComparator)
-		throws NoSuchOrgGroupRoleException {
+		throws com.liferay.portal.exception.NoSuchOrgGroupRoleException {
 		OrgGroupRole orgGroupRole = fetchByGroupId_Last(groupId,
 				orderByComparator);
 
@@ -346,7 +345,7 @@ public class OrgGroupRolePersistenceImpl extends BasePersistenceImpl<OrgGroupRol
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchOrgGroupRoleException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchOrgGroupRoleException(msg.toString());
 	}
 
 	/**
@@ -382,13 +381,13 @@ public class OrgGroupRolePersistenceImpl extends BasePersistenceImpl<OrgGroupRol
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next org group role
-	 * @throws NoSuchOrgGroupRoleException if a org group role with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrgGroupRoleException if a org group role with the primary key could not be found
 	 */
 	@Override
 	public OrgGroupRole[] findByGroupId_PrevAndNext(
 		OrgGroupRolePK orgGroupRolePK, long groupId,
 		OrderByComparator<OrgGroupRole> orderByComparator)
-		throws NoSuchOrgGroupRoleException {
+		throws com.liferay.portal.exception.NoSuchOrgGroupRoleException {
 		OrgGroupRole orgGroupRole = findByPrimaryKey(orgGroupRolePK);
 
 		Session session = null;
@@ -777,12 +776,12 @@ public class OrgGroupRolePersistenceImpl extends BasePersistenceImpl<OrgGroupRol
 	 * @param roleId the role ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching org group role
-	 * @throws NoSuchOrgGroupRoleException if a matching org group role could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrgGroupRoleException if a matching org group role could not be found
 	 */
 	@Override
 	public OrgGroupRole findByRoleId_First(long roleId,
 		OrderByComparator<OrgGroupRole> orderByComparator)
-		throws NoSuchOrgGroupRoleException {
+		throws com.liferay.portal.exception.NoSuchOrgGroupRoleException {
 		OrgGroupRole orgGroupRole = fetchByRoleId_First(roleId,
 				orderByComparator);
 
@@ -799,7 +798,7 @@ public class OrgGroupRolePersistenceImpl extends BasePersistenceImpl<OrgGroupRol
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchOrgGroupRoleException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchOrgGroupRoleException(msg.toString());
 	}
 
 	/**
@@ -827,12 +826,12 @@ public class OrgGroupRolePersistenceImpl extends BasePersistenceImpl<OrgGroupRol
 	 * @param roleId the role ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching org group role
-	 * @throws NoSuchOrgGroupRoleException if a matching org group role could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrgGroupRoleException if a matching org group role could not be found
 	 */
 	@Override
 	public OrgGroupRole findByRoleId_Last(long roleId,
 		OrderByComparator<OrgGroupRole> orderByComparator)
-		throws NoSuchOrgGroupRoleException {
+		throws com.liferay.portal.exception.NoSuchOrgGroupRoleException {
 		OrgGroupRole orgGroupRole = fetchByRoleId_Last(roleId, orderByComparator);
 
 		if (orgGroupRole != null) {
@@ -848,7 +847,7 @@ public class OrgGroupRolePersistenceImpl extends BasePersistenceImpl<OrgGroupRol
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchOrgGroupRoleException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchOrgGroupRoleException(msg.toString());
 	}
 
 	/**
@@ -884,13 +883,13 @@ public class OrgGroupRolePersistenceImpl extends BasePersistenceImpl<OrgGroupRol
 	 * @param roleId the role ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next org group role
-	 * @throws NoSuchOrgGroupRoleException if a org group role with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrgGroupRoleException if a org group role with the primary key could not be found
 	 */
 	@Override
 	public OrgGroupRole[] findByRoleId_PrevAndNext(
 		OrgGroupRolePK orgGroupRolePK, long roleId,
 		OrderByComparator<OrgGroupRole> orderByComparator)
-		throws NoSuchOrgGroupRoleException {
+		throws com.liferay.portal.exception.NoSuchOrgGroupRoleException {
 		OrgGroupRole orgGroupRole = findByPrimaryKey(orgGroupRolePK);
 
 		Session session = null;
@@ -1192,11 +1191,11 @@ public class OrgGroupRolePersistenceImpl extends BasePersistenceImpl<OrgGroupRol
 	 *
 	 * @param orgGroupRolePK the primary key of the org group role
 	 * @return the org group role that was removed
-	 * @throws NoSuchOrgGroupRoleException if a org group role with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrgGroupRoleException if a org group role with the primary key could not be found
 	 */
 	@Override
 	public OrgGroupRole remove(OrgGroupRolePK orgGroupRolePK)
-		throws NoSuchOrgGroupRoleException {
+		throws com.liferay.portal.exception.NoSuchOrgGroupRoleException {
 		return remove((Serializable)orgGroupRolePK);
 	}
 
@@ -1205,11 +1204,11 @@ public class OrgGroupRolePersistenceImpl extends BasePersistenceImpl<OrgGroupRol
 	 *
 	 * @param primaryKey the primary key of the org group role
 	 * @return the org group role that was removed
-	 * @throws NoSuchOrgGroupRoleException if a org group role with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrgGroupRoleException if a org group role with the primary key could not be found
 	 */
 	@Override
 	public OrgGroupRole remove(Serializable primaryKey)
-		throws NoSuchOrgGroupRoleException {
+		throws com.liferay.portal.exception.NoSuchOrgGroupRoleException {
 		Session session = null;
 
 		try {
@@ -1223,13 +1222,13 @@ public class OrgGroupRolePersistenceImpl extends BasePersistenceImpl<OrgGroupRol
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchOrgGroupRoleException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchOrgGroupRoleException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(orgGroupRole);
 		}
-		catch (NoSuchOrgGroupRoleException nsee) {
+		catch (com.liferay.portal.exception.NoSuchOrgGroupRoleException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -1376,11 +1375,11 @@ public class OrgGroupRolePersistenceImpl extends BasePersistenceImpl<OrgGroupRol
 	 *
 	 * @param primaryKey the primary key of the org group role
 	 * @return the org group role
-	 * @throws NoSuchOrgGroupRoleException if a org group role with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrgGroupRoleException if a org group role with the primary key could not be found
 	 */
 	@Override
 	public OrgGroupRole findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchOrgGroupRoleException {
+		throws com.liferay.portal.exception.NoSuchOrgGroupRoleException {
 		OrgGroupRole orgGroupRole = fetchByPrimaryKey(primaryKey);
 
 		if (orgGroupRole == null) {
@@ -1388,7 +1387,7 @@ public class OrgGroupRolePersistenceImpl extends BasePersistenceImpl<OrgGroupRol
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchOrgGroupRoleException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchOrgGroupRoleException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -1396,15 +1395,15 @@ public class OrgGroupRolePersistenceImpl extends BasePersistenceImpl<OrgGroupRol
 	}
 
 	/**
-	 * Returns the org group role with the primary key or throws a {@link NoSuchOrgGroupRoleException} if it could not be found.
+	 * Returns the org group role with the primary key or throws a {@link com.liferay.portal.exception.NoSuchOrgGroupRoleException} if it could not be found.
 	 *
 	 * @param orgGroupRolePK the primary key of the org group role
 	 * @return the org group role
-	 * @throws NoSuchOrgGroupRoleException if a org group role with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchOrgGroupRoleException if a org group role with the primary key could not be found
 	 */
 	@Override
 	public OrgGroupRole findByPrimaryKey(OrgGroupRolePK orgGroupRolePK)
-		throws NoSuchOrgGroupRoleException {
+		throws com.liferay.portal.exception.NoSuchOrgGroupRoleException {
 		return findByPrimaryKey((Serializable)orgGroupRolePK);
 	}
 

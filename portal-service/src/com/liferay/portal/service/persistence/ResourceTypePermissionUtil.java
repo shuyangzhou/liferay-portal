@@ -186,7 +186,7 @@ public class ResourceTypePermissionUtil {
 	* @param roleId the role ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching resource type permission
-	* @throws NoSuchResourceTypePermissionException if a matching resource type permission could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourceTypePermissionException if a matching resource type permission could not be found
 	*/
 	public static ResourceTypePermission findByRoleId_First(long roleId,
 		OrderByComparator<ResourceTypePermission> orderByComparator)
@@ -212,7 +212,7 @@ public class ResourceTypePermissionUtil {
 	* @param roleId the role ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching resource type permission
-	* @throws NoSuchResourceTypePermissionException if a matching resource type permission could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourceTypePermissionException if a matching resource type permission could not be found
 	*/
 	public static ResourceTypePermission findByRoleId_Last(long roleId,
 		OrderByComparator<ResourceTypePermission> orderByComparator)
@@ -239,7 +239,7 @@ public class ResourceTypePermissionUtil {
 	* @param roleId the role ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next resource type permission
-	* @throws NoSuchResourceTypePermissionException if a resource type permission with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourceTypePermissionException if a resource type permission with the primary key could not be found
 	*/
 	public static ResourceTypePermission[] findByRoleId_PrevAndNext(
 		long resourceTypePermissionId, long roleId,
@@ -357,7 +357,7 @@ public class ResourceTypePermissionUtil {
 	* @param roleId the role ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching resource type permission
-	* @throws NoSuchResourceTypePermissionException if a matching resource type permission could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourceTypePermissionException if a matching resource type permission could not be found
 	*/
 	public static ResourceTypePermission findByC_N_R_First(long companyId,
 		java.lang.String name, long roleId,
@@ -392,7 +392,7 @@ public class ResourceTypePermissionUtil {
 	* @param roleId the role ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching resource type permission
-	* @throws NoSuchResourceTypePermissionException if a matching resource type permission could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourceTypePermissionException if a matching resource type permission could not be found
 	*/
 	public static ResourceTypePermission findByC_N_R_Last(long companyId,
 		java.lang.String name, long roleId,
@@ -427,7 +427,7 @@ public class ResourceTypePermissionUtil {
 	* @param roleId the role ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next resource type permission
-	* @throws NoSuchResourceTypePermissionException if a resource type permission with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourceTypePermissionException if a resource type permission with the primary key could not be found
 	*/
 	public static ResourceTypePermission[] findByC_N_R_PrevAndNext(
 		long resourceTypePermissionId, long companyId, java.lang.String name,
@@ -464,14 +464,14 @@ public class ResourceTypePermissionUtil {
 	}
 
 	/**
-	* Returns the resource type permission where companyId = &#63; and groupId = &#63; and name = &#63; and roleId = &#63; or throws a {@link NoSuchResourceTypePermissionException} if it could not be found.
+	* Returns the resource type permission where companyId = &#63; and groupId = &#63; and name = &#63; and roleId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchResourceTypePermissionException} if it could not be found.
 	*
 	* @param companyId the company ID
 	* @param groupId the group ID
 	* @param name the name
 	* @param roleId the role ID
 	* @return the matching resource type permission
-	* @throws NoSuchResourceTypePermissionException if a matching resource type permission could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourceTypePermissionException if a matching resource type permission could not be found
 	*/
 	public static ResourceTypePermission findByC_G_N_R(long companyId,
 		long groupId, java.lang.String name, long roleId)
@@ -575,7 +575,7 @@ public class ResourceTypePermissionUtil {
 	*
 	* @param resourceTypePermissionId the primary key of the resource type permission
 	* @return the resource type permission that was removed
-	* @throws NoSuchResourceTypePermissionException if a resource type permission with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourceTypePermissionException if a resource type permission with the primary key could not be found
 	*/
 	public static ResourceTypePermission remove(long resourceTypePermissionId)
 		throws com.liferay.portal.exception.NoSuchResourceTypePermissionException {
@@ -588,11 +588,11 @@ public class ResourceTypePermissionUtil {
 	}
 
 	/**
-	* Returns the resource type permission with the primary key or throws a {@link NoSuchResourceTypePermissionException} if it could not be found.
+	* Returns the resource type permission with the primary key or throws a {@link com.liferay.portal.exception.NoSuchResourceTypePermissionException} if it could not be found.
 	*
 	* @param resourceTypePermissionId the primary key of the resource type permission
 	* @return the resource type permission
-	* @throws NoSuchResourceTypePermissionException if a resource type permission with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourceTypePermissionException if a resource type permission with the primary key could not be found
 	*/
 	public static ResourceTypePermission findByPrimaryKey(
 		long resourceTypePermissionId)

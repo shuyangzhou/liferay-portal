@@ -103,7 +103,7 @@ public interface ResourceActionPersistence extends BasePersistence<ResourceActio
 	* @param name the name
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching resource action
-	* @throws NoSuchResourceActionException if a matching resource action could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourceActionException if a matching resource action could not be found
 	*/
 	public ResourceAction findByName_First(java.lang.String name,
 		com.liferay.portal.kernel.util.OrderByComparator<ResourceAction> orderByComparator)
@@ -125,7 +125,7 @@ public interface ResourceActionPersistence extends BasePersistence<ResourceActio
 	* @param name the name
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching resource action
-	* @throws NoSuchResourceActionException if a matching resource action could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourceActionException if a matching resource action could not be found
 	*/
 	public ResourceAction findByName_Last(java.lang.String name,
 		com.liferay.portal.kernel.util.OrderByComparator<ResourceAction> orderByComparator)
@@ -148,7 +148,7 @@ public interface ResourceActionPersistence extends BasePersistence<ResourceActio
 	* @param name the name
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next resource action
-	* @throws NoSuchResourceActionException if a resource action with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourceActionException if a resource action with the primary key could not be found
 	*/
 	public ResourceAction[] findByName_PrevAndNext(long resourceActionId,
 		java.lang.String name,
@@ -171,12 +171,12 @@ public interface ResourceActionPersistence extends BasePersistence<ResourceActio
 	public int countByName(java.lang.String name);
 
 	/**
-	* Returns the resource action where name = &#63; and actionId = &#63; or throws a {@link NoSuchResourceActionException} if it could not be found.
+	* Returns the resource action where name = &#63; and actionId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchResourceActionException} if it could not be found.
 	*
 	* @param name the name
 	* @param actionId the action ID
 	* @return the matching resource action
-	* @throws NoSuchResourceActionException if a matching resource action could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourceActionException if a matching resource action could not be found
 	*/
 	public ResourceAction findByN_A(java.lang.String name,
 		java.lang.String actionId)
@@ -250,7 +250,7 @@ public interface ResourceActionPersistence extends BasePersistence<ResourceActio
 	*
 	* @param resourceActionId the primary key of the resource action
 	* @return the resource action that was removed
-	* @throws NoSuchResourceActionException if a resource action with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourceActionException if a resource action with the primary key could not be found
 	*/
 	public ResourceAction remove(long resourceActionId)
 		throws com.liferay.portal.exception.NoSuchResourceActionException;
@@ -258,11 +258,11 @@ public interface ResourceActionPersistence extends BasePersistence<ResourceActio
 	public ResourceAction updateImpl(ResourceAction resourceAction);
 
 	/**
-	* Returns the resource action with the primary key or throws a {@link NoSuchResourceActionException} if it could not be found.
+	* Returns the resource action with the primary key or throws a {@link com.liferay.portal.exception.NoSuchResourceActionException} if it could not be found.
 	*
 	* @param resourceActionId the primary key of the resource action
 	* @return the resource action
-	* @throws NoSuchResourceActionException if a resource action with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourceActionException if a resource action with the primary key could not be found
 	*/
 	public ResourceAction findByPrimaryKey(long resourceActionId)
 		throws com.liferay.portal.exception.NoSuchResourceActionException;

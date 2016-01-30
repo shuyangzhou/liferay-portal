@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchLayoutBranchException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -284,12 +283,12 @@ public class LayoutBranchPersistenceImpl extends BasePersistenceImpl<LayoutBranc
 	 * @param layoutSetBranchId the layout set branch ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching layout branch
-	 * @throws NoSuchLayoutBranchException if a matching layout branch could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutBranchException if a matching layout branch could not be found
 	 */
 	@Override
 	public LayoutBranch findByLayoutSetBranchId_First(long layoutSetBranchId,
 		OrderByComparator<LayoutBranch> orderByComparator)
-		throws NoSuchLayoutBranchException {
+		throws com.liferay.portal.exception.NoSuchLayoutBranchException {
 		LayoutBranch layoutBranch = fetchByLayoutSetBranchId_First(layoutSetBranchId,
 				orderByComparator);
 
@@ -306,7 +305,7 @@ public class LayoutBranchPersistenceImpl extends BasePersistenceImpl<LayoutBranc
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutBranchException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutBranchException(msg.toString());
 	}
 
 	/**
@@ -335,12 +334,12 @@ public class LayoutBranchPersistenceImpl extends BasePersistenceImpl<LayoutBranc
 	 * @param layoutSetBranchId the layout set branch ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching layout branch
-	 * @throws NoSuchLayoutBranchException if a matching layout branch could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutBranchException if a matching layout branch could not be found
 	 */
 	@Override
 	public LayoutBranch findByLayoutSetBranchId_Last(long layoutSetBranchId,
 		OrderByComparator<LayoutBranch> orderByComparator)
-		throws NoSuchLayoutBranchException {
+		throws com.liferay.portal.exception.NoSuchLayoutBranchException {
 		LayoutBranch layoutBranch = fetchByLayoutSetBranchId_Last(layoutSetBranchId,
 				orderByComparator);
 
@@ -357,7 +356,7 @@ public class LayoutBranchPersistenceImpl extends BasePersistenceImpl<LayoutBranc
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutBranchException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutBranchException(msg.toString());
 	}
 
 	/**
@@ -393,13 +392,13 @@ public class LayoutBranchPersistenceImpl extends BasePersistenceImpl<LayoutBranc
 	 * @param layoutSetBranchId the layout set branch ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next layout branch
-	 * @throws NoSuchLayoutBranchException if a layout branch with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutBranchException if a layout branch with the primary key could not be found
 	 */
 	@Override
 	public LayoutBranch[] findByLayoutSetBranchId_PrevAndNext(
 		long layoutBranchId, long layoutSetBranchId,
 		OrderByComparator<LayoutBranch> orderByComparator)
-		throws NoSuchLayoutBranchException {
+		throws com.liferay.portal.exception.NoSuchLayoutBranchException {
 		LayoutBranch layoutBranch = findByPrimaryKey(layoutBranchId);
 
 		Session session = null;
@@ -806,12 +805,12 @@ public class LayoutBranchPersistenceImpl extends BasePersistenceImpl<LayoutBranc
 	 * @param plid the plid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching layout branch
-	 * @throws NoSuchLayoutBranchException if a matching layout branch could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutBranchException if a matching layout branch could not be found
 	 */
 	@Override
 	public LayoutBranch findByL_P_First(long layoutSetBranchId, long plid,
 		OrderByComparator<LayoutBranch> orderByComparator)
-		throws NoSuchLayoutBranchException {
+		throws com.liferay.portal.exception.NoSuchLayoutBranchException {
 		LayoutBranch layoutBranch = fetchByL_P_First(layoutSetBranchId, plid,
 				orderByComparator);
 
@@ -831,7 +830,7 @@ public class LayoutBranchPersistenceImpl extends BasePersistenceImpl<LayoutBranc
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutBranchException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutBranchException(msg.toString());
 	}
 
 	/**
@@ -862,12 +861,12 @@ public class LayoutBranchPersistenceImpl extends BasePersistenceImpl<LayoutBranc
 	 * @param plid the plid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching layout branch
-	 * @throws NoSuchLayoutBranchException if a matching layout branch could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutBranchException if a matching layout branch could not be found
 	 */
 	@Override
 	public LayoutBranch findByL_P_Last(long layoutSetBranchId, long plid,
 		OrderByComparator<LayoutBranch> orderByComparator)
-		throws NoSuchLayoutBranchException {
+		throws com.liferay.portal.exception.NoSuchLayoutBranchException {
 		LayoutBranch layoutBranch = fetchByL_P_Last(layoutSetBranchId, plid,
 				orderByComparator);
 
@@ -887,7 +886,7 @@ public class LayoutBranchPersistenceImpl extends BasePersistenceImpl<LayoutBranc
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutBranchException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutBranchException(msg.toString());
 	}
 
 	/**
@@ -925,13 +924,13 @@ public class LayoutBranchPersistenceImpl extends BasePersistenceImpl<LayoutBranc
 	 * @param plid the plid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next layout branch
-	 * @throws NoSuchLayoutBranchException if a layout branch with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutBranchException if a layout branch with the primary key could not be found
 	 */
 	@Override
 	public LayoutBranch[] findByL_P_PrevAndNext(long layoutBranchId,
 		long layoutSetBranchId, long plid,
 		OrderByComparator<LayoutBranch> orderByComparator)
-		throws NoSuchLayoutBranchException {
+		throws com.liferay.portal.exception.NoSuchLayoutBranchException {
 		LayoutBranch layoutBranch = findByPrimaryKey(layoutBranchId);
 
 		Session session = null;
@@ -1160,17 +1159,18 @@ public class LayoutBranchPersistenceImpl extends BasePersistenceImpl<LayoutBranc
 			});
 
 	/**
-	 * Returns the layout branch where layoutSetBranchId = &#63; and plid = &#63; and name = &#63; or throws a {@link NoSuchLayoutBranchException} if it could not be found.
+	 * Returns the layout branch where layoutSetBranchId = &#63; and plid = &#63; and name = &#63; or throws a {@link com.liferay.portal.exception.NoSuchLayoutBranchException} if it could not be found.
 	 *
 	 * @param layoutSetBranchId the layout set branch ID
 	 * @param plid the plid
 	 * @param name the name
 	 * @return the matching layout branch
-	 * @throws NoSuchLayoutBranchException if a matching layout branch could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutBranchException if a matching layout branch could not be found
 	 */
 	@Override
 	public LayoutBranch findByL_P_N(long layoutSetBranchId, long plid,
-		String name) throws NoSuchLayoutBranchException {
+		String name)
+		throws com.liferay.portal.exception.NoSuchLayoutBranchException {
 		LayoutBranch layoutBranch = fetchByL_P_N(layoutSetBranchId, plid, name);
 
 		if (layoutBranch == null) {
@@ -1193,7 +1193,7 @@ public class LayoutBranchPersistenceImpl extends BasePersistenceImpl<LayoutBranc
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchLayoutBranchException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchLayoutBranchException(msg.toString());
 		}
 
 		return layoutBranch;
@@ -1336,7 +1336,8 @@ public class LayoutBranchPersistenceImpl extends BasePersistenceImpl<LayoutBranc
 	 */
 	@Override
 	public LayoutBranch removeByL_P_N(long layoutSetBranchId, long plid,
-		String name) throws NoSuchLayoutBranchException {
+		String name)
+		throws com.liferay.portal.exception.NoSuchLayoutBranchException {
 		LayoutBranch layoutBranch = findByL_P_N(layoutSetBranchId, plid, name);
 
 		return remove(layoutBranch);
@@ -1650,12 +1651,12 @@ public class LayoutBranchPersistenceImpl extends BasePersistenceImpl<LayoutBranc
 	 * @param master the master
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching layout branch
-	 * @throws NoSuchLayoutBranchException if a matching layout branch could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutBranchException if a matching layout branch could not be found
 	 */
 	@Override
 	public LayoutBranch findByL_P_M_First(long layoutSetBranchId, long plid,
 		boolean master, OrderByComparator<LayoutBranch> orderByComparator)
-		throws NoSuchLayoutBranchException {
+		throws com.liferay.portal.exception.NoSuchLayoutBranchException {
 		LayoutBranch layoutBranch = fetchByL_P_M_First(layoutSetBranchId, plid,
 				master, orderByComparator);
 
@@ -1678,7 +1679,7 @@ public class LayoutBranchPersistenceImpl extends BasePersistenceImpl<LayoutBranc
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutBranchException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutBranchException(msg.toString());
 	}
 
 	/**
@@ -1711,12 +1712,12 @@ public class LayoutBranchPersistenceImpl extends BasePersistenceImpl<LayoutBranc
 	 * @param master the master
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching layout branch
-	 * @throws NoSuchLayoutBranchException if a matching layout branch could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutBranchException if a matching layout branch could not be found
 	 */
 	@Override
 	public LayoutBranch findByL_P_M_Last(long layoutSetBranchId, long plid,
 		boolean master, OrderByComparator<LayoutBranch> orderByComparator)
-		throws NoSuchLayoutBranchException {
+		throws com.liferay.portal.exception.NoSuchLayoutBranchException {
 		LayoutBranch layoutBranch = fetchByL_P_M_Last(layoutSetBranchId, plid,
 				master, orderByComparator);
 
@@ -1739,7 +1740,7 @@ public class LayoutBranchPersistenceImpl extends BasePersistenceImpl<LayoutBranc
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchLayoutBranchException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchLayoutBranchException(msg.toString());
 	}
 
 	/**
@@ -1779,13 +1780,13 @@ public class LayoutBranchPersistenceImpl extends BasePersistenceImpl<LayoutBranc
 	 * @param master the master
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next layout branch
-	 * @throws NoSuchLayoutBranchException if a layout branch with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutBranchException if a layout branch with the primary key could not be found
 	 */
 	@Override
 	public LayoutBranch[] findByL_P_M_PrevAndNext(long layoutBranchId,
 		long layoutSetBranchId, long plid, boolean master,
 		OrderByComparator<LayoutBranch> orderByComparator)
-		throws NoSuchLayoutBranchException {
+		throws com.liferay.portal.exception.NoSuchLayoutBranchException {
 		LayoutBranch layoutBranch = findByPrimaryKey(layoutBranchId);
 
 		Session session = null;
@@ -2174,11 +2175,11 @@ public class LayoutBranchPersistenceImpl extends BasePersistenceImpl<LayoutBranc
 	 *
 	 * @param layoutBranchId the primary key of the layout branch
 	 * @return the layout branch that was removed
-	 * @throws NoSuchLayoutBranchException if a layout branch with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutBranchException if a layout branch with the primary key could not be found
 	 */
 	@Override
 	public LayoutBranch remove(long layoutBranchId)
-		throws NoSuchLayoutBranchException {
+		throws com.liferay.portal.exception.NoSuchLayoutBranchException {
 		return remove((Serializable)layoutBranchId);
 	}
 
@@ -2187,11 +2188,11 @@ public class LayoutBranchPersistenceImpl extends BasePersistenceImpl<LayoutBranc
 	 *
 	 * @param primaryKey the primary key of the layout branch
 	 * @return the layout branch that was removed
-	 * @throws NoSuchLayoutBranchException if a layout branch with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutBranchException if a layout branch with the primary key could not be found
 	 */
 	@Override
 	public LayoutBranch remove(Serializable primaryKey)
-		throws NoSuchLayoutBranchException {
+		throws com.liferay.portal.exception.NoSuchLayoutBranchException {
 		Session session = null;
 
 		try {
@@ -2205,13 +2206,13 @@ public class LayoutBranchPersistenceImpl extends BasePersistenceImpl<LayoutBranc
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchLayoutBranchException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchLayoutBranchException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(layoutBranch);
 		}
-		catch (NoSuchLayoutBranchException nsee) {
+		catch (com.liferay.portal.exception.NoSuchLayoutBranchException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -2396,11 +2397,11 @@ public class LayoutBranchPersistenceImpl extends BasePersistenceImpl<LayoutBranc
 	 *
 	 * @param primaryKey the primary key of the layout branch
 	 * @return the layout branch
-	 * @throws NoSuchLayoutBranchException if a layout branch with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutBranchException if a layout branch with the primary key could not be found
 	 */
 	@Override
 	public LayoutBranch findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchLayoutBranchException {
+		throws com.liferay.portal.exception.NoSuchLayoutBranchException {
 		LayoutBranch layoutBranch = fetchByPrimaryKey(primaryKey);
 
 		if (layoutBranch == null) {
@@ -2408,7 +2409,7 @@ public class LayoutBranchPersistenceImpl extends BasePersistenceImpl<LayoutBranc
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchLayoutBranchException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchLayoutBranchException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -2416,15 +2417,15 @@ public class LayoutBranchPersistenceImpl extends BasePersistenceImpl<LayoutBranc
 	}
 
 	/**
-	 * Returns the layout branch with the primary key or throws a {@link NoSuchLayoutBranchException} if it could not be found.
+	 * Returns the layout branch with the primary key or throws a {@link com.liferay.portal.exception.NoSuchLayoutBranchException} if it could not be found.
 	 *
 	 * @param layoutBranchId the primary key of the layout branch
 	 * @return the layout branch
-	 * @throws NoSuchLayoutBranchException if a layout branch with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchLayoutBranchException if a layout branch with the primary key could not be found
 	 */
 	@Override
 	public LayoutBranch findByPrimaryKey(long layoutBranchId)
-		throws NoSuchLayoutBranchException {
+		throws com.liferay.portal.exception.NoSuchLayoutBranchException {
 		return findByPrimaryKey((Serializable)layoutBranchId);
 	}
 

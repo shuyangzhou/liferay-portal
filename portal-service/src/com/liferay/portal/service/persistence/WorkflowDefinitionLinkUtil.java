@@ -186,7 +186,7 @@ public class WorkflowDefinitionLinkUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching workflow definition link
-	* @throws NoSuchWorkflowDefinitionLinkException if a matching workflow definition link could not be found
+	* @throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException if a matching workflow definition link could not be found
 	*/
 	public static WorkflowDefinitionLink findByCompanyId_First(long companyId,
 		OrderByComparator<WorkflowDefinitionLink> orderByComparator)
@@ -215,7 +215,7 @@ public class WorkflowDefinitionLinkUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching workflow definition link
-	* @throws NoSuchWorkflowDefinitionLinkException if a matching workflow definition link could not be found
+	* @throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException if a matching workflow definition link could not be found
 	*/
 	public static WorkflowDefinitionLink findByCompanyId_Last(long companyId,
 		OrderByComparator<WorkflowDefinitionLink> orderByComparator)
@@ -244,7 +244,7 @@ public class WorkflowDefinitionLinkUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next workflow definition link
-	* @throws NoSuchWorkflowDefinitionLinkException if a workflow definition link with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException if a workflow definition link with the primary key could not be found
 	*/
 	public static WorkflowDefinitionLink[] findByCompanyId_PrevAndNext(
 		long workflowDefinitionLinkId, long companyId,
@@ -363,7 +363,7 @@ public class WorkflowDefinitionLinkUtil {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching workflow definition link
-	* @throws NoSuchWorkflowDefinitionLinkException if a matching workflow definition link could not be found
+	* @throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException if a matching workflow definition link could not be found
 	*/
 	public static WorkflowDefinitionLink findByG_C_C_First(long groupId,
 		long companyId, long classNameId,
@@ -399,7 +399,7 @@ public class WorkflowDefinitionLinkUtil {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching workflow definition link
-	* @throws NoSuchWorkflowDefinitionLinkException if a matching workflow definition link could not be found
+	* @throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException if a matching workflow definition link could not be found
 	*/
 	public static WorkflowDefinitionLink findByG_C_C_Last(long groupId,
 		long companyId, long classNameId,
@@ -436,7 +436,7 @@ public class WorkflowDefinitionLinkUtil {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next workflow definition link
-	* @throws NoSuchWorkflowDefinitionLinkException if a workflow definition link with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException if a workflow definition link with the primary key could not be found
 	*/
 	public static WorkflowDefinitionLink[] findByG_C_C_PrevAndNext(
 		long workflowDefinitionLinkId, long groupId, long companyId,
@@ -569,7 +569,7 @@ public class WorkflowDefinitionLinkUtil {
 	* @param workflowDefinitionVersion the workflow definition version
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching workflow definition link
-	* @throws NoSuchWorkflowDefinitionLinkException if a matching workflow definition link could not be found
+	* @throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException if a matching workflow definition link could not be found
 	*/
 	public static WorkflowDefinitionLink findByC_W_W_First(long companyId,
 		java.lang.String workflowDefinitionName, int workflowDefinitionVersion,
@@ -605,7 +605,7 @@ public class WorkflowDefinitionLinkUtil {
 	* @param workflowDefinitionVersion the workflow definition version
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching workflow definition link
-	* @throws NoSuchWorkflowDefinitionLinkException if a matching workflow definition link could not be found
+	* @throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException if a matching workflow definition link could not be found
 	*/
 	public static WorkflowDefinitionLink findByC_W_W_Last(long companyId,
 		java.lang.String workflowDefinitionName, int workflowDefinitionVersion,
@@ -642,7 +642,7 @@ public class WorkflowDefinitionLinkUtil {
 	* @param workflowDefinitionVersion the workflow definition version
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next workflow definition link
-	* @throws NoSuchWorkflowDefinitionLinkException if a workflow definition link with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException if a workflow definition link with the primary key could not be found
 	*/
 	public static WorkflowDefinitionLink[] findByC_W_W_PrevAndNext(
 		long workflowDefinitionLinkId, long companyId,
@@ -685,7 +685,7 @@ public class WorkflowDefinitionLinkUtil {
 	}
 
 	/**
-	* Returns the workflow definition link where groupId = &#63; and companyId = &#63; and classNameId = &#63; and classPK = &#63; and typePK = &#63; or throws a {@link NoSuchWorkflowDefinitionLinkException} if it could not be found.
+	* Returns the workflow definition link where groupId = &#63; and companyId = &#63; and classNameId = &#63; and classPK = &#63; and typePK = &#63; or throws a {@link com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException} if it could not be found.
 	*
 	* @param groupId the group ID
 	* @param companyId the company ID
@@ -693,7 +693,7 @@ public class WorkflowDefinitionLinkUtil {
 	* @param classPK the class p k
 	* @param typePK the type p k
 	* @return the matching workflow definition link
-	* @throws NoSuchWorkflowDefinitionLinkException if a matching workflow definition link could not be found
+	* @throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException if a matching workflow definition link could not be found
 	*/
 	public static WorkflowDefinitionLink findByG_C_C_C_T(long groupId,
 		long companyId, long classNameId, long classPK, long typePK)
@@ -809,7 +809,7 @@ public class WorkflowDefinitionLinkUtil {
 	*
 	* @param workflowDefinitionLinkId the primary key of the workflow definition link
 	* @return the workflow definition link that was removed
-	* @throws NoSuchWorkflowDefinitionLinkException if a workflow definition link with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException if a workflow definition link with the primary key could not be found
 	*/
 	public static WorkflowDefinitionLink remove(long workflowDefinitionLinkId)
 		throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException {
@@ -822,11 +822,11 @@ public class WorkflowDefinitionLinkUtil {
 	}
 
 	/**
-	* Returns the workflow definition link with the primary key or throws a {@link NoSuchWorkflowDefinitionLinkException} if it could not be found.
+	* Returns the workflow definition link with the primary key or throws a {@link com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException} if it could not be found.
 	*
 	* @param workflowDefinitionLinkId the primary key of the workflow definition link
 	* @return the workflow definition link
-	* @throws NoSuchWorkflowDefinitionLinkException if a workflow definition link with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException if a workflow definition link with the primary key could not be found
 	*/
 	public static WorkflowDefinitionLink findByPrimaryKey(
 		long workflowDefinitionLinkId)

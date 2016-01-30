@@ -39,12 +39,12 @@ public interface WebDAVPropsPersistence extends BasePersistence<WebDAVProps> {
 	 */
 
 	/**
-	* Returns the web d a v props where classNameId = &#63; and classPK = &#63; or throws a {@link NoSuchWebDAVPropsException} if it could not be found.
+	* Returns the web d a v props where classNameId = &#63; and classPK = &#63; or throws a {@link com.liferay.portal.exception.NoSuchWebDAVPropsException} if it could not be found.
 	*
 	* @param classNameId the class name ID
 	* @param classPK the class p k
 	* @return the matching web d a v props
-	* @throws NoSuchWebDAVPropsException if a matching web d a v props could not be found
+	* @throws com.liferay.portal.exception.NoSuchWebDAVPropsException if a matching web d a v props could not be found
 	*/
 	public WebDAVProps findByC_C(long classNameId, long classPK)
 		throws com.liferay.portal.exception.NoSuchWebDAVPropsException;
@@ -115,7 +115,7 @@ public interface WebDAVPropsPersistence extends BasePersistence<WebDAVProps> {
 	*
 	* @param webDavPropsId the primary key of the web d a v props
 	* @return the web d a v props that was removed
-	* @throws NoSuchWebDAVPropsException if a web d a v props with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchWebDAVPropsException if a web d a v props with the primary key could not be found
 	*/
 	public WebDAVProps remove(long webDavPropsId)
 		throws com.liferay.portal.exception.NoSuchWebDAVPropsException;
@@ -123,11 +123,11 @@ public interface WebDAVPropsPersistence extends BasePersistence<WebDAVProps> {
 	public WebDAVProps updateImpl(WebDAVProps webDAVProps);
 
 	/**
-	* Returns the web d a v props with the primary key or throws a {@link NoSuchWebDAVPropsException} if it could not be found.
+	* Returns the web d a v props with the primary key or throws a {@link com.liferay.portal.exception.NoSuchWebDAVPropsException} if it could not be found.
 	*
 	* @param webDavPropsId the primary key of the web d a v props
 	* @return the web d a v props
-	* @throws NoSuchWebDAVPropsException if a web d a v props with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchWebDAVPropsException if a web d a v props with the primary key could not be found
 	*/
 	public WebDAVProps findByPrimaryKey(long webDavPropsId)
 		throws com.liferay.portal.exception.NoSuchWebDAVPropsException;

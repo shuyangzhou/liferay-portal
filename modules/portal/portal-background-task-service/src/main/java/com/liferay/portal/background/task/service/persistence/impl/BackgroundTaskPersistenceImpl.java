@@ -16,7 +16,6 @@ package com.liferay.portal.background.task.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException;
 import com.liferay.portal.background.task.model.BackgroundTask;
 import com.liferay.portal.background.task.model.impl.BackgroundTaskImpl;
 import com.liferay.portal.background.task.model.impl.BackgroundTaskModelImpl;
@@ -286,12 +285,12 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching background task
-	 * @throws NoSuchBackgroundTaskException if a matching background task could not be found
+	 * @throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException if a matching background task could not be found
 	 */
 	@Override
 	public BackgroundTask findByGroupId_First(long groupId,
 		OrderByComparator<BackgroundTask> orderByComparator)
-		throws NoSuchBackgroundTaskException {
+		throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException {
 		BackgroundTask backgroundTask = fetchByGroupId_First(groupId,
 				orderByComparator);
 
@@ -308,7 +307,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBackgroundTaskException(msg.toString());
+		throw new com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException(msg.toString());
 	}
 
 	/**
@@ -337,12 +336,12 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching background task
-	 * @throws NoSuchBackgroundTaskException if a matching background task could not be found
+	 * @throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException if a matching background task could not be found
 	 */
 	@Override
 	public BackgroundTask findByGroupId_Last(long groupId,
 		OrderByComparator<BackgroundTask> orderByComparator)
-		throws NoSuchBackgroundTaskException {
+		throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException {
 		BackgroundTask backgroundTask = fetchByGroupId_Last(groupId,
 				orderByComparator);
 
@@ -359,7 +358,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBackgroundTaskException(msg.toString());
+		throw new com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException(msg.toString());
 	}
 
 	/**
@@ -395,12 +394,12 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next background task
-	 * @throws NoSuchBackgroundTaskException if a background task with the primary key could not be found
+	 * @throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException if a background task with the primary key could not be found
 	 */
 	@Override
 	public BackgroundTask[] findByGroupId_PrevAndNext(long backgroundTaskId,
 		long groupId, OrderByComparator<BackgroundTask> orderByComparator)
-		throws NoSuchBackgroundTaskException {
+		throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException {
 		BackgroundTask backgroundTask = findByPrimaryKey(backgroundTaskId);
 
 		Session session = null;
@@ -795,12 +794,12 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching background task
-	 * @throws NoSuchBackgroundTaskException if a matching background task could not be found
+	 * @throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException if a matching background task could not be found
 	 */
 	@Override
 	public BackgroundTask findByCompanyId_First(long companyId,
 		OrderByComparator<BackgroundTask> orderByComparator)
-		throws NoSuchBackgroundTaskException {
+		throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException {
 		BackgroundTask backgroundTask = fetchByCompanyId_First(companyId,
 				orderByComparator);
 
@@ -817,7 +816,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBackgroundTaskException(msg.toString());
+		throw new com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException(msg.toString());
 	}
 
 	/**
@@ -846,12 +845,12 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching background task
-	 * @throws NoSuchBackgroundTaskException if a matching background task could not be found
+	 * @throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException if a matching background task could not be found
 	 */
 	@Override
 	public BackgroundTask findByCompanyId_Last(long companyId,
 		OrderByComparator<BackgroundTask> orderByComparator)
-		throws NoSuchBackgroundTaskException {
+		throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException {
 		BackgroundTask backgroundTask = fetchByCompanyId_Last(companyId,
 				orderByComparator);
 
@@ -868,7 +867,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBackgroundTaskException(msg.toString());
+		throw new com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException(msg.toString());
 	}
 
 	/**
@@ -904,12 +903,12 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next background task
-	 * @throws NoSuchBackgroundTaskException if a background task with the primary key could not be found
+	 * @throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException if a background task with the primary key could not be found
 	 */
 	@Override
 	public BackgroundTask[] findByCompanyId_PrevAndNext(long backgroundTaskId,
 		long companyId, OrderByComparator<BackgroundTask> orderByComparator)
-		throws NoSuchBackgroundTaskException {
+		throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException {
 		BackgroundTask backgroundTask = findByPrimaryKey(backgroundTaskId);
 
 		Session session = null;
@@ -1301,12 +1300,12 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching background task
-	 * @throws NoSuchBackgroundTaskException if a matching background task could not be found
+	 * @throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException if a matching background task could not be found
 	 */
 	@Override
 	public BackgroundTask findByStatus_First(int status,
 		OrderByComparator<BackgroundTask> orderByComparator)
-		throws NoSuchBackgroundTaskException {
+		throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException {
 		BackgroundTask backgroundTask = fetchByStatus_First(status,
 				orderByComparator);
 
@@ -1323,7 +1322,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBackgroundTaskException(msg.toString());
+		throw new com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException(msg.toString());
 	}
 
 	/**
@@ -1351,12 +1350,12 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching background task
-	 * @throws NoSuchBackgroundTaskException if a matching background task could not be found
+	 * @throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException if a matching background task could not be found
 	 */
 	@Override
 	public BackgroundTask findByStatus_Last(int status,
 		OrderByComparator<BackgroundTask> orderByComparator)
-		throws NoSuchBackgroundTaskException {
+		throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException {
 		BackgroundTask backgroundTask = fetchByStatus_Last(status,
 				orderByComparator);
 
@@ -1373,7 +1372,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBackgroundTaskException(msg.toString());
+		throw new com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException(msg.toString());
 	}
 
 	/**
@@ -1409,12 +1408,12 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next background task
-	 * @throws NoSuchBackgroundTaskException if a background task with the primary key could not be found
+	 * @throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException if a background task with the primary key could not be found
 	 */
 	@Override
 	public BackgroundTask[] findByStatus_PrevAndNext(long backgroundTaskId,
 		int status, OrderByComparator<BackgroundTask> orderByComparator)
-		throws NoSuchBackgroundTaskException {
+		throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException {
 		BackgroundTask backgroundTask = findByPrimaryKey(backgroundTaskId);
 
 		Session session = null;
@@ -1845,13 +1844,13 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 * @param taskExecutorClassName the task executor class name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching background task
-	 * @throws NoSuchBackgroundTaskException if a matching background task could not be found
+	 * @throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException if a matching background task could not be found
 	 */
 	@Override
 	public BackgroundTask findByG_T_First(long groupId,
 		String taskExecutorClassName,
 		OrderByComparator<BackgroundTask> orderByComparator)
-		throws NoSuchBackgroundTaskException {
+		throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException {
 		BackgroundTask backgroundTask = fetchByG_T_First(groupId,
 				taskExecutorClassName, orderByComparator);
 
@@ -1871,7 +1870,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBackgroundTaskException(msg.toString());
+		throw new com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException(msg.toString());
 	}
 
 	/**
@@ -1903,13 +1902,13 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 * @param taskExecutorClassName the task executor class name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching background task
-	 * @throws NoSuchBackgroundTaskException if a matching background task could not be found
+	 * @throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException if a matching background task could not be found
 	 */
 	@Override
 	public BackgroundTask findByG_T_Last(long groupId,
 		String taskExecutorClassName,
 		OrderByComparator<BackgroundTask> orderByComparator)
-		throws NoSuchBackgroundTaskException {
+		throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException {
 		BackgroundTask backgroundTask = fetchByG_T_Last(groupId,
 				taskExecutorClassName, orderByComparator);
 
@@ -1929,7 +1928,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBackgroundTaskException(msg.toString());
+		throw new com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException(msg.toString());
 	}
 
 	/**
@@ -1968,13 +1967,13 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 * @param taskExecutorClassName the task executor class name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next background task
-	 * @throws NoSuchBackgroundTaskException if a background task with the primary key could not be found
+	 * @throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException if a background task with the primary key could not be found
 	 */
 	@Override
 	public BackgroundTask[] findByG_T_PrevAndNext(long backgroundTaskId,
 		long groupId, String taskExecutorClassName,
 		OrderByComparator<BackgroundTask> orderByComparator)
-		throws NoSuchBackgroundTaskException {
+		throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException {
 		BackgroundTask backgroundTask = findByPrimaryKey(backgroundTaskId);
 
 		Session session = null;
@@ -2750,12 +2749,12 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching background task
-	 * @throws NoSuchBackgroundTaskException if a matching background task could not be found
+	 * @throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException if a matching background task could not be found
 	 */
 	@Override
 	public BackgroundTask findByG_S_First(long groupId, int status,
 		OrderByComparator<BackgroundTask> orderByComparator)
-		throws NoSuchBackgroundTaskException {
+		throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException {
 		BackgroundTask backgroundTask = fetchByG_S_First(groupId, status,
 				orderByComparator);
 
@@ -2775,7 +2774,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBackgroundTaskException(msg.toString());
+		throw new com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException(msg.toString());
 	}
 
 	/**
@@ -2806,12 +2805,12 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching background task
-	 * @throws NoSuchBackgroundTaskException if a matching background task could not be found
+	 * @throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException if a matching background task could not be found
 	 */
 	@Override
 	public BackgroundTask findByG_S_Last(long groupId, int status,
 		OrderByComparator<BackgroundTask> orderByComparator)
-		throws NoSuchBackgroundTaskException {
+		throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException {
 		BackgroundTask backgroundTask = fetchByG_S_Last(groupId, status,
 				orderByComparator);
 
@@ -2831,7 +2830,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBackgroundTaskException(msg.toString());
+		throw new com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException(msg.toString());
 	}
 
 	/**
@@ -2869,13 +2868,13 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next background task
-	 * @throws NoSuchBackgroundTaskException if a background task with the primary key could not be found
+	 * @throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException if a background task with the primary key could not be found
 	 */
 	@Override
 	public BackgroundTask[] findByG_S_PrevAndNext(long backgroundTaskId,
 		long groupId, int status,
 		OrderByComparator<BackgroundTask> orderByComparator)
-		throws NoSuchBackgroundTaskException {
+		throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException {
 		BackgroundTask backgroundTask = findByPrimaryKey(backgroundTaskId);
 
 		Session session = null;
@@ -3317,12 +3316,12 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching background task
-	 * @throws NoSuchBackgroundTaskException if a matching background task could not be found
+	 * @throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException if a matching background task could not be found
 	 */
 	@Override
 	public BackgroundTask findByT_S_First(String taskExecutorClassName,
 		int status, OrderByComparator<BackgroundTask> orderByComparator)
-		throws NoSuchBackgroundTaskException {
+		throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException {
 		BackgroundTask backgroundTask = fetchByT_S_First(taskExecutorClassName,
 				status, orderByComparator);
 
@@ -3342,7 +3341,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBackgroundTaskException(msg.toString());
+		throw new com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException(msg.toString());
 	}
 
 	/**
@@ -3373,12 +3372,12 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching background task
-	 * @throws NoSuchBackgroundTaskException if a matching background task could not be found
+	 * @throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException if a matching background task could not be found
 	 */
 	@Override
 	public BackgroundTask findByT_S_Last(String taskExecutorClassName,
 		int status, OrderByComparator<BackgroundTask> orderByComparator)
-		throws NoSuchBackgroundTaskException {
+		throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException {
 		BackgroundTask backgroundTask = fetchByT_S_Last(taskExecutorClassName,
 				status, orderByComparator);
 
@@ -3398,7 +3397,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBackgroundTaskException(msg.toString());
+		throw new com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException(msg.toString());
 	}
 
 	/**
@@ -3436,13 +3435,13 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next background task
-	 * @throws NoSuchBackgroundTaskException if a background task with the primary key could not be found
+	 * @throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException if a background task with the primary key could not be found
 	 */
 	@Override
 	public BackgroundTask[] findByT_S_PrevAndNext(long backgroundTaskId,
 		String taskExecutorClassName, int status,
 		OrderByComparator<BackgroundTask> orderByComparator)
-		throws NoSuchBackgroundTaskException {
+		throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException {
 		BackgroundTask backgroundTask = findByPrimaryKey(backgroundTaskId);
 
 		Session session = null;
@@ -4286,13 +4285,13 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 * @param taskExecutorClassName the task executor class name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching background task
-	 * @throws NoSuchBackgroundTaskException if a matching background task could not be found
+	 * @throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException if a matching background task could not be found
 	 */
 	@Override
 	public BackgroundTask findByG_N_T_First(long groupId, String name,
 		String taskExecutorClassName,
 		OrderByComparator<BackgroundTask> orderByComparator)
-		throws NoSuchBackgroundTaskException {
+		throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException {
 		BackgroundTask backgroundTask = fetchByG_N_T_First(groupId, name,
 				taskExecutorClassName, orderByComparator);
 
@@ -4315,7 +4314,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBackgroundTaskException(msg.toString());
+		throw new com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException(msg.toString());
 	}
 
 	/**
@@ -4349,13 +4348,13 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 * @param taskExecutorClassName the task executor class name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching background task
-	 * @throws NoSuchBackgroundTaskException if a matching background task could not be found
+	 * @throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException if a matching background task could not be found
 	 */
 	@Override
 	public BackgroundTask findByG_N_T_Last(long groupId, String name,
 		String taskExecutorClassName,
 		OrderByComparator<BackgroundTask> orderByComparator)
-		throws NoSuchBackgroundTaskException {
+		throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException {
 		BackgroundTask backgroundTask = fetchByG_N_T_Last(groupId, name,
 				taskExecutorClassName, orderByComparator);
 
@@ -4378,7 +4377,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBackgroundTaskException(msg.toString());
+		throw new com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException(msg.toString());
 	}
 
 	/**
@@ -4419,13 +4418,13 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 * @param taskExecutorClassName the task executor class name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next background task
-	 * @throws NoSuchBackgroundTaskException if a background task with the primary key could not be found
+	 * @throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException if a background task with the primary key could not be found
 	 */
 	@Override
 	public BackgroundTask[] findByG_N_T_PrevAndNext(long backgroundTaskId,
 		long groupId, String name, String taskExecutorClassName,
 		OrderByComparator<BackgroundTask> orderByComparator)
-		throws NoSuchBackgroundTaskException {
+		throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException {
 		BackgroundTask backgroundTask = findByPrimaryKey(backgroundTaskId);
 
 		Session session = null;
@@ -5327,13 +5326,13 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 * @param completed the completed
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching background task
-	 * @throws NoSuchBackgroundTaskException if a matching background task could not be found
+	 * @throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException if a matching background task could not be found
 	 */
 	@Override
 	public BackgroundTask findByG_T_C_First(long groupId,
 		String taskExecutorClassName, boolean completed,
 		OrderByComparator<BackgroundTask> orderByComparator)
-		throws NoSuchBackgroundTaskException {
+		throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException {
 		BackgroundTask backgroundTask = fetchByG_T_C_First(groupId,
 				taskExecutorClassName, completed, orderByComparator);
 
@@ -5356,7 +5355,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBackgroundTaskException(msg.toString());
+		throw new com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException(msg.toString());
 	}
 
 	/**
@@ -5390,13 +5389,13 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 * @param completed the completed
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching background task
-	 * @throws NoSuchBackgroundTaskException if a matching background task could not be found
+	 * @throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException if a matching background task could not be found
 	 */
 	@Override
 	public BackgroundTask findByG_T_C_Last(long groupId,
 		String taskExecutorClassName, boolean completed,
 		OrderByComparator<BackgroundTask> orderByComparator)
-		throws NoSuchBackgroundTaskException {
+		throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException {
 		BackgroundTask backgroundTask = fetchByG_T_C_Last(groupId,
 				taskExecutorClassName, completed, orderByComparator);
 
@@ -5419,7 +5418,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBackgroundTaskException(msg.toString());
+		throw new com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException(msg.toString());
 	}
 
 	/**
@@ -5460,13 +5459,13 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 * @param completed the completed
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next background task
-	 * @throws NoSuchBackgroundTaskException if a background task with the primary key could not be found
+	 * @throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException if a background task with the primary key could not be found
 	 */
 	@Override
 	public BackgroundTask[] findByG_T_C_PrevAndNext(long backgroundTaskId,
 		long groupId, String taskExecutorClassName, boolean completed,
 		OrderByComparator<BackgroundTask> orderByComparator)
-		throws NoSuchBackgroundTaskException {
+		throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException {
 		BackgroundTask backgroundTask = findByPrimaryKey(backgroundTaskId);
 
 		Session session = null;
@@ -6328,13 +6327,13 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching background task
-	 * @throws NoSuchBackgroundTaskException if a matching background task could not be found
+	 * @throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException if a matching background task could not be found
 	 */
 	@Override
 	public BackgroundTask findByG_T_S_First(long groupId,
 		String taskExecutorClassName, int status,
 		OrderByComparator<BackgroundTask> orderByComparator)
-		throws NoSuchBackgroundTaskException {
+		throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException {
 		BackgroundTask backgroundTask = fetchByG_T_S_First(groupId,
 				taskExecutorClassName, status, orderByComparator);
 
@@ -6357,7 +6356,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBackgroundTaskException(msg.toString());
+		throw new com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException(msg.toString());
 	}
 
 	/**
@@ -6391,13 +6390,13 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching background task
-	 * @throws NoSuchBackgroundTaskException if a matching background task could not be found
+	 * @throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException if a matching background task could not be found
 	 */
 	@Override
 	public BackgroundTask findByG_T_S_Last(long groupId,
 		String taskExecutorClassName, int status,
 		OrderByComparator<BackgroundTask> orderByComparator)
-		throws NoSuchBackgroundTaskException {
+		throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException {
 		BackgroundTask backgroundTask = fetchByG_T_S_Last(groupId,
 				taskExecutorClassName, status, orderByComparator);
 
@@ -6420,7 +6419,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBackgroundTaskException(msg.toString());
+		throw new com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException(msg.toString());
 	}
 
 	/**
@@ -6461,13 +6460,13 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next background task
-	 * @throws NoSuchBackgroundTaskException if a background task with the primary key could not be found
+	 * @throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException if a background task with the primary key could not be found
 	 */
 	@Override
 	public BackgroundTask[] findByG_T_S_PrevAndNext(long backgroundTaskId,
 		long groupId, String taskExecutorClassName, int status,
 		OrderByComparator<BackgroundTask> orderByComparator)
-		throws NoSuchBackgroundTaskException {
+		throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException {
 		BackgroundTask backgroundTask = findByPrimaryKey(backgroundTaskId);
 
 		Session session = null;
@@ -7357,13 +7356,13 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 * @param completed the completed
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching background task
-	 * @throws NoSuchBackgroundTaskException if a matching background task could not be found
+	 * @throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException if a matching background task could not be found
 	 */
 	@Override
 	public BackgroundTask findByG_N_T_C_First(long groupId, String name,
 		String taskExecutorClassName, boolean completed,
 		OrderByComparator<BackgroundTask> orderByComparator)
-		throws NoSuchBackgroundTaskException {
+		throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException {
 		BackgroundTask backgroundTask = fetchByG_N_T_C_First(groupId, name,
 				taskExecutorClassName, completed, orderByComparator);
 
@@ -7389,7 +7388,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBackgroundTaskException(msg.toString());
+		throw new com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException(msg.toString());
 	}
 
 	/**
@@ -7425,13 +7424,13 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 * @param completed the completed
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching background task
-	 * @throws NoSuchBackgroundTaskException if a matching background task could not be found
+	 * @throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException if a matching background task could not be found
 	 */
 	@Override
 	public BackgroundTask findByG_N_T_C_Last(long groupId, String name,
 		String taskExecutorClassName, boolean completed,
 		OrderByComparator<BackgroundTask> orderByComparator)
-		throws NoSuchBackgroundTaskException {
+		throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException {
 		BackgroundTask backgroundTask = fetchByG_N_T_C_Last(groupId, name,
 				taskExecutorClassName, completed, orderByComparator);
 
@@ -7457,7 +7456,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchBackgroundTaskException(msg.toString());
+		throw new com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException(msg.toString());
 	}
 
 	/**
@@ -7502,13 +7501,13 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 * @param completed the completed
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next background task
-	 * @throws NoSuchBackgroundTaskException if a background task with the primary key could not be found
+	 * @throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException if a background task with the primary key could not be found
 	 */
 	@Override
 	public BackgroundTask[] findByG_N_T_C_PrevAndNext(long backgroundTaskId,
 		long groupId, String name, String taskExecutorClassName,
 		boolean completed, OrderByComparator<BackgroundTask> orderByComparator)
-		throws NoSuchBackgroundTaskException {
+		throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException {
 		BackgroundTask backgroundTask = findByPrimaryKey(backgroundTaskId);
 
 		Session session = null;
@@ -8292,11 +8291,11 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 *
 	 * @param backgroundTaskId the primary key of the background task
 	 * @return the background task that was removed
-	 * @throws NoSuchBackgroundTaskException if a background task with the primary key could not be found
+	 * @throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException if a background task with the primary key could not be found
 	 */
 	@Override
 	public BackgroundTask remove(long backgroundTaskId)
-		throws NoSuchBackgroundTaskException {
+		throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException {
 		return remove((Serializable)backgroundTaskId);
 	}
 
@@ -8305,11 +8304,11 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 *
 	 * @param primaryKey the primary key of the background task
 	 * @return the background task that was removed
-	 * @throws NoSuchBackgroundTaskException if a background task with the primary key could not be found
+	 * @throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException if a background task with the primary key could not be found
 	 */
 	@Override
 	public BackgroundTask remove(Serializable primaryKey)
-		throws NoSuchBackgroundTaskException {
+		throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException {
 		Session session = null;
 
 		try {
@@ -8323,13 +8322,13 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchBackgroundTaskException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(backgroundTask);
 		}
-		catch (NoSuchBackgroundTaskException nsee) {
+		catch (com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -8684,11 +8683,11 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 *
 	 * @param primaryKey the primary key of the background task
 	 * @return the background task
-	 * @throws NoSuchBackgroundTaskException if a background task with the primary key could not be found
+	 * @throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException if a background task with the primary key could not be found
 	 */
 	@Override
 	public BackgroundTask findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchBackgroundTaskException {
+		throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException {
 		BackgroundTask backgroundTask = fetchByPrimaryKey(primaryKey);
 
 		if (backgroundTask == null) {
@@ -8696,7 +8695,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchBackgroundTaskException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -8704,15 +8703,15 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	}
 
 	/**
-	 * Returns the background task with the primary key or throws a {@link NoSuchBackgroundTaskException} if it could not be found.
+	 * Returns the background task with the primary key or throws a {@link com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException} if it could not be found.
 	 *
 	 * @param backgroundTaskId the primary key of the background task
 	 * @return the background task
-	 * @throws NoSuchBackgroundTaskException if a background task with the primary key could not be found
+	 * @throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException if a background task with the primary key could not be found
 	 */
 	@Override
 	public BackgroundTask findByPrimaryKey(long backgroundTaskId)
-		throws NoSuchBackgroundTaskException {
+		throws com.liferay.portal.background.task.exception.NoSuchBackgroundTaskException {
 		return findByPrimaryKey((Serializable)backgroundTaskId);
 	}
 
