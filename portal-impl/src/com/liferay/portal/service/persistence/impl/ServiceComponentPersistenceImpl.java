@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchServiceComponentException;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
@@ -304,12 +303,12 @@ public class ServiceComponentPersistenceImpl extends BasePersistenceImpl<Service
 	 * @param buildNamespace the build namespace
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching service component
-	 * @throws NoSuchServiceComponentException if a matching service component could not be found
+	 * @throws com.liferay.portal.exception.NoSuchServiceComponentException if a matching service component could not be found
 	 */
 	@Override
 	public ServiceComponent findByBuildNamespace_First(String buildNamespace,
 		OrderByComparator<ServiceComponent> orderByComparator)
-		throws NoSuchServiceComponentException {
+		throws com.liferay.portal.exception.NoSuchServiceComponentException {
 		ServiceComponent serviceComponent = fetchByBuildNamespace_First(buildNamespace,
 				orderByComparator);
 
@@ -326,7 +325,7 @@ public class ServiceComponentPersistenceImpl extends BasePersistenceImpl<Service
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchServiceComponentException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchServiceComponentException(msg.toString());
 	}
 
 	/**
@@ -355,12 +354,12 @@ public class ServiceComponentPersistenceImpl extends BasePersistenceImpl<Service
 	 * @param buildNamespace the build namespace
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching service component
-	 * @throws NoSuchServiceComponentException if a matching service component could not be found
+	 * @throws com.liferay.portal.exception.NoSuchServiceComponentException if a matching service component could not be found
 	 */
 	@Override
 	public ServiceComponent findByBuildNamespace_Last(String buildNamespace,
 		OrderByComparator<ServiceComponent> orderByComparator)
-		throws NoSuchServiceComponentException {
+		throws com.liferay.portal.exception.NoSuchServiceComponentException {
 		ServiceComponent serviceComponent = fetchByBuildNamespace_Last(buildNamespace,
 				orderByComparator);
 
@@ -377,7 +376,7 @@ public class ServiceComponentPersistenceImpl extends BasePersistenceImpl<Service
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchServiceComponentException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchServiceComponentException(msg.toString());
 	}
 
 	/**
@@ -413,13 +412,13 @@ public class ServiceComponentPersistenceImpl extends BasePersistenceImpl<Service
 	 * @param buildNamespace the build namespace
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next service component
-	 * @throws NoSuchServiceComponentException if a service component with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchServiceComponentException if a service component with the primary key could not be found
 	 */
 	@Override
 	public ServiceComponent[] findByBuildNamespace_PrevAndNext(
 		long serviceComponentId, String buildNamespace,
 		OrderByComparator<ServiceComponent> orderByComparator)
-		throws NoSuchServiceComponentException {
+		throws com.liferay.portal.exception.NoSuchServiceComponentException {
 		ServiceComponent serviceComponent = findByPrimaryKey(serviceComponentId);
 
 		Session session = null;
@@ -662,16 +661,17 @@ public class ServiceComponentPersistenceImpl extends BasePersistenceImpl<Service
 			new String[] { String.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the service component where buildNamespace = &#63; and buildNumber = &#63; or throws a {@link NoSuchServiceComponentException} if it could not be found.
+	 * Returns the service component where buildNamespace = &#63; and buildNumber = &#63; or throws a {@link com.liferay.portal.exception.NoSuchServiceComponentException} if it could not be found.
 	 *
 	 * @param buildNamespace the build namespace
 	 * @param buildNumber the build number
 	 * @return the matching service component
-	 * @throws NoSuchServiceComponentException if a matching service component could not be found
+	 * @throws com.liferay.portal.exception.NoSuchServiceComponentException if a matching service component could not be found
 	 */
 	@Override
 	public ServiceComponent findByBNS_BNU(String buildNamespace,
-		long buildNumber) throws NoSuchServiceComponentException {
+		long buildNumber)
+		throws com.liferay.portal.exception.NoSuchServiceComponentException {
 		ServiceComponent serviceComponent = fetchByBNS_BNU(buildNamespace,
 				buildNumber);
 
@@ -692,7 +692,7 @@ public class ServiceComponentPersistenceImpl extends BasePersistenceImpl<Service
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchServiceComponentException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchServiceComponentException(msg.toString());
 		}
 
 		return serviceComponent;
@@ -829,7 +829,8 @@ public class ServiceComponentPersistenceImpl extends BasePersistenceImpl<Service
 	 */
 	@Override
 	public ServiceComponent removeByBNS_BNU(String buildNamespace,
-		long buildNumber) throws NoSuchServiceComponentException {
+		long buildNumber)
+		throws com.liferay.portal.exception.NoSuchServiceComponentException {
 		ServiceComponent serviceComponent = findByBNS_BNU(buildNamespace,
 				buildNumber);
 
@@ -1074,11 +1075,11 @@ public class ServiceComponentPersistenceImpl extends BasePersistenceImpl<Service
 	 *
 	 * @param serviceComponentId the primary key of the service component
 	 * @return the service component that was removed
-	 * @throws NoSuchServiceComponentException if a service component with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchServiceComponentException if a service component with the primary key could not be found
 	 */
 	@Override
 	public ServiceComponent remove(long serviceComponentId)
-		throws NoSuchServiceComponentException {
+		throws com.liferay.portal.exception.NoSuchServiceComponentException {
 		return remove((Serializable)serviceComponentId);
 	}
 
@@ -1087,11 +1088,11 @@ public class ServiceComponentPersistenceImpl extends BasePersistenceImpl<Service
 	 *
 	 * @param primaryKey the primary key of the service component
 	 * @return the service component that was removed
-	 * @throws NoSuchServiceComponentException if a service component with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchServiceComponentException if a service component with the primary key could not be found
 	 */
 	@Override
 	public ServiceComponent remove(Serializable primaryKey)
-		throws NoSuchServiceComponentException {
+		throws com.liferay.portal.exception.NoSuchServiceComponentException {
 		Session session = null;
 
 		try {
@@ -1105,13 +1106,13 @@ public class ServiceComponentPersistenceImpl extends BasePersistenceImpl<Service
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchServiceComponentException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchServiceComponentException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(serviceComponent);
 		}
-		catch (NoSuchServiceComponentException nsee) {
+		catch (com.liferay.portal.exception.NoSuchServiceComponentException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -1250,11 +1251,11 @@ public class ServiceComponentPersistenceImpl extends BasePersistenceImpl<Service
 	 *
 	 * @param primaryKey the primary key of the service component
 	 * @return the service component
-	 * @throws NoSuchServiceComponentException if a service component with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchServiceComponentException if a service component with the primary key could not be found
 	 */
 	@Override
 	public ServiceComponent findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchServiceComponentException {
+		throws com.liferay.portal.exception.NoSuchServiceComponentException {
 		ServiceComponent serviceComponent = fetchByPrimaryKey(primaryKey);
 
 		if (serviceComponent == null) {
@@ -1262,7 +1263,7 @@ public class ServiceComponentPersistenceImpl extends BasePersistenceImpl<Service
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchServiceComponentException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchServiceComponentException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -1270,15 +1271,15 @@ public class ServiceComponentPersistenceImpl extends BasePersistenceImpl<Service
 	}
 
 	/**
-	 * Returns the service component with the primary key or throws a {@link NoSuchServiceComponentException} if it could not be found.
+	 * Returns the service component with the primary key or throws a {@link com.liferay.portal.exception.NoSuchServiceComponentException} if it could not be found.
 	 *
 	 * @param serviceComponentId the primary key of the service component
 	 * @return the service component
-	 * @throws NoSuchServiceComponentException if a service component with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchServiceComponentException if a service component with the primary key could not be found
 	 */
 	@Override
 	public ServiceComponent findByPrimaryKey(long serviceComponentId)
-		throws NoSuchServiceComponentException {
+		throws com.liferay.portal.exception.NoSuchServiceComponentException {
 		return findByPrimaryKey((Serializable)serviceComponentId);
 	}
 

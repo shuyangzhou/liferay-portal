@@ -182,7 +182,7 @@ public class ResourcePermissionUtil {
 	* @param scope the scope
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching resource permission
-	* @throws NoSuchResourcePermissionException if a matching resource permission could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a matching resource permission could not be found
 	*/
 	public static ResourcePermission findByScope_First(int scope,
 		OrderByComparator<ResourcePermission> orderByComparator)
@@ -208,7 +208,7 @@ public class ResourcePermissionUtil {
 	* @param scope the scope
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching resource permission
-	* @throws NoSuchResourcePermissionException if a matching resource permission could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a matching resource permission could not be found
 	*/
 	public static ResourcePermission findByScope_Last(int scope,
 		OrderByComparator<ResourcePermission> orderByComparator)
@@ -235,7 +235,7 @@ public class ResourcePermissionUtil {
 	* @param scope the scope
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next resource permission
-	* @throws NoSuchResourcePermissionException if a resource permission with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a resource permission with the primary key could not be found
 	*/
 	public static ResourcePermission[] findByScope_PrevAndNext(
 		long resourcePermissionId, int scope,
@@ -421,7 +421,7 @@ public class ResourcePermissionUtil {
 	* @param roleId the role ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching resource permission
-	* @throws NoSuchResourcePermissionException if a matching resource permission could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a matching resource permission could not be found
 	*/
 	public static ResourcePermission findByRoleId_First(long roleId,
 		OrderByComparator<ResourcePermission> orderByComparator)
@@ -447,7 +447,7 @@ public class ResourcePermissionUtil {
 	* @param roleId the role ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching resource permission
-	* @throws NoSuchResourcePermissionException if a matching resource permission could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a matching resource permission could not be found
 	*/
 	public static ResourcePermission findByRoleId_Last(long roleId,
 		OrderByComparator<ResourcePermission> orderByComparator)
@@ -474,7 +474,7 @@ public class ResourcePermissionUtil {
 	* @param roleId the role ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next resource permission
-	* @throws NoSuchResourcePermissionException if a resource permission with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a resource permission with the primary key could not be found
 	*/
 	public static ResourcePermission[] findByRoleId_PrevAndNext(
 		long resourcePermissionId, long roleId,
@@ -587,7 +587,7 @@ public class ResourcePermissionUtil {
 	* @param primKey the prim key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching resource permission
-	* @throws NoSuchResourcePermissionException if a matching resource permission could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a matching resource permission could not be found
 	*/
 	public static ResourcePermission findByC_LikeP_First(long companyId,
 		java.lang.String primKey,
@@ -619,7 +619,7 @@ public class ResourcePermissionUtil {
 	* @param primKey the prim key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching resource permission
-	* @throws NoSuchResourcePermissionException if a matching resource permission could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a matching resource permission could not be found
 	*/
 	public static ResourcePermission findByC_LikeP_Last(long companyId,
 		java.lang.String primKey,
@@ -652,7 +652,7 @@ public class ResourcePermissionUtil {
 	* @param primKey the prim key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next resource permission
-	* @throws NoSuchResourcePermissionException if a resource permission with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a resource permission with the primary key could not be found
 	*/
 	public static ResourcePermission[] findByC_LikeP_PrevAndNext(
 		long resourcePermissionId, long companyId, java.lang.String primKey,
@@ -772,7 +772,7 @@ public class ResourcePermissionUtil {
 	* @param scope the scope
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching resource permission
-	* @throws NoSuchResourcePermissionException if a matching resource permission could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a matching resource permission could not be found
 	*/
 	public static ResourcePermission findByC_N_S_First(long companyId,
 		java.lang.String name, int scope,
@@ -806,7 +806,7 @@ public class ResourcePermissionUtil {
 	* @param scope the scope
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching resource permission
-	* @throws NoSuchResourcePermissionException if a matching resource permission could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a matching resource permission could not be found
 	*/
 	public static ResourcePermission findByC_N_S_Last(long companyId,
 		java.lang.String name, int scope,
@@ -841,7 +841,7 @@ public class ResourcePermissionUtil {
 	* @param scope the scope
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next resource permission
-	* @throws NoSuchResourcePermissionException if a resource permission with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a resource permission with the primary key could not be found
 	*/
 	public static ResourcePermission[] findByC_N_S_PrevAndNext(
 		long resourcePermissionId, long companyId, java.lang.String name,
@@ -972,7 +972,7 @@ public class ResourcePermissionUtil {
 	* @param primKey the prim key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching resource permission
-	* @throws NoSuchResourcePermissionException if a matching resource permission could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a matching resource permission could not be found
 	*/
 	public static ResourcePermission findByC_N_S_P_First(long companyId,
 		java.lang.String name, int scope, java.lang.String primKey,
@@ -1010,7 +1010,7 @@ public class ResourcePermissionUtil {
 	* @param primKey the prim key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching resource permission
-	* @throws NoSuchResourcePermissionException if a matching resource permission could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a matching resource permission could not be found
 	*/
 	public static ResourcePermission findByC_N_S_P_Last(long companyId,
 		java.lang.String name, int scope, java.lang.String primKey,
@@ -1049,7 +1049,7 @@ public class ResourcePermissionUtil {
 	* @param primKey the prim key
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next resource permission
-	* @throws NoSuchResourcePermissionException if a resource permission with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a resource permission with the primary key could not be found
 	*/
 	public static ResourcePermission[] findByC_N_S_P_PrevAndNext(
 		long resourcePermissionId, long companyId, java.lang.String name,
@@ -1188,7 +1188,7 @@ public class ResourcePermissionUtil {
 	}
 
 	/**
-	* Returns the resource permission where companyId = &#63; and name = &#63; and scope = &#63; and primKey = &#63; and roleId = &#63; or throws a {@link NoSuchResourcePermissionException} if it could not be found.
+	* Returns the resource permission where companyId = &#63; and name = &#63; and scope = &#63; and primKey = &#63; and roleId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchResourcePermissionException} if it could not be found.
 	*
 	* @param companyId the company ID
 	* @param name the name
@@ -1196,7 +1196,7 @@ public class ResourcePermissionUtil {
 	* @param primKey the prim key
 	* @param roleId the role ID
 	* @return the matching resource permission
-	* @throws NoSuchResourcePermissionException if a matching resource permission could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a matching resource permission could not be found
 	*/
 	public static ResourcePermission findByC_N_S_P_R(long companyId,
 		java.lang.String name, int scope, java.lang.String primKey, long roleId)
@@ -1401,7 +1401,7 @@ public class ResourcePermissionUtil {
 	* @param viewActionId the view action ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching resource permission
-	* @throws NoSuchResourcePermissionException if a matching resource permission could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a matching resource permission could not be found
 	*/
 	public static ResourcePermission findByC_N_S_P_R_V_First(long companyId,
 		java.lang.String name, int scope, long primKeyId, long roleId,
@@ -1445,7 +1445,7 @@ public class ResourcePermissionUtil {
 	* @param viewActionId the view action ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching resource permission
-	* @throws NoSuchResourcePermissionException if a matching resource permission could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a matching resource permission could not be found
 	*/
 	public static ResourcePermission findByC_N_S_P_R_V_Last(long companyId,
 		java.lang.String name, int scope, long primKeyId, long roleId,
@@ -1490,7 +1490,7 @@ public class ResourcePermissionUtil {
 	* @param viewActionId the view action ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next resource permission
-	* @throws NoSuchResourcePermissionException if a resource permission with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a resource permission with the primary key could not be found
 	*/
 	public static ResourcePermission[] findByC_N_S_P_R_V_PrevAndNext(
 		long resourcePermissionId, long companyId, java.lang.String name,
@@ -1695,7 +1695,7 @@ public class ResourcePermissionUtil {
 	*
 	* @param resourcePermissionId the primary key of the resource permission
 	* @return the resource permission that was removed
-	* @throws NoSuchResourcePermissionException if a resource permission with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a resource permission with the primary key could not be found
 	*/
 	public static ResourcePermission remove(long resourcePermissionId)
 		throws com.liferay.portal.exception.NoSuchResourcePermissionException {
@@ -1708,11 +1708,11 @@ public class ResourcePermissionUtil {
 	}
 
 	/**
-	* Returns the resource permission with the primary key or throws a {@link NoSuchResourcePermissionException} if it could not be found.
+	* Returns the resource permission with the primary key or throws a {@link com.liferay.portal.exception.NoSuchResourcePermissionException} if it could not be found.
 	*
 	* @param resourcePermissionId the primary key of the resource permission
 	* @return the resource permission
-	* @throws NoSuchResourcePermissionException if a resource permission with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchResourcePermissionException if a resource permission with the primary key could not be found
 	*/
 	public static ResourcePermission findByPrimaryKey(long resourcePermissionId)
 		throws com.liferay.portal.exception.NoSuchResourcePermissionException {

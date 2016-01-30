@@ -39,7 +39,6 @@ import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
-import com.liferay.portlet.social.exception.NoSuchRelationException;
 import com.liferay.portlet.social.model.SocialRelation;
 import com.liferay.portlet.social.model.impl.SocialRelationImpl;
 import com.liferay.portlet.social.model.impl.SocialRelationModelImpl;
@@ -296,12 +295,12 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching social relation
-	 * @throws NoSuchRelationException if a matching social relation could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	 */
 	@Override
 	public SocialRelation findByUuid_First(String uuid,
 		OrderByComparator<SocialRelation> orderByComparator)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		SocialRelation socialRelation = fetchByUuid_First(uuid,
 				orderByComparator);
 
@@ -318,7 +317,7 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRelationException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchRelationException(msg.toString());
 	}
 
 	/**
@@ -346,12 +345,12 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching social relation
-	 * @throws NoSuchRelationException if a matching social relation could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	 */
 	@Override
 	public SocialRelation findByUuid_Last(String uuid,
 		OrderByComparator<SocialRelation> orderByComparator)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		SocialRelation socialRelation = fetchByUuid_Last(uuid, orderByComparator);
 
 		if (socialRelation != null) {
@@ -367,7 +366,7 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRelationException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchRelationException(msg.toString());
 	}
 
 	/**
@@ -403,12 +402,12 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next social relation
-	 * @throws NoSuchRelationException if a social relation with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a social relation with the primary key could not be found
 	 */
 	@Override
 	public SocialRelation[] findByUuid_PrevAndNext(long relationId,
 		String uuid, OrderByComparator<SocialRelation> orderByComparator)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		SocialRelation socialRelation = findByPrimaryKey(relationId);
 
 		Session session = null;
@@ -861,12 +860,12 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching social relation
-	 * @throws NoSuchRelationException if a matching social relation could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	 */
 	@Override
 	public SocialRelation findByUuid_C_First(String uuid, long companyId,
 		OrderByComparator<SocialRelation> orderByComparator)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		SocialRelation socialRelation = fetchByUuid_C_First(uuid, companyId,
 				orderByComparator);
 
@@ -886,7 +885,7 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRelationException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchRelationException(msg.toString());
 	}
 
 	/**
@@ -917,12 +916,12 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching social relation
-	 * @throws NoSuchRelationException if a matching social relation could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	 */
 	@Override
 	public SocialRelation findByUuid_C_Last(String uuid, long companyId,
 		OrderByComparator<SocialRelation> orderByComparator)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		SocialRelation socialRelation = fetchByUuid_C_Last(uuid, companyId,
 				orderByComparator);
 
@@ -942,7 +941,7 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRelationException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchRelationException(msg.toString());
 	}
 
 	/**
@@ -980,13 +979,13 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next social relation
-	 * @throws NoSuchRelationException if a social relation with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a social relation with the primary key could not be found
 	 */
 	@Override
 	public SocialRelation[] findByUuid_C_PrevAndNext(long relationId,
 		String uuid, long companyId,
 		OrderByComparator<SocialRelation> orderByComparator)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		SocialRelation socialRelation = findByPrimaryKey(relationId);
 
 		Session session = null;
@@ -1421,12 +1420,12 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching social relation
-	 * @throws NoSuchRelationException if a matching social relation could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	 */
 	@Override
 	public SocialRelation findByCompanyId_First(long companyId,
 		OrderByComparator<SocialRelation> orderByComparator)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		SocialRelation socialRelation = fetchByCompanyId_First(companyId,
 				orderByComparator);
 
@@ -1443,7 +1442,7 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRelationException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchRelationException(msg.toString());
 	}
 
 	/**
@@ -1472,12 +1471,12 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching social relation
-	 * @throws NoSuchRelationException if a matching social relation could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	 */
 	@Override
 	public SocialRelation findByCompanyId_Last(long companyId,
 		OrderByComparator<SocialRelation> orderByComparator)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		SocialRelation socialRelation = fetchByCompanyId_Last(companyId,
 				orderByComparator);
 
@@ -1494,7 +1493,7 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRelationException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchRelationException(msg.toString());
 	}
 
 	/**
@@ -1530,12 +1529,12 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next social relation
-	 * @throws NoSuchRelationException if a social relation with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a social relation with the primary key could not be found
 	 */
 	@Override
 	public SocialRelation[] findByCompanyId_PrevAndNext(long relationId,
 		long companyId, OrderByComparator<SocialRelation> orderByComparator)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		SocialRelation socialRelation = findByPrimaryKey(relationId);
 
 		Session session = null;
@@ -1926,12 +1925,12 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 * @param userId1 the user id1
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching social relation
-	 * @throws NoSuchRelationException if a matching social relation could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	 */
 	@Override
 	public SocialRelation findByUserId1_First(long userId1,
 		OrderByComparator<SocialRelation> orderByComparator)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		SocialRelation socialRelation = fetchByUserId1_First(userId1,
 				orderByComparator);
 
@@ -1948,7 +1947,7 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRelationException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchRelationException(msg.toString());
 	}
 
 	/**
@@ -1977,12 +1976,12 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 * @param userId1 the user id1
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching social relation
-	 * @throws NoSuchRelationException if a matching social relation could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	 */
 	@Override
 	public SocialRelation findByUserId1_Last(long userId1,
 		OrderByComparator<SocialRelation> orderByComparator)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		SocialRelation socialRelation = fetchByUserId1_Last(userId1,
 				orderByComparator);
 
@@ -1999,7 +1998,7 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRelationException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchRelationException(msg.toString());
 	}
 
 	/**
@@ -2035,12 +2034,12 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 * @param userId1 the user id1
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next social relation
-	 * @throws NoSuchRelationException if a social relation with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a social relation with the primary key could not be found
 	 */
 	@Override
 	public SocialRelation[] findByUserId1_PrevAndNext(long relationId,
 		long userId1, OrderByComparator<SocialRelation> orderByComparator)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		SocialRelation socialRelation = findByPrimaryKey(relationId);
 
 		Session session = null;
@@ -2431,12 +2430,12 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 * @param userId2 the user id2
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching social relation
-	 * @throws NoSuchRelationException if a matching social relation could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	 */
 	@Override
 	public SocialRelation findByUserId2_First(long userId2,
 		OrderByComparator<SocialRelation> orderByComparator)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		SocialRelation socialRelation = fetchByUserId2_First(userId2,
 				orderByComparator);
 
@@ -2453,7 +2452,7 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRelationException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchRelationException(msg.toString());
 	}
 
 	/**
@@ -2482,12 +2481,12 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 * @param userId2 the user id2
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching social relation
-	 * @throws NoSuchRelationException if a matching social relation could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	 */
 	@Override
 	public SocialRelation findByUserId2_Last(long userId2,
 		OrderByComparator<SocialRelation> orderByComparator)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		SocialRelation socialRelation = fetchByUserId2_Last(userId2,
 				orderByComparator);
 
@@ -2504,7 +2503,7 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRelationException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchRelationException(msg.toString());
 	}
 
 	/**
@@ -2540,12 +2539,12 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 * @param userId2 the user id2
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next social relation
-	 * @throws NoSuchRelationException if a social relation with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a social relation with the primary key could not be found
 	 */
 	@Override
 	public SocialRelation[] findByUserId2_PrevAndNext(long relationId,
 		long userId2, OrderByComparator<SocialRelation> orderByComparator)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		SocialRelation socialRelation = findByPrimaryKey(relationId);
 
 		Session session = null;
@@ -2935,12 +2934,12 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 * @param type the type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching social relation
-	 * @throws NoSuchRelationException if a matching social relation could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	 */
 	@Override
 	public SocialRelation findByType_First(int type,
 		OrderByComparator<SocialRelation> orderByComparator)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		SocialRelation socialRelation = fetchByType_First(type,
 				orderByComparator);
 
@@ -2957,7 +2956,7 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRelationException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchRelationException(msg.toString());
 	}
 
 	/**
@@ -2985,12 +2984,12 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 * @param type the type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching social relation
-	 * @throws NoSuchRelationException if a matching social relation could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	 */
 	@Override
 	public SocialRelation findByType_Last(int type,
 		OrderByComparator<SocialRelation> orderByComparator)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		SocialRelation socialRelation = fetchByType_Last(type, orderByComparator);
 
 		if (socialRelation != null) {
@@ -3006,7 +3005,7 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRelationException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchRelationException(msg.toString());
 	}
 
 	/**
@@ -3042,12 +3041,12 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 * @param type the type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next social relation
-	 * @throws NoSuchRelationException if a social relation with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a social relation with the primary key could not be found
 	 */
 	@Override
 	public SocialRelation[] findByType_PrevAndNext(long relationId, int type,
 		OrderByComparator<SocialRelation> orderByComparator)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		SocialRelation socialRelation = findByPrimaryKey(relationId);
 
 		Session session = null;
@@ -3454,12 +3453,12 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 * @param type the type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching social relation
-	 * @throws NoSuchRelationException if a matching social relation could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	 */
 	@Override
 	public SocialRelation findByC_T_First(long companyId, int type,
 		OrderByComparator<SocialRelation> orderByComparator)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		SocialRelation socialRelation = fetchByC_T_First(companyId, type,
 				orderByComparator);
 
@@ -3479,7 +3478,7 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRelationException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchRelationException(msg.toString());
 	}
 
 	/**
@@ -3510,12 +3509,12 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 * @param type the type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching social relation
-	 * @throws NoSuchRelationException if a matching social relation could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	 */
 	@Override
 	public SocialRelation findByC_T_Last(long companyId, int type,
 		OrderByComparator<SocialRelation> orderByComparator)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		SocialRelation socialRelation = fetchByC_T_Last(companyId, type,
 				orderByComparator);
 
@@ -3535,7 +3534,7 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRelationException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchRelationException(msg.toString());
 	}
 
 	/**
@@ -3573,13 +3572,13 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 * @param type the type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next social relation
-	 * @throws NoSuchRelationException if a social relation with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a social relation with the primary key could not be found
 	 */
 	@Override
 	public SocialRelation[] findByC_T_PrevAndNext(long relationId,
 		long companyId, int type,
 		OrderByComparator<SocialRelation> orderByComparator)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		SocialRelation socialRelation = findByPrimaryKey(relationId);
 
 		Session session = null;
@@ -3998,12 +3997,12 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 * @param userId2 the user id2
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching social relation
-	 * @throws NoSuchRelationException if a matching social relation could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	 */
 	@Override
 	public SocialRelation findByU1_U2_First(long userId1, long userId2,
 		OrderByComparator<SocialRelation> orderByComparator)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		SocialRelation socialRelation = fetchByU1_U2_First(userId1, userId2,
 				orderByComparator);
 
@@ -4023,7 +4022,7 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRelationException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchRelationException(msg.toString());
 	}
 
 	/**
@@ -4054,12 +4053,12 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 * @param userId2 the user id2
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching social relation
-	 * @throws NoSuchRelationException if a matching social relation could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	 */
 	@Override
 	public SocialRelation findByU1_U2_Last(long userId1, long userId2,
 		OrderByComparator<SocialRelation> orderByComparator)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		SocialRelation socialRelation = fetchByU1_U2_Last(userId1, userId2,
 				orderByComparator);
 
@@ -4079,7 +4078,7 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRelationException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchRelationException(msg.toString());
 	}
 
 	/**
@@ -4117,13 +4116,13 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 * @param userId2 the user id2
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next social relation
-	 * @throws NoSuchRelationException if a social relation with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a social relation with the primary key could not be found
 	 */
 	@Override
 	public SocialRelation[] findByU1_U2_PrevAndNext(long relationId,
 		long userId1, long userId2,
 		OrderByComparator<SocialRelation> orderByComparator)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		SocialRelation socialRelation = findByPrimaryKey(relationId);
 
 		Session session = null;
@@ -4541,12 +4540,12 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 * @param type the type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching social relation
-	 * @throws NoSuchRelationException if a matching social relation could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	 */
 	@Override
 	public SocialRelation findByU1_T_First(long userId1, int type,
 		OrderByComparator<SocialRelation> orderByComparator)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		SocialRelation socialRelation = fetchByU1_T_First(userId1, type,
 				orderByComparator);
 
@@ -4566,7 +4565,7 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRelationException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchRelationException(msg.toString());
 	}
 
 	/**
@@ -4597,12 +4596,12 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 * @param type the type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching social relation
-	 * @throws NoSuchRelationException if a matching social relation could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	 */
 	@Override
 	public SocialRelation findByU1_T_Last(long userId1, int type,
 		OrderByComparator<SocialRelation> orderByComparator)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		SocialRelation socialRelation = fetchByU1_T_Last(userId1, type,
 				orderByComparator);
 
@@ -4622,7 +4621,7 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRelationException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchRelationException(msg.toString());
 	}
 
 	/**
@@ -4660,13 +4659,13 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 * @param type the type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next social relation
-	 * @throws NoSuchRelationException if a social relation with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a social relation with the primary key could not be found
 	 */
 	@Override
 	public SocialRelation[] findByU1_T_PrevAndNext(long relationId,
 		long userId1, int type,
 		OrderByComparator<SocialRelation> orderByComparator)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		SocialRelation socialRelation = findByPrimaryKey(relationId);
 
 		Session session = null;
@@ -5084,12 +5083,12 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 * @param type the type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching social relation
-	 * @throws NoSuchRelationException if a matching social relation could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	 */
 	@Override
 	public SocialRelation findByU2_T_First(long userId2, int type,
 		OrderByComparator<SocialRelation> orderByComparator)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		SocialRelation socialRelation = fetchByU2_T_First(userId2, type,
 				orderByComparator);
 
@@ -5109,7 +5108,7 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRelationException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchRelationException(msg.toString());
 	}
 
 	/**
@@ -5140,12 +5139,12 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 * @param type the type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching social relation
-	 * @throws NoSuchRelationException if a matching social relation could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	 */
 	@Override
 	public SocialRelation findByU2_T_Last(long userId2, int type,
 		OrderByComparator<SocialRelation> orderByComparator)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		SocialRelation socialRelation = fetchByU2_T_Last(userId2, type,
 				orderByComparator);
 
@@ -5165,7 +5164,7 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchRelationException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchRelationException(msg.toString());
 	}
 
 	/**
@@ -5203,13 +5202,13 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 * @param type the type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next social relation
-	 * @throws NoSuchRelationException if a social relation with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a social relation with the primary key could not be found
 	 */
 	@Override
 	public SocialRelation[] findByU2_T_PrevAndNext(long relationId,
 		long userId2, int type,
 		OrderByComparator<SocialRelation> orderByComparator)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		SocialRelation socialRelation = findByPrimaryKey(relationId);
 
 		Session session = null;
@@ -5439,17 +5438,17 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 			});
 
 	/**
-	 * Returns the social relation where userId1 = &#63; and userId2 = &#63; and type = &#63; or throws a {@link NoSuchRelationException} if it could not be found.
+	 * Returns the social relation where userId1 = &#63; and userId2 = &#63; and type = &#63; or throws a {@link com.liferay.portlet.social.exception.NoSuchRelationException} if it could not be found.
 	 *
 	 * @param userId1 the user id1
 	 * @param userId2 the user id2
 	 * @param type the type
 	 * @return the matching social relation
-	 * @throws NoSuchRelationException if a matching social relation could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a matching social relation could not be found
 	 */
 	@Override
 	public SocialRelation findByU1_U2_T(long userId1, long userId2, int type)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		SocialRelation socialRelation = fetchByU1_U2_T(userId1, userId2, type);
 
 		if (socialRelation == null) {
@@ -5472,7 +5471,7 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchRelationException(msg.toString());
+			throw new com.liferay.portlet.social.exception.NoSuchRelationException(msg.toString());
 		}
 
 		return socialRelation;
@@ -5600,7 +5599,7 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 */
 	@Override
 	public SocialRelation removeByU1_U2_T(long userId1, long userId2, int type)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		SocialRelation socialRelation = findByU1_U2_T(userId1, userId2, type);
 
 		return remove(socialRelation);
@@ -5843,11 +5842,11 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 *
 	 * @param relationId the primary key of the social relation
 	 * @return the social relation that was removed
-	 * @throws NoSuchRelationException if a social relation with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a social relation with the primary key could not be found
 	 */
 	@Override
 	public SocialRelation remove(long relationId)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		return remove((Serializable)relationId);
 	}
 
@@ -5856,11 +5855,11 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 *
 	 * @param primaryKey the primary key of the social relation
 	 * @return the social relation that was removed
-	 * @throws NoSuchRelationException if a social relation with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a social relation with the primary key could not be found
 	 */
 	@Override
 	public SocialRelation remove(Serializable primaryKey)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		Session session = null;
 
 		try {
@@ -5874,13 +5873,13 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchRelationException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portlet.social.exception.NoSuchRelationException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(socialRelation);
 		}
-		catch (NoSuchRelationException nsee) {
+		catch (com.liferay.portlet.social.exception.NoSuchRelationException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -6194,11 +6193,11 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 *
 	 * @param primaryKey the primary key of the social relation
 	 * @return the social relation
-	 * @throws NoSuchRelationException if a social relation with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a social relation with the primary key could not be found
 	 */
 	@Override
 	public SocialRelation findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		SocialRelation socialRelation = fetchByPrimaryKey(primaryKey);
 
 		if (socialRelation == null) {
@@ -6206,7 +6205,7 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchRelationException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portlet.social.exception.NoSuchRelationException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -6214,15 +6213,15 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	}
 
 	/**
-	 * Returns the social relation with the primary key or throws a {@link NoSuchRelationException} if it could not be found.
+	 * Returns the social relation with the primary key or throws a {@link com.liferay.portlet.social.exception.NoSuchRelationException} if it could not be found.
 	 *
 	 * @param relationId the primary key of the social relation
 	 * @return the social relation
-	 * @throws NoSuchRelationException if a social relation with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchRelationException if a social relation with the primary key could not be found
 	 */
 	@Override
 	public SocialRelation findByPrimaryKey(long relationId)
-		throws NoSuchRelationException {
+		throws com.liferay.portlet.social.exception.NoSuchRelationException {
 		return findByPrimaryKey((Serializable)relationId);
 	}
 

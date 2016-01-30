@@ -36,7 +36,6 @@ import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
-import com.liferay.social.networking.exception.NoSuchWallEntryException;
 import com.liferay.social.networking.model.WallEntry;
 import com.liferay.social.networking.model.impl.WallEntryImpl;
 import com.liferay.social.networking.model.impl.WallEntryModelImpl;
@@ -278,12 +277,12 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching wall entry
-	 * @throws NoSuchWallEntryException if a matching wall entry could not be found
+	 * @throws com.liferay.social.networking.exception.NoSuchWallEntryException if a matching wall entry could not be found
 	 */
 	@Override
 	public WallEntry findByGroupId_First(long groupId,
 		OrderByComparator<WallEntry> orderByComparator)
-		throws NoSuchWallEntryException {
+		throws com.liferay.social.networking.exception.NoSuchWallEntryException {
 		WallEntry wallEntry = fetchByGroupId_First(groupId, orderByComparator);
 
 		if (wallEntry != null) {
@@ -299,7 +298,7 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchWallEntryException(msg.toString());
+		throw new com.liferay.social.networking.exception.NoSuchWallEntryException(msg.toString());
 	}
 
 	/**
@@ -327,12 +326,12 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching wall entry
-	 * @throws NoSuchWallEntryException if a matching wall entry could not be found
+	 * @throws com.liferay.social.networking.exception.NoSuchWallEntryException if a matching wall entry could not be found
 	 */
 	@Override
 	public WallEntry findByGroupId_Last(long groupId,
 		OrderByComparator<WallEntry> orderByComparator)
-		throws NoSuchWallEntryException {
+		throws com.liferay.social.networking.exception.NoSuchWallEntryException {
 		WallEntry wallEntry = fetchByGroupId_Last(groupId, orderByComparator);
 
 		if (wallEntry != null) {
@@ -348,7 +347,7 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchWallEntryException(msg.toString());
+		throw new com.liferay.social.networking.exception.NoSuchWallEntryException(msg.toString());
 	}
 
 	/**
@@ -384,12 +383,12 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next wall entry
-	 * @throws NoSuchWallEntryException if a wall entry with the primary key could not be found
+	 * @throws com.liferay.social.networking.exception.NoSuchWallEntryException if a wall entry with the primary key could not be found
 	 */
 	@Override
 	public WallEntry[] findByGroupId_PrevAndNext(long wallEntryId,
 		long groupId, OrderByComparator<WallEntry> orderByComparator)
-		throws NoSuchWallEntryException {
+		throws com.liferay.social.networking.exception.NoSuchWallEntryException {
 		WallEntry wallEntry = findByPrimaryKey(wallEntryId);
 
 		Session session = null;
@@ -779,12 +778,12 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching wall entry
-	 * @throws NoSuchWallEntryException if a matching wall entry could not be found
+	 * @throws com.liferay.social.networking.exception.NoSuchWallEntryException if a matching wall entry could not be found
 	 */
 	@Override
 	public WallEntry findByUserId_First(long userId,
 		OrderByComparator<WallEntry> orderByComparator)
-		throws NoSuchWallEntryException {
+		throws com.liferay.social.networking.exception.NoSuchWallEntryException {
 		WallEntry wallEntry = fetchByUserId_First(userId, orderByComparator);
 
 		if (wallEntry != null) {
@@ -800,7 +799,7 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchWallEntryException(msg.toString());
+		throw new com.liferay.social.networking.exception.NoSuchWallEntryException(msg.toString());
 	}
 
 	/**
@@ -828,12 +827,12 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching wall entry
-	 * @throws NoSuchWallEntryException if a matching wall entry could not be found
+	 * @throws com.liferay.social.networking.exception.NoSuchWallEntryException if a matching wall entry could not be found
 	 */
 	@Override
 	public WallEntry findByUserId_Last(long userId,
 		OrderByComparator<WallEntry> orderByComparator)
-		throws NoSuchWallEntryException {
+		throws com.liferay.social.networking.exception.NoSuchWallEntryException {
 		WallEntry wallEntry = fetchByUserId_Last(userId, orderByComparator);
 
 		if (wallEntry != null) {
@@ -849,7 +848,7 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchWallEntryException(msg.toString());
+		throw new com.liferay.social.networking.exception.NoSuchWallEntryException(msg.toString());
 	}
 
 	/**
@@ -885,12 +884,12 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next wall entry
-	 * @throws NoSuchWallEntryException if a wall entry with the primary key could not be found
+	 * @throws com.liferay.social.networking.exception.NoSuchWallEntryException if a wall entry with the primary key could not be found
 	 */
 	@Override
 	public WallEntry[] findByUserId_PrevAndNext(long wallEntryId, long userId,
 		OrderByComparator<WallEntry> orderByComparator)
-		throws NoSuchWallEntryException {
+		throws com.liferay.social.networking.exception.NoSuchWallEntryException {
 		WallEntry wallEntry = findByPrimaryKey(wallEntryId);
 
 		Session session = null;
@@ -1296,12 +1295,12 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching wall entry
-	 * @throws NoSuchWallEntryException if a matching wall entry could not be found
+	 * @throws com.liferay.social.networking.exception.NoSuchWallEntryException if a matching wall entry could not be found
 	 */
 	@Override
 	public WallEntry findByG_U_First(long groupId, long userId,
 		OrderByComparator<WallEntry> orderByComparator)
-		throws NoSuchWallEntryException {
+		throws com.liferay.social.networking.exception.NoSuchWallEntryException {
 		WallEntry wallEntry = fetchByG_U_First(groupId, userId,
 				orderByComparator);
 
@@ -1321,7 +1320,7 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchWallEntryException(msg.toString());
+		throw new com.liferay.social.networking.exception.NoSuchWallEntryException(msg.toString());
 	}
 
 	/**
@@ -1352,12 +1351,12 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching wall entry
-	 * @throws NoSuchWallEntryException if a matching wall entry could not be found
+	 * @throws com.liferay.social.networking.exception.NoSuchWallEntryException if a matching wall entry could not be found
 	 */
 	@Override
 	public WallEntry findByG_U_Last(long groupId, long userId,
 		OrderByComparator<WallEntry> orderByComparator)
-		throws NoSuchWallEntryException {
+		throws com.liferay.social.networking.exception.NoSuchWallEntryException {
 		WallEntry wallEntry = fetchByG_U_Last(groupId, userId, orderByComparator);
 
 		if (wallEntry != null) {
@@ -1376,7 +1375,7 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchWallEntryException(msg.toString());
+		throw new com.liferay.social.networking.exception.NoSuchWallEntryException(msg.toString());
 	}
 
 	/**
@@ -1414,12 +1413,12 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next wall entry
-	 * @throws NoSuchWallEntryException if a wall entry with the primary key could not be found
+	 * @throws com.liferay.social.networking.exception.NoSuchWallEntryException if a wall entry with the primary key could not be found
 	 */
 	@Override
 	public WallEntry[] findByG_U_PrevAndNext(long wallEntryId, long groupId,
 		long userId, OrderByComparator<WallEntry> orderByComparator)
-		throws NoSuchWallEntryException {
+		throws com.liferay.social.networking.exception.NoSuchWallEntryException {
 		WallEntry wallEntry = findByPrimaryKey(wallEntryId);
 
 		Session session = null;
@@ -1731,10 +1730,11 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 *
 	 * @param wallEntryId the primary key of the wall entry
 	 * @return the wall entry that was removed
-	 * @throws NoSuchWallEntryException if a wall entry with the primary key could not be found
+	 * @throws com.liferay.social.networking.exception.NoSuchWallEntryException if a wall entry with the primary key could not be found
 	 */
 	@Override
-	public WallEntry remove(long wallEntryId) throws NoSuchWallEntryException {
+	public WallEntry remove(long wallEntryId)
+		throws com.liferay.social.networking.exception.NoSuchWallEntryException {
 		return remove((Serializable)wallEntryId);
 	}
 
@@ -1743,11 +1743,11 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 *
 	 * @param primaryKey the primary key of the wall entry
 	 * @return the wall entry that was removed
-	 * @throws NoSuchWallEntryException if a wall entry with the primary key could not be found
+	 * @throws com.liferay.social.networking.exception.NoSuchWallEntryException if a wall entry with the primary key could not be found
 	 */
 	@Override
 	public WallEntry remove(Serializable primaryKey)
-		throws NoSuchWallEntryException {
+		throws com.liferay.social.networking.exception.NoSuchWallEntryException {
 		Session session = null;
 
 		try {
@@ -1761,13 +1761,13 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchWallEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.social.networking.exception.NoSuchWallEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(wallEntry);
 		}
-		catch (NoSuchWallEntryException nsee) {
+		catch (com.liferay.social.networking.exception.NoSuchWallEntryException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -1959,11 +1959,11 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 *
 	 * @param primaryKey the primary key of the wall entry
 	 * @return the wall entry
-	 * @throws NoSuchWallEntryException if a wall entry with the primary key could not be found
+	 * @throws com.liferay.social.networking.exception.NoSuchWallEntryException if a wall entry with the primary key could not be found
 	 */
 	@Override
 	public WallEntry findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchWallEntryException {
+		throws com.liferay.social.networking.exception.NoSuchWallEntryException {
 		WallEntry wallEntry = fetchByPrimaryKey(primaryKey);
 
 		if (wallEntry == null) {
@@ -1971,7 +1971,7 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchWallEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.social.networking.exception.NoSuchWallEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -1979,15 +1979,15 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	}
 
 	/**
-	 * Returns the wall entry with the primary key or throws a {@link NoSuchWallEntryException} if it could not be found.
+	 * Returns the wall entry with the primary key or throws a {@link com.liferay.social.networking.exception.NoSuchWallEntryException} if it could not be found.
 	 *
 	 * @param wallEntryId the primary key of the wall entry
 	 * @return the wall entry
-	 * @throws NoSuchWallEntryException if a wall entry with the primary key could not be found
+	 * @throws com.liferay.social.networking.exception.NoSuchWallEntryException if a wall entry with the primary key could not be found
 	 */
 	@Override
 	public WallEntry findByPrimaryKey(long wallEntryId)
-		throws NoSuchWallEntryException {
+		throws com.liferay.social.networking.exception.NoSuchWallEntryException {
 		return findByPrimaryKey((Serializable)wallEntryId);
 	}
 

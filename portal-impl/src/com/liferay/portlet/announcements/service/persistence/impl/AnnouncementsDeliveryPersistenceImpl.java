@@ -16,7 +16,6 @@ package com.liferay.portlet.announcements.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.announcements.kernel.exception.NoSuchDeliveryException;
 import com.liferay.announcements.kernel.model.AnnouncementsDelivery;
 import com.liferay.announcements.kernel.service.persistence.AnnouncementsDeliveryPersistence;
 
@@ -284,12 +283,12 @@ public class AnnouncementsDeliveryPersistenceImpl extends BasePersistenceImpl<An
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching announcements delivery
-	 * @throws NoSuchDeliveryException if a matching announcements delivery could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchDeliveryException if a matching announcements delivery could not be found
 	 */
 	@Override
 	public AnnouncementsDelivery findByUserId_First(long userId,
 		OrderByComparator<AnnouncementsDelivery> orderByComparator)
-		throws NoSuchDeliveryException {
+		throws com.liferay.announcements.kernel.exception.NoSuchDeliveryException {
 		AnnouncementsDelivery announcementsDelivery = fetchByUserId_First(userId,
 				orderByComparator);
 
@@ -306,7 +305,7 @@ public class AnnouncementsDeliveryPersistenceImpl extends BasePersistenceImpl<An
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchDeliveryException(msg.toString());
+		throw new com.liferay.announcements.kernel.exception.NoSuchDeliveryException(msg.toString());
 	}
 
 	/**
@@ -335,12 +334,12 @@ public class AnnouncementsDeliveryPersistenceImpl extends BasePersistenceImpl<An
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching announcements delivery
-	 * @throws NoSuchDeliveryException if a matching announcements delivery could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchDeliveryException if a matching announcements delivery could not be found
 	 */
 	@Override
 	public AnnouncementsDelivery findByUserId_Last(long userId,
 		OrderByComparator<AnnouncementsDelivery> orderByComparator)
-		throws NoSuchDeliveryException {
+		throws com.liferay.announcements.kernel.exception.NoSuchDeliveryException {
 		AnnouncementsDelivery announcementsDelivery = fetchByUserId_Last(userId,
 				orderByComparator);
 
@@ -357,7 +356,7 @@ public class AnnouncementsDeliveryPersistenceImpl extends BasePersistenceImpl<An
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchDeliveryException(msg.toString());
+		throw new com.liferay.announcements.kernel.exception.NoSuchDeliveryException(msg.toString());
 	}
 
 	/**
@@ -393,12 +392,12 @@ public class AnnouncementsDeliveryPersistenceImpl extends BasePersistenceImpl<An
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next announcements delivery
-	 * @throws NoSuchDeliveryException if a announcements delivery with the primary key could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchDeliveryException if a announcements delivery with the primary key could not be found
 	 */
 	@Override
 	public AnnouncementsDelivery[] findByUserId_PrevAndNext(long deliveryId,
 		long userId, OrderByComparator<AnnouncementsDelivery> orderByComparator)
-		throws NoSuchDeliveryException {
+		throws com.liferay.announcements.kernel.exception.NoSuchDeliveryException {
 		AnnouncementsDelivery announcementsDelivery = findByPrimaryKey(deliveryId);
 
 		Session session = null;
@@ -611,16 +610,16 @@ public class AnnouncementsDeliveryPersistenceImpl extends BasePersistenceImpl<An
 			new String[] { Long.class.getName(), String.class.getName() });
 
 	/**
-	 * Returns the announcements delivery where userId = &#63; and type = &#63; or throws a {@link com.liferay.portlet.announcements.exception.NoSuchDeliveryException} if it could not be found.
+	 * Returns the announcements delivery where userId = &#63; and type = &#63; or throws a {@link com.liferay.announcements.kernel.exception.NoSuchDeliveryException} if it could not be found.
 	 *
 	 * @param userId the user ID
 	 * @param type the type
 	 * @return the matching announcements delivery
-	 * @throws NoSuchDeliveryException if a matching announcements delivery could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchDeliveryException if a matching announcements delivery could not be found
 	 */
 	@Override
 	public AnnouncementsDelivery findByU_T(long userId, String type)
-		throws NoSuchDeliveryException {
+		throws com.liferay.announcements.kernel.exception.NoSuchDeliveryException {
 		AnnouncementsDelivery announcementsDelivery = fetchByU_T(userId, type);
 
 		if (announcementsDelivery == null) {
@@ -640,7 +639,7 @@ public class AnnouncementsDeliveryPersistenceImpl extends BasePersistenceImpl<An
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchDeliveryException(msg.toString());
+			throw new com.liferay.announcements.kernel.exception.NoSuchDeliveryException(msg.toString());
 		}
 
 		return announcementsDelivery;
@@ -773,7 +772,7 @@ public class AnnouncementsDeliveryPersistenceImpl extends BasePersistenceImpl<An
 	 */
 	@Override
 	public AnnouncementsDelivery removeByU_T(long userId, String type)
-		throws NoSuchDeliveryException {
+		throws com.liferay.announcements.kernel.exception.NoSuchDeliveryException {
 		AnnouncementsDelivery announcementsDelivery = findByU_T(userId, type);
 
 		return remove(announcementsDelivery);
@@ -1022,11 +1021,11 @@ public class AnnouncementsDeliveryPersistenceImpl extends BasePersistenceImpl<An
 	 *
 	 * @param deliveryId the primary key of the announcements delivery
 	 * @return the announcements delivery that was removed
-	 * @throws NoSuchDeliveryException if a announcements delivery with the primary key could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchDeliveryException if a announcements delivery with the primary key could not be found
 	 */
 	@Override
 	public AnnouncementsDelivery remove(long deliveryId)
-		throws NoSuchDeliveryException {
+		throws com.liferay.announcements.kernel.exception.NoSuchDeliveryException {
 		return remove((Serializable)deliveryId);
 	}
 
@@ -1035,11 +1034,11 @@ public class AnnouncementsDeliveryPersistenceImpl extends BasePersistenceImpl<An
 	 *
 	 * @param primaryKey the primary key of the announcements delivery
 	 * @return the announcements delivery that was removed
-	 * @throws NoSuchDeliveryException if a announcements delivery with the primary key could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchDeliveryException if a announcements delivery with the primary key could not be found
 	 */
 	@Override
 	public AnnouncementsDelivery remove(Serializable primaryKey)
-		throws NoSuchDeliveryException {
+		throws com.liferay.announcements.kernel.exception.NoSuchDeliveryException {
 		Session session = null;
 
 		try {
@@ -1053,13 +1052,13 @@ public class AnnouncementsDeliveryPersistenceImpl extends BasePersistenceImpl<An
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchDeliveryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.announcements.kernel.exception.NoSuchDeliveryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(announcementsDelivery);
 		}
-		catch (NoSuchDeliveryException nsee) {
+		catch (com.liferay.announcements.kernel.exception.NoSuchDeliveryException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -1197,11 +1196,11 @@ public class AnnouncementsDeliveryPersistenceImpl extends BasePersistenceImpl<An
 	 *
 	 * @param primaryKey the primary key of the announcements delivery
 	 * @return the announcements delivery
-	 * @throws NoSuchDeliveryException if a announcements delivery with the primary key could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchDeliveryException if a announcements delivery with the primary key could not be found
 	 */
 	@Override
 	public AnnouncementsDelivery findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchDeliveryException {
+		throws com.liferay.announcements.kernel.exception.NoSuchDeliveryException {
 		AnnouncementsDelivery announcementsDelivery = fetchByPrimaryKey(primaryKey);
 
 		if (announcementsDelivery == null) {
@@ -1209,7 +1208,7 @@ public class AnnouncementsDeliveryPersistenceImpl extends BasePersistenceImpl<An
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchDeliveryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.announcements.kernel.exception.NoSuchDeliveryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -1217,15 +1216,15 @@ public class AnnouncementsDeliveryPersistenceImpl extends BasePersistenceImpl<An
 	}
 
 	/**
-	 * Returns the announcements delivery with the primary key or throws a {@link NoSuchDeliveryException} if it could not be found.
+	 * Returns the announcements delivery with the primary key or throws a {@link com.liferay.announcements.kernel.exception.NoSuchDeliveryException} if it could not be found.
 	 *
 	 * @param deliveryId the primary key of the announcements delivery
 	 * @return the announcements delivery
-	 * @throws NoSuchDeliveryException if a announcements delivery with the primary key could not be found
+	 * @throws com.liferay.announcements.kernel.exception.NoSuchDeliveryException if a announcements delivery with the primary key could not be found
 	 */
 	@Override
 	public AnnouncementsDelivery findByPrimaryKey(long deliveryId)
-		throws NoSuchDeliveryException {
+		throws com.liferay.announcements.kernel.exception.NoSuchDeliveryException {
 		return findByPrimaryKey((Serializable)deliveryId);
 	}
 

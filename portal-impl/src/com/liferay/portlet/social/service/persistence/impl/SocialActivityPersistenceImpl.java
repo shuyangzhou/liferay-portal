@@ -38,7 +38,6 @@ import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
-import com.liferay.portlet.social.exception.NoSuchActivityException;
 import com.liferay.portlet.social.model.SocialActivity;
 import com.liferay.portlet.social.model.impl.SocialActivityImpl;
 import com.liferay.portlet.social.model.impl.SocialActivityModelImpl;
@@ -283,12 +282,12 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching social activity
-	 * @throws NoSuchActivityException if a matching social activity could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a matching social activity could not be found
 	 */
 	@Override
 	public SocialActivity findByGroupId_First(long groupId,
 		OrderByComparator<SocialActivity> orderByComparator)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = fetchByGroupId_First(groupId,
 				orderByComparator);
 
@@ -305,7 +304,7 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityException(msg.toString());
 	}
 
 	/**
@@ -334,12 +333,12 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching social activity
-	 * @throws NoSuchActivityException if a matching social activity could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a matching social activity could not be found
 	 */
 	@Override
 	public SocialActivity findByGroupId_Last(long groupId,
 		OrderByComparator<SocialActivity> orderByComparator)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = fetchByGroupId_Last(groupId,
 				orderByComparator);
 
@@ -356,7 +355,7 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityException(msg.toString());
 	}
 
 	/**
@@ -392,12 +391,12 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next social activity
-	 * @throws NoSuchActivityException if a social activity with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a social activity with the primary key could not be found
 	 */
 	@Override
 	public SocialActivity[] findByGroupId_PrevAndNext(long activityId,
 		long groupId, OrderByComparator<SocialActivity> orderByComparator)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = findByPrimaryKey(activityId);
 
 		Session session = null;
@@ -792,12 +791,12 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching social activity
-	 * @throws NoSuchActivityException if a matching social activity could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a matching social activity could not be found
 	 */
 	@Override
 	public SocialActivity findByCompanyId_First(long companyId,
 		OrderByComparator<SocialActivity> orderByComparator)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = fetchByCompanyId_First(companyId,
 				orderByComparator);
 
@@ -814,7 +813,7 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityException(msg.toString());
 	}
 
 	/**
@@ -843,12 +842,12 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching social activity
-	 * @throws NoSuchActivityException if a matching social activity could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a matching social activity could not be found
 	 */
 	@Override
 	public SocialActivity findByCompanyId_Last(long companyId,
 		OrderByComparator<SocialActivity> orderByComparator)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = fetchByCompanyId_Last(companyId,
 				orderByComparator);
 
@@ -865,7 +864,7 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityException(msg.toString());
 	}
 
 	/**
@@ -901,12 +900,12 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next social activity
-	 * @throws NoSuchActivityException if a social activity with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a social activity with the primary key could not be found
 	 */
 	@Override
 	public SocialActivity[] findByCompanyId_PrevAndNext(long activityId,
 		long companyId, OrderByComparator<SocialActivity> orderByComparator)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = findByPrimaryKey(activityId);
 
 		Session session = null;
@@ -1298,12 +1297,12 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching social activity
-	 * @throws NoSuchActivityException if a matching social activity could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a matching social activity could not be found
 	 */
 	@Override
 	public SocialActivity findByUserId_First(long userId,
 		OrderByComparator<SocialActivity> orderByComparator)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = fetchByUserId_First(userId,
 				orderByComparator);
 
@@ -1320,7 +1319,7 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityException(msg.toString());
 	}
 
 	/**
@@ -1348,12 +1347,12 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching social activity
-	 * @throws NoSuchActivityException if a matching social activity could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a matching social activity could not be found
 	 */
 	@Override
 	public SocialActivity findByUserId_Last(long userId,
 		OrderByComparator<SocialActivity> orderByComparator)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = fetchByUserId_Last(userId,
 				orderByComparator);
 
@@ -1370,7 +1369,7 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityException(msg.toString());
 	}
 
 	/**
@@ -1406,12 +1405,12 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next social activity
-	 * @throws NoSuchActivityException if a social activity with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a social activity with the primary key could not be found
 	 */
 	@Override
 	public SocialActivity[] findByUserId_PrevAndNext(long activityId,
 		long userId, OrderByComparator<SocialActivity> orderByComparator)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = findByPrimaryKey(activityId);
 
 		Session session = null;
@@ -1812,12 +1811,12 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 * @param activitySetId the activity set ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching social activity
-	 * @throws NoSuchActivityException if a matching social activity could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a matching social activity could not be found
 	 */
 	@Override
 	public SocialActivity findByActivitySetId_First(long activitySetId,
 		OrderByComparator<SocialActivity> orderByComparator)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = fetchByActivitySetId_First(activitySetId,
 				orderByComparator);
 
@@ -1834,7 +1833,7 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityException(msg.toString());
 	}
 
 	/**
@@ -1863,12 +1862,12 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 * @param activitySetId the activity set ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching social activity
-	 * @throws NoSuchActivityException if a matching social activity could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a matching social activity could not be found
 	 */
 	@Override
 	public SocialActivity findByActivitySetId_Last(long activitySetId,
 		OrderByComparator<SocialActivity> orderByComparator)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = fetchByActivitySetId_Last(activitySetId,
 				orderByComparator);
 
@@ -1885,7 +1884,7 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityException(msg.toString());
 	}
 
 	/**
@@ -1921,12 +1920,12 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 * @param activitySetId the activity set ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next social activity
-	 * @throws NoSuchActivityException if a social activity with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a social activity with the primary key could not be found
 	 */
 	@Override
 	public SocialActivity[] findByActivitySetId_PrevAndNext(long activityId,
 		long activitySetId, OrderByComparator<SocialActivity> orderByComparator)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = findByPrimaryKey(activityId);
 
 		Session session = null;
@@ -2136,15 +2135,15 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 			"countByMirrorActivityId", new String[] { Long.class.getName() });
 
 	/**
-	 * Returns the social activity where mirrorActivityId = &#63; or throws a {@link NoSuchActivityException} if it could not be found.
+	 * Returns the social activity where mirrorActivityId = &#63; or throws a {@link com.liferay.portlet.social.exception.NoSuchActivityException} if it could not be found.
 	 *
 	 * @param mirrorActivityId the mirror activity ID
 	 * @return the matching social activity
-	 * @throws NoSuchActivityException if a matching social activity could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a matching social activity could not be found
 	 */
 	@Override
 	public SocialActivity findByMirrorActivityId(long mirrorActivityId)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = fetchByMirrorActivityId(mirrorActivityId);
 
 		if (socialActivity == null) {
@@ -2161,7 +2160,7 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchActivityException(msg.toString());
+			throw new com.liferay.portlet.social.exception.NoSuchActivityException(msg.toString());
 		}
 
 		return socialActivity;
@@ -2278,7 +2277,7 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 */
 	@Override
 	public SocialActivity removeByMirrorActivityId(long mirrorActivityId)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = findByMirrorActivityId(mirrorActivityId);
 
 		return remove(socialActivity);
@@ -2534,12 +2533,12 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching social activity
-	 * @throws NoSuchActivityException if a matching social activity could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a matching social activity could not be found
 	 */
 	@Override
 	public SocialActivity findByClassNameId_First(long classNameId,
 		OrderByComparator<SocialActivity> orderByComparator)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = fetchByClassNameId_First(classNameId,
 				orderByComparator);
 
@@ -2556,7 +2555,7 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityException(msg.toString());
 	}
 
 	/**
@@ -2585,12 +2584,12 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching social activity
-	 * @throws NoSuchActivityException if a matching social activity could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a matching social activity could not be found
 	 */
 	@Override
 	public SocialActivity findByClassNameId_Last(long classNameId,
 		OrderByComparator<SocialActivity> orderByComparator)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = fetchByClassNameId_Last(classNameId,
 				orderByComparator);
 
@@ -2607,7 +2606,7 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityException(msg.toString());
 	}
 
 	/**
@@ -2643,12 +2642,12 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next social activity
-	 * @throws NoSuchActivityException if a social activity with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a social activity with the primary key could not be found
 	 */
 	@Override
 	public SocialActivity[] findByClassNameId_PrevAndNext(long activityId,
 		long classNameId, OrderByComparator<SocialActivity> orderByComparator)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = findByPrimaryKey(activityId);
 
 		Session session = null;
@@ -3049,12 +3048,12 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 * @param receiverUserId the receiver user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching social activity
-	 * @throws NoSuchActivityException if a matching social activity could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a matching social activity could not be found
 	 */
 	@Override
 	public SocialActivity findByReceiverUserId_First(long receiverUserId,
 		OrderByComparator<SocialActivity> orderByComparator)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = fetchByReceiverUserId_First(receiverUserId,
 				orderByComparator);
 
@@ -3071,7 +3070,7 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityException(msg.toString());
 	}
 
 	/**
@@ -3100,12 +3099,12 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 * @param receiverUserId the receiver user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching social activity
-	 * @throws NoSuchActivityException if a matching social activity could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a matching social activity could not be found
 	 */
 	@Override
 	public SocialActivity findByReceiverUserId_Last(long receiverUserId,
 		OrderByComparator<SocialActivity> orderByComparator)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = fetchByReceiverUserId_Last(receiverUserId,
 				orderByComparator);
 
@@ -3122,7 +3121,7 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityException(msg.toString());
 	}
 
 	/**
@@ -3158,12 +3157,12 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 * @param receiverUserId the receiver user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next social activity
-	 * @throws NoSuchActivityException if a social activity with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a social activity with the primary key could not be found
 	 */
 	@Override
 	public SocialActivity[] findByReceiverUserId_PrevAndNext(long activityId,
 		long receiverUserId, OrderByComparator<SocialActivity> orderByComparator)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = findByPrimaryKey(activityId);
 
 		Session session = null;
@@ -3573,12 +3572,12 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching social activity
-	 * @throws NoSuchActivityException if a matching social activity could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a matching social activity could not be found
 	 */
 	@Override
 	public SocialActivity findByC_C_First(long classNameId, long classPK,
 		OrderByComparator<SocialActivity> orderByComparator)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = fetchByC_C_First(classNameId, classPK,
 				orderByComparator);
 
@@ -3598,7 +3597,7 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityException(msg.toString());
 	}
 
 	/**
@@ -3629,12 +3628,12 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching social activity
-	 * @throws NoSuchActivityException if a matching social activity could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a matching social activity could not be found
 	 */
 	@Override
 	public SocialActivity findByC_C_Last(long classNameId, long classPK,
 		OrderByComparator<SocialActivity> orderByComparator)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = fetchByC_C_Last(classNameId, classPK,
 				orderByComparator);
 
@@ -3654,7 +3653,7 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityException(msg.toString());
 	}
 
 	/**
@@ -3692,13 +3691,13 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next social activity
-	 * @throws NoSuchActivityException if a social activity with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a social activity with the primary key could not be found
 	 */
 	@Override
 	public SocialActivity[] findByC_C_PrevAndNext(long activityId,
 		long classNameId, long classPK,
 		OrderByComparator<SocialActivity> orderByComparator)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = findByPrimaryKey(activityId);
 
 		Session session = null;
@@ -4137,13 +4136,13 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching social activity
-	 * @throws NoSuchActivityException if a matching social activity could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a matching social activity could not be found
 	 */
 	@Override
 	public SocialActivity findByM_C_C_First(long mirrorActivityId,
 		long classNameId, long classPK,
 		OrderByComparator<SocialActivity> orderByComparator)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = fetchByM_C_C_First(mirrorActivityId,
 				classNameId, classPK, orderByComparator);
 
@@ -4166,7 +4165,7 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityException(msg.toString());
 	}
 
 	/**
@@ -4200,13 +4199,13 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching social activity
-	 * @throws NoSuchActivityException if a matching social activity could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a matching social activity could not be found
 	 */
 	@Override
 	public SocialActivity findByM_C_C_Last(long mirrorActivityId,
 		long classNameId, long classPK,
 		OrderByComparator<SocialActivity> orderByComparator)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = fetchByM_C_C_Last(mirrorActivityId,
 				classNameId, classPK, orderByComparator);
 
@@ -4229,7 +4228,7 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityException(msg.toString());
 	}
 
 	/**
@@ -4270,13 +4269,13 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next social activity
-	 * @throws NoSuchActivityException if a social activity with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a social activity with the primary key could not be found
 	 */
 	@Override
 	public SocialActivity[] findByM_C_C_PrevAndNext(long activityId,
 		long mirrorActivityId, long classNameId, long classPK,
 		OrderByComparator<SocialActivity> orderByComparator)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = findByPrimaryKey(activityId);
 
 		Session session = null;
@@ -4735,12 +4734,12 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 * @param type the type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching social activity
-	 * @throws NoSuchActivityException if a matching social activity could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a matching social activity could not be found
 	 */
 	@Override
 	public SocialActivity findByC_C_T_First(long classNameId, long classPK,
 		int type, OrderByComparator<SocialActivity> orderByComparator)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = fetchByC_C_T_First(classNameId,
 				classPK, type, orderByComparator);
 
@@ -4763,7 +4762,7 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityException(msg.toString());
 	}
 
 	/**
@@ -4796,12 +4795,12 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 * @param type the type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching social activity
-	 * @throws NoSuchActivityException if a matching social activity could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a matching social activity could not be found
 	 */
 	@Override
 	public SocialActivity findByC_C_T_Last(long classNameId, long classPK,
 		int type, OrderByComparator<SocialActivity> orderByComparator)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = fetchByC_C_T_Last(classNameId, classPK,
 				type, orderByComparator);
 
@@ -4824,7 +4823,7 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityException(msg.toString());
 	}
 
 	/**
@@ -4864,13 +4863,13 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 * @param type the type
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next social activity
-	 * @throws NoSuchActivityException if a social activity with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a social activity with the primary key could not be found
 	 */
 	@Override
 	public SocialActivity[] findByC_C_T_PrevAndNext(long activityId,
 		long classNameId, long classPK, int type,
 		OrderByComparator<SocialActivity> orderByComparator)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = findByPrimaryKey(activityId);
 
 		Session session = null;
@@ -5366,13 +5365,13 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 * @param receiverUserId the receiver user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching social activity
-	 * @throws NoSuchActivityException if a matching social activity could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a matching social activity could not be found
 	 */
 	@Override
 	public SocialActivity findByG_U_C_C_T_R_First(long groupId, long userId,
 		long classNameId, long classPK, int type, long receiverUserId,
 		OrderByComparator<SocialActivity> orderByComparator)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = fetchByG_U_C_C_T_R_First(groupId,
 				userId, classNameId, classPK, type, receiverUserId,
 				orderByComparator);
@@ -5405,7 +5404,7 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityException(msg.toString());
 	}
 
 	/**
@@ -5446,13 +5445,13 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 * @param receiverUserId the receiver user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching social activity
-	 * @throws NoSuchActivityException if a matching social activity could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a matching social activity could not be found
 	 */
 	@Override
 	public SocialActivity findByG_U_C_C_T_R_Last(long groupId, long userId,
 		long classNameId, long classPK, int type, long receiverUserId,
 		OrderByComparator<SocialActivity> orderByComparator)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = fetchByG_U_C_C_T_R_Last(groupId,
 				userId, classNameId, classPK, type, receiverUserId,
 				orderByComparator);
@@ -5485,7 +5484,7 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchActivityException(msg.toString());
+		throw new com.liferay.portlet.social.exception.NoSuchActivityException(msg.toString());
 	}
 
 	/**
@@ -5534,13 +5533,13 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 * @param receiverUserId the receiver user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next social activity
-	 * @throws NoSuchActivityException if a social activity with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a social activity with the primary key could not be found
 	 */
 	@Override
 	public SocialActivity[] findByG_U_C_C_T_R_PrevAndNext(long activityId,
 		long groupId, long userId, long classNameId, long classPK, int type,
 		long receiverUserId, OrderByComparator<SocialActivity> orderByComparator)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = findByPrimaryKey(activityId);
 
 		Session session = null;
@@ -5828,7 +5827,7 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 			});
 
 	/**
-	 * Returns the social activity where groupId = &#63; and userId = &#63; and createDate = &#63; and classNameId = &#63; and classPK = &#63; and type = &#63; and receiverUserId = &#63; or throws a {@link NoSuchActivityException} if it could not be found.
+	 * Returns the social activity where groupId = &#63; and userId = &#63; and createDate = &#63; and classNameId = &#63; and classPK = &#63; and type = &#63; and receiverUserId = &#63; or throws a {@link com.liferay.portlet.social.exception.NoSuchActivityException} if it could not be found.
 	 *
 	 * @param groupId the group ID
 	 * @param userId the user ID
@@ -5838,12 +5837,13 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 * @param type the type
 	 * @param receiverUserId the receiver user ID
 	 * @return the matching social activity
-	 * @throws NoSuchActivityException if a matching social activity could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a matching social activity could not be found
 	 */
 	@Override
 	public SocialActivity findByG_U_CD_C_C_T_R(long groupId, long userId,
 		long createDate, long classNameId, long classPK, int type,
-		long receiverUserId) throws NoSuchActivityException {
+		long receiverUserId)
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = fetchByG_U_CD_C_C_T_R(groupId, userId,
 				createDate, classNameId, classPK, type, receiverUserId);
 
@@ -5879,7 +5879,7 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchActivityException(msg.toString());
+			throw new com.liferay.portlet.social.exception.NoSuchActivityException(msg.toString());
 		}
 
 		return socialActivity;
@@ -6051,7 +6051,8 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	@Override
 	public SocialActivity removeByG_U_CD_C_C_T_R(long groupId, long userId,
 		long createDate, long classNameId, long classPK, int type,
-		long receiverUserId) throws NoSuchActivityException {
+		long receiverUserId)
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = findByG_U_CD_C_C_T_R(groupId, userId,
 				createDate, classNameId, classPK, type, receiverUserId);
 
@@ -6380,11 +6381,11 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 *
 	 * @param activityId the primary key of the social activity
 	 * @return the social activity that was removed
-	 * @throws NoSuchActivityException if a social activity with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a social activity with the primary key could not be found
 	 */
 	@Override
 	public SocialActivity remove(long activityId)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		return remove((Serializable)activityId);
 	}
 
@@ -6393,11 +6394,11 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 *
 	 * @param primaryKey the primary key of the social activity
 	 * @return the social activity that was removed
-	 * @throws NoSuchActivityException if a social activity with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a social activity with the primary key could not be found
 	 */
 	@Override
 	public SocialActivity remove(Serializable primaryKey)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		Session session = null;
 
 		try {
@@ -6411,13 +6412,13 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchActivityException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portlet.social.exception.NoSuchActivityException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(socialActivity);
 		}
-		catch (NoSuchActivityException nsee) {
+		catch (com.liferay.portlet.social.exception.NoSuchActivityException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -6744,11 +6745,11 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	 *
 	 * @param primaryKey the primary key of the social activity
 	 * @return the social activity
-	 * @throws NoSuchActivityException if a social activity with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a social activity with the primary key could not be found
 	 */
 	@Override
 	public SocialActivity findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		SocialActivity socialActivity = fetchByPrimaryKey(primaryKey);
 
 		if (socialActivity == null) {
@@ -6756,7 +6757,7 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchActivityException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portlet.social.exception.NoSuchActivityException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -6764,15 +6765,15 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	}
 
 	/**
-	 * Returns the social activity with the primary key or throws a {@link NoSuchActivityException} if it could not be found.
+	 * Returns the social activity with the primary key or throws a {@link com.liferay.portlet.social.exception.NoSuchActivityException} if it could not be found.
 	 *
 	 * @param activityId the primary key of the social activity
 	 * @return the social activity
-	 * @throws NoSuchActivityException if a social activity with the primary key could not be found
+	 * @throws com.liferay.portlet.social.exception.NoSuchActivityException if a social activity with the primary key could not be found
 	 */
 	@Override
 	public SocialActivity findByPrimaryKey(long activityId)
-		throws NoSuchActivityException {
+		throws com.liferay.portlet.social.exception.NoSuchActivityException {
 		return findByPrimaryKey((Serializable)activityId);
 	}
 

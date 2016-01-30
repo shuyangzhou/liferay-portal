@@ -105,7 +105,7 @@ public interface TrashEntryPersistence extends BasePersistence<TrashEntry> {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching trash entry
-	* @throws NoSuchEntryException if a matching trash entry could not be found
+	* @throws com.liferay.portlet.trash.exception.NoSuchEntryException if a matching trash entry could not be found
 	*/
 	public TrashEntry findByGroupId_First(long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<TrashEntry> orderByComparator)
@@ -127,7 +127,7 @@ public interface TrashEntryPersistence extends BasePersistence<TrashEntry> {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching trash entry
-	* @throws NoSuchEntryException if a matching trash entry could not be found
+	* @throws com.liferay.portlet.trash.exception.NoSuchEntryException if a matching trash entry could not be found
 	*/
 	public TrashEntry findByGroupId_Last(long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<TrashEntry> orderByComparator)
@@ -150,7 +150,7 @@ public interface TrashEntryPersistence extends BasePersistence<TrashEntry> {
 	* @param groupId the group ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next trash entry
-	* @throws NoSuchEntryException if a trash entry with the primary key could not be found
+	* @throws com.liferay.portlet.trash.exception.NoSuchEntryException if a trash entry with the primary key could not be found
 	*/
 	public TrashEntry[] findByGroupId_PrevAndNext(long entryId, long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<TrashEntry> orderByComparator)
@@ -236,7 +236,7 @@ public interface TrashEntryPersistence extends BasePersistence<TrashEntry> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching trash entry
-	* @throws NoSuchEntryException if a matching trash entry could not be found
+	* @throws com.liferay.portlet.trash.exception.NoSuchEntryException if a matching trash entry could not be found
 	*/
 	public TrashEntry findByCompanyId_First(long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<TrashEntry> orderByComparator)
@@ -258,7 +258,7 @@ public interface TrashEntryPersistence extends BasePersistence<TrashEntry> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching trash entry
-	* @throws NoSuchEntryException if a matching trash entry could not be found
+	* @throws com.liferay.portlet.trash.exception.NoSuchEntryException if a matching trash entry could not be found
 	*/
 	public TrashEntry findByCompanyId_Last(long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<TrashEntry> orderByComparator)
@@ -281,7 +281,7 @@ public interface TrashEntryPersistence extends BasePersistence<TrashEntry> {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next trash entry
-	* @throws NoSuchEntryException if a trash entry with the primary key could not be found
+	* @throws com.liferay.portlet.trash.exception.NoSuchEntryException if a trash entry with the primary key could not be found
 	*/
 	public TrashEntry[] findByCompanyId_PrevAndNext(long entryId,
 		long companyId,
@@ -374,7 +374,7 @@ public interface TrashEntryPersistence extends BasePersistence<TrashEntry> {
 	* @param createDate the create date
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching trash entry
-	* @throws NoSuchEntryException if a matching trash entry could not be found
+	* @throws com.liferay.portlet.trash.exception.NoSuchEntryException if a matching trash entry could not be found
 	*/
 	public TrashEntry findByG_LtCD_First(long groupId,
 		java.util.Date createDate,
@@ -400,7 +400,7 @@ public interface TrashEntryPersistence extends BasePersistence<TrashEntry> {
 	* @param createDate the create date
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching trash entry
-	* @throws NoSuchEntryException if a matching trash entry could not be found
+	* @throws com.liferay.portlet.trash.exception.NoSuchEntryException if a matching trash entry could not be found
 	*/
 	public TrashEntry findByG_LtCD_Last(long groupId,
 		java.util.Date createDate,
@@ -427,7 +427,7 @@ public interface TrashEntryPersistence extends BasePersistence<TrashEntry> {
 	* @param createDate the create date
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next trash entry
-	* @throws NoSuchEntryException if a trash entry with the primary key could not be found
+	* @throws com.liferay.portlet.trash.exception.NoSuchEntryException if a trash entry with the primary key could not be found
 	*/
 	public TrashEntry[] findByG_LtCD_PrevAndNext(long entryId, long groupId,
 		java.util.Date createDate,
@@ -521,7 +521,7 @@ public interface TrashEntryPersistence extends BasePersistence<TrashEntry> {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching trash entry
-	* @throws NoSuchEntryException if a matching trash entry could not be found
+	* @throws com.liferay.portlet.trash.exception.NoSuchEntryException if a matching trash entry could not be found
 	*/
 	public TrashEntry findByG_C_First(long groupId, long classNameId,
 		com.liferay.portal.kernel.util.OrderByComparator<TrashEntry> orderByComparator)
@@ -545,7 +545,7 @@ public interface TrashEntryPersistence extends BasePersistence<TrashEntry> {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching trash entry
-	* @throws NoSuchEntryException if a matching trash entry could not be found
+	* @throws com.liferay.portlet.trash.exception.NoSuchEntryException if a matching trash entry could not be found
 	*/
 	public TrashEntry findByG_C_Last(long groupId, long classNameId,
 		com.liferay.portal.kernel.util.OrderByComparator<TrashEntry> orderByComparator)
@@ -570,7 +570,7 @@ public interface TrashEntryPersistence extends BasePersistence<TrashEntry> {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next trash entry
-	* @throws NoSuchEntryException if a trash entry with the primary key could not be found
+	* @throws com.liferay.portlet.trash.exception.NoSuchEntryException if a trash entry with the primary key could not be found
 	*/
 	public TrashEntry[] findByG_C_PrevAndNext(long entryId, long groupId,
 		long classNameId,
@@ -595,12 +595,12 @@ public interface TrashEntryPersistence extends BasePersistence<TrashEntry> {
 	public int countByG_C(long groupId, long classNameId);
 
 	/**
-	* Returns the trash entry where classNameId = &#63; and classPK = &#63; or throws a {@link NoSuchEntryException} if it could not be found.
+	* Returns the trash entry where classNameId = &#63; and classPK = &#63; or throws a {@link com.liferay.portlet.trash.exception.NoSuchEntryException} if it could not be found.
 	*
 	* @param classNameId the class name ID
 	* @param classPK the class p k
 	* @return the matching trash entry
-	* @throws NoSuchEntryException if a matching trash entry could not be found
+	* @throws com.liferay.portlet.trash.exception.NoSuchEntryException if a matching trash entry could not be found
 	*/
 	public TrashEntry findByC_C(long classNameId, long classPK)
 		throws com.liferay.portlet.trash.exception.NoSuchEntryException;
@@ -671,7 +671,7 @@ public interface TrashEntryPersistence extends BasePersistence<TrashEntry> {
 	*
 	* @param entryId the primary key of the trash entry
 	* @return the trash entry that was removed
-	* @throws NoSuchEntryException if a trash entry with the primary key could not be found
+	* @throws com.liferay.portlet.trash.exception.NoSuchEntryException if a trash entry with the primary key could not be found
 	*/
 	public TrashEntry remove(long entryId)
 		throws com.liferay.portlet.trash.exception.NoSuchEntryException;
@@ -679,11 +679,11 @@ public interface TrashEntryPersistence extends BasePersistence<TrashEntry> {
 	public TrashEntry updateImpl(TrashEntry trashEntry);
 
 	/**
-	* Returns the trash entry with the primary key or throws a {@link NoSuchEntryException} if it could not be found.
+	* Returns the trash entry with the primary key or throws a {@link com.liferay.portlet.trash.exception.NoSuchEntryException} if it could not be found.
 	*
 	* @param entryId the primary key of the trash entry
 	* @return the trash entry
-	* @throws NoSuchEntryException if a trash entry with the primary key could not be found
+	* @throws com.liferay.portlet.trash.exception.NoSuchEntryException if a trash entry with the primary key could not be found
 	*/
 	public TrashEntry findByPrimaryKey(long entryId)
 		throws com.liferay.portlet.trash.exception.NoSuchEntryException;

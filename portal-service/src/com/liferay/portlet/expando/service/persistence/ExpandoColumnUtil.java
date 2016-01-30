@@ -183,7 +183,7 @@ public class ExpandoColumnUtil {
 	* @param tableId the table ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching expando column
-	* @throws NoSuchColumnException if a matching expando column could not be found
+	* @throws com.liferay.portlet.expando.exception.NoSuchColumnException if a matching expando column could not be found
 	*/
 	public static ExpandoColumn findByTableId_First(long tableId,
 		OrderByComparator<ExpandoColumn> orderByComparator)
@@ -209,7 +209,7 @@ public class ExpandoColumnUtil {
 	* @param tableId the table ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching expando column
-	* @throws NoSuchColumnException if a matching expando column could not be found
+	* @throws com.liferay.portlet.expando.exception.NoSuchColumnException if a matching expando column could not be found
 	*/
 	public static ExpandoColumn findByTableId_Last(long tableId,
 		OrderByComparator<ExpandoColumn> orderByComparator)
@@ -236,7 +236,7 @@ public class ExpandoColumnUtil {
 	* @param tableId the table ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next expando column
-	* @throws NoSuchColumnException if a expando column with the primary key could not be found
+	* @throws com.liferay.portlet.expando.exception.NoSuchColumnException if a expando column with the primary key could not be found
 	*/
 	public static ExpandoColumn[] findByTableId_PrevAndNext(long columnId,
 		long tableId, OrderByComparator<ExpandoColumn> orderByComparator)
@@ -299,7 +299,7 @@ public class ExpandoColumnUtil {
 	* @param tableId the table ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next expando column
-	* @throws NoSuchColumnException if a expando column with the primary key could not be found
+	* @throws com.liferay.portlet.expando.exception.NoSuchColumnException if a expando column with the primary key could not be found
 	*/
 	public static ExpandoColumn[] filterFindByTableId_PrevAndNext(
 		long columnId, long tableId,
@@ -419,12 +419,12 @@ public class ExpandoColumnUtil {
 	}
 
 	/**
-	* Returns the expando column where tableId = &#63; and name = &#63; or throws a {@link NoSuchColumnException} if it could not be found.
+	* Returns the expando column where tableId = &#63; and name = &#63; or throws a {@link com.liferay.portlet.expando.exception.NoSuchColumnException} if it could not be found.
 	*
 	* @param tableId the table ID
 	* @param name the name
 	* @return the matching expando column
-	* @throws NoSuchColumnException if a matching expando column could not be found
+	* @throws com.liferay.portlet.expando.exception.NoSuchColumnException if a matching expando column could not be found
 	*/
 	public static ExpandoColumn findByT_N(long tableId, java.lang.String name)
 		throws com.liferay.portlet.expando.exception.NoSuchColumnException {
@@ -544,7 +544,7 @@ public class ExpandoColumnUtil {
 	*
 	* @param columnId the primary key of the expando column
 	* @return the expando column that was removed
-	* @throws NoSuchColumnException if a expando column with the primary key could not be found
+	* @throws com.liferay.portlet.expando.exception.NoSuchColumnException if a expando column with the primary key could not be found
 	*/
 	public static ExpandoColumn remove(long columnId)
 		throws com.liferay.portlet.expando.exception.NoSuchColumnException {
@@ -556,11 +556,11 @@ public class ExpandoColumnUtil {
 	}
 
 	/**
-	* Returns the expando column with the primary key or throws a {@link NoSuchColumnException} if it could not be found.
+	* Returns the expando column with the primary key or throws a {@link com.liferay.portlet.expando.exception.NoSuchColumnException} if it could not be found.
 	*
 	* @param columnId the primary key of the expando column
 	* @return the expando column
-	* @throws NoSuchColumnException if a expando column with the primary key could not be found
+	* @throws com.liferay.portlet.expando.exception.NoSuchColumnException if a expando column with the primary key could not be found
 	*/
 	public static ExpandoColumn findByPrimaryKey(long columnId)
 		throws com.liferay.portlet.expando.exception.NoSuchColumnException {

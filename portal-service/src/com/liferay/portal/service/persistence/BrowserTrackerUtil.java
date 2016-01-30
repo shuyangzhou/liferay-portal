@@ -109,11 +109,11 @@ public class BrowserTrackerUtil {
 	}
 
 	/**
-	* Returns the browser tracker where userId = &#63; or throws a {@link NoSuchBrowserTrackerException} if it could not be found.
+	* Returns the browser tracker where userId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchBrowserTrackerException} if it could not be found.
 	*
 	* @param userId the user ID
 	* @return the matching browser tracker
-	* @throws NoSuchBrowserTrackerException if a matching browser tracker could not be found
+	* @throws com.liferay.portal.exception.NoSuchBrowserTrackerException if a matching browser tracker could not be found
 	*/
 	public static BrowserTracker findByUserId(long userId)
 		throws com.liferay.portal.exception.NoSuchBrowserTrackerException {
@@ -196,7 +196,7 @@ public class BrowserTrackerUtil {
 	*
 	* @param browserTrackerId the primary key of the browser tracker
 	* @return the browser tracker that was removed
-	* @throws NoSuchBrowserTrackerException if a browser tracker with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchBrowserTrackerException if a browser tracker with the primary key could not be found
 	*/
 	public static BrowserTracker remove(long browserTrackerId)
 		throws com.liferay.portal.exception.NoSuchBrowserTrackerException {
@@ -208,11 +208,11 @@ public class BrowserTrackerUtil {
 	}
 
 	/**
-	* Returns the browser tracker with the primary key or throws a {@link NoSuchBrowserTrackerException} if it could not be found.
+	* Returns the browser tracker with the primary key or throws a {@link com.liferay.portal.exception.NoSuchBrowserTrackerException} if it could not be found.
 	*
 	* @param browserTrackerId the primary key of the browser tracker
 	* @return the browser tracker
-	* @throws NoSuchBrowserTrackerException if a browser tracker with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchBrowserTrackerException if a browser tracker with the primary key could not be found
 	*/
 	public static BrowserTracker findByPrimaryKey(long browserTrackerId)
 		throws com.liferay.portal.exception.NoSuchBrowserTrackerException {

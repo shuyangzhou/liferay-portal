@@ -184,7 +184,7 @@ public class LayoutSetPrototypeUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching layout set prototype
-	* @throws NoSuchLayoutSetPrototypeException if a matching layout set prototype could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a matching layout set prototype could not be found
 	*/
 	public static LayoutSetPrototype findByUuid_First(java.lang.String uuid,
 		OrderByComparator<LayoutSetPrototype> orderByComparator)
@@ -210,7 +210,7 @@ public class LayoutSetPrototypeUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching layout set prototype
-	* @throws NoSuchLayoutSetPrototypeException if a matching layout set prototype could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a matching layout set prototype could not be found
 	*/
 	public static LayoutSetPrototype findByUuid_Last(java.lang.String uuid,
 		OrderByComparator<LayoutSetPrototype> orderByComparator)
@@ -237,7 +237,7 @@ public class LayoutSetPrototypeUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next layout set prototype
-	* @throws NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
 	*/
 	public static LayoutSetPrototype[] findByUuid_PrevAndNext(
 		long layoutSetPrototypeId, java.lang.String uuid,
@@ -303,7 +303,7 @@ public class LayoutSetPrototypeUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next layout set prototype
-	* @throws NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
 	*/
 	public static LayoutSetPrototype[] filterFindByUuid_PrevAndNext(
 		long layoutSetPrototypeId, java.lang.String uuid,
@@ -425,7 +425,7 @@ public class LayoutSetPrototypeUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching layout set prototype
-	* @throws NoSuchLayoutSetPrototypeException if a matching layout set prototype could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a matching layout set prototype could not be found
 	*/
 	public static LayoutSetPrototype findByUuid_C_First(java.lang.String uuid,
 		long companyId, OrderByComparator<LayoutSetPrototype> orderByComparator)
@@ -456,7 +456,7 @@ public class LayoutSetPrototypeUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching layout set prototype
-	* @throws NoSuchLayoutSetPrototypeException if a matching layout set prototype could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a matching layout set prototype could not be found
 	*/
 	public static LayoutSetPrototype findByUuid_C_Last(java.lang.String uuid,
 		long companyId, OrderByComparator<LayoutSetPrototype> orderByComparator)
@@ -487,7 +487,7 @@ public class LayoutSetPrototypeUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next layout set prototype
-	* @throws NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
 	*/
 	public static LayoutSetPrototype[] findByUuid_C_PrevAndNext(
 		long layoutSetPrototypeId, java.lang.String uuid, long companyId,
@@ -558,7 +558,7 @@ public class LayoutSetPrototypeUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next layout set prototype
-	* @throws NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
 	*/
 	public static LayoutSetPrototype[] filterFindByUuid_C_PrevAndNext(
 		long layoutSetPrototypeId, java.lang.String uuid, long companyId,
@@ -677,7 +677,7 @@ public class LayoutSetPrototypeUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching layout set prototype
-	* @throws NoSuchLayoutSetPrototypeException if a matching layout set prototype could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a matching layout set prototype could not be found
 	*/
 	public static LayoutSetPrototype findByCompanyId_First(long companyId,
 		OrderByComparator<LayoutSetPrototype> orderByComparator)
@@ -705,7 +705,7 @@ public class LayoutSetPrototypeUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching layout set prototype
-	* @throws NoSuchLayoutSetPrototypeException if a matching layout set prototype could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a matching layout set prototype could not be found
 	*/
 	public static LayoutSetPrototype findByCompanyId_Last(long companyId,
 		OrderByComparator<LayoutSetPrototype> orderByComparator)
@@ -734,7 +734,7 @@ public class LayoutSetPrototypeUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next layout set prototype
-	* @throws NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
 	*/
 	public static LayoutSetPrototype[] findByCompanyId_PrevAndNext(
 		long layoutSetPrototypeId, long companyId,
@@ -800,7 +800,7 @@ public class LayoutSetPrototypeUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next layout set prototype
-	* @throws NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
 	*/
 	public static LayoutSetPrototype[] filterFindByCompanyId_PrevAndNext(
 		long layoutSetPrototypeId, long companyId,
@@ -922,7 +922,7 @@ public class LayoutSetPrototypeUtil {
 	* @param active the active
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching layout set prototype
-	* @throws NoSuchLayoutSetPrototypeException if a matching layout set prototype could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a matching layout set prototype could not be found
 	*/
 	public static LayoutSetPrototype findByC_A_First(long companyId,
 		boolean active, OrderByComparator<LayoutSetPrototype> orderByComparator)
@@ -952,7 +952,7 @@ public class LayoutSetPrototypeUtil {
 	* @param active the active
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching layout set prototype
-	* @throws NoSuchLayoutSetPrototypeException if a matching layout set prototype could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a matching layout set prototype could not be found
 	*/
 	public static LayoutSetPrototype findByC_A_Last(long companyId,
 		boolean active, OrderByComparator<LayoutSetPrototype> orderByComparator)
@@ -983,7 +983,7 @@ public class LayoutSetPrototypeUtil {
 	* @param active the active
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next layout set prototype
-	* @throws NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
 	*/
 	public static LayoutSetPrototype[] findByC_A_PrevAndNext(
 		long layoutSetPrototypeId, long companyId, boolean active,
@@ -1054,7 +1054,7 @@ public class LayoutSetPrototypeUtil {
 	* @param active the active
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next layout set prototype
-	* @throws NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
 	*/
 	public static LayoutSetPrototype[] filterFindByC_A_PrevAndNext(
 		long layoutSetPrototypeId, long companyId, boolean active,
@@ -1130,7 +1130,7 @@ public class LayoutSetPrototypeUtil {
 	*
 	* @param layoutSetPrototypeId the primary key of the layout set prototype
 	* @return the layout set prototype that was removed
-	* @throws NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
 	*/
 	public static LayoutSetPrototype remove(long layoutSetPrototypeId)
 		throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException {
@@ -1143,11 +1143,11 @@ public class LayoutSetPrototypeUtil {
 	}
 
 	/**
-	* Returns the layout set prototype with the primary key or throws a {@link NoSuchLayoutSetPrototypeException} if it could not be found.
+	* Returns the layout set prototype with the primary key or throws a {@link com.liferay.portal.exception.NoSuchLayoutSetPrototypeException} if it could not be found.
 	*
 	* @param layoutSetPrototypeId the primary key of the layout set prototype
 	* @return the layout set prototype
-	* @throws NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException if a layout set prototype with the primary key could not be found
 	*/
 	public static LayoutSetPrototype findByPrimaryKey(long layoutSetPrototypeId)
 		throws com.liferay.portal.exception.NoSuchLayoutSetPrototypeException {

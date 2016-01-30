@@ -187,7 +187,7 @@ public class PasswordPolicyRelUtil {
 	* @param passwordPolicyId the password policy ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching password policy rel
-	* @throws NoSuchPasswordPolicyRelException if a matching password policy rel could not be found
+	* @throws com.liferay.portal.exception.NoSuchPasswordPolicyRelException if a matching password policy rel could not be found
 	*/
 	public static PasswordPolicyRel findByPasswordPolicyId_First(
 		long passwordPolicyId,
@@ -219,7 +219,7 @@ public class PasswordPolicyRelUtil {
 	* @param passwordPolicyId the password policy ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching password policy rel
-	* @throws NoSuchPasswordPolicyRelException if a matching password policy rel could not be found
+	* @throws com.liferay.portal.exception.NoSuchPasswordPolicyRelException if a matching password policy rel could not be found
 	*/
 	public static PasswordPolicyRel findByPasswordPolicyId_Last(
 		long passwordPolicyId,
@@ -252,7 +252,7 @@ public class PasswordPolicyRelUtil {
 	* @param passwordPolicyId the password policy ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next password policy rel
-	* @throws NoSuchPasswordPolicyRelException if a password policy rel with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPasswordPolicyRelException if a password policy rel with the primary key could not be found
 	*/
 	public static PasswordPolicyRel[] findByPasswordPolicyId_PrevAndNext(
 		long passwordPolicyRelId, long passwordPolicyId,
@@ -283,12 +283,12 @@ public class PasswordPolicyRelUtil {
 	}
 
 	/**
-	* Returns the password policy rel where classNameId = &#63; and classPK = &#63; or throws a {@link NoSuchPasswordPolicyRelException} if it could not be found.
+	* Returns the password policy rel where classNameId = &#63; and classPK = &#63; or throws a {@link com.liferay.portal.exception.NoSuchPasswordPolicyRelException} if it could not be found.
 	*
 	* @param classNameId the class name ID
 	* @param classPK the class p k
 	* @return the matching password policy rel
-	* @throws NoSuchPasswordPolicyRelException if a matching password policy rel could not be found
+	* @throws com.liferay.portal.exception.NoSuchPasswordPolicyRelException if a matching password policy rel could not be found
 	*/
 	public static PasswordPolicyRel findByC_C(long classNameId, long classPK)
 		throws com.liferay.portal.exception.NoSuchPasswordPolicyRelException {
@@ -376,7 +376,7 @@ public class PasswordPolicyRelUtil {
 	*
 	* @param passwordPolicyRelId the primary key of the password policy rel
 	* @return the password policy rel that was removed
-	* @throws NoSuchPasswordPolicyRelException if a password policy rel with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPasswordPolicyRelException if a password policy rel with the primary key could not be found
 	*/
 	public static PasswordPolicyRel remove(long passwordPolicyRelId)
 		throws com.liferay.portal.exception.NoSuchPasswordPolicyRelException {
@@ -389,11 +389,11 @@ public class PasswordPolicyRelUtil {
 	}
 
 	/**
-	* Returns the password policy rel with the primary key or throws a {@link NoSuchPasswordPolicyRelException} if it could not be found.
+	* Returns the password policy rel with the primary key or throws a {@link com.liferay.portal.exception.NoSuchPasswordPolicyRelException} if it could not be found.
 	*
 	* @param passwordPolicyRelId the primary key of the password policy rel
 	* @return the password policy rel
-	* @throws NoSuchPasswordPolicyRelException if a password policy rel with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPasswordPolicyRelException if a password policy rel with the primary key could not be found
 	*/
 	public static PasswordPolicyRel findByPrimaryKey(long passwordPolicyRelId)
 		throws com.liferay.portal.exception.NoSuchPasswordPolicyRelException {

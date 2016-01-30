@@ -47,7 +47,6 @@ import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.service.persistence.impl.TableMapper;
 import com.liferay.portal.service.persistence.impl.TableMapperFactory;
 
-import com.liferay.portlet.documentlibrary.exception.NoSuchFolderException;
 import com.liferay.portlet.documentlibrary.model.DLFolder;
 import com.liferay.portlet.documentlibrary.model.impl.DLFolderImpl;
 import com.liferay.portlet.documentlibrary.model.impl.DLFolderModelImpl;
@@ -303,12 +302,12 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
 	public DLFolder findByUuid_First(String uuid,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = fetchByUuid_First(uuid, orderByComparator);
 
 		if (dlFolder != null) {
@@ -324,7 +323,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -352,12 +351,12 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
 	public DLFolder findByUuid_Last(String uuid,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = fetchByUuid_Last(uuid, orderByComparator);
 
 		if (dlFolder != null) {
@@ -373,7 +372,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -409,12 +408,12 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param uuid the uuid
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library folder
-	 * @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	 */
 	@Override
 	public DLFolder[] findByUuid_PrevAndNext(long folderId, String uuid,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = findByPrimaryKey(folderId);
 
 		Session session = null;
@@ -655,16 +654,16 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 			new String[] { String.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the document library folder where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchFolderException} if it could not be found.
+	 * Returns the document library folder where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchFolderException} if it could not be found.
 	 *
 	 * @param uuid the uuid
 	 * @param groupId the group ID
 	 * @return the matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
 	public DLFolder findByUUID_G(String uuid, long groupId)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = fetchByUUID_G(uuid, groupId);
 
 		if (dlFolder == null) {
@@ -684,7 +683,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchFolderException(msg.toString());
+			throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(msg.toString());
 		}
 
 		return dlFolder;
@@ -817,7 +816,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 */
 	@Override
 	public DLFolder removeByUUID_G(String uuid, long groupId)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = findByUUID_G(uuid, groupId);
 
 		return remove(dlFolder);
@@ -1120,12 +1119,12 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
 	public DLFolder findByUuid_C_First(String uuid, long companyId,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = fetchByUuid_C_First(uuid, companyId,
 				orderByComparator);
 
@@ -1145,7 +1144,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -1176,12 +1175,12 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
 	public DLFolder findByUuid_C_Last(String uuid, long companyId,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = fetchByUuid_C_Last(uuid, companyId,
 				orderByComparator);
 
@@ -1201,7 +1200,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -1239,12 +1238,12 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library folder
-	 * @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	 */
 	@Override
 	public DLFolder[] findByUuid_C_PrevAndNext(long folderId, String uuid,
 		long companyId, OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = findByPrimaryKey(folderId);
 
 		Session session = null;
@@ -1675,12 +1674,12 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
 	public DLFolder findByGroupId_First(long groupId,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = fetchByGroupId_First(groupId, orderByComparator);
 
 		if (dlFolder != null) {
@@ -1696,7 +1695,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -1724,12 +1723,12 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
 	public DLFolder findByGroupId_Last(long groupId,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = fetchByGroupId_Last(groupId, orderByComparator);
 
 		if (dlFolder != null) {
@@ -1745,7 +1744,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -1781,12 +1780,12 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library folder
-	 * @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	 */
 	@Override
 	public DLFolder[] findByGroupId_PrevAndNext(long folderId, long groupId,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = findByPrimaryKey(folderId);
 
 		Session session = null;
@@ -2050,12 +2049,12 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library folder
-	 * @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	 */
 	@Override
 	public DLFolder[] filterFindByGroupId_PrevAndNext(long folderId,
 		long groupId, OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByGroupId_PrevAndNext(folderId, groupId,
 				orderByComparator);
@@ -2535,12 +2534,12 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
 	public DLFolder findByCompanyId_First(long companyId,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = fetchByCompanyId_First(companyId, orderByComparator);
 
 		if (dlFolder != null) {
@@ -2556,7 +2555,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -2584,12 +2583,12 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
 	public DLFolder findByCompanyId_Last(long companyId,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = fetchByCompanyId_Last(companyId, orderByComparator);
 
 		if (dlFolder != null) {
@@ -2605,7 +2604,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -2641,12 +2640,12 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param companyId the company ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library folder
-	 * @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	 */
 	@Override
 	public DLFolder[] findByCompanyId_PrevAndNext(long folderId,
 		long companyId, OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = findByPrimaryKey(folderId);
 
 		Session session = null;
@@ -3045,12 +3044,12 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param repositoryId the repository ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
 	public DLFolder findByRepositoryId_First(long repositoryId,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = fetchByRepositoryId_First(repositoryId,
 				orderByComparator);
 
@@ -3067,7 +3066,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -3096,12 +3095,12 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param repositoryId the repository ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
 	public DLFolder findByRepositoryId_Last(long repositoryId,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = fetchByRepositoryId_Last(repositoryId,
 				orderByComparator);
 
@@ -3118,7 +3117,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -3154,12 +3153,12 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param repositoryId the repository ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library folder
-	 * @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	 */
 	@Override
 	public DLFolder[] findByRepositoryId_PrevAndNext(long folderId,
 		long repositoryId, OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = findByPrimaryKey(folderId);
 
 		Session session = null;
@@ -3566,12 +3565,12 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param parentFolderId the parent folder ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
 	public DLFolder findByG_P_First(long groupId, long parentFolderId,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = fetchByG_P_First(groupId, parentFolderId,
 				orderByComparator);
 
@@ -3591,7 +3590,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -3622,12 +3621,12 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param parentFolderId the parent folder ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
 	public DLFolder findByG_P_Last(long groupId, long parentFolderId,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = fetchByG_P_Last(groupId, parentFolderId,
 				orderByComparator);
 
@@ -3647,7 +3646,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -3685,12 +3684,12 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param parentFolderId the parent folder ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library folder
-	 * @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	 */
 	@Override
 	public DLFolder[] findByG_P_PrevAndNext(long folderId, long groupId,
 		long parentFolderId, OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = findByPrimaryKey(folderId);
 
 		Session session = null;
@@ -3968,12 +3967,12 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param parentFolderId the parent folder ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library folder
-	 * @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	 */
 	@Override
 	public DLFolder[] filterFindByG_P_PrevAndNext(long folderId, long groupId,
 		long parentFolderId, OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_P_PrevAndNext(folderId, groupId, parentFolderId,
 				orderByComparator);
@@ -4469,12 +4468,12 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
 	public DLFolder findByC_NotS_First(long companyId, int status,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = fetchByC_NotS_First(companyId, status,
 				orderByComparator);
 
@@ -4494,7 +4493,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -4525,12 +4524,12 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
 	public DLFolder findByC_NotS_Last(long companyId, int status,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = fetchByC_NotS_Last(companyId, status,
 				orderByComparator);
 
@@ -4550,7 +4549,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -4588,12 +4587,12 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library folder
-	 * @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	 */
 	@Override
 	public DLFolder[] findByC_NotS_PrevAndNext(long folderId, long companyId,
 		int status, OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = findByPrimaryKey(folderId);
 
 		Session session = null;
@@ -4815,16 +4814,16 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 			new String[] { Long.class.getName(), Boolean.class.getName() });
 
 	/**
-	 * Returns the document library folder where repositoryId = &#63; and mountPoint = &#63; or throws a {@link NoSuchFolderException} if it could not be found.
+	 * Returns the document library folder where repositoryId = &#63; and mountPoint = &#63; or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchFolderException} if it could not be found.
 	 *
 	 * @param repositoryId the repository ID
 	 * @param mountPoint the mount point
 	 * @return the matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
 	public DLFolder findByR_M(long repositoryId, boolean mountPoint)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = fetchByR_M(repositoryId, mountPoint);
 
 		if (dlFolder == null) {
@@ -4844,7 +4843,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchFolderException(msg.toString());
+			throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(msg.toString());
 		}
 
 		return dlFolder;
@@ -4969,7 +4968,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 */
 	@Override
 	public DLFolder removeByR_M(long repositoryId, boolean mountPoint)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = findByR_M(repositoryId, mountPoint);
 
 		return remove(dlFolder);
@@ -5241,12 +5240,12 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param parentFolderId the parent folder ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
 	public DLFolder findByR_P_First(long repositoryId, long parentFolderId,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = fetchByR_P_First(repositoryId, parentFolderId,
 				orderByComparator);
 
@@ -5266,7 +5265,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -5297,12 +5296,12 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param parentFolderId the parent folder ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
 	public DLFolder findByR_P_Last(long repositoryId, long parentFolderId,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = fetchByR_P_Last(repositoryId, parentFolderId,
 				orderByComparator);
 
@@ -5322,7 +5321,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -5360,12 +5359,12 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param parentFolderId the parent folder ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library folder
-	 * @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	 */
 	@Override
 	public DLFolder[] findByR_P_PrevAndNext(long folderId, long repositoryId,
 		long parentFolderId, OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = findByPrimaryKey(folderId);
 
 		Session session = null;
@@ -5796,12 +5795,12 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param name the name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
 	public DLFolder findByP_N_First(long parentFolderId, String name,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = fetchByP_N_First(parentFolderId, name,
 				orderByComparator);
 
@@ -5821,7 +5820,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -5852,12 +5851,12 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param name the name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
 	public DLFolder findByP_N_Last(long parentFolderId, String name,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = fetchByP_N_Last(parentFolderId, name,
 				orderByComparator);
 
@@ -5877,7 +5876,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -5915,12 +5914,12 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param name the name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library folder
-	 * @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	 */
 	@Override
 	public DLFolder[] findByP_N_PrevAndNext(long folderId, long parentFolderId,
 		String name, OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = findByPrimaryKey(folderId);
 
 		Session session = null;
@@ -6388,12 +6387,12 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param parentFolderId the parent folder ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
 	public DLFolder findByG_M_P_First(long groupId, boolean mountPoint,
 		long parentFolderId, OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = fetchByG_M_P_First(groupId, mountPoint,
 				parentFolderId, orderByComparator);
 
@@ -6416,7 +6415,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -6449,12 +6448,12 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param parentFolderId the parent folder ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
 	public DLFolder findByG_M_P_Last(long groupId, boolean mountPoint,
 		long parentFolderId, OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = fetchByG_M_P_Last(groupId, mountPoint,
 				parentFolderId, orderByComparator);
 
@@ -6477,7 +6476,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -6517,13 +6516,13 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param parentFolderId the parent folder ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library folder
-	 * @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	 */
 	@Override
 	public DLFolder[] findByG_M_P_PrevAndNext(long folderId, long groupId,
 		boolean mountPoint, long parentFolderId,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = findByPrimaryKey(folderId);
 
 		Session session = null;
@@ -6817,13 +6816,13 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param parentFolderId the parent folder ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library folder
-	 * @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	 */
 	@Override
 	public DLFolder[] filterFindByG_M_P_PrevAndNext(long folderId,
 		long groupId, boolean mountPoint, long parentFolderId,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_M_P_PrevAndNext(folderId, groupId, mountPoint,
 				parentFolderId, orderByComparator);
@@ -7165,17 +7164,17 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 			});
 
 	/**
-	 * Returns the document library folder where groupId = &#63; and parentFolderId = &#63; and name = &#63; or throws a {@link NoSuchFolderException} if it could not be found.
+	 * Returns the document library folder where groupId = &#63; and parentFolderId = &#63; and name = &#63; or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchFolderException} if it could not be found.
 	 *
 	 * @param groupId the group ID
 	 * @param parentFolderId the parent folder ID
 	 * @param name the name
 	 * @return the matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
 	public DLFolder findByG_P_N(long groupId, long parentFolderId, String name)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = fetchByG_P_N(groupId, parentFolderId, name);
 
 		if (dlFolder == null) {
@@ -7198,7 +7197,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchFolderException(msg.toString());
+			throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(msg.toString());
 		}
 
 		return dlFolder;
@@ -7340,7 +7339,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 */
 	@Override
 	public DLFolder removeByG_P_N(long groupId, long parentFolderId, String name)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = findByG_P_N(groupId, parentFolderId, name);
 
 		return remove(dlFolder);
@@ -7648,13 +7647,13 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
 	public DLFolder findByF_C_P_NotS_First(long folderId, long companyId,
 		long parentFolderId, int status,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = fetchByF_C_P_NotS_First(folderId, companyId,
 				parentFolderId, status, orderByComparator);
 
@@ -7680,7 +7679,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -7716,13 +7715,13 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
 	public DLFolder findByF_C_P_NotS_Last(long folderId, long companyId,
 		long parentFolderId, int status,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = fetchByF_C_P_NotS_Last(folderId, companyId,
 				parentFolderId, status, orderByComparator);
 
@@ -7748,7 +7747,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -8116,13 +8115,13 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param hidden the hidden
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
 	public DLFolder findByG_M_P_H_First(long groupId, boolean mountPoint,
 		long parentFolderId, boolean hidden,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = fetchByG_M_P_H_First(groupId, mountPoint,
 				parentFolderId, hidden, orderByComparator);
 
@@ -8148,7 +8147,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -8184,13 +8183,13 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param hidden the hidden
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
 	public DLFolder findByG_M_P_H_Last(long groupId, boolean mountPoint,
 		long parentFolderId, boolean hidden,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = fetchByG_M_P_H_Last(groupId, mountPoint,
 				parentFolderId, hidden, orderByComparator);
 
@@ -8216,7 +8215,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -8259,13 +8258,13 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param hidden the hidden
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library folder
-	 * @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	 */
 	@Override
 	public DLFolder[] findByG_M_P_H_PrevAndNext(long folderId, long groupId,
 		boolean mountPoint, long parentFolderId, boolean hidden,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = findByPrimaryKey(folderId);
 
 		Session session = null;
@@ -8571,13 +8570,13 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param hidden the hidden
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library folder
-	 * @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	 */
 	@Override
 	public DLFolder[] filterFindByG_M_P_H_PrevAndNext(long folderId,
 		long groupId, boolean mountPoint, long parentFolderId, boolean hidden,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_M_P_H_PrevAndNext(folderId, groupId, mountPoint,
 				parentFolderId, hidden, orderByComparator);
@@ -9159,13 +9158,13 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param hidden the hidden
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
 	public DLFolder findByG_M_T_H_First(long groupId, boolean mountPoint,
 		String treePath, boolean hidden,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = fetchByG_M_T_H_First(groupId, mountPoint, treePath,
 				hidden, orderByComparator);
 
@@ -9191,7 +9190,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -9227,13 +9226,13 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param hidden the hidden
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
 	public DLFolder findByG_M_T_H_Last(long groupId, boolean mountPoint,
 		String treePath, boolean hidden,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = fetchByG_M_T_H_Last(groupId, mountPoint, treePath,
 				hidden, orderByComparator);
 
@@ -9259,7 +9258,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -9302,13 +9301,13 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param hidden the hidden
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library folder
-	 * @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	 */
 	@Override
 	public DLFolder[] findByG_M_T_H_PrevAndNext(long folderId, long groupId,
 		boolean mountPoint, String treePath, boolean hidden,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = findByPrimaryKey(folderId);
 
 		Session session = null;
@@ -9642,13 +9641,13 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param hidden the hidden
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library folder
-	 * @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	 */
 	@Override
 	public DLFolder[] filterFindByG_M_T_H_PrevAndNext(long folderId,
 		long groupId, boolean mountPoint, String treePath, boolean hidden,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_M_T_H_PrevAndNext(folderId, groupId, mountPoint,
 				treePath, hidden, orderByComparator);
@@ -10275,13 +10274,13 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
 	public DLFolder findByG_P_H_S_First(long groupId, long parentFolderId,
 		boolean hidden, int status,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = fetchByG_P_H_S_First(groupId, parentFolderId,
 				hidden, status, orderByComparator);
 
@@ -10307,7 +10306,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -10343,13 +10342,13 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
 	public DLFolder findByG_P_H_S_Last(long groupId, long parentFolderId,
 		boolean hidden, int status,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = fetchByG_P_H_S_Last(groupId, parentFolderId,
 				hidden, status, orderByComparator);
 
@@ -10375,7 +10374,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -10418,13 +10417,13 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library folder
-	 * @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	 */
 	@Override
 	public DLFolder[] findByG_P_H_S_PrevAndNext(long folderId, long groupId,
 		long parentFolderId, boolean hidden, int status,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = findByPrimaryKey(folderId);
 
 		Session session = null;
@@ -10730,13 +10729,13 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library folder
-	 * @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	 */
 	@Override
 	public DLFolder[] filterFindByG_P_H_S_PrevAndNext(long folderId,
 		long groupId, long parentFolderId, boolean hidden, int status,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_P_H_S_PrevAndNext(folderId, groupId, parentFolderId,
 				hidden, status, orderByComparator);
@@ -11338,13 +11337,13 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
 	public DLFolder findByG_M_P_H_S_First(long groupId, boolean mountPoint,
 		long parentFolderId, boolean hidden, int status,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = fetchByG_M_P_H_S_First(groupId, mountPoint,
 				parentFolderId, hidden, status, orderByComparator);
 
@@ -11373,7 +11372,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -11411,13 +11410,13 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
 	public DLFolder findByG_M_P_H_S_Last(long groupId, boolean mountPoint,
 		long parentFolderId, boolean hidden, int status,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = fetchByG_M_P_H_S_Last(groupId, mountPoint,
 				parentFolderId, hidden, status, orderByComparator);
 
@@ -11446,7 +11445,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchFolderException(msg.toString());
+		throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(msg.toString());
 	}
 
 	/**
@@ -11493,13 +11492,13 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library folder
-	 * @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	 */
 	@Override
 	public DLFolder[] findByG_M_P_H_S_PrevAndNext(long folderId, long groupId,
 		boolean mountPoint, long parentFolderId, boolean hidden, int status,
 		OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = findByPrimaryKey(folderId);
 
 		Session session = null;
@@ -11820,13 +11819,13 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * @param status the status
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next document library folder
-	 * @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	 */
 	@Override
 	public DLFolder[] filterFindByG_M_P_H_S_PrevAndNext(long folderId,
 		long groupId, boolean mountPoint, long parentFolderId, boolean hidden,
 		int status, OrderByComparator<DLFolder> orderByComparator)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
 			return findByG_M_P_H_S_PrevAndNext(folderId, groupId, mountPoint,
 				parentFolderId, hidden, status, orderByComparator);
@@ -12447,10 +12446,11 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 *
 	 * @param folderId the primary key of the document library folder
 	 * @return the document library folder that was removed
-	 * @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	 */
 	@Override
-	public DLFolder remove(long folderId) throws NoSuchFolderException {
+	public DLFolder remove(long folderId)
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		return remove((Serializable)folderId);
 	}
 
@@ -12459,11 +12459,11 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 *
 	 * @param primaryKey the primary key of the document library folder
 	 * @return the document library folder that was removed
-	 * @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	 */
 	@Override
 	public DLFolder remove(Serializable primaryKey)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		Session session = null;
 
 		try {
@@ -12477,13 +12477,13 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchFolderException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(dlFolder);
 		}
-		catch (NoSuchFolderException nsee) {
+		catch (com.liferay.portlet.documentlibrary.exception.NoSuchFolderException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -12896,11 +12896,11 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 *
 	 * @param primaryKey the primary key of the document library folder
 	 * @return the document library folder
-	 * @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	 */
 	@Override
 	public DLFolder findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		DLFolder dlFolder = fetchByPrimaryKey(primaryKey);
 
 		if (dlFolder == null) {
@@ -12908,7 +12908,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchFolderException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portlet.documentlibrary.exception.NoSuchFolderException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -12916,15 +12916,15 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	}
 
 	/**
-	 * Returns the document library folder with the primary key or throws a {@link NoSuchFolderException} if it could not be found.
+	 * Returns the document library folder with the primary key or throws a {@link com.liferay.portlet.documentlibrary.exception.NoSuchFolderException} if it could not be found.
 	 *
 	 * @param folderId the primary key of the document library folder
 	 * @return the document library folder
-	 * @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	 * @throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException if a document library folder with the primary key could not be found
 	 */
 	@Override
 	public DLFolder findByPrimaryKey(long folderId)
-		throws NoSuchFolderException {
+		throws com.liferay.portlet.documentlibrary.exception.NoSuchFolderException {
 		return findByPrimaryKey((Serializable)folderId);
 	}
 

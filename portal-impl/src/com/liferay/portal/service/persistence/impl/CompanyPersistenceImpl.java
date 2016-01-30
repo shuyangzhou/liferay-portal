@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchCompanyException;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
@@ -96,14 +95,15 @@ public class CompanyPersistenceImpl extends BasePersistenceImpl<Company>
 			new String[] { String.class.getName() });
 
 	/**
-	 * Returns the company where webId = &#63; or throws a {@link NoSuchCompanyException} if it could not be found.
+	 * Returns the company where webId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchCompanyException} if it could not be found.
 	 *
 	 * @param webId the web ID
 	 * @return the matching company
-	 * @throws NoSuchCompanyException if a matching company could not be found
+	 * @throws com.liferay.portal.exception.NoSuchCompanyException if a matching company could not be found
 	 */
 	@Override
-	public Company findByWebId(String webId) throws NoSuchCompanyException {
+	public Company findByWebId(String webId)
+		throws com.liferay.portal.exception.NoSuchCompanyException {
 		Company company = fetchByWebId(webId);
 
 		if (company == null) {
@@ -120,7 +120,7 @@ public class CompanyPersistenceImpl extends BasePersistenceImpl<Company>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchCompanyException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchCompanyException(msg.toString());
 		}
 
 		return company;
@@ -242,7 +242,8 @@ public class CompanyPersistenceImpl extends BasePersistenceImpl<Company>
 	 * @return the company that was removed
 	 */
 	@Override
-	public Company removeByWebId(String webId) throws NoSuchCompanyException {
+	public Company removeByWebId(String webId)
+		throws com.liferay.portal.exception.NoSuchCompanyException {
 		Company company = findByWebId(webId);
 
 		return remove(company);
@@ -327,14 +328,15 @@ public class CompanyPersistenceImpl extends BasePersistenceImpl<Company>
 			new String[] { String.class.getName() });
 
 	/**
-	 * Returns the company where mx = &#63; or throws a {@link NoSuchCompanyException} if it could not be found.
+	 * Returns the company where mx = &#63; or throws a {@link com.liferay.portal.exception.NoSuchCompanyException} if it could not be found.
 	 *
 	 * @param mx the mx
 	 * @return the matching company
-	 * @throws NoSuchCompanyException if a matching company could not be found
+	 * @throws com.liferay.portal.exception.NoSuchCompanyException if a matching company could not be found
 	 */
 	@Override
-	public Company findByMx(String mx) throws NoSuchCompanyException {
+	public Company findByMx(String mx)
+		throws com.liferay.portal.exception.NoSuchCompanyException {
 		Company company = fetchByMx(mx);
 
 		if (company == null) {
@@ -351,7 +353,7 @@ public class CompanyPersistenceImpl extends BasePersistenceImpl<Company>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchCompanyException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchCompanyException(msg.toString());
 		}
 
 		return company;
@@ -480,7 +482,8 @@ public class CompanyPersistenceImpl extends BasePersistenceImpl<Company>
 	 * @return the company that was removed
 	 */
 	@Override
-	public Company removeByMx(String mx) throws NoSuchCompanyException {
+	public Company removeByMx(String mx)
+		throws com.liferay.portal.exception.NoSuchCompanyException {
 		Company company = findByMx(mx);
 
 		return remove(company);
@@ -565,14 +568,15 @@ public class CompanyPersistenceImpl extends BasePersistenceImpl<Company>
 			new String[] { Long.class.getName() });
 
 	/**
-	 * Returns the company where logoId = &#63; or throws a {@link NoSuchCompanyException} if it could not be found.
+	 * Returns the company where logoId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchCompanyException} if it could not be found.
 	 *
 	 * @param logoId the logo ID
 	 * @return the matching company
-	 * @throws NoSuchCompanyException if a matching company could not be found
+	 * @throws com.liferay.portal.exception.NoSuchCompanyException if a matching company could not be found
 	 */
 	@Override
-	public Company findByLogoId(long logoId) throws NoSuchCompanyException {
+	public Company findByLogoId(long logoId)
+		throws com.liferay.portal.exception.NoSuchCompanyException {
 		Company company = fetchByLogoId(logoId);
 
 		if (company == null) {
@@ -589,7 +593,7 @@ public class CompanyPersistenceImpl extends BasePersistenceImpl<Company>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchCompanyException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchCompanyException(msg.toString());
 		}
 
 		return company;
@@ -703,7 +707,8 @@ public class CompanyPersistenceImpl extends BasePersistenceImpl<Company>
 	 * @return the company that was removed
 	 */
 	@Override
-	public Company removeByLogoId(long logoId) throws NoSuchCompanyException {
+	public Company removeByLogoId(long logoId)
+		throws com.liferay.portal.exception.NoSuchCompanyException {
 		Company company = findByLogoId(logoId);
 
 		return remove(company);
@@ -950,12 +955,12 @@ public class CompanyPersistenceImpl extends BasePersistenceImpl<Company>
 	 * @param system the system
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching company
-	 * @throws NoSuchCompanyException if a matching company could not be found
+	 * @throws com.liferay.portal.exception.NoSuchCompanyException if a matching company could not be found
 	 */
 	@Override
 	public Company findBySystem_First(boolean system,
 		OrderByComparator<Company> orderByComparator)
-		throws NoSuchCompanyException {
+		throws com.liferay.portal.exception.NoSuchCompanyException {
 		Company company = fetchBySystem_First(system, orderByComparator);
 
 		if (company != null) {
@@ -971,7 +976,7 @@ public class CompanyPersistenceImpl extends BasePersistenceImpl<Company>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchCompanyException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchCompanyException(msg.toString());
 	}
 
 	/**
@@ -999,12 +1004,12 @@ public class CompanyPersistenceImpl extends BasePersistenceImpl<Company>
 	 * @param system the system
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching company
-	 * @throws NoSuchCompanyException if a matching company could not be found
+	 * @throws com.liferay.portal.exception.NoSuchCompanyException if a matching company could not be found
 	 */
 	@Override
 	public Company findBySystem_Last(boolean system,
 		OrderByComparator<Company> orderByComparator)
-		throws NoSuchCompanyException {
+		throws com.liferay.portal.exception.NoSuchCompanyException {
 		Company company = fetchBySystem_Last(system, orderByComparator);
 
 		if (company != null) {
@@ -1020,7 +1025,7 @@ public class CompanyPersistenceImpl extends BasePersistenceImpl<Company>
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchCompanyException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchCompanyException(msg.toString());
 	}
 
 	/**
@@ -1056,12 +1061,12 @@ public class CompanyPersistenceImpl extends BasePersistenceImpl<Company>
 	 * @param system the system
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next company
-	 * @throws NoSuchCompanyException if a company with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchCompanyException if a company with the primary key could not be found
 	 */
 	@Override
 	public Company[] findBySystem_PrevAndNext(long companyId, boolean system,
 		OrderByComparator<Company> orderByComparator)
-		throws NoSuchCompanyException {
+		throws com.liferay.portal.exception.NoSuchCompanyException {
 		Company company = findByPrimaryKey(companyId);
 
 		Session session = null;
@@ -1470,10 +1475,11 @@ public class CompanyPersistenceImpl extends BasePersistenceImpl<Company>
 	 *
 	 * @param companyId the primary key of the company
 	 * @return the company that was removed
-	 * @throws NoSuchCompanyException if a company with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchCompanyException if a company with the primary key could not be found
 	 */
 	@Override
-	public Company remove(long companyId) throws NoSuchCompanyException {
+	public Company remove(long companyId)
+		throws com.liferay.portal.exception.NoSuchCompanyException {
 		return remove((Serializable)companyId);
 	}
 
@@ -1482,11 +1488,11 @@ public class CompanyPersistenceImpl extends BasePersistenceImpl<Company>
 	 *
 	 * @param primaryKey the primary key of the company
 	 * @return the company that was removed
-	 * @throws NoSuchCompanyException if a company with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchCompanyException if a company with the primary key could not be found
 	 */
 	@Override
 	public Company remove(Serializable primaryKey)
-		throws NoSuchCompanyException {
+		throws com.liferay.portal.exception.NoSuchCompanyException {
 		Session session = null;
 
 		try {
@@ -1499,13 +1505,13 @@ public class CompanyPersistenceImpl extends BasePersistenceImpl<Company>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchCompanyException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchCompanyException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(company);
 		}
-		catch (NoSuchCompanyException nsee) {
+		catch (com.liferay.portal.exception.NoSuchCompanyException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -1643,11 +1649,11 @@ public class CompanyPersistenceImpl extends BasePersistenceImpl<Company>
 	 *
 	 * @param primaryKey the primary key of the company
 	 * @return the company
-	 * @throws NoSuchCompanyException if a company with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchCompanyException if a company with the primary key could not be found
 	 */
 	@Override
 	public Company findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchCompanyException {
+		throws com.liferay.portal.exception.NoSuchCompanyException {
 		Company company = fetchByPrimaryKey(primaryKey);
 
 		if (company == null) {
@@ -1655,7 +1661,7 @@ public class CompanyPersistenceImpl extends BasePersistenceImpl<Company>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchCompanyException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchCompanyException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -1663,15 +1669,15 @@ public class CompanyPersistenceImpl extends BasePersistenceImpl<Company>
 	}
 
 	/**
-	 * Returns the company with the primary key or throws a {@link NoSuchCompanyException} if it could not be found.
+	 * Returns the company with the primary key or throws a {@link com.liferay.portal.exception.NoSuchCompanyException} if it could not be found.
 	 *
 	 * @param companyId the primary key of the company
 	 * @return the company
-	 * @throws NoSuchCompanyException if a company with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchCompanyException if a company with the primary key could not be found
 	 */
 	@Override
 	public Company findByPrimaryKey(long companyId)
-		throws NoSuchCompanyException {
+		throws com.liferay.portal.exception.NoSuchCompanyException {
 		return findByPrimaryKey((Serializable)companyId);
 	}
 

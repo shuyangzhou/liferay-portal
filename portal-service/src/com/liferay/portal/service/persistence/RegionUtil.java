@@ -179,7 +179,7 @@ public class RegionUtil {
 	* @param countryId the country ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching region
-	* @throws NoSuchRegionException if a matching region could not be found
+	* @throws com.liferay.portal.exception.NoSuchRegionException if a matching region could not be found
 	*/
 	public static Region findByCountryId_First(long countryId,
 		OrderByComparator<Region> orderByComparator)
@@ -207,7 +207,7 @@ public class RegionUtil {
 	* @param countryId the country ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching region
-	* @throws NoSuchRegionException if a matching region could not be found
+	* @throws com.liferay.portal.exception.NoSuchRegionException if a matching region could not be found
 	*/
 	public static Region findByCountryId_Last(long countryId,
 		OrderByComparator<Region> orderByComparator)
@@ -236,7 +236,7 @@ public class RegionUtil {
 	* @param countryId the country ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next region
-	* @throws NoSuchRegionException if a region with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRegionException if a region with the primary key could not be found
 	*/
 	public static Region[] findByCountryId_PrevAndNext(long regionId,
 		long countryId, OrderByComparator<Region> orderByComparator)
@@ -337,7 +337,7 @@ public class RegionUtil {
 	* @param active the active
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching region
-	* @throws NoSuchRegionException if a matching region could not be found
+	* @throws com.liferay.portal.exception.NoSuchRegionException if a matching region could not be found
 	*/
 	public static Region findByActive_First(boolean active,
 		OrderByComparator<Region> orderByComparator)
@@ -363,7 +363,7 @@ public class RegionUtil {
 	* @param active the active
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching region
-	* @throws NoSuchRegionException if a matching region could not be found
+	* @throws com.liferay.portal.exception.NoSuchRegionException if a matching region could not be found
 	*/
 	public static Region findByActive_Last(boolean active,
 		OrderByComparator<Region> orderByComparator)
@@ -390,7 +390,7 @@ public class RegionUtil {
 	* @param active the active
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next region
-	* @throws NoSuchRegionException if a region with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRegionException if a region with the primary key could not be found
 	*/
 	public static Region[] findByActive_PrevAndNext(long regionId,
 		boolean active, OrderByComparator<Region> orderByComparator)
@@ -419,12 +419,12 @@ public class RegionUtil {
 	}
 
 	/**
-	* Returns the region where countryId = &#63; and regionCode = &#63; or throws a {@link NoSuchRegionException} if it could not be found.
+	* Returns the region where countryId = &#63; and regionCode = &#63; or throws a {@link com.liferay.portal.exception.NoSuchRegionException} if it could not be found.
 	*
 	* @param countryId the country ID
 	* @param regionCode the region code
 	* @return the matching region
-	* @throws NoSuchRegionException if a matching region could not be found
+	* @throws com.liferay.portal.exception.NoSuchRegionException if a matching region could not be found
 	*/
 	public static Region findByC_R(long countryId, java.lang.String regionCode)
 		throws com.liferay.portal.exception.NoSuchRegionException {
@@ -558,7 +558,7 @@ public class RegionUtil {
 	* @param active the active
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching region
-	* @throws NoSuchRegionException if a matching region could not be found
+	* @throws com.liferay.portal.exception.NoSuchRegionException if a matching region could not be found
 	*/
 	public static Region findByC_A_First(long countryId, boolean active,
 		OrderByComparator<Region> orderByComparator)
@@ -588,7 +588,7 @@ public class RegionUtil {
 	* @param active the active
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching region
-	* @throws NoSuchRegionException if a matching region could not be found
+	* @throws com.liferay.portal.exception.NoSuchRegionException if a matching region could not be found
 	*/
 	public static Region findByC_A_Last(long countryId, boolean active,
 		OrderByComparator<Region> orderByComparator)
@@ -619,7 +619,7 @@ public class RegionUtil {
 	* @param active the active
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next region
-	* @throws NoSuchRegionException if a region with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRegionException if a region with the primary key could not be found
 	*/
 	public static Region[] findByC_A_PrevAndNext(long regionId, long countryId,
 		boolean active, OrderByComparator<Region> orderByComparator)
@@ -683,7 +683,7 @@ public class RegionUtil {
 	*
 	* @param regionId the primary key of the region
 	* @return the region that was removed
-	* @throws NoSuchRegionException if a region with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRegionException if a region with the primary key could not be found
 	*/
 	public static Region remove(long regionId)
 		throws com.liferay.portal.exception.NoSuchRegionException {
@@ -695,11 +695,11 @@ public class RegionUtil {
 	}
 
 	/**
-	* Returns the region with the primary key or throws a {@link NoSuchRegionException} if it could not be found.
+	* Returns the region with the primary key or throws a {@link com.liferay.portal.exception.NoSuchRegionException} if it could not be found.
 	*
 	* @param regionId the primary key of the region
 	* @return the region
-	* @throws NoSuchRegionException if a region with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchRegionException if a region with the primary key could not be found
 	*/
 	public static Region findByPrimaryKey(long regionId)
 		throws com.liferay.portal.exception.NoSuchRegionException {

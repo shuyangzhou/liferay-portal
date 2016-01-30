@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchSubscriptionException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -282,12 +281,12 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching subscription
-	 * @throws NoSuchSubscriptionException if a matching subscription could not be found
+	 * @throws com.liferay.portal.exception.NoSuchSubscriptionException if a matching subscription could not be found
 	 */
 	@Override
 	public Subscription findByUserId_First(long userId,
 		OrderByComparator<Subscription> orderByComparator)
-		throws NoSuchSubscriptionException {
+		throws com.liferay.portal.exception.NoSuchSubscriptionException {
 		Subscription subscription = fetchByUserId_First(userId,
 				orderByComparator);
 
@@ -304,7 +303,7 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchSubscriptionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchSubscriptionException(msg.toString());
 	}
 
 	/**
@@ -332,12 +331,12 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching subscription
-	 * @throws NoSuchSubscriptionException if a matching subscription could not be found
+	 * @throws com.liferay.portal.exception.NoSuchSubscriptionException if a matching subscription could not be found
 	 */
 	@Override
 	public Subscription findByUserId_Last(long userId,
 		OrderByComparator<Subscription> orderByComparator)
-		throws NoSuchSubscriptionException {
+		throws com.liferay.portal.exception.NoSuchSubscriptionException {
 		Subscription subscription = fetchByUserId_Last(userId, orderByComparator);
 
 		if (subscription != null) {
@@ -353,7 +352,7 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchSubscriptionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchSubscriptionException(msg.toString());
 	}
 
 	/**
@@ -389,12 +388,12 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next subscription
-	 * @throws NoSuchSubscriptionException if a subscription with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchSubscriptionException if a subscription with the primary key could not be found
 	 */
 	@Override
 	public Subscription[] findByUserId_PrevAndNext(long subscriptionId,
 		long userId, OrderByComparator<Subscription> orderByComparator)
-		throws NoSuchSubscriptionException {
+		throws com.liferay.portal.exception.NoSuchSubscriptionException {
 		Subscription subscription = findByPrimaryKey(subscriptionId);
 
 		Session session = null;
@@ -799,12 +798,12 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching subscription
-	 * @throws NoSuchSubscriptionException if a matching subscription could not be found
+	 * @throws com.liferay.portal.exception.NoSuchSubscriptionException if a matching subscription could not be found
 	 */
 	@Override
 	public Subscription findByG_U_First(long groupId, long userId,
 		OrderByComparator<Subscription> orderByComparator)
-		throws NoSuchSubscriptionException {
+		throws com.liferay.portal.exception.NoSuchSubscriptionException {
 		Subscription subscription = fetchByG_U_First(groupId, userId,
 				orderByComparator);
 
@@ -824,7 +823,7 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchSubscriptionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchSubscriptionException(msg.toString());
 	}
 
 	/**
@@ -855,12 +854,12 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching subscription
-	 * @throws NoSuchSubscriptionException if a matching subscription could not be found
+	 * @throws com.liferay.portal.exception.NoSuchSubscriptionException if a matching subscription could not be found
 	 */
 	@Override
 	public Subscription findByG_U_Last(long groupId, long userId,
 		OrderByComparator<Subscription> orderByComparator)
-		throws NoSuchSubscriptionException {
+		throws com.liferay.portal.exception.NoSuchSubscriptionException {
 		Subscription subscription = fetchByG_U_Last(groupId, userId,
 				orderByComparator);
 
@@ -880,7 +879,7 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchSubscriptionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchSubscriptionException(msg.toString());
 	}
 
 	/**
@@ -918,13 +917,13 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next subscription
-	 * @throws NoSuchSubscriptionException if a subscription with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchSubscriptionException if a subscription with the primary key could not be found
 	 */
 	@Override
 	public Subscription[] findByG_U_PrevAndNext(long subscriptionId,
 		long groupId, long userId,
 		OrderByComparator<Subscription> orderByComparator)
-		throws NoSuchSubscriptionException {
+		throws com.liferay.portal.exception.NoSuchSubscriptionException {
 		Subscription subscription = findByPrimaryKey(subscriptionId);
 
 		Session session = null;
@@ -1341,12 +1340,12 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching subscription
-	 * @throws NoSuchSubscriptionException if a matching subscription could not be found
+	 * @throws com.liferay.portal.exception.NoSuchSubscriptionException if a matching subscription could not be found
 	 */
 	@Override
 	public Subscription findByU_C_First(long userId, long classNameId,
 		OrderByComparator<Subscription> orderByComparator)
-		throws NoSuchSubscriptionException {
+		throws com.liferay.portal.exception.NoSuchSubscriptionException {
 		Subscription subscription = fetchByU_C_First(userId, classNameId,
 				orderByComparator);
 
@@ -1366,7 +1365,7 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchSubscriptionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchSubscriptionException(msg.toString());
 	}
 
 	/**
@@ -1397,12 +1396,12 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching subscription
-	 * @throws NoSuchSubscriptionException if a matching subscription could not be found
+	 * @throws com.liferay.portal.exception.NoSuchSubscriptionException if a matching subscription could not be found
 	 */
 	@Override
 	public Subscription findByU_C_Last(long userId, long classNameId,
 		OrderByComparator<Subscription> orderByComparator)
-		throws NoSuchSubscriptionException {
+		throws com.liferay.portal.exception.NoSuchSubscriptionException {
 		Subscription subscription = fetchByU_C_Last(userId, classNameId,
 				orderByComparator);
 
@@ -1422,7 +1421,7 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchSubscriptionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchSubscriptionException(msg.toString());
 	}
 
 	/**
@@ -1460,13 +1459,13 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 	 * @param classNameId the class name ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next subscription
-	 * @throws NoSuchSubscriptionException if a subscription with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchSubscriptionException if a subscription with the primary key could not be found
 	 */
 	@Override
 	public Subscription[] findByU_C_PrevAndNext(long subscriptionId,
 		long userId, long classNameId,
 		OrderByComparator<Subscription> orderByComparator)
-		throws NoSuchSubscriptionException {
+		throws com.liferay.portal.exception.NoSuchSubscriptionException {
 		Subscription subscription = findByPrimaryKey(subscriptionId);
 
 		Session session = null;
@@ -1901,12 +1900,12 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching subscription
-	 * @throws NoSuchSubscriptionException if a matching subscription could not be found
+	 * @throws com.liferay.portal.exception.NoSuchSubscriptionException if a matching subscription could not be found
 	 */
 	@Override
 	public Subscription findByC_C_C_First(long companyId, long classNameId,
 		long classPK, OrderByComparator<Subscription> orderByComparator)
-		throws NoSuchSubscriptionException {
+		throws com.liferay.portal.exception.NoSuchSubscriptionException {
 		Subscription subscription = fetchByC_C_C_First(companyId, classNameId,
 				classPK, orderByComparator);
 
@@ -1929,7 +1928,7 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchSubscriptionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchSubscriptionException(msg.toString());
 	}
 
 	/**
@@ -1962,12 +1961,12 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching subscription
-	 * @throws NoSuchSubscriptionException if a matching subscription could not be found
+	 * @throws com.liferay.portal.exception.NoSuchSubscriptionException if a matching subscription could not be found
 	 */
 	@Override
 	public Subscription findByC_C_C_Last(long companyId, long classNameId,
 		long classPK, OrderByComparator<Subscription> orderByComparator)
-		throws NoSuchSubscriptionException {
+		throws com.liferay.portal.exception.NoSuchSubscriptionException {
 		Subscription subscription = fetchByC_C_C_Last(companyId, classNameId,
 				classPK, orderByComparator);
 
@@ -1990,7 +1989,7 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchSubscriptionException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchSubscriptionException(msg.toString());
 	}
 
 	/**
@@ -2030,13 +2029,13 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 	 * @param classPK the class p k
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next subscription
-	 * @throws NoSuchSubscriptionException if a subscription with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchSubscriptionException if a subscription with the primary key could not be found
 	 */
 	@Override
 	public Subscription[] findByC_C_C_PrevAndNext(long subscriptionId,
 		long companyId, long classNameId, long classPK,
 		OrderByComparator<Subscription> orderByComparator)
-		throws NoSuchSubscriptionException {
+		throws com.liferay.portal.exception.NoSuchSubscriptionException {
 		Subscription subscription = findByPrimaryKey(subscriptionId);
 
 		Session session = null;
@@ -2543,18 +2542,19 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 	}
 
 	/**
-	 * Returns the subscription where companyId = &#63; and userId = &#63; and classNameId = &#63; and classPK = &#63; or throws a {@link NoSuchSubscriptionException} if it could not be found.
+	 * Returns the subscription where companyId = &#63; and userId = &#63; and classNameId = &#63; and classPK = &#63; or throws a {@link com.liferay.portal.exception.NoSuchSubscriptionException} if it could not be found.
 	 *
 	 * @param companyId the company ID
 	 * @param userId the user ID
 	 * @param classNameId the class name ID
 	 * @param classPK the class p k
 	 * @return the matching subscription
-	 * @throws NoSuchSubscriptionException if a matching subscription could not be found
+	 * @throws com.liferay.portal.exception.NoSuchSubscriptionException if a matching subscription could not be found
 	 */
 	@Override
 	public Subscription findByC_U_C_C(long companyId, long userId,
-		long classNameId, long classPK) throws NoSuchSubscriptionException {
+		long classNameId, long classPK)
+		throws com.liferay.portal.exception.NoSuchSubscriptionException {
 		Subscription subscription = fetchByC_U_C_C(companyId, userId,
 				classNameId, classPK);
 
@@ -2581,7 +2581,7 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchSubscriptionException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchSubscriptionException(msg.toString());
 		}
 
 		return subscription;
@@ -2721,7 +2721,8 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 	 */
 	@Override
 	public Subscription removeByC_U_C_C(long companyId, long userId,
-		long classNameId, long classPK) throws NoSuchSubscriptionException {
+		long classNameId, long classPK)
+		throws com.liferay.portal.exception.NoSuchSubscriptionException {
 		Subscription subscription = findByC_U_C_C(companyId, userId,
 				classNameId, classPK);
 
@@ -3064,11 +3065,11 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 	 *
 	 * @param subscriptionId the primary key of the subscription
 	 * @return the subscription that was removed
-	 * @throws NoSuchSubscriptionException if a subscription with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchSubscriptionException if a subscription with the primary key could not be found
 	 */
 	@Override
 	public Subscription remove(long subscriptionId)
-		throws NoSuchSubscriptionException {
+		throws com.liferay.portal.exception.NoSuchSubscriptionException {
 		return remove((Serializable)subscriptionId);
 	}
 
@@ -3077,11 +3078,11 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 	 *
 	 * @param primaryKey the primary key of the subscription
 	 * @return the subscription that was removed
-	 * @throws NoSuchSubscriptionException if a subscription with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchSubscriptionException if a subscription with the primary key could not be found
 	 */
 	@Override
 	public Subscription remove(Serializable primaryKey)
-		throws NoSuchSubscriptionException {
+		throws com.liferay.portal.exception.NoSuchSubscriptionException {
 		Session session = null;
 
 		try {
@@ -3095,13 +3096,13 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchSubscriptionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchSubscriptionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(subscription);
 		}
-		catch (NoSuchSubscriptionException nsee) {
+		catch (com.liferay.portal.exception.NoSuchSubscriptionException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -3352,11 +3353,11 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 	 *
 	 * @param primaryKey the primary key of the subscription
 	 * @return the subscription
-	 * @throws NoSuchSubscriptionException if a subscription with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchSubscriptionException if a subscription with the primary key could not be found
 	 */
 	@Override
 	public Subscription findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchSubscriptionException {
+		throws com.liferay.portal.exception.NoSuchSubscriptionException {
 		Subscription subscription = fetchByPrimaryKey(primaryKey);
 
 		if (subscription == null) {
@@ -3364,7 +3365,7 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchSubscriptionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchSubscriptionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -3372,15 +3373,15 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 	}
 
 	/**
-	 * Returns the subscription with the primary key or throws a {@link NoSuchSubscriptionException} if it could not be found.
+	 * Returns the subscription with the primary key or throws a {@link com.liferay.portal.exception.NoSuchSubscriptionException} if it could not be found.
 	 *
 	 * @param subscriptionId the primary key of the subscription
 	 * @return the subscription
-	 * @throws NoSuchSubscriptionException if a subscription with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchSubscriptionException if a subscription with the primary key could not be found
 	 */
 	@Override
 	public Subscription findByPrimaryKey(long subscriptionId)
-		throws NoSuchSubscriptionException {
+		throws com.liferay.portal.exception.NoSuchSubscriptionException {
 		return findByPrimaryKey((Serializable)subscriptionId);
 	}
 

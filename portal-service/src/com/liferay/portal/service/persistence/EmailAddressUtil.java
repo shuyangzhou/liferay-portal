@@ -181,7 +181,7 @@ public class EmailAddressUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching email address
-	* @throws NoSuchEmailAddressException if a matching email address could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	*/
 	public static EmailAddress findByUuid_First(java.lang.String uuid,
 		OrderByComparator<EmailAddress> orderByComparator)
@@ -207,7 +207,7 @@ public class EmailAddressUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching email address
-	* @throws NoSuchEmailAddressException if a matching email address could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	*/
 	public static EmailAddress findByUuid_Last(java.lang.String uuid,
 		OrderByComparator<EmailAddress> orderByComparator)
@@ -234,7 +234,7 @@ public class EmailAddressUtil {
 	* @param uuid the uuid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next email address
-	* @throws NoSuchEmailAddressException if a email address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a email address with the primary key could not be found
 	*/
 	public static EmailAddress[] findByUuid_PrevAndNext(long emailAddressId,
 		java.lang.String uuid, OrderByComparator<EmailAddress> orderByComparator)
@@ -345,7 +345,7 @@ public class EmailAddressUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching email address
-	* @throws NoSuchEmailAddressException if a matching email address could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	*/
 	public static EmailAddress findByUuid_C_First(java.lang.String uuid,
 		long companyId, OrderByComparator<EmailAddress> orderByComparator)
@@ -375,7 +375,7 @@ public class EmailAddressUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching email address
-	* @throws NoSuchEmailAddressException if a matching email address could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	*/
 	public static EmailAddress findByUuid_C_Last(java.lang.String uuid,
 		long companyId, OrderByComparator<EmailAddress> orderByComparator)
@@ -406,7 +406,7 @@ public class EmailAddressUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next email address
-	* @throws NoSuchEmailAddressException if a email address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a email address with the primary key could not be found
 	*/
 	public static EmailAddress[] findByUuid_C_PrevAndNext(long emailAddressId,
 		java.lang.String uuid, long companyId,
@@ -512,7 +512,7 @@ public class EmailAddressUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching email address
-	* @throws NoSuchEmailAddressException if a matching email address could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	*/
 	public static EmailAddress findByCompanyId_First(long companyId,
 		OrderByComparator<EmailAddress> orderByComparator)
@@ -540,7 +540,7 @@ public class EmailAddressUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching email address
-	* @throws NoSuchEmailAddressException if a matching email address could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	*/
 	public static EmailAddress findByCompanyId_Last(long companyId,
 		OrderByComparator<EmailAddress> orderByComparator)
@@ -569,7 +569,7 @@ public class EmailAddressUtil {
 	* @param companyId the company ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next email address
-	* @throws NoSuchEmailAddressException if a email address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a email address with the primary key could not be found
 	*/
 	public static EmailAddress[] findByCompanyId_PrevAndNext(
 		long emailAddressId, long companyId,
@@ -673,7 +673,7 @@ public class EmailAddressUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching email address
-	* @throws NoSuchEmailAddressException if a matching email address could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	*/
 	public static EmailAddress findByUserId_First(long userId,
 		OrderByComparator<EmailAddress> orderByComparator)
@@ -699,7 +699,7 @@ public class EmailAddressUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching email address
-	* @throws NoSuchEmailAddressException if a matching email address could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	*/
 	public static EmailAddress findByUserId_Last(long userId,
 		OrderByComparator<EmailAddress> orderByComparator)
@@ -726,7 +726,7 @@ public class EmailAddressUtil {
 	* @param userId the user ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next email address
-	* @throws NoSuchEmailAddressException if a email address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a email address with the primary key could not be found
 	*/
 	public static EmailAddress[] findByUserId_PrevAndNext(long emailAddressId,
 		long userId, OrderByComparator<EmailAddress> orderByComparator)
@@ -837,7 +837,7 @@ public class EmailAddressUtil {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching email address
-	* @throws NoSuchEmailAddressException if a matching email address could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	*/
 	public static EmailAddress findByC_C_First(long companyId,
 		long classNameId, OrderByComparator<EmailAddress> orderByComparator)
@@ -867,7 +867,7 @@ public class EmailAddressUtil {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching email address
-	* @throws NoSuchEmailAddressException if a matching email address could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	*/
 	public static EmailAddress findByC_C_Last(long companyId, long classNameId,
 		OrderByComparator<EmailAddress> orderByComparator)
@@ -898,7 +898,7 @@ public class EmailAddressUtil {
 	* @param classNameId the class name ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next email address
-	* @throws NoSuchEmailAddressException if a email address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a email address with the primary key could not be found
 	*/
 	public static EmailAddress[] findByC_C_PrevAndNext(long emailAddressId,
 		long companyId, long classNameId,
@@ -1019,7 +1019,7 @@ public class EmailAddressUtil {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching email address
-	* @throws NoSuchEmailAddressException if a matching email address could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	*/
 	public static EmailAddress findByC_C_C_First(long companyId,
 		long classNameId, long classPK,
@@ -1055,7 +1055,7 @@ public class EmailAddressUtil {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching email address
-	* @throws NoSuchEmailAddressException if a matching email address could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	*/
 	public static EmailAddress findByC_C_C_Last(long companyId,
 		long classNameId, long classPK,
@@ -1092,7 +1092,7 @@ public class EmailAddressUtil {
 	* @param classPK the class p k
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next email address
-	* @throws NoSuchEmailAddressException if a email address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a email address with the primary key could not be found
 	*/
 	public static EmailAddress[] findByC_C_C_PrevAndNext(long emailAddressId,
 		long companyId, long classNameId, long classPK,
@@ -1224,7 +1224,7 @@ public class EmailAddressUtil {
 	* @param primary the primary
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching email address
-	* @throws NoSuchEmailAddressException if a matching email address could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	*/
 	public static EmailAddress findByC_C_C_P_First(long companyId,
 		long classNameId, long classPK, boolean primary,
@@ -1262,7 +1262,7 @@ public class EmailAddressUtil {
 	* @param primary the primary
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching email address
-	* @throws NoSuchEmailAddressException if a matching email address could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a matching email address could not be found
 	*/
 	public static EmailAddress findByC_C_C_P_Last(long companyId,
 		long classNameId, long classPK, boolean primary,
@@ -1301,7 +1301,7 @@ public class EmailAddressUtil {
 	* @param primary the primary
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next email address
-	* @throws NoSuchEmailAddressException if a email address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a email address with the primary key could not be found
 	*/
 	public static EmailAddress[] findByC_C_C_P_PrevAndNext(
 		long emailAddressId, long companyId, long classNameId, long classPK,
@@ -1374,7 +1374,7 @@ public class EmailAddressUtil {
 	*
 	* @param emailAddressId the primary key of the email address
 	* @return the email address that was removed
-	* @throws NoSuchEmailAddressException if a email address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a email address with the primary key could not be found
 	*/
 	public static EmailAddress remove(long emailAddressId)
 		throws com.liferay.portal.exception.NoSuchEmailAddressException {
@@ -1386,11 +1386,11 @@ public class EmailAddressUtil {
 	}
 
 	/**
-	* Returns the email address with the primary key or throws a {@link NoSuchEmailAddressException} if it could not be found.
+	* Returns the email address with the primary key or throws a {@link com.liferay.portal.exception.NoSuchEmailAddressException} if it could not be found.
 	*
 	* @param emailAddressId the primary key of the email address
 	* @return the email address
-	* @throws NoSuchEmailAddressException if a email address with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchEmailAddressException if a email address with the primary key could not be found
 	*/
 	public static EmailAddress findByPrimaryKey(long emailAddressId)
 		throws com.liferay.portal.exception.NoSuchEmailAddressException {

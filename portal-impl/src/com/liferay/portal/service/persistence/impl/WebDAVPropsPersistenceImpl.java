@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchWebDAVPropsException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -100,16 +99,16 @@ public class WebDAVPropsPersistenceImpl extends BasePersistenceImpl<WebDAVProps>
 			new String[] { Long.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the web d a v props where classNameId = &#63; and classPK = &#63; or throws a {@link NoSuchWebDAVPropsException} if it could not be found.
+	 * Returns the web d a v props where classNameId = &#63; and classPK = &#63; or throws a {@link com.liferay.portal.exception.NoSuchWebDAVPropsException} if it could not be found.
 	 *
 	 * @param classNameId the class name ID
 	 * @param classPK the class p k
 	 * @return the matching web d a v props
-	 * @throws NoSuchWebDAVPropsException if a matching web d a v props could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWebDAVPropsException if a matching web d a v props could not be found
 	 */
 	@Override
 	public WebDAVProps findByC_C(long classNameId, long classPK)
-		throws NoSuchWebDAVPropsException {
+		throws com.liferay.portal.exception.NoSuchWebDAVPropsException {
 		WebDAVProps webDAVProps = fetchByC_C(classNameId, classPK);
 
 		if (webDAVProps == null) {
@@ -129,7 +128,7 @@ public class WebDAVPropsPersistenceImpl extends BasePersistenceImpl<WebDAVProps>
 				_log.warn(msg.toString());
 			}
 
-			throw new NoSuchWebDAVPropsException(msg.toString());
+			throw new com.liferay.portal.exception.NoSuchWebDAVPropsException(msg.toString());
 		}
 
 		return webDAVProps;
@@ -247,7 +246,7 @@ public class WebDAVPropsPersistenceImpl extends BasePersistenceImpl<WebDAVProps>
 	 */
 	@Override
 	public WebDAVProps removeByC_C(long classNameId, long classPK)
-		throws NoSuchWebDAVPropsException {
+		throws com.liferay.portal.exception.NoSuchWebDAVPropsException {
 		WebDAVProps webDAVProps = findByC_C(classNameId, classPK);
 
 		return remove(webDAVProps);
@@ -473,11 +472,11 @@ public class WebDAVPropsPersistenceImpl extends BasePersistenceImpl<WebDAVProps>
 	 *
 	 * @param webDavPropsId the primary key of the web d a v props
 	 * @return the web d a v props that was removed
-	 * @throws NoSuchWebDAVPropsException if a web d a v props with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWebDAVPropsException if a web d a v props with the primary key could not be found
 	 */
 	@Override
 	public WebDAVProps remove(long webDavPropsId)
-		throws NoSuchWebDAVPropsException {
+		throws com.liferay.portal.exception.NoSuchWebDAVPropsException {
 		return remove((Serializable)webDavPropsId);
 	}
 
@@ -486,11 +485,11 @@ public class WebDAVPropsPersistenceImpl extends BasePersistenceImpl<WebDAVProps>
 	 *
 	 * @param primaryKey the primary key of the web d a v props
 	 * @return the web d a v props that was removed
-	 * @throws NoSuchWebDAVPropsException if a web d a v props with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWebDAVPropsException if a web d a v props with the primary key could not be found
 	 */
 	@Override
 	public WebDAVProps remove(Serializable primaryKey)
-		throws NoSuchWebDAVPropsException {
+		throws com.liferay.portal.exception.NoSuchWebDAVPropsException {
 		Session session = null;
 
 		try {
@@ -504,13 +503,13 @@ public class WebDAVPropsPersistenceImpl extends BasePersistenceImpl<WebDAVProps>
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchWebDAVPropsException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchWebDAVPropsException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(webDAVProps);
 		}
-		catch (NoSuchWebDAVPropsException nsee) {
+		catch (com.liferay.portal.exception.NoSuchWebDAVPropsException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -649,11 +648,11 @@ public class WebDAVPropsPersistenceImpl extends BasePersistenceImpl<WebDAVProps>
 	 *
 	 * @param primaryKey the primary key of the web d a v props
 	 * @return the web d a v props
-	 * @throws NoSuchWebDAVPropsException if a web d a v props with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWebDAVPropsException if a web d a v props with the primary key could not be found
 	 */
 	@Override
 	public WebDAVProps findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchWebDAVPropsException {
+		throws com.liferay.portal.exception.NoSuchWebDAVPropsException {
 		WebDAVProps webDAVProps = fetchByPrimaryKey(primaryKey);
 
 		if (webDAVProps == null) {
@@ -661,7 +660,7 @@ public class WebDAVPropsPersistenceImpl extends BasePersistenceImpl<WebDAVProps>
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchWebDAVPropsException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchWebDAVPropsException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -669,15 +668,15 @@ public class WebDAVPropsPersistenceImpl extends BasePersistenceImpl<WebDAVProps>
 	}
 
 	/**
-	 * Returns the web d a v props with the primary key or throws a {@link NoSuchWebDAVPropsException} if it could not be found.
+	 * Returns the web d a v props with the primary key or throws a {@link com.liferay.portal.exception.NoSuchWebDAVPropsException} if it could not be found.
 	 *
 	 * @param webDavPropsId the primary key of the web d a v props
 	 * @return the web d a v props
-	 * @throws NoSuchWebDAVPropsException if a web d a v props with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchWebDAVPropsException if a web d a v props with the primary key could not be found
 	 */
 	@Override
 	public WebDAVProps findByPrimaryKey(long webDavPropsId)
-		throws NoSuchWebDAVPropsException {
+		throws com.liferay.portal.exception.NoSuchWebDAVPropsException {
 		return findByPrimaryKey((Serializable)webDavPropsId);
 	}
 

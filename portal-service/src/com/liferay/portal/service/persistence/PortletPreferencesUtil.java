@@ -182,7 +182,7 @@ public class PortletPreferencesUtil {
 	* @param plid the plid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching portlet preferences
-	* @throws NoSuchPortletPreferencesException if a matching portlet preferences could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletPreferencesException if a matching portlet preferences could not be found
 	*/
 	public static PortletPreferences findByPlid_First(long plid,
 		OrderByComparator<PortletPreferences> orderByComparator)
@@ -208,7 +208,7 @@ public class PortletPreferencesUtil {
 	* @param plid the plid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching portlet preferences
-	* @throws NoSuchPortletPreferencesException if a matching portlet preferences could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletPreferencesException if a matching portlet preferences could not be found
 	*/
 	public static PortletPreferences findByPlid_Last(long plid,
 		OrderByComparator<PortletPreferences> orderByComparator)
@@ -235,7 +235,7 @@ public class PortletPreferencesUtil {
 	* @param plid the plid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next portlet preferences
-	* @throws NoSuchPortletPreferencesException if a portlet preferences with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletPreferencesException if a portlet preferences with the primary key could not be found
 	*/
 	public static PortletPreferences[] findByPlid_PrevAndNext(
 		long portletPreferencesId, long plid,
@@ -342,7 +342,7 @@ public class PortletPreferencesUtil {
 	* @param portletId the portlet ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching portlet preferences
-	* @throws NoSuchPortletPreferencesException if a matching portlet preferences could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletPreferencesException if a matching portlet preferences could not be found
 	*/
 	public static PortletPreferences findByPortletId_First(
 		java.lang.String portletId,
@@ -372,7 +372,7 @@ public class PortletPreferencesUtil {
 	* @param portletId the portlet ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching portlet preferences
-	* @throws NoSuchPortletPreferencesException if a matching portlet preferences could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletPreferencesException if a matching portlet preferences could not be found
 	*/
 	public static PortletPreferences findByPortletId_Last(
 		java.lang.String portletId,
@@ -403,7 +403,7 @@ public class PortletPreferencesUtil {
 	* @param portletId the portlet ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next portlet preferences
-	* @throws NoSuchPortletPreferencesException if a portlet preferences with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletPreferencesException if a portlet preferences with the primary key could not be found
 	*/
 	public static PortletPreferences[] findByPortletId_PrevAndNext(
 		long portletPreferencesId, java.lang.String portletId,
@@ -516,7 +516,7 @@ public class PortletPreferencesUtil {
 	* @param portletId the portlet ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching portlet preferences
-	* @throws NoSuchPortletPreferencesException if a matching portlet preferences could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletPreferencesException if a matching portlet preferences could not be found
 	*/
 	public static PortletPreferences findByO_P_First(int ownerType,
 		java.lang.String portletId,
@@ -548,7 +548,7 @@ public class PortletPreferencesUtil {
 	* @param portletId the portlet ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching portlet preferences
-	* @throws NoSuchPortletPreferencesException if a matching portlet preferences could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletPreferencesException if a matching portlet preferences could not be found
 	*/
 	public static PortletPreferences findByO_P_Last(int ownerType,
 		java.lang.String portletId,
@@ -581,7 +581,7 @@ public class PortletPreferencesUtil {
 	* @param portletId the portlet ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next portlet preferences
-	* @throws NoSuchPortletPreferencesException if a portlet preferences with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletPreferencesException if a portlet preferences with the primary key could not be found
 	*/
 	public static PortletPreferences[] findByO_P_PrevAndNext(
 		long portletPreferencesId, int ownerType, java.lang.String portletId,
@@ -695,7 +695,7 @@ public class PortletPreferencesUtil {
 	* @param portletId the portlet ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching portlet preferences
-	* @throws NoSuchPortletPreferencesException if a matching portlet preferences could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletPreferencesException if a matching portlet preferences could not be found
 	*/
 	public static PortletPreferences findByP_P_First(long plid,
 		java.lang.String portletId,
@@ -727,7 +727,7 @@ public class PortletPreferencesUtil {
 	* @param portletId the portlet ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching portlet preferences
-	* @throws NoSuchPortletPreferencesException if a matching portlet preferences could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletPreferencesException if a matching portlet preferences could not be found
 	*/
 	public static PortletPreferences findByP_P_Last(long plid,
 		java.lang.String portletId,
@@ -760,7 +760,7 @@ public class PortletPreferencesUtil {
 	* @param portletId the portlet ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next portlet preferences
-	* @throws NoSuchPortletPreferencesException if a portlet preferences with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletPreferencesException if a portlet preferences with the primary key could not be found
 	*/
 	public static PortletPreferences[] findByP_P_PrevAndNext(
 		long portletPreferencesId, long plid, java.lang.String portletId,
@@ -880,7 +880,7 @@ public class PortletPreferencesUtil {
 	* @param plid the plid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching portlet preferences
-	* @throws NoSuchPortletPreferencesException if a matching portlet preferences could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletPreferencesException if a matching portlet preferences could not be found
 	*/
 	public static PortletPreferences findByO_O_P_First(long ownerId,
 		int ownerType, long plid,
@@ -916,7 +916,7 @@ public class PortletPreferencesUtil {
 	* @param plid the plid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching portlet preferences
-	* @throws NoSuchPortletPreferencesException if a matching portlet preferences could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletPreferencesException if a matching portlet preferences could not be found
 	*/
 	public static PortletPreferences findByO_O_P_Last(long ownerId,
 		int ownerType, long plid,
@@ -952,7 +952,7 @@ public class PortletPreferencesUtil {
 	* @param plid the plid
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next portlet preferences
-	* @throws NoSuchPortletPreferencesException if a portlet preferences with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletPreferencesException if a portlet preferences with the primary key could not be found
 	*/
 	public static PortletPreferences[] findByO_O_P_PrevAndNext(
 		long portletPreferencesId, long ownerId, int ownerType, long plid,
@@ -1075,7 +1075,7 @@ public class PortletPreferencesUtil {
 	* @param portletId the portlet ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching portlet preferences
-	* @throws NoSuchPortletPreferencesException if a matching portlet preferences could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletPreferencesException if a matching portlet preferences could not be found
 	*/
 	public static PortletPreferences findByO_O_PI_First(long ownerId,
 		int ownerType, java.lang.String portletId,
@@ -1111,7 +1111,7 @@ public class PortletPreferencesUtil {
 	* @param portletId the portlet ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching portlet preferences
-	* @throws NoSuchPortletPreferencesException if a matching portlet preferences could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletPreferencesException if a matching portlet preferences could not be found
 	*/
 	public static PortletPreferences findByO_O_PI_Last(long ownerId,
 		int ownerType, java.lang.String portletId,
@@ -1148,7 +1148,7 @@ public class PortletPreferencesUtil {
 	* @param portletId the portlet ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next portlet preferences
-	* @throws NoSuchPortletPreferencesException if a portlet preferences with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletPreferencesException if a portlet preferences with the primary key could not be found
 	*/
 	public static PortletPreferences[] findByO_O_PI_PrevAndNext(
 		long portletPreferencesId, long ownerId, int ownerType,
@@ -1274,7 +1274,7 @@ public class PortletPreferencesUtil {
 	* @param portletId the portlet ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching portlet preferences
-	* @throws NoSuchPortletPreferencesException if a matching portlet preferences could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletPreferencesException if a matching portlet preferences could not be found
 	*/
 	public static PortletPreferences findByO_P_P_First(int ownerType,
 		long plid, java.lang.String portletId,
@@ -1310,7 +1310,7 @@ public class PortletPreferencesUtil {
 	* @param portletId the portlet ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching portlet preferences
-	* @throws NoSuchPortletPreferencesException if a matching portlet preferences could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletPreferencesException if a matching portlet preferences could not be found
 	*/
 	public static PortletPreferences findByO_P_P_Last(int ownerType, long plid,
 		java.lang.String portletId,
@@ -1347,7 +1347,7 @@ public class PortletPreferencesUtil {
 	* @param portletId the portlet ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next portlet preferences
-	* @throws NoSuchPortletPreferencesException if a portlet preferences with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletPreferencesException if a portlet preferences with the primary key could not be found
 	*/
 	public static PortletPreferences[] findByO_P_P_PrevAndNext(
 		long portletPreferencesId, int ownerType, long plid,
@@ -1385,14 +1385,14 @@ public class PortletPreferencesUtil {
 	}
 
 	/**
-	* Returns the portlet preferences where ownerId = &#63; and ownerType = &#63; and plid = &#63; and portletId = &#63; or throws a {@link NoSuchPortletPreferencesException} if it could not be found.
+	* Returns the portlet preferences where ownerId = &#63; and ownerType = &#63; and plid = &#63; and portletId = &#63; or throws a {@link com.liferay.portal.exception.NoSuchPortletPreferencesException} if it could not be found.
 	*
 	* @param ownerId the owner ID
 	* @param ownerType the owner type
 	* @param plid the plid
 	* @param portletId the portlet ID
 	* @return the matching portlet preferences
-	* @throws NoSuchPortletPreferencesException if a matching portlet preferences could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletPreferencesException if a matching portlet preferences could not be found
 	*/
 	public static PortletPreferences findByO_O_P_P(long ownerId, int ownerType,
 		long plid, java.lang.String portletId)
@@ -1499,7 +1499,7 @@ public class PortletPreferencesUtil {
 	*
 	* @param portletPreferencesId the primary key of the portlet preferences
 	* @return the portlet preferences that was removed
-	* @throws NoSuchPortletPreferencesException if a portlet preferences with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletPreferencesException if a portlet preferences with the primary key could not be found
 	*/
 	public static PortletPreferences remove(long portletPreferencesId)
 		throws com.liferay.portal.exception.NoSuchPortletPreferencesException {
@@ -1512,11 +1512,11 @@ public class PortletPreferencesUtil {
 	}
 
 	/**
-	* Returns the portlet preferences with the primary key or throws a {@link NoSuchPortletPreferencesException} if it could not be found.
+	* Returns the portlet preferences with the primary key or throws a {@link com.liferay.portal.exception.NoSuchPortletPreferencesException} if it could not be found.
 	*
 	* @param portletPreferencesId the primary key of the portlet preferences
 	* @return the portlet preferences
-	* @throws NoSuchPortletPreferencesException if a portlet preferences with the primary key could not be found
+	* @throws com.liferay.portal.exception.NoSuchPortletPreferencesException if a portlet preferences with the primary key could not be found
 	*/
 	public static PortletPreferences findByPrimaryKey(long portletPreferencesId)
 		throws com.liferay.portal.exception.NoSuchPortletPreferencesException {

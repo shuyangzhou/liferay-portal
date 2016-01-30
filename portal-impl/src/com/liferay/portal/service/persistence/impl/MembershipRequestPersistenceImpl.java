@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchMembershipRequestException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -281,12 +280,12 @@ public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<Member
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching membership request
-	 * @throws NoSuchMembershipRequestException if a matching membership request could not be found
+	 * @throws com.liferay.portal.exception.NoSuchMembershipRequestException if a matching membership request could not be found
 	 */
 	@Override
 	public MembershipRequest findByGroupId_First(long groupId,
 		OrderByComparator<MembershipRequest> orderByComparator)
-		throws NoSuchMembershipRequestException {
+		throws com.liferay.portal.exception.NoSuchMembershipRequestException {
 		MembershipRequest membershipRequest = fetchByGroupId_First(groupId,
 				orderByComparator);
 
@@ -303,7 +302,7 @@ public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<Member
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMembershipRequestException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchMembershipRequestException(msg.toString());
 	}
 
 	/**
@@ -332,12 +331,12 @@ public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<Member
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching membership request
-	 * @throws NoSuchMembershipRequestException if a matching membership request could not be found
+	 * @throws com.liferay.portal.exception.NoSuchMembershipRequestException if a matching membership request could not be found
 	 */
 	@Override
 	public MembershipRequest findByGroupId_Last(long groupId,
 		OrderByComparator<MembershipRequest> orderByComparator)
-		throws NoSuchMembershipRequestException {
+		throws com.liferay.portal.exception.NoSuchMembershipRequestException {
 		MembershipRequest membershipRequest = fetchByGroupId_Last(groupId,
 				orderByComparator);
 
@@ -354,7 +353,7 @@ public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<Member
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMembershipRequestException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchMembershipRequestException(msg.toString());
 	}
 
 	/**
@@ -390,13 +389,13 @@ public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<Member
 	 * @param groupId the group ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next membership request
-	 * @throws NoSuchMembershipRequestException if a membership request with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchMembershipRequestException if a membership request with the primary key could not be found
 	 */
 	@Override
 	public MembershipRequest[] findByGroupId_PrevAndNext(
 		long membershipRequestId, long groupId,
 		OrderByComparator<MembershipRequest> orderByComparator)
-		throws NoSuchMembershipRequestException {
+		throws com.liferay.portal.exception.NoSuchMembershipRequestException {
 		MembershipRequest membershipRequest = findByPrimaryKey(membershipRequestId);
 
 		Session session = null;
@@ -788,12 +787,12 @@ public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<Member
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching membership request
-	 * @throws NoSuchMembershipRequestException if a matching membership request could not be found
+	 * @throws com.liferay.portal.exception.NoSuchMembershipRequestException if a matching membership request could not be found
 	 */
 	@Override
 	public MembershipRequest findByUserId_First(long userId,
 		OrderByComparator<MembershipRequest> orderByComparator)
-		throws NoSuchMembershipRequestException {
+		throws com.liferay.portal.exception.NoSuchMembershipRequestException {
 		MembershipRequest membershipRequest = fetchByUserId_First(userId,
 				orderByComparator);
 
@@ -810,7 +809,7 @@ public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<Member
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMembershipRequestException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchMembershipRequestException(msg.toString());
 	}
 
 	/**
@@ -839,12 +838,12 @@ public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<Member
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching membership request
-	 * @throws NoSuchMembershipRequestException if a matching membership request could not be found
+	 * @throws com.liferay.portal.exception.NoSuchMembershipRequestException if a matching membership request could not be found
 	 */
 	@Override
 	public MembershipRequest findByUserId_Last(long userId,
 		OrderByComparator<MembershipRequest> orderByComparator)
-		throws NoSuchMembershipRequestException {
+		throws com.liferay.portal.exception.NoSuchMembershipRequestException {
 		MembershipRequest membershipRequest = fetchByUserId_Last(userId,
 				orderByComparator);
 
@@ -861,7 +860,7 @@ public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<Member
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMembershipRequestException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchMembershipRequestException(msg.toString());
 	}
 
 	/**
@@ -897,13 +896,13 @@ public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<Member
 	 * @param userId the user ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next membership request
-	 * @throws NoSuchMembershipRequestException if a membership request with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchMembershipRequestException if a membership request with the primary key could not be found
 	 */
 	@Override
 	public MembershipRequest[] findByUserId_PrevAndNext(
 		long membershipRequestId, long userId,
 		OrderByComparator<MembershipRequest> orderByComparator)
-		throws NoSuchMembershipRequestException {
+		throws com.liferay.portal.exception.NoSuchMembershipRequestException {
 		MembershipRequest membershipRequest = findByPrimaryKey(membershipRequestId);
 
 		Session session = null;
@@ -1313,12 +1312,12 @@ public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<Member
 	 * @param statusId the status ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching membership request
-	 * @throws NoSuchMembershipRequestException if a matching membership request could not be found
+	 * @throws com.liferay.portal.exception.NoSuchMembershipRequestException if a matching membership request could not be found
 	 */
 	@Override
 	public MembershipRequest findByG_S_First(long groupId, long statusId,
 		OrderByComparator<MembershipRequest> orderByComparator)
-		throws NoSuchMembershipRequestException {
+		throws com.liferay.portal.exception.NoSuchMembershipRequestException {
 		MembershipRequest membershipRequest = fetchByG_S_First(groupId,
 				statusId, orderByComparator);
 
@@ -1338,7 +1337,7 @@ public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<Member
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMembershipRequestException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchMembershipRequestException(msg.toString());
 	}
 
 	/**
@@ -1369,12 +1368,12 @@ public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<Member
 	 * @param statusId the status ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching membership request
-	 * @throws NoSuchMembershipRequestException if a matching membership request could not be found
+	 * @throws com.liferay.portal.exception.NoSuchMembershipRequestException if a matching membership request could not be found
 	 */
 	@Override
 	public MembershipRequest findByG_S_Last(long groupId, long statusId,
 		OrderByComparator<MembershipRequest> orderByComparator)
-		throws NoSuchMembershipRequestException {
+		throws com.liferay.portal.exception.NoSuchMembershipRequestException {
 		MembershipRequest membershipRequest = fetchByG_S_Last(groupId,
 				statusId, orderByComparator);
 
@@ -1394,7 +1393,7 @@ public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<Member
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMembershipRequestException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchMembershipRequestException(msg.toString());
 	}
 
 	/**
@@ -1432,13 +1431,13 @@ public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<Member
 	 * @param statusId the status ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next membership request
-	 * @throws NoSuchMembershipRequestException if a membership request with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchMembershipRequestException if a membership request with the primary key could not be found
 	 */
 	@Override
 	public MembershipRequest[] findByG_S_PrevAndNext(long membershipRequestId,
 		long groupId, long statusId,
 		OrderByComparator<MembershipRequest> orderByComparator)
-		throws NoSuchMembershipRequestException {
+		throws com.liferay.portal.exception.NoSuchMembershipRequestException {
 		MembershipRequest membershipRequest = findByPrimaryKey(membershipRequestId);
 
 		Session session = null;
@@ -1876,12 +1875,12 @@ public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<Member
 	 * @param statusId the status ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching membership request
-	 * @throws NoSuchMembershipRequestException if a matching membership request could not be found
+	 * @throws com.liferay.portal.exception.NoSuchMembershipRequestException if a matching membership request could not be found
 	 */
 	@Override
 	public MembershipRequest findByG_U_S_First(long groupId, long userId,
 		long statusId, OrderByComparator<MembershipRequest> orderByComparator)
-		throws NoSuchMembershipRequestException {
+		throws com.liferay.portal.exception.NoSuchMembershipRequestException {
 		MembershipRequest membershipRequest = fetchByG_U_S_First(groupId,
 				userId, statusId, orderByComparator);
 
@@ -1904,7 +1903,7 @@ public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<Member
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMembershipRequestException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchMembershipRequestException(msg.toString());
 	}
 
 	/**
@@ -1937,12 +1936,12 @@ public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<Member
 	 * @param statusId the status ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching membership request
-	 * @throws NoSuchMembershipRequestException if a matching membership request could not be found
+	 * @throws com.liferay.portal.exception.NoSuchMembershipRequestException if a matching membership request could not be found
 	 */
 	@Override
 	public MembershipRequest findByG_U_S_Last(long groupId, long userId,
 		long statusId, OrderByComparator<MembershipRequest> orderByComparator)
-		throws NoSuchMembershipRequestException {
+		throws com.liferay.portal.exception.NoSuchMembershipRequestException {
 		MembershipRequest membershipRequest = fetchByG_U_S_Last(groupId,
 				userId, statusId, orderByComparator);
 
@@ -1965,7 +1964,7 @@ public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<Member
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-		throw new NoSuchMembershipRequestException(msg.toString());
+		throw new com.liferay.portal.exception.NoSuchMembershipRequestException(msg.toString());
 	}
 
 	/**
@@ -2005,13 +2004,13 @@ public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<Member
 	 * @param statusId the status ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next membership request
-	 * @throws NoSuchMembershipRequestException if a membership request with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchMembershipRequestException if a membership request with the primary key could not be found
 	 */
 	@Override
 	public MembershipRequest[] findByG_U_S_PrevAndNext(
 		long membershipRequestId, long groupId, long userId, long statusId,
 		OrderByComparator<MembershipRequest> orderByComparator)
-		throws NoSuchMembershipRequestException {
+		throws com.liferay.portal.exception.NoSuchMembershipRequestException {
 		MembershipRequest membershipRequest = findByPrimaryKey(membershipRequestId);
 
 		Session session = null;
@@ -2338,11 +2337,11 @@ public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<Member
 	 *
 	 * @param membershipRequestId the primary key of the membership request
 	 * @return the membership request that was removed
-	 * @throws NoSuchMembershipRequestException if a membership request with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchMembershipRequestException if a membership request with the primary key could not be found
 	 */
 	@Override
 	public MembershipRequest remove(long membershipRequestId)
-		throws NoSuchMembershipRequestException {
+		throws com.liferay.portal.exception.NoSuchMembershipRequestException {
 		return remove((Serializable)membershipRequestId);
 	}
 
@@ -2351,11 +2350,11 @@ public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<Member
 	 *
 	 * @param primaryKey the primary key of the membership request
 	 * @return the membership request that was removed
-	 * @throws NoSuchMembershipRequestException if a membership request with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchMembershipRequestException if a membership request with the primary key could not be found
 	 */
 	@Override
 	public MembershipRequest remove(Serializable primaryKey)
-		throws NoSuchMembershipRequestException {
+		throws com.liferay.portal.exception.NoSuchMembershipRequestException {
 		Session session = null;
 
 		try {
@@ -2369,13 +2368,13 @@ public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<Member
 					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchMembershipRequestException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				throw new com.liferay.portal.exception.NoSuchMembershipRequestException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 					primaryKey);
 			}
 
 			return remove(membershipRequest);
 		}
-		catch (NoSuchMembershipRequestException nsee) {
+		catch (com.liferay.portal.exception.NoSuchMembershipRequestException nsee) {
 			throw nsee;
 		}
 		catch (Exception e) {
@@ -2573,11 +2572,11 @@ public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<Member
 	 *
 	 * @param primaryKey the primary key of the membership request
 	 * @return the membership request
-	 * @throws NoSuchMembershipRequestException if a membership request with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchMembershipRequestException if a membership request with the primary key could not be found
 	 */
 	@Override
 	public MembershipRequest findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchMembershipRequestException {
+		throws com.liferay.portal.exception.NoSuchMembershipRequestException {
 		MembershipRequest membershipRequest = fetchByPrimaryKey(primaryKey);
 
 		if (membershipRequest == null) {
@@ -2585,7 +2584,7 @@ public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<Member
 				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchMembershipRequestException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+			throw new com.liferay.portal.exception.NoSuchMembershipRequestException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
 				primaryKey);
 		}
 
@@ -2593,15 +2592,15 @@ public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<Member
 	}
 
 	/**
-	 * Returns the membership request with the primary key or throws a {@link NoSuchMembershipRequestException} if it could not be found.
+	 * Returns the membership request with the primary key or throws a {@link com.liferay.portal.exception.NoSuchMembershipRequestException} if it could not be found.
 	 *
 	 * @param membershipRequestId the primary key of the membership request
 	 * @return the membership request
-	 * @throws NoSuchMembershipRequestException if a membership request with the primary key could not be found
+	 * @throws com.liferay.portal.exception.NoSuchMembershipRequestException if a membership request with the primary key could not be found
 	 */
 	@Override
 	public MembershipRequest findByPrimaryKey(long membershipRequestId)
-		throws NoSuchMembershipRequestException {
+		throws com.liferay.portal.exception.NoSuchMembershipRequestException {
 		return findByPrimaryKey((Serializable)membershipRequestId);
 	}
 
