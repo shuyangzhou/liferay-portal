@@ -137,7 +137,7 @@
 			<var name="panelHeading" value="Metadata" />
 		</execute>
 
-		<execute function="AssertTextEquals" locator1="Message#ERROR_2" value1="Please select at least one category for ${vocabularyName}." />
+		<execute function="AssertTextEquals#assertPartialText" locator1="Message#ERROR_2" value1="Please select at least one category for ${vocabularyName}." />
 	</command>
 
 	<command name="addLocalizedPGViaWCD">
@@ -429,7 +429,7 @@
 			<var name="panelHeading" value="Structure and Template" />
 		</execute>
 
-		<execute function="AssertClick" locator1="WCEditWebContent#SELECT_STRUCTURE_LINK" value1="Select" />
+		<execute function="AssertClick" locator1="WCEditWebContent#SELECT_STRUCTURE" value1="Select" />
 		<execute function="SelectFrame" value1="relative=top" />
 
 		<execute function="SelectFrame" locator1="DDMSelectStructure#DDM_STRUCTURES_IFRAME" />

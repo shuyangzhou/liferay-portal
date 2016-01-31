@@ -164,13 +164,13 @@ public class FriendlyURLMapperTrackerImpl implements FriendlyURLMapperTracker {
 		@Override
 		public void modifiedService(
 			ServiceReference<FriendlyURLMapper> serviceReference,
-			FriendlyURLMapper service) {
+			FriendlyURLMapper friendlyURLMapper) {
 		}
 
 		@Override
 		public void removedService(
 			ServiceReference<FriendlyURLMapper> serviceReference,
-			FriendlyURLMapper service) {
+			FriendlyURLMapper friendlyURLMapper) {
 
 			Registry registry = RegistryUtil.getRegistry();
 

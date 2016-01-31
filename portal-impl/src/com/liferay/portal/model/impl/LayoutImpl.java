@@ -1019,6 +1019,7 @@ public class LayoutImpl extends LayoutBaseImpl {
 		return false;
 	}
 
+	@Override
 	public boolean isPortletEmbedded(String portletId) {
 		List<PortletPreferences> portletPreferences = _getPortletPreferences(
 			getGroupId());
