@@ -34,9 +34,10 @@ import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.expando.model.ExpandoBridge;
 import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 import com.liferay.portlet.exportimport.lar.StagedModelType;
-import com.liferay.portlet.ratings.model.RatingsEntry;
-import com.liferay.portlet.ratings.model.RatingsEntryModel;
-import com.liferay.portlet.ratings.model.RatingsEntrySoap;
+
+import com.liferay.ratings.kernel.model.RatingsEntry;
+import com.liferay.ratings.kernel.model.RatingsEntryModel;
+import com.liferay.ratings.kernel.model.RatingsEntrySoap;
 
 import java.io.Serializable;
 
@@ -742,7 +743,7 @@ public class RatingsEntryModelImpl extends BaseModelImpl<RatingsEntry>
 		StringBundler sb = new StringBundler(34);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.portlet.ratings.model.RatingsEntry");
+		sb.append("com.liferay.ratings.kernel.model.RatingsEntry");
 		sb.append("</model-name>");
 
 		sb.append(

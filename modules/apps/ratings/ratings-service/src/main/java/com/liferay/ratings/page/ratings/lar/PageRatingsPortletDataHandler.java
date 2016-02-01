@@ -24,8 +24,8 @@ import com.liferay.portlet.exportimport.lar.PortletDataHandler;
 import com.liferay.portlet.exportimport.lar.PortletDataHandlerBoolean;
 import com.liferay.portlet.exportimport.lar.StagedModelDataHandlerUtil;
 import com.liferay.portlet.exportimport.lar.StagedModelType;
-import com.liferay.portlet.ratings.model.RatingsEntry;
-import com.liferay.portlet.ratings.service.RatingsEntryLocalService;
+import com.liferay.ratings.kernel.model.RatingsEntry;
+import com.liferay.ratings.kernel.service.RatingsEntryLocalService;
 import com.liferay.ratings.page.ratings.constants.PageRatingsPortletKeys;
 
 import java.util.List;
@@ -126,7 +126,7 @@ public class PageRatingsPortletDataHandler extends BasePortletDataHandler {
 
 	private RatingsEntryLocalService _ratingsEntryLocalService;
 
-	private class ImportRatingsCallable implements Callable<Void> {
+	private static class ImportRatingsCallable implements Callable<Void> {
 
 		public ImportRatingsCallable(PortletDataContext portletDataContext) {
 			_portletDataContext = portletDataContext;

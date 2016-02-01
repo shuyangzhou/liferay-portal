@@ -15,8 +15,8 @@
 package com.liferay.blogs.web.ratings.definition;
 
 import com.liferay.blogs.web.constants.BlogsPortletKeys;
-import com.liferay.portlet.ratings.RatingsType;
-import com.liferay.portlet.ratings.definition.PortletRatingsDefinition;
+import com.liferay.ratings.kernel.RatingsType;
+import com.liferay.ratings.kernel.definition.PortletRatingsDefinition;
 
 import org.osgi.service.component.annotations.Component;
 

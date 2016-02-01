@@ -15,9 +15,11 @@
 package com.liferay.configuration.admin.web.util;
 
 import com.liferay.configuration.admin.web.model.ConfigurationModel;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.metatype.definitions.ExtendedMetaTypeInformation;
 import com.liferay.portal.metatype.definitions.ExtendedMetaTypeService;
 
@@ -150,23 +152,8 @@ public class ConfigurationModelRetrieverImpl
 			ConfigurationModel factoryConfigurationModel)
 		throws IOException {
 
-		StringBundler filter = new StringBundler(5);
-
-		filter.append(StringPool.OPEN_PARENTHESIS);
-		filter.append(ConfigurationAdmin.SERVICE_FACTORYPID);
-		filter.append(StringPool.EQUAL);
-		filter.append(factoryConfigurationModel.getFactoryPid());
-		filter.append(StringPool.CLOSE_PARENTHESIS);
-
-		Configuration[] configurations = null;
-
-		try {
-			configurations = _configurationAdmin.listConfigurations(
-				filter.toString());
-		}
-		catch (InvalidSyntaxException ise) {
-			ReflectionUtil.throwException(ise);
-		}
+		Configuration[] configurations = getFactoryConfigurations(
+			factoryConfigurationModel.getFactoryPid());
 
 		if (configurations == null) {
 			return Collections.emptyList();
@@ -223,6 +210,25 @@ public class ConfigurationModelRetrieverImpl
 		}
 	}
 
+	protected Configuration getCompanyDefaultConfiguration(String factoryPid) {
+		Configuration configuration = null;
+
+		try {
+			Configuration[] factoryConfigurations = getFactoryConfigurations(
+				factoryPid, ConfigurationModel.PROPERTY_KEY_COMPANY_ID,
+				ConfigurationModel.PROPERTY_VALUE_COMPANY_ID_DEFAULT);
+
+			if (ArrayUtil.isNotEmpty(factoryConfigurations)) {
+				configuration = factoryConfigurations[0];
+			}
+		}
+		catch (IOException ioe) {
+			ReflectionUtil.throwException(ioe);
+		}
+
+		return configuration;
+	}
+
 	protected Comparator<String> getConfigurationCategoryComparator() {
 		return new ConfigurationCategoryComparator();
 	}
@@ -237,32 +243,88 @@ public class ConfigurationModelRetrieverImpl
 			return null;
 		}
 
-		return new ConfigurationModel(
+		ConfigurationModel configurationModel = new ConfigurationModel(
 			metaTypeInformation.getObjectClassDefinition(pid, locale),
 			getConfiguration(pid), StringPool.QUESTION, factory);
+
+		if (configurationModel.isCompanyFactory()) {
+			Configuration configuration = getCompanyDefaultConfiguration(pid);
+
+			configurationModel = new ConfigurationModel(
+				configurationModel.getExtendedObjectClassDefinition(),
+				configuration, configurationModel.getBundleLocation(),
+				configurationModel.isFactory());
+		}
+
+		return configurationModel;
 	}
 
 	protected Comparator<ConfigurationModel> getConfigurationModelComparator() {
 		return new ConfigurationModelComparator();
 	}
 
-	protected String getPidFilterString(String pid, boolean factory) {
-		StringBundler filter = new StringBundler(5);
+	protected Configuration[] getFactoryConfigurations(String factoryPid)
+		throws IOException {
 
-		filter.append(StringPool.OPEN_PARENTHESIS);
+		return getFactoryConfigurations(factoryPid, null, null);
+	}
+
+	protected Configuration[] getFactoryConfigurations(
+			String factoryPid, String property, String value)
+		throws IOException {
+
+		Configuration[] configurations = null;
+
+		StringBundler sb = new StringBundler(13);
+
+		if (Validator.isNotNull(property) && Validator.isNotNull(value)) {
+			sb.append(StringPool.OPEN_PARENTHESIS);
+			sb.append(StringPool.AMPERSAND);
+		}
+
+		sb.append(StringPool.OPEN_PARENTHESIS);
+		sb.append(ConfigurationAdmin.SERVICE_FACTORYPID);
+		sb.append(StringPool.EQUAL);
+		sb.append(factoryPid);
+		sb.append(StringPool.CLOSE_PARENTHESIS);
+
+		if (Validator.isNotNull(property) && Validator.isNotNull(value)) {
+			sb.append(StringPool.OPEN_PARENTHESIS);
+			sb.append(property);
+			sb.append(StringPool.EQUAL);
+			sb.append(value);
+			sb.append(StringPool.CLOSE_PARENTHESIS);
+			sb.append(StringPool.CLOSE_PARENTHESIS);
+		}
+
+		try {
+			configurations = _configurationAdmin.listConfigurations(
+				sb.toString());
+		}
+		catch (InvalidSyntaxException ise) {
+			ReflectionUtil.throwException(ise);
+		}
+
+		return configurations;
+	}
+
+	protected String getPidFilterString(String pid, boolean factory) {
+		StringBundler sb = new StringBundler(5);
+
+		sb.append(StringPool.OPEN_PARENTHESIS);
 
 		if (factory) {
-			filter.append(ConfigurationAdmin.SERVICE_FACTORYPID);
+			sb.append(ConfigurationAdmin.SERVICE_FACTORYPID);
 		}
 		else {
-			filter.append(Constants.SERVICE_PID);
+			sb.append(Constants.SERVICE_PID);
 		}
 
-		filter.append(StringPool.EQUAL);
-		filter.append(pid);
-		filter.append(StringPool.CLOSE_PARENTHESIS);
+		sb.append(StringPool.EQUAL);
+		sb.append(pid);
+		sb.append(StringPool.CLOSE_PARENTHESIS);
 
-		return filter.toString();
+		return sb.toString();
 	}
 
 	@Reference(unbind = "-")
@@ -283,7 +345,7 @@ public class ConfigurationModelRetrieverImpl
 	private ConfigurationAdmin _configurationAdmin;
 	private ExtendedMetaTypeService _extendedMetaTypeService;
 
-	private class ConfigurationCategoryComparator
+	private static class ConfigurationCategoryComparator
 		implements Comparator<String> {
 
 		@Override
@@ -325,7 +387,7 @@ public class ConfigurationModelRetrieverImpl
 
 	}
 
-	private class ConfigurationModelComparator
+	private static class ConfigurationModelComparator
 		implements Comparator<ConfigurationModel> {
 
 		@Override

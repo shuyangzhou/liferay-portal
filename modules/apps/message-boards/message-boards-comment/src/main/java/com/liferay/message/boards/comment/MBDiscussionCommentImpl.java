@@ -21,9 +21,9 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portlet.messageboards.model.MBMessage;
 import com.liferay.portlet.messageboards.model.MBTreeWalker;
 import com.liferay.portlet.messageboards.service.MBMessageLocalServiceUtil;
-import com.liferay.portlet.ratings.model.RatingsEntry;
-import com.liferay.portlet.ratings.model.RatingsStats;
-import com.liferay.portlet.ratings.service.persistence.RatingsStatsUtil;
+import com.liferay.ratings.kernel.model.RatingsEntry;
+import com.liferay.ratings.kernel.model.RatingsStats;
+import com.liferay.ratings.kernel.service.persistence.RatingsStatsUtil;
 
 import java.util.ArrayList;
 import java.util.List;
