@@ -33,9 +33,6 @@ import com.liferay.portal.model.Group;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.RequestBackedPortletURLFactory;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -60,6 +57,8 @@ import org.osgi.service.component.annotations.ReferencePolicy;
 @Component(service = ItemSelector.class)
 public class ItemSelectorImpl implements ItemSelector {
 
+	public static final String JSON = "json";
+
 	public static final String PARAMETER_CRITERIA = "criteria";
 
 	public static final String PARAMETER_ITEM_SELECTED_EVENT_NAME =
@@ -82,11 +81,12 @@ public class ItemSelectorImpl implements ItemSelector {
 			Class<? extends ItemSelectorCriterion> itemSelectorCriterionClass =
 				itemSelectorCriterionClasses.get(i);
 
-			String prefix = i + "_";
+			String json = parameters.get(
+				String.valueOf(i).concat("_".concat(JSON)))[0];
 
 			itemSelectorCriteria.add(
-				getItemSelectorCriterion(
-					parameters, prefix, itemSelectorCriterionClass));
+				_itemSelectionCriterionSerializer.deserialize(
+					itemSelectorCriterionClass, json));
 		}
 
 		return itemSelectorCriteria;
@@ -197,31 +197,6 @@ public class ItemSelectorImpl implements ItemSelector {
 			itemSelectorCriteria);
 	}
 
-	protected <T extends ItemSelectorCriterion> T getItemSelectorCriterion(
-		Map<String, String[]> parameters, String prefix,
-		Class<T> itemSelectorCriterionClass) {
-
-		try {
-			Constructor<T> constructor =
-				itemSelectorCriterionClass.getConstructor();
-
-			constructor.setAccessible(true);
-
-			T itemSelectorCriterion = constructor.newInstance();
-
-			_itemSelectionCriterionSerializer.setProperties(
-				itemSelectorCriterion, prefix, parameters);
-
-			return itemSelectorCriterion;
-		}
-		catch (InvocationTargetException | InstantiationException |
-			   IllegalAccessException | NoSuchMethodException e) {
-
-			throw new SystemException(
-				"Unable to unmarshall item selector criterion", e);
-		}
-	}
-
 	protected List<Class<? extends ItemSelectorCriterion>>
 		getItemSelectorCriterionClasses(Map<String, String[]> parameters) {
 
@@ -260,8 +235,32 @@ public class ItemSelectorImpl implements ItemSelector {
 			PARAMETER_ITEM_SELECTED_EVENT_NAME,
 			new String[] {itemSelectedEventName});
 
-		populateCriteria(parameters, itemSelectorCriteria);
-		populateItemSelectorCriteria(parameters, itemSelectorCriteria);
+		StringBundler sb = new StringBundler(itemSelectorCriteria.length * 2);
+
+		for (ItemSelectorCriterion itemSelectorCriterion :
+				itemSelectorCriteria) {
+
+			Class<?> clazz = itemSelectorCriterion.getClass();
+
+			sb.append(clazz.getName());
+			sb.append(StringPool.COMMA);
+		}
+
+		sb.setIndex(sb.index() - 1);
+
+		parameters.put(PARAMETER_CRITERIA, new String[] {sb.toString()});
+
+		for (int i = 0; i < itemSelectorCriteria.length; i++) {
+			ItemSelectorCriterion itemSelectorCriterion =
+				itemSelectorCriteria[i];
+
+			parameters.put(
+				String.valueOf(i).concat("_".concat(JSON)),
+				new String[] {
+					_itemSelectionCriterionSerializer.serialize(
+						itemSelectorCriterion)
+				});
+		}
 
 		return parameters;
 	}
@@ -315,40 +314,6 @@ public class ItemSelectorImpl implements ItemSelector {
 		}
 
 		return false;
-	}
-
-	protected void populateCriteria(
-		Map<String, String[]> parameters,
-		ItemSelectorCriterion[] itemSelectorCriteria) {
-
-		StringBundler sb = new StringBundler(itemSelectorCriteria.length * 2);
-
-		for (ItemSelectorCriterion itemSelectorCriterion :
-				itemSelectorCriteria) {
-
-			Class<?> clazz = itemSelectorCriterion.getClass();
-
-			sb.append(clazz.getName());
-			sb.append(StringPool.COMMA);
-		}
-
-		sb.setIndex(sb.index() - 1);
-
-		parameters.put(PARAMETER_CRITERIA, new String[] {sb.toString()});
-	}
-
-	protected void populateItemSelectorCriteria(
-		Map<String, String[]> parameters,
-		ItemSelectorCriterion[] itemSelectorCriteria) {
-
-		for (int i = 0; i < itemSelectorCriteria.length; i++) {
-			ItemSelectorCriterion itemSelectorCriterion =
-				itemSelectorCriteria[i];
-
-			parameters.putAll(
-				_itemSelectionCriterionSerializer.getProperties(
-					itemSelectorCriterion, i + "_"));
-		}
 	}
 
 	@Reference(
