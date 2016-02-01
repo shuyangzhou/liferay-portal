@@ -16,6 +16,10 @@ package com.liferay.portlet.blogs.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.blogs.kernel.exception.NoSuchEntryException;
+import com.liferay.blogs.kernel.model.BlogsEntry;
+import com.liferay.blogs.kernel.service.persistence.BlogsEntryPersistence;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -52,11 +56,8 @@ import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
-import com.liferay.portlet.blogs.exception.NoSuchEntryException;
-import com.liferay.portlet.blogs.model.BlogsEntry;
 import com.liferay.portlet.blogs.model.impl.BlogsEntryImpl;
 import com.liferay.portlet.blogs.model.impl.BlogsEntryModelImpl;
-import com.liferay.portlet.blogs.service.persistence.BlogsEntryPersistence;
 
 import java.io.Serializable;
 
@@ -81,7 +82,7 @@ import java.util.Set;
  *
  * @author Brian Wing Shun Chan
  * @see BlogsEntryPersistence
- * @see com.liferay.portlet.blogs.service.persistence.BlogsEntryUtil
+ * @see com.liferay.blogs.kernel.service.persistence.BlogsEntryUtil
  * @generated
  */
 @ProviderType
@@ -663,7 +664,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 			new String[] { String.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the blogs entry where uuid = &#63; and groupId = &#63; or throws a {@link NoSuchEntryException} if it could not be found.
+	 * Returns the blogs entry where uuid = &#63; and groupId = &#63; or throws a {@link com.liferay.portlet.blogs.exception.NoSuchEntryException} if it could not be found.
 	 *
 	 * @param uuid the uuid
 	 * @param groupId the group ID
@@ -2869,7 +2870,7 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 			new String[] { Long.class.getName(), String.class.getName() });
 
 	/**
-	 * Returns the blogs entry where groupId = &#63; and urlTitle = &#63; or throws a {@link NoSuchEntryException} if it could not be found.
+	 * Returns the blogs entry where groupId = &#63; and urlTitle = &#63; or throws a {@link com.liferay.portlet.blogs.exception.NoSuchEntryException} if it could not be found.
 	 *
 	 * @param groupId the group ID
 	 * @param urlTitle the url title
@@ -19088,13 +19089,13 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 			try {
 				blogsEntry.setTitle(SanitizerUtil.sanitize(companyId, groupId,
 						userId,
-						com.liferay.portlet.blogs.model.BlogsEntry.class.getName(),
+						com.liferay.blogs.kernel.model.BlogsEntry.class.getName(),
 						entryId, ContentTypes.TEXT_PLAIN, Sanitizer.MODE_ALL,
 						blogsEntry.getTitle(), null));
 
 				blogsEntry.setContent(SanitizerUtil.sanitize(companyId,
 						groupId, userId,
-						com.liferay.portlet.blogs.model.BlogsEntry.class.getName(),
+						com.liferay.blogs.kernel.model.BlogsEntry.class.getName(),
 						entryId, ContentTypes.TEXT_HTML, Sanitizer.MODE_ALL,
 						blogsEntry.getContent(), null));
 			}

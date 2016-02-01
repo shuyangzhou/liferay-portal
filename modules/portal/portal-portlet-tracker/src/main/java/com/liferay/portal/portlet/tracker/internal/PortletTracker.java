@@ -340,8 +340,6 @@ public class PortletTracker
 
 			deployPortlet(serviceReference, portletModel, companies);
 
-			checkResources(serviceReference, portletModel, companies);
-
 			portletModel.setReady(true);
 
 			if (_log.isInfoEnabled()) {
@@ -431,39 +429,6 @@ public class PortletTracker
 					LanguageResources.getResourceBundle(locale), properties);
 
 			serviceRegistrations.addServiceRegistration(serviceRegistration);
-		}
-	}
-
-	protected void checkResources(
-			ServiceReference<Portlet> serviceReference,
-			com.liferay.portal.model.Portlet portletModel,
-			List<Company> companies)
-		throws PortalException {
-
-		List<String> portletActions =
-			_resourceActions.getPortletResourceActions(
-				portletModel.getPortletId());
-
-		_resourceActionLocalService.checkResourceActions(
-			portletModel.getPortletId(), portletActions);
-
-		List<String> modelNames = _resourceActions.getPortletModelResources(
-			portletModel.getPortletId());
-
-		for (String modelName : modelNames) {
-			List<String> modelActions =
-				_resourceActions.getModelResourceActions(modelName);
-
-			_resourceActionLocalService.checkResourceActions(
-				modelName, modelActions);
-		}
-
-		for (Company company : companies) {
-			com.liferay.portal.model.Portlet companyPortletModel =
-				_portletLocalService.getPortletById(
-					company.getCompanyId(), portletModel.getPortletId());
-
-			_portletLocalService.checkPortlet(companyPortletModel);
 		}
 	}
 
@@ -1436,7 +1401,7 @@ public class PortletTracker
 	private ServiceTracker<Portlet, com.liferay.portal.model.Portlet>
 		_serviceTracker;
 
-	private class JspServletWrapper extends HttpServlet {
+	private static class JspServletWrapper extends HttpServlet {
 
 		@Override
 		public void destroy() {
@@ -1465,7 +1430,7 @@ public class PortletTracker
 
 	}
 
-	private class PortletServletWrapper extends HttpServlet {
+	private static class PortletServletWrapper extends HttpServlet {
 
 		@Override
 		protected void service(
@@ -1480,7 +1445,7 @@ public class PortletTracker
 
 	}
 
-	private class RestrictPortletServletRequestFilter implements Filter {
+	private static class RestrictPortletServletRequestFilter implements Filter {
 
 		@Override
 		public void destroy() {
