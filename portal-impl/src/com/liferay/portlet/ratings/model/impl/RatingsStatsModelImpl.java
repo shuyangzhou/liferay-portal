@@ -29,8 +29,9 @@ import com.liferay.portal.util.PortalUtil;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
 import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
-import com.liferay.portlet.ratings.model.RatingsStats;
-import com.liferay.portlet.ratings.model.RatingsStatsModel;
+
+import com.liferay.ratings.kernel.model.RatingsStats;
+import com.liferay.ratings.kernel.model.RatingsStatsModel;
 
 import java.io.Serializable;
 
@@ -102,7 +103,7 @@ public class RatingsStatsModelImpl extends BaseModelImpl<RatingsStats>
 	public static final long CLASSPK_COLUMN_BITMASK = 2L;
 	public static final long STATSID_COLUMN_BITMASK = 4L;
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.portal.util.PropsUtil.get(
-				"lock.expiration.time.com.liferay.portlet.ratings.model.RatingsStats"));
+				"lock.expiration.time.com.liferay.ratings.kernel.model.RatingsStats"));
 
 	public RatingsStatsModelImpl() {
 	}
@@ -474,7 +475,7 @@ public class RatingsStatsModelImpl extends BaseModelImpl<RatingsStats>
 		StringBundler sb = new StringBundler(25);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.portlet.ratings.model.RatingsStats");
+		sb.append("com.liferay.ratings.kernel.model.RatingsStats");
 		sb.append("</model-name>");
 
 		sb.append(
