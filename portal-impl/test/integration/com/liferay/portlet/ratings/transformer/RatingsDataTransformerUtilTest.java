@@ -70,11 +70,11 @@ public class RatingsDataTransformerUtilTest {
 				"_RatingsType",
 			"like");
 		oldPortletPreferences.setValue(
-			"com.liferay.portlet.messageboards.model.MBDiscussion" +
+			"com.liferay.message.boards.kernel.model.MBDiscussion" +
 				"_RatingsType",
 			"like");
 		oldPortletPreferences.setValue(
-			"com.liferay.portlet.messageboards.model.MBMessage_RatingsType",
+			"com.liferay.message.boards.kernel.model.MBMessage_RatingsType",
 			"like");
 		oldPortletPreferences.setValue(
 			"com.liferay.wiki.model.WikiPage_RatingsType", "like");
@@ -92,11 +92,11 @@ public class RatingsDataTransformerUtilTest {
 				"_RatingsType",
 			"stars");
 		unicodeProperties.setProperty(
-			"com.liferay.portlet.messageboards.model.MBDiscussion" +
+			"com.liferay.message.boards.kernel.model.MBDiscussion" +
 				"_RatingsType",
 			"stars");
 		unicodeProperties.setProperty(
-			"com.liferay.portlet.messageboards.model.MBMessage_RatingsType",
+			"com.liferay.message.boards.kernel.model.MBMessage_RatingsType",
 			"stars");
 		unicodeProperties.setProperty(
 			"com.liferay.wiki.model.WikiPage_RatingsType", "stars");
@@ -124,11 +124,11 @@ public class RatingsDataTransformerUtilTest {
 				"_RatingsType",
 			"like");
 		oldUnicodeProperties.setProperty(
-			"com.liferay.portlet.messageboards.model.MBDiscussion" +
+			"com.liferay.message.boards.kernel.model.MBDiscussion" +
 				"_RatingsType",
 			"like");
 		oldUnicodeProperties.setProperty(
-			"com.liferay.portlet.messageboards.model.MBMessage_RatingsType",
+			"com.liferay.message.boards.kernel.model.MBMessage_RatingsType",
 			"like");
 		oldUnicodeProperties.setProperty(
 			"com.liferay.wiki.model.WikiPage_RatingsType", "like");
@@ -146,11 +146,11 @@ public class RatingsDataTransformerUtilTest {
 				"_RatingsType",
 			"stars");
 		unicodeProperties.setProperty(
-			"com.liferay.portlet.messageboards.model.MBDiscussion" +
+			"com.liferay.message.boards.kernel.model.MBDiscussion" +
 				"_RatingsType",
 			"stars");
 		unicodeProperties.setProperty(
-			"com.liferay.portlet.messageboards.model.MBMessage_RatingsType",
+			"com.liferay.message.boards.kernel.model.MBMessage_RatingsType",
 			"stars");
 		unicodeProperties.setProperty(
 			"com.liferay.wiki.model.WikiPage_RatingsType", "stars");
