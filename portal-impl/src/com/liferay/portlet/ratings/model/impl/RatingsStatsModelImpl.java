@@ -475,7 +475,7 @@ public class RatingsStatsModelImpl extends BaseModelImpl<RatingsStats>
 		StringBundler sb = new StringBundler(25);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.portlet.ratings.model.RatingsStats");
+		sb.append("com.liferay.ratings.kernel.model.RatingsStats");
 		sb.append("</model-name>");
 
 		sb.append(
