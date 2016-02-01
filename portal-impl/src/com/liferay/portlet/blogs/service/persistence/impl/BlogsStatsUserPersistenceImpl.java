@@ -16,6 +16,10 @@ package com.liferay.portlet.blogs.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.blogs.kernel.exception.NoSuchStatsUserException;
+import com.liferay.blogs.kernel.model.BlogsStatsUser;
+import com.liferay.blogs.kernel.service.persistence.BlogsStatsUserPersistence;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -37,11 +41,8 @@ import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
-import com.liferay.portlet.blogs.exception.NoSuchStatsUserException;
-import com.liferay.portlet.blogs.model.BlogsStatsUser;
 import com.liferay.portlet.blogs.model.impl.BlogsStatsUserImpl;
 import com.liferay.portlet.blogs.model.impl.BlogsStatsUserModelImpl;
-import com.liferay.portlet.blogs.service.persistence.BlogsStatsUserPersistence;
 
 import java.io.Serializable;
 
@@ -65,7 +66,7 @@ import java.util.Set;
  *
  * @author Brian Wing Shun Chan
  * @see BlogsStatsUserPersistence
- * @see com.liferay.portlet.blogs.service.persistence.BlogsStatsUserUtil
+ * @see com.liferay.blogs.kernel.service.persistence.BlogsStatsUserUtil
  * @generated
  */
 @ProviderType
@@ -1115,7 +1116,7 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 			new String[] { Long.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns the blogs stats user where groupId = &#63; and userId = &#63; or throws a {@link NoSuchStatsUserException} if it could not be found.
+	 * Returns the blogs stats user where groupId = &#63; and userId = &#63; or throws a {@link com.liferay.portlet.blogs.exception.NoSuchStatsUserException} if it could not be found.
 	 *
 	 * @param groupId the group ID
 	 * @param userId the user ID
