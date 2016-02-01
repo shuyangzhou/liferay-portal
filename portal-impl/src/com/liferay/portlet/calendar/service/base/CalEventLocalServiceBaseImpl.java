@@ -16,6 +16,9 @@ package com.liferay.portlet.calendar.service.base;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.message.boards.kernel.service.persistence.MBMessageFinder;
+import com.liferay.message.boards.kernel.service.persistence.MBMessagePersistence;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -63,8 +66,6 @@ import com.liferay.portlet.exportimport.lar.ManifestSummary;
 import com.liferay.portlet.exportimport.lar.PortletDataContext;
 import com.liferay.portlet.exportimport.lar.StagedModelDataHandlerUtil;
 import com.liferay.portlet.exportimport.lar.StagedModelType;
-import com.liferay.portlet.messageboards.service.persistence.MBMessageFinder;
-import com.liferay.portlet.messageboards.service.persistence.MBMessagePersistence;
 import com.liferay.portlet.social.service.persistence.SocialActivityFinder;
 import com.liferay.portlet.social.service.persistence.SocialActivityPersistence;
 
@@ -1007,7 +1008,7 @@ public abstract class CalEventLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 *
 	 * @return the message-boards message local service
 	 */
-	public com.liferay.portlet.messageboards.service.MBMessageLocalService getMBMessageLocalService() {
+	public com.liferay.message.boards.kernel.service.MBMessageLocalService getMBMessageLocalService() {
 		return mbMessageLocalService;
 	}
 
@@ -1017,7 +1018,7 @@ public abstract class CalEventLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * @param mbMessageLocalService the message-boards message local service
 	 */
 	public void setMBMessageLocalService(
-		com.liferay.portlet.messageboards.service.MBMessageLocalService mbMessageLocalService) {
+		com.liferay.message.boards.kernel.service.MBMessageLocalService mbMessageLocalService) {
 		this.mbMessageLocalService = mbMessageLocalService;
 	}
 
@@ -1227,8 +1228,8 @@ public abstract class CalEventLocalServiceBaseImpl extends BaseLocalServiceImpl
 	protected com.liferay.portlet.expando.service.ExpandoValueLocalService expandoValueLocalService;
 	@BeanReference(type = ExpandoValuePersistence.class)
 	protected ExpandoValuePersistence expandoValuePersistence;
-	@BeanReference(type = com.liferay.portlet.messageboards.service.MBMessageLocalService.class)
-	protected com.liferay.portlet.messageboards.service.MBMessageLocalService mbMessageLocalService;
+	@BeanReference(type = com.liferay.message.boards.kernel.service.MBMessageLocalService.class)
+	protected com.liferay.message.boards.kernel.service.MBMessageLocalService mbMessageLocalService;
 	@BeanReference(type = MBMessagePersistence.class)
 	protected MBMessagePersistence mbMessagePersistence;
 	@BeanReference(type = MBMessageFinder.class)
