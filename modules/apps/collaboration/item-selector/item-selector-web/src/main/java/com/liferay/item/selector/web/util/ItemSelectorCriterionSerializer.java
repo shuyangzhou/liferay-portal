@@ -68,12 +68,17 @@ public class ItemSelectorCriterionSerializer {
 		Class<? extends ItemSelectorReturnType> itemSelectorReturnTypeClass =
 			itemSelectorReturnType.getClass();
 
-		_itemSelectorReturnTypes.putIfAbsent(
-			itemSelectorReturnTypeClass.getName(),
-			new CopyOnWriteArrayList<ItemSelectorReturnType>());
-
 		List<ItemSelectorReturnType> itemSelectorReturnTypes =
 			_itemSelectorReturnTypes.get(itemSelectorReturnTypeClass.getName());
+
+		if (itemSelectorReturnTypes == null) {
+			_itemSelectorReturnTypes.putIfAbsent(
+				itemSelectorReturnTypeClass.getName(),
+				new CopyOnWriteArrayList<ItemSelectorReturnType>());
+
+			itemSelectorReturnTypes = _itemSelectorReturnTypes.get(
+				itemSelectorReturnTypeClass.getName());
+		}
 
 		itemSelectorReturnTypes.add(itemSelectorReturnType);
 	}
@@ -311,13 +316,18 @@ public class ItemSelectorCriterionSerializer {
 					supportedItemSelectorReturnTypeClass =
 						supportedItemSelectorReturnType.getClass();
 
-				_itemSelectorReturnTypes.putIfAbsent(
-					supportedItemSelectorReturnTypeClass.getName(),
-					new CopyOnWriteArrayList<ItemSelectorReturnType>());
-
 				List<ItemSelectorReturnType> itemSelectorReturnTypes =
 					_itemSelectorReturnTypes.get(
 						supportedItemSelectorReturnTypeClass.getName());
+
+				if (itemSelectorReturnTypes == null) {
+					_itemSelectorReturnTypes.putIfAbsent(
+						supportedItemSelectorReturnTypeClass.getName(),
+						new CopyOnWriteArrayList<ItemSelectorReturnType>());
+
+					itemSelectorReturnTypes = _itemSelectorReturnTypes.get(
+						supportedItemSelectorReturnTypeClass.getName());
+				}
 
 				itemSelectorReturnTypes.add(supportedItemSelectorReturnType);
 			}
