@@ -71,11 +71,12 @@ public class ItemSelectorImpl implements ItemSelector {
 	public List<ItemSelectorCriterion> getItemSelectorCriteria(
 		Map<String, String[]> parameters) {
 
-		List<ItemSelectorCriterion> itemSelectorCriteria = new ArrayList<>();
-
 		List<Class<? extends ItemSelectorCriterion>>
 			itemSelectorCriterionClasses = getItemSelectorCriterionClasses(
 				parameters);
+
+		List<ItemSelectorCriterion> itemSelectorCriteria = new ArrayList<>(
+			itemSelectorCriterionClasses.size());
 
 		for (int i = 0; i < itemSelectorCriterionClasses.size(); i++) {
 			Class<? extends ItemSelectorCriterion> itemSelectorCriterionClass =
@@ -229,7 +230,8 @@ public class ItemSelectorImpl implements ItemSelector {
 		String[] itemSelectorCriterionClassNames = criteria.split(",");
 
 		List<Class<? extends ItemSelectorCriterion>>
-			itemSelectorCriterionClasses = new ArrayList<>();
+			itemSelectorCriterionClasses = new ArrayList<>(
+				itemSelectorCriterionClassNames.length);
 
 		for (String itemSelectorCriterionClassName :
 				itemSelectorCriterionClassNames) {
