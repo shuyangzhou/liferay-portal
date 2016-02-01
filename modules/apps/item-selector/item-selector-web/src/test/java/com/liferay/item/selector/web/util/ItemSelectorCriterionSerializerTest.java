@@ -139,7 +139,7 @@ public class ItemSelectorCriterionSerializerTest {
 	private static final String _PREFIX = "prefix_";
 
 	private FlickrItemSelectorCriterion _flickrItemSelectorCriterion;
-	private final ItemSelectorCriterionSerializer<FlickrItemSelectorCriterion>
+	private final ItemSelectorCriterionSerializer
 		_itemSelectorCriterionSerializer =
 			new ItemSelectorCriterionSerializer();
 	private final ItemSelectorReturnType _testFileEntryItemSelectorReturnType =

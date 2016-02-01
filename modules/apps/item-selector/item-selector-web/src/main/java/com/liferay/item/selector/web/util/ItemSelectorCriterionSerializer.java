@@ -59,7 +59,7 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
  * @author Iván Zaera
  */
 @Component(immediate = true, service = ItemSelectorCriterionSerializer.class)
-public class ItemSelectorCriterionSerializer<T extends ItemSelectorCriterion> {
+public class ItemSelectorCriterionSerializer {
 
 	public static final String JSON = "json";
 
