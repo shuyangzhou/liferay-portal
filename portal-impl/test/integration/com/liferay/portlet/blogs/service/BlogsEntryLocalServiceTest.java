@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.blogs.service;
 
+import com.liferay.message.boards.kernel.service.MBMessageLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -54,7 +55,6 @@ import com.liferay.portlet.blogs.exception.EntryTitleException;
 import com.liferay.portlet.blogs.exception.NoSuchEntryException;
 import com.liferay.portlet.blogs.model.BlogsEntry;
 import com.liferay.portlet.blogs.util.test.BlogsTestUtil;
-import com.liferay.portlet.messageboards.service.MBMessageLocalServiceUtil;
 
 import java.io.InputStream;
 
