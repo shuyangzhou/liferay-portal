@@ -304,13 +304,13 @@
 	<bean id="com.liferay.portlet.messageboards.service.persistence.MBThreadFinder" class="com.liferay.portlet.messageboards.service.persistence.impl.MBThreadFinderImpl" parent="basePersistence" />
 	<bean id="com.liferay.portlet.messageboards.service.MBThreadFlagLocalService" class="com.liferay.portlet.messageboards.service.impl.MBThreadFlagLocalServiceImpl" />
 	<bean id="com.liferay.portlet.messageboards.service.persistence.MBThreadFlagPersistence" class="com.liferay.portlet.messageboards.service.persistence.impl.MBThreadFlagPersistenceImpl" parent="basePersistence" />
-	<bean id="com.liferay.portlet.ratings.service.RatingsEntryLocalService" class="com.liferay.portlet.ratings.service.impl.RatingsEntryLocalServiceImpl" />
-	<bean id="com.liferay.portlet.ratings.service.RatingsEntryService" class="com.liferay.portlet.ratings.service.impl.RatingsEntryServiceImpl" />
-	<bean id="com.liferay.portlet.ratings.service.persistence.RatingsEntryPersistence" class="com.liferay.portlet.ratings.service.persistence.impl.RatingsEntryPersistenceImpl" parent="basePersistence" />
-	<bean id="com.liferay.portlet.ratings.service.persistence.RatingsEntryFinder" class="com.liferay.portlet.ratings.service.persistence.impl.RatingsEntryFinderImpl" parent="basePersistence" />
-	<bean id="com.liferay.portlet.ratings.service.RatingsStatsLocalService" class="com.liferay.portlet.ratings.service.impl.RatingsStatsLocalServiceImpl" />
-	<bean id="com.liferay.portlet.ratings.service.persistence.RatingsStatsPersistence" class="com.liferay.portlet.ratings.service.persistence.impl.RatingsStatsPersistenceImpl" parent="basePersistence" />
-	<bean id="com.liferay.portlet.ratings.service.persistence.RatingsStatsFinder" class="com.liferay.portlet.ratings.service.persistence.impl.RatingsStatsFinderImpl" parent="basePersistence" />
+	<bean id="com.liferay.ratings.kernel.service.RatingsEntryLocalService" class="com.liferay.portlet.ratings.service.impl.RatingsEntryLocalServiceImpl" />
+	<bean id="com.liferay.ratings.kernel.service.RatingsEntryService" class="com.liferay.portlet.ratings.service.impl.RatingsEntryServiceImpl" />
+	<bean id="com.liferay.ratings.kernel.service.persistence.RatingsEntryPersistence" class="com.liferay.portlet.ratings.service.persistence.impl.RatingsEntryPersistenceImpl" parent="basePersistence" />
+	<bean id="com.liferay.ratings.kernel.service.persistence.RatingsEntryFinder" class="com.liferay.portlet.ratings.service.persistence.impl.RatingsEntryFinderImpl" parent="basePersistence" />
+	<bean id="com.liferay.ratings.kernel.service.RatingsStatsLocalService" class="com.liferay.portlet.ratings.service.impl.RatingsStatsLocalServiceImpl" />
+	<bean id="com.liferay.ratings.kernel.service.persistence.RatingsStatsPersistence" class="com.liferay.portlet.ratings.service.persistence.impl.RatingsStatsPersistenceImpl" parent="basePersistence" />
+	<bean id="com.liferay.ratings.kernel.service.persistence.RatingsStatsFinder" class="com.liferay.portlet.ratings.service.persistence.impl.RatingsStatsFinderImpl" parent="basePersistence" />
 	<bean id="com.liferay.portlet.social.service.SocialActivityLocalService" class="com.liferay.portlet.social.service.impl.SocialActivityLocalServiceImpl" />
 	<bean id="com.liferay.portlet.social.service.SocialActivityService" class="com.liferay.portlet.social.service.impl.SocialActivityServiceImpl" />
 	<bean id="com.liferay.portlet.social.service.persistence.SocialActivityPersistence" class="com.liferay.portlet.social.service.persistence.impl.SocialActivityPersistenceImpl" parent="basePersistence" />
