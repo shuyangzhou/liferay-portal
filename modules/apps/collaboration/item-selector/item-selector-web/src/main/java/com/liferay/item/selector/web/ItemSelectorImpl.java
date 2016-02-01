@@ -28,8 +28,8 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactory;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.Accessor;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -319,31 +319,20 @@ public class ItemSelectorImpl implements ItemSelector {
 		Map<String, String[]> parameters,
 		ItemSelectorCriterion[] itemSelectorCriteria) {
 
-		Accessor<ItemSelectorCriterion, String> accessor =
-			new Accessor<ItemSelectorCriterion, String>() {
+		StringBundler sb = new StringBundler(itemSelectorCriteria.length * 2);
 
-				@Override
-				public String get(ItemSelectorCriterion itemSelectorCriterion) {
-					Class<?> clazz = itemSelectorCriterion.getClass();
+		for (ItemSelectorCriterion itemSelectorCriterion :
+				itemSelectorCriteria) {
 
-					return clazz.getName();
-				}
+			Class<?> clazz = itemSelectorCriterion.getClass();
 
-				@Override
-				public Class<String> getAttributeClass() {
-					return String.class;
-				}
+			sb.append(clazz.getName());
+			sb.append(StringPool.COMMA);
+		}
 
-				@Override
-				public Class<ItemSelectorCriterion> getTypeClass() {
-					return ItemSelectorCriterion.class;
-				}
+		sb.setIndex(sb.index() - 1);
 
-			};
-
-		parameters.put(
-			PARAMETER_CRITERIA,
-			new String[] {ArrayUtil.toString(itemSelectorCriteria, accessor)});
+		parameters.put(PARAMETER_CRITERIA, new String[] {sb.toString()});
 	}
 
 	protected void populateItemSelectorCriteria(

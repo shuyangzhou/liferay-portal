@@ -26,9 +26,9 @@ import com.liferay.portal.kernel.json.JSONSerializer;
 import com.liferay.portal.kernel.json.JSONTransformer;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.Accessor;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
@@ -267,37 +267,25 @@ public class ItemSelectorCriterionSerializer<T extends ItemSelectorCriterion> {
 			List<ItemSelectorReturnType> desiredItemSelectorReturnTypes =
 				(List<ItemSelectorReturnType>)object;
 
-			String desiredItemSelectorReturnTypesString = ListUtil.toString(
-				desiredItemSelectorReturnTypes,
-				new Accessor<ItemSelectorReturnType, String>() {
+			StringBundler sb = new StringBundler(
+				desiredItemSelectorReturnTypes.size() * 2 + 1);
 
-					@Override
-					public String get(
-						ItemSelectorReturnType itemSelectorReturnType) {
+			sb.append(StringPool.QUOTE);
 
-						Class<? extends ItemSelectorReturnType>
-							itemSelectorReturnTypeClass =
-								itemSelectorReturnType.getClass();
+			for (ItemSelectorReturnType itemSelectorReturnType :
+					desiredItemSelectorReturnTypes) {
 
-						return itemSelectorReturnTypeClass.getName();
-					}
+				Class<? extends ItemSelectorReturnType>
+					itemSelectorReturnTypeClass =
+						itemSelectorReturnType.getClass();
 
-					@Override
-					public Class<String> getAttributeClass() {
-						return String.class;
-					}
+				sb.append(itemSelectorReturnTypeClass.getName());
+				sb.append(StringPool.COMMA);
+			}
 
-					@Override
-					public Class<ItemSelectorReturnType> getTypeClass() {
-						return ItemSelectorReturnType.class;
-					}
+			sb.setStringAt(StringPool.QUOTE, sb.index() - 1);
 
-				}
-			);
-
-			jsonContext.write(
-				StringUtil.quote(
-					desiredItemSelectorReturnTypesString, StringPool.QUOTE));
+			jsonContext.write(sb.toString());
 		}
 
 	}
