@@ -29,8 +29,9 @@ import com.liferay.portal.util.PortalUtil;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
 import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
-import com.liferay.portlet.ratings.model.RatingsStats;
-import com.liferay.portlet.ratings.model.RatingsStatsModel;
+
+import com.liferay.ratings.kernel.model.RatingsStats;
+import com.liferay.ratings.kernel.model.RatingsStatsModel;
 
 import java.io.Serializable;
 

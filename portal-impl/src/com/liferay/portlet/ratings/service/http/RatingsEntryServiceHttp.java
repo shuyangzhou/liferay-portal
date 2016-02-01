@@ -83,7 +83,7 @@ public class RatingsEntryServiceHttp {
 		}
 	}
 
-	public static com.liferay.portlet.ratings.model.RatingsEntry updateEntry(
+	public static com.liferay.ratings.kernel.model.RatingsEntry updateEntry(
 		HttpPrincipal httpPrincipal, java.lang.String className, long classPK,
 		double score)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -107,7 +107,7 @@ public class RatingsEntryServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portlet.ratings.model.RatingsEntry)returnObj;
+			return (com.liferay.ratings.kernel.model.RatingsEntry)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);

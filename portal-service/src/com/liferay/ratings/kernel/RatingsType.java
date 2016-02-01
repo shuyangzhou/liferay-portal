@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portlet.ratings;
+package com.liferay.ratings.kernel;
 
 /**
  * @author Sergio Gonzalez
