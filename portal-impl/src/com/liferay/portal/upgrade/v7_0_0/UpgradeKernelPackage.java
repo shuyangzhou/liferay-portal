@@ -111,6 +111,42 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 		{
 			"com.liferay.portlet.announcements.model.AnnouncementsFlag",
 			"com.liferay.announcements.kernel.model.AnnouncementsFlag"
+		},
+		{
+			"com.liferay.portlet.messageboards",
+			"com.liferay.message.boards.kernel"
+		},
+		{
+			"com.liferay.portlet.messageboards.model.MBBan",
+			"com.liferay.message.boards.kernel.model.MBBan"
+		},
+		{
+			"com.liferay.portlet.messageboards.model.MBCategory",
+			"com.liferay.message.boards.kernel.model.MBCategory"
+		},
+		{
+			"com.liferay.portlet.messageboards.model.MBDiscussion",
+			"com.liferay.message.boards.kernel.model.MBDiscussion"
+		},
+		{
+			"com.liferay.portlet.messageboards.model.MBMailingList",
+			"com.liferay.message.boards.kernel.model.MBMailingList"
+		},
+		{
+			"com.liferay.portlet.messageboards.model.MBMessage",
+			"com.liferay.message.boards.kernel.model.MBMessage"
+		},
+		{
+			"com.liferay.portlet.messageboards.model.MBStatsUser",
+			"com.liferay.message.boards.kernel.model.MBStatsUser"
+		},
+		{
+			"com.liferay.portlet.messageboards.model.MBThreadFlag",
+			"com.liferay.message.boards.kernel.model.MBThreadFlag"
+		},
+		{
+			"com.liferay.portlet.messageboards.model.MBThread",
+			"com.liferay.message.boards.kernel.model.MBThread"
 		}
 	};
 
