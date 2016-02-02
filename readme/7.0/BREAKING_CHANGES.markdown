@@ -3471,6 +3471,8 @@ else.
 
 - `com.liferay.portlet.backgroundtask` &rarr; `com.liferay.background.task.kernel`
 
+- `com.liferay.portlet.blogs` &rarr; `com.liferay.blogs.kernel`
+
 - `com.liferay.portlet.dynamicdatamapping` &rarr; `com.liferay.dynamic.data.mapping.kernel`
 
 - `com.liferay.portlet.imagegallerydisplay.display.context` &rarr; `com.liferay.image.gallery.display.kernel.display.context`
