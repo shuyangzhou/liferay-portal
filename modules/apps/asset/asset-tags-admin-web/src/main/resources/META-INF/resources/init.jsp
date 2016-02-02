@@ -24,7 +24,13 @@ taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet" %><%@
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
-<%@ page import="com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker" %><%@
+<%@ page import="com.liferay.asset.kernel.exception.AssetTagException" %><%@
+page import="com.liferay.asset.kernel.exception.DuplicateTagException" %><%@
+page import="com.liferay.asset.kernel.exception.NoSuchTagException" %><%@
+page import="com.liferay.asset.kernel.model.AssetTag" %><%@
+page import="com.liferay.asset.kernel.service.AssetTagLocalServiceUtil" %><%@
+page import="com.liferay.asset.kernel.service.AssetTagServiceUtil" %><%@
+page import="com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker" %><%@
 page import="com.liferay.portal.kernel.dao.search.ResultRow" %><%@
 page import="com.liferay.portal.kernel.dao.search.SearchContainer" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
@@ -35,12 +41,6 @@ page import="com.liferay.portal.kernel.util.StringPool" %><%@
 page import="com.liferay.portal.kernel.util.StringUtil" %><%@
 page import="com.liferay.portal.kernel.util.Validator" %><%@
 page import="com.liferay.portal.kernel.util.WebKeys" %><%@
-page import="com.liferay.portlet.asset.exception.AssetTagException" %><%@
-page import="com.liferay.portlet.asset.exception.DuplicateTagException" %><%@
-page import="com.liferay.portlet.asset.exception.NoSuchTagException" %><%@
-page import="com.liferay.portlet.asset.model.AssetTag" %><%@
-page import="com.liferay.portlet.asset.service.AssetTagLocalServiceUtil" %><%@
-page import="com.liferay.portlet.asset.service.AssetTagServiceUtil" %><%@
 page import="com.liferay.portlet.asset.service.permission.AssetPermission" %><%@
 page import="com.liferay.portlet.asset.service.permission.AssetTagPermission" %><%@
 page import="com.liferay.portlet.asset.util.comparator.AssetTagAssetCountComparator" %><%@

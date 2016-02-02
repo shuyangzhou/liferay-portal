@@ -29,7 +29,20 @@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
 <%@ page contentType="text/html; charset=UTF-8" %>
 
-<%@ page import="com.liferay.portal.exception.NoSuchOrganizationException" %><%@
+<%@ page import="com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil" %><%@
+page import="com.liferay.asset.kernel.model.AssetCategory" %><%@
+page import="com.liferay.asset.kernel.model.AssetEntry" %><%@
+page import="com.liferay.asset.kernel.model.AssetRenderer" %><%@
+page import="com.liferay.asset.kernel.model.AssetRendererFactory" %><%@
+page import="com.liferay.asset.kernel.model.AssetTag" %><%@
+page import="com.liferay.asset.kernel.model.AssetVocabulary" %><%@
+page import="com.liferay.asset.kernel.service.AssetCategoryLocalServiceUtil" %><%@
+page import="com.liferay.asset.kernel.service.AssetCategoryServiceUtil" %><%@
+page import="com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil" %><%@
+page import="com.liferay.asset.kernel.service.AssetTagServiceUtil" %><%@
+page import="com.liferay.asset.kernel.service.AssetVocabularyLocalServiceUtil" %><%@
+page import="com.liferay.asset.kernel.service.AssetVocabularyServiceUtil" %><%@
+page import="com.liferay.portal.exception.NoSuchOrganizationException" %><%@
 page import="com.liferay.portal.kernel.bean.BeanParamUtil" %><%@
 page import="com.liferay.portal.kernel.bean.BeanPropertiesUtil" %><%@
 page import="com.liferay.portal.kernel.cal.Recurrence" %><%@
@@ -167,19 +180,6 @@ page import="com.liferay.portlet.RenderRequestFactory" %><%@
 page import="com.liferay.portlet.RenderRequestImpl" %><%@
 page import="com.liferay.portlet.RenderResponseFactory" %><%@
 page import="com.liferay.portlet.RenderResponseImpl" %><%@
-page import="com.liferay.portlet.asset.AssetRendererFactoryRegistryUtil" %><%@
-page import="com.liferay.portlet.asset.model.AssetCategory" %><%@
-page import="com.liferay.portlet.asset.model.AssetEntry" %><%@
-page import="com.liferay.portlet.asset.model.AssetRenderer" %><%@
-page import="com.liferay.portlet.asset.model.AssetRendererFactory" %><%@
-page import="com.liferay.portlet.asset.model.AssetTag" %><%@
-page import="com.liferay.portlet.asset.model.AssetVocabulary" %><%@
-page import="com.liferay.portlet.asset.service.AssetCategoryLocalServiceUtil" %><%@
-page import="com.liferay.portlet.asset.service.AssetCategoryServiceUtil" %><%@
-page import="com.liferay.portlet.asset.service.AssetEntryLocalServiceUtil" %><%@
-page import="com.liferay.portlet.asset.service.AssetTagServiceUtil" %><%@
-page import="com.liferay.portlet.asset.service.AssetVocabularyLocalServiceUtil" %><%@
-page import="com.liferay.portlet.asset.service.AssetVocabularyServiceUtil" %><%@
 page import="com.liferay.portlet.asset.util.AssetUtil" %><%@
 page import="com.liferay.portlet.configuration.kernel.util.PortletConfigurationUtil" %><%@
 page import="com.liferay.portlet.documentlibrary.model.DLFileEntry" %><%@
