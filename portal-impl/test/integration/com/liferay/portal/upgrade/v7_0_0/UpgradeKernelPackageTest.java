@@ -87,20 +87,21 @@ public class UpgradeKernelPackageTest extends UpgradeKernelPackage {
 
 	@After
 	public void tearDown() throws Exception {
-		for (String className : getClassNames()[0]) {
-			runSQL("delete from Counter where name like '%" + className + "%'");
+		for (String packageName : getPackageNames()[0]) {
+			runSQL(
+				"delete from Counter where name like '%" + packageName + "%'");
 
 			runSQL(
-				"delete from ClassName_ where value like '%" + className +
+				"delete from ClassName_ where value like '%" + packageName +
 					"%'");
 
 			runSQL(
-				"delete from ResourceBlock where name like '%" + className +
+				"delete from ResourceBlock where name like '%" + packageName +
 					"%'");
 
 			runSQL(
 				"delete from ResourcePermission where name like '%" +
-					className + "%'");
+					packageName + "%'");
 		}
 
 		connection.close();
@@ -184,7 +185,7 @@ public class UpgradeKernelPackageTest extends UpgradeKernelPackage {
 	}
 
 	@Override
-	protected String[][] getClassNames() {
+	protected String[][] getPackageNames() {
 		return new String[][] {{_OLD_CLASS_NAME, _NEW_CLASS_NAME}};
 	}
 

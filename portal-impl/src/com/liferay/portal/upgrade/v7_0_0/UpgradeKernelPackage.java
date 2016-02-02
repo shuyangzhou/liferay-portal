@@ -36,8 +36,8 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 		upgradeTable("ResourcePermission", "name");
 	}
 
-	protected String[][] getClassNames() {
-		return _CLASS_NAMES;
+	protected String[][] getPackageNames() {
+		return _PACKAGE_NAMES;
 	}
 
 	protected void upgradeTable(String tableName, String columnName)
@@ -55,7 +55,7 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 
 		String updateSQL = updateSB.toString();
 
-		for (String[] className : getClassNames()) {
+		for (String[] packageName : getPackageNames()) {
 			StringBundler selectSB = new StringBundler(9);
 
 			selectSB.append("select ");
@@ -65,16 +65,17 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 			selectSB.append(" where ");
 			selectSB.append(columnName);
 			selectSB.append(" like '%");
-			selectSB.append(className[0]);
+			selectSB.append(packageName[0]);
 			selectSB.append("%'");
 
-			upgradeTable(columnName, selectSB.toString(), updateSQL, className);
+			upgradeTable(
+				columnName, selectSB.toString(), updateSQL, packageName);
 		}
 	}
 
 	protected void upgradeTable(
 			String columnName, String selectSQL, String updateSQL,
-			String[] className)
+			String[] packageName)
 		throws SQLException {
 
 		try (PreparedStatement ps1 = connection.prepareStatement(selectSQL);
@@ -87,7 +88,7 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 				String oldValue = rs.getString(columnName);
 
 				String newValue = StringUtil.replace(
-					oldValue, className[0], className[1]);
+					oldValue, packageName[0], packageName[1]);
 
 				ps2.setString(1, newValue);
 				ps2.setString(2, oldValue);
@@ -99,18 +100,10 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 		}
 	}
 
-	private static final String[][] _CLASS_NAMES = new String[][] {
+	private static final String[][] _PACKAGE_NAMES = new String[][] {
 		{
-			"com.liferay.portlet.announcements.model.AnnouncementsDelivery",
-			"com.liferay.announcements.kernel.model.AnnouncementsDelivery"
-		},
-		{
-			"com.liferay.portlet.announcements.model.AnnouncementsEntry",
-			"com.liferay.announcements.kernel.model.AnnouncementsEntry"
-		},
-		{
-			"com.liferay.portlet.announcements.model.AnnouncementsFlag",
-			"com.liferay.announcements.kernel.model.AnnouncementsFlag"
+			"com.liferay.portlet.announcements",
+			"com.liferay.announcements.kernel"
 		}
 	};
 
