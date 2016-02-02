@@ -193,7 +193,7 @@ public class SocialActivityLocalServiceWrapper
 	*/
 	@Override
 	public void deleteActivities(
-		com.liferay.portlet.asset.model.AssetEntry assetEntry)
+		com.liferay.asset.kernel.model.AssetEntry assetEntry)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_socialActivityLocalService.deleteActivities(assetEntry);
 	}

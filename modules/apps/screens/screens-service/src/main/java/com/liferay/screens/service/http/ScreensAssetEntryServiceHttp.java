@@ -57,7 +57,7 @@ import com.liferay.screens.service.ScreensAssetEntryServiceUtil;
 public class ScreensAssetEntryServiceHttp {
 	public static com.liferay.portal.kernel.json.JSONArray getAssetEntries(
 		HttpPrincipal httpPrincipal,
-		com.liferay.portlet.asset.service.persistence.AssetEntryQuery assetEntryQuery,
+		com.liferay.asset.kernel.service.persistence.AssetEntryQuery assetEntryQuery,
 		java.util.Locale locale)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -124,7 +124,7 @@ public class ScreensAssetEntryServiceHttp {
 
 	private static Log _log = LogFactoryUtil.getLog(ScreensAssetEntryServiceHttp.class);
 	private static final Class<?>[] _getAssetEntriesParameterTypes0 = new Class[] {
-			com.liferay.portlet.asset.service.persistence.AssetEntryQuery.class,
+			com.liferay.asset.kernel.service.persistence.AssetEntryQuery.class,
 			java.util.Locale.class
 		};
 	private static final Class<?>[] _getAssetEntriesParameterTypes1 = new Class[] {
