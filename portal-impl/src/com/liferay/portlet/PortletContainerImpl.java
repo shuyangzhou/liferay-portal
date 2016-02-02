@@ -54,7 +54,7 @@ import com.liferay.portal.theme.PortletDisplay;
 import com.liferay.portal.theme.PortletDisplayFactory;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.util.PropertyComparator;
+import com.liferay.portal.util.comparator.PortletConfigurationIconFactoryComparator;
 import com.liferay.util.SerializableUtil;
 
 import java.io.Serializable;
@@ -601,7 +601,7 @@ public class PortletContainerImpl implements PortletContainer {
 		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
 
 		_portletConfigurationIconMenu.setComparator(
-			new PropertyComparator("weight", false, false));
+			PortletConfigurationIconFactoryComparator.INSTANCE);
 
 		portletDisplay.setPortletConfigurationIconMenu(
 			_portletConfigurationIconMenu);
