@@ -56,7 +56,7 @@ import java.rmi.RemoteException;
 @ProviderType
 public class ScreensAssetEntryServiceSoap {
 	public static java.lang.String getAssetEntries(
-		com.liferay.portlet.asset.service.persistence.AssetEntryQuery assetEntryQuery,
+		com.liferay.asset.kernel.service.persistence.AssetEntryQuery assetEntryQuery,
 		String locale) throws RemoteException {
 		try {
 			com.liferay.portal.kernel.json.JSONArray returnValue = ScreensAssetEntryServiceUtil.getAssetEntries(assetEntryQuery,

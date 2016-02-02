@@ -16,6 +16,9 @@ package com.liferay.portlet.asset.model.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.asset.kernel.model.AssetTagStats;
+import com.liferay.asset.kernel.model.AssetTagStatsModel;
+
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
@@ -27,8 +30,6 @@ import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.util.PortalUtil;
 
-import com.liferay.portlet.asset.model.AssetTagStats;
-import com.liferay.portlet.asset.model.AssetTagStatsModel;
 import com.liferay.portlet.expando.model.ExpandoBridge;
 import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
@@ -436,7 +437,7 @@ public class AssetTagStatsModelImpl extends BaseModelImpl<AssetTagStats>
 		StringBundler sb = new StringBundler(19);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.portlet.asset.model.AssetTagStats");
+		sb.append("com.liferay.asset.kernel.model.AssetTagStats");
 		sb.append("</model-name>");
 
 		sb.append(

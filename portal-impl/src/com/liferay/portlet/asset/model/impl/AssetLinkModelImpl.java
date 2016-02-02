@@ -16,6 +16,9 @@ package com.liferay.portlet.asset.model.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.asset.kernel.model.AssetLink;
+import com.liferay.asset.kernel.model.AssetLinkModel;
+
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -28,8 +31,6 @@ import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
-import com.liferay.portlet.asset.model.AssetLink;
-import com.liferay.portlet.asset.model.AssetLinkModel;
 import com.liferay.portlet.expando.model.ExpandoBridge;
 import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
@@ -563,7 +564,7 @@ public class AssetLinkModelImpl extends BaseModelImpl<AssetLink>
 		StringBundler sb = new StringBundler(31);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.portlet.asset.model.AssetLink");
+		sb.append("com.liferay.asset.kernel.model.AssetLink");
 		sb.append("</model-name>");
 
 		sb.append(

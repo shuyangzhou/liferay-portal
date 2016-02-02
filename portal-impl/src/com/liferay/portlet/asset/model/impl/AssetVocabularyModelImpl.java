@@ -16,6 +16,10 @@ package com.liferay.portlet.asset.model.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.asset.kernel.model.AssetVocabulary;
+import com.liferay.asset.kernel.model.AssetVocabularyModel;
+import com.liferay.asset.kernel.model.AssetVocabularySoap;
+
 import com.liferay.portal.LocaleException;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -34,9 +38,6 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
 
-import com.liferay.portlet.asset.model.AssetVocabulary;
-import com.liferay.portlet.asset.model.AssetVocabularyModel;
-import com.liferay.portlet.asset.model.AssetVocabularySoap;
 import com.liferay.portlet.expando.model.ExpandoBridge;
 import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 import com.liferay.portlet.exportimport.lar.StagedModelType;
@@ -1069,7 +1070,7 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 		StringBundler sb = new StringBundler(43);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.portlet.asset.model.AssetVocabulary");
+		sb.append("com.liferay.asset.kernel.model.AssetVocabulary");
 		sb.append("</model-name>");
 
 		sb.append(
