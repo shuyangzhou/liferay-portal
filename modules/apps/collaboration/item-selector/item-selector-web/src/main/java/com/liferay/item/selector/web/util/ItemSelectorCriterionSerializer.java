@@ -81,24 +81,6 @@ public class ItemSelectorCriterionSerializer {
 		itemSelectorReturnTypes.add(itemSelectorReturnType);
 	}
 
-	public String serialize(ItemSelectorCriterion itemSelectorCriterion) {
-		JSONSerializer jsonSerializer = JSONFactoryUtil.createJSONSerializer();
-
-		String[] externalPropertyKeys = getExternalPropertyKeys(
-			itemSelectorCriterion);
-
-		String[] serializableFields = ArrayUtil.append(
-			externalPropertyKeys, "desiredItemSelectorReturnTypes");
-
-		jsonSerializer.transform(
-			new DesiredItemSelectorReturnTypesJSONTransformer(),
-			"desiredItemSelectorReturnTypes");
-
-		jsonSerializer.include(serializableFields);
-
-		return jsonSerializer.serialize(itemSelectorCriterion);
-	}
-
 	public <T extends ItemSelectorCriterion> T deserialize(
 		Class<T> itemSelectorCriterionClass, String json) {
 
@@ -155,6 +137,24 @@ public class ItemSelectorCriterionSerializer {
 
 			throw new SystemException(e);
 		}
+	}
+
+	public String serialize(ItemSelectorCriterion itemSelectorCriterion) {
+		JSONSerializer jsonSerializer = JSONFactoryUtil.createJSONSerializer();
+
+		String[] externalPropertyKeys = getExternalPropertyKeys(
+			itemSelectorCriterion);
+
+		String[] serializableFields = ArrayUtil.append(
+			externalPropertyKeys, "desiredItemSelectorReturnTypes");
+
+		jsonSerializer.transform(
+			new DesiredItemSelectorReturnTypesJSONTransformer(),
+			"desiredItemSelectorReturnTypes");
+
+		jsonSerializer.include(serializableFields);
+
+		return jsonSerializer.serialize(itemSelectorCriterion);
 	}
 
 	@Activate
