@@ -1582,7 +1582,7 @@
 		</field>
 		<field name="lastPublishDate" type="Date" />
 	</model>
-	<model name="com.liferay.portlet.documentlibrary.model.DLContent">
+	<model name="com.liferay.document.library.kernel.model.DLContent">
 		<field name="contentId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -1594,7 +1594,7 @@
 		<field name="data" type="Blob" />
 		<field name="size" type="long" />
 	</model>
-	<model name="com.liferay.portlet.documentlibrary.model.DLFileEntry">
+	<model name="com.liferay.document.library.kernel.model.DLFileEntry">
 		<field name="uuid" type="String" />
 		<field name="fileEntryId" type="long" />
 		<field name="groupId" type="long" />
@@ -1638,7 +1638,7 @@
 		<field name="manualCheckInRequired" type="boolean" />
 		<field name="lastPublishDate" type="Date" />
 	</model>
-	<model name="com.liferay.portlet.documentlibrary.model.DLFileEntryMetadata">
+	<model name="com.liferay.document.library.kernel.model.DLFileEntryMetadata">
 		<field name="uuid" type="String" />
 		<field name="fileEntryMetadataId" type="long" />
 		<field name="companyId" type="long" />
@@ -1647,7 +1647,7 @@
 		<field name="fileEntryId" type="long" />
 		<field name="fileVersionId" type="long" />
 	</model>
-	<model name="com.liferay.portlet.documentlibrary.model.DLFileEntryType">
+	<model name="com.liferay.document.library.kernel.model.DLFileEntryType">
 		<field name="uuid" type="String" />
 		<field name="fileEntryTypeId" type="long" />
 		<field name="groupId" type="long" />
@@ -1666,7 +1666,7 @@
 		</field>
 		<field name="lastPublishDate" type="Date" />
 	</model>
-	<model name="com.liferay.portlet.documentlibrary.model.DLFileRank">
+	<model name="com.liferay.document.library.kernel.model.DLFileRank">
 		<field name="fileRankId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -1675,7 +1675,7 @@
 		<field name="fileEntryId" type="long" />
 		<field name="active" type="boolean" />
 	</model>
-	<model name="com.liferay.portlet.documentlibrary.model.DLFileShortcut">
+	<model name="com.liferay.document.library.kernel.model.DLFileShortcut">
 		<field name="uuid" type="String" />
 		<field name="fileShortcutId" type="long" />
 		<field name="groupId" type="long" />
@@ -1697,7 +1697,7 @@
 		<field name="statusByUserName" type="String" />
 		<field name="statusDate" type="Date" />
 	</model>
-	<model name="com.liferay.portlet.documentlibrary.model.DLFileVersion">
+	<model name="com.liferay.document.library.kernel.model.DLFileVersion">
 		<field name="uuid" type="String" />
 		<field name="fileVersionId" type="long" />
 		<field name="groupId" type="long" />
@@ -1738,7 +1738,7 @@
 		<field name="statusByUserName" type="String" />
 		<field name="statusDate" type="Date" />
 	</model>
-	<model name="com.liferay.portlet.documentlibrary.model.DLFolder">
+	<model name="com.liferay.document.library.kernel.model.DLFolder">
 		<field name="uuid" type="String" />
 		<field name="folderId" type="long" />
 		<field name="groupId" type="long" />
@@ -1770,7 +1770,7 @@
 		<field name="statusByUserName" type="String" />
 		<field name="statusDate" type="Date" />
 	</model>
-	<model name="com.liferay.portlet.documentlibrary.model.DLSyncEvent">
+	<model name="com.liferay.document.library.kernel.model.DLSyncEvent">
 		<field name="syncEventId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="modifiedTime" type="long" />
