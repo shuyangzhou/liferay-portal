@@ -98,10 +98,10 @@
 	<import class="com.liferay.portlet.documentlibrary.model.DLFolder" />
 	<import class="com.liferay.portlet.documentlibrary.model.DLSyncEvent" />
 	<import class="com.liferay.portlet.documentlibrary.model.DLTrash" />
-	<import class="com.liferay.portlet.expando.model.ExpandoColumn" />
-	<import class="com.liferay.portlet.expando.model.ExpandoRow" />
-	<import class="com.liferay.portlet.expando.model.ExpandoTable" />
-	<import class="com.liferay.portlet.expando.model.ExpandoValue" />
+	<import class="com.liferay.expando.kernel.model.ExpandoColumn" />
+	<import class="com.liferay.expando.kernel.model.ExpandoRow" />
+	<import class="com.liferay.expando.kernel.model.ExpandoTable" />
+	<import class="com.liferay.expando.kernel.model.ExpandoValue" />
 	<import class="com.liferay.portlet.exportimport.model.ExportImport" />
 	<import class="com.liferay.portlet.exportimport.model.ExportImportConfiguration" />
 	<import class="com.liferay.portlet.exportimport.model.Staging" />
