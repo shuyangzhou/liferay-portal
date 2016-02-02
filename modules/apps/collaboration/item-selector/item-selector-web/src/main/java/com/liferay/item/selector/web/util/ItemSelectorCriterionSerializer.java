@@ -33,10 +33,10 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -60,8 +60,6 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 @Component(immediate = true, service = ItemSelectorCriterionSerializer.class)
 public class ItemSelectorCriterionSerializer {
 
-	public static final String JSON = "json";
-
 	public void addItemSelectorReturnType(
 		ItemSelectorReturnType itemSelectorReturnType) {
 
@@ -83,11 +81,7 @@ public class ItemSelectorCriterionSerializer {
 		itemSelectorReturnTypes.add(itemSelectorReturnType);
 	}
 
-	public Map<String, String[]> getProperties(
-		ItemSelectorCriterion itemSelectorCriterion, String prefix) {
-
-		Map<String, String[]> properties = new HashMap<>();
-
+	public String serialize(ItemSelectorCriterion itemSelectorCriterion) {
 		JSONSerializer jsonSerializer = JSONFactoryUtil.createJSONSerializer();
 
 		String[] externalPropertyKeys = getExternalPropertyKeys(
@@ -102,19 +96,19 @@ public class ItemSelectorCriterionSerializer {
 
 		jsonSerializer.include(serializableFields);
 
-		properties.put(
-			prefix + JSON,
-			new String[] {jsonSerializer.serialize(itemSelectorCriterion)});
-
-		return properties;
+		return jsonSerializer.serialize(itemSelectorCriterion);
 	}
 
-	public void setProperties(
-		ItemSelectorCriterion itemSelectorCriterion, String prefix,
-		Map<String, String[]> parameters) {
+	public <T extends ItemSelectorCriterion> T deserialize(
+		Class<T> itemSelectorCriterionClass, String json) {
 
 		try {
-			String json = parameters.get(prefix + JSON)[0];
+			Constructor<T> constructor =
+				itemSelectorCriterionClass.getConstructor();
+
+			constructor.setAccessible(true);
+
+			T itemSelectorCriterion = constructor.newInstance();
 
 			JSONDeserializer<Map<String, ?>> jsonDeserializer =
 				JSONFactoryUtil.createJSONDeserializer();
@@ -152,9 +146,12 @@ public class ItemSelectorCriterionSerializer {
 			}
 
 			_setDesiredItemSelectorReturnTypes(itemSelectorCriterion, map);
+
+			return itemSelectorCriterion;
 		}
-		catch (IllegalAccessException | InvocationTargetException |
-			   NoSuchMethodException e) {
+
+		catch (IllegalAccessException | InstantiationException |
+			   InvocationTargetException | NoSuchMethodException e) {
 
 			throw new SystemException(e);
 		}
