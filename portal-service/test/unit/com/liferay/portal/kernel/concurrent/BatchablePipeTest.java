@@ -58,7 +58,7 @@ public class BatchablePipeTest {
 		Assert.assertNotSame(increasbleEntry1, batchedIncreasableEntry);
 		Assert.assertEquals(
 			increasbleEntry1.getKey(), batchedIncreasableEntry.getKey());
-		Assert.assertEquals( 2, (int)batchedIncreasableEntry.getValue());
+		Assert.assertEquals(2, (int)batchedIncreasableEntry.getValue());
 		Assert.assertNull(batchablePipe.take());
 
 		// Batch 2 entries
@@ -361,7 +361,7 @@ public class BatchablePipeTest {
 		Assert.assertNull(batchablePipe.take());
 	}
 
-	private class IntegerIncreasableEntry
+	private static class IntegerIncreasableEntry
 		extends IncreasableEntry<String, Integer> {
 
 		public IntegerIncreasableEntry(String key, Integer value) {

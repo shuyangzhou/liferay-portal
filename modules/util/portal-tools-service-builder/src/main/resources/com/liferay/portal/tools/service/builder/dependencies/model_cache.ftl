@@ -168,7 +168,7 @@ public class ${entity.name}CacheModel implements CacheModel<${entity.name}>, Ext
 		<#assign throwsClassNotFoundException = false>
 
 		<#list entity.regularColList as column>
-			<#if column.primitiveType>
+			<#if column.isPrimitiveType(false)>
 			<#elseif column.type == "Date">
 			<#elseif column.type == "String">
 			<#elseif column.type != "Blob">
@@ -187,7 +187,7 @@ public class ${entity.name}CacheModel implements CacheModel<${entity.name}>, Ext
 		IOException {
 
 		<#list entity.regularColList as column>
-			<#if column.primitiveType>
+			<#if column.isPrimitiveType(false)>
 				${column.name} = objectInput.read${textFormatter.format(column.type, 6)}();
 			<#elseif column.type == "Date">
 				${column.name} = objectInput.readLong();
@@ -220,7 +220,7 @@ public class ${entity.name}CacheModel implements CacheModel<${entity.name}>, Ext
 	@Override
 	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		<#list entity.regularColList as column>
-			<#if column.primitiveType>
+			<#if column.isPrimitiveType(false)>
 				objectOutput.write${textFormatter.format(column.type, 6)}(${column.name});
 			<#elseif column.type == "Date">
 				objectOutput.writeLong(${column.name});

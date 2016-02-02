@@ -237,7 +237,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			company.setMx(mx);
 			company.setActive(true);
 
-			companyPersistence.update(company);
+			company = companyPersistence.update(company);
 
 			// Account
 
@@ -297,6 +297,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 				}
 			}
 		}
+
+		preregisterCompany(company.getCompanyId());
 
 		CompanyProvider currentCompanyProvider =
 			_companyProviderWrapper.getCompanyProvider();
@@ -1400,6 +1402,15 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		return company;
 	}
 
+	protected void preregisterCompany(long companyId) {
+		PortalInstanceLifecycleManager portalInstanceLifecycleManager =
+			_serviceTracker.getService();
+
+		if (portalInstanceLifecycleManager != null) {
+			portalInstanceLifecycleManager.preregisterCompany(companyId);
+		}
+	}
+
 	protected void registerCompany(Company company) {
 		PortalInstanceLifecycleManager portalInstanceLifecycleManager =
 			_serviceTracker.getService();
@@ -1716,7 +1727,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		<PortalInstanceLifecycleManager, PortalInstanceLifecycleManager>
 			_serviceTracker;
 
-	private class CustomCompanyProvider implements CompanyProvider {
+	private static class CustomCompanyProvider implements CompanyProvider {
 
 		public CustomCompanyProvider(long companyId) {
 			_companyId = companyId;

@@ -14,6 +14,9 @@
 
 package com.liferay.portal.struts;
 
+import com.liferay.portal.kernel.portlet.BasePortletLayoutFinder;
+import com.liferay.portal.kernel.portlet.PortletLayoutFinder;
+
 import javax.portlet.PortletURL;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,11 +53,6 @@ public abstract class FindAction extends Action {
 			}
 
 			@Override
-			public String[] initPortletIds() {
-				return FindAction.this.initPortletIds();
-			}
-
-			@Override
 			public PortletURL processPortletURL(
 					HttpServletRequest request, PortletURL portletURL)
 				throws Exception {
@@ -68,6 +66,11 @@ public abstract class FindAction extends Action {
 				throws Exception {
 
 				FindAction.this.setPrimaryKeyParameter(portletURL, primaryKey);
+			}
+
+			@Override
+			protected PortletLayoutFinder getPortletLayoutFinder() {
+				return FindAction.this._portletLayoutFinder;
 			}
 
 		};
@@ -109,5 +112,15 @@ public abstract class FindAction extends Action {
 	}
 
 	private final FindActionHelper _findActionHelper;
+
+	private final PortletLayoutFinder _portletLayoutFinder =
+		new BasePortletLayoutFinder() {
+
+			@Override
+			protected String[] getPortletIds() {
+				return FindAction.this.initPortletIds();
+			}
+
+		};
 
 }
