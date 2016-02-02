@@ -3491,6 +3491,8 @@ else.
 
 - `com.liferay.portlet.dynamicdatamapping` &rarr; `com.liferay.dynamic.data.mapping.kernel`
 
+- `com.liferay.portlet.expando` &rarr; `com.liferay.expando.kernel`
+
 - `com.liferay.portlet.exportimport` &rarr; `com.liferay.exportimport.kernel`
 
 - `com.liferay.portlet.imagegallerydisplay.display.context` &rarr; `com.liferay.image.gallery.display.kernel.display.context`
