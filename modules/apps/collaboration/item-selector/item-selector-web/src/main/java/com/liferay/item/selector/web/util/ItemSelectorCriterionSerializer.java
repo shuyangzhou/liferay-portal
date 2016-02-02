@@ -18,33 +18,25 @@ import com.liferay.item.selector.ItemSelectorCriterion;
 import com.liferay.item.selector.ItemSelectorReturnType;
 import com.liferay.item.selector.ItemSelectorView;
 import com.liferay.osgi.util.ServiceTrackerFactory;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONContext;
 import com.liferay.portal.kernel.json.JSONDeserializer;
+import com.liferay.portal.kernel.json.JSONDeserializerTransformer;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONSerializer;
 import com.liferay.portal.kernel.json.JSONTransformer;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import org.apache.commons.beanutils.PropertyUtils;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -84,77 +76,26 @@ public class ItemSelectorCriterionSerializer {
 	public <T extends ItemSelectorCriterion> T deserialize(
 		Class<T> itemSelectorCriterionClass, String json) {
 
-		try {
-			Constructor<T> constructor =
-				itemSelectorCriterionClass.getConstructor();
+		JSONDeserializer<T> jsonDeserializer =
+			JSONFactoryUtil.createJSONDeserializer();
 
-			constructor.setAccessible(true);
+		jsonDeserializer.transform(
+			_desiredItemSelectorReturnTypesJSONDeserializerTransformer,
+			"desiredItemSelectorReturnTypes");
 
-			T itemSelectorCriterion = constructor.newInstance();
-
-			JSONDeserializer<Map<String, ?>> jsonDeserializer =
-				JSONFactoryUtil.createJSONDeserializer();
-
-			Map<String, ?> map = jsonDeserializer.deserialize(json);
-
-			String[] externalPropertyKeys = getExternalPropertyKeys(
-				itemSelectorCriterion);
-
-			for (String externalPropertyKey : externalPropertyKeys) {
-				Class<?> serializableFieldClass = PropertyUtils.getPropertyType(
-					itemSelectorCriterion, externalPropertyKey);
-
-				Object value = map.get(externalPropertyKey);
-
-				if (serializableFieldClass.isArray() &&
-					List.class.isInstance(value)) {
-
-					List<?> list = (List<?>)value;
-
-					value = list.toArray(
-						(Object[])Array.newInstance(
-							serializableFieldClass.getComponentType(),
-							list.size()));
-				}
-				else if (((serializableFieldClass == Long.class) ||
-						  (serializableFieldClass == Long.TYPE)) &&
-						 (value instanceof String)) {
-
-					value = Long.valueOf((String)value);
-				}
-
-				PropertyUtils.setProperty(
-					itemSelectorCriterion, externalPropertyKey, value);
-			}
-
-			_setDesiredItemSelectorReturnTypes(itemSelectorCriterion, map);
-
-			return itemSelectorCriterion;
-		}
-
-		catch (IllegalAccessException | InstantiationException |
-			   InvocationTargetException | NoSuchMethodException e) {
-
-			throw new SystemException(e);
-		}
+		return jsonDeserializer.deserialize(json, itemSelectorCriterionClass);
 	}
 
 	public String serialize(ItemSelectorCriterion itemSelectorCriterion) {
 		JSONSerializer jsonSerializer = JSONFactoryUtil.createJSONSerializer();
 
-		String[] externalPropertyKeys = getExternalPropertyKeys(
-			itemSelectorCriterion);
-
-		String[] serializableFields = ArrayUtil.append(
-			externalPropertyKeys, "desiredItemSelectorReturnTypes");
-
 		jsonSerializer.transform(
-			new DesiredItemSelectorReturnTypesJSONTransformer(),
+			_desiredItemSelectorReturnTypesJSONTransformer,
 			"desiredItemSelectorReturnTypes");
 
-		jsonSerializer.include(serializableFields);
+		jsonSerializer.exclude(_EXCLUDED_FIELD_NAMES);
 
-		return jsonSerializer.serialize(itemSelectorCriterion);
+		return jsonSerializer.serializeDeep(itemSelectorCriterion);
 	}
 
 	@Activate
@@ -171,92 +112,20 @@ public class ItemSelectorCriterionSerializer {
 		_serviceTracker.close();
 	}
 
-	private boolean _isInternalProperty(String name) {
-		if (name.equals("availableItemSelectorReturnTypes") ||
-			name.equals("class") ||
-			name.equals("desiredItemSelectorReturnTypes")) {
-
-			return true;
-		}
-
-		return false;
-	}
-
-	private void _setDesiredItemSelectorReturnTypes(
-		ItemSelectorCriterion itemSelectorCriterion, Map<String, ?> map) {
-
-		List<ItemSelectorReturnType> desiredItemSelectorReturnTypes =
-			new ArrayList<>();
-
-		String[] desiredItemSelectorReturnTypeNames = StringUtil.split(
-			(String)map.get("desiredItemSelectorReturnTypes"));
-
-		for (String desiredItemSelectorReturnTypeName :
-				desiredItemSelectorReturnTypeNames) {
-
-			List<ItemSelectorReturnType> itemSelectorReturnTypes =
-				_itemSelectorReturnTypes.get(desiredItemSelectorReturnTypeName);
-
-			if (ListUtil.isEmpty(itemSelectorReturnTypes)) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(
-						"No return types are registered for " +
-							desiredItemSelectorReturnTypeName);
-				}
-
-				continue;
-			}
-
-			Iterator<ItemSelectorReturnType> iterator =
-				itemSelectorReturnTypes.iterator();
-
-			if (iterator.hasNext()) {
-				desiredItemSelectorReturnTypes.add(iterator.next());
-			}
-		}
-
-		if (desiredItemSelectorReturnTypes.isEmpty()) {
-			if (_log.isWarnEnabled()) {
-				_log.warn("No valid desired item selector return types found");
-			}
-		}
-
-		itemSelectorCriterion.setDesiredItemSelectorReturnTypes(
-			desiredItemSelectorReturnTypes);
-	}
-
-	private String[] getExternalPropertyKeys(
-		ItemSelectorCriterion itemSelectorCriterion) {
-
-		List<String> list = new ArrayList<>();
-
-		try {
-			Map<String, Object> map = PropertyUtils.describe(
-				itemSelectorCriterion);
-
-			for (Map.Entry<String, Object> entry : map.entrySet()) {
-				String key = entry.getKey();
-
-				if (_isInternalProperty(key)) {
-					continue;
-				}
-
-				list.add(key);
-			}
-		}
-		catch (IllegalAccessException | InvocationTargetException |
-			   NoSuchMethodException e) {
-
-			throw new SystemException(e);
-		}
-
-		return list.toArray(new String[list.size()]);
-	}
+	private static final String[] _EXCLUDED_FIELD_NAMES = new String[] {
+		"availableItemSelectorReturnTypes", "class"
+	};
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ItemSelectorCriterionSerializer.class);
 
 	private BundleContext _bundleContext;
+	private final DesiredItemSelectorReturnTypesJSONDeserializerTransformer
+		_desiredItemSelectorReturnTypesJSONDeserializerTransformer =
+			new DesiredItemSelectorReturnTypesJSONDeserializerTransformer();
+	private final DesiredItemSelectorReturnTypesJSONTransformer
+		_desiredItemSelectorReturnTypesJSONTransformer =
+			new DesiredItemSelectorReturnTypesJSONTransformer();
 	private final ConcurrentMap<String, List<ItemSelectorReturnType>>
 		_itemSelectorReturnTypes = new ConcurrentHashMap<>();
 	private ServiceTracker<ItemSelectorView, ItemSelectorView> _serviceTracker;
@@ -288,6 +157,54 @@ public class ItemSelectorCriterionSerializer {
 			sb.setStringAt(StringPool.QUOTE, sb.index() - 1);
 
 			jsonContext.write(sb.toString());
+		}
+
+	}
+
+	private class DesiredItemSelectorReturnTypesJSONDeserializerTransformer
+		implements JSONDeserializerTransformer
+			<String, List<ItemSelectorReturnType>> {
+
+		@Override
+		public List<ItemSelectorReturnType> transform(String key) {
+			List<ItemSelectorReturnType> desiredItemSelectorReturnTypes =
+				new ArrayList<>();
+
+			String[] desiredItemSelectorReturnTypeNames = StringUtil.split(key);
+
+			for (String desiredItemSelectorReturnTypeName :
+					desiredItemSelectorReturnTypeNames) {
+
+				List<ItemSelectorReturnType> itemSelectorReturnTypes =
+					_itemSelectorReturnTypes.get(
+						desiredItemSelectorReturnTypeName);
+
+				if (ListUtil.isEmpty(itemSelectorReturnTypes)) {
+					if (_log.isWarnEnabled()) {
+						_log.warn(
+							"No return types are registered for " +
+								desiredItemSelectorReturnTypeName);
+					}
+
+					continue;
+				}
+
+				Iterator<ItemSelectorReturnType> iterator =
+					itemSelectorReturnTypes.iterator();
+
+				if (iterator.hasNext()) {
+					desiredItemSelectorReturnTypes.add(iterator.next());
+				}
+			}
+
+			if (desiredItemSelectorReturnTypes.isEmpty()) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"No valid desired item selector return types found");
+				}
+			}
+
+			return desiredItemSelectorReturnTypes;
 		}
 
 	}
