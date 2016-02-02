@@ -12,11 +12,11 @@
  * details.
  */
 
-package com.liferay.portlet.ratings.transformer;
+package com.liferay.ratings.kernel.transformer;
 
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portlet.ratings.RatingsType;
+import com.liferay.ratings.kernel.RatingsType;
 import com.liferay.portlet.ratings.model.RatingsEntry;
 
 /**

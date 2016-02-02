@@ -12,9 +12,9 @@
  * details.
  */
 
-package com.liferay.portlet.ratings.definition;
+package com.liferay.ratings.kernel.definition;
 
-import com.liferay.portlet.ratings.RatingsType;
+import com.liferay.ratings.kernel.RatingsType;
 
 /**
  * Provides an interface for defining the ratings used by an entity (or

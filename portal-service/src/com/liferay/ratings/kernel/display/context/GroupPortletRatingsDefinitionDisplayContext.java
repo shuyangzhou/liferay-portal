@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portlet.ratings.display.context;
+package com.liferay.ratings.kernel.display.context;
 
 import com.liferay.portal.kernel.util.PropertiesParamUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
@@ -20,10 +20,10 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.service.PortletLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portlet.ratings.RatingsType;
-import com.liferay.portlet.ratings.definition.PortletRatingsDefinitionUtil;
-import com.liferay.portlet.ratings.definition.PortletRatingsDefinitionValues;
-import com.liferay.portlet.ratings.transformer.RatingsDataTransformerUtil;
+import com.liferay.ratings.kernel.RatingsType;
+import com.liferay.ratings.kernel.definition.PortletRatingsDefinitionUtil;
+import com.liferay.ratings.kernel.definition.PortletRatingsDefinitionValues;
+import com.liferay.ratings.kernel.transformer.RatingsDataTransformerUtil;
 
 import java.util.Collections;
 import java.util.HashMap;
