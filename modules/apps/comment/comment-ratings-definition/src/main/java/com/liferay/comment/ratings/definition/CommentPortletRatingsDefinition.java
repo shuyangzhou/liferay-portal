@@ -17,8 +17,8 @@ package com.liferay.comment.ratings.definition;
 import com.liferay.portal.kernel.comment.Comment;
 import com.liferay.portal.kernel.portlet.PortletProvider;
 import com.liferay.portal.kernel.portlet.PortletProviderUtil;
-import com.liferay.portlet.ratings.RatingsType;
-import com.liferay.portlet.ratings.definition.PortletRatingsDefinition;
+import com.liferay.ratings.kernel.RatingsType;
+import com.liferay.ratings.kernel.definition.PortletRatingsDefinition;
 
 import org.osgi.service.component.annotations.Component;
 
