@@ -16,9 +16,12 @@ package com.liferay.journal.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.journal.exception.NoSuchArticleException;
 import com.liferay.journal.model.JournalArticle;
 
 import com.liferay.portal.service.persistence.BasePersistence;
+
+import java.util.Date;
 
 /**
  * The persistence interface for the journal article service.
@@ -109,7 +112,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	*/
 	public JournalArticle findByUuid_First(java.lang.String uuid,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the first journal article in the ordered set where uuid = &#63;.
@@ -131,7 +134,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	*/
 	public JournalArticle findByUuid_Last(java.lang.String uuid,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the last journal article in the ordered set where uuid = &#63;.
@@ -155,7 +158,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] findByUuid_PrevAndNext(long id,
 		java.lang.String uuid,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Removes all the journal articles where uuid = &#63; from the database.
@@ -181,7 +184,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public JournalArticle findByUUID_G(java.lang.String uuid, long groupId)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the journal article where uuid = &#63; and groupId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
@@ -211,7 +214,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	* @return the journal article that was removed
 	*/
 	public JournalArticle removeByUUID_G(java.lang.String uuid, long groupId)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the number of journal articles where uuid = &#63; and groupId = &#63;.
@@ -298,7 +301,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByUuid_C_First(java.lang.String uuid,
 		long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the first journal article in the ordered set where uuid = &#63; and companyId = &#63;.
@@ -324,7 +327,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByUuid_C_Last(java.lang.String uuid,
 		long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the last journal article in the ordered set where uuid = &#63; and companyId = &#63;.
@@ -351,7 +354,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] findByUuid_C_PrevAndNext(long id,
 		java.lang.String uuid, long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Removes all the journal articles where uuid = &#63; and companyId = &#63; from the database.
@@ -440,7 +443,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	*/
 	public JournalArticle findByResourcePrimKey_First(long resourcePrimKey,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the first journal article in the ordered set where resourcePrimKey = &#63;.
@@ -462,7 +465,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	*/
 	public JournalArticle findByResourcePrimKey_Last(long resourcePrimKey,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the last journal article in the ordered set where resourcePrimKey = &#63;.
@@ -486,7 +489,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] findByResourcePrimKey_PrevAndNext(long id,
 		long resourcePrimKey,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Removes all the journal articles where resourcePrimKey = &#63; from the database.
@@ -572,7 +575,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	*/
 	public JournalArticle findByGroupId_First(long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the first journal article in the ordered set where groupId = &#63;.
@@ -594,7 +597,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	*/
 	public JournalArticle findByGroupId_Last(long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the last journal article in the ordered set where groupId = &#63;.
@@ -617,7 +620,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	*/
 	public JournalArticle[] findByGroupId_PrevAndNext(long id, long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns all the journal articles that the user has permission to view where groupId = &#63;.
@@ -671,7 +674,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] filterFindByGroupId_PrevAndNext(long id,
 		long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Removes all the journal articles where groupId = &#63; from the database.
@@ -765,7 +768,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	*/
 	public JournalArticle findByCompanyId_First(long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the first journal article in the ordered set where companyId = &#63;.
@@ -787,7 +790,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	*/
 	public JournalArticle findByCompanyId_Last(long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the last journal article in the ordered set where companyId = &#63;.
@@ -811,7 +814,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] findByCompanyId_PrevAndNext(long id,
 		long companyId,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Removes all the journal articles where companyId = &#63; from the database.
@@ -899,7 +902,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByDDMStructureKey_First(
 		java.lang.String DDMStructureKey,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the first journal article in the ordered set where DDMStructureKey = &#63;.
@@ -923,7 +926,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByDDMStructureKey_Last(
 		java.lang.String DDMStructureKey,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the last journal article in the ordered set where DDMStructureKey = &#63;.
@@ -948,7 +951,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] findByDDMStructureKey_PrevAndNext(long id,
 		java.lang.String DDMStructureKey,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns all the journal articles where DDMStructureKey = any &#63;.
@@ -1108,7 +1111,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByDDMTemplateKey_First(
 		java.lang.String DDMTemplateKey,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the first journal article in the ordered set where DDMTemplateKey = &#63;.
@@ -1132,7 +1135,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByDDMTemplateKey_Last(
 		java.lang.String DDMTemplateKey,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the last journal article in the ordered set where DDMTemplateKey = &#63;.
@@ -1157,7 +1160,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] findByDDMTemplateKey_PrevAndNext(long id,
 		java.lang.String DDMTemplateKey,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Removes all the journal articles where DDMTemplateKey = &#63; from the database.
@@ -1244,7 +1247,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	*/
 	public JournalArticle findByLayoutUuid_First(java.lang.String layoutUuid,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the first journal article in the ordered set where layoutUuid = &#63;.
@@ -1266,7 +1269,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	*/
 	public JournalArticle findByLayoutUuid_Last(java.lang.String layoutUuid,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the last journal article in the ordered set where layoutUuid = &#63;.
@@ -1290,7 +1293,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] findByLayoutUuid_PrevAndNext(long id,
 		java.lang.String layoutUuid,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Removes all the journal articles where layoutUuid = &#63; from the database.
@@ -1376,7 +1379,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	*/
 	public JournalArticle findBySmallImageId_First(long smallImageId,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the first journal article in the ordered set where smallImageId = &#63;.
@@ -1398,7 +1401,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	*/
 	public JournalArticle findBySmallImageId_Last(long smallImageId,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the last journal article in the ordered set where smallImageId = &#63;.
@@ -1422,7 +1425,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] findBySmallImageId_PrevAndNext(long id,
 		long smallImageId,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Removes all the journal articles where smallImageId = &#63; from the database.
@@ -1515,7 +1518,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByR_I_First(long resourcePrimKey,
 		boolean indexable,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the first journal article in the ordered set where resourcePrimKey = &#63; and indexable = &#63;.
@@ -1541,7 +1544,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByR_I_Last(long resourcePrimKey,
 		boolean indexable,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the last journal article in the ordered set where resourcePrimKey = &#63; and indexable = &#63;.
@@ -1568,7 +1571,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] findByR_I_PrevAndNext(long id,
 		long resourcePrimKey, boolean indexable,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Removes all the journal articles where resourcePrimKey = &#63; and indexable = &#63; from the database.
@@ -1662,7 +1665,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	*/
 	public JournalArticle findByR_ST_First(long resourcePrimKey, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the first journal article in the ordered set where resourcePrimKey = &#63; and status = &#63;.
@@ -1686,7 +1689,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	*/
 	public JournalArticle findByR_ST_Last(long resourcePrimKey, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the last journal article in the ordered set where resourcePrimKey = &#63; and status = &#63;.
@@ -1712,7 +1715,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] findByR_ST_PrevAndNext(long id,
 		long resourcePrimKey, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns all the journal articles where resourcePrimKey = &#63; and status = any &#63;.
@@ -1882,7 +1885,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	*/
 	public JournalArticle findByG_U_First(long groupId, long userId,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the first journal article in the ordered set where groupId = &#63; and userId = &#63;.
@@ -1906,7 +1909,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	*/
 	public JournalArticle findByG_U_Last(long groupId, long userId,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the last journal article in the ordered set where groupId = &#63; and userId = &#63;.
@@ -1932,7 +1935,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] findByG_U_PrevAndNext(long id, long groupId,
 		long userId,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns all the journal articles that the user has permission to view where groupId = &#63; and userId = &#63;.
@@ -1991,7 +1994,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] filterFindByG_U_PrevAndNext(long id, long groupId,
 		long userId,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Removes all the journal articles where groupId = &#63; and userId = &#63; from the database.
@@ -2093,7 +2096,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	*/
 	public JournalArticle findByG_F_First(long groupId, long folderId,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the first journal article in the ordered set where groupId = &#63; and folderId = &#63;.
@@ -2117,7 +2120,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	*/
 	public JournalArticle findByG_F_Last(long groupId, long folderId,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the last journal article in the ordered set where groupId = &#63; and folderId = &#63;.
@@ -2143,7 +2146,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] findByG_F_PrevAndNext(long id, long groupId,
 		long folderId,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns all the journal articles that the user has permission to view where groupId = &#63; and folderId = &#63;.
@@ -2202,7 +2205,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] filterFindByG_F_PrevAndNext(long id, long groupId,
 		long folderId,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns all the journal articles that the user has permission to view where groupId = &#63; and folderId = any &#63;.
@@ -2436,7 +2439,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByG_A_First(long groupId,
 		java.lang.String articleId,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the first journal article in the ordered set where groupId = &#63; and articleId = &#63;.
@@ -2462,7 +2465,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByG_A_Last(long groupId,
 		java.lang.String articleId,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the last journal article in the ordered set where groupId = &#63; and articleId = &#63;.
@@ -2489,7 +2492,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] findByG_A_PrevAndNext(long id, long groupId,
 		java.lang.String articleId,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns all the journal articles that the user has permission to view where groupId = &#63; and articleId = &#63;.
@@ -2548,7 +2551,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] filterFindByG_A_PrevAndNext(long id, long groupId,
 		java.lang.String articleId,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Removes all the journal articles where groupId = &#63; and articleId = &#63; from the database.
@@ -2652,7 +2655,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByG_UT_First(long groupId,
 		java.lang.String urlTitle,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the first journal article in the ordered set where groupId = &#63; and urlTitle = &#63;.
@@ -2678,7 +2681,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByG_UT_Last(long groupId,
 		java.lang.String urlTitle,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the last journal article in the ordered set where groupId = &#63; and urlTitle = &#63;.
@@ -2705,7 +2708,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] findByG_UT_PrevAndNext(long id, long groupId,
 		java.lang.String urlTitle,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns all the journal articles that the user has permission to view where groupId = &#63; and urlTitle = &#63;.
@@ -2764,7 +2767,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] filterFindByG_UT_PrevAndNext(long id, long groupId,
 		java.lang.String urlTitle,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Removes all the journal articles where groupId = &#63; and urlTitle = &#63; from the database.
@@ -2868,7 +2871,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByG_DDMSK_First(long groupId,
 		java.lang.String DDMStructureKey,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the first journal article in the ordered set where groupId = &#63; and DDMStructureKey = &#63;.
@@ -2894,7 +2897,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByG_DDMSK_Last(long groupId,
 		java.lang.String DDMStructureKey,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the last journal article in the ordered set where groupId = &#63; and DDMStructureKey = &#63;.
@@ -2921,7 +2924,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] findByG_DDMSK_PrevAndNext(long id, long groupId,
 		java.lang.String DDMStructureKey,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns all the journal articles that the user has permission to view where groupId = &#63; and DDMStructureKey = &#63;.
@@ -2980,7 +2983,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] filterFindByG_DDMSK_PrevAndNext(long id,
 		long groupId, java.lang.String DDMStructureKey,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Removes all the journal articles where groupId = &#63; and DDMStructureKey = &#63; from the database.
@@ -3085,7 +3088,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByG_DDMTK_First(long groupId,
 		java.lang.String DDMTemplateKey,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the first journal article in the ordered set where groupId = &#63; and DDMTemplateKey = &#63;.
@@ -3111,7 +3114,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByG_DDMTK_Last(long groupId,
 		java.lang.String DDMTemplateKey,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the last journal article in the ordered set where groupId = &#63; and DDMTemplateKey = &#63;.
@@ -3138,7 +3141,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] findByG_DDMTK_PrevAndNext(long id, long groupId,
 		java.lang.String DDMTemplateKey,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns all the journal articles that the user has permission to view where groupId = &#63; and DDMTemplateKey = &#63;.
@@ -3197,7 +3200,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] filterFindByG_DDMTK_PrevAndNext(long id,
 		long groupId, java.lang.String DDMTemplateKey,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Removes all the journal articles where groupId = &#63; and DDMTemplateKey = &#63; from the database.
@@ -3302,7 +3305,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByG_L_First(long groupId,
 		java.lang.String layoutUuid,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the first journal article in the ordered set where groupId = &#63; and layoutUuid = &#63;.
@@ -3328,7 +3331,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByG_L_Last(long groupId,
 		java.lang.String layoutUuid,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the last journal article in the ordered set where groupId = &#63; and layoutUuid = &#63;.
@@ -3355,7 +3358,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] findByG_L_PrevAndNext(long id, long groupId,
 		java.lang.String layoutUuid,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns all the journal articles that the user has permission to view where groupId = &#63; and layoutUuid = &#63;.
@@ -3414,7 +3417,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] filterFindByG_L_PrevAndNext(long id, long groupId,
 		java.lang.String layoutUuid,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Removes all the journal articles where groupId = &#63; and layoutUuid = &#63; from the database.
@@ -3516,7 +3519,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	*/
 	public JournalArticle findByG_ST_First(long groupId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the first journal article in the ordered set where groupId = &#63; and status = &#63;.
@@ -3540,7 +3543,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	*/
 	public JournalArticle findByG_ST_Last(long groupId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the last journal article in the ordered set where groupId = &#63; and status = &#63;.
@@ -3566,7 +3569,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] findByG_ST_PrevAndNext(long id, long groupId,
 		int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns all the journal articles that the user has permission to view where groupId = &#63; and status = &#63;.
@@ -3625,7 +3628,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] filterFindByG_ST_PrevAndNext(long id, long groupId,
 		int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Removes all the journal articles where groupId = &#63; and status = &#63; from the database.
@@ -3728,7 +3731,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	*/
 	public JournalArticle findByC_V_First(long companyId, double version,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the first journal article in the ordered set where companyId = &#63; and version = &#63;.
@@ -3752,7 +3755,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	*/
 	public JournalArticle findByC_V_Last(long companyId, double version,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the last journal article in the ordered set where companyId = &#63; and version = &#63;.
@@ -3778,7 +3781,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] findByC_V_PrevAndNext(long id, long companyId,
 		double version,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Removes all the journal articles where companyId = &#63; and version = &#63; from the database.
@@ -3871,7 +3874,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	*/
 	public JournalArticle findByC_ST_First(long companyId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the first journal article in the ordered set where companyId = &#63; and status = &#63;.
@@ -3895,7 +3898,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	*/
 	public JournalArticle findByC_ST_Last(long companyId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the last journal article in the ordered set where companyId = &#63; and status = &#63;.
@@ -3921,7 +3924,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] findByC_ST_PrevAndNext(long id, long companyId,
 		int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Removes all the journal articles where companyId = &#63; and status = &#63; from the database.
@@ -4015,7 +4018,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	*/
 	public JournalArticle findByC_NotST_First(long companyId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the first journal article in the ordered set where companyId = &#63; and status &ne; &#63;.
@@ -4039,7 +4042,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	*/
 	public JournalArticle findByC_NotST_Last(long companyId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the last journal article in the ordered set where companyId = &#63; and status &ne; &#63;.
@@ -4065,7 +4068,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] findByC_NotST_PrevAndNext(long id, long companyId,
 		int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Removes all the journal articles where companyId = &#63; and status &ne; &#63; from the database.
@@ -4160,7 +4163,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByC_DDMTK_First(long classNameId,
 		java.lang.String DDMTemplateKey,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the first journal article in the ordered set where classNameId = &#63; and DDMTemplateKey = &#63;.
@@ -4186,7 +4189,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByC_DDMTK_Last(long classNameId,
 		java.lang.String DDMTemplateKey,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the last journal article in the ordered set where classNameId = &#63; and DDMTemplateKey = &#63;.
@@ -4213,7 +4216,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] findByC_DDMTK_PrevAndNext(long id,
 		long classNameId, java.lang.String DDMTemplateKey,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Removes all the journal articles where classNameId = &#63; and DDMTemplateKey = &#63; from the database.
@@ -4240,8 +4243,8 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	* @param status the status
 	* @return the matching journal articles
 	*/
-	public java.util.List<JournalArticle> findByLtD_S(
-		java.util.Date displayDate, int status);
+	public java.util.List<JournalArticle> findByLtD_S(Date displayDate,
+		int status);
 
 	/**
 	* Returns a range of all the journal articles where displayDate &lt; &#63; and status = &#63;.
@@ -4256,8 +4259,8 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	* @param end the upper bound of the range of journal articles (not inclusive)
 	* @return the range of matching journal articles
 	*/
-	public java.util.List<JournalArticle> findByLtD_S(
-		java.util.Date displayDate, int status, int start, int end);
+	public java.util.List<JournalArticle> findByLtD_S(Date displayDate,
+		int status, int start, int end);
 
 	/**
 	* Returns an ordered range of all the journal articles where displayDate &lt; &#63; and status = &#63;.
@@ -4273,8 +4276,8 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of matching journal articles
 	*/
-	public java.util.List<JournalArticle> findByLtD_S(
-		java.util.Date displayDate, int status, int start, int end,
+	public java.util.List<JournalArticle> findByLtD_S(Date displayDate,
+		int status, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator);
 
 	/**
@@ -4292,8 +4295,8 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	* @param retrieveFromCache whether to retrieve from the finder cache
 	* @return the ordered range of matching journal articles
 	*/
-	public java.util.List<JournalArticle> findByLtD_S(
-		java.util.Date displayDate, int status, int start, int end,
+	public java.util.List<JournalArticle> findByLtD_S(Date displayDate,
+		int status, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator,
 		boolean retrieveFromCache);
 
@@ -4306,10 +4309,9 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	* @return the first matching journal article
 	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
-	public JournalArticle findByLtD_S_First(java.util.Date displayDate,
-		int status,
+	public JournalArticle findByLtD_S_First(Date displayDate, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the first journal article in the ordered set where displayDate &lt; &#63; and status = &#63;.
@@ -4319,8 +4321,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
-	public JournalArticle fetchByLtD_S_First(java.util.Date displayDate,
-		int status,
+	public JournalArticle fetchByLtD_S_First(Date displayDate, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator);
 
 	/**
@@ -4332,10 +4333,9 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	* @return the last matching journal article
 	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
-	public JournalArticle findByLtD_S_Last(java.util.Date displayDate,
-		int status,
+	public JournalArticle findByLtD_S_Last(Date displayDate, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the last journal article in the ordered set where displayDate &lt; &#63; and status = &#63;.
@@ -4345,8 +4345,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching journal article, or <code>null</code> if a matching journal article could not be found
 	*/
-	public JournalArticle fetchByLtD_S_Last(java.util.Date displayDate,
-		int status,
+	public JournalArticle fetchByLtD_S_Last(Date displayDate, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator);
 
 	/**
@@ -4359,10 +4358,10 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	* @return the previous, current, and next journal article
 	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
-	public JournalArticle[] findByLtD_S_PrevAndNext(long id,
-		java.util.Date displayDate, int status,
+	public JournalArticle[] findByLtD_S_PrevAndNext(long id, Date displayDate,
+		int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Removes all the journal articles where displayDate &lt; &#63; and status = &#63; from the database.
@@ -4370,7 +4369,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	* @param displayDate the display date
 	* @param status the status
 	*/
-	public void removeByLtD_S(java.util.Date displayDate, int status);
+	public void removeByLtD_S(Date displayDate, int status);
 
 	/**
 	* Returns the number of journal articles where displayDate &lt; &#63; and status = &#63;.
@@ -4379,7 +4378,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	* @param status the status
 	* @return the number of matching journal articles
 	*/
-	public int countByLtD_S(java.util.Date displayDate, int status);
+	public int countByLtD_S(Date displayDate, int status);
 
 	/**
 	* Returns all the journal articles where resourcePrimKey = &#63; and indexable = &#63; and status = &#63;.
@@ -4462,7 +4461,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByR_I_S_First(long resourcePrimKey,
 		boolean indexable, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the first journal article in the ordered set where resourcePrimKey = &#63; and indexable = &#63; and status = &#63;.
@@ -4490,7 +4489,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByR_I_S_Last(long resourcePrimKey,
 		boolean indexable, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the last journal article in the ordered set where resourcePrimKey = &#63; and indexable = &#63; and status = &#63;.
@@ -4519,7 +4518,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] findByR_I_S_PrevAndNext(long id,
 		long resourcePrimKey, boolean indexable, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns all the journal articles where resourcePrimKey = &#63; and indexable = &#63; and status = any &#63;.
@@ -4705,7 +4704,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByG_U_C_First(long groupId, long userId,
 		long classNameId,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the first journal article in the ordered set where groupId = &#63; and userId = &#63; and classNameId = &#63;.
@@ -4733,7 +4732,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByG_U_C_Last(long groupId, long userId,
 		long classNameId,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the last journal article in the ordered set where groupId = &#63; and userId = &#63; and classNameId = &#63;.
@@ -4762,7 +4761,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] findByG_U_C_PrevAndNext(long id, long groupId,
 		long userId, long classNameId,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns all the journal articles that the user has permission to view where groupId = &#63; and userId = &#63; and classNameId = &#63;.
@@ -4825,7 +4824,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] filterFindByG_U_C_PrevAndNext(long id,
 		long groupId, long userId, long classNameId,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Removes all the journal articles where groupId = &#63; and userId = &#63; and classNameId = &#63; from the database.
@@ -4937,7 +4936,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByG_F_ST_First(long groupId, long folderId,
 		int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the first journal article in the ordered set where groupId = &#63; and folderId = &#63; and status = &#63;.
@@ -4965,7 +4964,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByG_F_ST_Last(long groupId, long folderId,
 		int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the last journal article in the ordered set where groupId = &#63; and folderId = &#63; and status = &#63;.
@@ -4994,7 +4993,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] findByG_F_ST_PrevAndNext(long id, long groupId,
 		long folderId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns all the journal articles that the user has permission to view where groupId = &#63; and folderId = &#63; and status = &#63;.
@@ -5057,7 +5056,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] filterFindByG_F_ST_PrevAndNext(long id,
 		long groupId, long folderId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns all the journal articles that the user has permission to view where groupId = &#63; and folderId = &#63; and status = any &#63;.
@@ -5308,7 +5307,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByG_C_C_First(long groupId, long classNameId,
 		long classPK,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the first journal article in the ordered set where groupId = &#63; and classNameId = &#63; and classPK = &#63;.
@@ -5336,7 +5335,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByG_C_C_Last(long groupId, long classNameId,
 		long classPK,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the last journal article in the ordered set where groupId = &#63; and classNameId = &#63; and classPK = &#63;.
@@ -5365,7 +5364,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] findByG_C_C_PrevAndNext(long id, long groupId,
 		long classNameId, long classPK,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns all the journal articles that the user has permission to view where groupId = &#63; and classNameId = &#63; and classPK = &#63;.
@@ -5428,7 +5427,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] filterFindByG_C_C_PrevAndNext(long id,
 		long groupId, long classNameId, long classPK,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Removes all the journal articles where groupId = &#63; and classNameId = &#63; and classPK = &#63; from the database.
@@ -5469,8 +5468,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public JournalArticle findByG_C_DDMSK(long groupId, long classNameId,
-		java.lang.String DDMStructureKey)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		java.lang.String DDMStructureKey) throws NoSuchArticleException;
 
 	/**
 	* Returns the journal article where groupId = &#63; and classNameId = &#63; and DDMStructureKey = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
@@ -5504,8 +5502,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	* @return the journal article that was removed
 	*/
 	public JournalArticle removeByG_C_DDMSK(long groupId, long classNameId,
-		java.lang.String DDMStructureKey)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		java.lang.String DDMStructureKey) throws NoSuchArticleException;
 
 	/**
 	* Returns the number of journal articles where groupId = &#63; and classNameId = &#63; and DDMStructureKey = &#63;.
@@ -5599,7 +5596,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByG_C_DDMTK_First(long groupId, long classNameId,
 		java.lang.String DDMTemplateKey,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the first journal article in the ordered set where groupId = &#63; and classNameId = &#63; and DDMTemplateKey = &#63;.
@@ -5627,7 +5624,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByG_C_DDMTK_Last(long groupId, long classNameId,
 		java.lang.String DDMTemplateKey,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the last journal article in the ordered set where groupId = &#63; and classNameId = &#63; and DDMTemplateKey = &#63;.
@@ -5656,7 +5653,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] findByG_C_DDMTK_PrevAndNext(long id, long groupId,
 		long classNameId, java.lang.String DDMTemplateKey,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns all the journal articles that the user has permission to view where groupId = &#63; and classNameId = &#63; and DDMTemplateKey = &#63;.
@@ -5719,7 +5716,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] filterFindByG_C_DDMTK_PrevAndNext(long id,
 		long groupId, long classNameId, java.lang.String DDMTemplateKey,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Removes all the journal articles where groupId = &#63; and classNameId = &#63; and DDMTemplateKey = &#63; from the database.
@@ -5834,7 +5831,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByG_C_L_First(long groupId, long classNameId,
 		java.lang.String layoutUuid,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the first journal article in the ordered set where groupId = &#63; and classNameId = &#63; and layoutUuid = &#63;.
@@ -5862,7 +5859,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByG_C_L_Last(long groupId, long classNameId,
 		java.lang.String layoutUuid,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the last journal article in the ordered set where groupId = &#63; and classNameId = &#63; and layoutUuid = &#63;.
@@ -5891,7 +5888,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] findByG_C_L_PrevAndNext(long id, long groupId,
 		long classNameId, java.lang.String layoutUuid,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns all the journal articles that the user has permission to view where groupId = &#63; and classNameId = &#63; and layoutUuid = &#63;.
@@ -5954,7 +5951,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] filterFindByG_C_L_PrevAndNext(long id,
 		long groupId, long classNameId, java.lang.String layoutUuid,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Removes all the journal articles where groupId = &#63; and classNameId = &#63; and layoutUuid = &#63; from the database.
@@ -5998,8 +5995,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	* @throws NoSuchArticleException if a matching journal article could not be found
 	*/
 	public JournalArticle findByG_A_V(long groupId, java.lang.String articleId,
-		double version)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		double version) throws NoSuchArticleException;
 
 	/**
 	* Returns the journal article where groupId = &#63; and articleId = &#63; and version = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
@@ -6034,7 +6030,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	*/
 	public JournalArticle removeByG_A_V(long groupId,
 		java.lang.String articleId, double version)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the number of journal articles where groupId = &#63; and articleId = &#63; and version = &#63;.
@@ -6128,7 +6124,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByG_A_ST_First(long groupId,
 		java.lang.String articleId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the first journal article in the ordered set where groupId = &#63; and articleId = &#63; and status = &#63;.
@@ -6156,7 +6152,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByG_A_ST_Last(long groupId,
 		java.lang.String articleId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the last journal article in the ordered set where groupId = &#63; and articleId = &#63; and status = &#63;.
@@ -6185,7 +6181,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] findByG_A_ST_PrevAndNext(long id, long groupId,
 		java.lang.String articleId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns all the journal articles that the user has permission to view where groupId = &#63; and articleId = &#63; and status = &#63;.
@@ -6248,7 +6244,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] filterFindByG_A_ST_PrevAndNext(long id,
 		long groupId, java.lang.String articleId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns all the journal articles that the user has permission to view where groupId = &#63; and articleId = &#63; and status = any &#63;.
@@ -6504,7 +6500,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByG_A_NotST_First(long groupId,
 		java.lang.String articleId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the first journal article in the ordered set where groupId = &#63; and articleId = &#63; and status &ne; &#63;.
@@ -6532,7 +6528,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByG_A_NotST_Last(long groupId,
 		java.lang.String articleId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the last journal article in the ordered set where groupId = &#63; and articleId = &#63; and status &ne; &#63;.
@@ -6561,7 +6557,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] findByG_A_NotST_PrevAndNext(long id, long groupId,
 		java.lang.String articleId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns all the journal articles that the user has permission to view where groupId = &#63; and articleId = &#63; and status &ne; &#63;.
@@ -6624,7 +6620,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] filterFindByG_A_NotST_PrevAndNext(long id,
 		long groupId, java.lang.String articleId, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Removes all the journal articles where groupId = &#63; and articleId = &#63; and status &ne; &#63; from the database.
@@ -6739,7 +6735,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByG_UT_ST_First(long groupId,
 		java.lang.String urlTitle, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the first journal article in the ordered set where groupId = &#63; and urlTitle = &#63; and status = &#63;.
@@ -6767,7 +6763,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByG_UT_ST_Last(long groupId,
 		java.lang.String urlTitle, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the last journal article in the ordered set where groupId = &#63; and urlTitle = &#63; and status = &#63;.
@@ -6796,7 +6792,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] findByG_UT_ST_PrevAndNext(long id, long groupId,
 		java.lang.String urlTitle, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns all the journal articles that the user has permission to view where groupId = &#63; and urlTitle = &#63; and status = &#63;.
@@ -6859,7 +6855,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] filterFindByG_UT_ST_PrevAndNext(long id,
 		long groupId, java.lang.String urlTitle, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Removes all the journal articles where groupId = &#63; and urlTitle = &#63; and status = &#63; from the database.
@@ -6974,7 +6970,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByC_V_ST_First(long companyId, double version,
 		int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the first journal article in the ordered set where companyId = &#63; and version = &#63; and status = &#63;.
@@ -7002,7 +6998,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle findByC_V_ST_Last(long companyId, double version,
 		int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the last journal article in the ordered set where companyId = &#63; and version = &#63; and status = &#63;.
@@ -7031,7 +7027,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	public JournalArticle[] findByC_V_ST_PrevAndNext(long id, long companyId,
 		double version, int status,
 		com.liferay.portal.kernel.util.OrderByComparator<JournalArticle> orderByComparator)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Removes all the journal articles where companyId = &#63; and version = &#63; and status = &#63; from the database.
@@ -7081,8 +7077,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	* @return the journal article that was removed
 	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
-	public JournalArticle remove(long id)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+	public JournalArticle remove(long id) throws NoSuchArticleException;
 
 	public JournalArticle updateImpl(JournalArticle journalArticle);
 
@@ -7094,7 +7089,7 @@ public interface JournalArticlePersistence extends BasePersistence<JournalArticl
 	* @throws NoSuchArticleException if a journal article with the primary key could not be found
 	*/
 	public JournalArticle findByPrimaryKey(long id)
-		throws com.liferay.journal.exception.NoSuchArticleException;
+		throws NoSuchArticleException;
 
 	/**
 	* Returns the journal article with the primary key or returns <code>null</code> if it could not be found.

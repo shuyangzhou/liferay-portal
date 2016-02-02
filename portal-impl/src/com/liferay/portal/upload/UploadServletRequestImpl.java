@@ -211,7 +211,7 @@ public class UploadServletRequestImpl
 			if (e instanceof FileUploadBase.FileSizeLimitExceededException) {
 				uploadException.setExceededFileSizeLimit(true);
 			}
-			else if (e instanceof FileUploadBase.SizeLimitExceededException ) {
+			else if (e instanceof FileUploadBase.SizeLimitExceededException) {
 				uploadException.setExceededUploadRequestSizeLimit(true);
 			}
 
@@ -623,7 +623,8 @@ public class UploadServletRequestImpl
 	private final LiferayServletRequest _liferayServletRequest;
 	private final Map<String, List<String>> _regularParameters;
 
-	private class GroupedFileItems implements Comparable<GroupedFileItems> {
+	private static class GroupedFileItems
+		implements Comparable<GroupedFileItems> {
 
 		public GroupedFileItems(String key) {
 			_key = key;

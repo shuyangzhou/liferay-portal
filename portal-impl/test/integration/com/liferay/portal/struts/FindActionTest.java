@@ -15,6 +15,8 @@
 package com.liferay.portal.struts;
 
 import com.liferay.portal.exception.NoSuchLayoutException;
+import com.liferay.portal.kernel.portlet.BasePortletLayoutFinder;
+import com.liferay.portal.kernel.portlet.PortletLayoutFinder;
 import com.liferay.portal.kernel.portlet.PortletProvider;
 import com.liferay.portal.kernel.portlet.PortletProviderUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
@@ -75,22 +77,30 @@ public class FindActionTest {
 			PortletProviderUtil.getPortletId(
 				BlogsEntry.class.getName(), PortletProvider.Action.VIEW)
 		};
+
+		_portletLayoutFinder = new BasePortletLayoutFinder() {
+
+			@Override
+			protected String[] getPortletIds() {
+				return _portletIds;
+			}
+
+		};
 	}
 
 	@Test
 	public void testGetPlidAndPortletIdViewInContext() throws Exception {
 		addLayouts(true, false);
 
-		Object[] plidAndPorltetId = BaseFindActionHelper.getPlidAndPortletId(
-			getThemeDisplay(), _blogsEntry.getGroupId(), _assetLayout.getPlid(),
-			_portletIds);
+		PortletLayoutFinder.Result result = _portletLayoutFinder.find(
+			getThemeDisplay(), _blogsEntry.getGroupId());
 
-		Assert.assertEquals(_blogLayout.getPlid(), plidAndPorltetId[0]);
+		Assert.assertEquals(_blogLayout.getPlid(), result.getPlid());
 
 		String portletId = PortletProviderUtil.getPortletId(
 			BlogsEntry.class.getName(), PortletProvider.Action.VIEW);
 
-		Assert.assertEquals(portletId, plidAndPorltetId[1]);
+		Assert.assertEquals(portletId, result.getPortletId());
 	}
 
 	@Test
@@ -100,9 +110,8 @@ public class FindActionTest {
 		addLayouts(false, false);
 
 		try {
-			BaseFindActionHelper.getPlidAndPortletId(
-				getThemeDisplay(), _blogsEntry.getGroupId(),
-				_assetLayout.getPlid(), _portletIds);
+			_portletLayoutFinder.find(
+				getThemeDisplay(), _blogsEntry.getGroupId());
 
 			Assert.fail();
 		}
@@ -203,6 +212,8 @@ public class FindActionTest {
 
 		themeDisplay.setPermissionChecker(permissionChecker);
 
+		themeDisplay.setPlid(_assetLayout.getPlid());
+
 		return themeDisplay;
 	}
 
@@ -215,6 +226,7 @@ public class FindActionTest {
 	@DeleteAfterTestRun
 	private Group _group;
 
+	private PortletLayoutFinder _portletLayoutFinder;
 	private String _testPortletId;
 
 }

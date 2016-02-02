@@ -14,6 +14,8 @@
 
 package com.liferay.portal.struts;
 
+import com.liferay.portal.kernel.portlet.BasePortletLayoutFinder;
+import com.liferay.portal.kernel.portlet.PortletLayoutFinder;
 import com.liferay.portal.kernel.struts.BaseStrutsAction;
 
 import javax.portlet.PortletURL;
@@ -48,11 +50,6 @@ public abstract class FindStrutsAction extends BaseStrutsAction {
 			}
 
 			@Override
-			public String[] initPortletIds() {
-				return FindStrutsAction.this.initPortletIds();
-			}
-
-			@Override
 			public PortletURL processPortletURL(
 					HttpServletRequest request, PortletURL portletURL)
 				throws Exception {
@@ -68,6 +65,11 @@ public abstract class FindStrutsAction extends BaseStrutsAction {
 
 				FindStrutsAction.this.setPrimaryKeyParameter(
 					portletURL, primaryKey);
+			}
+
+			@Override
+			protected PortletLayoutFinder getPortletLayoutFinder() {
+				return FindStrutsAction.this._portletLayoutFinder;
 			}
 
 		};
@@ -108,5 +110,15 @@ public abstract class FindStrutsAction extends BaseStrutsAction {
 	}
 
 	private final FindActionHelper _findActionHelper;
+
+	private final PortletLayoutFinder _portletLayoutFinder =
+		new BasePortletLayoutFinder() {
+
+			@Override
+			protected String[] getPortletIds() {
+				return FindStrutsAction.this.initPortletIds();
+			}
+
+		};
 
 }

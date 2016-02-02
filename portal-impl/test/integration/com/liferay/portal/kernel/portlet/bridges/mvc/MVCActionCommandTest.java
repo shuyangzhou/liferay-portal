@@ -166,7 +166,7 @@ public class MVCActionCommandTest {
 	private static ServiceTracker<GenericPortlet, GenericPortlet>
 		_genericPortletServiceTracker;
 
-	private class MockLiferayPortletRequest
+	private static class MockLiferayPortletRequest
 		extends MockActionRequest implements LiferayPortletRequest {
 
 		@Override
@@ -174,6 +174,11 @@ public class MVCActionCommandTest {
 			_mockHttpServletRequest.addParameter(name, value);
 
 			super.addParameter(name, value);
+		}
+
+		@Override
+		public Map<String, String[]> clearRenderParameters() {
+			return null;
 		}
 
 		@Override
@@ -193,11 +198,6 @@ public class MVCActionCommandTest {
 
 		@Override
 		public String getPortletName() {
-			return null;
-		}
-
-		@Override
-		public Map<String, String[]> getRenderParameters() {
 			return null;
 		}
 
