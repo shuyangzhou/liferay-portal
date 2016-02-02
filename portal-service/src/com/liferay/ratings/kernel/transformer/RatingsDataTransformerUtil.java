@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portlet.ratings.transformer;
+package com.liferay.ratings.kernel.transformer;
 
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -21,9 +21,9 @@ import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.UnicodeProperties;
-import com.liferay.portlet.ratings.RatingsType;
-import com.liferay.portlet.ratings.definition.PortletRatingsDefinitionUtil;
-import com.liferay.portlet.ratings.definition.PortletRatingsDefinitionValues;
+import com.liferay.ratings.kernel.RatingsType;
+import com.liferay.ratings.kernel.definition.PortletRatingsDefinitionUtil;
+import com.liferay.ratings.kernel.definition.PortletRatingsDefinitionValues;
 import com.liferay.portlet.ratings.model.RatingsEntry;
 import com.liferay.portlet.ratings.service.RatingsEntryLocalServiceUtil;
 import com.liferay.registry.Registry;
