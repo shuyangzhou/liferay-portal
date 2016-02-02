@@ -17,7 +17,7 @@ package com.liferay.ratings.kernel.transformer;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.ratings.kernel.RatingsType;
-import com.liferay.portlet.ratings.model.RatingsEntry;
+import com.liferay.ratings.kernel.model.RatingsEntry;
 
 /**
  * Provides an interface defining the transformations to be applied to the
