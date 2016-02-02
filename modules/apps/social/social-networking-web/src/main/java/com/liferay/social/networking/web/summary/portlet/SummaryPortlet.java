@@ -14,6 +14,7 @@
 
 package com.liferay.social.networking.web.summary.portlet;
 
+import com.liferay.expando.kernel.service.ExpandoValueLocalService;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -39,7 +40,6 @@ import com.liferay.portal.service.UserLocalService;
 import com.liferay.portal.service.permission.UserPermissionUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.expando.service.ExpandoValueLocalService;
 import com.liferay.portlet.social.model.SocialRelationConstants;
 import com.liferay.portlet.social.service.SocialRelationLocalService;
 import com.liferay.portlet.social.service.SocialRequestLocalService;
