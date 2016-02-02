@@ -16,15 +16,15 @@ package com.liferay.portlet.expando.model.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.expando.kernel.model.ExpandoRow;
+import com.liferay.expando.kernel.model.ExpandoRowModel;
+
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.impl.BaseModelImpl;
-
-import com.liferay.portlet.expando.model.ExpandoRow;
-import com.liferay.portlet.expando.model.ExpandoRowModel;
 
 import java.io.Serializable;
 
@@ -395,7 +395,7 @@ public class ExpandoRowModelImpl extends BaseModelImpl<ExpandoRow>
 		StringBundler sb = new StringBundler(19);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.portlet.expando.model.ExpandoRow");
+		sb.append("com.liferay.expando.kernel.model.ExpandoRow");
 		sb.append("</model-name>");
 
 		sb.append(
