@@ -186,11 +186,11 @@ public interface LockLocalService extends BaseLocalService,
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Lock getLock(java.lang.String className, java.lang.String key)
+	public Lock getLock(java.lang.String className, long key)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Lock getLock(java.lang.String className, long key)
+	public Lock getLock(java.lang.String className, java.lang.String key)
 		throws PortalException;
 
 	/**
@@ -257,10 +257,10 @@ public interface LockLocalService extends BaseLocalService,
 	public boolean hasLock(long userId, java.lang.String className, long key);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean isLocked(java.lang.String className, java.lang.String key);
+	public boolean isLocked(java.lang.String className, long key);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean isLocked(java.lang.String className, long key);
+	public boolean isLocked(java.lang.String className, java.lang.String key);
 
 	@MasterDataSource
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -283,9 +283,9 @@ public interface LockLocalService extends BaseLocalService,
 	public Lock refresh(java.lang.String uuid, long companyId,
 		long expirationTime) throws PortalException;
 
-	public void unlock(java.lang.String className, long key);
-
 	public void unlock(java.lang.String className, java.lang.String key);
+
+	public void unlock(java.lang.String className, long key);
 
 	@MasterDataSource
 	@Transactional(propagation = Propagation.REQUIRES_NEW)

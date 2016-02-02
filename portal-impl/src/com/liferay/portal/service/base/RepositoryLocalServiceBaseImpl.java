@@ -16,6 +16,8 @@ package com.liferay.portal.service.base;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.expando.kernel.service.persistence.ExpandoValuePersistence;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -62,7 +64,6 @@ import com.liferay.portlet.documentlibrary.service.persistence.DLFileShortcutPer
 import com.liferay.portlet.documentlibrary.service.persistence.DLFileVersionPersistence;
 import com.liferay.portlet.documentlibrary.service.persistence.DLFolderFinder;
 import com.liferay.portlet.documentlibrary.service.persistence.DLFolderPersistence;
-import com.liferay.portlet.expando.service.persistence.ExpandoValuePersistence;
 import com.liferay.portlet.exportimport.lar.ExportImportHelperUtil;
 import com.liferay.portlet.exportimport.lar.ManifestSummary;
 import com.liferay.portlet.exportimport.lar.PortletDataContext;
@@ -976,7 +977,7 @@ public abstract class RepositoryLocalServiceBaseImpl
 	 *
 	 * @return the expando value local service
 	 */
-	public com.liferay.portlet.expando.service.ExpandoValueLocalService getExpandoValueLocalService() {
+	public com.liferay.expando.kernel.service.ExpandoValueLocalService getExpandoValueLocalService() {
 		return expandoValueLocalService;
 	}
 
@@ -986,7 +987,7 @@ public abstract class RepositoryLocalServiceBaseImpl
 	 * @param expandoValueLocalService the expando value local service
 	 */
 	public void setExpandoValueLocalService(
-		com.liferay.portlet.expando.service.ExpandoValueLocalService expandoValueLocalService) {
+		com.liferay.expando.kernel.service.ExpandoValueLocalService expandoValueLocalService) {
 		this.expandoValueLocalService = expandoValueLocalService;
 	}
 
@@ -1265,8 +1266,8 @@ public abstract class RepositoryLocalServiceBaseImpl
 	protected DLFolderPersistence dlFolderPersistence;
 	@BeanReference(type = DLFolderFinder.class)
 	protected DLFolderFinder dlFolderFinder;
-	@BeanReference(type = com.liferay.portlet.expando.service.ExpandoValueLocalService.class)
-	protected com.liferay.portlet.expando.service.ExpandoValueLocalService expandoValueLocalService;
+	@BeanReference(type = com.liferay.expando.kernel.service.ExpandoValueLocalService.class)
+	protected com.liferay.expando.kernel.service.ExpandoValueLocalService expandoValueLocalService;
 	@BeanReference(type = ExpandoValuePersistence.class)
 	protected ExpandoValuePersistence expandoValuePersistence;
 	@BeanReference(type = com.liferay.portal.service.RepositoryEntryLocalService.class)

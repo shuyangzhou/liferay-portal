@@ -16,6 +16,8 @@ package com.liferay.calendar.model;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.expando.kernel.model.ExpandoBridge;
+
 import com.liferay.portal.LocaleException;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -29,7 +31,6 @@ import com.liferay.portal.model.TrashedModel;
 import com.liferay.portal.model.WorkflowedModel;
 import com.liferay.portal.service.ServiceContext;
 
-import com.liferay.portlet.expando.model.ExpandoBridge;
 import com.liferay.portlet.trash.model.TrashEntry;
 
 import java.io.Serializable;
