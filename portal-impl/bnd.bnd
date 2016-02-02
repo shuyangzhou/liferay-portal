@@ -1,5 +1,9 @@
 Bundle-Version: 7.0.0
 Export-Package:\
+	com.liferay.expando.kernel.model,\
+	com.liferay.expando.kernel.service,\
+	com.liferay.expando.kernel.service.persistence,\
+	com.liferay.expando.kernel.util,\
 	com.liferay.portal.bean,\
 	com.liferay.portal.cache.thread.local,\
 	com.liferay.portal.cluster,\
@@ -59,10 +63,6 @@ Export-Package:\
 	com.liferay.portlet.documentlibrary.action,\
 	com.liferay.portlet.documentlibrary.service.permission,\
 	com.liferay.portlet.documentlibrary.util,\
-	com.liferay.portlet.expando.model,\
-	com.liferay.portlet.expando.service,\
-	com.liferay.portlet.expando.service.persistence,\
-	com.liferay.portlet.expando.util,\
 	com.liferay.portlet.layoutsadmin.display.context,\
 	com.liferay.portlet.messageboards.model,\
 	com.liferay.portlet.messageboards.service,\

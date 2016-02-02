@@ -18,6 +18,8 @@ Import-Package:\
 	com.liferay.bookmarks.util,\
 	com.liferay.bookmarks.*,\
 	\
+	com.liferay.expando.kernel.model,\
+	\
 	com.liferay.portal.kernel.bean,\
 	com.liferay.portal.kernel.configuration,\
 	com.liferay.portal.kernel.xml,\
@@ -43,7 +45,6 @@ Import-Package:\
 	com.liferay.portlet.asset,\
 	com.liferay.portlet.asset.model,\
 	com.liferay.portlet.asset.service,\
-	com.liferay.portlet.expando.model,\
 	com.liferay.portlet.exportimport.lar,\
 	com.liferay.portlet.social.model,\
 	com.liferay.portlet.trash.model,\
