@@ -104,6 +104,9 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 		{
 			"com.liferay.portlet.announcements",
 			"com.liferay.announcements.kernel"
+		},
+		{
+			"com.liferay.portlet.asset", "com.liferay.asset.kernel"
 		}
 	};
 
