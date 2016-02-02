@@ -20,6 +20,7 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.SyntheticBundleRule;
 import com.liferay.portal.util.test.AtomicState;
 import com.liferay.portlet.PortletPreferencesImpl;
+import com.liferay.ratings.kernel.transformer.RatingsDataTransformerUtil;
 
 import javax.portlet.PortletPreferences;
 
