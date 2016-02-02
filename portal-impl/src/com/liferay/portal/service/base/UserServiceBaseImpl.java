@@ -16,6 +16,8 @@ package com.liferay.portal.service.base;
 
 import com.liferay.announcements.kernel.service.persistence.AnnouncementsDeliveryPersistence;
 
+import com.liferay.expando.kernel.service.persistence.ExpandoRowPersistence;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -68,7 +70,6 @@ import com.liferay.portlet.documentlibrary.service.persistence.DLFileEntryFinder
 import com.liferay.portlet.documentlibrary.service.persistence.DLFileEntryPersistence;
 import com.liferay.portlet.documentlibrary.service.persistence.DLFileRankFinder;
 import com.liferay.portlet.documentlibrary.service.persistence.DLFileRankPersistence;
-import com.liferay.portlet.expando.service.persistence.ExpandoRowPersistence;
 import com.liferay.portlet.messageboards.service.persistence.MBBanPersistence;
 import com.liferay.portlet.messageboards.service.persistence.MBMessageFinder;
 import com.liferay.portlet.messageboards.service.persistence.MBMessagePersistence;
@@ -1532,7 +1533,7 @@ public abstract class UserServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the expando row local service
 	 */
-	public com.liferay.portlet.expando.service.ExpandoRowLocalService getExpandoRowLocalService() {
+	public com.liferay.expando.kernel.service.ExpandoRowLocalService getExpandoRowLocalService() {
 		return expandoRowLocalService;
 	}
 
@@ -1542,7 +1543,7 @@ public abstract class UserServiceBaseImpl extends BaseServiceImpl
 	 * @param expandoRowLocalService the expando row local service
 	 */
 	public void setExpandoRowLocalService(
-		com.liferay.portlet.expando.service.ExpandoRowLocalService expandoRowLocalService) {
+		com.liferay.expando.kernel.service.ExpandoRowLocalService expandoRowLocalService) {
 		this.expandoRowLocalService = expandoRowLocalService;
 	}
 
@@ -2425,8 +2426,8 @@ public abstract class UserServiceBaseImpl extends BaseServiceImpl
 	protected DLFileRankPersistence dlFileRankPersistence;
 	@BeanReference(type = DLFileRankFinder.class)
 	protected DLFileRankFinder dlFileRankFinder;
-	@BeanReference(type = com.liferay.portlet.expando.service.ExpandoRowLocalService.class)
-	protected com.liferay.portlet.expando.service.ExpandoRowLocalService expandoRowLocalService;
+	@BeanReference(type = com.liferay.expando.kernel.service.ExpandoRowLocalService.class)
+	protected com.liferay.expando.kernel.service.ExpandoRowLocalService expandoRowLocalService;
 	@BeanReference(type = ExpandoRowPersistence.class)
 	protected ExpandoRowPersistence expandoRowPersistence;
 	@BeanReference(type = com.liferay.portlet.messageboards.service.MBBanLocalService.class)
