@@ -260,8 +260,29 @@ public class ItemSelectorImpl implements ItemSelector {
 			PARAMETER_ITEM_SELECTED_EVENT_NAME,
 			new String[] {itemSelectedEventName});
 
-		populateCriteria(parameters, itemSelectorCriteria);
-		populateItemSelectorCriteria(parameters, itemSelectorCriteria);
+		StringBundler sb = new StringBundler(itemSelectorCriteria.length * 2);
+
+		for (ItemSelectorCriterion itemSelectorCriterion :
+				itemSelectorCriteria) {
+
+			Class<?> clazz = itemSelectorCriterion.getClass();
+
+			sb.append(clazz.getName());
+			sb.append(StringPool.COMMA);
+		}
+
+		sb.setIndex(sb.index() - 1);
+
+		parameters.put(PARAMETER_CRITERIA, new String[] {sb.toString()});
+
+		for (int i = 0; i < itemSelectorCriteria.length; i++) {
+			ItemSelectorCriterion itemSelectorCriterion =
+				itemSelectorCriteria[i];
+
+			parameters.putAll(
+				_itemSelectionCriterionSerializer.getProperties(
+					itemSelectorCriterion, i + "_"));
+		}
 
 		return parameters;
 	}
@@ -315,40 +336,6 @@ public class ItemSelectorImpl implements ItemSelector {
 		}
 
 		return false;
-	}
-
-	protected void populateCriteria(
-		Map<String, String[]> parameters,
-		ItemSelectorCriterion[] itemSelectorCriteria) {
-
-		StringBundler sb = new StringBundler(itemSelectorCriteria.length * 2);
-
-		for (ItemSelectorCriterion itemSelectorCriterion :
-				itemSelectorCriteria) {
-
-			Class<?> clazz = itemSelectorCriterion.getClass();
-
-			sb.append(clazz.getName());
-			sb.append(StringPool.COMMA);
-		}
-
-		sb.setIndex(sb.index() - 1);
-
-		parameters.put(PARAMETER_CRITERIA, new String[] {sb.toString()});
-	}
-
-	protected void populateItemSelectorCriteria(
-		Map<String, String[]> parameters,
-		ItemSelectorCriterion[] itemSelectorCriteria) {
-
-		for (int i = 0; i < itemSelectorCriteria.length; i++) {
-			ItemSelectorCriterion itemSelectorCriterion =
-				itemSelectorCriteria[i];
-
-			parameters.putAll(
-				_itemSelectionCriterionSerializer.getProperties(
-					itemSelectorCriterion, i + "_"));
-		}
 	}
 
 	@Reference(
