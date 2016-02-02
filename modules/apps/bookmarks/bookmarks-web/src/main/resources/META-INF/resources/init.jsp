@@ -27,7 +27,14 @@ taglib uri="http://liferay.com/tld/trash" prefix="liferay-trash" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %><%@
 taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
-<%@ page import="com.liferay.bookmarks.configuration.BookmarksGroupServiceOverriddenConfiguration" %><%@
+<%@ page import="com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil" %><%@
+page import="com.liferay.asset.kernel.model.AssetEntry" %><%@
+page import="com.liferay.asset.kernel.model.AssetRenderer" %><%@
+page import="com.liferay.asset.kernel.model.AssetRendererFactory" %><%@
+page import="com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil" %><%@
+page import="com.liferay.asset.kernel.service.AssetEntryServiceUtil" %><%@
+page import="com.liferay.asset.kernel.service.persistence.AssetEntryQuery" %><%@
+page import="com.liferay.bookmarks.configuration.BookmarksGroupServiceOverriddenConfiguration" %><%@
 page import="com.liferay.bookmarks.constants.BookmarksConstants" %><%@
 page import="com.liferay.bookmarks.constants.BookmarksPortletKeys" %><%@
 page import="com.liferay.bookmarks.constants.BookmarksWebKeys" %><%@
@@ -87,13 +94,6 @@ page import="com.liferay.portal.util.PortalUtil" %><%@
 page import="com.liferay.portlet.PortalPreferences" %><%@
 page import="com.liferay.portlet.PortletPreferencesFactoryUtil" %><%@
 page import="com.liferay.portlet.PortletURLUtil" %><%@
-page import="com.liferay.portlet.asset.AssetRendererFactoryRegistryUtil" %><%@
-page import="com.liferay.portlet.asset.model.AssetEntry" %><%@
-page import="com.liferay.portlet.asset.model.AssetRenderer" %><%@
-page import="com.liferay.portlet.asset.model.AssetRendererFactory" %><%@
-page import="com.liferay.portlet.asset.service.AssetEntryLocalServiceUtil" %><%@
-page import="com.liferay.portlet.asset.service.AssetEntryServiceUtil" %><%@
-page import="com.liferay.portlet.asset.service.persistence.AssetEntryQuery" %><%@
 page import="com.liferay.trash.kernel.util.TrashUtil" %>
 
 <%@ page import="java.text.Format" %>
