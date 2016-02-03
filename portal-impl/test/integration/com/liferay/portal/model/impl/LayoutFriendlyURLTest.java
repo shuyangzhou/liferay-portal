@@ -150,10 +150,10 @@ public class LayoutFriendlyURLTest {
 
 			Assert.assertEquals(1, layoutFriendlyURLExceptions.size());
 
-			LayoutFriendlyURLException lfurle =
+			LayoutFriendlyURLException lfurle2 =
 				(LayoutFriendlyURLException)layoutFriendlyURLExceptions.get(0);
 
-			Assert.assertEquals(lfurle.getKeywordConflict(), "tags");
+			Assert.assertEquals(lfurle2.getKeywordConflict(), "tags");
 		}
 
 		friendlyURLMap = new HashMap<>();
