@@ -14,6 +14,16 @@
 
 package com.liferay.portlet.expando.model.impl;
 
+import com.liferay.expando.kernel.model.ExpandoBridge;
+import com.liferay.expando.kernel.model.ExpandoColumn;
+import com.liferay.expando.kernel.model.ExpandoColumnConstants;
+import com.liferay.expando.kernel.model.ExpandoTable;
+import com.liferay.expando.kernel.model.ExpandoTableConstants;
+import com.liferay.expando.kernel.service.ExpandoColumnLocalServiceUtil;
+import com.liferay.expando.kernel.service.ExpandoColumnServiceUtil;
+import com.liferay.expando.kernel.service.ExpandoTableLocalServiceUtil;
+import com.liferay.expando.kernel.service.ExpandoValueLocalServiceUtil;
+import com.liferay.expando.kernel.service.ExpandoValueServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
@@ -22,16 +32,6 @@ import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.portlet.expando.model.ExpandoBridge;
-import com.liferay.portlet.expando.model.ExpandoColumn;
-import com.liferay.portlet.expando.model.ExpandoColumnConstants;
-import com.liferay.portlet.expando.model.ExpandoTable;
-import com.liferay.portlet.expando.model.ExpandoTableConstants;
-import com.liferay.portlet.expando.service.ExpandoColumnLocalServiceUtil;
-import com.liferay.portlet.expando.service.ExpandoColumnServiceUtil;
-import com.liferay.portlet.expando.service.ExpandoTableLocalServiceUtil;
-import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
-import com.liferay.portlet.expando.service.ExpandoValueServiceUtil;
 import com.liferay.portlet.exportimport.lar.ExportImportThreadLocal;
 
 import java.io.Serializable;

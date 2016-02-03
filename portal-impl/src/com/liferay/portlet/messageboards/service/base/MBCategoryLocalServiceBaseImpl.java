@@ -16,6 +16,8 @@ package com.liferay.portlet.messageboards.service.base;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.expando.kernel.service.persistence.ExpandoRowPersistence;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -55,7 +57,6 @@ import com.liferay.portlet.asset.service.persistence.AssetEntryFinder;
 import com.liferay.portlet.asset.service.persistence.AssetEntryPersistence;
 import com.liferay.portlet.asset.service.persistence.AssetTagFinder;
 import com.liferay.portlet.asset.service.persistence.AssetTagPersistence;
-import com.liferay.portlet.expando.service.persistence.ExpandoRowPersistence;
 import com.liferay.portlet.exportimport.lar.ExportImportHelperUtil;
 import com.liferay.portlet.exportimport.lar.ManifestSummary;
 import com.liferay.portlet.exportimport.lar.PortletDataContext;
@@ -877,7 +878,7 @@ public abstract class MBCategoryLocalServiceBaseImpl
 	 *
 	 * @return the expando row local service
 	 */
-	public com.liferay.portlet.expando.service.ExpandoRowLocalService getExpandoRowLocalService() {
+	public com.liferay.expando.kernel.service.ExpandoRowLocalService getExpandoRowLocalService() {
 		return expandoRowLocalService;
 	}
 
@@ -887,7 +888,7 @@ public abstract class MBCategoryLocalServiceBaseImpl
 	 * @param expandoRowLocalService the expando row local service
 	 */
 	public void setExpandoRowLocalService(
-		com.liferay.portlet.expando.service.ExpandoRowLocalService expandoRowLocalService) {
+		com.liferay.expando.kernel.service.ExpandoRowLocalService expandoRowLocalService) {
 		this.expandoRowLocalService = expandoRowLocalService;
 	}
 
@@ -1285,8 +1286,8 @@ public abstract class MBCategoryLocalServiceBaseImpl
 	protected AssetTagPersistence assetTagPersistence;
 	@BeanReference(type = AssetTagFinder.class)
 	protected AssetTagFinder assetTagFinder;
-	@BeanReference(type = com.liferay.portlet.expando.service.ExpandoRowLocalService.class)
-	protected com.liferay.portlet.expando.service.ExpandoRowLocalService expandoRowLocalService;
+	@BeanReference(type = com.liferay.expando.kernel.service.ExpandoRowLocalService.class)
+	protected com.liferay.expando.kernel.service.ExpandoRowLocalService expandoRowLocalService;
 	@BeanReference(type = ExpandoRowPersistence.class)
 	protected ExpandoRowPersistence expandoRowPersistence;
 	@BeanReference(type = com.liferay.portlet.ratings.service.RatingsStatsLocalService.class)
