@@ -67,9 +67,7 @@ public class BNDSourceProcessor extends BaseSourceProcessor {
 
 		content = sortDefinitions(content);
 
-		if (portalSource && isModulesFile(absolutePath)) {
-			content = formatIncludeResource(content);
-		}
+		content = formatIncludeResource(content);
 
 		return trimContent(content, false);
 	}
