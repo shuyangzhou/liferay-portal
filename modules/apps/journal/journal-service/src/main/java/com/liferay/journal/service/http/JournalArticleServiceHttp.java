@@ -2279,7 +2279,8 @@ public class JournalArticleServiceHttp {
 		};
 	private static final Class<?>[] _getArticleContentParameterTypes14 = new Class[] {
 			long.class, java.lang.String.class, double.class,
-			java.lang.String.class, com.liferay.portal.kernel.theme.ThemeDisplay.class
+			java.lang.String.class,
+			com.liferay.portal.kernel.theme.ThemeDisplay.class
 		};
 	private static final Class<?>[] _getArticleContentParameterTypes15 = new Class[] {
 			long.class, java.lang.String.class, java.lang.String.class,
