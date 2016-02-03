@@ -21,13 +21,14 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.servlet.SessionMessages;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.service.GroupLocalService;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextFactory;
-import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.exportimport.service.StagingLocalService;
 import com.liferay.portlet.exportimport.staging.StagingConstants;
@@ -200,6 +201,10 @@ public class StagingConfigurationPortlet extends MVCPortlet {
 
 			if (portletURL != null) {
 				redirect = portletURL.toString();
+			}
+
+			if (stagingType == StagingConstants.TYPE_NOT_STAGED) {
+				SessionMessages.add(actionRequest, "stagingDisabled");
 			}
 		}
 		else {

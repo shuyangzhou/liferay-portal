@@ -14,7 +14,9 @@
 
 package com.liferay.layout.admin.web.portlet;
 
+import com.liferay.application.list.GroupProvider;
 import com.liferay.layout.admin.web.constants.LayoutAdminPortletKeys;
+import com.liferay.layout.admin.web.constants.LayoutAdminWebKeys;
 import com.liferay.mobile.device.rules.model.MDRAction;
 import com.liferay.mobile.device.rules.model.MDRRuleGroupInstance;
 import com.liferay.mobile.device.rules.service.MDRActionLocalService;
@@ -42,6 +44,7 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.servlet.MultiSessionMessages;
 import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadException;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.FileUtil;
@@ -82,7 +85,6 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.service.ServiceContextThreadLocal;
 import com.liferay.portal.service.ThemeLocalService;
-import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.documentlibrary.service.DLAppLocalService;
@@ -655,6 +657,9 @@ public class LayoutAdminPortlet extends MVCPortlet {
 				}
 			}
 
+			renderRequest.setAttribute(
+				LayoutAdminWebKeys.GROUP_PROVIDER, groupProvider);
+
 			super.doDispatch(renderRequest, renderResponse);
 		}
 	}
@@ -767,6 +772,11 @@ public class LayoutAdminPortlet extends MVCPortlet {
 	@Reference(unbind = "-")
 	protected void setGroupLocalService(GroupLocalService groupLocalService) {
 		this.groupLocalService = groupLocalService;
+	}
+
+	@Reference(unbind = "-")
+	protected void setGroupProvider(GroupProvider groupProvider) {
+		this.groupProvider = groupProvider;
 	}
 
 	@Reference(unbind = "-")
@@ -1112,6 +1122,7 @@ public class LayoutAdminPortlet extends MVCPortlet {
 
 	protected DLAppLocalService dlAppLocalService;
 	protected GroupLocalService groupLocalService;
+	protected GroupProvider groupProvider;
 	protected GroupService groupService;
 	protected LayoutLocalService layoutLocalService;
 	protected LayoutPrototypeLocalService layoutPrototypeLocalService;
