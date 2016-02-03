@@ -15,7 +15,7 @@
 package com.liferay.portal.kernel.workflow;
 
 import com.liferay.portal.kernel.util.AutoResetThreadLocal;
-import com.liferay.portlet.exportimport.lar.ExportImportThreadLocal;
+import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 
 /**
  * @author Jorge Ferrer

@@ -18,7 +18,7 @@ import com.liferay.portal.kernel.image.ImageTool;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.xml.Element;
-import com.liferay.portlet.exportimport.lar.PortletDataContext;
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
 
 import java.io.InputStream;
 

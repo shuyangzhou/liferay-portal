@@ -21,7 +21,7 @@ import com.liferay.portal.model.ResourceConstants;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.ResourceLocalServiceUtil;
 import com.liferay.portal.service.ResourcePermissionLocalServiceUtil;
-import com.liferay.portlet.exportimport.staging.permission.StagingPermissionUtil;
+import com.liferay.exportimport.kernel.staging.permission.StagingPermissionUtil;
 
 /**
  * @author Preston Crary
