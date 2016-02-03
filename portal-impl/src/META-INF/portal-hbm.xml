@@ -114,8 +114,8 @@
 	<import class="com.liferay.portlet.messageboards.model.MBStatsUser" />
 	<import class="com.liferay.portlet.messageboards.model.MBThread" />
 	<import class="com.liferay.portlet.messageboards.model.MBThreadFlag" />
-	<import class="com.liferay.portlet.ratings.model.RatingsEntry" />
-	<import class="com.liferay.portlet.ratings.model.RatingsStats" />
+	<import class="com.liferay.ratings.kernel.model.RatingsEntry" />
+	<import class="com.liferay.ratings.kernel.model.RatingsStats" />
 	<import class="com.liferay.portlet.social.model.SocialActivity" />
 	<import class="com.liferay.portlet.social.model.SocialActivityAchievement" />
 	<import class="com.liferay.portlet.social.model.SocialActivityCounter" />
