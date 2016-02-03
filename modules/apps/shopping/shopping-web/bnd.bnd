@@ -20,7 +20,7 @@ Import-Package:\
 	com.liferay.portal.struts,\
 	com.liferay.portal.theme,\
 	com.liferay.portal.webserver,\
-	com.liferay.portlet.exportimport.lar,\
+	com.liferay.exportimport.kernel.lar,\
 	com.liferay.shopping.configuration,\
 	com.liferay.shopping.exception,\
 	com.liferay.shopping.lar,\
