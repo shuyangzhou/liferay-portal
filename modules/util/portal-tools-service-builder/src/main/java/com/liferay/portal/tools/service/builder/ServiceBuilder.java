@@ -1709,7 +1709,7 @@ public class ServiceBuilder {
 			if (parameterTypeName.equals(
 					"com.liferay.portal.kernel.util.UnicodeProperties") ||
 				parameterTypeName.equals(
-					"com.liferay.portal.theme.ThemeDisplay") ||
+					"com.liferay.portal.kernel.theme.ThemeDisplay") ||
 				parameterTypeName.equals(
 					"com.liferay.portlet.PortletPreferencesImpl") ||
 				parameterTypeName.equals(
