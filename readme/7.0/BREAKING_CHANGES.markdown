@@ -3493,6 +3493,22 @@ else.
 
 - `com.liferay.portlet.layoutsadmin.util` &rarr; `com.liferay.layouts.admin.kernel.util`
 
+- `com.liferay.portlet.messageboards` &rarr; `com.liferay.message.boards.kernel`
+
+- `com.liferay.portlet.messageboards.constants` &rarr; `com.liferay.message.boards.kernel.constants`
+
+- `com.liferay.portlet.messageboards.exception` &rarr; `com.liferay.message.boards.kernel.exception`
+
+- `com.liferay.portlet.messageboards.model` &rarr; `com.liferay.message.boards.kernel.model`
+
+- `com.liferay.portlet.messageboards.service` &rarr; `com.liferay.message.boards.kernel.service`
+
+- `com.liferay.portlet.messageboards.service.persistence` &rarr; `com.liferay.message.boards.kernel.service.persistence`
+
+- `com.liferay.portlet.messageboards.util` &rarr; `com.liferay.message.boards.kernel.util`
+
+- `com.liferay.portlet.messageboards.util.comparator` &rarr; `com.liferay.message.boards.kernel.util.comparator`
+
 - `com.liferay.portlet.mobiledevicerules` &rarr; `com.liferay.mobile.device.rules`
 
 - `com.liferay.portlet.portletconfiguration.util` &rarr; `com.liferay.portlet.configuration.kernel.util`
