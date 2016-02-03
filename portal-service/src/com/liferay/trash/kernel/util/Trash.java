@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portlet.trash.util;
+package com.liferay.trash.kernel.util;
 
 import aQute.bnd.annotation.ProviderType;
 

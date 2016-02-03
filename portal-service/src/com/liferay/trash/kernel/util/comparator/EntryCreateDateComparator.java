@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portlet.trash.util.comparator;
+package com.liferay.trash.kernel.util.comparator;
 
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
