@@ -12,15 +12,19 @@
  * details.
  */
 
-package com.liferay.portal.theme;
+package com.liferay.application.list;
+
+import com.liferay.portal.model.Group;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Julio Camarero
  */
-public class ThemeGroupId extends ThemeCompanyId {
+public interface GroupProvider {
 
-	public ThemeGroupId(String value, boolean pattern) {
-		super(value, pattern);
-	}
+	public Group getGroup(HttpServletRequest request);
+
+	public void setGroup(HttpServletRequest request, Group group);
 
 }

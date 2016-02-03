@@ -12,29 +12,18 @@
  * details.
  */
 
-package com.liferay.portal.theme;
-
-import java.io.Serializable;
+package com.liferay.product.navigation.site.administration.constants;
 
 /**
- * @author Brian Wing Shun Chan
+ *
+ * @author Julio Camarero
  */
-public class ThemeCompanyId implements Serializable {
+public class SiteAdministrationWebKeys {
 
-	public ThemeCompanyId(String value, boolean pattern) {
-		_value = value;
-		_pattern = pattern;
-	}
+	public static final String GROUP_PROVIDER = "GROUP_PROVIDER";
 
-	public String getValue() {
-		return _value;
-	}
+	public static final String GROUP_URL_PROVIDER = "GROUP_URL_PROVIDER";
 
-	public boolean isPattern() {
-		return _pattern;
-	}
-
-	private final boolean _pattern;
-	private final String _value;
+	public static final String RECENT_GROUP_MANAGER = "RECENT_GROUP_MANAGER";
 
 }

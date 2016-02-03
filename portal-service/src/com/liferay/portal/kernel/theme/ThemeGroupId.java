@@ -12,10 +12,15 @@
  * details.
  */
 
-package com.liferay.portal.theme;
+package com.liferay.portal.kernel.theme;
 
 /**
  * @author Brian Wing Shun Chan
  */
-public class ThemeGroupLimit extends ThemeCompanyLimit {
+public class ThemeGroupId extends ThemeCompanyId {
+
+	public ThemeGroupId(String value, boolean pattern) {
+		super(value, pattern);
+	}
+
 }
