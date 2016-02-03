@@ -1029,7 +1029,7 @@ public class ${entity.name}Clp extends BaseModelImpl<${entity.name}> implements 
 		StringBundler sb = new StringBundler(${entity.regularColList?size * 3 + 4});
 
 		sb.append("<model><model-name>");
-		sb.append("${packagePath}.model.${entity.name}");
+		sb.append("${apiPackagePath}.model.${entity.name}");
 		sb.append("</model-name>");
 
 		<#list entity.regularColList as column>

@@ -319,7 +319,7 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 		</#if>
 	</#list>
 
-	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(${propsUtil}.get("lock.expiration.time.${packagePath}.model.${entity.name}"));
+	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(${propsUtil}.get("lock.expiration.time.${apiPackagePath}.model.${entity.name}"));
 
 	public ${entity.name}ModelImpl() {
 	}
