@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.calendar.service.impl;
 
+import com.liferay.asset.kernel.model.AssetEntry;
+import com.liferay.asset.kernel.model.AssetLinkConstants;
 import com.liferay.mail.service.MailService;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cal.DayAndPosition;
@@ -57,8 +59,6 @@ import com.liferay.portal.service.permission.ModelPermissions;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PortletKeys;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.portlet.asset.model.AssetEntry;
-import com.liferay.portlet.asset.model.AssetLinkConstants;
 import com.liferay.portlet.calendar.exception.EventDurationException;
 import com.liferay.portlet.calendar.exception.EventEndDateException;
 import com.liferay.portlet.calendar.exception.EventStartDateException;

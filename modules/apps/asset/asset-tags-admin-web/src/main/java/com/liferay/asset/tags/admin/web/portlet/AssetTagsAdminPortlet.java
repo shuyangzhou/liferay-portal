@@ -14,6 +14,12 @@
 
 package com.liferay.asset.tags.admin.web.portlet;
 
+import com.liferay.asset.kernel.exception.AssetTagException;
+import com.liferay.asset.kernel.exception.DuplicateTagException;
+import com.liferay.asset.kernel.exception.NoSuchTagException;
+import com.liferay.asset.kernel.model.AssetTag;
+import com.liferay.asset.kernel.service.AssetTagLocalService;
+import com.liferay.asset.kernel.service.AssetTagService;
 import com.liferay.asset.tags.admin.web.constants.AssetTagsAdminPortletKeys;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
@@ -22,12 +28,6 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextFactory;
-import com.liferay.portlet.asset.exception.AssetTagException;
-import com.liferay.portlet.asset.exception.DuplicateTagException;
-import com.liferay.portlet.asset.exception.NoSuchTagException;
-import com.liferay.portlet.asset.model.AssetTag;
-import com.liferay.portlet.asset.service.AssetTagLocalService;
-import com.liferay.portlet.asset.service.AssetTagService;
 
 import java.io.IOException;
 

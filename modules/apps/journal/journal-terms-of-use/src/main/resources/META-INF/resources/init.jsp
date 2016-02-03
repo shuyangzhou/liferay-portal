@@ -22,14 +22,14 @@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %><%@
 taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
-<%@ page import="com.liferay.journal.configuration.JournalServiceConfigurationKeys" %><%@
+<%@ page import="com.liferay.asset.kernel.model.AssetRenderer" %><%@
+page import="com.liferay.journal.configuration.JournalServiceConfigurationKeys" %><%@
 page import="com.liferay.journal.configuration.JournalServiceConfigurationValues" %><%@
 page import="com.liferay.journal.model.JournalArticle" %><%@
 page import="com.liferay.journal.service.JournalArticleLocalServiceUtil" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
 page import="com.liferay.portal.kernel.util.PrefsPropsUtil" %><%@
-page import="com.liferay.portal.kernel.util.Validator" %><%@
-page import="com.liferay.portlet.asset.model.AssetRenderer" %>
+page import="com.liferay.portal.kernel.util.Validator" %>
 
 <liferay-frontend:defineObjects />
 

@@ -14,7 +14,7 @@
 
 package com.liferay.taglib.ui;
 
-import com.liferay.portlet.asset.model.AssetTag;
+import com.liferay.asset.kernel.model.AssetTag;
 import com.liferay.taglib.util.IncludeTag;
 
 import java.util.ArrayList;
