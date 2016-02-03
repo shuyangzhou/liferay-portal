@@ -14,6 +14,8 @@
 
 package com.liferay.document.library.web.portlet.action;
 
+import com.liferay.asset.kernel.exception.AssetCategoryException;
+import com.liferay.asset.kernel.exception.AssetTagException;
 import com.liferay.document.library.web.constants.DLPortletKeys;
 import com.liferay.portal.kernel.lock.DuplicateLockException;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
@@ -34,8 +36,6 @@ import com.liferay.portal.model.TrashedModel;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.asset.exception.AssetCategoryException;
-import com.liferay.portlet.asset.exception.AssetTagException;
 import com.liferay.portlet.documentlibrary.exception.DuplicateFileEntryException;
 import com.liferay.portlet.documentlibrary.exception.DuplicateFolderNameException;
 import com.liferay.portlet.documentlibrary.exception.InvalidFolderException;
@@ -45,8 +45,8 @@ import com.liferay.portlet.documentlibrary.exception.SourceFileNameException;
 import com.liferay.portlet.documentlibrary.model.DLFileEntry;
 import com.liferay.portlet.documentlibrary.service.DLAppService;
 import com.liferay.portlet.documentlibrary.service.DLTrashService;
-import com.liferay.portlet.trash.service.TrashEntryService;
-import com.liferay.portlet.trash.util.TrashUtil;
+import com.liferay.trash.kernel.service.TrashEntryService;
+import com.liferay.trash.kernel.util.TrashUtil;
 
 import java.util.ArrayList;
 import java.util.List;

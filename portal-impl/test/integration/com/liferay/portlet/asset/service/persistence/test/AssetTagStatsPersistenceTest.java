@@ -14,6 +14,12 @@
 
 package com.liferay.portlet.asset.service.persistence.test;
 
+import com.liferay.asset.kernel.exception.NoSuchTagStatsException;
+import com.liferay.asset.kernel.model.AssetTagStats;
+import com.liferay.asset.kernel.service.AssetTagStatsLocalServiceUtil;
+import com.liferay.asset.kernel.service.persistence.AssetTagStatsPersistence;
+import com.liferay.asset.kernel.service.persistence.AssetTagStatsUtil;
+
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -30,12 +36,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
-
-import com.liferay.portlet.asset.exception.NoSuchTagStatsException;
-import com.liferay.portlet.asset.model.AssetTagStats;
-import com.liferay.portlet.asset.service.AssetTagStatsLocalServiceUtil;
-import com.liferay.portlet.asset.service.persistence.AssetTagStatsPersistence;
-import com.liferay.portlet.asset.service.persistence.AssetTagStatsUtil;
 
 import org.junit.After;
 import org.junit.Assert;
