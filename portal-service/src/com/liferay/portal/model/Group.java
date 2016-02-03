@@ -110,7 +110,8 @@ public interface Group extends GroupModel, PersistedModel, TreeModel {
 		java.lang.String key);
 
 	public java.lang.String getLogoURL(
-		com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay, boolean useDefault);
+		com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay,
+		boolean useDefault);
 
 	public long getOrganizationId();
 
