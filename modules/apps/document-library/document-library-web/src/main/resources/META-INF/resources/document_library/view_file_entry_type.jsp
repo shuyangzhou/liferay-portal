@@ -38,7 +38,7 @@ portletURL.setParameter("mvcPath", "/document_library/view_file_entry_type.jsp")
 	</liferay-ui:search-container-results>
 
 	<liferay-ui:search-container-row
-		className="com.liferay.portlet.documentlibrary.model.DLFileEntryType"
+		className="com.liferay.document.library.kernel.model.DLFileEntryType"
 		escapedModel="<%= true %>"
 		keyProperty="fileEntryTypeId"
 		modelVar="fileEntryType"
