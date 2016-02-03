@@ -14,6 +14,7 @@
 
 package com.liferay.dynamic.data.mapping.util.impl;
 
+import com.liferay.document.library.kernel.model.DLFileEntryTypeConstants;
 import com.liferay.dynamic.data.mapping.io.DDMFormJSONDeserializer;
 import com.liferay.dynamic.data.mapping.io.DDMFormLayoutJSONDeserializer;
 import com.liferay.dynamic.data.mapping.io.DDMFormXSDDeserializer;
@@ -43,7 +44,6 @@ import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.UnsecureSAXReaderUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.documentlibrary.model.DLFileEntryTypeConstants;
 
 import java.util.HashMap;
 import java.util.List;

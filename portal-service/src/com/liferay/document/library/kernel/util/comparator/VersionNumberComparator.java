@@ -14,9 +14,9 @@
 
 package com.liferay.document.library.kernel.util.comparator;
 
+import com.liferay.document.library.kernel.model.DLFileEntryConstants;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portlet.documentlibrary.model.DLFileEntryConstants;
 
 import java.util.Comparator;
 

@@ -14,8 +14,8 @@
 
 package com.liferay.document.library.kernel.util;
 
+import com.liferay.document.library.kernel.model.DLProcessorConstants;
 import com.liferay.portal.kernel.repository.model.FileVersion;
-import com.liferay.portlet.documentlibrary.model.DLProcessorConstants;
 
 import java.io.InputStream;
 

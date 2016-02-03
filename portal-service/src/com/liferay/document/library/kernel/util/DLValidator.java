@@ -14,12 +14,12 @@
 
 package com.liferay.document.library.kernel.util;
 
-import com.liferay.portlet.documentlibrary.exception.FileExtensionException;
-import com.liferay.portlet.documentlibrary.exception.FileNameException;
-import com.liferay.portlet.documentlibrary.exception.FileSizeException;
-import com.liferay.portlet.documentlibrary.exception.FolderNameException;
-import com.liferay.portlet.documentlibrary.exception.InvalidFileVersionException;
-import com.liferay.portlet.documentlibrary.exception.SourceFileNameException;
+import com.liferay.document.library.kernel.exception.FileExtensionException;
+import com.liferay.document.library.kernel.exception.FileNameException;
+import com.liferay.document.library.kernel.exception.FileSizeException;
+import com.liferay.document.library.kernel.exception.FolderNameException;
+import com.liferay.document.library.kernel.exception.InvalidFileVersionException;
+import com.liferay.document.library.kernel.exception.SourceFileNameException;
 
 import java.io.File;
 import java.io.InputStream;

@@ -14,10 +14,10 @@
 
 package com.liferay.document.library.kernel.util;
 
+import com.liferay.document.library.kernel.model.DLProcessorConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;
-import com.liferay.portlet.documentlibrary.model.DLProcessorConstants;
 
 /**
  * Document library processor responsible for the generation of raw metadata
