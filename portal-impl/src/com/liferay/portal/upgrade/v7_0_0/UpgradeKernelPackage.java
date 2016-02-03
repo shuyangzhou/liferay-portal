@@ -111,6 +111,14 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 		{
 			"com.liferay.portlet.announcements.model.AnnouncementsFlag",
 			"com.liferay.announcements.kernel.model.AnnouncementsFlag"
+		},
+		{
+			"com.liferay.portlet.blogs.model.BlogsEntry",
+			"com.liferay.blogs.kernel.model.BlogsEntry"
+		},
+		{
+			"com.liferay.portlet.blogs.model.BlogsStatsUser",
+			"com.liferay.blogs.kernel.model.BlogsStatsUser"
 		}
 	};
 
