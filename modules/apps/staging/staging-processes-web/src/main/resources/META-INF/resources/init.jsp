@@ -29,7 +29,16 @@ taglib uri="http://liferay.com/tld/trash" prefix="liferay-trash" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %><%@
 taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
-<%@ page import="com.liferay.exportimport.util.comparator.ExportImportConfigurationNameComparator" %><%@
+<%@ page import="com.liferay.exportimport.kernel.background.task.BackgroundTaskExecutorNames" %><%@
+page import="com.liferay.exportimport.kernel.configuration.ExportImportConfigurationConstants" %><%@
+page import="com.liferay.exportimport.kernel.exception.RemoteExportException" %><%@
+page import="com.liferay.exportimport.kernel.lar.ExportImportHelperUtil" %><%@
+page import="com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys" %><%@
+page import="com.liferay.exportimport.kernel.model.ExportImportConfiguration" %><%@
+page import="com.liferay.exportimport.kernel.service.ExportImportConfigurationLocalServiceUtil" %><%@
+page import="com.liferay.exportimport.kernel.staging.LayoutStagingUtil" %><%@
+page import="com.liferay.exportimport.kernel.staging.StagingUtil" %><%@
+page import="com.liferay.exportimport.util.comparator.ExportImportConfigurationNameComparator" %><%@
 page import="com.liferay.portal.RemoteOptionsException" %><%@
 page import="com.liferay.portal.exception.LayoutPrototypeException" %><%@
 page import="com.liferay.portal.exception.NoSuchGroupException" %><%@
@@ -79,15 +88,6 @@ page import="com.liferay.portal.util.PortletKeys" %><%@
 page import="com.liferay.portal.util.SessionClicks" %><%@
 page import="com.liferay.portlet.PortalPreferences" %><%@
 page import="com.liferay.portlet.PortletPreferencesFactoryUtil" %><%@
-page import="com.liferay.portlet.exportimport.background.task.BackgroundTaskExecutorNames" %><%@
-page import="com.liferay.portlet.exportimport.configuration.ExportImportConfigurationConstants" %><%@
-page import="com.liferay.portlet.exportimport.exception.RemoteExportException" %><%@
-page import="com.liferay.portlet.exportimport.lar.ExportImportHelperUtil" %><%@
-page import="com.liferay.portlet.exportimport.lar.PortletDataHandlerKeys" %><%@
-page import="com.liferay.portlet.exportimport.model.ExportImportConfiguration" %><%@
-page import="com.liferay.portlet.exportimport.service.ExportImportConfigurationLocalServiceUtil" %><%@
-page import="com.liferay.portlet.exportimport.staging.LayoutStagingUtil" %><%@
-page import="com.liferay.portlet.exportimport.staging.StagingUtil" %><%@
 page import="com.liferay.staging.constants.StagingConfigurationPortletKeys" %><%@
 page import="com.liferay.staging.constants.StagingProcessesPortletKeys" %><%@
 page import="com.liferay.staging.processes.web.search.PublishConfigurationDisplayTerms" %><%@
