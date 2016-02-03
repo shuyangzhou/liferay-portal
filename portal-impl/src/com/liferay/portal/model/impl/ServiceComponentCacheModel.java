@@ -128,9 +128,12 @@ public class ServiceComponentCacheModel implements CacheModel<ServiceComponent>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
+
 		serviceComponentId = objectInput.readLong();
 		buildNamespace = objectInput.readUTF();
+
 		buildNumber = objectInput.readLong();
+
 		buildDate = objectInput.readLong();
 		data = objectInput.readUTF();
 	}
@@ -139,6 +142,7 @@ public class ServiceComponentCacheModel implements CacheModel<ServiceComponent>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(serviceComponentId);
 
 		if (buildNamespace == null) {
@@ -149,6 +153,7 @@ public class ServiceComponentCacheModel implements CacheModel<ServiceComponent>,
 		}
 
 		objectOutput.writeLong(buildNumber);
+
 		objectOutput.writeLong(buildDate);
 
 		if (data == null) {

@@ -112,6 +112,7 @@ public class ClassNameCacheModel implements CacheModel<ClassName>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
+
 		classNameId = objectInput.readLong();
 		value = objectInput.readUTF();
 	}
@@ -120,6 +121,7 @@ public class ClassNameCacheModel implements CacheModel<ClassName>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(classNameId);
 
 		if (value == null) {

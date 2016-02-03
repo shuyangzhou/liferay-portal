@@ -2721,6 +2721,12 @@
 			<type>java.util.Locale[]</type>
 		</attribute>
 		<attribute>
+			<name>changeableDefaultLanguage</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
 			<description><![CDATA[The language ID to which the translation manager defaults when no other translations are available in the user's language]]></description>
 			<name>defaultLanguageId</name>
 			<required>false</required>

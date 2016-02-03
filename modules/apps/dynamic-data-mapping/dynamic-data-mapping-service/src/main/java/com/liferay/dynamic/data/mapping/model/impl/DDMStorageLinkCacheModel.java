@@ -108,10 +108,15 @@ public class DDMStorageLinkCacheModel implements CacheModel<DDMStorageLink>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
+
 		storageLinkId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		classNameId = objectInput.readLong();
+
 		classPK = objectInput.readLong();
+
 		structureId = objectInput.readLong();
 	}
 
@@ -126,9 +131,13 @@ public class DDMStorageLinkCacheModel implements CacheModel<DDMStorageLink>,
 		}
 
 		objectOutput.writeLong(storageLinkId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(classNameId);
+
 		objectOutput.writeLong(classPK);
+
 		objectOutput.writeLong(structureId);
 	}
 

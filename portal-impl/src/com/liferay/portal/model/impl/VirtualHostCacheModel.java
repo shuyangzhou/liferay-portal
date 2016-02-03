@@ -118,8 +118,11 @@ public class VirtualHostCacheModel implements CacheModel<VirtualHost>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
+
 		virtualHostId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		layoutSetId = objectInput.readLong();
 		hostname = objectInput.readUTF();
 	}
@@ -128,8 +131,11 @@ public class VirtualHostCacheModel implements CacheModel<VirtualHost>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(virtualHostId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(layoutSetId);
 
 		if (hostname == null) {

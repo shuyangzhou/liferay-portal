@@ -180,8 +180,11 @@ public class LayoutPrototypeCacheModel implements CacheModel<LayoutPrototype>,
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
 		uuid = objectInput.readUTF();
+
 		layoutPrototypeId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
@@ -189,6 +192,7 @@ public class LayoutPrototypeCacheModel implements CacheModel<LayoutPrototype>,
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
 		settings = objectInput.readUTF();
+
 		active = objectInput.readBoolean();
 	}
 
@@ -205,7 +209,9 @@ public class LayoutPrototypeCacheModel implements CacheModel<LayoutPrototype>,
 		}
 
 		objectOutput.writeLong(layoutPrototypeId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {

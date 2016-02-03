@@ -109,9 +109,13 @@ public class MBStatsUserCacheModel implements CacheModel<MBStatsUser>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		statsUserId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
+
 		messageCount = objectInput.readInt();
 		lastPostDate = objectInput.readLong();
 	}
@@ -120,9 +124,13 @@ public class MBStatsUserCacheModel implements CacheModel<MBStatsUser>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(statsUserId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
+
 		objectOutput.writeInt(messageCount);
 		objectOutput.writeLong(lastPostDate);
 	}

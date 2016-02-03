@@ -126,13 +126,19 @@ public class AssetLinkCacheModel implements CacheModel<AssetLink>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		linkId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
+
 		entryId1 = objectInput.readLong();
+
 		entryId2 = objectInput.readLong();
+
 		type = objectInput.readInt();
+
 		weight = objectInput.readInt();
 	}
 
@@ -140,7 +146,9 @@ public class AssetLinkCacheModel implements CacheModel<AssetLink>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(linkId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -151,9 +159,13 @@ public class AssetLinkCacheModel implements CacheModel<AssetLink>,
 		}
 
 		objectOutput.writeLong(createDate);
+
 		objectOutput.writeLong(entryId1);
+
 		objectOutput.writeLong(entryId2);
+
 		objectOutput.writeInt(type);
+
 		objectOutput.writeInt(weight);
 	}
 

@@ -114,9 +114,13 @@ public class WikiPageResourceCacheModel implements CacheModel<WikiPageResource>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
+
 		resourcePrimKey = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		nodeId = objectInput.readLong();
 		title = objectInput.readUTF();
 	}
@@ -132,8 +136,11 @@ public class WikiPageResourceCacheModel implements CacheModel<WikiPageResource>,
 		}
 
 		objectOutput.writeLong(resourcePrimKey);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(nodeId);
 
 		if (title == null) {

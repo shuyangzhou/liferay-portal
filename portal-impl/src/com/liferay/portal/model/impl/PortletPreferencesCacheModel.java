@@ -133,10 +133,15 @@ public class PortletPreferencesCacheModel implements CacheModel<PortletPreferenc
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
+
 		portletPreferencesId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		ownerId = objectInput.readLong();
+
 		ownerType = objectInput.readInt();
+
 		plid = objectInput.readLong();
 		portletId = objectInput.readUTF();
 		preferences = objectInput.readUTF();
@@ -146,10 +151,15 @@ public class PortletPreferencesCacheModel implements CacheModel<PortletPreferenc
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(portletPreferencesId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(ownerId);
+
 		objectOutput.writeInt(ownerType);
+
 		objectOutput.writeLong(plid);
 
 		if (portletId == null) {

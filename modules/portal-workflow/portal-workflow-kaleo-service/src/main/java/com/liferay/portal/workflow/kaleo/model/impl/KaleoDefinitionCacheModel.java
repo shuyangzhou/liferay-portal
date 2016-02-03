@@ -170,8 +170,11 @@ public class KaleoDefinitionCacheModel implements CacheModel<KaleoDefinition>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		kaleoDefinitionId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
@@ -180,8 +183,11 @@ public class KaleoDefinitionCacheModel implements CacheModel<KaleoDefinition>,
 		title = objectInput.readUTF();
 		description = objectInput.readUTF();
 		content = objectInput.readUTF();
+
 		version = objectInput.readInt();
+
 		active = objectInput.readBoolean();
+
 		startKaleoNodeId = objectInput.readLong();
 	}
 
@@ -189,8 +195,11 @@ public class KaleoDefinitionCacheModel implements CacheModel<KaleoDefinition>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(kaleoDefinitionId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -232,7 +241,9 @@ public class KaleoDefinitionCacheModel implements CacheModel<KaleoDefinition>,
 		}
 
 		objectOutput.writeInt(version);
+
 		objectOutput.writeBoolean(active);
+
 		objectOutput.writeLong(startKaleoNodeId);
 	}
 

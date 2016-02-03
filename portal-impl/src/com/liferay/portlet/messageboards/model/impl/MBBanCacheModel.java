@@ -146,13 +146,18 @@ public class MBBanCacheModel implements CacheModel<MBBan>, Externalizable {
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
+
 		banId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		banUserId = objectInput.readLong();
 		lastPublishDate = objectInput.readLong();
 	}
@@ -168,8 +173,11 @@ public class MBBanCacheModel implements CacheModel<MBBan>, Externalizable {
 		}
 
 		objectOutput.writeLong(banId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -181,6 +189,7 @@ public class MBBanCacheModel implements CacheModel<MBBan>, Externalizable {
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(banUserId);
 		objectOutput.writeLong(lastPublishDate);
 	}

@@ -259,9 +259,13 @@ public class JournalFeedCacheModel implements CacheModel<JournalFeed>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
+
 		id = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
@@ -272,6 +276,7 @@ public class JournalFeedCacheModel implements CacheModel<JournalFeed>,
 		DDMStructureKey = objectInput.readUTF();
 		DDMTemplateKey = objectInput.readUTF();
 		DDMRendererTemplateKey = objectInput.readUTF();
+
 		delta = objectInput.readInt();
 		orderByCol = objectInput.readUTF();
 		orderByType = objectInput.readUTF();
@@ -279,6 +284,7 @@ public class JournalFeedCacheModel implements CacheModel<JournalFeed>,
 		targetPortletId = objectInput.readUTF();
 		contentField = objectInput.readUTF();
 		feedFormat = objectInput.readUTF();
+
 		feedVersion = objectInput.readDouble();
 		lastPublishDate = objectInput.readLong();
 	}
@@ -294,8 +300,11 @@ public class JournalFeedCacheModel implements CacheModel<JournalFeed>,
 		}
 
 		objectOutput.writeLong(id);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {

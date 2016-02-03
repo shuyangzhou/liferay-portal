@@ -179,12 +179,16 @@ public class AppCacheModel implements CacheModel<App>, Externalizable {
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
+
 		appId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		remoteAppId = objectInput.readLong();
 		title = objectInput.readUTF();
 		description = objectInput.readUTF();
@@ -204,7 +208,9 @@ public class AppCacheModel implements CacheModel<App>, Externalizable {
 		}
 
 		objectOutput.writeLong(appId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -216,6 +222,7 @@ public class AppCacheModel implements CacheModel<App>, Externalizable {
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(remoteAppId);
 
 		if (title == null) {

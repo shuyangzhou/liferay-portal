@@ -102,7 +102,9 @@ public class ExpandoTableCacheModel implements CacheModel<ExpandoTable>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		tableId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		classNameId = objectInput.readLong();
 		name = objectInput.readUTF();
 	}
@@ -111,7 +113,9 @@ public class ExpandoTableCacheModel implements CacheModel<ExpandoTable>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(tableId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(classNameId);
 
 		if (name == null) {

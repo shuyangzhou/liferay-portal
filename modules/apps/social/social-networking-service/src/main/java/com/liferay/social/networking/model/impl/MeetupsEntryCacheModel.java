@@ -171,7 +171,9 @@ public class MeetupsEntryCacheModel implements CacheModel<MeetupsEntry>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		meetupsEntryId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
@@ -180,9 +182,13 @@ public class MeetupsEntryCacheModel implements CacheModel<MeetupsEntry>,
 		description = objectInput.readUTF();
 		startDate = objectInput.readLong();
 		endDate = objectInput.readLong();
+
 		totalAttendees = objectInput.readInt();
+
 		maxAttendees = objectInput.readInt();
+
 		price = objectInput.readDouble();
+
 		thumbnailId = objectInput.readLong();
 	}
 
@@ -190,7 +196,9 @@ public class MeetupsEntryCacheModel implements CacheModel<MeetupsEntry>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(meetupsEntryId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -219,9 +227,13 @@ public class MeetupsEntryCacheModel implements CacheModel<MeetupsEntry>,
 
 		objectOutput.writeLong(startDate);
 		objectOutput.writeLong(endDate);
+
 		objectOutput.writeInt(totalAttendees);
+
 		objectOutput.writeInt(maxAttendees);
+
 		objectOutput.writeDouble(price);
+
 		objectOutput.writeLong(thumbnailId);
 	}
 

@@ -119,13 +119,20 @@ public class BlogsStatsUserCacheModel implements CacheModel<BlogsStatsUser>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		statsUserId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
+
 		entryCount = objectInput.readInt();
 		lastPostDate = objectInput.readLong();
+
 		ratingsTotalEntries = objectInput.readInt();
+
 		ratingsTotalScore = objectInput.readDouble();
+
 		ratingsAverageScore = objectInput.readDouble();
 	}
 
@@ -133,13 +140,20 @@ public class BlogsStatsUserCacheModel implements CacheModel<BlogsStatsUser>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(statsUserId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
+
 		objectOutput.writeInt(entryCount);
 		objectOutput.writeLong(lastPostDate);
+
 		objectOutput.writeInt(ratingsTotalEntries);
+
 		objectOutput.writeDouble(ratingsTotalScore);
+
 		objectOutput.writeDouble(ratingsAverageScore);
 	}
 

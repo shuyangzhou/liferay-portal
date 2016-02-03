@@ -124,9 +124,12 @@ public class ExpandoColumnCacheModel implements CacheModel<ExpandoColumn>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		columnId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		tableId = objectInput.readLong();
 		name = objectInput.readUTF();
+
 		type = objectInput.readInt();
 		defaultData = objectInput.readUTF();
 		typeSettings = objectInput.readUTF();
@@ -136,7 +139,9 @@ public class ExpandoColumnCacheModel implements CacheModel<ExpandoColumn>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(columnId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(tableId);
 
 		if (name == null) {

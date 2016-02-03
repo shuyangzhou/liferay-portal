@@ -207,14 +207,19 @@ public class KaleoActionCacheModel implements CacheModel<KaleoAction>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		kaleoActionId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
 		kaleoClassName = objectInput.readUTF();
+
 		kaleoClassPK = objectInput.readLong();
+
 		kaleoDefinitionId = objectInput.readLong();
 		kaleoNodeName = objectInput.readUTF();
 		name = objectInput.readUTF();
@@ -223,6 +228,7 @@ public class KaleoActionCacheModel implements CacheModel<KaleoAction>,
 		script = objectInput.readUTF();
 		scriptLanguage = objectInput.readUTF();
 		scriptRequiredContexts = objectInput.readUTF();
+
 		priority = objectInput.readInt();
 	}
 
@@ -230,8 +236,11 @@ public class KaleoActionCacheModel implements CacheModel<KaleoAction>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(kaleoActionId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -252,6 +261,7 @@ public class KaleoActionCacheModel implements CacheModel<KaleoAction>,
 		}
 
 		objectOutput.writeLong(kaleoClassPK);
+
 		objectOutput.writeLong(kaleoDefinitionId);
 
 		if (kaleoNodeName == null) {

@@ -149,13 +149,18 @@ public class KaleoTaskCacheModel implements CacheModel<KaleoTask>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		kaleoTaskId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		kaleoDefinitionId = objectInput.readLong();
+
 		kaleoNodeId = objectInput.readLong();
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
@@ -165,8 +170,11 @@ public class KaleoTaskCacheModel implements CacheModel<KaleoTask>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(kaleoTaskId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -178,7 +186,9 @@ public class KaleoTaskCacheModel implements CacheModel<KaleoTask>,
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(kaleoDefinitionId);
+
 		objectOutput.writeLong(kaleoNodeId);
 
 		if (name == null) {

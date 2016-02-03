@@ -172,16 +172,23 @@ public class EmailAddressCacheModel implements CacheModel<EmailAddress>,
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
 		uuid = objectInput.readUTF();
+
 		emailAddressId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		classNameId = objectInput.readLong();
+
 		classPK = objectInput.readLong();
 		address = objectInput.readUTF();
+
 		typeId = objectInput.readLong();
+
 		primary = objectInput.readBoolean();
 	}
 
@@ -198,7 +205,9 @@ public class EmailAddressCacheModel implements CacheModel<EmailAddress>,
 		}
 
 		objectOutput.writeLong(emailAddressId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -210,7 +219,9 @@ public class EmailAddressCacheModel implements CacheModel<EmailAddress>,
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(classNameId);
+
 		objectOutput.writeLong(classPK);
 
 		if (address == null) {
@@ -221,6 +232,7 @@ public class EmailAddressCacheModel implements CacheModel<EmailAddress>,
 		}
 
 		objectOutput.writeLong(typeId);
+
 		objectOutput.writeBoolean(primary);
 	}
 

@@ -129,8 +129,11 @@ public class PasswordTrackerCacheModel implements CacheModel<PasswordTracker>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
+
 		passwordTrackerId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		createDate = objectInput.readLong();
 		password = objectInput.readUTF();
@@ -140,8 +143,11 @@ public class PasswordTrackerCacheModel implements CacheModel<PasswordTracker>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(passwordTrackerId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 		objectOutput.writeLong(createDate);
 

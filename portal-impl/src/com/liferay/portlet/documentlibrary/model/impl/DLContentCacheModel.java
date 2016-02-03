@@ -118,11 +118,15 @@ public class DLContentCacheModel implements CacheModel<DLContent>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		contentId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		repositoryId = objectInput.readLong();
 		path = objectInput.readUTF();
 		version = objectInput.readUTF();
+
 		size = objectInput.readLong();
 	}
 
@@ -130,8 +134,11 @@ public class DLContentCacheModel implements CacheModel<DLContent>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(contentId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(repositoryId);
 
 		if (path == null) {

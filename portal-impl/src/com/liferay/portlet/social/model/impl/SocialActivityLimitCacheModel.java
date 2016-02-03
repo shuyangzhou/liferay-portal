@@ -123,11 +123,17 @@ public class SocialActivityLimitCacheModel implements CacheModel<SocialActivityL
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		activityLimitId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
+
 		classNameId = objectInput.readLong();
+
 		classPK = objectInput.readLong();
+
 		activityType = objectInput.readInt();
 		activityCounterName = objectInput.readUTF();
 		value = objectInput.readUTF();
@@ -137,11 +143,17 @@ public class SocialActivityLimitCacheModel implements CacheModel<SocialActivityL
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(activityLimitId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
+
 		objectOutput.writeLong(classNameId);
+
 		objectOutput.writeLong(classPK);
+
 		objectOutput.writeInt(activityType);
 
 		if (activityCounterName == null) {

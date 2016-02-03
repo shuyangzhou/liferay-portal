@@ -116,15 +116,25 @@ public class ShoppingItemPriceCacheModel implements CacheModel<ShoppingItemPrice
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		itemPriceId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		itemId = objectInput.readLong();
+
 		minQuantity = objectInput.readInt();
+
 		maxQuantity = objectInput.readInt();
+
 		price = objectInput.readDouble();
+
 		discount = objectInput.readDouble();
+
 		taxable = objectInput.readBoolean();
+
 		shipping = objectInput.readDouble();
+
 		useShippingFormula = objectInput.readBoolean();
+
 		status = objectInput.readInt();
 	}
 
@@ -132,15 +142,25 @@ public class ShoppingItemPriceCacheModel implements CacheModel<ShoppingItemPrice
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(itemPriceId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(itemId);
+
 		objectOutput.writeInt(minQuantity);
+
 		objectOutput.writeInt(maxQuantity);
+
 		objectOutput.writeDouble(price);
+
 		objectOutput.writeDouble(discount);
+
 		objectOutput.writeBoolean(taxable);
+
 		objectOutput.writeDouble(shipping);
+
 		objectOutput.writeBoolean(useShippingFormula);
+
 		objectOutput.writeInt(status);
 	}
 

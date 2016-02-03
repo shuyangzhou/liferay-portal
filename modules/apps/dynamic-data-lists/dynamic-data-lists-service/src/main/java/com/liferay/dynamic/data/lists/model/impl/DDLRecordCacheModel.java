@@ -176,18 +176,26 @@ public class DDLRecordCacheModel implements CacheModel<DDLRecord>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
+
 		recordId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
+
 		versionUserId = objectInput.readLong();
 		versionUserName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		DDMStorageId = objectInput.readLong();
+
 		recordSetId = objectInput.readLong();
 		version = objectInput.readUTF();
+
 		displayIndex = objectInput.readInt();
 		lastPublishDate = objectInput.readLong();
 	}
@@ -203,8 +211,11 @@ public class DDLRecordCacheModel implements CacheModel<DDLRecord>,
 		}
 
 		objectOutput.writeLong(recordId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -225,7 +236,9 @@ public class DDLRecordCacheModel implements CacheModel<DDLRecord>,
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(DDMStorageId);
+
 		objectOutput.writeLong(recordSetId);
 
 		if (version == null) {

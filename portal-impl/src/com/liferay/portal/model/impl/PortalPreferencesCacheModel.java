@@ -118,8 +118,11 @@ public class PortalPreferencesCacheModel implements CacheModel<PortalPreferences
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
+
 		portalPreferencesId = objectInput.readLong();
+
 		ownerId = objectInput.readLong();
+
 		ownerType = objectInput.readInt();
 		preferences = objectInput.readUTF();
 	}
@@ -128,8 +131,11 @@ public class PortalPreferencesCacheModel implements CacheModel<PortalPreferences
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(portalPreferencesId);
+
 		objectOutput.writeLong(ownerId);
+
 		objectOutput.writeInt(ownerType);
 
 		if (preferences == null) {

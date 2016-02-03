@@ -114,11 +114,17 @@ public class ExpandoValueCacheModel implements CacheModel<ExpandoValue>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		valueId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		tableId = objectInput.readLong();
+
 		columnId = objectInput.readLong();
+
 		rowId = objectInput.readLong();
+
 		classNameId = objectInput.readLong();
+
 		classPK = objectInput.readLong();
 		data = objectInput.readUTF();
 	}
@@ -127,11 +133,17 @@ public class ExpandoValueCacheModel implements CacheModel<ExpandoValue>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(valueId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(tableId);
+
 		objectOutput.writeLong(columnId);
+
 		objectOutput.writeLong(rowId);
+
 		objectOutput.writeLong(classNameId);
+
 		objectOutput.writeLong(classPK);
 
 		if (data == null) {

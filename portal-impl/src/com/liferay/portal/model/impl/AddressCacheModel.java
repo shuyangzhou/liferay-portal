@@ -217,23 +217,33 @@ public class AddressCacheModel implements CacheModel<Address>, Externalizable,
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
 		uuid = objectInput.readUTF();
+
 		addressId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		classNameId = objectInput.readLong();
+
 		classPK = objectInput.readLong();
 		street1 = objectInput.readUTF();
 		street2 = objectInput.readUTF();
 		street3 = objectInput.readUTF();
 		city = objectInput.readUTF();
 		zip = objectInput.readUTF();
+
 		regionId = objectInput.readLong();
+
 		countryId = objectInput.readLong();
+
 		typeId = objectInput.readLong();
+
 		mailing = objectInput.readBoolean();
+
 		primary = objectInput.readBoolean();
 	}
 
@@ -250,7 +260,9 @@ public class AddressCacheModel implements CacheModel<Address>, Externalizable,
 		}
 
 		objectOutput.writeLong(addressId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -262,7 +274,9 @@ public class AddressCacheModel implements CacheModel<Address>, Externalizable,
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(classNameId);
+
 		objectOutput.writeLong(classPK);
 
 		if (street1 == null) {
@@ -301,9 +315,13 @@ public class AddressCacheModel implements CacheModel<Address>, Externalizable,
 		}
 
 		objectOutput.writeLong(regionId);
+
 		objectOutput.writeLong(countryId);
+
 		objectOutput.writeLong(typeId);
+
 		objectOutput.writeBoolean(mailing);
+
 		objectOutput.writeBoolean(primary);
 	}
 

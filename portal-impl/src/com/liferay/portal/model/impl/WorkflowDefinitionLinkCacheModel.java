@@ -164,17 +164,25 @@ public class WorkflowDefinitionLinkCacheModel implements CacheModel<WorkflowDefi
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
+
 		workflowDefinitionLinkId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		classNameId = objectInput.readLong();
+
 		classPK = objectInput.readLong();
+
 		typePK = objectInput.readLong();
 		workflowDefinitionName = objectInput.readUTF();
+
 		workflowDefinitionVersion = objectInput.readInt();
 	}
 
@@ -182,9 +190,13 @@ public class WorkflowDefinitionLinkCacheModel implements CacheModel<WorkflowDefi
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(workflowDefinitionLinkId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -196,8 +208,11 @@ public class WorkflowDefinitionLinkCacheModel implements CacheModel<WorkflowDefi
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(classNameId);
+
 		objectOutput.writeLong(classPK);
+
 		objectOutput.writeLong(typePK);
 
 		if (workflowDefinitionName == null) {

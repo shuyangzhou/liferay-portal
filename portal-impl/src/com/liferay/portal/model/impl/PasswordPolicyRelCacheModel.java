@@ -114,10 +114,15 @@ public class PasswordPolicyRelCacheModel implements CacheModel<PasswordPolicyRel
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
+
 		passwordPolicyRelId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		passwordPolicyId = objectInput.readLong();
+
 		classNameId = objectInput.readLong();
+
 		classPK = objectInput.readLong();
 	}
 
@@ -125,10 +130,15 @@ public class PasswordPolicyRelCacheModel implements CacheModel<PasswordPolicyRel
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(passwordPolicyRelId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(passwordPolicyId);
+
 		objectOutput.writeLong(classNameId);
+
 		objectOutput.writeLong(classPK);
 	}
 

@@ -189,21 +189,31 @@ public class CalendarCacheModel implements CacheModel<Calendar>, Externalizable 
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
+
 		calendarId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		resourceBlockId = objectInput.readLong();
+
 		calendarResourceId = objectInput.readLong();
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
 		timeZoneId = objectInput.readUTF();
+
 		color = objectInput.readInt();
+
 		defaultCalendar = objectInput.readBoolean();
+
 		enableComments = objectInput.readBoolean();
+
 		enableRatings = objectInput.readBoolean();
 		lastPublishDate = objectInput.readLong();
 	}
@@ -219,8 +229,11 @@ public class CalendarCacheModel implements CacheModel<Calendar>, Externalizable 
 		}
 
 		objectOutput.writeLong(calendarId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -232,7 +245,9 @@ public class CalendarCacheModel implements CacheModel<Calendar>, Externalizable 
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(resourceBlockId);
+
 		objectOutput.writeLong(calendarResourceId);
 
 		if (name == null) {
@@ -257,8 +272,11 @@ public class CalendarCacheModel implements CacheModel<Calendar>, Externalizable 
 		}
 
 		objectOutput.writeInt(color);
+
 		objectOutput.writeBoolean(defaultCalendar);
+
 		objectOutput.writeBoolean(enableComments);
+
 		objectOutput.writeBoolean(enableRatings);
 		objectOutput.writeLong(lastPublishDate);
 	}

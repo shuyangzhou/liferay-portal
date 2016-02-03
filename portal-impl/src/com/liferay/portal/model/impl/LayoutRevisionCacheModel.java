@@ -291,19 +291,30 @@ public class LayoutRevisionCacheModel implements CacheModel<LayoutRevision>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
+
 		layoutRevisionId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		layoutSetBranchId = objectInput.readLong();
+
 		layoutBranchId = objectInput.readLong();
+
 		parentLayoutRevisionId = objectInput.readLong();
+
 		head = objectInput.readBoolean();
+
 		major = objectInput.readBoolean();
+
 		plid = objectInput.readLong();
+
 		privateLayout = objectInput.readBoolean();
 		name = objectInput.readUTF();
 		title = objectInput.readUTF();
@@ -311,13 +322,16 @@ public class LayoutRevisionCacheModel implements CacheModel<LayoutRevision>,
 		keywords = objectInput.readUTF();
 		robots = objectInput.readUTF();
 		typeSettings = objectInput.readUTF();
+
 		iconImageId = objectInput.readLong();
 		themeId = objectInput.readUTF();
 		colorSchemeId = objectInput.readUTF();
 		wapThemeId = objectInput.readUTF();
 		wapColorSchemeId = objectInput.readUTF();
 		css = objectInput.readUTF();
+
 		status = objectInput.readInt();
+
 		statusByUserId = objectInput.readLong();
 		statusByUserName = objectInput.readUTF();
 		statusDate = objectInput.readLong();
@@ -327,9 +341,13 @@ public class LayoutRevisionCacheModel implements CacheModel<LayoutRevision>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(layoutRevisionId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -341,12 +359,19 @@ public class LayoutRevisionCacheModel implements CacheModel<LayoutRevision>,
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(layoutSetBranchId);
+
 		objectOutput.writeLong(layoutBranchId);
+
 		objectOutput.writeLong(parentLayoutRevisionId);
+
 		objectOutput.writeBoolean(head);
+
 		objectOutput.writeBoolean(major);
+
 		objectOutput.writeLong(plid);
+
 		objectOutput.writeBoolean(privateLayout);
 
 		if (name == null) {
@@ -429,6 +454,7 @@ public class LayoutRevisionCacheModel implements CacheModel<LayoutRevision>,
 		}
 
 		objectOutput.writeInt(status);
+
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {

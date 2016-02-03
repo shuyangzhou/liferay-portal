@@ -111,11 +111,17 @@ public class DLFileEntryMetadataCacheModel implements CacheModel<DLFileEntryMeta
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
+
 		fileEntryMetadataId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		DDMStorageId = objectInput.readLong();
+
 		DDMStructureId = objectInput.readLong();
+
 		fileEntryId = objectInput.readLong();
+
 		fileVersionId = objectInput.readLong();
 	}
 
@@ -130,10 +136,15 @@ public class DLFileEntryMetadataCacheModel implements CacheModel<DLFileEntryMeta
 		}
 
 		objectOutput.writeLong(fileEntryMetadataId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(DDMStorageId);
+
 		objectOutput.writeLong(DDMStructureId);
+
 		objectOutput.writeLong(fileEntryId);
+
 		objectOutput.writeLong(fileVersionId);
 	}
 

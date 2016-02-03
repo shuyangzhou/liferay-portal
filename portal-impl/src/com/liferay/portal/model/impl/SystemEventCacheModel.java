@@ -170,18 +170,28 @@ public class SystemEventCacheModel implements CacheModel<SystemEvent>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
+
 		systemEventId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
+
 		classNameId = objectInput.readLong();
+
 		classPK = objectInput.readLong();
 		classUuid = objectInput.readUTF();
+
 		referrerClassNameId = objectInput.readLong();
+
 		parentSystemEventId = objectInput.readLong();
+
 		systemEventSetKey = objectInput.readLong();
+
 		type = objectInput.readInt();
 		extraData = objectInput.readUTF();
 	}
@@ -190,9 +200,13 @@ public class SystemEventCacheModel implements CacheModel<SystemEvent>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(systemEventId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -203,7 +217,9 @@ public class SystemEventCacheModel implements CacheModel<SystemEvent>,
 		}
 
 		objectOutput.writeLong(createDate);
+
 		objectOutput.writeLong(classNameId);
+
 		objectOutput.writeLong(classPK);
 
 		if (classUuid == null) {
@@ -214,8 +230,11 @@ public class SystemEventCacheModel implements CacheModel<SystemEvent>,
 		}
 
 		objectOutput.writeLong(referrerClassNameId);
+
 		objectOutput.writeLong(parentSystemEventId);
+
 		objectOutput.writeLong(systemEventSetKey);
+
 		objectOutput.writeInt(type);
 
 		if (extraData == null) {

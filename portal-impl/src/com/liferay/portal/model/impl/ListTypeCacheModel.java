@@ -121,6 +121,7 @@ public class ListTypeCacheModel implements CacheModel<ListType>, Externalizable,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
+
 		listTypeId = objectInput.readLong();
 		name = objectInput.readUTF();
 		type = objectInput.readUTF();
@@ -130,6 +131,7 @@ public class ListTypeCacheModel implements CacheModel<ListType>, Externalizable,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(listTypeId);
 
 		if (name == null) {

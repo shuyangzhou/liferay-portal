@@ -155,13 +155,16 @@ public class CountryCacheModel implements CacheModel<Country>, Externalizable,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
+
 		countryId = objectInput.readLong();
 		name = objectInput.readUTF();
 		a2 = objectInput.readUTF();
 		a3 = objectInput.readUTF();
 		number = objectInput.readUTF();
 		idd = objectInput.readUTF();
+
 		zipRequired = objectInput.readBoolean();
+
 		active = objectInput.readBoolean();
 	}
 
@@ -169,6 +172,7 @@ public class CountryCacheModel implements CacheModel<Country>, Externalizable,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(countryId);
 
 		if (name == null) {
@@ -207,6 +211,7 @@ public class CountryCacheModel implements CacheModel<Country>, Externalizable,
 		}
 
 		objectOutput.writeBoolean(zipRequired);
+
 		objectOutput.writeBoolean(active);
 	}
 

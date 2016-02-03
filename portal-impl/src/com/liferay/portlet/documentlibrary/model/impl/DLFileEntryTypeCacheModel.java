@@ -170,9 +170,13 @@ public class DLFileEntryTypeCacheModel implements CacheModel<DLFileEntryType>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
+
 		fileEntryTypeId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
@@ -194,8 +198,11 @@ public class DLFileEntryTypeCacheModel implements CacheModel<DLFileEntryType>,
 		}
 
 		objectOutput.writeLong(fileEntryTypeId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {

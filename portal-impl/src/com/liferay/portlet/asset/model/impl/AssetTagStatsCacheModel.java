@@ -98,9 +98,13 @@ public class AssetTagStatsCacheModel implements CacheModel<AssetTagStats>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		tagStatsId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		tagId = objectInput.readLong();
+
 		classNameId = objectInput.readLong();
+
 		assetCount = objectInput.readInt();
 	}
 
@@ -108,9 +112,13 @@ public class AssetTagStatsCacheModel implements CacheModel<AssetTagStats>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(tagStatsId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(tagId);
+
 		objectOutput.writeLong(classNameId);
+
 		objectOutput.writeInt(assetCount);
 	}
 

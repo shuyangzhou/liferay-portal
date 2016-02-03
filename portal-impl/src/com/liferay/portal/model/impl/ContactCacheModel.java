@@ -296,22 +296,32 @@ public class ContactCacheModel implements CacheModel<Contact>, Externalizable,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
+
 		contactId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		classNameId = objectInput.readLong();
+
 		classPK = objectInput.readLong();
+
 		accountId = objectInput.readLong();
+
 		parentContactId = objectInput.readLong();
 		emailAddress = objectInput.readUTF();
 		firstName = objectInput.readUTF();
 		middleName = objectInput.readUTF();
 		lastName = objectInput.readUTF();
+
 		prefixId = objectInput.readLong();
+
 		suffixId = objectInput.readLong();
+
 		male = objectInput.readBoolean();
 		birthday = objectInput.readLong();
 		smsSn = objectInput.readUTF();
@@ -330,8 +340,11 @@ public class ContactCacheModel implements CacheModel<Contact>, Externalizable,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(contactId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -343,9 +356,13 @@ public class ContactCacheModel implements CacheModel<Contact>, Externalizable,
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(classNameId);
+
 		objectOutput.writeLong(classPK);
+
 		objectOutput.writeLong(accountId);
+
 		objectOutput.writeLong(parentContactId);
 
 		if (emailAddress == null) {
@@ -377,7 +394,9 @@ public class ContactCacheModel implements CacheModel<Contact>, Externalizable,
 		}
 
 		objectOutput.writeLong(prefixId);
+
 		objectOutput.writeLong(suffixId);
+
 		objectOutput.writeBoolean(male);
 		objectOutput.writeLong(birthday);
 

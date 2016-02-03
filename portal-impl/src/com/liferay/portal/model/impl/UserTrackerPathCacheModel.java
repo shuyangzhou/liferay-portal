@@ -129,8 +129,11 @@ public class UserTrackerPathCacheModel implements CacheModel<UserTrackerPath>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
+
 		userTrackerPathId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userTrackerId = objectInput.readLong();
 		path = objectInput.readUTF();
 		pathDate = objectInput.readLong();
@@ -140,8 +143,11 @@ public class UserTrackerPathCacheModel implements CacheModel<UserTrackerPath>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(userTrackerPathId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userTrackerId);
 
 		if (path == null) {

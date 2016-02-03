@@ -194,9 +194,13 @@ public class WikiNodeCacheModel implements CacheModel<WikiNode>, Externalizable 
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
+
 		nodeId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
@@ -205,7 +209,9 @@ public class WikiNodeCacheModel implements CacheModel<WikiNode>, Externalizable 
 		description = objectInput.readUTF();
 		lastPostDate = objectInput.readLong();
 		lastPublishDate = objectInput.readLong();
+
 		status = objectInput.readInt();
+
 		statusByUserId = objectInput.readLong();
 		statusByUserName = objectInput.readUTF();
 		statusDate = objectInput.readLong();
@@ -222,8 +228,11 @@ public class WikiNodeCacheModel implements CacheModel<WikiNode>, Externalizable 
 		}
 
 		objectOutput.writeLong(nodeId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -252,7 +261,9 @@ public class WikiNodeCacheModel implements CacheModel<WikiNode>, Externalizable 
 
 		objectOutput.writeLong(lastPostDate);
 		objectOutput.writeLong(lastPublishDate);
+
 		objectOutput.writeInt(status);
+
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {

@@ -171,19 +171,28 @@ public class KaleoInstanceTokenCacheModel implements CacheModel<KaleoInstanceTok
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		kaleoInstanceTokenId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		kaleoDefinitionId = objectInput.readLong();
+
 		kaleoInstanceId = objectInput.readLong();
+
 		parentKaleoInstanceTokenId = objectInput.readLong();
+
 		currentKaleoNodeId = objectInput.readLong();
 		currentKaleoNodeName = objectInput.readUTF();
 		className = objectInput.readUTF();
+
 		classPK = objectInput.readLong();
+
 		completed = objectInput.readBoolean();
 		completionDate = objectInput.readLong();
 	}
@@ -192,8 +201,11 @@ public class KaleoInstanceTokenCacheModel implements CacheModel<KaleoInstanceTok
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(kaleoInstanceTokenId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -205,9 +217,13 @@ public class KaleoInstanceTokenCacheModel implements CacheModel<KaleoInstanceTok
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(kaleoDefinitionId);
+
 		objectOutput.writeLong(kaleoInstanceId);
+
 		objectOutput.writeLong(parentKaleoInstanceTokenId);
+
 		objectOutput.writeLong(currentKaleoNodeId);
 
 		if (currentKaleoNodeName == null) {
@@ -225,6 +241,7 @@ public class KaleoInstanceTokenCacheModel implements CacheModel<KaleoInstanceTok
 		}
 
 		objectOutput.writeLong(classPK);
+
 		objectOutput.writeBoolean(completed);
 		objectOutput.writeLong(completionDate);
 	}

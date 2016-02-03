@@ -113,11 +113,16 @@ public class DLFileRankCacheModel implements CacheModel<DLFileRank>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		fileRankId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		createDate = objectInput.readLong();
+
 		fileEntryId = objectInput.readLong();
+
 		active = objectInput.readBoolean();
 	}
 
@@ -125,11 +130,16 @@ public class DLFileRankCacheModel implements CacheModel<DLFileRank>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(fileRankId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 		objectOutput.writeLong(createDate);
+
 		objectOutput.writeLong(fileEntryId);
+
 		objectOutput.writeBoolean(active);
 	}
 

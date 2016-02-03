@@ -136,17 +136,28 @@ public class SocialRequestCacheModel implements CacheModel<SocialRequest>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
+
 		requestId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
+
 		createDate = objectInput.readLong();
+
 		modifiedDate = objectInput.readLong();
+
 		classNameId = objectInput.readLong();
+
 		classPK = objectInput.readLong();
+
 		type = objectInput.readInt();
 		extraData = objectInput.readUTF();
+
 		receiverUserId = objectInput.readLong();
+
 		status = objectInput.readInt();
 	}
 
@@ -161,13 +172,21 @@ public class SocialRequestCacheModel implements CacheModel<SocialRequest>,
 		}
 
 		objectOutput.writeLong(requestId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
+
 		objectOutput.writeLong(createDate);
+
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(classNameId);
+
 		objectOutput.writeLong(classPK);
+
 		objectOutput.writeInt(type);
 
 		if (extraData == null) {
@@ -178,6 +197,7 @@ public class SocialRequestCacheModel implements CacheModel<SocialRequest>,
 		}
 
 		objectOutput.writeLong(receiverUserId);
+
 		objectOutput.writeInt(status);
 	}
 

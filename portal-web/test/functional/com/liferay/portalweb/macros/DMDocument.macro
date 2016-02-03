@@ -374,7 +374,7 @@
 			<then>
 				<execute macro="Alert#viewRequestFailedToComplete" />
 
-				<execute function="AssertTextEquals" locator1="DocumentsAndMediaEditDocument#UNIQUE_DOCUMENT_ERROR_MESSAGE" value1="Please enter a unique document name." />
+				<execute function="AssertTextEquals#assertPartialText" locator1="DocumentsAndMediaEditDocument#UNIQUE_DOCUMENT_ERROR_MESSAGE" value1="Please enter a unique document name." />
 			</then>
 			<elseif>
 				<equals arg1="${dmDocument}" arg2="Invalid" />
@@ -1898,6 +1898,7 @@
 	</command>
 
 	<command name="viewDocumentToolbarCmdPG">
+		<execute function="AssertVisible" locator1="Button#DOWNLOAD" value1="Download" />
 		<execute function="AssertTextEquals" locator1="Button#DOWNLOAD" value1="Download" />
 		<execute function="AssertTextEquals" locator1="Button#EDIT" value1="Edit" />
 		<execute function="AssertTextEquals" locator1="Button#MOVE" value1="Move" />

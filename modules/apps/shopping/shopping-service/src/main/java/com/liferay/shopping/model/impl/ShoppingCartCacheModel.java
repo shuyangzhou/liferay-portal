@@ -150,15 +150,20 @@ public class ShoppingCartCacheModel implements CacheModel<ShoppingCart>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		cartId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
 		itemIds = objectInput.readUTF();
 		couponCodes = objectInput.readUTF();
+
 		altShipping = objectInput.readInt();
+
 		insure = objectInput.readBoolean();
 	}
 
@@ -166,8 +171,11 @@ public class ShoppingCartCacheModel implements CacheModel<ShoppingCart>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(cartId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -195,6 +203,7 @@ public class ShoppingCartCacheModel implements CacheModel<ShoppingCart>,
 		}
 
 		objectOutput.writeInt(altShipping);
+
 		objectOutput.writeBoolean(insure);
 	}
 

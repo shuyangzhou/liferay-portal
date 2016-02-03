@@ -111,8 +111,11 @@ public class JournalArticleResourceCacheModel implements CacheModel<JournalArtic
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
+
 		resourcePrimKey = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
 		articleId = objectInput.readUTF();
 	}
@@ -128,7 +131,9 @@ public class JournalArticleResourceCacheModel implements CacheModel<JournalArtic
 		}
 
 		objectOutput.writeLong(resourcePrimKey);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
 
 		if (articleId == null) {

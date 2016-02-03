@@ -125,7 +125,9 @@ public class ModuleCacheModel implements CacheModel<Module>, Externalizable {
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
+
 		moduleId = objectInput.readLong();
+
 		appId = objectInput.readLong();
 		bundleSymbolicName = objectInput.readUTF();
 		bundleVersion = objectInput.readUTF();
@@ -143,6 +145,7 @@ public class ModuleCacheModel implements CacheModel<Module>, Externalizable {
 		}
 
 		objectOutput.writeLong(moduleId);
+
 		objectOutput.writeLong(appId);
 
 		if (bundleSymbolicName == null) {

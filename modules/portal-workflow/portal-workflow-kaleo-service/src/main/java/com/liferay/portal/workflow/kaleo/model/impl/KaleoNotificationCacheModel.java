@@ -203,14 +203,19 @@ public class KaleoNotificationCacheModel implements CacheModel<KaleoNotification
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		kaleoNotificationId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
 		kaleoClassName = objectInput.readUTF();
+
 		kaleoClassPK = objectInput.readLong();
+
 		kaleoDefinitionId = objectInput.readLong();
 		kaleoNodeName = objectInput.readUTF();
 		name = objectInput.readUTF();
@@ -225,8 +230,11 @@ public class KaleoNotificationCacheModel implements CacheModel<KaleoNotification
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(kaleoNotificationId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -247,6 +255,7 @@ public class KaleoNotificationCacheModel implements CacheModel<KaleoNotification
 		}
 
 		objectOutput.writeLong(kaleoClassPK);
+
 		objectOutput.writeLong(kaleoDefinitionId);
 
 		if (kaleoNodeName == null) {

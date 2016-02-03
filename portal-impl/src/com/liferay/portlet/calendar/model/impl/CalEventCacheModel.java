@@ -225,9 +225,13 @@ public class CalEventCacheModel implements CacheModel<CalEvent>, Externalizable 
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
+
 		eventId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
@@ -237,15 +241,23 @@ public class CalEventCacheModel implements CacheModel<CalEvent>, Externalizable 
 		location = objectInput.readUTF();
 		startDate = objectInput.readLong();
 		endDate = objectInput.readLong();
+
 		durationHour = objectInput.readInt();
+
 		durationMinute = objectInput.readInt();
+
 		allDay = objectInput.readBoolean();
+
 		timeZoneSensitive = objectInput.readBoolean();
 		type = objectInput.readUTF();
+
 		repeating = objectInput.readBoolean();
 		recurrence = objectInput.readUTF();
+
 		remindBy = objectInput.readInt();
+
 		firstReminder = objectInput.readInt();
+
 		secondReminder = objectInput.readInt();
 	}
 
@@ -260,8 +272,11 @@ public class CalEventCacheModel implements CacheModel<CalEvent>, Externalizable 
 		}
 
 		objectOutput.writeLong(eventId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -297,9 +312,13 @@ public class CalEventCacheModel implements CacheModel<CalEvent>, Externalizable 
 
 		objectOutput.writeLong(startDate);
 		objectOutput.writeLong(endDate);
+
 		objectOutput.writeInt(durationHour);
+
 		objectOutput.writeInt(durationMinute);
+
 		objectOutput.writeBoolean(allDay);
+
 		objectOutput.writeBoolean(timeZoneSensitive);
 
 		if (type == null) {
@@ -319,7 +338,9 @@ public class CalEventCacheModel implements CacheModel<CalEvent>, Externalizable 
 		}
 
 		objectOutput.writeInt(remindBy);
+
 		objectOutput.writeInt(firstReminder);
+
 		objectOutput.writeInt(secondReminder);
 	}
 

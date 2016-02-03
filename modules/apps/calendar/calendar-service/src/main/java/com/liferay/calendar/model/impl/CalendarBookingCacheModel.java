@@ -262,31 +262,46 @@ public class CalendarBookingCacheModel implements CacheModel<CalendarBooking>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
+
 		calendarBookingId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		resourceBlockId = objectInput.readLong();
+
 		calendarId = objectInput.readLong();
+
 		calendarResourceId = objectInput.readLong();
+
 		parentCalendarBookingId = objectInput.readLong();
 		vEventUid = objectInput.readUTF();
 		title = objectInput.readUTF();
 		description = objectInput.readUTF();
 		location = objectInput.readUTF();
+
 		startTime = objectInput.readLong();
+
 		endTime = objectInput.readLong();
+
 		allDay = objectInput.readBoolean();
 		recurrence = objectInput.readUTF();
+
 		firstReminder = objectInput.readLong();
 		firstReminderType = objectInput.readUTF();
+
 		secondReminder = objectInput.readLong();
 		secondReminderType = objectInput.readUTF();
 		lastPublishDate = objectInput.readLong();
+
 		status = objectInput.readInt();
+
 		statusByUserId = objectInput.readLong();
 		statusByUserName = objectInput.readUTF();
 		statusDate = objectInput.readLong();
@@ -303,8 +318,11 @@ public class CalendarBookingCacheModel implements CacheModel<CalendarBooking>,
 		}
 
 		objectOutput.writeLong(calendarBookingId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -316,9 +334,13 @@ public class CalendarBookingCacheModel implements CacheModel<CalendarBooking>,
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(resourceBlockId);
+
 		objectOutput.writeLong(calendarId);
+
 		objectOutput.writeLong(calendarResourceId);
+
 		objectOutput.writeLong(parentCalendarBookingId);
 
 		if (vEventUid == null) {
@@ -350,7 +372,9 @@ public class CalendarBookingCacheModel implements CacheModel<CalendarBooking>,
 		}
 
 		objectOutput.writeLong(startTime);
+
 		objectOutput.writeLong(endTime);
+
 		objectOutput.writeBoolean(allDay);
 
 		if (recurrence == null) {
@@ -379,7 +403,9 @@ public class CalendarBookingCacheModel implements CacheModel<CalendarBooking>,
 		}
 
 		objectOutput.writeLong(lastPublishDate);
+
 		objectOutput.writeInt(status);
+
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {

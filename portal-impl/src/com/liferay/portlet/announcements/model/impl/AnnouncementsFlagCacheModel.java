@@ -110,10 +110,14 @@ public class AnnouncementsFlagCacheModel implements CacheModel<AnnouncementsFlag
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		flagId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		createDate = objectInput.readLong();
+
 		entryId = objectInput.readLong();
+
 		value = objectInput.readInt();
 	}
 
@@ -121,10 +125,14 @@ public class AnnouncementsFlagCacheModel implements CacheModel<AnnouncementsFlag
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(flagId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 		objectOutput.writeLong(createDate);
+
 		objectOutput.writeLong(entryId);
+
 		objectOutput.writeInt(value);
 	}
 

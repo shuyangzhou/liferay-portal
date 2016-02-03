@@ -130,17 +130,28 @@ public class SocialActivityCounterCacheModel implements CacheModel<SocialActivit
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		activityCounterId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		classNameId = objectInput.readLong();
+
 		classPK = objectInput.readLong();
 		name = objectInput.readUTF();
+
 		ownerType = objectInput.readInt();
+
 		currentValue = objectInput.readInt();
+
 		totalValue = objectInput.readInt();
+
 		graceValue = objectInput.readInt();
+
 		startPeriod = objectInput.readInt();
+
 		endPeriod = objectInput.readInt();
+
 		active = objectInput.readBoolean();
 	}
 
@@ -148,9 +159,13 @@ public class SocialActivityCounterCacheModel implements CacheModel<SocialActivit
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(activityCounterId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(classNameId);
+
 		objectOutput.writeLong(classPK);
 
 		if (name == null) {
@@ -161,11 +176,17 @@ public class SocialActivityCounterCacheModel implements CacheModel<SocialActivit
 		}
 
 		objectOutput.writeInt(ownerType);
+
 		objectOutput.writeInt(currentValue);
+
 		objectOutput.writeInt(totalValue);
+
 		objectOutput.writeInt(graceValue);
+
 		objectOutput.writeInt(startPeriod);
+
 		objectOutput.writeInt(endPeriod);
+
 		objectOutput.writeBoolean(active);
 	}
 

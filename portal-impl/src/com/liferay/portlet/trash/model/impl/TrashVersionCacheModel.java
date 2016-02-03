@@ -112,11 +112,16 @@ public class TrashVersionCacheModel implements CacheModel<TrashVersion>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		versionId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		entryId = objectInput.readLong();
+
 		classNameId = objectInput.readLong();
+
 		classPK = objectInput.readLong();
 		typeSettings = objectInput.readUTF();
+
 		status = objectInput.readInt();
 	}
 
@@ -124,9 +129,13 @@ public class TrashVersionCacheModel implements CacheModel<TrashVersion>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(versionId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(entryId);
+
 		objectOutput.writeLong(classNameId);
+
 		objectOutput.writeLong(classPK);
 
 		if (typeSettings == null) {

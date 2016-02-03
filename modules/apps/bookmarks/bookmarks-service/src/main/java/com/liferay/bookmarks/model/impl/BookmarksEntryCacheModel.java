@@ -218,23 +218,33 @@ public class BookmarksEntryCacheModel implements CacheModel<BookmarksEntry>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
+
 		entryId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		resourceBlockId = objectInput.readLong();
+
 		folderId = objectInput.readLong();
 		treePath = objectInput.readUTF();
 		name = objectInput.readUTF();
 		url = objectInput.readUTF();
 		description = objectInput.readUTF();
+
 		visits = objectInput.readInt();
+
 		priority = objectInput.readInt();
 		lastPublishDate = objectInput.readLong();
+
 		status = objectInput.readInt();
+
 		statusByUserId = objectInput.readLong();
 		statusByUserName = objectInput.readUTF();
 		statusDate = objectInput.readLong();
@@ -251,8 +261,11 @@ public class BookmarksEntryCacheModel implements CacheModel<BookmarksEntry>,
 		}
 
 		objectOutput.writeLong(entryId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -264,7 +277,9 @@ public class BookmarksEntryCacheModel implements CacheModel<BookmarksEntry>,
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(resourceBlockId);
+
 		objectOutput.writeLong(folderId);
 
 		if (treePath == null) {
@@ -296,9 +311,12 @@ public class BookmarksEntryCacheModel implements CacheModel<BookmarksEntry>,
 		}
 
 		objectOutput.writeInt(visits);
+
 		objectOutput.writeInt(priority);
 		objectOutput.writeLong(lastPublishDate);
+
 		objectOutput.writeInt(status);
+
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {

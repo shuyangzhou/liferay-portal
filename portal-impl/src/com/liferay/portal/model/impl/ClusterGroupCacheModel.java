@@ -125,9 +125,11 @@ public class ClusterGroupCacheModel implements CacheModel<ClusterGroup>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
+
 		clusterGroupId = objectInput.readLong();
 		name = objectInput.readUTF();
 		clusterNodeIds = objectInput.readUTF();
+
 		wholeCluster = objectInput.readBoolean();
 	}
 
@@ -135,6 +137,7 @@ public class ClusterGroupCacheModel implements CacheModel<ClusterGroup>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(clusterGroupId);
 
 		if (name == null) {

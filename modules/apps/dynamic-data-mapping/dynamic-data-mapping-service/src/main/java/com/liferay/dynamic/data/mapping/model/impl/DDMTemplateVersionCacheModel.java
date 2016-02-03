@@ -196,20 +196,28 @@ public class DDMTemplateVersionCacheModel implements CacheModel<DDMTemplateVersi
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		templateVersionId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
+
 		classNameId = objectInput.readLong();
+
 		classPK = objectInput.readLong();
+
 		templateId = objectInput.readLong();
 		version = objectInput.readUTF();
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
 		language = objectInput.readUTF();
 		script = objectInput.readUTF();
+
 		status = objectInput.readInt();
+
 		statusByUserId = objectInput.readLong();
 		statusByUserName = objectInput.readUTF();
 		statusDate = objectInput.readLong();
@@ -219,8 +227,11 @@ public class DDMTemplateVersionCacheModel implements CacheModel<DDMTemplateVersi
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(templateVersionId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -231,8 +242,11 @@ public class DDMTemplateVersionCacheModel implements CacheModel<DDMTemplateVersi
 		}
 
 		objectOutput.writeLong(createDate);
+
 		objectOutput.writeLong(classNameId);
+
 		objectOutput.writeLong(classPK);
+
 		objectOutput.writeLong(templateId);
 
 		if (version == null) {
@@ -271,6 +285,7 @@ public class DDMTemplateVersionCacheModel implements CacheModel<DDMTemplateVersi
 		}
 
 		objectOutput.writeInt(status);
+
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {

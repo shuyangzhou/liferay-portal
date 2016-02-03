@@ -128,10 +128,13 @@ public class PortletCacheModel implements CacheModel<Portlet>, Externalizable,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
+
 		id = objectInput.readLong();
+
 		companyId = objectInput.readLong();
 		portletId = objectInput.readUTF();
 		roles = objectInput.readUTF();
+
 		active = objectInput.readBoolean();
 	}
 
@@ -139,7 +142,9 @@ public class PortletCacheModel implements CacheModel<Portlet>, Externalizable,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(id);
+
 		objectOutput.writeLong(companyId);
 
 		if (portletId == null) {

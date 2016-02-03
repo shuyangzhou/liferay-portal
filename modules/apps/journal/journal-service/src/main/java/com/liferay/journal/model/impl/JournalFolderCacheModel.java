@@ -203,20 +203,28 @@ public class JournalFolderCacheModel implements CacheModel<JournalFolder>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
+
 		folderId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		parentFolderId = objectInput.readLong();
 		treePath = objectInput.readUTF();
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
+
 		restrictionType = objectInput.readInt();
 		lastPublishDate = objectInput.readLong();
+
 		status = objectInput.readInt();
+
 		statusByUserId = objectInput.readLong();
 		statusByUserName = objectInput.readUTF();
 		statusDate = objectInput.readLong();
@@ -233,8 +241,11 @@ public class JournalFolderCacheModel implements CacheModel<JournalFolder>,
 		}
 
 		objectOutput.writeLong(folderId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -246,6 +257,7 @@ public class JournalFolderCacheModel implements CacheModel<JournalFolder>,
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(parentFolderId);
 
 		if (treePath == null) {
@@ -271,7 +283,9 @@ public class JournalFolderCacheModel implements CacheModel<JournalFolder>,
 
 		objectOutput.writeInt(restrictionType);
 		objectOutput.writeLong(lastPublishDate);
+
 		objectOutput.writeInt(status);
+
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {

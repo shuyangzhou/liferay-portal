@@ -224,16 +224,23 @@ public class DDMStructureCacheModel implements CacheModel<DDMStructure>,
 	public void readExternal(ObjectInput objectInput)
 		throws ClassNotFoundException, IOException {
 		uuid = objectInput.readUTF();
+
 		structureId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
+
 		versionUserId = objectInput.readLong();
 		versionUserName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		parentStructureId = objectInput.readLong();
+
 		classNameId = objectInput.readLong();
 		structureKey = objectInput.readUTF();
 		version = objectInput.readUTF();
@@ -241,6 +248,7 @@ public class DDMStructureCacheModel implements CacheModel<DDMStructure>,
 		description = objectInput.readUTF();
 		definition = objectInput.readUTF();
 		storageType = objectInput.readUTF();
+
 		type = objectInput.readInt();
 		lastPublishDate = objectInput.readLong();
 
@@ -258,8 +266,11 @@ public class DDMStructureCacheModel implements CacheModel<DDMStructure>,
 		}
 
 		objectOutput.writeLong(structureId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -280,7 +291,9 @@ public class DDMStructureCacheModel implements CacheModel<DDMStructure>,
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(parentStructureId);
+
 		objectOutput.writeLong(classNameId);
 
 		if (structureKey == null) {

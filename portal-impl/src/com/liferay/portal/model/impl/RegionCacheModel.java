@@ -128,10 +128,13 @@ public class RegionCacheModel implements CacheModel<Region>, Externalizable,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
+
 		regionId = objectInput.readLong();
+
 		countryId = objectInput.readLong();
 		regionCode = objectInput.readUTF();
 		name = objectInput.readUTF();
+
 		active = objectInput.readBoolean();
 	}
 
@@ -139,7 +142,9 @@ public class RegionCacheModel implements CacheModel<Region>, Externalizable,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(regionId);
+
 		objectOutput.writeLong(countryId);
 
 		if (regionCode == null) {

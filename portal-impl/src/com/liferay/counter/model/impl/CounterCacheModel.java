@@ -95,6 +95,7 @@ public class CounterCacheModel implements CacheModel<Counter>, Externalizable {
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		name = objectInput.readUTF();
+
 		currentId = objectInput.readLong();
 	}
 

@@ -111,11 +111,17 @@ public class SocialRelationCacheModel implements CacheModel<SocialRelation>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
+
 		relationId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		createDate = objectInput.readLong();
+
 		userId1 = objectInput.readLong();
+
 		userId2 = objectInput.readLong();
+
 		type = objectInput.readInt();
 	}
 
@@ -130,10 +136,15 @@ public class SocialRelationCacheModel implements CacheModel<SocialRelation>,
 		}
 
 		objectOutput.writeLong(relationId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(createDate);
+
 		objectOutput.writeLong(userId1);
+
 		objectOutput.writeLong(userId2);
+
 		objectOutput.writeInt(type);
 	}
 

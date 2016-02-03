@@ -157,15 +157,21 @@ public class MembershipRequestCacheModel implements CacheModel<MembershipRequest
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
+
 		membershipRequestId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		createDate = objectInput.readLong();
 		comments = objectInput.readUTF();
 		replyComments = objectInput.readUTF();
 		replyDate = objectInput.readLong();
+
 		replierUserId = objectInput.readLong();
+
 		statusId = objectInput.readLong();
 	}
 
@@ -173,9 +179,13 @@ public class MembershipRequestCacheModel implements CacheModel<MembershipRequest
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(membershipRequestId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 		objectOutput.writeLong(createDate);
 
@@ -194,7 +204,9 @@ public class MembershipRequestCacheModel implements CacheModel<MembershipRequest
 		}
 
 		objectOutput.writeLong(replyDate);
+
 		objectOutput.writeLong(replierUserId);
+
 		objectOutput.writeLong(statusId);
 	}
 

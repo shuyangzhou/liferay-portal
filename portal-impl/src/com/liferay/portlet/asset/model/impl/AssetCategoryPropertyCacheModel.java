@@ -144,11 +144,14 @@ public class AssetCategoryPropertyCacheModel implements CacheModel<AssetCategory
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		categoryPropertyId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		categoryId = objectInput.readLong();
 		key = objectInput.readUTF();
 		value = objectInput.readUTF();
@@ -158,7 +161,9 @@ public class AssetCategoryPropertyCacheModel implements CacheModel<AssetCategory
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(categoryPropertyId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -170,6 +175,7 @@ public class AssetCategoryPropertyCacheModel implements CacheModel<AssetCategory
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(categoryId);
 
 		if (key == null) {

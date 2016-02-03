@@ -131,11 +131,15 @@ public class ResourceBlockCacheModel implements CacheModel<ResourceBlock>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
+
 		resourceBlockId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
 		name = objectInput.readUTF();
 		permissionsHash = objectInput.readUTF();
+
 		referenceCount = objectInput.readLong();
 	}
 
@@ -143,8 +147,11 @@ public class ResourceBlockCacheModel implements CacheModel<ResourceBlock>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(resourceBlockId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(groupId);
 
 		if (name == null) {

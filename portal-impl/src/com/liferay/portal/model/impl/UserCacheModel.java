@@ -381,25 +381,35 @@ public class UserCacheModel implements CacheModel<User>, Externalizable,
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
 		uuid = objectInput.readUTF();
+
 		userId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		defaultUser = objectInput.readBoolean();
+
 		contactId = objectInput.readLong();
 		password = objectInput.readUTF();
+
 		passwordEncrypted = objectInput.readBoolean();
+
 		passwordReset = objectInput.readBoolean();
 		passwordModifiedDate = objectInput.readLong();
 		digest = objectInput.readUTF();
 		reminderQueryQuestion = objectInput.readUTF();
 		reminderQueryAnswer = objectInput.readUTF();
+
 		graceLoginCount = objectInput.readInt();
 		screenName = objectInput.readUTF();
 		emailAddress = objectInput.readUTF();
+
 		facebookId = objectInput.readLong();
+
 		ldapServerId = objectInput.readLong();
 		openId = objectInput.readUTF();
+
 		portraitId = objectInput.readLong();
 		languageId = objectInput.readUTF();
 		timeZoneId = objectInput.readUTF();
@@ -414,11 +424,16 @@ public class UserCacheModel implements CacheModel<User>, Externalizable,
 		lastLoginDate = objectInput.readLong();
 		lastLoginIP = objectInput.readUTF();
 		lastFailedLoginDate = objectInput.readLong();
+
 		failedLoginAttempts = objectInput.readInt();
+
 		lockout = objectInput.readBoolean();
 		lockoutDate = objectInput.readLong();
+
 		agreedToTermsOfUse = objectInput.readBoolean();
+
 		emailAddressVerified = objectInput.readBoolean();
+
 		status = objectInput.readInt();
 	}
 
@@ -435,10 +450,13 @@ public class UserCacheModel implements CacheModel<User>, Externalizable,
 		}
 
 		objectOutput.writeLong(userId);
+
 		objectOutput.writeLong(companyId);
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeBoolean(defaultUser);
+
 		objectOutput.writeLong(contactId);
 
 		if (password == null) {
@@ -449,6 +467,7 @@ public class UserCacheModel implements CacheModel<User>, Externalizable,
 		}
 
 		objectOutput.writeBoolean(passwordEncrypted);
+
 		objectOutput.writeBoolean(passwordReset);
 		objectOutput.writeLong(passwordModifiedDate);
 
@@ -490,6 +509,7 @@ public class UserCacheModel implements CacheModel<User>, Externalizable,
 		}
 
 		objectOutput.writeLong(facebookId);
+
 		objectOutput.writeLong(ldapServerId);
 
 		if (openId == null) {
@@ -576,11 +596,16 @@ public class UserCacheModel implements CacheModel<User>, Externalizable,
 		}
 
 		objectOutput.writeLong(lastFailedLoginDate);
+
 		objectOutput.writeInt(failedLoginAttempts);
+
 		objectOutput.writeBoolean(lockout);
 		objectOutput.writeLong(lockoutDate);
+
 		objectOutput.writeBoolean(agreedToTermsOfUse);
+
 		objectOutput.writeBoolean(emailAddressVerified);
+
 		objectOutput.writeInt(status);
 	}
 

@@ -192,17 +192,24 @@ public class KaleoTaskAssignmentCacheModel implements CacheModel<KaleoTaskAssign
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		kaleoTaskAssignmentId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
 		kaleoClassName = objectInput.readUTF();
+
 		kaleoClassPK = objectInput.readLong();
+
 		kaleoDefinitionId = objectInput.readLong();
+
 		kaleoNodeId = objectInput.readLong();
 		assigneeClassName = objectInput.readUTF();
+
 		assigneeClassPK = objectInput.readLong();
 		assigneeActionId = objectInput.readUTF();
 		assigneeScript = objectInput.readUTF();
@@ -214,8 +221,11 @@ public class KaleoTaskAssignmentCacheModel implements CacheModel<KaleoTaskAssign
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(kaleoTaskAssignmentId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -236,7 +246,9 @@ public class KaleoTaskAssignmentCacheModel implements CacheModel<KaleoTaskAssign
 		}
 
 		objectOutput.writeLong(kaleoClassPK);
+
 		objectOutput.writeLong(kaleoDefinitionId);
+
 		objectOutput.writeLong(kaleoNodeId);
 
 		if (assigneeClassName == null) {

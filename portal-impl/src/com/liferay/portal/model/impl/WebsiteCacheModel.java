@@ -181,16 +181,23 @@ public class WebsiteCacheModel implements CacheModel<Website>, Externalizable,
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
 		uuid = objectInput.readUTF();
+
 		websiteId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		classNameId = objectInput.readLong();
+
 		classPK = objectInput.readLong();
 		url = objectInput.readUTF();
+
 		typeId = objectInput.readLong();
+
 		primary = objectInput.readBoolean();
 		lastPublishDate = objectInput.readLong();
 	}
@@ -208,7 +215,9 @@ public class WebsiteCacheModel implements CacheModel<Website>, Externalizable,
 		}
 
 		objectOutput.writeLong(websiteId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -220,7 +229,9 @@ public class WebsiteCacheModel implements CacheModel<Website>, Externalizable,
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(classNameId);
+
 		objectOutput.writeLong(classPK);
 
 		if (url == null) {
@@ -231,6 +242,7 @@ public class WebsiteCacheModel implements CacheModel<Website>, Externalizable,
 		}
 
 		objectOutput.writeLong(typeId);
+
 		objectOutput.writeBoolean(primary);
 		objectOutput.writeLong(lastPublishDate);
 	}

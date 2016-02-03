@@ -239,26 +239,37 @@ public class WikiPageCacheModel implements CacheModel<WikiPage>, Externalizable 
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
+
 		pageId = objectInput.readLong();
+
 		resourcePrimKey = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		nodeId = objectInput.readLong();
 		title = objectInput.readUTF();
+
 		version = objectInput.readDouble();
+
 		minorEdit = objectInput.readBoolean();
 		content = objectInput.readUTF();
 		summary = objectInput.readUTF();
 		format = objectInput.readUTF();
+
 		head = objectInput.readBoolean();
 		parentTitle = objectInput.readUTF();
 		redirectTitle = objectInput.readUTF();
 		lastPublishDate = objectInput.readLong();
+
 		status = objectInput.readInt();
+
 		statusByUserId = objectInput.readLong();
 		statusByUserName = objectInput.readUTF();
 		statusDate = objectInput.readLong();
@@ -275,9 +286,13 @@ public class WikiPageCacheModel implements CacheModel<WikiPage>, Externalizable 
 		}
 
 		objectOutput.writeLong(pageId);
+
 		objectOutput.writeLong(resourcePrimKey);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -289,6 +304,7 @@ public class WikiPageCacheModel implements CacheModel<WikiPage>, Externalizable 
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(nodeId);
 
 		if (title == null) {
@@ -299,6 +315,7 @@ public class WikiPageCacheModel implements CacheModel<WikiPage>, Externalizable 
 		}
 
 		objectOutput.writeDouble(version);
+
 		objectOutput.writeBoolean(minorEdit);
 
 		if (content == null) {
@@ -339,7 +356,9 @@ public class WikiPageCacheModel implements CacheModel<WikiPage>, Externalizable 
 		}
 
 		objectOutput.writeLong(lastPublishDate);
+
 		objectOutput.writeInt(status);
+
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {

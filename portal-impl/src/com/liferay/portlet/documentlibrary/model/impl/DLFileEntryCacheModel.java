@@ -263,16 +263,24 @@ public class DLFileEntryCacheModel implements CacheModel<DLFileEntry>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
+
 		fileEntryId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		classNameId = objectInput.readLong();
+
 		classPK = objectInput.readLong();
+
 		repositoryId = objectInput.readLong();
+
 		folderId = objectInput.readLong();
 		treePath = objectInput.readUTF();
 		name = objectInput.readUTF();
@@ -282,14 +290,22 @@ public class DLFileEntryCacheModel implements CacheModel<DLFileEntry>,
 		title = objectInput.readUTF();
 		description = objectInput.readUTF();
 		extraSettings = objectInput.readUTF();
+
 		fileEntryTypeId = objectInput.readLong();
 		version = objectInput.readUTF();
+
 		size = objectInput.readLong();
+
 		readCount = objectInput.readInt();
+
 		smallImageId = objectInput.readLong();
+
 		largeImageId = objectInput.readLong();
+
 		custom1ImageId = objectInput.readLong();
+
 		custom2ImageId = objectInput.readLong();
+
 		manualCheckInRequired = objectInput.readBoolean();
 		lastPublishDate = objectInput.readLong();
 	}
@@ -305,8 +321,11 @@ public class DLFileEntryCacheModel implements CacheModel<DLFileEntry>,
 		}
 
 		objectOutput.writeLong(fileEntryId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -318,9 +337,13 @@ public class DLFileEntryCacheModel implements CacheModel<DLFileEntry>,
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(classNameId);
+
 		objectOutput.writeLong(classPK);
+
 		objectOutput.writeLong(repositoryId);
+
 		objectOutput.writeLong(folderId);
 
 		if (treePath == null) {
@@ -389,11 +412,17 @@ public class DLFileEntryCacheModel implements CacheModel<DLFileEntry>,
 		}
 
 		objectOutput.writeLong(size);
+
 		objectOutput.writeInt(readCount);
+
 		objectOutput.writeLong(smallImageId);
+
 		objectOutput.writeLong(largeImageId);
+
 		objectOutput.writeLong(custom1ImageId);
+
 		objectOutput.writeLong(custom2ImageId);
+
 		objectOutput.writeBoolean(manualCheckInRequired);
 		objectOutput.writeLong(lastPublishDate);
 	}

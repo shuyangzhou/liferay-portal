@@ -137,13 +137,17 @@ public class JournalArticleImageCacheModel implements CacheModel<JournalArticleI
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		articleImageId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
 		articleId = objectInput.readUTF();
+
 		version = objectInput.readDouble();
 		elInstanceId = objectInput.readUTF();
 		elName = objectInput.readUTF();
 		languageId = objectInput.readUTF();
+
 		tempImage = objectInput.readBoolean();
 	}
 
@@ -151,7 +155,9 @@ public class JournalArticleImageCacheModel implements CacheModel<JournalArticleI
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(articleImageId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
 
 		if (articleId == null) {

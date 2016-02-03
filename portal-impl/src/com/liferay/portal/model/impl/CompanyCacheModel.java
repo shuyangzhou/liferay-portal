@@ -160,15 +160,21 @@ public class CompanyCacheModel implements CacheModel<Company>, Externalizable,
 	public void readExternal(ObjectInput objectInput)
 		throws ClassNotFoundException, IOException {
 		mvccVersion = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		accountId = objectInput.readLong();
 		webId = objectInput.readUTF();
 		key = objectInput.readUTF();
 		mx = objectInput.readUTF();
 		homeURL = objectInput.readUTF();
+
 		logoId = objectInput.readLong();
+
 		system = objectInput.readBoolean();
+
 		maxUsers = objectInput.readInt();
+
 		active = objectInput.readBoolean();
 
 		_keyObj = (java.security.Key)objectInput.readObject();
@@ -179,7 +185,9 @@ public class CompanyCacheModel implements CacheModel<Company>, Externalizable,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(accountId);
 
 		if (webId == null) {
@@ -211,8 +219,11 @@ public class CompanyCacheModel implements CacheModel<Company>, Externalizable,
 		}
 
 		objectOutput.writeLong(logoId);
+
 		objectOutput.writeBoolean(system);
+
 		objectOutput.writeInt(maxUsers);
+
 		objectOutput.writeBoolean(active);
 
 		objectOutput.writeObject(_keyObj);

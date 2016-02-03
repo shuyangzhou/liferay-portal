@@ -107,9 +107,12 @@ public class ExpandoRowCacheModel implements CacheModel<ExpandoRow>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		rowId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		tableId = objectInput.readLong();
+
 		classPK = objectInput.readLong();
 	}
 
@@ -117,9 +120,12 @@ public class ExpandoRowCacheModel implements CacheModel<ExpandoRow>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(rowId);
+
 		objectOutput.writeLong(companyId);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(tableId);
+
 		objectOutput.writeLong(classPK);
 	}
 

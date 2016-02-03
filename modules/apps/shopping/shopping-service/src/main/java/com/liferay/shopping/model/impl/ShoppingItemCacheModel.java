@@ -259,37 +259,59 @@ public class ShoppingItemCacheModel implements CacheModel<ShoppingItem>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		itemId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		categoryId = objectInput.readLong();
 		sku = objectInput.readUTF();
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
 		properties = objectInput.readUTF();
+
 		fields = objectInput.readBoolean();
 		fieldsQuantities = objectInput.readUTF();
+
 		minQuantity = objectInput.readInt();
+
 		maxQuantity = objectInput.readInt();
+
 		price = objectInput.readDouble();
+
 		discount = objectInput.readDouble();
+
 		taxable = objectInput.readBoolean();
+
 		shipping = objectInput.readDouble();
+
 		useShippingFormula = objectInput.readBoolean();
+
 		requiresShipping = objectInput.readBoolean();
+
 		stockQuantity = objectInput.readInt();
+
 		featured = objectInput.readBoolean();
+
 		sale = objectInput.readBoolean();
+
 		smallImage = objectInput.readBoolean();
+
 		smallImageId = objectInput.readLong();
 		smallImageURL = objectInput.readUTF();
+
 		mediumImage = objectInput.readBoolean();
+
 		mediumImageId = objectInput.readLong();
 		mediumImageURL = objectInput.readUTF();
+
 		largeImage = objectInput.readBoolean();
+
 		largeImageId = objectInput.readLong();
 		largeImageURL = objectInput.readUTF();
 	}
@@ -298,8 +320,11 @@ public class ShoppingItemCacheModel implements CacheModel<ShoppingItem>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(itemId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -311,6 +336,7 @@ public class ShoppingItemCacheModel implements CacheModel<ShoppingItem>,
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(categoryId);
 
 		if (sku == null) {
@@ -351,17 +377,29 @@ public class ShoppingItemCacheModel implements CacheModel<ShoppingItem>,
 		}
 
 		objectOutput.writeInt(minQuantity);
+
 		objectOutput.writeInt(maxQuantity);
+
 		objectOutput.writeDouble(price);
+
 		objectOutput.writeDouble(discount);
+
 		objectOutput.writeBoolean(taxable);
+
 		objectOutput.writeDouble(shipping);
+
 		objectOutput.writeBoolean(useShippingFormula);
+
 		objectOutput.writeBoolean(requiresShipping);
+
 		objectOutput.writeInt(stockQuantity);
+
 		objectOutput.writeBoolean(featured);
+
 		objectOutput.writeBoolean(sale);
+
 		objectOutput.writeBoolean(smallImage);
+
 		objectOutput.writeLong(smallImageId);
 
 		if (smallImageURL == null) {
@@ -372,6 +410,7 @@ public class ShoppingItemCacheModel implements CacheModel<ShoppingItem>,
 		}
 
 		objectOutput.writeBoolean(mediumImage);
+
 		objectOutput.writeLong(mediumImageId);
 
 		if (mediumImageURL == null) {
@@ -382,6 +421,7 @@ public class ShoppingItemCacheModel implements CacheModel<ShoppingItem>,
 		}
 
 		objectOutput.writeBoolean(largeImage);
+
 		objectOutput.writeLong(largeImageId);
 
 		if (largeImageURL == null) {

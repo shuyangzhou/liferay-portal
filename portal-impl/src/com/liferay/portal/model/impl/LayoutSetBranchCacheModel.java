@@ -237,17 +237,24 @@ public class LayoutSetBranchCacheModel implements CacheModel<LayoutSetBranch>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
+
 		layoutSetBranchId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		privateLayout = objectInput.readBoolean();
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
+
 		master = objectInput.readBoolean();
+
 		logoId = objectInput.readLong();
 		themeId = objectInput.readUTF();
 		colorSchemeId = objectInput.readUTF();
@@ -256,6 +263,7 @@ public class LayoutSetBranchCacheModel implements CacheModel<LayoutSetBranch>,
 		css = objectInput.readUTF();
 		settings = objectInput.readUTF();
 		layoutSetPrototypeUuid = objectInput.readUTF();
+
 		layoutSetPrototypeLinkEnabled = objectInput.readBoolean();
 	}
 
@@ -263,9 +271,13 @@ public class LayoutSetBranchCacheModel implements CacheModel<LayoutSetBranch>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(layoutSetBranchId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -277,6 +289,7 @@ public class LayoutSetBranchCacheModel implements CacheModel<LayoutSetBranch>,
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeBoolean(privateLayout);
 
 		if (name == null) {
@@ -294,6 +307,7 @@ public class LayoutSetBranchCacheModel implements CacheModel<LayoutSetBranch>,
 		}
 
 		objectOutput.writeBoolean(master);
+
 		objectOutput.writeLong(logoId);
 
 		if (themeId == null) {

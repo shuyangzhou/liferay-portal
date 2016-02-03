@@ -193,20 +193,30 @@ public class KaleoTaskInstanceTokenCacheModel implements CacheModel<KaleoTaskIns
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		kaleoTaskInstanceTokenId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		kaleoDefinitionId = objectInput.readLong();
+
 		kaleoInstanceId = objectInput.readLong();
+
 		kaleoInstanceTokenId = objectInput.readLong();
+
 		kaleoTaskId = objectInput.readLong();
 		kaleoTaskName = objectInput.readUTF();
 		className = objectInput.readUTF();
+
 		classPK = objectInput.readLong();
+
 		completionUserId = objectInput.readLong();
+
 		completed = objectInput.readBoolean();
 		completionDate = objectInput.readLong();
 		dueDate = objectInput.readLong();
@@ -217,8 +227,11 @@ public class KaleoTaskInstanceTokenCacheModel implements CacheModel<KaleoTaskIns
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(kaleoTaskInstanceTokenId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -230,9 +243,13 @@ public class KaleoTaskInstanceTokenCacheModel implements CacheModel<KaleoTaskIns
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(kaleoDefinitionId);
+
 		objectOutput.writeLong(kaleoInstanceId);
+
 		objectOutput.writeLong(kaleoInstanceTokenId);
+
 		objectOutput.writeLong(kaleoTaskId);
 
 		if (kaleoTaskName == null) {
@@ -250,7 +267,9 @@ public class KaleoTaskInstanceTokenCacheModel implements CacheModel<KaleoTaskIns
 		}
 
 		objectOutput.writeLong(classPK);
+
 		objectOutput.writeLong(completionUserId);
+
 		objectOutput.writeBoolean(completed);
 		objectOutput.writeLong(completionDate);
 		objectOutput.writeLong(dueDate);

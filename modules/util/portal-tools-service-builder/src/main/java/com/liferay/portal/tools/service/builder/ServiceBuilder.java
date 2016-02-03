@@ -2459,6 +2459,12 @@ public class ServiceBuilder {
 				_outputPath + "/model/impl/" + superClassValue + ".java");
 
 			for (JavaMethod method : _getMethods(javaClass)) {
+				String methodName = method.getName();
+
+				if (methodName.equals("hasSetModifiedDate")) {
+					continue;
+				}
+
 				methods.remove(method.getDeclarationSignature(false));
 			}
 

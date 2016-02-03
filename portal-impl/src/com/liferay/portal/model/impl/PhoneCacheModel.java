@@ -181,17 +181,24 @@ public class PhoneCacheModel implements CacheModel<Phone>, Externalizable,
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
 		uuid = objectInput.readUTF();
+
 		phoneId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		classNameId = objectInput.readLong();
+
 		classPK = objectInput.readLong();
 		number = objectInput.readUTF();
 		extension = objectInput.readUTF();
+
 		typeId = objectInput.readLong();
+
 		primary = objectInput.readBoolean();
 	}
 
@@ -208,7 +215,9 @@ public class PhoneCacheModel implements CacheModel<Phone>, Externalizable,
 		}
 
 		objectOutput.writeLong(phoneId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -220,7 +229,9 @@ public class PhoneCacheModel implements CacheModel<Phone>, Externalizable,
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(classNameId);
+
 		objectOutput.writeLong(classPK);
 
 		if (number == null) {
@@ -238,6 +249,7 @@ public class PhoneCacheModel implements CacheModel<Phone>, Externalizable,
 		}
 
 		objectOutput.writeLong(typeId);
+
 		objectOutput.writeBoolean(primary);
 	}
 

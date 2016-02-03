@@ -179,20 +179,28 @@ public class KaleoTransitionCacheModel implements CacheModel<KaleoTransition>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		kaleoTransitionId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		kaleoDefinitionId = objectInput.readLong();
+
 		kaleoNodeId = objectInput.readLong();
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
+
 		sourceKaleoNodeId = objectInput.readLong();
 		sourceKaleoNodeName = objectInput.readUTF();
+
 		targetKaleoNodeId = objectInput.readLong();
 		targetKaleoNodeName = objectInput.readUTF();
+
 		defaultTransition = objectInput.readBoolean();
 	}
 
@@ -200,8 +208,11 @@ public class KaleoTransitionCacheModel implements CacheModel<KaleoTransition>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(kaleoTransitionId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -213,7 +224,9 @@ public class KaleoTransitionCacheModel implements CacheModel<KaleoTransition>,
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(kaleoDefinitionId);
+
 		objectOutput.writeLong(kaleoNodeId);
 
 		if (name == null) {

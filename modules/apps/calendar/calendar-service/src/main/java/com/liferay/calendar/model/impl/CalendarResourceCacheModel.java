@@ -193,20 +193,28 @@ public class CalendarResourceCacheModel implements CacheModel<CalendarResource>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
+
 		calendarResourceId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		resourceBlockId = objectInput.readLong();
+
 		classNameId = objectInput.readLong();
+
 		classPK = objectInput.readLong();
 		classUuid = objectInput.readUTF();
 		code = objectInput.readUTF();
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
+
 		active = objectInput.readBoolean();
 		lastPublishDate = objectInput.readLong();
 	}
@@ -222,8 +230,11 @@ public class CalendarResourceCacheModel implements CacheModel<CalendarResource>,
 		}
 
 		objectOutput.writeLong(calendarResourceId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -235,8 +246,11 @@ public class CalendarResourceCacheModel implements CacheModel<CalendarResource>,
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(resourceBlockId);
+
 		objectOutput.writeLong(classNameId);
+
 		objectOutput.writeLong(classPK);
 
 		if (classUuid == null) {

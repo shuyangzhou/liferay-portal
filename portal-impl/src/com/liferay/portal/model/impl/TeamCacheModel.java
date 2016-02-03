@@ -180,12 +180,16 @@ public class TeamCacheModel implements CacheModel<Team>, Externalizable,
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
 		uuid = objectInput.readUTF();
+
 		teamId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		groupId = objectInput.readLong();
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
@@ -205,7 +209,9 @@ public class TeamCacheModel implements CacheModel<Team>, Externalizable,
 		}
 
 		objectOutput.writeLong(teamId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -217,6 +223,7 @@ public class TeamCacheModel implements CacheModel<Team>, Externalizable,
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(groupId);
 
 		if (name == null) {

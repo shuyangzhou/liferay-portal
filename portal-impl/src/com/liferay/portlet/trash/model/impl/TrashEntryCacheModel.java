@@ -139,15 +139,22 @@ public class TrashEntryCacheModel implements CacheModel<TrashEntry>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		entryId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
+
 		classNameId = objectInput.readLong();
+
 		classPK = objectInput.readLong();
+
 		systemEventSetKey = objectInput.readLong();
 		typeSettings = objectInput.readUTF();
+
 		status = objectInput.readInt();
 	}
 
@@ -155,8 +162,11 @@ public class TrashEntryCacheModel implements CacheModel<TrashEntry>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(entryId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -167,8 +177,11 @@ public class TrashEntryCacheModel implements CacheModel<TrashEntry>,
 		}
 
 		objectOutput.writeLong(createDate);
+
 		objectOutput.writeLong(classNameId);
+
 		objectOutput.writeLong(classPK);
+
 		objectOutput.writeLong(systemEventSetKey);
 
 		if (typeSettings == null) {

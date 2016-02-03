@@ -150,13 +150,18 @@ public class DDMStructureLayoutCacheModel implements CacheModel<DDMStructureLayo
 	public void readExternal(ObjectInput objectInput)
 		throws ClassNotFoundException, IOException {
 		uuid = objectInput.readUTF();
+
 		structureLayoutId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		structureVersionId = objectInput.readLong();
 		definition = objectInput.readUTF();
 
@@ -174,8 +179,11 @@ public class DDMStructureLayoutCacheModel implements CacheModel<DDMStructureLayo
 		}
 
 		objectOutput.writeLong(structureLayoutId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -187,6 +195,7 @@ public class DDMStructureLayoutCacheModel implements CacheModel<DDMStructureLayo
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(structureVersionId);
 
 		if (definition == null) {

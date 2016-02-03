@@ -170,14 +170,18 @@ public class ReleaseCacheModel implements CacheModel<Release>, Externalizable,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
+
 		releaseId = objectInput.readLong();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
 		servletContextName = objectInput.readUTF();
 		schemaVersion = objectInput.readUTF();
+
 		buildNumber = objectInput.readInt();
 		buildDate = objectInput.readLong();
+
 		verified = objectInput.readBoolean();
+
 		state = objectInput.readInt();
 		testString = objectInput.readUTF();
 	}
@@ -186,6 +190,7 @@ public class ReleaseCacheModel implements CacheModel<Release>, Externalizable,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(releaseId);
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
@@ -206,7 +211,9 @@ public class ReleaseCacheModel implements CacheModel<Release>, Externalizable,
 
 		objectOutput.writeInt(buildNumber);
 		objectOutput.writeLong(buildDate);
+
 		objectOutput.writeBoolean(verified);
+
 		objectOutput.writeInt(state);
 
 		if (testString == null) {

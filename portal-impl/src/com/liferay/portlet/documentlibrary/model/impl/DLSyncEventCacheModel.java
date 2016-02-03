@@ -115,10 +115,13 @@ public class DLSyncEventCacheModel implements CacheModel<DLSyncEvent>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		syncEventId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		modifiedTime = objectInput.readLong();
 		event = objectInput.readUTF();
 		type = objectInput.readUTF();
+
 		typePK = objectInput.readLong();
 	}
 
@@ -126,7 +129,9 @@ public class DLSyncEventCacheModel implements CacheModel<DLSyncEvent>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(syncEventId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(modifiedTime);
 
 		if (event == null) {

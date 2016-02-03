@@ -137,11 +137,14 @@ public class PluginSettingCacheModel implements CacheModel<PluginSetting>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
+
 		pluginSettingId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
 		pluginId = objectInput.readUTF();
 		pluginType = objectInput.readUTF();
 		roles = objectInput.readUTF();
+
 		active = objectInput.readBoolean();
 	}
 
@@ -149,7 +152,9 @@ public class PluginSettingCacheModel implements CacheModel<PluginSetting>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(pluginSettingId);
+
 		objectOutput.writeLong(companyId);
 
 		if (pluginId == null) {

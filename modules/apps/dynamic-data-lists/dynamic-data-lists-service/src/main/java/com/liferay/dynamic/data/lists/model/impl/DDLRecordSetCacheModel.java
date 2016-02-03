@@ -193,18 +193,25 @@ public class DDLRecordSetCacheModel implements CacheModel<DDLRecordSet>,
 	public void readExternal(ObjectInput objectInput)
 		throws ClassNotFoundException, IOException {
 		uuid = objectInput.readUTF();
+
 		recordSetId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		DDMStructureId = objectInput.readLong();
 		recordSetKey = objectInput.readUTF();
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
+
 		minDisplayRows = objectInput.readInt();
+
 		scope = objectInput.readInt();
 		settings = objectInput.readUTF();
 		lastPublishDate = objectInput.readLong();
@@ -223,8 +230,11 @@ public class DDLRecordSetCacheModel implements CacheModel<DDLRecordSet>,
 		}
 
 		objectOutput.writeLong(recordSetId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -236,6 +246,7 @@ public class DDLRecordSetCacheModel implements CacheModel<DDLRecordSet>,
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(DDMStructureId);
 
 		if (recordSetKey == null) {
@@ -260,6 +271,7 @@ public class DDLRecordSetCacheModel implements CacheModel<DDLRecordSet>,
 		}
 
 		objectOutput.writeInt(minDisplayRows);
+
 		objectOutput.writeInt(scope);
 
 		if (settings == null) {

@@ -144,15 +144,23 @@ public class ResourcePermissionCacheModel implements CacheModel<ResourcePermissi
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
+
 		resourcePermissionId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
 		name = objectInput.readUTF();
+
 		scope = objectInput.readInt();
 		primKey = objectInput.readUTF();
+
 		primKeyId = objectInput.readLong();
+
 		roleId = objectInput.readLong();
+
 		ownerId = objectInput.readLong();
+
 		actionIds = objectInput.readLong();
+
 		viewActionId = objectInput.readBoolean();
 	}
 
@@ -160,7 +168,9 @@ public class ResourcePermissionCacheModel implements CacheModel<ResourcePermissi
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(resourcePermissionId);
+
 		objectOutput.writeLong(companyId);
 
 		if (name == null) {
@@ -180,9 +190,13 @@ public class ResourcePermissionCacheModel implements CacheModel<ResourcePermissi
 		}
 
 		objectOutput.writeLong(primKeyId);
+
 		objectOutput.writeLong(roleId);
+
 		objectOutput.writeLong(ownerId);
+
 		objectOutput.writeLong(actionIds);
+
 		objectOutput.writeBoolean(viewActionId);
 	}
 

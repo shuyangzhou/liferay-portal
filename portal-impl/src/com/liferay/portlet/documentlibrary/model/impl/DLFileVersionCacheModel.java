@@ -276,15 +276,22 @@ public class DLFileVersionCacheModel implements CacheModel<DLFileVersion>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
+
 		fileVersionId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		repositoryId = objectInput.readLong();
+
 		folderId = objectInput.readLong();
+
 		fileEntryId = objectInput.readLong();
 		treePath = objectInput.readUTF();
 		fileName = objectInput.readUTF();
@@ -294,12 +301,16 @@ public class DLFileVersionCacheModel implements CacheModel<DLFileVersion>,
 		description = objectInput.readUTF();
 		changeLog = objectInput.readUTF();
 		extraSettings = objectInput.readUTF();
+
 		fileEntryTypeId = objectInput.readLong();
 		version = objectInput.readUTF();
+
 		size = objectInput.readLong();
 		checksum = objectInput.readUTF();
 		lastPublishDate = objectInput.readLong();
+
 		status = objectInput.readInt();
+
 		statusByUserId = objectInput.readLong();
 		statusByUserName = objectInput.readUTF();
 		statusDate = objectInput.readLong();
@@ -316,8 +327,11 @@ public class DLFileVersionCacheModel implements CacheModel<DLFileVersion>,
 		}
 
 		objectOutput.writeLong(fileVersionId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -329,8 +343,11 @@ public class DLFileVersionCacheModel implements CacheModel<DLFileVersion>,
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(repositoryId);
+
 		objectOutput.writeLong(folderId);
+
 		objectOutput.writeLong(fileEntryId);
 
 		if (treePath == null) {
@@ -408,7 +425,9 @@ public class DLFileVersionCacheModel implements CacheModel<DLFileVersion>,
 		}
 
 		objectOutput.writeLong(lastPublishDate);
+
 		objectOutput.writeInt(status);
+
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {

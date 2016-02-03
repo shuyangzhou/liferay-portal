@@ -156,8 +156,11 @@ public class UserTrackerCacheModel implements CacheModel<UserTracker>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
+
 		userTrackerId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
 		sessionId = objectInput.readUTF();
@@ -170,8 +173,11 @@ public class UserTrackerCacheModel implements CacheModel<UserTracker>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(userTrackerId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 		objectOutput.writeLong(modifiedDate);
 

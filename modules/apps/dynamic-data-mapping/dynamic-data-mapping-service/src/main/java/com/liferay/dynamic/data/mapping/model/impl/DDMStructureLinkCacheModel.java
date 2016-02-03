@@ -98,9 +98,13 @@ public class DDMStructureLinkCacheModel implements CacheModel<DDMStructureLink>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		structureLinkId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		classNameId = objectInput.readLong();
+
 		classPK = objectInput.readLong();
+
 		structureId = objectInput.readLong();
 	}
 
@@ -108,9 +112,13 @@ public class DDMStructureLinkCacheModel implements CacheModel<DDMStructureLink>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(structureLinkId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(classNameId);
+
 		objectOutput.writeLong(classPK);
+
 		objectOutput.writeLong(structureId);
 	}
 

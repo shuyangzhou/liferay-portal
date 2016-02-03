@@ -120,7 +120,9 @@ public class ShoppingItemFieldCacheModel implements CacheModel<ShoppingItemField
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		itemFieldId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		itemId = objectInput.readLong();
 		name = objectInput.readUTF();
 		values = objectInput.readUTF();
@@ -131,7 +133,9 @@ public class ShoppingItemFieldCacheModel implements CacheModel<ShoppingItemField
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(itemFieldId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(itemId);
 
 		if (name == null) {

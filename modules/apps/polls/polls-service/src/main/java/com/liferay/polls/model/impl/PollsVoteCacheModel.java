@@ -159,14 +159,20 @@ public class PollsVoteCacheModel implements CacheModel<PollsVote>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
+
 		voteId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		questionId = objectInput.readLong();
+
 		choiceId = objectInput.readLong();
 		lastPublishDate = objectInput.readLong();
 		voteDate = objectInput.readLong();
@@ -183,8 +189,11 @@ public class PollsVoteCacheModel implements CacheModel<PollsVote>,
 		}
 
 		objectOutput.writeLong(voteId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -196,7 +205,9 @@ public class PollsVoteCacheModel implements CacheModel<PollsVote>,
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(questionId);
+
 		objectOutput.writeLong(choiceId);
 		objectOutput.writeLong(lastPublishDate);
 		objectOutput.writeLong(voteDate);

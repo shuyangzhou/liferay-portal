@@ -133,18 +133,30 @@ public class SocialActivityCacheModel implements CacheModel<SocialActivity>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		activityId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
+
 		createDate = objectInput.readLong();
+
 		activitySetId = objectInput.readLong();
+
 		mirrorActivityId = objectInput.readLong();
+
 		classNameId = objectInput.readLong();
+
 		classPK = objectInput.readLong();
+
 		parentClassNameId = objectInput.readLong();
+
 		parentClassPK = objectInput.readLong();
+
 		type = objectInput.readInt();
 		extraData = objectInput.readUTF();
+
 		receiverUserId = objectInput.readLong();
 	}
 
@@ -152,16 +164,27 @@ public class SocialActivityCacheModel implements CacheModel<SocialActivity>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(activityId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
+
 		objectOutput.writeLong(createDate);
+
 		objectOutput.writeLong(activitySetId);
+
 		objectOutput.writeLong(mirrorActivityId);
+
 		objectOutput.writeLong(classNameId);
+
 		objectOutput.writeLong(classPK);
+
 		objectOutput.writeLong(parentClassNameId);
+
 		objectOutput.writeLong(parentClassPK);
+
 		objectOutput.writeInt(type);
 
 		if (extraData == null) {

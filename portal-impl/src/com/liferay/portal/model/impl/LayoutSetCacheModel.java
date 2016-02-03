@@ -212,21 +212,28 @@ public class LayoutSetCacheModel implements CacheModel<LayoutSet>,
 	public void readExternal(ObjectInput objectInput)
 		throws ClassNotFoundException, IOException {
 		mvccVersion = objectInput.readLong();
+
 		layoutSetId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		privateLayout = objectInput.readBoolean();
+
 		logoId = objectInput.readLong();
 		themeId = objectInput.readUTF();
 		colorSchemeId = objectInput.readUTF();
 		wapThemeId = objectInput.readUTF();
 		wapColorSchemeId = objectInput.readUTF();
 		css = objectInput.readUTF();
+
 		pageCount = objectInput.readInt();
 		settings = objectInput.readUTF();
 		layoutSetPrototypeUuid = objectInput.readUTF();
+
 		layoutSetPrototypeLinkEnabled = objectInput.readBoolean();
 
 		_companyFallbackVirtualHostname = (java.lang.String)objectInput.readObject();
@@ -237,12 +244,17 @@ public class LayoutSetCacheModel implements CacheModel<LayoutSet>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(layoutSetId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeBoolean(privateLayout);
+
 		objectOutput.writeLong(logoId);
 
 		if (themeId == null) {

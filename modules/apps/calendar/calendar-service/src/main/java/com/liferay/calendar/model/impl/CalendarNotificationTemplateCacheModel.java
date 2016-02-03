@@ -195,13 +195,18 @@ public class CalendarNotificationTemplateCacheModel implements CacheModel<Calend
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
+
 		calendarNotificationTemplateId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		calendarId = objectInput.readLong();
 		notificationType = objectInput.readUTF();
 		notificationTypeSettings = objectInput.readUTF();
@@ -222,8 +227,11 @@ public class CalendarNotificationTemplateCacheModel implements CacheModel<Calend
 		}
 
 		objectOutput.writeLong(calendarNotificationTemplateId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -235,6 +243,7 @@ public class CalendarNotificationTemplateCacheModel implements CacheModel<Calend
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(calendarId);
 
 		if (notificationType == null) {

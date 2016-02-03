@@ -188,20 +188,28 @@ public class KaleoTimerCacheModel implements CacheModel<KaleoTimer>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		kaleoTimerId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
 		kaleoClassName = objectInput.readUTF();
+
 		kaleoClassPK = objectInput.readLong();
+
 		kaleoDefinitionId = objectInput.readLong();
 		name = objectInput.readUTF();
+
 		blocking = objectInput.readBoolean();
 		description = objectInput.readUTF();
+
 		duration = objectInput.readDouble();
 		scale = objectInput.readUTF();
+
 		recurrenceDuration = objectInput.readDouble();
 		recurrenceScale = objectInput.readUTF();
 	}
@@ -210,8 +218,11 @@ public class KaleoTimerCacheModel implements CacheModel<KaleoTimer>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(kaleoTimerId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -232,6 +243,7 @@ public class KaleoTimerCacheModel implements CacheModel<KaleoTimer>,
 		}
 
 		objectOutput.writeLong(kaleoClassPK);
+
 		objectOutput.writeLong(kaleoDefinitionId);
 
 		if (name == null) {

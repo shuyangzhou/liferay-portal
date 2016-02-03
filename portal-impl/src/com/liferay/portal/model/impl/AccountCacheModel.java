@@ -223,12 +223,16 @@ public class AccountCacheModel implements CacheModel<Account>, Externalizable,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
+
 		accountId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		parentAccountId = objectInput.readLong();
 		name = objectInput.readUTF();
 		legalName = objectInput.readUTF();
@@ -245,8 +249,11 @@ public class AccountCacheModel implements CacheModel<Account>, Externalizable,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(accountId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -258,6 +265,7 @@ public class AccountCacheModel implements CacheModel<Account>, Externalizable,
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(parentAccountId);
 
 		if (name == null) {

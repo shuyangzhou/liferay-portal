@@ -208,8 +208,11 @@ public class ShoppingCouponCacheModel implements CacheModel<ShoppingCoupon>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		couponId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
@@ -219,10 +222,13 @@ public class ShoppingCouponCacheModel implements CacheModel<ShoppingCoupon>,
 		description = objectInput.readUTF();
 		startDate = objectInput.readLong();
 		endDate = objectInput.readLong();
+
 		active = objectInput.readBoolean();
 		limitCategories = objectInput.readUTF();
 		limitSkus = objectInput.readUTF();
+
 		minOrder = objectInput.readDouble();
+
 		discount = objectInput.readDouble();
 		discountType = objectInput.readUTF();
 	}
@@ -231,8 +237,11 @@ public class ShoppingCouponCacheModel implements CacheModel<ShoppingCoupon>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(couponId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -268,6 +277,7 @@ public class ShoppingCouponCacheModel implements CacheModel<ShoppingCoupon>,
 
 		objectOutput.writeLong(startDate);
 		objectOutput.writeLong(endDate);
+
 		objectOutput.writeBoolean(active);
 
 		if (limitCategories == null) {
@@ -285,6 +295,7 @@ public class ShoppingCouponCacheModel implements CacheModel<ShoppingCoupon>,
 		}
 
 		objectOutput.writeDouble(minOrder);
+
 		objectOutput.writeDouble(discount);
 
 		if (discountType == null) {

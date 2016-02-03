@@ -182,13 +182,18 @@ public class MDRRuleCacheModel implements CacheModel<MDRRule>, Externalizable {
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
+
 		ruleId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		ruleGroupId = objectInput.readLong();
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
@@ -208,8 +213,11 @@ public class MDRRuleCacheModel implements CacheModel<MDRRule>, Externalizable {
 		}
 
 		objectOutput.writeLong(ruleId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -221,6 +229,7 @@ public class MDRRuleCacheModel implements CacheModel<MDRRule>, Externalizable {
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(ruleGroupId);
 
 		if (name == null) {

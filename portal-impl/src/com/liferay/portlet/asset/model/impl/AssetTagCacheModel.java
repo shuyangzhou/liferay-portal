@@ -155,14 +155,19 @@ public class AssetTagCacheModel implements CacheModel<AssetTag>, Externalizable 
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
+
 		tagId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
 		name = objectInput.readUTF();
+
 		assetCount = objectInput.readInt();
 		lastPublishDate = objectInput.readLong();
 	}
@@ -178,8 +183,11 @@ public class AssetTagCacheModel implements CacheModel<AssetTag>, Externalizable 
 		}
 
 		objectOutput.writeLong(tagId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {

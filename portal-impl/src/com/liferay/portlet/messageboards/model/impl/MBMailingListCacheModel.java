@@ -248,30 +248,43 @@ public class MBMailingListCacheModel implements CacheModel<MBMailingList>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
+
 		mailingListId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		categoryId = objectInput.readLong();
 		emailAddress = objectInput.readUTF();
 		inProtocol = objectInput.readUTF();
 		inServerName = objectInput.readUTF();
+
 		inServerPort = objectInput.readInt();
+
 		inUseSSL = objectInput.readBoolean();
 		inUserName = objectInput.readUTF();
 		inPassword = objectInput.readUTF();
+
 		inReadInterval = objectInput.readInt();
 		outEmailAddress = objectInput.readUTF();
+
 		outCustom = objectInput.readBoolean();
 		outServerName = objectInput.readUTF();
+
 		outServerPort = objectInput.readInt();
+
 		outUseSSL = objectInput.readBoolean();
 		outUserName = objectInput.readUTF();
 		outPassword = objectInput.readUTF();
+
 		allowAnonymous = objectInput.readBoolean();
+
 		active = objectInput.readBoolean();
 	}
 
@@ -286,8 +299,11 @@ public class MBMailingListCacheModel implements CacheModel<MBMailingList>,
 		}
 
 		objectOutput.writeLong(mailingListId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -299,6 +315,7 @@ public class MBMailingListCacheModel implements CacheModel<MBMailingList>,
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(categoryId);
 
 		if (emailAddress == null) {
@@ -323,6 +340,7 @@ public class MBMailingListCacheModel implements CacheModel<MBMailingList>,
 		}
 
 		objectOutput.writeInt(inServerPort);
+
 		objectOutput.writeBoolean(inUseSSL);
 
 		if (inUserName == null) {
@@ -358,6 +376,7 @@ public class MBMailingListCacheModel implements CacheModel<MBMailingList>,
 		}
 
 		objectOutput.writeInt(outServerPort);
+
 		objectOutput.writeBoolean(outUseSSL);
 
 		if (outUserName == null) {
@@ -375,6 +394,7 @@ public class MBMailingListCacheModel implements CacheModel<MBMailingList>,
 		}
 
 		objectOutput.writeBoolean(allowAnonymous);
+
 		objectOutput.writeBoolean(active);
 	}
 

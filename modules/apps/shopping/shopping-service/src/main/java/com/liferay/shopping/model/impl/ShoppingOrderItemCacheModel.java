@@ -156,14 +156,18 @@ public class ShoppingOrderItemCacheModel implements CacheModel<ShoppingOrderItem
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		orderItemId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		orderId = objectInput.readLong();
 		itemId = objectInput.readUTF();
 		sku = objectInput.readUTF();
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
 		properties = objectInput.readUTF();
+
 		price = objectInput.readDouble();
+
 		quantity = objectInput.readInt();
 		shippedDate = objectInput.readLong();
 	}
@@ -172,7 +176,9 @@ public class ShoppingOrderItemCacheModel implements CacheModel<ShoppingOrderItem
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(orderItemId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(orderId);
 
 		if (itemId == null) {
@@ -211,6 +217,7 @@ public class ShoppingOrderItemCacheModel implements CacheModel<ShoppingOrderItem
 		}
 
 		objectOutput.writeDouble(price);
+
 		objectOutput.writeInt(quantity);
 		objectOutput.writeLong(shippedDate);
 	}

@@ -191,20 +191,30 @@ public class DLFileShortcutCacheModel implements CacheModel<DLFileShortcut>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
+
 		fileShortcutId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		repositoryId = objectInput.readLong();
+
 		folderId = objectInput.readLong();
+
 		toFileEntryId = objectInput.readLong();
 		treePath = objectInput.readUTF();
+
 		active = objectInput.readBoolean();
 		lastPublishDate = objectInput.readLong();
+
 		status = objectInput.readInt();
+
 		statusByUserId = objectInput.readLong();
 		statusByUserName = objectInput.readUTF();
 		statusDate = objectInput.readLong();
@@ -221,8 +231,11 @@ public class DLFileShortcutCacheModel implements CacheModel<DLFileShortcut>,
 		}
 
 		objectOutput.writeLong(fileShortcutId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -234,8 +247,11 @@ public class DLFileShortcutCacheModel implements CacheModel<DLFileShortcut>,
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(repositoryId);
+
 		objectOutput.writeLong(folderId);
+
 		objectOutput.writeLong(toFileEntryId);
 
 		if (treePath == null) {
@@ -247,7 +263,9 @@ public class DLFileShortcutCacheModel implements CacheModel<DLFileShortcut>,
 
 		objectOutput.writeBoolean(active);
 		objectOutput.writeLong(lastPublishDate);
+
 		objectOutput.writeInt(status);
+
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {

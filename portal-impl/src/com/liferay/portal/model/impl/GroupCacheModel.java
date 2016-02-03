@@ -210,25 +210,39 @@ public class GroupCacheModel implements CacheModel<Group>, Externalizable,
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
 		uuid = objectInput.readUTF();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		creatorUserId = objectInput.readLong();
+
 		classNameId = objectInput.readLong();
+
 		classPK = objectInput.readLong();
+
 		parentGroupId = objectInput.readLong();
+
 		liveGroupId = objectInput.readLong();
 		treePath = objectInput.readUTF();
 		groupKey = objectInput.readUTF();
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
+
 		type = objectInput.readInt();
 		typeSettings = objectInput.readUTF();
+
 		manualMembership = objectInput.readBoolean();
+
 		membershipRestriction = objectInput.readInt();
 		friendlyURL = objectInput.readUTF();
+
 		site = objectInput.readBoolean();
+
 		remoteStagingGroupCount = objectInput.readInt();
+
 		inheritContent = objectInput.readBoolean();
+
 		active = objectInput.readBoolean();
 	}
 
@@ -245,11 +259,17 @@ public class GroupCacheModel implements CacheModel<Group>, Externalizable,
 		}
 
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(creatorUserId);
+
 		objectOutput.writeLong(classNameId);
+
 		objectOutput.writeLong(classPK);
+
 		objectOutput.writeLong(parentGroupId);
+
 		objectOutput.writeLong(liveGroupId);
 
 		if (treePath == null) {
@@ -290,6 +310,7 @@ public class GroupCacheModel implements CacheModel<Group>, Externalizable,
 		}
 
 		objectOutput.writeBoolean(manualMembership);
+
 		objectOutput.writeInt(membershipRestriction);
 
 		if (friendlyURL == null) {
@@ -300,8 +321,11 @@ public class GroupCacheModel implements CacheModel<Group>, Externalizable,
 		}
 
 		objectOutput.writeBoolean(site);
+
 		objectOutput.writeInt(remoteStagingGroupCount);
+
 		objectOutput.writeBoolean(inheritContent);
+
 		objectOutput.writeBoolean(active);
 	}
 

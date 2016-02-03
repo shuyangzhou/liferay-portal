@@ -125,9 +125,11 @@ public class ResourceActionCacheModel implements CacheModel<ResourceAction>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
+
 		resourceActionId = objectInput.readLong();
 		name = objectInput.readUTF();
 		actionId = objectInput.readUTF();
+
 		bitwiseValue = objectInput.readLong();
 	}
 
@@ -135,6 +137,7 @@ public class ResourceActionCacheModel implements CacheModel<ResourceAction>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(resourceActionId);
 
 		if (name == null) {

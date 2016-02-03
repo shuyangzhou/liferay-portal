@@ -147,13 +147,18 @@ public class MBThreadFlagCacheModel implements CacheModel<MBThreadFlag>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
+
 		threadFlagId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		threadId = objectInput.readLong();
 		lastPublishDate = objectInput.readLong();
 	}
@@ -169,8 +174,11 @@ public class MBThreadFlagCacheModel implements CacheModel<MBThreadFlag>,
 		}
 
 		objectOutput.writeLong(threadFlagId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -182,6 +190,7 @@ public class MBThreadFlagCacheModel implements CacheModel<MBThreadFlag>,
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(threadId);
 		objectOutput.writeLong(lastPublishDate);
 	}

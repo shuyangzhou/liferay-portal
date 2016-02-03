@@ -151,15 +151,22 @@ public class WorkflowInstanceLinkCacheModel implements CacheModel<WorkflowInstan
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
+
 		workflowInstanceLinkId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		classNameId = objectInput.readLong();
+
 		classPK = objectInput.readLong();
+
 		workflowInstanceId = objectInput.readLong();
 	}
 
@@ -167,9 +174,13 @@ public class WorkflowInstanceLinkCacheModel implements CacheModel<WorkflowInstan
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(workflowInstanceLinkId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -181,8 +192,11 @@ public class WorkflowInstanceLinkCacheModel implements CacheModel<WorkflowInstan
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(classNameId);
+
 		objectOutput.writeLong(classPK);
+
 		objectOutput.writeLong(workflowInstanceId);
 	}
 

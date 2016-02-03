@@ -205,18 +205,24 @@ public class RepositoryCacheModel implements CacheModel<Repository>,
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
 		uuid = objectInput.readUTF();
+
 		repositoryId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		classNameId = objectInput.readLong();
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
 		portletId = objectInput.readUTF();
 		typeSettings = objectInput.readUTF();
+
 		dlFolderId = objectInput.readLong();
 		lastPublishDate = objectInput.readLong();
 	}
@@ -234,8 +240,11 @@ public class RepositoryCacheModel implements CacheModel<Repository>,
 		}
 
 		objectOutput.writeLong(repositoryId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -247,6 +256,7 @@ public class RepositoryCacheModel implements CacheModel<Repository>,
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(classNameId);
 
 		if (name == null) {

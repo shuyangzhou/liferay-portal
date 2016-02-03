@@ -254,17 +254,25 @@ public class AssetEntryCacheModel implements CacheModel<AssetEntry>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		entryId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		classNameId = objectInput.readLong();
+
 		classPK = objectInput.readLong();
 		classUuid = objectInput.readUTF();
+
 		classTypeId = objectInput.readLong();
+
 		listable = objectInput.readBoolean();
+
 		visible = objectInput.readBoolean();
 		startDate = objectInput.readLong();
 		endDate = objectInput.readLong();
@@ -276,9 +284,13 @@ public class AssetEntryCacheModel implements CacheModel<AssetEntry>,
 		summary = objectInput.readUTF();
 		url = objectInput.readUTF();
 		layoutUuid = objectInput.readUTF();
+
 		height = objectInput.readInt();
+
 		width = objectInput.readInt();
+
 		priority = objectInput.readDouble();
+
 		viewCount = objectInput.readInt();
 	}
 
@@ -286,8 +298,11 @@ public class AssetEntryCacheModel implements CacheModel<AssetEntry>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(entryId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -299,7 +314,9 @@ public class AssetEntryCacheModel implements CacheModel<AssetEntry>,
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(classNameId);
+
 		objectOutput.writeLong(classPK);
 
 		if (classUuid == null) {
@@ -310,7 +327,9 @@ public class AssetEntryCacheModel implements CacheModel<AssetEntry>,
 		}
 
 		objectOutput.writeLong(classTypeId);
+
 		objectOutput.writeBoolean(listable);
+
 		objectOutput.writeBoolean(visible);
 		objectOutput.writeLong(startDate);
 		objectOutput.writeLong(endDate);
@@ -360,8 +379,11 @@ public class AssetEntryCacheModel implements CacheModel<AssetEntry>,
 		}
 
 		objectOutput.writeInt(height);
+
 		objectOutput.writeInt(width);
+
 		objectOutput.writeDouble(priority);
+
 		objectOutput.writeInt(viewCount);
 	}
 

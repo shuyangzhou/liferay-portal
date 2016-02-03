@@ -184,15 +184,20 @@ public class UserGroupCacheModel implements CacheModel<UserGroup>,
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
 		uuid = objectInput.readUTF();
+
 		userGroupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		parentUserGroupId = objectInput.readLong();
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
+
 		addedByLDAPImport = objectInput.readBoolean();
 		lastPublishDate = objectInput.readLong();
 	}
@@ -210,7 +215,9 @@ public class UserGroupCacheModel implements CacheModel<UserGroup>,
 		}
 
 		objectOutput.writeLong(userGroupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -222,6 +229,7 @@ public class UserGroupCacheModel implements CacheModel<UserGroup>,
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(parentUserGroupId);
 
 		if (name == null) {

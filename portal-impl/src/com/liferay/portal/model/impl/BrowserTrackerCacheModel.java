@@ -111,9 +111,13 @@ public class BrowserTrackerCacheModel implements CacheModel<BrowserTracker>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
+
 		browserTrackerId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
+
 		browserKey = objectInput.readLong();
 	}
 
@@ -121,9 +125,13 @@ public class BrowserTrackerCacheModel implements CacheModel<BrowserTracker>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(browserTrackerId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
+
 		objectOutput.writeLong(browserKey);
 	}
 

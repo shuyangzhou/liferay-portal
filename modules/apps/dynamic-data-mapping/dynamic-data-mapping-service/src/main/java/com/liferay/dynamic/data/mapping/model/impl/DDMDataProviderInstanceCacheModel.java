@@ -170,9 +170,13 @@ public class DDMDataProviderInstanceCacheModel implements CacheModel<DDMDataProv
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
+
 		dataProviderInstanceId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
@@ -194,8 +198,11 @@ public class DDMDataProviderInstanceCacheModel implements CacheModel<DDMDataProv
 		}
 
 		objectOutput.writeLong(dataProviderInstanceId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {

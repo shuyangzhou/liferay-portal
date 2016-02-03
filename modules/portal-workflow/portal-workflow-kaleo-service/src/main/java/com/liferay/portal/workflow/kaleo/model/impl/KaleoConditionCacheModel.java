@@ -158,13 +158,18 @@ public class KaleoConditionCacheModel implements CacheModel<KaleoCondition>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		kaleoConditionId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		kaleoDefinitionId = objectInput.readLong();
+
 		kaleoNodeId = objectInput.readLong();
 		script = objectInput.readUTF();
 		scriptLanguage = objectInput.readUTF();
@@ -175,8 +180,11 @@ public class KaleoConditionCacheModel implements CacheModel<KaleoCondition>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(kaleoConditionId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -188,7 +196,9 @@ public class KaleoConditionCacheModel implements CacheModel<KaleoCondition>,
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(kaleoDefinitionId);
+
 		objectOutput.writeLong(kaleoNodeId);
 
 		if (script == null) {

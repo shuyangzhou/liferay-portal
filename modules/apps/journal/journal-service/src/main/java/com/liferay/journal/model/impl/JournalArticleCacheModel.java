@@ -317,19 +317,28 @@ public class JournalArticleCacheModel implements CacheModel<JournalArticle>,
 	public void readExternal(ObjectInput objectInput)
 		throws ClassNotFoundException, IOException {
 		uuid = objectInput.readUTF();
+
 		id = objectInput.readLong();
+
 		resourcePrimKey = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		folderId = objectInput.readLong();
+
 		classNameId = objectInput.readLong();
+
 		classPK = objectInput.readLong();
 		treePath = objectInput.readUTF();
 		articleId = objectInput.readUTF();
+
 		version = objectInput.readDouble();
 		title = objectInput.readUTF();
 		urlTitle = objectInput.readUTF();
@@ -341,12 +350,17 @@ public class JournalArticleCacheModel implements CacheModel<JournalArticle>,
 		displayDate = objectInput.readLong();
 		expirationDate = objectInput.readLong();
 		reviewDate = objectInput.readLong();
+
 		indexable = objectInput.readBoolean();
+
 		smallImage = objectInput.readBoolean();
+
 		smallImageId = objectInput.readLong();
 		smallImageURL = objectInput.readUTF();
 		lastPublishDate = objectInput.readLong();
+
 		status = objectInput.readInt();
+
 		statusByUserId = objectInput.readLong();
 		statusByUserName = objectInput.readUTF();
 		statusDate = objectInput.readLong();
@@ -366,9 +380,13 @@ public class JournalArticleCacheModel implements CacheModel<JournalArticle>,
 		}
 
 		objectOutput.writeLong(id);
+
 		objectOutput.writeLong(resourcePrimKey);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -380,8 +398,11 @@ public class JournalArticleCacheModel implements CacheModel<JournalArticle>,
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(folderId);
+
 		objectOutput.writeLong(classNameId);
+
 		objectOutput.writeLong(classPK);
 
 		if (treePath == null) {
@@ -452,8 +473,11 @@ public class JournalArticleCacheModel implements CacheModel<JournalArticle>,
 		objectOutput.writeLong(displayDate);
 		objectOutput.writeLong(expirationDate);
 		objectOutput.writeLong(reviewDate);
+
 		objectOutput.writeBoolean(indexable);
+
 		objectOutput.writeBoolean(smallImage);
+
 		objectOutput.writeLong(smallImageId);
 
 		if (smallImageURL == null) {
@@ -464,7 +488,9 @@ public class JournalArticleCacheModel implements CacheModel<JournalArticle>,
 		}
 
 		objectOutput.writeLong(lastPublishDate);
+
 		objectOutput.writeInt(status);
+
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {

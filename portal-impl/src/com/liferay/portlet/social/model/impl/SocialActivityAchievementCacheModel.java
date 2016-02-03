@@ -112,11 +112,16 @@ public class SocialActivityAchievementCacheModel implements CacheModel<SocialAct
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		activityAchievementId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
+
 		createDate = objectInput.readLong();
 		name = objectInput.readUTF();
+
 		firstInGroup = objectInput.readBoolean();
 	}
 
@@ -124,9 +129,13 @@ public class SocialActivityAchievementCacheModel implements CacheModel<SocialAct
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(activityAchievementId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
+
 		objectOutput.writeLong(createDate);
 
 		if (name == null) {

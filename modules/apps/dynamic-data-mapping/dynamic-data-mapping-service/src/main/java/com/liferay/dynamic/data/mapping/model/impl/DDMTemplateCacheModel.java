@@ -257,17 +257,25 @@ public class DDMTemplateCacheModel implements CacheModel<DDMTemplate>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
+
 		templateId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
+
 		versionUserId = objectInput.readLong();
 		versionUserName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		classNameId = objectInput.readLong();
+
 		classPK = objectInput.readLong();
+
 		resourceClassNameId = objectInput.readLong();
 		templateKey = objectInput.readUTF();
 		version = objectInput.readUTF();
@@ -277,8 +285,11 @@ public class DDMTemplateCacheModel implements CacheModel<DDMTemplate>,
 		mode = objectInput.readUTF();
 		language = objectInput.readUTF();
 		script = objectInput.readUTF();
+
 		cacheable = objectInput.readBoolean();
+
 		smallImage = objectInput.readBoolean();
+
 		smallImageId = objectInput.readLong();
 		smallImageURL = objectInput.readUTF();
 		lastPublishDate = objectInput.readLong();
@@ -295,8 +306,11 @@ public class DDMTemplateCacheModel implements CacheModel<DDMTemplate>,
 		}
 
 		objectOutput.writeLong(templateId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -317,8 +331,11 @@ public class DDMTemplateCacheModel implements CacheModel<DDMTemplate>,
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(classNameId);
+
 		objectOutput.writeLong(classPK);
+
 		objectOutput.writeLong(resourceClassNameId);
 
 		if (templateKey == null) {
@@ -378,7 +395,9 @@ public class DDMTemplateCacheModel implements CacheModel<DDMTemplate>,
 		}
 
 		objectOutput.writeBoolean(cacheable);
+
 		objectOutput.writeBoolean(smallImage);
+
 		objectOutput.writeLong(smallImageId);
 
 		if (smallImageURL == null) {

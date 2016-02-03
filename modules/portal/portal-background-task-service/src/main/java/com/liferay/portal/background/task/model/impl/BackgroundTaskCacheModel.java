@@ -200,9 +200,13 @@ public class BackgroundTaskCacheModel implements CacheModel<BackgroundTask>,
 	public void readExternal(ObjectInput objectInput)
 		throws ClassNotFoundException, IOException {
 		mvccVersion = objectInput.readLong();
+
 		backgroundTaskId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
@@ -211,8 +215,10 @@ public class BackgroundTaskCacheModel implements CacheModel<BackgroundTask>,
 		servletContextNames = objectInput.readUTF();
 		taskExecutorClassName = objectInput.readUTF();
 		taskContextMap = (Map<String, Serializable>)objectInput.readObject();
+
 		completed = objectInput.readBoolean();
 		completionDate = objectInput.readLong();
+
 		status = objectInput.readInt();
 		statusMessage = objectInput.readUTF();
 	}
@@ -221,9 +227,13 @@ public class BackgroundTaskCacheModel implements CacheModel<BackgroundTask>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(backgroundTaskId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -258,8 +268,10 @@ public class BackgroundTaskCacheModel implements CacheModel<BackgroundTask>,
 		}
 
 		objectOutput.writeObject(taskContextMap);
+
 		objectOutput.writeBoolean(completed);
 		objectOutput.writeLong(completionDate);
+
 		objectOutput.writeInt(status);
 
 		if (statusMessage == null) {

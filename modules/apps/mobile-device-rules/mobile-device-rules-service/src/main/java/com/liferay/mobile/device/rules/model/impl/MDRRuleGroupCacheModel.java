@@ -161,9 +161,13 @@ public class MDRRuleGroupCacheModel implements CacheModel<MDRRuleGroup>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
+
 		ruleGroupId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
@@ -184,8 +188,11 @@ public class MDRRuleGroupCacheModel implements CacheModel<MDRRuleGroup>,
 		}
 
 		objectOutput.writeLong(ruleGroupId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {

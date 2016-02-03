@@ -223,25 +223,37 @@ public class DLFolderCacheModel implements CacheModel<DLFolder>, Externalizable 
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
+
 		folderId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		repositoryId = objectInput.readLong();
+
 		mountPoint = objectInput.readBoolean();
+
 		parentFolderId = objectInput.readLong();
 		treePath = objectInput.readUTF();
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
 		lastPostDate = objectInput.readLong();
+
 		defaultFileEntryTypeId = objectInput.readLong();
+
 		hidden = objectInput.readBoolean();
+
 		restrictionType = objectInput.readInt();
 		lastPublishDate = objectInput.readLong();
+
 		status = objectInput.readInt();
+
 		statusByUserId = objectInput.readLong();
 		statusByUserName = objectInput.readUTF();
 		statusDate = objectInput.readLong();
@@ -258,8 +270,11 @@ public class DLFolderCacheModel implements CacheModel<DLFolder>, Externalizable 
 		}
 
 		objectOutput.writeLong(folderId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -271,8 +286,11 @@ public class DLFolderCacheModel implements CacheModel<DLFolder>, Externalizable 
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(repositoryId);
+
 		objectOutput.writeBoolean(mountPoint);
+
 		objectOutput.writeLong(parentFolderId);
 
 		if (treePath == null) {
@@ -297,11 +315,16 @@ public class DLFolderCacheModel implements CacheModel<DLFolder>, Externalizable 
 		}
 
 		objectOutput.writeLong(lastPostDate);
+
 		objectOutput.writeLong(defaultFileEntryTypeId);
+
 		objectOutput.writeBoolean(hidden);
+
 		objectOutput.writeInt(restrictionType);
 		objectOutput.writeLong(lastPublishDate);
+
 		objectOutput.writeInt(status);
+
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {

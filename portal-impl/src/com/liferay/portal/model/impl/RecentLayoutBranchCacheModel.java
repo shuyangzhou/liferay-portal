@@ -120,12 +120,19 @@ public class RecentLayoutBranchCacheModel implements CacheModel<RecentLayoutBran
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
+
 		recentLayoutBranchId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
+
 		layoutBranchId = objectInput.readLong();
+
 		layoutSetBranchId = objectInput.readLong();
+
 		plid = objectInput.readLong();
 	}
 
@@ -133,12 +140,19 @@ public class RecentLayoutBranchCacheModel implements CacheModel<RecentLayoutBran
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(recentLayoutBranchId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
+
 		objectOutput.writeLong(layoutBranchId);
+
 		objectOutput.writeLong(layoutSetBranchId);
+
 		objectOutput.writeLong(plid);
 	}
 

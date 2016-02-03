@@ -98,9 +98,13 @@ public class DDMTemplateLinkCacheModel implements CacheModel<DDMTemplateLink>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		templateLinkId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		classNameId = objectInput.readLong();
+
 		classPK = objectInput.readLong();
+
 		templateId = objectInput.readLong();
 	}
 
@@ -108,9 +112,13 @@ public class DDMTemplateLinkCacheModel implements CacheModel<DDMTemplateLink>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(templateLinkId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(classNameId);
+
 		objectOutput.writeLong(classPK);
+
 		objectOutput.writeLong(templateId);
 	}
 

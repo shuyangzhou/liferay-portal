@@ -180,14 +180,18 @@ public class LockCacheModel implements CacheModel<Lock>, Externalizable,
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
 		uuid = objectInput.readUTF();
+
 		lockId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		className = objectInput.readUTF();
 		key = objectInput.readUTF();
 		owner = objectInput.readUTF();
+
 		inheritable = objectInput.readBoolean();
 		expirationDate = objectInput.readLong();
 	}
@@ -205,7 +209,9 @@ public class LockCacheModel implements CacheModel<Lock>, Externalizable,
 		}
 
 		objectOutput.writeLong(lockId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {

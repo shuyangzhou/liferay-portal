@@ -196,17 +196,23 @@ public class RoleCacheModel implements CacheModel<Role>, Externalizable,
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
 		uuid = objectInput.readUTF();
+
 		roleId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		classNameId = objectInput.readLong();
+
 		classPK = objectInput.readLong();
 		name = objectInput.readUTF();
 		title = objectInput.readUTF();
 		description = objectInput.readUTF();
+
 		type = objectInput.readInt();
 		subtype = objectInput.readUTF();
 	}
@@ -224,7 +230,9 @@ public class RoleCacheModel implements CacheModel<Role>, Externalizable,
 		}
 
 		objectOutput.writeLong(roleId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -236,7 +244,9 @@ public class RoleCacheModel implements CacheModel<Role>, Externalizable,
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(classNameId);
+
 		objectOutput.writeLong(classPK);
 
 		if (name == null) {

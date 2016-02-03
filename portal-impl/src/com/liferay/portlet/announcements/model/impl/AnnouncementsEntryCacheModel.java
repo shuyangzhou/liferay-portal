@@ -199,13 +199,18 @@ public class AnnouncementsEntryCacheModel implements CacheModel<AnnouncementsEnt
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
+
 		entryId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		classNameId = objectInput.readLong();
+
 		classPK = objectInput.readLong();
 		title = objectInput.readUTF();
 		content = objectInput.readUTF();
@@ -213,7 +218,9 @@ public class AnnouncementsEntryCacheModel implements CacheModel<AnnouncementsEnt
 		type = objectInput.readUTF();
 		displayDate = objectInput.readLong();
 		expirationDate = objectInput.readLong();
+
 		priority = objectInput.readInt();
+
 		alert = objectInput.readBoolean();
 	}
 
@@ -228,7 +235,9 @@ public class AnnouncementsEntryCacheModel implements CacheModel<AnnouncementsEnt
 		}
 
 		objectOutput.writeLong(entryId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -240,7 +249,9 @@ public class AnnouncementsEntryCacheModel implements CacheModel<AnnouncementsEnt
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(classNameId);
+
 		objectOutput.writeLong(classPK);
 
 		if (title == null) {
@@ -273,7 +284,9 @@ public class AnnouncementsEntryCacheModel implements CacheModel<AnnouncementsEnt
 
 		objectOutput.writeLong(displayDate);
 		objectOutput.writeLong(expirationDate);
+
 		objectOutput.writeInt(priority);
+
 		objectOutput.writeBoolean(alert);
 	}
 

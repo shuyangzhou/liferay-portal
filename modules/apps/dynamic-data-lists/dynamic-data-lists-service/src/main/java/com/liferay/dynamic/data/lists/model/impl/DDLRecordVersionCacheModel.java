@@ -163,17 +163,26 @@ public class DDLRecordVersionCacheModel implements CacheModel<DDLRecordVersion>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		recordVersionId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
+
 		DDMStorageId = objectInput.readLong();
+
 		recordSetId = objectInput.readLong();
+
 		recordId = objectInput.readLong();
 		version = objectInput.readUTF();
+
 		displayIndex = objectInput.readInt();
+
 		status = objectInput.readInt();
+
 		statusByUserId = objectInput.readLong();
 		statusByUserName = objectInput.readUTF();
 		statusDate = objectInput.readLong();
@@ -183,8 +192,11 @@ public class DDLRecordVersionCacheModel implements CacheModel<DDLRecordVersion>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(recordVersionId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -195,8 +207,11 @@ public class DDLRecordVersionCacheModel implements CacheModel<DDLRecordVersion>,
 		}
 
 		objectOutput.writeLong(createDate);
+
 		objectOutput.writeLong(DDMStorageId);
+
 		objectOutput.writeLong(recordSetId);
+
 		objectOutput.writeLong(recordId);
 
 		if (version == null) {
@@ -207,7 +222,9 @@ public class DDLRecordVersionCacheModel implements CacheModel<DDLRecordVersion>,
 		}
 
 		objectOutput.writeInt(displayIndex);
+
 		objectOutput.writeInt(status);
+
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {

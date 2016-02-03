@@ -113,9 +113,13 @@ public class UserGroupGroupRoleCacheModel implements CacheModel<UserGroupGroupRo
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
+
 		userGroupId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		roleId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
 
 		userGroupGroupRolePK = new UserGroupGroupRolePK(userGroupId, groupId,
@@ -126,9 +130,13 @@ public class UserGroupGroupRoleCacheModel implements CacheModel<UserGroupGroupRo
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(userGroupId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(roleId);
+
 		objectOutput.writeLong(companyId);
 	}
 

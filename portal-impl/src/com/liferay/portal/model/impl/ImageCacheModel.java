@@ -136,12 +136,17 @@ public class ImageCacheModel implements CacheModel<Image>, Externalizable,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
+
 		imageId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
 		type = objectInput.readUTF();
+
 		height = objectInput.readInt();
+
 		width = objectInput.readInt();
+
 		size = objectInput.readInt();
 	}
 
@@ -149,7 +154,9 @@ public class ImageCacheModel implements CacheModel<Image>, Externalizable,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(mvccVersion);
+
 		objectOutput.writeLong(imageId);
+
 		objectOutput.writeLong(companyId);
 		objectOutput.writeLong(modifiedDate);
 
@@ -161,7 +168,9 @@ public class ImageCacheModel implements CacheModel<Image>, Externalizable,
 		}
 
 		objectOutput.writeInt(height);
+
 		objectOutput.writeInt(width);
+
 		objectOutput.writeInt(size);
 	}
 

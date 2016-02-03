@@ -158,16 +158,25 @@ public class UserNotificationEventCacheModel implements CacheModel<UserNotificat
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
 		uuid = objectInput.readUTF();
+
 		userNotificationEventId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		type = objectInput.readUTF();
+
 		timestamp = objectInput.readLong();
+
 		deliveryType = objectInput.readInt();
+
 		deliverBy = objectInput.readLong();
+
 		delivered = objectInput.readBoolean();
 		payload = objectInput.readUTF();
+
 		actionRequired = objectInput.readBoolean();
+
 		archived = objectInput.readBoolean();
 	}
 
@@ -184,7 +193,9 @@ public class UserNotificationEventCacheModel implements CacheModel<UserNotificat
 		}
 
 		objectOutput.writeLong(userNotificationEventId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (type == null) {
@@ -195,8 +206,11 @@ public class UserNotificationEventCacheModel implements CacheModel<UserNotificat
 		}
 
 		objectOutput.writeLong(timestamp);
+
 		objectOutput.writeInt(deliveryType);
+
 		objectOutput.writeLong(deliverBy);
+
 		objectOutput.writeBoolean(delivered);
 
 		if (payload == null) {
@@ -207,6 +221,7 @@ public class UserNotificationEventCacheModel implements CacheModel<UserNotificat
 		}
 
 		objectOutput.writeBoolean(actionRequired);
+
 		objectOutput.writeBoolean(archived);
 	}
 

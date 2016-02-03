@@ -270,33 +270,47 @@ public class KaleoLogCacheModel implements CacheModel<KaleoLog>, Externalizable 
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		kaleoLogId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
 		kaleoClassName = objectInput.readUTF();
+
 		kaleoClassPK = objectInput.readLong();
+
 		kaleoDefinitionId = objectInput.readLong();
+
 		kaleoInstanceId = objectInput.readLong();
+
 		kaleoInstanceTokenId = objectInput.readLong();
+
 		kaleoTaskInstanceTokenId = objectInput.readLong();
 		kaleoNodeName = objectInput.readUTF();
+
 		terminalKaleoNode = objectInput.readBoolean();
+
 		kaleoActionId = objectInput.readLong();
 		kaleoActionName = objectInput.readUTF();
 		kaleoActionDescription = objectInput.readUTF();
+
 		previousKaleoNodeId = objectInput.readLong();
 		previousKaleoNodeName = objectInput.readUTF();
 		previousAssigneeClassName = objectInput.readUTF();
+
 		previousAssigneeClassPK = objectInput.readLong();
 		currentAssigneeClassName = objectInput.readUTF();
+
 		currentAssigneeClassPK = objectInput.readLong();
 		type = objectInput.readUTF();
 		comment = objectInput.readUTF();
 		startDate = objectInput.readLong();
 		endDate = objectInput.readLong();
+
 		duration = objectInput.readLong();
 		workflowContext = objectInput.readUTF();
 	}
@@ -305,8 +319,11 @@ public class KaleoLogCacheModel implements CacheModel<KaleoLog>, Externalizable 
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(kaleoLogId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -327,9 +344,13 @@ public class KaleoLogCacheModel implements CacheModel<KaleoLog>, Externalizable 
 		}
 
 		objectOutput.writeLong(kaleoClassPK);
+
 		objectOutput.writeLong(kaleoDefinitionId);
+
 		objectOutput.writeLong(kaleoInstanceId);
+
 		objectOutput.writeLong(kaleoInstanceTokenId);
+
 		objectOutput.writeLong(kaleoTaskInstanceTokenId);
 
 		if (kaleoNodeName == null) {
@@ -340,6 +361,7 @@ public class KaleoLogCacheModel implements CacheModel<KaleoLog>, Externalizable 
 		}
 
 		objectOutput.writeBoolean(terminalKaleoNode);
+
 		objectOutput.writeLong(kaleoActionId);
 
 		if (kaleoActionName == null) {
@@ -399,6 +421,7 @@ public class KaleoLogCacheModel implements CacheModel<KaleoLog>, Externalizable 
 
 		objectOutput.writeLong(startDate);
 		objectOutput.writeLong(endDate);
+
 		objectOutput.writeLong(duration);
 
 		if (workflowContext == null) {

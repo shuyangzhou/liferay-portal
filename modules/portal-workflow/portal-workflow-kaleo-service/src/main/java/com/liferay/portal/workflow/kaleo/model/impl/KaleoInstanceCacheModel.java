@@ -178,18 +178,26 @@ public class KaleoInstanceCacheModel implements CacheModel<KaleoInstance>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		kaleoInstanceId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+
 		kaleoDefinitionId = objectInput.readLong();
 		kaleoDefinitionName = objectInput.readUTF();
+
 		kaleoDefinitionVersion = objectInput.readInt();
+
 		rootKaleoInstanceTokenId = objectInput.readLong();
 		className = objectInput.readUTF();
+
 		classPK = objectInput.readLong();
+
 		completed = objectInput.readBoolean();
 		completionDate = objectInput.readLong();
 		workflowContext = objectInput.readUTF();
@@ -199,8 +207,11 @@ public class KaleoInstanceCacheModel implements CacheModel<KaleoInstance>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(kaleoInstanceId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -212,6 +223,7 @@ public class KaleoInstanceCacheModel implements CacheModel<KaleoInstance>,
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(kaleoDefinitionId);
 
 		if (kaleoDefinitionName == null) {
@@ -222,6 +234,7 @@ public class KaleoInstanceCacheModel implements CacheModel<KaleoInstance>,
 		}
 
 		objectOutput.writeInt(kaleoDefinitionVersion);
+
 		objectOutput.writeLong(rootKaleoInstanceTokenId);
 
 		if (className == null) {
@@ -232,6 +245,7 @@ public class KaleoInstanceCacheModel implements CacheModel<KaleoInstance>,
 		}
 
 		objectOutput.writeLong(classPK);
+
 		objectOutput.writeBoolean(completed);
 		objectOutput.writeLong(completionDate);
 

@@ -190,22 +190,34 @@ public class KaleoTimerInstanceTokenCacheModel implements CacheModel<KaleoTimerI
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		kaleoTimerInstanceTokenId = objectInput.readLong();
+
 		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
 		kaleoClassName = objectInput.readUTF();
+
 		kaleoClassPK = objectInput.readLong();
+
 		kaleoDefinitionId = objectInput.readLong();
+
 		kaleoInstanceId = objectInput.readLong();
+
 		kaleoInstanceTokenId = objectInput.readLong();
+
 		kaleoTaskInstanceTokenId = objectInput.readLong();
+
 		kaleoTimerId = objectInput.readLong();
 		kaleoTimerName = objectInput.readUTF();
+
 		blocking = objectInput.readBoolean();
+
 		completionUserId = objectInput.readLong();
+
 		completed = objectInput.readBoolean();
 		completionDate = objectInput.readLong();
 		workflowContext = objectInput.readUTF();
@@ -215,8 +227,11 @@ public class KaleoTimerInstanceTokenCacheModel implements CacheModel<KaleoTimerI
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(kaleoTimerInstanceTokenId);
+
 		objectOutput.writeLong(groupId);
+
 		objectOutput.writeLong(companyId);
+
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
@@ -237,10 +252,15 @@ public class KaleoTimerInstanceTokenCacheModel implements CacheModel<KaleoTimerI
 		}
 
 		objectOutput.writeLong(kaleoClassPK);
+
 		objectOutput.writeLong(kaleoDefinitionId);
+
 		objectOutput.writeLong(kaleoInstanceId);
+
 		objectOutput.writeLong(kaleoInstanceTokenId);
+
 		objectOutput.writeLong(kaleoTaskInstanceTokenId);
+
 		objectOutput.writeLong(kaleoTimerId);
 
 		if (kaleoTimerName == null) {
@@ -251,7 +271,9 @@ public class KaleoTimerInstanceTokenCacheModel implements CacheModel<KaleoTimerI
 		}
 
 		objectOutput.writeBoolean(blocking);
+
 		objectOutput.writeLong(completionUserId);
+
 		objectOutput.writeBoolean(completed);
 		objectOutput.writeLong(completionDate);
 
