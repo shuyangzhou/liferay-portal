@@ -14,12 +14,12 @@
 
 package com.liferay.exportimport.lifecycle;
 
+import com.liferay.exportimport.kernel.lifecycle.ExportImportLifecycleEvent;
+import com.liferay.exportimport.kernel.lifecycle.ExportImportLifecycleListener;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
-import com.liferay.portlet.exportimport.lifecycle.ExportImportLifecycleEvent;
-import com.liferay.portlet.exportimport.lifecycle.ExportImportLifecycleListener;
 
 import java.util.Set;
 

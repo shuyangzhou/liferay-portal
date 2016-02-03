@@ -14,8 +14,8 @@
 
 package com.liferay.staging.portlet.data.handler;
 
-import com.liferay.portlet.exportimport.lar.DefaultConfigurationPortletDataHandler;
-import com.liferay.portlet.exportimport.lar.PortletDataHandler;
+import com.liferay.exportimport.kernel.lar.DefaultConfigurationPortletDataHandler;
+import com.liferay.exportimport.kernel.lar.PortletDataHandler;
 
 import org.osgi.service.component.annotations.Component;
 

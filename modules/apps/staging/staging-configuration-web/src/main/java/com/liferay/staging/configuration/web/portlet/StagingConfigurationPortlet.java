@@ -14,6 +14,8 @@
 
 package com.liferay.staging.configuration.web.portlet;
 
+import com.liferay.exportimport.kernel.service.StagingLocalService;
+import com.liferay.exportimport.kernel.staging.StagingConstants;
 import com.liferay.portal.exception.NoSuchBackgroundTaskException;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskConstants;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskManagerUtil;
@@ -30,8 +32,6 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.exportimport.service.StagingLocalService;
-import com.liferay.portlet.exportimport.staging.StagingConstants;
 import com.liferay.staging.constants.StagingConfigurationPortletKeys;
 import com.liferay.staging.constants.StagingProcessesPortletKeys;
 

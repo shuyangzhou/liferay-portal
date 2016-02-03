@@ -16,18 +16,18 @@ package com.liferay.exportimport.lar;
 
 import com.liferay.exportimport.content.processor.ExportImportContentProcessor;
 import com.liferay.exportimport.content.processor.ExportImportContentProcessorRegistryUtil;
+import com.liferay.exportimport.kernel.lar.ExportImportDateUtil;
+import com.liferay.exportimport.kernel.lar.ExportImportProcessCallbackRegistryUtil;
+import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
+import com.liferay.exportimport.kernel.lar.PortletDataException;
+import com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys;
 import com.liferay.exportimport.staged.model.repository.StagedModelRepository;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.DateRange;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.model.StagedGroupedModel;
 import com.liferay.portal.model.StagedModel;
-import com.liferay.portlet.exportimport.lar.ExportImportDateUtil;
-import com.liferay.portlet.exportimport.lar.ExportImportProcessCallbackRegistryUtil;
-import com.liferay.portlet.exportimport.lar.ExportImportThreadLocal;
-import com.liferay.portlet.exportimport.lar.PortletDataContext;
-import com.liferay.portlet.exportimport.lar.PortletDataException;
-import com.liferay.portlet.exportimport.lar.PortletDataHandlerKeys;
 
 import java.util.Collections;
 import java.util.Date;
@@ -38,7 +38,7 @@ import java.util.concurrent.Callable;
  * @author Daniel Kocsis
  */
 public abstract class BaseStagedModelDataHandler<T extends StagedModel>
-	extends com.liferay.portlet.exportimport.lar.BaseStagedModelDataHandler<T> {
+	extends com.liferay.exportimport.kernel.lar.BaseStagedModelDataHandler<T> {
 
 	@Override
 	public void deleteStagedModel(

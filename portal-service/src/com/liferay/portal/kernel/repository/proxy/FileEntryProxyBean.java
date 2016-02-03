@@ -16,6 +16,7 @@ package com.liferay.portal.kernel.repository.proxy;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.lock.Lock;
 import com.liferay.portal.kernel.log.Log;
@@ -29,7 +30,6 @@ import com.liferay.portal.kernel.repository.model.RepositoryModelOperation;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portlet.expando.model.ExpandoBridge;
-import com.liferay.exportimport.kernel.lar.StagedModelType;
 
 import java.io.InputStream;
 import java.io.Serializable;

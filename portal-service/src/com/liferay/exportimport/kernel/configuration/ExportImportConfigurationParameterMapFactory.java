@@ -14,10 +14,10 @@
 
 package com.liferay.exportimport.kernel.configuration;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.exportimport.kernel.lar.ExportImportDateUtil;
 import com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys;
 import com.liferay.exportimport.kernel.lar.UserIdStrategy;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

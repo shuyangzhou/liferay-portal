@@ -14,11 +14,11 @@
 
 package com.liferay.portlet.documentlibrary.util;
 
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
 import com.liferay.portal.kernel.xml.Element;
-import com.liferay.exportimport.kernel.lar.PortletDataContext;
 
 /**
  * @author Mika Koivisto

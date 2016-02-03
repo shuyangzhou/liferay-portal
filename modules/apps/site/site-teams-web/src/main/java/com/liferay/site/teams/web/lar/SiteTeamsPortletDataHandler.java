@@ -14,15 +14,15 @@
 
 package com.liferay.site.teams.web.lar;
 
+import com.liferay.exportimport.kernel.lar.BasePortletDataHandler;
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
+import com.liferay.exportimport.kernel.lar.PortletDataHandler;
+import com.liferay.exportimport.kernel.lar.PortletDataHandlerBoolean;
+import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.model.Team;
 import com.liferay.portal.service.TeamLocalService;
-import com.liferay.portlet.exportimport.lar.BasePortletDataHandler;
-import com.liferay.portlet.exportimport.lar.PortletDataContext;
-import com.liferay.portlet.exportimport.lar.PortletDataHandler;
-import com.liferay.portlet.exportimport.lar.PortletDataHandlerBoolean;
-import com.liferay.portlet.exportimport.lar.StagedModelDataHandlerUtil;
 import com.liferay.site.teams.web.constants.SiteTeamsPortletKeys;
 
 import java.util.List;

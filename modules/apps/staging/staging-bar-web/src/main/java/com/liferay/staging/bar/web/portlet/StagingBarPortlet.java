@@ -14,6 +14,7 @@
 
 package com.liferay.staging.bar.web.portlet;
 
+import com.liferay.exportimport.kernel.staging.StagingUtil;
 import com.liferay.portal.exception.LayoutBranchNameException;
 import com.liferay.portal.exception.LayoutSetBranchNameException;
 import com.liferay.portal.exception.NoSuchGroupException;
@@ -35,7 +36,6 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.exportimport.staging.StagingUtil;
 import com.liferay.staging.bar.web.portlet.constants.StagingBarPortletKeys;
 
 import java.io.IOException;

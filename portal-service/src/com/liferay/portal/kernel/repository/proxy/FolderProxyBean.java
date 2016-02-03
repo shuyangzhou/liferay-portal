@@ -14,12 +14,12 @@
 
 package com.liferay.portal.kernel.repository.proxy;
 
+import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.repository.model.RepositoryModelOperation;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portlet.expando.model.ExpandoBridge;
-import com.liferay.exportimport.kernel.lar.StagedModelType;
 
 import java.io.Serializable;
 

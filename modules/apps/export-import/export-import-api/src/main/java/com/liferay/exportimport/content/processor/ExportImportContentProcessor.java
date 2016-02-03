@@ -14,9 +14,9 @@
 
 package com.liferay.exportimport.content.processor;
 
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.model.StagedModel;
-import com.liferay.portlet.exportimport.lar.PortletDataContext;
 
 import java.io.Serializable;
 

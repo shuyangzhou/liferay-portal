@@ -17,6 +17,8 @@ package com.liferay.asset.publisher.web.portlet.action;
 import com.liferay.asset.publisher.web.configuration.AssetPublisherWebConfigurationValues;
 import com.liferay.asset.publisher.web.constants.AssetPublisherPortletKeys;
 import com.liferay.asset.publisher.web.util.AssetPublisherUtil;
+import com.liferay.exportimport.kernel.staging.LayoutStagingUtil;
+import com.liferay.exportimport.kernel.staging.StagingUtil;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
@@ -50,8 +52,6 @@ import com.liferay.portlet.asset.exception.DuplicateQueryRuleException;
 import com.liferay.portlet.asset.model.AssetQueryRule;
 import com.liferay.portlet.asset.model.AssetRendererFactory;
 import com.liferay.portlet.asset.service.AssetTagLocalService;
-import com.liferay.portlet.exportimport.staging.LayoutStagingUtil;
-import com.liferay.portlet.exportimport.staging.StagingUtil;
 import com.liferay.util.ContentUtil;
 
 import java.util.ArrayList;

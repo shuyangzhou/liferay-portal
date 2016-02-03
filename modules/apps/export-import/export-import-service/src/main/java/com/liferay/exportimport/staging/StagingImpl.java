@@ -14,6 +14,31 @@
 
 package com.liferay.exportimport.staging;
 
+import com.liferay.exportimport.kernel.background.task.BackgroundTaskExecutorNames;
+import com.liferay.exportimport.kernel.configuration.ExportImportConfigurationConstants;
+import com.liferay.exportimport.kernel.configuration.ExportImportConfigurationParameterMapFactory;
+import com.liferay.exportimport.kernel.configuration.ExportImportConfigurationSettingsMapFactory;
+import com.liferay.exportimport.kernel.exception.LARFileException;
+import com.liferay.exportimport.kernel.exception.LARFileSizeException;
+import com.liferay.exportimport.kernel.exception.LARTypeException;
+import com.liferay.exportimport.kernel.exception.MissingReferenceException;
+import com.liferay.exportimport.kernel.exception.RemoteExportException;
+import com.liferay.exportimport.kernel.lar.ExportImportDateUtil;
+import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
+import com.liferay.exportimport.kernel.lar.MissingReference;
+import com.liferay.exportimport.kernel.lar.MissingReferences;
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
+import com.liferay.exportimport.kernel.lar.PortletDataException;
+import com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys;
+import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
+import com.liferay.exportimport.kernel.lar.StagedModelType;
+import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
+import com.liferay.exportimport.kernel.service.ExportImportConfigurationLocalService;
+import com.liferay.exportimport.kernel.service.StagingLocalService;
+import com.liferay.exportimport.kernel.staging.LayoutStagingUtil;
+import com.liferay.exportimport.kernel.staging.Staging;
+import com.liferay.exportimport.kernel.staging.StagingConstants;
+import com.liferay.exportimport.kernel.staging.StagingUtil;
 import com.liferay.portal.LocaleException;
 import com.liferay.portal.RemoteOptionsException;
 import com.liferay.portal.exception.LayoutPrototypeException;
@@ -103,32 +128,7 @@ import com.liferay.portlet.documentlibrary.exception.DuplicateFileEntryException
 import com.liferay.portlet.documentlibrary.exception.FileExtensionException;
 import com.liferay.portlet.documentlibrary.exception.FileNameException;
 import com.liferay.portlet.documentlibrary.exception.FileSizeException;
-import com.liferay.portlet.exportimport.background.task.BackgroundTaskExecutorNames;
-import com.liferay.portlet.exportimport.configuration.ExportImportConfigurationConstants;
-import com.liferay.portlet.exportimport.configuration.ExportImportConfigurationParameterMapFactory;
-import com.liferay.portlet.exportimport.configuration.ExportImportConfigurationSettingsMapFactory;
-import com.liferay.portlet.exportimport.exception.LARFileException;
-import com.liferay.portlet.exportimport.exception.LARFileSizeException;
-import com.liferay.portlet.exportimport.exception.LARTypeException;
-import com.liferay.portlet.exportimport.exception.MissingReferenceException;
-import com.liferay.portlet.exportimport.exception.RemoteExportException;
-import com.liferay.portlet.exportimport.lar.ExportImportDateUtil;
-import com.liferay.portlet.exportimport.lar.ExportImportHelperUtil;
-import com.liferay.portlet.exportimport.lar.MissingReference;
-import com.liferay.portlet.exportimport.lar.MissingReferences;
-import com.liferay.portlet.exportimport.lar.PortletDataContext;
-import com.liferay.portlet.exportimport.lar.PortletDataException;
-import com.liferay.portlet.exportimport.lar.PortletDataHandlerKeys;
-import com.liferay.portlet.exportimport.lar.StagedModelDataHandlerUtil;
-import com.liferay.portlet.exportimport.lar.StagedModelType;
-import com.liferay.portlet.exportimport.model.ExportImportConfiguration;
-import com.liferay.portlet.exportimport.service.ExportImportConfigurationLocalService;
-import com.liferay.portlet.exportimport.service.StagingLocalService;
-import com.liferay.portlet.exportimport.staging.LayoutStagingUtil;
 import com.liferay.portlet.exportimport.staging.ProxiedLayoutsThreadLocal;
-import com.liferay.portlet.exportimport.staging.Staging;
-import com.liferay.portlet.exportimport.staging.StagingConstants;
-import com.liferay.portlet.exportimport.staging.StagingUtil;
 
 import java.io.Serializable;
 

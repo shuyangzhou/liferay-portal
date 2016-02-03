@@ -14,8 +14,8 @@
 
 package com.liferay.staging.taglib.servlet.taglib;
 
+import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portlet.exportimport.model.ExportImportConfiguration;
 import com.liferay.staging.taglib.servlet.ServletContextUtil;
 import com.liferay.taglib.util.IncludeTag;
 

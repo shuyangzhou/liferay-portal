@@ -14,10 +14,10 @@
 
 package com.liferay.staging.security.permission;
 
+import com.liferay.exportimport.kernel.staging.StagingUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.UserBag;
 import com.liferay.portal.model.User;
-import com.liferay.portlet.exportimport.staging.StagingUtil;
 
 import java.util.List;
 
