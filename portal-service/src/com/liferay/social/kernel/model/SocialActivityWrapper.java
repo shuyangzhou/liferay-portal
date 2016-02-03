@@ -194,7 +194,7 @@ public class SocialActivityWrapper implements SocialActivity,
 	}
 
 	@Override
-	public com.liferay.portlet.asset.model.AssetEntry getAssetEntry() {
+	public com.liferay.asset.kernel.model.AssetEntry getAssetEntry() {
 		return _socialActivity.getAssetEntry();
 	}
 
@@ -433,7 +433,7 @@ public class SocialActivityWrapper implements SocialActivity,
 
 	@Override
 	public void setAssetEntry(
-		com.liferay.portlet.asset.model.AssetEntry assetEntry) {
+		com.liferay.asset.kernel.model.AssetEntry assetEntry) {
 		_socialActivity.setAssetEntry(assetEntry);
 	}
 
