@@ -209,14 +209,14 @@ public class LockLocalServiceWrapper implements LockLocalService,
 
 	@Override
 	public com.liferay.portal.lock.model.Lock getLock(
-		java.lang.String className, java.lang.String key)
+		java.lang.String className, long key)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _lockLocalService.getLock(className, key);
 	}
 
 	@Override
 	public com.liferay.portal.lock.model.Lock getLock(
-		java.lang.String className, long key)
+		java.lang.String className, java.lang.String key)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _lockLocalService.getLock(className, key);
 	}
@@ -305,12 +305,12 @@ public class LockLocalServiceWrapper implements LockLocalService,
 	}
 
 	@Override
-	public boolean isLocked(java.lang.String className, java.lang.String key) {
+	public boolean isLocked(java.lang.String className, long key) {
 		return _lockLocalService.isLocked(className, key);
 	}
 
 	@Override
-	public boolean isLocked(java.lang.String className, long key) {
+	public boolean isLocked(java.lang.String className, java.lang.String key) {
 		return _lockLocalService.isLocked(className, key);
 	}
 
@@ -354,12 +354,12 @@ public class LockLocalServiceWrapper implements LockLocalService,
 	}
 
 	@Override
-	public void unlock(java.lang.String className, long key) {
+	public void unlock(java.lang.String className, java.lang.String key) {
 		_lockLocalService.unlock(className, key);
 	}
 
 	@Override
-	public void unlock(java.lang.String className, java.lang.String key) {
+	public void unlock(java.lang.String className, long key) {
 		_lockLocalService.unlock(className, key);
 	}
 

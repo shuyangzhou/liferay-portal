@@ -16,6 +16,9 @@ package com.liferay.portlet.expando.model.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.expando.kernel.model.ExpandoTable;
+import com.liferay.expando.kernel.model.ExpandoTableModel;
+
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -26,9 +29,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.util.PortalUtil;
-
-import com.liferay.portlet.expando.model.ExpandoTable;
-import com.liferay.portlet.expando.model.ExpandoTableModel;
 
 import java.io.Serializable;
 
@@ -416,7 +416,7 @@ public class ExpandoTableModelImpl extends BaseModelImpl<ExpandoTable>
 		StringBundler sb = new StringBundler(16);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.portlet.expando.model.ExpandoTable");
+		sb.append("com.liferay.expando.kernel.model.ExpandoTable");
 		sb.append("</model-name>");
 
 		sb.append(

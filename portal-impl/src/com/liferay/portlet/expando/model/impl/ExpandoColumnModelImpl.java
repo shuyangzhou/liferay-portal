@@ -16,6 +16,10 @@ package com.liferay.portlet.expando.model.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.expando.kernel.model.ExpandoColumn;
+import com.liferay.expando.kernel.model.ExpandoColumnModel;
+import com.liferay.expando.kernel.model.ExpandoColumnSoap;
+
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -24,10 +28,6 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.impl.BaseModelImpl;
-
-import com.liferay.portlet.expando.model.ExpandoColumn;
-import com.liferay.portlet.expando.model.ExpandoColumnModel;
-import com.liferay.portlet.expando.model.ExpandoColumnSoap;
 
 import java.io.Serializable;
 
@@ -519,7 +519,7 @@ public class ExpandoColumnModelImpl extends BaseModelImpl<ExpandoColumn>
 		StringBundler sb = new StringBundler(25);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.portlet.expando.model.ExpandoColumn");
+		sb.append("com.liferay.expando.kernel.model.ExpandoColumn");
 		sb.append("</model-name>");
 
 		sb.append(

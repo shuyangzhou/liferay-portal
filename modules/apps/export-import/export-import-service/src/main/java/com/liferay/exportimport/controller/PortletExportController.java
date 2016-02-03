@@ -20,6 +20,7 @@ import static com.liferay.portlet.exportimport.lifecycle.ExportImportLifecycleCo
 import static com.liferay.portlet.exportimport.lifecycle.ExportImportLifecycleConstants.PROCESS_FLAG_PORTLET_EXPORT_IN_PROCESS;
 import static com.liferay.portlet.exportimport.lifecycle.ExportImportLifecycleConstants.PROCESS_FLAG_PORTLET_STAGING_IN_PROCESS;
 
+import com.liferay.expando.kernel.model.ExpandoColumn;
 import com.liferay.exportimport.lar.DeletionSystemEventExporter;
 import com.liferay.exportimport.lar.PermissionExporter;
 import com.liferay.exportimport.portlet.preferences.processor.Capability;
@@ -76,7 +77,6 @@ import com.liferay.portlet.asset.model.AssetLink;
 import com.liferay.portlet.asset.model.adapter.StagedAssetLink;
 import com.liferay.portlet.asset.service.AssetEntryLocalService;
 import com.liferay.portlet.asset.service.AssetLinkLocalService;
-import com.liferay.portlet.expando.model.ExpandoColumn;
 import com.liferay.portlet.exportimport.controller.ExportController;
 import com.liferay.portlet.exportimport.controller.ExportImportController;
 import com.liferay.portlet.exportimport.exception.LayoutImportException;

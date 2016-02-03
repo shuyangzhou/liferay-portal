@@ -14,6 +14,8 @@
 
 package com.liferay.journal.service.base;
 
+import com.liferay.expando.kernel.service.persistence.ExpandoValuePersistence;
+
 import com.liferay.journal.model.JournalFolder;
 import com.liferay.journal.service.JournalFolderService;
 import com.liferay.journal.service.persistence.JournalArticleFinder;
@@ -40,7 +42,6 @@ import com.liferay.portal.util.PortalUtil;
 
 import com.liferay.portlet.asset.service.persistence.AssetEntryPersistence;
 import com.liferay.portlet.asset.service.persistence.AssetLinkPersistence;
-import com.liferay.portlet.expando.service.persistence.ExpandoValuePersistence;
 import com.liferay.portlet.ratings.service.persistence.RatingsStatsPersistence;
 import com.liferay.portlet.trash.service.persistence.TrashEntryPersistence;
 import com.liferay.portlet.trash.service.persistence.TrashVersionPersistence;
@@ -639,7 +640,7 @@ public abstract class JournalFolderServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the expando value local service
 	 */
-	public com.liferay.portlet.expando.service.ExpandoValueLocalService getExpandoValueLocalService() {
+	public com.liferay.expando.kernel.service.ExpandoValueLocalService getExpandoValueLocalService() {
 		return expandoValueLocalService;
 	}
 
@@ -649,7 +650,7 @@ public abstract class JournalFolderServiceBaseImpl extends BaseServiceImpl
 	 * @param expandoValueLocalService the expando value local service
 	 */
 	public void setExpandoValueLocalService(
-		com.liferay.portlet.expando.service.ExpandoValueLocalService expandoValueLocalService) {
+		com.liferay.expando.kernel.service.ExpandoValueLocalService expandoValueLocalService) {
 		this.expandoValueLocalService = expandoValueLocalService;
 	}
 
@@ -658,7 +659,7 @@ public abstract class JournalFolderServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the expando value remote service
 	 */
-	public com.liferay.portlet.expando.service.ExpandoValueService getExpandoValueService() {
+	public com.liferay.expando.kernel.service.ExpandoValueService getExpandoValueService() {
 		return expandoValueService;
 	}
 
@@ -668,7 +669,7 @@ public abstract class JournalFolderServiceBaseImpl extends BaseServiceImpl
 	 * @param expandoValueService the expando value remote service
 	 */
 	public void setExpandoValueService(
-		com.liferay.portlet.expando.service.ExpandoValueService expandoValueService) {
+		com.liferay.expando.kernel.service.ExpandoValueService expandoValueService) {
 		this.expandoValueService = expandoValueService;
 	}
 
@@ -932,10 +933,10 @@ public abstract class JournalFolderServiceBaseImpl extends BaseServiceImpl
 	protected com.liferay.portlet.asset.service.AssetLinkLocalService assetLinkLocalService;
 	@ServiceReference(type = AssetLinkPersistence.class)
 	protected AssetLinkPersistence assetLinkPersistence;
-	@ServiceReference(type = com.liferay.portlet.expando.service.ExpandoValueLocalService.class)
-	protected com.liferay.portlet.expando.service.ExpandoValueLocalService expandoValueLocalService;
-	@ServiceReference(type = com.liferay.portlet.expando.service.ExpandoValueService.class)
-	protected com.liferay.portlet.expando.service.ExpandoValueService expandoValueService;
+	@ServiceReference(type = com.liferay.expando.kernel.service.ExpandoValueLocalService.class)
+	protected com.liferay.expando.kernel.service.ExpandoValueLocalService expandoValueLocalService;
+	@ServiceReference(type = com.liferay.expando.kernel.service.ExpandoValueService.class)
+	protected com.liferay.expando.kernel.service.ExpandoValueService expandoValueService;
 	@ServiceReference(type = ExpandoValuePersistence.class)
 	protected ExpandoValuePersistence expandoValuePersistence;
 	@ServiceReference(type = com.liferay.portlet.ratings.service.RatingsStatsLocalService.class)

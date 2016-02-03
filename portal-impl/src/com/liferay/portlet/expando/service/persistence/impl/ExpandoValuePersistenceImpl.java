@@ -16,6 +16,10 @@ package com.liferay.portlet.expando.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.expando.kernel.exception.NoSuchValueException;
+import com.liferay.expando.kernel.model.ExpandoValue;
+import com.liferay.expando.kernel.service.persistence.ExpandoValuePersistence;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -38,11 +42,8 @@ import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
-import com.liferay.portlet.expando.exception.NoSuchValueException;
-import com.liferay.portlet.expando.model.ExpandoValue;
 import com.liferay.portlet.expando.model.impl.ExpandoValueImpl;
 import com.liferay.portlet.expando.model.impl.ExpandoValueModelImpl;
-import com.liferay.portlet.expando.service.persistence.ExpandoValuePersistence;
 
 import java.io.Serializable;
 
@@ -63,7 +64,7 @@ import java.util.Set;
  *
  * @author Brian Wing Shun Chan
  * @see ExpandoValuePersistence
- * @see com.liferay.portlet.expando.service.persistence.ExpandoValueUtil
+ * @see com.liferay.expando.kernel.service.persistence.ExpandoValueUtil
  * @generated
  */
 @ProviderType
@@ -4864,8 +4865,8 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	private static final String _FINDER_COLUMN_T_C_D_TABLEID_2 = "expandoValue.tableId = ? AND ";
 	private static final String _FINDER_COLUMN_T_C_D_COLUMNID_2 = "expandoValue.columnId = ? AND ";
 	private static final String _FINDER_COLUMN_T_C_D_DATA_1 = "expandoValue.data IS NULL";
-	private static final String _FINDER_COLUMN_T_C_D_DATA_2 = "CAST_CLOB_TEXT(expandoValue.data) = ?";
-	private static final String _FINDER_COLUMN_T_C_D_DATA_3 = "(expandoValue.data IS NULL OR CAST_CLOB_TEXT(expandoValue.data) = '')";
+	private static final String _FINDER_COLUMN_T_C_D_DATA_2 = "expandoValue.data = ?";
+	private static final String _FINDER_COLUMN_T_C_D_DATA_3 = "(expandoValue.data IS NULL OR expandoValue.data = '')";
 
 	public ExpandoValuePersistenceImpl() {
 		setModelClass(ExpandoValue.class);
