@@ -29,7 +29,7 @@ import com.liferay.portal.kernel.repository.model.RepositoryModelOperation;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portlet.expando.model.ExpandoBridge;
-import com.liferay.portlet.exportimport.lar.StagedModelType;
+import com.liferay.exportimport.kernel.lar.StagedModelType;
 
 import java.io.InputStream;
 import java.io.Serializable;

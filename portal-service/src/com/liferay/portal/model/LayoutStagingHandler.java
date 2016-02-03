@@ -29,8 +29,8 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextThreadLocal;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.LayoutTypePortletFactoryUtil;
-import com.liferay.portlet.exportimport.staging.MergeLayoutPrototypesThreadLocal;
-import com.liferay.portlet.exportimport.staging.StagingUtil;
+import com.liferay.exportimport.kernel.staging.MergeLayoutPrototypesThreadLocal;
+import com.liferay.exportimport.kernel.staging.StagingUtil;
 
 import java.io.Serializable;
 
