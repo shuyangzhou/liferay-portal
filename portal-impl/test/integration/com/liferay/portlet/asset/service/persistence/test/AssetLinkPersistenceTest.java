@@ -14,6 +14,12 @@
 
 package com.liferay.portlet.asset.service.persistence.test;
 
+import com.liferay.asset.kernel.exception.NoSuchLinkException;
+import com.liferay.asset.kernel.model.AssetLink;
+import com.liferay.asset.kernel.service.AssetLinkLocalServiceUtil;
+import com.liferay.asset.kernel.service.persistence.AssetLinkPersistence;
+import com.liferay.asset.kernel.service.persistence.AssetLinkUtil;
+
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -31,12 +37,6 @@ import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
-
-import com.liferay.portlet.asset.exception.NoSuchLinkException;
-import com.liferay.portlet.asset.model.AssetLink;
-import com.liferay.portlet.asset.service.AssetLinkLocalServiceUtil;
-import com.liferay.portlet.asset.service.persistence.AssetLinkPersistence;
-import com.liferay.portlet.asset.service.persistence.AssetLinkUtil;
 
 import org.junit.After;
 import org.junit.Assert;

@@ -15,6 +15,7 @@
 package com.liferay.journal.search.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.asset.kernel.service.persistence.AssetEntryQuery;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalFolderConstants;
@@ -37,7 +38,6 @@ import com.liferay.portal.model.Group;
 import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.asset.service.persistence.AssetEntryQuery;
 import com.liferay.portlet.asset.service.persistence.test.AssetEntryQueryTestUtil;
 import com.liferay.portlet.asset.util.AssetUtil;
 

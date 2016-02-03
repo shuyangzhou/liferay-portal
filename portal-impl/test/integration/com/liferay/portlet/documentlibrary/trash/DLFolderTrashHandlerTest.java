@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.documentlibrary.trash;
 
+import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.Sync;
@@ -27,7 +28,6 @@ import com.liferay.portal.model.ClassedModel;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portlet.asset.model.AssetEntry;
 import com.liferay.portlet.documentlibrary.model.DLFolder;
 import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
 import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
@@ -46,7 +46,7 @@ import com.liferay.portlet.trash.test.WhenIsMoveableFromTrashBaseModel;
 import com.liferay.portlet.trash.test.WhenIsRestorableBaseModel;
 import com.liferay.portlet.trash.test.WhenIsUpdatableBaseModel;
 import com.liferay.portlet.trash.test.WhenParentModelIsSameType;
-import com.liferay.portlet.trash.util.TrashUtil;
+import com.liferay.trash.kernel.util.TrashUtil;
 
 import org.junit.ClassRule;
 import org.junit.Rule;

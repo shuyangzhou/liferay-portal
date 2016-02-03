@@ -26,7 +26,12 @@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %><%@
 taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
-<%@ page import="com.liferay.control.menu.web.constants.ControlMenuPortletKeys" %><%@
+<%@ page import="com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil" %><%@
+page import="com.liferay.asset.kernel.model.AssetEntry" %><%@
+page import="com.liferay.asset.kernel.model.AssetRenderer" %><%@
+page import="com.liferay.asset.kernel.model.AssetRendererFactory" %><%@
+page import="com.liferay.asset.kernel.service.persistence.AssetEntryQuery" %><%@
+page import="com.liferay.control.menu.web.constants.ControlMenuPortletKeys" %><%@
 page import="com.liferay.control.menu.web.constants.ControlMenuWebKeys" %><%@
 page import="com.liferay.portal.kernel.dao.search.SearchContainer" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
@@ -68,11 +73,6 @@ page import="com.liferay.portal.util.comparator.PortletCategoryComparator" %><%@
 page import="com.liferay.portal.util.comparator.PortletTitleComparator" %><%@
 page import="com.liferay.portlet.PortletConfigFactoryUtil" %><%@
 page import="com.liferay.portlet.PortletURLFactoryUtil" %><%@
-page import="com.liferay.portlet.asset.AssetRendererFactoryRegistryUtil" %><%@
-page import="com.liferay.portlet.asset.model.AssetEntry" %><%@
-page import="com.liferay.portlet.asset.model.AssetRenderer" %><%@
-page import="com.liferay.portlet.asset.model.AssetRendererFactory" %><%@
-page import="com.liferay.portlet.asset.service.persistence.AssetEntryQuery" %><%@
 page import="com.liferay.portlet.asset.util.AssetUtil" %><%@
 page import="com.liferay.taglib.aui.AUIUtil" %>
 

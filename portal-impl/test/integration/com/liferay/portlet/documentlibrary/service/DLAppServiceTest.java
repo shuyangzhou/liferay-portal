@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.documentlibrary.service;
 
+import com.liferay.asset.kernel.model.AssetEntry;
+import com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil;
 import com.liferay.portal.kernel.comment.CommentManagerUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -61,8 +63,6 @@ import com.liferay.portal.test.rule.ExpectedType;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.util.test.PrefsPropsTemporarySwapper;
-import com.liferay.portlet.asset.model.AssetEntry;
-import com.liferay.portlet.asset.service.AssetEntryLocalServiceUtil;
 import com.liferay.portlet.documentlibrary.exception.DuplicateFileEntryException;
 import com.liferay.portlet.documentlibrary.exception.FileExtensionException;
 import com.liferay.portlet.documentlibrary.exception.FileNameException;
