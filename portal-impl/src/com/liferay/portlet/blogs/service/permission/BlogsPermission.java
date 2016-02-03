@@ -21,15 +21,15 @@ import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.BaseResourcePermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
-import com.liferay.portlet.blogs.model.BlogsEntry;
+import com.liferay.blogs.kernel.model.BlogsEntry;
 
 /**
  * @author Jorge Ferrer
  */
-@OSGiBeanProperties(property = {"resource.name=com.liferay.portlet.blogs"})
+@OSGiBeanProperties(property = {"resource.name=com.liferay.blogs.kernel"})
 public class BlogsPermission extends BaseResourcePermissionChecker {
 
-	public static final String RESOURCE_NAME = "com.liferay.portlet.blogs";
+	public static final String RESOURCE_NAME = "com.liferay.blogs.kernel";
 
 	public static void check(
 			PermissionChecker permissionChecker, long groupId, String actionId)
