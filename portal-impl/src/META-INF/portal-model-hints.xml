@@ -1818,7 +1818,7 @@
 			<hint-collection name="CLOB" />
 		</field>
 	</model>
-	<model name="com.liferay.portlet.exportimport.model.ExportImportConfiguration">
+	<model name="com.liferay.exportimport.kernel.model.ExportImportConfiguration">
 		<field name="mvccVersion" type="long" />
 		<field name="exportImportConfigurationId" type="long" />
 		<field name="groupId" type="long" />
