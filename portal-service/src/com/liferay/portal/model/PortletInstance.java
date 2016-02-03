@@ -35,8 +35,22 @@ public class PortletInstance {
 		String portletInstanceKey) {
 
 		return new PortletInstance(
-			_getPortletName(portletInstanceKey), _getUserId(portletInstanceKey),
+			getPortletName(portletInstanceKey), _getUserId(portletInstanceKey),
 			_getInstanceId(portletInstanceKey));
+	}
+
+	public static String getPortletName(String portletInstanceKey) {
+		int x = portletInstanceKey.indexOf(_USER_SEPARATOR);
+		int y = portletInstanceKey.indexOf(_INSTANCE_SEPARATOR);
+
+		if ((x == -1) && (y == -1)) {
+			return portletInstanceKey;
+		}
+		else if (x != -1) {
+			return portletInstanceKey.substring(0, x);
+		}
+
+		return portletInstanceKey.substring(0, y);
 	}
 
 	public PortletInstance(String portletName) {
@@ -123,20 +137,6 @@ public class PortletInstance {
 
 		return portletInstanceKey.substring(
 			index + _INSTANCE_SEPARATOR.length());
-	}
-
-	private static String _getPortletName(String portletInstanceKey) {
-		int x = portletInstanceKey.indexOf(_USER_SEPARATOR);
-		int y = portletInstanceKey.indexOf(_INSTANCE_SEPARATOR);
-
-		if ((x == -1) && (y == -1)) {
-			return portletInstanceKey;
-		}
-		else if (x != -1) {
-			return portletInstanceKey.substring(0, x);
-		}
-
-		return portletInstanceKey.substring(0, y);
 	}
 
 	private static long _getUserId(String portletInstanceKey) {
