@@ -103,7 +103,7 @@ import com.liferay.portlet.exportimport.xstream.XStreamAlias;
 import com.liferay.portlet.exportimport.xstream.XStreamConverter;
 import com.liferay.portlet.exportimport.xstream.XStreamType;
 import com.liferay.portlet.messageboards.model.MBMessage;
-import com.liferay.portlet.ratings.model.RatingsEntry;
+import com.liferay.ratings.kernel.model.RatingsEntry;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.core.ClassLoaderReference;
