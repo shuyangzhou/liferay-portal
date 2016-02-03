@@ -14,7 +14,7 @@
 
 package com.liferay.asset.publisher.web.display.context;
 
-import com.liferay.portlet.asset.model.AssetEntry;
+import com.liferay.asset.kernel.model.AssetEntry;
 
 import java.util.List;
 

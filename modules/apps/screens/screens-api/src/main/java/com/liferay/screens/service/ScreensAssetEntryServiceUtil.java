@@ -42,7 +42,7 @@ public class ScreensAssetEntryServiceUtil {
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.screens.service.impl.ScreensAssetEntryServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.portal.kernel.json.JSONArray getAssetEntries(
-		com.liferay.portlet.asset.service.persistence.AssetEntryQuery assetEntryQuery,
+		com.liferay.asset.kernel.service.persistence.AssetEntryQuery assetEntryQuery,
 		java.util.Locale locale)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getAssetEntries(assetEntryQuery, locale);

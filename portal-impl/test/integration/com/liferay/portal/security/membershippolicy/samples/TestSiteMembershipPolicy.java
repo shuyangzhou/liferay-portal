@@ -14,6 +14,8 @@
 
 package com.liferay.portal.security.membershippolicy.samples;
 
+import com.liferay.asset.kernel.model.AssetCategory;
+import com.liferay.asset.kernel.model.AssetTag;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.membershippolicy.BaseSiteMembershipPolicy;
 import com.liferay.portal.kernel.security.membershippolicy.MembershipPolicyException;
@@ -23,8 +25,6 @@ import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.UserGroupRole;
 import com.liferay.portal.security.membershippolicy.BaseSiteMembershipPolicyTestCase;
-import com.liferay.portlet.asset.model.AssetCategory;
-import com.liferay.portlet.asset.model.AssetTag;
 
 import java.io.Serializable;
 

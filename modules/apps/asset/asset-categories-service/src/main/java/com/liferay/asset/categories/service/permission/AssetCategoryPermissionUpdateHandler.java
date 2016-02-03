@@ -14,10 +14,10 @@
 
 package com.liferay.asset.categories.service.permission;
 
+import com.liferay.asset.kernel.model.AssetCategory;
+import com.liferay.asset.kernel.service.AssetCategoryLocalService;
 import com.liferay.portal.kernel.security.permission.PermissionUpdateHandler;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portlet.asset.model.AssetCategory;
-import com.liferay.portlet.asset.service.AssetCategoryLocalService;
 
 import java.util.Date;
 
@@ -29,7 +29,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"model.class.name=com.liferay.portlet.asset.model.AssetCategory"
+		"model.class.name=com.liferay.asset.kernel.model.AssetCategory"
 	},
 	service = PermissionUpdateHandler.class
 )

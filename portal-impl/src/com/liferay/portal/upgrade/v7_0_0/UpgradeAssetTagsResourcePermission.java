@@ -14,9 +14,9 @@
 
 package com.liferay.portal.upgrade.v7_0_0;
 
+import com.liferay.asset.kernel.model.AssetTag;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.model.ResourceConstants;
-import com.liferay.portlet.asset.model.AssetTag;
 
 /**
  * @author Andrew Betts

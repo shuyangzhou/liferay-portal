@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.asset.model;
 
+import com.liferay.asset.kernel.model.AssetTagDisplay;
+
 import org.junit.Assert;
 import org.junit.Test;
 
