@@ -21,7 +21,7 @@ import com.liferay.portal.model.Layout;
 import com.liferay.portal.service.permission.GroupPermissionUtil;
 import com.liferay.portal.service.permission.PortletPermissionUtil;
 import com.liferay.portlet.exportimport.lar.MissingReferences;
-import com.liferay.portlet.exportimport.model.ExportImportConfiguration;
+import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.portlet.exportimport.service.base.ExportImportServiceBaseImpl;
 
 import java.io.File;
