@@ -14,11 +14,11 @@
 
 package com.liferay.journal.exportimport.lifecycle;
 
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
+import com.liferay.exportimport.kernel.lifecycle.BaseExportImportLifecycleListener;
+import com.liferay.exportimport.kernel.lifecycle.ExportImportLifecycleListener;
 import com.liferay.journal.constants.JournalPortletKeys;
 import com.liferay.journal.util.JournalContent;
-import com.liferay.portlet.exportimport.lar.PortletDataContext;
-import com.liferay.portlet.exportimport.lifecycle.BaseExportImportLifecycleListener;
-import com.liferay.portlet.exportimport.lifecycle.ExportImportLifecycleListener;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

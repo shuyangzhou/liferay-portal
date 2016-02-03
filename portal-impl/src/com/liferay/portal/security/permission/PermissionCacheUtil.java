@@ -14,6 +14,7 @@
 
 package com.liferay.portal.security.permission;
 
+import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 import com.liferay.portal.kernel.cache.MultiVMPoolUtil;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.index.IndexEncoder;
@@ -28,7 +29,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ResourceConstants;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.portlet.exportimport.lar.ExportImportThreadLocal;
 
 import java.io.Serializable;
 

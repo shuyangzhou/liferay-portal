@@ -20,6 +20,9 @@ import com.liferay.asset.publisher.web.util.AssetPublisherUtil;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMStructureUtil;
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
+import com.liferay.exportimport.kernel.lar.PortletDataException;
+import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.portlet.preferences.processor.Capability;
 import com.liferay.exportimport.portlet.preferences.processor.ExportImportPortletPreferencesProcessor;
 import com.liferay.exportimport.portlet.preferences.processor.base.BaseExportImportPortletPreferencesProcessor;
@@ -70,9 +73,6 @@ import com.liferay.portlet.documentlibrary.model.DLFileEntry;
 import com.liferay.portlet.documentlibrary.model.DLFileEntryType;
 import com.liferay.portlet.documentlibrary.service.DLFileEntryTypeLocalService;
 import com.liferay.portlet.documentlibrary.service.persistence.DLFileEntryTypeUtil;
-import com.liferay.portlet.exportimport.lar.PortletDataContext;
-import com.liferay.portlet.exportimport.lar.PortletDataException;
-import com.liferay.portlet.exportimport.lar.StagedModelDataHandlerUtil;
 
 import java.io.Serializable;
 

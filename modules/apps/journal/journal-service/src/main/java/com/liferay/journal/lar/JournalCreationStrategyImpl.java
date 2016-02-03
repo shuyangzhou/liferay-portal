@@ -14,8 +14,8 @@
 
 package com.liferay.journal.lar;
 
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.journal.model.JournalArticle;
-import com.liferay.portlet.exportimport.lar.PortletDataContext;
 
 /**
  * Provides the strategy for creating new content when new Journal content is

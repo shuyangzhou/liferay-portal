@@ -14,11 +14,11 @@
 
 package com.liferay.exportimport.lifecycle;
 
+import com.liferay.exportimport.kernel.lifecycle.BaseProcessExportImportLifecycleListener;
+import com.liferay.exportimport.kernel.lifecycle.ExportImportLifecycleListener;
 import com.liferay.exportimport.lar.ExportImportProcessCallbackUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portlet.exportimport.lifecycle.BaseProcessExportImportLifecycleListener;
-import com.liferay.portlet.exportimport.lifecycle.ExportImportLifecycleListener;
 
 import java.io.Serializable;
 

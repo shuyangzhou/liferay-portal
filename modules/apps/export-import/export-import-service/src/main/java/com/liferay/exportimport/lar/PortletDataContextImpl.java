@@ -14,6 +14,19 @@
 
 package com.liferay.exportimport.lar;
 
+import com.liferay.exportimport.kernel.lar.ExportImportClassedModelUtil;
+import com.liferay.exportimport.kernel.lar.ExportImportPathUtil;
+import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
+import com.liferay.exportimport.kernel.lar.ManifestSummary;
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
+import com.liferay.exportimport.kernel.lar.PortletDataHandlerControl;
+import com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys;
+import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
+import com.liferay.exportimport.kernel.lar.StagedModelType;
+import com.liferay.exportimport.kernel.lar.UserIdStrategy;
+import com.liferay.exportimport.kernel.xstream.XStreamAlias;
+import com.liferay.exportimport.kernel.xstream.XStreamConverter;
+import com.liferay.exportimport.kernel.xstream.XStreamType;
 import com.liferay.exportimport.xstream.ConverterAdapter;
 import com.liferay.exportimport.xstream.XStreamStagedModelTypeHierarchyPermission;
 import com.liferay.exportimport.xstream.configurator.XStreamConfigurator;
@@ -90,19 +103,6 @@ import com.liferay.portlet.asset.service.AssetTagLocalServiceUtil;
 import com.liferay.portlet.expando.model.ExpandoBridge;
 import com.liferay.portlet.expando.model.ExpandoColumn;
 import com.liferay.portlet.expando.service.ExpandoColumnLocalServiceUtil;
-import com.liferay.portlet.exportimport.lar.ExportImportClassedModelUtil;
-import com.liferay.portlet.exportimport.lar.ExportImportPathUtil;
-import com.liferay.portlet.exportimport.lar.ExportImportThreadLocal;
-import com.liferay.portlet.exportimport.lar.ManifestSummary;
-import com.liferay.portlet.exportimport.lar.PortletDataContext;
-import com.liferay.portlet.exportimport.lar.PortletDataHandlerControl;
-import com.liferay.portlet.exportimport.lar.PortletDataHandlerKeys;
-import com.liferay.portlet.exportimport.lar.StagedModelDataHandlerUtil;
-import com.liferay.portlet.exportimport.lar.StagedModelType;
-import com.liferay.portlet.exportimport.lar.UserIdStrategy;
-import com.liferay.portlet.exportimport.xstream.XStreamAlias;
-import com.liferay.portlet.exportimport.xstream.XStreamConverter;
-import com.liferay.portlet.exportimport.xstream.XStreamType;
 import com.liferay.ratings.kernel.model.RatingsEntry;
 
 import com.thoughtworks.xstream.XStream;
@@ -150,7 +150,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 
 	/**
 	 * @deprecated As of 7.0.0, replaced by {@link
-	 *             com.liferay.portlet.exportimport.lar.BaseStagedModelDataHandler#exportAssetCategories(
+	 *             om.liferay.exportimport.kernel.lar.BaseStagedModelDataHandler#exportAssetCategories(
 	 *             PortletDataContext, StagedModel)}
 	 */
 	@Deprecated
@@ -249,7 +249,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 
 	/**
 	 * @deprecated As of 7.0.0, replaced by {@link
-	 *             com.liferay.portlet.exportimport.lar.BaseStagedModelDataHandler#exportComments(
+	 *             om.liferay.exportimport.kernel.lar.BaseStagedModelDataHandler#exportComments(
 	 *             PortletDataContext, StagedModel)}
 	 */
 	@Deprecated
@@ -259,7 +259,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 
 	/**
 	 * @deprecated As of 7.0.0, replaced by {@link
-	 *             com.liferay.portlet.exportimport.lar.BaseStagedModelDataHandler#exportComments(
+	 *             om.liferay.exportimport.kernel.lar.BaseStagedModelDataHandler#exportComments(
 	 *             PortletDataContext, StagedModel)}
 	 */
 	@Deprecated
@@ -425,7 +425,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 
 	/**
 	 * @deprecated As of 7.0.0, replaced by {@link
-	 *             com.liferay.portlet.exportimport.lar.BaseStagedModelDataHandler#exportRatings(
+	 *             om.liferay.exportimport.kernel.lar.BaseStagedModelDataHandler#exportRatings(
 	 *             PortletDataContext, StagedModel)}
 	 */
 	@Deprecated
@@ -435,7 +435,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 
 	/**
 	 * @deprecated As of 7.0.0, replaced by {@link
-	 *             com.liferay.portlet.exportimport.lar.BaseStagedModelDataHandler#exportRatings(
+	 *             om.liferay.exportimport.kernel.lar.BaseStagedModelDataHandler#exportRatings(
 	 *             PortletDataContext, StagedModel)}
 	 */
 	@Deprecated
@@ -1403,7 +1403,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 
 	/**
 	 * @deprecated As of 7.0.0, replaced by {@link
-	 *             com.liferay.portlet.exportimport.lar.BaseStagedModelDataHandler#importComments(
+	 *             om.liferay.exportimport.kernel.lar.BaseStagedModelDataHandler#importComments(
 	 *             PortletDataContext, StagedModel)}
 	 */
 	@Deprecated
@@ -1547,7 +1547,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 
 	/**
 	 * @deprecated As of 7.0.0, replaced by {@link
-	 *             com.liferay.portlet.exportimport.lar.BaseStagedModelDataHandler#importRatings(
+	 *             om.liferay.exportimport.kernel.lar.BaseStagedModelDataHandler#importRatings(
 	 *             PortletDataContext, StagedModel)}
 	 */
 	@Deprecated
@@ -1802,7 +1802,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	@Deprecated
 	@Override
 	public void setPortetDataContextListener(
-		com.liferay.portlet.exportimport.lar.PortletDataContextListener
+		com.liferay.exportimport.kernel.lar.PortletDataContextListener
 			portletDataContextListener) {
 	}
 

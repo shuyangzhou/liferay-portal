@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.asset.service.impl;
 
+import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -53,7 +54,6 @@ import com.liferay.portlet.asset.service.permission.AssetTagPermission;
 import com.liferay.portlet.asset.service.persistence.AssetEntryQuery;
 import com.liferay.portlet.asset.util.AssetEntryValidator;
 import com.liferay.portlet.asset.util.AssetSearcher;
-import com.liferay.portlet.exportimport.lar.ExportImportThreadLocal;
 import com.liferay.social.kernel.model.SocialActivityConstants;
 
 import java.util.ArrayList;

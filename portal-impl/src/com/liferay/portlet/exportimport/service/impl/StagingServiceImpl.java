@@ -14,13 +14,13 @@
 
 package com.liferay.portlet.exportimport.service.impl;
 
+import com.liferay.exportimport.kernel.lar.MissingReferences;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.service.permission.GroupPermissionUtil;
-import com.liferay.portlet.exportimport.lar.MissingReferences;
 import com.liferay.portlet.exportimport.service.base.StagingServiceBaseImpl;
 
 import java.util.Map;

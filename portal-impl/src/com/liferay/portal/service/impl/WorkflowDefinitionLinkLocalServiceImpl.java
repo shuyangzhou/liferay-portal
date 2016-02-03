@@ -14,6 +14,7 @@
 
 package com.liferay.portal.service.impl;
 
+import com.liferay.exportimport.kernel.staging.StagingUtil;
 import com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.spring.aop.Skip;
@@ -27,7 +28,6 @@ import com.liferay.portal.kernel.workflow.WorkflowEngineManagerUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.model.WorkflowDefinitionLink;
 import com.liferay.portal.service.base.WorkflowDefinitionLinkLocalServiceBaseImpl;
-import com.liferay.portlet.exportimport.staging.StagingUtil;
 
 import java.util.List;
 

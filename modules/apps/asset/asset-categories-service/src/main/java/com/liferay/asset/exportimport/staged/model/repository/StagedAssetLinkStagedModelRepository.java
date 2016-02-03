@@ -14,6 +14,7 @@
 
 package com.liferay.asset.exportimport.staged.model.repository;
 
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.staged.model.repository.StagedModelRepository;
 import com.liferay.exportimport.staged.model.repository.base.BaseStagedModelRepository;
 import com.liferay.portal.kernel.dao.orm.Criterion;
@@ -33,7 +34,6 @@ import com.liferay.portlet.asset.model.AssetLink;
 import com.liferay.portlet.asset.model.adapter.StagedAssetLink;
 import com.liferay.portlet.asset.service.AssetEntryLocalService;
 import com.liferay.portlet.asset.service.AssetLinkLocalService;
-import com.liferay.portlet.exportimport.lar.PortletDataContext;
 
 import java.util.Collections;
 import java.util.List;

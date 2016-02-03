@@ -15,6 +15,11 @@
 package com.liferay.exportimport.web.portlet.action;
 
 import com.liferay.dynamic.data.mapping.exception.StructureDuplicateStructureKeyException;
+import com.liferay.exportimport.kernel.exception.LARFileException;
+import com.liferay.exportimport.kernel.exception.LARFileNameException;
+import com.liferay.exportimport.kernel.exception.LARFileSizeException;
+import com.liferay.exportimport.kernel.exception.LARTypeException;
+import com.liferay.exportimport.kernel.staging.StagingUtil;
 import com.liferay.exportimport.web.constants.ExportImportPortletKeys;
 import com.liferay.portal.LocaleException;
 import com.liferay.portal.exception.NoSuchLayoutException;
@@ -31,11 +36,6 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Portlet;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.exportimport.exception.LARFileException;
-import com.liferay.portlet.exportimport.exception.LARFileNameException;
-import com.liferay.portlet.exportimport.exception.LARFileSizeException;
-import com.liferay.portlet.exportimport.exception.LARTypeException;
-import com.liferay.portlet.exportimport.staging.StagingUtil;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;

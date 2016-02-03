@@ -14,15 +14,15 @@
 
 package com.liferay.mobile.device.rules.exportimport.xstream.configurator;
 
+import com.liferay.exportimport.kernel.xstream.XStreamAlias;
+import com.liferay.exportimport.kernel.xstream.XStreamConverter;
+import com.liferay.exportimport.kernel.xstream.XStreamType;
 import com.liferay.exportimport.xstream.configurator.XStreamConfigurator;
 import com.liferay.mobile.device.rules.model.impl.MDRActionImpl;
 import com.liferay.mobile.device.rules.model.impl.MDRRuleGroupImpl;
 import com.liferay.mobile.device.rules.model.impl.MDRRuleGroupInstanceImpl;
 import com.liferay.mobile.device.rules.model.impl.MDRRuleImpl;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portlet.exportimport.xstream.XStreamAlias;
-import com.liferay.portlet.exportimport.xstream.XStreamConverter;
-import com.liferay.portlet.exportimport.xstream.XStreamType;
 
 import java.util.List;
 

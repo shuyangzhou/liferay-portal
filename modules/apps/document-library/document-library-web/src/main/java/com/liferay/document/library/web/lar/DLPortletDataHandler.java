@@ -15,6 +15,15 @@
 package com.liferay.document.library.web.lar;
 
 import com.liferay.document.library.web.constants.DLPortletKeys;
+import com.liferay.exportimport.kernel.lar.BasePortletDataHandler;
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
+import com.liferay.exportimport.kernel.lar.PortletDataHandler;
+import com.liferay.exportimport.kernel.lar.PortletDataHandlerBoolean;
+import com.liferay.exportimport.kernel.lar.PortletDataHandlerControl;
+import com.liferay.exportimport.kernel.lar.StagedModelDataHandler;
+import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerRegistryUtil;
+import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
+import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Conjunction;
 import com.liferay.portal.kernel.dao.orm.Criterion;
@@ -55,15 +64,6 @@ import com.liferay.portlet.documentlibrary.service.DLFileEntryTypeLocalService;
 import com.liferay.portlet.documentlibrary.service.DLFileShortcutLocalService;
 import com.liferay.portlet.documentlibrary.service.DLFolderLocalService;
 import com.liferay.portlet.documentlibrary.service.permission.DLPermission;
-import com.liferay.portlet.exportimport.lar.BasePortletDataHandler;
-import com.liferay.portlet.exportimport.lar.PortletDataContext;
-import com.liferay.portlet.exportimport.lar.PortletDataHandler;
-import com.liferay.portlet.exportimport.lar.PortletDataHandlerBoolean;
-import com.liferay.portlet.exportimport.lar.PortletDataHandlerControl;
-import com.liferay.portlet.exportimport.lar.StagedModelDataHandler;
-import com.liferay.portlet.exportimport.lar.StagedModelDataHandlerRegistryUtil;
-import com.liferay.portlet.exportimport.lar.StagedModelDataHandlerUtil;
-import com.liferay.portlet.exportimport.lar.StagedModelType;
 
 import java.util.List;
 

@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.documentlibrary.util;
 
+import com.liferay.exportimport.kernel.lar.ExportImportPathUtil;
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.image.ImageBag;
 import com.liferay.portal.kernel.image.ImageToolUtil;
@@ -38,8 +40,6 @@ import com.liferay.portal.model.CompanyConstants;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PortletKeys;
 import com.liferay.portlet.documentlibrary.store.DLStoreUtil;
-import com.liferay.exportimport.kernel.lar.ExportImportPathUtil;
-import com.liferay.exportimport.kernel.lar.PortletDataContext;
 
 import java.awt.image.RenderedImage;
 

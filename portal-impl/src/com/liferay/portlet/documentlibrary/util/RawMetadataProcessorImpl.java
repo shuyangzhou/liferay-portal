@@ -17,6 +17,7 @@ package com.liferay.portlet.documentlibrary.util;
 import com.liferay.dynamic.data.mapping.kernel.DDMFormValues;
 import com.liferay.dynamic.data.mapping.kernel.DDMStructure;
 import com.liferay.dynamic.data.mapping.kernel.DDMStructureManagerUtil;
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -41,7 +42,6 @@ import com.liferay.portlet.documentlibrary.model.DLFileEntry;
 import com.liferay.portlet.documentlibrary.model.DLFileEntryConstants;
 import com.liferay.portlet.documentlibrary.model.DLProcessorConstants;
 import com.liferay.portlet.documentlibrary.service.DLFileEntryMetadataLocalServiceUtil;
-import com.liferay.portlet.exportimport.lar.PortletDataContext;
 
 import java.io.File;
 import java.io.InputStream;

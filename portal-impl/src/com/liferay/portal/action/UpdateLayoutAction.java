@@ -14,6 +14,7 @@
 
 package com.liferay.portal.action;
 
+import com.liferay.exportimport.kernel.staging.StagingUtil;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.portlet.AddPortletProvider;
@@ -54,7 +55,6 @@ import com.liferay.portal.util.LayoutCloneFactory;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portlet.asset.model.AssetEntry;
-import com.liferay.portlet.exportimport.staging.StagingUtil;
 import com.liferay.registry.collections.ServiceTrackerCollections;
 import com.liferay.registry.collections.ServiceTrackerMap;
 

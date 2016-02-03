@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.expando.model.impl;
 
+import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
@@ -32,7 +33,6 @@ import com.liferay.portlet.expando.service.ExpandoColumnServiceUtil;
 import com.liferay.portlet.expando.service.ExpandoTableLocalServiceUtil;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.portlet.expando.service.ExpandoValueServiceUtil;
-import com.liferay.portlet.exportimport.lar.ExportImportThreadLocal;
 
 import java.io.Serializable;
 

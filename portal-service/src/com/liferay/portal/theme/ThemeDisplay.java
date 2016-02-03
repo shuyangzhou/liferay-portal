@@ -17,6 +17,7 @@ package com.liferay.portal.theme;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.admin.kernel.util.PortalMyAccountApplicationType;
+import com.liferay.exportimport.kernel.staging.StagingUtil;
 import com.liferay.mobile.device.rules.kernel.MDRRuleGroupInstance;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
@@ -49,7 +50,6 @@ import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.LayoutLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PortletKeys;
-import com.liferay.exportimport.kernel.staging.StagingUtil;
 
 import java.io.Serializable;
 

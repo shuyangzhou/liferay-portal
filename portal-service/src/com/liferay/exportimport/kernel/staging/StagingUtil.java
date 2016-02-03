@@ -16,6 +16,9 @@ package com.liferay.exportimport.kernel.staging;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.exportimport.kernel.lar.MissingReference;
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
+import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -29,9 +32,6 @@ import com.liferay.portal.model.LayoutRevision;
 import com.liferay.portal.model.Portlet;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
-import com.liferay.exportimport.kernel.lar.MissingReference;
-import com.liferay.exportimport.kernel.lar.PortletDataContext;
-import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 
 import java.io.Serializable;
 

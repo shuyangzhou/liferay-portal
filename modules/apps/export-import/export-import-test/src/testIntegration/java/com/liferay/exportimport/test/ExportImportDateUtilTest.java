@@ -15,6 +15,8 @@
 package com.liferay.exportimport.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.exportimport.kernel.lar.ExportImportDateUtil;
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.lar.PortletDataContextImpl;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
@@ -33,8 +35,6 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.PortletKeys;
 import com.liferay.portal.util.test.LayoutTestUtil;
 import com.liferay.portlet.PortletPreferencesFactoryUtil;
-import com.liferay.portlet.exportimport.lar.ExportImportDateUtil;
-import com.liferay.portlet.exportimport.lar.PortletDataContext;
 
 import java.util.Date;
 import java.util.HashMap;

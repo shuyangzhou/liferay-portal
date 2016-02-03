@@ -18,6 +18,7 @@ import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.DDMTemplate;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalServiceUtil;
 import com.liferay.dynamic.data.mapping.service.DDMTemplateLocalServiceUtil;
+import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleResource;
 import com.liferay.journal.model.JournalFolder;
@@ -50,7 +51,6 @@ import com.liferay.portal.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.service.ImageLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.exportimport.lar.StagedModelType;
 
 import java.util.HashMap;
 import java.util.Locale;

@@ -26,6 +26,8 @@ import static com.liferay.exportimport.kernel.configuration.ExportImportConfigur
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
+import com.liferay.exportimport.kernel.service.ExportImportConfigurationLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -50,8 +52,6 @@ import com.liferay.portal.service.LayoutLocalServiceUtil;
 import com.liferay.portal.service.LayoutSetLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.PortletPreferencesFactoryUtil;
-import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
-import com.liferay.exportimport.kernel.service.ExportImportConfigurationLocalServiceUtil;
 
 import java.io.Serializable;
 
