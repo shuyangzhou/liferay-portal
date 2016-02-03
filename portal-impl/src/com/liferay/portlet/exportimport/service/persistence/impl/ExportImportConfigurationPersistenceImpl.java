@@ -16,6 +16,10 @@ package com.liferay.portlet.exportimport.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.exportimport.kernel.exception.NoSuchConfigurationException;
+import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
+import com.liferay.exportimport.kernel.service.persistence.ExportImportConfigurationPersistence;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -40,11 +44,8 @@ import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
-import com.liferay.portlet.exportimport.exception.NoSuchConfigurationException;
-import com.liferay.portlet.exportimport.model.ExportImportConfiguration;
 import com.liferay.portlet.exportimport.model.impl.ExportImportConfigurationImpl;
 import com.liferay.portlet.exportimport.model.impl.ExportImportConfigurationModelImpl;
-import com.liferay.portlet.exportimport.service.persistence.ExportImportConfigurationPersistence;
 
 import java.io.Serializable;
 
@@ -66,7 +67,7 @@ import java.util.Set;
  *
  * @author Brian Wing Shun Chan
  * @see ExportImportConfigurationPersistence
- * @see com.liferay.portlet.exportimport.service.persistence.ExportImportConfigurationUtil
+ * @see com.liferay.exportimport.kernel.service.persistence.ExportImportConfigurationUtil
  * @generated
  */
 @ProviderType
