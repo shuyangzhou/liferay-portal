@@ -103,8 +103,8 @@ import com.liferay.portlet.asset.exception.AssetCategoryException;
 import com.liferay.portlet.asset.exception.AssetTagException;
 import com.liferay.portlet.documentlibrary.exception.DuplicateFileEntryException;
 import com.liferay.portlet.documentlibrary.exception.FileSizeException;
-import com.liferay.portlet.trash.service.TrashEntryService;
-import com.liferay.portlet.trash.util.TrashUtil;
+import com.liferay.trash.kernel.service.TrashEntryService;
+import com.liferay.trash.kernel.util.TrashUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -335,9 +335,9 @@ public class JournalPortlet extends MVCPortlet {
 					themeDisplay.getScopeGroupId(),
 					HtmlUtil.unescape(articleId), newFolderId, serviceContext);
 			}
-			catch (InvalidDDMStructureException idse) {
+			catch (InvalidDDMStructureException iddmse) {
 				if (_log.isWarnEnabled()) {
-					_log.warn(idse.getMessage());
+					_log.warn(iddmse.getMessage());
 				}
 
 				invalidArticleIds.add(articleId);
