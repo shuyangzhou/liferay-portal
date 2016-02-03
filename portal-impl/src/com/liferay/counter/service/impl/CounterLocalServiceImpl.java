@@ -14,7 +14,7 @@
 
 package com.liferay.counter.service.impl;
 
-import com.liferay.counter.service.CounterLocalService;
+import com.liferay.counter.kernel.service.CounterLocalService;
 import com.liferay.counter.service.base.CounterLocalServiceBaseImpl;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
