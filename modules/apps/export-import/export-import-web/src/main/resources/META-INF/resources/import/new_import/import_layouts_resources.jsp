@@ -126,7 +126,7 @@ ManifestSummary manifestSummary = ExportImportHelperUtil.getManifestSummary(user
 	<div class="export-dialog-tree">
 		<div id="<portlet:namespace />importConfiguration">
 			<aui:fieldset-group markupView="lexicon">
-				<aui:fieldset cssClass="options-group" label="file">
+				<aui:fieldset cssClass="options-group" label="file-summary">
 					<dl class="import-file-details options">
 						<dt>
 							<liferay-ui:message key="name" />
@@ -353,9 +353,7 @@ ManifestSummary manifestSummary = ExportImportHelperUtil.getManifestSummary(user
 
 				<liferay-staging:deletions cmd="<%= Constants.IMPORT %>" />
 
-				<aui:fieldset collapsible="<%= true %>" cssClass="options-group" label="permissions">
-					<aui:input label="permissions" name="<%= PortletDataHandlerKeys.PERMISSIONS %>" type="toggle-switch" />
-				</aui:fieldset>
+				<liferay-staging:permissions action="import" descriptionCSSClass="permissions-description" global="<%= group.isCompany() %>" labelCSSClass="permissions-label" />
 			</aui:fieldset-group>
 
 			<aui:button-row>

@@ -90,7 +90,10 @@ portletURL.setParameter("groupId", String.valueOf(groupId));
 portletURL.setParameter("liveGroupId", String.valueOf(liveGroupId));
 portletURL.setParameter("privateLayout", String.valueOf(privateLayout));
 
-renderResponse.setTitle(!configuredExport ? LanguageUtil.get(request, "new-export") : LanguageUtil.format(request, "new-export-based-on-x", exportImportConfiguration.getName(), false));
+portletDisplay.setShowBackIcon(true);
+portletDisplay.setURLBack(portletURL.toString());
+
+renderResponse.setTitle(!configuredExport ? LanguageUtil.get(request, "new-custom-export") : LanguageUtil.format(request, "new-export-based-on-x", exportImportConfiguration.getName(), false));
 %>
 
 <div class="container-fluid-1280">
@@ -160,7 +163,7 @@ renderResponse.setTitle(!configuredExport ? LanguageUtil.get(request, "new-expor
 
 					<liferay-staging:content cmd="<%= Constants.EXPORT %>" disableInputs="<%= configuredExport %>" parameterMap="<%= parameterMap %>" type="<%= Constants.EXPORT %>" />
 
-					<liferay-staging:permissions disableInputs="<%= configuredExport %>" global="<%= group.isCompany() %>" parameterMap="<%= parameterMap %>" />
+					<liferay-staging:permissions action="export" descriptionCSSClass="permissions-description" disableInputs="<%= configuredExport %>" global="<%= group.isCompany() %>" labelCSSClass="permissions-label" parameterMap="<%= parameterMap %>" />
 				</aui:fieldset-group>
 			</div>
 

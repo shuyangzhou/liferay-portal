@@ -72,8 +72,9 @@ import com.liferay.portlet.exportimport.lar.StagedModelDataHandlerUtil;
 import com.liferay.portlet.exportimport.lar.StagedModelType;
 import com.liferay.portlet.messageboards.service.persistence.MBMessagePersistence;
 import com.liferay.portlet.ratings.service.persistence.RatingsStatsPersistence;
-import com.liferay.portlet.social.service.persistence.SocialActivityCounterPersistence;
-import com.liferay.portlet.social.service.persistence.SocialActivityPersistence;
+
+import com.liferay.social.kernel.service.persistence.SocialActivityCounterPersistence;
+import com.liferay.social.kernel.service.persistence.SocialActivityPersistence;
 
 import com.liferay.trash.kernel.service.persistence.TrashEntryPersistence;
 
@@ -599,25 +600,6 @@ public abstract class CalendarBookingLocalServiceBaseImpl
 	}
 
 	/**
-	 * Returns the calendar importer local service.
-	 *
-	 * @return the calendar importer local service
-	 */
-	public com.liferay.calendar.service.CalendarImporterLocalService getCalendarImporterLocalService() {
-		return calendarImporterLocalService;
-	}
-
-	/**
-	 * Sets the calendar importer local service.
-	 *
-	 * @param calendarImporterLocalService the calendar importer local service
-	 */
-	public void setCalendarImporterLocalService(
-		com.liferay.calendar.service.CalendarImporterLocalService calendarImporterLocalService) {
-		this.calendarImporterLocalService = calendarImporterLocalService;
-	}
-
-	/**
 	 * Returns the calendar notification template local service.
 	 *
 	 * @return the calendar notification template local service
@@ -1095,7 +1077,7 @@ public abstract class CalendarBookingLocalServiceBaseImpl
 	 *
 	 * @return the social activity local service
 	 */
-	public com.liferay.portlet.social.service.SocialActivityLocalService getSocialActivityLocalService() {
+	public com.liferay.social.kernel.service.SocialActivityLocalService getSocialActivityLocalService() {
 		return socialActivityLocalService;
 	}
 
@@ -1105,7 +1087,7 @@ public abstract class CalendarBookingLocalServiceBaseImpl
 	 * @param socialActivityLocalService the social activity local service
 	 */
 	public void setSocialActivityLocalService(
-		com.liferay.portlet.social.service.SocialActivityLocalService socialActivityLocalService) {
+		com.liferay.social.kernel.service.SocialActivityLocalService socialActivityLocalService) {
 		this.socialActivityLocalService = socialActivityLocalService;
 	}
 
@@ -1133,7 +1115,7 @@ public abstract class CalendarBookingLocalServiceBaseImpl
 	 *
 	 * @return the social activity counter local service
 	 */
-	public com.liferay.portlet.social.service.SocialActivityCounterLocalService getSocialActivityCounterLocalService() {
+	public com.liferay.social.kernel.service.SocialActivityCounterLocalService getSocialActivityCounterLocalService() {
 		return socialActivityCounterLocalService;
 	}
 
@@ -1143,7 +1125,7 @@ public abstract class CalendarBookingLocalServiceBaseImpl
 	 * @param socialActivityCounterLocalService the social activity counter local service
 	 */
 	public void setSocialActivityCounterLocalService(
-		com.liferay.portlet.social.service.SocialActivityCounterLocalService socialActivityCounterLocalService) {
+		com.liferay.social.kernel.service.SocialActivityCounterLocalService socialActivityCounterLocalService) {
 		this.socialActivityCounterLocalService = socialActivityCounterLocalService;
 	}
 
@@ -1268,8 +1250,6 @@ public abstract class CalendarBookingLocalServiceBaseImpl
 	protected CalendarBookingPersistence calendarBookingPersistence;
 	@BeanReference(type = CalendarBookingFinder.class)
 	protected CalendarBookingFinder calendarBookingFinder;
-	@BeanReference(type = com.liferay.calendar.service.CalendarImporterLocalService.class)
-	protected com.liferay.calendar.service.CalendarImporterLocalService calendarImporterLocalService;
 	@BeanReference(type = com.liferay.calendar.service.CalendarNotificationTemplateLocalService.class)
 	protected com.liferay.calendar.service.CalendarNotificationTemplateLocalService calendarNotificationTemplateLocalService;
 	@BeanReference(type = CalendarNotificationTemplatePersistence.class)
@@ -1320,12 +1300,12 @@ public abstract class CalendarBookingLocalServiceBaseImpl
 	protected com.liferay.portlet.ratings.service.RatingsStatsLocalService ratingsStatsLocalService;
 	@ServiceReference(type = RatingsStatsPersistence.class)
 	protected RatingsStatsPersistence ratingsStatsPersistence;
-	@ServiceReference(type = com.liferay.portlet.social.service.SocialActivityLocalService.class)
-	protected com.liferay.portlet.social.service.SocialActivityLocalService socialActivityLocalService;
+	@ServiceReference(type = com.liferay.social.kernel.service.SocialActivityLocalService.class)
+	protected com.liferay.social.kernel.service.SocialActivityLocalService socialActivityLocalService;
 	@ServiceReference(type = SocialActivityPersistence.class)
 	protected SocialActivityPersistence socialActivityPersistence;
-	@ServiceReference(type = com.liferay.portlet.social.service.SocialActivityCounterLocalService.class)
-	protected com.liferay.portlet.social.service.SocialActivityCounterLocalService socialActivityCounterLocalService;
+	@ServiceReference(type = com.liferay.social.kernel.service.SocialActivityCounterLocalService.class)
+	protected com.liferay.social.kernel.service.SocialActivityCounterLocalService socialActivityCounterLocalService;
 	@ServiceReference(type = SocialActivityCounterPersistence.class)
 	protected SocialActivityCounterPersistence socialActivityCounterPersistence;
 	@ServiceReference(type = com.liferay.trash.kernel.service.TrashEntryLocalService.class)
