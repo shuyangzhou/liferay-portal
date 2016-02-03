@@ -16,6 +16,10 @@ package com.liferay.portlet.asset.model.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.asset.kernel.model.AssetCategory;
+import com.liferay.asset.kernel.model.AssetCategoryModel;
+import com.liferay.asset.kernel.model.AssetCategorySoap;
+
 import com.liferay.portal.LocaleException;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -34,9 +38,6 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
 
-import com.liferay.portlet.asset.model.AssetCategory;
-import com.liferay.portlet.asset.model.AssetCategoryModel;
-import com.liferay.portlet.asset.model.AssetCategorySoap;
 import com.liferay.portlet.expando.model.ExpandoBridge;
 import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 import com.liferay.portlet.exportimport.lar.StagedModelType;
@@ -124,13 +125,13 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
 	public static final String TX_MANAGER = "liferayTransactionManager";
 	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
-				"value.object.entity.cache.enabled.com.liferay.portlet.asset.model.AssetCategory"),
+				"value.object.entity.cache.enabled.com.liferay.asset.kernel.model.AssetCategory"),
 			true);
 	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
-				"value.object.finder.cache.enabled.com.liferay.portlet.asset.model.AssetCategory"),
+				"value.object.finder.cache.enabled.com.liferay.asset.kernel.model.AssetCategory"),
 			true);
 	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
-				"value.object.column.bitmask.enabled.com.liferay.portlet.asset.model.AssetCategory"),
+				"value.object.column.bitmask.enabled.com.liferay.asset.kernel.model.AssetCategory"),
 			true);
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 	public static final long GROUPID_COLUMN_BITMASK = 2L;
@@ -206,7 +207,7 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 				"value.object.finder.cache.enabled.AssetEntries_AssetCategories"),
 			true);
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.portal.util.PropsUtil.get(
-				"lock.expiration.time.com.liferay.portlet.asset.model.AssetCategory"));
+				"lock.expiration.time.com.liferay.asset.kernel.model.AssetCategory"));
 
 	public AssetCategoryModelImpl() {
 	}
@@ -1202,7 +1203,7 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 		StringBundler sb = new StringBundler(52);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.portlet.asset.model.AssetCategory");
+		sb.append("com.liferay.asset.kernel.model.AssetCategory");
 		sb.append("</model-name>");
 
 		sb.append(

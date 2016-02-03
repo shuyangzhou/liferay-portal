@@ -14,8 +14,8 @@
 
 package com.liferay.portal.verify.model;
 
+import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.portal.kernel.verify.model.VerifiableResourcedModel;
-import com.liferay.portlet.asset.model.AssetVocabulary;
 
 /**
  * @author Brian Wing Shun Chan
