@@ -20,7 +20,7 @@ import com.liferay.portal.kernel.util.Function;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.blogs.linkback.LinkbackConsumer;
-import com.liferay.portlet.blogs.model.BlogsEntry;
+import com.liferay.blogs.kernel.model.BlogsEntry;
 
 /**
  * @author André de Oliveira

@@ -29,7 +29,7 @@ import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.blogs.linkback.LinkbackConsumer;
 import com.liferay.portlet.blogs.linkback.LinkbackConsumerUtil;
-import com.liferay.portlet.blogs.model.BlogsEntry;
+import com.liferay.blogs.kernel.model.BlogsEntry;
 
 /**
  * @author Alexander Chow

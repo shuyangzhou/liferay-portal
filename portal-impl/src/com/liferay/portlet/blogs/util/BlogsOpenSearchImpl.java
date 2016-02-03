@@ -19,7 +19,7 @@ import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portlet.blogs.model.BlogsEntry;
+import com.liferay.blogs.kernel.model.BlogsEntry;
 
 /**
  * @author Brian Wing Shun Chan
