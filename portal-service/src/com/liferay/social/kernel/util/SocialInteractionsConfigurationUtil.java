@@ -16,7 +16,7 @@ package com.liferay.social.kernel.util;
 
 import com.liferay.portal.kernel.util.PrefsParamUtil;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
-import com.liferay.portlet.social.util.SocialInteractionsConfiguration.SocialInteractionsType;
+import com.liferay.social.kernel.util.SocialInteractionsConfiguration.SocialInteractionsType;
 
 import javax.portlet.PortletPreferences;
 

@@ -22,7 +22,7 @@ import com.liferay.portal.model.Group;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portlet.social.service.persistence.SocialRequestUtil;
+import com.liferay.social.kernel.service.persistence.SocialRequestUtil;
 
 import java.util.List;
 

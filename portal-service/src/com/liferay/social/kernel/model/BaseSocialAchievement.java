@@ -26,8 +26,8 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.asset.model.AssetEntry;
 import com.liferay.portlet.asset.service.AssetEntryLocalServiceUtil;
-import com.liferay.portlet.social.service.SocialActivityAchievementLocalServiceUtil;
-import com.liferay.portlet.social.service.SocialActivityCounterLocalServiceUtil;
+import com.liferay.social.kernel.service.SocialActivityAchievementLocalServiceUtil;
+import com.liferay.social.kernel.service.SocialActivityCounterLocalServiceUtil;
 
 /**
  * @author Zsolt Berentey

@@ -14,7 +14,7 @@
 
 package com.liferay.social.kernel.util.comparator;
 
-import com.liferay.portlet.social.model.SocialActivityDefinition;
+import com.liferay.social.kernel.model.SocialActivityDefinition;
 
 import java.util.Comparator;
 import java.util.Locale;

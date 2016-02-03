@@ -15,7 +15,7 @@
 package com.liferay.social.kernel.util.comparator;
 
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portlet.social.model.SocialActivitySet;
+import com.liferay.social.kernel.model.SocialActivitySet;
 
 /**
  * @author Matthew Kong

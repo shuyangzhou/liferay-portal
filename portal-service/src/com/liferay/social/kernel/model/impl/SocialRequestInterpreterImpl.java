@@ -15,9 +15,9 @@
 package com.liferay.social.kernel.model.impl;
 
 import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portlet.social.model.SocialRequest;
-import com.liferay.portlet.social.model.SocialRequestFeedEntry;
-import com.liferay.portlet.social.model.SocialRequestInterpreter;
+import com.liferay.social.kernel.model.SocialRequest;
+import com.liferay.social.kernel.model.SocialRequestFeedEntry;
+import com.liferay.social.kernel.model.SocialRequestInterpreter;
 
 import java.util.HashSet;
 import java.util.Set;

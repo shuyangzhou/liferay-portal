@@ -14,7 +14,7 @@
 
 package com.liferay.social.kernel.model;
 
-import com.liferay.portlet.social.util.SocialRelationTypesUtil;
+import com.liferay.social.kernel.util.SocialRelationTypesUtil;
 
 /**
  * @author Brian Wing Shun Chan

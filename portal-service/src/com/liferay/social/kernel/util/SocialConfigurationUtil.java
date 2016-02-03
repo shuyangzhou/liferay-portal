@@ -15,7 +15,7 @@
 package com.liferay.social.kernel.util;
 
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
-import com.liferay.portlet.social.model.SocialActivityDefinition;
+import com.liferay.social.kernel.model.SocialActivityDefinition;
 
 import java.util.List;
 
