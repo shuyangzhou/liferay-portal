@@ -14,7 +14,7 @@
 
 package com.liferay.portal.kernel.transaction;
 
-import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.transaction.TransactionAttribute.Builder;
 import com.liferay.portal.kernel.util.PwdGenerator;
 import com.liferay.portal.model.ClassName;
