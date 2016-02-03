@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.messageboards.service.impl;
 
+import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.increment.BufferedIncrement;
@@ -39,7 +40,6 @@ import com.liferay.portal.model.ResourceConstants;
 import com.liferay.portal.model.SystemEventConstants;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
-import com.liferay.portlet.asset.model.AssetEntry;
 import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
 import com.liferay.portlet.exportimport.lar.ExportImportThreadLocal;
 import com.liferay.portlet.messageboards.constants.MBConstants;

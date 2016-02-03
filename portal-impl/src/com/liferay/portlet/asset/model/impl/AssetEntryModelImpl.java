@@ -16,6 +16,10 @@ package com.liferay.portlet.asset.model.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.asset.kernel.model.AssetEntry;
+import com.liferay.asset.kernel.model.AssetEntryModel;
+import com.liferay.asset.kernel.model.AssetEntrySoap;
+
 import com.liferay.portal.LocaleException;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -34,9 +38,6 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
 
-import com.liferay.portlet.asset.model.AssetEntry;
-import com.liferay.portlet.asset.model.AssetEntryModel;
-import com.liferay.portlet.asset.model.AssetEntrySoap;
 import com.liferay.portlet.expando.model.ExpandoBridge;
 import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
@@ -145,13 +146,13 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
 	public static final String TX_MANAGER = "liferayTransactionManager";
 	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
-				"value.object.entity.cache.enabled.com.liferay.portlet.asset.model.AssetEntry"),
+				"value.object.entity.cache.enabled.com.liferay.asset.kernel.model.AssetEntry"),
 			true);
 	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
-				"value.object.finder.cache.enabled.com.liferay.portlet.asset.model.AssetEntry"),
+				"value.object.finder.cache.enabled.com.liferay.asset.kernel.model.AssetEntry"),
 			true);
 	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
-				"value.object.column.bitmask.enabled.com.liferay.portlet.asset.model.AssetEntry"),
+				"value.object.column.bitmask.enabled.com.liferay.asset.kernel.model.AssetEntry"),
 			true);
 	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
 	public static final long CLASSPK_COLUMN_BITMASK = 2L;
@@ -252,7 +253,7 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 				"value.object.finder.cache.enabled.AssetEntries_AssetTags"),
 			true);
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.portal.util.PropsUtil.get(
-				"lock.expiration.time.com.liferay.portlet.asset.model.AssetEntry"));
+				"lock.expiration.time.com.liferay.asset.kernel.model.AssetEntry"));
 
 	public AssetEntryModelImpl() {
 	}
@@ -1707,7 +1708,7 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 		StringBundler sb = new StringBundler(85);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.portlet.asset.model.AssetEntry");
+		sb.append("com.liferay.asset.kernel.model.AssetEntry");
 		sb.append("</model-name>");
 
 		sb.append(

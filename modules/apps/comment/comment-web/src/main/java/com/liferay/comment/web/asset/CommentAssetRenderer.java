@@ -14,6 +14,8 @@
 
 package com.liferay.comment.web.asset;
 
+import com.liferay.asset.kernel.model.AssetRendererFactory;
+import com.liferay.asset.kernel.model.BaseJSPAssetRenderer;
 import com.liferay.comment.web.constants.CommentPortletKeys;
 import com.liferay.portal.kernel.comment.Comment;
 import com.liferay.portal.kernel.comment.CommentManagerUtil;
@@ -30,8 +32,6 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.asset.model.AssetRendererFactory;
-import com.liferay.portlet.asset.model.BaseJSPAssetRenderer;
 
 import java.util.Date;
 import java.util.Locale;

@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.documentlibrary.sharepoint;
 
+import com.liferay.asset.kernel.service.AssetTagLocalServiceUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
@@ -31,7 +32,6 @@ import com.liferay.portal.sharepoint.BaseSharepointStorageImpl;
 import com.liferay.portal.sharepoint.SharepointRequest;
 import com.liferay.portal.sharepoint.SharepointUtil;
 import com.liferay.portal.sharepoint.Tree;
-import com.liferay.portlet.asset.service.AssetTagLocalServiceUtil;
 import com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException;
 import com.liferay.portlet.documentlibrary.exception.NoSuchFolderException;
 import com.liferay.portlet.documentlibrary.model.DLFileEntryConstants;
