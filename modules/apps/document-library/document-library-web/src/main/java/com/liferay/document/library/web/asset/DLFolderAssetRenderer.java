@@ -14,6 +14,7 @@
 
 package com.liferay.document.library.web.asset;
 
+import com.liferay.document.library.kernel.model.DLFolder;
 import com.liferay.document.library.web.constants.DLPortletKeys;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -28,7 +29,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.asset.model.AssetRendererFactory;
 import com.liferay.portlet.asset.model.BaseJSPAssetRenderer;
-import com.liferay.portlet.documentlibrary.model.DLFolder;
 import com.liferay.portlet.documentlibrary.service.permission.DLFolderPermission;
 import com.liferay.trash.kernel.util.TrashUtil;
 

@@ -14,6 +14,10 @@
 
 package com.liferay.exportimport.staging;
 
+import com.liferay.document.library.kernel.exception.DuplicateFileEntryException;
+import com.liferay.document.library.kernel.exception.FileExtensionException;
+import com.liferay.document.library.kernel.exception.FileNameException;
+import com.liferay.document.library.kernel.exception.FileSizeException;
 import com.liferay.portal.LocaleException;
 import com.liferay.portal.RemoteOptionsException;
 import com.liferay.portal.exception.LayoutPrototypeException;
@@ -99,10 +103,6 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PrefsPropsUtil;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.portlet.documentlibrary.exception.DuplicateFileEntryException;
-import com.liferay.portlet.documentlibrary.exception.FileExtensionException;
-import com.liferay.portlet.documentlibrary.exception.FileNameException;
-import com.liferay.portlet.documentlibrary.exception.FileSizeException;
 import com.liferay.portlet.exportimport.background.task.BackgroundTaskExecutorNames;
 import com.liferay.portlet.exportimport.configuration.ExportImportConfigurationConstants;
 import com.liferay.portlet.exportimport.configuration.ExportImportConfigurationParameterMapFactory;

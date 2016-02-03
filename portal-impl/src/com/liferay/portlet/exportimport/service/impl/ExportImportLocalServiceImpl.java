@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.exportimport.service.impl;
 
+import com.liferay.document.library.kernel.util.DLValidatorUtil;
 import com.liferay.portal.LocaleException;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskManagerUtil;
@@ -24,7 +25,6 @@ import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.model.Portlet;
 import com.liferay.portal.service.ServiceContext;
-import com.liferay.portlet.documentlibrary.util.DLValidatorUtil;
 import com.liferay.portlet.exportimport.background.task.BackgroundTaskExecutorNames;
 import com.liferay.portlet.exportimport.controller.ExportController;
 import com.liferay.portlet.exportimport.controller.ExportImportControllerRegistryUtil;

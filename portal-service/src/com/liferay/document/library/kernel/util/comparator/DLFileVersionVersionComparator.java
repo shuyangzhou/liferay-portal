@@ -14,7 +14,7 @@
 
 package com.liferay.document.library.kernel.util.comparator;
 
-import com.liferay.portlet.documentlibrary.model.DLFileVersion;
+import com.liferay.document.library.kernel.model.DLFileVersion;
 
 import java.util.Comparator;
 

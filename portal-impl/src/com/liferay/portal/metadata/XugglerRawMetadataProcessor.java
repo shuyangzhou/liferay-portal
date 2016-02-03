@@ -14,6 +14,8 @@
 
 package com.liferay.portal.metadata;
 
+import com.liferay.document.library.kernel.util.AudioProcessorUtil;
+import com.liferay.document.library.kernel.util.VideoProcessorUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
@@ -23,8 +25,6 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xuggler.XugglerUtil;
-import com.liferay.portlet.documentlibrary.util.AudioProcessorUtil;
-import com.liferay.portlet.documentlibrary.util.VideoProcessorUtil;
 import com.liferay.portlet.exportimport.lar.PortletDataContext;
 
 import com.xuggle.xuggler.IContainer;

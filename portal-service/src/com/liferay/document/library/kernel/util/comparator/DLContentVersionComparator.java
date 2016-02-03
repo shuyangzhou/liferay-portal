@@ -14,8 +14,8 @@
 
 package com.liferay.document.library.kernel.util.comparator;
 
+import com.liferay.document.library.kernel.model.DLContent;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portlet.documentlibrary.model.DLContent;
 
 /**
  * @author Shuyang Zhou

@@ -14,11 +14,11 @@
 
 package com.liferay.document.library.kernel.display.context;
 
+import com.liferay.document.library.kernel.model.DLFileEntryType;
 import com.liferay.portal.kernel.display.context.BaseDisplayContextFactory;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileShortcut;
 import com.liferay.portal.kernel.repository.model.FileVersion;
-import com.liferay.portlet.documentlibrary.model.DLFileEntryType;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

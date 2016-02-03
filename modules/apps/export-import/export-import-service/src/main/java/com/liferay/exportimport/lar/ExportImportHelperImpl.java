@@ -14,6 +14,7 @@
 
 package com.liferay.exportimport.lar;
 
+import com.liferay.document.library.kernel.service.DLFileEntryLocalService;
 import com.liferay.portal.exception.NoSuchLayoutException;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Disjunction;
@@ -72,7 +73,6 @@ import com.liferay.portal.service.SystemEventLocalService;
 import com.liferay.portal.service.UserLocalService;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.portlet.documentlibrary.service.DLFileEntryLocalService;
 import com.liferay.portlet.exportimport.lar.DefaultConfigurationPortletDataHandler;
 import com.liferay.portlet.exportimport.lar.ExportImportDateUtil;
 import com.liferay.portlet.exportimport.lar.ExportImportHelper;
