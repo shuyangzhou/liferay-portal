@@ -135,7 +135,7 @@ else {
 		searchContainer="<%= assetBrowserSearch %>"
 	>
 		<liferay-ui:search-container-row
-			className="com.liferay.portlet.asset.model.AssetEntry"
+			className="com.liferay.asset.kernel.model.AssetEntry"
 			escapedModel="<%= true %>"
 			modelVar="assetEntry"
 		>

@@ -139,7 +139,7 @@ public class SocialActivityCounterLocalServiceWrapper
 	*/
 	@Override
 	public void deleteActivityCounters(
-		com.liferay.portlet.asset.model.AssetEntry assetEntry)
+		com.liferay.asset.kernel.model.AssetEntry assetEntry)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_socialActivityCounterLocalService.deleteActivityCounters(assetEntry);
 	}

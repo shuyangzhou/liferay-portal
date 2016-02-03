@@ -14,13 +14,13 @@
 
 package com.liferay.dynamic.data.lists.web.asset;
 
+import com.liferay.asset.kernel.model.ClassType;
+import com.liferay.asset.kernel.model.ClassTypeReader;
 import com.liferay.dynamic.data.lists.model.DDLRecordSet;
 import com.liferay.dynamic.data.lists.model.DDLRecordSetConstants;
 import com.liferay.dynamic.data.lists.service.DDLRecordSetServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portlet.asset.model.ClassType;
-import com.liferay.portlet.asset.model.ClassTypeReader;
 
 import java.util.ArrayList;
 import java.util.List;

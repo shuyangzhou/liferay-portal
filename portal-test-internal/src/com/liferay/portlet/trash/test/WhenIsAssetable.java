@@ -14,8 +14,8 @@
 
 package com.liferay.portlet.trash.test;
 
+import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.portal.model.ClassedModel;
-import com.liferay.portlet.asset.model.AssetEntry;
 
 /**
  * @author Cristina González
