@@ -19,6 +19,11 @@ import com.liferay.announcements.kernel.service.persistence.AnnouncementsDeliver
 import com.liferay.blogs.kernel.service.persistence.BlogsStatsUserFinder;
 import com.liferay.blogs.kernel.service.persistence.BlogsStatsUserPersistence;
 
+import com.liferay.document.library.kernel.service.persistence.DLFileEntryFinder;
+import com.liferay.document.library.kernel.service.persistence.DLFileEntryPersistence;
+import com.liferay.document.library.kernel.service.persistence.DLFileRankFinder;
+import com.liferay.document.library.kernel.service.persistence.DLFileRankPersistence;
+
 import com.liferay.message.boards.kernel.service.persistence.MBBanPersistence;
 import com.liferay.message.boards.kernel.service.persistence.MBMessageFinder;
 import com.liferay.message.boards.kernel.service.persistence.MBMessagePersistence;
@@ -71,10 +76,6 @@ import com.liferay.portal.util.PortalUtil;
 
 import com.liferay.portlet.asset.service.persistence.AssetEntryFinder;
 import com.liferay.portlet.asset.service.persistence.AssetEntryPersistence;
-import com.liferay.portlet.documentlibrary.service.persistence.DLFileEntryFinder;
-import com.liferay.portlet.documentlibrary.service.persistence.DLFileEntryPersistence;
-import com.liferay.portlet.documentlibrary.service.persistence.DLFileRankFinder;
-import com.liferay.portlet.documentlibrary.service.persistence.DLFileRankPersistence;
 import com.liferay.portlet.expando.service.persistence.ExpandoRowPersistence;
 
 import com.liferay.ratings.kernel.service.persistence.RatingsStatsFinder;
@@ -1405,7 +1406,7 @@ public abstract class UserServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the document library file entry local service
 	 */
-	public com.liferay.portlet.documentlibrary.service.DLFileEntryLocalService getDLFileEntryLocalService() {
+	public com.liferay.document.library.kernel.service.DLFileEntryLocalService getDLFileEntryLocalService() {
 		return dlFileEntryLocalService;
 	}
 
@@ -1415,7 +1416,7 @@ public abstract class UserServiceBaseImpl extends BaseServiceImpl
 	 * @param dlFileEntryLocalService the document library file entry local service
 	 */
 	public void setDLFileEntryLocalService(
-		com.liferay.portlet.documentlibrary.service.DLFileEntryLocalService dlFileEntryLocalService) {
+		com.liferay.document.library.kernel.service.DLFileEntryLocalService dlFileEntryLocalService) {
 		this.dlFileEntryLocalService = dlFileEntryLocalService;
 	}
 
@@ -1424,7 +1425,7 @@ public abstract class UserServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the document library file entry remote service
 	 */
-	public com.liferay.portlet.documentlibrary.service.DLFileEntryService getDLFileEntryService() {
+	public com.liferay.document.library.kernel.service.DLFileEntryService getDLFileEntryService() {
 		return dlFileEntryService;
 	}
 
@@ -1434,7 +1435,7 @@ public abstract class UserServiceBaseImpl extends BaseServiceImpl
 	 * @param dlFileEntryService the document library file entry remote service
 	 */
 	public void setDLFileEntryService(
-		com.liferay.portlet.documentlibrary.service.DLFileEntryService dlFileEntryService) {
+		com.liferay.document.library.kernel.service.DLFileEntryService dlFileEntryService) {
 		this.dlFileEntryService = dlFileEntryService;
 	}
 
@@ -1480,7 +1481,7 @@ public abstract class UserServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the document library file rank local service
 	 */
-	public com.liferay.portlet.documentlibrary.service.DLFileRankLocalService getDLFileRankLocalService() {
+	public com.liferay.document.library.kernel.service.DLFileRankLocalService getDLFileRankLocalService() {
 		return dlFileRankLocalService;
 	}
 
@@ -1490,7 +1491,7 @@ public abstract class UserServiceBaseImpl extends BaseServiceImpl
 	 * @param dlFileRankLocalService the document library file rank local service
 	 */
 	public void setDLFileRankLocalService(
-		com.liferay.portlet.documentlibrary.service.DLFileRankLocalService dlFileRankLocalService) {
+		com.liferay.document.library.kernel.service.DLFileRankLocalService dlFileRankLocalService) {
 		this.dlFileRankLocalService = dlFileRankLocalService;
 	}
 
@@ -2415,16 +2416,16 @@ public abstract class UserServiceBaseImpl extends BaseServiceImpl
 	protected BlogsStatsUserPersistence blogsStatsUserPersistence;
 	@BeanReference(type = BlogsStatsUserFinder.class)
 	protected BlogsStatsUserFinder blogsStatsUserFinder;
-	@BeanReference(type = com.liferay.portlet.documentlibrary.service.DLFileEntryLocalService.class)
-	protected com.liferay.portlet.documentlibrary.service.DLFileEntryLocalService dlFileEntryLocalService;
-	@BeanReference(type = com.liferay.portlet.documentlibrary.service.DLFileEntryService.class)
-	protected com.liferay.portlet.documentlibrary.service.DLFileEntryService dlFileEntryService;
+	@BeanReference(type = com.liferay.document.library.kernel.service.DLFileEntryLocalService.class)
+	protected com.liferay.document.library.kernel.service.DLFileEntryLocalService dlFileEntryLocalService;
+	@BeanReference(type = com.liferay.document.library.kernel.service.DLFileEntryService.class)
+	protected com.liferay.document.library.kernel.service.DLFileEntryService dlFileEntryService;
 	@BeanReference(type = DLFileEntryPersistence.class)
 	protected DLFileEntryPersistence dlFileEntryPersistence;
 	@BeanReference(type = DLFileEntryFinder.class)
 	protected DLFileEntryFinder dlFileEntryFinder;
-	@BeanReference(type = com.liferay.portlet.documentlibrary.service.DLFileRankLocalService.class)
-	protected com.liferay.portlet.documentlibrary.service.DLFileRankLocalService dlFileRankLocalService;
+	@BeanReference(type = com.liferay.document.library.kernel.service.DLFileRankLocalService.class)
+	protected com.liferay.document.library.kernel.service.DLFileRankLocalService dlFileRankLocalService;
 	@BeanReference(type = DLFileRankPersistence.class)
 	protected DLFileRankPersistence dlFileRankPersistence;
 	@BeanReference(type = DLFileRankFinder.class)

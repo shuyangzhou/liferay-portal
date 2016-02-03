@@ -16,6 +16,10 @@ package com.liferay.portlet.documentlibrary.model.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.document.library.kernel.model.DLFileVersion;
+import com.liferay.document.library.kernel.model.DLFileVersionModel;
+import com.liferay.document.library.kernel.model.DLFileVersionSoap;
+
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
@@ -32,9 +36,6 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
 
-import com.liferay.portlet.documentlibrary.model.DLFileVersion;
-import com.liferay.portlet.documentlibrary.model.DLFileVersionModel;
-import com.liferay.portlet.documentlibrary.model.DLFileVersionSoap;
 import com.liferay.portlet.expando.model.ExpandoBridge;
 import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 import com.liferay.portlet.exportimport.lar.StagedModelType;
@@ -143,13 +144,13 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
 	public static final String TX_MANAGER = "liferayTransactionManager";
 	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
-				"value.object.entity.cache.enabled.com.liferay.portlet.documentlibrary.model.DLFileVersion"),
+				"value.object.entity.cache.enabled.com.liferay.document.library.kernel.model.DLFileVersion"),
 			true);
 	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
-				"value.object.finder.cache.enabled.com.liferay.portlet.documentlibrary.model.DLFileVersion"),
+				"value.object.finder.cache.enabled.com.liferay.document.library.kernel.model.DLFileVersion"),
 			true);
 	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
-				"value.object.column.bitmask.enabled.com.liferay.portlet.documentlibrary.model.DLFileVersion"),
+				"value.object.column.bitmask.enabled.com.liferay.document.library.kernel.model.DLFileVersion"),
 			true);
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 	public static final long FILEENTRYID_COLUMN_BITMASK = 2L;
@@ -228,7 +229,7 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 	}
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.portal.util.PropsUtil.get(
-				"lock.expiration.time.com.liferay.portlet.documentlibrary.model.DLFileVersion"));
+				"lock.expiration.time.com.liferay.document.library.kernel.model.DLFileVersion"));
 
 	public DLFileVersionModelImpl() {
 	}
@@ -1480,7 +1481,7 @@ public class DLFileVersionModelImpl extends BaseModelImpl<DLFileVersion>
 		StringBundler sb = new StringBundler(88);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.portlet.documentlibrary.model.DLFileVersion");
+		sb.append("com.liferay.document.library.kernel.model.DLFileVersion");
 		sb.append("</model-name>");
 
 		sb.append(
