@@ -559,7 +559,8 @@ public class GroupWrapper implements Group, ModelWrapper<Group> {
 
 	@Override
 	public java.lang.String getLogoURL(
-		com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay, boolean useDefault) {
+		com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay,
+		boolean useDefault) {
 		return _group.getLogoURL(themeDisplay, useDefault);
 	}
 
