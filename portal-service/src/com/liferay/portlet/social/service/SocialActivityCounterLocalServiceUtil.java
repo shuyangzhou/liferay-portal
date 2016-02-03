@@ -141,7 +141,7 @@ public class SocialActivityCounterLocalServiceUtil {
 	* @param assetEntry the asset entry
 	*/
 	public static void deleteActivityCounters(
-		com.liferay.portlet.asset.model.AssetEntry assetEntry)
+		com.liferay.asset.kernel.model.AssetEntry assetEntry)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().deleteActivityCounters(assetEntry);
 	}

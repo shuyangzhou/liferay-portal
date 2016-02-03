@@ -14,6 +14,9 @@
 
 package com.liferay.dynamic.data.lists.web.asset;
 
+import com.liferay.asset.kernel.model.AssetRendererFactory;
+import com.liferay.asset.kernel.model.BaseJSPAssetRenderer;
+import com.liferay.asset.kernel.model.DDMFormValuesReader;
 import com.liferay.dynamic.data.lists.constants.DDLPortletKeys;
 import com.liferay.dynamic.data.lists.constants.DDLWebKeys;
 import com.liferay.dynamic.data.lists.model.DDLRecord;
@@ -30,9 +33,6 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.asset.model.AssetRendererFactory;
-import com.liferay.portlet.asset.model.BaseJSPAssetRenderer;
-import com.liferay.portlet.asset.model.DDMFormValuesReader;
 
 import java.util.Locale;
 

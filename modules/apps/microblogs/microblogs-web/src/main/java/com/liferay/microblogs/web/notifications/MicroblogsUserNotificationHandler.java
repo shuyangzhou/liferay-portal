@@ -14,6 +14,7 @@
 
 package com.liferay.microblogs.web.notifications;
 
+import com.liferay.asset.kernel.model.AssetRenderer;
 import com.liferay.microblogs.constants.MicroblogsPortletKeys;
 import com.liferay.microblogs.model.MicroblogsEntry;
 import com.liferay.microblogs.model.MicroblogsEntryConstants;
@@ -27,7 +28,6 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalService;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.asset.model.AssetRenderer;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

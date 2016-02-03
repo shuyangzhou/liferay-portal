@@ -14,6 +14,12 @@
 
 package com.liferay.portlet.asset.service.persistence.test;
 
+import com.liferay.asset.kernel.exception.NoSuchCategoryPropertyException;
+import com.liferay.asset.kernel.model.AssetCategoryProperty;
+import com.liferay.asset.kernel.service.AssetCategoryPropertyLocalServiceUtil;
+import com.liferay.asset.kernel.service.persistence.AssetCategoryPropertyPersistence;
+import com.liferay.asset.kernel.service.persistence.AssetCategoryPropertyUtil;
+
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -33,12 +39,6 @@ import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
-
-import com.liferay.portlet.asset.exception.NoSuchCategoryPropertyException;
-import com.liferay.portlet.asset.model.AssetCategoryProperty;
-import com.liferay.portlet.asset.service.AssetCategoryPropertyLocalServiceUtil;
-import com.liferay.portlet.asset.service.persistence.AssetCategoryPropertyPersistence;
-import com.liferay.portlet.asset.service.persistence.AssetCategoryPropertyUtil;
 
 import org.junit.After;
 import org.junit.Assert;

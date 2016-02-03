@@ -14,6 +14,7 @@
 
 package com.liferay.dynamic.data.lists.asset;
 
+import com.liferay.asset.kernel.model.DDMFormValuesReader;
 import com.liferay.dynamic.data.lists.web.asset.DDLRecordDDMFormValuesReader;
 import com.liferay.dynamic.data.mapping.kernel.DDMForm;
 import com.liferay.dynamic.data.mapping.kernel.DDMFormField;
@@ -23,7 +24,6 @@ import com.liferay.dynamic.data.mapping.kernel.UnlocalizedValue;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portlet.asset.model.DDMFormValuesReader;
 
 import java.util.List;
 

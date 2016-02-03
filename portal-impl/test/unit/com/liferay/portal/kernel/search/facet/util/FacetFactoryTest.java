@@ -79,7 +79,7 @@ public class FacetFactoryTest extends PowerMockito {
 		).thenReturn(
 			new String[] {
 				"com.liferay.portal.kernel.plugin.PluginPackage",
-				"com.liferay.portlet.asset.model.AssetEntry"
+				"com.liferay.asset.kernel.model.AssetEntry"
 			}
 		);
 

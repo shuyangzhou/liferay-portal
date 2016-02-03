@@ -27,7 +27,15 @@ taglib uri="http://liferay.com/tld/trash" prefix="liferay-trash" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %><%@
 taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
-<%@ page import="com.liferay.frontend.taglib.servlet.taglib.AddMenuItem" %><%@
+<%@ page import="com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil" %><%@
+page import="com.liferay.asset.kernel.model.AssetEntry" %><%@
+page import="com.liferay.asset.kernel.model.AssetRenderer" %><%@
+page import="com.liferay.asset.kernel.model.AssetRendererFactory" %><%@
+page import="com.liferay.asset.kernel.model.AssetTag" %><%@
+page import="com.liferay.asset.kernel.service.AssetEntryServiceUtil" %><%@
+page import="com.liferay.asset.kernel.service.AssetTagLocalServiceUtil" %><%@
+page import="com.liferay.asset.kernel.service.persistence.AssetEntryQuery" %><%@
+page import="com.liferay.frontend.taglib.servlet.taglib.AddMenuItem" %><%@
 page import="com.liferay.message.boards.display.context.MBHomeDisplayContext" %><%@
 page import="com.liferay.message.boards.web.constants.MBPortletKeys" %><%@
 page import="com.liferay.message.boards.web.constants.MBWebKeys" %><%@
@@ -99,14 +107,6 @@ page import="com.liferay.portal.util.PropsValues" %><%@
 page import="com.liferay.portlet.PortalPreferences" %><%@
 page import="com.liferay.portlet.PortletPreferencesFactoryUtil" %><%@
 page import="com.liferay.portlet.PortletURLFactoryUtil" %><%@
-page import="com.liferay.portlet.asset.AssetRendererFactoryRegistryUtil" %><%@
-page import="com.liferay.portlet.asset.model.AssetEntry" %><%@
-page import="com.liferay.portlet.asset.model.AssetRenderer" %><%@
-page import="com.liferay.portlet.asset.model.AssetRendererFactory" %><%@
-page import="com.liferay.portlet.asset.model.AssetTag" %><%@
-page import="com.liferay.portlet.asset.service.AssetEntryServiceUtil" %><%@
-page import="com.liferay.portlet.asset.service.AssetTagLocalServiceUtil" %><%@
-page import="com.liferay.portlet.asset.service.persistence.AssetEntryQuery" %><%@
 page import="com.liferay.portlet.asset.util.AssetUtil" %><%@
 page import="com.liferay.portlet.documentlibrary.antivirus.AntivirusScannerException" %><%@
 page import="com.liferay.portlet.documentlibrary.exception.DuplicateFileEntryException" %><%@
