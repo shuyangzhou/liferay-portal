@@ -3495,6 +3495,22 @@ else.
 
 - `com.liferay.portlet.useradmin.util` &rarr; `com.liferay.users.admin.kernel.util`
 
+- `com.liferay.portlet.ratings` &rarr; `com.liferay.ratings.kernel`
+
+- `com.liferay.portlet.ratings.definition` &rarr; `com.liferay.ratings.kernel.definition`
+
+- `com.liferay.portlet.ratings.display.context` &rarr; `com.liferay.ratings.kernel.display.context`
+
+- `com.liferay.portlet.ratings.exception` &rarr; `com.liferay.ratings.kernel.exception`
+
+- `com.liferay.portlet.ratings.model` &rarr; `com.liferay.ratings.kernel.model`
+
+- `com.liferay.portlet.ratings.service` &rarr; `com.liferay.ratings.kernel.service`
+
+- `com.liferay.portlet.ratings.service.persistence` &rarr; `com.liferay.ratings.kernel.service.persistence`
+
+- `com.liferay.portlet.ratings.transformer` &rarr; `com.liferay.ratings.kernel.transformer`
+
 #### Why was this change made?
 
 This change was necessary to solve the current split package problems and
