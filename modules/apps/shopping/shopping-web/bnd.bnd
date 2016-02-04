@@ -2,6 +2,8 @@ Bundle-Name: Liferay Shopping Web
 Bundle-SymbolicName: com.liferay.shopping.web
 Bundle-Version: 1.0.0
 Import-Package:\
+	com.liferay.exportimport.kernel.lar,\
+	\
 	com.liferay.portal.kernel.bean,\
 	com.liferay.portal.kernel.configuration,\
 	com.liferay.portal.kernel.exception,\
@@ -20,7 +22,6 @@ Import-Package:\
 	com.liferay.portal.struts,\
 	com.liferay.portal.theme,\
 	com.liferay.portal.webserver,\
-	com.liferay.exportimport.kernel.lar,\
 	com.liferay.shopping.configuration,\
 	com.liferay.shopping.exception,\
 	com.liferay.shopping.lar,\
