@@ -30,7 +30,7 @@ import com.liferay.portal.metatype.annotations.ExtendedObjectClassDefinition;
 public interface SearchEngineHelperConfiguration {
 
 	@Meta.AD(
-		deflt = "com.liferay.portal.kernel.plugin.PluginPackage|com.liferay.portlet.asset.model.AssetEntry",
+		deflt = "com.liferay.portal.kernel.plugin.PluginPackage|com.liferay.asset.kernel.model.AssetEntry",
 		required = false
 	)
 	public String[] excludedEntryClassNames();

@@ -128,7 +128,7 @@ tagsSearchContainer.setResults(tags);
 	>
 
 		<liferay-ui:search-container-row
-			className="com.liferay.portlet.asset.model.AssetTag"
+			className="com.liferay.asset.kernel.model.AssetTag"
 			keyProperty="tagId"
 			modelVar="tag"
 		>

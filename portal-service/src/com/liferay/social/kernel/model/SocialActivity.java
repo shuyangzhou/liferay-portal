@@ -54,7 +54,7 @@ public interface SocialActivity extends SocialActivityModel, PersistedModel {
 			}
 		};
 
-	public com.liferay.portlet.asset.model.AssetEntry getAssetEntry();
+	public com.liferay.asset.kernel.model.AssetEntry getAssetEntry();
 
 	public java.lang.String getExtraDataValue(java.lang.String key)
 		throws com.liferay.portal.kernel.json.JSONException;
@@ -66,7 +66,7 @@ public interface SocialActivity extends SocialActivityModel, PersistedModel {
 	public boolean isClassName(java.lang.String className);
 
 	public void setAssetEntry(
-		com.liferay.portlet.asset.model.AssetEntry assetEntry);
+		com.liferay.asset.kernel.model.AssetEntry assetEntry);
 
 	public void setExtraDataValue(java.lang.String key, java.lang.String value)
 		throws com.liferay.portal.kernel.json.JSONException;

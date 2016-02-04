@@ -253,7 +253,7 @@ public class DLAppHelperLocalServiceUtil {
 		getService().restoreFolderFromTrash(userId, folder);
 	}
 
-	public static com.liferay.portlet.asset.model.AssetEntry updateAsset(
+	public static com.liferay.asset.kernel.model.AssetEntry updateAsset(
 		long userId,
 		com.liferay.portal.kernel.repository.model.FileEntry fileEntry,
 		com.liferay.portal.kernel.repository.model.FileVersion fileVersion,
@@ -265,7 +265,7 @@ public class DLAppHelperLocalServiceUtil {
 			assetCategoryIds, assetTagNames, assetLinkEntryIds);
 	}
 
-	public static com.liferay.portlet.asset.model.AssetEntry updateAsset(
+	public static com.liferay.asset.kernel.model.AssetEntry updateAsset(
 		long userId,
 		com.liferay.portal.kernel.repository.model.FileEntry fileEntry,
 		com.liferay.portal.kernel.repository.model.FileVersion fileVersion,
@@ -275,7 +275,7 @@ public class DLAppHelperLocalServiceUtil {
 				   .updateAsset(userId, fileEntry, fileVersion, assetClassPk);
 	}
 
-	public static com.liferay.portlet.asset.model.AssetEntry updateAsset(
+	public static com.liferay.asset.kernel.model.AssetEntry updateAsset(
 		long userId, com.liferay.portal.kernel.repository.model.Folder folder,
 		long[] assetCategoryIds, java.lang.String[] assetTagNames,
 		long[] assetLinkEntryIds)
