@@ -340,7 +340,7 @@ public class JournalArticleWrapper implements JournalArticle,
 
 	@Override
 	public java.lang.String getArticleImageURL(
-		com.liferay.portal.theme.ThemeDisplay themeDisplay) {
+		com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay) {
 		return _journalArticle.getArticleImageURL(themeDisplay);
 	}
 
