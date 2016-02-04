@@ -12,29 +12,15 @@
  * details.
  */
 
-package com.liferay.portlet.calendar.exception;
-
-import com.liferay.portal.kernel.exception.PortalException;
+package com.liferay.portal.kernel.theme;
 
 /**
  * @author Brian Wing Shun Chan
- * @author Juan Fernández
  */
-public class ImportEventsException extends PortalException {
+public class ThemeGroupId extends ThemeCompanyId {
 
-	public ImportEventsException() {
-	}
-
-	public ImportEventsException(String msg) {
-		super(msg);
-	}
-
-	public ImportEventsException(String msg, Throwable cause) {
-		super(msg, cause);
-	}
-
-	public ImportEventsException(Throwable cause) {
-		super(cause);
+	public ThemeGroupId(String value, boolean pattern) {
+		super(value, pattern);
 	}
 
 }
