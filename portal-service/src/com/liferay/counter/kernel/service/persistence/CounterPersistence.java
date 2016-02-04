@@ -12,12 +12,12 @@
  * details.
  */
 
-package com.liferay.counter.service.persistence;
+package com.liferay.counter.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.counter.exception.NoSuchCounterException;
-import com.liferay.counter.model.Counter;
+import com.liferay.counter.kernel.exception.NoSuchCounterException;
+import com.liferay.counter.kernel.model.Counter;
 
 import com.liferay.portal.service.persistence.BasePersistence;
 

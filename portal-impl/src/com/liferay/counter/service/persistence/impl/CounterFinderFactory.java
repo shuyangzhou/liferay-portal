@@ -14,7 +14,7 @@
 
 package com.liferay.counter.service.persistence.impl;
 
-import com.liferay.counter.service.persistence.CounterFinder;
+import com.liferay.counter.kernel.service.persistence.CounterFinder;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.util.PropsValues;
 

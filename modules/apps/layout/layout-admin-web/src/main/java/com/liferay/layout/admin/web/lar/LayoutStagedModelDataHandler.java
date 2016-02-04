@@ -14,7 +14,7 @@
 
 package com.liferay.layout.admin.web.lar;
 
-import com.liferay.counter.service.CounterLocalService;
+import com.liferay.counter.kernel.service.CounterLocalService;
 import com.liferay.exportimport.lar.BaseStagedModelDataHandler;
 import com.liferay.portal.exception.NoSuchLayoutException;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;

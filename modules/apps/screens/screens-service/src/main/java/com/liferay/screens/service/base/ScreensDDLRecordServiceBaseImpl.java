@@ -135,7 +135,7 @@ public abstract class ScreensDDLRecordServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.service.CounterLocalService getCounterLocalService() {
+	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
 		return counterLocalService;
 	}
 
@@ -145,7 +145,7 @@ public abstract class ScreensDDLRecordServiceBaseImpl extends BaseServiceImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.service.CounterLocalService counterLocalService) {
+		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -386,8 +386,8 @@ public abstract class ScreensDDLRecordServiceBaseImpl extends BaseServiceImpl
 	protected com.liferay.screens.service.ScreensJournalArticleService screensJournalArticleService;
 	@BeanReference(type = com.liferay.screens.service.ScreensUserService.class)
 	protected com.liferay.screens.service.ScreensUserService screensUserService;
-	@ServiceReference(type = com.liferay.counter.service.CounterLocalService.class)
-	protected com.liferay.counter.service.CounterLocalService counterLocalService;
+	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
+	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
 	@ServiceReference(type = com.liferay.dynamic.data.lists.service.DDLRecordLocalService.class)
 	protected com.liferay.dynamic.data.lists.service.DDLRecordLocalService ddlRecordLocalService;
 	@ServiceReference(type = com.liferay.dynamic.data.lists.service.DDLRecordService.class)

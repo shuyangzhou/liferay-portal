@@ -14,7 +14,7 @@
 
 package com.liferay.document.library.verify;
 
-import com.liferay.counter.service.CounterLocalService;
+import com.liferay.counter.kernel.service.CounterLocalService;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Criterion;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;

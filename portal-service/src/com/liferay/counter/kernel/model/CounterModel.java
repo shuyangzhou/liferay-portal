@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.counter.model;
+package com.liferay.counter.kernel.model;
 
 import aQute.bnd.annotation.ProviderType;
 
@@ -126,19 +126,19 @@ public interface CounterModel extends BaseModel<Counter> {
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.counter.model.Counter counter);
+	public int compareTo(com.liferay.counter.kernel.model.Counter counter);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.counter.model.Counter> toCacheModel();
+	public CacheModel<com.liferay.counter.kernel.model.Counter> toCacheModel();
 
 	@Override
-	public com.liferay.counter.model.Counter toEscapedModel();
+	public com.liferay.counter.kernel.model.Counter toEscapedModel();
 
 	@Override
-	public com.liferay.counter.model.Counter toUnescapedModel();
+	public com.liferay.counter.kernel.model.Counter toUnescapedModel();
 
 	@Override
 	public String toString();
