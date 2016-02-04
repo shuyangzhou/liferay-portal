@@ -16,10 +16,10 @@ package com.liferay.portlet.exportimport.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.exportimport.kernel.service.ExportImportServiceUtil;
+
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-
-import com.liferay.portlet.exportimport.service.ExportImportServiceUtil;
 
 import java.rmi.RemoteException;
 
@@ -55,11 +55,10 @@ import java.rmi.RemoteException;
 @ProviderType
 public class ExportImportServiceSoap {
 	public static long exportLayoutsAsFileInBackground(
-		com.liferay.portlet.exportimport.model.ExportImportConfigurationSoap exportImportConfiguration)
+		com.liferay.exportimport.kernel.model.ExportImportConfiguration exportImportConfiguration)
 		throws RemoteException {
 		try {
-			long returnValue = ExportImportServiceUtil.exportLayoutsAsFileInBackground(com.liferay.portlet.exportimport.model.impl.ExportImportConfigurationModelImpl.toModel(
-						exportImportConfiguration));
+			long returnValue = ExportImportServiceUtil.exportLayoutsAsFileInBackground(exportImportConfiguration);
 
 			return returnValue;
 		}
@@ -85,11 +84,10 @@ public class ExportImportServiceSoap {
 	}
 
 	public static long exportPortletInfoAsFileInBackground(
-		com.liferay.portlet.exportimport.model.ExportImportConfigurationSoap exportImportConfiguration)
+		com.liferay.exportimport.kernel.model.ExportImportConfiguration exportImportConfiguration)
 		throws RemoteException {
 		try {
-			long returnValue = ExportImportServiceUtil.exportPortletInfoAsFileInBackground(com.liferay.portlet.exportimport.model.impl.ExportImportConfigurationModelImpl.toModel(
-						exportImportConfiguration));
+			long returnValue = ExportImportServiceUtil.exportPortletInfoAsFileInBackground(exportImportConfiguration);
 
 			return returnValue;
 		}

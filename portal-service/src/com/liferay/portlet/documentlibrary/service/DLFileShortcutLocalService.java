@@ -16,6 +16,8 @@ package com.liferay.portlet.documentlibrary.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
+
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery;
@@ -38,7 +40,6 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.permission.ModelPermissions;
 
 import com.liferay.portlet.documentlibrary.model.DLFileShortcut;
-import com.liferay.portlet.exportimport.lar.PortletDataContext;
 
 import java.io.Serializable;
 

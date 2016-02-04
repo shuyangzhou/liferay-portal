@@ -109,9 +109,9 @@
 	<import class="com.liferay.portlet.expando.model.ExpandoRow" />
 	<import class="com.liferay.portlet.expando.model.ExpandoTable" />
 	<import class="com.liferay.portlet.expando.model.ExpandoValue" />
-	<import class="com.liferay.portlet.exportimport.model.ExportImport" />
-	<import class="com.liferay.portlet.exportimport.model.ExportImportConfiguration" />
-	<import class="com.liferay.portlet.exportimport.model.Staging" />
+	<import class="com.liferay.exportimport.kernel.model.ExportImport" />
+	<import class="com.liferay.exportimport.kernel.model.ExportImportConfiguration" />
+	<import class="com.liferay.exportimport.kernel.model.Staging" />
 	<import class="com.liferay.portlet.flags.model.FlagsEntry" />
 	<import class="com.liferay.ratings.kernel.model.RatingsEntry" />
 	<import class="com.liferay.ratings.kernel.model.RatingsStats" />
