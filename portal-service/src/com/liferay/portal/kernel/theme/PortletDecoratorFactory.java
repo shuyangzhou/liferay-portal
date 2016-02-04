@@ -12,28 +12,26 @@
  * details.
  */
 
-package com.liferay.portlet.calendar.exception;
+package com.liferay.portal.kernel.theme;
 
-import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.model.PortletDecorator;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Eduardo Garcia
  */
-public class EventTitleException extends PortalException {
+public interface PortletDecoratorFactory {
 
-	public EventTitleException() {
-	}
+	public PortletDecorator getDefaultPortletDecorator();
 
-	public EventTitleException(String msg) {
-		super(msg);
-	}
+	public String getDefaultPortletDecoratorCssClass();
 
-	public EventTitleException(String msg, Throwable cause) {
-		super(msg, cause);
-	}
+	public String getDefaultPortletDecoratorId();
 
-	public EventTitleException(Throwable cause) {
-		super(cause);
-	}
+	public PortletDecorator getPortletDecorator();
+
+	public PortletDecorator getPortletDecorator(String portletDecoratorId);
+
+	public PortletDecorator getPortletDecorator(
+		String portletDecoratorId, String name, String cssClass);
 
 }
