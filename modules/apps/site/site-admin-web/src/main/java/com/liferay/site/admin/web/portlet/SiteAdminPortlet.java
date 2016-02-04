@@ -90,6 +90,8 @@ import com.liferay.portlet.asset.exception.AssetTagException;
 import com.liferay.portlet.exportimport.exception.RemoteExportException;
 import com.liferay.portlet.exportimport.staging.StagingUtil;
 import com.liferay.site.admin.web.constants.SiteAdminPortletKeys;
+import com.liferay.site.constants.SiteWebKeys;
+import com.liferay.site.util.GroupSearchProvider;
 import com.liferay.sites.kernel.util.Sites;
 import com.liferay.sites.kernel.util.SitesUtil;
 
@@ -302,6 +304,9 @@ public class SiteAdminPortlet extends MVCPortlet {
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws IOException, PortletException {
 
+		renderRequest.setAttribute(
+			SiteWebKeys.GROUP_SEARCH_PROVIDER, groupSearchProvider);
+
 		PanelCategoryHelper panelCategoryHelper = new PanelCategoryHelper(
 			panelAppRegistry, panelCategoryRegistry);
 
@@ -448,6 +453,13 @@ public class SiteAdminPortlet extends MVCPortlet {
 	@Reference(unbind = "-")
 	protected void setGroupLocalService(GroupLocalService groupLocalService) {
 		this.groupLocalService = groupLocalService;
+	}
+
+	@Reference(unbind = "-")
+	protected void setGroupSearchProvider(
+		GroupSearchProvider groupSearchProvider) {
+
+		this.groupSearchProvider = groupSearchProvider;
 	}
 
 	@Reference(unbind = "-")
@@ -886,6 +898,7 @@ public class SiteAdminPortlet extends MVCPortlet {
 	}
 
 	protected GroupLocalService groupLocalService;
+	protected GroupSearchProvider groupSearchProvider;
 	protected GroupService groupService;
 	protected LayoutLocalService layoutLocalService;
 	protected LayoutSetLocalService layoutSetLocalService;
