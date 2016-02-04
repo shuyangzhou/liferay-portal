@@ -12,26 +12,15 @@
  * details.
  */
 
-package com.liferay.portal.util;
-
-import java.util.Set;
+package com.liferay.portal.kernel.util;
 
 /**
- * @author Ryan Park
+ * @author Jorge Ferrer
+ * @author Dennis Ju
  * @author Brian Wing Shun Chan
  */
-public interface CustomJspRegistry {
+public interface PortletListerFactory {
 
-	public String getCustomJspFileName(
-		String servletContextName, String fileName);
-
-	public String getDisplayName(String servletContextName);
-
-	public Set<String> getServletContextNames();
-
-	public void registerServletContextName(
-		String servletContextName, String displayName);
-
-	public void unregisterServletContextName(String servletContextName);
+	public PortletLister getPortletLister();
 
 }

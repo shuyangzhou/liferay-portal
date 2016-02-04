@@ -12,10 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.util;
-
-import com.liferay.portal.kernel.util.DateUtil;
-import com.liferay.portal.kernel.util.StringPool;
+package com.liferay.portal.kernel.util;
 
 import java.text.FieldPosition;
 import java.text.SimpleDateFormat;

@@ -12,27 +12,19 @@
  * details.
  */
 
-package com.liferay.portal.util;
+package com.liferay.portal.kernel.util;
 
-import aQute.bnd.annotation.ProviderType;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.net.InetSocketAddress;
 
 /**
- * @author Eduardo Garcia
+ * @author Tina Tian
  */
-@ProviderType
-public interface TermsOfUseContentProvider {
+public interface PortalInetSocketAddressEventListener {
 
-	public String getClassName();
+	public void portalLocalInetSocketAddressConfigured(
+		InetSocketAddress localInetSocketAddress, boolean secure);
 
-	public void includeConfig(
-			HttpServletRequest request, HttpServletResponse response)
-		throws Exception;
-
-	public void includeView(
-			HttpServletRequest request, HttpServletResponse response)
-		throws Exception;
+	public void portalServerInetSocketAddressConfigured(
+		InetSocketAddress serverInetSocketAddress, boolean secure);
 
 }
