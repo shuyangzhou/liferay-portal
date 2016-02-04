@@ -615,7 +615,7 @@ public class UserWrapper implements User, ModelWrapper<User> {
 	*/
 	@Override
 	public java.lang.String getDisplayURL(
-		com.liferay.portal.theme.ThemeDisplay themeDisplay)
+		com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _user.getDisplayURL(themeDisplay);
 	}
@@ -653,7 +653,7 @@ public class UserWrapper implements User, ModelWrapper<User> {
 	*/
 	@Override
 	public java.lang.String getDisplayURL(
-		com.liferay.portal.theme.ThemeDisplay themeDisplay,
+		com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay,
 		boolean privateLayout)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _user.getDisplayURL(themeDisplay, privateLayout);
@@ -1096,7 +1096,7 @@ public class UserWrapper implements User, ModelWrapper<User> {
 
 	@Override
 	public java.lang.String getPortraitURL(
-		com.liferay.portal.theme.ThemeDisplay themeDisplay)
+		com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _user.getPortraitURL(themeDisplay);
 	}
