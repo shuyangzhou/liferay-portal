@@ -12,28 +12,10 @@
  * details.
  */
 
-package com.liferay.portal.verify;
-
-import com.liferay.portal.kernel.test.rule.AggregateTestRule;
-import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portal.verify.test.BaseVerifyProcessTestCase;
-
-import org.junit.ClassRule;
-import org.junit.Rule;
+package com.liferay.portal.kernel.theme;
 
 /**
- * @author Manuel de la Peña
+ * @author Brian Wing Shun Chan
  */
-public class VerifyCalendarTest extends BaseVerifyProcessTestCase {
-
-	@ClassRule
-	@Rule
-	public static final AggregateTestRule aggregateTestRule =
-		new LiferayIntegrationTestRule();
-
-	@Override
-	protected VerifyProcess getVerifyProcess() {
-		return new VerifyCalendar();
-	}
-
+public class ThemeGroupLimit extends ThemeCompanyLimit {
 }
