@@ -14,8 +14,8 @@
 
 package com.liferay.journal.util.comparator;
 
+import com.liferay.exportimport.kernel.lar.StagedModelModifiedDateComparator;
 import com.liferay.journal.model.JournalArticle;
-import com.liferay.portlet.exportimport.lar.StagedModelModifiedDateComparator;
 
 /**
  * @author Brian Wing Shun Chan

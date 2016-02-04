@@ -42,7 +42,7 @@ public class ServiceBeanMatcher implements BeanMatcher {
 	}
 
 	private static final String _COUNTER_SERVICE_BEAN_NAME =
-		"com.liferay.counter.service.CounterLocalService";
+		"com.liferay.counter.kernel.service.CounterLocalService";
 
 	private static final String _SERVICE_SUFFIX = "Service";
 

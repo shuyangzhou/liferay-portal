@@ -642,7 +642,7 @@ public interface Portlet extends PortletModel, PersistedModel {
 	*
 	* @return the portlet data handler instance of the portlet
 	*/
-	public com.liferay.portlet.exportimport.lar.PortletDataHandler getPortletDataHandlerInstance();
+	public com.liferay.exportimport.kernel.lar.PortletDataHandler getPortletDataHandlerInstance();
 
 	/**
 	* Returns the filters of the portlet.
@@ -953,7 +953,7 @@ public interface Portlet extends PortletModel, PersistedModel {
 	*
 	* @return the staged model data handler instances of the portlet
 	*/
-	public java.util.List<com.liferay.portlet.exportimport.lar.StagedModelDataHandler<?>> getStagedModelDataHandlerInstances();
+	public java.util.List<com.liferay.exportimport.kernel.lar.StagedModelDataHandler<?>> getStagedModelDataHandlerInstances();
 
 	/**
 	* Returns <code>true</code> if the portlet is a static portlet that is

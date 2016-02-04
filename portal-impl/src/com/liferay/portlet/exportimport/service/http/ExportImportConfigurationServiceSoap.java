@@ -16,10 +16,10 @@ package com.liferay.portlet.exportimport.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.exportimport.kernel.service.ExportImportConfigurationServiceUtil;
+
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-
-import com.liferay.portlet.exportimport.service.ExportImportConfigurationServiceUtil;
 
 import java.rmi.RemoteException;
 
@@ -33,10 +33,10 @@ import java.rmi.RemoteException;
  * <p>
  * ServiceBuilder follows certain rules in translating the methods. For example,
  * if the method in the service utility returns a {@link java.util.List}, that
- * is translated to an array of {@link com.liferay.portlet.exportimport.model.ExportImportConfigurationSoap}.
+ * is translated to an array of {@link com.liferay.exportimport.kernel.model.ExportImportConfigurationSoap}.
  * If the method in the service utility returns a
- * {@link com.liferay.portlet.exportimport.model.ExportImportConfiguration}, that is translated to a
- * {@link com.liferay.portlet.exportimport.model.ExportImportConfigurationSoap}. Methods that SOAP cannot
+ * {@link com.liferay.exportimport.kernel.model.ExportImportConfiguration}, that is translated to a
+ * {@link com.liferay.exportimport.kernel.model.ExportImportConfigurationSoap}. Methods that SOAP cannot
  * safely wire are skipped.
  * </p>
  *
@@ -59,7 +59,7 @@ import java.rmi.RemoteException;
  *
  * @author Brian Wing Shun Chan
  * @see ExportImportConfigurationServiceHttp
- * @see com.liferay.portlet.exportimport.model.ExportImportConfigurationSoap
+ * @see com.liferay.exportimport.kernel.model.ExportImportConfigurationSoap
  * @see ExportImportConfigurationServiceUtil
  * @generated
  */
@@ -77,13 +77,13 @@ public class ExportImportConfigurationServiceSoap {
 		}
 	}
 
-	public static com.liferay.portlet.exportimport.model.ExportImportConfigurationSoap moveExportImportConfigurationToTrash(
+	public static com.liferay.exportimport.kernel.model.ExportImportConfigurationSoap moveExportImportConfigurationToTrash(
 		long exportImportConfigurationId) throws RemoteException {
 		try {
-			com.liferay.portlet.exportimport.model.ExportImportConfiguration returnValue =
+			com.liferay.exportimport.kernel.model.ExportImportConfiguration returnValue =
 				ExportImportConfigurationServiceUtil.moveExportImportConfigurationToTrash(exportImportConfigurationId);
 
-			return com.liferay.portlet.exportimport.model.ExportImportConfigurationSoap.toSoapModel(returnValue);
+			return com.liferay.exportimport.kernel.model.ExportImportConfigurationSoap.toSoapModel(returnValue);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -92,13 +92,13 @@ public class ExportImportConfigurationServiceSoap {
 		}
 	}
 
-	public static com.liferay.portlet.exportimport.model.ExportImportConfigurationSoap restoreExportImportConfigurationFromTrash(
+	public static com.liferay.exportimport.kernel.model.ExportImportConfigurationSoap restoreExportImportConfigurationFromTrash(
 		long exportImportConfigurationId) throws RemoteException {
 		try {
-			com.liferay.portlet.exportimport.model.ExportImportConfiguration returnValue =
+			com.liferay.exportimport.kernel.model.ExportImportConfiguration returnValue =
 				ExportImportConfigurationServiceUtil.restoreExportImportConfigurationFromTrash(exportImportConfigurationId);
 
-			return com.liferay.portlet.exportimport.model.ExportImportConfigurationSoap.toSoapModel(returnValue);
+			return com.liferay.exportimport.kernel.model.ExportImportConfigurationSoap.toSoapModel(returnValue);
 		}
 		catch (Exception e) {
 			_log.error(e, e);

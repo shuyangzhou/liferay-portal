@@ -14,6 +14,7 @@
 
 package com.liferay.exportimport.staging;
 
+import com.liferay.exportimport.kernel.staging.LayoutStaging;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.pacl.DoPrivileged;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -27,7 +28,6 @@ import com.liferay.portal.model.LayoutSetBranch;
 import com.liferay.portal.model.LayoutSetStagingHandler;
 import com.liferay.portal.model.LayoutStagingHandler;
 import com.liferay.portal.service.LayoutSetBranchLocalService;
-import com.liferay.portlet.exportimport.staging.LayoutStaging;
 
 import java.lang.reflect.InvocationHandler;
 

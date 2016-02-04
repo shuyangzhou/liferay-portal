@@ -14,6 +14,10 @@
 
 package com.liferay.site.teams.web.lar;
 
+import com.liferay.exportimport.kernel.lar.ExportImportPathUtil;
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
+import com.liferay.exportimport.kernel.lar.PortletDataException;
+import com.liferay.exportimport.kernel.lar.StagedModelDataHandler;
 import com.liferay.exportimport.lar.BaseStagedModelDataHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -26,10 +30,6 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.TeamLocalService;
 import com.liferay.portal.service.UserGroupLocalService;
 import com.liferay.portal.service.UserLocalService;
-import com.liferay.portlet.exportimport.lar.ExportImportPathUtil;
-import com.liferay.portlet.exportimport.lar.PortletDataContext;
-import com.liferay.portlet.exportimport.lar.PortletDataException;
-import com.liferay.portlet.exportimport.lar.StagedModelDataHandler;
 import com.liferay.site.teams.web.constants.SiteTeamsPortletKeys;
 
 import java.util.List;

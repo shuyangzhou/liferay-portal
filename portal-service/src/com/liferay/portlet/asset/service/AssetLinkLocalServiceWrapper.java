@@ -329,7 +329,7 @@ public class AssetLinkLocalServiceWrapper implements AssetLinkLocalService,
 
 	@Override
 	public com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery getExportActionbleDynamicQuery(
-		com.liferay.portlet.exportimport.lar.PortletDataContext portletDataContext) {
+		com.liferay.exportimport.kernel.lar.PortletDataContext portletDataContext) {
 		return _assetLinkLocalService.getExportActionbleDynamicQuery(portletDataContext);
 	}
 

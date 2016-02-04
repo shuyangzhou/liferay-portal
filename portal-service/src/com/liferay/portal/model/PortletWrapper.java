@@ -939,7 +939,7 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	* @return the portlet data handler instance of the portlet
 	*/
 	@Override
-	public com.liferay.portlet.exportimport.lar.PortletDataHandler getPortletDataHandlerInstance() {
+	public com.liferay.exportimport.kernel.lar.PortletDataHandler getPortletDataHandlerInstance() {
 		return _portlet.getPortletDataHandlerInstance();
 	}
 
@@ -1405,7 +1405,7 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	* @return the staged model data handler instances of the portlet
 	*/
 	@Override
-	public java.util.List<com.liferay.portlet.exportimport.lar.StagedModelDataHandler<?>> getStagedModelDataHandlerInstances() {
+	public java.util.List<com.liferay.exportimport.kernel.lar.StagedModelDataHandler<?>> getStagedModelDataHandlerInstances() {
 		return _portlet.getStagedModelDataHandlerInstances();
 	}
 

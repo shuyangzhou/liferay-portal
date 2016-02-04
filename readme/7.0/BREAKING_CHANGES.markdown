@@ -3439,6 +3439,8 @@ else.
 
 **Example**
 
+- `com.liferay.counter` &rarr; `com.liferay.counter.kernel`
+
 - `com.liferay.portal.jdbc.pool.metrics` &rarr; `com.liferay.portal.kernel.jdbc.pool.metrics`
 
 - `com.liferay.portal.layoutconfiguration.util` &rarr; `com.liferay.portal.kernel.layoutconfiguration.util`
