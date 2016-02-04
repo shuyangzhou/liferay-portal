@@ -18,6 +18,14 @@
 	<bean id="com.liferay.blogs.kernel.service.BlogsStatsUserLocalService" class="com.liferay.portlet.blogs.service.impl.BlogsStatsUserLocalServiceImpl" />
 	<bean id="com.liferay.blogs.kernel.service.persistence.BlogsStatsUserPersistence" class="com.liferay.portlet.blogs.service.persistence.impl.BlogsStatsUserPersistenceImpl" parent="basePersistence" />
 	<bean id="com.liferay.blogs.kernel.service.persistence.BlogsStatsUserFinder" class="com.liferay.portlet.blogs.service.persistence.impl.BlogsStatsUserFinderImpl" parent="basePersistence" />
+	<bean id="com.liferay.exportimport.kernel.service.ExportImportLocalService" class="com.liferay.portlet.exportimport.service.impl.ExportImportLocalServiceImpl" />
+	<bean id="com.liferay.exportimport.kernel.service.ExportImportService" class="com.liferay.portlet.exportimport.service.impl.ExportImportServiceImpl" />
+	<bean id="com.liferay.exportimport.kernel.service.ExportImportConfigurationLocalService" class="com.liferay.portlet.exportimport.service.impl.ExportImportConfigurationLocalServiceImpl" />
+	<bean id="com.liferay.exportimport.kernel.service.ExportImportConfigurationService" class="com.liferay.portlet.exportimport.service.impl.ExportImportConfigurationServiceImpl" />
+	<bean id="com.liferay.exportimport.kernel.service.persistence.ExportImportConfigurationPersistence" class="com.liferay.portlet.exportimport.service.persistence.impl.ExportImportConfigurationPersistenceImpl" parent="basePersistence" />
+	<bean id="com.liferay.exportimport.kernel.service.persistence.ExportImportConfigurationFinder" class="com.liferay.portlet.exportimport.service.persistence.impl.ExportImportConfigurationFinderImpl" parent="basePersistence" />
+	<bean id="com.liferay.exportimport.kernel.service.StagingLocalService" class="com.liferay.portlet.exportimport.service.impl.StagingLocalServiceImpl" />
+	<bean id="com.liferay.exportimport.kernel.service.StagingService" class="com.liferay.portlet.exportimport.service.impl.StagingServiceImpl" />
 	<bean id="com.liferay.message.boards.kernel.service.MBBanLocalService" class="com.liferay.portlet.messageboards.service.impl.MBBanLocalServiceImpl" />
 	<bean id="com.liferay.message.boards.kernel.service.MBBanService" class="com.liferay.portlet.messageboards.service.impl.MBBanServiceImpl" />
 	<bean id="com.liferay.message.boards.kernel.service.persistence.MBBanPersistence" class="com.liferay.portlet.messageboards.service.persistence.impl.MBBanPersistenceImpl" parent="basePersistence" />
@@ -293,14 +301,6 @@
 	<bean id="com.liferay.portlet.expando.service.ExpandoValueLocalService" class="com.liferay.portlet.expando.service.impl.ExpandoValueLocalServiceImpl" />
 	<bean id="com.liferay.portlet.expando.service.ExpandoValueService" class="com.liferay.portlet.expando.service.impl.ExpandoValueServiceImpl" />
 	<bean id="com.liferay.portlet.expando.service.persistence.ExpandoValuePersistence" class="com.liferay.portlet.expando.service.persistence.impl.ExpandoValuePersistenceImpl" parent="basePersistence" />
-	<bean id="com.liferay.exportimport.kernel.service.ExportImportLocalService" class="com.liferay.portlet.exportimport.service.impl.ExportImportLocalServiceImpl" />
-	<bean id="com.liferay.exportimport.kernel.service.ExportImportService" class="com.liferay.portlet.exportimport.service.impl.ExportImportServiceImpl" />
-	<bean id="com.liferay.exportimport.kernel.service.ExportImportConfigurationLocalService" class="com.liferay.portlet.exportimport.service.impl.ExportImportConfigurationLocalServiceImpl" />
-	<bean id="com.liferay.exportimport.kernel.service.ExportImportConfigurationService" class="com.liferay.portlet.exportimport.service.impl.ExportImportConfigurationServiceImpl" />
-	<bean id="com.liferay.exportimport.kernel.service.persistence.ExportImportConfigurationPersistence" class="com.liferay.portlet.exportimport.service.persistence.impl.ExportImportConfigurationPersistenceImpl" parent="basePersistence" />
-	<bean id="com.liferay.exportimport.kernel.service.persistence.ExportImportConfigurationFinder" class="com.liferay.portlet.exportimport.service.persistence.impl.ExportImportConfigurationFinderImpl" parent="basePersistence" />
-	<bean id="com.liferay.exportimport.kernel.service.StagingLocalService" class="com.liferay.portlet.exportimport.service.impl.StagingLocalServiceImpl" />
-	<bean id="com.liferay.exportimport.kernel.service.StagingService" class="com.liferay.portlet.exportimport.service.impl.StagingServiceImpl" />
 	<bean id="com.liferay.ratings.kernel.service.RatingsEntryLocalService" class="com.liferay.portlet.ratings.service.impl.RatingsEntryLocalServiceImpl" />
 	<bean id="com.liferay.ratings.kernel.service.RatingsEntryService" class="com.liferay.portlet.ratings.service.impl.RatingsEntryServiceImpl" />
 	<bean id="com.liferay.ratings.kernel.service.persistence.RatingsEntryPersistence" class="com.liferay.portlet.ratings.service.persistence.impl.RatingsEntryPersistenceImpl" parent="basePersistence" />
