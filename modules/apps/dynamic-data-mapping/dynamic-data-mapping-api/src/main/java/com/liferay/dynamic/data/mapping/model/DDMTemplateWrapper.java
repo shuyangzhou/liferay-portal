@@ -628,7 +628,7 @@ public class DDMTemplateWrapper implements DDMTemplate,
 
 	@Override
 	public java.lang.String getTemplateImageURL(
-		com.liferay.portal.theme.ThemeDisplay themeDisplay) {
+		com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay) {
 		return _ddmTemplate.getTemplateImageURL(themeDisplay);
 	}
 
@@ -749,7 +749,7 @@ public class DDMTemplateWrapper implements DDMTemplate,
 	*/
 	@Override
 	public java.lang.String getWebDavURL(
-		com.liferay.portal.theme.ThemeDisplay themeDisplay,
+		com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay,
 		java.lang.String webDAVToken) {
 		return _ddmTemplate.getWebDavURL(themeDisplay, webDAVToken);
 	}
