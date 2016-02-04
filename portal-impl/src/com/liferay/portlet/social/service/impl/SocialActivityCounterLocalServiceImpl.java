@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.social.service.impl;
 
+import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.portal.kernel.cache.MultiVMPoolUtil;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -28,7 +29,6 @@ import com.liferay.portal.model.Group;
 import com.liferay.portal.model.User;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.portlet.asset.model.AssetEntry;
 import com.liferay.portlet.social.model.impl.SocialActivityImpl;
 import com.liferay.portlet.social.service.base.SocialActivityCounterLocalServiceBaseImpl;
 import com.liferay.social.kernel.model.SocialAchievement;

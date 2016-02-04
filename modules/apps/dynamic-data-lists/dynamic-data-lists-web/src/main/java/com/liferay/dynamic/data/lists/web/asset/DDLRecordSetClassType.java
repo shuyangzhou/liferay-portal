@@ -14,11 +14,11 @@
 
 package com.liferay.dynamic.data.lists.web.asset;
 
+import com.liferay.asset.kernel.model.ClassTypeField;
+import com.liferay.asset.kernel.model.DDMStructureClassType;
 import com.liferay.dynamic.data.lists.model.DDLRecordSet;
 import com.liferay.dynamic.data.lists.service.DDLRecordSetServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portlet.asset.model.ClassTypeField;
-import com.liferay.portlet.asset.model.DDMStructureClassType;
 
 import java.util.List;
 

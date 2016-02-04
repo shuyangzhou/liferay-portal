@@ -188,7 +188,7 @@ AssetCategoryUtil.addPortletBreadcrumbEntry(vocabulary, category, request, rende
 	>
 
 		<liferay-ui:search-container-row
-			className="com.liferay.portlet.asset.model.AssetCategory"
+			className="com.liferay.asset.kernel.model.AssetCategory"
 			keyProperty="categoryId"
 			modelVar="curCategory"
 		>

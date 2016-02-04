@@ -14,7 +14,7 @@
 
 package com.liferay.asset.publisher.test.util;
 
-import com.liferay.portlet.asset.model.AssetEntry;
+import com.liferay.asset.kernel.model.AssetEntry;
 
 /**
  * @author Tamas Molnar

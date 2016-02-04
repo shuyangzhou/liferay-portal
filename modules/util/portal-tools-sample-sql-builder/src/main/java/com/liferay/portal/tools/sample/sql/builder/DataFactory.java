@@ -14,6 +14,15 @@
 
 package com.liferay.portal.tools.sample.sql.builder;
 
+import com.liferay.asset.kernel.model.AssetCategory;
+import com.liferay.asset.kernel.model.AssetCategoryConstants;
+import com.liferay.asset.kernel.model.AssetCategoryModel;
+import com.liferay.asset.kernel.model.AssetEntryModel;
+import com.liferay.asset.kernel.model.AssetTag;
+import com.liferay.asset.kernel.model.AssetTagModel;
+import com.liferay.asset.kernel.model.AssetTagStatsModel;
+import com.liferay.asset.kernel.model.AssetVocabulary;
+import com.liferay.asset.kernel.model.AssetVocabularyModel;
 import com.liferay.blogs.web.constants.BlogsPortletKeys;
 import com.liferay.counter.model.Counter;
 import com.liferay.counter.model.CounterModel;
@@ -129,15 +138,6 @@ import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.PortletPreferencesFactory;
 import com.liferay.portlet.PortletPreferencesFactoryImpl;
 import com.liferay.portlet.PortletPreferencesImpl;
-import com.liferay.portlet.asset.model.AssetCategory;
-import com.liferay.portlet.asset.model.AssetCategoryConstants;
-import com.liferay.portlet.asset.model.AssetCategoryModel;
-import com.liferay.portlet.asset.model.AssetEntryModel;
-import com.liferay.portlet.asset.model.AssetTag;
-import com.liferay.portlet.asset.model.AssetTagModel;
-import com.liferay.portlet.asset.model.AssetTagStatsModel;
-import com.liferay.portlet.asset.model.AssetVocabulary;
-import com.liferay.portlet.asset.model.AssetVocabularyModel;
 import com.liferay.portlet.asset.model.impl.AssetCategoryModelImpl;
 import com.liferay.portlet.asset.model.impl.AssetEntryModelImpl;
 import com.liferay.portlet.asset.model.impl.AssetTagModelImpl;

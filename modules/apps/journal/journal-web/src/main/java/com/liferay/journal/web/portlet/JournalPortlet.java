@@ -16,6 +16,8 @@ package com.liferay.journal.web.portlet;
 
 import aQute.bnd.annotation.metatype.Configurable;
 
+import com.liferay.asset.kernel.exception.AssetCategoryException;
+import com.liferay.asset.kernel.exception.AssetTagException;
 import com.liferay.dynamic.data.mapping.exception.NoSuchStructureException;
 import com.liferay.dynamic.data.mapping.exception.NoSuchTemplateException;
 import com.liferay.dynamic.data.mapping.exception.StorageFieldRequiredException;
@@ -99,8 +101,6 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portlet.PortletURLFactoryUtil;
-import com.liferay.portlet.asset.exception.AssetCategoryException;
-import com.liferay.portlet.asset.exception.AssetTagException;
 import com.liferay.portlet.documentlibrary.exception.DuplicateFileEntryException;
 import com.liferay.portlet.documentlibrary.exception.FileSizeException;
 import com.liferay.trash.kernel.service.TrashEntryService;
