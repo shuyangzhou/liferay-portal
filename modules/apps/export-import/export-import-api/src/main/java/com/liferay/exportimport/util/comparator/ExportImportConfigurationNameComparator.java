@@ -14,10 +14,10 @@
 
 package com.liferay.exportimport.util.comparator;
 
+import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portlet.exportimport.model.ExportImportConfiguration;
 
 /**
  * @author Daniel Kocsis

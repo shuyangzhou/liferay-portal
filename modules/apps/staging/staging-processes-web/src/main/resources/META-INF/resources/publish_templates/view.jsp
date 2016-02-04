@@ -71,7 +71,7 @@ int exportImportConfigurationType = stagingGroup.isStagedRemotely() ? ExportImpo
 			</liferay-ui:search-container-results>
 
 			<liferay-ui:search-container-row
-				className="com.liferay.portlet.exportimport.model.ExportImportConfiguration"
+				className="com.liferay.exportimport.kernel.model.ExportImportConfiguration"
 				keyProperty="exportImportConfigurationId"
 				modelVar="exportImportConfiguration"
 			>

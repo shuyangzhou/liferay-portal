@@ -14,9 +14,9 @@
 
 package com.liferay.user.groups.admin.internal.exportimport.portlet.preferences.processor;
 
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.portlet.preferences.processor.Capability;
 import com.liferay.portlet.display.template.exportimport.portlet.preferences.processor.PortletDisplayTemplateExportCapability;
-import com.liferay.portlet.exportimport.lar.PortletDataContext;
 
 import javax.portlet.PortletPreferences;
 

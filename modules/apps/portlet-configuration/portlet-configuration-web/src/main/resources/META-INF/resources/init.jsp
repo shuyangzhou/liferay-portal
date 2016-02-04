@@ -26,7 +26,8 @@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %><%@
 taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
-<%@ page import="com.liferay.portal.exception.NoSuchPortletItemException" %><%@
+<%@ page import="com.liferay.exportimport.kernel.exception.LARFileSizeException" %><%@
+page import="com.liferay.portal.exception.NoSuchPortletItemException" %><%@
 page import="com.liferay.portal.exception.NoSuchResourceException" %><%@
 page import="com.liferay.portal.exception.PortletItemNameException" %><%@
 page import="com.liferay.portal.exception.ResourcePrimKeyException" %><%@
@@ -84,7 +85,6 @@ page import="com.liferay.portal.util.PropsValues" %><%@
 page import="com.liferay.portal.util.ResourcePermissionUtil" %><%@
 page import="com.liferay.portlet.PortletQNameUtil" %><%@
 page import="com.liferay.portlet.PortletURLImpl" %><%@
-page import="com.liferay.portlet.exportimport.exception.LARFileSizeException" %><%@
 page import="com.liferay.portlet.portletconfiguration.action.ActionUtil" %><%@
 page import="com.liferay.portlet.portletconfiguration.util.PublicRenderParameterConfiguration" %><%@
 page import="com.liferay.sites.kernel.util.SitesUtil" %><%@
