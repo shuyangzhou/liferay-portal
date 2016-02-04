@@ -16,6 +16,10 @@ package com.liferay.portlet.documentlibrary.model.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.document.library.kernel.model.DLFileEntryType;
+import com.liferay.document.library.kernel.model.DLFileEntryTypeModel;
+import com.liferay.document.library.kernel.model.DLFileEntryTypeSoap;
+
 import com.liferay.portal.LocaleException;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -34,9 +38,6 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
 
-import com.liferay.portlet.documentlibrary.model.DLFileEntryType;
-import com.liferay.portlet.documentlibrary.model.DLFileEntryTypeModel;
-import com.liferay.portlet.documentlibrary.model.DLFileEntryTypeSoap;
 import com.liferay.portlet.expando.model.ExpandoBridge;
 import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 import com.liferay.portlet.exportimport.lar.StagedModelType;
@@ -116,13 +117,13 @@ public class DLFileEntryTypeModelImpl extends BaseModelImpl<DLFileEntryType>
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
 	public static final String TX_MANAGER = "liferayTransactionManager";
 	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
-				"value.object.entity.cache.enabled.com.liferay.portlet.documentlibrary.model.DLFileEntryType"),
+				"value.object.entity.cache.enabled.com.liferay.document.library.kernel.model.DLFileEntryType"),
 			true);
 	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
-				"value.object.finder.cache.enabled.com.liferay.portlet.documentlibrary.model.DLFileEntryType"),
+				"value.object.finder.cache.enabled.com.liferay.document.library.kernel.model.DLFileEntryType"),
 			true);
 	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
-				"value.object.column.bitmask.enabled.com.liferay.portlet.documentlibrary.model.DLFileEntryType"),
+				"value.object.column.bitmask.enabled.com.liferay.document.library.kernel.model.DLFileEntryType"),
 			true);
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 	public static final long FILEENTRYTYPEKEY_COLUMN_BITMASK = 2L;
@@ -193,7 +194,7 @@ public class DLFileEntryTypeModelImpl extends BaseModelImpl<DLFileEntryType>
 				"value.object.finder.cache.enabled.DLFileEntryTypes_DLFolders"),
 			true);
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.portal.util.PropsUtil.get(
-				"lock.expiration.time.com.liferay.portlet.documentlibrary.model.DLFileEntryType"));
+				"lock.expiration.time.com.liferay.document.library.kernel.model.DLFileEntryType"));
 
 	public DLFileEntryTypeModelImpl() {
 	}
@@ -1047,7 +1048,7 @@ public class DLFileEntryTypeModelImpl extends BaseModelImpl<DLFileEntryType>
 		StringBundler sb = new StringBundler(40);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.portlet.documentlibrary.model.DLFileEntryType");
+		sb.append("com.liferay.document.library.kernel.model.DLFileEntryType");
 		sb.append("</model-name>");
 
 		sb.append(

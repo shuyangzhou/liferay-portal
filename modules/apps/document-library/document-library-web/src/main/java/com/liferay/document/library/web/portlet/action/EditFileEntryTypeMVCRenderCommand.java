@@ -14,6 +14,11 @@
 
 package com.liferay.document.library.web.portlet.action;
 
+import com.liferay.document.library.kernel.exception.NoSuchFileEntryTypeException;
+import com.liferay.document.library.kernel.model.DLFileEntryMetadata;
+import com.liferay.document.library.kernel.model.DLFileEntryType;
+import com.liferay.document.library.kernel.service.DLFileEntryTypeService;
+import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.document.library.web.constants.DLPortletKeys;
 import com.liferay.dynamic.data.mapping.kernel.DDMStructure;
 import com.liferay.dynamic.data.mapping.kernel.DDMStructureManagerUtil;
@@ -23,11 +28,6 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryTypeException;
-import com.liferay.portlet.documentlibrary.model.DLFileEntryMetadata;
-import com.liferay.portlet.documentlibrary.model.DLFileEntryType;
-import com.liferay.portlet.documentlibrary.service.DLFileEntryTypeService;
-import com.liferay.portlet.documentlibrary.util.DLUtil;
 
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;

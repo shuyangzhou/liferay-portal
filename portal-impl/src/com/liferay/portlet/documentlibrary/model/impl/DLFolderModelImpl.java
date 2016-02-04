@@ -16,6 +16,10 @@ package com.liferay.portlet.documentlibrary.model.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.document.library.kernel.model.DLFolder;
+import com.liferay.document.library.kernel.model.DLFolderModel;
+import com.liferay.document.library.kernel.model.DLFolderSoap;
+
 import com.liferay.portal.exception.NoSuchModelException;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -37,9 +41,6 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
 
-import com.liferay.portlet.documentlibrary.model.DLFolder;
-import com.liferay.portlet.documentlibrary.model.DLFolderModel;
-import com.liferay.portlet.documentlibrary.model.DLFolderSoap;
 import com.liferay.portlet.expando.model.ExpandoBridge;
 import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 import com.liferay.portlet.exportimport.lar.StagedModelType;
@@ -141,13 +142,13 @@ public class DLFolderModelImpl extends BaseModelImpl<DLFolder>
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
 	public static final String TX_MANAGER = "liferayTransactionManager";
 	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
-				"value.object.entity.cache.enabled.com.liferay.portlet.documentlibrary.model.DLFolder"),
+				"value.object.entity.cache.enabled.com.liferay.document.library.kernel.model.DLFolder"),
 			true);
 	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
-				"value.object.finder.cache.enabled.com.liferay.portlet.documentlibrary.model.DLFolder"),
+				"value.object.finder.cache.enabled.com.liferay.document.library.kernel.model.DLFolder"),
 			true);
 	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
-				"value.object.column.bitmask.enabled.com.liferay.portlet.documentlibrary.model.DLFolder"),
+				"value.object.column.bitmask.enabled.com.liferay.document.library.kernel.model.DLFolder"),
 			true);
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 	public static final long FOLDERID_COLUMN_BITMASK = 2L;
@@ -234,7 +235,7 @@ public class DLFolderModelImpl extends BaseModelImpl<DLFolder>
 				"value.object.finder.cache.enabled.DLFileEntryTypes_DLFolders"),
 			true);
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.portal.util.PropsUtil.get(
-				"lock.expiration.time.com.liferay.portlet.documentlibrary.model.DLFolder"));
+				"lock.expiration.time.com.liferay.document.library.kernel.model.DLFolder"));
 
 	public DLFolderModelImpl() {
 	}
@@ -1492,7 +1493,7 @@ public class DLFolderModelImpl extends BaseModelImpl<DLFolder>
 		StringBundler sb = new StringBundler(73);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.portlet.documentlibrary.model.DLFolder");
+		sb.append("com.liferay.document.library.kernel.model.DLFolder");
 		sb.append("</model-name>");
 
 		sb.append(
