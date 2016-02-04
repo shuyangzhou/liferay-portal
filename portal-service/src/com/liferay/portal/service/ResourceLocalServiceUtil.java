@@ -91,30 +91,6 @@ public class ResourceLocalServiceUtil {
 	}
 
 	/**
-	* Adds resources for the model with the name and primary key, always
-	* creating a resource at the individual scope and only creating resources
-	* at the group, group template, and company scope if such resources don't
-	* already exist.
-	*
-	* @param companyId the primary key of the portal instance
-	* @param groupId the primary key of the group
-	* @param userId the primary key of the user adding the resources
-	* @param name a name for the resource, typically the model's class name
-	* @param primKey the primary key of the model instance, optionally
-	<code>0</code> if no instance exists
-	* @param groupPermissions the group permissions to be applied
-	* @param guestPermissions the guest permissions to be applied
-	*/
-	public static void addModelResources(long companyId, long groupId,
-		long userId, java.lang.String name, long primKey,
-		java.lang.String[] groupPermissions, java.lang.String[] guestPermissions)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService()
-			.addModelResources(companyId, groupId, userId, name, primKey,
-			groupPermissions, guestPermissions);
-	}
-
-	/**
 	* Adds resources for the model with the name and primary key string, always
 	* creating a resource at the individual scope and only creating resources
 	* at the group, group template, and company scope if such resources don't
@@ -138,8 +114,32 @@ public class ResourceLocalServiceUtil {
 			groupPermissions, guestPermissions);
 	}
 
+	/**
+	* Adds resources for the model with the name and primary key, always
+	* creating a resource at the individual scope and only creating resources
+	* at the group, group template, and company scope if such resources don't
+	* already exist.
+	*
+	* @param companyId the primary key of the portal instance
+	* @param groupId the primary key of the group
+	* @param userId the primary key of the user adding the resources
+	* @param name a name for the resource, typically the model's class name
+	* @param primKey the primary key of the model instance, optionally
+	<code>0</code> if no instance exists
+	* @param groupPermissions the group permissions to be applied
+	* @param guestPermissions the guest permissions to be applied
+	*/
 	public static void addModelResources(long companyId, long groupId,
 		long userId, java.lang.String name, long primKey,
+		java.lang.String[] groupPermissions, java.lang.String[] guestPermissions)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService()
+			.addModelResources(companyId, groupId, userId, name, primKey,
+			groupPermissions, guestPermissions);
+	}
+
+	public static void addModelResources(long companyId, long groupId,
+		long userId, java.lang.String name, java.lang.String primKey,
 		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService()
@@ -148,7 +148,7 @@ public class ResourceLocalServiceUtil {
 	}
 
 	public static void addModelResources(long companyId, long groupId,
-		long userId, java.lang.String name, java.lang.String primKey,
+		long userId, java.lang.String name, long primKey,
 		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService()
