@@ -16,10 +16,10 @@ package com.liferay.counter.service.base;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.counter.model.Counter;
-import com.liferay.counter.service.CounterLocalService;
-import com.liferay.counter.service.persistence.CounterFinder;
-import com.liferay.counter.service.persistence.CounterPersistence;
+import com.liferay.counter.kernel.model.Counter;
+import com.liferay.counter.kernel.service.CounterLocalService;
+import com.liferay.counter.kernel.service.persistence.CounterFinder;
+import com.liferay.counter.kernel.service.persistence.CounterPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -55,7 +55,7 @@ import javax.sql.DataSource;
  *
  * @author Brian Wing Shun Chan
  * @see com.liferay.counter.service.impl.CounterLocalServiceImpl
- * @see com.liferay.counter.service.CounterLocalServiceUtil
+ * @see com.liferay.counter.kernel.service.CounterLocalServiceUtil
  * @generated
  */
 @ProviderType
@@ -64,7 +64,7 @@ public abstract class CounterLocalServiceBaseImpl extends BaseLocalServiceImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link com.liferay.counter.service.CounterLocalServiceUtil} to access the counter local service.
+	 * Never modify or reference this class directly. Always use {@link com.liferay.counter.kernel.service.CounterLocalServiceUtil} to access the counter local service.
 	 */
 
 	/**
@@ -323,13 +323,13 @@ public abstract class CounterLocalServiceBaseImpl extends BaseLocalServiceImpl
 	}
 
 	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register("com.liferay.counter.model.Counter",
+		persistedModelLocalServiceRegistry.register("com.liferay.counter.kernel.model.Counter",
 			counterLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
-			"com.liferay.counter.model.Counter");
+			"com.liferay.counter.kernel.model.Counter");
 	}
 
 	/**
@@ -374,7 +374,7 @@ public abstract class CounterLocalServiceBaseImpl extends BaseLocalServiceImpl
 		}
 	}
 
-	@BeanReference(type = com.liferay.counter.service.CounterLocalService.class)
+	@BeanReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
 	protected CounterLocalService counterLocalService;
 	@BeanReference(type = CounterPersistence.class)
 	protected CounterPersistence counterPersistence;
