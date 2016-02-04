@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.counter.model;
+package com.liferay.counter.kernel.model;
 
 import aQute.bnd.annotation.ProviderType;
 
@@ -83,7 +83,7 @@ public class CounterWrapper implements Counter, ModelWrapper<Counter> {
 	}
 
 	@Override
-	public int compareTo(com.liferay.counter.model.Counter counter) {
+	public int compareTo(com.liferay.counter.kernel.model.Counter counter) {
 		return _counter.compareTo(counter);
 	}
 
@@ -214,12 +214,12 @@ public class CounterWrapper implements Counter, ModelWrapper<Counter> {
 	}
 
 	@Override
-	public com.liferay.portal.model.CacheModel<com.liferay.counter.model.Counter> toCacheModel() {
+	public com.liferay.portal.model.CacheModel<com.liferay.counter.kernel.model.Counter> toCacheModel() {
 		return _counter.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.counter.model.Counter toEscapedModel() {
+	public com.liferay.counter.kernel.model.Counter toEscapedModel() {
 		return new CounterWrapper(_counter.toEscapedModel());
 	}
 
@@ -229,7 +229,7 @@ public class CounterWrapper implements Counter, ModelWrapper<Counter> {
 	}
 
 	@Override
-	public com.liferay.counter.model.Counter toUnescapedModel() {
+	public com.liferay.counter.kernel.model.Counter toUnescapedModel() {
 		return new CounterWrapper(_counter.toUnescapedModel());
 	}
 

@@ -12,11 +12,11 @@
  * details.
  */
 
-package com.liferay.counter.service.persistence;
+package com.liferay.counter.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.counter.model.Counter;
+import com.liferay.counter.kernel.model.Counter;
 
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -143,7 +143,7 @@ public class CounterUtil {
 	* @throws NoSuchCounterException if a counter with the primary key could not be found
 	*/
 	public static Counter remove(java.lang.String name)
-		throws com.liferay.counter.exception.NoSuchCounterException {
+		throws com.liferay.counter.kernel.exception.NoSuchCounterException {
 		return getPersistence().remove(name);
 	}
 
@@ -159,7 +159,7 @@ public class CounterUtil {
 	* @throws NoSuchCounterException if a counter with the primary key could not be found
 	*/
 	public static Counter findByPrimaryKey(java.lang.String name)
-		throws com.liferay.counter.exception.NoSuchCounterException {
+		throws com.liferay.counter.kernel.exception.NoSuchCounterException {
 		return getPersistence().findByPrimaryKey(name);
 	}
 

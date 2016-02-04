@@ -130,7 +130,7 @@
 		<field name="ratingsTotalScore" type="double" />
 		<field name="ratingsAverageScore" type="double" />
 	</model>
-	<model name="com.liferay.counter.model.Counter">
+	<model name="com.liferay.counter.kernel.model.Counter">
 		<field name="name" type="String" />
 		<field name="currentId" type="long" />
 	</model>

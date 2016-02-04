@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.counter.exception;
+package com.liferay.counter.kernel.exception;
 
 import com.liferay.portal.exception.NoSuchModelException;
 

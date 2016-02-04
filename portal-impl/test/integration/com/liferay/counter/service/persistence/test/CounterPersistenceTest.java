@@ -14,10 +14,10 @@
 
 package com.liferay.counter.service.persistence.test;
 
-import com.liferay.counter.exception.NoSuchCounterException;
-import com.liferay.counter.model.Counter;
-import com.liferay.counter.service.persistence.CounterPersistence;
-import com.liferay.counter.service.persistence.CounterUtil;
+import com.liferay.counter.kernel.exception.NoSuchCounterException;
+import com.liferay.counter.kernel.model.Counter;
+import com.liferay.counter.kernel.service.persistence.CounterPersistence;
+import com.liferay.counter.kernel.service.persistence.CounterUtil;
 
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
