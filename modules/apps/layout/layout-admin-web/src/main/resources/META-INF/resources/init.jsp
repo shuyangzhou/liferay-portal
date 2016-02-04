@@ -27,7 +27,10 @@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %><%@
 taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
-<%@ page import="com.liferay.layout.admin.web.constants.LayoutAdminPortletKeys" %><%@
+<%@ page import="com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys" %><%@
+page import="com.liferay.exportimport.kernel.staging.LayoutStagingUtil" %><%@
+page import="com.liferay.exportimport.kernel.staging.StagingUtil" %><%@
+page import="com.liferay.layout.admin.web.constants.LayoutAdminPortletKeys" %><%@
 page import="com.liferay.layout.admin.web.display.context.LayoutsAdminDisplayContext" %><%@
 page import="com.liferay.layout.admin.web.display.context.LayoutsTreeDisplayContext" %><%@
 page import="com.liferay.portal.exception.ImageTypeException" %><%@
@@ -111,9 +114,6 @@ page import="com.liferay.portal.util.PropsValues" %><%@
 page import="com.liferay.portal.util.RobotsUtil" %><%@
 page import="com.liferay.portlet.PortletURLUtil" %><%@
 page import="com.liferay.portlet.documentlibrary.exception.FileSizeException" %><%@
-page import="com.liferay.portlet.exportimport.lar.PortletDataHandlerKeys" %><%@
-page import="com.liferay.portlet.exportimport.staging.LayoutStagingUtil" %><%@
-page import="com.liferay.portlet.exportimport.staging.StagingUtil" %><%@
 page import="com.liferay.sites.kernel.util.SitesUtil" %>
 
 <%@ page import="java.util.Collections" %><%@

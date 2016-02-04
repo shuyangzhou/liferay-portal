@@ -16,6 +16,8 @@ package com.liferay.portal.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
+
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery;
@@ -34,8 +36,6 @@ import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.model.PersistedModel;
 import com.liferay.portal.model.Repository;
 import com.liferay.portal.model.SystemEventConstants;
-
-import com.liferay.portlet.exportimport.lar.PortletDataContext;
 
 import java.io.Serializable;
 

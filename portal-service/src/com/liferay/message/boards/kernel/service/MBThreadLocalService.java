@@ -16,6 +16,8 @@ package com.liferay.message.boards.kernel.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
+
 import com.liferay.message.boards.kernel.model.MBMessage;
 import com.liferay.message.boards.kernel.model.MBThread;
 
@@ -41,8 +43,6 @@ import com.liferay.portal.model.SystemEventConstants;
 import com.liferay.portal.service.BaseLocalService;
 import com.liferay.portal.service.PersistedModelLocalService;
 import com.liferay.portal.service.ServiceContext;
-
-import com.liferay.portlet.exportimport.lar.PortletDataContext;
 
 import java.io.Serializable;
 

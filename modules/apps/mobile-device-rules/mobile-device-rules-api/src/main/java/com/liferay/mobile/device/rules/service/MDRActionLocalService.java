@@ -16,6 +16,8 @@ package com.liferay.mobile.device.rules.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
+
 import com.liferay.mobile.device.rules.model.MDRAction;
 
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
@@ -38,8 +40,6 @@ import com.liferay.portal.model.SystemEventConstants;
 import com.liferay.portal.service.BaseLocalService;
 import com.liferay.portal.service.PersistedModelLocalService;
 import com.liferay.portal.service.ServiceContext;
-
-import com.liferay.portlet.exportimport.lar.PortletDataContext;
 
 import java.io.Serializable;
 

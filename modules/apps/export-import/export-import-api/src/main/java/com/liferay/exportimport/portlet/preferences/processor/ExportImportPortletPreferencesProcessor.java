@@ -14,8 +14,8 @@
 
 package com.liferay.exportimport.portlet.preferences.processor;
 
-import com.liferay.portlet.exportimport.lar.PortletDataContext;
-import com.liferay.portlet.exportimport.lar.PortletDataException;
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
+import com.liferay.exportimport.kernel.lar.PortletDataException;
 
 import java.util.List;
 

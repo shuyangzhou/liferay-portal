@@ -15,7 +15,7 @@
 package com.liferay.dynamic.data.lists.util.comparator;
 
 import com.liferay.dynamic.data.lists.model.DDLRecord;
-import com.liferay.portlet.exportimport.lar.StagedModelModifiedDateComparator;
+import com.liferay.exportimport.kernel.lar.StagedModelModifiedDateComparator;
 
 /**
  * @author Leonardo Barros

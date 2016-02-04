@@ -14,6 +14,8 @@
 
 package com.liferay.exportimport.web.trash;
 
+import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
+import com.liferay.exportimport.kernel.service.ExportImportConfigurationLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.trash.BaseTrashHandler;
@@ -24,8 +26,6 @@ import com.liferay.portal.model.Group;
 import com.liferay.portal.service.GroupLocalService;
 import com.liferay.portal.service.permission.GroupPermissionUtil;
 import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portlet.exportimport.model.ExportImportConfiguration;
-import com.liferay.portlet.exportimport.service.ExportImportConfigurationLocalService;
 import com.liferay.trash.kernel.model.TrashEntry;
 
 import javax.portlet.PortletRequest;
@@ -41,7 +41,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	immediate = true,
 	property = {
-		"model.class.name=com.liferay.portlet.exportimport.model.ExportImportConfiguration"
+		"model.class.name=com.liferay.exportimport.kernel.model.ExportImportConfiguration"
 	},
 	service = TrashHandler.class
 )
