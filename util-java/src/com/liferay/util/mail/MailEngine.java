@@ -14,16 +14,16 @@
 
 package com.liferay.util.mail;
 
-import com.liferay.mail.model.FileAttachment;
-import com.liferay.mail.service.MailServiceUtil;
+import com.liferay.mail.kernel.model.Account;
+import com.liferay.mail.kernel.model.FileAttachment;
+import com.liferay.mail.kernel.model.MailMessage;
+import com.liferay.mail.kernel.model.SMTPAccount;
+import com.liferay.mail.kernel.service.MailServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.log.LogUtil;
-import com.liferay.portal.kernel.mail.Account;
-import com.liferay.portal.kernel.mail.MailMessage;
-import com.liferay.portal.kernel.mail.SMTPAccount;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.InfrastructureUtil;

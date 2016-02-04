@@ -16,8 +16,8 @@ package com.liferay.invitation.web.portlet.action;
 
 import com.liferay.invitation.web.constants.InvitationPortletKeys;
 import com.liferay.invitation.web.util.InvitationUtil;
-import com.liferay.mail.service.MailService;
-import com.liferay.portal.kernel.mail.MailMessage;
+import com.liferay.mail.kernel.model.MailMessage;
+import com.liferay.mail.kernel.service.MailService;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.servlet.SessionErrors;
