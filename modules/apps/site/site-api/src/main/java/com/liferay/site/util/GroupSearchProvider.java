@@ -17,6 +17,7 @@ package com.liferay.site.util;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -28,7 +29,6 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.GroupLocalService;
 import com.liferay.portal.service.GroupService;
 import com.liferay.portal.service.permission.GroupPermissionUtil;
-import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.usersadmin.search.GroupSearch;
 import com.liferay.portlet.usersadmin.search.GroupSearchTerms;
@@ -40,15 +40,24 @@ import java.util.List;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
- *
  * @author Julio Camarero
  */
 @Component(immediate = true, service = GroupSearchProvider.class)
 public class GroupSearchProvider {
+
+	@Activate
+	public void activate() {
+		_classNameIds = new long[] {
+			PortalUtil.getClassNameId(Company.class),
+			PortalUtil.getClassNameId(Group.class),
+			PortalUtil.getClassNameId(Organization.class)
+		};
+	}
 
 	public GroupSearch getGroupSearch(
 			PortletRequest portletRequest, PortletURL portletURL)
@@ -237,12 +246,7 @@ public class GroupSearchProvider {
 		_groupService = groupService;
 	}
 
-	private static final long[] _classNameIds = new long[] {
-		PortalUtil.getClassNameId(Company.class),
-		PortalUtil.getClassNameId(Group.class),
-		PortalUtil.getClassNameId(Organization.class)
-	};
-
+	private long[] _classNameIds;
 	private GroupLocalService _groupLocalService;
 	private GroupService _groupService;
 
