@@ -1150,7 +1150,7 @@ svn://svn.liferay.com/repos/public/alloy/trunk/sandbox/taglibs.
 			<replacevalue><![CDATA[import com.liferay.portal.model.User;
 import com.liferay.portal.service.PortalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portal.util.TestPropsValues;
+import com.liferay.portal.kernel.test.util.TestPropsValues;
 
 import java.util.HashMap;]]></replacevalue>
 		</replace>
