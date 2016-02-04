@@ -14,12 +14,12 @@
 
 package com.liferay.document.library.lar.xstream;
 
+import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.portal.kernel.bean.BeanPropertiesUtil;
 import com.liferay.portal.kernel.repository.proxy.FileEntryProxyBean;
 import com.liferay.portal.kernel.repository.proxy.FileVersionProxyBean;
 import com.liferay.portal.repository.liferayrepository.model.LiferayFileEntry;
 import com.liferay.portal.repository.liferayrepository.model.LiferayFileVersion;
-import com.liferay.portlet.documentlibrary.model.DLFileEntry;
 import com.liferay.portlet.documentlibrary.model.impl.DLFileEntryImpl;
 import com.liferay.portlet.exportimport.xstream.BaseXStreamConverter;
 import com.liferay.portlet.exportimport.xstream.XStreamHierarchicalStreamReader;
