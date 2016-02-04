@@ -363,7 +363,7 @@ public abstract class ResourceBlockPermissionLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.service.CounterLocalService getCounterLocalService() {
+	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
 		return counterLocalService;
 	}
 
@@ -373,7 +373,7 @@ public abstract class ResourceBlockPermissionLocalServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.service.CounterLocalService counterLocalService) {
+		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -489,8 +489,8 @@ public abstract class ResourceBlockPermissionLocalServiceBaseImpl
 	protected ResourceBlockPermissionLocalService resourceBlockPermissionLocalService;
 	@BeanReference(type = ResourceBlockPermissionPersistence.class)
 	protected ResourceBlockPermissionPersistence resourceBlockPermissionPersistence;
-	@BeanReference(type = com.liferay.counter.service.CounterLocalService.class)
-	protected com.liferay.counter.service.CounterLocalService counterLocalService;
+	@BeanReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
+	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
 	@BeanReference(type = com.liferay.portal.service.ResourceBlockLocalService.class)
 	protected com.liferay.portal.service.ResourceBlockLocalService resourceBlockLocalService;
 	@BeanReference(type = ResourceBlockPersistence.class)

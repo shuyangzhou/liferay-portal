@@ -379,7 +379,7 @@ public abstract class SocialActivitySetLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.service.CounterLocalService getCounterLocalService() {
+	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
 		return counterLocalService;
 	}
 
@@ -389,7 +389,7 @@ public abstract class SocialActivitySetLocalServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.service.CounterLocalService counterLocalService) {
+		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -508,8 +508,8 @@ public abstract class SocialActivitySetLocalServiceBaseImpl
 	protected SocialActivitySetPersistence socialActivitySetPersistence;
 	@BeanReference(type = SocialActivitySetFinder.class)
 	protected SocialActivitySetFinder socialActivitySetFinder;
-	@BeanReference(type = com.liferay.counter.service.CounterLocalService.class)
-	protected com.liferay.counter.service.CounterLocalService counterLocalService;
+	@BeanReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
+	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
 	@BeanReference(type = com.liferay.social.kernel.service.SocialActivityLocalService.class)
 	protected com.liferay.social.kernel.service.SocialActivityLocalService socialActivityLocalService;
 	@BeanReference(type = SocialActivityPersistence.class)
