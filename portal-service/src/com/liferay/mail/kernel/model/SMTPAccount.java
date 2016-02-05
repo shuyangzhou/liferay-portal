@@ -12,40 +12,15 @@
  * details.
  */
 
-package com.liferay.mail.model;
-
-import java.io.Serializable;
+package com.liferay.mail.kernel.model;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Thiago Moreira
  */
-public class Filter implements Serializable {
+public class SMTPAccount extends Account {
 
-	public Filter() {
+	protected SMTPAccount(String protocol, boolean secure, int port) {
+		super(protocol, secure, port);
 	}
-
-	public Filter(String emailAddress, String folder) {
-		_emailAddress = emailAddress;
-		_folder = folder;
-	}
-
-	public String getEmailAddress() {
-		return _emailAddress;
-	}
-
-	public String getFolder() {
-		return _folder;
-	}
-
-	public void setEmailAddress(String emailAddress) {
-		_emailAddress = emailAddress;
-	}
-
-	public void setFolder(String folder) {
-		_folder = folder;
-	}
-
-	private String _emailAddress;
-	private String _folder;
 
 }

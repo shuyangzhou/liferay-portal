@@ -17,8 +17,8 @@ package com.liferay.calendar.notification.impl;
 import com.liferay.calendar.model.CalendarNotificationTemplate;
 import com.liferay.calendar.model.CalendarNotificationTemplateConstants;
 import com.liferay.calendar.notification.NotificationField;
-import com.liferay.mail.service.MailServiceUtil;
-import com.liferay.portal.kernel.mail.MailMessage;
+import com.liferay.mail.kernel.model.MailMessage;
+import com.liferay.mail.kernel.service.MailServiceUtil;
 
 import javax.mail.internet.InternetAddress;
 

@@ -12,11 +12,11 @@
  * details.
  */
 
-package com.liferay.mail.service;
+package com.liferay.mail.kernel.service;
 
-import com.liferay.mail.model.Filter;
+import com.liferay.mail.kernel.model.Filter;
+import com.liferay.mail.kernel.model.MailMessage;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-import com.liferay.portal.kernel.mail.MailMessage;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 import java.util.List;
