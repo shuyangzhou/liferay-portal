@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.model.impl;
+package com.liferay.portal.kernel.model.impl;
 
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.model.Layout;

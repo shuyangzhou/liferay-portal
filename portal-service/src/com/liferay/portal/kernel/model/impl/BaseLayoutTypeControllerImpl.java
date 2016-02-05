@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.model.impl;
+package com.liferay.portal.kernel.model.impl;
 
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
