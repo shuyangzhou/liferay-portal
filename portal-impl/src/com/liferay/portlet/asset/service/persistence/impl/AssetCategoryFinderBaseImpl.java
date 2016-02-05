@@ -15,7 +15,7 @@
 package com.liferay.portlet.asset.service.persistence.impl;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 
 import com.liferay.portlet.asset.model.AssetCategory;
 import com.liferay.portlet.asset.service.persistence.AssetCategoryPersistence;

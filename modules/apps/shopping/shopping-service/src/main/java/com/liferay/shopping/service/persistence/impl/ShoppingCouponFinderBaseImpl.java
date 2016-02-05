@@ -15,7 +15,7 @@
 package com.liferay.shopping.service.persistence.impl;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 
 import com.liferay.shopping.model.ShoppingCoupon;
 import com.liferay.shopping.service.persistence.ShoppingCouponPersistence;

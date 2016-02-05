@@ -18,7 +18,7 @@ import com.liferay.calendar.model.Calendar;
 import com.liferay.calendar.service.persistence.CalendarPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 
 import java.util.Set;
 

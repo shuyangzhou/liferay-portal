@@ -15,9 +15,9 @@
 package com.liferay.portal.lock.service.persistence.impl;
 
 import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.lock.model.Lock;
 import com.liferay.portal.lock.service.persistence.LockPersistence;
-import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.util.Set;
 

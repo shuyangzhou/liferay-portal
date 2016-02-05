@@ -18,7 +18,7 @@ import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.persistence.JournalArticlePersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 
 import java.util.Set;
 

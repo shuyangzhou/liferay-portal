@@ -43,7 +43,7 @@ import javax.sql.DataSource;
  * </p>
  *
  * @author Brian Wing Shun Chan
- * @see    com.liferay.portal.service.persistence.impl.BasePersistenceImpl
+ * @see    com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl
  */
 public interface BasePersistence<T extends BaseModel<T>> {
 

@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.service.persistence.impl;
+package com.liferay.portal.kernel.service.persistence.impl;
 
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.persistence.CompanyProvider;

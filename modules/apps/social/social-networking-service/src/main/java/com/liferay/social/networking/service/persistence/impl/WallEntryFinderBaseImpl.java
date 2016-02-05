@@ -15,7 +15,7 @@
 package com.liferay.social.networking.service.persistence.impl;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 
 import com.liferay.social.networking.model.WallEntry;
 import com.liferay.social.networking.service.persistence.WallEntryPersistence;
