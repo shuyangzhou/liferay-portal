@@ -90,6 +90,7 @@ public class SocialRequestServiceHttp {
 
 	private static Log _log = LogFactoryUtil.getLog(SocialRequestServiceHttp.class);
 	private static final Class<?>[] _updateRequestParameterTypes0 = new Class[] {
-			long.class, int.class, com.liferay.portal.kernel.theme.ThemeDisplay.class
+			long.class, int.class,
+			com.liferay.portal.kernel.theme.ThemeDisplay.class
 		};
 }
