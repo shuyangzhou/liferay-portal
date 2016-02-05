@@ -18,6 +18,9 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.announcements.kernel.service.persistence.AnnouncementsDeliveryPersistence;
 
+import com.liferay.asset.kernel.service.persistence.AssetEntryFinder;
+import com.liferay.asset.kernel.service.persistence.AssetEntryPersistence;
+
 import com.liferay.blogs.kernel.service.persistence.BlogsStatsUserFinder;
 import com.liferay.blogs.kernel.service.persistence.BlogsStatsUserPersistence;
 
@@ -92,8 +95,6 @@ import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.service.persistence.WorkflowInstanceLinkPersistence;
 import com.liferay.portal.util.PortalUtil;
 
-import com.liferay.portlet.asset.service.persistence.AssetEntryFinder;
-import com.liferay.portlet.asset.service.persistence.AssetEntryPersistence;
 import com.liferay.portlet.documentlibrary.service.persistence.DLFileEntryFinder;
 import com.liferay.portlet.documentlibrary.service.persistence.DLFileEntryPersistence;
 import com.liferay.portlet.documentlibrary.service.persistence.DLFileRankFinder;
@@ -2022,7 +2023,7 @@ public abstract class UserLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 *
 	 * @return the asset entry local service
 	 */
-	public com.liferay.portlet.asset.service.AssetEntryLocalService getAssetEntryLocalService() {
+	public com.liferay.asset.kernel.service.AssetEntryLocalService getAssetEntryLocalService() {
 		return assetEntryLocalService;
 	}
 
@@ -2032,7 +2033,7 @@ public abstract class UserLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * @param assetEntryLocalService the asset entry local service
 	 */
 	public void setAssetEntryLocalService(
-		com.liferay.portlet.asset.service.AssetEntryLocalService assetEntryLocalService) {
+		com.liferay.asset.kernel.service.AssetEntryLocalService assetEntryLocalService) {
 		this.assetEntryLocalService = assetEntryLocalService;
 	}
 
@@ -2976,8 +2977,8 @@ public abstract class UserLocalServiceBaseImpl extends BaseLocalServiceImpl
 	protected com.liferay.announcements.kernel.service.AnnouncementsDeliveryLocalService announcementsDeliveryLocalService;
 	@BeanReference(type = AnnouncementsDeliveryPersistence.class)
 	protected AnnouncementsDeliveryPersistence announcementsDeliveryPersistence;
-	@BeanReference(type = com.liferay.portlet.asset.service.AssetEntryLocalService.class)
-	protected com.liferay.portlet.asset.service.AssetEntryLocalService assetEntryLocalService;
+	@BeanReference(type = com.liferay.asset.kernel.service.AssetEntryLocalService.class)
+	protected com.liferay.asset.kernel.service.AssetEntryLocalService assetEntryLocalService;
 	@BeanReference(type = AssetEntryPersistence.class)
 	protected AssetEntryPersistence assetEntryPersistence;
 	@BeanReference(type = AssetEntryFinder.class)

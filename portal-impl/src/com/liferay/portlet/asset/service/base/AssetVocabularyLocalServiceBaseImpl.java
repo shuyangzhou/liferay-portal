@@ -16,6 +16,13 @@ package com.liferay.portlet.asset.service.base;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.asset.kernel.model.AssetVocabulary;
+import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
+import com.liferay.asset.kernel.service.persistence.AssetCategoryFinder;
+import com.liferay.asset.kernel.service.persistence.AssetCategoryPersistence;
+import com.liferay.asset.kernel.service.persistence.AssetVocabularyFinder;
+import com.liferay.asset.kernel.service.persistence.AssetVocabularyPersistence;
+
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
 import com.liferay.exportimport.kernel.lar.ManifestSummary;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
@@ -50,13 +57,6 @@ import com.liferay.portal.service.persistence.UserFinder;
 import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.util.PortalUtil;
 
-import com.liferay.portlet.asset.model.AssetVocabulary;
-import com.liferay.portlet.asset.service.AssetVocabularyLocalService;
-import com.liferay.portlet.asset.service.persistence.AssetCategoryFinder;
-import com.liferay.portlet.asset.service.persistence.AssetCategoryPersistence;
-import com.liferay.portlet.asset.service.persistence.AssetVocabularyFinder;
-import com.liferay.portlet.asset.service.persistence.AssetVocabularyPersistence;
-
 import java.io.Serializable;
 
 import java.util.List;
@@ -72,7 +72,7 @@ import javax.sql.DataSource;
  *
  * @author Brian Wing Shun Chan
  * @see com.liferay.portlet.asset.service.impl.AssetVocabularyLocalServiceImpl
- * @see com.liferay.portlet.asset.service.AssetVocabularyLocalServiceUtil
+ * @see com.liferay.asset.kernel.service.AssetVocabularyLocalServiceUtil
  * @generated
  */
 @ProviderType
@@ -82,7 +82,7 @@ public abstract class AssetVocabularyLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link com.liferay.portlet.asset.service.AssetVocabularyLocalServiceUtil} to access the asset vocabulary local service.
+	 * Never modify or reference this class directly. Always use {@link com.liferay.asset.kernel.service.AssetVocabularyLocalServiceUtil} to access the asset vocabulary local service.
 	 */
 
 	/**
@@ -255,7 +255,7 @@ public abstract class AssetVocabularyLocalServiceBaseImpl
 	public ActionableDynamicQuery getActionableDynamicQuery() {
 		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
 
-		actionableDynamicQuery.setBaseLocalService(com.liferay.portlet.asset.service.AssetVocabularyLocalServiceUtil.getService());
+		actionableDynamicQuery.setBaseLocalService(com.liferay.asset.kernel.service.AssetVocabularyLocalServiceUtil.getService());
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(AssetVocabulary.class);
 
@@ -268,7 +268,7 @@ public abstract class AssetVocabularyLocalServiceBaseImpl
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
 		IndexableActionableDynamicQuery indexableActionableDynamicQuery = new IndexableActionableDynamicQuery();
 
-		indexableActionableDynamicQuery.setBaseLocalService(com.liferay.portlet.asset.service.AssetVocabularyLocalServiceUtil.getService());
+		indexableActionableDynamicQuery.setBaseLocalService(com.liferay.asset.kernel.service.AssetVocabularyLocalServiceUtil.getService());
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
 		indexableActionableDynamicQuery.setModelClass(AssetVocabulary.class);
 
@@ -280,7 +280,7 @@ public abstract class AssetVocabularyLocalServiceBaseImpl
 
 	protected void initActionableDynamicQuery(
 		ActionableDynamicQuery actionableDynamicQuery) {
-		actionableDynamicQuery.setBaseLocalService(com.liferay.portlet.asset.service.AssetVocabularyLocalServiceUtil.getService());
+		actionableDynamicQuery.setBaseLocalService(com.liferay.asset.kernel.service.AssetVocabularyLocalServiceUtil.getService());
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(AssetVocabulary.class);
 
@@ -687,7 +687,7 @@ public abstract class AssetVocabularyLocalServiceBaseImpl
 	 *
 	 * @return the asset category local service
 	 */
-	public com.liferay.portlet.asset.service.AssetCategoryLocalService getAssetCategoryLocalService() {
+	public com.liferay.asset.kernel.service.AssetCategoryLocalService getAssetCategoryLocalService() {
 		return assetCategoryLocalService;
 	}
 
@@ -697,7 +697,7 @@ public abstract class AssetVocabularyLocalServiceBaseImpl
 	 * @param assetCategoryLocalService the asset category local service
 	 */
 	public void setAssetCategoryLocalService(
-		com.liferay.portlet.asset.service.AssetCategoryLocalService assetCategoryLocalService) {
+		com.liferay.asset.kernel.service.AssetCategoryLocalService assetCategoryLocalService) {
 		this.assetCategoryLocalService = assetCategoryLocalService;
 	}
 
@@ -739,13 +739,13 @@ public abstract class AssetVocabularyLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register("com.liferay.portlet.asset.model.AssetVocabulary",
+		persistedModelLocalServiceRegistry.register("com.liferay.asset.kernel.model.AssetVocabulary",
 			assetVocabularyLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
-			"com.liferay.portlet.asset.model.AssetVocabulary");
+			"com.liferay.asset.kernel.model.AssetVocabulary");
 	}
 
 	/**
@@ -790,7 +790,7 @@ public abstract class AssetVocabularyLocalServiceBaseImpl
 		}
 	}
 
-	@BeanReference(type = com.liferay.portlet.asset.service.AssetVocabularyLocalService.class)
+	@BeanReference(type = com.liferay.asset.kernel.service.AssetVocabularyLocalService.class)
 	protected AssetVocabularyLocalService assetVocabularyLocalService;
 	@BeanReference(type = AssetVocabularyPersistence.class)
 	protected AssetVocabularyPersistence assetVocabularyPersistence;
@@ -816,8 +816,8 @@ public abstract class AssetVocabularyLocalServiceBaseImpl
 	protected UserPersistence userPersistence;
 	@BeanReference(type = UserFinder.class)
 	protected UserFinder userFinder;
-	@BeanReference(type = com.liferay.portlet.asset.service.AssetCategoryLocalService.class)
-	protected com.liferay.portlet.asset.service.AssetCategoryLocalService assetCategoryLocalService;
+	@BeanReference(type = com.liferay.asset.kernel.service.AssetCategoryLocalService.class)
+	protected com.liferay.asset.kernel.service.AssetCategoryLocalService assetCategoryLocalService;
 	@BeanReference(type = AssetCategoryPersistence.class)
 	protected AssetCategoryPersistence assetCategoryPersistence;
 	@BeanReference(type = AssetCategoryFinder.class)

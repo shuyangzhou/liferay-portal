@@ -14,6 +14,12 @@
 
 package com.liferay.portlet.messageboards.service.base;
 
+import com.liferay.asset.kernel.service.persistence.AssetEntryFinder;
+import com.liferay.asset.kernel.service.persistence.AssetEntryPersistence;
+import com.liferay.asset.kernel.service.persistence.AssetLinkPersistence;
+import com.liferay.asset.kernel.service.persistence.AssetTagFinder;
+import com.liferay.asset.kernel.service.persistence.AssetTagPersistence;
+
 import com.liferay.blogs.kernel.service.persistence.BlogsEntryFinder;
 import com.liferay.blogs.kernel.service.persistence.BlogsEntryPersistence;
 
@@ -49,12 +55,6 @@ import com.liferay.portal.service.persistence.UserFinder;
 import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.service.persistence.WorkflowInstanceLinkPersistence;
 import com.liferay.portal.util.PortalUtil;
-
-import com.liferay.portlet.asset.service.persistence.AssetEntryFinder;
-import com.liferay.portlet.asset.service.persistence.AssetEntryPersistence;
-import com.liferay.portlet.asset.service.persistence.AssetLinkPersistence;
-import com.liferay.portlet.asset.service.persistence.AssetTagFinder;
-import com.liferay.portlet.asset.service.persistence.AssetTagPersistence;
 
 import com.liferay.ratings.kernel.service.persistence.RatingsStatsFinder;
 import com.liferay.ratings.kernel.service.persistence.RatingsStatsPersistence;
@@ -630,7 +630,7 @@ public abstract class MBMessageServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the asset entry local service
 	 */
-	public com.liferay.portlet.asset.service.AssetEntryLocalService getAssetEntryLocalService() {
+	public com.liferay.asset.kernel.service.AssetEntryLocalService getAssetEntryLocalService() {
 		return assetEntryLocalService;
 	}
 
@@ -640,7 +640,7 @@ public abstract class MBMessageServiceBaseImpl extends BaseServiceImpl
 	 * @param assetEntryLocalService the asset entry local service
 	 */
 	public void setAssetEntryLocalService(
-		com.liferay.portlet.asset.service.AssetEntryLocalService assetEntryLocalService) {
+		com.liferay.asset.kernel.service.AssetEntryLocalService assetEntryLocalService) {
 		this.assetEntryLocalService = assetEntryLocalService;
 	}
 
@@ -649,7 +649,7 @@ public abstract class MBMessageServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the asset entry remote service
 	 */
-	public com.liferay.portlet.asset.service.AssetEntryService getAssetEntryService() {
+	public com.liferay.asset.kernel.service.AssetEntryService getAssetEntryService() {
 		return assetEntryService;
 	}
 
@@ -659,7 +659,7 @@ public abstract class MBMessageServiceBaseImpl extends BaseServiceImpl
 	 * @param assetEntryService the asset entry remote service
 	 */
 	public void setAssetEntryService(
-		com.liferay.portlet.asset.service.AssetEntryService assetEntryService) {
+		com.liferay.asset.kernel.service.AssetEntryService assetEntryService) {
 		this.assetEntryService = assetEntryService;
 	}
 
@@ -705,7 +705,7 @@ public abstract class MBMessageServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the asset link local service
 	 */
-	public com.liferay.portlet.asset.service.AssetLinkLocalService getAssetLinkLocalService() {
+	public com.liferay.asset.kernel.service.AssetLinkLocalService getAssetLinkLocalService() {
 		return assetLinkLocalService;
 	}
 
@@ -715,7 +715,7 @@ public abstract class MBMessageServiceBaseImpl extends BaseServiceImpl
 	 * @param assetLinkLocalService the asset link local service
 	 */
 	public void setAssetLinkLocalService(
-		com.liferay.portlet.asset.service.AssetLinkLocalService assetLinkLocalService) {
+		com.liferay.asset.kernel.service.AssetLinkLocalService assetLinkLocalService) {
 		this.assetLinkLocalService = assetLinkLocalService;
 	}
 
@@ -743,7 +743,7 @@ public abstract class MBMessageServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the asset tag local service
 	 */
-	public com.liferay.portlet.asset.service.AssetTagLocalService getAssetTagLocalService() {
+	public com.liferay.asset.kernel.service.AssetTagLocalService getAssetTagLocalService() {
 		return assetTagLocalService;
 	}
 
@@ -753,7 +753,7 @@ public abstract class MBMessageServiceBaseImpl extends BaseServiceImpl
 	 * @param assetTagLocalService the asset tag local service
 	 */
 	public void setAssetTagLocalService(
-		com.liferay.portlet.asset.service.AssetTagLocalService assetTagLocalService) {
+		com.liferay.asset.kernel.service.AssetTagLocalService assetTagLocalService) {
 		this.assetTagLocalService = assetTagLocalService;
 	}
 
@@ -762,7 +762,7 @@ public abstract class MBMessageServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the asset tag remote service
 	 */
-	public com.liferay.portlet.asset.service.AssetTagService getAssetTagService() {
+	public com.liferay.asset.kernel.service.AssetTagService getAssetTagService() {
 		return assetTagService;
 	}
 
@@ -772,7 +772,7 @@ public abstract class MBMessageServiceBaseImpl extends BaseServiceImpl
 	 * @param assetTagService the asset tag remote service
 	 */
 	public void setAssetTagService(
-		com.liferay.portlet.asset.service.AssetTagService assetTagService) {
+		com.liferay.asset.kernel.service.AssetTagService assetTagService) {
 		this.assetTagService = assetTagService;
 	}
 
@@ -1312,22 +1312,22 @@ public abstract class MBMessageServiceBaseImpl extends BaseServiceImpl
 	protected com.liferay.portal.service.WorkflowInstanceLinkLocalService workflowInstanceLinkLocalService;
 	@BeanReference(type = WorkflowInstanceLinkPersistence.class)
 	protected WorkflowInstanceLinkPersistence workflowInstanceLinkPersistence;
-	@BeanReference(type = com.liferay.portlet.asset.service.AssetEntryLocalService.class)
-	protected com.liferay.portlet.asset.service.AssetEntryLocalService assetEntryLocalService;
-	@BeanReference(type = com.liferay.portlet.asset.service.AssetEntryService.class)
-	protected com.liferay.portlet.asset.service.AssetEntryService assetEntryService;
+	@BeanReference(type = com.liferay.asset.kernel.service.AssetEntryLocalService.class)
+	protected com.liferay.asset.kernel.service.AssetEntryLocalService assetEntryLocalService;
+	@BeanReference(type = com.liferay.asset.kernel.service.AssetEntryService.class)
+	protected com.liferay.asset.kernel.service.AssetEntryService assetEntryService;
 	@BeanReference(type = AssetEntryPersistence.class)
 	protected AssetEntryPersistence assetEntryPersistence;
 	@BeanReference(type = AssetEntryFinder.class)
 	protected AssetEntryFinder assetEntryFinder;
-	@BeanReference(type = com.liferay.portlet.asset.service.AssetLinkLocalService.class)
-	protected com.liferay.portlet.asset.service.AssetLinkLocalService assetLinkLocalService;
+	@BeanReference(type = com.liferay.asset.kernel.service.AssetLinkLocalService.class)
+	protected com.liferay.asset.kernel.service.AssetLinkLocalService assetLinkLocalService;
 	@BeanReference(type = AssetLinkPersistence.class)
 	protected AssetLinkPersistence assetLinkPersistence;
-	@BeanReference(type = com.liferay.portlet.asset.service.AssetTagLocalService.class)
-	protected com.liferay.portlet.asset.service.AssetTagLocalService assetTagLocalService;
-	@BeanReference(type = com.liferay.portlet.asset.service.AssetTagService.class)
-	protected com.liferay.portlet.asset.service.AssetTagService assetTagService;
+	@BeanReference(type = com.liferay.asset.kernel.service.AssetTagLocalService.class)
+	protected com.liferay.asset.kernel.service.AssetTagLocalService assetTagLocalService;
+	@BeanReference(type = com.liferay.asset.kernel.service.AssetTagService.class)
+	protected com.liferay.asset.kernel.service.AssetTagService assetTagService;
 	@BeanReference(type = AssetTagPersistence.class)
 	protected AssetTagPersistence assetTagPersistence;
 	@BeanReference(type = AssetTagFinder.class)

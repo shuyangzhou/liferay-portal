@@ -16,14 +16,14 @@ package com.liferay.portlet.asset.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.asset.kernel.service.AssetEntryServiceUtil;
+
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
 import com.liferay.portal.kernel.service.http.TunnelUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
-
-import com.liferay.portlet.asset.service.AssetEntryServiceUtil;
 
 /**
  * Provides the HTTP utility for the
@@ -55,7 +55,7 @@ import com.liferay.portlet.asset.service.AssetEntryServiceUtil;
  */
 @ProviderType
 public class AssetEntryServiceHttp {
-	public static com.liferay.portlet.asset.model.AssetEntry fetchEntry(
+	public static com.liferay.asset.kernel.model.AssetEntry fetchEntry(
 		HttpPrincipal httpPrincipal, long entryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -77,7 +77,7 @@ public class AssetEntryServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portlet.asset.model.AssetEntry)returnObj;
+			return (com.liferay.asset.kernel.model.AssetEntry)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -86,7 +86,7 @@ public class AssetEntryServiceHttp {
 		}
 	}
 
-	public static java.util.List<com.liferay.portlet.asset.model.AssetEntry> getCompanyEntries(
+	public static java.util.List<com.liferay.asset.kernel.model.AssetEntry> getCompanyEntries(
 		HttpPrincipal httpPrincipal, long companyId, int start, int end) {
 		try {
 			MethodKey methodKey = new MethodKey(AssetEntryServiceUtil.class,
@@ -104,7 +104,7 @@ public class AssetEntryServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (java.util.List<com.liferay.portlet.asset.model.AssetEntry>)returnObj;
+			return (java.util.List<com.liferay.asset.kernel.model.AssetEntry>)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -140,9 +140,9 @@ public class AssetEntryServiceHttp {
 		}
 	}
 
-	public static java.util.List<com.liferay.portlet.asset.model.AssetEntry> getEntries(
+	public static java.util.List<com.liferay.asset.kernel.model.AssetEntry> getEntries(
 		HttpPrincipal httpPrincipal,
-		com.liferay.portlet.asset.service.persistence.AssetEntryQuery entryQuery)
+		com.liferay.asset.kernel.service.persistence.AssetEntryQuery entryQuery)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AssetEntryServiceUtil.class,
@@ -164,7 +164,7 @@ public class AssetEntryServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (java.util.List<com.liferay.portlet.asset.model.AssetEntry>)returnObj;
+			return (java.util.List<com.liferay.asset.kernel.model.AssetEntry>)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -174,7 +174,7 @@ public class AssetEntryServiceHttp {
 	}
 
 	public static int getEntriesCount(HttpPrincipal httpPrincipal,
-		com.liferay.portlet.asset.service.persistence.AssetEntryQuery entryQuery)
+		com.liferay.asset.kernel.service.persistence.AssetEntryQuery entryQuery)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AssetEntryServiceUtil.class,
@@ -205,7 +205,7 @@ public class AssetEntryServiceHttp {
 		}
 	}
 
-	public static com.liferay.portlet.asset.model.AssetEntry getEntry(
+	public static com.liferay.asset.kernel.model.AssetEntry getEntry(
 		HttpPrincipal httpPrincipal, long entryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -227,7 +227,7 @@ public class AssetEntryServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portlet.asset.model.AssetEntry)returnObj;
+			return (com.liferay.asset.kernel.model.AssetEntry)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -236,7 +236,7 @@ public class AssetEntryServiceHttp {
 		}
 	}
 
-	public static com.liferay.portlet.asset.model.AssetEntry incrementViewCounter(
+	public static com.liferay.asset.kernel.model.AssetEntry incrementViewCounter(
 		HttpPrincipal httpPrincipal, java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -259,7 +259,7 @@ public class AssetEntryServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portlet.asset.model.AssetEntry)returnObj;
+			return (com.liferay.asset.kernel.model.AssetEntry)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -268,7 +268,7 @@ public class AssetEntryServiceHttp {
 		}
 	}
 
-	public static com.liferay.portlet.asset.model.AssetEntry updateEntry(
+	public static com.liferay.asset.kernel.model.AssetEntry updateEntry(
 		HttpPrincipal httpPrincipal, long groupId, java.util.Date createDate,
 		java.util.Date modifiedDate, java.lang.String className, long classPK,
 		java.lang.String classUuid, long classTypeId, long[] categoryIds,
@@ -302,7 +302,7 @@ public class AssetEntryServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portlet.asset.model.AssetEntry)returnObj;
+			return (com.liferay.asset.kernel.model.AssetEntry)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -311,7 +311,7 @@ public class AssetEntryServiceHttp {
 		}
 	}
 
-	public static com.liferay.portlet.asset.model.AssetEntry updateEntry(
+	public static com.liferay.asset.kernel.model.AssetEntry updateEntry(
 		HttpPrincipal httpPrincipal, long groupId, java.util.Date createDate,
 		java.util.Date modifiedDate, java.lang.String className, long classPK,
 		java.lang.String classUuid, long classTypeId, long[] categoryIds,
@@ -345,7 +345,7 @@ public class AssetEntryServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portlet.asset.model.AssetEntry)returnObj;
+			return (com.liferay.asset.kernel.model.AssetEntry)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -365,10 +365,10 @@ public class AssetEntryServiceHttp {
 			long.class
 		};
 	private static final Class<?>[] _getEntriesParameterTypes3 = new Class[] {
-			com.liferay.portlet.asset.service.persistence.AssetEntryQuery.class
+			com.liferay.asset.kernel.service.persistence.AssetEntryQuery.class
 		};
 	private static final Class<?>[] _getEntriesCountParameterTypes4 = new Class[] {
-			com.liferay.portlet.asset.service.persistence.AssetEntryQuery.class
+			com.liferay.asset.kernel.service.persistence.AssetEntryQuery.class
 		};
 	private static final Class<?>[] _getEntryParameterTypes5 = new Class[] {
 			long.class

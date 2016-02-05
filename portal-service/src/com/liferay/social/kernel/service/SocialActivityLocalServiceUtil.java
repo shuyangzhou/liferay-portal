@@ -195,7 +195,7 @@ public class SocialActivityLocalServiceUtil {
 	* @param assetEntry the asset from which to remove stored activities
 	*/
 	public static void deleteActivities(
-		com.liferay.portlet.asset.model.AssetEntry assetEntry)
+		com.liferay.asset.kernel.model.AssetEntry assetEntry)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().deleteActivities(assetEntry);
 	}

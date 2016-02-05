@@ -16,14 +16,14 @@ package com.liferay.portlet.asset.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.asset.kernel.service.AssetTagServiceUtil;
+
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
 import com.liferay.portal.kernel.service.http.TunnelUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
-
-import com.liferay.portlet.asset.service.AssetTagServiceUtil;
 
 /**
  * Provides the HTTP utility for the
@@ -55,7 +55,7 @@ import com.liferay.portlet.asset.service.AssetTagServiceUtil;
  */
 @ProviderType
 public class AssetTagServiceHttp {
-	public static com.liferay.portlet.asset.model.AssetTag addTag(
+	public static com.liferay.asset.kernel.model.AssetTag addTag(
 		HttpPrincipal httpPrincipal, long groupId, java.lang.String name,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -79,7 +79,7 @@ public class AssetTagServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portlet.asset.model.AssetTag)returnObj;
+			return (com.liferay.asset.kernel.model.AssetTag)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -140,7 +140,7 @@ public class AssetTagServiceHttp {
 		}
 	}
 
-	public static java.util.List<com.liferay.portlet.asset.model.AssetTag> getGroupsTags(
+	public static java.util.List<com.liferay.asset.kernel.model.AssetTag> getGroupsTags(
 		HttpPrincipal httpPrincipal, long[] groupIds) {
 		try {
 			MethodKey methodKey = new MethodKey(AssetTagServiceUtil.class,
@@ -157,7 +157,7 @@ public class AssetTagServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (java.util.List<com.liferay.portlet.asset.model.AssetTag>)returnObj;
+			return (java.util.List<com.liferay.asset.kernel.model.AssetTag>)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -166,7 +166,7 @@ public class AssetTagServiceHttp {
 		}
 	}
 
-	public static java.util.List<com.liferay.portlet.asset.model.AssetTag> getGroupTags(
+	public static java.util.List<com.liferay.asset.kernel.model.AssetTag> getGroupTags(
 		HttpPrincipal httpPrincipal, long groupId) {
 		try {
 			MethodKey methodKey = new MethodKey(AssetTagServiceUtil.class,
@@ -183,7 +183,7 @@ public class AssetTagServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (java.util.List<com.liferay.portlet.asset.model.AssetTag>)returnObj;
+			return (java.util.List<com.liferay.asset.kernel.model.AssetTag>)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -192,9 +192,9 @@ public class AssetTagServiceHttp {
 		}
 	}
 
-	public static java.util.List<com.liferay.portlet.asset.model.AssetTag> getGroupTags(
+	public static java.util.List<com.liferay.asset.kernel.model.AssetTag> getGroupTags(
 		HttpPrincipal httpPrincipal, long groupId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portlet.asset.model.AssetTag> obc) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.asset.kernel.model.AssetTag> obc) {
 		try {
 			MethodKey methodKey = new MethodKey(AssetTagServiceUtil.class,
 					"getGroupTags", _getGroupTagsParameterTypes5);
@@ -211,7 +211,7 @@ public class AssetTagServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (java.util.List<com.liferay.portlet.asset.model.AssetTag>)returnObj;
+			return (java.util.List<com.liferay.asset.kernel.model.AssetTag>)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -246,7 +246,7 @@ public class AssetTagServiceHttp {
 		}
 	}
 
-	public static com.liferay.portlet.asset.model.AssetTagDisplay getGroupTagsDisplay(
+	public static com.liferay.asset.kernel.model.AssetTagDisplay getGroupTagsDisplay(
 		HttpPrincipal httpPrincipal, long groupId, java.lang.String name,
 		int start, int end) {
 		try {
@@ -265,7 +265,7 @@ public class AssetTagServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portlet.asset.model.AssetTagDisplay)returnObj;
+			return (com.liferay.asset.kernel.model.AssetTagDisplay)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -274,7 +274,7 @@ public class AssetTagServiceHttp {
 		}
 	}
 
-	public static com.liferay.portlet.asset.model.AssetTag getTag(
+	public static com.liferay.asset.kernel.model.AssetTag getTag(
 		HttpPrincipal httpPrincipal, long tagId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -296,7 +296,7 @@ public class AssetTagServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portlet.asset.model.AssetTag)returnObj;
+			return (com.liferay.asset.kernel.model.AssetTag)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -305,7 +305,7 @@ public class AssetTagServiceHttp {
 		}
 	}
 
-	public static java.util.List<com.liferay.portlet.asset.model.AssetTag> getTags(
+	public static java.util.List<com.liferay.asset.kernel.model.AssetTag> getTags(
 		HttpPrincipal httpPrincipal, long groupId, long classNameId,
 		java.lang.String name) {
 		try {
@@ -324,7 +324,7 @@ public class AssetTagServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (java.util.List<com.liferay.portlet.asset.model.AssetTag>)returnObj;
+			return (java.util.List<com.liferay.asset.kernel.model.AssetTag>)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -333,10 +333,10 @@ public class AssetTagServiceHttp {
 		}
 	}
 
-	public static java.util.List<com.liferay.portlet.asset.model.AssetTag> getTags(
+	public static java.util.List<com.liferay.asset.kernel.model.AssetTag> getTags(
 		HttpPrincipal httpPrincipal, long groupId, long classNameId,
 		java.lang.String name, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portlet.asset.model.AssetTag> obc) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.asset.kernel.model.AssetTag> obc) {
 		try {
 			MethodKey methodKey = new MethodKey(AssetTagServiceUtil.class,
 					"getTags", _getTagsParameterTypes10);
@@ -353,7 +353,7 @@ public class AssetTagServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (java.util.List<com.liferay.portlet.asset.model.AssetTag>)returnObj;
+			return (java.util.List<com.liferay.asset.kernel.model.AssetTag>)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -362,7 +362,7 @@ public class AssetTagServiceHttp {
 		}
 	}
 
-	public static java.util.List<com.liferay.portlet.asset.model.AssetTag> getTags(
+	public static java.util.List<com.liferay.asset.kernel.model.AssetTag> getTags(
 		HttpPrincipal httpPrincipal, long groupId, java.lang.String name,
 		int start, int end) {
 		try {
@@ -381,7 +381,7 @@ public class AssetTagServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (java.util.List<com.liferay.portlet.asset.model.AssetTag>)returnObj;
+			return (java.util.List<com.liferay.asset.kernel.model.AssetTag>)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -390,10 +390,10 @@ public class AssetTagServiceHttp {
 		}
 	}
 
-	public static java.util.List<com.liferay.portlet.asset.model.AssetTag> getTags(
+	public static java.util.List<com.liferay.asset.kernel.model.AssetTag> getTags(
 		HttpPrincipal httpPrincipal, long groupId, java.lang.String name,
 		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portlet.asset.model.AssetTag> obc) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.asset.kernel.model.AssetTag> obc) {
 		try {
 			MethodKey methodKey = new MethodKey(AssetTagServiceUtil.class,
 					"getTags", _getTagsParameterTypes12);
@@ -410,7 +410,7 @@ public class AssetTagServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (java.util.List<com.liferay.portlet.asset.model.AssetTag>)returnObj;
+			return (java.util.List<com.liferay.asset.kernel.model.AssetTag>)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -419,7 +419,7 @@ public class AssetTagServiceHttp {
 		}
 	}
 
-	public static java.util.List<com.liferay.portlet.asset.model.AssetTag> getTags(
+	public static java.util.List<com.liferay.asset.kernel.model.AssetTag> getTags(
 		HttpPrincipal httpPrincipal, long[] groupIds, java.lang.String name,
 		int start, int end) {
 		try {
@@ -438,7 +438,7 @@ public class AssetTagServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (java.util.List<com.liferay.portlet.asset.model.AssetTag>)returnObj;
+			return (java.util.List<com.liferay.asset.kernel.model.AssetTag>)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -447,10 +447,10 @@ public class AssetTagServiceHttp {
 		}
 	}
 
-	public static java.util.List<com.liferay.portlet.asset.model.AssetTag> getTags(
+	public static java.util.List<com.liferay.asset.kernel.model.AssetTag> getTags(
 		HttpPrincipal httpPrincipal, long[] groupIds, java.lang.String name,
 		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portlet.asset.model.AssetTag> obc) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.asset.kernel.model.AssetTag> obc) {
 		try {
 			MethodKey methodKey = new MethodKey(AssetTagServiceUtil.class,
 					"getTags", _getTagsParameterTypes14);
@@ -467,7 +467,7 @@ public class AssetTagServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (java.util.List<com.liferay.portlet.asset.model.AssetTag>)returnObj;
+			return (java.util.List<com.liferay.asset.kernel.model.AssetTag>)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -476,7 +476,7 @@ public class AssetTagServiceHttp {
 		}
 	}
 
-	public static java.util.List<com.liferay.portlet.asset.model.AssetTag> getTags(
+	public static java.util.List<com.liferay.asset.kernel.model.AssetTag> getTags(
 		HttpPrincipal httpPrincipal, java.lang.String className, long classPK) {
 		try {
 			MethodKey methodKey = new MethodKey(AssetTagServiceUtil.class,
@@ -494,7 +494,7 @@ public class AssetTagServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (java.util.List<com.liferay.portlet.asset.model.AssetTag>)returnObj;
+			return (java.util.List<com.liferay.asset.kernel.model.AssetTag>)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -698,7 +698,7 @@ public class AssetTagServiceHttp {
 		}
 	}
 
-	public static com.liferay.portlet.asset.model.AssetTag updateTag(
+	public static com.liferay.asset.kernel.model.AssetTag updateTag(
 		HttpPrincipal httpPrincipal, long tagId, java.lang.String name,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -722,7 +722,7 @@ public class AssetTagServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portlet.asset.model.AssetTag)returnObj;
+			return (com.liferay.asset.kernel.model.AssetTag)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);

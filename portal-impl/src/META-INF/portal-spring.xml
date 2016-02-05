@@ -244,30 +244,30 @@
 	<bean id="com.liferay.portal.service.persistence.WorkflowDefinitionLinkPersistence" class="com.liferay.portal.service.persistence.impl.WorkflowDefinitionLinkPersistenceImpl" parent="basePersistence" />
 	<bean id="com.liferay.portal.service.WorkflowInstanceLinkLocalService" class="com.liferay.portal.service.impl.WorkflowInstanceLinkLocalServiceImpl" />
 	<bean id="com.liferay.portal.service.persistence.WorkflowInstanceLinkPersistence" class="com.liferay.portal.service.persistence.impl.WorkflowInstanceLinkPersistenceImpl" parent="basePersistence" />
-	<bean id="com.liferay.portlet.asset.service.AssetCategoryLocalService" class="com.liferay.portlet.asset.service.impl.AssetCategoryLocalServiceImpl" />
-	<bean id="com.liferay.portlet.asset.service.AssetCategoryService" class="com.liferay.portlet.asset.service.impl.AssetCategoryServiceImpl" />
-	<bean id="com.liferay.portlet.asset.service.persistence.AssetCategoryPersistence" class="com.liferay.portlet.asset.service.persistence.impl.AssetCategoryPersistenceImpl" parent="basePersistence" />
-	<bean id="com.liferay.portlet.asset.service.persistence.AssetCategoryFinder" class="com.liferay.portlet.asset.service.persistence.impl.AssetCategoryFinderImpl" parent="basePersistence" />
-	<bean id="com.liferay.portlet.asset.service.AssetCategoryPropertyLocalService" class="com.liferay.portlet.asset.service.impl.AssetCategoryPropertyLocalServiceImpl" />
-	<bean id="com.liferay.portlet.asset.service.AssetCategoryPropertyService" class="com.liferay.portlet.asset.service.impl.AssetCategoryPropertyServiceImpl" />
-	<bean id="com.liferay.portlet.asset.service.persistence.AssetCategoryPropertyPersistence" class="com.liferay.portlet.asset.service.persistence.impl.AssetCategoryPropertyPersistenceImpl" parent="basePersistence" />
-	<bean id="com.liferay.portlet.asset.service.persistence.AssetCategoryPropertyFinder" class="com.liferay.portlet.asset.service.persistence.impl.AssetCategoryPropertyFinderImpl" parent="basePersistence" />
-	<bean id="com.liferay.portlet.asset.service.AssetEntryLocalService" class="com.liferay.portlet.asset.service.impl.AssetEntryLocalServiceImpl" />
-	<bean id="com.liferay.portlet.asset.service.AssetEntryService" class="com.liferay.portlet.asset.service.impl.AssetEntryServiceImpl" />
-	<bean id="com.liferay.portlet.asset.service.persistence.AssetEntryPersistence" class="com.liferay.portlet.asset.service.persistence.impl.AssetEntryPersistenceImpl" parent="basePersistence" />
-	<bean id="com.liferay.portlet.asset.service.persistence.AssetEntryFinder" class="com.liferay.portlet.asset.service.persistence.impl.AssetEntryFinderImpl" parent="basePersistence" />
-	<bean id="com.liferay.portlet.asset.service.AssetLinkLocalService" class="com.liferay.portlet.asset.service.impl.AssetLinkLocalServiceImpl" />
-	<bean id="com.liferay.portlet.asset.service.persistence.AssetLinkPersistence" class="com.liferay.portlet.asset.service.persistence.impl.AssetLinkPersistenceImpl" parent="basePersistence" />
-	<bean id="com.liferay.portlet.asset.service.AssetTagLocalService" class="com.liferay.portlet.asset.service.impl.AssetTagLocalServiceImpl" />
-	<bean id="com.liferay.portlet.asset.service.AssetTagService" class="com.liferay.portlet.asset.service.impl.AssetTagServiceImpl" />
-	<bean id="com.liferay.portlet.asset.service.persistence.AssetTagPersistence" class="com.liferay.portlet.asset.service.persistence.impl.AssetTagPersistenceImpl" parent="basePersistence" />
-	<bean id="com.liferay.portlet.asset.service.persistence.AssetTagFinder" class="com.liferay.portlet.asset.service.persistence.impl.AssetTagFinderImpl" parent="basePersistence" />
-	<bean id="com.liferay.portlet.asset.service.AssetTagStatsLocalService" class="com.liferay.portlet.asset.service.impl.AssetTagStatsLocalServiceImpl" />
-	<bean id="com.liferay.portlet.asset.service.persistence.AssetTagStatsPersistence" class="com.liferay.portlet.asset.service.persistence.impl.AssetTagStatsPersistenceImpl" parent="basePersistence" />
-	<bean id="com.liferay.portlet.asset.service.AssetVocabularyLocalService" class="com.liferay.portlet.asset.service.impl.AssetVocabularyLocalServiceImpl" />
-	<bean id="com.liferay.portlet.asset.service.AssetVocabularyService" class="com.liferay.portlet.asset.service.impl.AssetVocabularyServiceImpl" />
-	<bean id="com.liferay.portlet.asset.service.persistence.AssetVocabularyPersistence" class="com.liferay.portlet.asset.service.persistence.impl.AssetVocabularyPersistenceImpl" parent="basePersistence" />
-	<bean id="com.liferay.portlet.asset.service.persistence.AssetVocabularyFinder" class="com.liferay.portlet.asset.service.persistence.impl.AssetVocabularyFinderImpl" parent="basePersistence" />
+	<bean id="com.liferay.asset.kernel.service.AssetCategoryLocalService" class="com.liferay.portlet.asset.service.impl.AssetCategoryLocalServiceImpl" />
+	<bean id="com.liferay.asset.kernel.service.AssetCategoryService" class="com.liferay.portlet.asset.service.impl.AssetCategoryServiceImpl" />
+	<bean id="com.liferay.asset.kernel.service.persistence.AssetCategoryPersistence" class="com.liferay.portlet.asset.service.persistence.impl.AssetCategoryPersistenceImpl" parent="basePersistence" />
+	<bean id="com.liferay.asset.kernel.service.persistence.AssetCategoryFinder" class="com.liferay.portlet.asset.service.persistence.impl.AssetCategoryFinderImpl" parent="basePersistence" />
+	<bean id="com.liferay.asset.kernel.service.AssetCategoryPropertyLocalService" class="com.liferay.portlet.asset.service.impl.AssetCategoryPropertyLocalServiceImpl" />
+	<bean id="com.liferay.asset.kernel.service.AssetCategoryPropertyService" class="com.liferay.portlet.asset.service.impl.AssetCategoryPropertyServiceImpl" />
+	<bean id="com.liferay.asset.kernel.service.persistence.AssetCategoryPropertyPersistence" class="com.liferay.portlet.asset.service.persistence.impl.AssetCategoryPropertyPersistenceImpl" parent="basePersistence" />
+	<bean id="com.liferay.asset.kernel.service.persistence.AssetCategoryPropertyFinder" class="com.liferay.portlet.asset.service.persistence.impl.AssetCategoryPropertyFinderImpl" parent="basePersistence" />
+	<bean id="com.liferay.asset.kernel.service.AssetEntryLocalService" class="com.liferay.portlet.asset.service.impl.AssetEntryLocalServiceImpl" />
+	<bean id="com.liferay.asset.kernel.service.AssetEntryService" class="com.liferay.portlet.asset.service.impl.AssetEntryServiceImpl" />
+	<bean id="com.liferay.asset.kernel.service.persistence.AssetEntryPersistence" class="com.liferay.portlet.asset.service.persistence.impl.AssetEntryPersistenceImpl" parent="basePersistence" />
+	<bean id="com.liferay.asset.kernel.service.persistence.AssetEntryFinder" class="com.liferay.portlet.asset.service.persistence.impl.AssetEntryFinderImpl" parent="basePersistence" />
+	<bean id="com.liferay.asset.kernel.service.AssetLinkLocalService" class="com.liferay.portlet.asset.service.impl.AssetLinkLocalServiceImpl" />
+	<bean id="com.liferay.asset.kernel.service.persistence.AssetLinkPersistence" class="com.liferay.portlet.asset.service.persistence.impl.AssetLinkPersistenceImpl" parent="basePersistence" />
+	<bean id="com.liferay.asset.kernel.service.AssetTagLocalService" class="com.liferay.portlet.asset.service.impl.AssetTagLocalServiceImpl" />
+	<bean id="com.liferay.asset.kernel.service.AssetTagService" class="com.liferay.portlet.asset.service.impl.AssetTagServiceImpl" />
+	<bean id="com.liferay.asset.kernel.service.persistence.AssetTagPersistence" class="com.liferay.portlet.asset.service.persistence.impl.AssetTagPersistenceImpl" parent="basePersistence" />
+	<bean id="com.liferay.asset.kernel.service.persistence.AssetTagFinder" class="com.liferay.portlet.asset.service.persistence.impl.AssetTagFinderImpl" parent="basePersistence" />
+	<bean id="com.liferay.asset.kernel.service.AssetTagStatsLocalService" class="com.liferay.portlet.asset.service.impl.AssetTagStatsLocalServiceImpl" />
+	<bean id="com.liferay.asset.kernel.service.persistence.AssetTagStatsPersistence" class="com.liferay.portlet.asset.service.persistence.impl.AssetTagStatsPersistenceImpl" parent="basePersistence" />
+	<bean id="com.liferay.asset.kernel.service.AssetVocabularyLocalService" class="com.liferay.portlet.asset.service.impl.AssetVocabularyLocalServiceImpl" />
+	<bean id="com.liferay.asset.kernel.service.AssetVocabularyService" class="com.liferay.portlet.asset.service.impl.AssetVocabularyServiceImpl" />
+	<bean id="com.liferay.asset.kernel.service.persistence.AssetVocabularyPersistence" class="com.liferay.portlet.asset.service.persistence.impl.AssetVocabularyPersistenceImpl" parent="basePersistence" />
+	<bean id="com.liferay.asset.kernel.service.persistence.AssetVocabularyFinder" class="com.liferay.portlet.asset.service.persistence.impl.AssetVocabularyFinderImpl" parent="basePersistence" />
 	<bean id="com.liferay.portlet.documentlibrary.service.DLAppLocalService" class="com.liferay.portlet.documentlibrary.service.impl.DLAppLocalServiceImpl" />
 	<bean id="com.liferay.portlet.documentlibrary.service.DLAppService" class="com.liferay.portlet.documentlibrary.service.impl.DLAppServiceImpl" />
 	<bean id="com.liferay.portlet.documentlibrary.service.DLAppHelperLocalService" class="com.liferay.portlet.documentlibrary.service.impl.DLAppHelperLocalServiceImpl" />
