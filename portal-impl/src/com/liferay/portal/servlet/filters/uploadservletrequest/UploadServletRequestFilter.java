@@ -14,7 +14,9 @@
 
 package com.liferay.portal.servlet.filters.uploadservletrequest;
 
+import com.liferay.portal.kernel.portlet.InvokerPortlet;
 import com.liferay.portal.kernel.portlet.LiferayPortletConfig;
+import com.liferay.portal.kernel.portlet.PortletInstanceFactoryUtil;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.upload.UploadServletRequest;
 import com.liferay.portal.kernel.util.ContentTypes;
@@ -25,8 +27,6 @@ import com.liferay.portal.model.Portlet;
 import com.liferay.portal.service.PortletLocalServiceUtil;
 import com.liferay.portal.servlet.filters.BasePortalFilter;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.InvokerPortlet;
-import com.liferay.portlet.PortletInstanceFactoryUtil;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletContext;

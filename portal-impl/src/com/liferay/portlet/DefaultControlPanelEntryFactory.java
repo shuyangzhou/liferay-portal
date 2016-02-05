@@ -14,6 +14,7 @@
 
 package com.liferay.portlet;
 
+import com.liferay.portal.kernel.portlet.ControlPanelEntry;
 import com.liferay.registry.Filter;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;

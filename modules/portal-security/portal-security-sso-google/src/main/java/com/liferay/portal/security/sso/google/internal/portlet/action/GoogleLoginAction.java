@@ -26,6 +26,7 @@ import com.google.api.services.oauth2.Oauth2;
 import com.google.api.services.oauth2.model.Userinfoplus;
 
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.struts.BaseStrutsAction;
 import com.liferay.portal.kernel.struts.StrutsAction;
@@ -48,7 +49,6 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalService;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PortletKeys;
-import com.liferay.portlet.PortletURLFactoryUtil;
 
 import java.util.Arrays;
 import java.util.Calendar;

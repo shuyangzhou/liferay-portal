@@ -18,8 +18,8 @@ import com.liferay.dynamic.data.mapping.model.DDMDataProviderInstance;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletProvider;
 import com.liferay.portal.kernel.portlet.PortletProviderUtil;
+import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.configuration.icon.BasePortletConfigurationIcon;
-import com.liferay.portlet.PortletURLFactoryUtil;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;

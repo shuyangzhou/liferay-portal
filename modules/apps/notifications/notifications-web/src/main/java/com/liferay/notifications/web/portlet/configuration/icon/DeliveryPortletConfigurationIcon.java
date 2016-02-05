@@ -17,10 +17,10 @@ package com.liferay.notifications.web.portlet.configuration.icon;
 import com.liferay.notifications.web.constants.NotificationsPortletKeys;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.configuration.icon.BasePortletConfigurationIcon;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portlet.PortletURLFactoryUtil;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;

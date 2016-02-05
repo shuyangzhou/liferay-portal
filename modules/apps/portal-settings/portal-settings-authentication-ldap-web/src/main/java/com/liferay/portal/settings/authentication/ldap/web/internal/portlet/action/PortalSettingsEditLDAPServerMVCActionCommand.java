@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.ldap.DuplicateLDAPServerNameException;
 import com.liferay.portal.kernel.ldap.LDAPFilterException;
 import com.liferay.portal.kernel.ldap.LDAPServerNameException;
 import com.liferay.portal.kernel.ldap.LDAPUtil;
+import com.liferay.portal.kernel.portlet.PortletContextFactory;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderConstants;
@@ -39,7 +40,6 @@ import com.liferay.portal.ldap.constants.LDAPConstants;
 import com.liferay.portal.model.Portlet;
 import com.liferay.portal.settings.web.constants.PortalSettingsPortletKeys;
 import com.liferay.portal.util.Portal;
-import com.liferay.portlet.PortletContextFactory;
 
 import java.util.Dictionary;
 import java.util.List;

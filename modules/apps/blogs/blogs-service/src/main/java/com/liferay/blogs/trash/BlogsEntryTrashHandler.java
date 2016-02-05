@@ -19,6 +19,7 @@ import com.liferay.blogs.kernel.service.BlogsEntryLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.PortletProvider;
 import com.liferay.portal.kernel.portlet.PortletProviderUtil;
+import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.trash.BaseTrashHandler;
@@ -26,7 +27,6 @@ import com.liferay.portal.kernel.trash.TrashHandler;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.LayoutConstants;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.PortletURLFactoryUtil;
 import com.liferay.portlet.blogs.service.permission.BlogsEntryPermission;
 
 import javax.portlet.PortletRequest;
