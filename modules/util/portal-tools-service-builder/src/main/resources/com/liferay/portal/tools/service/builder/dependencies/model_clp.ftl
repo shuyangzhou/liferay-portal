@@ -54,6 +54,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+/**
+ * @generated
+ */
 @ProviderType
 public class ${entity.name}Clp extends BaseModelImpl<${entity.name}> implements ${entity.name} {
 
