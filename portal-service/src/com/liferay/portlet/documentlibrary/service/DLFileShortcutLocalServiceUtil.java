@@ -73,7 +73,7 @@ public class DLFileShortcutLocalServiceUtil {
 
 	public static void addFileShortcutResources(
 		com.liferay.portlet.documentlibrary.model.DLFileShortcut fileShortcut,
-		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
+		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().addFileShortcutResources(fileShortcut, modelPermissions);
 	}
@@ -87,7 +87,7 @@ public class DLFileShortcutLocalServiceUtil {
 	}
 
 	public static void addFileShortcutResources(long fileShortcutId,
-		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
+		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().addFileShortcutResources(fileShortcutId, modelPermissions);
 	}

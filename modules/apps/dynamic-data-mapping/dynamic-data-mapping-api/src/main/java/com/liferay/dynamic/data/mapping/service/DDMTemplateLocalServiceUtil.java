@@ -170,7 +170,7 @@ public class DDMTemplateLocalServiceUtil {
 	*/
 	public static void addTemplateResources(
 		com.liferay.dynamic.data.mapping.model.DDMTemplate template,
-		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
+		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().addTemplateResources(template, modelPermissions);
 	}
