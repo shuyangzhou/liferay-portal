@@ -16,9 +16,9 @@ package com.liferay.frontend.taglib.servlet.taglib;
 
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
+import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.PortletURLUtil;
 import com.liferay.taglib.util.TagResourceBundleUtil;
 
 import java.util.Locale;

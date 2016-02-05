@@ -269,7 +269,7 @@ public interface Portlet extends PortletModel, PersistedModel {
 	* @return the instance of the class that will control when the portlet will
 	be shown in the Control Panel
 	*/
-	public com.liferay.portlet.ControlPanelEntry getControlPanelEntryInstance();
+	public com.liferay.portal.kernel.portlet.ControlPanelEntry getControlPanelEntryInstance();
 
 	/**
 	* Returns the relative weight of the portlet with respect to the other

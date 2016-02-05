@@ -14,8 +14,8 @@
 
 package com.liferay.search.web.upgrade.v1_0_0;
 
+import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.upgrade.BaseUpgradePortletPreferences;
-import com.liferay.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.search.web.constants.SearchPortletKeys;
 
 import javax.portlet.PortletPreferences;
