@@ -12,15 +12,31 @@
  * details.
  */
 
-package com.liferay.portal.service.persistence;
+package com.liferay.portal.kernel.service.persistence;
 
 /**
- * @author Manuel de la Peña
+ * @author Cristina González
  */
-public interface CompanyProvider {
+public class CompanyProviderWrapper implements CompanyProvider {
 
-	public long getCompanyId();
+	@Override
+	public long getCompanyId() {
+		return _companyProvider.getCompanyId();
+	}
 
-	public String getCompanyIdName();
+	@Override
+	public String getCompanyIdName() {
+		return _companyProvider.getCompanyIdName();
+	}
+
+	public CompanyProvider getCompanyProvider() {
+		return _companyProvider;
+	}
+
+	public void setCompanyProvider(CompanyProvider companyProvider) {
+		_companyProvider = companyProvider;
+	}
+
+	private CompanyProvider _companyProvider;
 
 }

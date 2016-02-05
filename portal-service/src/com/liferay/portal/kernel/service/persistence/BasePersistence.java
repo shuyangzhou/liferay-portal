@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.service.persistence;
+package com.liferay.portal.kernel.service.persistence;
 
 import com.liferay.portal.exception.NoSuchModelException;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
