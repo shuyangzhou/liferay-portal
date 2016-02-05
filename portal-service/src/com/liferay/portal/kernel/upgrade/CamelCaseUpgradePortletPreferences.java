@@ -14,8 +14,8 @@
 
 package com.liferay.portal.kernel.upgrade;
 
+import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.util.TextFormatter;
-import com.liferay.portlet.PortletPreferencesFactoryUtil;
 
 import java.util.Map;
 

@@ -15,6 +15,7 @@
 package com.liferay.portal.util.test;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -32,7 +33,6 @@ import com.liferay.portal.upload.LiferayFileItem;
 import com.liferay.portal.upload.LiferayFileItemFactory;
 import com.liferay.portal.upload.LiferayServletRequest;
 import com.liferay.portal.upload.UploadServletRequestImpl;
-import com.liferay.portlet.PortletURLFactoryUtil;
 
 import java.io.IOException;
 import java.io.InputStream;

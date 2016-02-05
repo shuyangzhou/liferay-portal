@@ -17,6 +17,7 @@ package com.liferay.portal.service.impl;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.PortalPreferences;
 import com.liferay.portal.model.PortletConstants;
@@ -24,7 +25,6 @@ import com.liferay.portal.service.base.PortalPreferencesLocalServiceBaseImpl;
 import com.liferay.portlet.PortalPreferencesImpl;
 import com.liferay.portlet.PortalPreferencesWrapper;
 import com.liferay.portlet.PortalPreferencesWrapperCacheUtil;
-import com.liferay.portlet.PortletPreferencesFactoryUtil;
 
 import javax.portlet.PortletPreferences;
 
@@ -115,7 +115,7 @@ public class PortalPreferencesLocalServiceImpl
 	@Override
 	public PortalPreferences updatePreferences(
 		long ownerId, int ownerType,
-		com.liferay.portlet.PortalPreferences portalPreferences) {
+		com.liferay.portal.kernel.portlet.PortalPreferences portalPreferences) {
 
 		String xml = PortletPreferencesFactoryUtil.toXML(portalPreferences);
 

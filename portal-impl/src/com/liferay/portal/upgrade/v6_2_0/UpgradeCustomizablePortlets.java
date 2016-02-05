@@ -15,6 +15,7 @@
 package com.liferay.portal.upgrade.v6_2_0;
 
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
+import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringPool;
@@ -27,7 +28,6 @@ import com.liferay.portal.model.impl.PortletPreferencesImpl;
 import com.liferay.portal.util.PortletKeys;
 import com.liferay.portlet.PortalPreferencesImpl;
 import com.liferay.portlet.PortalPreferencesWrapper;
-import com.liferay.portlet.PortletPreferencesFactoryUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
