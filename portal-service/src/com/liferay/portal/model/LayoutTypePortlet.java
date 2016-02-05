@@ -14,7 +14,7 @@
 
 package com.liferay.portal.model;
 
-import com.liferay.portlet.PortalPreferences;
+import com.liferay.portal.kernel.portlet.PortalPreferences;
 
 import java.util.List;
 

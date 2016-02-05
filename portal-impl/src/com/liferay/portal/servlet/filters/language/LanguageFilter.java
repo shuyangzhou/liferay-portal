@@ -17,6 +17,7 @@ package com.liferay.portal.servlet.filters.language;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.portlet.PortletConfigFactoryUtil;
 import com.liferay.portal.kernel.servlet.BufferCacheServletResponse;
 import com.liferay.portal.kernel.servlet.PortletServlet;
 import com.liferay.portal.kernel.servlet.ServletResponseUtil;
@@ -27,7 +28,6 @@ import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.model.Portlet;
 import com.liferay.portal.model.PortletApp;
 import com.liferay.portal.servlet.filters.BasePortalFilter;
-import com.liferay.portlet.PortletConfigFactoryUtil;
 
 import java.util.List;
 import java.util.Locale;

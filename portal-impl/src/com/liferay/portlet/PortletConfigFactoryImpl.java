@@ -14,6 +14,8 @@
 
 package com.liferay.portlet;
 
+import com.liferay.portal.kernel.portlet.PortletConfigFactory;
+import com.liferay.portal.kernel.portlet.PortletContextFactory;
 import com.liferay.portal.kernel.security.pacl.DoPrivileged;
 import com.liferay.portal.model.Portlet;
 import com.liferay.portal.model.PortletConstants;

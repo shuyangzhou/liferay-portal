@@ -14,13 +14,13 @@
 
 package com.liferay.site.admin.web.portlet;
 
+import com.liferay.portal.kernel.portlet.BaseControlPanelEntry;
+import com.liferay.portal.kernel.portlet.ControlPanelEntry;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Portlet;
 import com.liferay.portal.service.GroupLocalService;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.portlet.BaseControlPanelEntry;
-import com.liferay.portlet.ControlPanelEntry;
 import com.liferay.site.admin.web.constants.SiteAdminPortletKeys;
 
 import java.util.LinkedHashMap;
