@@ -15,6 +15,8 @@
 package com.liferay.blogs.recent.bloggers.web.exportimport.portlet.preferences.processor;
 
 import com.liferay.blogs.recent.bloggers.web.constants.RecentBloggersPortletKeys;
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
+import com.liferay.exportimport.kernel.lar.PortletDataException;
 import com.liferay.exportimport.portlet.preferences.processor.Capability;
 import com.liferay.exportimport.portlet.preferences.processor.ExportImportPortletPreferencesProcessor;
 import com.liferay.exportimport.portlet.preferences.processor.base.BaseExportImportPortletPreferencesProcessor;
@@ -30,8 +32,6 @@ import com.liferay.portal.service.CompanyLocalService;
 import com.liferay.portal.service.OrganizationLocalService;
 import com.liferay.portal.service.PortletLocalService;
 import com.liferay.portal.service.persistence.OrganizationUtil;
-import com.liferay.portlet.exportimport.lar.PortletDataContext;
-import com.liferay.portlet.exportimport.lar.PortletDataException;
 
 import java.util.List;
 import java.util.Map;

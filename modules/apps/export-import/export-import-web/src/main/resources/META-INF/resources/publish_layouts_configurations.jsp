@@ -46,6 +46,7 @@ int exportImportConfigurationType = localPublishing ? ExportImportConfigurationC
 	<aui:nav-bar-search>
 		<liferay-portlet:renderURL varImpl="searchURL">
 			<portlet:param name="mvcRenderCommandName" value="publishLayouts" />
+			<portlet:param name="publishConfigurationButtons" value="saved" />
 		</liferay-portlet:renderURL>
 
 		<aui:form action="<%= searchURL.toString() %>" name="searchFm">
@@ -77,7 +78,7 @@ int exportImportConfigurationType = localPublishing ? ExportImportConfigurationC
 		</liferay-ui:search-container-results>
 
 		<liferay-ui:search-container-row
-			className="com.liferay.portlet.exportimport.model.ExportImportConfiguration"
+			className="com.liferay.exportimport.kernel.model.ExportImportConfiguration"
 			keyProperty="exportImportConfigurationId"
 			modelVar="exportImportConfiguration"
 		>

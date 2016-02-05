@@ -299,7 +299,7 @@ public class UserServiceSoap {
 		com.liferay.portal.model.EmailAddressSoap[] emailAddresses,
 		com.liferay.portal.model.PhoneSoap[] phones,
 		com.liferay.portal.model.WebsiteSoap[] websites,
-		java.util.List<com.liferay.announcements.kernel.model.AnnouncementsDelivery> announcementsDelivers,
+		com.liferay.announcements.kernel.model.AnnouncementsDeliverySoap[] announcementsDelivers,
 		boolean sendEmail,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws RemoteException {
@@ -318,8 +318,9 @@ public class UserServiceSoap {
 					com.liferay.portal.model.impl.PhoneModelImpl.toModels(
 						phones),
 					com.liferay.portal.model.impl.WebsiteModelImpl.toModels(
-						websites), announcementsDelivers, sendEmail,
-					serviceContext);
+						websites),
+					com.liferay.portlet.announcements.model.impl.AnnouncementsDeliveryModelImpl.toModels(
+						announcementsDelivers), sendEmail, serviceContext);
 
 			return com.liferay.portal.model.UserSoap.toSoapModel(returnValue);
 		}
@@ -488,7 +489,7 @@ public class UserServiceSoap {
 		com.liferay.portal.model.EmailAddressSoap[] emailAddresses,
 		com.liferay.portal.model.PhoneSoap[] phones,
 		com.liferay.portal.model.WebsiteSoap[] websites,
-		java.util.List<com.liferay.announcements.kernel.model.AnnouncementsDelivery> announcementsDelivers,
+		com.liferay.announcements.kernel.model.AnnouncementsDeliverySoap[] announcementsDelivers,
 		boolean sendEmail,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws RemoteException {
@@ -507,8 +508,9 @@ public class UserServiceSoap {
 					com.liferay.portal.model.impl.PhoneModelImpl.toModels(
 						phones),
 					com.liferay.portal.model.impl.WebsiteModelImpl.toModels(
-						websites), announcementsDelivers, sendEmail,
-					serviceContext);
+						websites),
+					com.liferay.portlet.announcements.model.impl.AnnouncementsDeliveryModelImpl.toModels(
+						announcementsDelivers), sendEmail, serviceContext);
 
 			return com.liferay.portal.model.UserSoap.toSoapModel(returnValue);
 		}
@@ -1580,7 +1582,7 @@ public class UserServiceSoap {
 		com.liferay.portal.model.EmailAddressSoap[] emailAddresses,
 		com.liferay.portal.model.PhoneSoap[] phones,
 		com.liferay.portal.model.WebsiteSoap[] websites,
-		java.util.List<com.liferay.announcements.kernel.model.AnnouncementsDelivery> announcementsDelivers,
+		com.liferay.announcements.kernel.model.AnnouncementsDeliverySoap[] announcementsDelivers,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws RemoteException {
 		try {
@@ -1602,7 +1604,9 @@ public class UserServiceSoap {
 					com.liferay.portal.model.impl.PhoneModelImpl.toModels(
 						phones),
 					com.liferay.portal.model.impl.WebsiteModelImpl.toModels(
-						websites), announcementsDelivers, serviceContext);
+						websites),
+					com.liferay.portlet.announcements.model.impl.AnnouncementsDeliveryModelImpl.toModels(
+						announcementsDelivers), serviceContext);
 
 			return com.liferay.portal.model.UserSoap.toSoapModel(returnValue);
 		}
@@ -1694,7 +1698,7 @@ public class UserServiceSoap {
 		com.liferay.portal.model.EmailAddressSoap[] emailAddresses,
 		com.liferay.portal.model.PhoneSoap[] phones,
 		com.liferay.portal.model.WebsiteSoap[] websites,
-		java.util.List<com.liferay.announcements.kernel.model.AnnouncementsDelivery> announcementsDelivers,
+		com.liferay.announcements.kernel.model.AnnouncementsDeliverySoap[] announcementsDelivers,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws RemoteException {
 		try {
@@ -1715,7 +1719,9 @@ public class UserServiceSoap {
 					com.liferay.portal.model.impl.PhoneModelImpl.toModels(
 						phones),
 					com.liferay.portal.model.impl.WebsiteModelImpl.toModels(
-						websites), announcementsDelivers, serviceContext);
+						websites),
+					com.liferay.portlet.announcements.model.impl.AnnouncementsDeliveryModelImpl.toModels(
+						announcementsDelivers), serviceContext);
 
 			return com.liferay.portal.model.UserSoap.toSoapModel(returnValue);
 		}

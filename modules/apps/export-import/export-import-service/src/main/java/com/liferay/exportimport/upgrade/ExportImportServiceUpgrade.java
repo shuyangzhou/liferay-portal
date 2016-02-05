@@ -14,13 +14,13 @@
 
 package com.liferay.exportimport.upgrade;
 
+import com.liferay.exportimport.kernel.service.ExportImportConfigurationLocalService;
 import com.liferay.exportimport.upgrade.v1_0_0.UpgradePublisherRequest;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.scheduler.SchedulerEngineHelper;
 import com.liferay.portal.service.GroupLocalService;
 import com.liferay.portal.service.UserLocalService;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
-import com.liferay.portlet.exportimport.service.ExportImportConfigurationLocalService;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

@@ -14,6 +14,7 @@
 
 package com.liferay.portal.systemevent;
 
+import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
@@ -29,7 +30,6 @@ import com.liferay.portal.model.SystemEventConstants;
 import com.liferay.portal.model.TypedModel;
 import com.liferay.portal.service.SystemEventLocalServiceUtil;
 import com.liferay.portal.spring.aop.AnnotationChainableMethodAdvice;
-import com.liferay.portlet.exportimport.lar.StagedModelType;
 
 import java.io.Serializable;
 

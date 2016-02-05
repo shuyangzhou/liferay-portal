@@ -14,9 +14,9 @@
 
 package com.liferay.exportimport.xstream;
 
+import com.liferay.exportimport.kernel.xstream.XStreamConverter;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portlet.exportimport.xstream.XStreamConverter;
 
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;

@@ -3465,11 +3465,17 @@ else.
 
 - `com.liferay.portal.security.xml` &rarr; `com.liferay.portal.kernel.security.xml`
 
+- `com.liferay.portal.util.comparator` &rarr; `com.liferay.portal.kernel.util.comparator`
+
 - `com.liferay.portal.verify.model` &rarr; `com.liferay.portal.kernel.verify.model`
 
 - `com.liferay.portal.webserver` &rarr; `com.liferay.portal.kernel.webserver`
 
+- `com.liferay.portlet.admin.util` &rarr; `com.liferay.admin.kernel.util`
+
 - `com.liferay.portlet.announcements` &rarr; `com.liferay.announcements.kernel`
+
+- `com.liferay.portlet.backgroundtask.util.comparator` &rarr; `com.liferay.background.task.kernel.util.comparator`
 
 - `com.liferay.portlet.blogs` &rarr; `com.liferay.blogs.kernel`
 
@@ -3483,9 +3489,11 @@ else.
 
 - `com.liferay.portlet.blogs.util.comparator` &rarr; `com.liferay.blogs.kernel.util.comparator`
 
-- `com.liferay.portlet.backgroundtask` &rarr; `com.liferay.background.task.kernel`
-
 - `com.liferay.portlet.dynamicdatamapping` &rarr; `com.liferay.dynamic.data.mapping.kernel`
+
+- `com.liferay.portlet.expando` &rarr; `com.liferay.expando.kernel`
+
+- `com.liferay.portlet.exportimport` &rarr; `com.liferay.exportimport.kernel`
 
 - `com.liferay.portlet.imagegallerydisplay.display.context` &rarr; `com.liferay.image.gallery.display.kernel.display.context`
 
@@ -3601,3 +3609,29 @@ icon instead.
 
 In order to display the `documents-and-media` lexicon icon in Documents and
 Media this change was necessary.
+
+---------------------------------------
+
+### The aui:column taglib has been removed and replaced with aui:col taglib
+- **Date:** 2016-Jan-19
+- **JIRA Ticket:** LPS-62208
+
+#### What changed?
+
+The `aui:column` taglib has been removed and replaced with
+`aui:col` taglib.
+
+#### Who is affected?
+
+Plugins or templates that are using the `aui:column` tag need
+to update their usage of the tag.
+
+#### How should I update my code?
+
+You should import the `aui` tag library if it isn't already and
+update the tag namespace from `aui:column` to `aui:col`.
+
+#### Why was this change made?
+
+This change was made as a part of the ongoing strategy to modularize Liferay
+Portal by means of an OSGi container.

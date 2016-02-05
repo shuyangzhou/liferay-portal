@@ -18,6 +18,7 @@ import com.liferay.document.library.repository.cmis.CMISRepositoryHandler;
 import com.liferay.document.library.repository.cmis.configuration.CMISRepositoryConfiguration;
 import com.liferay.document.library.repository.cmis.search.BaseCmisSearchQueryBuilder;
 import com.liferay.document.library.repository.cmis.search.CMISSearchQueryBuilder;
+import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.lock.LockManager;
 import com.liferay.portal.kernel.repository.BaseRepository;
@@ -31,7 +32,6 @@ import com.liferay.portal.service.UserLocalService;
 import com.liferay.portlet.asset.service.AssetEntryLocalService;
 import com.liferay.portlet.documentlibrary.service.DLAppHelperLocalService;
 import com.liferay.portlet.documentlibrary.service.DLFolderLocalService;
-import com.liferay.portlet.exportimport.lar.ExportImportThreadLocal;
 
 /**
  * @author Adolfo Pérez

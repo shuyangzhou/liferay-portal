@@ -343,7 +343,7 @@ public class DDMDataProviderInstanceLocalServiceWrapper
 
 	@Override
 	public com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery getExportActionableDynamicQuery(
-		com.liferay.portlet.exportimport.lar.PortletDataContext portletDataContext) {
+		com.liferay.exportimport.kernel.lar.PortletDataContext portletDataContext) {
 		return _ddmDataProviderInstanceLocalService.getExportActionableDynamicQuery(portletDataContext);
 	}
 

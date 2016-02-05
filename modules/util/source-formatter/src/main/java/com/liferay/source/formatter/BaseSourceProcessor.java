@@ -1123,7 +1123,7 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		_annotationsExclusions = SetUtil.fromArray(
 			new String[] {
 				"ArquillianResource", "BeanReference", "Inject", "Mock",
-				"ServiceReference", "SuppressWarnings"
+				"Reference", "ServiceReference", "SuppressWarnings"
 			});
 
 		return _annotationsExclusions;
@@ -1738,6 +1738,20 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 			File file, String fileName, String content, String newContent)
 		throws IOException {
 
+		if (!content.equals(newContent)) {
+			if (sourceFormatterArgs.isPrintErrors()) {
+				_sourceFormatterHelper.printError(fileName, file);
+			}
+
+			if (sourceFormatterArgs.isAutoFix()) {
+				FileUtil.write(file, newContent);
+			}
+			else if (_firstSourceMismatchException == null) {
+				_firstSourceMismatchException = new SourceMismatchException(
+					fileName, content, newContent);
+			}
+		}
+
 		if (sourceFormatterArgs.isPrintErrors()) {
 			List<String> errorMessages = _errorMessagesMap.get(fileName);
 
@@ -1749,22 +1763,6 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		}
 
 		_modifiedFileNames.add(file.getAbsolutePath());
-
-		if (content.equals(newContent)) {
-			return;
-		}
-
-		if (sourceFormatterArgs.isAutoFix()) {
-			FileUtil.write(file, newContent);
-		}
-		else if (_firstSourceMismatchException == null) {
-			_firstSourceMismatchException = new SourceMismatchException(
-				fileName, content, newContent);
-		}
-
-		if (sourceFormatterArgs.isPrintErrors()) {
-			_sourceFormatterHelper.printError(fileName, file);
-		}
 	}
 
 	protected String replacePrimitiveWrapperInstantiation(String line) {

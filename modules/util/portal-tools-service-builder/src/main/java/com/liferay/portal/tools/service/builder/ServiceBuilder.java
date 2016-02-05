@@ -1064,6 +1064,18 @@ public class ServiceBuilder {
 			return entity;
 		}
 
+		Set<Entity> entities = new HashSet<>(_ejbList);
+
+		entities.addAll(_entityPool.values());
+
+		for (Entity curEntity : entities) {
+			if (refPackage.equals(curEntity.getApiPackagePath())) {
+				refPackage = curEntity.getPackagePath();
+
+				break;
+			}
+		}
+
 		String refPackageDirName = StringUtil.replace(refPackage, ".", "/");
 
 		String refFileName =

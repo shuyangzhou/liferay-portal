@@ -14,8 +14,8 @@
 
 package com.liferay.exportimport.lar;
 
+import com.liferay.exportimport.kernel.lar.ExportImportProcessCallbackRegistry;
 import com.liferay.portal.kernel.security.pacl.DoPrivileged;
-import com.liferay.portlet.exportimport.lar.ExportImportProcessCallbackRegistry;
 
 import java.util.concurrent.Callable;
 

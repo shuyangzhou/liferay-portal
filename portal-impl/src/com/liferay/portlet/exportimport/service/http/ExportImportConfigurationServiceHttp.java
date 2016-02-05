@@ -16,14 +16,14 @@ package com.liferay.portlet.exportimport.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.exportimport.kernel.service.ExportImportConfigurationServiceUtil;
+
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.service.http.TunnelUtil;
-
-import com.liferay.portlet.exportimport.service.ExportImportConfigurationServiceUtil;
 
 /**
  * Provides the HTTP utility for the
@@ -84,7 +84,7 @@ public class ExportImportConfigurationServiceHttp {
 		}
 	}
 
-	public static com.liferay.portlet.exportimport.model.ExportImportConfiguration moveExportImportConfigurationToTrash(
+	public static com.liferay.exportimport.kernel.model.ExportImportConfiguration moveExportImportConfigurationToTrash(
 		HttpPrincipal httpPrincipal, long exportImportConfigurationId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -108,7 +108,7 @@ public class ExportImportConfigurationServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portlet.exportimport.model.ExportImportConfiguration)returnObj;
+			return (com.liferay.exportimport.kernel.model.ExportImportConfiguration)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -117,7 +117,7 @@ public class ExportImportConfigurationServiceHttp {
 		}
 	}
 
-	public static com.liferay.portlet.exportimport.model.ExportImportConfiguration restoreExportImportConfigurationFromTrash(
+	public static com.liferay.exportimport.kernel.model.ExportImportConfiguration restoreExportImportConfigurationFromTrash(
 		HttpPrincipal httpPrincipal, long exportImportConfigurationId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -141,7 +141,7 @@ public class ExportImportConfigurationServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portlet.exportimport.model.ExportImportConfiguration)returnObj;
+			return (com.liferay.exportimport.kernel.model.ExportImportConfiguration)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
