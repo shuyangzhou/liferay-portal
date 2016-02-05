@@ -12,16 +12,23 @@
  * details.
  */
 
-package com.liferay.mail.util;
+package com.liferay.mail.kernel.service;
 
-import com.liferay.mail.model.Filter;
+import com.liferay.mail.kernel.model.Filter;
+import com.liferay.mail.kernel.model.MailMessage;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.transaction.Transactional;
 
 import java.util.List;
+
+import javax.mail.Session;
 
 /**
  * @author Brian Wing Shun Chan
  */
-public interface Hook {
+@Transactional(rollbackFor = {PortalException.class, SystemException.class})
+public interface MailService {
 
 	public void addForward(
 		long companyId, long userId, List<Filter> filters,
@@ -35,9 +42,15 @@ public interface Hook {
 		long companyId, long userId, String emailAddress,
 		String vacationMessage);
 
+	public void clearSession();
+
 	public void deleteEmailAddress(long companyId, long userId);
 
 	public void deleteUser(long companyId, long userId);
+
+	public Session getSession();
+
+	public void sendEmail(MailMessage mailMessage);
 
 	public void updateBlocked(
 		long companyId, long userId, List<String> blocked);

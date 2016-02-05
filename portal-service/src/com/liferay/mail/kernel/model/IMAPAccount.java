@@ -12,14 +12,14 @@
  * details.
  */
 
-package com.liferay.portal.kernel.mail;
+package com.liferay.mail.kernel.model;
 
 /**
  * @author Thiago Moreira
  */
-public class SMTPAccount extends Account {
+public class IMAPAccount extends Account {
 
-	protected SMTPAccount(String protocol, boolean secure, int port) {
+	protected IMAPAccount(String protocol, boolean secure, int port) {
 		super(protocol, secure, port);
 	}
 

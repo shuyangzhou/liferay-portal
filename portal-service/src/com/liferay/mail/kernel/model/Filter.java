@@ -12,41 +12,40 @@
  * details.
  */
 
-package com.liferay.mail.model;
+package com.liferay.mail.kernel.model;
 
-import java.io.File;
+import java.io.Serializable;
 
 /**
- * @author Barrie Selack
  * @author Brian Wing Shun Chan
  */
-public class FileAttachment {
+public class Filter implements Serializable {
 
-	public FileAttachment() {
+	public Filter() {
 	}
 
-	public FileAttachment(File file, String fileName) {
-		_file = file;
-		_fileName = fileName;
+	public Filter(String emailAddress, String folder) {
+		_emailAddress = emailAddress;
+		_folder = folder;
 	}
 
-	public File getFile() {
-		return _file;
+	public String getEmailAddress() {
+		return _emailAddress;
 	}
 
-	public String getFileName() {
-		return _fileName;
+	public String getFolder() {
+		return _folder;
 	}
 
-	public void setFile(File file) {
-		_file = file;
+	public void setEmailAddress(String emailAddress) {
+		_emailAddress = emailAddress;
 	}
 
-	public void setFileName(String fileName) {
-		_fileName = fileName;
+	public void setFolder(String folder) {
+		_folder = folder;
 	}
 
-	private File _file;
-	private String _fileName;
+	private String _emailAddress;
+	private String _folder;
 
 }

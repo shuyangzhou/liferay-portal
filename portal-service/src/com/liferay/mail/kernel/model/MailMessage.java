@@ -12,9 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.kernel.mail;
-
-import com.liferay.mail.model.FileAttachment;
+package com.liferay.mail.kernel.model;
 
 import java.io.File;
 import java.io.Serializable;
