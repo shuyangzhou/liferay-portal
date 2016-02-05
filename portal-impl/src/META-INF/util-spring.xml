@@ -436,61 +436,61 @@
 	<bean id="com.liferay.portal.resiliency.mpi.portlet.PortalResiliencyPortletContainerWrapper" class="com.liferay.portal.resiliency.mpi.portlet.PortalResiliencyPortletContainerWrapper" factory-method="createPortalResiliencyPortletContainerWrapper">
 		<constructor-arg name="portletContainer" ref="com.liferay.portlet.PortletContainerImpl" />
 	</bean>
-	<bean id="com.liferay.portal.service.permission.AccountPermissionUtil" class="com.liferay.portal.service.permission.AccountPermissionUtil">
+	<bean id="com.liferay.portal.kernel.service.permission.AccountPermissionUtil" class="com.liferay.portal.kernel.service.permission.AccountPermissionUtil">
 		<property name="accountPermission">
 			<bean class="com.liferay.portal.service.permission.AccountPermissionImpl" />
 		</property>
 	</bean>
-	<bean id="com.liferay.portal.service.permission.CommonPermissionUtil" class="com.liferay.portal.service.permission.CommonPermissionUtil">
+	<bean id="com.liferay.portal.kernel.service.permission.CommonPermissionUtil" class="com.liferay.portal.kernel.service.permission.CommonPermissionUtil">
 		<property name="commonPermission">
 			<bean class="com.liferay.portal.service.permission.CommonPermissionImpl" />
 		</property>
 	</bean>
 	<bean id="com.liferay.portal.service.permission.GroupPermissionImpl" class="com.liferay.portal.service.permission.GroupPermissionImpl" />
-	<bean id="com.liferay.portal.service.permission.GroupPermissionUtil" class="com.liferay.portal.service.permission.GroupPermissionUtil">
+	<bean id="com.liferay.portal.kernel.service.permission.GroupPermissionUtil" class="com.liferay.portal.kernel.service.permission.GroupPermissionUtil">
 		<property name="groupPermission" ref="com.liferay.portal.service.permission.GroupPermissionImpl" />
 	</bean>
-	<bean id="com.liferay.portal.service.permission.OrganizationPermissionUtil" class="com.liferay.portal.service.permission.OrganizationPermissionUtil">
+	<bean id="com.liferay.portal.kernel.service.permission.OrganizationPermissionUtil" class="com.liferay.portal.kernel.service.permission.OrganizationPermissionUtil">
 		<property name="organizationPermission">
 			<bean class="com.liferay.portal.service.permission.OrganizationPermissionImpl" />
 		</property>
 	</bean>
-	<bean id="com.liferay.portal.service.permission.PasswordPolicyPermissionUtil" class="com.liferay.portal.service.permission.PasswordPolicyPermissionUtil">
+	<bean id="com.liferay.portal.kernel.service.permission.PasswordPolicyPermissionUtil" class="com.liferay.portal.kernel.service.permission.PasswordPolicyPermissionUtil">
 		<property name="passwordPolicyPermission">
 			<bean class="com.liferay.portal.service.permission.PasswordPolicyPermissionImpl" />
 		</property>
 	</bean>
-	<bean id="com.liferay.portal.service.permission.PortalPermissionUtil" class="com.liferay.portal.service.permission.PortalPermissionUtil">
+	<bean id="com.liferay.portal.kernel.service.permission.PortalPermissionUtil" class="com.liferay.portal.kernel.service.permission.PortalPermissionUtil">
 		<property name="portalPermission">
 			<bean class="com.liferay.portal.service.permission.PortalPermissionImpl" />
 		</property>
 	</bean>
-	<bean id="com.liferay.portal.service.permission.PortletPermission" class="com.liferay.portal.service.permission.PortletPermissionImpl" />
-	<bean id="com.liferay.portal.service.permission.PortletPermissionUtil" class="com.liferay.portal.service.permission.PortletPermissionUtil">
-		<property name="portletPermission" ref="com.liferay.portal.service.permission.PortletPermission" />
+	<bean id="com.liferay.portal.kernel.service.permission.PortletPermission" class="com.liferay.portal.service.permission.PortletPermissionImpl" />
+	<bean id="com.liferay.portal.kernel.service.permission.PortletPermissionUtil" class="com.liferay.portal.kernel.service.permission.PortletPermissionUtil">
+		<property name="portletPermission" ref="com.liferay.portal.kernel.service.permission.PortletPermission" />
 	</bean>
-	<bean id="com.liferay.portal.service.permission.RolePermissionUtil" class="com.liferay.portal.service.permission.RolePermissionUtil">
+	<bean id="com.liferay.portal.kernel.service.permission.RolePermissionUtil" class="com.liferay.portal.kernel.service.permission.RolePermissionUtil">
 		<property name="rolePermission">
 			<bean class="com.liferay.portal.service.permission.RolePermissionImpl" />
 		</property>
 	</bean>
-	<bean id="com.liferay.portal.service.permission.TeamPermissionUtil" class="com.liferay.portal.service.permission.TeamPermissionUtil">
+	<bean id="com.liferay.portal.kernel.service.permission.TeamPermissionUtil" class="com.liferay.portal.kernel.service.permission.TeamPermissionUtil">
 		<property name="teamPermission">
 			<bean class="com.liferay.portal.service.permission.TeamPermissionImpl" />
 		</property>
 	</bean>
-	<bean id="com.liferay.portal.service.permission.UserGroupPermissionUtil" class="com.liferay.portal.service.permission.UserGroupPermissionUtil">
+	<bean id="com.liferay.portal.kernel.service.permission.UserGroupPermissionUtil" class="com.liferay.portal.kernel.service.permission.UserGroupPermissionUtil">
 		<property name="userGroupPermission">
 			<bean class="com.liferay.portal.service.permission.UserGroupPermissionImpl" />
 		</property>
 	</bean>
-	<bean id="com.liferay.portal.service.permission.UserGroupRolePermissionUtil" class="com.liferay.portal.service.permission.UserGroupRolePermissionUtil">
+	<bean id="com.liferay.portal.kernel.service.permission.UserGroupRolePermissionUtil" class="com.liferay.portal.kernel.service.permission.UserGroupRolePermissionUtil">
 		<property name="userGroupRolePermission">
 			<bean class="com.liferay.portal.service.permission.UserGroupRolePermissionImpl" />
 		</property>
 	</bean>
 	<bean id="com.liferay.portal.service.permission.UserPermissionImpl" class="com.liferay.portal.service.permission.UserPermissionImpl" />
-	<bean id="com.liferay.portal.service.permission.UserPermissionUtil" class="com.liferay.portal.service.permission.UserPermissionUtil">
+	<bean id="com.liferay.portal.kernel.service.permission.UserPermissionUtil" class="com.liferay.portal.kernel.service.permission.UserPermissionUtil">
 		<property name="userPermission" ref="com.liferay.portal.service.permission.UserPermissionImpl" />
 	</bean>
 	<bean id="com.liferay.portal.service.persistence.BatchSessionUtil" class="com.liferay.portal.service.persistence.BatchSessionUtil">
