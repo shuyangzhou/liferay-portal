@@ -17,6 +17,7 @@ package com.liferay.portal.portlet.container.upload.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -37,7 +38,6 @@ import com.liferay.portal.theme.ThemeDisplayFactory;
 import com.liferay.portal.upload.LiferayServletRequest;
 import com.liferay.portal.util.test.PortletContainerTestUtil;
 import com.liferay.portal.util.test.PortletContainerTestUtil.Response;
-import com.liferay.portlet.PortletURLFactoryUtil;
 
 import java.io.IOException;
 import java.io.PrintWriter;

@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.audit.AuditRouterUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletContainerUtil;
+import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.servlet.MetaInfoCacheServletResponse;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -39,7 +40,6 @@ import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PortletKeys;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.PortletRequestImpl;
-import com.liferay.portlet.PortletURLFactoryUtil;
 import com.liferay.portlet.RenderParametersPool;
 
 import javax.portlet.PortletMode;

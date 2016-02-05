@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.dao.db.DBContext;
 import com.liferay.portal.kernel.dao.db.DBManager;
 import com.liferay.portal.kernel.dao.db.DBProcessContext;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
+import com.liferay.portal.kernel.service.configuration.configurator.ServiceConfigurator;
 import com.liferay.portal.kernel.upgrade.UpgradeException;
 import com.liferay.portal.kernel.upgrade.UpgradeStep;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -27,7 +28,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.model.Release;
-import com.liferay.portal.service.configuration.configurator.ServiceConfigurator;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistratorTracker;
 
 import java.io.IOException;

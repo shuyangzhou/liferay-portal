@@ -97,7 +97,7 @@ public class ServiceComponentLocalServiceUtil {
 	}
 
 	public static void destroyServiceComponent(
-		com.liferay.portal.service.configuration.ServiceComponentConfiguration serviceComponentConfiguration,
+		com.liferay.portal.kernel.service.configuration.ServiceComponentConfiguration serviceComponentConfiguration,
 		java.lang.ClassLoader classLoader) {
 		getService()
 			.destroyServiceComponent(serviceComponentConfiguration, classLoader);
@@ -252,7 +252,7 @@ public class ServiceComponentLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.model.ServiceComponent initServiceComponent(
-		com.liferay.portal.service.configuration.ServiceComponentConfiguration serviceComponentConfiguration,
+		com.liferay.portal.kernel.service.configuration.ServiceComponentConfiguration serviceComponentConfiguration,
 		java.lang.ClassLoader classLoader, java.lang.String buildNamespace,
 		long buildNumber, long buildDate, boolean buildAutoUpgrade)
 		throws com.liferay.portal.kernel.exception.PortalException {

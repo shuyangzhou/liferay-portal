@@ -16,6 +16,7 @@ package com.liferay.document.library.web.portlet.action;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileShortcut;
 import com.liferay.portal.kernel.repository.model.FileVersion;
@@ -31,7 +32,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.Repository;
 import com.liferay.portal.service.RepositoryServiceUtil;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException;
 import com.liferay.portlet.documentlibrary.exception.NoSuchFolderException;
 import com.liferay.portlet.documentlibrary.model.DLFolder;

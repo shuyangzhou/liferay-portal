@@ -16,7 +16,7 @@ package com.liferay.portal.spring.extender.loader;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.service.configuration.ServiceComponentConfiguration;
+import com.liferay.portal.kernel.service.configuration.ServiceComponentConfiguration;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

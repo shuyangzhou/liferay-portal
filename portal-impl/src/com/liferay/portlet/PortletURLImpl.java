@@ -22,6 +22,8 @@ import com.liferay.portal.kernel.portlet.LiferayPortletConfig;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletModeFactory;
+import com.liferay.portal.kernel.portlet.PortletQName;
+import com.liferay.portal.kernel.portlet.PortletQNameUtil;
 import com.liferay.portal.kernel.portlet.WindowStateFactory;
 import com.liferay.portal.kernel.security.auth.AuthTokenUtil;
 import com.liferay.portal.kernel.theme.PortletDisplay;

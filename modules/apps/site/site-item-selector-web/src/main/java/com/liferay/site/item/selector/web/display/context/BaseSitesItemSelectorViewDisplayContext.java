@@ -15,8 +15,8 @@
 package com.liferay.site.item.selector.web.display.context;
 
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
+import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
-import com.liferay.portlet.PortletURLUtil;
 import com.liferay.site.item.selector.criterion.SiteItemSelectorCriterion;
 
 import javax.portlet.PortletException;

@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.notifications.UserNotificationHandler;
 import com.liferay.portal.kernel.poller.PollerProcessor;
 import com.liferay.portal.kernel.pop.MessageListener;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
+import com.liferay.portal.kernel.portlet.ControlPanelEntry;
 import com.liferay.portal.kernel.portlet.FriendlyURLMapperTracker;
 import com.liferay.portal.kernel.portlet.PortletBag;
 import com.liferay.portal.kernel.portlet.PortletLayoutListener;

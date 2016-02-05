@@ -26,6 +26,7 @@ import com.liferay.exportimport.kernel.service.ExportImportConfigurationLocalSer
 import com.liferay.exportimport.kernel.service.ExportImportLocalServiceUtil;
 import com.liferay.portal.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.portletdisplaytemplate.PortletDisplayTemplateManager;
 import com.liferay.portal.kernel.template.TemplateHandler;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
@@ -46,7 +47,6 @@ import com.liferay.portal.service.PortletLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.test.LayoutTestUtil;
-import com.liferay.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portlet.asset.model.AssetEntry;
 import com.liferay.portlet.asset.model.AssetLink;
 import com.liferay.portlet.asset.service.AssetEntryLocalServiceUtil;

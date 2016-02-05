@@ -16,12 +16,12 @@ package com.liferay.portal.util;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.portlet.PortalPreferences;
+import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portlet.PortalPreferences;
-import com.liferay.portlet.PortletPreferencesFactoryUtil;
 
 import java.util.ConcurrentModificationException;
 

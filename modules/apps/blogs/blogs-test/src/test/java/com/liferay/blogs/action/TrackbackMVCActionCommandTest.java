@@ -18,6 +18,8 @@ import com.liferay.blogs.kernel.exception.NoSuchEntryException;
 import com.liferay.blogs.kernel.model.BlogsEntry;
 import com.liferay.blogs.web.portlet.action.ActionUtil;
 import com.liferay.blogs.web.portlet.action.TrackbackMVCActionCommand;
+import com.liferay.portal.kernel.portlet.PortletPreferencesFactory;
+import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Function;
@@ -29,8 +31,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.util.Portal;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.PortletPreferencesFactory;
-import com.liferay.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portlet.blogs.trackback.Trackback;
 
 import javax.portlet.ActionRequest;

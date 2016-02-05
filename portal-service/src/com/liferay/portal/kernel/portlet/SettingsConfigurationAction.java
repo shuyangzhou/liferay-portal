@@ -42,7 +42,6 @@ import com.liferay.portal.model.Portlet;
 import com.liferay.portal.service.PortletLocalServiceUtil;
 import com.liferay.portal.service.permission.PortletPermissionUtil;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.PortletConfigFactoryUtil;
 
 import java.util.HashMap;
 import java.util.Map;

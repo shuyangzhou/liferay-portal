@@ -15,8 +15,8 @@
 package com.liferay.blogs.web.upgrade.v1_0_0;
 
 import com.liferay.blogs.web.constants.BlogsPortletKeys;
+import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.upgrade.BaseUpgradePortletPreferences;
-import com.liferay.portlet.PortletPreferencesFactoryUtil;
 
 import javax.portlet.PortletPreferences;
 

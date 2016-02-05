@@ -14,11 +14,11 @@
 
 package com.liferay.staging.processes.web.portlet;
 
+import com.liferay.portal.kernel.portlet.BaseControlPanelEntry;
+import com.liferay.portal.kernel.portlet.ControlPanelEntry;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Portlet;
-import com.liferay.portlet.BaseControlPanelEntry;
-import com.liferay.portlet.ControlPanelEntry;
 import com.liferay.staging.constants.StagingProcessesPortletKeys;
 
 import org.osgi.service.component.annotations.Component;

@@ -15,11 +15,11 @@
 package com.liferay.portal.upgrade.v7_0_0;
 
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
+import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.portletdisplaytemplate.PortletDisplayTemplateManager;
 import com.liferay.portal.kernel.upgrade.BaseUpgradePortletPreferences;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portlet.PortletPreferencesFactoryUtil;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

@@ -14,13 +14,13 @@
 
 package com.liferay.site.admin.web.portlet;
 
+import com.liferay.portal.kernel.portlet.BaseControlPanelEntry;
+import com.liferay.portal.kernel.portlet.ControlPanelEntry;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Portlet;
 import com.liferay.portal.service.permission.GroupPermissionUtil;
-import com.liferay.portlet.BaseControlPanelEntry;
-import com.liferay.portlet.ControlPanelEntry;
 import com.liferay.site.admin.web.constants.SiteAdminPortletKeys;
 
 import org.osgi.service.component.annotations.Component;
