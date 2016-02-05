@@ -7,7 +7,7 @@
 	<description/>
 	<groupId>com.liferay</groupId>
 	<artifactId>com.liferay.source.formatter</artifactId>
-	<version>1.0.137</version>
+	<version>1.0.138</version>
 	<goalPrefix>liferay</goalPrefix>
 	<mojos>
 		<mojo>

@@ -1560,14 +1560,14 @@ public class HookHotDeployListener
 			String mailHookClassName = portalProperties.getProperty(
 				PropsKeys.MAIL_HOOK_IMPL);
 
-			com.liferay.mail.util.Hook mailHook =
-				(com.liferay.mail.util.Hook)newInstance(
-					portletClassLoader, com.liferay.mail.util.Hook.class,
+			com.liferay.mail.kernel.util.Hook mailHook =
+				(com.liferay.mail.kernel.util.Hook)newInstance(
+					portletClassLoader, com.liferay.mail.kernel.util.Hook.class,
 					mailHookClassName);
 
 			registerService(
 				servletContextName, mailHookClassName,
-				com.liferay.mail.util.Hook.class, mailHook);
+				com.liferay.mail.kernel.util.Hook.class, mailHook);
 		}
 
 		if (portalProperties.containsKey(

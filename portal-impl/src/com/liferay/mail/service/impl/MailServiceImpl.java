@@ -14,13 +14,13 @@
 
 package com.liferay.mail.service.impl;
 
-import com.liferay.mail.model.Filter;
-import com.liferay.mail.service.MailService;
-import com.liferay.mail.util.Hook;
+import com.liferay.mail.kernel.model.Account;
+import com.liferay.mail.kernel.model.Filter;
+import com.liferay.mail.kernel.model.MailMessage;
+import com.liferay.mail.kernel.service.MailService;
+import com.liferay.mail.kernel.util.Hook;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.mail.Account;
-import com.liferay.portal.kernel.mail.MailMessage;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;

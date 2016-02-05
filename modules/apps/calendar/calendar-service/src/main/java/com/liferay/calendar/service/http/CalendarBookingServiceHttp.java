@@ -21,9 +21,9 @@ import com.liferay.calendar.service.CalendarBookingServiceUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
+import com.liferay.portal.kernel.service.http.TunnelUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
-import com.liferay.portal.service.http.TunnelUtil;
 
 /**
  * Provides the HTTP utility for the
@@ -505,7 +505,7 @@ public class CalendarBookingServiceHttp {
 		HttpPrincipal httpPrincipal, long calendarId, long startTime,
 		long endTime, int max, java.lang.String type, double version,
 		java.lang.String displayStyle,
-		com.liferay.portal.theme.ThemeDisplay themeDisplay)
+		com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(CalendarBookingServiceUtil.class,
@@ -1279,7 +1279,7 @@ public class CalendarBookingServiceHttp {
 	private static final Class<?>[] _getCalendarBookingsRSSParameterTypes13 = new Class[] {
 			long.class, long.class, long.class, int.class,
 			java.lang.String.class, double.class, java.lang.String.class,
-			com.liferay.portal.theme.ThemeDisplay.class
+			com.liferay.portal.kernel.theme.ThemeDisplay.class
 		};
 	private static final Class<?>[] _getChildCalendarBookingsParameterTypes14 = new Class[] {
 			long.class

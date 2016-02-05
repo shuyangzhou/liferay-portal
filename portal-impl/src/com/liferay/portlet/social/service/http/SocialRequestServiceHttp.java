@@ -19,9 +19,9 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
+import com.liferay.portal.kernel.service.http.TunnelUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
-import com.liferay.portal.service.http.TunnelUtil;
 
 import com.liferay.social.kernel.service.SocialRequestServiceUtil;
 
@@ -57,7 +57,7 @@ import com.liferay.social.kernel.service.SocialRequestServiceUtil;
 public class SocialRequestServiceHttp {
 	public static com.liferay.social.kernel.model.SocialRequest updateRequest(
 		HttpPrincipal httpPrincipal, long requestId, int status,
-		com.liferay.portal.theme.ThemeDisplay themeDisplay)
+		com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(SocialRequestServiceUtil.class,
@@ -90,6 +90,7 @@ public class SocialRequestServiceHttp {
 
 	private static Log _log = LogFactoryUtil.getLog(SocialRequestServiceHttp.class);
 	private static final Class<?>[] _updateRequestParameterTypes0 = new Class[] {
-			long.class, int.class, com.liferay.portal.theme.ThemeDisplay.class
+			long.class, int.class,
+			com.liferay.portal.kernel.theme.ThemeDisplay.class
 		};
 }
