@@ -56,6 +56,7 @@ page import="com.liferay.portal.kernel.layoutconfiguration.util.RuntimePageUtil"
 page import="com.liferay.portal.kernel.log.Log" %><%@
 page import="com.liferay.portal.kernel.log.LogFactoryUtil" %><%@
 page import="com.liferay.portal.kernel.log.LogUtil" %><%@
+page import="com.liferay.portal.kernel.model.impl.VirtualLayout" %><%@
 page import="com.liferay.portal.kernel.portlet.LiferayPortletMode" %><%@
 page import="com.liferay.portal.kernel.portlet.LiferayPortletRequest" %><%@
 page import="com.liferay.portal.kernel.portlet.LiferayPortletResponse" %><%@
