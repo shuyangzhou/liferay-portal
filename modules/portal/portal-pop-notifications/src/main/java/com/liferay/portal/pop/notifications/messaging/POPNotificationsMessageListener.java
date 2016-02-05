@@ -14,9 +14,9 @@
 
 package com.liferay.portal.pop.notifications.messaging;
 
+import com.liferay.mail.kernel.model.Account;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.mail.Account;
 import com.liferay.portal.kernel.messaging.BaseSchedulerEntryMessageListener;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;

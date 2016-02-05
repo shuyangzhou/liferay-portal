@@ -17,9 +17,10 @@ package com.liferay.blogs.web.portlet.action;
 import com.liferay.blogs.configuration.BlogsGroupServiceOverriddenConfiguration;
 import com.liferay.blogs.kernel.service.BlogsEntryService;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
-import com.liferay.portal.kernel.module.configuration.ConfigurationFactory;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.settings.GroupServiceSettingsLocator;
 import com.liferay.portal.kernel.struts.StrutsAction;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.RSSUtil;
 import com.liferay.portal.kernel.util.StringPool;
@@ -27,7 +28,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.struts.BaseRSSStrutsAction;
-import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.blogs.constants.BlogsConstants;
 
 import java.util.Date;
@@ -121,7 +121,7 @@ public class RSSAction extends BaseRSSStrutsAction {
 
 		BlogsGroupServiceOverriddenConfiguration
 			blogsGroupServiceOverridenConfiguration =
-				_configurationFactory.getConfiguration(
+				_configurationProvider.getConfiguration(
 					BlogsGroupServiceOverriddenConfiguration.class,
 					new GroupServiceSettingsLocator(
 						themeDisplay.getSiteGroupId(),
@@ -136,13 +136,13 @@ public class RSSAction extends BaseRSSStrutsAction {
 	}
 
 	@Reference(unbind = "-")
-	protected void setConfigurationFactory(
-		ConfigurationFactory configurationFactory) {
+	protected void setConfigurationProvider(
+		ConfigurationProvider configurationProvider) {
 
-		_configurationFactory = configurationFactory;
+		_configurationProvider = configurationProvider;
 	}
 
 	private BlogsEntryService _blogsEntryService;
-	private ConfigurationFactory _configurationFactory;
+	private ConfigurationProvider _configurationProvider;
 
 }

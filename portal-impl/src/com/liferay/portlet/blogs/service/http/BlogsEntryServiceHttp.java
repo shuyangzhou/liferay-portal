@@ -21,9 +21,9 @@ import com.liferay.blogs.kernel.service.BlogsEntryServiceUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
+import com.liferay.portal.kernel.service.http.TunnelUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
-import com.liferay.portal.service.http.TunnelUtil;
 
 /**
  * Provides the HTTP utility for the
@@ -207,7 +207,7 @@ public class BlogsEntryServiceHttp {
 		java.util.Date displayDate, int status, int max, java.lang.String type,
 		double version, java.lang.String displayStyle,
 		java.lang.String feedURL, java.lang.String entryURL,
-		com.liferay.portal.theme.ThemeDisplay themeDisplay)
+		com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(BlogsEntryServiceUtil.class,
@@ -503,7 +503,7 @@ public class BlogsEntryServiceHttp {
 		int status, int max, java.lang.String type, double version,
 		java.lang.String displayStyle, java.lang.String feedURL,
 		java.lang.String entryURL,
-		com.liferay.portal.theme.ThemeDisplay themeDisplay)
+		com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(BlogsEntryServiceUtil.class,
@@ -721,7 +721,7 @@ public class BlogsEntryServiceHttp {
 		java.util.Date displayDate, int status, int max, java.lang.String type,
 		double version, java.lang.String displayStyle,
 		java.lang.String feedURL, java.lang.String entryURL,
-		com.liferay.portal.theme.ThemeDisplay themeDisplay)
+		com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(BlogsEntryServiceUtil.class,
@@ -981,7 +981,7 @@ public class BlogsEntryServiceHttp {
 			long.class, java.util.Date.class, int.class, int.class,
 			java.lang.String.class, double.class, java.lang.String.class,
 			java.lang.String.class, java.lang.String.class,
-			com.liferay.portal.theme.ThemeDisplay.class
+			com.liferay.portal.kernel.theme.ThemeDisplay.class
 		};
 	private static final Class<?>[] _getEntryParameterTypes5 = new Class[] {
 			long.class
@@ -1015,7 +1015,7 @@ public class BlogsEntryServiceHttp {
 			long.class, java.util.Date.class, int.class, int.class,
 			java.lang.String.class, double.class, java.lang.String.class,
 			java.lang.String.class, java.lang.String.class,
-			com.liferay.portal.theme.ThemeDisplay.class
+			com.liferay.portal.kernel.theme.ThemeDisplay.class
 		};
 	private static final Class<?>[] _getGroupsEntriesParameterTypes15 = new Class[] {
 			long.class, long.class, java.util.Date.class, int.class, int.class
@@ -1041,7 +1041,7 @@ public class BlogsEntryServiceHttp {
 			long.class, java.util.Date.class, int.class, int.class,
 			java.lang.String.class, double.class, java.lang.String.class,
 			java.lang.String.class, java.lang.String.class,
-			com.liferay.portal.theme.ThemeDisplay.class
+			com.liferay.portal.kernel.theme.ThemeDisplay.class
 		};
 	private static final Class<?>[] _moveEntryToTrashParameterTypes22 = new Class[] {
 			long.class

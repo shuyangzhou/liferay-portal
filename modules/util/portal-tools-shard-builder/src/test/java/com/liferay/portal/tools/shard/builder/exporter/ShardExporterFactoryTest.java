@@ -14,10 +14,16 @@
 
 package com.liferay.portal.tools.shard.builder.exporter;
 
+import com.liferay.portal.tools.shard.builder.db.mysql.MySQLProvider;
 import com.liferay.portal.tools.shard.builder.exporter.exception.DBProviderNotAvailableException;
+import com.liferay.portal.tools.shard.builder.internal.util.PropsReader;
+
+import java.net.URL;
 
 import java.util.Properties;
 
+import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Test;
 
 /**
@@ -28,6 +34,29 @@ public class ShardExporterFactoryTest {
 	@Test(expected = DBProviderNotAvailableException.class)
 	public void testGetShardExporter() throws Exception {
 		ShardExporterFactory.getShardExporter(new Properties());
+	}
+
+	@Test
+	public void testGetShardExporterReturnsMysqlProvider() throws Exception {
+		testGetShardExporter("mysql", MySQLProvider.class);
+	}
+
+	protected void testGetShardExporter(
+			String databaseType, Class<?> providerClass)
+		throws Exception {
+
+		Class<?> clazz = getClass();
+
+		URL url = clazz.getResource("/" + databaseType +".properties");
+
+		Assume.assumeNotNull(url);
+
+		Properties properties = PropsReader.read(url.getPath());
+
+		ShardExporter shardExporter = ShardExporterFactory.getShardExporter(
+			properties);
+
+		Assert.assertTrue(providerClass.isInstance(shardExporter));
 	}
 
 }

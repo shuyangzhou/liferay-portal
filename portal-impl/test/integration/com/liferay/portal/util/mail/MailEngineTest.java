@@ -14,7 +14,7 @@
 
 package com.liferay.portal.util.mail;
 
-import com.liferay.portal.kernel.mail.MailMessage;
+import com.liferay.mail.kernel.model.MailMessage;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
