@@ -12,9 +12,9 @@
  * details.
  */
 
-package com.liferay.portal.service.configuration.servlet;
+package com.liferay.portal.kernel.service.configuration.servlet;
 
-import com.liferay.portal.service.configuration.ServiceComponentConfiguration;
+import com.liferay.portal.kernel.service.configuration.ServiceComponentConfiguration;
 
 import javax.servlet.ServletContext;
 import java.io.InputStream;

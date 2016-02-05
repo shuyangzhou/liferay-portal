@@ -12,25 +12,23 @@
  * details.
  */
 
-package com.liferay.portal.service.configuration;
+package com.liferay.portal.kernel.service.configuration.configurator;
 
-import java.io.InputStream;
+import com.liferay.portal.kernel.service.configuration.ServiceComponentConfiguration;
 
 /**
  * @author Miguel Pastor
  */
-public interface ServiceComponentConfiguration {
+public interface ServiceConfigurator {
 
-	public InputStream getHibernateInputStream();
+	public void destroyServices(
+			ServiceComponentConfiguration serviceComponentConfiguration,
+			ClassLoader classLoader)
+		throws Exception;
 
-	public InputStream getModelHintsInputStream();
-
-	public InputStream getModelHintsExtInputStream();
-
-	public InputStream getSQLIndexesInputStream();
-
-	public InputStream getSQLSequencesInputStream();
-
-	public InputStream getSQLTablesInputStream();
+	public void initServices(
+			ServiceComponentConfiguration serviceComponentConfiguration,
+			ClassLoader classLoader)
+		throws Exception;
 
 }

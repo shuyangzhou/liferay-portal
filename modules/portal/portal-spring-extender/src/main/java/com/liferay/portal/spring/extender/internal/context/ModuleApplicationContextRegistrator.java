@@ -17,7 +17,7 @@ package com.liferay.portal.spring.extender.internal.context;
 import com.liferay.portal.bean.BeanLocatorImpl;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.service.configuration.configurator.ServiceConfigurator;
+import com.liferay.portal.kernel.service.configuration.configurator.ServiceConfigurator;
 import com.liferay.portal.spring.bean.BeanReferenceRefreshUtil;
 import com.liferay.portal.spring.extender.internal.bean.ApplicationContextServicePublisher;
 import com.liferay.portal.spring.extender.internal.bundle.CompositeResourceLoaderBundle;

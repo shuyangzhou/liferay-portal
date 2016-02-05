@@ -27,7 +27,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.model.Release;
-import com.liferay.portal.service.configuration.configurator.ServiceConfigurator;
+import com.liferay.portal.kernel.service.configuration.configurator.ServiceConfigurator;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistratorTracker;
 
 import java.io.IOException;
