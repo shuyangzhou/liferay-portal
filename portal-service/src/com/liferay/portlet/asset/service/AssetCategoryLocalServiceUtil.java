@@ -103,7 +103,7 @@ public class AssetCategoryLocalServiceUtil {
 
 	public static void addCategoryResources(
 		com.liferay.portlet.asset.model.AssetCategory category,
-		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
+		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().addCategoryResources(category, modelPermissions);
 	}

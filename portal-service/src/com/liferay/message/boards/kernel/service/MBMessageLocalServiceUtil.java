@@ -156,7 +156,7 @@ public class MBMessageLocalServiceUtil {
 
 	public static void addMessageResources(
 		com.liferay.message.boards.kernel.model.MBMessage message,
-		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
+		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().addMessageResources(message, modelPermissions);
 	}
@@ -170,7 +170,7 @@ public class MBMessageLocalServiceUtil {
 	}
 
 	public static void addMessageResources(long messageId,
-		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
+		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().addMessageResources(messageId, modelPermissions);
 	}

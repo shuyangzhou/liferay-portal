@@ -16,12 +16,12 @@ package com.liferay.layout.admin.web.portlet.configuration.icon;
 
 import com.liferay.portal.kernel.portlet.configuration.icon.BaseJSPPortletConfigurationIcon;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.model.LayoutConstants;
 import com.liferay.portal.service.LayoutLocalService;
-import com.liferay.portal.service.permission.LayoutPermissionUtil;
 
 import javax.portlet.PortletRequest;
 

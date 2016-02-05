@@ -16,6 +16,10 @@ package com.liferay.announcements.kernel.util;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
+import com.liferay.portal.kernel.service.permission.OrganizationPermissionUtil;
+import com.liferay.portal.kernel.service.permission.RolePermissionUtil;
+import com.liferay.portal.kernel.service.permission.UserGroupPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -33,10 +37,6 @@ import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.TeamLocalServiceUtil;
 import com.liferay.portal.service.UserGroupLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portal.service.permission.GroupPermissionUtil;
-import com.liferay.portal.service.permission.OrganizationPermissionUtil;
-import com.liferay.portal.service.permission.RolePermissionUtil;
-import com.liferay.portal.service.permission.UserGroupPermissionUtil;
 import com.liferay.portal.util.PortalUtil;
 
 import java.util.ArrayList;

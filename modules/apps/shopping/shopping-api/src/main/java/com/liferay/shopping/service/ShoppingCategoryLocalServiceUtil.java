@@ -62,7 +62,7 @@ public class ShoppingCategoryLocalServiceUtil {
 
 	public static void addCategoryResources(
 		com.liferay.shopping.model.ShoppingCategory category,
-		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
+		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().addCategoryResources(category, modelPermissions);
 	}
@@ -76,7 +76,7 @@ public class ShoppingCategoryLocalServiceUtil {
 	}
 
 	public static void addCategoryResources(long categoryId,
-		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
+		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().addCategoryResources(categoryId, modelPermissions);
 	}

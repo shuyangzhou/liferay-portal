@@ -18,8 +18,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.configuration.icon.BaseJSPPortletConfigurationIcon;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.service.permission.PortalPermissionUtil;
-import com.liferay.portal.service.permission.PortletPermissionUtil;
+import com.liferay.portal.kernel.service.permission.PortalPermissionUtil;
+import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
 import com.liferay.users.admin.constants.UsersAdminPortletKeys;
 
 import javax.portlet.PortletRequest;

@@ -18,15 +18,15 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.membershippolicy.UserGroupMembershipPolicyUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
+import com.liferay.portal.kernel.service.permission.PortalPermissionUtil;
+import com.liferay.portal.kernel.service.permission.TeamPermissionUtil;
+import com.liferay.portal.kernel.service.permission.UserGroupPermissionUtil;
+import com.liferay.portal.kernel.service.permission.UserPermissionUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.model.UserGroup;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.base.UserGroupServiceBaseImpl;
-import com.liferay.portal.service.permission.GroupPermissionUtil;
-import com.liferay.portal.service.permission.PortalPermissionUtil;
-import com.liferay.portal.service.permission.TeamPermissionUtil;
-import com.liferay.portal.service.permission.UserGroupPermissionUtil;
-import com.liferay.portal.service.permission.UserPermissionUtil;
 
 import java.io.Serializable;
 

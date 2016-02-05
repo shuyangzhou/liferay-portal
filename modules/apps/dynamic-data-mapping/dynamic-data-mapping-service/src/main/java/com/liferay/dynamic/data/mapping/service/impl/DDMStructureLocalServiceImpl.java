@@ -49,6 +49,7 @@ import com.liferay.portal.kernel.search.DDMStructureIndexer;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.service.permission.ModelPermissions;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.Constants;
@@ -64,7 +65,6 @@ import com.liferay.portal.model.ResourceConstants;
 import com.liferay.portal.model.SystemEventConstants;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
-import com.liferay.portal.service.permission.ModelPermissions;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.util.PortalUtil;
 
