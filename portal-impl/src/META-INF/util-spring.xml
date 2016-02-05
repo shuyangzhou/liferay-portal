@@ -493,7 +493,7 @@
 	<bean id="com.liferay.portal.service.permission.UserPermissionUtil" class="com.liferay.portal.service.permission.UserPermissionUtil">
 		<property name="userPermission" ref="com.liferay.portal.service.permission.UserPermissionImpl" />
 	</bean>
-	<bean id="com.liferay.portal.service.persistence.BatchSessionUtil" class="com.liferay.portal.service.persistence.BatchSessionUtil">
+	<bean id="com.liferay.portal.kernel.service.persistence.BatchSessionUtil" class="com.liferay.portal.kernel.service.persistence.BatchSessionUtil">
 		<property name="batchSession">
 			<bean class="com.liferay.portal.service.persistence.BatchSessionImpl" />
 		</property>

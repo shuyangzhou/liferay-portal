@@ -11,6 +11,6 @@
 	<bean id="com.liferay.portal.service.impl.LayoutLocalServiceVirtualLayoutsAdvice" class="com.liferay.portal.service.impl.LayoutLocalServiceVirtualLayoutsAdvice" />
 	<bean id="com.liferay.portlet.VirtualLayoutFriendlyURLResolver" class="com.liferay.portlet.VirtualLayoutFriendlyURLResolver" />
 	<aop:config proxy-target-class="false">
-		<aop:advisor advice-ref="com.liferay.portal.service.impl.LayoutLocalServiceVirtualLayoutsAdvice" pointcut="bean(com.liferay.portal.service.LayoutLocalService)" />
+		<aop:advisor advice-ref="com.liferay.portal.service.impl.LayoutLocalServiceVirtualLayoutsAdvice" pointcut="bean(com.liferay.portal.kernel.service.LayoutLocalService)" />
 	</aop:config>
 </beans>

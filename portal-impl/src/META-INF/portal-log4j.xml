@@ -288,6 +288,10 @@
 		<priority value="WARN" />
 	</category>
 
+	<category name="com.liferay.portal.kernel.model.Image">
+		<priority value="ERROR" />
+	</category>
+
 	<category name="com.liferay.portal.kernel.portlet.RestrictPortletServletRequest">
 		<priority value="ERROR" />
 	</category>
@@ -397,10 +401,6 @@
 	</category>
 
 	<category name="com.liferay.portal.model.DefaultModelHintsImpl">
-		<priority value="ERROR" />
-	</category>
-
-	<category name="com.liferay.portal.model.Image">
 		<priority value="ERROR" />
 	</category>
 
