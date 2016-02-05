@@ -82,7 +82,7 @@ public class MBCategoryLocalServiceUtil {
 
 	public static void addCategoryResources(
 		com.liferay.message.boards.kernel.model.MBCategory category,
-		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
+		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().addCategoryResources(category, modelPermissions);
 	}
@@ -96,7 +96,7 @@ public class MBCategoryLocalServiceUtil {
 	}
 
 	public static void addCategoryResources(long categoryId,
-		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
+		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().addCategoryResources(categoryId, modelPermissions);
 	}

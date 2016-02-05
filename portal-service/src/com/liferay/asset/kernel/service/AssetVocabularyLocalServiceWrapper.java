@@ -86,7 +86,7 @@ public class AssetVocabularyLocalServiceWrapper
 	@Override
 	public void addVocabularyResources(
 		com.liferay.asset.kernel.model.AssetVocabulary vocabulary,
-		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
+		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_assetVocabularyLocalService.addVocabularyResources(vocabulary,
 			modelPermissions);

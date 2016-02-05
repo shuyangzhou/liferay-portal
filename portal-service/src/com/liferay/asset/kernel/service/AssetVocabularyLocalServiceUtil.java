@@ -88,7 +88,7 @@ public class AssetVocabularyLocalServiceUtil {
 
 	public static void addVocabularyResources(
 		com.liferay.asset.kernel.model.AssetVocabulary vocabulary,
-		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
+		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().addVocabularyResources(vocabulary, modelPermissions);
 	}

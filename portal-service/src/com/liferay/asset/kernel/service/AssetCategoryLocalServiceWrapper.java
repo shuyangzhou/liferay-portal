@@ -106,7 +106,7 @@ public class AssetCategoryLocalServiceWrapper
 	@Override
 	public void addCategoryResources(
 		com.liferay.asset.kernel.model.AssetCategory category,
-		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
+		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_assetCategoryLocalService.addCategoryResources(category,
 			modelPermissions);

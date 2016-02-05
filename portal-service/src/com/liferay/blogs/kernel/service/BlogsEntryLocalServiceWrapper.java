@@ -151,7 +151,7 @@ public class BlogsEntryLocalServiceWrapper implements BlogsEntryLocalService,
 	@Override
 	public void addEntryResources(
 		com.liferay.blogs.kernel.model.BlogsEntry entry,
-		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
+		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_blogsEntryLocalService.addEntryResources(entry, modelPermissions);
 	}
@@ -166,7 +166,7 @@ public class BlogsEntryLocalServiceWrapper implements BlogsEntryLocalService,
 
 	@Override
 	public void addEntryResources(long entryId,
-		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
+		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_blogsEntryLocalService.addEntryResources(entryId, modelPermissions);
 	}
@@ -769,7 +769,7 @@ public class BlogsEntryLocalServiceWrapper implements BlogsEntryLocalService,
 	@Override
 	public void updateEntryResources(
 		com.liferay.blogs.kernel.model.BlogsEntry entry,
-		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
+		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_blogsEntryLocalService.updateEntryResources(entry, modelPermissions);
 	}
