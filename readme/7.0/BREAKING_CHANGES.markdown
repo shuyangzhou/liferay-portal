@@ -3441,7 +3441,15 @@ else.
 
 - `com.liferay.counter` &rarr; `com.liferay.counter.kernel`
 
+- `com.liferay.mail.model` &rarr; `com.liferay.mail.kernel.model`
+
+- `com.liferay.mail.service` &rarr; `com.liferay.mail.kernel.service`
+
+- `com.liferay.mail.util` &rarr; `com.liferay.mail.kernel.util`
+
 - `com.liferay.portal.jdbc.pool.metrics` &rarr; `com.liferay.portal.kernel.jdbc.pool.metrics`
+
+- `com.liferay.portal.kernel.mail` &rarr; `com.liferay.mail.kernel.model`
 
 - `com.liferay.portal.layoutconfiguration.util` &rarr; `com.liferay.portal.kernel.layoutconfiguration.util`
 
