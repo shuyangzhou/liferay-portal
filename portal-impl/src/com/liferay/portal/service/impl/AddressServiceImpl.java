@@ -16,11 +16,11 @@ package com.liferay.portal.service.impl;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.service.permission.CommonPermissionUtil;
 import com.liferay.portal.model.Address;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.base.AddressServiceBaseImpl;
-import com.liferay.portal.service.permission.CommonPermissionUtil;
 
 import java.util.List;
 
