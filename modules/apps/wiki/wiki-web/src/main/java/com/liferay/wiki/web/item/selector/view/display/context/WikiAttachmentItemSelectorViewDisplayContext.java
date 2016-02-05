@@ -16,7 +16,7 @@ package com.liferay.wiki.web.item.selector.view.display.context;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
-import com.liferay.portlet.PortletURLUtil;
+import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.wiki.constants.WikiPortletKeys;
 import com.liferay.wiki.item.selector.criterion.WikiAttachmentItemSelectorCriterion;
 import com.liferay.wiki.model.WikiPage;

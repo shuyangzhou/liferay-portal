@@ -16,11 +16,11 @@ package com.liferay.portlet.configuration.kernel.util;
 
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.portlet.PortletSetupUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portlet.PortletSetupUtil;
 
 import java.util.HashMap;
 import java.util.Locale;

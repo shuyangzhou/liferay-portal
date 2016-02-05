@@ -17,12 +17,12 @@ package com.liferay.layout.type.controller.full.page.application.controller;
 import com.liferay.layout.type.controller.full.page.application.constants.FullPageApplicationLayoutTypeControllerConstants;
 import com.liferay.layout.type.controller.full.page.application.constants.FullPageApplicationLayoutTypeControllerWebKeys;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
+import com.liferay.portal.kernel.model.impl.BaseLayoutTypeControllerImpl;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PredicateFilter;
 import com.liferay.portal.model.LayoutConstants;
 import com.liferay.portal.model.LayoutTypeController;
 import com.liferay.portal.model.Portlet;
-import com.liferay.portal.model.impl.BaseLayoutTypeControllerImpl;
 import com.liferay.portal.service.PortletLocalService;
 import com.liferay.taglib.servlet.PipingServletResponse;
 

@@ -239,7 +239,7 @@ public interface PortalPreferencesLocalService extends BaseLocalService,
 		PortalPreferences portalPreferences);
 
 	public PortalPreferences updatePreferences(long ownerId, int ownerType,
-		com.liferay.portlet.PortalPreferences portalPreferences);
+		com.liferay.portal.kernel.portlet.PortalPreferences portalPreferences);
 
 	public PortalPreferences updatePreferences(long ownerId, int ownerType,
 		java.lang.String xml);

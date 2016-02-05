@@ -19,12 +19,12 @@ import com.liferay.item.selector.taglib.ItemSelectorRepositoryEntryBrowserReturn
 import com.liferay.item.selector.taglib.servlet.ServletContextUtil;
 import com.liferay.item.selector.web.constants.ItemSelectorPortletKeys;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.portlet.PortalPreferences;
+import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.repository.model.RepositoryEntry;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portlet.PortalPreferences;
-import com.liferay.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.taglib.util.IncludeTag;
 
 import java.util.ArrayList;

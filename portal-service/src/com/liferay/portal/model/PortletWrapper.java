@@ -397,7 +397,7 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	be shown in the Control Panel
 	*/
 	@Override
-	public com.liferay.portlet.ControlPanelEntry getControlPanelEntryInstance() {
+	public com.liferay.portal.kernel.portlet.ControlPanelEntry getControlPanelEntryInstance() {
 		return _portlet.getControlPanelEntryInstance();
 	}
 

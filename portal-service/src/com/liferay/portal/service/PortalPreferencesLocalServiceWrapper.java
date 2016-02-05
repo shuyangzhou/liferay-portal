@@ -287,7 +287,7 @@ public class PortalPreferencesLocalServiceWrapper
 	@Override
 	public com.liferay.portal.model.PortalPreferences updatePreferences(
 		long ownerId, int ownerType,
-		com.liferay.portlet.PortalPreferences portalPreferences) {
+		com.liferay.portal.kernel.portlet.PortalPreferences portalPreferences) {
 		return _portalPreferencesLocalService.updatePreferences(ownerId,
 			ownerType, portalPreferences);
 	}

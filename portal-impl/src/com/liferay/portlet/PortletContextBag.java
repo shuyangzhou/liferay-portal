@@ -14,6 +14,8 @@
 
 package com.liferay.portlet;
 
+import com.liferay.portal.kernel.portlet.CustomUserAttributes;
+
 import java.util.HashMap;
 import java.util.Map;
 

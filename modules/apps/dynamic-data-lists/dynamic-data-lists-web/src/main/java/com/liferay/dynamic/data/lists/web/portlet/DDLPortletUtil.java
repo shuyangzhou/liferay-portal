@@ -23,12 +23,12 @@ import com.liferay.dynamic.data.lists.util.comparator.DDLRecordSetCreateDateComp
 import com.liferay.dynamic.data.lists.util.comparator.DDLRecordSetModifiedDateComparator;
 import com.liferay.dynamic.data.lists.util.comparator.DDLRecordSetNameComparator;
 import com.liferay.dynamic.data.lists.web.configuration.DDLWebConfiguration;
+import com.liferay.portal.kernel.portlet.PortalPreferences;
+import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portlet.PortalPreferences;
-import com.liferay.portlet.PortletPreferencesFactoryUtil;
 
 import javax.portlet.PortletRequest;
 

@@ -15,6 +15,7 @@
 package com.liferay.shopping.service.impl;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.service.permission.ModelPermissions;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -25,7 +26,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ResourceConstants;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
-import com.liferay.portal.service.permission.ModelPermissions;
 import com.liferay.portal.util.PrefsPropsUtil;
 import com.liferay.shopping.exception.DuplicateItemFieldNameException;
 import com.liferay.shopping.exception.DuplicateItemSKUException;

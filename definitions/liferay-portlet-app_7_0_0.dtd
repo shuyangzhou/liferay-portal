@@ -391,7 +391,7 @@ that the entry will appear lower in the Control Panel menu.
 
 <!--
 The control-panel-entry-class value must be a class that implements
-com.liferay.portlet.ControlPanelEntry and is called by the Control Panel to
+com.liferay.portal.kernel.portlet.ControlPanelEntry and is called by the Control Panel to
 decide whether the portlet should be shown to a specific user in a specific
 context. The default value is set in portal.properties.
 
@@ -840,7 +840,7 @@ See the comments in role-mapper element.
 
 <!--
 The custom-user-attribute contains a list of names that are retrieved using a
-custom class that extends com.liferay.portlet.CustomUserAttributes.
+custom class that extends com.liferay.portal.kernel.portlet.CustomUserAttributes.
 
 See:
 
