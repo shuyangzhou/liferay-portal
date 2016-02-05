@@ -28,7 +28,7 @@ import java.util.Map;
  * be used directly.
  *
  * @author Brian Wing Shun Chan
- * @see    com.liferay.portal.model.impl.BaseModelImpl
+ * @see    com.liferay.portal.kernel.model.impl.BaseModelImpl
  */
 @ProviderType
 public interface BaseModel<T>
