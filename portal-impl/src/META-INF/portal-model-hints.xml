@@ -65,6 +65,136 @@
 		<field name="entryId" type="long" />
 		<field name="value" type="int" />
 	</model>
+	<model name="com.liferay.asset.kernel.model.AssetCategory">
+		<field name="uuid" type="String" />
+		<field name="categoryId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="parentCategoryId" type="long" />
+		<field name="leftCategoryId" type="long" />
+		<field name="rightCategoryId" type="long" />
+		<field name="name" type="String" />
+		<field name="title" type="String" localized="true">
+			<validator name="required" />
+		</field>
+		<field name="description" type="String" localized="true">
+			<hint-collection name="TEXTAREA" />
+			<hint name="display-width">350</hint>
+		</field>
+		<field name="vocabularyId" type="long" />
+		<field name="lastPublishDate" type="Date" />
+	</model>
+	<model name="com.liferay.asset.kernel.model.AssetCategoryProperty">
+		<field name="categoryPropertyId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="categoryId" type="long" />
+		<field name="key" type="String">
+			<hint name="display-width">210</hint>
+		</field>
+		<field name="value" type="String">
+			<hint name="display-width">210</hint>
+		</field>
+	</model>
+	<model name="com.liferay.asset.kernel.model.AssetEntry">
+		<field name="entryId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="classNameId" type="long" />
+		<field name="classPK" type="long" />
+		<field name="classUuid" type="String" />
+		<field name="classTypeId" type="long" />
+		<field name="listable" type="boolean" />
+		<field name="visible" type="boolean" />
+		<field name="startDate" type="Date" />
+		<field name="endDate" type="Date" />
+		<field name="publishDate" type="Date" />
+		<field name="expirationDate" type="Date" />
+		<field name="mimeType" type="String" />
+		<field name="title" type="String" localized="true">
+			<hint name="max-length">4000</hint>
+		</field>
+		<field name="description" type="String" localized="true">
+			<hint-collection name="CLOB" />
+		</field>
+		<field name="summary" type="String" localized="true">
+			<hint-collection name="CLOB" />
+		</field>
+		<field name="url" type="String">
+			<hint-collection name="URL" />
+		</field>
+		<field name="layoutUuid" type="String" />
+		<field name="height" type="int" />
+		<field name="width" type="int" />
+		<field name="priority" type="double" />
+		<field name="viewCount" type="int" />
+	</model>
+	<model name="com.liferay.asset.kernel.model.AssetLink">
+		<field name="linkId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="entryId1" type="long" />
+		<field name="entryId2" type="long" />
+		<field name="type" type="int" />
+		<field name="weight" type="int" />
+	</model>
+	<model name="com.liferay.asset.kernel.model.AssetTag">
+		<field name="uuid" type="String" />
+		<field name="tagId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="name" type="String">
+			<validator name="required" />
+		</field>
+		<field name="assetCount" type="int" />
+		<field name="lastPublishDate" type="Date" />
+	</model>
+	<model name="com.liferay.asset.kernel.model.AssetTagStats">
+		<field name="tagStatsId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="tagId" type="long" />
+		<field name="classNameId" type="long" />
+		<field name="assetCount" type="int" />
+	</model>
+	<model name="com.liferay.asset.kernel.model.AssetVocabulary">
+		<field name="uuid" type="String" />
+		<field name="vocabularyId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="name" type="String" />
+		<field name="title" type="String" localized="true">
+			<validator name="required" />
+		</field>
+		<field name="description" type="String" localized="true">
+			<hint-collection name="TEXTAREA" />
+			<hint name="display-width">350</hint>
+		</field>
+		<field name="settings" type="String">
+			<hint name="max-length">4000</hint>
+		</field>
+		<field name="lastPublishDate" type="Date" />
+	</model>
 	<model name="com.liferay.blogs.kernel.model.BlogsEntry">
 		<field name="uuid" type="String" />
 		<field name="entryId" type="long" />
@@ -1516,136 +1646,6 @@
 		<field name="classNameId" type="long" />
 		<field name="classPK" type="long" />
 		<field name="workflowInstanceId" type="long" />
-	</model>
-	<model name="com.liferay.asset.kernel.model.AssetCategory">
-		<field name="uuid" type="String" />
-		<field name="categoryId" type="long" />
-		<field name="groupId" type="long" />
-		<field name="companyId" type="long" />
-		<field name="userId" type="long" />
-		<field name="userName" type="String" />
-		<field name="createDate" type="Date" />
-		<field name="modifiedDate" type="Date" />
-		<field name="parentCategoryId" type="long" />
-		<field name="leftCategoryId" type="long" />
-		<field name="rightCategoryId" type="long" />
-		<field name="name" type="String" />
-		<field name="title" type="String" localized="true">
-			<validator name="required" />
-		</field>
-		<field name="description" type="String" localized="true">
-			<hint-collection name="TEXTAREA" />
-			<hint name="display-width">350</hint>
-		</field>
-		<field name="vocabularyId" type="long" />
-		<field name="lastPublishDate" type="Date" />
-	</model>
-	<model name="com.liferay.asset.kernel.model.AssetCategoryProperty">
-		<field name="categoryPropertyId" type="long" />
-		<field name="companyId" type="long" />
-		<field name="userId" type="long" />
-		<field name="userName" type="String" />
-		<field name="createDate" type="Date" />
-		<field name="modifiedDate" type="Date" />
-		<field name="categoryId" type="long" />
-		<field name="key" type="String">
-			<hint name="display-width">210</hint>
-		</field>
-		<field name="value" type="String">
-			<hint name="display-width">210</hint>
-		</field>
-	</model>
-	<model name="com.liferay.asset.kernel.model.AssetEntry">
-		<field name="entryId" type="long" />
-		<field name="groupId" type="long" />
-		<field name="companyId" type="long" />
-		<field name="userId" type="long" />
-		<field name="userName" type="String" />
-		<field name="createDate" type="Date" />
-		<field name="modifiedDate" type="Date" />
-		<field name="classNameId" type="long" />
-		<field name="classPK" type="long" />
-		<field name="classUuid" type="String" />
-		<field name="classTypeId" type="long" />
-		<field name="listable" type="boolean" />
-		<field name="visible" type="boolean" />
-		<field name="startDate" type="Date" />
-		<field name="endDate" type="Date" />
-		<field name="publishDate" type="Date" />
-		<field name="expirationDate" type="Date" />
-		<field name="mimeType" type="String" />
-		<field name="title" type="String" localized="true">
-			<hint name="max-length">4000</hint>
-		</field>
-		<field name="description" type="String" localized="true">
-			<hint-collection name="CLOB" />
-		</field>
-		<field name="summary" type="String" localized="true">
-			<hint-collection name="CLOB" />
-		</field>
-		<field name="url" type="String">
-			<hint-collection name="URL" />
-		</field>
-		<field name="layoutUuid" type="String" />
-		<field name="height" type="int" />
-		<field name="width" type="int" />
-		<field name="priority" type="double" />
-		<field name="viewCount" type="int" />
-	</model>
-	<model name="com.liferay.asset.kernel.model.AssetLink">
-		<field name="linkId" type="long" />
-		<field name="companyId" type="long" />
-		<field name="userId" type="long" />
-		<field name="userName" type="String" />
-		<field name="createDate" type="Date" />
-		<field name="entryId1" type="long" />
-		<field name="entryId2" type="long" />
-		<field name="type" type="int" />
-		<field name="weight" type="int" />
-	</model>
-	<model name="com.liferay.asset.kernel.model.AssetTag">
-		<field name="uuid" type="String" />
-		<field name="tagId" type="long" />
-		<field name="groupId" type="long" />
-		<field name="companyId" type="long" />
-		<field name="userId" type="long" />
-		<field name="userName" type="String" />
-		<field name="createDate" type="Date" />
-		<field name="modifiedDate" type="Date" />
-		<field name="name" type="String">
-			<validator name="required" />
-		</field>
-		<field name="assetCount" type="int" />
-		<field name="lastPublishDate" type="Date" />
-	</model>
-	<model name="com.liferay.asset.kernel.model.AssetTagStats">
-		<field name="tagStatsId" type="long" />
-		<field name="companyId" type="long" />
-		<field name="tagId" type="long" />
-		<field name="classNameId" type="long" />
-		<field name="assetCount" type="int" />
-	</model>
-	<model name="com.liferay.asset.kernel.model.AssetVocabulary">
-		<field name="uuid" type="String" />
-		<field name="vocabularyId" type="long" />
-		<field name="groupId" type="long" />
-		<field name="companyId" type="long" />
-		<field name="userId" type="long" />
-		<field name="userName" type="String" />
-		<field name="createDate" type="Date" />
-		<field name="modifiedDate" type="Date" />
-		<field name="name" type="String" />
-		<field name="title" type="String" localized="true">
-			<validator name="required" />
-		</field>
-		<field name="description" type="String" localized="true">
-			<hint-collection name="TEXTAREA" />
-			<hint name="display-width">350</hint>
-		</field>
-		<field name="settings" type="String">
-			<hint name="max-length">4000</hint>
-		</field>
-		<field name="lastPublishDate" type="Date" />
 	</model>
 	<model name="com.liferay.portlet.documentlibrary.model.DLContent">
 		<field name="contentId" type="long" />
