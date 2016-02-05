@@ -18,11 +18,11 @@ import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.LayoutSet;
+import com.liferay.portal.kernel.model.LayoutSetBranch;
+import com.liferay.portal.kernel.model.Theme;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.xml.Element;
-import com.liferay.portal.model.LayoutSet;
-import com.liferay.portal.model.LayoutSetBranch;
-import com.liferay.portal.model.Theme;
 import com.liferay.portal.model.adapter.ModelAdapterUtil;
 import com.liferay.portal.model.adapter.StagedTheme;
 

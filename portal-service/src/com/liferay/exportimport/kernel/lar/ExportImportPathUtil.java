@@ -16,12 +16,12 @@ package com.liferay.exportimport.kernel.lar;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.model.StagedGroupedModel;
+import com.liferay.portal.kernel.model.StagedModel;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.model.StagedGroupedModel;
-import com.liferay.portal.model.StagedModel;
 import com.liferay.portal.util.PortletKeys;
 
 import java.io.Serializable;

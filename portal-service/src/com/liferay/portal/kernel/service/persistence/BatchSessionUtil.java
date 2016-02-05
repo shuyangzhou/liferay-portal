@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import com.liferay.portal.kernel.dao.orm.ORMException;
 import com.liferay.portal.kernel.dao.orm.Session;
+import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
-import com.liferay.portal.model.BaseModel;
 
 /**
  * @author     Brian Wing Shun Chan

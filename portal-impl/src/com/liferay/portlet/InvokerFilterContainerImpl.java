@@ -16,10 +16,10 @@ package com.liferay.portlet;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.util.ClassLoaderUtil;
 import com.liferay.portal.kernel.util.ClassUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.model.Portlet;
 import com.liferay.portal.model.impl.PortletFilterImpl;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.registry.Filter;
@@ -75,13 +75,13 @@ public class InvokerFilterContainerImpl
 		properties.put("javax.portlet.name", rootPortletId);
 		properties.put("preinitialized.filter", Boolean.TRUE);
 
-		Map<String, com.liferay.portal.model.PortletFilter> portletFilters =
-			portlet.getPortletFilters();
+		Map<String, com.liferay.portal.kernel.model.PortletFilter>
+			portletFilters = portlet.getPortletFilters();
 
-		for (Map.Entry<String, com.liferay.portal.model.PortletFilter> entry :
-				portletFilters.entrySet()) {
+		for (Map.Entry<String, com.liferay.portal.kernel.model.PortletFilter>
+				entry: portletFilters.entrySet()) {
 
-			com.liferay.portal.model.PortletFilter portletFilterModel =
+			com.liferay.portal.kernel.model.PortletFilter portletFilterModel =
 				entry.getValue();
 
 			PortletFilter portletFilter = PortletFilterFactory.create(
@@ -107,8 +107,8 @@ public class InvokerFilterContainerImpl
 			for (String portletFilterClassName :
 					PropsValues.PORTLET_FILTERS_SYSTEM) {
 
-				com.liferay.portal.model.PortletFilter portletFilterModel =
-					new PortletFilterImpl(
+				com.liferay.portal.kernel.model.PortletFilter
+					portletFilterModel = new PortletFilterImpl(
 						portletFilterClassName, portletFilterClassName,
 						Collections.<String>emptySet(),
 						Collections.<String, String>emptyMap(),
@@ -193,14 +193,16 @@ public class InvokerFilterContainerImpl
 	private static class ServiceRegistrationTuple {
 
 		public ServiceRegistrationTuple(
-			com.liferay.portal.model.PortletFilter portletFilterModel,
+			com.liferay.portal.kernel.model.PortletFilter portletFilterModel,
 			ServiceRegistration<PortletFilter> serviceRegistration) {
 
 			_portletFilterModel = portletFilterModel;
 			_serviceRegistration = serviceRegistration;
 		}
 
-		public com.liferay.portal.model.PortletFilter getPortletFilterModel() {
+		public com.liferay.portal.kernel.model.PortletFilter
+			getPortletFilterModel() {
+
 			return _portletFilterModel;
 		}
 
@@ -208,7 +210,7 @@ public class InvokerFilterContainerImpl
 			return _serviceRegistration;
 		}
 
-		private final com.liferay.portal.model.PortletFilter
+		private final com.liferay.portal.kernel.model.PortletFilter
 			_portletFilterModel;
 		private final ServiceRegistration<PortletFilter> _serviceRegistration;
 

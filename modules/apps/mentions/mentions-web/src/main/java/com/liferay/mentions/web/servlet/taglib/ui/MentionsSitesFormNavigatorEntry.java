@@ -15,6 +15,8 @@
 package com.liferay.mentions.web.servlet.taglib.ui;
 
 import com.liferay.mentions.constants.MentionsWebKeys;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.servlet.taglib.ui.FormNavigatorConstants;
 import com.liferay.portal.kernel.servlet.taglib.ui.FormNavigatorEntry;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -22,8 +24,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PrefsParamUtil;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
-import com.liferay.portal.model.Group;
-import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextThreadLocal;
 

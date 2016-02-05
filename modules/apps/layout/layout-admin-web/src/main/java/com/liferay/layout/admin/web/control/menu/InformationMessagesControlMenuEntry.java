@@ -19,13 +19,13 @@ import com.liferay.control.menu.ControlMenuEntry;
 import com.liferay.control.menu.constants.ControlMenuCategoryKeys;
 import com.liferay.layout.admin.web.constants.LayoutAdminWebKeys;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.LayoutSet;
+import com.liferay.portal.kernel.model.LayoutTypePortlet;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.Group;
-import com.liferay.portal.model.Layout;
-import com.liferay.portal.model.LayoutSet;
-import com.liferay.portal.model.LayoutTypePortlet;
 import com.liferay.portal.service.permission.LayoutPermissionUtil;
 import com.liferay.sites.kernel.util.SitesUtil;
 

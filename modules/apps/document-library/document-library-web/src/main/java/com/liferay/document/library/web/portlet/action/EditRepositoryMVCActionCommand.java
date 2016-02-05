@@ -15,11 +15,12 @@
 package com.liferay.document.library.web.portlet.action;
 
 import com.liferay.document.library.web.constants.DLPortletKeys;
-import com.liferay.portal.exception.InvalidRepositoryException;
-import com.liferay.portal.exception.NoSuchRepositoryException;
+import com.liferay.portal.kernel.exception.InvalidRepositoryException;
+import com.liferay.portal.kernel.exception.NoSuchRepositoryException;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.service.RepositoryService;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -28,7 +29,6 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PropertiesParamUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.service.RepositoryService;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.util.PortalUtil;

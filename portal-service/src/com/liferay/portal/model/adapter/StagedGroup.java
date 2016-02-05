@@ -14,8 +14,8 @@
 
 package com.liferay.portal.model.adapter;
 
-import com.liferay.portal.model.GroupModel;
-import com.liferay.portal.model.StagedModel;
+import com.liferay.portal.kernel.model.GroupModel;
+import com.liferay.portal.kernel.model.StagedModel;
 
 /**
  * @author Daniel Kocsis

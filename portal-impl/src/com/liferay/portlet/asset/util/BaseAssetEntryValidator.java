@@ -15,10 +15,10 @@
 package com.liferay.portlet.asset.util;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
+import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.model.Group;
-import com.liferay.portal.service.ClassNameLocalServiceUtil;
-import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.asset.AssetRendererFactoryRegistryUtil;
 import com.liferay.portlet.asset.exception.AssetCategoryException;

@@ -15,10 +15,10 @@
 package com.liferay.portal.kernel.repository;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.service.CompanyLocalService;
+import com.liferay.portal.kernel.service.RepositoryEntryLocalService;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.UnicodeProperties;
-import com.liferay.portal.service.CompanyLocalService;
-import com.liferay.portal.service.RepositoryEntryLocalService;
-import com.liferay.portal.service.UserLocalService;
 import com.liferay.portlet.asset.service.AssetEntryLocalService;
 import com.liferay.portlet.documentlibrary.service.DLAppHelperLocalService;
 import com.liferay.portlet.documentlibrary.service.DLFolderLocalService;

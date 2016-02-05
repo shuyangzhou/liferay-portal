@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.documentlibrary.service.http;
 
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
@@ -21,7 +22,6 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.model.Group;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.http.HttpPrincipalTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;

@@ -14,12 +14,12 @@
 
 package com.liferay.portal.exception;
 
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.security.auth.ScreenNameValidator;
 import com.liferay.portal.kernel.util.ClassUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.model.Group;
 
 /**
  * @author Brian Wing Shun Chan

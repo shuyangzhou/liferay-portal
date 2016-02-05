@@ -14,10 +14,10 @@
 
 package com.liferay.portlet.trash.service.impl;
 
-import com.liferay.portal.TrashPermissionException;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.search.SearchPaginationUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.TrashPermissionException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;

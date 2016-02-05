@@ -14,17 +14,17 @@
 
 package com.liferay.portal.upgrade.v6_2_0;
 
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.PortletConstants;
+import com.liferay.portal.kernel.model.PortletPreferences;
+import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.model.Group;
-import com.liferay.portal.model.Layout;
-import com.liferay.portal.model.PortletConstants;
-import com.liferay.portal.model.PortletPreferences;
-import com.liferay.portal.service.PortletPreferencesLocalServiceUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.PortletKeys;
 import com.liferay.portal.util.test.LayoutTestUtil;

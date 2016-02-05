@@ -14,9 +14,9 @@
 
 package com.liferay.document.library.web.search;
 
-import com.liferay.portal.exception.NoSuchRepositoryEntryException;
 import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.RowChecker;
+import com.liferay.portal.kernel.exception.NoSuchRepositoryEntryException;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.repository.model.FileEntry;

@@ -14,7 +14,7 @@
 
 package com.liferay.portal.kernel.dao.orm;
 
-import com.liferay.portal.model.BaseModel;
+import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 /**

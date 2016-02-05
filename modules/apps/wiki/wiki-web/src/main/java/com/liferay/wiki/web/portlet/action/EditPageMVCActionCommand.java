@@ -14,6 +14,8 @@
 
 package com.liferay.wiki.web.portlet.action;
 
+import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.TrashedModel;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.sanitizer.SanitizerException;
@@ -26,8 +28,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.model.Layout;
-import com.liferay.portal.model.TrashedModel;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.struts.StrutsActionPortletURL;

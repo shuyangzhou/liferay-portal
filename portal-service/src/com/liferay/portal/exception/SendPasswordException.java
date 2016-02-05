@@ -14,7 +14,7 @@
 
 package com.liferay.portal.exception;
 
-import com.liferay.portal.model.Company;
+import com.liferay.portal.kernel.model.Company;
 
 /**
  * @author Brian Wing Shun Chan

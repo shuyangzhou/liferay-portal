@@ -16,6 +16,7 @@ package com.liferay.document.library.web.portlet.action;
 
 import com.liferay.document.library.web.constants.DLPortletKeys;
 import com.liferay.portal.kernel.lock.DuplicateLockException;
+import com.liferay.portal.kernel.model.TrashedModel;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
@@ -30,7 +31,6 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.model.TrashedModel;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.util.PortalUtil;

@@ -14,12 +14,16 @@
 
 package com.liferay.portal.service.impl;
 
-import com.liferay.portal.exception.InvalidRepositoryException;
-import com.liferay.portal.exception.NoSuchRepositoryException;
 import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.exception.InvalidRepositoryException;
+import com.liferay.portal.kernel.exception.NoSuchRepositoryException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.Repository;
+import com.liferay.portal.kernel.model.SystemEventConstants;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.repository.InvalidRepositoryIdException;
 import com.liferay.portal.kernel.repository.LocalRepository;
 import com.liferay.portal.kernel.repository.RepositoryFactoryUtil;
@@ -29,10 +33,6 @@ import com.liferay.portal.kernel.repository.event.RepositoryEventType;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.model.Group;
-import com.liferay.portal.model.Repository;
-import com.liferay.portal.model.SystemEventConstants;
-import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.base.RepositoryLocalServiceBaseImpl;
 import com.liferay.portlet.documentlibrary.exception.RepositoryNameException;

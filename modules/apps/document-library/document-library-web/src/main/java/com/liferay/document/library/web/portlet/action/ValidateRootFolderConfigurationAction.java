@@ -14,7 +14,7 @@
 
 package com.liferay.document.library.web.portlet.action;
 
-import com.liferay.portal.exception.NoSuchRepositoryEntryException;
+import com.liferay.portal.kernel.exception.NoSuchRepositoryEntryException;
 import com.liferay.portal.kernel.portlet.BaseJSPSettingsConfigurationAction;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.Constants;

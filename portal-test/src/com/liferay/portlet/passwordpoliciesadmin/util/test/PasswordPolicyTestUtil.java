@@ -14,9 +14,9 @@
 
 package com.liferay.portlet.passwordpoliciesadmin.util.test;
 
+import com.liferay.portal.kernel.model.PasswordPolicy;
+import com.liferay.portal.kernel.service.PasswordPolicyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
-import com.liferay.portal.model.PasswordPolicy;
-import com.liferay.portal.service.PasswordPolicyLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 
 /**

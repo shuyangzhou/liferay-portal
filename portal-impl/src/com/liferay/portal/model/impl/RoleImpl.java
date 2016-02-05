@@ -17,10 +17,10 @@ package com.liferay.portal.model.impl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.RoleConstants;
+import com.liferay.portal.kernel.model.Team;
+import com.liferay.portal.kernel.service.TeamLocalServiceUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.model.RoleConstants;
-import com.liferay.portal.model.Team;
-import com.liferay.portal.service.TeamLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
 
 /**

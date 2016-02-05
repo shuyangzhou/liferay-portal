@@ -14,9 +14,9 @@
 
 package com.liferay.portal.service.permission;
 
+import com.liferay.portal.kernel.model.LayoutSetPrototype;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.model.LayoutSetPrototype;
 
 /**
  * @author Brian Wing Shun Chan

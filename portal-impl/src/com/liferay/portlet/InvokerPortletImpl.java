@@ -17,11 +17,14 @@ package com.liferay.portlet;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.PortletConstants;
 import com.liferay.portal.kernel.portlet.LiferayPortletConfig;
 import com.liferay.portal.kernel.portlet.LiferayPortletContext;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletFilterUtil;
+import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.servlet.BufferCacheServletResponse;
 import com.liferay.portal.kernel.servlet.PortletServlet;
 import com.liferay.portal.kernel.util.ClassLoaderUtil;
@@ -35,9 +38,6 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.Layout;
-import com.liferay.portal.model.PortletConstants;
-import com.liferay.portal.service.PortletLocalServiceUtil;
 import com.liferay.portal.tools.deploy.PortletDeployer;
 
 import java.io.Closeable;
@@ -142,7 +142,7 @@ public class InvokerPortletImpl
 	}
 
 	public InvokerPortletImpl(
-		com.liferay.portal.model.Portlet portletModel, Portlet portlet,
+		com.liferay.portal.kernel.model.Portlet portletModel, Portlet portlet,
 		PortletConfig portletConfig, PortletContext portletContext,
 		InvokerFilterContainer invokerFilterContainer, boolean checkAuthToken,
 		boolean facesPortlet, boolean strutsPortlet,
@@ -155,7 +155,7 @@ public class InvokerPortletImpl
 	}
 
 	public InvokerPortletImpl(
-		com.liferay.portal.model.Portlet portletModel, Portlet portlet,
+		com.liferay.portal.kernel.model.Portlet portletModel, Portlet portlet,
 		PortletContext portletContext,
 		InvokerFilterContainer invokerFilterContainer) {
 
@@ -667,7 +667,7 @@ public class InvokerPortletImpl
 	}
 
 	private void _initialize(
-		com.liferay.portal.model.Portlet portletModel, Portlet portlet,
+		com.liferay.portal.kernel.model.Portlet portletModel, Portlet portlet,
 		PortletConfig portletConfig, PortletContext portletContext,
 		InvokerFilterContainer invokerFilterContainer, boolean checkAuthToken,
 		boolean facesPortlet, boolean strutsPortlet,
@@ -703,7 +703,7 @@ public class InvokerPortletImpl
 	private LiferayPortletContext _liferayPortletContext;
 	private Portlet _portlet;
 	private String _portletId;
-	private com.liferay.portal.model.Portlet _portletModel;
+	private com.liferay.portal.kernel.model.Portlet _portletModel;
 	private boolean _strutsBridgePortlet;
 	private boolean _strutsPortlet;
 

@@ -15,6 +15,7 @@
 package com.liferay.document.library.web.portlet.action;
 
 import com.liferay.portal.kernel.flash.FlashMagicBytesUtil;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileShortcut;
 import com.liferay.portal.kernel.repository.model.FileVersion;
@@ -30,7 +31,6 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.User;
 import com.liferay.portal.repository.liferayrepository.model.LiferayFileEntry;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException;

@@ -15,10 +15,10 @@
 package com.liferay.users.admin.web.search;
 
 import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
+import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
-import com.liferay.portal.model.Organization;
 import com.liferay.portal.service.permission.OrganizationPermissionUtil;
 
 import javax.portlet.RenderResponse;

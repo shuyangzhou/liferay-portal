@@ -25,10 +25,10 @@ import com.liferay.portal.kernel.repository.BaseRepository;
 import com.liferay.portal.kernel.repository.LocalRepository;
 import com.liferay.portal.kernel.repository.Repository;
 import com.liferay.portal.kernel.repository.RepositoryFactory;
-import com.liferay.portal.service.CompanyLocalService;
-import com.liferay.portal.service.RepositoryEntryLocalService;
-import com.liferay.portal.service.RepositoryLocalService;
-import com.liferay.portal.service.UserLocalService;
+import com.liferay.portal.kernel.service.CompanyLocalService;
+import com.liferay.portal.kernel.service.RepositoryEntryLocalService;
+import com.liferay.portal.kernel.service.RepositoryLocalService;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portlet.asset.service.AssetEntryLocalService;
 import com.liferay.portlet.documentlibrary.service.DLAppHelperLocalService;
 import com.liferay.portlet.documentlibrary.service.DLFolderLocalService;
@@ -62,7 +62,7 @@ public abstract class BaseCMISRepositoryFactory<T extends CMISRepositoryHandler>
 
 		T baseRepository = createBaseRepository();
 
-		com.liferay.portal.model.Repository repository =
+		com.liferay.portal.kernel.model.Repository repository =
 			_repositoryLocalService.getRepository(repositoryId);
 
 		CMISRepository cmisRepository = new CMISRepository(
@@ -128,7 +128,8 @@ public abstract class BaseCMISRepositoryFactory<T extends CMISRepositoryHandler>
 	}
 
 	protected void setupRepository(
-		long repositoryId, com.liferay.portal.model.Repository repository,
+		long repositoryId,
+		com.liferay.portal.kernel.model.Repository repository,
 		BaseRepository baseRepository) {
 
 		baseRepository.setAssetEntryLocalService(_assetEntryLocalService);

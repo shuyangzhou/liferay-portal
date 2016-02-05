@@ -16,6 +16,8 @@ package com.liferay.portlet;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.model.PortletApp;
 import com.liferay.portal.kernel.portlet.LiferayPortletContext;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequestDispatcher;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
@@ -28,8 +30,6 @@ import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.Portlet;
-import com.liferay.portal.model.PortletApp;
 import com.liferay.portal.servlet.NamespaceServletRequest;
 import com.liferay.portal.struts.StrutsURLEncoder;
 import com.liferay.portal.util.PortalUtil;

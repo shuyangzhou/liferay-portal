@@ -14,7 +14,7 @@
 
 package com.liferay.portlet;
 
-import com.liferay.portal.model.Portlet;
+import com.liferay.portal.kernel.model.Portlet;
 
 import javax.portlet.PortletConfig;
 

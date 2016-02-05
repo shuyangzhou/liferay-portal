@@ -15,6 +15,8 @@
 package com.liferay.portal.workflow.kaleo.internal.runtime;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -22,8 +24,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowException;
 import com.liferay.portal.kernel.workflow.WorkflowTask;
-import com.liferay.portal.model.Role;
-import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.workflow.kaleo.BaseKaleoBean;
 import com.liferay.portal.workflow.kaleo.definition.ExecutionType;

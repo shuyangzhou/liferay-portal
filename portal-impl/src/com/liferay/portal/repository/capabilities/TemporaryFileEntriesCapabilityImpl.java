@@ -14,8 +14,8 @@
 
 package com.liferay.portal.repository.capabilities;
 
-import com.liferay.portal.exception.NoSuchModelException;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;

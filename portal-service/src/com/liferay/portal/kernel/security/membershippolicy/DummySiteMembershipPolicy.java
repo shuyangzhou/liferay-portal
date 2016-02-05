@@ -14,8 +14,8 @@
 
 package com.liferay.portal.kernel.security.membershippolicy;
 
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.util.UnicodeProperties;
-import com.liferay.portal.model.Group;
 import com.liferay.portlet.asset.model.AssetCategory;
 import com.liferay.portlet.asset.model.AssetTag;
 

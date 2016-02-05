@@ -22,8 +22,8 @@ import com.liferay.polls.model.PollsQuestion;
 import com.liferay.polls.model.PollsVote;
 import com.liferay.polls.service.base.PollsVoteLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 
 import java.util.Date;

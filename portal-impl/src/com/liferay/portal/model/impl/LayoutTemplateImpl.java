@@ -17,6 +17,8 @@ package com.liferay.portal.model.impl;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.LayoutTemplate;
+import com.liferay.portal.kernel.model.Plugin;
 import com.liferay.portal.kernel.servlet.ServletContextPool;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.HttpUtil;
@@ -24,8 +26,6 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.model.LayoutTemplate;
-import com.liferay.portal.model.Plugin;
 import com.liferay.portal.util.PortalUtil;
 
 import java.io.IOException;

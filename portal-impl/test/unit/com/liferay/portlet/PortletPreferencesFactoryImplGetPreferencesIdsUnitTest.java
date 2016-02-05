@@ -14,16 +14,16 @@
 
 package com.liferay.portlet;
 
+import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
+import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
-import com.liferay.portal.model.Layout;
-import com.liferay.portal.model.Portlet;
 import com.liferay.portal.model.impl.LayoutImpl;
 import com.liferay.portal.model.impl.PortletImpl;
-import com.liferay.portal.service.PortletLocalServiceUtil;
 import com.liferay.portal.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.tools.ToolDependencies;
 

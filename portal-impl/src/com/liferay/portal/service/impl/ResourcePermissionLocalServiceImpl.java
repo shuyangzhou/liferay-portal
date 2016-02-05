@@ -14,13 +14,20 @@
 
 package com.liferay.portal.service.impl;
 
-import com.liferay.portal.exception.NoSuchResourcePermissionException;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.Type;
+import com.liferay.portal.kernel.exception.NoSuchResourcePermissionException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.model.Resource;
+import com.liferay.portal.kernel.model.ResourceAction;
+import com.liferay.portal.kernel.model.ResourceConstants;
+import com.liferay.portal.kernel.model.ResourcePermission;
+import com.liferay.portal.kernel.model.ResourcePermissionConstants;
+import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.search.IndexWriterHelperUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
@@ -34,13 +41,6 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.model.Resource;
-import com.liferay.portal.model.ResourceAction;
-import com.liferay.portal.model.ResourceConstants;
-import com.liferay.portal.model.ResourcePermission;
-import com.liferay.portal.model.ResourcePermissionConstants;
-import com.liferay.portal.model.Role;
-import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.security.permission.PermissionCacheUtil;
 import com.liferay.portal.service.ExceptionRetryAcceptor;
 import com.liferay.portal.service.base.ResourcePermissionLocalServiceBaseImpl;

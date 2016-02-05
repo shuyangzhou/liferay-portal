@@ -14,8 +14,8 @@
 
 package com.liferay.portal.upgrade.v6_2_0;
 
+import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-import com.liferay.portal.model.Company;
 import com.liferay.portal.upgrade.v6_2_0.util.GroupTable;
 import com.liferay.portal.util.PortalUtil;
 

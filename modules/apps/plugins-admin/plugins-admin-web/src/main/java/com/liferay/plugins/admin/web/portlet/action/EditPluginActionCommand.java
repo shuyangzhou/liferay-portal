@@ -15,16 +15,16 @@
 package com.liferay.plugins.admin.web.portlet.action;
 
 import com.liferay.plugins.admin.web.constants.PluginsAdminPortletKeys;
+import com.liferay.portal.kernel.model.Plugin;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.service.PluginSettingService;
+import com.liferay.portal.kernel.service.PortletService;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.model.Plugin;
-import com.liferay.portal.service.PluginSettingService;
-import com.liferay.portal.service.PortletService;
 import com.liferay.portal.util.PortalUtil;
 
 import java.util.Arrays;

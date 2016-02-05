@@ -14,8 +14,8 @@
 
 package com.liferay.portal.service.util.test;
 
+import com.liferay.portal.kernel.model.PortletPreferences;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
-import com.liferay.portal.model.PortletPreferences;
 import com.liferay.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portlet.PortletPreferencesImpl;
 

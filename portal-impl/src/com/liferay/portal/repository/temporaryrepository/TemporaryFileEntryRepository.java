@@ -14,10 +14,10 @@
 
 package com.liferay.portal.repository.temporaryrepository;
 
+import com.liferay.portal.kernel.service.RepositoryLocalService;
+import com.liferay.portal.kernel.service.RepositoryService;
+import com.liferay.portal.kernel.service.ResourceLocalService;
 import com.liferay.portal.repository.liferayrepository.LiferayRepository;
-import com.liferay.portal.service.RepositoryLocalService;
-import com.liferay.portal.service.RepositoryService;
-import com.liferay.portal.service.ResourceLocalService;
 import com.liferay.portlet.documentlibrary.service.DLAppHelperLocalService;
 import com.liferay.portlet.documentlibrary.service.DLFileEntryLocalService;
 import com.liferay.portlet.documentlibrary.service.DLFileEntryService;

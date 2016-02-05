@@ -15,11 +15,11 @@
 package com.liferay.directory.web.asset;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.model.Group;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.GroupLocalService;
-import com.liferay.portal.service.UserLocalService;
+import com.liferay.portal.kernel.service.GroupLocalService;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.service.permission.UserPermissionUtil;
 import com.liferay.portal.util.PortletKeys;
 import com.liferay.portlet.asset.model.AssetRenderer;

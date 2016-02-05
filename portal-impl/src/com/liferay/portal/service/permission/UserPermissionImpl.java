@@ -17,20 +17,20 @@ package com.liferay.portal.service.permission;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Contact;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.Organization;
+import com.liferay.portal.kernel.model.ResourceConstants;
+import com.liferay.portal.kernel.model.RoleConstants;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.BaseModelPermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
+import com.liferay.portal.kernel.service.UserGroupRoleLocalServiceUtil;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
-import com.liferay.portal.model.Contact;
-import com.liferay.portal.model.Group;
-import com.liferay.portal.model.Organization;
-import com.liferay.portal.model.ResourceConstants;
-import com.liferay.portal.model.RoleConstants;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.OrganizationLocalServiceUtil;
-import com.liferay.portal.service.UserGroupRoleLocalServiceUtil;
-import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
 
 import java.util.List;
@@ -40,7 +40,7 @@ import java.util.List;
  * @author Jorge Ferrer
  */
 @OSGiBeanProperties(
-	property = {"model.class.name=com.liferay.portal.model.User"}
+	property = {"model.class.name=com.liferay.portal.kernel.model.User"}
 )
 public class UserPermissionImpl
 	implements BaseModelPermissionChecker, UserPermission {

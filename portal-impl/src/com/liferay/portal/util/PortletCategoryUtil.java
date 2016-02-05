@@ -14,17 +14,17 @@
 
 package com.liferay.portal.util;
 
+import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.LayoutTypePortlet;
+import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.model.PortletCategory;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.model.Layout;
-import com.liferay.portal.model.LayoutTypePortlet;
-import com.liferay.portal.model.Portlet;
-import com.liferay.portal.model.PortletCategory;
-import com.liferay.portal.service.PortletLocalServiceUtil;
 import com.liferay.portal.service.permission.PortletPermissionUtil;
 
 import java.util.HashSet;

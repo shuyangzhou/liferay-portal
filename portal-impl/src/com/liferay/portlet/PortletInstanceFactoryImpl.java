@@ -14,14 +14,14 @@
 
 package com.liferay.portlet;
 
+import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.model.PortletApp;
+import com.liferay.portal.kernel.model.PortletConstants;
 import com.liferay.portal.kernel.portlet.PortletBag;
 import com.liferay.portal.kernel.portlet.PortletBagPool;
 import com.liferay.portal.kernel.security.pacl.DoPrivileged;
+import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.util.ClassLoaderUtil;
-import com.liferay.portal.model.Portlet;
-import com.liferay.portal.model.PortletApp;
-import com.liferay.portal.model.PortletConstants;
-import com.liferay.portal.service.PortletLocalServiceUtil;
 import com.liferay.portal.util.PortletKeys;
 import com.liferay.registry.Filter;
 import com.liferay.registry.Registry;

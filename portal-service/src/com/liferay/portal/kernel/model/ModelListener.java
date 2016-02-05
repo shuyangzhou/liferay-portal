@@ -14,7 +14,7 @@
 
 package com.liferay.portal.kernel.model;
 
-import com.liferay.portal.exception.ModelListenerException;
+import com.liferay.portal.kernel.exception.ModelListenerException;
 
 /**
  * @author Brian Wing Shun Chan

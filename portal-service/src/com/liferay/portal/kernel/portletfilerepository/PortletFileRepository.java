@@ -17,6 +17,7 @@ package com.liferay.portal.kernel.portletfilerepository;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Repository;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.search.Hits;
@@ -24,7 +25,6 @@ import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.model.Repository;
 import com.liferay.portal.service.ServiceContext;
 
 import java.io.File;

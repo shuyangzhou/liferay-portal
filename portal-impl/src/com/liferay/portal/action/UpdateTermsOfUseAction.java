@@ -14,7 +14,7 @@
 
 package com.liferay.portal.action;
 
-import com.liferay.portal.service.UserServiceUtil;
+import com.liferay.portal.kernel.service.UserServiceUtil;
 import com.liferay.portal.struts.ActionConstants;
 import com.liferay.portal.util.PortalUtil;
 

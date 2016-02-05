@@ -15,8 +15,8 @@
 package com.liferay.exportimport.web.portlet.configuration.icon;
 
 import com.liferay.exportimport.web.constants.ExportImportPortletKeys;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.configuration.icon.BasePortletConfigurationIcon;
-import com.liferay.portal.model.User;
 import com.liferay.portal.util.PortalUtil;
 
 import javax.portlet.PortletRequest;

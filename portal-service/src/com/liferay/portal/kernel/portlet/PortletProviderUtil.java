@@ -15,8 +15,8 @@
 package com.liferay.portal.kernel.portlet;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.model.Group;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.asset.AssetRendererFactoryRegistryUtil;
 import com.liferay.portlet.asset.model.AssetEntry;

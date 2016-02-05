@@ -19,9 +19,9 @@ import com.liferay.control.menu.ControlMenuEntry;
 import com.liferay.control.menu.constants.ControlMenuCategoryKeys;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.search.IndexWriterHelper;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
-import com.liferay.portal.model.CompanyConstants;
 
 import java.util.Locale;
 import java.util.Map;

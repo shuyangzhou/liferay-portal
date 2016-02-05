@@ -15,9 +15,9 @@
 package com.liferay.portal.service;
 
 import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.model.ServiceComponent;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
-import com.liferay.portal.model.ServiceComponent;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.util.List;

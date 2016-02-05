@@ -16,27 +16,27 @@ package com.liferay.portal.service.permission;
 
 import com.liferay.exportimport.kernel.staging.permission.StagingPermissionUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.LayoutConstants;
+import com.liferay.portal.kernel.model.LayoutType;
+import com.liferay.portal.kernel.model.LayoutTypeController;
+import com.liferay.portal.kernel.model.Organization;
+import com.liferay.portal.kernel.model.ResourceConstants;
+import com.liferay.portal.kernel.model.ResourcePermission;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.BaseModelPermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
+import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
+import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
+import com.liferay.portal.kernel.service.ResourceLocalServiceUtil;
+import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
-import com.liferay.portal.model.Group;
-import com.liferay.portal.model.Layout;
-import com.liferay.portal.model.LayoutConstants;
-import com.liferay.portal.model.LayoutType;
-import com.liferay.portal.model.LayoutTypeController;
-import com.liferay.portal.model.Organization;
-import com.liferay.portal.model.ResourceConstants;
-import com.liferay.portal.model.ResourcePermission;
-import com.liferay.portal.model.User;
 import com.liferay.portal.model.impl.VirtualLayout;
-import com.liferay.portal.service.GroupLocalServiceUtil;
-import com.liferay.portal.service.LayoutLocalServiceUtil;
-import com.liferay.portal.service.OrganizationLocalServiceUtil;
-import com.liferay.portal.service.ResourceLocalServiceUtil;
-import com.liferay.portal.service.ResourcePermissionLocalServiceUtil;
-import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.sites.kernel.util.SitesUtil;
 
@@ -48,7 +48,7 @@ import java.util.List;
  * @author Raymond Augé
  */
 @OSGiBeanProperties(
-	property = {"model.class.name=com.liferay.portal.model.Layout"}
+	property = {"model.class.name=com.liferay.portal.kernel.model.Layout"}
 )
 public class LayoutPermissionImpl
 	implements BaseModelPermissionChecker, LayoutPermission {

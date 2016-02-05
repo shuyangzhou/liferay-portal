@@ -14,6 +14,10 @@
 
 package com.liferay.portlet.documentlibrary.trash;
 
+import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.ClassedModel;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.WorkflowedModel;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
@@ -28,10 +32,6 @@ import com.liferay.portal.kernel.trash.TrashHandlerRegistryUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.model.BaseModel;
-import com.liferay.portal.model.ClassedModel;
-import com.liferay.portal.model.Group;
-import com.liferay.portal.model.WorkflowedModel;
 import com.liferay.portal.repository.liferayrepository.model.LiferayFileEntry;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;

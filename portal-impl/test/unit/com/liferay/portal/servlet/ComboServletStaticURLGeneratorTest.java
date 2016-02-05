@@ -14,13 +14,13 @@
 
 package com.liferay.portal.servlet;
 
+import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.servlet.ServletContextPool;
 import com.liferay.portal.kernel.servlet.ServletContextUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.PredicateFilter;
 import com.liferay.portal.kernel.util.SetUtil;
-import com.liferay.portal.model.Portlet;
 import com.liferay.portal.model.impl.PortletAppImpl;
 import com.liferay.portal.model.impl.PortletImpl;
 import com.liferay.portal.util.HtmlImpl;

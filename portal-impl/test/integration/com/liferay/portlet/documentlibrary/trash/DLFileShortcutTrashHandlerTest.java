@@ -14,6 +14,9 @@
 
 package com.liferay.portlet.documentlibrary.trash;
 
+import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.ClassedModel;
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileShortcut;
 import com.liferay.portal.kernel.repository.model.Folder;
@@ -26,9 +29,6 @@ import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.model.BaseModel;
-import com.liferay.portal.model.ClassedModel;
-import com.liferay.portal.model.Group;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portlet.asset.model.AssetEntry;

@@ -16,6 +16,7 @@ package com.liferay.shopping.service.impl;
 
 import com.liferay.portal.kernel.comment.CommentManagerUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.settings.GroupServiceSettingsLocator;
@@ -24,7 +25,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.PwdGenerator;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.util.PropsValues;

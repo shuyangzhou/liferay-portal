@@ -14,7 +14,7 @@
 
 package com.liferay.portal.model.adapter.builder;
 
-import com.liferay.portal.model.Group;
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.model.adapter.StagedGroup;
 import com.liferay.portal.model.adapter.impl.StagedGroupImpl;
 

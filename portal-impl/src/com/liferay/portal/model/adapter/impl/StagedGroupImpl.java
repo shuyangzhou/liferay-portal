@@ -15,7 +15,7 @@
 package com.liferay.portal.model.adapter.impl;
 
 import com.liferay.exportimport.kernel.lar.StagedModelType;
-import com.liferay.portal.model.Group;
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.model.adapter.StagedGroup;
 import com.liferay.portal.model.impl.GroupImpl;
 

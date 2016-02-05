@@ -14,8 +14,8 @@
 
 package com.liferay.trash.web.portlet;
 
-import com.liferay.portal.TrashPermissionException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.TrashPermissionException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.theme.ThemeDisplay;

@@ -14,9 +14,11 @@
 
 package com.liferay.portal.repository;
 
-import com.liferay.portal.exception.NoSuchRepositoryException;
 import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.exception.NoSuchRepositoryException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.RepositoryEntry;
 import com.liferay.portal.kernel.repository.InvalidRepositoryIdException;
 import com.liferay.portal.kernel.repository.LocalRepository;
 import com.liferay.portal.kernel.repository.Repository;
@@ -25,12 +27,10 @@ import com.liferay.portal.kernel.repository.RepositoryProvider;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
+import com.liferay.portal.kernel.service.GroupLocalService;
+import com.liferay.portal.kernel.service.RepositoryEntryLocalService;
+import com.liferay.portal.kernel.service.RepositoryLocalService;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.model.Group;
-import com.liferay.portal.model.RepositoryEntry;
-import com.liferay.portal.service.GroupLocalService;
-import com.liferay.portal.service.RepositoryEntryLocalService;
-import com.liferay.portal.service.RepositoryLocalService;
 import com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException;
 import com.liferay.portlet.documentlibrary.exception.NoSuchFileShortcutException;
 import com.liferay.portlet.documentlibrary.exception.NoSuchFileVersionException;
@@ -361,7 +361,7 @@ public class RepositoryProviderImpl implements RepositoryProvider {
 		}
 
 		try {
-			com.liferay.portal.model.Repository repository =
+			com.liferay.portal.kernel.model.Repository repository =
 				repositoryLocalService.fetchRepository(repositoryId);
 
 			PermissionChecker permissionChecker =
@@ -458,12 +458,14 @@ public class RepositoryProviderImpl implements RepositoryProvider {
 	}
 
 	protected List<Long> getGroupRepositoryIds(long groupId) {
-		List<com.liferay.portal.model.Repository> repositories =
+		List<com.liferay.portal.kernel.model.Repository> repositories =
 			repositoryLocalService.getGroupRepositories(groupId);
 
 		List<Long> repositoryIds = new ArrayList<>(repositories.size() + 1);
 
-		for (com.liferay.portal.model.Repository repository : repositories) {
+		for (com.liferay.portal.kernel.model.Repository repository :
+				repositories) {
+
 			repositoryIds.add(repository.getRepositoryId());
 		}
 

@@ -19,9 +19,9 @@ import com.liferay.dynamic.data.mapping.model.DDMFormLayoutColumn;
 import com.liferay.dynamic.data.mapping.model.DDMFormLayoutRow;
 import com.liferay.dynamic.data.mapping.model.DDMStructureLayout;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLayoutLocalServiceUtil;
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
-import com.liferay.portal.model.Group;
 import com.liferay.portal.service.ServiceContext;
 
 import java.util.ArrayList;

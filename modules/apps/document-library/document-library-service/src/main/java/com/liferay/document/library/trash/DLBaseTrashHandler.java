@@ -15,6 +15,7 @@
 package com.liferay.document.library.trash;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.ContainerModel;
 import com.liferay.portal.kernel.repository.DocumentRepository;
 import com.liferay.portal.kernel.repository.Repository;
 import com.liferay.portal.kernel.repository.RepositoryProviderUtil;
@@ -31,7 +32,6 @@ import com.liferay.portal.kernel.trash.TrashRenderer;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.model.ContainerModel;
 import com.liferay.portlet.documentlibrary.model.DLFileEntry;
 import com.liferay.portlet.documentlibrary.model.DLFileShortcutConstants;
 import com.liferay.portlet.documentlibrary.model.DLFolder;

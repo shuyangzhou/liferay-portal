@@ -14,8 +14,8 @@
 
 package com.liferay.portal.exception;
 
-import com.liferay.portal.model.PasswordPolicy;
-import com.liferay.portal.model.User;
+import com.liferay.portal.kernel.model.PasswordPolicy;
+import com.liferay.portal.kernel.model.User;
 
 /**
  * @author Scott Lee

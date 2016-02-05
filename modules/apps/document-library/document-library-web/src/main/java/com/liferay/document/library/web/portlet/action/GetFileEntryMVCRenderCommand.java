@@ -14,7 +14,7 @@
 
 package com.liferay.document.library.web.portlet.action;
 
-import com.liferay.portal.exception.NoSuchRepositoryEntryException;
+import com.liferay.portal.kernel.exception.NoSuchRepositoryEntryException;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;

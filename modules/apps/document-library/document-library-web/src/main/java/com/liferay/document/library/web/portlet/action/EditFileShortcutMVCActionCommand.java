@@ -15,6 +15,7 @@
 package com.liferay.document.library.web.portlet.action;
 
 import com.liferay.document.library.web.constants.DLPortletKeys;
+import com.liferay.portal.kernel.model.TrashedModel;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.repository.model.FileShortcut;
@@ -22,7 +23,6 @@ import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.model.TrashedModel;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portlet.documentlibrary.exception.FileShortcutPermissionException;

@@ -58,6 +58,7 @@ import com.liferay.portal.kernel.security.membershippolicy.SiteMembershipPolicyF
 import com.liferay.portal.kernel.security.membershippolicy.UserGroupMembershipPolicy;
 import com.liferay.portal.kernel.security.membershippolicy.UserGroupMembershipPolicyFactoryUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.service.ServiceComponentLocalService;
 import com.liferay.portal.kernel.servlet.DirectServletRegistryUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
@@ -78,7 +79,6 @@ import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.kernel.xuggler.XugglerInstallException;
 import com.liferay.portal.kernel.xuggler.XugglerUtil;
 import com.liferay.portal.security.lang.DoPrivilegedBean;
-import com.liferay.portal.service.ServiceComponentLocalService;
 import com.liferay.portal.upload.UploadServletRequestImpl;
 import com.liferay.portal.util.MaintenanceUtil;
 import com.liferay.portal.util.Portal;

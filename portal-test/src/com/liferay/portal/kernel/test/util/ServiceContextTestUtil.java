@@ -15,9 +15,9 @@
 package com.liferay.portal.kernel.test.util;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.model.Group;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.GroupLocalServiceUtil;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 
 /**

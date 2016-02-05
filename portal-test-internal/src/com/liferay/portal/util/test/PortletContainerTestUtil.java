@@ -15,6 +15,10 @@
 package com.liferay.portal.util.test;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -23,10 +27,6 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.ProgressTracker;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.Company;
-import com.liferay.portal.model.Group;
-import com.liferay.portal.model.Layout;
-import com.liferay.portal.service.CompanyLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplayFactory;
 import com.liferay.portal.upload.LiferayFileItem;
 import com.liferay.portal.upload.LiferayFileItemFactory;

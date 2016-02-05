@@ -14,7 +14,12 @@
 
 package com.liferay.portal.kernel.portlet.bridges.mvc;
 
+import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.LayoutTypePortlet;
+import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.model.PortletConstants;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.servlet.BrowserSnifferUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
@@ -27,11 +32,6 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.Layout;
-import com.liferay.portal.model.LayoutTypePortlet;
-import com.liferay.portal.model.Portlet;
-import com.liferay.portal.model.PortletConstants;
-import com.liferay.portal.service.PortletLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.PortletConfigFactoryUtil;
 

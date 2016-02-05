@@ -14,7 +14,7 @@
 
 package com.liferay.portal.kernel.security.membershippolicy;
 
-import com.liferay.portal.model.Organization;
+import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portlet.asset.model.AssetCategory;
 import com.liferay.portlet.asset.model.AssetTag;
 

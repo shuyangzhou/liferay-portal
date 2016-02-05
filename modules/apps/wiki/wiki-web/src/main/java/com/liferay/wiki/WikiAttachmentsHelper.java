@@ -14,6 +14,7 @@
 
 package com.liferay.wiki;
 
+import com.liferay.portal.kernel.model.TrashedModel;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
@@ -23,7 +24,6 @@ import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.TrashedModel;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.documentlibrary.model.DLFileEntry;
 import com.liferay.trash.kernel.service.TrashEntryService;

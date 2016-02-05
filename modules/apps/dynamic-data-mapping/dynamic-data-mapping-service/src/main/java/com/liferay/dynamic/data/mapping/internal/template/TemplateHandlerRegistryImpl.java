@@ -20,6 +20,10 @@ import com.liferay.dynamic.data.mapping.service.permission.DDMTemplatePermission
 import com.liferay.portal.instance.lifecycle.BasePortalInstanceLifecycleListener;
 import com.liferay.portal.instance.lifecycle.PortalInstanceLifecycleListener;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.service.GroupLocalService;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.template.TemplateHandler;
 import com.liferay.portal.kernel.template.TemplateHandlerRegistry;
 import com.liferay.portal.kernel.util.AggregateResourceBundleLoader;
@@ -31,11 +35,7 @@ import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.language.LanguageResources;
-import com.liferay.portal.model.Company;
-import com.liferay.portal.model.Group;
-import com.liferay.portal.service.GroupLocalService;
 import com.liferay.portal.service.ServiceContext;
-import com.liferay.portal.service.UserLocalService;
 import com.liferay.portal.util.Portal;
 
 import java.util.ArrayList;

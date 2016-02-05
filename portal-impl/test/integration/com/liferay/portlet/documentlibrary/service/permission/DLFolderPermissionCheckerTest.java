@@ -14,6 +14,8 @@
 
 package com.liferay.portlet.documentlibrary.service.permission;
 
+import com.liferay.portal.kernel.model.ResourceConstants;
+import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
@@ -21,8 +23,6 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.RoleTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
-import com.liferay.portal.model.ResourceConstants;
-import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.permission.test.BasePermissionTestCase;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;

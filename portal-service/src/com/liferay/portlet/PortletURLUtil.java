@@ -14,6 +14,8 @@
 
 package com.liferay.portlet;
 
+import com.liferay.portal.kernel.model.LayoutTypePortlet;
+import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
@@ -28,8 +30,6 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.LayoutTypePortlet;
-import com.liferay.portal.model.Portlet;
 import com.liferay.portal.util.PortalUtil;
 
 import java.util.Enumeration;

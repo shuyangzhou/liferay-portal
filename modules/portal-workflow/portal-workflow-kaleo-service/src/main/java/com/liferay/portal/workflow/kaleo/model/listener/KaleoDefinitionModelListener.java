@@ -14,11 +14,11 @@
 
 package com.liferay.portal.workflow.kaleo.model.listener;
 
-import com.liferay.portal.exception.ModelListenerException;
+import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
-import com.liferay.portal.model.BaseModelListener;
-import com.liferay.portal.model.ModelListener;
+import com.liferay.portal.kernel.model.BaseModelListener;
+import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.service.ServiceContextThreadLocal;
 import com.liferay.portal.workflow.kaleo.model.KaleoDefinition;
 

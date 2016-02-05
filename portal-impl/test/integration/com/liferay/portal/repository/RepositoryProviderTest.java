@@ -14,6 +14,7 @@
 
 package com.liferay.portal.repository;
 
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.repository.RepositoryException;
 import com.liferay.portal.kernel.repository.RepositoryProviderUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
@@ -23,7 +24,6 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
-import com.liferay.portal.model.Group;
 import com.liferay.portal.security.permission.SimplePermissionChecker;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException;

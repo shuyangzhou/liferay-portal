@@ -14,11 +14,11 @@
 
 package com.liferay.site.util;
 
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.model.Group;
-import com.liferay.portal.service.GroupLocalService;
 import com.liferay.portal.util.SessionClicks;
 
 import java.util.ArrayList;

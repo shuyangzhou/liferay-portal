@@ -15,9 +15,9 @@
 package com.liferay.portal.workflow.kaleo.activator.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
-import com.liferay.portal.model.Company;
-import com.liferay.portal.service.CompanyLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.workflow.kaleo.model.KaleoDefinition;

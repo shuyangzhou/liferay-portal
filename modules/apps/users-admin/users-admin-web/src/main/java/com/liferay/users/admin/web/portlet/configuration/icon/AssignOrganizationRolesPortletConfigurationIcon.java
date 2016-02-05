@@ -14,6 +14,9 @@
 
 package com.liferay.users.admin.web.portlet.configuration.icon;
 
+import com.liferay.portal.kernel.model.Organization;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.model.UserGroupRole;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletProvider;
 import com.liferay.portal.kernel.portlet.PortletProviderUtil;
@@ -21,9 +24,6 @@ import com.liferay.portal.kernel.portlet.configuration.icon.BasePortletConfigura
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.model.Organization;
-import com.liferay.portal.model.User;
-import com.liferay.portal.model.UserGroupRole;
 import com.liferay.portal.service.permission.OrganizationPermissionUtil;
 import com.liferay.users.admin.web.portlet.action.ActionUtil;
 

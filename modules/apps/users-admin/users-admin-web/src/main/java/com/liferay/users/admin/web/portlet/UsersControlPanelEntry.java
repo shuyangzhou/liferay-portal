@@ -14,16 +14,16 @@
 
 package com.liferay.users.admin.web.portlet;
 
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.Organization;
+import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.model.RoleConstants;
+import com.liferay.portal.kernel.model.UserGroupRole;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.model.Group;
-import com.liferay.portal.model.Organization;
-import com.liferay.portal.model.Portlet;
-import com.liferay.portal.model.Role;
-import com.liferay.portal.model.RoleConstants;
-import com.liferay.portal.model.UserGroupRole;
-import com.liferay.portal.service.OrganizationLocalService;
-import com.liferay.portal.service.UserGroupRoleLocalService;
+import com.liferay.portal.kernel.service.OrganizationLocalService;
+import com.liferay.portal.kernel.service.UserGroupRoleLocalService;
 import com.liferay.portal.service.permission.OrganizationPermissionUtil;
 import com.liferay.portlet.BaseControlPanelEntry;
 import com.liferay.portlet.ControlPanelEntry;

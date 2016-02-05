@@ -15,8 +15,8 @@
 package com.liferay.social.networking.service.impl;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.model.User;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.social.networking.exception.MeetupsEntryEndDateException;
 import com.liferay.social.networking.exception.MeetupsEntryStartDateException;

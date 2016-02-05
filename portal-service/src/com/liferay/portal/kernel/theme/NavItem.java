@@ -15,6 +15,8 @@
 package com.liferay.portal.kernel.theme;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.LayoutType;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PredicateFilter;
@@ -24,8 +26,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.webserver.WebServerServletTokenUtil;
-import com.liferay.portal.model.Layout;
-import com.liferay.portal.model.LayoutType;
 import com.liferay.portal.util.PortalUtil;
 
 import java.io.Serializable;
