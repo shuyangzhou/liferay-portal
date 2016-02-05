@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.documentlibrary.model.DLFileEntry;
 import com.liferay.portlet.documentlibrary.social.DLActivityKeys;
 
 import java.sql.Connection;
@@ -128,7 +127,8 @@ public class UpgradeSocial extends UpgradeProcess {
 	}
 
 	protected void updateDLFileVersionActivities() throws Exception {
-		long classNameId = PortalUtil.getClassNameId(DLFileEntry.class);
+		long classNameId = PortalUtil.getClassNameId(
+			"com.liferay.portlet.documentlibrary.model.DLFolder");
 
 		runSQL("delete from SocialActivity where classNameId = " + classNameId);
 

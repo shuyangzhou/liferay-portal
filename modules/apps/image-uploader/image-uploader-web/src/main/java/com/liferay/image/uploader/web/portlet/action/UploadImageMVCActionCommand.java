@@ -14,6 +14,11 @@
 
 package com.liferay.image.uploader.web.portlet.action;
 
+import com.liferay.document.library.kernel.antivirus.AntivirusScannerException;
+import com.liferay.document.library.kernel.exception.FileExtensionException;
+import com.liferay.document.library.kernel.exception.FileSizeException;
+import com.liferay.document.library.kernel.exception.NoSuchFileEntryException;
+import com.liferay.document.library.kernel.exception.NoSuchFileException;
 import com.liferay.image.uploader.web.constants.ImageUploaderPortletKeys;
 import com.liferay.image.uploader.web.util.UploadImageUtil;
 import com.liferay.portal.exception.ImageTypeException;
@@ -52,11 +57,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PrefsPropsUtil;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.portlet.documentlibrary.antivirus.AntivirusScannerException;
-import com.liferay.portlet.documentlibrary.exception.FileExtensionException;
-import com.liferay.portlet.documentlibrary.exception.FileSizeException;
-import com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException;
-import com.liferay.portlet.documentlibrary.exception.NoSuchFileException;
 
 import java.awt.image.RenderedImage;
 

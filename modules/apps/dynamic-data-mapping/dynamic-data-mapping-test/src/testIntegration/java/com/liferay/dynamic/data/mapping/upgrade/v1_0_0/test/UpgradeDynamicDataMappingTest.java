@@ -1375,12 +1375,12 @@ public class UpgradeDynamicDataMappingTest {
 
 	static {
 		_structureModelResourceNames.put(
-			"com.liferay.portlet.documentlibrary.model.DLFileEntryMetadata",
+			"com.liferay.document.library.kernel.model.DLFileEntryMetadata",
 			"com.liferay.portlet.documentlibrary.model.DLFileEntryMetadata-" +
 				DDMStructure.class.getName());
 
 		_structureModelResourceNames.put(
-			"com.liferay.portlet.documentlibrary.util.RawMetadataProcessor",
+			"com.liferay.document.library.kernel.util.RawMetadataProcessor",
 			DDMStructure.class.getName());
 
 		_structureModelResourceNames.put(

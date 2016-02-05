@@ -27,7 +27,13 @@ taglib uri="http://liferay.com/tld/trash" prefix="liferay-trash" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %><%@
 taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
-<%@ page import="com.liferay.frontend.taglib.servlet.taglib.AddMenuItem" %><%@
+<%@ page import="com.liferay.document.library.kernel.antivirus.AntivirusScannerException" %><%@
+page import="com.liferay.document.library.kernel.exception.DuplicateFileEntryException" %><%@
+page import="com.liferay.document.library.kernel.exception.FileExtensionException" %><%@
+page import="com.liferay.document.library.kernel.exception.FileNameException" %><%@
+page import="com.liferay.document.library.kernel.exception.FileSizeException" %><%@
+page import="com.liferay.document.library.kernel.model.DLFileEntry" %><%@
+page import="com.liferay.frontend.taglib.servlet.taglib.AddMenuItem" %><%@
 page import="com.liferay.message.boards.display.context.MBHomeDisplayContext" %><%@
 page import="com.liferay.message.boards.kernel.constants.MBConstants" %><%@
 page import="com.liferay.message.boards.kernel.exception.BannedUserException" %><%@
@@ -149,12 +155,6 @@ page import="com.liferay.portlet.asset.service.AssetEntryServiceUtil" %><%@
 page import="com.liferay.portlet.asset.service.AssetTagLocalServiceUtil" %><%@
 page import="com.liferay.portlet.asset.service.persistence.AssetEntryQuery" %><%@
 page import="com.liferay.portlet.asset.util.AssetUtil" %><%@
-page import="com.liferay.portlet.documentlibrary.antivirus.AntivirusScannerException" %><%@
-page import="com.liferay.portlet.documentlibrary.exception.DuplicateFileEntryException" %><%@
-page import="com.liferay.portlet.documentlibrary.exception.FileExtensionException" %><%@
-page import="com.liferay.portlet.documentlibrary.exception.FileNameException" %><%@
-page import="com.liferay.portlet.documentlibrary.exception.FileSizeException" %><%@
-page import="com.liferay.portlet.documentlibrary.model.DLFileEntry" %><%@
 page import="com.liferay.portlet.messageboards.MBGroupServiceSettings" %><%@
 page import="com.liferay.portlet.messageboards.model.impl.MBCategoryDisplayImpl" %><%@
 page import="com.liferay.portlet.messageboards.model.impl.MBMessageImpl" %><%@
