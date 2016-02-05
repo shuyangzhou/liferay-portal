@@ -16,9 +16,9 @@ package com.liferay.portal.service.impl;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.service.permission.OrganizationPermissionUtil;
 import com.liferay.portal.model.OrgLabor;
 import com.liferay.portal.service.base.OrgLaborServiceBaseImpl;
-import com.liferay.portal.service.permission.OrganizationPermissionUtil;
 
 import java.util.List;
 
