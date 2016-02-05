@@ -18,13 +18,13 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
+import com.liferay.portal.kernel.service.permission.TeamPermissionUtil;
+import com.liferay.portal.kernel.service.permission.UserPermissionUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.model.Team;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.base.TeamServiceBaseImpl;
-import com.liferay.portal.service.permission.GroupPermissionUtil;
-import com.liferay.portal.service.permission.TeamPermissionUtil;
-import com.liferay.portal.service.permission.UserPermissionUtil;
 
 import java.util.LinkedHashMap;
 import java.util.List;

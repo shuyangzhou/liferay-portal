@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.portlet.BaseControlPanelEntry;
 import com.liferay.portal.kernel.portlet.ControlPanelEntry;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.service.permission.OrganizationPermissionUtil;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Organization;
 import com.liferay.portal.model.Portlet;
@@ -26,7 +27,6 @@ import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.model.UserGroupRole;
 import com.liferay.portal.service.OrganizationLocalService;
 import com.liferay.portal.service.UserGroupRoleLocalService;
-import com.liferay.portal.service.permission.OrganizationPermissionUtil;
 import com.liferay.users.admin.constants.UsersAdminPortletKeys;
 
 import java.util.List;

@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
+import com.liferay.portal.kernel.service.permission.RolePermissionUtil;
 import com.liferay.portal.model.Role;
-import com.liferay.portal.service.permission.RolePermissionUtil;
 
 import javax.portlet.PortletResponse;
 

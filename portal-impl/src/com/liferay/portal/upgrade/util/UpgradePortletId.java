@@ -17,6 +17,7 @@ package com.liferay.portal.upgrade.util;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -27,7 +28,6 @@ import com.liferay.portal.model.LayoutTypePortletConstants;
 import com.liferay.portal.model.PortletConstants;
 import com.liferay.portal.model.PortletInstance;
 import com.liferay.portal.model.ResourceConstants;
-import com.liferay.portal.service.permission.PortletPermissionUtil;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
