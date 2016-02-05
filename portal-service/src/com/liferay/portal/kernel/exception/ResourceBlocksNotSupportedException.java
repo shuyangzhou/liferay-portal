@@ -12,28 +12,10 @@
  * details.
  */
 
-package com.liferay.portal;
-
-import com.liferay.portal.kernel.exception.PortalException;
+package com.liferay.portal.kernel.exception;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Connor McKay
  */
-public class RSSFeedException extends PortalException {
-
-	public RSSFeedException() {
-	}
-
-	public RSSFeedException(String msg) {
-		super(msg);
-	}
-
-	public RSSFeedException(String msg, Throwable cause) {
-		super(msg, cause);
-	}
-
-	public RSSFeedException(Throwable cause) {
-		super(cause);
-	}
-
+public class ResourceBlocksNotSupportedException extends SystemException {
 }

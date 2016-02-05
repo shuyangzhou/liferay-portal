@@ -14,7 +14,6 @@
 
 package com.liferay.portal.exception;
 
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.auth.FullNameValidator;
 import com.liferay.portal.kernel.util.ClassUtil;
 

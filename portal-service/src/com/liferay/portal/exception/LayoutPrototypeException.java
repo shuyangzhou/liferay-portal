@@ -14,7 +14,6 @@
 
 package com.liferay.portal.exception;
 
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.Tuple;
 
 import java.util.List;

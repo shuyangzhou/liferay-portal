@@ -12,25 +12,25 @@
  * details.
  */
 
-package com.liferay.portal.exception;
+package com.liferay.portal.kernel.exception;
 
 /**
  * @author Brian Wing Shun Chan
  */
-public class NoSuchResourceException extends NoSuchModelException {
+public class NoSuchBackgroundTaskException extends NoSuchModelException {
 
-	public NoSuchResourceException() {
+	public NoSuchBackgroundTaskException() {
 	}
 
-	public NoSuchResourceException(String msg) {
+	public NoSuchBackgroundTaskException(String msg) {
 		super(msg);
 	}
 
-	public NoSuchResourceException(String msg, Throwable cause) {
+	public NoSuchBackgroundTaskException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
 
-	public NoSuchResourceException(Throwable cause) {
+	public NoSuchBackgroundTaskException(Throwable cause) {
 		super(cause);
 	}
 

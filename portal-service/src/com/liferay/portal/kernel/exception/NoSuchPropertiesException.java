@@ -12,27 +12,25 @@
  * details.
  */
 
-package com.liferay.portal;
-
-import com.liferay.portal.kernel.exception.PortalException;
+package com.liferay.portal.kernel.exception;
 
 /**
  * @author Brian Wing Shun Chan
  */
-public class NoSuchResourceNameException extends PortalException {
+public class NoSuchPropertiesException extends PortalException {
 
-	public NoSuchResourceNameException() {
+	public NoSuchPropertiesException() {
 	}
 
-	public NoSuchResourceNameException(String msg) {
+	public NoSuchPropertiesException(String msg) {
 		super(msg);
 	}
 
-	public NoSuchResourceNameException(String msg, Throwable cause) {
+	public NoSuchPropertiesException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
 
-	public NoSuchResourceNameException(Throwable cause) {
+	public NoSuchPropertiesException(Throwable cause) {
 		super(cause);
 	}
 

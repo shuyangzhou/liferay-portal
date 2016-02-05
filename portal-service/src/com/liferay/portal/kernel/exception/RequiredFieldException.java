@@ -12,26 +12,27 @@
  * details.
  */
 
-package com.liferay.portal.exception;
+package com.liferay.portal.kernel.exception;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Amos Fong
  */
-public class NoSuchBackgroundTaskException extends NoSuchModelException {
+public class RequiredFieldException extends PortalException {
 
-	public NoSuchBackgroundTaskException() {
+	public RequiredFieldException(String requiredField, String labelId) {
+		_requiredField = requiredField;
+		_labelId = labelId;
 	}
 
-	public NoSuchBackgroundTaskException(String msg) {
-		super(msg);
+	public String getLabelId() {
+		return _labelId;
 	}
 
-	public NoSuchBackgroundTaskException(String msg, Throwable cause) {
-		super(msg, cause);
+	public String getRequiredField() {
+		return _requiredField;
 	}
 
-	public NoSuchBackgroundTaskException(Throwable cause) {
-		super(cause);
-	}
+	private final String _labelId;
+	private final String _requiredField;
 
 }

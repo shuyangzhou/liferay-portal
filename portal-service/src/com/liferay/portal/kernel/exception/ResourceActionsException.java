@@ -12,29 +12,26 @@
  * details.
  */
 
-package com.liferay.portal;
-
-import com.liferay.portal.kernel.exception.PortalException;
+package com.liferay.portal.kernel.exception;
 
 /**
- * @author Amos Fong
+ * @author Brian Wing Shun Chan
  */
-public class RequiredFieldException extends PortalException {
+public class ResourceActionsException extends PortalException {
 
-	public RequiredFieldException(String requiredField, String labelId) {
-		_requiredField = requiredField;
-		_labelId = labelId;
+	public ResourceActionsException() {
 	}
 
-	public String getLabelId() {
-		return _labelId;
+	public ResourceActionsException(String msg) {
+		super(msg);
 	}
 
-	public String getRequiredField() {
-		return _requiredField;
+	public ResourceActionsException(String msg, Throwable cause) {
+		super(msg, cause);
 	}
 
-	private final String _labelId;
-	private final String _requiredField;
+	public ResourceActionsException(Throwable cause) {
+		super(cause);
+	}
 
 }

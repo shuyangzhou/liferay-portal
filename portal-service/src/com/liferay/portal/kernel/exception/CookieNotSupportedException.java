@@ -12,27 +12,25 @@
  * details.
  */
 
-package com.liferay.portal;
-
-import com.liferay.portal.kernel.exception.PortalException;
+package com.liferay.portal.kernel.exception;
 
 /**
- * @author Amos Fong
+ * @author Michael Young
  */
-public class TermsOfUseException extends PortalException {
+public class CookieNotSupportedException extends PortalException {
 
-	public TermsOfUseException() {
+	public CookieNotSupportedException() {
 	}
 
-	public TermsOfUseException(String msg) {
+	public CookieNotSupportedException(String msg) {
 		super(msg);
 	}
 
-	public TermsOfUseException(String msg, Throwable cause) {
+	public CookieNotSupportedException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
 
-	public TermsOfUseException(Throwable cause) {
+	public CookieNotSupportedException(Throwable cause) {
 		super(cause);
 	}
 

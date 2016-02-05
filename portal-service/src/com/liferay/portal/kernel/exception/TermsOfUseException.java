@@ -12,27 +12,25 @@
  * details.
  */
 
-package com.liferay.portal;
-
-import com.liferay.portal.kernel.exception.PortalException;
+package com.liferay.portal.kernel.exception;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Amos Fong
  */
-public class NoSuchLayoutTemplateException extends PortalException {
+public class TermsOfUseException extends PortalException {
 
-	public NoSuchLayoutTemplateException() {
+	public TermsOfUseException() {
 	}
 
-	public NoSuchLayoutTemplateException(String msg) {
+	public TermsOfUseException(String msg) {
 		super(msg);
 	}
 
-	public NoSuchLayoutTemplateException(String msg, Throwable cause) {
+	public TermsOfUseException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
 
-	public NoSuchLayoutTemplateException(Throwable cause) {
+	public TermsOfUseException(Throwable cause) {
 		super(cause);
 	}
 

@@ -12,9 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.exception;
-
-import com.liferay.portal.kernel.exception.PortalException;
+package com.liferay.portal.kernel.exception;
 
 /**
  * @author Brian Wing Shun Chan

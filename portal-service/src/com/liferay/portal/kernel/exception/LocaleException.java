@@ -12,9 +12,7 @@
  * details.
  */
 
-package com.liferay.portal;
-
-import com.liferay.portal.kernel.exception.PortalException;
+package com.liferay.portal.kernel.exception;
 
 import java.util.Collection;
 import java.util.Locale;

@@ -12,28 +12,33 @@
  * details.
  */
 
-package com.liferay.portal.exception;
-
-import com.liferay.portal.kernel.exception.SystemException;
+package com.liferay.portal.kernel.exception;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Zsolt Berentey
  */
-public class ModelListenerException extends SystemException {
+public class TrashPermissionException extends PortalException {
 
-	public ModelListenerException() {
+	public static final int DELETE = 1;
+
+	public static final int EMPTY_TRASH = 2;
+
+	public static final int MOVE = 3;
+
+	public static final int RESTORE = 4;
+
+	public static final int RESTORE_OVERWRITE = 5;
+
+	public static final int RESTORE_RENAME = 6;
+
+	public TrashPermissionException(int type) {
+		_type = type;
 	}
 
-	public ModelListenerException(String msg) {
-		super(msg);
+	public int getType() {
+		return _type;
 	}
 
-	public ModelListenerException(String msg, Throwable cause) {
-		super(msg, cause);
-	}
-
-	public ModelListenerException(Throwable cause) {
-		super(cause);
-	}
+	private final int _type;
 
 }

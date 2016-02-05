@@ -12,27 +12,25 @@
  * details.
  */
 
-package com.liferay.portal;
-
-import com.liferay.portal.kernel.exception.PortalException;
+package com.liferay.portal.kernel.exception;
 
 /**
  * @author Brian Wing Shun Chan
  */
-public class NoSuchPropertiesException extends PortalException {
+public class RSSFeedException extends PortalException {
 
-	public NoSuchPropertiesException() {
+	public RSSFeedException() {
 	}
 
-	public NoSuchPropertiesException(String msg) {
+	public RSSFeedException(String msg) {
 		super(msg);
 	}
 
-	public NoSuchPropertiesException(String msg, Throwable cause) {
+	public RSSFeedException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
 
-	public NoSuchPropertiesException(Throwable cause) {
+	public RSSFeedException(Throwable cause) {
 		super(cause);
 	}
 

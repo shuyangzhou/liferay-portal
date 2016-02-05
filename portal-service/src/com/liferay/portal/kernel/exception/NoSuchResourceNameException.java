@@ -12,12 +12,26 @@
  * details.
  */
 
-package com.liferay.portal;
-
-import com.liferay.portal.kernel.exception.SystemException;
+package com.liferay.portal.kernel.exception;
 
 /**
- * @author Connor McKay
+ * @author Brian Wing Shun Chan
  */
-public class ResourceBlocksNotSupportedException extends SystemException {
+public class NoSuchResourceNameException extends PortalException {
+
+	public NoSuchResourceNameException() {
+	}
+
+	public NoSuchResourceNameException(String msg) {
+		super(msg);
+	}
+
+	public NoSuchResourceNameException(String msg, Throwable cause) {
+		super(msg, cause);
+	}
+
+	public NoSuchResourceNameException(Throwable cause) {
+		super(cause);
+	}
+
 }

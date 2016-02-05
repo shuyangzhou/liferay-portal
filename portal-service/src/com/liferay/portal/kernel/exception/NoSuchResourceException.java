@@ -12,27 +12,25 @@
  * details.
  */
 
-package com.liferay.portal;
-
-import com.liferay.portal.kernel.exception.PortalException;
+package com.liferay.portal.kernel.exception;
 
 /**
- * @author Michael Young
+ * @author Brian Wing Shun Chan
  */
-public class CookieNotSupportedException extends PortalException {
+public class NoSuchResourceException extends NoSuchModelException {
 
-	public CookieNotSupportedException() {
+	public NoSuchResourceException() {
 	}
 
-	public CookieNotSupportedException(String msg) {
+	public NoSuchResourceException(String msg) {
 		super(msg);
 	}
 
-	public CookieNotSupportedException(String msg, Throwable cause) {
+	public NoSuchResourceException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
 
-	public CookieNotSupportedException(Throwable cause) {
+	public NoSuchResourceException(Throwable cause) {
 		super(cause);
 	}
 
