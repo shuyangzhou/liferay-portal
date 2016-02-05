@@ -14,6 +14,8 @@
 
 package com.liferay.asset.publisher.web.portlet;
 
+import com.liferay.asset.kernel.model.AssetEntry;
+import com.liferay.asset.kernel.service.AssetEntryLocalService;
 import com.liferay.asset.publisher.web.constants.AssetPublisherPortletKeys;
 import com.liferay.asset.publisher.web.util.AssetPublisherUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -21,8 +23,6 @@ import com.liferay.portal.kernel.portlet.AddPortletProvider;
 import com.liferay.portal.kernel.portlet.BasePortletProvider;
 import com.liferay.portal.kernel.portlet.ViewPortletProvider;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portlet.asset.model.AssetEntry;
-import com.liferay.portlet.asset.service.AssetEntryLocalService;
 
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletURL;
@@ -37,7 +37,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	immediate = true,
-	property = {"model.class.name=com.liferay.portlet.asset.model.AssetEntry"},
+	property = {"model.class.name=com.liferay.asset.kernel.model.AssetEntry"},
 	service = {AddPortletProvider.class, ViewPortletProvider.class}
 )
 public class AssetPublisherAddPortletProvider

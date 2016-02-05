@@ -180,7 +180,7 @@ public interface Portlet extends PortletModel, PersistedModel {
 	*
 	* @return the asset type instances of the portlet
 	*/
-	public java.util.List<com.liferay.portlet.asset.model.AssetRendererFactory<?>> getAssetRendererFactoryInstances();
+	public java.util.List<com.liferay.asset.kernel.model.AssetRendererFactory<?>> getAssetRendererFactoryInstances();
 
 	/**
 	* Returns the names of the classes that represent atom collection adapters

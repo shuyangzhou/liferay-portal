@@ -14,11 +14,11 @@
 
 package com.liferay.portlet.asset.service.persistence.impl;
 
+import com.liferay.asset.kernel.model.AssetEntry;
+import com.liferay.asset.kernel.service.persistence.AssetEntryPersistence;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
-
-import com.liferay.portlet.asset.model.AssetEntry;
-import com.liferay.portlet.asset.service.persistence.AssetEntryPersistence;
 
 /**
  * @author Brian Wing Shun Chan

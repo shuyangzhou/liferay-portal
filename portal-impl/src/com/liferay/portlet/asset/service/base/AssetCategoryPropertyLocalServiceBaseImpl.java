@@ -16,6 +16,11 @@ package com.liferay.portlet.asset.service.base;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.asset.kernel.model.AssetCategoryProperty;
+import com.liferay.asset.kernel.service.AssetCategoryPropertyLocalService;
+import com.liferay.asset.kernel.service.persistence.AssetCategoryPropertyFinder;
+import com.liferay.asset.kernel.service.persistence.AssetCategoryPropertyPersistence;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -40,11 +45,6 @@ import com.liferay.portal.service.persistence.UserFinder;
 import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.util.PortalUtil;
 
-import com.liferay.portlet.asset.model.AssetCategoryProperty;
-import com.liferay.portlet.asset.service.AssetCategoryPropertyLocalService;
-import com.liferay.portlet.asset.service.persistence.AssetCategoryPropertyFinder;
-import com.liferay.portlet.asset.service.persistence.AssetCategoryPropertyPersistence;
-
 import java.io.Serializable;
 
 import java.util.List;
@@ -60,7 +60,7 @@ import javax.sql.DataSource;
  *
  * @author Brian Wing Shun Chan
  * @see com.liferay.portlet.asset.service.impl.AssetCategoryPropertyLocalServiceImpl
- * @see com.liferay.portlet.asset.service.AssetCategoryPropertyLocalServiceUtil
+ * @see com.liferay.asset.kernel.service.AssetCategoryPropertyLocalServiceUtil
  * @generated
  */
 @ProviderType
@@ -70,7 +70,7 @@ public abstract class AssetCategoryPropertyLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link com.liferay.portlet.asset.service.AssetCategoryPropertyLocalServiceUtil} to access the asset category property local service.
+	 * Never modify or reference this class directly. Always use {@link com.liferay.asset.kernel.service.AssetCategoryPropertyLocalServiceUtil} to access the asset category property local service.
 	 */
 
 	/**
@@ -233,7 +233,7 @@ public abstract class AssetCategoryPropertyLocalServiceBaseImpl
 	public ActionableDynamicQuery getActionableDynamicQuery() {
 		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
 
-		actionableDynamicQuery.setBaseLocalService(com.liferay.portlet.asset.service.AssetCategoryPropertyLocalServiceUtil.getService());
+		actionableDynamicQuery.setBaseLocalService(com.liferay.asset.kernel.service.AssetCategoryPropertyLocalServiceUtil.getService());
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(AssetCategoryProperty.class);
 
@@ -246,7 +246,7 @@ public abstract class AssetCategoryPropertyLocalServiceBaseImpl
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
 		IndexableActionableDynamicQuery indexableActionableDynamicQuery = new IndexableActionableDynamicQuery();
 
-		indexableActionableDynamicQuery.setBaseLocalService(com.liferay.portlet.asset.service.AssetCategoryPropertyLocalServiceUtil.getService());
+		indexableActionableDynamicQuery.setBaseLocalService(com.liferay.asset.kernel.service.AssetCategoryPropertyLocalServiceUtil.getService());
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
 		indexableActionableDynamicQuery.setModelClass(AssetCategoryProperty.class);
 
@@ -258,7 +258,7 @@ public abstract class AssetCategoryPropertyLocalServiceBaseImpl
 
 	protected void initActionableDynamicQuery(
 		ActionableDynamicQuery actionableDynamicQuery) {
-		actionableDynamicQuery.setBaseLocalService(com.liferay.portlet.asset.service.AssetCategoryPropertyLocalServiceUtil.getService());
+		actionableDynamicQuery.setBaseLocalService(com.liferay.asset.kernel.service.AssetCategoryPropertyLocalServiceUtil.getService());
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(AssetCategoryProperty.class);
 
@@ -452,13 +452,13 @@ public abstract class AssetCategoryPropertyLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register("com.liferay.portlet.asset.model.AssetCategoryProperty",
+		persistedModelLocalServiceRegistry.register("com.liferay.asset.kernel.model.AssetCategoryProperty",
 			assetCategoryPropertyLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
-			"com.liferay.portlet.asset.model.AssetCategoryProperty");
+			"com.liferay.asset.kernel.model.AssetCategoryProperty");
 	}
 
 	/**
@@ -503,7 +503,7 @@ public abstract class AssetCategoryPropertyLocalServiceBaseImpl
 		}
 	}
 
-	@BeanReference(type = com.liferay.portlet.asset.service.AssetCategoryPropertyLocalService.class)
+	@BeanReference(type = com.liferay.asset.kernel.service.AssetCategoryPropertyLocalService.class)
 	protected AssetCategoryPropertyLocalService assetCategoryPropertyLocalService;
 	@BeanReference(type = AssetCategoryPropertyPersistence.class)
 	protected AssetCategoryPropertyPersistence assetCategoryPropertyPersistence;

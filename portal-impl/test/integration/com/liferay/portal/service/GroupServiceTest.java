@@ -14,6 +14,7 @@
 
 package com.liferay.portal.service;
 
+import com.liferay.asset.kernel.service.AssetTagLocalServiceUtil;
 import com.liferay.blogs.kernel.model.BlogsEntry;
 import com.liferay.blogs.kernel.service.BlogsEntryLocalServiceUtil;
 import com.liferay.portal.LocaleException;
@@ -53,7 +54,6 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.test.LayoutTestUtil;
-import com.liferay.portlet.asset.service.AssetTagLocalServiceUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
