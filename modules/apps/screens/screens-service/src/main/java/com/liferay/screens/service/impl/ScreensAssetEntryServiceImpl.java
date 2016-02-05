@@ -145,7 +145,7 @@ public class ScreensAssetEntryServiceImpl
 		String className = assetEntry.getClassName();
 
 		if (className.equals(
-				"com.liferay.portlet.documentlibrary.model.DLFileEntry")) {
+				"com.liferay.document.library.kernel.model.DLFileEntry")) {
 
 			return getFileEntryJSONObject(assetEntry);
 		}

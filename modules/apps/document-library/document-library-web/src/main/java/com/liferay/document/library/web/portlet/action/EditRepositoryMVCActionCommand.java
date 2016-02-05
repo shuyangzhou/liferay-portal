@@ -14,6 +14,11 @@
 
 package com.liferay.document.library.web.portlet.action;
 
+import com.liferay.document.library.kernel.exception.DuplicateFolderNameException;
+import com.liferay.document.library.kernel.exception.DuplicateRepositoryNameException;
+import com.liferay.document.library.kernel.exception.FolderNameException;
+import com.liferay.document.library.kernel.exception.RepositoryNameException;
+import com.liferay.document.library.kernel.model.DLFolder;
 import com.liferay.document.library.web.constants.DLPortletKeys;
 import com.liferay.portal.exception.InvalidRepositoryException;
 import com.liferay.portal.exception.NoSuchRepositoryException;
@@ -32,11 +37,6 @@ import com.liferay.portal.service.RepositoryService;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.documentlibrary.exception.DuplicateFolderNameException;
-import com.liferay.portlet.documentlibrary.exception.DuplicateRepositoryNameException;
-import com.liferay.portlet.documentlibrary.exception.FolderNameException;
-import com.liferay.portlet.documentlibrary.exception.RepositoryNameException;
-import com.liferay.portlet.documentlibrary.model.DLFolder;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;

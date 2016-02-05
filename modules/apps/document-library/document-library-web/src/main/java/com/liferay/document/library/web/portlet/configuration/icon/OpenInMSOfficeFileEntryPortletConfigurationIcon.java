@@ -14,6 +14,7 @@
 
 package com.liferay.document.library.web.portlet.configuration.icon;
 
+import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.document.library.web.display.context.logic.UIItemsBuilder;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.configuration.icon.BasePortletConfigurationIcon;
@@ -23,7 +24,6 @@ import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.portlet.documentlibrary.util.DLUtil;
 
 import javax.portlet.PortletRequest;
 
