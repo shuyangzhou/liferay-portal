@@ -13,28 +13,28 @@
 		</property>
 	</bean>
 	<bean id="com.liferay.portal.service.impl.LayoutLocalServiceHelper" class="com.liferay.portal.service.impl.LayoutLocalServiceHelper" />
-	<bean id="com.liferay.portal.service.permission.LayoutBranchPermissionUtil" class="com.liferay.portal.service.permission.LayoutBranchPermissionUtil">
+	<bean id="com.liferay.portal.kernel.service.permission.LayoutBranchPermissionUtil" class="com.liferay.portal.kernel.service.permission.LayoutBranchPermissionUtil">
 		<property name="layoutBranchPermission">
 			<bean class="com.liferay.portal.service.permission.LayoutBranchPermissionImpl" />
 		</property>
 	</bean>
 	<bean id="com.liferay.portal.service.permission.LayoutPermissionImpl" class="com.liferay.portal.service.permission.LayoutPermissionImpl" />
-	<bean id="com.liferay.portal.service.permission.LayoutPermissionUtil" class="com.liferay.portal.service.permission.LayoutPermissionUtil">
+	<bean id="com.liferay.portal.kernel.service.permission.LayoutPermissionUtil" class="com.liferay.portal.kernel.service.permission.LayoutPermissionUtil">
 		<property name="layoutPermission" ref="com.liferay.portal.service.permission.LayoutPermissionImpl">
 
 		</property>
 	</bean>
-	<bean id="com.liferay.portal.service.permission.LayoutPrototypePermissionUtil" class="com.liferay.portal.service.permission.LayoutPrototypePermissionUtil">
+	<bean id="com.liferay.portal.kernel.service.permission.LayoutPrototypePermissionUtil" class="com.liferay.portal.kernel.service.permission.LayoutPrototypePermissionUtil">
 		<property name="layoutPrototypePermission">
 			<bean class="com.liferay.portal.service.permission.LayoutPrototypePermissionImpl" />
 		</property>
 	</bean>
-	<bean id="com.liferay.portal.service.permission.LayoutSetBranchPermissionUtil" class="com.liferay.portal.service.permission.LayoutSetBranchPermissionUtil">
+	<bean id="com.liferay.portal.kernel.service.permission.LayoutSetBranchPermissionUtil" class="com.liferay.portal.kernel.service.permission.LayoutSetBranchPermissionUtil">
 		<property name="layoutSetBranchPermission">
 			<bean class="com.liferay.portal.service.permission.LayoutSetBranchPermissionImpl" />
 		</property>
 	</bean>
-	<bean id="com.liferay.portal.service.permission.LayoutSetPrototypePermissionUtil" class="com.liferay.portal.service.permission.LayoutSetPrototypePermissionUtil">
+	<bean id="com.liferay.portal.kernel.service.permission.LayoutSetPrototypePermissionUtil" class="com.liferay.portal.kernel.service.permission.LayoutSetPrototypePermissionUtil">
 		<property name="layoutSetPrototypePermission">
 			<bean class="com.liferay.portal.service.permission.LayoutSetPrototypePermissionImpl" />
 		</property>
