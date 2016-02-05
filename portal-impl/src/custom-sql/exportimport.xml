@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <custom-sql>
-	<sql id="com.liferay.portlet.exportimport.service.persistence.ExportImportConfigurationFinder.countByC_G_N_D_T">
+	<sql id="com.liferay.exportimport.kernel.service.persistence.ExportImportConfigurationFinder.countByC_G_N_D_T">
 		<![CDATA[
 			SELECT
 				COUNT(DISTINCT exportImportConfigurationId) AS COUNT_VALUE
@@ -17,7 +17,7 @@
 				(type_ = ?)
 		]]>
 	</sql>
-	<sql id="com.liferay.portlet.exportimport.service.persistence.ExportImportConfigurationFinder.findByC_G_N_D_T">
+	<sql id="om.liferay.exportimport.kernel.service.persistence.ExportImportConfigurationFinder.findByC_G_N_D_T">
 		<![CDATA[
 			SELECT
 				{ExportImportConfiguration.*}

@@ -14,6 +14,9 @@
 
 package com.liferay.exportimport.lifecycle;
 
+import com.liferay.exportimport.kernel.lifecycle.ExportImportLifecycleEvent;
+import com.liferay.exportimport.kernel.lifecycle.ExportImportLifecycleEventFactory;
+import com.liferay.exportimport.kernel.lifecycle.ExportImportLifecycleManager;
 import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
 import com.liferay.portal.kernel.messaging.DestinationFactory;
@@ -21,9 +24,6 @@ import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.util.HashMapDictionary;
-import com.liferay.portlet.exportimport.lifecycle.ExportImportLifecycleEvent;
-import com.liferay.portlet.exportimport.lifecycle.ExportImportLifecycleEventFactory;
-import com.liferay.portlet.exportimport.lifecycle.ExportImportLifecycleManager;
 
 import java.io.Serializable;
 

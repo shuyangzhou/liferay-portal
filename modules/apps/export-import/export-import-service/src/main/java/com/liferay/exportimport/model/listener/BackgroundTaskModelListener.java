@@ -14,14 +14,14 @@
 
 package com.liferay.exportimport.model.listener;
 
+import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
+import com.liferay.exportimport.kernel.service.ExportImportConfigurationLocalService;
 import com.liferay.portal.background.task.model.BackgroundTask;
 import com.liferay.portal.exception.ModelListenerException;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.BaseModelListener;
 import com.liferay.portal.model.ModelListener;
-import com.liferay.portlet.exportimport.model.ExportImportConfiguration;
-import com.liferay.portlet.exportimport.service.ExportImportConfigurationLocalService;
 
 import java.io.Serializable;
 

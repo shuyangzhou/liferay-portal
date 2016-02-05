@@ -16,14 +16,14 @@ package com.liferay.portlet.exportimport.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.exportimport.kernel.service.ExportImportServiceUtil;
+
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.service.http.TunnelUtil;
-
-import com.liferay.portlet.exportimport.service.ExportImportServiceUtil;
 
 /**
  * Provides the HTTP utility for the
@@ -57,7 +57,7 @@ import com.liferay.portlet.exportimport.service.ExportImportServiceUtil;
 public class ExportImportServiceHttp {
 	public static java.io.File exportLayoutsAsFile(
 		HttpPrincipal httpPrincipal,
-		com.liferay.portlet.exportimport.model.ExportImportConfiguration exportImportConfiguration)
+		com.liferay.exportimport.kernel.model.ExportImportConfiguration exportImportConfiguration)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(ExportImportServiceUtil.class,
@@ -90,7 +90,7 @@ public class ExportImportServiceHttp {
 
 	public static long exportLayoutsAsFileInBackground(
 		HttpPrincipal httpPrincipal,
-		com.liferay.portlet.exportimport.model.ExportImportConfiguration exportImportConfiguration)
+		com.liferay.exportimport.kernel.model.ExportImportConfiguration exportImportConfiguration)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(ExportImportServiceUtil.class,
@@ -157,7 +157,7 @@ public class ExportImportServiceHttp {
 
 	public static java.io.File exportPortletInfoAsFile(
 		HttpPrincipal httpPrincipal,
-		com.liferay.portlet.exportimport.model.ExportImportConfiguration exportImportConfiguration)
+		com.liferay.exportimport.kernel.model.ExportImportConfiguration exportImportConfiguration)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(ExportImportServiceUtil.class,
@@ -191,7 +191,7 @@ public class ExportImportServiceHttp {
 
 	public static long exportPortletInfoAsFileInBackground(
 		HttpPrincipal httpPrincipal,
-		com.liferay.portlet.exportimport.model.ExportImportConfiguration exportImportConfiguration)
+		com.liferay.exportimport.kernel.model.ExportImportConfiguration exportImportConfiguration)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(ExportImportServiceUtil.class,
@@ -224,7 +224,7 @@ public class ExportImportServiceHttp {
 	}
 
 	public static void importLayouts(HttpPrincipal httpPrincipal,
-		com.liferay.portlet.exportimport.model.ExportImportConfiguration exportImportConfiguration,
+		com.liferay.exportimport.kernel.model.ExportImportConfiguration exportImportConfiguration,
 		java.io.File file)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -253,7 +253,7 @@ public class ExportImportServiceHttp {
 	}
 
 	public static void importLayouts(HttpPrincipal httpPrincipal,
-		com.liferay.portlet.exportimport.model.ExportImportConfiguration exportImportConfiguration,
+		com.liferay.exportimport.kernel.model.ExportImportConfiguration exportImportConfiguration,
 		java.io.InputStream inputStream)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -282,7 +282,7 @@ public class ExportImportServiceHttp {
 	}
 
 	public static long importLayoutsInBackground(HttpPrincipal httpPrincipal,
-		com.liferay.portlet.exportimport.model.ExportImportConfiguration exportImportConfiguration,
+		com.liferay.exportimport.kernel.model.ExportImportConfiguration exportImportConfiguration,
 		java.io.File file)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -316,7 +316,7 @@ public class ExportImportServiceHttp {
 	}
 
 	public static long importLayoutsInBackground(HttpPrincipal httpPrincipal,
-		com.liferay.portlet.exportimport.model.ExportImportConfiguration exportImportConfiguration,
+		com.liferay.exportimport.kernel.model.ExportImportConfiguration exportImportConfiguration,
 		java.io.InputStream inputStream)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -350,7 +350,7 @@ public class ExportImportServiceHttp {
 	}
 
 	public static void importPortletInfo(HttpPrincipal httpPrincipal,
-		com.liferay.portlet.exportimport.model.ExportImportConfiguration exportImportConfiguration,
+		com.liferay.exportimport.kernel.model.ExportImportConfiguration exportImportConfiguration,
 		java.io.File file)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -379,7 +379,7 @@ public class ExportImportServiceHttp {
 	}
 
 	public static void importPortletInfo(HttpPrincipal httpPrincipal,
-		com.liferay.portlet.exportimport.model.ExportImportConfiguration exportImportConfiguration,
+		com.liferay.exportimport.kernel.model.ExportImportConfiguration exportImportConfiguration,
 		java.io.InputStream inputStream)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -409,7 +409,7 @@ public class ExportImportServiceHttp {
 
 	public static long importPortletInfoInBackground(
 		HttpPrincipal httpPrincipal,
-		com.liferay.portlet.exportimport.model.ExportImportConfiguration exportImportConfiguration,
+		com.liferay.exportimport.kernel.model.ExportImportConfiguration exportImportConfiguration,
 		java.io.File file)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -444,7 +444,7 @@ public class ExportImportServiceHttp {
 
 	public static long importPortletInfoInBackground(
 		HttpPrincipal httpPrincipal,
-		com.liferay.portlet.exportimport.model.ExportImportConfiguration exportImportConfiguration,
+		com.liferay.exportimport.kernel.model.ExportImportConfiguration exportImportConfiguration,
 		java.io.InputStream inputStream)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -477,9 +477,9 @@ public class ExportImportServiceHttp {
 		}
 	}
 
-	public static com.liferay.portlet.exportimport.lar.MissingReferences validateImportLayoutsFile(
+	public static com.liferay.exportimport.kernel.lar.MissingReferences validateImportLayoutsFile(
 		HttpPrincipal httpPrincipal,
-		com.liferay.portlet.exportimport.model.ExportImportConfiguration exportImportConfiguration,
+		com.liferay.exportimport.kernel.model.ExportImportConfiguration exportImportConfiguration,
 		java.io.File file)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -503,7 +503,7 @@ public class ExportImportServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portlet.exportimport.lar.MissingReferences)returnObj;
+			return (com.liferay.exportimport.kernel.lar.MissingReferences)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -512,9 +512,9 @@ public class ExportImportServiceHttp {
 		}
 	}
 
-	public static com.liferay.portlet.exportimport.lar.MissingReferences validateImportLayoutsFile(
+	public static com.liferay.exportimport.kernel.lar.MissingReferences validateImportLayoutsFile(
 		HttpPrincipal httpPrincipal,
-		com.liferay.portlet.exportimport.model.ExportImportConfiguration exportImportConfiguration,
+		com.liferay.exportimport.kernel.model.ExportImportConfiguration exportImportConfiguration,
 		java.io.InputStream inputStream)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -538,7 +538,7 @@ public class ExportImportServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portlet.exportimport.lar.MissingReferences)returnObj;
+			return (com.liferay.exportimport.kernel.lar.MissingReferences)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -547,9 +547,9 @@ public class ExportImportServiceHttp {
 		}
 	}
 
-	public static com.liferay.portlet.exportimport.lar.MissingReferences validateImportPortletInfo(
+	public static com.liferay.exportimport.kernel.lar.MissingReferences validateImportPortletInfo(
 		HttpPrincipal httpPrincipal,
-		com.liferay.portlet.exportimport.model.ExportImportConfiguration exportImportConfiguration,
+		com.liferay.exportimport.kernel.model.ExportImportConfiguration exportImportConfiguration,
 		java.io.File file)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -573,7 +573,7 @@ public class ExportImportServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portlet.exportimport.lar.MissingReferences)returnObj;
+			return (com.liferay.exportimport.kernel.lar.MissingReferences)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -582,9 +582,9 @@ public class ExportImportServiceHttp {
 		}
 	}
 
-	public static com.liferay.portlet.exportimport.lar.MissingReferences validateImportPortletInfo(
+	public static com.liferay.exportimport.kernel.lar.MissingReferences validateImportPortletInfo(
 		HttpPrincipal httpPrincipal,
-		com.liferay.portlet.exportimport.model.ExportImportConfiguration exportImportConfiguration,
+		com.liferay.exportimport.kernel.model.ExportImportConfiguration exportImportConfiguration,
 		java.io.InputStream inputStream)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -608,7 +608,7 @@ public class ExportImportServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portlet.exportimport.lar.MissingReferences)returnObj;
+			return (com.liferay.exportimport.kernel.lar.MissingReferences)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -619,69 +619,69 @@ public class ExportImportServiceHttp {
 
 	private static Log _log = LogFactoryUtil.getLog(ExportImportServiceHttp.class);
 	private static final Class<?>[] _exportLayoutsAsFileParameterTypes0 = new Class[] {
-			com.liferay.portlet.exportimport.model.ExportImportConfiguration.class
+			com.liferay.exportimport.kernel.model.ExportImportConfiguration.class
 		};
 	private static final Class<?>[] _exportLayoutsAsFileInBackgroundParameterTypes1 =
 		new Class[] {
-			com.liferay.portlet.exportimport.model.ExportImportConfiguration.class
+			com.liferay.exportimport.kernel.model.ExportImportConfiguration.class
 		};
 	private static final Class<?>[] _exportLayoutsAsFileInBackgroundParameterTypes2 =
 		new Class[] { long.class };
 	private static final Class<?>[] _exportPortletInfoAsFileParameterTypes3 = new Class[] {
-			com.liferay.portlet.exportimport.model.ExportImportConfiguration.class
+			com.liferay.exportimport.kernel.model.ExportImportConfiguration.class
 		};
 	private static final Class<?>[] _exportPortletInfoAsFileInBackgroundParameterTypes4 =
 		new Class[] {
-			com.liferay.portlet.exportimport.model.ExportImportConfiguration.class
+			com.liferay.exportimport.kernel.model.ExportImportConfiguration.class
 		};
 	private static final Class<?>[] _importLayoutsParameterTypes5 = new Class[] {
-			com.liferay.portlet.exportimport.model.ExportImportConfiguration.class,
+			com.liferay.exportimport.kernel.model.ExportImportConfiguration.class,
 			java.io.File.class
 		};
 	private static final Class<?>[] _importLayoutsParameterTypes6 = new Class[] {
-			com.liferay.portlet.exportimport.model.ExportImportConfiguration.class,
+			com.liferay.exportimport.kernel.model.ExportImportConfiguration.class,
 			java.io.InputStream.class
 		};
 	private static final Class<?>[] _importLayoutsInBackgroundParameterTypes7 = new Class[] {
-			com.liferay.portlet.exportimport.model.ExportImportConfiguration.class,
+			com.liferay.exportimport.kernel.model.ExportImportConfiguration.class,
 			java.io.File.class
 		};
 	private static final Class<?>[] _importLayoutsInBackgroundParameterTypes8 = new Class[] {
-			com.liferay.portlet.exportimport.model.ExportImportConfiguration.class,
+			com.liferay.exportimport.kernel.model.ExportImportConfiguration.class,
 			java.io.InputStream.class
 		};
 	private static final Class<?>[] _importPortletInfoParameterTypes9 = new Class[] {
-			com.liferay.portlet.exportimport.model.ExportImportConfiguration.class,
+			com.liferay.exportimport.kernel.model.ExportImportConfiguration.class,
 			java.io.File.class
 		};
 	private static final Class<?>[] _importPortletInfoParameterTypes10 = new Class[] {
-			com.liferay.portlet.exportimport.model.ExportImportConfiguration.class,
+			com.liferay.exportimport.kernel.model.ExportImportConfiguration.class,
 			java.io.InputStream.class
 		};
 	private static final Class<?>[] _importPortletInfoInBackgroundParameterTypes11 =
 		new Class[] {
-			com.liferay.portlet.exportimport.model.ExportImportConfiguration.class,
+			com.liferay.exportimport.kernel.model.ExportImportConfiguration.class,
 			java.io.File.class
 		};
 	private static final Class<?>[] _importPortletInfoInBackgroundParameterTypes12 =
 		new Class[] {
-			com.liferay.portlet.exportimport.model.ExportImportConfiguration.class,
+			com.liferay.exportimport.kernel.model.ExportImportConfiguration.class,
 			java.io.InputStream.class
 		};
 	private static final Class<?>[] _validateImportLayoutsFileParameterTypes13 = new Class[] {
-			com.liferay.portlet.exportimport.model.ExportImportConfiguration.class,
+			com.liferay.exportimport.kernel.model.ExportImportConfiguration.class,
 			java.io.File.class
 		};
 	private static final Class<?>[] _validateImportLayoutsFileParameterTypes14 = new Class[] {
-			com.liferay.portlet.exportimport.model.ExportImportConfiguration.class,
+			com.liferay.exportimport.kernel.model.ExportImportConfiguration.class,
 			java.io.InputStream.class
 		};
 	private static final Class<?>[] _validateImportPortletInfoParameterTypes15 = new Class[] {
-			com.liferay.portlet.exportimport.model.ExportImportConfiguration.class,
+			com.liferay.exportimport.kernel.model.ExportImportConfiguration.class,
 			java.io.File.class
 		};
 	private static final Class<?>[] _validateImportPortletInfoParameterTypes16 = new Class[] {
-			com.liferay.portlet.exportimport.model.ExportImportConfiguration.class,
+			com.liferay.exportimport.kernel.model.ExportImportConfiguration.class,
 			java.io.InputStream.class
 		};
 }

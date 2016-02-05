@@ -353,7 +353,7 @@
 					<constructor-arg name="value" value="_serviceContextThreadLocal" />
 				</bean>
 				<bean class="com.liferay.portal.kernel.util.KeyValuePair">
-					<constructor-arg name="key" value="com.liferay.portlet.exportimport.staging.MergeLayoutPrototypesThreadLocal" />
+					<constructor-arg name="key" value="com.liferay.exportimport.kernel.staging.MergeLayoutPrototypesThreadLocal" />
 					<constructor-arg name="value" value="_inProgress" />
 				</bean>
 			</list>

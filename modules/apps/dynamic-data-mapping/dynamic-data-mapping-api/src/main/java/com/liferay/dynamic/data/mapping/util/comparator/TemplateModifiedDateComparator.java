@@ -15,7 +15,7 @@
 package com.liferay.dynamic.data.mapping.util.comparator;
 
 import com.liferay.dynamic.data.mapping.model.DDMTemplate;
-import com.liferay.portlet.exportimport.lar.StagedModelModifiedDateComparator;
+import com.liferay.exportimport.kernel.lar.StagedModelModifiedDateComparator;
 
 /**
  * @author Eduardo Garcia

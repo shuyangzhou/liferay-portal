@@ -14,8 +14,8 @@
 
 package com.liferay.exportimport.xstream;
 
-import com.liferay.portlet.exportimport.xstream.XStreamConverter;
-import com.liferay.portlet.exportimport.xstream.XStreamUnmarshallingContext;
+import com.liferay.exportimport.kernel.xstream.XStreamConverter;
+import com.liferay.exportimport.kernel.xstream.XStreamUnmarshallingContext;
 
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 

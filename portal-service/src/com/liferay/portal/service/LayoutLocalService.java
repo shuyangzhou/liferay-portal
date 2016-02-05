@@ -16,6 +16,10 @@ package com.liferay.portal.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.exportimport.kernel.lar.MissingReferences;
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
+import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
+
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery;
@@ -36,10 +40,6 @@ import com.liferay.portal.model.LayoutReference;
 import com.liferay.portal.model.PersistedModel;
 import com.liferay.portal.model.SystemEventConstants;
 import com.liferay.portal.model.User;
-
-import com.liferay.portlet.exportimport.lar.MissingReferences;
-import com.liferay.portlet.exportimport.lar.PortletDataContext;
-import com.liferay.portlet.exportimport.model.ExportImportConfiguration;
 
 import java.io.File;
 import java.io.InputStream;
@@ -345,7 +345,7 @@ public interface LayoutLocalService extends BaseLocalService,
 	* @param parameterMap the mapping of parameters indicating which
 	information to export. For information on the keys used in
 	the map see {@link
-	com.liferay.portlet.exportimport.lar.PortletDataHandlerKeys}.
+	com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys}.
 	* @param startDate the export's start date
 	* @param endDate the export's end date
 	* @return the layouts as a byte array
@@ -366,7 +366,7 @@ public interface LayoutLocalService extends BaseLocalService,
 	* @param parameterMap the mapping of parameters indicating which
 	information to export. For information on the keys used in
 	the map see {@link
-	com.liferay.portlet.exportimport.lar.PortletDataHandlerKeys}.
+	com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys}.
 	* @param startDate the export's start date
 	* @param endDate the export's end date
 	* @return the layout as a byte array
@@ -381,7 +381,7 @@ public interface LayoutLocalService extends BaseLocalService,
 	/**
 	* @throws PortalException
 	* @deprecated As of 7.0.0, replaced by {@link
-	com.liferay.portlet.exportimport.service.ExportImportLocalService#exportLayoutsAsFile(
+	com.liferay.exportimport.kernel.service.ExportImportLocalService#exportLayoutsAsFile(
 	ExportImportConfiguration)}
 	*/
 	@java.lang.Deprecated
@@ -399,7 +399,7 @@ public interface LayoutLocalService extends BaseLocalService,
 	* @param parameterMap the mapping of parameters indicating which
 	information to export. For information on the keys used in
 	the map see {@link
-	com.liferay.portlet.exportimport.lar.PortletDataHandlerKeys}.
+	com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys}.
 	* @param startDate the export's start date
 	* @param endDate the export's end date
 	* @return the layouts as a File
@@ -415,7 +415,7 @@ public interface LayoutLocalService extends BaseLocalService,
 	/**
 	* @throws PortalException
 	* @deprecated As of 7.0.0, replaced by {@link
-	com.liferay.portlet.exportimport.service.ExportImportLocalService#exportLayoutsAsFileInBackground(
+	com.liferay.exportimport.kernel.service.ExportImportLocalService#exportLayoutsAsFileInBackground(
 	long, ExportImportConfiguration)}
 	*/
 	@java.lang.Deprecated
@@ -426,7 +426,7 @@ public interface LayoutLocalService extends BaseLocalService,
 	/**
 	* @throws PortalException
 	* @deprecated As of 7.0.0, replaced by {@link
-	com.liferay.portlet.exportimport.service.ExportImportLocalService#exportLayoutsAsFileInBackground(
+	com.liferay.exportimport.kernel.service.ExportImportLocalService#exportLayoutsAsFileInBackground(
 	long, long)}
 	*/
 	@java.lang.Deprecated
@@ -474,7 +474,7 @@ public interface LayoutLocalService extends BaseLocalService,
 	* @param parameterMap the mapping of parameters indicating which
 	information to export. For information on the keys used in
 	the map see {@link
-	com.liferay.portlet.exportimport.lar.PortletDataHandlerKeys}.
+	com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys}.
 	* @param startDate the export's start date
 	* @param endDate the export's end date
 	* @return the portlet information as a byte array
@@ -500,7 +500,7 @@ public interface LayoutLocalService extends BaseLocalService,
 	/**
 	* @throws PortalException
 	* @deprecated As of 7.0.0, replaced by {@link
-	com.liferay.portlet.exportimport.service.ExportImportLocalService#exportPortletInfoAsFile(
+	com.liferay.exportimport.kernel.service.ExportImportLocalService#exportPortletInfoAsFile(
 	ExportImportConfiguration)}}
 	*/
 	@java.lang.Deprecated
@@ -518,7 +518,7 @@ public interface LayoutLocalService extends BaseLocalService,
 	* @param parameterMap the mapping of parameters indicating which
 	information to export. For information on the keys used in
 	the map see {@link
-	com.liferay.portlet.exportimport.lar.PortletDataHandlerKeys}.
+	com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys}.
 	* @param startDate the export's start date
 	* @param endDate the export's end date
 	* @return the portlet information as a file
@@ -534,7 +534,7 @@ public interface LayoutLocalService extends BaseLocalService,
 	/**
 	* @throws PortalException
 	* @deprecated As of 7.0.0, replaced by {@link
-	com.liferay.portlet.exportimport.service.ExportImportLocalService#exportPortletInfoAsFileInBackground(
+	com.liferay.exportimport.kernel.service.ExportImportLocalService#exportPortletInfoAsFileInBackground(
 	long, ExportImportConfiguration)}}
 	*/
 	@java.lang.Deprecated
@@ -545,7 +545,7 @@ public interface LayoutLocalService extends BaseLocalService,
 	/**
 	* @throws PortalException
 	* @deprecated As of 7.0.0, replaced by {@link
-	com.liferay.portlet.exportimport.service.ExportImportLocalService#exportPortletInfoAsFileInBackground(
+	com.liferay.exportimport.kernel.service.ExportImportLocalService#exportPortletInfoAsFileInBackground(
 	long, long)}}
 	*/
 	@java.lang.Deprecated
@@ -973,7 +973,7 @@ public interface LayoutLocalService extends BaseLocalService,
 	/**
 	* @throws PortalException
 	* @deprecated As of 7.0.0, replaced by {@link
-	com.liferay.portlet.exportimport.service.ExportImportLocalService#importLayouts(
+	com.liferay.exportimport.kernel.service.ExportImportLocalService#importLayouts(
 	ExportImportConfiguration, File)}}
 	*/
 	@java.lang.Deprecated
@@ -984,7 +984,7 @@ public interface LayoutLocalService extends BaseLocalService,
 	/**
 	* @throws PortalException
 	* @deprecated As of 7.0.0, replaced by {@link
-	com.liferay.portlet.exportimport.service.ExportImportLocalService#importLayouts(
+	com.liferay.exportimport.kernel.service.ExportImportLocalService#importLayouts(
 	ExportImportConfiguration, InputStream)}}
 	*/
 	@java.lang.Deprecated
@@ -1001,10 +1001,10 @@ public interface LayoutLocalService extends BaseLocalService,
 	* @param parameterMap the mapping of parameters indicating which
 	information will be imported. For information on the keys
 	used in the map see {@link
-	com.liferay.portlet.exportimport.lar.PortletDataHandlerKeys}.
+	com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys}.
 	* @param bytes the byte array with the data
 	* @throws PortalException
-	* @see com.liferay.portlet.exportimport.lar.LayoutImporter
+	* @see com.liferay.exportimport.kernel.lar.LayoutImporter
 	* @deprecated As of 7.0.0, with no direct replacement
 	*/
 	@java.lang.Deprecated
@@ -1021,10 +1021,10 @@ public interface LayoutLocalService extends BaseLocalService,
 	* @param parameterMap the mapping of parameters indicating which
 	information will be imported. For information on the keys
 	used in the map see {@link
-	com.liferay.portlet.exportimport.lar.PortletDataHandlerKeys}.
+	com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys}.
 	* @param file the LAR file with the data
 	* @throws PortalException
-	* @see com.liferay.portlet.exportimport.lar.LayoutImporter
+	* @see com.liferay.exportimport.kernel.lar.LayoutImporter
 	* @deprecated As of 7.0.0, with no direct replacement
 	*/
 	@java.lang.Deprecated
@@ -1041,10 +1041,10 @@ public interface LayoutLocalService extends BaseLocalService,
 	* @param parameterMap the mapping of parameters indicating which
 	information will be imported. For information on the keys
 	used in the map see {@link
-	com.liferay.portlet.exportimport.lar.PortletDataHandlerKeys}.
+	com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys}.
 	* @param is the input stream
 	* @throws PortalException
-	* @see com.liferay.portlet.exportimport.lar.LayoutImporter
+	* @see com.liferay.exportimport.kernel.lar.LayoutImporter
 	* @deprecated As of 7.0.0, with no direct replacement
 	*/
 	@java.lang.Deprecated
@@ -1055,7 +1055,7 @@ public interface LayoutLocalService extends BaseLocalService,
 	/**
 	* @throws PortalException
 	* @deprecated As of 7.0.0, replaced by {@link
-	com.liferay.portlet.exportimport.service.ExportImportLocalService#importLayoutsDataDeletions(
+	com.liferay.exportimport.kernel.service.ExportImportLocalService#importLayoutsDataDeletions(
 	ExportImportConfiguration, File)}
 	*/
 	@java.lang.Deprecated
@@ -1066,7 +1066,7 @@ public interface LayoutLocalService extends BaseLocalService,
 	/**
 	* @throws PortalException
 	* @deprecated As of 7.0.0, replaced by {@link
-	com.liferay.portlet.exportimport.service.ExportImportLocalService#importLayoutsInBackground(
+	com.liferay.exportimport.kernel.service.ExportImportLocalService#importLayoutsInBackground(
 	long, ExportImportConfiguration, File)}
 	*/
 	@java.lang.Deprecated
@@ -1077,7 +1077,7 @@ public interface LayoutLocalService extends BaseLocalService,
 	/**
 	* @throws PortalException
 	* @deprecated As of 7.0.0, replaced by {@link
-	com.liferay.portlet.exportimport.service.ExportImportLocalService#importLayoutsInBackground(
+	com.liferay.exportimport.kernel.service.ExportImportLocalService#importLayoutsInBackground(
 	long, long, File)}
 	*/
 	@java.lang.Deprecated
@@ -1107,7 +1107,7 @@ public interface LayoutLocalService extends BaseLocalService,
 	/**
 	* @throws PortalException
 	* @deprecated As of 7.0.0, replaced by {@link
-	com.liferay.portlet.exportimport.service.ExportImportLocalService#importPortletDataDeletions(
+	com.liferay.exportimport.kernel.service.ExportImportLocalService#importPortletDataDeletions(
 	ExportImportConfiguration, File)}
 	*/
 	@java.lang.Deprecated
@@ -1118,7 +1118,7 @@ public interface LayoutLocalService extends BaseLocalService,
 	/**
 	* @throws PortalException
 	* @deprecated As of 7.0.0, replaced by {@link
-	com.liferay.portlet.exportimport.service.ExportImportLocalService#importPortletInfo(
+	com.liferay.exportimport.kernel.service.ExportImportLocalService#importPortletInfo(
 	ExportImportConfiguration, File)}
 	*/
 	@java.lang.Deprecated
@@ -1129,7 +1129,7 @@ public interface LayoutLocalService extends BaseLocalService,
 	/**
 	* @throws PortalException
 	* @deprecated As of 7.0.0, replaced by {@link
-	com.liferay.portlet.exportimport.service.ExportImportLocalService#importPortletInfo(
+	com.liferay.exportimport.kernel.service.ExportImportLocalService#importPortletInfo(
 	ExportImportConfiguration, InputStream)}
 	*/
 	@java.lang.Deprecated
@@ -1148,7 +1148,7 @@ public interface LayoutLocalService extends BaseLocalService,
 	* @param parameterMap the mapping of parameters indicating which
 	information will be imported. For information on the keys
 	used in the map see {@link
-	com.liferay.portlet.exportimport.lar.PortletDataHandlerKeys}.
+	com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys}.
 	* @param file the LAR file with the data
 	* @throws PortalException
 	* @deprecated As of 7.0.0, with no direct replacement
@@ -1170,7 +1170,7 @@ public interface LayoutLocalService extends BaseLocalService,
 	* @param parameterMap the mapping of parameters indicating which
 	information will be imported. For information on the keys
 	used in the map see {@link
-	com.liferay.portlet.exportimport.lar.PortletDataHandlerKeys}.
+	com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys}.
 	* @param is the input stream
 	* @throws PortalException
 	* @deprecated As of 7.0.0, with no direct replacement
@@ -1202,7 +1202,7 @@ public interface LayoutLocalService extends BaseLocalService,
 	/**
 	* @throws PortalException
 	* @deprecated As of 7.0.0, replaced by {@link
-	com.liferay.portlet.exportimport.service.ExportImportLocalService#importPortletInfoInBackground(
+	com.liferay.exportimport.kernel.service.ExportImportLocalService#importPortletInfoInBackground(
 	long, ExportImportConfiguration, File)}
 	*/
 	@java.lang.Deprecated
@@ -1213,7 +1213,7 @@ public interface LayoutLocalService extends BaseLocalService,
 	/**
 	* @throws PortalException
 	* @deprecated As of 7.0.0, replaced by {@link
-	com.liferay.portlet.exportimport.service.ExportImportLocalService#importPortletInfoInBackground(
+	com.liferay.exportimport.kernel.service.ExportImportLocalService#importPortletInfoInBackground(
 	long, long, File)}
 	*/
 	@java.lang.Deprecated
@@ -1539,7 +1539,7 @@ public interface LayoutLocalService extends BaseLocalService,
 	/**
 	* @throws PortalException
 	* @deprecated As of 7.0.0, replaced by {@link
-	com.liferay.portlet.exportimport.service.ExportImportLocalService#validateImportLayoutsFile(
+	com.liferay.exportimport.kernel.service.ExportImportLocalService#validateImportLayoutsFile(
 	ExportImportConfiguration, File)}
 	*/
 	@java.lang.Deprecated
@@ -1550,7 +1550,7 @@ public interface LayoutLocalService extends BaseLocalService,
 	/**
 	* @throws PortalException
 	* @deprecated As of 7.0.0, replaced by {@link
-	com.liferay.portlet.exportimport.service.ExportImportLocalService#validateImportLayoutsFile(
+	com.liferay.exportimport.kernel.service.ExportImportLocalService#validateImportLayoutsFile(
 	ExportImportConfiguration, InputStream)}
 	*/
 	@java.lang.Deprecated
@@ -1581,7 +1581,7 @@ public interface LayoutLocalService extends BaseLocalService,
 	/**
 	* @throws PortalException
 	* @deprecated As of 7.0.0, replaced by {@link
-	com.liferay.portlet.exportimport.service.ExportImportLocalService#validateImportPortletInfo(
+	com.liferay.exportimport.kernel.service.ExportImportLocalService#validateImportPortletInfo(
 	ExportImportConfiguration, File)}
 	*/
 	@java.lang.Deprecated
@@ -1592,7 +1592,7 @@ public interface LayoutLocalService extends BaseLocalService,
 	/**
 	* @throws PortalException
 	* @deprecated As of 7.0.0, replaced by {@link
-	com.liferay.portlet.exportimport.service.ExportImportLocalService#validateImportPortletInfo(
+	com.liferay.exportimport.kernel.service.ExportImportLocalService#validateImportPortletInfo(
 	ExportImportConfiguration, InputStream)}
 	*/
 	@java.lang.Deprecated

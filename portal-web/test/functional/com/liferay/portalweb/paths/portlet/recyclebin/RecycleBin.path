@@ -39,16 +39,6 @@
 	<td></td>
 </tr>
 <tr>
-	<td>STAGING_TOOLBAR</td>
-	<td>//ul[contains(@class,'nav-tabs')]//li/a[contains(.,'Staging')]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>LIVE_TOOLBAR</td>
-	<td>//ul[contains(@class,'nav-tabs')]//li/a[contains(.,'Live')]</td>
-	<td></td>
-</tr>
-<tr>
 	<td>RECYCLE_BIN</td>
 	<td>//div[contains(@id,'site_administration_content')]//a[contains(@id,'trash_web_portlet_TrashPortlet')]</td>
 	<td></td>
