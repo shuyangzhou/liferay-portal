@@ -500,7 +500,7 @@ public abstract class BaseStagedModelDataHandler<T extends StagedModel>
 				ExportImportClassedModelUtil.getClassPK(stagedModel));
 
 		for (AssetCategory assetCategory : assetCategories) {
-			StagedModelDataHandlerUtil.exportReferenceStagedModel(
+			StagedModelDataHandlerUtil.<T, AssetCategory>exportReferenceStagedModel(
 				portletDataContext, stagedModel, assetCategory,
 				PortletDataContext.REFERENCE_TYPE_WEAK);
 		}
