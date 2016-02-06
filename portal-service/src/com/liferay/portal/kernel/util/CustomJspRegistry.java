@@ -12,19 +12,26 @@
  * details.
  */
 
-package com.liferay.portal.util;
+package com.liferay.portal.kernel.util;
 
-import java.net.InetSocketAddress;
+import java.util.Set;
 
 /**
- * @author Tina Tian
+ * @author Ryan Park
+ * @author Brian Wing Shun Chan
  */
-public interface PortalInetSocketAddressEventListener {
+public interface CustomJspRegistry {
 
-	public void portalLocalInetSocketAddressConfigured(
-		InetSocketAddress localInetSocketAddress, boolean secure);
+	public String getCustomJspFileName(
+		String servletContextName, String fileName);
 
-	public void portalServerInetSocketAddressConfigured(
-		InetSocketAddress serverInetSocketAddress, boolean secure);
+	public String getDisplayName(String servletContextName);
+
+	public Set<String> getServletContextNames();
+
+	public void registerServletContextName(
+		String servletContextName, String displayName);
+
+	public void unregisterServletContextName(String servletContextName);
 
 }

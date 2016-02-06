@@ -12,16 +12,27 @@
  * details.
  */
 
-package com.liferay.portal.util;
+package com.liferay.portal.kernel.util;
 
-import com.liferay.portal.model.Layout;
-import com.liferay.portal.model.LayoutTypePortlet;
+import aQute.bnd.annotation.ProviderType;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
- * @author Raymond Augé
+ * @author Eduardo Garcia
  */
-public interface LayoutTypePortletFactory {
+@ProviderType
+public interface TermsOfUseContentProvider {
 
-	public LayoutTypePortlet create(Layout layout);
+	public String getClassName();
+
+	public void includeConfig(
+			HttpServletRequest request, HttpServletResponse response)
+		throws Exception;
+
+	public void includeView(
+			HttpServletRequest request, HttpServletResponse response)
+		throws Exception;
 
 }

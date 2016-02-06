@@ -12,16 +12,16 @@
  * details.
  */
 
-package com.liferay.portal.util;
+package com.liferay.portal.kernel.util;
+
+import com.liferay.portal.model.Layout;
+import com.liferay.portal.model.LayoutTypePortlet;
 
 /**
- * @author     Michael C. Han
- * @deprecated As of 7.0.0, replaced by {@link
- *             PortalInetSocketAddressEventListener}
+ * @author Raymond Augé
  */
-@Deprecated
-public interface PortalPortEventListener {
+public interface LayoutTypePortletFactory {
 
-	public void portalPortConfigured(int port);
+	public LayoutTypePortlet create(Layout layout);
 
 }

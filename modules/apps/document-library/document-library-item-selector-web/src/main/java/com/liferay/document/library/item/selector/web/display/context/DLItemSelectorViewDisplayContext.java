@@ -19,7 +19,7 @@ import com.liferay.item.selector.ItemSelectorCriterion;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.util.PortletKeys;
+import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
 
 import java.util.Locale;

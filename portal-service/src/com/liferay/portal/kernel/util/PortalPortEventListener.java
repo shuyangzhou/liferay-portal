@@ -12,15 +12,16 @@
  * details.
  */
 
-package com.liferay.portal.util;
+package com.liferay.portal.kernel.util;
 
 /**
- * @author Jorge Ferrer
- * @author Dennis Ju
- * @author Brian Wing Shun Chan
+ * @author     Michael C. Han
+ * @deprecated As of 7.0.0, replaced by {@link
+ *             PortalInetSocketAddressEventListener}
  */
-public interface PortletListerFactory {
+@Deprecated
+public interface PortalPortEventListener {
 
-	public PortletLister getPortletLister();
+	public void portalPortConfigured(int port);
 
 }
