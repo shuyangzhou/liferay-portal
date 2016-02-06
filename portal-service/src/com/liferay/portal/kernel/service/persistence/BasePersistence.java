@@ -14,16 +14,16 @@
 
 package com.liferay.portal.kernel.service.persistence;
 
-import com.liferay.portal.exception.NoSuchModelException;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.ORMException;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.dao.orm.Session;
+import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.ModelListener;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.model.BaseModel;
-import com.liferay.portal.model.ModelListener;
-import com.liferay.portal.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -265,8 +265,8 @@ public interface BasePersistence<T extends BaseModel<T>> {
 	 * <p>
 	 * Typically not called directly, use local service update model methods
 	 * instead. For example, {@link
-	 * com.liferay.portal.service.UserLocalServiceUtil#updateUser(
-	 * com.liferay.portal.model.User)}.
+	 * com.liferay.portal.kernel.service.UserLocalServiceUtil#updateUser(
+	 * com.liferay.portal.kernel.model.User)}.
 	 * </p>
 	 *
 	 * @param  model the model instance to update

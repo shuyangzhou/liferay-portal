@@ -16,7 +16,7 @@ package com.liferay.portal.kernel.service.persistence;
 
 import com.liferay.portal.kernel.dao.orm.ORMException;
 import com.liferay.portal.kernel.dao.orm.Session;
-import com.liferay.portal.model.BaseModel;
+import com.liferay.portal.kernel.model.BaseModel;
 
 /**
  * Tracks database updates and flushes them from the session in batches.
@@ -124,8 +124,8 @@ public interface BatchSession {
 	 * leaves the model layer. However, local service update model methods use
 	 * merging by default, so in most cases this nuance is handled
 	 * automatically. See {@link
-	 * com.liferay.portal.service.UserLocalService#updateUser(
-	 * com.liferay.portal.model.User)} for an example.
+	 * com.liferay.portal.kernel.service.UserLocalService#updateUser(
+	 * com.liferay.portal.kernel.model.User)} for an example.
 	 * </p>
 	 *
 	 * @param session the session

@@ -15,8 +15,8 @@
 package com.liferay.portal.kernel.service;
 
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.model.PortletPreferencesIds;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.model.PortletPreferencesIds;
 
 import javax.portlet.PortletPreferences;
 

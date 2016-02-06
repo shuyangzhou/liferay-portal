@@ -14,11 +14,10 @@
 
 package com.liferay.portal.kernel.exception;
 
-import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.EmailAddressValidator;
 import com.liferay.portal.kernel.util.ClassUtil;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.model.User;
 
 /**
  * @author Brian Wing Shun Chan

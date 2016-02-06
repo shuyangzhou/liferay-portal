@@ -17,6 +17,12 @@ package com.liferay.portal.kernel.service;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.model.AuditedModel;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.PortletConstants;
+import com.liferay.portal.kernel.model.PortletPreferencesIds;
+import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
@@ -31,12 +37,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.model.AuditedModel;
-import com.liferay.portal.model.Group;
-import com.liferay.portal.model.PortletConstants;
-import com.liferay.portal.model.PortletPreferencesIds;
-import com.liferay.portal.model.Role;
-import com.liferay.portal.model.RoleConstants;
 
 import java.io.Serializable;
 
@@ -1230,7 +1230,7 @@ public class ServiceContext implements Cloneable, Serializable {
 	 *
 	 * <p>
 	 * These attributes should only include fields that {@link
-	 * com.liferay.portal.service.ServiceContext} does not possess by default.
+	 * com.liferay.portal.kernel.service.ServiceContext} does not possess by default.
 	 * </p>
 	 *
 	 * @param expandoBridgeAttributes the expando bridge attributes (optionally
