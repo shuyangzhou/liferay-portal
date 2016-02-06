@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.service.ResourceBlockLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourceBlockPermissionLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
+import com.liferay.portal.kernel.service.persistence.RoleFinderUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;

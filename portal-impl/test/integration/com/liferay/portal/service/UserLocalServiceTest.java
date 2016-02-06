@@ -16,6 +16,9 @@ package com.liferay.portal.service;
 
 import com.liferay.announcements.kernel.service.AnnouncementsDeliveryLocalServiceUtil;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ContactLocalServiceUtil;
+import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
