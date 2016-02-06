@@ -19,10 +19,10 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
+import com.liferay.portal.kernel.service.PortletPreferencesServiceUtil;
 import com.liferay.portal.kernel.service.http.TunnelUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
-import com.liferay.portal.kernel.service.PortletPreferencesServiceUtil;
 
 /**
  * Provides the HTTP utility for the
@@ -148,8 +148,8 @@ public class PortletPreferencesServiceHttp {
 
 	public static void restoreArchivedPreferences(HttpPrincipal httpPrincipal,
 		long groupId, java.lang.String name,
-		com.liferay.portal.kernel.model.Layout layout, java.lang.String portletId,
-		javax.portlet.PortletPreferences preferences)
+		com.liferay.portal.kernel.model.Layout layout,
+		java.lang.String portletId, javax.portlet.PortletPreferences preferences)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(PortletPreferencesServiceUtil.class,
@@ -218,7 +218,8 @@ public class PortletPreferencesServiceHttp {
 		};
 	private static final Class<?>[] _restoreArchivedPreferencesParameterTypes2 = new Class[] {
 			long.class, com.liferay.portal.kernel.model.Layout.class,
-			java.lang.String.class, com.liferay.portal.kernel.model.PortletItem.class,
+			java.lang.String.class,
+			com.liferay.portal.kernel.model.PortletItem.class,
 			javax.portlet.PortletPreferences.class
 		};
 	private static final Class<?>[] _restoreArchivedPreferencesParameterTypes3 = new Class[] {

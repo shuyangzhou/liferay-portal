@@ -301,8 +301,8 @@ public class UserServiceWrapper implements UserService,
 	* @return the new user
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.User addUserWithWorkflow(long companyId,
-		boolean autoPassword, java.lang.String password1,
+	public com.liferay.portal.kernel.model.User addUserWithWorkflow(
+		long companyId, boolean autoPassword, java.lang.String password1,
 		java.lang.String password2, boolean autoScreenName,
 		java.lang.String screenName, java.lang.String emailAddress,
 		long facebookId, java.lang.String openId, java.util.Locale locale,
@@ -374,8 +374,8 @@ public class UserServiceWrapper implements UserService,
 	* @return the new user
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.User addUserWithWorkflow(long companyId,
-		boolean autoPassword, java.lang.String password1,
+	public com.liferay.portal.kernel.model.User addUserWithWorkflow(
+		long companyId, boolean autoPassword, java.lang.String password1,
 		java.lang.String password2, boolean autoScreenName,
 		java.lang.String screenName, java.lang.String emailAddress,
 		long facebookId, java.lang.String openId, java.util.Locale locale,
@@ -527,8 +527,8 @@ public class UserServiceWrapper implements UserService,
 	* @return the user with the email address
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.User getUserByEmailAddress(long companyId,
-		java.lang.String emailAddress)
+	public com.liferay.portal.kernel.model.User getUserByEmailAddress(
+		long companyId, java.lang.String emailAddress)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userService.getUserByEmailAddress(companyId, emailAddress);
 	}
@@ -553,8 +553,8 @@ public class UserServiceWrapper implements UserService,
 	* @return the user with the screen name
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.User getUserByScreenName(long companyId,
-		java.lang.String screenName)
+	public com.liferay.portal.kernel.model.User getUserByScreenName(
+		long companyId, java.lang.String screenName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userService.getUserByScreenName(companyId, screenName);
 	}
@@ -840,8 +840,8 @@ public class UserServiceWrapper implements UserService,
 	* @return the user
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.User updateAgreedToTermsOfUse(long userId,
-		boolean agreedToTermsOfUse)
+	public com.liferay.portal.kernel.model.User updateAgreedToTermsOfUse(
+		long userId, boolean agreedToTermsOfUse)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userService.updateAgreedToTermsOfUse(userId, agreedToTermsOfUse);
 	}
@@ -859,8 +859,8 @@ public class UserServiceWrapper implements UserService,
 	* @return the user
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.User updateEmailAddress(long userId,
-		java.lang.String password, java.lang.String emailAddress1,
+	public com.liferay.portal.kernel.model.User updateEmailAddress(
+		long userId, java.lang.String password, java.lang.String emailAddress1,
 		java.lang.String emailAddress2,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -905,8 +905,8 @@ public class UserServiceWrapper implements UserService,
 	* @return the user
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.User updateIncompleteUser(long companyId,
-		boolean autoPassword, java.lang.String password1,
+	public com.liferay.portal.kernel.model.User updateIncompleteUser(
+		long companyId, boolean autoPassword, java.lang.String password1,
 		java.lang.String password2, boolean autoScreenName,
 		java.lang.String screenName, java.lang.String emailAddress,
 		long facebookId, java.lang.String openId, java.util.Locale locale,
@@ -1010,8 +1010,8 @@ public class UserServiceWrapper implements UserService,
 	* @return the user
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.User updateReminderQuery(long userId,
-		java.lang.String question, java.lang.String answer)
+	public com.liferay.portal.kernel.model.User updateReminderQuery(
+		long userId, java.lang.String question, java.lang.String answer)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userService.updateReminderQuery(userId, question, answer);
 	}
@@ -1041,8 +1041,8 @@ public class UserServiceWrapper implements UserService,
 	*/
 	@Deprecated
 	@Override
-	public com.liferay.portal.kernel.model.User updateStatus(long userId, int status)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public com.liferay.portal.kernel.model.User updateStatus(long userId,
+		int status) throws com.liferay.portal.kernel.exception.PortalException {
 		return _userService.updateStatus(userId, status);
 	}
 
@@ -1057,7 +1057,8 @@ public class UserServiceWrapper implements UserService,
 	* @return the user
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.User updateStatus(long userId, int status,
+	public com.liferay.portal.kernel.model.User updateStatus(long userId,
+		int status,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userService.updateStatus(userId, status, serviceContext);

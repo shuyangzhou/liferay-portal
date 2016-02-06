@@ -319,8 +319,8 @@ public class WebsiteLocalServiceWrapper implements WebsiteLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.Website updateWebsite(long websiteId,
-		java.lang.String url, long typeId, boolean primary)
+	public com.liferay.portal.kernel.model.Website updateWebsite(
+		long websiteId, java.lang.String url, long typeId, boolean primary)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _websiteLocalService.updateWebsite(websiteId, url, typeId,
 			primary);

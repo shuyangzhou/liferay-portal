@@ -286,8 +286,9 @@ public class ReleaseLocalServiceWrapper implements ReleaseLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.Release updateRelease(long releaseId,
-		int buildNumber, java.util.Date buildDate, boolean verified)
+	public com.liferay.portal.kernel.model.Release updateRelease(
+		long releaseId, int buildNumber, java.util.Date buildDate,
+		boolean verified)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _releaseLocalService.updateRelease(releaseId, buildNumber,
 			buildDate, verified);

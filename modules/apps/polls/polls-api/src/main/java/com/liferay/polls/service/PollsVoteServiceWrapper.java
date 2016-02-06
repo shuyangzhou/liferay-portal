@@ -34,7 +34,8 @@ public class PollsVoteServiceWrapper implements PollsVoteService,
 
 	@Override
 	public com.liferay.polls.model.PollsVote addVote(long questionId,
-		long choiceId, com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		long choiceId,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _pollsVoteService.addVote(questionId, choiceId, serviceContext);
 	}

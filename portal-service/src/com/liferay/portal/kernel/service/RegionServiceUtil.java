@@ -40,18 +40,20 @@ public class RegionServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.portal.service.impl.RegionServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.portal.kernel.model.Region addRegion(long countryId,
-		java.lang.String regionCode, java.lang.String name, boolean active)
+	public static com.liferay.portal.kernel.model.Region addRegion(
+		long countryId, java.lang.String regionCode, java.lang.String name,
+		boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().addRegion(countryId, regionCode, name, active);
 	}
 
-	public static com.liferay.portal.kernel.model.Region fetchRegion(long countryId,
-		java.lang.String regionCode) {
+	public static com.liferay.portal.kernel.model.Region fetchRegion(
+		long countryId, java.lang.String regionCode) {
 		return getService().fetchRegion(countryId, regionCode);
 	}
 
-	public static com.liferay.portal.kernel.model.Region fetchRegion(long regionId) {
+	public static com.liferay.portal.kernel.model.Region fetchRegion(
+		long regionId) {
 		return getService().fetchRegion(regionId);
 	}
 
@@ -64,13 +66,14 @@ public class RegionServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.kernel.model.Region getRegion(long countryId,
-		java.lang.String regionCode)
+	public static com.liferay.portal.kernel.model.Region getRegion(
+		long countryId, java.lang.String regionCode)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getRegion(countryId, regionCode);
 	}
 
-	public static com.liferay.portal.kernel.model.Region getRegion(long regionId)
+	public static com.liferay.portal.kernel.model.Region getRegion(
+		long regionId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getRegion(regionId);
 	}

@@ -215,7 +215,8 @@ public class OrgLaborLocalServiceUtil {
 	* @return the org labor
 	* @throws PortalException if a org labor with the primary key could not be found
 	*/
-	public static com.liferay.portal.kernel.model.OrgLabor getOrgLabor(long orgLaborId)
+	public static com.liferay.portal.kernel.model.OrgLabor getOrgLabor(
+		long orgLaborId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getOrgLabor(orgLaborId);
 	}

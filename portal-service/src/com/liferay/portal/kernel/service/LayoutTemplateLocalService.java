@@ -18,12 +18,12 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.model.LayoutTemplate;
 import com.liferay.portal.kernel.plugin.PluginPackage;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.xml.Element;
-import com.liferay.portal.kernel.model.LayoutTemplate;
 
 import java.util.List;
 import java.util.Set;

@@ -61,7 +61,8 @@ public class CompanyServiceUtil {
 				   .addCompany(webId, virtualHost, mx, system, maxUsers, active);
 	}
 
-	public static com.liferay.portal.kernel.model.Company deleteCompany(long companyId)
+	public static com.liferay.portal.kernel.model.Company deleteCompany(
+		long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteCompany(companyId);
 	}
@@ -398,8 +399,8 @@ public class CompanyServiceUtil {
 	* @param bytes the bytes of the company's logo image
 	* @return the company with the primary key
 	*/
-	public static com.liferay.portal.kernel.model.Company updateLogo(long companyId,
-		byte[] bytes)
+	public static com.liferay.portal.kernel.model.Company updateLogo(
+		long companyId, byte[] bytes)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateLogo(companyId, bytes);
 	}
@@ -411,8 +412,8 @@ public class CompanyServiceUtil {
 	* @param inputStream the input stream of the company's logo image
 	* @return the company with the primary key
 	*/
-	public static com.liferay.portal.kernel.model.Company updateLogo(long companyId,
-		java.io.InputStream inputStream)
+	public static com.liferay.portal.kernel.model.Company updateLogo(
+		long companyId, java.io.InputStream inputStream)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateLogo(companyId, inputStream);
 	}

@@ -107,7 +107,8 @@ public interface RoleFinder {
 		throws com.liferay.portal.kernel.exception.NoSuchRoleException;
 
 	public java.util.List<com.liferay.portal.kernel.model.Role> findByU_G(
-		long userId, java.util.List<com.liferay.portal.kernel.model.Group> groups);
+		long userId,
+		java.util.List<com.liferay.portal.kernel.model.Group> groups);
 
 	public java.util.List<com.liferay.portal.kernel.model.Role> findByU_G(
 		long userId, long groupId);

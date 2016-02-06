@@ -278,7 +278,8 @@ public interface LayoutBranchModel extends BaseModel<LayoutBranch>, MVCCModel,
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.kernel.model.LayoutBranch layoutBranch);
+	public int compareTo(
+		com.liferay.portal.kernel.model.LayoutBranch layoutBranch);
 
 	@Override
 	public int hashCode();

@@ -452,7 +452,8 @@ public class DLFileShortcutLocalServiceUtil {
 	}
 
 	public static void updateStatus(long userId, long fileShortcutId,
-		int status, com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		int status,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().updateStatus(userId, fileShortcutId, status, serviceContext);
 	}

@@ -18,10 +18,10 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
-import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.ReferenceRegistry;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 import java.util.List;
 
@@ -1865,7 +1865,8 @@ public class GroupUtil {
 	* @throws NoSuchGroupException if a matching group could not be found
 	*/
 	public static Group findByC_C_C(long companyId, long classNameId,
-		long classPK) throws com.liferay.portal.kernel.exception.NoSuchGroupException {
+		long classPK)
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence().findByC_C_C(companyId, classNameId, classPK);
 	}
 
@@ -1907,7 +1908,8 @@ public class GroupUtil {
 	* @return the group that was removed
 	*/
 	public static Group removeByC_C_C(long companyId, long classNameId,
-		long classPK) throws com.liferay.portal.kernel.exception.NoSuchGroupException {
+		long classPK)
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence().removeByC_C_C(companyId, classNameId, classPK);
 	}
 
@@ -3133,7 +3135,8 @@ public class GroupUtil {
 	* @param pk the primary key of the group
 	* @param role the role
 	*/
-	public static void addRole(long pk, com.liferay.portal.kernel.model.Role role) {
+	public static void addRole(long pk,
+		com.liferay.portal.kernel.model.Role role) {
 		getPersistence().addRole(pk, role);
 	}
 
@@ -3183,7 +3186,8 @@ public class GroupUtil {
 	* @param pk the primary key of the group
 	* @param role the role
 	*/
-	public static void removeRole(long pk, com.liferay.portal.kernel.model.Role role) {
+	public static void removeRole(long pk,
+		com.liferay.portal.kernel.model.Role role) {
 		getPersistence().removeRole(pk, role);
 	}
 
@@ -3534,7 +3538,8 @@ public class GroupUtil {
 	* @param pk the primary key of the group
 	* @param user the user
 	*/
-	public static void addUser(long pk, com.liferay.portal.kernel.model.User user) {
+	public static void addUser(long pk,
+		com.liferay.portal.kernel.model.User user) {
 		getPersistence().addUser(pk, user);
 	}
 
@@ -3584,7 +3589,8 @@ public class GroupUtil {
 	* @param pk the primary key of the group
 	* @param user the user
 	*/
-	public static void removeUser(long pk, com.liferay.portal.kernel.model.User user) {
+	public static void removeUser(long pk,
+		com.liferay.portal.kernel.model.User user) {
 		getPersistence().removeUser(pk, user);
 	}
 

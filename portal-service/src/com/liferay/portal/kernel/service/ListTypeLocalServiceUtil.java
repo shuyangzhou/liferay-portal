@@ -199,7 +199,8 @@ public class ListTypeLocalServiceUtil {
 	* @return the list type
 	* @throws PortalException if a list type with the primary key could not be found
 	*/
-	public static com.liferay.portal.kernel.model.ListType getListType(long listTypeId)
+	public static com.liferay.portal.kernel.model.ListType getListType(
+		long listTypeId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getListType(listTypeId);
 	}

@@ -61,7 +61,8 @@ public class ClassNameLocalServiceWrapper implements ClassNameLocalService,
 	* @return the new class name
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.ClassName createClassName(long classNameId) {
+	public com.liferay.portal.kernel.model.ClassName createClassName(
+		long classNameId) {
 		return _classNameLocalService.createClassName(classNameId);
 	}
 
@@ -85,7 +86,8 @@ public class ClassNameLocalServiceWrapper implements ClassNameLocalService,
 	* @throws PortalException if a class name with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.ClassName deleteClassName(long classNameId)
+	public com.liferay.portal.kernel.model.ClassName deleteClassName(
+		long classNameId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _classNameLocalService.deleteClassName(classNameId);
 	}
@@ -185,7 +187,8 @@ public class ClassNameLocalServiceWrapper implements ClassNameLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.ClassName fetchClassName(long classNameId) {
+	public com.liferay.portal.kernel.model.ClassName fetchClassName(
+		long classNameId) {
 		return _classNameLocalService.fetchClassName(classNameId);
 	}
 
@@ -208,7 +211,8 @@ public class ClassNameLocalServiceWrapper implements ClassNameLocalService,
 	* @throws PortalException if a class name with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.ClassName getClassName(long classNameId)
+	public com.liferay.portal.kernel.model.ClassName getClassName(
+		long classNameId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _classNameLocalService.getClassName(classNameId);
 	}

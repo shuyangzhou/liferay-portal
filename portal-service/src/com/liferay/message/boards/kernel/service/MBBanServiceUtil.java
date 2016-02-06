@@ -41,7 +41,8 @@ public class MBBanServiceUtil {
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.portlet.messageboards.service.impl.MBBanServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.message.boards.kernel.model.MBBan addBan(
-		long banUserId, com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		long banUserId,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().addBan(banUserId, serviceContext);
 	}

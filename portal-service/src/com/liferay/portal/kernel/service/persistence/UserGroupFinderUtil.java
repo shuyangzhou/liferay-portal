@@ -58,8 +58,8 @@ public class UserGroupFinderUtil {
 				   .findByKeywords(companyId, keywords, params, start, end, obc);
 	}
 
-	public static com.liferay.portal.kernel.model.UserGroup findByC_N(long companyId,
-		java.lang.String name)
+	public static com.liferay.portal.kernel.model.UserGroup findByC_N(
+		long companyId, java.lang.String name)
 		throws com.liferay.portal.kernel.exception.NoSuchUserGroupException {
 		return getFinder().findByC_N(companyId, name);
 	}

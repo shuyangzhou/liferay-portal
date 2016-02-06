@@ -84,8 +84,9 @@ public class OrganizationLocalServiceWrapper implements OrganizationLocalService
 	* @return the organization
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.Organization addOrganization(long userId,
-		long parentOrganizationId, java.lang.String name, boolean site)
+	public com.liferay.portal.kernel.model.Organization addOrganization(
+		long userId, long parentOrganizationId, java.lang.String name,
+		boolean site)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _organizationLocalService.addOrganization(userId,
 			parentOrganizationId, name, site);
@@ -118,8 +119,8 @@ public class OrganizationLocalServiceWrapper implements OrganizationLocalService
 	* @return the organization
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.Organization addOrganization(long userId,
-		long parentOrganizationId, java.lang.String name,
+	public com.liferay.portal.kernel.model.Organization addOrganization(
+		long userId, long parentOrganizationId, java.lang.String name,
 		java.lang.String type, long regionId, long countryId, long statusId,
 		java.lang.String comments, boolean site,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)

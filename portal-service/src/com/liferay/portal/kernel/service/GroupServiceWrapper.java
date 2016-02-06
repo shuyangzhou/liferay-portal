@@ -92,7 +92,8 @@ public class GroupServiceWrapper implements GroupService,
 		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
 		int type, boolean manualMembership, int membershipRestriction,
 		java.lang.String friendlyURL, boolean site, boolean inheritContent,
-		boolean active, com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		boolean active,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupService.addGroup(parentGroupId, liveGroupId, nameMap,
 			descriptionMap, type, manualMembership, membershipRestriction,
@@ -246,8 +247,8 @@ public class GroupServiceWrapper implements GroupService,
 	*/
 	@Override
 	public java.util.List<com.liferay.portal.kernel.model.Group> getManageableSiteGroups(
-		java.util.Collection<com.liferay.portal.kernel.model.Portlet> portlets, int max)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		java.util.Collection<com.liferay.portal.kernel.model.Portlet> portlets,
+		int max) throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupService.getManageableSiteGroups(portlets, max);
 	}
 
@@ -572,8 +573,8 @@ public class GroupServiceWrapper implements GroupService,
 	* @throws PortalException if a portal exception occurred
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.Group updateFriendlyURL(long groupId,
-		java.lang.String friendlyURL)
+	public com.liferay.portal.kernel.model.Group updateFriendlyURL(
+		long groupId, java.lang.String friendlyURL)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupService.updateFriendlyURL(groupId, friendlyURL);
 	}

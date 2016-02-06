@@ -80,8 +80,8 @@ public class RegionServiceSoap {
 		}
 	}
 
-	public static com.liferay.portal.kernel.model.RegionSoap fetchRegion(long regionId)
-		throws RemoteException {
+	public static com.liferay.portal.kernel.model.RegionSoap fetchRegion(
+		long regionId) throws RemoteException {
 		try {
 			com.liferay.portal.kernel.model.Region returnValue = RegionServiceUtil.fetchRegion(regionId);
 
@@ -109,8 +109,8 @@ public class RegionServiceSoap {
 		}
 	}
 
-	public static com.liferay.portal.kernel.model.RegionSoap getRegion(long regionId)
-		throws RemoteException {
+	public static com.liferay.portal.kernel.model.RegionSoap getRegion(
+		long regionId) throws RemoteException {
 		try {
 			com.liferay.portal.kernel.model.Region returnValue = RegionServiceUtil.getRegion(regionId);
 

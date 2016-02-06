@@ -20,8 +20,8 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
 
@@ -204,7 +204,8 @@ public class OrganizationWrapper implements Organization,
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.kernel.model.Organization organization) {
+	public int compareTo(
+		com.liferay.portal.kernel.model.Organization organization) {
 		return _organization.compareTo(organization);
 	}
 

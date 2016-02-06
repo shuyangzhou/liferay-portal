@@ -18,8 +18,8 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.service.RoleServiceUtil;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 
 import java.rmi.RemoteException;
 
@@ -149,8 +149,8 @@ public class RoleServiceSoap {
 		}
 	}
 
-	public static com.liferay.portal.kernel.model.RoleSoap fetchRole(long roleId)
-		throws RemoteException {
+	public static com.liferay.portal.kernel.model.RoleSoap fetchRole(
+		long roleId) throws RemoteException {
 		try {
 			com.liferay.portal.kernel.model.Role returnValue = RoleServiceUtil.fetchRole(roleId);
 
@@ -215,8 +215,8 @@ public class RoleServiceSoap {
 	* @param name the role's name
 	* @return the role with the name
 	*/
-	public static com.liferay.portal.kernel.model.RoleSoap getRole(long companyId,
-		java.lang.String name) throws RemoteException {
+	public static com.liferay.portal.kernel.model.RoleSoap getRole(
+		long companyId, java.lang.String name) throws RemoteException {
 		try {
 			com.liferay.portal.kernel.model.Role returnValue = RoleServiceUtil.getRole(companyId,
 					name);
@@ -230,8 +230,8 @@ public class RoleServiceSoap {
 		}
 	}
 
-	public static com.liferay.portal.kernel.model.RoleSoap[] getRoles(int type,
-		java.lang.String subtype) throws RemoteException {
+	public static com.liferay.portal.kernel.model.RoleSoap[] getRoles(
+		int type, java.lang.String subtype) throws RemoteException {
 		try {
 			java.util.List<com.liferay.portal.kernel.model.Role> returnValue = RoleServiceUtil.getRoles(type,
 					subtype);
@@ -245,8 +245,8 @@ public class RoleServiceSoap {
 		}
 	}
 
-	public static com.liferay.portal.kernel.model.RoleSoap[] getRoles(long companyId,
-		int[] types) throws RemoteException {
+	public static com.liferay.portal.kernel.model.RoleSoap[] getRoles(
+		long companyId, int[] types) throws RemoteException {
 		try {
 			java.util.List<com.liferay.portal.kernel.model.Role> returnValue = RoleServiceUtil.getRoles(companyId,
 					types);
@@ -334,8 +334,8 @@ public class RoleServiceSoap {
 	* @param userId the primary key of the user
 	* @return the roles associated with the user
 	*/
-	public static com.liferay.portal.kernel.model.RoleSoap[] getUserRoles(long userId)
-		throws RemoteException {
+	public static com.liferay.portal.kernel.model.RoleSoap[] getUserRoles(
+		long userId) throws RemoteException {
 		try {
 			java.util.List<com.liferay.portal.kernel.model.Role> returnValue = RoleServiceUtil.getUserRoles(userId);
 
@@ -436,8 +436,9 @@ public class RoleServiceSoap {
 	role.
 	* @return the role with the primary key
 	*/
-	public static com.liferay.portal.kernel.model.RoleSoap updateRole(long roleId,
-		java.lang.String name, java.lang.String[] titleMapLanguageIds,
+	public static com.liferay.portal.kernel.model.RoleSoap updateRole(
+		long roleId, java.lang.String name,
+		java.lang.String[] titleMapLanguageIds,
 		java.lang.String[] titleMapValues,
 		java.lang.String[] descriptionMapLanguageIds,
 		java.lang.String[] descriptionMapValues, java.lang.String subtype,

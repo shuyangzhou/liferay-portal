@@ -1656,7 +1656,8 @@ public interface OrganizationPersistence extends BasePersistence<Organization> {
 	* @param pk the primary key of the organization
 	* @return the groups associated with the organization
 	*/
-	public java.util.List<com.liferay.portal.kernel.model.Group> getGroups(long pk);
+	public java.util.List<com.liferay.portal.kernel.model.Group> getGroups(
+		long pk);
 
 	/**
 	* Returns a range of all the groups associated with the organization.
@@ -1670,8 +1671,8 @@ public interface OrganizationPersistence extends BasePersistence<Organization> {
 	* @param end the upper bound of the range of organizations (not inclusive)
 	* @return the range of groups associated with the organization
 	*/
-	public java.util.List<com.liferay.portal.kernel.model.Group> getGroups(long pk,
-		int start, int end);
+	public java.util.List<com.liferay.portal.kernel.model.Group> getGroups(
+		long pk, int start, int end);
 
 	/**
 	* Returns an ordered range of all the groups associated with the organization.
@@ -1686,8 +1687,8 @@ public interface OrganizationPersistence extends BasePersistence<Organization> {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of groups associated with the organization
 	*/
-	public java.util.List<com.liferay.portal.kernel.model.Group> getGroups(long pk,
-		int start, int end,
+	public java.util.List<com.liferay.portal.kernel.model.Group> getGroups(
+		long pk, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Group> orderByComparator);
 
 	/**
@@ -1819,7 +1820,8 @@ public interface OrganizationPersistence extends BasePersistence<Organization> {
 	* @param pk the primary key of the organization
 	* @return the users associated with the organization
 	*/
-	public java.util.List<com.liferay.portal.kernel.model.User> getUsers(long pk);
+	public java.util.List<com.liferay.portal.kernel.model.User> getUsers(
+		long pk);
 
 	/**
 	* Returns a range of all the users associated with the organization.
@@ -1833,8 +1835,8 @@ public interface OrganizationPersistence extends BasePersistence<Organization> {
 	* @param end the upper bound of the range of organizations (not inclusive)
 	* @return the range of users associated with the organization
 	*/
-	public java.util.List<com.liferay.portal.kernel.model.User> getUsers(long pk,
-		int start, int end);
+	public java.util.List<com.liferay.portal.kernel.model.User> getUsers(
+		long pk, int start, int end);
 
 	/**
 	* Returns an ordered range of all the users associated with the organization.
@@ -1849,8 +1851,8 @@ public interface OrganizationPersistence extends BasePersistence<Organization> {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of users associated with the organization
 	*/
-	public java.util.List<com.liferay.portal.kernel.model.User> getUsers(long pk,
-		int start, int end,
+	public java.util.List<com.liferay.portal.kernel.model.User> getUsers(
+		long pk, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.User> orderByComparator);
 
 	/**

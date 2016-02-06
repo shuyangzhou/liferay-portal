@@ -55,7 +55,8 @@ public class PortletPreferencesServiceUtil {
 	}
 
 	public static void restoreArchivedPreferences(long groupId,
-		com.liferay.portal.kernel.model.Layout layout, java.lang.String portletId,
+		com.liferay.portal.kernel.model.Layout layout,
+		java.lang.String portletId,
 		com.liferay.portal.kernel.model.PortletItem portletItem,
 		javax.portlet.PortletPreferences preferences)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -65,8 +66,9 @@ public class PortletPreferencesServiceUtil {
 	}
 
 	public static void restoreArchivedPreferences(long groupId,
-		com.liferay.portal.kernel.model.Layout layout, java.lang.String portletId,
-		long portletItemId, javax.portlet.PortletPreferences preferences)
+		com.liferay.portal.kernel.model.Layout layout,
+		java.lang.String portletId, long portletItemId,
+		javax.portlet.PortletPreferences preferences)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService()
 			.restoreArchivedPreferences(groupId, layout, portletId,

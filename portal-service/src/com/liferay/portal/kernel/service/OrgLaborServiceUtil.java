@@ -66,7 +66,8 @@ public class OrgLaborServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.kernel.model.OrgLabor getOrgLabor(long orgLaborId)
+	public static com.liferay.portal.kernel.model.OrgLabor getOrgLabor(
+		long orgLaborId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getOrgLabor(orgLaborId);
 	}

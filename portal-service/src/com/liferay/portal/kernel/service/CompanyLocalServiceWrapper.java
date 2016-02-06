@@ -56,9 +56,9 @@ public class CompanyLocalServiceWrapper implements CompanyLocalService,
 	* @return the company
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.Company addCompany(java.lang.String webId,
-		java.lang.String virtualHostname, java.lang.String mx, boolean system,
-		int maxUsers, boolean active)
+	public com.liferay.portal.kernel.model.Company addCompany(
+		java.lang.String webId, java.lang.String virtualHostname,
+		java.lang.String mx, boolean system, int maxUsers, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _companyLocalService.addCompany(webId, virtualHostname, mx,
 			system, maxUsers, active);
@@ -74,7 +74,8 @@ public class CompanyLocalServiceWrapper implements CompanyLocalService,
 	* @return the company with the web domain
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.Company checkCompany(java.lang.String webId)
+	public com.liferay.portal.kernel.model.Company checkCompany(
+		java.lang.String webId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _companyLocalService.checkCompany(webId);
 	}
@@ -266,7 +267,8 @@ public class CompanyLocalServiceWrapper implements CompanyLocalService,
 	with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.Company fetchCompanyById(long companyId) {
+	public com.liferay.portal.kernel.model.Company fetchCompanyById(
+		long companyId) {
 		return _companyLocalService.fetchCompanyById(companyId);
 	}
 
@@ -376,7 +378,8 @@ public class CompanyLocalServiceWrapper implements CompanyLocalService,
 	* @return the company with the primary key
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.Company getCompanyById(long companyId)
+	public com.liferay.portal.kernel.model.Company getCompanyById(
+		long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _companyLocalService.getCompanyById(companyId);
 	}
@@ -388,8 +391,8 @@ public class CompanyLocalServiceWrapper implements CompanyLocalService,
 	* @return the company with the logo
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.Company getCompanyByLogoId(long logoId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public com.liferay.portal.kernel.model.Company getCompanyByLogoId(
+		long logoId) throws com.liferay.portal.kernel.exception.PortalException {
 		return _companyLocalService.getCompanyByLogoId(logoId);
 	}
 
@@ -400,7 +403,8 @@ public class CompanyLocalServiceWrapper implements CompanyLocalService,
 	* @return the company with the mail domain
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.Company getCompanyByMx(java.lang.String mx)
+	public com.liferay.portal.kernel.model.Company getCompanyByMx(
+		java.lang.String mx)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _companyLocalService.getCompanyByMx(mx);
 	}
@@ -571,8 +575,8 @@ public class CompanyLocalServiceWrapper implements CompanyLocalService,
 	* @return the company with the primary key
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.Company updateCompany(long companyId,
-		java.lang.String virtualHostname, java.lang.String mx,
+	public com.liferay.portal.kernel.model.Company updateCompany(
+		long companyId, java.lang.String virtualHostname, java.lang.String mx,
 		java.lang.String homeURL, boolean logo, byte[] logoBytes,
 		java.lang.String name, java.lang.String legalName,
 		java.lang.String legalId, java.lang.String legalType,
@@ -615,8 +619,8 @@ public class CompanyLocalServiceWrapper implements CompanyLocalService,
 	*/
 	@Deprecated
 	@Override
-	public com.liferay.portal.kernel.model.Company updateCompany(long companyId,
-		java.lang.String virtualHostname, java.lang.String mx,
+	public com.liferay.portal.kernel.model.Company updateCompany(
+		long companyId, java.lang.String virtualHostname, java.lang.String mx,
 		java.lang.String homeURL, java.lang.String name,
 		java.lang.String legalName, java.lang.String legalId,
 		java.lang.String legalType, java.lang.String sicCode,
@@ -640,9 +644,9 @@ public class CompanyLocalServiceWrapper implements CompanyLocalService,
 	* @return the company with the primary key
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.Company updateCompany(long companyId,
-		java.lang.String virtualHostname, java.lang.String mx, int maxUsers,
-		boolean active)
+	public com.liferay.portal.kernel.model.Company updateCompany(
+		long companyId, java.lang.String virtualHostname, java.lang.String mx,
+		int maxUsers, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _companyLocalService.updateCompany(companyId, virtualHostname,
 			mx, maxUsers, active);

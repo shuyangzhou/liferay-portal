@@ -42,7 +42,8 @@ public class PortletPreferencesLocalServiceUtil {
 	 */
 	public static com.liferay.portal.kernel.model.PortletPreferences addPortletPreferences(
 		long companyId, long ownerId, int ownerType, long plid,
-		java.lang.String portletId, com.liferay.portal.kernel.model.Portlet portlet,
+		java.lang.String portletId,
+		com.liferay.portal.kernel.model.Portlet portlet,
 		java.lang.String defaultPreferences) {
 		return getService()
 				   .addPortletPreferences(companyId, ownerId, ownerType, plid,

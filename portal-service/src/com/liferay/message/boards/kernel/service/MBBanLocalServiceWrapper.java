@@ -34,7 +34,8 @@ public class MBBanLocalServiceWrapper implements MBBanLocalService,
 
 	@Override
 	public com.liferay.message.boards.kernel.model.MBBan addBan(long userId,
-		long banUserId, com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		long banUserId,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _mbBanLocalService.addBan(userId, banUserId, serviceContext);
 	}

@@ -64,8 +64,8 @@ import java.rmi.RemoteException;
  */
 @ProviderType
 public class ImageServiceSoap {
-	public static com.liferay.portal.kernel.model.ImageSoap getImage(long imageId)
-		throws RemoteException {
+	public static com.liferay.portal.kernel.model.ImageSoap getImage(
+		long imageId) throws RemoteException {
 		try {
 			com.liferay.portal.kernel.model.Image returnValue = ImageServiceUtil.getImage(imageId);
 

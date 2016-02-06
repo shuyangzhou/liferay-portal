@@ -194,7 +194,8 @@ public class RoleServiceUtil {
 	* @return the union of all the user's roles within the groups
 	*/
 	public static java.util.List<com.liferay.portal.kernel.model.Role> getUserRelatedRoles(
-		long userId, java.util.List<com.liferay.portal.kernel.model.Group> groups)
+		long userId,
+		java.util.List<com.liferay.portal.kernel.model.Group> groups)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getUserRelatedRoles(userId, groups);
 	}

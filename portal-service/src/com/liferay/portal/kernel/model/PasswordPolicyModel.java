@@ -686,7 +686,8 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.kernel.model.PasswordPolicy passwordPolicy);
+	public int compareTo(
+		com.liferay.portal.kernel.model.PasswordPolicy passwordPolicy);
 
 	@Override
 	public int hashCode();

@@ -215,8 +215,8 @@ public class UserIdMapperLocalServiceWrapper implements UserIdMapperLocalService
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.UserIdMapper getUserIdMapper(long userId,
-		java.lang.String type)
+	public com.liferay.portal.kernel.model.UserIdMapper getUserIdMapper(
+		long userId, java.lang.String type)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userIdMapperLocalService.getUserIdMapper(userId, type);
 	}

@@ -57,7 +57,8 @@ public class KaleoDefinitionLocalServiceUtil {
 	}
 
 	public static void activateKaleoDefinition(java.lang.String name,
-		int version, com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		int version,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().activateKaleoDefinition(name, version, serviceContext);
 	}
@@ -95,7 +96,8 @@ public class KaleoDefinitionLocalServiceUtil {
 	}
 
 	public static void deactivateKaleoDefinition(java.lang.String name,
-		int version, com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		int version,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().deactivateKaleoDefinition(name, version, serviceContext);
 	}
@@ -129,7 +131,8 @@ public class KaleoDefinitionLocalServiceUtil {
 	}
 
 	public static void deleteKaleoDefinition(java.lang.String name,
-		int version, com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		int version,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().deleteKaleoDefinition(name, version, serviceContext);
 	}
@@ -328,7 +331,8 @@ public class KaleoDefinitionLocalServiceUtil {
 	}
 
 	public static int getKaleoDefinitionsCount(java.lang.String name,
-		boolean active, com.liferay.portal.kernel.service.ServiceContext serviceContext) {
+		boolean active,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext) {
 		return getService()
 				   .getKaleoDefinitionsCount(name, active, serviceContext);
 	}

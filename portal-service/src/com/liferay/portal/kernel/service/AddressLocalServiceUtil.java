@@ -52,11 +52,12 @@ public class AddressLocalServiceUtil {
 		return getService().addAddress(address);
 	}
 
-	public static com.liferay.portal.kernel.model.Address addAddress(long userId,
-		java.lang.String className, long classPK, java.lang.String street1,
-		java.lang.String street2, java.lang.String street3,
-		java.lang.String city, java.lang.String zip, long regionId,
-		long countryId, long typeId, boolean mailing, boolean primary,
+	public static com.liferay.portal.kernel.model.Address addAddress(
+		long userId, java.lang.String className, long classPK,
+		java.lang.String street1, java.lang.String street2,
+		java.lang.String street3, java.lang.String city, java.lang.String zip,
+		long regionId, long countryId, long typeId, boolean mailing,
+		boolean primary,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
@@ -71,7 +72,8 @@ public class AddressLocalServiceUtil {
 	* @param addressId the primary key for the new address
 	* @return the new address
 	*/
-	public static com.liferay.portal.kernel.model.Address createAddress(long addressId) {
+	public static com.liferay.portal.kernel.model.Address createAddress(
+		long addressId) {
 		return getService().createAddress(addressId);
 	}
 
@@ -93,7 +95,8 @@ public class AddressLocalServiceUtil {
 	* @return the address that was removed
 	* @throws PortalException if a address with the primary key could not be found
 	*/
-	public static com.liferay.portal.kernel.model.Address deleteAddress(long addressId)
+	public static com.liferay.portal.kernel.model.Address deleteAddress(
+		long addressId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteAddress(addressId);
 	}
@@ -190,7 +193,8 @@ public class AddressLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.portal.kernel.model.Address fetchAddress(long addressId) {
+	public static com.liferay.portal.kernel.model.Address fetchAddress(
+		long addressId) {
 		return getService().fetchAddress(addressId);
 	}
 
@@ -217,7 +221,8 @@ public class AddressLocalServiceUtil {
 	* @return the address
 	* @throws PortalException if a address with the primary key could not be found
 	*/
-	public static com.liferay.portal.kernel.model.Address getAddress(long addressId)
+	public static com.liferay.portal.kernel.model.Address getAddress(
+		long addressId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getAddress(addressId);
 	}

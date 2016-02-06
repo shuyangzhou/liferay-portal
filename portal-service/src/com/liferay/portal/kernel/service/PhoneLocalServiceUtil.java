@@ -68,7 +68,8 @@ public class PhoneLocalServiceUtil {
 	* @param phoneId the primary key for the new phone
 	* @return the new phone
 	*/
-	public static com.liferay.portal.kernel.model.Phone createPhone(long phoneId) {
+	public static com.liferay.portal.kernel.model.Phone createPhone(
+		long phoneId) {
 		return getService().createPhone(phoneId);
 	}
 
@@ -99,7 +100,8 @@ public class PhoneLocalServiceUtil {
 	* @return the phone that was removed
 	* @throws PortalException if a phone with the primary key could not be found
 	*/
-	public static com.liferay.portal.kernel.model.Phone deletePhone(long phoneId)
+	public static com.liferay.portal.kernel.model.Phone deletePhone(
+		long phoneId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deletePhone(phoneId);
 	}
@@ -302,9 +304,9 @@ public class PhoneLocalServiceUtil {
 		return getService().updatePhone(phone);
 	}
 
-	public static com.liferay.portal.kernel.model.Phone updatePhone(long phoneId,
-		java.lang.String number, java.lang.String extension, long typeId,
-		boolean primary)
+	public static com.liferay.portal.kernel.model.Phone updatePhone(
+		long phoneId, java.lang.String number, java.lang.String extension,
+		long typeId, boolean primary)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updatePhone(phoneId, number, extension, typeId, primary);

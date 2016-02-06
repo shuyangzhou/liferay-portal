@@ -49,8 +49,8 @@ public class TicketLocalServiceUtil {
 			extraInfo, expirationDate, serviceContext);
 	}
 
-	public static com.liferay.portal.kernel.model.Ticket addTicket(long companyId,
-		java.lang.String className, long classPK, int type,
+	public static com.liferay.portal.kernel.model.Ticket addTicket(
+		long companyId, java.lang.String className, long classPK, int type,
 		java.lang.String extraInfo, java.util.Date expirationDate,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext) {
 		return getService()
@@ -75,7 +75,8 @@ public class TicketLocalServiceUtil {
 	* @param ticketId the primary key for the new ticket
 	* @return the new ticket
 	*/
-	public static com.liferay.portal.kernel.model.Ticket createTicket(long ticketId) {
+	public static com.liferay.portal.kernel.model.Ticket createTicket(
+		long ticketId) {
 		return getService().createTicket(ticketId);
 	}
 
@@ -106,7 +107,8 @@ public class TicketLocalServiceUtil {
 	* @return the ticket that was removed
 	* @throws PortalException if a ticket with the primary key could not be found
 	*/
-	public static com.liferay.portal.kernel.model.Ticket deleteTicket(long ticketId)
+	public static com.liferay.portal.kernel.model.Ticket deleteTicket(
+		long ticketId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteTicket(ticketId);
 	}
@@ -194,7 +196,8 @@ public class TicketLocalServiceUtil {
 		return getService().fetchTicket(key);
 	}
 
-	public static com.liferay.portal.kernel.model.Ticket fetchTicket(long ticketId) {
+	public static com.liferay.portal.kernel.model.Ticket fetchTicket(
+		long ticketId) {
 		return getService().fetchTicket(ticketId);
 	}
 
@@ -234,7 +237,8 @@ public class TicketLocalServiceUtil {
 	* @return the ticket
 	* @throws PortalException if a ticket with the primary key could not be found
 	*/
-	public static com.liferay.portal.kernel.model.Ticket getTicket(long ticketId)
+	public static com.liferay.portal.kernel.model.Ticket getTicket(
+		long ticketId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getTicket(ticketId);
 	}

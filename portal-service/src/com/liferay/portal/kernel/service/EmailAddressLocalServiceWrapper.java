@@ -44,9 +44,9 @@ public class EmailAddressLocalServiceWrapper implements EmailAddressLocalService
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.EmailAddress addEmailAddress(long userId,
-		java.lang.String className, long classPK, java.lang.String address,
-		long typeId, boolean primary,
+	public com.liferay.portal.kernel.model.EmailAddress addEmailAddress(
+		long userId, java.lang.String className, long classPK,
+		java.lang.String address, long typeId, boolean primary,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _emailAddressLocalService.addEmailAddress(userId, className,

@@ -56,7 +56,8 @@ public class ListTypeLocalServiceWrapper implements ListTypeLocalService,
 	* @return the new list type
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.ListType createListType(long listTypeId) {
+	public com.liferay.portal.kernel.model.ListType createListType(
+		long listTypeId) {
 		return _listTypeLocalService.createListType(listTypeId);
 	}
 
@@ -80,7 +81,8 @@ public class ListTypeLocalServiceWrapper implements ListTypeLocalService,
 	* @throws PortalException if a list type with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.ListType deleteListType(long listTypeId)
+	public com.liferay.portal.kernel.model.ListType deleteListType(
+		long listTypeId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _listTypeLocalService.deleteListType(listTypeId);
 	}
@@ -180,7 +182,8 @@ public class ListTypeLocalServiceWrapper implements ListTypeLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.ListType fetchListType(long listTypeId) {
+	public com.liferay.portal.kernel.model.ListType fetchListType(
+		long listTypeId) {
 		return _listTypeLocalService.fetchListType(listTypeId);
 	}
 

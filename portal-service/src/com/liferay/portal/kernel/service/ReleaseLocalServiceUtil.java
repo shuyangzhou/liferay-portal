@@ -68,7 +68,8 @@ public class ReleaseLocalServiceUtil {
 	* @param releaseId the primary key for the new release
 	* @return the new release
 	*/
-	public static com.liferay.portal.kernel.model.Release createRelease(long releaseId) {
+	public static com.liferay.portal.kernel.model.Release createRelease(
+		long releaseId) {
 		return getService().createRelease(releaseId);
 	}
 
@@ -103,7 +104,8 @@ public class ReleaseLocalServiceUtil {
 	* @return the release that was removed
 	* @throws PortalException if a release with the primary key could not be found
 	*/
-	public static com.liferay.portal.kernel.model.Release deleteRelease(long releaseId)
+	public static com.liferay.portal.kernel.model.Release deleteRelease(
+		long releaseId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteRelease(releaseId);
 	}
@@ -186,7 +188,8 @@ public class ReleaseLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.portal.kernel.model.Release fetchRelease(long releaseId) {
+	public static com.liferay.portal.kernel.model.Release fetchRelease(
+		long releaseId) {
 		return getService().fetchRelease(releaseId);
 	}
 
@@ -230,7 +233,8 @@ public class ReleaseLocalServiceUtil {
 	* @return the release
 	* @throws PortalException if a release with the primary key could not be found
 	*/
-	public static com.liferay.portal.kernel.model.Release getRelease(long releaseId)
+	public static com.liferay.portal.kernel.model.Release getRelease(
+		long releaseId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getRelease(releaseId);
 	}

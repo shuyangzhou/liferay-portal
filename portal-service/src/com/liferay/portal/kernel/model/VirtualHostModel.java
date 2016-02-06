@@ -171,7 +171,8 @@ public interface VirtualHostModel extends BaseModel<VirtualHost>, MVCCModel,
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.kernel.model.VirtualHost virtualHost);
+	public int compareTo(
+		com.liferay.portal.kernel.model.VirtualHost virtualHost);
 
 	@Override
 	public int hashCode();

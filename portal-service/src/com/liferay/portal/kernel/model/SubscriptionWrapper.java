@@ -18,8 +18,8 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
 
@@ -147,7 +147,8 @@ public class SubscriptionWrapper implements Subscription,
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.kernel.model.Subscription subscription) {
+	public int compareTo(
+		com.liferay.portal.kernel.model.Subscription subscription) {
 		return _subscription.compareTo(subscription);
 	}
 

@@ -1108,7 +1108,8 @@ public class MBCategoryServiceHttp {
 			int.class, java.lang.String.class, boolean.class,
 			java.lang.String.class, int.class, boolean.class,
 			java.lang.String.class, java.lang.String.class, boolean.class,
-			boolean.class, com.liferay.portal.kernel.service.ServiceContext.class
+			boolean.class,
+			com.liferay.portal.kernel.service.ServiceContext.class
 		};
 	private static final Class<?>[] _deleteCategoryParameterTypes2 = new Class[] {
 			long.class, boolean.class

@@ -18,8 +18,8 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
 
@@ -104,7 +104,8 @@ public class ClusterGroupWrapper implements ClusterGroup,
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.kernel.model.ClusterGroup clusterGroup) {
+	public int compareTo(
+		com.liferay.portal.kernel.model.ClusterGroup clusterGroup) {
 		return _clusterGroup.compareTo(clusterGroup);
 	}
 

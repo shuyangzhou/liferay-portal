@@ -44,9 +44,9 @@ public class PortletItemLocalServiceWrapper implements PortletItemLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.PortletItem addPortletItem(long userId,
-		long groupId, java.lang.String name, java.lang.String portletId,
-		java.lang.String className)
+	public com.liferay.portal.kernel.model.PortletItem addPortletItem(
+		long userId, long groupId, java.lang.String name,
+		java.lang.String portletId, java.lang.String className)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _portletItemLocalService.addPortletItem(userId, groupId, name,
 			portletId, className);
@@ -219,8 +219,8 @@ public class PortletItemLocalServiceWrapper implements PortletItemLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.PortletItem getPortletItem(long groupId,
-		java.lang.String name, java.lang.String portletId,
+	public com.liferay.portal.kernel.model.PortletItem getPortletItem(
+		long groupId, java.lang.String name, java.lang.String portletId,
 		java.lang.String className)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _portletItemLocalService.getPortletItem(groupId, name,
@@ -294,9 +294,9 @@ public class PortletItemLocalServiceWrapper implements PortletItemLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.PortletItem updatePortletItem(long userId,
-		long groupId, java.lang.String name, java.lang.String portletId,
-		java.lang.String className)
+	public com.liferay.portal.kernel.model.PortletItem updatePortletItem(
+		long userId, long groupId, java.lang.String name,
+		java.lang.String portletId, java.lang.String className)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _portletItemLocalService.updatePortletItem(userId, groupId,
 			name, portletId, className);

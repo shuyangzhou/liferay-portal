@@ -151,7 +151,8 @@ public class LayoutServiceWrapper implements LayoutService,
 	*/
 	@Override
 	public void deleteLayout(long groupId, boolean privateLayout,
-		long layoutId, com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		long layoutId,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_layoutService.deleteLayout(groupId, privateLayout, layoutId,
 			serviceContext);
@@ -1167,9 +1168,10 @@ public class LayoutServiceWrapper implements LayoutService,
 	* @return the updated layout
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.Layout updateLookAndFeel(long groupId,
-		boolean privateLayout, long layoutId, java.lang.String themeId,
-		java.lang.String colorSchemeId, java.lang.String css, boolean wapTheme)
+	public com.liferay.portal.kernel.model.Layout updateLookAndFeel(
+		long groupId, boolean privateLayout, long layoutId,
+		java.lang.String themeId, java.lang.String colorSchemeId,
+		java.lang.String css, boolean wapTheme)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutService.updateLookAndFeel(groupId, privateLayout,
 			layoutId, themeId, colorSchemeId, css, wapTheme);
@@ -1224,8 +1226,8 @@ public class LayoutServiceWrapper implements LayoutService,
 	* @return the matching layout
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.Layout updateParentLayoutId(long groupId,
-		boolean privateLayout, long layoutId, long parentLayoutId)
+	public com.liferay.portal.kernel.model.Layout updateParentLayoutId(
+		long groupId, boolean privateLayout, long layoutId, long parentLayoutId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutService.updateParentLayoutId(groupId, privateLayout,
 			layoutId, parentLayoutId);
@@ -1242,8 +1244,8 @@ public class LayoutServiceWrapper implements LayoutService,
 	* @return the layout matching the primary key
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.Layout updateParentLayoutId(long plid,
-		long parentPlid)
+	public com.liferay.portal.kernel.model.Layout updateParentLayoutId(
+		long plid, long parentPlid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutService.updateParentLayoutId(plid, parentPlid);
 	}

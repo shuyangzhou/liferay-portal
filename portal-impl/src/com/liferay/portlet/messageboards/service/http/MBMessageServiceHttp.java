@@ -1210,6 +1210,7 @@ public class MBMessageServiceHttp {
 	private static final Class<?>[] _updateMessageParameterTypes31 = new Class[] {
 			long.class, java.lang.String.class, java.lang.String.class,
 			java.util.List.class, java.util.List.class, double.class,
-			boolean.class, com.liferay.portal.kernel.service.ServiceContext.class
+			boolean.class,
+			com.liferay.portal.kernel.service.ServiceContext.class
 		};
 }

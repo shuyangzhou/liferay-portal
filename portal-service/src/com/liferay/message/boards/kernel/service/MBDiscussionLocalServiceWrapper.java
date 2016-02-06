@@ -50,7 +50,8 @@ public class MBDiscussionLocalServiceWrapper implements MBDiscussionLocalService
 	@Override
 	public com.liferay.message.boards.kernel.model.MBDiscussion addDiscussion(
 		long userId, long groupId, long classNameId, long classPK,
-		long threadId, com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		long threadId,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _mbDiscussionLocalService.addDiscussion(userId, groupId,
 			classNameId, classPK, threadId, serviceContext);

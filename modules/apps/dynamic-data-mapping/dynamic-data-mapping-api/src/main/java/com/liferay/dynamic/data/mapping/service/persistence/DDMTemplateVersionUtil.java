@@ -21,8 +21,8 @@ import com.liferay.dynamic.data.mapping.model.DDMTemplateVersion;
 import com.liferay.osgi.util.ServiceTrackerFactory;
 
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
-import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.OrderByComparator;
 
 import org.osgi.util.tracker.ServiceTracker;
 

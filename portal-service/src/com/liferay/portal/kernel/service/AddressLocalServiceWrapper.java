@@ -322,8 +322,8 @@ public class AddressLocalServiceWrapper implements AddressLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.Address updateAddress(long addressId,
-		java.lang.String street1, java.lang.String street2,
+	public com.liferay.portal.kernel.model.Address updateAddress(
+		long addressId, java.lang.String street1, java.lang.String street2,
 		java.lang.String street3, java.lang.String city, java.lang.String zip,
 		long regionId, long countryId, long typeId, boolean mailing,
 		boolean primary)

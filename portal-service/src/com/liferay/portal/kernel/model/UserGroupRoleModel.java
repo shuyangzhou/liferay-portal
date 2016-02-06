@@ -184,7 +184,8 @@ public interface UserGroupRoleModel extends BaseModel<UserGroupRole>, MVCCModel,
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.kernel.model.UserGroupRole userGroupRole);
+	public int compareTo(
+		com.liferay.portal.kernel.model.UserGroupRole userGroupRole);
 
 	@Override
 	public int hashCode();

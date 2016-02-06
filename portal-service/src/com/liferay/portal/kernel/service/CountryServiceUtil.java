@@ -47,7 +47,8 @@ public class CountryServiceUtil {
 		return getService().addCountry(name, a2, a3, number, idd, active);
 	}
 
-	public static com.liferay.portal.kernel.model.Country fetchCountry(long countryId) {
+	public static com.liferay.portal.kernel.model.Country fetchCountry(
+		long countryId) {
 		return getService().fetchCountry(countryId);
 	}
 
@@ -70,7 +71,8 @@ public class CountryServiceUtil {
 		return getService().getCountries(active);
 	}
 
-	public static com.liferay.portal.kernel.model.Country getCountry(long countryId)
+	public static com.liferay.portal.kernel.model.Country getCountry(
+		long countryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getCountry(countryId);
 	}

@@ -222,8 +222,8 @@ public class VirtualHostLocalServiceWrapper implements VirtualHostLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.VirtualHost getVirtualHost(long companyId,
-		long layoutSetId)
+	public com.liferay.portal.kernel.model.VirtualHost getVirtualHost(
+		long companyId, long layoutSetId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _virtualHostLocalService.getVirtualHost(companyId, layoutSetId);
 	}

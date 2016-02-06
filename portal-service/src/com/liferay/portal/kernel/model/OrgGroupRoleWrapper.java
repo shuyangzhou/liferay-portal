@@ -18,8 +18,8 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
 
@@ -104,7 +104,8 @@ public class OrgGroupRoleWrapper implements OrgGroupRole,
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.kernel.model.OrgGroupRole orgGroupRole) {
+	public int compareTo(
+		com.liferay.portal.kernel.model.OrgGroupRole orgGroupRole) {
 		return _orgGroupRole.compareTo(orgGroupRole);
 	}
 

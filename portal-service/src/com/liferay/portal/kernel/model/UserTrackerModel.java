@@ -246,7 +246,8 @@ public interface UserTrackerModel extends BaseModel<UserTracker>, MVCCModel,
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.kernel.model.UserTracker userTracker);
+	public int compareTo(
+		com.liferay.portal.kernel.model.UserTracker userTracker);
 
 	@Override
 	public int hashCode();

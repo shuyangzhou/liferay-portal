@@ -49,8 +49,8 @@ public class RoleServiceWrapper implements RoleService,
 	* @return the role
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.Role addRole(java.lang.String className,
-		long classPK, java.lang.String name,
+	public com.liferay.portal.kernel.model.Role addRole(
+		java.lang.String className, long classPK, java.lang.String name,
 		java.util.Map<java.util.Locale, java.lang.String> titleMap,
 		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
 		int type, java.lang.String subtype,
@@ -152,8 +152,8 @@ public class RoleServiceWrapper implements RoleService,
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.kernel.model.Role> getRoles(int type,
-		java.lang.String subtype)
+	public java.util.List<com.liferay.portal.kernel.model.Role> getRoles(
+		int type, java.lang.String subtype)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _roleService.getRoles(type, subtype);
 	}
@@ -195,7 +195,8 @@ public class RoleServiceWrapper implements RoleService,
 	*/
 	@Override
 	public java.util.List<com.liferay.portal.kernel.model.Role> getUserRelatedRoles(
-		long userId, java.util.List<com.liferay.portal.kernel.model.Group> groups)
+		long userId,
+		java.util.List<com.liferay.portal.kernel.model.Group> groups)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _roleService.getUserRelatedRoles(userId, groups);
 	}

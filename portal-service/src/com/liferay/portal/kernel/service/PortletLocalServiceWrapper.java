@@ -144,7 +144,8 @@ public class PortletLocalServiceWrapper implements PortletLocalService,
 
 	@Override
 	public com.liferay.portal.kernel.model.Portlet deployRemotePortlet(
-		com.liferay.portal.kernel.model.Portlet portlet, java.lang.String categoryName)
+		com.liferay.portal.kernel.model.Portlet portlet,
+		java.lang.String categoryName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _portletLocalService.deployRemotePortlet(portlet, categoryName);
 	}
@@ -172,7 +173,8 @@ public class PortletLocalServiceWrapper implements PortletLocalService,
 	}
 
 	@Override
-	public void destroyRemotePortlet(com.liferay.portal.kernel.model.Portlet portlet) {
+	public void destroyRemotePortlet(
+		com.liferay.portal.kernel.model.Portlet portlet) {
 		_portletLocalService.destroyRemotePortlet(portlet);
 	}
 
@@ -333,8 +335,8 @@ public class PortletLocalServiceWrapper implements PortletLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.Portlet getPortletById(long companyId,
-		java.lang.String portletId) {
+	public com.liferay.portal.kernel.model.Portlet getPortletById(
+		long companyId, java.lang.String portletId) {
 		return _portletLocalService.getPortletById(companyId, portletId);
 	}
 
@@ -449,8 +451,9 @@ public class PortletLocalServiceWrapper implements PortletLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.Portlet updatePortlet(long companyId,
-		java.lang.String portletId, java.lang.String roles, boolean active) {
+	public com.liferay.portal.kernel.model.Portlet updatePortlet(
+		long companyId, java.lang.String portletId, java.lang.String roles,
+		boolean active) {
 		return _portletLocalService.updatePortlet(companyId, portletId, roles,
 			active);
 	}

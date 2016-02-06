@@ -52,8 +52,8 @@ public class ContactLocalServiceUtil {
 		return getService().addContact(contact);
 	}
 
-	public static com.liferay.portal.kernel.model.Contact addContact(long userId,
-		java.lang.String className, long classPK,
+	public static com.liferay.portal.kernel.model.Contact addContact(
+		long userId, java.lang.String className, long classPK,
 		java.lang.String emailAddress, java.lang.String firstName,
 		java.lang.String middleName, java.lang.String lastName, long prefixId,
 		long suffixId, boolean male, int birthdayMonth, int birthdayDay,
@@ -74,7 +74,8 @@ public class ContactLocalServiceUtil {
 	* @param contactId the primary key for the new contact
 	* @return the new contact
 	*/
-	public static com.liferay.portal.kernel.model.Contact createContact(long contactId) {
+	public static com.liferay.portal.kernel.model.Contact createContact(
+		long contactId) {
 		return getService().createContact(contactId);
 	}
 
@@ -96,7 +97,8 @@ public class ContactLocalServiceUtil {
 	* @return the contact that was removed
 	* @throws PortalException if a contact with the primary key could not be found
 	*/
-	public static com.liferay.portal.kernel.model.Contact deleteContact(long contactId)
+	public static com.liferay.portal.kernel.model.Contact deleteContact(
+		long contactId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteContact(contactId);
 	}
@@ -188,7 +190,8 @@ public class ContactLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.portal.kernel.model.Contact fetchContact(long contactId) {
+	public static com.liferay.portal.kernel.model.Contact fetchContact(
+		long contactId) {
 		return getService().fetchContact(contactId);
 	}
 
@@ -203,7 +206,8 @@ public class ContactLocalServiceUtil {
 	* @return the contact
 	* @throws PortalException if a contact with the primary key could not be found
 	*/
-	public static com.liferay.portal.kernel.model.Contact getContact(long contactId)
+	public static com.liferay.portal.kernel.model.Contact getContact(
+		long contactId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getContact(contactId);
 	}

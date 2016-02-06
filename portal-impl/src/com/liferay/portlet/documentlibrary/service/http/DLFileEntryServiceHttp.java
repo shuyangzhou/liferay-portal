@@ -1374,7 +1374,8 @@ public class DLFileEntryServiceHttp {
 
 	public static com.liferay.document.library.kernel.model.DLFileEntry updateStatus(
 		HttpPrincipal httpPrincipal, long userId, long fileVersionId,
-		int status, com.liferay.portal.kernel.service.ServiceContext serviceContext,
+		int status,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext,
 		java.util.Map<java.lang.String, java.io.Serializable> workflowContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -1622,7 +1623,8 @@ public class DLFileEntryServiceHttp {
 		};
 	private static final Class<?>[] _updateStatusParameterTypes41 = new Class[] {
 			long.class, long.class, int.class,
-			com.liferay.portal.kernel.service.ServiceContext.class, java.util.Map.class
+			com.liferay.portal.kernel.service.ServiceContext.class,
+			java.util.Map.class
 		};
 	private static final Class<?>[] _verifyFileEntryCheckOutParameterTypes42 = new Class[] {
 			long.class, java.lang.String.class
