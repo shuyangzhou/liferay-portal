@@ -264,9 +264,9 @@ public class ConfigurationModelIndexer extends BaseIndexer<ConfigurationModel> {
 	}
 
 	@Reference
-	private final ConfigurationModelRetriever _configurationModelRetriever;
+	private ConfigurationModelRetriever _configurationModelRetriever;
 
 	@Reference
-	private final IndexWriterHelper _indexWriterHelper;
+	private IndexWriterHelper _indexWriterHelper;
 
 }

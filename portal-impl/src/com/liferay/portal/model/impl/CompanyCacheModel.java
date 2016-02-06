@@ -149,11 +149,16 @@ public class CompanyCacheModel implements CacheModel<Company>, Externalizable,
 
 		companyImpl.resetOriginalValues();
 
+		companyImpl.setKeyObj(_keyObj);
+
+		companyImpl.setVirtualHostname(_virtualHostname);
+
 		return companyImpl;
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
 		mvccVersion = objectInput.readLong();
 
 		companyId = objectInput.readLong();
@@ -171,6 +176,9 @@ public class CompanyCacheModel implements CacheModel<Company>, Externalizable,
 		maxUsers = objectInput.readInt();
 
 		active = objectInput.readBoolean();
+
+		_keyObj = (java.security.Key)objectInput.readObject();
+		_virtualHostname = (java.lang.String)objectInput.readObject();
 	}
 
 	@Override
@@ -217,6 +225,9 @@ public class CompanyCacheModel implements CacheModel<Company>, Externalizable,
 		objectOutput.writeInt(maxUsers);
 
 		objectOutput.writeBoolean(active);
+
+		objectOutput.writeObject(_keyObj);
+		objectOutput.writeObject(_virtualHostname);
 	}
 
 	public long mvccVersion;
@@ -230,4 +241,6 @@ public class CompanyCacheModel implements CacheModel<Company>, Externalizable,
 	public boolean system;
 	public int maxUsers;
 	public boolean active;
+	public java.security.Key _keyObj;
+	public java.lang.String _virtualHostname;
 }

@@ -22,11 +22,11 @@ import com.liferay.expando.kernel.model.ExpandoColumnSoap;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.json.JSON;
+import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.model.impl.BaseModelImpl;
 
 import java.io.Serializable;

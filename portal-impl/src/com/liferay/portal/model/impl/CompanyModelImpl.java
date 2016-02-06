@@ -484,6 +484,20 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 		_active = active;
 	}
 
+	public java.security.Key getKeyObj() {
+		return null;
+	}
+
+	public void setKeyObj(java.security.Key keyObj) {
+	}
+
+	public java.lang.String getVirtualHostname() {
+		return null;
+	}
+
+	public void setVirtualHostname(java.lang.String virtualHostname) {
+	}
+
 	public long getColumnBitmask() {
 		return _columnBitmask;
 	}
@@ -600,6 +614,10 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 
 		companyModelImpl._setOriginalSystem = false;
 
+		setKeyObj(null);
+
+		setVirtualHostname(null);
+
 		companyModelImpl._columnBitmask = 0;
 	}
 
@@ -652,6 +670,10 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 		companyCacheModel.maxUsers = getMaxUsers();
 
 		companyCacheModel.active = getActive();
+
+		companyCacheModel._keyObj = getKeyObj();
+
+		companyCacheModel._virtualHostname = getVirtualHostname();
 
 		return companyCacheModel;
 	}

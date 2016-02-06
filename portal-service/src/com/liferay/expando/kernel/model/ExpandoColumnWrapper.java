@@ -16,8 +16,8 @@ package com.liferay.expando.kernel.model;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.model.ModelWrapper;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.service.ServiceContext;
 
 import java.io.Serializable;

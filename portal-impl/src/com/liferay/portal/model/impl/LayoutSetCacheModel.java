@@ -201,11 +201,16 @@ public class LayoutSetCacheModel implements CacheModel<LayoutSet>,
 
 		layoutSetImpl.resetOriginalValues();
 
+		layoutSetImpl.setCompanyFallbackVirtualHostname(_companyFallbackVirtualHostname);
+
+		layoutSetImpl.setVirtualHostname(_virtualHostname);
+
 		return layoutSetImpl;
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
 		mvccVersion = objectInput.readLong();
 
 		layoutSetId = objectInput.readLong();
@@ -230,6 +235,9 @@ public class LayoutSetCacheModel implements CacheModel<LayoutSet>,
 		layoutSetPrototypeUuid = objectInput.readUTF();
 
 		layoutSetPrototypeLinkEnabled = objectInput.readBoolean();
+
+		_companyFallbackVirtualHostname = (java.lang.String)objectInput.readObject();
+		_virtualHostname = (java.lang.String)objectInput.readObject();
 	}
 
 	@Override
@@ -301,6 +309,9 @@ public class LayoutSetCacheModel implements CacheModel<LayoutSet>,
 		}
 
 		objectOutput.writeBoolean(layoutSetPrototypeLinkEnabled);
+
+		objectOutput.writeObject(_companyFallbackVirtualHostname);
+		objectOutput.writeObject(_virtualHostname);
 	}
 
 	public long mvccVersion;
@@ -320,4 +331,6 @@ public class LayoutSetCacheModel implements CacheModel<LayoutSet>,
 	public String settings;
 	public String layoutSetPrototypeUuid;
 	public boolean layoutSetPrototypeLinkEnabled;
+	public java.lang.String _companyFallbackVirtualHostname;
+	public java.lang.String _virtualHostname;
 }
