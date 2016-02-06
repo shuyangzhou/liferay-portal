@@ -34,7 +34,7 @@ public class StagingLocalServiceWrapper implements StagingLocalService,
 
 	@Override
 	public void checkDefaultLayoutSetBranches(long userId,
-		com.liferay.portal.model.Group liveGroup, boolean branchingPublic,
+		com.liferay.portal.kernel.model.Group liveGroup, boolean branchingPublic,
 		boolean branchingPrivate, boolean remote,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -57,7 +57,7 @@ public class StagingLocalServiceWrapper implements StagingLocalService,
 	}
 
 	@Override
-	public void disableStaging(com.liferay.portal.model.Group liveGroup,
+	public void disableStaging(com.liferay.portal.kernel.model.Group liveGroup,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_stagingLocalService.disableStaging(liveGroup, serviceContext);
@@ -65,7 +65,7 @@ public class StagingLocalServiceWrapper implements StagingLocalService,
 
 	@Override
 	public void disableStaging(javax.portlet.PortletRequest portletRequest,
-		com.liferay.portal.model.Group liveGroup,
+		com.liferay.portal.kernel.model.Group liveGroup,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_stagingLocalService.disableStaging(portletRequest, liveGroup,
@@ -74,7 +74,7 @@ public class StagingLocalServiceWrapper implements StagingLocalService,
 
 	@Override
 	public void enableLocalStaging(long userId,
-		com.liferay.portal.model.Group liveGroup, boolean branchingPublic,
+		com.liferay.portal.kernel.model.Group liveGroup, boolean branchingPublic,
 		boolean branchingPrivate,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -84,7 +84,7 @@ public class StagingLocalServiceWrapper implements StagingLocalService,
 
 	@Override
 	public void enableRemoteStaging(long userId,
-		com.liferay.portal.model.Group stagingGroup, boolean branchingPublic,
+		com.liferay.portal.kernel.model.Group stagingGroup, boolean branchingPublic,
 		boolean branchingPrivate, java.lang.String remoteAddress,
 		int remotePort, java.lang.String remotePathContext,
 		boolean secureConnection, long remoteGroupId,

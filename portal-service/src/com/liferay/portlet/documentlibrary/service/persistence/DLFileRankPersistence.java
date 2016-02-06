@@ -16,7 +16,7 @@ package com.liferay.portlet.documentlibrary.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.service.persistence.BasePersistence;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import com.liferay.portlet.documentlibrary.exception.NoSuchFileRankException;
 import com.liferay.portlet.documentlibrary.model.DLFileRank;

@@ -41,7 +41,7 @@ public class StagingLocalServiceUtil {
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.portlet.exportimport.service.impl.StagingLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static void checkDefaultLayoutSetBranches(long userId,
-		com.liferay.portal.model.Group liveGroup, boolean branchingPublic,
+		com.liferay.portal.kernel.model.Group liveGroup, boolean branchingPublic,
 		boolean branchingPrivate, boolean remote,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -62,7 +62,7 @@ public class StagingLocalServiceUtil {
 	}
 
 	public static void disableStaging(
-		com.liferay.portal.model.Group liveGroup,
+		com.liferay.portal.kernel.model.Group liveGroup,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().disableStaging(liveGroup, serviceContext);
@@ -70,14 +70,14 @@ public class StagingLocalServiceUtil {
 
 	public static void disableStaging(
 		javax.portlet.PortletRequest portletRequest,
-		com.liferay.portal.model.Group liveGroup,
+		com.liferay.portal.kernel.model.Group liveGroup,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().disableStaging(portletRequest, liveGroup, serviceContext);
 	}
 
 	public static void enableLocalStaging(long userId,
-		com.liferay.portal.model.Group liveGroup, boolean branchingPublic,
+		com.liferay.portal.kernel.model.Group liveGroup, boolean branchingPublic,
 		boolean branchingPrivate,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -87,7 +87,7 @@ public class StagingLocalServiceUtil {
 	}
 
 	public static void enableRemoteStaging(long userId,
-		com.liferay.portal.model.Group stagingGroup, boolean branchingPublic,
+		com.liferay.portal.kernel.model.Group stagingGroup, boolean branchingPublic,
 		boolean branchingPrivate, java.lang.String remoteAddress,
 		int remotePort, java.lang.String remotePathContext,
 		boolean secureConnection, long remoteGroupId,
