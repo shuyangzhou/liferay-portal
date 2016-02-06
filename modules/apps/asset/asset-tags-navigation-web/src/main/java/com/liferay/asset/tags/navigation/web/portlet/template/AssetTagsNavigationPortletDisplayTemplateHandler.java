@@ -14,19 +14,19 @@
 
 package com.liferay.asset.tags.navigation.web.portlet.template;
 
+import com.liferay.asset.kernel.model.AssetTag;
+import com.liferay.asset.kernel.service.AssetTagLocalService;
+import com.liferay.asset.kernel.service.AssetTagService;
+import com.liferay.asset.kernel.service.AssetTagStatsLocalService;
 import com.liferay.asset.tags.navigation.web.configuration.AssetTagsNavigationWebConfigurationValues;
 import com.liferay.asset.tags.navigation.web.constants.AssetTagsNavigationPortletKeys;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portletdisplaytemplate.BasePortletDisplayTemplateHandler;
 import com.liferay.portal.kernel.template.TemplateHandler;
 import com.liferay.portal.kernel.template.TemplateVariableGroup;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.asset.model.AssetTag;
-import com.liferay.portlet.asset.service.AssetTagLocalService;
-import com.liferay.portlet.asset.service.AssetTagService;
-import com.liferay.portlet.asset.service.AssetTagStatsLocalService;
 import com.liferay.portlet.display.template.PortletDisplayTemplateConstants;
 
 import java.util.List;

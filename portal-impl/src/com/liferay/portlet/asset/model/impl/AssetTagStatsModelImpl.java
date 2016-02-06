@@ -16,22 +16,22 @@ package com.liferay.portlet.asset.model.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.asset.kernel.model.AssetTagStats;
+import com.liferay.asset.kernel.model.AssetTagStatsModel;
+
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
+import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
-import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
-import com.liferay.portal.util.PortalUtil;
-
-import com.liferay.portlet.asset.model.AssetTagStats;
-import com.liferay.portlet.asset.model.AssetTagStatsModel;
 
 import java.io.Serializable;
 
@@ -87,19 +87,19 @@ public class AssetTagStatsModelImpl extends BaseModelImpl<AssetTagStats>
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
 	public static final String TX_MANAGER = "liferayTransactionManager";
 	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
-				"value.object.entity.cache.enabled.com.liferay.portlet.asset.model.AssetTagStats"),
+				"value.object.entity.cache.enabled.com.liferay.asset.kernel.model.AssetTagStats"),
 			true);
 	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
-				"value.object.finder.cache.enabled.com.liferay.portlet.asset.model.AssetTagStats"),
+				"value.object.finder.cache.enabled.com.liferay.asset.kernel.model.AssetTagStats"),
 			true);
 	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
-				"value.object.column.bitmask.enabled.com.liferay.portlet.asset.model.AssetTagStats"),
+				"value.object.column.bitmask.enabled.com.liferay.asset.kernel.model.AssetTagStats"),
 			true);
 	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
 	public static final long TAGID_COLUMN_BITMASK = 2L;
 	public static final long ASSETCOUNT_COLUMN_BITMASK = 4L;
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.portal.util.PropsUtil.get(
-				"lock.expiration.time.com.liferay.portlet.asset.model.AssetTagStats"));
+				"lock.expiration.time.com.liferay.asset.kernel.model.AssetTagStats"));
 
 	public AssetTagStatsModelImpl() {
 	}
@@ -437,7 +437,7 @@ public class AssetTagStatsModelImpl extends BaseModelImpl<AssetTagStats>
 		StringBundler sb = new StringBundler(19);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.portlet.asset.model.AssetTagStats");
+		sb.append("com.liferay.asset.kernel.model.AssetTagStats");
 		sb.append("</model-name>");
 
 		sb.append(

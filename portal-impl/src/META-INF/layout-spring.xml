@@ -40,7 +40,7 @@
 		</property>
 	</bean>
 	<bean id="com.liferay.portal.util.LayoutSitemapURLProvider" class="com.liferay.portal.util.LayoutSitemapURLProvider" />
-	<bean id="com.liferay.portal.util.LayoutTypePortletFactoryUtil" class="com.liferay.portal.util.LayoutTypePortletFactoryUtil">
+	<bean id="com.liferay.portal.util.LayoutTypePortletFactoryUtil" class="com.liferay.portal.kernel.util.LayoutTypePortletFactoryUtil">
 		<property name="layoutTypePortletFactory">
 			<bean class="com.liferay.portal.util.LayoutTypePortletFactoryImpl" />
 		</property>

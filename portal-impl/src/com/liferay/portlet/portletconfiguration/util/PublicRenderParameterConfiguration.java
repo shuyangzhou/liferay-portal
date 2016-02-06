@@ -14,8 +14,8 @@
 
 package com.liferay.portlet.portletconfiguration.util;
 
+import com.liferay.portal.kernel.portlet.PortletQNameUtil;
 import com.liferay.portal.model.PublicRenderParameter;
-import com.liferay.portlet.PortletQNameUtil;
 
 /**
  * @author Alberto Montero

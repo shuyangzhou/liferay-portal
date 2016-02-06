@@ -265,7 +265,7 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	* @return the asset type instances of the portlet
 	*/
 	@Override
-	public java.util.List<com.liferay.portlet.asset.model.AssetRendererFactory<?>> getAssetRendererFactoryInstances() {
+	public java.util.List<com.liferay.asset.kernel.model.AssetRendererFactory<?>> getAssetRendererFactoryInstances() {
 		return _portlet.getAssetRendererFactoryInstances();
 	}
 
@@ -397,7 +397,7 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	be shown in the Control Panel
 	*/
 	@Override
-	public com.liferay.portlet.ControlPanelEntry getControlPanelEntryInstance() {
+	public com.liferay.portal.kernel.portlet.ControlPanelEntry getControlPanelEntryInstance() {
 		return _portlet.getControlPanelEntryInstance();
 	}
 

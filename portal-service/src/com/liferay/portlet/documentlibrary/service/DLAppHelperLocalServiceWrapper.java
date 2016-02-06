@@ -273,7 +273,7 @@ public class DLAppHelperLocalServiceWrapper implements DLAppHelperLocalService,
 	}
 
 	@Override
-	public com.liferay.portlet.asset.model.AssetEntry updateAsset(long userId,
+	public com.liferay.asset.kernel.model.AssetEntry updateAsset(long userId,
 		com.liferay.portal.kernel.repository.model.FileEntry fileEntry,
 		com.liferay.portal.kernel.repository.model.FileVersion fileVersion,
 		long[] assetCategoryIds, java.lang.String[] assetTagNames,
@@ -284,7 +284,7 @@ public class DLAppHelperLocalServiceWrapper implements DLAppHelperLocalService,
 	}
 
 	@Override
-	public com.liferay.portlet.asset.model.AssetEntry updateAsset(long userId,
+	public com.liferay.asset.kernel.model.AssetEntry updateAsset(long userId,
 		com.liferay.portal.kernel.repository.model.FileEntry fileEntry,
 		com.liferay.portal.kernel.repository.model.FileVersion fileVersion,
 		long assetClassPk)
@@ -294,7 +294,7 @@ public class DLAppHelperLocalServiceWrapper implements DLAppHelperLocalService,
 	}
 
 	@Override
-	public com.liferay.portlet.asset.model.AssetEntry updateAsset(long userId,
+	public com.liferay.asset.kernel.model.AssetEntry updateAsset(long userId,
 		com.liferay.portal.kernel.repository.model.Folder folder,
 		long[] assetCategoryIds, java.lang.String[] assetTagNames,
 		long[] assetLinkEntryIds)

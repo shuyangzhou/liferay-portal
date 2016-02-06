@@ -14,8 +14,8 @@
 
 package com.liferay.shopping.upgrade.v1_0_0;
 
+import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.upgrade.BaseUpgradePortletPreferences;
-import com.liferay.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.shopping.constants.ShoppingPortletKeys;
 
 import javax.portlet.PortletPreferences;

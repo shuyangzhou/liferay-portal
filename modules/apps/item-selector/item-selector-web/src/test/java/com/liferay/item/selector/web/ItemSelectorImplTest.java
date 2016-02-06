@@ -22,10 +22,10 @@ import com.liferay.item.selector.web.util.ItemSelectorCriterionSerializer;
 import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
+import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactory;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.impl.GroupImpl;
-import com.liferay.portlet.RequestBackedPortletURLFactory;
 
 import java.util.ArrayList;
 import java.util.List;

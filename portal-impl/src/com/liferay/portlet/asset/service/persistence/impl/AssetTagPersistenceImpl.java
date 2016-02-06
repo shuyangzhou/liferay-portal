@@ -16,6 +16,11 @@ package com.liferay.portlet.asset.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.asset.kernel.exception.NoSuchTagException;
+import com.liferay.asset.kernel.model.AssetTag;
+import com.liferay.asset.kernel.service.persistence.AssetEntryPersistence;
+import com.liferay.asset.kernel.service.persistence.AssetTagPersistence;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -48,12 +53,8 @@ import com.liferay.portal.service.ServiceContextThreadLocal;
 import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 
-import com.liferay.portlet.asset.exception.NoSuchTagException;
-import com.liferay.portlet.asset.model.AssetTag;
 import com.liferay.portlet.asset.model.impl.AssetTagImpl;
 import com.liferay.portlet.asset.model.impl.AssetTagModelImpl;
-import com.liferay.portlet.asset.service.persistence.AssetEntryPersistence;
-import com.liferay.portlet.asset.service.persistence.AssetTagPersistence;
 
 import java.io.Serializable;
 
@@ -76,7 +77,7 @@ import java.util.Set;
  *
  * @author Brian Wing Shun Chan
  * @see AssetTagPersistence
- * @see com.liferay.portlet.asset.service.persistence.AssetTagUtil
+ * @see com.liferay.asset.kernel.service.persistence.AssetTagUtil
  * @generated
  */
 @ProviderType
@@ -5429,7 +5430,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 * @return the asset entries associated with the asset tag
 	 */
 	@Override
-	public List<com.liferay.portlet.asset.model.AssetEntry> getAssetEntries(
+	public List<com.liferay.asset.kernel.model.AssetEntry> getAssetEntries(
 		long pk) {
 		return getAssetEntries(pk, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 	}
@@ -5447,7 +5448,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 * @return the range of asset entries associated with the asset tag
 	 */
 	@Override
-	public List<com.liferay.portlet.asset.model.AssetEntry> getAssetEntries(
+	public List<com.liferay.asset.kernel.model.AssetEntry> getAssetEntries(
 		long pk, int start, int end) {
 		return getAssetEntries(pk, start, end, null);
 	}
@@ -5466,9 +5467,9 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 * @return the ordered range of asset entries associated with the asset tag
 	 */
 	@Override
-	public List<com.liferay.portlet.asset.model.AssetEntry> getAssetEntries(
+	public List<com.liferay.asset.kernel.model.AssetEntry> getAssetEntries(
 		long pk, int start, int end,
-		OrderByComparator<com.liferay.portlet.asset.model.AssetEntry> orderByComparator) {
+		OrderByComparator<com.liferay.asset.kernel.model.AssetEntry> orderByComparator) {
 		return assetTagToAssetEntryTableMapper.getRightBaseModels(pk, start,
 			end, orderByComparator);
 	}
@@ -5543,7 +5544,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 */
 	@Override
 	public void addAssetEntry(long pk,
-		com.liferay.portlet.asset.model.AssetEntry assetEntry) {
+		com.liferay.asset.kernel.model.AssetEntry assetEntry) {
 		AssetTag assetTag = fetchByPrimaryKey(pk);
 
 		if (assetTag == null) {
@@ -5589,7 +5590,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 */
 	@Override
 	public void addAssetEntries(long pk,
-		List<com.liferay.portlet.asset.model.AssetEntry> assetEntries) {
+		List<com.liferay.asset.kernel.model.AssetEntry> assetEntries) {
 		long companyId = 0;
 
 		AssetTag assetTag = fetchByPrimaryKey(pk);
@@ -5601,7 +5602,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 			companyId = assetTag.getCompanyId();
 		}
 
-		for (com.liferay.portlet.asset.model.AssetEntry assetEntry : assetEntries) {
+		for (com.liferay.asset.kernel.model.AssetEntry assetEntry : assetEntries) {
 			assetTagToAssetEntryTableMapper.addTableMapping(companyId, pk,
 				assetEntry.getPrimaryKey());
 		}
@@ -5636,7 +5637,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 */
 	@Override
 	public void removeAssetEntry(long pk,
-		com.liferay.portlet.asset.model.AssetEntry assetEntry) {
+		com.liferay.asset.kernel.model.AssetEntry assetEntry) {
 		assetTagToAssetEntryTableMapper.deleteTableMapping(pk,
 			assetEntry.getPrimaryKey());
 	}
@@ -5662,8 +5663,8 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 */
 	@Override
 	public void removeAssetEntries(long pk,
-		List<com.liferay.portlet.asset.model.AssetEntry> assetEntries) {
-		for (com.liferay.portlet.asset.model.AssetEntry assetEntry : assetEntries) {
+		List<com.liferay.asset.kernel.model.AssetEntry> assetEntries) {
+		for (com.liferay.asset.kernel.model.AssetEntry assetEntry : assetEntries) {
 			assetTagToAssetEntryTableMapper.deleteTableMapping(pk,
 				assetEntry.getPrimaryKey());
 		}
@@ -5717,12 +5718,12 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	 */
 	@Override
 	public void setAssetEntries(long pk,
-		List<com.liferay.portlet.asset.model.AssetEntry> assetEntries) {
+		List<com.liferay.asset.kernel.model.AssetEntry> assetEntries) {
 		try {
 			long[] assetEntryPKs = new long[assetEntries.size()];
 
 			for (int i = 0; i < assetEntries.size(); i++) {
-				com.liferay.portlet.asset.model.AssetEntry assetEntry = assetEntries.get(i);
+				com.liferay.asset.kernel.model.AssetEntry assetEntry = assetEntries.get(i);
 
 				assetEntryPKs[i] = assetEntry.getPrimaryKey();
 			}
@@ -5767,7 +5768,7 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	@BeanReference(type = AssetEntryPersistence.class)
 	protected AssetEntryPersistence assetEntryPersistence;
-	protected TableMapper<AssetTag, com.liferay.portlet.asset.model.AssetEntry> assetTagToAssetEntryTableMapper;
+	protected TableMapper<AssetTag, com.liferay.asset.kernel.model.AssetEntry> assetTagToAssetEntryTableMapper;
 	private static final String _SQL_SELECT_ASSETTAG = "SELECT assetTag FROM AssetTag assetTag";
 	private static final String _SQL_SELECT_ASSETTAG_WHERE_PKS_IN = "SELECT assetTag FROM AssetTag assetTag WHERE tagId IN (";
 	private static final String _SQL_SELECT_ASSETTAG_WHERE = "SELECT assetTag FROM AssetTag assetTag WHERE ";

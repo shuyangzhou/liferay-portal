@@ -14,10 +14,10 @@
 
 package com.liferay.wiki.upgrade.v1_0_0;
 
+import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.upgrade.BaseUpgradePortletPreferences;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.wiki.constants.WikiPortletKeys;
 
 import javax.portlet.PortletPreferences;

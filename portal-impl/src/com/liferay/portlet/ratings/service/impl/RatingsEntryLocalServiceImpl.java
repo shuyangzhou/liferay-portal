@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.ratings.service.impl;
 
+import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.blogs.kernel.model.BlogsEntry;
 import com.liferay.blogs.kernel.model.BlogsStatsUser;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -24,7 +25,6 @@ import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.model.SystemEventConstants;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
-import com.liferay.portlet.asset.model.AssetEntry;
 import com.liferay.portlet.ratings.service.base.RatingsEntryLocalServiceBaseImpl;
 import com.liferay.ratings.kernel.exception.EntryScoreException;
 import com.liferay.ratings.kernel.model.RatingsEntry;

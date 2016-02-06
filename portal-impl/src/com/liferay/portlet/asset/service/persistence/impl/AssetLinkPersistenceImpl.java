@@ -16,6 +16,10 @@ package com.liferay.portlet.asset.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.asset.kernel.exception.NoSuchLinkException;
+import com.liferay.asset.kernel.model.AssetLink;
+import com.liferay.asset.kernel.service.persistence.AssetLinkPersistence;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -37,11 +41,8 @@ import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 
-import com.liferay.portlet.asset.exception.NoSuchLinkException;
-import com.liferay.portlet.asset.model.AssetLink;
 import com.liferay.portlet.asset.model.impl.AssetLinkImpl;
 import com.liferay.portlet.asset.model.impl.AssetLinkModelImpl;
-import com.liferay.portlet.asset.service.persistence.AssetLinkPersistence;
 
 import java.io.Serializable;
 
@@ -62,7 +63,7 @@ import java.util.Set;
  *
  * @author Brian Wing Shun Chan
  * @see AssetLinkPersistence
- * @see com.liferay.portlet.asset.service.persistence.AssetLinkUtil
+ * @see com.liferay.asset.kernel.service.persistence.AssetLinkUtil
  * @generated
  */
 @ProviderType

@@ -16,23 +16,23 @@ package com.liferay.portlet.asset.model.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.asset.kernel.model.AssetLink;
+import com.liferay.asset.kernel.model.AssetLinkModel;
+
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.User;
-import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
-
-import com.liferay.portlet.asset.model.AssetLink;
-import com.liferay.portlet.asset.model.AssetLinkModel;
 
 import java.io.Serializable;
 
@@ -97,20 +97,20 @@ public class AssetLinkModelImpl extends BaseModelImpl<AssetLink>
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
 	public static final String TX_MANAGER = "liferayTransactionManager";
 	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
-				"value.object.entity.cache.enabled.com.liferay.portlet.asset.model.AssetLink"),
+				"value.object.entity.cache.enabled.com.liferay.asset.kernel.model.AssetLink"),
 			true);
 	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
-				"value.object.finder.cache.enabled.com.liferay.portlet.asset.model.AssetLink"),
+				"value.object.finder.cache.enabled.com.liferay.asset.kernel.model.AssetLink"),
 			true);
 	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
-				"value.object.column.bitmask.enabled.com.liferay.portlet.asset.model.AssetLink"),
+				"value.object.column.bitmask.enabled.com.liferay.asset.kernel.model.AssetLink"),
 			true);
 	public static final long ENTRYID1_COLUMN_BITMASK = 1L;
 	public static final long ENTRYID2_COLUMN_BITMASK = 2L;
 	public static final long TYPE_COLUMN_BITMASK = 4L;
 	public static final long WEIGHT_COLUMN_BITMASK = 8L;
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.portal.util.PropsUtil.get(
-				"lock.expiration.time.com.liferay.portlet.asset.model.AssetLink"));
+				"lock.expiration.time.com.liferay.asset.kernel.model.AssetLink"));
 
 	public AssetLinkModelImpl() {
 	}
@@ -564,7 +564,7 @@ public class AssetLinkModelImpl extends BaseModelImpl<AssetLink>
 		StringBundler sb = new StringBundler(31);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.portlet.asset.model.AssetLink");
+		sb.append("com.liferay.asset.kernel.model.AssetLink");
 		sb.append("</model-name>");
 
 		sb.append(
