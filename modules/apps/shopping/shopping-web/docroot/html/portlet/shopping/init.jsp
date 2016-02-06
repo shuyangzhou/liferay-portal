@@ -41,6 +41,7 @@ page import="com.liferay.portal.kernel.model.Region" %><%@
 page import="com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil" %><%@
 page import="com.liferay.portal.kernel.portlet.LiferayWindowState" %><%@
 page import="com.liferay.portal.kernel.security.permission.ActionKeys" %><%@
+page import="com.liferay.portal.kernel.service.*" %><%@
 page import="com.liferay.portal.kernel.servlet.SessionErrors" %><%@
 page import="com.liferay.portal.kernel.settings.GroupServiceSettingsLocator" %><%@
 page import="com.liferay.portal.kernel.settings.ParameterMapSettingsLocator" %><%@
