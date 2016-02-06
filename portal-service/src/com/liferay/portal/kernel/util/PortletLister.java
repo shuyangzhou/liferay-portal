@@ -12,11 +12,10 @@
  * details.
  */
 
-package com.liferay.portal.util;
+package com.liferay.portal.kernel.util;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.TreeView;
 import com.liferay.portal.model.LayoutTypePortlet;
 import com.liferay.portal.model.User;
 

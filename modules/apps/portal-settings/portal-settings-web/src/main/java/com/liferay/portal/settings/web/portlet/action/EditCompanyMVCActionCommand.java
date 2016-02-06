@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropertiesParamUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.model.Address;
@@ -45,7 +46,6 @@ import com.liferay.portal.model.Phone;
 import com.liferay.portal.model.Website;
 import com.liferay.portal.service.CompanyService;
 import com.liferay.portal.settings.web.constants.PortalSettingsPortletKeys;
-import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.documentlibrary.service.DLAppLocalService;
 import com.liferay.users.admin.kernel.util.UsersAdminUtil;
 

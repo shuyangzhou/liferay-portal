@@ -17,7 +17,7 @@ package com.liferay.portal.upgrade.v6_0_3;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.util.PortalUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portlet.documentlibrary.model.DLFileEntry;
 
 import java.sql.Connection;

@@ -49,10 +49,10 @@ import com.liferay.portal.kernel.upload.UploadRequestSizeException;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.service.LayoutService;
-import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.documentlibrary.exception.FileSizeException;
 import com.liferay.portlet.documentlibrary.service.DLFileEntryLocalService;
 
