@@ -319,7 +319,8 @@ public class OrganizationServiceSoap {
 	public static com.liferay.portal.kernel.model.OrganizationSoap[] getOrganizations(
 		long companyId, long parentOrganizationId) throws RemoteException {
 		try {
-			java.util.List<com.liferay.portal.kernel.model.Organization> returnValue = OrganizationServiceUtil.getOrganizations(companyId,
+			java.util.List<com.liferay.portal.kernel.model.Organization> returnValue =
+				OrganizationServiceUtil.getOrganizations(companyId,
 					parentOrganizationId);
 
 			return com.liferay.portal.kernel.model.OrganizationSoap.toSoapModels(returnValue);
@@ -357,7 +358,8 @@ public class OrganizationServiceSoap {
 		long companyId, long parentOrganizationId, int start, int end)
 		throws RemoteException {
 		try {
-			java.util.List<com.liferay.portal.kernel.model.Organization> returnValue = OrganizationServiceUtil.getOrganizations(companyId,
+			java.util.List<com.liferay.portal.kernel.model.Organization> returnValue =
+				OrganizationServiceUtil.getOrganizations(companyId,
 					parentOrganizationId, start, end);
 
 			return com.liferay.portal.kernel.model.OrganizationSoap.toSoapModels(returnValue);
@@ -408,7 +410,8 @@ public class OrganizationServiceSoap {
 	public static com.liferay.portal.kernel.model.OrganizationSoap[] getUserOrganizations(
 		long userId) throws RemoteException {
 		try {
-			java.util.List<com.liferay.portal.kernel.model.Organization> returnValue = OrganizationServiceUtil.getUserOrganizations(userId);
+			java.util.List<com.liferay.portal.kernel.model.Organization> returnValue =
+				OrganizationServiceUtil.getUserOrganizations(userId);
 
 			return com.liferay.portal.kernel.model.OrganizationSoap.toSoapModels(returnValue);
 		}

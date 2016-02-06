@@ -48,15 +48,15 @@ public class TeamLocalServiceWrapper implements TeamLocalService,
 	*/
 	@Deprecated
 	@Override
-	public com.liferay.portal.kernel.model.Team addTeam(long userId, long groupId,
-		java.lang.String name, java.lang.String description)
+	public com.liferay.portal.kernel.model.Team addTeam(long userId,
+		long groupId, java.lang.String name, java.lang.String description)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _teamLocalService.addTeam(userId, groupId, name, description);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.Team addTeam(long userId, long groupId,
-		java.lang.String name, java.lang.String description,
+	public com.liferay.portal.kernel.model.Team addTeam(long userId,
+		long groupId, java.lang.String name, java.lang.String description,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _teamLocalService.addTeam(userId, groupId, name, description,
@@ -86,7 +86,8 @@ public class TeamLocalServiceWrapper implements TeamLocalService,
 	}
 
 	@Override
-	public void addUserTeam(long userId, com.liferay.portal.kernel.model.Team team) {
+	public void addUserTeam(long userId,
+		com.liferay.portal.kernel.model.Team team) {
 		_teamLocalService.addUserTeam(userId, team);
 	}
 
@@ -193,7 +194,8 @@ public class TeamLocalServiceWrapper implements TeamLocalService,
 	}
 
 	@Override
-	public void deleteUserTeam(long userId, com.liferay.portal.kernel.model.Team team) {
+	public void deleteUserTeam(long userId,
+		com.liferay.portal.kernel.model.Team team) {
 		_teamLocalService.deleteUserTeam(userId, team);
 	}
 
@@ -407,8 +409,8 @@ public class TeamLocalServiceWrapper implements TeamLocalService,
 	* @return the range of teams
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.kernel.model.Team> getTeams(int start,
-		int end) {
+	public java.util.List<com.liferay.portal.kernel.model.Team> getTeams(
+		int start, int end) {
 		return _teamLocalService.getTeams(start, end);
 	}
 
@@ -558,8 +560,8 @@ public class TeamLocalServiceWrapper implements TeamLocalService,
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.kernel.model.Team> search(long groupId,
-		java.lang.String name, java.lang.String description,
+	public java.util.List<com.liferay.portal.kernel.model.Team> search(
+		long groupId, java.lang.String name, java.lang.String description,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Team> obc) {

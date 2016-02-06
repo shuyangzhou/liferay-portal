@@ -40,9 +40,9 @@ public class WebsiteLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.portal.service.impl.WebsiteLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.portal.kernel.model.Website addWebsite(long userId,
-		java.lang.String className, long classPK, java.lang.String url,
-		long typeId, boolean primary,
+	public static com.liferay.portal.kernel.model.Website addWebsite(
+		long userId, java.lang.String className, long classPK,
+		java.lang.String url, long typeId, boolean primary,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
@@ -67,7 +67,8 @@ public class WebsiteLocalServiceUtil {
 	* @param websiteId the primary key for the new website
 	* @return the new website
 	*/
-	public static com.liferay.portal.kernel.model.Website createWebsite(long websiteId) {
+	public static com.liferay.portal.kernel.model.Website createWebsite(
+		long websiteId) {
 		return getService().createWebsite(websiteId);
 	}
 
@@ -98,7 +99,8 @@ public class WebsiteLocalServiceUtil {
 	* @return the website that was removed
 	* @throws PortalException if a website with the primary key could not be found
 	*/
-	public static com.liferay.portal.kernel.model.Website deleteWebsite(long websiteId)
+	public static com.liferay.portal.kernel.model.Website deleteWebsite(
+		long websiteId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteWebsite(websiteId);
 	}
@@ -186,7 +188,8 @@ public class WebsiteLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.portal.kernel.model.Website fetchWebsite(long websiteId) {
+	public static com.liferay.portal.kernel.model.Website fetchWebsite(
+		long websiteId) {
 		return getService().fetchWebsite(websiteId);
 	}
 
@@ -237,7 +240,8 @@ public class WebsiteLocalServiceUtil {
 	* @return the website
 	* @throws PortalException if a website with the primary key could not be found
 	*/
-	public static com.liferay.portal.kernel.model.Website getWebsite(long websiteId)
+	public static com.liferay.portal.kernel.model.Website getWebsite(
+		long websiteId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getWebsite(websiteId);
 	}

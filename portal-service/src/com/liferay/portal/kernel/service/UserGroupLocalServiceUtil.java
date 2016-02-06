@@ -106,8 +106,9 @@ public class UserGroupLocalServiceUtil {
 	String, String, ServiceContext)}
 	*/
 	@Deprecated
-	public static com.liferay.portal.kernel.model.UserGroup addUserGroup(long userId,
-		long companyId, java.lang.String name, java.lang.String description)
+	public static com.liferay.portal.kernel.model.UserGroup addUserGroup(
+		long userId, long companyId, java.lang.String name,
+		java.lang.String description)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().addUserGroup(userId, companyId, name, description);
 	}
@@ -131,8 +132,9 @@ public class UserGroupLocalServiceUtil {
 	user group.
 	* @return the user group
 	*/
-	public static com.liferay.portal.kernel.model.UserGroup addUserGroup(long userId,
-		long companyId, java.lang.String name, java.lang.String description,
+	public static com.liferay.portal.kernel.model.UserGroup addUserGroup(
+		long userId, long companyId, java.lang.String name,
+		java.lang.String description,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()

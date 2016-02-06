@@ -20,8 +20,8 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
 
@@ -318,7 +318,8 @@ public class PasswordPolicyWrapper implements PasswordPolicy,
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.kernel.model.PasswordPolicy passwordPolicy) {
+	public int compareTo(
+		com.liferay.portal.kernel.model.PasswordPolicy passwordPolicy) {
 		return _passwordPolicy.compareTo(passwordPolicy);
 	}
 

@@ -21,18 +21,18 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.json.JSON;
+import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.ClassName;
+import com.liferay.portal.kernel.model.ClassNameModel;
+import com.liferay.portal.kernel.model.ClassNameSoap;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.model.CacheModel;
-import com.liferay.portal.kernel.model.ClassName;
-import com.liferay.portal.kernel.model.ClassNameModel;
-import com.liferay.portal.kernel.model.ClassNameSoap;
-import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 

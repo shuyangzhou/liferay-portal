@@ -18,8 +18,8 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
 
@@ -138,7 +138,8 @@ public class UserTrackerWrapper implements UserTracker,
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.kernel.model.UserTracker userTracker) {
+	public int compareTo(
+		com.liferay.portal.kernel.model.UserTracker userTracker) {
 		return _userTracker.compareTo(userTracker);
 	}
 

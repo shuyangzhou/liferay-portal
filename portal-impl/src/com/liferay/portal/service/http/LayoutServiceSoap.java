@@ -18,8 +18,8 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.service.LayoutServiceUtil;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 
 import java.rmi.RemoteException;
 
@@ -106,8 +106,8 @@ public class LayoutServiceSoap {
 	administrators can modify this page within their site.
 	* @return the layout
 	*/
-	public static com.liferay.portal.kernel.model.LayoutSoap addLayout(long groupId,
-		boolean privateLayout, long parentLayoutId,
+	public static com.liferay.portal.kernel.model.LayoutSoap addLayout(
+		long groupId, boolean privateLayout, long parentLayoutId,
 		java.lang.String[] localeNamesMapLanguageIds,
 		java.lang.String[] localeNamesMapValues,
 		java.lang.String[] localeTitlesMapLanguageIds,
@@ -185,10 +185,11 @@ public class LayoutServiceSoap {
 	administrators can modify this page within their site.
 	* @return the layout
 	*/
-	public static com.liferay.portal.kernel.model.LayoutSoap addLayout(long groupId,
-		boolean privateLayout, long parentLayoutId, java.lang.String name,
-		java.lang.String title, java.lang.String description,
-		java.lang.String type, boolean hidden, java.lang.String friendlyURL,
+	public static com.liferay.portal.kernel.model.LayoutSoap addLayout(
+		long groupId, boolean privateLayout, long parentLayoutId,
+		java.lang.String name, java.lang.String title,
+		java.lang.String description, java.lang.String type, boolean hidden,
+		java.lang.String friendlyURL,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws RemoteException {
 		try {
@@ -215,7 +216,8 @@ public class LayoutServiceSoap {
 	* @param serviceContext the service context to be applied
 	*/
 	public static void deleteLayout(long groupId, boolean privateLayout,
-		long layoutId, com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		long layoutId,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws RemoteException {
 		try {
 			LayoutServiceUtil.deleteLayout(groupId, privateLayout, layoutId,
@@ -746,9 +748,10 @@ public class LayoutServiceSoap {
 	see {@link Locale}.
 	* @return the updated layout
 	*/
-	public static com.liferay.portal.kernel.model.LayoutSoap updateName(long groupId,
-		boolean privateLayout, long layoutId, java.lang.String name,
-		java.lang.String languageId) throws RemoteException {
+	public static com.liferay.portal.kernel.model.LayoutSoap updateName(
+		long groupId, boolean privateLayout, long layoutId,
+		java.lang.String name, java.lang.String languageId)
+		throws RemoteException {
 		try {
 			com.liferay.portal.kernel.model.Layout returnValue = LayoutServiceUtil.updateName(groupId,
 					privateLayout, layoutId, name, languageId);
@@ -771,8 +774,8 @@ public class LayoutServiceSoap {
 	see {@link Locale}.
 	* @return the updated layout
 	*/
-	public static com.liferay.portal.kernel.model.LayoutSoap updateName(long plid,
-		java.lang.String name, java.lang.String languageId)
+	public static com.liferay.portal.kernel.model.LayoutSoap updateName(
+		long plid, java.lang.String name, java.lang.String languageId)
 		throws RemoteException {
 		try {
 			com.liferay.portal.kernel.model.Layout returnValue = LayoutServiceUtil.updateName(plid,

@@ -31,9 +31,9 @@ public class PhoneServiceWrapper implements PhoneService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.Phone addPhone(java.lang.String className,
-		long classPK, java.lang.String number, java.lang.String extension,
-		long typeId, boolean primary,
+	public com.liferay.portal.kernel.model.Phone addPhone(
+		java.lang.String className, long classPK, java.lang.String number,
+		java.lang.String extension, long typeId, boolean primary,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _phoneService.addPhone(className, classPK, number, extension,

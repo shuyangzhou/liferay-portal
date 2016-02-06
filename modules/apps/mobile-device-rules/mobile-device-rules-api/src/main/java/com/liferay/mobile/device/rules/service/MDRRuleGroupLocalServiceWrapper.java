@@ -59,7 +59,8 @@ public class MDRRuleGroupLocalServiceWrapper implements MDRRuleGroupLocalService
 	@Override
 	public com.liferay.mobile.device.rules.model.MDRRuleGroup copyRuleGroup(
 		com.liferay.mobile.device.rules.model.MDRRuleGroup ruleGroup,
-		long groupId, com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		long groupId,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _mdrRuleGroupLocalService.copyRuleGroup(ruleGroup, groupId,
 			serviceContext);

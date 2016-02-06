@@ -2465,7 +2465,8 @@ public interface GroupPersistence extends BasePersistence<Group> {
 	* @param pk the primary key of the group
 	* @return the roles associated with the group
 	*/
-	public java.util.List<com.liferay.portal.kernel.model.Role> getRoles(long pk);
+	public java.util.List<com.liferay.portal.kernel.model.Role> getRoles(
+		long pk);
 
 	/**
 	* Returns a range of all the roles associated with the group.
@@ -2479,8 +2480,8 @@ public interface GroupPersistence extends BasePersistence<Group> {
 	* @param end the upper bound of the range of groups (not inclusive)
 	* @return the range of roles associated with the group
 	*/
-	public java.util.List<com.liferay.portal.kernel.model.Role> getRoles(long pk,
-		int start, int end);
+	public java.util.List<com.liferay.portal.kernel.model.Role> getRoles(
+		long pk, int start, int end);
 
 	/**
 	* Returns an ordered range of all the roles associated with the group.
@@ -2495,8 +2496,8 @@ public interface GroupPersistence extends BasePersistence<Group> {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of roles associated with the group
 	*/
-	public java.util.List<com.liferay.portal.kernel.model.Role> getRoles(long pk,
-		int start, int end,
+	public java.util.List<com.liferay.portal.kernel.model.Role> getRoles(
+		long pk, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Role> orderByComparator);
 
 	/**
@@ -2794,7 +2795,8 @@ public interface GroupPersistence extends BasePersistence<Group> {
 	* @param pk the primary key of the group
 	* @return the users associated with the group
 	*/
-	public java.util.List<com.liferay.portal.kernel.model.User> getUsers(long pk);
+	public java.util.List<com.liferay.portal.kernel.model.User> getUsers(
+		long pk);
 
 	/**
 	* Returns a range of all the users associated with the group.
@@ -2808,8 +2810,8 @@ public interface GroupPersistence extends BasePersistence<Group> {
 	* @param end the upper bound of the range of groups (not inclusive)
 	* @return the range of users associated with the group
 	*/
-	public java.util.List<com.liferay.portal.kernel.model.User> getUsers(long pk,
-		int start, int end);
+	public java.util.List<com.liferay.portal.kernel.model.User> getUsers(
+		long pk, int start, int end);
 
 	/**
 	* Returns an ordered range of all the users associated with the group.
@@ -2824,8 +2826,8 @@ public interface GroupPersistence extends BasePersistence<Group> {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of users associated with the group
 	*/
-	public java.util.List<com.liferay.portal.kernel.model.User> getUsers(long pk,
-		int start, int end,
+	public java.util.List<com.liferay.portal.kernel.model.User> getUsers(
+		long pk, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.User> orderByComparator);
 
 	/**

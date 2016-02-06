@@ -18,8 +18,8 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
 
@@ -147,7 +147,8 @@ public class PortletItemWrapper implements PortletItem,
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.kernel.model.PortletItem portletItem) {
+	public int compareTo(
+		com.liferay.portal.kernel.model.PortletItem portletItem) {
 		return _portletItem.compareTo(portletItem);
 	}
 

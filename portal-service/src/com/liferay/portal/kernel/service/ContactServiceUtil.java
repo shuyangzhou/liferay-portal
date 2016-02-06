@@ -40,7 +40,8 @@ public class ContactServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.portal.service.impl.ContactServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.portal.kernel.model.Contact getContact(long contactId)
+	public static com.liferay.portal.kernel.model.Contact getContact(
+		long contactId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getContact(contactId);
 	}

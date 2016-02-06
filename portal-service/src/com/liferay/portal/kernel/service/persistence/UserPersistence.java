@@ -1894,7 +1894,8 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @return the groups associated with the user
 	*/
-	public java.util.List<com.liferay.portal.kernel.model.Group> getGroups(long pk);
+	public java.util.List<com.liferay.portal.kernel.model.Group> getGroups(
+		long pk);
 
 	/**
 	* Returns a range of all the groups associated with the user.
@@ -1908,8 +1909,8 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param end the upper bound of the range of users (not inclusive)
 	* @return the range of groups associated with the user
 	*/
-	public java.util.List<com.liferay.portal.kernel.model.Group> getGroups(long pk,
-		int start, int end);
+	public java.util.List<com.liferay.portal.kernel.model.Group> getGroups(
+		long pk, int start, int end);
 
 	/**
 	* Returns an ordered range of all the groups associated with the user.
@@ -1924,8 +1925,8 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of groups associated with the user
 	*/
-	public java.util.List<com.liferay.portal.kernel.model.Group> getGroups(long pk,
-		int start, int end,
+	public java.util.List<com.liferay.portal.kernel.model.Group> getGroups(
+		long pk, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Group> orderByComparator);
 
 	/**
@@ -2223,7 +2224,8 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @return the roles associated with the user
 	*/
-	public java.util.List<com.liferay.portal.kernel.model.Role> getRoles(long pk);
+	public java.util.List<com.liferay.portal.kernel.model.Role> getRoles(
+		long pk);
 
 	/**
 	* Returns a range of all the roles associated with the user.
@@ -2237,8 +2239,8 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param end the upper bound of the range of users (not inclusive)
 	* @return the range of roles associated with the user
 	*/
-	public java.util.List<com.liferay.portal.kernel.model.Role> getRoles(long pk,
-		int start, int end);
+	public java.util.List<com.liferay.portal.kernel.model.Role> getRoles(
+		long pk, int start, int end);
 
 	/**
 	* Returns an ordered range of all the roles associated with the user.
@@ -2253,8 +2255,8 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of roles associated with the user
 	*/
-	public java.util.List<com.liferay.portal.kernel.model.Role> getRoles(long pk,
-		int start, int end,
+	public java.util.List<com.liferay.portal.kernel.model.Role> getRoles(
+		long pk, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Role> orderByComparator);
 
 	/**
@@ -2386,7 +2388,8 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @return the teams associated with the user
 	*/
-	public java.util.List<com.liferay.portal.kernel.model.Team> getTeams(long pk);
+	public java.util.List<com.liferay.portal.kernel.model.Team> getTeams(
+		long pk);
 
 	/**
 	* Returns a range of all the teams associated with the user.
@@ -2400,8 +2403,8 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param end the upper bound of the range of users (not inclusive)
 	* @return the range of teams associated with the user
 	*/
-	public java.util.List<com.liferay.portal.kernel.model.Team> getTeams(long pk,
-		int start, int end);
+	public java.util.List<com.liferay.portal.kernel.model.Team> getTeams(
+		long pk, int start, int end);
 
 	/**
 	* Returns an ordered range of all the teams associated with the user.
@@ -2416,8 +2419,8 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of teams associated with the user
 	*/
-	public java.util.List<com.liferay.portal.kernel.model.Team> getTeams(long pk,
-		int start, int end,
+	public java.util.List<com.liferay.portal.kernel.model.Team> getTeams(
+		long pk, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Team> orderByComparator);
 
 	/**

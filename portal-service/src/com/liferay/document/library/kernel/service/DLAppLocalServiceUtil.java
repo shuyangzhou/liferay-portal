@@ -43,7 +43,8 @@ public class DLAppLocalServiceUtil {
 	public static com.liferay.portal.kernel.repository.model.FileEntry addFileEntry(
 		long userId, long repositoryId, long folderId,
 		java.lang.String sourceFileName, java.lang.String mimeType,
-		byte[] bytes, com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		byte[] bytes,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addFileEntry(userId, repositoryId, folderId,

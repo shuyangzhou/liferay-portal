@@ -291,8 +291,9 @@ public class ResourceLocalServiceWrapper implements ResourceLocalService,
 	* @return the new resource
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.Resource getResource(long companyId,
-		java.lang.String name, int scope, java.lang.String primKey) {
+	public com.liferay.portal.kernel.model.Resource getResource(
+		long companyId, java.lang.String name, int scope,
+		java.lang.String primKey) {
 		return _resourceLocalService.getResource(companyId, name, scope, primKey);
 	}
 

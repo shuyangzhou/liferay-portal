@@ -176,7 +176,8 @@ public interface ClusterGroupModel extends BaseModel<ClusterGroup>, MVCCModel {
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.kernel.model.ClusterGroup clusterGroup);
+	public int compareTo(
+		com.liferay.portal.kernel.model.ClusterGroup clusterGroup);
 
 	@Override
 	public int hashCode();

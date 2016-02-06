@@ -65,8 +65,8 @@ public class SubscriptionLocalServiceWrapper implements SubscriptionLocalService
 	* @return the subscription
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.Subscription addSubscription(long userId,
-		long groupId, java.lang.String className, long classPK)
+	public com.liferay.portal.kernel.model.Subscription addSubscription(
+		long userId, long groupId, java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _subscriptionLocalService.addSubscription(userId, groupId,
 			className, classPK);
@@ -94,8 +94,8 @@ public class SubscriptionLocalServiceWrapper implements SubscriptionLocalService
 	* @return the subscription
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.Subscription addSubscription(long userId,
-		long groupId, java.lang.String className, long classPK,
+	public com.liferay.portal.kernel.model.Subscription addSubscription(
+		long userId, long groupId, java.lang.String className, long classPK,
 		java.lang.String frequency)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _subscriptionLocalService.addSubscription(userId, groupId,

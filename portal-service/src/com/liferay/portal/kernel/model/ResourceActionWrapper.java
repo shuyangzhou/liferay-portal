@@ -18,8 +18,8 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
 
@@ -104,7 +104,8 @@ public class ResourceActionWrapper implements ResourceAction,
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.kernel.model.ResourceAction resourceAction) {
+	public int compareTo(
+		com.liferay.portal.kernel.model.ResourceAction resourceAction) {
 		return _resourceAction.compareTo(resourceAction);
 	}
 

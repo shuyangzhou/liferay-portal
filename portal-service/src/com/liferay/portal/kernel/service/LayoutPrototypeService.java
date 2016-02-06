@@ -19,12 +19,12 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
+import com.liferay.portal.kernel.model.LayoutPrototype;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.model.LayoutPrototype;
 
 import java.util.List;
 import java.util.Locale;
@@ -60,7 +60,8 @@ public interface LayoutPrototypeService extends BaseService {
 	@java.lang.Deprecated
 	public LayoutPrototype addLayoutPrototype(
 		Map<Locale, java.lang.String> nameMap, java.lang.String description,
-		boolean active, com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		boolean active,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	public LayoutPrototype addLayoutPrototype(
@@ -99,7 +100,8 @@ public interface LayoutPrototypeService extends BaseService {
 	@java.lang.Deprecated
 	public LayoutPrototype updateLayoutPrototype(long layoutPrototypeId,
 		Map<Locale, java.lang.String> nameMap, java.lang.String description,
-		boolean active, com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		boolean active,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	public LayoutPrototype updateLayoutPrototype(long layoutPrototypeId,

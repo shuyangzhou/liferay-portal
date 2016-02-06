@@ -19,10 +19,10 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
+import com.liferay.portal.kernel.service.UserServiceUtil;
 import com.liferay.portal.kernel.service.http.TunnelUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
-import com.liferay.portal.kernel.service.UserServiceUtil;
 
 /**
  * Provides the HTTP utility for the
@@ -55,7 +55,8 @@ import com.liferay.portal.kernel.service.UserServiceUtil;
 @ProviderType
 public class UserServiceHttp {
 	public static void addGroupUsers(HttpPrincipal httpPrincipal, long groupId,
-		long[] userIds, com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		long[] userIds,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(UserServiceUtil.class,
@@ -2020,7 +2021,8 @@ public class UserServiceHttp {
 			java.lang.String.class, long[].class, long[].class, long[].class,
 			long[].class, java.util.List.class, java.util.List.class,
 			java.util.List.class, java.util.List.class, java.util.List.class,
-			boolean.class, com.liferay.portal.kernel.service.ServiceContext.class
+			boolean.class,
+			com.liferay.portal.kernel.service.ServiceContext.class
 		};
 	private static final Class<?>[] _addUserGroupUsersParameterTypes7 = new Class[] {
 			long.class, long[].class
@@ -2046,7 +2048,8 @@ public class UserServiceHttp {
 			java.lang.String.class, long[].class, long[].class, long[].class,
 			long[].class, java.util.List.class, java.util.List.class,
 			java.util.List.class, java.util.List.class, java.util.List.class,
-			boolean.class, com.liferay.portal.kernel.service.ServiceContext.class
+			boolean.class,
+			com.liferay.portal.kernel.service.ServiceContext.class
 		};
 	private static final Class<?>[] _deletePortraitParameterTypes10 = new Class[] {
 			long.class

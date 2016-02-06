@@ -18,8 +18,8 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.service.UserServiceUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
 
 import java.rmi.RemoteException;
 
@@ -204,8 +204,8 @@ public class UserServiceSoap {
 	bridge attributes for the user.
 	* @return the new user
 	*/
-	public static com.liferay.portal.kernel.model.UserSoap addUser(long companyId,
-		boolean autoPassword, java.lang.String password1,
+	public static com.liferay.portal.kernel.model.UserSoap addUser(
+		long companyId, boolean autoPassword, java.lang.String password1,
 		java.lang.String password2, boolean autoScreenName,
 		java.lang.String screenName, java.lang.String emailAddress,
 		long facebookId, java.lang.String openId, String locale,
@@ -285,8 +285,8 @@ public class UserServiceSoap {
 	bridge attributes for the user.
 	* @return the new user
 	*/
-	public static com.liferay.portal.kernel.model.UserSoap addUser(long companyId,
-		boolean autoPassword, java.lang.String password1,
+	public static com.liferay.portal.kernel.model.UserSoap addUser(
+		long companyId, boolean autoPassword, java.lang.String password1,
 		java.lang.String password2, boolean autoScreenName,
 		java.lang.String screenName, java.lang.String emailAddress,
 		long facebookId, java.lang.String openId, String locale,
@@ -742,8 +742,8 @@ public class UserServiceSoap {
 	* @param userId the primary key of the user
 	* @return the user with the primary key
 	*/
-	public static com.liferay.portal.kernel.model.UserSoap getUserById(long userId)
-		throws RemoteException {
+	public static com.liferay.portal.kernel.model.UserSoap getUserById(
+		long userId) throws RemoteException {
 		try {
 			com.liferay.portal.kernel.model.User returnValue = UserServiceUtil.getUserById(userId);
 
@@ -1323,8 +1323,8 @@ public class UserServiceSoap {
 	* @param openId the new OpenID
 	* @return the user
 	*/
-	public static com.liferay.portal.kernel.model.UserSoap updateOpenId(long userId,
-		java.lang.String openId) throws RemoteException {
+	public static com.liferay.portal.kernel.model.UserSoap updateOpenId(
+		long userId, java.lang.String openId) throws RemoteException {
 		try {
 			com.liferay.portal.kernel.model.User returnValue = UserServiceUtil.updateOpenId(userId,
 					openId);
@@ -1465,8 +1465,8 @@ public class UserServiceSoap {
 	ServiceContext)}
 	*/
 	@Deprecated
-	public static com.liferay.portal.kernel.model.UserSoap updateStatus(long userId,
-		int status) throws RemoteException {
+	public static com.liferay.portal.kernel.model.UserSoap updateStatus(
+		long userId, int status) throws RemoteException {
 		try {
 			com.liferay.portal.kernel.model.User returnValue = UserServiceUtil.updateStatus(userId,
 					status);
@@ -1490,8 +1490,9 @@ public class UserServiceSoap {
 	user via attribute <code>passwordUnencrypted</code>.
 	* @return the user
 	*/
-	public static com.liferay.portal.kernel.model.UserSoap updateStatus(long userId,
-		int status, com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public static com.liferay.portal.kernel.model.UserSoap updateStatus(
+		long userId, int status,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws RemoteException {
 		try {
 			com.liferay.portal.kernel.model.User returnValue = UserServiceUtil.updateStatus(userId,
@@ -1561,10 +1562,10 @@ public class UserServiceSoap {
 	bridge attributes for the user.
 	* @return the user
 	*/
-	public static com.liferay.portal.kernel.model.UserSoap updateUser(long userId,
-		java.lang.String oldPassword, java.lang.String newPassword1,
-		java.lang.String newPassword2, boolean passwordReset,
-		java.lang.String reminderQueryQuestion,
+	public static com.liferay.portal.kernel.model.UserSoap updateUser(
+		long userId, java.lang.String oldPassword,
+		java.lang.String newPassword1, java.lang.String newPassword2,
+		boolean passwordReset, java.lang.String reminderQueryQuestion,
 		java.lang.String reminderQueryAnswer, java.lang.String screenName,
 		java.lang.String emailAddress, long facebookId,
 		java.lang.String openId, boolean portrait, byte[] portraitBytes,
@@ -1578,7 +1579,8 @@ public class UserServiceSoap {
 		java.lang.String twitterSn, java.lang.String jobTitle, long[] groupIds,
 		long[] organizationIds, long[] roleIds,
 		com.liferay.portal.kernel.model.UserGroupRoleSoap[] userGroupRoles,
-		long[] userGroupIds, com.liferay.portal.kernel.model.AddressSoap[] addresses,
+		long[] userGroupIds,
+		com.liferay.portal.kernel.model.AddressSoap[] addresses,
 		com.liferay.portal.kernel.model.EmailAddressSoap[] emailAddresses,
 		com.liferay.portal.kernel.model.PhoneSoap[] phones,
 		com.liferay.portal.kernel.model.WebsiteSoap[] websites,
@@ -1678,10 +1680,10 @@ public class UserServiceSoap {
 	List, ServiceContext)}
 	*/
 	@Deprecated
-	public static com.liferay.portal.kernel.model.UserSoap updateUser(long userId,
-		java.lang.String oldPassword, java.lang.String newPassword1,
-		java.lang.String newPassword2, boolean passwordReset,
-		java.lang.String reminderQueryQuestion,
+	public static com.liferay.portal.kernel.model.UserSoap updateUser(
+		long userId, java.lang.String oldPassword,
+		java.lang.String newPassword1, java.lang.String newPassword2,
+		boolean passwordReset, java.lang.String reminderQueryQuestion,
 		java.lang.String reminderQueryAnswer, java.lang.String screenName,
 		java.lang.String emailAddress, long facebookId,
 		java.lang.String openId, java.lang.String languageId,
@@ -1694,7 +1696,8 @@ public class UserServiceSoap {
 		java.lang.String twitterSn, java.lang.String jobTitle, long[] groupIds,
 		long[] organizationIds, long[] roleIds,
 		com.liferay.portal.kernel.model.UserGroupRoleSoap[] userGroupRoles,
-		long[] userGroupIds, com.liferay.portal.kernel.model.AddressSoap[] addresses,
+		long[] userGroupIds,
+		com.liferay.portal.kernel.model.AddressSoap[] addresses,
 		com.liferay.portal.kernel.model.EmailAddressSoap[] emailAddresses,
 		com.liferay.portal.kernel.model.PhoneSoap[] phones,
 		com.liferay.portal.kernel.model.WebsiteSoap[] websites,
@@ -1780,10 +1783,10 @@ public class UserServiceSoap {
 	bridge attributes for the user.
 	* @return the user
 	*/
-	public static com.liferay.portal.kernel.model.UserSoap updateUser(long userId,
-		java.lang.String oldPassword, java.lang.String newPassword1,
-		java.lang.String newPassword2, boolean passwordReset,
-		java.lang.String reminderQueryQuestion,
+	public static com.liferay.portal.kernel.model.UserSoap updateUser(
+		long userId, java.lang.String oldPassword,
+		java.lang.String newPassword1, java.lang.String newPassword2,
+		boolean passwordReset, java.lang.String reminderQueryQuestion,
 		java.lang.String reminderQueryAnswer, java.lang.String screenName,
 		java.lang.String emailAddress, long facebookId,
 		java.lang.String openId, java.lang.String languageId,

@@ -84,7 +84,8 @@ public class ExportImportConfigurationLocalServiceUtil {
 		long userId, long groupId, java.lang.String name,
 		java.lang.String description, int type,
 		java.util.Map<java.lang.String, java.io.Serializable> settingsMap,
-		int status, com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		int status,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addExportImportConfiguration(userId, groupId, name,

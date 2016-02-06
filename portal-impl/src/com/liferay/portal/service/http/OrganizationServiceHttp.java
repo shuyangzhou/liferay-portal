@@ -19,10 +19,10 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
+import com.liferay.portal.kernel.service.OrganizationServiceUtil;
 import com.liferay.portal.kernel.service.http.TunnelUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
-import com.liferay.portal.kernel.service.OrganizationServiceUtil;
 
 /**
  * Provides the HTTP utility for the
@@ -685,7 +685,8 @@ public class OrganizationServiceHttp {
 	private static final Class<?>[] _addOrganizationParameterTypes2 = new Class[] {
 			long.class, java.lang.String.class, java.lang.String.class,
 			long.class, long.class, long.class, java.lang.String.class,
-			boolean.class, com.liferay.portal.kernel.service.ServiceContext.class
+			boolean.class,
+			com.liferay.portal.kernel.service.ServiceContext.class
 		};
 	private static final Class<?>[] _addPasswordPolicyOrganizationsParameterTypes3 =
 		new Class[] { long.class, long[].class };

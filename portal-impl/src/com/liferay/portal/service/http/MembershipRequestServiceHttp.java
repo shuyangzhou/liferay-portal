@@ -19,10 +19,10 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
+import com.liferay.portal.kernel.service.MembershipRequestServiceUtil;
 import com.liferay.portal.kernel.service.http.TunnelUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
-import com.liferay.portal.kernel.service.MembershipRequestServiceUtil;
 
 /**
  * Provides the HTTP utility for the
@@ -150,7 +150,8 @@ public class MembershipRequestServiceHttp {
 
 	public static void updateStatus(HttpPrincipal httpPrincipal,
 		long membershipRequestId, java.lang.String reviewComments,
-		long statusId, com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		long statusId,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(MembershipRequestServiceUtil.class,

@@ -35,7 +35,8 @@ public class PortletPreferencesLocalServiceWrapper
 	@Override
 	public com.liferay.portal.kernel.model.PortletPreferences addPortletPreferences(
 		long companyId, long ownerId, int ownerType, long plid,
-		java.lang.String portletId, com.liferay.portal.kernel.model.Portlet portlet,
+		java.lang.String portletId,
+		com.liferay.portal.kernel.model.Portlet portlet,
 		java.lang.String defaultPreferences) {
 		return _portletPreferencesLocalService.addPortletPreferences(companyId,
 			ownerId, ownerType, plid, portletId, portlet, defaultPreferences);

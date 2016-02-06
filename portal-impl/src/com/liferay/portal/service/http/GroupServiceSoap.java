@@ -18,8 +18,8 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.service.GroupServiceUtil;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 
 import java.rmi.RemoteException;
 
@@ -76,7 +76,8 @@ public class GroupServiceSoap {
 		java.lang.String[] descriptionMapValues, int type,
 		boolean manualMembership, int membershipRestriction,
 		java.lang.String friendlyURL, boolean site, boolean inheritContent,
-		boolean active, com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		boolean active,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws RemoteException {
 		try {
 			Map<Locale, String> nameMap = LocalizationUtil.getLocalizationMap(nameMapLanguageIds,
@@ -161,7 +162,8 @@ public class GroupServiceSoap {
 		long parentGroupId, long liveGroupId, java.lang.String name,
 		java.lang.String description, int type, boolean manualMembership,
 		int membershipRestriction, java.lang.String friendlyURL, boolean site,
-		boolean active, com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		boolean active,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws RemoteException {
 		try {
 			com.liferay.portal.kernel.model.Group returnValue = GroupServiceUtil.addGroup(parentGroupId,
@@ -290,8 +292,8 @@ public class GroupServiceSoap {
 	* @return the group with the primary key
 	* @throws PortalException if a portal exception occurred
 	*/
-	public static com.liferay.portal.kernel.model.GroupSoap getGroup(long groupId)
-		throws RemoteException {
+	public static com.liferay.portal.kernel.model.GroupSoap getGroup(
+		long groupId) throws RemoteException {
 		try {
 			com.liferay.portal.kernel.model.Group returnValue = GroupServiceUtil.getGroup(groupId);
 
@@ -312,8 +314,8 @@ public class GroupServiceSoap {
 	* @return the group with the group key
 	* @throws PortalException if a portal exception occurred
 	*/
-	public static com.liferay.portal.kernel.model.GroupSoap getGroup(long companyId,
-		java.lang.String groupKey) throws RemoteException {
+	public static com.liferay.portal.kernel.model.GroupSoap getGroup(
+		long companyId, java.lang.String groupKey) throws RemoteException {
 		try {
 			com.liferay.portal.kernel.model.Group returnValue = GroupServiceUtil.getGroup(companyId,
 					groupKey);
@@ -392,8 +394,8 @@ public class GroupServiceSoap {
 	* @throws PortalException if a portal exception occurred
 	*/
 	public static com.liferay.portal.kernel.model.GroupSoap[] getManageableSiteGroups(
-		java.util.Collection<com.liferay.portal.kernel.model.Portlet> portlets, int max)
-		throws RemoteException {
+		java.util.Collection<com.liferay.portal.kernel.model.Portlet> portlets,
+		int max) throws RemoteException {
 		try {
 			java.util.List<com.liferay.portal.kernel.model.Group> returnValue = GroupServiceUtil.getManageableSiteGroups(portlets,
 					max);
@@ -701,8 +703,8 @@ public class GroupServiceSoap {
 	* @return the matching groups ordered by name
 	* @throws PortalException if a portal exception occurred
 	*/
-	public static com.liferay.portal.kernel.model.GroupSoap[] search(long companyId,
-		java.lang.String name, java.lang.String description,
+	public static com.liferay.portal.kernel.model.GroupSoap[] search(
+		long companyId, java.lang.String name, java.lang.String description,
 		java.lang.String[] params, int start, int end)
 		throws RemoteException {
 		try {
@@ -814,8 +816,9 @@ public class GroupServiceSoap {
 		}
 	}
 
-	public static com.liferay.portal.kernel.model.GroupSoap updateGroup(long groupId,
-		long parentGroupId, java.lang.String[] nameMapLanguageIds,
+	public static com.liferay.portal.kernel.model.GroupSoap updateGroup(
+		long groupId, long parentGroupId,
+		java.lang.String[] nameMapLanguageIds,
 		java.lang.String[] nameMapValues,
 		java.lang.String[] descriptionMapLanguageIds,
 		java.lang.String[] descriptionMapValues, int type,
@@ -872,8 +875,8 @@ public class GroupServiceSoap {
 	ServiceContext)}
 	*/
 	@Deprecated
-	public static com.liferay.portal.kernel.model.GroupSoap updateGroup(long groupId,
-		long parentGroupId, java.lang.String name,
+	public static com.liferay.portal.kernel.model.GroupSoap updateGroup(
+		long groupId, long parentGroupId, java.lang.String name,
 		java.lang.String description, int type, boolean manualMembership,
 		int membershipRestriction, java.lang.String friendlyURL,
 		boolean inheritContent, boolean active,
@@ -903,8 +906,8 @@ public class GroupServiceSoap {
 	* @return the group
 	* @throws PortalException if a portal exception occurred
 	*/
-	public static com.liferay.portal.kernel.model.GroupSoap updateGroup(long groupId,
-		java.lang.String typeSettings) throws RemoteException {
+	public static com.liferay.portal.kernel.model.GroupSoap updateGroup(
+		long groupId, java.lang.String typeSettings) throws RemoteException {
 		try {
 			com.liferay.portal.kernel.model.Group returnValue = GroupServiceUtil.updateGroup(groupId,
 					typeSettings);

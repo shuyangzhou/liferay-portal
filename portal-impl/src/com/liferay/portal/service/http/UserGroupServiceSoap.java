@@ -243,7 +243,8 @@ public class UserGroupServiceSoap {
 	public static com.liferay.portal.kernel.model.UserGroupSoap[] getUserGroups(
 		long companyId) throws RemoteException {
 		try {
-			java.util.List<com.liferay.portal.kernel.model.UserGroup> returnValue = UserGroupServiceUtil.getUserGroups(companyId);
+			java.util.List<com.liferay.portal.kernel.model.UserGroup> returnValue =
+				UserGroupServiceUtil.getUserGroups(companyId);
 
 			return com.liferay.portal.kernel.model.UserGroupSoap.toSoapModels(returnValue);
 		}
@@ -263,7 +264,8 @@ public class UserGroupServiceSoap {
 	public static com.liferay.portal.kernel.model.UserGroupSoap[] getUserUserGroups(
 		long userId) throws RemoteException {
 		try {
-			java.util.List<com.liferay.portal.kernel.model.UserGroup> returnValue = UserGroupServiceUtil.getUserUserGroups(userId);
+			java.util.List<com.liferay.portal.kernel.model.UserGroup> returnValue =
+				UserGroupServiceUtil.getUserUserGroups(userId);
 
 			return com.liferay.portal.kernel.model.UserGroupSoap.toSoapModels(returnValue);
 		}

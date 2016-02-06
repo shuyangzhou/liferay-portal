@@ -18,8 +18,8 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
 
@@ -2819,7 +2819,8 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	* @param portletApp this portlet's application
 	*/
 	@Override
-	public void setPortletApp(com.liferay.portal.kernel.model.PortletApp portletApp) {
+	public void setPortletApp(
+		com.liferay.portal.kernel.model.PortletApp portletApp) {
 		_portlet.setPortletApp(portletApp);
 	}
 
@@ -2872,7 +2873,8 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	* @param portletInfo the portlet info of the portlet
 	*/
 	@Override
-	public void setPortletInfo(com.liferay.portal.kernel.model.PortletInfo portletInfo) {
+	public void setPortletInfo(
+		com.liferay.portal.kernel.model.PortletInfo portletInfo) {
 		_portlet.setPortletInfo(portletInfo);
 	}
 

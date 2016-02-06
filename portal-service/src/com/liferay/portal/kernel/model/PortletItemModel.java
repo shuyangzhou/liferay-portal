@@ -297,7 +297,8 @@ public interface PortletItemModel extends BaseModel<PortletItem>, GroupedModel,
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.kernel.model.PortletItem portletItem);
+	public int compareTo(
+		com.liferay.portal.kernel.model.PortletItem portletItem);
 
 	@Override
 	public int hashCode();

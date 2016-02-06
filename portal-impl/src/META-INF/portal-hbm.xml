@@ -54,7 +54,7 @@
 	<import class="com.liferay.portal.kernel.model.Permission" />
 	<import class="com.liferay.portal.kernel.model.Phone" />
 	<import class="com.liferay.portal.kernel.model.PluginSetting" />
-	<import class="com.liferay.portal.model.Portal" />
+	<import class="com.liferay.portal.kernel.model.Portal" />
 	<import class="com.liferay.portal.kernel.model.PortalPreferences" />
 	<import class="com.liferay.portal.kernel.model.Portlet" />
 	<import class="com.liferay.portal.kernel.model.PortletItem" />

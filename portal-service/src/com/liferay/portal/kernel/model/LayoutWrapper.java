@@ -20,8 +20,8 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
 
@@ -1854,7 +1854,8 @@ public class LayoutWrapper implements Layout, ModelWrapper<Layout> {
 	}
 
 	@Override
-	public void setLayoutSet(com.liferay.portal.kernel.model.LayoutSet layoutSet) {
+	public void setLayoutSet(
+		com.liferay.portal.kernel.model.LayoutSet layoutSet) {
 		_layout.setLayoutSet(layoutSet);
 	}
 

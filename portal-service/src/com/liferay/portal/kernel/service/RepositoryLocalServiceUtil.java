@@ -57,7 +57,8 @@ public class RepositoryLocalServiceUtil {
 		java.lang.String name, java.lang.String description,
 		java.lang.String portletId,
 		com.liferay.portal.kernel.util.UnicodeProperties typeSettingsProperties,
-		boolean hidden, com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		boolean hidden,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addRepository(userId, groupId, classNameId, parentFolderId,

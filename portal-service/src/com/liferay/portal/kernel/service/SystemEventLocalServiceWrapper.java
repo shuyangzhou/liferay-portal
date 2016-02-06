@@ -32,9 +32,10 @@ public class SystemEventLocalServiceWrapper implements SystemEventLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.SystemEvent addSystemEvent(long companyId,
-		java.lang.String className, long classPK, java.lang.String classUuid,
-		java.lang.String referrerClassName, int type, java.lang.String extraData)
+	public com.liferay.portal.kernel.model.SystemEvent addSystemEvent(
+		long companyId, java.lang.String className, long classPK,
+		java.lang.String classUuid, java.lang.String referrerClassName,
+		int type, java.lang.String extraData)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _systemEventLocalService.addSystemEvent(companyId, className,
 			classPK, classUuid, referrerClassName, type, extraData);
@@ -53,8 +54,8 @@ public class SystemEventLocalServiceWrapper implements SystemEventLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.SystemEvent addSystemEvent(long userId,
-		long groupId, java.lang.String className, long classPK,
+	public com.liferay.portal.kernel.model.SystemEvent addSystemEvent(
+		long userId, long groupId, java.lang.String className, long classPK,
 		java.lang.String classUuid, java.lang.String referrerClassName,
 		int type, java.lang.String extraData)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -206,8 +207,8 @@ public class SystemEventLocalServiceWrapper implements SystemEventLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.SystemEvent fetchSystemEvent(long groupId,
-		long classNameId, long classPK, int type) {
+	public com.liferay.portal.kernel.model.SystemEvent fetchSystemEvent(
+		long groupId, long classNameId, long classPK, int type) {
 		return _systemEventLocalService.fetchSystemEvent(groupId, classNameId,
 			classPK, type);
 	}

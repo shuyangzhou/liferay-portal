@@ -18,10 +18,10 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
-import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.ReferenceRegistry;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 import java.util.Date;
 import java.util.List;
@@ -2376,8 +2376,8 @@ public class UserUtil {
 	* @param end the upper bound of the range of users (not inclusive)
 	* @return the range of groups associated with the user
 	*/
-	public static List<com.liferay.portal.kernel.model.Group> getGroups(long pk,
-		int start, int end) {
+	public static List<com.liferay.portal.kernel.model.Group> getGroups(
+		long pk, int start, int end) {
 		return getPersistence().getGroups(pk, start, end);
 	}
 
@@ -2394,8 +2394,8 @@ public class UserUtil {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of groups associated with the user
 	*/
-	public static List<com.liferay.portal.kernel.model.Group> getGroups(long pk,
-		int start, int end,
+	public static List<com.liferay.portal.kernel.model.Group> getGroups(
+		long pk, int start, int end,
 		OrderByComparator<com.liferay.portal.kernel.model.Group> orderByComparator) {
 		return getPersistence().getGroups(pk, start, end, orderByComparator);
 	}
@@ -2447,7 +2447,8 @@ public class UserUtil {
 	* @param pk the primary key of the user
 	* @param group the group
 	*/
-	public static void addGroup(long pk, com.liferay.portal.kernel.model.Group group) {
+	public static void addGroup(long pk,
+		com.liferay.portal.kernel.model.Group group) {
 		getPersistence().addGroup(pk, group);
 	}
 
@@ -2497,7 +2498,8 @@ public class UserUtil {
 	* @param pk the primary key of the user
 	* @param group the group
 	*/
-	public static void removeGroup(long pk, com.liferay.portal.kernel.model.Group group) {
+	public static void removeGroup(long pk,
+		com.liferay.portal.kernel.model.Group group) {
 		getPersistence().removeGroup(pk, group);
 	}
 
@@ -2849,7 +2851,8 @@ public class UserUtil {
 	* @param pk the primary key of the user
 	* @param role the role
 	*/
-	public static void addRole(long pk, com.liferay.portal.kernel.model.Role role) {
+	public static void addRole(long pk,
+		com.liferay.portal.kernel.model.Role role) {
 		getPersistence().addRole(pk, role);
 	}
 
@@ -2899,7 +2902,8 @@ public class UserUtil {
 	* @param pk the primary key of the user
 	* @param role the role
 	*/
-	public static void removeRole(long pk, com.liferay.portal.kernel.model.Role role) {
+	public static void removeRole(long pk,
+		com.liferay.portal.kernel.model.Role role) {
 		getPersistence().removeRole(pk, role);
 	}
 
@@ -3048,7 +3052,8 @@ public class UserUtil {
 	* @param pk the primary key of the user
 	* @param team the team
 	*/
-	public static void addTeam(long pk, com.liferay.portal.kernel.model.Team team) {
+	public static void addTeam(long pk,
+		com.liferay.portal.kernel.model.Team team) {
 		getPersistence().addTeam(pk, team);
 	}
 
@@ -3098,7 +3103,8 @@ public class UserUtil {
 	* @param pk the primary key of the user
 	* @param team the team
 	*/
-	public static void removeTeam(long pk, com.liferay.portal.kernel.model.Team team) {
+	public static void removeTeam(long pk,
+		com.liferay.portal.kernel.model.Team team) {
 		getPersistence().removeTeam(pk, team);
 	}
 

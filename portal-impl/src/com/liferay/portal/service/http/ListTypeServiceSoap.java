@@ -81,7 +81,8 @@ public class ListTypeServiceSoap {
 	public static com.liferay.portal.kernel.model.ListTypeSoap[] getListTypes(
 		java.lang.String type) throws RemoteException {
 		try {
-			java.util.List<com.liferay.portal.kernel.model.ListType> returnValue = ListTypeServiceUtil.getListTypes(type);
+			java.util.List<com.liferay.portal.kernel.model.ListType> returnValue =
+				ListTypeServiceUtil.getListTypes(type);
 
 			return com.liferay.portal.kernel.model.ListTypeSoap.toSoapModels(returnValue);
 		}

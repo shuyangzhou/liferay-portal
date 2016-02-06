@@ -69,8 +69,8 @@ public class TeamServiceSoap {
 	String, ServiceContext)}
 	*/
 	@Deprecated
-	public static com.liferay.portal.kernel.model.TeamSoap addTeam(long groupId,
-		java.lang.String name, java.lang.String description)
+	public static com.liferay.portal.kernel.model.TeamSoap addTeam(
+		long groupId, java.lang.String name, java.lang.String description)
 		throws RemoteException {
 		try {
 			com.liferay.portal.kernel.model.Team returnValue = TeamServiceUtil.addTeam(groupId,
@@ -85,8 +85,8 @@ public class TeamServiceSoap {
 		}
 	}
 
-	public static com.liferay.portal.kernel.model.TeamSoap addTeam(long groupId,
-		java.lang.String name, java.lang.String description,
+	public static com.liferay.portal.kernel.model.TeamSoap addTeam(
+		long groupId, java.lang.String name, java.lang.String description,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws RemoteException {
 		try {
@@ -141,8 +141,8 @@ public class TeamServiceSoap {
 		}
 	}
 
-	public static com.liferay.portal.kernel.model.TeamSoap getTeam(long groupId,
-		java.lang.String name) throws RemoteException {
+	public static com.liferay.portal.kernel.model.TeamSoap getTeam(
+		long groupId, java.lang.String name) throws RemoteException {
 		try {
 			com.liferay.portal.kernel.model.Team returnValue = TeamServiceUtil.getTeam(groupId,
 					name);
@@ -156,8 +156,8 @@ public class TeamServiceSoap {
 		}
 	}
 
-	public static com.liferay.portal.kernel.model.TeamSoap[] getUserTeams(long userId)
-		throws RemoteException {
+	public static com.liferay.portal.kernel.model.TeamSoap[] getUserTeams(
+		long userId) throws RemoteException {
 		try {
 			java.util.List<com.liferay.portal.kernel.model.Team> returnValue = TeamServiceUtil.getUserTeams(userId);
 
@@ -199,8 +199,8 @@ public class TeamServiceSoap {
 		}
 	}
 
-	public static com.liferay.portal.kernel.model.TeamSoap updateTeam(long teamId,
-		java.lang.String name, java.lang.String description)
+	public static com.liferay.portal.kernel.model.TeamSoap updateTeam(
+		long teamId, java.lang.String name, java.lang.String description)
 		throws RemoteException {
 		try {
 			com.liferay.portal.kernel.model.Team returnValue = TeamServiceUtil.updateTeam(teamId,

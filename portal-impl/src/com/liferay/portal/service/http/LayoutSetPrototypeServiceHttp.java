@@ -19,10 +19,10 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
+import com.liferay.portal.kernel.service.LayoutSetPrototypeServiceUtil;
 import com.liferay.portal.kernel.service.http.TunnelUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
-import com.liferay.portal.kernel.service.LayoutSetPrototypeServiceUtil;
 
 /**
  * Provides the HTTP utility for the
@@ -369,11 +369,13 @@ public class LayoutSetPrototypeServiceHttp {
 	private static Log _log = LogFactoryUtil.getLog(LayoutSetPrototypeServiceHttp.class);
 	private static final Class<?>[] _addLayoutSetPrototypeParameterTypes0 = new Class[] {
 			java.util.Map.class, java.util.Map.class, boolean.class,
-			boolean.class, com.liferay.portal.kernel.service.ServiceContext.class
+			boolean.class,
+			com.liferay.portal.kernel.service.ServiceContext.class
 		};
 	private static final Class<?>[] _addLayoutSetPrototypeParameterTypes1 = new Class[] {
 			java.util.Map.class, java.lang.String.class, boolean.class,
-			boolean.class, com.liferay.portal.kernel.service.ServiceContext.class
+			boolean.class,
+			com.liferay.portal.kernel.service.ServiceContext.class
 		};
 	private static final Class<?>[] _deleteLayoutSetPrototypeParameterTypes2 = new Class[] {
 			long.class
@@ -390,7 +392,8 @@ public class LayoutSetPrototypeServiceHttp {
 		};
 	private static final Class<?>[] _updateLayoutSetPrototypeParameterTypes6 = new Class[] {
 			long.class, java.util.Map.class, java.util.Map.class, boolean.class,
-			boolean.class, com.liferay.portal.kernel.service.ServiceContext.class
+			boolean.class,
+			com.liferay.portal.kernel.service.ServiceContext.class
 		};
 	private static final Class<?>[] _updateLayoutSetPrototypeParameterTypes7 = new Class[] {
 			long.class, java.util.Map.class, java.lang.String.class,

@@ -1907,7 +1907,8 @@ public interface Portlet extends PortletModel, PersistedModel {
 	*
 	* @param portletApp this portlet's application
 	*/
-	public void setPortletApp(com.liferay.portal.kernel.model.PortletApp portletApp);
+	public void setPortletApp(
+		com.liferay.portal.kernel.model.PortletApp portletApp);
 
 	/**
 	* Sets the name of the portlet class of the portlet.
@@ -1938,7 +1939,8 @@ public interface Portlet extends PortletModel, PersistedModel {
 	*
 	* @param portletInfo the portlet info of the portlet
 	*/
-	public void setPortletInfo(com.liferay.portal.kernel.model.PortletInfo portletInfo);
+	public void setPortletInfo(
+		com.liferay.portal.kernel.model.PortletInfo portletInfo);
 
 	/**
 	* Sets the name of the portlet layout listener class of the portlet.

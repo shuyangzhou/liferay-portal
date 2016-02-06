@@ -57,7 +57,8 @@ public class PortletLocalServiceUtil {
 		getService().addPortletCategory(companyId, categoryName);
 	}
 
-	public static void checkPortlet(com.liferay.portal.kernel.model.Portlet portlet)
+	public static void checkPortlet(
+		com.liferay.portal.kernel.model.Portlet portlet)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().checkPortlet(portlet);
 	}
@@ -143,7 +144,8 @@ public class PortletLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.Portlet deployRemotePortlet(
-		com.liferay.portal.kernel.model.Portlet portlet, java.lang.String categoryName)
+		com.liferay.portal.kernel.model.Portlet portlet,
+		java.lang.String categoryName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deployRemotePortlet(portlet, categoryName);
 	}
@@ -163,7 +165,8 @@ public class PortletLocalServiceUtil {
 				   .deployRemotePortlet(portlet, categoryNames, eagerDestroy);
 	}
 
-	public static void destroyPortlet(com.liferay.portal.kernel.model.Portlet portlet) {
+	public static void destroyPortlet(
+		com.liferay.portal.kernel.model.Portlet portlet) {
 		getService().destroyPortlet(portlet);
 	}
 

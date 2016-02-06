@@ -58,7 +58,8 @@ public class AddressServiceUtil {
 		getService().deleteAddress(addressId);
 	}
 
-	public static com.liferay.portal.kernel.model.Address getAddress(long addressId)
+	public static com.liferay.portal.kernel.model.Address getAddress(
+		long addressId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getAddress(addressId);
 	}

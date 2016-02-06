@@ -93,8 +93,8 @@ public class PhoneServiceSoap {
 		}
 	}
 
-	public static com.liferay.portal.kernel.model.PhoneSoap getPhone(long phoneId)
-		throws RemoteException {
+	public static com.liferay.portal.kernel.model.PhoneSoap getPhone(
+		long phoneId) throws RemoteException {
 		try {
 			com.liferay.portal.kernel.model.Phone returnValue = PhoneServiceUtil.getPhone(phoneId);
 
@@ -122,9 +122,9 @@ public class PhoneServiceSoap {
 		}
 	}
 
-	public static com.liferay.portal.kernel.model.PhoneSoap updatePhone(long phoneId,
-		java.lang.String number, java.lang.String extension, long typeId,
-		boolean primary) throws RemoteException {
+	public static com.liferay.portal.kernel.model.PhoneSoap updatePhone(
+		long phoneId, java.lang.String number, java.lang.String extension,
+		long typeId, boolean primary) throws RemoteException {
 		try {
 			com.liferay.portal.kernel.model.Phone returnValue = PhoneServiceUtil.updatePhone(phoneId,
 					number, extension, typeId, primary);

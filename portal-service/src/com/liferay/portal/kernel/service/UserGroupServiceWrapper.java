@@ -117,7 +117,8 @@ public class UserGroupServiceWrapper implements UserGroupService,
 	* @return the user group with the primary key
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.UserGroup fetchUserGroup(long userGroupId)
+	public com.liferay.portal.kernel.model.UserGroup fetchUserGroup(
+		long userGroupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userGroupService.fetchUserGroup(userGroupId);
 	}
@@ -152,7 +153,8 @@ public class UserGroupServiceWrapper implements UserGroupService,
 	* @return the user group with the primary key
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.UserGroup getUserGroup(long userGroupId)
+	public com.liferay.portal.kernel.model.UserGroup getUserGroup(
+		long userGroupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userGroupService.getUserGroup(userGroupId);
 	}

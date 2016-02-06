@@ -445,8 +445,8 @@ public class LayoutRevisionLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.LayoutRevision updateStatus(long userId,
-		long layoutRevisionId, int status,
+	public com.liferay.portal.kernel.model.LayoutRevision updateStatus(
+		long userId, long layoutRevisionId, int status,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutRevisionLocalService.updateStatus(userId,

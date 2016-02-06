@@ -90,7 +90,8 @@ public class BackgroundTaskLocalServiceWrapper
 	public com.liferay.portal.background.task.model.BackgroundTask amendBackgroundTask(
 		long backgroundTaskId,
 		java.util.Map<java.lang.String, java.io.Serializable> taskContextMap,
-		int status, com.liferay.portal.kernel.service.ServiceContext serviceContext) {
+		int status,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext) {
 		return _backgroundTaskLocalService.amendBackgroundTask(backgroundTaskId,
 			taskContextMap, status, serviceContext);
 	}

@@ -215,8 +215,8 @@ public class WebDAVPropsLocalServiceWrapper implements WebDAVPropsLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.WebDAVProps getWebDAVProps(long companyId,
-		java.lang.String className, long classPK) {
+	public com.liferay.portal.kernel.model.WebDAVProps getWebDAVProps(
+		long companyId, java.lang.String className, long classPK) {
 		return _webDAVPropsLocalService.getWebDAVProps(companyId, className,
 			classPK);
 	}

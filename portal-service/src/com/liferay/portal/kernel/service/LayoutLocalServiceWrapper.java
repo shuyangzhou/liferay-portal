@@ -89,10 +89,11 @@ public class LayoutLocalServiceWrapper implements LayoutLocalService,
 	* @return the layout
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.Layout addLayout(long userId, long groupId,
-		boolean privateLayout, long parentLayoutId, java.lang.String name,
-		java.lang.String title, java.lang.String description,
-		java.lang.String type, boolean hidden, java.lang.String friendlyURL,
+	public com.liferay.portal.kernel.model.Layout addLayout(long userId,
+		long groupId, boolean privateLayout, long parentLayoutId,
+		java.lang.String name, java.lang.String title,
+		java.lang.String description, java.lang.String type, boolean hidden,
+		java.lang.String friendlyURL,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutLocalService.addLayout(userId, groupId, privateLayout,
@@ -146,8 +147,8 @@ public class LayoutLocalServiceWrapper implements LayoutLocalService,
 	* @return the layout
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.Layout addLayout(long userId, long groupId,
-		boolean privateLayout, long parentLayoutId,
+	public com.liferay.portal.kernel.model.Layout addLayout(long userId,
+		long groupId, boolean privateLayout, long parentLayoutId,
 		java.util.Map<java.util.Locale, java.lang.String> nameMap,
 		java.util.Map<java.util.Locale, java.lang.String> titleMap,
 		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
@@ -185,7 +186,8 @@ public class LayoutLocalServiceWrapper implements LayoutLocalService,
 	*/
 	@Override
 	public void deleteLayout(long groupId, boolean privateLayout,
-		long layoutId, com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		long layoutId,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_layoutLocalService.deleteLayout(groupId, privateLayout, layoutId,
 			serviceContext);
@@ -681,8 +683,8 @@ public class LayoutLocalServiceWrapper implements LayoutLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.Layout fetchFirstLayout(long groupId,
-		boolean privateLayout, long parentLayoutId) {
+	public com.liferay.portal.kernel.model.Layout fetchFirstLayout(
+		long groupId, boolean privateLayout, long parentLayoutId) {
 		return _layoutLocalService.fetchFirstLayout(groupId, privateLayout,
 			parentLayoutId);
 	}
@@ -783,8 +785,8 @@ public class LayoutLocalServiceWrapper implements LayoutLocalService,
 	* @return the layout for the friendly URL
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.Layout getFriendlyURLLayout(long groupId,
-		boolean privateLayout, java.lang.String friendlyURL)
+	public com.liferay.portal.kernel.model.Layout getFriendlyURLLayout(
+		long groupId, boolean privateLayout, java.lang.String friendlyURL)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutLocalService.getFriendlyURLLayout(groupId, privateLayout,
 			friendlyURL);
@@ -1682,8 +1684,9 @@ public class LayoutLocalServiceWrapper implements LayoutLocalService,
 	* @return the updated layout
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.Layout updateFriendlyURL(long userId,
-		long plid, java.lang.String friendlyURL, java.lang.String languageId)
+	public com.liferay.portal.kernel.model.Layout updateFriendlyURL(
+		long userId, long plid, java.lang.String friendlyURL,
+		java.lang.String languageId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutLocalService.updateFriendlyURL(userId, plid, friendlyURL,
 			languageId);
@@ -1794,9 +1797,10 @@ public class LayoutLocalServiceWrapper implements LayoutLocalService,
 	* @return the updated layout
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.Layout updateLookAndFeel(long groupId,
-		boolean privateLayout, long layoutId, java.lang.String themeId,
-		java.lang.String colorSchemeId, java.lang.String css)
+	public com.liferay.portal.kernel.model.Layout updateLookAndFeel(
+		long groupId, boolean privateLayout, long layoutId,
+		java.lang.String themeId, java.lang.String colorSchemeId,
+		java.lang.String css)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutLocalService.updateLookAndFeel(groupId, privateLayout,
 			layoutId, themeId, colorSchemeId, css);
@@ -1868,8 +1872,8 @@ public class LayoutLocalServiceWrapper implements LayoutLocalService,
 	* @return the matching layout
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.Layout updateParentLayoutId(long groupId,
-		boolean privateLayout, long layoutId, long parentLayoutId)
+	public com.liferay.portal.kernel.model.Layout updateParentLayoutId(
+		long groupId, boolean privateLayout, long layoutId, long parentLayoutId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutLocalService.updateParentLayoutId(groupId, privateLayout,
 			layoutId, parentLayoutId);
@@ -1886,8 +1890,8 @@ public class LayoutLocalServiceWrapper implements LayoutLocalService,
 	* @return the layout matching the primary key
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.Layout updateParentLayoutId(long plid,
-		long parentPlid)
+	public com.liferay.portal.kernel.model.Layout updateParentLayoutId(
+		long plid, long parentPlid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutLocalService.updateParentLayoutId(plid, parentPlid);
 	}

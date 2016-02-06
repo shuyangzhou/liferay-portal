@@ -31,9 +31,9 @@ public class CountryServiceWrapper implements CountryService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.Country addCountry(java.lang.String name,
-		java.lang.String a2, java.lang.String a3, java.lang.String number,
-		java.lang.String idd, boolean active)
+	public com.liferay.portal.kernel.model.Country addCountry(
+		java.lang.String name, java.lang.String a2, java.lang.String a3,
+		java.lang.String number, java.lang.String idd, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _countryService.addCountry(name, a2, a3, number, idd, active);
 	}
@@ -73,13 +73,15 @@ public class CountryServiceWrapper implements CountryService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.Country getCountryByA2(java.lang.String a2)
+	public com.liferay.portal.kernel.model.Country getCountryByA2(
+		java.lang.String a2)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _countryService.getCountryByA2(a2);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.Country getCountryByA3(java.lang.String a3)
+	public com.liferay.portal.kernel.model.Country getCountryByA3(
+		java.lang.String a3)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _countryService.getCountryByA3(a3);
 	}

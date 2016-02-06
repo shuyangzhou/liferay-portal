@@ -22,14 +22,14 @@ import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.model.LayoutRevision;
+import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.model.LayoutRevision;
-import com.liferay.portal.kernel.model.PersistedModel;
 
 import java.io.Serializable;
 
@@ -326,6 +326,7 @@ public interface LayoutRevisionLocalService extends BaseLocalService,
 		throws PortalException;
 
 	public LayoutRevision updateStatus(long userId, long layoutRevisionId,
-		int status, com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		int status,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 }

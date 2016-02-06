@@ -23,13 +23,13 @@ import com.liferay.portal.kernel.cache.thread.local.ThreadLocalCachable;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
+import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.LayoutReference;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
-import com.liferay.portal.kernel.model.Layout;
-import com.liferay.portal.kernel.model.LayoutReference;
 
 import java.io.File;
 import java.io.InputStream;
@@ -167,7 +167,8 @@ public interface LayoutService extends BaseService {
 	* @param serviceContext the service context to be applied
 	*/
 	public void deleteLayout(long groupId, boolean privateLayout,
-		long layoutId, com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		long layoutId,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**

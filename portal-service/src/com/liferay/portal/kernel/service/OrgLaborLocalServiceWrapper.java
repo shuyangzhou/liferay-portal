@@ -44,10 +44,11 @@ public class OrgLaborLocalServiceWrapper implements OrgLaborLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.OrgLabor addOrgLabor(long organizationId,
-		long typeId, int sunOpen, int sunClose, int monOpen, int monClose,
-		int tueOpen, int tueClose, int wedOpen, int wedClose, int thuOpen,
-		int thuClose, int friOpen, int friClose, int satOpen, int satClose)
+	public com.liferay.portal.kernel.model.OrgLabor addOrgLabor(
+		long organizationId, long typeId, int sunOpen, int sunClose,
+		int monOpen, int monClose, int tueOpen, int tueClose, int wedOpen,
+		int wedClose, int thuOpen, int thuClose, int friOpen, int friClose,
+		int satOpen, int satClose)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _orgLaborLocalService.addOrgLabor(organizationId, typeId,
 			sunOpen, sunClose, monOpen, monClose, tueOpen, tueClose, wedOpen,
@@ -61,7 +62,8 @@ public class OrgLaborLocalServiceWrapper implements OrgLaborLocalService,
 	* @return the new org labor
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.OrgLabor createOrgLabor(long orgLaborId) {
+	public com.liferay.portal.kernel.model.OrgLabor createOrgLabor(
+		long orgLaborId) {
 		return _orgLaborLocalService.createOrgLabor(orgLaborId);
 	}
 
@@ -85,7 +87,8 @@ public class OrgLaborLocalServiceWrapper implements OrgLaborLocalService,
 	* @throws PortalException if a org labor with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.OrgLabor deleteOrgLabor(long orgLaborId)
+	public com.liferay.portal.kernel.model.OrgLabor deleteOrgLabor(
+		long orgLaborId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _orgLaborLocalService.deleteOrgLabor(orgLaborId);
 	}
@@ -185,7 +188,8 @@ public class OrgLaborLocalServiceWrapper implements OrgLaborLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.OrgLabor fetchOrgLabor(long orgLaborId) {
+	public com.liferay.portal.kernel.model.OrgLabor fetchOrgLabor(
+		long orgLaborId) {
 		return _orgLaborLocalService.fetchOrgLabor(orgLaborId);
 	}
 
@@ -275,10 +279,11 @@ public class OrgLaborLocalServiceWrapper implements OrgLaborLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.OrgLabor updateOrgLabor(long orgLaborId,
-		long typeId, int sunOpen, int sunClose, int monOpen, int monClose,
-		int tueOpen, int tueClose, int wedOpen, int wedClose, int thuOpen,
-		int thuClose, int friOpen, int friClose, int satOpen, int satClose)
+	public com.liferay.portal.kernel.model.OrgLabor updateOrgLabor(
+		long orgLaborId, long typeId, int sunOpen, int sunClose, int monOpen,
+		int monClose, int tueOpen, int tueClose, int wedOpen, int wedClose,
+		int thuOpen, int thuClose, int friOpen, int friClose, int satOpen,
+		int satClose)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _orgLaborLocalService.updateOrgLabor(orgLaborId, typeId,
 			sunOpen, sunClose, monOpen, monClose, tueOpen, tueClose, wedOpen,

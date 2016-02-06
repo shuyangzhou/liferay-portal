@@ -903,8 +903,8 @@ public class UserServiceUtil {
 	* @param lockout whether the user is locked out
 	* @return the user
 	*/
-	public static com.liferay.portal.kernel.model.User updateLockoutById(long userId,
-		boolean lockout)
+	public static com.liferay.portal.kernel.model.User updateLockoutById(
+		long userId, boolean lockout)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateLockoutById(userId, lockout);
 	}
@@ -916,8 +916,8 @@ public class UserServiceUtil {
 	* @param openId the new OpenID
 	* @return the user
 	*/
-	public static com.liferay.portal.kernel.model.User updateOpenId(long userId,
-		java.lang.String openId)
+	public static com.liferay.portal.kernel.model.User updateOpenId(
+		long userId, java.lang.String openId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateOpenId(userId, openId);
 	}
@@ -947,8 +947,8 @@ public class UserServiceUtil {
 	password the next time they log in
 	* @return the user
 	*/
-	public static com.liferay.portal.kernel.model.User updatePassword(long userId,
-		java.lang.String password1, java.lang.String password2,
+	public static com.liferay.portal.kernel.model.User updatePassword(
+		long userId, java.lang.String password1, java.lang.String password2,
 		boolean passwordReset)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
@@ -962,8 +962,8 @@ public class UserServiceUtil {
 	* @param bytes the new portrait image data
 	* @return the user
 	*/
-	public static com.liferay.portal.kernel.model.User updatePortrait(long userId,
-		byte[] bytes)
+	public static com.liferay.portal.kernel.model.User updatePortrait(
+		long userId, byte[] bytes)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updatePortrait(userId, bytes);
 	}
@@ -989,8 +989,8 @@ public class UserServiceUtil {
 	* @param screenName the user's new screen name
 	* @return the user
 	*/
-	public static com.liferay.portal.kernel.model.User updateScreenName(long userId,
-		java.lang.String screenName)
+	public static com.liferay.portal.kernel.model.User updateScreenName(
+		long userId, java.lang.String screenName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateScreenName(userId, screenName);
 	}
@@ -1005,8 +1005,9 @@ public class UserServiceUtil {
 	ServiceContext)}
 	*/
 	@Deprecated
-	public static com.liferay.portal.kernel.model.User updateStatus(long userId,
-		int status) throws com.liferay.portal.kernel.exception.PortalException {
+	public static com.liferay.portal.kernel.model.User updateStatus(
+		long userId, int status)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateStatus(userId, status);
 	}
 
@@ -1020,8 +1021,9 @@ public class UserServiceUtil {
 	user via attribute <code>passwordUnencrypted</code>.
 	* @return the user
 	*/
-	public static com.liferay.portal.kernel.model.User updateStatus(long userId,
-		int status, com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public static com.liferay.portal.kernel.model.User updateStatus(
+		long userId, int status,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateStatus(userId, status, serviceContext);
 	}

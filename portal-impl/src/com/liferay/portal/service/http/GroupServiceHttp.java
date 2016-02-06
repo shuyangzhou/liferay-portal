@@ -19,10 +19,10 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
+import com.liferay.portal.kernel.service.GroupServiceUtil;
 import com.liferay.portal.kernel.service.http.TunnelUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
-import com.liferay.portal.kernel.service.GroupServiceUtil;
 
 /**
  * Provides the HTTP utility for the
@@ -60,7 +60,8 @@ public class GroupServiceHttp {
 		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
 		int type, boolean manualMembership, int membershipRestriction,
 		java.lang.String friendlyURL, boolean site, boolean inheritContent,
-		boolean active, com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		boolean active,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(GroupServiceUtil.class,
@@ -466,8 +467,8 @@ public class GroupServiceHttp {
 
 	public static java.util.List<com.liferay.portal.kernel.model.Group> getManageableSiteGroups(
 		HttpPrincipal httpPrincipal,
-		java.util.Collection<com.liferay.portal.kernel.model.Portlet> portlets, int max)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		java.util.Collection<com.liferay.portal.kernel.model.Portlet> portlets,
+		int max) throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(GroupServiceUtil.class,
 					"getManageableSiteGroups",

@@ -735,7 +735,8 @@ public interface TeamPersistence extends BasePersistence<Team> {
 	* @param pk the primary key of the team
 	* @return the users associated with the team
 	*/
-	public java.util.List<com.liferay.portal.kernel.model.User> getUsers(long pk);
+	public java.util.List<com.liferay.portal.kernel.model.User> getUsers(
+		long pk);
 
 	/**
 	* Returns a range of all the users associated with the team.
@@ -749,8 +750,8 @@ public interface TeamPersistence extends BasePersistence<Team> {
 	* @param end the upper bound of the range of teams (not inclusive)
 	* @return the range of users associated with the team
 	*/
-	public java.util.List<com.liferay.portal.kernel.model.User> getUsers(long pk,
-		int start, int end);
+	public java.util.List<com.liferay.portal.kernel.model.User> getUsers(
+		long pk, int start, int end);
 
 	/**
 	* Returns an ordered range of all the users associated with the team.
@@ -765,8 +766,8 @@ public interface TeamPersistence extends BasePersistence<Team> {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of users associated with the team
 	*/
-	public java.util.List<com.liferay.portal.kernel.model.User> getUsers(long pk,
-		int start, int end,
+	public java.util.List<com.liferay.portal.kernel.model.User> getUsers(
+		long pk, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.User> orderByComparator);
 
 	/**

@@ -113,7 +113,8 @@ public class OrgLaborServiceSoap {
 	public static com.liferay.portal.kernel.model.OrgLaborSoap[] getOrgLabors(
 		long organizationId) throws RemoteException {
 		try {
-			java.util.List<com.liferay.portal.kernel.model.OrgLabor> returnValue = OrgLaborServiceUtil.getOrgLabors(organizationId);
+			java.util.List<com.liferay.portal.kernel.model.OrgLabor> returnValue =
+				OrgLaborServiceUtil.getOrgLabors(organizationId);
 
 			return com.liferay.portal.kernel.model.OrgLaborSoap.toSoapModels(returnValue);
 		}

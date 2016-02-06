@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.exception.NoSuchOrganizationException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -28,9 +27,20 @@ import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
+import com.liferay.portal.kernel.exception.NoSuchOrganizationException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.MVCCModel;
+import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.security.permission.InlineSQLHelperUtil;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
+import com.liferay.portal.kernel.service.persistence.CompanyProvider;
+import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
+import com.liferay.portal.kernel.service.persistence.GroupPersistence;
+import com.liferay.portal.kernel.service.persistence.OrganizationPersistence;
+import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapper;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapperFactory;
@@ -42,18 +52,8 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
-import com.liferay.portal.kernel.model.CacheModel;
-import com.liferay.portal.kernel.model.MVCCModel;
-import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.model.impl.OrganizationImpl;
 import com.liferay.portal.model.impl.OrganizationModelImpl;
-import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
-import com.liferay.portal.kernel.service.persistence.CompanyProvider;
-import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
-import com.liferay.portal.kernel.service.persistence.GroupPersistence;
-import com.liferay.portal.kernel.service.persistence.OrganizationPersistence;
-import com.liferay.portal.kernel.service.persistence.UserPersistence;
 
 import java.io.Serializable;
 
@@ -7449,8 +7449,8 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @return the range of groups associated with the organization
 	 */
 	@Override
-	public List<com.liferay.portal.kernel.model.Group> getGroups(long pk, int start,
-		int end) {
+	public List<com.liferay.portal.kernel.model.Group> getGroups(long pk,
+		int start, int end) {
 		return getGroups(pk, start, end, null);
 	}
 
@@ -7468,8 +7468,8 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @return the ordered range of groups associated with the organization
 	 */
 	@Override
-	public List<com.liferay.portal.kernel.model.Group> getGroups(long pk, int start,
-		int end,
+	public List<com.liferay.portal.kernel.model.Group> getGroups(long pk,
+		int start, int end,
 		OrderByComparator<com.liferay.portal.kernel.model.Group> orderByComparator) {
 		return organizationToGroupTableMapper.getRightBaseModels(pk, start,
 			end, orderByComparator);
@@ -7588,7 +7588,8 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @param groups the groups
 	 */
 	@Override
-	public void addGroups(long pk, List<com.liferay.portal.kernel.model.Group> groups) {
+	public void addGroups(long pk,
+		List<com.liferay.portal.kernel.model.Group> groups) {
 		long companyId = 0;
 
 		Organization organization = fetchByPrimaryKey(pk);
@@ -7713,7 +7714,8 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @param groups the groups to be associated with the organization
 	 */
 	@Override
-	public void setGroups(long pk, List<com.liferay.portal.kernel.model.Group> groups) {
+	public void setGroups(long pk,
+		List<com.liferay.portal.kernel.model.Group> groups) {
 		try {
 			long[] groupPKs = new long[groups.size()];
 
@@ -7767,8 +7769,8 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @return the range of users associated with the organization
 	 */
 	@Override
-	public List<com.liferay.portal.kernel.model.User> getUsers(long pk, int start,
-		int end) {
+	public List<com.liferay.portal.kernel.model.User> getUsers(long pk,
+		int start, int end) {
 		return getUsers(pk, start, end, null);
 	}
 
@@ -7786,8 +7788,8 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @return the ordered range of users associated with the organization
 	 */
 	@Override
-	public List<com.liferay.portal.kernel.model.User> getUsers(long pk, int start,
-		int end,
+	public List<com.liferay.portal.kernel.model.User> getUsers(long pk,
+		int start, int end,
 		OrderByComparator<com.liferay.portal.kernel.model.User> orderByComparator) {
 		return organizationToUserTableMapper.getRightBaseModels(pk, start, end,
 			orderByComparator);
@@ -7905,7 +7907,8 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @param users the users
 	 */
 	@Override
-	public void addUsers(long pk, List<com.liferay.portal.kernel.model.User> users) {
+	public void addUsers(long pk,
+		List<com.liferay.portal.kernel.model.User> users) {
 		long companyId = 0;
 
 		Organization organization = fetchByPrimaryKey(pk);
@@ -7976,7 +7979,8 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @param users the users
 	 */
 	@Override
-	public void removeUsers(long pk, List<com.liferay.portal.kernel.model.User> users) {
+	public void removeUsers(long pk,
+		List<com.liferay.portal.kernel.model.User> users) {
 		for (com.liferay.portal.kernel.model.User user : users) {
 			organizationToUserTableMapper.deleteTableMapping(pk,
 				user.getPrimaryKey());
@@ -8029,7 +8033,8 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 * @param users the users to be associated with the organization
 	 */
 	@Override
-	public void setUsers(long pk, List<com.liferay.portal.kernel.model.User> users) {
+	public void setUsers(long pk,
+		List<com.liferay.portal.kernel.model.User> users) {
 		try {
 			long[] userPKs = new long[users.size()];
 

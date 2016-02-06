@@ -19,10 +19,10 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
+import com.liferay.portal.kernel.service.LayoutBranchServiceUtil;
 import com.liferay.portal.kernel.service.http.TunnelUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
-import com.liferay.portal.kernel.service.LayoutBranchServiceUtil;
 
 /**
  * Provides the HTTP utility for the
@@ -153,7 +153,8 @@ public class LayoutBranchServiceHttp {
 	private static Log _log = LogFactoryUtil.getLog(LayoutBranchServiceHttp.class);
 	private static final Class<?>[] _addLayoutBranchParameterTypes0 = new Class[] {
 			long.class, java.lang.String.class, java.lang.String.class,
-			boolean.class, com.liferay.portal.kernel.service.ServiceContext.class
+			boolean.class,
+			com.liferay.portal.kernel.service.ServiceContext.class
 		};
 	private static final Class<?>[] _deleteLayoutBranchParameterTypes1 = new Class[] {
 			long.class

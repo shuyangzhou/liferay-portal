@@ -123,7 +123,8 @@ public class CompanyLocalServiceUtil {
 	* @param companyId the primary key for the new company
 	* @return the new company
 	*/
-	public static com.liferay.portal.kernel.model.Company createCompany(long companyId) {
+	public static com.liferay.portal.kernel.model.Company createCompany(
+		long companyId) {
 		return getService().createCompany(companyId);
 	}
 
@@ -147,7 +148,8 @@ public class CompanyLocalServiceUtil {
 	* @return the company that was removed
 	* @throws PortalException if a company with the primary key could not be found
 	*/
-	public static com.liferay.portal.kernel.model.Company deleteCompany(long companyId)
+	public static com.liferay.portal.kernel.model.Company deleteCompany(
+		long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteCompany(companyId);
 	}
@@ -158,7 +160,8 @@ public class CompanyLocalServiceUtil {
 	* @param companyId the primary key of the company
 	* @return the deleted logo's company
 	*/
-	public static com.liferay.portal.kernel.model.Company deleteLogo(long companyId)
+	public static com.liferay.portal.kernel.model.Company deleteLogo(
+		long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteLogo(companyId);
 	}
@@ -250,7 +253,8 @@ public class CompanyLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.portal.kernel.model.Company fetchCompany(long companyId) {
+	public static com.liferay.portal.kernel.model.Company fetchCompany(
+		long companyId) {
 		return getService().fetchCompany(companyId);
 	}
 
@@ -351,7 +355,8 @@ public class CompanyLocalServiceUtil {
 	* @return the company
 	* @throws PortalException if a company with the primary key could not be found
 	*/
-	public static com.liferay.portal.kernel.model.Company getCompany(long companyId)
+	public static com.liferay.portal.kernel.model.Company getCompany(
+		long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getCompany(companyId);
 	}
@@ -645,8 +650,8 @@ public class CompanyLocalServiceUtil {
 	* @param bytes the bytes of the company's logo image
 	* @return the company with the primary key
 	*/
-	public static com.liferay.portal.kernel.model.Company updateLogo(long companyId,
-		byte[] bytes)
+	public static com.liferay.portal.kernel.model.Company updateLogo(
+		long companyId, byte[] bytes)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateLogo(companyId, bytes);
 	}
@@ -658,8 +663,8 @@ public class CompanyLocalServiceUtil {
 	* @param file the file of the company's logo image
 	* @return the company with the primary key
 	*/
-	public static com.liferay.portal.kernel.model.Company updateLogo(long companyId,
-		java.io.File file)
+	public static com.liferay.portal.kernel.model.Company updateLogo(
+		long companyId, java.io.File file)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateLogo(companyId, file);
 	}
@@ -671,8 +676,8 @@ public class CompanyLocalServiceUtil {
 	* @param is the input stream of the company's logo image
 	* @return the company with the primary key
 	*/
-	public static com.liferay.portal.kernel.model.Company updateLogo(long companyId,
-		java.io.InputStream is)
+	public static com.liferay.portal.kernel.model.Company updateLogo(
+		long companyId, java.io.InputStream is)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateLogo(companyId, is);
 	}

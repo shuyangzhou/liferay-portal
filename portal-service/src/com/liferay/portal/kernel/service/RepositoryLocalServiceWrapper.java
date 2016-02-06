@@ -44,12 +44,13 @@ public class RepositoryLocalServiceWrapper implements RepositoryLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.Repository addRepository(long userId,
-		long groupId, long classNameId, long parentFolderId,
+	public com.liferay.portal.kernel.model.Repository addRepository(
+		long userId, long groupId, long classNameId, long parentFolderId,
 		java.lang.String name, java.lang.String description,
 		java.lang.String portletId,
 		com.liferay.portal.kernel.util.UnicodeProperties typeSettingsProperties,
-		boolean hidden, com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		boolean hidden,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _repositoryLocalService.addRepository(userId, groupId,
 			classNameId, parentFolderId, name, description, portletId,
@@ -201,14 +202,14 @@ public class RepositoryLocalServiceWrapper implements RepositoryLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.Repository fetchRepository(long groupId,
-		java.lang.String name, java.lang.String portletId) {
+	public com.liferay.portal.kernel.model.Repository fetchRepository(
+		long groupId, java.lang.String name, java.lang.String portletId) {
 		return _repositoryLocalService.fetchRepository(groupId, name, portletId);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.Repository fetchRepository(long groupId,
-		java.lang.String portletId) {
+	public com.liferay.portal.kernel.model.Repository fetchRepository(
+		long groupId, java.lang.String portletId) {
 		return _repositoryLocalService.fetchRepository(groupId, portletId);
 	}
 
@@ -331,15 +332,15 @@ public class RepositoryLocalServiceWrapper implements RepositoryLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.Repository getRepository(long groupId,
-		java.lang.String name, java.lang.String portletId)
+	public com.liferay.portal.kernel.model.Repository getRepository(
+		long groupId, java.lang.String name, java.lang.String portletId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _repositoryLocalService.getRepository(groupId, name, portletId);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.Repository getRepository(long groupId,
-		java.lang.String portletId)
+	public com.liferay.portal.kernel.model.Repository getRepository(
+		long groupId, java.lang.String portletId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _repositoryLocalService.getRepository(groupId, portletId);
 	}
@@ -352,7 +353,8 @@ public class RepositoryLocalServiceWrapper implements RepositoryLocalService,
 	* @throws PortalException if a repository with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.Repository getRepository(long repositoryId)
+	public com.liferay.portal.kernel.model.Repository getRepository(
+		long repositoryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _repositoryLocalService.getRepository(repositoryId);
 	}

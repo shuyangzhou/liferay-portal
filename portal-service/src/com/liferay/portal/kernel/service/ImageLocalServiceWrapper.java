@@ -222,8 +222,8 @@ public class ImageLocalServiceWrapper implements ImageLocalService,
 	* @return the range of images
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.kernel.model.Image> getImages(int start,
-		int end) {
+	public java.util.List<com.liferay.portal.kernel.model.Image> getImages(
+		int start, int end) {
 		return _imageLocalService.getImages(start, end);
 	}
 
@@ -266,7 +266,8 @@ public class ImageLocalServiceWrapper implements ImageLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.Image moveImage(long imageId, byte[] bytes)
+	public com.liferay.portal.kernel.model.Image moveImage(long imageId,
+		byte[] bytes)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _imageLocalService.moveImage(imageId, bytes);
 	}
@@ -284,7 +285,8 @@ public class ImageLocalServiceWrapper implements ImageLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.Image updateImage(long imageId, byte[] bytes)
+	public com.liferay.portal.kernel.model.Image updateImage(long imageId,
+		byte[] bytes)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _imageLocalService.updateImage(imageId, bytes);
 	}

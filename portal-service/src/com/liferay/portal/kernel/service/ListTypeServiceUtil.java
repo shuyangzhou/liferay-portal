@@ -40,7 +40,8 @@ public class ListTypeServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.portal.service.impl.ListTypeServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.portal.kernel.model.ListType getListType(long listTypeId)
+	public static com.liferay.portal.kernel.model.ListType getListType(
+		long listTypeId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getListType(listTypeId);
 	}

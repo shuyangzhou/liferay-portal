@@ -1399,7 +1399,8 @@ public class WikiPageServiceHttp {
 
 	public static com.liferay.wiki.model.WikiPage revertPage(
 		HttpPrincipal httpPrincipal, long nodeId, java.lang.String title,
-		double version, com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		double version,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(WikiPageServiceUtil.class,

@@ -31,8 +31,8 @@ public class TicketLocalServiceWrapper implements TicketLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.Ticket addDistinctTicket(long companyId,
-		java.lang.String className, long classPK, int type,
+	public com.liferay.portal.kernel.model.Ticket addDistinctTicket(
+		long companyId, java.lang.String className, long classPK, int type,
 		java.lang.String extraInfo, java.util.Date expirationDate,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext) {
 		return _ticketLocalService.addDistinctTicket(companyId, className,
@@ -191,7 +191,8 @@ public class TicketLocalServiceWrapper implements TicketLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.Ticket fetchTicket(java.lang.String key) {
+	public com.liferay.portal.kernel.model.Ticket fetchTicket(
+		java.lang.String key) {
 		return _ticketLocalService.fetchTicket(key);
 	}
 
@@ -228,7 +229,8 @@ public class TicketLocalServiceWrapper implements TicketLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.Ticket getTicket(java.lang.String key)
+	public com.liferay.portal.kernel.model.Ticket getTicket(
+		java.lang.String key)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketLocalService.getTicket(key);
 	}

@@ -75,9 +75,9 @@ public class PhoneServiceUtil {
 		return getService().getPhones(className, classPK);
 	}
 
-	public static com.liferay.portal.kernel.model.Phone updatePhone(long phoneId,
-		java.lang.String number, java.lang.String extension, long typeId,
-		boolean primary)
+	public static com.liferay.portal.kernel.model.Phone updatePhone(
+		long phoneId, java.lang.String number, java.lang.String extension,
+		long typeId, boolean primary)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updatePhone(phoneId, number, extension, typeId, primary);

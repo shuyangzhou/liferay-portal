@@ -31,9 +31,10 @@ public class RepositoryServiceWrapper implements RepositoryService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.Repository addRepository(long groupId,
-		long classNameId, long parentFolderId, java.lang.String name,
-		java.lang.String description, java.lang.String portletId,
+	public com.liferay.portal.kernel.model.Repository addRepository(
+		long groupId, long classNameId, long parentFolderId,
+		java.lang.String name, java.lang.String description,
+		java.lang.String portletId,
 		com.liferay.portal.kernel.util.UnicodeProperties typeSettingsProperties,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -65,7 +66,8 @@ public class RepositoryServiceWrapper implements RepositoryService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.Repository getRepository(long repositoryId)
+	public com.liferay.portal.kernel.model.Repository getRepository(
+		long repositoryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _repositoryService.getRepository(repositoryId);
 	}

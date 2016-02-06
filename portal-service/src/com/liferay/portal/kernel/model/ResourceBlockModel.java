@@ -200,7 +200,8 @@ public interface ResourceBlockModel extends BaseModel<ResourceBlock>, MVCCModel,
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.kernel.model.ResourceBlock resourceBlock);
+	public int compareTo(
+		com.liferay.portal.kernel.model.ResourceBlock resourceBlock);
 
 	@Override
 	public int hashCode();

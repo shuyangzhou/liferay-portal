@@ -43,10 +43,11 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	* @return the new default admin user
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.User addDefaultAdminUser(long companyId,
-		java.lang.String screenName, java.lang.String emailAddress,
-		java.util.Locale locale, java.lang.String firstName,
-		java.lang.String middleName, java.lang.String lastName)
+	public com.liferay.portal.kernel.model.User addDefaultAdminUser(
+		long companyId, java.lang.String screenName,
+		java.lang.String emailAddress, java.util.Locale locale,
+		java.lang.String firstName, java.lang.String middleName,
+		java.lang.String lastName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userLocalService.addDefaultAdminUser(companyId, screenName,
 			emailAddress, locale, firstName, middleName, lastName);
@@ -95,7 +96,8 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	}
 
 	@Override
-	public void addGroupUser(long groupId, com.liferay.portal.kernel.model.User user) {
+	public void addGroupUser(long groupId,
+		com.liferay.portal.kernel.model.User user) {
 		_userLocalService.addGroupUser(groupId, user);
 	}
 
@@ -166,7 +168,8 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	}
 
 	@Override
-	public void addRoleUser(long roleId, com.liferay.portal.kernel.model.User user) {
+	public void addRoleUser(long roleId,
+		com.liferay.portal.kernel.model.User user) {
 		_userLocalService.addRoleUser(roleId, user);
 	}
 
@@ -195,7 +198,8 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	}
 
 	@Override
-	public void addTeamUser(long teamId, com.liferay.portal.kernel.model.User user) {
+	public void addTeamUser(long teamId,
+		com.liferay.portal.kernel.model.User user) {
 		_userLocalService.addTeamUser(teamId, user);
 	}
 
@@ -687,7 +691,8 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	<code>sendEmail</code> to <code>true</code>.
 	*/
 	@Override
-	public void completeUserRegistration(com.liferay.portal.kernel.model.User user,
+	public void completeUserRegistration(
+		com.liferay.portal.kernel.model.User user,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_userLocalService.completeUserRegistration(user, serviceContext);
@@ -722,7 +727,8 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	}
 
 	@Override
-	public void deleteGroupUser(long groupId, com.liferay.portal.kernel.model.User user) {
+	public void deleteGroupUser(long groupId,
+		com.liferay.portal.kernel.model.User user) {
 		_userLocalService.deleteGroupUser(groupId, user);
 	}
 
@@ -789,7 +795,8 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	* @throws PortalException
 	*/
 	@Override
-	public void deleteRoleUser(long roleId, com.liferay.portal.kernel.model.User user)
+	public void deleteRoleUser(long roleId,
+		com.liferay.portal.kernel.model.User user)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_userLocalService.deleteRoleUser(roleId, user);
 	}
@@ -815,7 +822,8 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	}
 
 	@Override
-	public void deleteTeamUser(long teamId, com.liferay.portal.kernel.model.User user) {
+	public void deleteTeamUser(long teamId,
+		com.liferay.portal.kernel.model.User user) {
 		_userLocalService.deleteTeamUser(teamId, user);
 	}
 
@@ -1002,7 +1010,8 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	the contact ID could not be found
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.User fetchUserByContactId(long contactId) {
+	public com.liferay.portal.kernel.model.User fetchUserByContactId(
+		long contactId) {
 		return _userLocalService.fetchUserByContactId(contactId);
 	}
 
@@ -1029,8 +1038,8 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	with the Facebook ID could not be found
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.User fetchUserByFacebookId(long companyId,
-		long facebookId) {
+	public com.liferay.portal.kernel.model.User fetchUserByFacebookId(
+		long companyId, long facebookId) {
 		return _userLocalService.fetchUserByFacebookId(companyId, facebookId);
 	}
 
@@ -1069,8 +1078,8 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	OpenID could not be found
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.User fetchUserByOpenId(long companyId,
-		java.lang.String openId) {
+	public com.liferay.portal.kernel.model.User fetchUserByOpenId(
+		long companyId, java.lang.String openId) {
 		return _userLocalService.fetchUserByOpenId(companyId, openId);
 	}
 
@@ -1082,7 +1091,8 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	with the portrait ID could not be found
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.User fetchUserByPortraitId(long portraitId) {
+	public com.liferay.portal.kernel.model.User fetchUserByPortraitId(
+		long portraitId) {
 		return _userLocalService.fetchUserByPortraitId(portraitId);
 	}
 
@@ -1095,8 +1105,8 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	with the screen name could not be found
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.User fetchUserByScreenName(long companyId,
-		java.lang.String screenName) {
+	public com.liferay.portal.kernel.model.User fetchUserByScreenName(
+		long companyId, java.lang.String screenName) {
 		return _userLocalService.fetchUserByScreenName(companyId, screenName);
 	}
 
@@ -1708,7 +1718,8 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	* @return the user with the contact ID
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.User getUserByContactId(long contactId)
+	public com.liferay.portal.kernel.model.User getUserByContactId(
+		long contactId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userLocalService.getUserByContactId(contactId);
 	}
@@ -1721,8 +1732,8 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	* @return the user with the email address
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.User getUserByEmailAddress(long companyId,
-		java.lang.String emailAddress)
+	public com.liferay.portal.kernel.model.User getUserByEmailAddress(
+		long companyId, java.lang.String emailAddress)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userLocalService.getUserByEmailAddress(companyId, emailAddress);
 	}
@@ -1735,8 +1746,8 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	* @return the user with the Facebook ID
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.User getUserByFacebookId(long companyId,
-		long facebookId)
+	public com.liferay.portal.kernel.model.User getUserByFacebookId(
+		long companyId, long facebookId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userLocalService.getUserByFacebookId(companyId, facebookId);
 	}
@@ -1749,8 +1760,8 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	* @return the user with the Google user ID
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.User getUserByGoogleUserId(long companyId,
-		java.lang.String googleUserId)
+	public com.liferay.portal.kernel.model.User getUserByGoogleUserId(
+		long companyId, java.lang.String googleUserId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userLocalService.getUserByGoogleUserId(companyId, googleUserId);
 	}
@@ -1763,8 +1774,8 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	* @return the user with the primary key
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.User getUserById(long companyId, long userId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public com.liferay.portal.kernel.model.User getUserById(long companyId,
+		long userId) throws com.liferay.portal.kernel.exception.PortalException {
 		return _userLocalService.getUserById(companyId, userId);
 	}
 
@@ -1788,8 +1799,8 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	* @return the user with the OpenID
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.User getUserByOpenId(long companyId,
-		java.lang.String openId)
+	public com.liferay.portal.kernel.model.User getUserByOpenId(
+		long companyId, java.lang.String openId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userLocalService.getUserByOpenId(companyId, openId);
 	}
@@ -1801,7 +1812,8 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	* @return the user with the portrait ID
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.User getUserByPortraitId(long portraitId)
+	public com.liferay.portal.kernel.model.User getUserByPortraitId(
+		long portraitId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userLocalService.getUserByPortraitId(portraitId);
 	}
@@ -1814,8 +1826,8 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	* @return the user with the screen name
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.User getUserByScreenName(long companyId,
-		java.lang.String screenName)
+	public com.liferay.portal.kernel.model.User getUserByScreenName(
+		long companyId, java.lang.String screenName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userLocalService.getUserByScreenName(companyId, screenName);
 	}
@@ -1924,8 +1936,8 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	* @return the range of users
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.kernel.model.User> getUsers(int start,
-		int end) {
+	public java.util.List<com.liferay.portal.kernel.model.User> getUsers(
+		int start, int end) {
 		return _userLocalService.getUsers(start, end);
 	}
 
@@ -2046,7 +2058,8 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	<code>false</code> otherwise
 	*/
 	@Override
-	public boolean isPasswordExpiringSoon(com.liferay.portal.kernel.model.User user)
+	public boolean isPasswordExpiringSoon(
+		com.liferay.portal.kernel.model.User user)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userLocalService.isPasswordExpiringSoon(user);
 	}
@@ -2058,7 +2071,8 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	* @return the default user for the company
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.User loadGetDefaultUser(long companyId)
+	public com.liferay.portal.kernel.model.User loadGetDefaultUser(
+		long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userLocalService.loadGetDefaultUser(companyId);
 	}
@@ -2406,7 +2420,8 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	*/
 	@Override
 	public void sendEmailAddressVerification(
-		com.liferay.portal.kernel.model.User user, java.lang.String emailAddress,
+		com.liferay.portal.kernel.model.User user,
+		java.lang.String emailAddress,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_userLocalService.sendEmailAddressVerification(user, emailAddress,
@@ -2658,8 +2673,8 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	* @return the user
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.User updateAgreedToTermsOfUse(long userId,
-		boolean agreedToTermsOfUse)
+	public com.liferay.portal.kernel.model.User updateAgreedToTermsOfUse(
+		long userId, boolean agreedToTermsOfUse)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userLocalService.updateAgreedToTermsOfUse(userId,
 			agreedToTermsOfUse);
@@ -2675,8 +2690,9 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	* @param assetTagNames the new asset tag names
 	*/
 	@Override
-	public void updateAsset(long userId, com.liferay.portal.kernel.model.User user,
-		long[] assetCategoryIds, java.lang.String[] assetTagNames)
+	public void updateAsset(long userId,
+		com.liferay.portal.kernel.model.User user, long[] assetCategoryIds,
+		java.lang.String[] assetTagNames)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_userLocalService.updateAsset(userId, user, assetCategoryIds,
 			assetTagNames);
@@ -2706,8 +2722,8 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	* @return the user
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.User updateEmailAddress(long userId,
-		java.lang.String password, java.lang.String emailAddress1,
+	public com.liferay.portal.kernel.model.User updateEmailAddress(
+		long userId, java.lang.String password, java.lang.String emailAddress1,
 		java.lang.String emailAddress2)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userLocalService.updateEmailAddress(userId, password,
@@ -2727,8 +2743,8 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	* @return the user
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.User updateEmailAddress(long userId,
-		java.lang.String password, java.lang.String emailAddress1,
+	public com.liferay.portal.kernel.model.User updateEmailAddress(
+		long userId, java.lang.String password, java.lang.String emailAddress1,
 		java.lang.String emailAddress2,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -2773,8 +2789,8 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	* @return the user
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.User updateGoogleUserId(long userId,
-		java.lang.String googleUserId)
+	public com.liferay.portal.kernel.model.User updateGoogleUserId(
+		long userId, java.lang.String googleUserId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userLocalService.updateGoogleUserId(userId, googleUserId);
 	}
@@ -2949,8 +2965,8 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	* @return the user
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.User updateModifiedDate(long userId,
-		java.util.Date modifiedDate)
+	public com.liferay.portal.kernel.model.User updateModifiedDate(
+		long userId, java.util.Date modifiedDate)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userLocalService.updateModifiedDate(userId, modifiedDate);
 	}
@@ -3040,8 +3056,8 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	* @return the user
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.User updatePasswordManually(long userId,
-		java.lang.String password, boolean passwordEncrypted,
+	public com.liferay.portal.kernel.model.User updatePasswordManually(
+		long userId, java.lang.String password, boolean passwordEncrypted,
 		boolean passwordReset, java.util.Date passwordModifiedDate)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userLocalService.updatePasswordManually(userId, password,
@@ -3058,8 +3074,8 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	* @return the user
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.User updatePasswordReset(long userId,
-		boolean passwordReset)
+	public com.liferay.portal.kernel.model.User updatePasswordReset(
+		long userId, boolean passwordReset)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userLocalService.updatePasswordReset(userId, passwordReset);
 	}
@@ -3087,8 +3103,8 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	* @return the user
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.User updateReminderQuery(long userId,
-		java.lang.String question, java.lang.String answer)
+	public com.liferay.portal.kernel.model.User updateReminderQuery(
+		long userId, java.lang.String question, java.lang.String answer)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userLocalService.updateReminderQuery(userId, question, answer);
 	}
@@ -3118,8 +3134,8 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	*/
 	@Deprecated
 	@Override
-	public com.liferay.portal.kernel.model.User updateStatus(long userId, int status)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public com.liferay.portal.kernel.model.User updateStatus(long userId,
+		int status) throws com.liferay.portal.kernel.exception.PortalException {
 		return _userLocalService.updateStatus(userId, status);
 	}
 
@@ -3134,7 +3150,8 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	* @return the user
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.User updateStatus(long userId, int status,
+	public com.liferay.portal.kernel.model.User updateStatus(long userId,
+		int status,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userLocalService.updateStatus(userId, status, serviceContext);

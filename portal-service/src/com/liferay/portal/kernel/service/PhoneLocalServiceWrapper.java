@@ -290,8 +290,8 @@ public class PhoneLocalServiceWrapper implements PhoneLocalService,
 	* @return the range of phones
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.kernel.model.Phone> getPhones(int start,
-		int end) {
+	public java.util.List<com.liferay.portal.kernel.model.Phone> getPhones(
+		int start, int end) {
 		return _phoneLocalService.getPhones(start, end);
 	}
 

@@ -327,8 +327,8 @@ public class RoleLocalServiceUtil {
 	* @return Returns the role with the name or <code>null</code> if a role
 	with the name could not be found in the company
 	*/
-	public static com.liferay.portal.kernel.model.Role fetchRole(long companyId,
-		java.lang.String name) {
+	public static com.liferay.portal.kernel.model.Role fetchRole(
+		long companyId, java.lang.String name) {
 		return getService().fetchRole(companyId, name);
 	}
 
@@ -622,8 +622,9 @@ public class RoleLocalServiceUtil {
 	* @param teamId the primary key of the team
 	* @return the team role in the company
 	*/
-	public static com.liferay.portal.kernel.model.Role getTeamRole(long companyId,
-		long teamId) throws com.liferay.portal.kernel.exception.PortalException {
+	public static com.liferay.portal.kernel.model.Role getTeamRole(
+		long companyId, long teamId)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getTeamRole(companyId, teamId);
 	}
 
@@ -785,7 +786,8 @@ public class RoleLocalServiceUtil {
 	List)
 	*/
 	public static java.util.List<com.liferay.portal.kernel.model.Role> getUserRelatedRoles(
-		long userId, java.util.List<com.liferay.portal.kernel.model.Group> groups) {
+		long userId,
+		java.util.List<com.liferay.portal.kernel.model.Group> groups) {
 		return getService().getUserRelatedRoles(userId, groups);
 	}
 
@@ -869,8 +871,8 @@ public class RoleLocalServiceUtil {
 	* @return the role with the name, or <code>null</code> if a role with the
 	name could not be found in the company
 	*/
-	public static com.liferay.portal.kernel.model.Role loadFetchRole(long companyId,
-		java.lang.String name) {
+	public static com.liferay.portal.kernel.model.Role loadFetchRole(
+		long companyId, java.lang.String name) {
 		return getService().loadFetchRole(companyId, name);
 	}
 
@@ -881,8 +883,8 @@ public class RoleLocalServiceUtil {
 	* @param name the role's name
 	* @return the role with the name in the company
 	*/
-	public static com.liferay.portal.kernel.model.Role loadGetRole(long companyId,
-		java.lang.String name)
+	public static com.liferay.portal.kernel.model.Role loadGetRole(
+		long companyId, java.lang.String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().loadGetRole(companyId, name);
 	}

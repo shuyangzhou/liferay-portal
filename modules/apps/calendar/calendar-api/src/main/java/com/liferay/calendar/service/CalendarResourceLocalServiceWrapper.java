@@ -52,7 +52,8 @@ public class CalendarResourceLocalServiceWrapper
 		java.lang.String classUuid, java.lang.String code,
 		java.util.Map<java.util.Locale, java.lang.String> nameMap,
 		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
-		boolean active, com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		boolean active,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _calendarResourceLocalService.addCalendarResource(userId,
 			groupId, classNameId, classPK, classUuid, code, nameMap,
@@ -427,7 +428,8 @@ public class CalendarResourceLocalServiceWrapper
 		long calendarResourceId,
 		java.util.Map<java.util.Locale, java.lang.String> nameMap,
 		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
-		boolean active, com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		boolean active,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _calendarResourceLocalService.updateCalendarResource(calendarResourceId,
 			nameMap, descriptionMap, active, serviceContext);

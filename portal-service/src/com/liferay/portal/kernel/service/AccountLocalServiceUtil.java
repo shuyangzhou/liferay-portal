@@ -58,7 +58,8 @@ public class AccountLocalServiceUtil {
 	* @param accountId the primary key for the new account
 	* @return the new account
 	*/
-	public static com.liferay.portal.kernel.model.Account createAccount(long accountId) {
+	public static com.liferay.portal.kernel.model.Account createAccount(
+		long accountId) {
 		return getService().createAccount(accountId);
 	}
 
@@ -80,7 +81,8 @@ public class AccountLocalServiceUtil {
 	* @return the account that was removed
 	* @throws PortalException if a account with the primary key could not be found
 	*/
-	public static com.liferay.portal.kernel.model.Account deleteAccount(long accountId)
+	public static com.liferay.portal.kernel.model.Account deleteAccount(
+		long accountId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteAccount(accountId);
 	}
@@ -172,7 +174,8 @@ public class AccountLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.portal.kernel.model.Account fetchAccount(long accountId) {
+	public static com.liferay.portal.kernel.model.Account fetchAccount(
+		long accountId) {
 		return getService().fetchAccount(accountId);
 	}
 
@@ -183,13 +186,14 @@ public class AccountLocalServiceUtil {
 	* @return the account
 	* @throws PortalException if a account with the primary key could not be found
 	*/
-	public static com.liferay.portal.kernel.model.Account getAccount(long accountId)
+	public static com.liferay.portal.kernel.model.Account getAccount(
+		long accountId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getAccount(accountId);
 	}
 
-	public static com.liferay.portal.kernel.model.Account getAccount(long companyId,
-		long accountId)
+	public static com.liferay.portal.kernel.model.Account getAccount(
+		long companyId, long accountId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getAccount(companyId, accountId);
 	}

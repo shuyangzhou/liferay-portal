@@ -169,7 +169,8 @@ public interface ResourceActionModel extends BaseModel<ResourceAction>, MVCCMode
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.kernel.model.ResourceAction resourceAction);
+	public int compareTo(
+		com.liferay.portal.kernel.model.ResourceAction resourceAction);
 
 	@Override
 	public int hashCode();

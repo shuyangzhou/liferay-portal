@@ -64,7 +64,8 @@ public class WebsiteServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.kernel.model.Website getWebsite(long websiteId)
+	public static com.liferay.portal.kernel.model.Website getWebsite(
+		long websiteId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getWebsite(websiteId);
 	}

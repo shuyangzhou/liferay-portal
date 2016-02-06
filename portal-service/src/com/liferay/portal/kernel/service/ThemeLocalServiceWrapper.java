@@ -51,8 +51,8 @@ public class ThemeLocalServiceWrapper implements ThemeLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.ColorScheme getColorScheme(long companyId,
-		java.lang.String themeId, java.lang.String colorSchemeId) {
+	public com.liferay.portal.kernel.model.ColorScheme getColorScheme(
+		long companyId, java.lang.String themeId, java.lang.String colorSchemeId) {
 		return _themeLocalService.getColorScheme(companyId, themeId,
 			colorSchemeId);
 	}

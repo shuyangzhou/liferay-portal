@@ -304,27 +304,28 @@ public class LayoutSetLocalServiceUtil {
 			layoutSetPrototypeLinkEnabled, layoutSetPrototypeUuid);
 	}
 
-	public static com.liferay.portal.kernel.model.LayoutSet updateLogo(long groupId,
-		boolean privateLayout, boolean logo, byte[] bytes)
+	public static com.liferay.portal.kernel.model.LayoutSet updateLogo(
+		long groupId, boolean privateLayout, boolean logo, byte[] bytes)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateLogo(groupId, privateLayout, logo, bytes);
 	}
 
-	public static com.liferay.portal.kernel.model.LayoutSet updateLogo(long groupId,
-		boolean privateLayout, boolean logo, java.io.File file)
+	public static com.liferay.portal.kernel.model.LayoutSet updateLogo(
+		long groupId, boolean privateLayout, boolean logo, java.io.File file)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateLogo(groupId, privateLayout, logo, file);
 	}
 
-	public static com.liferay.portal.kernel.model.LayoutSet updateLogo(long groupId,
-		boolean privateLayout, boolean logo, java.io.InputStream is)
+	public static com.liferay.portal.kernel.model.LayoutSet updateLogo(
+		long groupId, boolean privateLayout, boolean logo,
+		java.io.InputStream is)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateLogo(groupId, privateLayout, logo, is);
 	}
 
-	public static com.liferay.portal.kernel.model.LayoutSet updateLogo(long groupId,
-		boolean privateLayout, boolean logo, java.io.InputStream is,
-		boolean cleanUpStream)
+	public static com.liferay.portal.kernel.model.LayoutSet updateLogo(
+		long groupId, boolean privateLayout, boolean logo,
+		java.io.InputStream is, boolean cleanUpStream)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateLogo(groupId, privateLayout, logo, is, cleanUpStream);

@@ -32,10 +32,10 @@ public class UserTrackerLocalServiceWrapper implements UserTrackerLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.UserTracker addUserTracker(long companyId,
-		long userId, java.util.Date modifiedDate, java.lang.String sessionId,
-		java.lang.String remoteAddr, java.lang.String remoteHost,
-		java.lang.String userAgent,
+	public com.liferay.portal.kernel.model.UserTracker addUserTracker(
+		long companyId, long userId, java.util.Date modifiedDate,
+		java.lang.String sessionId, java.lang.String remoteAddr,
+		java.lang.String remoteHost, java.lang.String userAgent,
 		java.util.List<com.liferay.portal.kernel.model.UserTrackerPath> userTrackerPaths) {
 		return _userTrackerLocalService.addUserTracker(companyId, userId,
 			modifiedDate, sessionId, remoteAddr, remoteHost, userAgent,
