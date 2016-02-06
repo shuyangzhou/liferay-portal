@@ -14,6 +14,7 @@
 
 package com.liferay.exportimport.web.portlet.action;
 
+import com.liferay.document.library.kernel.service.DLFileEntryLocalService;
 import com.liferay.dynamic.data.mapping.exception.StructureDuplicateStructureKeyException;
 import com.liferay.exportimport.kernel.configuration.ExportImportConfigurationConstants;
 import com.liferay.exportimport.kernel.configuration.ExportImportConfigurationSettingsMapFactory;
@@ -52,7 +53,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.Portlet;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.documentlibrary.service.DLFileEntryLocalService;
 
 import java.io.InputStream;
 import java.io.Serializable;

@@ -14,6 +14,8 @@
 
 package com.liferay.exportimport.web.portlet.action;
 
+import com.liferay.document.library.kernel.exception.FileSizeException;
+import com.liferay.document.library.kernel.service.DLFileEntryLocalService;
 import com.liferay.exportimport.kernel.configuration.ExportImportConfigurationConstants;
 import com.liferay.exportimport.kernel.configuration.ExportImportConfigurationSettingsMapFactory;
 import com.liferay.exportimport.kernel.exception.LARFileException;
@@ -53,8 +55,6 @@ import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.service.LayoutService;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.documentlibrary.exception.FileSizeException;
-import com.liferay.portlet.documentlibrary.service.DLFileEntryLocalService;
 
 import java.io.InputStream;
 import java.io.Serializable;

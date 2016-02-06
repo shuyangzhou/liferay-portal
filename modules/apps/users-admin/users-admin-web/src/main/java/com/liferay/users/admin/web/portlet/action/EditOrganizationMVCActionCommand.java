@@ -14,6 +14,7 @@
 
 package com.liferay.users.admin.web.portlet.action;
 
+import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.portal.exception.AddressCityException;
 import com.liferay.portal.exception.AddressStreetException;
 import com.liferay.portal.exception.AddressZipException;
@@ -57,7 +58,6 @@ import com.liferay.portal.service.OrganizationService;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.documentlibrary.service.DLAppLocalService;
 import com.liferay.sites.kernel.util.SitesUtil;
 import com.liferay.users.admin.constants.UsersAdminPortletKeys;
 import com.liferay.users.admin.kernel.util.UsersAdminUtil;

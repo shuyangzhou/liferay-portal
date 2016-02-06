@@ -14,6 +14,7 @@
 
 package com.liferay.portal.background.task.service.impl;
 
+import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.portal.background.task.internal.BackgroundTaskImpl;
 import com.liferay.portal.background.task.model.BackgroundTask;
 import com.liferay.portal.background.task.service.base.BackgroundTaskLocalServiceBaseImpl;
@@ -42,7 +43,6 @@ import com.liferay.portal.model.UserConstants;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.util.PortletKeys;
-import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
 
 import java.io.File;
 import java.io.InputStream;

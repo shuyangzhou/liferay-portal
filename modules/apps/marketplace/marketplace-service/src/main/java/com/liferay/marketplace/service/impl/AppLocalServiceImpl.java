@@ -14,6 +14,8 @@
 
 package com.liferay.marketplace.service.impl;
 
+import com.liferay.document.library.kernel.exception.NoSuchFileException;
+import com.liferay.document.library.kernel.store.DLStoreUtil;
 import com.liferay.marketplace.bundle.BundleManagerUtil;
 import com.liferay.marketplace.exception.AppPropertiesException;
 import com.liferay.marketplace.exception.AppTitleException;
@@ -43,8 +45,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CompanyConstants;
 import com.liferay.portal.model.User;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.documentlibrary.exception.NoSuchFileException;
-import com.liferay.portlet.documentlibrary.store.DLStoreUtil;
 
 import java.io.File;
 import java.io.IOException;

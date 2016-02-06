@@ -14,6 +14,7 @@
 
 package com.liferay.journal.web.util;
 
+import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.journal.model.JournalArticleDisplay;
 import com.liferay.journal.util.JournalContent;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
@@ -31,7 +32,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.documentlibrary.util.DLUtil;
 import com.liferay.portlet.documentlibrary.util.DocumentConversionUtil;
 
 import java.io.File;
