@@ -15,7 +15,7 @@
 package com.liferay.portal.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.model.PersistedModel;
+import com.liferay.portal.kernel.model.PersistedModel;
 
 import java.io.Serializable;
 

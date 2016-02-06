@@ -15,10 +15,10 @@
 package com.liferay.portal.model;
 
 import com.liferay.exportimport.kernel.staging.LayoutStagingUtil;
-import com.liferay.portal.exception.ModelListenerException;
+import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.service.LayoutRevisionLocalServiceUtil;
+import com.liferay.portal.kernel.service.LayoutRevisionLocalServiceUtil;
 import com.liferay.portal.servlet.filters.cache.CacheUtil;
 
 /**

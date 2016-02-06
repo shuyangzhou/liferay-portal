@@ -14,7 +14,7 @@
 
 package com.liferay.portal.kernel.model;
 
-import com.liferay.portal.LocaleException;
+import com.liferay.portal.kernel.exception.LocaleException;
 
 import java.util.Locale;
 
