@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -118,7 +118,7 @@ public class UserIdMapperWrapper implements UserIdMapper,
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.model.UserIdMapper userIdMapper) {
+	public int compareTo(com.liferay.portal.kernel.model.UserIdMapper userIdMapper) {
 		return _userIdMapper.compareTo(userIdMapper);
 	}
 
@@ -368,12 +368,12 @@ public class UserIdMapperWrapper implements UserIdMapper,
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.UserIdMapper> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.UserIdMapper> toCacheModel() {
 		return _userIdMapper.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.UserIdMapper toEscapedModel() {
+	public com.liferay.portal.kernel.model.UserIdMapper toEscapedModel() {
 		return new UserIdMapperWrapper(_userIdMapper.toEscapedModel());
 	}
 
@@ -383,7 +383,7 @@ public class UserIdMapperWrapper implements UserIdMapper,
 	}
 
 	@Override
-	public com.liferay.portal.model.UserIdMapper toUnescapedModel() {
+	public com.liferay.portal.kernel.model.UserIdMapper toUnescapedModel() {
 		return new UserIdMapperWrapper(_userIdMapper.toUnescapedModel());
 	}
 

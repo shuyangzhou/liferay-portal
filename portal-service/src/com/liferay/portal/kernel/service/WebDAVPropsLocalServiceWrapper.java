@@ -38,8 +38,8 @@ public class WebDAVPropsLocalServiceWrapper implements WebDAVPropsLocalService,
 	* @return the web d a v props that was added
 	*/
 	@Override
-	public com.liferay.portal.model.WebDAVProps addWebDAVProps(
-		com.liferay.portal.model.WebDAVProps webDAVProps) {
+	public com.liferay.portal.kernel.model.WebDAVProps addWebDAVProps(
+		com.liferay.portal.kernel.model.WebDAVProps webDAVProps) {
 		return _webDAVPropsLocalService.addWebDAVProps(webDAVProps);
 	}
 
@@ -50,7 +50,7 @@ public class WebDAVPropsLocalServiceWrapper implements WebDAVPropsLocalService,
 	* @return the new web d a v props
 	*/
 	@Override
-	public com.liferay.portal.model.WebDAVProps createWebDAVProps(
+	public com.liferay.portal.kernel.model.WebDAVProps createWebDAVProps(
 		long webDavPropsId) {
 		return _webDAVPropsLocalService.createWebDAVProps(webDavPropsId);
 	}
@@ -59,8 +59,8 @@ public class WebDAVPropsLocalServiceWrapper implements WebDAVPropsLocalService,
 	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _webDAVPropsLocalService.deletePersistedModel(persistedModel);
 	}
@@ -77,8 +77,8 @@ public class WebDAVPropsLocalServiceWrapper implements WebDAVPropsLocalService,
 	* @return the web d a v props that was removed
 	*/
 	@Override
-	public com.liferay.portal.model.WebDAVProps deleteWebDAVProps(
-		com.liferay.portal.model.WebDAVProps webDAVProps) {
+	public com.liferay.portal.kernel.model.WebDAVProps deleteWebDAVProps(
+		com.liferay.portal.kernel.model.WebDAVProps webDAVProps) {
 		return _webDAVPropsLocalService.deleteWebDAVProps(webDAVProps);
 	}
 
@@ -90,7 +90,7 @@ public class WebDAVPropsLocalServiceWrapper implements WebDAVPropsLocalService,
 	* @throws PortalException if a web d a v props with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.WebDAVProps deleteWebDAVProps(
+	public com.liferay.portal.kernel.model.WebDAVProps deleteWebDAVProps(
 		long webDavPropsId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _webDAVPropsLocalService.deleteWebDAVProps(webDavPropsId);
@@ -182,7 +182,7 @@ public class WebDAVPropsLocalServiceWrapper implements WebDAVPropsLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.WebDAVProps fetchWebDAVProps(
+	public com.liferay.portal.kernel.model.WebDAVProps fetchWebDAVProps(
 		long webDavPropsId) {
 		return _webDAVPropsLocalService.fetchWebDAVProps(webDavPropsId);
 	}
@@ -208,14 +208,14 @@ public class WebDAVPropsLocalServiceWrapper implements WebDAVPropsLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.PersistedModel getPersistedModel(
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _webDAVPropsLocalService.getPersistedModel(primaryKeyObj);
 	}
 
 	@Override
-	public com.liferay.portal.model.WebDAVProps getWebDAVProps(long companyId,
+	public com.liferay.portal.kernel.model.WebDAVProps getWebDAVProps(long companyId,
 		java.lang.String className, long classPK) {
 		return _webDAVPropsLocalService.getWebDAVProps(companyId, className,
 			classPK);
@@ -229,7 +229,7 @@ public class WebDAVPropsLocalServiceWrapper implements WebDAVPropsLocalService,
 	* @throws PortalException if a web d a v props with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.WebDAVProps getWebDAVProps(
+	public com.liferay.portal.kernel.model.WebDAVProps getWebDAVProps(
 		long webDavPropsId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _webDAVPropsLocalService.getWebDAVProps(webDavPropsId);
@@ -247,7 +247,7 @@ public class WebDAVPropsLocalServiceWrapper implements WebDAVPropsLocalService,
 	* @return the range of web d a v propses
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.WebDAVProps> getWebDAVPropses(
+	public java.util.List<com.liferay.portal.kernel.model.WebDAVProps> getWebDAVPropses(
 		int start, int end) {
 		return _webDAVPropsLocalService.getWebDAVPropses(start, end);
 	}
@@ -264,7 +264,7 @@ public class WebDAVPropsLocalServiceWrapper implements WebDAVPropsLocalService,
 
 	@Override
 	public void storeWebDAVProps(
-		com.liferay.portal.model.WebDAVProps webDavProps)
+		com.liferay.portal.kernel.model.WebDAVProps webDavProps)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_webDAVPropsLocalService.storeWebDAVProps(webDavProps);
 	}
@@ -276,8 +276,8 @@ public class WebDAVPropsLocalServiceWrapper implements WebDAVPropsLocalService,
 	* @return the web d a v props that was updated
 	*/
 	@Override
-	public com.liferay.portal.model.WebDAVProps updateWebDAVProps(
-		com.liferay.portal.model.WebDAVProps webDAVProps) {
+	public com.liferay.portal.kernel.model.WebDAVProps updateWebDAVProps(
+		com.liferay.portal.kernel.model.WebDAVProps webDAVProps) {
 		return _webDAVPropsLocalService.updateWebDAVProps(webDAVProps);
 	}
 

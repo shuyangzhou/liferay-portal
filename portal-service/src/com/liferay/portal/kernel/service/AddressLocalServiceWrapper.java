@@ -37,18 +37,18 @@ public class AddressLocalServiceWrapper implements AddressLocalService,
 	* @return the address that was added
 	*/
 	@Override
-	public com.liferay.portal.model.Address addAddress(
-		com.liferay.portal.model.Address address) {
+	public com.liferay.portal.kernel.model.Address addAddress(
+		com.liferay.portal.kernel.model.Address address) {
 		return _addressLocalService.addAddress(address);
 	}
 
 	@Override
-	public com.liferay.portal.model.Address addAddress(long userId,
+	public com.liferay.portal.kernel.model.Address addAddress(long userId,
 		java.lang.String className, long classPK, java.lang.String street1,
 		java.lang.String street2, java.lang.String street3,
 		java.lang.String city, java.lang.String zip, long regionId,
 		long countryId, long typeId, boolean mailing, boolean primary,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _addressLocalService.addAddress(userId, className, classPK,
 			street1, street2, street3, city, zip, regionId, countryId, typeId,
@@ -62,7 +62,7 @@ public class AddressLocalServiceWrapper implements AddressLocalService,
 	* @return the new address
 	*/
 	@Override
-	public com.liferay.portal.model.Address createAddress(long addressId) {
+	public com.liferay.portal.kernel.model.Address createAddress(long addressId) {
 		return _addressLocalService.createAddress(addressId);
 	}
 
@@ -73,8 +73,8 @@ public class AddressLocalServiceWrapper implements AddressLocalService,
 	* @return the address that was removed
 	*/
 	@Override
-	public com.liferay.portal.model.Address deleteAddress(
-		com.liferay.portal.model.Address address) {
+	public com.liferay.portal.kernel.model.Address deleteAddress(
+		com.liferay.portal.kernel.model.Address address) {
 		return _addressLocalService.deleteAddress(address);
 	}
 
@@ -86,7 +86,7 @@ public class AddressLocalServiceWrapper implements AddressLocalService,
 	* @throws PortalException if a address with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.Address deleteAddress(long addressId)
+	public com.liferay.portal.kernel.model.Address deleteAddress(long addressId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _addressLocalService.deleteAddress(addressId);
 	}
@@ -101,8 +101,8 @@ public class AddressLocalServiceWrapper implements AddressLocalService,
 	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _addressLocalService.deletePersistedModel(persistedModel);
 	}
@@ -192,7 +192,7 @@ public class AddressLocalServiceWrapper implements AddressLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.Address fetchAddress(long addressId) {
+	public com.liferay.portal.kernel.model.Address fetchAddress(long addressId) {
 		return _addressLocalService.fetchAddress(addressId);
 	}
 
@@ -204,7 +204,7 @@ public class AddressLocalServiceWrapper implements AddressLocalService,
 	* @return the matching address, or <code>null</code> if a matching address could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.Address fetchAddressByUuidAndCompanyId(
+	public com.liferay.portal.kernel.model.Address fetchAddressByUuidAndCompanyId(
 		java.lang.String uuid, long companyId) {
 		return _addressLocalService.fetchAddressByUuidAndCompanyId(uuid,
 			companyId);
@@ -223,7 +223,7 @@ public class AddressLocalServiceWrapper implements AddressLocalService,
 	* @throws PortalException if a address with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.Address getAddress(long addressId)
+	public com.liferay.portal.kernel.model.Address getAddress(long addressId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _addressLocalService.getAddress(addressId);
 	}
@@ -237,19 +237,19 @@ public class AddressLocalServiceWrapper implements AddressLocalService,
 	* @throws PortalException if a matching address could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.Address getAddressByUuidAndCompanyId(
+	public com.liferay.portal.kernel.model.Address getAddressByUuidAndCompanyId(
 		java.lang.String uuid, long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _addressLocalService.getAddressByUuidAndCompanyId(uuid, companyId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Address> getAddresses() {
+	public java.util.List<com.liferay.portal.kernel.model.Address> getAddresses() {
 		return _addressLocalService.getAddresses();
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Address> getAddresses(
+	public java.util.List<com.liferay.portal.kernel.model.Address> getAddresses(
 		long companyId, java.lang.String className, long classPK) {
 		return _addressLocalService.getAddresses(companyId, className, classPK);
 	}
@@ -266,7 +266,7 @@ public class AddressLocalServiceWrapper implements AddressLocalService,
 	* @return the range of addresses
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Address> getAddresses(
+	public java.util.List<com.liferay.portal.kernel.model.Address> getAddresses(
 		int start, int end) {
 		return _addressLocalService.getAddresses(start, end);
 	}
@@ -303,7 +303,7 @@ public class AddressLocalServiceWrapper implements AddressLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.PersistedModel getPersistedModel(
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _addressLocalService.getPersistedModel(primaryKeyObj);
@@ -316,13 +316,13 @@ public class AddressLocalServiceWrapper implements AddressLocalService,
 	* @return the address that was updated
 	*/
 	@Override
-	public com.liferay.portal.model.Address updateAddress(
-		com.liferay.portal.model.Address address) {
+	public com.liferay.portal.kernel.model.Address updateAddress(
+		com.liferay.portal.kernel.model.Address address) {
 		return _addressLocalService.updateAddress(address);
 	}
 
 	@Override
-	public com.liferay.portal.model.Address updateAddress(long addressId,
+	public com.liferay.portal.kernel.model.Address updateAddress(long addressId,
 		java.lang.String street1, java.lang.String street2,
 		java.lang.String street3, java.lang.String city, java.lang.String zip,
 		long regionId, long countryId, long typeId, boolean mailing,

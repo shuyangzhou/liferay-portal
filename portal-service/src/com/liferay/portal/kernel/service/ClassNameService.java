@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
-import com.liferay.portal.model.ClassName;
+import com.liferay.portal.kernel.model.ClassName;
 
 /**
  * Provides the remote service interface for ClassName. Methods of this

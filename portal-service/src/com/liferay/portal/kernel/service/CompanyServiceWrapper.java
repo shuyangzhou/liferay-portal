@@ -43,7 +43,7 @@ public class CompanyServiceWrapper implements CompanyService,
 	* @return the company
 	*/
 	@Override
-	public com.liferay.portal.model.Company addCompany(java.lang.String webId,
+	public com.liferay.portal.kernel.model.Company addCompany(java.lang.String webId,
 		java.lang.String virtualHost, java.lang.String mx, boolean system,
 		int maxUsers, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -52,7 +52,7 @@ public class CompanyServiceWrapper implements CompanyService,
 	}
 
 	@Override
-	public com.liferay.portal.model.Company deleteCompany(long companyId)
+	public com.liferay.portal.kernel.model.Company deleteCompany(long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _companyService.deleteCompany(companyId);
 	}
@@ -75,7 +75,7 @@ public class CompanyServiceWrapper implements CompanyService,
 	* @return Returns the company with the primary key
 	*/
 	@Override
-	public com.liferay.portal.model.Company getCompanyById(long companyId)
+	public com.liferay.portal.kernel.model.Company getCompanyById(long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _companyService.getCompanyById(companyId);
 	}
@@ -87,7 +87,7 @@ public class CompanyServiceWrapper implements CompanyService,
 	* @return Returns the company with the logo
 	*/
 	@Override
-	public com.liferay.portal.model.Company getCompanyByLogoId(long logoId)
+	public com.liferay.portal.kernel.model.Company getCompanyByLogoId(long logoId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _companyService.getCompanyByLogoId(logoId);
 	}
@@ -99,7 +99,7 @@ public class CompanyServiceWrapper implements CompanyService,
 	* @return Returns the company with the mail domain
 	*/
 	@Override
-	public com.liferay.portal.model.Company getCompanyByMx(java.lang.String mx)
+	public com.liferay.portal.kernel.model.Company getCompanyByMx(java.lang.String mx)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _companyService.getCompanyByMx(mx);
 	}
@@ -111,7 +111,7 @@ public class CompanyServiceWrapper implements CompanyService,
 	* @return Returns the company with the virtual host name
 	*/
 	@Override
-	public com.liferay.portal.model.Company getCompanyByVirtualHost(
+	public com.liferay.portal.kernel.model.Company getCompanyByVirtualHost(
 		java.lang.String virtualHost)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _companyService.getCompanyByVirtualHost(virtualHost);
@@ -124,7 +124,7 @@ public class CompanyServiceWrapper implements CompanyService,
 	* @return Returns the company with the web domain
 	*/
 	@Override
-	public com.liferay.portal.model.Company getCompanyByWebId(
+	public com.liferay.portal.kernel.model.Company getCompanyByWebId(
 		java.lang.String webId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _companyService.getCompanyByWebId(webId);
@@ -145,7 +145,7 @@ public class CompanyServiceWrapper implements CompanyService,
 	*
 	* This method is called by {@link
 	* com.liferay.portlet.portalsettings.action.EditLDAPServerAction} remotely
-	* through {@link com.liferay.portal.service.CompanyService}.
+	* through {@link com.liferay.portal.kernel.service.CompanyService}.
 	*
 	* @param companyId the primary key of the company
 	* @param keys the company's preferences keys to be remove
@@ -183,7 +183,7 @@ public class CompanyServiceWrapper implements CompanyService,
 	* @return the the company with the primary key
 	*/
 	@Override
-	public com.liferay.portal.model.Company updateCompany(long companyId,
+	public com.liferay.portal.kernel.model.Company updateCompany(long companyId,
 		java.lang.String virtualHost, java.lang.String mx,
 		java.lang.String homeURL, boolean logo, byte[] logoBytes,
 		java.lang.String name, java.lang.String legalName,
@@ -230,7 +230,7 @@ public class CompanyServiceWrapper implements CompanyService,
 	* @return the company with the primary key
 	*/
 	@Override
-	public com.liferay.portal.model.Company updateCompany(long companyId,
+	public com.liferay.portal.kernel.model.Company updateCompany(long companyId,
 		java.lang.String virtualHost, java.lang.String mx,
 		java.lang.String homeURL, boolean logo, byte[] logoBytes,
 		java.lang.String name, java.lang.String legalName,
@@ -239,10 +239,10 @@ public class CompanyServiceWrapper implements CompanyService,
 		java.lang.String industry, java.lang.String type,
 		java.lang.String size, java.lang.String languageId,
 		java.lang.String timeZoneId,
-		java.util.List<com.liferay.portal.model.Address> addresses,
-		java.util.List<com.liferay.portal.model.EmailAddress> emailAddresses,
-		java.util.List<com.liferay.portal.model.Phone> phones,
-		java.util.List<com.liferay.portal.model.Website> websites,
+		java.util.List<com.liferay.portal.kernel.model.Address> addresses,
+		java.util.List<com.liferay.portal.kernel.model.EmailAddress> emailAddresses,
+		java.util.List<com.liferay.portal.kernel.model.Phone> phones,
+		java.util.List<com.liferay.portal.kernel.model.Website> websites,
 		com.liferay.portal.kernel.util.UnicodeProperties properties)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _companyService.updateCompany(companyId, virtualHost, mx,
@@ -283,7 +283,7 @@ public class CompanyServiceWrapper implements CompanyService,
 	*/
 	@Deprecated
 	@Override
-	public com.liferay.portal.model.Company updateCompany(long companyId,
+	public com.liferay.portal.kernel.model.Company updateCompany(long companyId,
 		java.lang.String virtualHost, java.lang.String mx,
 		java.lang.String homeURL, java.lang.String name,
 		java.lang.String legalName, java.lang.String legalId,
@@ -336,7 +336,7 @@ public class CompanyServiceWrapper implements CompanyService,
 	*/
 	@Deprecated
 	@Override
-	public com.liferay.portal.model.Company updateCompany(long companyId,
+	public com.liferay.portal.kernel.model.Company updateCompany(long companyId,
 		java.lang.String virtualHost, java.lang.String mx,
 		java.lang.String homeURL, java.lang.String name,
 		java.lang.String legalName, java.lang.String legalId,
@@ -344,10 +344,10 @@ public class CompanyServiceWrapper implements CompanyService,
 		java.lang.String tickerSymbol, java.lang.String industry,
 		java.lang.String type, java.lang.String size,
 		java.lang.String languageId, java.lang.String timeZoneId,
-		java.util.List<com.liferay.portal.model.Address> addresses,
-		java.util.List<com.liferay.portal.model.EmailAddress> emailAddresses,
-		java.util.List<com.liferay.portal.model.Phone> phones,
-		java.util.List<com.liferay.portal.model.Website> websites,
+		java.util.List<com.liferay.portal.kernel.model.Address> addresses,
+		java.util.List<com.liferay.portal.kernel.model.EmailAddress> emailAddresses,
+		java.util.List<com.liferay.portal.kernel.model.Phone> phones,
+		java.util.List<com.liferay.portal.kernel.model.Website> websites,
 		com.liferay.portal.kernel.util.UnicodeProperties properties)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _companyService.updateCompany(companyId, virtualHost, mx,
@@ -368,7 +368,7 @@ public class CompanyServiceWrapper implements CompanyService,
 	* @return the company with the primary key
 	*/
 	@Override
-	public com.liferay.portal.model.Company updateCompany(long companyId,
+	public com.liferay.portal.kernel.model.Company updateCompany(long companyId,
 		java.lang.String virtualHost, java.lang.String mx, int maxUsers,
 		boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -398,7 +398,7 @@ public class CompanyServiceWrapper implements CompanyService,
 	* @return the company with the primary key
 	*/
 	@Override
-	public com.liferay.portal.model.Company updateLogo(long companyId,
+	public com.liferay.portal.kernel.model.Company updateLogo(long companyId,
 		byte[] bytes)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _companyService.updateLogo(companyId, bytes);
@@ -412,7 +412,7 @@ public class CompanyServiceWrapper implements CompanyService,
 	* @return the company with the primary key
 	*/
 	@Override
-	public com.liferay.portal.model.Company updateLogo(long companyId,
+	public com.liferay.portal.kernel.model.Company updateLogo(long companyId,
 		java.io.InputStream inputStream)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _companyService.updateLogo(companyId, inputStream);

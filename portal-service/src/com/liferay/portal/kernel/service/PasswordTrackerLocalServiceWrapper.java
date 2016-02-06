@@ -39,8 +39,8 @@ public class PasswordTrackerLocalServiceWrapper
 	* @return the password tracker that was added
 	*/
 	@Override
-	public com.liferay.portal.model.PasswordTracker addPasswordTracker(
-		com.liferay.portal.model.PasswordTracker passwordTracker) {
+	public com.liferay.portal.kernel.model.PasswordTracker addPasswordTracker(
+		com.liferay.portal.kernel.model.PasswordTracker passwordTracker) {
 		return _passwordTrackerLocalService.addPasswordTracker(passwordTracker);
 	}
 
@@ -51,7 +51,7 @@ public class PasswordTrackerLocalServiceWrapper
 	* @return the new password tracker
 	*/
 	@Override
-	public com.liferay.portal.model.PasswordTracker createPasswordTracker(
+	public com.liferay.portal.kernel.model.PasswordTracker createPasswordTracker(
 		long passwordTrackerId) {
 		return _passwordTrackerLocalService.createPasswordTracker(passwordTrackerId);
 	}
@@ -63,8 +63,8 @@ public class PasswordTrackerLocalServiceWrapper
 	* @return the password tracker that was removed
 	*/
 	@Override
-	public com.liferay.portal.model.PasswordTracker deletePasswordTracker(
-		com.liferay.portal.model.PasswordTracker passwordTracker) {
+	public com.liferay.portal.kernel.model.PasswordTracker deletePasswordTracker(
+		com.liferay.portal.kernel.model.PasswordTracker passwordTracker) {
 		return _passwordTrackerLocalService.deletePasswordTracker(passwordTracker);
 	}
 
@@ -76,7 +76,7 @@ public class PasswordTrackerLocalServiceWrapper
 	* @throws PortalException if a password tracker with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.PasswordTracker deletePasswordTracker(
+	public com.liferay.portal.kernel.model.PasswordTracker deletePasswordTracker(
 		long passwordTrackerId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _passwordTrackerLocalService.deletePasswordTracker(passwordTrackerId);
@@ -91,8 +91,8 @@ public class PasswordTrackerLocalServiceWrapper
 	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _passwordTrackerLocalService.deletePersistedModel(persistedModel);
 	}
@@ -184,7 +184,7 @@ public class PasswordTrackerLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.model.PasswordTracker fetchPasswordTracker(
+	public com.liferay.portal.kernel.model.PasswordTracker fetchPasswordTracker(
 		long passwordTrackerId) {
 		return _passwordTrackerLocalService.fetchPasswordTracker(passwordTrackerId);
 	}
@@ -217,7 +217,7 @@ public class PasswordTrackerLocalServiceWrapper
 	* @throws PortalException if a password tracker with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.PasswordTracker getPasswordTracker(
+	public com.liferay.portal.kernel.model.PasswordTracker getPasswordTracker(
 		long passwordTrackerId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _passwordTrackerLocalService.getPasswordTracker(passwordTrackerId);
@@ -235,7 +235,7 @@ public class PasswordTrackerLocalServiceWrapper
 	* @return the range of password trackers
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.PasswordTracker> getPasswordTrackers(
+	public java.util.List<com.liferay.portal.kernel.model.PasswordTracker> getPasswordTrackers(
 		int start, int end) {
 		return _passwordTrackerLocalService.getPasswordTrackers(start, end);
 	}
@@ -251,7 +251,7 @@ public class PasswordTrackerLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.model.PersistedModel getPersistedModel(
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _passwordTrackerLocalService.getPersistedModel(primaryKeyObj);
@@ -285,8 +285,8 @@ public class PasswordTrackerLocalServiceWrapper
 	* @return the password tracker that was updated
 	*/
 	@Override
-	public com.liferay.portal.model.PasswordTracker updatePasswordTracker(
-		com.liferay.portal.model.PasswordTracker passwordTracker) {
+	public com.liferay.portal.kernel.model.PasswordTracker updatePasswordTracker(
+		com.liferay.portal.kernel.model.PasswordTracker passwordTracker) {
 		return _passwordTrackerLocalService.updatePasswordTracker(passwordTracker);
 	}
 

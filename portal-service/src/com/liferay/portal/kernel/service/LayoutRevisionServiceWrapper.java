@@ -32,7 +32,7 @@ public class LayoutRevisionServiceWrapper implements LayoutRevisionService,
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutRevision addLayoutRevision(
+	public com.liferay.portal.kernel.model.LayoutRevision addLayoutRevision(
 		long userId, long layoutSetBranchId, long layoutBranchId,
 		long parentLayoutRevisionId, boolean head, long plid,
 		long portletPreferencesPlid, boolean privateLayout,
@@ -42,7 +42,7 @@ public class LayoutRevisionServiceWrapper implements LayoutRevisionService,
 		boolean iconImage, long iconImageId, java.lang.String themeId,
 		java.lang.String colorSchemeId, java.lang.String wapThemeId,
 		java.lang.String wapColorSchemeId, java.lang.String css,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutRevisionService.addLayoutRevision(userId,
 			layoutSetBranchId, layoutBranchId, parentLayoutRevisionId, head,

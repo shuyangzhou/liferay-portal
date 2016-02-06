@@ -21,7 +21,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -171,7 +171,7 @@ public class LayoutFriendlyURLWrapper implements LayoutFriendlyURL,
 
 	@Override
 	public int compareTo(
-		com.liferay.portal.model.LayoutFriendlyURL layoutFriendlyURL) {
+		com.liferay.portal.kernel.model.LayoutFriendlyURL layoutFriendlyURL) {
 		return _layoutFriendlyURL.compareTo(layoutFriendlyURL);
 	}
 
@@ -571,12 +571,12 @@ public class LayoutFriendlyURLWrapper implements LayoutFriendlyURL,
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.LayoutFriendlyURL> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.LayoutFriendlyURL> toCacheModel() {
 		return _layoutFriendlyURL.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutFriendlyURL toEscapedModel() {
+	public com.liferay.portal.kernel.model.LayoutFriendlyURL toEscapedModel() {
 		return new LayoutFriendlyURLWrapper(_layoutFriendlyURL.toEscapedModel());
 	}
 
@@ -586,7 +586,7 @@ public class LayoutFriendlyURLWrapper implements LayoutFriendlyURL,
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutFriendlyURL toUnescapedModel() {
+	public com.liferay.portal.kernel.model.LayoutFriendlyURL toUnescapedModel() {
 		return new LayoutFriendlyURLWrapper(_layoutFriendlyURL.toUnescapedModel());
 	}
 

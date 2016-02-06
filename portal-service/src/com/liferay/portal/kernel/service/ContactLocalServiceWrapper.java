@@ -37,13 +37,13 @@ public class ContactLocalServiceWrapper implements ContactLocalService,
 	* @return the contact that was added
 	*/
 	@Override
-	public com.liferay.portal.model.Contact addContact(
-		com.liferay.portal.model.Contact contact) {
+	public com.liferay.portal.kernel.model.Contact addContact(
+		com.liferay.portal.kernel.model.Contact contact) {
 		return _contactLocalService.addContact(contact);
 	}
 
 	@Override
-	public com.liferay.portal.model.Contact addContact(long userId,
+	public com.liferay.portal.kernel.model.Contact addContact(long userId,
 		java.lang.String className, long classPK,
 		java.lang.String emailAddress, java.lang.String firstName,
 		java.lang.String middleName, java.lang.String lastName, long prefixId,
@@ -65,7 +65,7 @@ public class ContactLocalServiceWrapper implements ContactLocalService,
 	* @return the new contact
 	*/
 	@Override
-	public com.liferay.portal.model.Contact createContact(long contactId) {
+	public com.liferay.portal.kernel.model.Contact createContact(long contactId) {
 		return _contactLocalService.createContact(contactId);
 	}
 
@@ -76,8 +76,8 @@ public class ContactLocalServiceWrapper implements ContactLocalService,
 	* @return the contact that was removed
 	*/
 	@Override
-	public com.liferay.portal.model.Contact deleteContact(
-		com.liferay.portal.model.Contact contact) {
+	public com.liferay.portal.kernel.model.Contact deleteContact(
+		com.liferay.portal.kernel.model.Contact contact) {
 		return _contactLocalService.deleteContact(contact);
 	}
 
@@ -89,7 +89,7 @@ public class ContactLocalServiceWrapper implements ContactLocalService,
 	* @throws PortalException if a contact with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.Contact deleteContact(long contactId)
+	public com.liferay.portal.kernel.model.Contact deleteContact(long contactId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _contactLocalService.deleteContact(contactId);
 	}
@@ -98,8 +98,8 @@ public class ContactLocalServiceWrapper implements ContactLocalService,
 	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _contactLocalService.deletePersistedModel(persistedModel);
 	}
@@ -189,7 +189,7 @@ public class ContactLocalServiceWrapper implements ContactLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.Contact fetchContact(long contactId) {
+	public com.liferay.portal.kernel.model.Contact fetchContact(long contactId) {
 		return _contactLocalService.fetchContact(contactId);
 	}
 
@@ -206,15 +206,15 @@ public class ContactLocalServiceWrapper implements ContactLocalService,
 	* @throws PortalException if a contact with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.Contact getContact(long contactId)
+	public com.liferay.portal.kernel.model.Contact getContact(long contactId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _contactLocalService.getContact(contactId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Contact> getContacts(
+	public java.util.List<com.liferay.portal.kernel.model.Contact> getContacts(
 		long classNameId, long classPK, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Contact> orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Contact> orderByComparator) {
 		return _contactLocalService.getContacts(classNameId, classPK, start,
 			end, orderByComparator);
 	}
@@ -231,7 +231,7 @@ public class ContactLocalServiceWrapper implements ContactLocalService,
 	* @return the range of contacts
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Contact> getContacts(
+	public java.util.List<com.liferay.portal.kernel.model.Contact> getContacts(
 		int start, int end) {
 		return _contactLocalService.getContacts(start, end);
 	}
@@ -267,7 +267,7 @@ public class ContactLocalServiceWrapper implements ContactLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.PersistedModel getPersistedModel(
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _contactLocalService.getPersistedModel(primaryKeyObj);
@@ -280,13 +280,13 @@ public class ContactLocalServiceWrapper implements ContactLocalService,
 	* @return the contact that was updated
 	*/
 	@Override
-	public com.liferay.portal.model.Contact updateContact(
-		com.liferay.portal.model.Contact contact) {
+	public com.liferay.portal.kernel.model.Contact updateContact(
+		com.liferay.portal.kernel.model.Contact contact) {
 		return _contactLocalService.updateContact(contact);
 	}
 
 	@Override
-	public com.liferay.portal.model.Contact updateContact(long contactId,
+	public com.liferay.portal.kernel.model.Contact updateContact(long contactId,
 		java.lang.String emailAddress, java.lang.String firstName,
 		java.lang.String middleName, java.lang.String lastName, long prefixId,
 		long suffixId, boolean male, int birthdayMonth, int birthdayDay,

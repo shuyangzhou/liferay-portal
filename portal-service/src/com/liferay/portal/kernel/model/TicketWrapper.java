@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -139,7 +139,7 @@ public class TicketWrapper implements Ticket, ModelWrapper<Ticket> {
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.model.Ticket ticket) {
+	public int compareTo(com.liferay.portal.kernel.model.Ticket ticket) {
 		return _ticket.compareTo(ticket);
 	}
 
@@ -449,12 +449,12 @@ public class TicketWrapper implements Ticket, ModelWrapper<Ticket> {
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.Ticket> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.Ticket> toCacheModel() {
 		return _ticket.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.Ticket toEscapedModel() {
+	public com.liferay.portal.kernel.model.Ticket toEscapedModel() {
 		return new TicketWrapper(_ticket.toEscapedModel());
 	}
 
@@ -464,7 +464,7 @@ public class TicketWrapper implements Ticket, ModelWrapper<Ticket> {
 	}
 
 	@Override
-	public com.liferay.portal.model.Ticket toUnescapedModel() {
+	public com.liferay.portal.kernel.model.Ticket toUnescapedModel() {
 		return new TicketWrapper(_ticket.toUnescapedModel());
 	}
 

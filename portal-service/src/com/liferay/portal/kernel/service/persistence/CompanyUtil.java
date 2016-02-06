@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
-import com.liferay.portal.model.Company;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -46,35 +46,35 @@ public class CompanyUtil {
 	 */
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache()
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache()
 	 */
 	public static void clearCache() {
 		getPersistence().clearCache();
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static void clearCache(Company company) {
 		getPersistence().clearCache(company);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
 	public static long countWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<Company> findWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().findWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
 	public static List<Company> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
@@ -82,7 +82,7 @@ public class CompanyUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
 	public static List<Company> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
@@ -93,14 +93,14 @@ public class CompanyUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static Company update(Company company) {
 		return getPersistence().update(company);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
 	public static Company update(Company company, ServiceContext serviceContext) {
 		return getPersistence().update(company, serviceContext);
@@ -114,7 +114,7 @@ public class CompanyUtil {
 	* @throws NoSuchCompanyException if a matching company could not be found
 	*/
 	public static Company findByWebId(java.lang.String webId)
-		throws com.liferay.portal.exception.NoSuchCompanyException {
+		throws com.liferay.portal.kernel.exception.NoSuchCompanyException {
 		return getPersistence().findByWebId(webId);
 	}
 
@@ -147,7 +147,7 @@ public class CompanyUtil {
 	* @return the company that was removed
 	*/
 	public static Company removeByWebId(java.lang.String webId)
-		throws com.liferay.portal.exception.NoSuchCompanyException {
+		throws com.liferay.portal.kernel.exception.NoSuchCompanyException {
 		return getPersistence().removeByWebId(webId);
 	}
 
@@ -169,7 +169,7 @@ public class CompanyUtil {
 	* @throws NoSuchCompanyException if a matching company could not be found
 	*/
 	public static Company findByMx(java.lang.String mx)
-		throws com.liferay.portal.exception.NoSuchCompanyException {
+		throws com.liferay.portal.kernel.exception.NoSuchCompanyException {
 		return getPersistence().findByMx(mx);
 	}
 
@@ -202,7 +202,7 @@ public class CompanyUtil {
 	* @return the company that was removed
 	*/
 	public static Company removeByMx(java.lang.String mx)
-		throws com.liferay.portal.exception.NoSuchCompanyException {
+		throws com.liferay.portal.kernel.exception.NoSuchCompanyException {
 		return getPersistence().removeByMx(mx);
 	}
 
@@ -224,7 +224,7 @@ public class CompanyUtil {
 	* @throws NoSuchCompanyException if a matching company could not be found
 	*/
 	public static Company findByLogoId(long logoId)
-		throws com.liferay.portal.exception.NoSuchCompanyException {
+		throws com.liferay.portal.kernel.exception.NoSuchCompanyException {
 		return getPersistence().findByLogoId(logoId);
 	}
 
@@ -256,7 +256,7 @@ public class CompanyUtil {
 	* @return the company that was removed
 	*/
 	public static Company removeByLogoId(long logoId)
-		throws com.liferay.portal.exception.NoSuchCompanyException {
+		throws com.liferay.portal.kernel.exception.NoSuchCompanyException {
 		return getPersistence().removeByLogoId(logoId);
 	}
 
@@ -347,7 +347,7 @@ public class CompanyUtil {
 	*/
 	public static Company findBySystem_First(boolean system,
 		OrderByComparator<Company> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchCompanyException {
+		throws com.liferay.portal.kernel.exception.NoSuchCompanyException {
 		return getPersistence().findBySystem_First(system, orderByComparator);
 	}
 
@@ -373,7 +373,7 @@ public class CompanyUtil {
 	*/
 	public static Company findBySystem_Last(boolean system,
 		OrderByComparator<Company> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchCompanyException {
+		throws com.liferay.portal.kernel.exception.NoSuchCompanyException {
 		return getPersistence().findBySystem_Last(system, orderByComparator);
 	}
 
@@ -400,7 +400,7 @@ public class CompanyUtil {
 	*/
 	public static Company[] findBySystem_PrevAndNext(long companyId,
 		boolean system, OrderByComparator<Company> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchCompanyException {
+		throws com.liferay.portal.kernel.exception.NoSuchCompanyException {
 		return getPersistence()
 				   .findBySystem_PrevAndNext(companyId, system,
 			orderByComparator);
@@ -461,7 +461,7 @@ public class CompanyUtil {
 	* @throws NoSuchCompanyException if a company with the primary key could not be found
 	*/
 	public static Company remove(long companyId)
-		throws com.liferay.portal.exception.NoSuchCompanyException {
+		throws com.liferay.portal.kernel.exception.NoSuchCompanyException {
 		return getPersistence().remove(companyId);
 	}
 
@@ -477,7 +477,7 @@ public class CompanyUtil {
 	* @throws NoSuchCompanyException if a company with the primary key could not be found
 	*/
 	public static Company findByPrimaryKey(long companyId)
-		throws com.liferay.portal.exception.NoSuchCompanyException {
+		throws com.liferay.portal.kernel.exception.NoSuchCompanyException {
 		return getPersistence().findByPrimaryKey(companyId);
 	}
 

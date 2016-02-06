@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
-import com.liferay.portal.model.OrgLabor;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.OrgLabor;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -46,35 +46,35 @@ public class OrgLaborUtil {
 	 */
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache()
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache()
 	 */
 	public static void clearCache() {
 		getPersistence().clearCache();
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static void clearCache(OrgLabor orgLabor) {
 		getPersistence().clearCache(orgLabor);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
 	public static long countWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<OrgLabor> findWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().findWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
 	public static List<OrgLabor> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
@@ -82,7 +82,7 @@ public class OrgLaborUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
 	public static List<OrgLabor> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
@@ -93,14 +93,14 @@ public class OrgLaborUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static OrgLabor update(OrgLabor orgLabor) {
 		return getPersistence().update(orgLabor);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
 	public static OrgLabor update(OrgLabor orgLabor,
 		ServiceContext serviceContext) {
@@ -186,7 +186,7 @@ public class OrgLaborUtil {
 	*/
 	public static OrgLabor findByOrganizationId_First(long organizationId,
 		OrderByComparator<OrgLabor> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchOrgLaborException {
+		throws com.liferay.portal.kernel.exception.NoSuchOrgLaborException {
 		return getPersistence()
 				   .findByOrganizationId_First(organizationId, orderByComparator);
 	}
@@ -215,7 +215,7 @@ public class OrgLaborUtil {
 	*/
 	public static OrgLabor findByOrganizationId_Last(long organizationId,
 		OrderByComparator<OrgLabor> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchOrgLaborException {
+		throws com.liferay.portal.kernel.exception.NoSuchOrgLaborException {
 		return getPersistence()
 				   .findByOrganizationId_Last(organizationId, orderByComparator);
 	}
@@ -244,7 +244,7 @@ public class OrgLaborUtil {
 	*/
 	public static OrgLabor[] findByOrganizationId_PrevAndNext(long orgLaborId,
 		long organizationId, OrderByComparator<OrgLabor> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchOrgLaborException {
+		throws com.liferay.portal.kernel.exception.NoSuchOrgLaborException {
 		return getPersistence()
 				   .findByOrganizationId_PrevAndNext(orgLaborId,
 			organizationId, orderByComparator);
@@ -305,7 +305,7 @@ public class OrgLaborUtil {
 	* @throws NoSuchOrgLaborException if a org labor with the primary key could not be found
 	*/
 	public static OrgLabor remove(long orgLaborId)
-		throws com.liferay.portal.exception.NoSuchOrgLaborException {
+		throws com.liferay.portal.kernel.exception.NoSuchOrgLaborException {
 		return getPersistence().remove(orgLaborId);
 	}
 
@@ -321,7 +321,7 @@ public class OrgLaborUtil {
 	* @throws NoSuchOrgLaborException if a org labor with the primary key could not be found
 	*/
 	public static OrgLabor findByPrimaryKey(long orgLaborId)
-		throws com.liferay.portal.exception.NoSuchOrgLaborException {
+		throws com.liferay.portal.kernel.exception.NoSuchOrgLaborException {
 		return getPersistence().findByPrimaryKey(orgLaborId);
 	}
 

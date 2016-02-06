@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchAddressException;
-import com.liferay.portal.model.Address;
+import com.liferay.portal.kernel.exception.NoSuchAddressException;
+import com.liferay.portal.kernel.model.Address;
 
 /**
  * The persistence interface for the address service.

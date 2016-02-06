@@ -47,13 +47,13 @@ public class ResourceBlockPermissionLocalServiceUtil {
 	* @param resourceBlockPermission the resource block permission
 	* @return the resource block permission that was added
 	*/
-	public static com.liferay.portal.model.ResourceBlockPermission addResourceBlockPermission(
-		com.liferay.portal.model.ResourceBlockPermission resourceBlockPermission) {
+	public static com.liferay.portal.kernel.model.ResourceBlockPermission addResourceBlockPermission(
+		com.liferay.portal.kernel.model.ResourceBlockPermission resourceBlockPermission) {
 		return getService().addResourceBlockPermission(resourceBlockPermission);
 	}
 
 	public static void addResourceBlockPermissions(long resourceBlockId,
-		com.liferay.portal.model.ResourceBlockPermissionsContainer resourceBlockPermissionsContainer) {
+		com.liferay.portal.kernel.model.ResourceBlockPermissionsContainer resourceBlockPermissionsContainer) {
 		getService()
 			.addResourceBlockPermissions(resourceBlockId,
 			resourceBlockPermissionsContainer);
@@ -65,7 +65,7 @@ public class ResourceBlockPermissionLocalServiceUtil {
 	* @param resourceBlockPermissionId the primary key for the new resource block permission
 	* @return the new resource block permission
 	*/
-	public static com.liferay.portal.model.ResourceBlockPermission createResourceBlockPermission(
+	public static com.liferay.portal.kernel.model.ResourceBlockPermission createResourceBlockPermission(
 		long resourceBlockPermissionId) {
 		return getService()
 				   .createResourceBlockPermission(resourceBlockPermissionId);
@@ -74,8 +74,8 @@ public class ResourceBlockPermissionLocalServiceUtil {
 	/**
 	* @throws PortalException
 	*/
-	public static com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -86,8 +86,8 @@ public class ResourceBlockPermissionLocalServiceUtil {
 	* @param resourceBlockPermission the resource block permission
 	* @return the resource block permission that was removed
 	*/
-	public static com.liferay.portal.model.ResourceBlockPermission deleteResourceBlockPermission(
-		com.liferay.portal.model.ResourceBlockPermission resourceBlockPermission) {
+	public static com.liferay.portal.kernel.model.ResourceBlockPermission deleteResourceBlockPermission(
+		com.liferay.portal.kernel.model.ResourceBlockPermission resourceBlockPermission) {
 		return getService()
 				   .deleteResourceBlockPermission(resourceBlockPermission);
 	}
@@ -99,7 +99,7 @@ public class ResourceBlockPermissionLocalServiceUtil {
 	* @return the resource block permission that was removed
 	* @throws PortalException if a resource block permission with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.ResourceBlockPermission deleteResourceBlockPermission(
+	public static com.liferay.portal.kernel.model.ResourceBlockPermission deleteResourceBlockPermission(
 		long resourceBlockPermissionId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
@@ -188,7 +188,7 @@ public class ResourceBlockPermissionLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.portal.model.ResourceBlockPermission fetchResourceBlockPermission(
+	public static com.liferay.portal.kernel.model.ResourceBlockPermission fetchResourceBlockPermission(
 		long resourceBlockPermissionId) {
 		return getService()
 				   .fetchResourceBlockPermission(resourceBlockPermissionId);
@@ -235,7 +235,7 @@ public class ResourceBlockPermissionLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.model.PersistedModel getPersistedModel(
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getPersistedModel(primaryKeyObj);
@@ -248,7 +248,7 @@ public class ResourceBlockPermissionLocalServiceUtil {
 	* @return the resource block permission
 	* @throws PortalException if a resource block permission with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.ResourceBlockPermission getResourceBlockPermission(
+	public static com.liferay.portal.kernel.model.ResourceBlockPermission getResourceBlockPermission(
 		long resourceBlockPermissionId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getResourceBlockPermission(resourceBlockPermissionId);
@@ -265,12 +265,12 @@ public class ResourceBlockPermissionLocalServiceUtil {
 	* @param end the upper bound of the range of resource block permissions (not inclusive)
 	* @return the range of resource block permissions
 	*/
-	public static java.util.List<com.liferay.portal.model.ResourceBlockPermission> getResourceBlockPermissions(
+	public static java.util.List<com.liferay.portal.kernel.model.ResourceBlockPermission> getResourceBlockPermissions(
 		int start, int end) {
 		return getService().getResourceBlockPermissions(start, end);
 	}
 
-	public static com.liferay.portal.model.ResourceBlockPermissionsContainer getResourceBlockPermissionsContainer(
+	public static com.liferay.portal.kernel.model.ResourceBlockPermissionsContainer getResourceBlockPermissionsContainer(
 		long resourceBlockId) {
 		return getService().getResourceBlockPermissionsContainer(resourceBlockId);
 	}
@@ -303,8 +303,8 @@ public class ResourceBlockPermissionLocalServiceUtil {
 	* @param resourceBlockPermission the resource block permission
 	* @return the resource block permission that was updated
 	*/
-	public static com.liferay.portal.model.ResourceBlockPermission updateResourceBlockPermission(
-		com.liferay.portal.model.ResourceBlockPermission resourceBlockPermission) {
+	public static com.liferay.portal.kernel.model.ResourceBlockPermission updateResourceBlockPermission(
+		com.liferay.portal.kernel.model.ResourceBlockPermission resourceBlockPermission) {
 		return getService()
 				   .updateResourceBlockPermission(resourceBlockPermission);
 	}

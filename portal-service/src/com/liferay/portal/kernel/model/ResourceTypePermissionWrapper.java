@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -121,7 +121,7 @@ public class ResourceTypePermissionWrapper implements ResourceTypePermission,
 
 	@Override
 	public int compareTo(
-		com.liferay.portal.model.ResourceTypePermission resourceTypePermission) {
+		com.liferay.portal.kernel.model.ResourceTypePermission resourceTypePermission) {
 		return _resourceTypePermission.compareTo(resourceTypePermission);
 	}
 
@@ -217,7 +217,7 @@ public class ResourceTypePermissionWrapper implements ResourceTypePermission,
 
 	@Override
 	public boolean hasAction(
-		com.liferay.portal.model.ResourceAction resourceAction) {
+		com.liferay.portal.kernel.model.ResourceAction resourceAction) {
 		return _resourceTypePermission.hasAction(resourceAction);
 	}
 
@@ -367,12 +367,12 @@ public class ResourceTypePermissionWrapper implements ResourceTypePermission,
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.ResourceTypePermission> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.ResourceTypePermission> toCacheModel() {
 		return _resourceTypePermission.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.ResourceTypePermission toEscapedModel() {
+	public com.liferay.portal.kernel.model.ResourceTypePermission toEscapedModel() {
 		return new ResourceTypePermissionWrapper(_resourceTypePermission.toEscapedModel());
 	}
 
@@ -382,7 +382,7 @@ public class ResourceTypePermissionWrapper implements ResourceTypePermission,
 	}
 
 	@Override
-	public com.liferay.portal.model.ResourceTypePermission toUnescapedModel() {
+	public com.liferay.portal.kernel.model.ResourceTypePermission toUnescapedModel() {
 		return new ResourceTypePermissionWrapper(_resourceTypePermission.toUnescapedModel());
 	}
 

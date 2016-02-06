@@ -30,11 +30,11 @@ import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.model.Group;
-import com.liferay.portal.model.Layout;
-import com.liferay.portal.model.Organization;
-import com.liferay.portal.model.PersistedModel;
-import com.liferay.portal.model.UserGroup;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.Organization;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.model.UserGroup;
 
 import java.io.Serializable;
 
@@ -111,7 +111,7 @@ public interface GroupLocalService extends BaseLocalService,
 		java.lang.String name, java.lang.String description, int type,
 		boolean manualMembership, int membershipRestriction,
 		java.lang.String friendlyURL, boolean site, boolean active,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	public Group addGroup(long userId, long parentGroupId,
@@ -120,7 +120,7 @@ public interface GroupLocalService extends BaseLocalService,
 		Map<Locale, java.lang.String> descriptionMap, int type,
 		boolean manualMembership, int membershipRestriction,
 		java.lang.String friendlyURL, boolean site, boolean active,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	public Group addGroup(long userId, long parentGroupId,
@@ -129,7 +129,7 @@ public interface GroupLocalService extends BaseLocalService,
 		Map<Locale, java.lang.String> descriptionMap, int type,
 		boolean manualMembership, int membershipRestriction,
 		java.lang.String friendlyURL, boolean site, boolean inheritContent,
-		boolean active, com.liferay.portal.service.ServiceContext serviceContext)
+		boolean active, com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	public void addOrganizationGroup(long organizationId, Group group);
@@ -1140,7 +1140,7 @@ public interface GroupLocalService extends BaseLocalService,
 	&quot;usersGroups&quot; mapped to the user's ID and an entry with
 	key &quot;inherit&quot; mapped to a non-<code>null</code> object.
 	For more information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param start the lower bound of the range of groups to return
 	* @param end the upper bound of the range of groups to return (not
 	inclusive)
@@ -1177,7 +1177,7 @@ public interface GroupLocalService extends BaseLocalService,
 	&quot;usersGroups&quot; mapped to the user's ID and an entry with
 	key &quot;inherit&quot; mapped to a non-<code>null</code> object.
 	For more information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param start the lower bound of the range of groups to return
 	* @param end the upper bound of the range of groups to return (not
 	inclusive)
@@ -1218,7 +1218,7 @@ public interface GroupLocalService extends BaseLocalService,
 	&quot;usersGroups&quot; mapped to the user's ID and an entry with
 	key &quot;inherit&quot; mapped to a non-<code>null</code> object.
 	For more information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param andOperator whether every field must match its keywords, or just
 	one field.
 	* @param start the lower bound of the range of groups to return
@@ -1259,7 +1259,7 @@ public interface GroupLocalService extends BaseLocalService,
 	&quot;usersGroups&quot; mapped to the user's ID and an entry with
 	key &quot;inherit&quot; mapped to a non-<code>null</code> object.
 	For more information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param andOperator whether every field must match its keywords, or just
 	one field.
 	* @param start the lower bound of the range of groups to return
@@ -1302,7 +1302,7 @@ public interface GroupLocalService extends BaseLocalService,
 	&quot;usersGroups&quot; mapped to the user's ID and an entry with
 	key &quot;inherit&quot; mapped to a non-<code>null</code> object.
 	For more information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param start the lower bound of the range of groups to return
 	* @param end the upper bound of the range of groups to return (not
 	inclusive)
@@ -1341,7 +1341,7 @@ public interface GroupLocalService extends BaseLocalService,
 	&quot;usersGroups&quot; mapped to the user's ID and an entry with
 	key &quot;inherit&quot; mapped to a non-<code>null</code> object.
 	For more information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param start the lower bound of the range of groups to return
 	* @param end the upper bound of the range of groups to return (not
 	inclusive)
@@ -1383,7 +1383,7 @@ public interface GroupLocalService extends BaseLocalService,
 	&quot;usersGroups&quot; mapped to the user's ID and an entry with
 	key &quot;inherit&quot; mapped to a non-<code>null</code> object.
 	For more information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param andOperator whether every field must match its keywords, or just
 	one field.
 	* @param start the lower bound of the range of groups to return
@@ -1426,7 +1426,7 @@ public interface GroupLocalService extends BaseLocalService,
 	&quot;usersGroups&quot; mapped to the user's ID and an entry with
 	key &quot;inherit&quot; mapped to a non-<code>null</code> object.
 	For more information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param andOperator whether every field must match its keywords, or just
 	one field.
 	* @param start the lower bound of the range of groups to return
@@ -1465,7 +1465,7 @@ public interface GroupLocalService extends BaseLocalService,
 	search, add entries having &quot;usersGroups&quot; and
 	&quot;inherit&quot; as keys mapped to the the user's ID. For more
 	information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param start the lower bound of the range of groups to return
 	* @param end the upper bound of the range of groups to return (not
 	inclusive)
@@ -1499,7 +1499,7 @@ public interface GroupLocalService extends BaseLocalService,
 	search, add entries having &quot;usersGroups&quot; and
 	&quot;inherit&quot; as keys mapped to the the user's ID. For more
 	information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param start the lower bound of the range of groups to return
 	* @param end the upper bound of the range of groups to return (not
 	inclusive)
@@ -1536,7 +1536,7 @@ public interface GroupLocalService extends BaseLocalService,
 	search, add entries having &quot;usersGroups&quot; and
 	&quot;inherit&quot; as keys mapped to the the user's ID. For more
 	information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param andOperator whether every field must match its keywords, or just
 	one field.
 	* @param start the lower bound of the range of groups to return
@@ -1574,7 +1574,7 @@ public interface GroupLocalService extends BaseLocalService,
 	search, add entries having &quot;usersGroups&quot; and
 	&quot;inherit&quot; as keys mapped to the the user's ID. For more
 	information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param andOperator whether every field must match its keywords, or just
 	one field.
 	* @param start the lower bound of the range of groups to return
@@ -1611,7 +1611,7 @@ public interface GroupLocalService extends BaseLocalService,
 	&quot;usersGroups&quot; mapped to the user's ID and an entry with
 	key &quot;inherit&quot; mapped to a non-<code>null</code> object.
 	For more information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param start the lower bound of the range of groups to return
 	* @param end the upper bound of the range of groups to return (not
 	inclusive)
@@ -1646,7 +1646,7 @@ public interface GroupLocalService extends BaseLocalService,
 	search, add entries having &quot;usersGroups&quot; and
 	&quot;inherit&quot; as keys mapped to the the user's ID. For more
 	information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param start the lower bound of the range of groups to return
 	* @param end the upper bound of the range of groups to return (not
 	inclusive)
@@ -1682,7 +1682,7 @@ public interface GroupLocalService extends BaseLocalService,
 	search, add entries having &quot;usersGroups&quot; and
 	&quot;inherit&quot; as keys mapped to the the user's ID. For more
 	information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param start the lower bound of the range of groups to return
 	* @param end the upper bound of the range of groups to return (not
 	inclusive)
@@ -1721,7 +1721,7 @@ public interface GroupLocalService extends BaseLocalService,
 	search, add entries having &quot;usersGroups&quot; and
 	&quot;inherit&quot; as keys mapped to the the user's ID. For more
 	information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param andOperator whether every field must match its keywords, or just
 	one field.
 	* @param start the lower bound of the range of groups to return
@@ -1760,7 +1760,7 @@ public interface GroupLocalService extends BaseLocalService,
 	search, add entries having &quot;usersGroups&quot; and
 	&quot;inherit&quot; as keys mapped to the the user's ID. For more
 	information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param andOperator whether every field must match its keywords, or just
 	one field.
 	* @param start the lower bound of the range of groups to return
@@ -1791,7 +1791,7 @@ public interface GroupLocalService extends BaseLocalService,
 	in the search, add entries having &quot;usersGroups&quot; and
 	&quot;inherit&quot; as keys mapped to the the user's ID. For more
 	information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @return the number of matching groups
 	*/
 	@ThreadLocalCachable
@@ -1816,7 +1816,7 @@ public interface GroupLocalService extends BaseLocalService,
 	in the search, add entries having &quot;usersGroups&quot; and
 	&quot;inherit&quot; as keys mapped to the the user's ID. For more
 	information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param andOperator whether every field must match its keywords, or just
 	one field.
 	* @return the number of matching groups
@@ -1845,7 +1845,7 @@ public interface GroupLocalService extends BaseLocalService,
 	in the search, add entries having &quot;usersGroups&quot; and
 	&quot;inherit&quot; as keys mapped to the the user's ID. For more
 	information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @return the number of matching groups
 	*/
 	@ThreadLocalCachable
@@ -1872,7 +1872,7 @@ public interface GroupLocalService extends BaseLocalService,
 	in the search, add entries having &quot;usersGroups&quot; and
 	&quot;inherit&quot; as keys mapped to the the user's ID. For more
 	information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param andOperator whether every field must match its keywords, or just
 	one field.
 	* @return the number of matching groups
@@ -1898,7 +1898,7 @@ public interface GroupLocalService extends BaseLocalService,
 	in the search, add entries having &quot;usersGroups&quot; and
 	&quot;inherit&quot; as keys mapped to the the user's ID. For more
 	information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @return the number of matching groups
 	*/
 	@ThreadLocalCachable
@@ -1921,7 +1921,7 @@ public interface GroupLocalService extends BaseLocalService,
 	in the search, add entries having &quot;usersGroups&quot; and
 	&quot;inherit&quot; as keys mapped to the the user's ID. For more
 	information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param andOperator whether every field must match its keywords, or just
 	one field.
 	* @return the number of matching groups
@@ -1947,7 +1947,7 @@ public interface GroupLocalService extends BaseLocalService,
 	in the search, add entries having &quot;usersGroups&quot; and
 	&quot;inherit&quot; as keys mapped to the the user's ID. For more
 	information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @return the number of matching groups
 	*/
 	@ThreadLocalCachable
@@ -1972,7 +1972,7 @@ public interface GroupLocalService extends BaseLocalService,
 	in the search, add entries having &quot;usersGroups&quot; and
 	&quot;inherit&quot; as keys mapped to the the user's ID. For more
 	information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param andOperator whether every field must match its keywords, or just
 	one field.
 	* @return the number of matching groups
@@ -2075,7 +2075,7 @@ public interface GroupLocalService extends BaseLocalService,
 		java.lang.String name, java.lang.String description, int type,
 		boolean manualMembership, int membershipRestriction,
 		java.lang.String friendlyURL, boolean inheritContent, boolean active,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	public Group updateGroup(long groupId, long parentGroupId,
@@ -2083,7 +2083,7 @@ public interface GroupLocalService extends BaseLocalService,
 		Map<Locale, java.lang.String> descriptionMap, int type,
 		boolean manualMembership, int membershipRestriction,
 		java.lang.String friendlyURL, boolean inheritContent, boolean active,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**

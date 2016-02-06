@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -188,7 +188,7 @@ public class AccountWrapper implements Account, ModelWrapper<Account> {
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.model.Account account) {
+	public int compareTo(com.liferay.portal.kernel.model.Account account) {
 		return _account.compareTo(account);
 	}
 
@@ -638,12 +638,12 @@ public class AccountWrapper implements Account, ModelWrapper<Account> {
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.Account> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.Account> toCacheModel() {
 		return _account.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.Account toEscapedModel() {
+	public com.liferay.portal.kernel.model.Account toEscapedModel() {
 		return new AccountWrapper(_account.toEscapedModel());
 	}
 
@@ -653,7 +653,7 @@ public class AccountWrapper implements Account, ModelWrapper<Account> {
 	}
 
 	@Override
-	public com.liferay.portal.model.Account toUnescapedModel() {
+	public com.liferay.portal.kernel.model.Account toUnescapedModel() {
 		return new AccountWrapper(_account.toUnescapedModel());
 	}
 

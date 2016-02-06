@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -229,19 +229,19 @@ public interface WebDAVPropsModel extends AttachedModel, BaseModel<WebDAVProps>,
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.model.WebDAVProps webDAVProps);
+	public int compareTo(com.liferay.portal.kernel.model.WebDAVProps webDAVProps);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.WebDAVProps> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.WebDAVProps> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.WebDAVProps toEscapedModel();
+	public com.liferay.portal.kernel.model.WebDAVProps toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.WebDAVProps toUnescapedModel();
+	public com.liferay.portal.kernel.model.WebDAVProps toUnescapedModel();
 
 	@Override
 	public String toString();

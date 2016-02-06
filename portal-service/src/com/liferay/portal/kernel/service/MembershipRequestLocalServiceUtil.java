@@ -47,14 +47,14 @@ public class MembershipRequestLocalServiceUtil {
 	* @param membershipRequest the membership request
 	* @return the membership request that was added
 	*/
-	public static com.liferay.portal.model.MembershipRequest addMembershipRequest(
-		com.liferay.portal.model.MembershipRequest membershipRequest) {
+	public static com.liferay.portal.kernel.model.MembershipRequest addMembershipRequest(
+		com.liferay.portal.kernel.model.MembershipRequest membershipRequest) {
 		return getService().addMembershipRequest(membershipRequest);
 	}
 
-	public static com.liferay.portal.model.MembershipRequest addMembershipRequest(
+	public static com.liferay.portal.kernel.model.MembershipRequest addMembershipRequest(
 		long userId, long groupId, java.lang.String comments,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addMembershipRequest(userId, groupId, comments,
@@ -67,7 +67,7 @@ public class MembershipRequestLocalServiceUtil {
 	* @param membershipRequestId the primary key for the new membership request
 	* @return the new membership request
 	*/
-	public static com.liferay.portal.model.MembershipRequest createMembershipRequest(
+	public static com.liferay.portal.kernel.model.MembershipRequest createMembershipRequest(
 		long membershipRequestId) {
 		return getService().createMembershipRequest(membershipRequestId);
 	}
@@ -78,8 +78,8 @@ public class MembershipRequestLocalServiceUtil {
 	* @param membershipRequest the membership request
 	* @return the membership request that was removed
 	*/
-	public static com.liferay.portal.model.MembershipRequest deleteMembershipRequest(
-		com.liferay.portal.model.MembershipRequest membershipRequest) {
+	public static com.liferay.portal.kernel.model.MembershipRequest deleteMembershipRequest(
+		com.liferay.portal.kernel.model.MembershipRequest membershipRequest) {
 		return getService().deleteMembershipRequest(membershipRequest);
 	}
 
@@ -90,7 +90,7 @@ public class MembershipRequestLocalServiceUtil {
 	* @return the membership request that was removed
 	* @throws PortalException if a membership request with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.MembershipRequest deleteMembershipRequest(
+	public static com.liferay.portal.kernel.model.MembershipRequest deleteMembershipRequest(
 		long membershipRequestId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteMembershipRequest(membershipRequestId);
@@ -111,8 +111,8 @@ public class MembershipRequestLocalServiceUtil {
 	/**
 	* @throws PortalException
 	*/
-	public static com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -195,7 +195,7 @@ public class MembershipRequestLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.portal.model.MembershipRequest fetchMembershipRequest(
+	public static com.liferay.portal.kernel.model.MembershipRequest fetchMembershipRequest(
 		long membershipRequestId) {
 		return getService().fetchMembershipRequest(membershipRequestId);
 	}
@@ -215,7 +215,7 @@ public class MembershipRequestLocalServiceUtil {
 	* @return the membership request
 	* @throws PortalException if a membership request with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.MembershipRequest getMembershipRequest(
+	public static com.liferay.portal.kernel.model.MembershipRequest getMembershipRequest(
 		long membershipRequestId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getMembershipRequest(membershipRequestId);
@@ -232,12 +232,12 @@ public class MembershipRequestLocalServiceUtil {
 	* @param end the upper bound of the range of membership requests (not inclusive)
 	* @return the range of membership requests
 	*/
-	public static java.util.List<com.liferay.portal.model.MembershipRequest> getMembershipRequests(
+	public static java.util.List<com.liferay.portal.kernel.model.MembershipRequest> getMembershipRequests(
 		int start, int end) {
 		return getService().getMembershipRequests(start, end);
 	}
 
-	public static java.util.List<com.liferay.portal.model.MembershipRequest> getMembershipRequests(
+	public static java.util.List<com.liferay.portal.kernel.model.MembershipRequest> getMembershipRequests(
 		long userId, long groupId, long statusId) {
 		return getService().getMembershipRequests(userId, groupId, statusId);
 	}
@@ -260,7 +260,7 @@ public class MembershipRequestLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.model.PersistedModel getPersistedModel(
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getPersistedModel(primaryKeyObj);
@@ -271,7 +271,7 @@ public class MembershipRequestLocalServiceUtil {
 		return getService().hasMembershipRequest(userId, groupId, statusId);
 	}
 
-	public static java.util.List<com.liferay.portal.model.MembershipRequest> search(
+	public static java.util.List<com.liferay.portal.kernel.model.MembershipRequest> search(
 		long groupId, int status, int start, int end) {
 		return getService().search(groupId, status, start, end);
 	}
@@ -286,15 +286,15 @@ public class MembershipRequestLocalServiceUtil {
 	* @param membershipRequest the membership request
 	* @return the membership request that was updated
 	*/
-	public static com.liferay.portal.model.MembershipRequest updateMembershipRequest(
-		com.liferay.portal.model.MembershipRequest membershipRequest) {
+	public static com.liferay.portal.kernel.model.MembershipRequest updateMembershipRequest(
+		com.liferay.portal.kernel.model.MembershipRequest membershipRequest) {
 		return getService().updateMembershipRequest(membershipRequest);
 	}
 
 	public static void updateStatus(long replierUserId,
 		long membershipRequestId, java.lang.String replyComments,
 		long statusId, boolean addUserToGroup,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService()
 			.updateStatus(replierUserId, membershipRequestId, replyComments,

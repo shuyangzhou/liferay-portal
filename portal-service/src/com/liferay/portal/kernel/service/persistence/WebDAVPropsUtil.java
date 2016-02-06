@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
-import com.liferay.portal.model.WebDAVProps;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.WebDAVProps;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -46,28 +46,28 @@ public class WebDAVPropsUtil {
 	 */
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache()
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache()
 	 */
 	public static void clearCache() {
 		getPersistence().clearCache();
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static void clearCache(WebDAVProps webDAVProps) {
 		getPersistence().clearCache(webDAVProps);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
 	public static long countWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<WebDAVProps> findWithDynamicQuery(
 		DynamicQuery dynamicQuery) {
@@ -75,7 +75,7 @@ public class WebDAVPropsUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
 	public static List<WebDAVProps> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
@@ -83,7 +83,7 @@ public class WebDAVPropsUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
 	public static List<WebDAVProps> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
@@ -94,14 +94,14 @@ public class WebDAVPropsUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static WebDAVProps update(WebDAVProps webDAVProps) {
 		return getPersistence().update(webDAVProps);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
 	public static WebDAVProps update(WebDAVProps webDAVProps,
 		ServiceContext serviceContext) {
@@ -117,7 +117,7 @@ public class WebDAVPropsUtil {
 	* @throws NoSuchWebDAVPropsException if a matching web d a v props could not be found
 	*/
 	public static WebDAVProps findByC_C(long classNameId, long classPK)
-		throws com.liferay.portal.exception.NoSuchWebDAVPropsException {
+		throws com.liferay.portal.kernel.exception.NoSuchWebDAVPropsException {
 		return getPersistence().findByC_C(classNameId, classPK);
 	}
 
@@ -154,7 +154,7 @@ public class WebDAVPropsUtil {
 	* @return the web d a v props that was removed
 	*/
 	public static WebDAVProps removeByC_C(long classNameId, long classPK)
-		throws com.liferay.portal.exception.NoSuchWebDAVPropsException {
+		throws com.liferay.portal.kernel.exception.NoSuchWebDAVPropsException {
 		return getPersistence().removeByC_C(classNameId, classPK);
 	}
 
@@ -205,7 +205,7 @@ public class WebDAVPropsUtil {
 	* @throws NoSuchWebDAVPropsException if a web d a v props with the primary key could not be found
 	*/
 	public static WebDAVProps remove(long webDavPropsId)
-		throws com.liferay.portal.exception.NoSuchWebDAVPropsException {
+		throws com.liferay.portal.kernel.exception.NoSuchWebDAVPropsException {
 		return getPersistence().remove(webDavPropsId);
 	}
 
@@ -221,7 +221,7 @@ public class WebDAVPropsUtil {
 	* @throws NoSuchWebDAVPropsException if a web d a v props with the primary key could not be found
 	*/
 	public static WebDAVProps findByPrimaryKey(long webDavPropsId)
-		throws com.liferay.portal.exception.NoSuchWebDAVPropsException {
+		throws com.liferay.portal.kernel.exception.NoSuchWebDAVPropsException {
 		return getPersistence().findByPrimaryKey(webDavPropsId);
 	}
 

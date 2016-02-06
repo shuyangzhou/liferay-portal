@@ -40,12 +40,12 @@ public class RepositoryServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.portal.service.impl.RepositoryServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.portal.model.Repository addRepository(
+	public static com.liferay.portal.kernel.model.Repository addRepository(
 		long groupId, long classNameId, long parentFolderId,
 		java.lang.String name, java.lang.String description,
 		java.lang.String portletId,
 		com.liferay.portal.kernel.util.UnicodeProperties typeSettingsProperties,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addRepository(groupId, classNameId, parentFolderId, name,
@@ -71,7 +71,7 @@ public class RepositoryServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.model.Repository getRepository(
+	public static com.liferay.portal.kernel.model.Repository getRepository(
 		long repositoryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getRepository(repositoryId);

@@ -22,9 +22,9 @@ import aQute.bnd.annotation.ProviderType;
  */
 @ProviderType
 public interface ResourceTypePermissionFinder {
-	public java.util.List<com.liferay.portal.model.ResourceTypePermission> findByEitherScopeC_G_N(
+	public java.util.List<com.liferay.portal.kernel.model.ResourceTypePermission> findByEitherScopeC_G_N(
 		long companyId, long groupId, java.lang.String name);
 
-	public java.util.List<com.liferay.portal.model.ResourceTypePermission> findByGroupScopeC_N_R(
+	public java.util.List<com.liferay.portal.kernel.model.ResourceTypePermission> findByGroupScopeC_N_R(
 		long companyId, java.lang.String name, long roleId);
 }

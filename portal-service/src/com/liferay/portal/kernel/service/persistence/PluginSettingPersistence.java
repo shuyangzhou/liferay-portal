@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchPluginSettingException;
-import com.liferay.portal.model.PluginSetting;
+import com.liferay.portal.kernel.exception.NoSuchPluginSettingException;
+import com.liferay.portal.kernel.model.PluginSetting;
 
 /**
  * The persistence interface for the plugin setting service.

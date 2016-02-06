@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchLayoutRevisionException;
-import com.liferay.portal.model.LayoutRevision;
+import com.liferay.portal.kernel.exception.NoSuchLayoutRevisionException;
+import com.liferay.portal.kernel.model.LayoutRevision;
 
 /**
  * The persistence interface for the layout revision service.

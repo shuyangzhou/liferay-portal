@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -214,19 +214,19 @@ public interface ImageModel extends BaseModel<Image>, MVCCModel, ShardedModel {
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.model.Image image);
+	public int compareTo(com.liferay.portal.kernel.model.Image image);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.Image> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.Image> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.Image toEscapedModel();
+	public com.liferay.portal.kernel.model.Image toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.Image toUnescapedModel();
+	public com.liferay.portal.kernel.model.Image toUnescapedModel();
 
 	@Override
 	public String toString();

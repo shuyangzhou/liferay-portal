@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -443,19 +443,19 @@ public interface AddressModel extends AttachedModel, BaseModel<Address>,
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.model.Address address);
+	public int compareTo(com.liferay.portal.kernel.model.Address address);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.Address> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.Address> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.Address toEscapedModel();
+	public com.liferay.portal.kernel.model.Address toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.Address toUnescapedModel();
+	public com.liferay.portal.kernel.model.Address toUnescapedModel();
 
 	@Override
 	public String toString();

@@ -33,7 +33,7 @@ public class PortalPreferencesLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.model.PortalPreferences addPortalPreferences(
+	public com.liferay.portal.kernel.model.PortalPreferences addPortalPreferences(
 		long ownerId, int ownerType, java.lang.String defaultPreferences) {
 		return _portalPreferencesLocalService.addPortalPreferences(ownerId,
 			ownerType, defaultPreferences);
@@ -46,8 +46,8 @@ public class PortalPreferencesLocalServiceWrapper
 	* @return the portal preferences that was added
 	*/
 	@Override
-	public com.liferay.portal.model.PortalPreferences addPortalPreferences(
-		com.liferay.portal.model.PortalPreferences portalPreferences) {
+	public com.liferay.portal.kernel.model.PortalPreferences addPortalPreferences(
+		com.liferay.portal.kernel.model.PortalPreferences portalPreferences) {
 		return _portalPreferencesLocalService.addPortalPreferences(portalPreferences);
 	}
 
@@ -58,7 +58,7 @@ public class PortalPreferencesLocalServiceWrapper
 	* @return the new portal preferences
 	*/
 	@Override
-	public com.liferay.portal.model.PortalPreferences createPortalPreferences(
+	public com.liferay.portal.kernel.model.PortalPreferences createPortalPreferences(
 		long portalPreferencesId) {
 		return _portalPreferencesLocalService.createPortalPreferences(portalPreferencesId);
 	}
@@ -67,8 +67,8 @@ public class PortalPreferencesLocalServiceWrapper
 	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _portalPreferencesLocalService.deletePersistedModel(persistedModel);
 	}
@@ -80,8 +80,8 @@ public class PortalPreferencesLocalServiceWrapper
 	* @return the portal preferences that was removed
 	*/
 	@Override
-	public com.liferay.portal.model.PortalPreferences deletePortalPreferences(
-		com.liferay.portal.model.PortalPreferences portalPreferences) {
+	public com.liferay.portal.kernel.model.PortalPreferences deletePortalPreferences(
+		com.liferay.portal.kernel.model.PortalPreferences portalPreferences) {
 		return _portalPreferencesLocalService.deletePortalPreferences(portalPreferences);
 	}
 
@@ -93,7 +93,7 @@ public class PortalPreferencesLocalServiceWrapper
 	* @throws PortalException if a portal preferences with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.PortalPreferences deletePortalPreferences(
+	public com.liferay.portal.kernel.model.PortalPreferences deletePortalPreferences(
 		long portalPreferencesId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _portalPreferencesLocalService.deletePortalPreferences(portalPreferencesId);
@@ -186,7 +186,7 @@ public class PortalPreferencesLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.model.PortalPreferences fetchPortalPreferences(
+	public com.liferay.portal.kernel.model.PortalPreferences fetchPortalPreferences(
 		long portalPreferencesId) {
 		return _portalPreferencesLocalService.fetchPortalPreferences(portalPreferencesId);
 	}
@@ -212,7 +212,7 @@ public class PortalPreferencesLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.model.PersistedModel getPersistedModel(
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _portalPreferencesLocalService.getPersistedModel(primaryKeyObj);
@@ -226,7 +226,7 @@ public class PortalPreferencesLocalServiceWrapper
 	* @throws PortalException if a portal preferences with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.PortalPreferences getPortalPreferences(
+	public com.liferay.portal.kernel.model.PortalPreferences getPortalPreferences(
 		long portalPreferencesId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _portalPreferencesLocalService.getPortalPreferences(portalPreferencesId);
@@ -244,7 +244,7 @@ public class PortalPreferencesLocalServiceWrapper
 	* @return the range of portal preferenceses
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.PortalPreferences> getPortalPreferenceses(
+	public java.util.List<com.liferay.portal.kernel.model.PortalPreferences> getPortalPreferenceses(
 		int start, int end) {
 		return _portalPreferencesLocalService.getPortalPreferenceses(start, end);
 	}
@@ -279,13 +279,13 @@ public class PortalPreferencesLocalServiceWrapper
 	* @return the portal preferences that was updated
 	*/
 	@Override
-	public com.liferay.portal.model.PortalPreferences updatePortalPreferences(
-		com.liferay.portal.model.PortalPreferences portalPreferences) {
+	public com.liferay.portal.kernel.model.PortalPreferences updatePortalPreferences(
+		com.liferay.portal.kernel.model.PortalPreferences portalPreferences) {
 		return _portalPreferencesLocalService.updatePortalPreferences(portalPreferences);
 	}
 
 	@Override
-	public com.liferay.portal.model.PortalPreferences updatePreferences(
+	public com.liferay.portal.kernel.model.PortalPreferences updatePreferences(
 		long ownerId, int ownerType,
 		com.liferay.portal.kernel.portlet.PortalPreferences portalPreferences) {
 		return _portalPreferencesLocalService.updatePreferences(ownerId,
@@ -293,7 +293,7 @@ public class PortalPreferencesLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.model.PortalPreferences updatePreferences(
+	public com.liferay.portal.kernel.model.PortalPreferences updatePreferences(
 		long ownerId, int ownerType, java.lang.String xml) {
 		return _portalPreferencesLocalService.updatePreferences(ownerId,
 			ownerType, xml);

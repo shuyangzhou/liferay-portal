@@ -21,7 +21,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -157,7 +157,7 @@ public class LayoutSetPrototypeWrapper implements LayoutSetPrototype,
 
 	@Override
 	public int compareTo(
-		com.liferay.portal.model.LayoutSetPrototype layoutSetPrototype) {
+		com.liferay.portal.kernel.model.LayoutSetPrototype layoutSetPrototype) {
 		return _layoutSetPrototype.compareTo(layoutSetPrototype);
 	}
 
@@ -285,7 +285,7 @@ public class LayoutSetPrototypeWrapper implements LayoutSetPrototype,
 	}
 
 	@Override
-	public com.liferay.portal.model.Group getGroup()
+	public com.liferay.portal.kernel.model.Group getGroup()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutSetPrototype.getGroup();
 	}
@@ -297,7 +297,7 @@ public class LayoutSetPrototypeWrapper implements LayoutSetPrototype,
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutSet getLayoutSet()
+	public com.liferay.portal.kernel.model.LayoutSet getLayoutSet()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutSetPrototype.getLayoutSet();
 	}
@@ -526,14 +526,14 @@ public class LayoutSetPrototypeWrapper implements LayoutSetPrototype,
 
 	@Override
 	public void prepareLocalizedFieldsForImport()
-		throws com.liferay.portal.LocaleException {
+		throws com.liferay.portal.kernel.exception.LocaleException {
 		_layoutSetPrototype.prepareLocalizedFieldsForImport();
 	}
 
 	@Override
 	public void prepareLocalizedFieldsForImport(
 		java.util.Locale defaultImportLocale)
-		throws com.liferay.portal.LocaleException {
+		throws com.liferay.portal.kernel.exception.LocaleException {
 		_layoutSetPrototype.prepareLocalizedFieldsForImport(defaultImportLocale);
 	}
 
@@ -819,12 +819,12 @@ public class LayoutSetPrototypeWrapper implements LayoutSetPrototype,
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.LayoutSetPrototype> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.LayoutSetPrototype> toCacheModel() {
 		return _layoutSetPrototype.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutSetPrototype toEscapedModel() {
+	public com.liferay.portal.kernel.model.LayoutSetPrototype toEscapedModel() {
 		return new LayoutSetPrototypeWrapper(_layoutSetPrototype.toEscapedModel());
 	}
 
@@ -834,7 +834,7 @@ public class LayoutSetPrototypeWrapper implements LayoutSetPrototype,
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutSetPrototype toUnescapedModel() {
+	public com.liferay.portal.kernel.model.LayoutSetPrototype toUnescapedModel() {
 		return new LayoutSetPrototypeWrapper(_layoutSetPrototype.toUnescapedModel());
 	}
 

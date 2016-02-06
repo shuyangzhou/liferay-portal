@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -167,7 +167,7 @@ public class WorkflowDefinitionLinkWrapper implements WorkflowDefinitionLink,
 
 	@Override
 	public int compareTo(
-		com.liferay.portal.model.WorkflowDefinitionLink workflowDefinitionLink) {
+		com.liferay.portal.kernel.model.WorkflowDefinitionLink workflowDefinitionLink) {
 		return _workflowDefinitionLink.compareTo(workflowDefinitionLink);
 	}
 
@@ -553,12 +553,12 @@ public class WorkflowDefinitionLinkWrapper implements WorkflowDefinitionLink,
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.WorkflowDefinitionLink> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.WorkflowDefinitionLink> toCacheModel() {
 		return _workflowDefinitionLink.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.WorkflowDefinitionLink toEscapedModel() {
+	public com.liferay.portal.kernel.model.WorkflowDefinitionLink toEscapedModel() {
 		return new WorkflowDefinitionLinkWrapper(_workflowDefinitionLink.toEscapedModel());
 	}
 
@@ -568,7 +568,7 @@ public class WorkflowDefinitionLinkWrapper implements WorkflowDefinitionLink,
 	}
 
 	@Override
-	public com.liferay.portal.model.WorkflowDefinitionLink toUnescapedModel() {
+	public com.liferay.portal.kernel.model.WorkflowDefinitionLink toUnescapedModel() {
 		return new WorkflowDefinitionLinkWrapper(_workflowDefinitionLink.toUnescapedModel());
 	}
 

@@ -33,7 +33,7 @@ public class ResourceActionLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.model.ResourceAction addResourceAction(
+	public com.liferay.portal.kernel.model.ResourceAction addResourceAction(
 		java.lang.String name, java.lang.String actionId, long bitwiseValue) {
 		return _resourceActionLocalService.addResourceAction(name, actionId,
 			bitwiseValue);
@@ -46,8 +46,8 @@ public class ResourceActionLocalServiceWrapper
 	* @return the resource action that was added
 	*/
 	@Override
-	public com.liferay.portal.model.ResourceAction addResourceAction(
-		com.liferay.portal.model.ResourceAction resourceAction) {
+	public com.liferay.portal.kernel.model.ResourceAction addResourceAction(
+		com.liferay.portal.kernel.model.ResourceAction resourceAction) {
 		return _resourceActionLocalService.addResourceAction(resourceAction);
 	}
 
@@ -76,7 +76,7 @@ public class ResourceActionLocalServiceWrapper
 	* @return the new resource action
 	*/
 	@Override
-	public com.liferay.portal.model.ResourceAction createResourceAction(
+	public com.liferay.portal.kernel.model.ResourceAction createResourceAction(
 		long resourceActionId) {
 		return _resourceActionLocalService.createResourceAction(resourceActionId);
 	}
@@ -85,8 +85,8 @@ public class ResourceActionLocalServiceWrapper
 	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _resourceActionLocalService.deletePersistedModel(persistedModel);
 	}
@@ -98,8 +98,8 @@ public class ResourceActionLocalServiceWrapper
 	* @return the resource action that was removed
 	*/
 	@Override
-	public com.liferay.portal.model.ResourceAction deleteResourceAction(
-		com.liferay.portal.model.ResourceAction resourceAction) {
+	public com.liferay.portal.kernel.model.ResourceAction deleteResourceAction(
+		com.liferay.portal.kernel.model.ResourceAction resourceAction) {
 		return _resourceActionLocalService.deleteResourceAction(resourceAction);
 	}
 
@@ -111,7 +111,7 @@ public class ResourceActionLocalServiceWrapper
 	* @throws PortalException if a resource action with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.ResourceAction deleteResourceAction(
+	public com.liferay.portal.kernel.model.ResourceAction deleteResourceAction(
 		long resourceActionId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _resourceActionLocalService.deleteResourceAction(resourceActionId);
@@ -203,13 +203,13 @@ public class ResourceActionLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.model.ResourceAction fetchResourceAction(
+	public com.liferay.portal.kernel.model.ResourceAction fetchResourceAction(
 		java.lang.String name, java.lang.String actionId) {
 		return _resourceActionLocalService.fetchResourceAction(name, actionId);
 	}
 
 	@Override
-	public com.liferay.portal.model.ResourceAction fetchResourceAction(
+	public com.liferay.portal.kernel.model.ResourceAction fetchResourceAction(
 		long resourceActionId) {
 		return _resourceActionLocalService.fetchResourceAction(resourceActionId);
 	}
@@ -235,14 +235,14 @@ public class ResourceActionLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.model.PersistedModel getPersistedModel(
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _resourceActionLocalService.getPersistedModel(primaryKeyObj);
 	}
 
 	@Override
-	public com.liferay.portal.model.ResourceAction getResourceAction(
+	public com.liferay.portal.kernel.model.ResourceAction getResourceAction(
 		java.lang.String name, java.lang.String actionId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _resourceActionLocalService.getResourceAction(name, actionId);
@@ -256,14 +256,14 @@ public class ResourceActionLocalServiceWrapper
 	* @throws PortalException if a resource action with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.ResourceAction getResourceAction(
+	public com.liferay.portal.kernel.model.ResourceAction getResourceAction(
 		long resourceActionId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _resourceActionLocalService.getResourceAction(resourceActionId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.ResourceAction> getResourceActions(
+	public java.util.List<com.liferay.portal.kernel.model.ResourceAction> getResourceActions(
 		java.lang.String name) {
 		return _resourceActionLocalService.getResourceActions(name);
 	}
@@ -280,7 +280,7 @@ public class ResourceActionLocalServiceWrapper
 	* @return the range of resource actions
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.ResourceAction> getResourceActions(
+	public java.util.List<com.liferay.portal.kernel.model.ResourceAction> getResourceActions(
 		int start, int end) {
 		return _resourceActionLocalService.getResourceActions(start, end);
 	}
@@ -307,8 +307,8 @@ public class ResourceActionLocalServiceWrapper
 	* @return the resource action that was updated
 	*/
 	@Override
-	public com.liferay.portal.model.ResourceAction updateResourceAction(
-		com.liferay.portal.model.ResourceAction resourceAction) {
+	public com.liferay.portal.kernel.model.ResourceAction updateResourceAction(
+		com.liferay.portal.kernel.model.ResourceAction resourceAction) {
 		return _resourceActionLocalService.updateResourceAction(resourceAction);
 	}
 

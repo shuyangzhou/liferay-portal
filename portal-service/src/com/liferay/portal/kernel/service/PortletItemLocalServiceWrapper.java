@@ -38,13 +38,13 @@ public class PortletItemLocalServiceWrapper implements PortletItemLocalService,
 	* @return the portlet item that was added
 	*/
 	@Override
-	public com.liferay.portal.model.PortletItem addPortletItem(
-		com.liferay.portal.model.PortletItem portletItem) {
+	public com.liferay.portal.kernel.model.PortletItem addPortletItem(
+		com.liferay.portal.kernel.model.PortletItem portletItem) {
 		return _portletItemLocalService.addPortletItem(portletItem);
 	}
 
 	@Override
-	public com.liferay.portal.model.PortletItem addPortletItem(long userId,
+	public com.liferay.portal.kernel.model.PortletItem addPortletItem(long userId,
 		long groupId, java.lang.String name, java.lang.String portletId,
 		java.lang.String className)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -59,7 +59,7 @@ public class PortletItemLocalServiceWrapper implements PortletItemLocalService,
 	* @return the new portlet item
 	*/
 	@Override
-	public com.liferay.portal.model.PortletItem createPortletItem(
+	public com.liferay.portal.kernel.model.PortletItem createPortletItem(
 		long portletItemId) {
 		return _portletItemLocalService.createPortletItem(portletItemId);
 	}
@@ -68,8 +68,8 @@ public class PortletItemLocalServiceWrapper implements PortletItemLocalService,
 	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _portletItemLocalService.deletePersistedModel(persistedModel);
 	}
@@ -81,8 +81,8 @@ public class PortletItemLocalServiceWrapper implements PortletItemLocalService,
 	* @return the portlet item that was removed
 	*/
 	@Override
-	public com.liferay.portal.model.PortletItem deletePortletItem(
-		com.liferay.portal.model.PortletItem portletItem) {
+	public com.liferay.portal.kernel.model.PortletItem deletePortletItem(
+		com.liferay.portal.kernel.model.PortletItem portletItem) {
 		return _portletItemLocalService.deletePortletItem(portletItem);
 	}
 
@@ -94,7 +94,7 @@ public class PortletItemLocalServiceWrapper implements PortletItemLocalService,
 	* @throws PortalException if a portlet item with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.PortletItem deletePortletItem(
+	public com.liferay.portal.kernel.model.PortletItem deletePortletItem(
 		long portletItemId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _portletItemLocalService.deletePortletItem(portletItemId);
@@ -186,7 +186,7 @@ public class PortletItemLocalServiceWrapper implements PortletItemLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.PortletItem fetchPortletItem(
+	public com.liferay.portal.kernel.model.PortletItem fetchPortletItem(
 		long portletItemId) {
 		return _portletItemLocalService.fetchPortletItem(portletItemId);
 	}
@@ -212,14 +212,14 @@ public class PortletItemLocalServiceWrapper implements PortletItemLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.PersistedModel getPersistedModel(
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _portletItemLocalService.getPersistedModel(primaryKeyObj);
 	}
 
 	@Override
-	public com.liferay.portal.model.PortletItem getPortletItem(long groupId,
+	public com.liferay.portal.kernel.model.PortletItem getPortletItem(long groupId,
 		java.lang.String name, java.lang.String portletId,
 		java.lang.String className)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -235,20 +235,20 @@ public class PortletItemLocalServiceWrapper implements PortletItemLocalService,
 	* @throws PortalException if a portlet item with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.PortletItem getPortletItem(
+	public com.liferay.portal.kernel.model.PortletItem getPortletItem(
 		long portletItemId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _portletItemLocalService.getPortletItem(portletItemId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.PortletItem> getPortletItems(
+	public java.util.List<com.liferay.portal.kernel.model.PortletItem> getPortletItems(
 		long groupId, java.lang.String className) {
 		return _portletItemLocalService.getPortletItems(groupId, className);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.PortletItem> getPortletItems(
+	public java.util.List<com.liferay.portal.kernel.model.PortletItem> getPortletItems(
 		long groupId, java.lang.String portletId, java.lang.String className) {
 		return _portletItemLocalService.getPortletItems(groupId, portletId,
 			className);
@@ -266,7 +266,7 @@ public class PortletItemLocalServiceWrapper implements PortletItemLocalService,
 	* @return the range of portlet items
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.PortletItem> getPortletItems(
+	public java.util.List<com.liferay.portal.kernel.model.PortletItem> getPortletItems(
 		int start, int end) {
 		return _portletItemLocalService.getPortletItems(start, end);
 	}
@@ -288,13 +288,13 @@ public class PortletItemLocalServiceWrapper implements PortletItemLocalService,
 	* @return the portlet item that was updated
 	*/
 	@Override
-	public com.liferay.portal.model.PortletItem updatePortletItem(
-		com.liferay.portal.model.PortletItem portletItem) {
+	public com.liferay.portal.kernel.model.PortletItem updatePortletItem(
+		com.liferay.portal.kernel.model.PortletItem portletItem) {
 		return _portletItemLocalService.updatePortletItem(portletItem);
 	}
 
 	@Override
-	public com.liferay.portal.model.PortletItem updatePortletItem(long userId,
+	public com.liferay.portal.kernel.model.PortletItem updatePortletItem(long userId,
 		long groupId, java.lang.String name, java.lang.String portletId,
 		java.lang.String className)
 		throws com.liferay.portal.kernel.exception.PortalException {

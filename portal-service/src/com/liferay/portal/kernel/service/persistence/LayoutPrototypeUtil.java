@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
-import com.liferay.portal.model.LayoutPrototype;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.LayoutPrototype;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -46,28 +46,28 @@ public class LayoutPrototypeUtil {
 	 */
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache()
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache()
 	 */
 	public static void clearCache() {
 		getPersistence().clearCache();
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static void clearCache(LayoutPrototype layoutPrototype) {
 		getPersistence().clearCache(layoutPrototype);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
 	public static long countWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<LayoutPrototype> findWithDynamicQuery(
 		DynamicQuery dynamicQuery) {
@@ -75,7 +75,7 @@ public class LayoutPrototypeUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
 	public static List<LayoutPrototype> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
@@ -83,7 +83,7 @@ public class LayoutPrototypeUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
 	public static List<LayoutPrototype> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
@@ -94,14 +94,14 @@ public class LayoutPrototypeUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static LayoutPrototype update(LayoutPrototype layoutPrototype) {
 		return getPersistence().update(layoutPrototype);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
 	public static LayoutPrototype update(LayoutPrototype layoutPrototype,
 		ServiceContext serviceContext) {
@@ -186,7 +186,7 @@ public class LayoutPrototypeUtil {
 	*/
 	public static LayoutPrototype findByUuid_First(java.lang.String uuid,
 		OrderByComparator<LayoutPrototype> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchLayoutPrototypeException {
+		throws com.liferay.portal.kernel.exception.NoSuchLayoutPrototypeException {
 		return getPersistence().findByUuid_First(uuid, orderByComparator);
 	}
 
@@ -212,7 +212,7 @@ public class LayoutPrototypeUtil {
 	*/
 	public static LayoutPrototype findByUuid_Last(java.lang.String uuid,
 		OrderByComparator<LayoutPrototype> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchLayoutPrototypeException {
+		throws com.liferay.portal.kernel.exception.NoSuchLayoutPrototypeException {
 		return getPersistence().findByUuid_Last(uuid, orderByComparator);
 	}
 
@@ -240,7 +240,7 @@ public class LayoutPrototypeUtil {
 	public static LayoutPrototype[] findByUuid_PrevAndNext(
 		long layoutPrototypeId, java.lang.String uuid,
 		OrderByComparator<LayoutPrototype> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchLayoutPrototypeException {
+		throws com.liferay.portal.kernel.exception.NoSuchLayoutPrototypeException {
 		return getPersistence()
 				   .findByUuid_PrevAndNext(layoutPrototypeId, uuid,
 			orderByComparator);
@@ -305,7 +305,7 @@ public class LayoutPrototypeUtil {
 	public static LayoutPrototype[] filterFindByUuid_PrevAndNext(
 		long layoutPrototypeId, java.lang.String uuid,
 		OrderByComparator<LayoutPrototype> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchLayoutPrototypeException {
+		throws com.liferay.portal.kernel.exception.NoSuchLayoutPrototypeException {
 		return getPersistence()
 				   .filterFindByUuid_PrevAndNext(layoutPrototypeId, uuid,
 			orderByComparator);
@@ -426,7 +426,7 @@ public class LayoutPrototypeUtil {
 	*/
 	public static LayoutPrototype findByUuid_C_First(java.lang.String uuid,
 		long companyId, OrderByComparator<LayoutPrototype> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchLayoutPrototypeException {
+		throws com.liferay.portal.kernel.exception.NoSuchLayoutPrototypeException {
 		return getPersistence()
 				   .findByUuid_C_First(uuid, companyId, orderByComparator);
 	}
@@ -456,7 +456,7 @@ public class LayoutPrototypeUtil {
 	*/
 	public static LayoutPrototype findByUuid_C_Last(java.lang.String uuid,
 		long companyId, OrderByComparator<LayoutPrototype> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchLayoutPrototypeException {
+		throws com.liferay.portal.kernel.exception.NoSuchLayoutPrototypeException {
 		return getPersistence()
 				   .findByUuid_C_Last(uuid, companyId, orderByComparator);
 	}
@@ -488,7 +488,7 @@ public class LayoutPrototypeUtil {
 	public static LayoutPrototype[] findByUuid_C_PrevAndNext(
 		long layoutPrototypeId, java.lang.String uuid, long companyId,
 		OrderByComparator<LayoutPrototype> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchLayoutPrototypeException {
+		throws com.liferay.portal.kernel.exception.NoSuchLayoutPrototypeException {
 		return getPersistence()
 				   .findByUuid_C_PrevAndNext(layoutPrototypeId, uuid,
 			companyId, orderByComparator);
@@ -559,7 +559,7 @@ public class LayoutPrototypeUtil {
 	public static LayoutPrototype[] filterFindByUuid_C_PrevAndNext(
 		long layoutPrototypeId, java.lang.String uuid, long companyId,
 		OrderByComparator<LayoutPrototype> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchLayoutPrototypeException {
+		throws com.liferay.portal.kernel.exception.NoSuchLayoutPrototypeException {
 		return getPersistence()
 				   .filterFindByUuid_C_PrevAndNext(layoutPrototypeId, uuid,
 			companyId, orderByComparator);
@@ -676,7 +676,7 @@ public class LayoutPrototypeUtil {
 	*/
 	public static LayoutPrototype findByCompanyId_First(long companyId,
 		OrderByComparator<LayoutPrototype> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchLayoutPrototypeException {
+		throws com.liferay.portal.kernel.exception.NoSuchLayoutPrototypeException {
 		return getPersistence()
 				   .findByCompanyId_First(companyId, orderByComparator);
 	}
@@ -704,7 +704,7 @@ public class LayoutPrototypeUtil {
 	*/
 	public static LayoutPrototype findByCompanyId_Last(long companyId,
 		OrderByComparator<LayoutPrototype> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchLayoutPrototypeException {
+		throws com.liferay.portal.kernel.exception.NoSuchLayoutPrototypeException {
 		return getPersistence()
 				   .findByCompanyId_Last(companyId, orderByComparator);
 	}
@@ -734,7 +734,7 @@ public class LayoutPrototypeUtil {
 	public static LayoutPrototype[] findByCompanyId_PrevAndNext(
 		long layoutPrototypeId, long companyId,
 		OrderByComparator<LayoutPrototype> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchLayoutPrototypeException {
+		throws com.liferay.portal.kernel.exception.NoSuchLayoutPrototypeException {
 		return getPersistence()
 				   .findByCompanyId_PrevAndNext(layoutPrototypeId, companyId,
 			orderByComparator);
@@ -799,7 +799,7 @@ public class LayoutPrototypeUtil {
 	public static LayoutPrototype[] filterFindByCompanyId_PrevAndNext(
 		long layoutPrototypeId, long companyId,
 		OrderByComparator<LayoutPrototype> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchLayoutPrototypeException {
+		throws com.liferay.portal.kernel.exception.NoSuchLayoutPrototypeException {
 		return getPersistence()
 				   .filterFindByCompanyId_PrevAndNext(layoutPrototypeId,
 			companyId, orderByComparator);
@@ -919,7 +919,7 @@ public class LayoutPrototypeUtil {
 	*/
 	public static LayoutPrototype findByC_A_First(long companyId,
 		boolean active, OrderByComparator<LayoutPrototype> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchLayoutPrototypeException {
+		throws com.liferay.portal.kernel.exception.NoSuchLayoutPrototypeException {
 		return getPersistence()
 				   .findByC_A_First(companyId, active, orderByComparator);
 	}
@@ -949,7 +949,7 @@ public class LayoutPrototypeUtil {
 	*/
 	public static LayoutPrototype findByC_A_Last(long companyId,
 		boolean active, OrderByComparator<LayoutPrototype> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchLayoutPrototypeException {
+		throws com.liferay.portal.kernel.exception.NoSuchLayoutPrototypeException {
 		return getPersistence()
 				   .findByC_A_Last(companyId, active, orderByComparator);
 	}
@@ -981,7 +981,7 @@ public class LayoutPrototypeUtil {
 	public static LayoutPrototype[] findByC_A_PrevAndNext(
 		long layoutPrototypeId, long companyId, boolean active,
 		OrderByComparator<LayoutPrototype> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchLayoutPrototypeException {
+		throws com.liferay.portal.kernel.exception.NoSuchLayoutPrototypeException {
 		return getPersistence()
 				   .findByC_A_PrevAndNext(layoutPrototypeId, companyId, active,
 			orderByComparator);
@@ -1052,7 +1052,7 @@ public class LayoutPrototypeUtil {
 	public static LayoutPrototype[] filterFindByC_A_PrevAndNext(
 		long layoutPrototypeId, long companyId, boolean active,
 		OrderByComparator<LayoutPrototype> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchLayoutPrototypeException {
+		throws com.liferay.portal.kernel.exception.NoSuchLayoutPrototypeException {
 		return getPersistence()
 				   .filterFindByC_A_PrevAndNext(layoutPrototypeId, companyId,
 			active, orderByComparator);
@@ -1126,7 +1126,7 @@ public class LayoutPrototypeUtil {
 	* @throws NoSuchLayoutPrototypeException if a layout prototype with the primary key could not be found
 	*/
 	public static LayoutPrototype remove(long layoutPrototypeId)
-		throws com.liferay.portal.exception.NoSuchLayoutPrototypeException {
+		throws com.liferay.portal.kernel.exception.NoSuchLayoutPrototypeException {
 		return getPersistence().remove(layoutPrototypeId);
 	}
 
@@ -1142,7 +1142,7 @@ public class LayoutPrototypeUtil {
 	* @throws NoSuchLayoutPrototypeException if a layout prototype with the primary key could not be found
 	*/
 	public static LayoutPrototype findByPrimaryKey(long layoutPrototypeId)
-		throws com.liferay.portal.exception.NoSuchLayoutPrototypeException {
+		throws com.liferay.portal.kernel.exception.NoSuchLayoutPrototypeException {
 		return getPersistence().findByPrimaryKey(layoutPrototypeId);
 	}
 

@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -771,19 +771,19 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.model.User user);
+	public int compareTo(com.liferay.portal.kernel.model.User user);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.User> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.User> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.User toEscapedModel();
+	public com.liferay.portal.kernel.model.User toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.User toUnescapedModel();
+	public com.liferay.portal.kernel.model.User toUnescapedModel();
 
 	@Override
 	public String toString();

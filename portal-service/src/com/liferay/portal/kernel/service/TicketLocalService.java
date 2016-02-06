@@ -28,8 +28,8 @@ import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.model.PersistedModel;
-import com.liferay.portal.model.Ticket;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.model.Ticket;
 
 import java.io.Serializable;
 
@@ -61,12 +61,12 @@ public interface TicketLocalService extends BaseLocalService,
 	public Ticket addDistinctTicket(long companyId, java.lang.String className,
 		long classPK, int type, java.lang.String extraInfo,
 		Date expirationDate,
-		com.liferay.portal.service.ServiceContext serviceContext);
+		com.liferay.portal.kernel.service.ServiceContext serviceContext);
 
 	public Ticket addTicket(long companyId, java.lang.String className,
 		long classPK, int type, java.lang.String extraInfo,
 		Date expirationDate,
-		com.liferay.portal.service.ServiceContext serviceContext);
+		com.liferay.portal.kernel.service.ServiceContext serviceContext);
 
 	/**
 	* Adds the ticket to the database. Also notifies the appropriate model listeners.

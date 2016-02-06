@@ -37,8 +37,8 @@ public class AccountLocalServiceWrapper implements AccountLocalService,
 	* @return the account that was added
 	*/
 	@Override
-	public com.liferay.portal.model.Account addAccount(
-		com.liferay.portal.model.Account account) {
+	public com.liferay.portal.kernel.model.Account addAccount(
+		com.liferay.portal.kernel.model.Account account) {
 		return _accountLocalService.addAccount(account);
 	}
 
@@ -49,7 +49,7 @@ public class AccountLocalServiceWrapper implements AccountLocalService,
 	* @return the new account
 	*/
 	@Override
-	public com.liferay.portal.model.Account createAccount(long accountId) {
+	public com.liferay.portal.kernel.model.Account createAccount(long accountId) {
 		return _accountLocalService.createAccount(accountId);
 	}
 
@@ -60,8 +60,8 @@ public class AccountLocalServiceWrapper implements AccountLocalService,
 	* @return the account that was removed
 	*/
 	@Override
-	public com.liferay.portal.model.Account deleteAccount(
-		com.liferay.portal.model.Account account) {
+	public com.liferay.portal.kernel.model.Account deleteAccount(
+		com.liferay.portal.kernel.model.Account account) {
 		return _accountLocalService.deleteAccount(account);
 	}
 
@@ -73,7 +73,7 @@ public class AccountLocalServiceWrapper implements AccountLocalService,
 	* @throws PortalException if a account with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.Account deleteAccount(long accountId)
+	public com.liferay.portal.kernel.model.Account deleteAccount(long accountId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountLocalService.deleteAccount(accountId);
 	}
@@ -82,8 +82,8 @@ public class AccountLocalServiceWrapper implements AccountLocalService,
 	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountLocalService.deletePersistedModel(persistedModel);
 	}
@@ -173,7 +173,7 @@ public class AccountLocalServiceWrapper implements AccountLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.Account fetchAccount(long accountId) {
+	public com.liferay.portal.kernel.model.Account fetchAccount(long accountId) {
 		return _accountLocalService.fetchAccount(accountId);
 	}
 
@@ -185,13 +185,13 @@ public class AccountLocalServiceWrapper implements AccountLocalService,
 	* @throws PortalException if a account with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.Account getAccount(long accountId)
+	public com.liferay.portal.kernel.model.Account getAccount(long accountId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountLocalService.getAccount(accountId);
 	}
 
 	@Override
-	public com.liferay.portal.model.Account getAccount(long companyId,
+	public com.liferay.portal.kernel.model.Account getAccount(long companyId,
 		long accountId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountLocalService.getAccount(companyId, accountId);
@@ -209,7 +209,7 @@ public class AccountLocalServiceWrapper implements AccountLocalService,
 	* @return the range of accounts
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Account> getAccounts(
+	public java.util.List<com.liferay.portal.kernel.model.Account> getAccounts(
 		int start, int end) {
 		return _accountLocalService.getAccounts(start, end);
 	}
@@ -245,7 +245,7 @@ public class AccountLocalServiceWrapper implements AccountLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.PersistedModel getPersistedModel(
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountLocalService.getPersistedModel(primaryKeyObj);
@@ -258,8 +258,8 @@ public class AccountLocalServiceWrapper implements AccountLocalService,
 	* @return the account that was updated
 	*/
 	@Override
-	public com.liferay.portal.model.Account updateAccount(
-		com.liferay.portal.model.Account account) {
+	public com.liferay.portal.kernel.model.Account updateAccount(
+		com.liferay.portal.kernel.model.Account account) {
 		return _accountLocalService.updateAccount(account);
 	}
 

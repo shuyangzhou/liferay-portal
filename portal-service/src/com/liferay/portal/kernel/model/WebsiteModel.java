@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -348,19 +348,19 @@ public interface WebsiteModel extends AttachedModel, BaseModel<Website>,
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.model.Website website);
+	public int compareTo(com.liferay.portal.kernel.model.Website website);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.Website> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.Website> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.Website toEscapedModel();
+	public com.liferay.portal.kernel.model.Website toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.Website toUnescapedModel();
+	public com.liferay.portal.kernel.model.Website toUnescapedModel();
 
 	@Override
 	public String toString();

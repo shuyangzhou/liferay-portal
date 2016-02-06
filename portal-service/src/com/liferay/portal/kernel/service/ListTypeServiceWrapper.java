@@ -31,13 +31,13 @@ public class ListTypeServiceWrapper implements ListTypeService,
 	}
 
 	@Override
-	public com.liferay.portal.model.ListType getListType(long listTypeId)
+	public com.liferay.portal.kernel.model.ListType getListType(long listTypeId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _listTypeService.getListType(listTypeId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.ListType> getListTypes(
+	public java.util.List<com.liferay.portal.kernel.model.ListType> getListTypes(
 		java.lang.String type) {
 		return _listTypeService.getListTypes(type);
 	}

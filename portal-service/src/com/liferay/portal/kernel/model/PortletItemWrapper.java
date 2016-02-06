@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -147,7 +147,7 @@ public class PortletItemWrapper implements PortletItem,
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.model.PortletItem portletItem) {
+	public int compareTo(com.liferay.portal.kernel.model.PortletItem portletItem) {
 		return _portletItem.compareTo(portletItem);
 	}
 
@@ -492,12 +492,12 @@ public class PortletItemWrapper implements PortletItem,
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.PortletItem> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.PortletItem> toCacheModel() {
 		return _portletItem.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.PortletItem toEscapedModel() {
+	public com.liferay.portal.kernel.model.PortletItem toEscapedModel() {
 		return new PortletItemWrapper(_portletItem.toEscapedModel());
 	}
 
@@ -507,7 +507,7 @@ public class PortletItemWrapper implements PortletItem,
 	}
 
 	@Override
-	public com.liferay.portal.model.PortletItem toUnescapedModel() {
+	public com.liferay.portal.kernel.model.PortletItem toUnescapedModel() {
 		return new PortletItemWrapper(_portletItem.toUnescapedModel());
 	}
 

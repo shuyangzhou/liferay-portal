@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -242,19 +242,19 @@ public interface CountryModel extends BaseModel<Country>, MVCCModel {
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.model.Country country);
+	public int compareTo(com.liferay.portal.kernel.model.Country country);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.Country> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.Country> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.Country toEscapedModel();
+	public com.liferay.portal.kernel.model.Country toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.Country toUnescapedModel();
+	public com.liferay.portal.kernel.model.Country toUnescapedModel();
 
 	@Override
 	public String toString();

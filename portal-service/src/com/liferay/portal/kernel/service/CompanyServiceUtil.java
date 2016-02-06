@@ -53,7 +53,7 @@ public class CompanyServiceUtil {
 	* @param active whether the company is active
 	* @return the company
 	*/
-	public static com.liferay.portal.model.Company addCompany(
+	public static com.liferay.portal.kernel.model.Company addCompany(
 		java.lang.String webId, java.lang.String virtualHost,
 		java.lang.String mx, boolean system, int maxUsers, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -61,7 +61,7 @@ public class CompanyServiceUtil {
 				   .addCompany(webId, virtualHost, mx, system, maxUsers, active);
 	}
 
-	public static com.liferay.portal.model.Company deleteCompany(long companyId)
+	public static com.liferay.portal.kernel.model.Company deleteCompany(long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteCompany(companyId);
 	}
@@ -82,7 +82,7 @@ public class CompanyServiceUtil {
 	* @param companyId the primary key of the company
 	* @return Returns the company with the primary key
 	*/
-	public static com.liferay.portal.model.Company getCompanyById(
+	public static com.liferay.portal.kernel.model.Company getCompanyById(
 		long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getCompanyById(companyId);
@@ -94,7 +94,7 @@ public class CompanyServiceUtil {
 	* @param logoId the ID of the company's logo
 	* @return Returns the company with the logo
 	*/
-	public static com.liferay.portal.model.Company getCompanyByLogoId(
+	public static com.liferay.portal.kernel.model.Company getCompanyByLogoId(
 		long logoId) throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getCompanyByLogoId(logoId);
 	}
@@ -105,7 +105,7 @@ public class CompanyServiceUtil {
 	* @param mx the company's mail domain
 	* @return Returns the company with the mail domain
 	*/
-	public static com.liferay.portal.model.Company getCompanyByMx(
+	public static com.liferay.portal.kernel.model.Company getCompanyByMx(
 		java.lang.String mx)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getCompanyByMx(mx);
@@ -117,7 +117,7 @@ public class CompanyServiceUtil {
 	* @param virtualHost the company's virtual host name
 	* @return Returns the company with the virtual host name
 	*/
-	public static com.liferay.portal.model.Company getCompanyByVirtualHost(
+	public static com.liferay.portal.kernel.model.Company getCompanyByVirtualHost(
 		java.lang.String virtualHost)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getCompanyByVirtualHost(virtualHost);
@@ -129,7 +129,7 @@ public class CompanyServiceUtil {
 	* @param webId the company's web domain
 	* @return Returns the company with the web domain
 	*/
-	public static com.liferay.portal.model.Company getCompanyByWebId(
+	public static com.liferay.portal.kernel.model.Company getCompanyByWebId(
 		java.lang.String webId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getCompanyByWebId(webId);
@@ -149,7 +149,7 @@ public class CompanyServiceUtil {
 	*
 	* This method is called by {@link
 	* com.liferay.portlet.portalsettings.action.EditLDAPServerAction} remotely
-	* through {@link com.liferay.portal.service.CompanyService}.
+	* through {@link com.liferay.portal.kernel.service.CompanyService}.
 	*
 	* @param companyId the primary key of the company
 	* @param keys the company's preferences keys to be remove
@@ -185,7 +185,7 @@ public class CompanyServiceUtil {
 	* @param size the company's account size (optionally <code>null</code>)
 	* @return the the company with the primary key
 	*/
-	public static com.liferay.portal.model.Company updateCompany(
+	public static com.liferay.portal.kernel.model.Company updateCompany(
 		long companyId, java.lang.String virtualHost, java.lang.String mx,
 		java.lang.String homeURL, boolean logo, byte[] logoBytes,
 		java.lang.String name, java.lang.String legalName,
@@ -232,7 +232,7 @@ public class CompanyServiceUtil {
 	* @param properties the company's properties
 	* @return the company with the primary key
 	*/
-	public static com.liferay.portal.model.Company updateCompany(
+	public static com.liferay.portal.kernel.model.Company updateCompany(
 		long companyId, java.lang.String virtualHost, java.lang.String mx,
 		java.lang.String homeURL, boolean logo, byte[] logoBytes,
 		java.lang.String name, java.lang.String legalName,
@@ -241,10 +241,10 @@ public class CompanyServiceUtil {
 		java.lang.String industry, java.lang.String type,
 		java.lang.String size, java.lang.String languageId,
 		java.lang.String timeZoneId,
-		java.util.List<com.liferay.portal.model.Address> addresses,
-		java.util.List<com.liferay.portal.model.EmailAddress> emailAddresses,
-		java.util.List<com.liferay.portal.model.Phone> phones,
-		java.util.List<com.liferay.portal.model.Website> websites,
+		java.util.List<com.liferay.portal.kernel.model.Address> addresses,
+		java.util.List<com.liferay.portal.kernel.model.EmailAddress> emailAddresses,
+		java.util.List<com.liferay.portal.kernel.model.Phone> phones,
+		java.util.List<com.liferay.portal.kernel.model.Website> websites,
 		com.liferay.portal.kernel.util.UnicodeProperties properties)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
@@ -285,7 +285,7 @@ public class CompanyServiceUtil {
 	String, String, String, String, String, String)}
 	*/
 	@Deprecated
-	public static com.liferay.portal.model.Company updateCompany(
+	public static com.liferay.portal.kernel.model.Company updateCompany(
 		long companyId, java.lang.String virtualHost, java.lang.String mx,
 		java.lang.String homeURL, java.lang.String name,
 		java.lang.String legalName, java.lang.String legalId,
@@ -338,7 +338,7 @@ public class CompanyServiceUtil {
 	String, List, List, List, List, UnicodeProperties)}
 	*/
 	@Deprecated
-	public static com.liferay.portal.model.Company updateCompany(
+	public static com.liferay.portal.kernel.model.Company updateCompany(
 		long companyId, java.lang.String virtualHost, java.lang.String mx,
 		java.lang.String homeURL, java.lang.String name,
 		java.lang.String legalName, java.lang.String legalId,
@@ -346,10 +346,10 @@ public class CompanyServiceUtil {
 		java.lang.String tickerSymbol, java.lang.String industry,
 		java.lang.String type, java.lang.String size,
 		java.lang.String languageId, java.lang.String timeZoneId,
-		java.util.List<com.liferay.portal.model.Address> addresses,
-		java.util.List<com.liferay.portal.model.EmailAddress> emailAddresses,
-		java.util.List<com.liferay.portal.model.Phone> phones,
-		java.util.List<com.liferay.portal.model.Website> websites,
+		java.util.List<com.liferay.portal.kernel.model.Address> addresses,
+		java.util.List<com.liferay.portal.kernel.model.EmailAddress> emailAddresses,
+		java.util.List<com.liferay.portal.kernel.model.Phone> phones,
+		java.util.List<com.liferay.portal.kernel.model.Website> websites,
 		com.liferay.portal.kernel.util.UnicodeProperties properties)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
@@ -370,7 +370,7 @@ public class CompanyServiceUtil {
 	* @param active whether the company is active
 	* @return the company with the primary key
 	*/
-	public static com.liferay.portal.model.Company updateCompany(
+	public static com.liferay.portal.kernel.model.Company updateCompany(
 		long companyId, java.lang.String virtualHost, java.lang.String mx,
 		int maxUsers, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -398,7 +398,7 @@ public class CompanyServiceUtil {
 	* @param bytes the bytes of the company's logo image
 	* @return the company with the primary key
 	*/
-	public static com.liferay.portal.model.Company updateLogo(long companyId,
+	public static com.liferay.portal.kernel.model.Company updateLogo(long companyId,
 		byte[] bytes)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateLogo(companyId, bytes);
@@ -411,7 +411,7 @@ public class CompanyServiceUtil {
 	* @param inputStream the input stream of the company's logo image
 	* @return the company with the primary key
 	*/
-	public static com.liferay.portal.model.Company updateLogo(long companyId,
+	public static com.liferay.portal.kernel.model.Company updateLogo(long companyId,
 		java.io.InputStream inputStream)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateLogo(companyId, inputStream);

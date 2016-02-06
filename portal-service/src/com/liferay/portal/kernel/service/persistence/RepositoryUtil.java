@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
-import com.liferay.portal.model.Repository;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.Repository;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -46,28 +46,28 @@ public class RepositoryUtil {
 	 */
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache()
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache()
 	 */
 	public static void clearCache() {
 		getPersistence().clearCache();
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static void clearCache(Repository repository) {
 		getPersistence().clearCache(repository);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
 	public static long countWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<Repository> findWithDynamicQuery(
 		DynamicQuery dynamicQuery) {
@@ -75,7 +75,7 @@ public class RepositoryUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
 	public static List<Repository> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
@@ -83,7 +83,7 @@ public class RepositoryUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
 	public static List<Repository> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
@@ -94,14 +94,14 @@ public class RepositoryUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static Repository update(Repository repository) {
 		return getPersistence().update(repository);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
 	public static Repository update(Repository repository,
 		ServiceContext serviceContext) {
@@ -185,7 +185,7 @@ public class RepositoryUtil {
 	*/
 	public static Repository findByUuid_First(java.lang.String uuid,
 		OrderByComparator<Repository> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRepositoryException {
+		throws com.liferay.portal.kernel.exception.NoSuchRepositoryException {
 		return getPersistence().findByUuid_First(uuid, orderByComparator);
 	}
 
@@ -211,7 +211,7 @@ public class RepositoryUtil {
 	*/
 	public static Repository findByUuid_Last(java.lang.String uuid,
 		OrderByComparator<Repository> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRepositoryException {
+		throws com.liferay.portal.kernel.exception.NoSuchRepositoryException {
 		return getPersistence().findByUuid_Last(uuid, orderByComparator);
 	}
 
@@ -238,7 +238,7 @@ public class RepositoryUtil {
 	*/
 	public static Repository[] findByUuid_PrevAndNext(long repositoryId,
 		java.lang.String uuid, OrderByComparator<Repository> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRepositoryException {
+		throws com.liferay.portal.kernel.exception.NoSuchRepositoryException {
 		return getPersistence()
 				   .findByUuid_PrevAndNext(repositoryId, uuid, orderByComparator);
 	}
@@ -271,7 +271,7 @@ public class RepositoryUtil {
 	* @throws NoSuchRepositoryException if a matching repository could not be found
 	*/
 	public static Repository findByUUID_G(java.lang.String uuid, long groupId)
-		throws com.liferay.portal.exception.NoSuchRepositoryException {
+		throws com.liferay.portal.kernel.exception.NoSuchRepositoryException {
 		return getPersistence().findByUUID_G(uuid, groupId);
 	}
 
@@ -307,7 +307,7 @@ public class RepositoryUtil {
 	* @return the repository that was removed
 	*/
 	public static Repository removeByUUID_G(java.lang.String uuid, long groupId)
-		throws com.liferay.portal.exception.NoSuchRepositoryException {
+		throws com.liferay.portal.kernel.exception.NoSuchRepositoryException {
 		return getPersistence().removeByUUID_G(uuid, groupId);
 	}
 
@@ -408,7 +408,7 @@ public class RepositoryUtil {
 	*/
 	public static Repository findByUuid_C_First(java.lang.String uuid,
 		long companyId, OrderByComparator<Repository> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRepositoryException {
+		throws com.liferay.portal.kernel.exception.NoSuchRepositoryException {
 		return getPersistence()
 				   .findByUuid_C_First(uuid, companyId, orderByComparator);
 	}
@@ -438,7 +438,7 @@ public class RepositoryUtil {
 	*/
 	public static Repository findByUuid_C_Last(java.lang.String uuid,
 		long companyId, OrderByComparator<Repository> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRepositoryException {
+		throws com.liferay.portal.kernel.exception.NoSuchRepositoryException {
 		return getPersistence()
 				   .findByUuid_C_Last(uuid, companyId, orderByComparator);
 	}
@@ -470,7 +470,7 @@ public class RepositoryUtil {
 	public static Repository[] findByUuid_C_PrevAndNext(long repositoryId,
 		java.lang.String uuid, long companyId,
 		OrderByComparator<Repository> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRepositoryException {
+		throws com.liferay.portal.kernel.exception.NoSuchRepositoryException {
 		return getPersistence()
 				   .findByUuid_C_PrevAndNext(repositoryId, uuid, companyId,
 			orderByComparator);
@@ -575,7 +575,7 @@ public class RepositoryUtil {
 	*/
 	public static Repository findByGroupId_First(long groupId,
 		OrderByComparator<Repository> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRepositoryException {
+		throws com.liferay.portal.kernel.exception.NoSuchRepositoryException {
 		return getPersistence().findByGroupId_First(groupId, orderByComparator);
 	}
 
@@ -601,7 +601,7 @@ public class RepositoryUtil {
 	*/
 	public static Repository findByGroupId_Last(long groupId,
 		OrderByComparator<Repository> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRepositoryException {
+		throws com.liferay.portal.kernel.exception.NoSuchRepositoryException {
 		return getPersistence().findByGroupId_Last(groupId, orderByComparator);
 	}
 
@@ -628,7 +628,7 @@ public class RepositoryUtil {
 	*/
 	public static Repository[] findByGroupId_PrevAndNext(long repositoryId,
 		long groupId, OrderByComparator<Repository> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRepositoryException {
+		throws com.liferay.portal.kernel.exception.NoSuchRepositoryException {
 		return getPersistence()
 				   .findByGroupId_PrevAndNext(repositoryId, groupId,
 			orderByComparator);
@@ -664,7 +664,7 @@ public class RepositoryUtil {
 	*/
 	public static Repository findByG_N_P(long groupId, java.lang.String name,
 		java.lang.String portletId)
-		throws com.liferay.portal.exception.NoSuchRepositoryException {
+		throws com.liferay.portal.kernel.exception.NoSuchRepositoryException {
 		return getPersistence().findByG_N_P(groupId, name, portletId);
 	}
 
@@ -706,7 +706,7 @@ public class RepositoryUtil {
 	*/
 	public static Repository removeByG_N_P(long groupId, java.lang.String name,
 		java.lang.String portletId)
-		throws com.liferay.portal.exception.NoSuchRepositoryException {
+		throws com.liferay.portal.kernel.exception.NoSuchRepositoryException {
 		return getPersistence().removeByG_N_P(groupId, name, portletId);
 	}
 
@@ -759,7 +759,7 @@ public class RepositoryUtil {
 	* @throws NoSuchRepositoryException if a repository with the primary key could not be found
 	*/
 	public static Repository remove(long repositoryId)
-		throws com.liferay.portal.exception.NoSuchRepositoryException {
+		throws com.liferay.portal.kernel.exception.NoSuchRepositoryException {
 		return getPersistence().remove(repositoryId);
 	}
 
@@ -775,7 +775,7 @@ public class RepositoryUtil {
 	* @throws NoSuchRepositoryException if a repository with the primary key could not be found
 	*/
 	public static Repository findByPrimaryKey(long repositoryId)
-		throws com.liferay.portal.exception.NoSuchRepositoryException {
+		throws com.liferay.portal.kernel.exception.NoSuchRepositoryException {
 		return getPersistence().findByPrimaryKey(repositoryId);
 	}
 

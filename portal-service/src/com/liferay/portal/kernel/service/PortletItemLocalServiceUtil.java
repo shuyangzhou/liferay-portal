@@ -47,12 +47,12 @@ public class PortletItemLocalServiceUtil {
 	* @param portletItem the portlet item
 	* @return the portlet item that was added
 	*/
-	public static com.liferay.portal.model.PortletItem addPortletItem(
-		com.liferay.portal.model.PortletItem portletItem) {
+	public static com.liferay.portal.kernel.model.PortletItem addPortletItem(
+		com.liferay.portal.kernel.model.PortletItem portletItem) {
 		return getService().addPortletItem(portletItem);
 	}
 
-	public static com.liferay.portal.model.PortletItem addPortletItem(
+	public static com.liferay.portal.kernel.model.PortletItem addPortletItem(
 		long userId, long groupId, java.lang.String name,
 		java.lang.String portletId, java.lang.String className)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -66,7 +66,7 @@ public class PortletItemLocalServiceUtil {
 	* @param portletItemId the primary key for the new portlet item
 	* @return the new portlet item
 	*/
-	public static com.liferay.portal.model.PortletItem createPortletItem(
+	public static com.liferay.portal.kernel.model.PortletItem createPortletItem(
 		long portletItemId) {
 		return getService().createPortletItem(portletItemId);
 	}
@@ -74,8 +74,8 @@ public class PortletItemLocalServiceUtil {
 	/**
 	* @throws PortalException
 	*/
-	public static com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -86,8 +86,8 @@ public class PortletItemLocalServiceUtil {
 	* @param portletItem the portlet item
 	* @return the portlet item that was removed
 	*/
-	public static com.liferay.portal.model.PortletItem deletePortletItem(
-		com.liferay.portal.model.PortletItem portletItem) {
+	public static com.liferay.portal.kernel.model.PortletItem deletePortletItem(
+		com.liferay.portal.kernel.model.PortletItem portletItem) {
 		return getService().deletePortletItem(portletItem);
 	}
 
@@ -98,7 +98,7 @@ public class PortletItemLocalServiceUtil {
 	* @return the portlet item that was removed
 	* @throws PortalException if a portlet item with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.PortletItem deletePortletItem(
+	public static com.liferay.portal.kernel.model.PortletItem deletePortletItem(
 		long portletItemId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deletePortletItem(portletItemId);
@@ -182,7 +182,7 @@ public class PortletItemLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.portal.model.PortletItem fetchPortletItem(
+	public static com.liferay.portal.kernel.model.PortletItem fetchPortletItem(
 		long portletItemId) {
 		return getService().fetchPortletItem(portletItemId);
 	}
@@ -204,13 +204,13 @@ public class PortletItemLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.model.PersistedModel getPersistedModel(
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static com.liferay.portal.model.PortletItem getPortletItem(
+	public static com.liferay.portal.kernel.model.PortletItem getPortletItem(
 		long groupId, java.lang.String name, java.lang.String portletId,
 		java.lang.String className)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -224,18 +224,18 @@ public class PortletItemLocalServiceUtil {
 	* @return the portlet item
 	* @throws PortalException if a portlet item with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.PortletItem getPortletItem(
+	public static com.liferay.portal.kernel.model.PortletItem getPortletItem(
 		long portletItemId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getPortletItem(portletItemId);
 	}
 
-	public static java.util.List<com.liferay.portal.model.PortletItem> getPortletItems(
+	public static java.util.List<com.liferay.portal.kernel.model.PortletItem> getPortletItems(
 		long groupId, java.lang.String className) {
 		return getService().getPortletItems(groupId, className);
 	}
 
-	public static java.util.List<com.liferay.portal.model.PortletItem> getPortletItems(
+	public static java.util.List<com.liferay.portal.kernel.model.PortletItem> getPortletItems(
 		long groupId, java.lang.String portletId, java.lang.String className) {
 		return getService().getPortletItems(groupId, portletId, className);
 	}
@@ -251,7 +251,7 @@ public class PortletItemLocalServiceUtil {
 	* @param end the upper bound of the range of portlet items (not inclusive)
 	* @return the range of portlet items
 	*/
-	public static java.util.List<com.liferay.portal.model.PortletItem> getPortletItems(
+	public static java.util.List<com.liferay.portal.kernel.model.PortletItem> getPortletItems(
 		int start, int end) {
 		return getService().getPortletItems(start, end);
 	}
@@ -271,12 +271,12 @@ public class PortletItemLocalServiceUtil {
 	* @param portletItem the portlet item
 	* @return the portlet item that was updated
 	*/
-	public static com.liferay.portal.model.PortletItem updatePortletItem(
-		com.liferay.portal.model.PortletItem portletItem) {
+	public static com.liferay.portal.kernel.model.PortletItem updatePortletItem(
+		com.liferay.portal.kernel.model.PortletItem portletItem) {
 		return getService().updatePortletItem(portletItem);
 	}
 
-	public static com.liferay.portal.model.PortletItem updatePortletItem(
+	public static com.liferay.portal.kernel.model.PortletItem updatePortletItem(
 		long userId, long groupId, java.lang.String name,
 		java.lang.String portletId, java.lang.String className)
 		throws com.liferay.portal.kernel.exception.PortalException {

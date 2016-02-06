@@ -38,19 +38,19 @@ public class ClusterGroupLocalServiceWrapper implements ClusterGroupLocalService
 	* @return the cluster group that was added
 	*/
 	@Override
-	public com.liferay.portal.model.ClusterGroup addClusterGroup(
-		com.liferay.portal.model.ClusterGroup clusterGroup) {
+	public com.liferay.portal.kernel.model.ClusterGroup addClusterGroup(
+		com.liferay.portal.kernel.model.ClusterGroup clusterGroup) {
 		return _clusterGroupLocalService.addClusterGroup(clusterGroup);
 	}
 
 	@Override
-	public com.liferay.portal.model.ClusterGroup addClusterGroup(
+	public com.liferay.portal.kernel.model.ClusterGroup addClusterGroup(
 		java.lang.String name, java.util.List<java.lang.String> clusterNodeIds) {
 		return _clusterGroupLocalService.addClusterGroup(name, clusterNodeIds);
 	}
 
 	@Override
-	public com.liferay.portal.model.ClusterGroup addWholeClusterGroup(
+	public com.liferay.portal.kernel.model.ClusterGroup addWholeClusterGroup(
 		java.lang.String name) {
 		return _clusterGroupLocalService.addWholeClusterGroup(name);
 	}
@@ -62,7 +62,7 @@ public class ClusterGroupLocalServiceWrapper implements ClusterGroupLocalService
 	* @return the new cluster group
 	*/
 	@Override
-	public com.liferay.portal.model.ClusterGroup createClusterGroup(
+	public com.liferay.portal.kernel.model.ClusterGroup createClusterGroup(
 		long clusterGroupId) {
 		return _clusterGroupLocalService.createClusterGroup(clusterGroupId);
 	}
@@ -74,8 +74,8 @@ public class ClusterGroupLocalServiceWrapper implements ClusterGroupLocalService
 	* @return the cluster group that was removed
 	*/
 	@Override
-	public com.liferay.portal.model.ClusterGroup deleteClusterGroup(
-		com.liferay.portal.model.ClusterGroup clusterGroup) {
+	public com.liferay.portal.kernel.model.ClusterGroup deleteClusterGroup(
+		com.liferay.portal.kernel.model.ClusterGroup clusterGroup) {
 		return _clusterGroupLocalService.deleteClusterGroup(clusterGroup);
 	}
 
@@ -87,7 +87,7 @@ public class ClusterGroupLocalServiceWrapper implements ClusterGroupLocalService
 	* @throws PortalException if a cluster group with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.ClusterGroup deleteClusterGroup(
+	public com.liferay.portal.kernel.model.ClusterGroup deleteClusterGroup(
 		long clusterGroupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _clusterGroupLocalService.deleteClusterGroup(clusterGroupId);
@@ -97,8 +97,8 @@ public class ClusterGroupLocalServiceWrapper implements ClusterGroupLocalService
 	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _clusterGroupLocalService.deletePersistedModel(persistedModel);
 	}
@@ -189,7 +189,7 @@ public class ClusterGroupLocalServiceWrapper implements ClusterGroupLocalService
 	}
 
 	@Override
-	public com.liferay.portal.model.ClusterGroup fetchClusterGroup(
+	public com.liferay.portal.kernel.model.ClusterGroup fetchClusterGroup(
 		long clusterGroupId) {
 		return _clusterGroupLocalService.fetchClusterGroup(clusterGroupId);
 	}
@@ -207,7 +207,7 @@ public class ClusterGroupLocalServiceWrapper implements ClusterGroupLocalService
 	* @throws PortalException if a cluster group with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.ClusterGroup getClusterGroup(
+	public com.liferay.portal.kernel.model.ClusterGroup getClusterGroup(
 		long clusterGroupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _clusterGroupLocalService.getClusterGroup(clusterGroupId);
@@ -225,7 +225,7 @@ public class ClusterGroupLocalServiceWrapper implements ClusterGroupLocalService
 	* @return the range of cluster groups
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.ClusterGroup> getClusterGroups(
+	public java.util.List<com.liferay.portal.kernel.model.ClusterGroup> getClusterGroups(
 		int start, int end) {
 		return _clusterGroupLocalService.getClusterGroups(start, end);
 	}
@@ -256,7 +256,7 @@ public class ClusterGroupLocalServiceWrapper implements ClusterGroupLocalService
 	}
 
 	@Override
-	public com.liferay.portal.model.PersistedModel getPersistedModel(
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _clusterGroupLocalService.getPersistedModel(primaryKeyObj);
@@ -269,8 +269,8 @@ public class ClusterGroupLocalServiceWrapper implements ClusterGroupLocalService
 	* @return the cluster group that was updated
 	*/
 	@Override
-	public com.liferay.portal.model.ClusterGroup updateClusterGroup(
-		com.liferay.portal.model.ClusterGroup clusterGroup) {
+	public com.liferay.portal.kernel.model.ClusterGroup updateClusterGroup(
+		com.liferay.portal.kernel.model.ClusterGroup clusterGroup) {
 		return _clusterGroupLocalService.updateClusterGroup(clusterGroup);
 	}
 

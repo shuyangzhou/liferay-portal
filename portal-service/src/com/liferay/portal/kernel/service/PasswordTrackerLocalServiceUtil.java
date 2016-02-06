@@ -47,8 +47,8 @@ public class PasswordTrackerLocalServiceUtil {
 	* @param passwordTracker the password tracker
 	* @return the password tracker that was added
 	*/
-	public static com.liferay.portal.model.PasswordTracker addPasswordTracker(
-		com.liferay.portal.model.PasswordTracker passwordTracker) {
+	public static com.liferay.portal.kernel.model.PasswordTracker addPasswordTracker(
+		com.liferay.portal.kernel.model.PasswordTracker passwordTracker) {
 		return getService().addPasswordTracker(passwordTracker);
 	}
 
@@ -58,7 +58,7 @@ public class PasswordTrackerLocalServiceUtil {
 	* @param passwordTrackerId the primary key for the new password tracker
 	* @return the new password tracker
 	*/
-	public static com.liferay.portal.model.PasswordTracker createPasswordTracker(
+	public static com.liferay.portal.kernel.model.PasswordTracker createPasswordTracker(
 		long passwordTrackerId) {
 		return getService().createPasswordTracker(passwordTrackerId);
 	}
@@ -69,8 +69,8 @@ public class PasswordTrackerLocalServiceUtil {
 	* @param passwordTracker the password tracker
 	* @return the password tracker that was removed
 	*/
-	public static com.liferay.portal.model.PasswordTracker deletePasswordTracker(
-		com.liferay.portal.model.PasswordTracker passwordTracker) {
+	public static com.liferay.portal.kernel.model.PasswordTracker deletePasswordTracker(
+		com.liferay.portal.kernel.model.PasswordTracker passwordTracker) {
 		return getService().deletePasswordTracker(passwordTracker);
 	}
 
@@ -81,7 +81,7 @@ public class PasswordTrackerLocalServiceUtil {
 	* @return the password tracker that was removed
 	* @throws PortalException if a password tracker with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.PasswordTracker deletePasswordTracker(
+	public static com.liferay.portal.kernel.model.PasswordTracker deletePasswordTracker(
 		long passwordTrackerId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deletePasswordTracker(passwordTrackerId);
@@ -94,8 +94,8 @@ public class PasswordTrackerLocalServiceUtil {
 	/**
 	* @throws PortalException
 	*/
-	public static com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -178,7 +178,7 @@ public class PasswordTrackerLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.portal.model.PasswordTracker fetchPasswordTracker(
+	public static com.liferay.portal.kernel.model.PasswordTracker fetchPasswordTracker(
 		long passwordTrackerId) {
 		return getService().fetchPasswordTracker(passwordTrackerId);
 	}
@@ -207,7 +207,7 @@ public class PasswordTrackerLocalServiceUtil {
 	* @return the password tracker
 	* @throws PortalException if a password tracker with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.PasswordTracker getPasswordTracker(
+	public static com.liferay.portal.kernel.model.PasswordTracker getPasswordTracker(
 		long passwordTrackerId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getPasswordTracker(passwordTrackerId);
@@ -224,7 +224,7 @@ public class PasswordTrackerLocalServiceUtil {
 	* @param end the upper bound of the range of password trackers (not inclusive)
 	* @return the range of password trackers
 	*/
-	public static java.util.List<com.liferay.portal.model.PasswordTracker> getPasswordTrackers(
+	public static java.util.List<com.liferay.portal.kernel.model.PasswordTracker> getPasswordTrackers(
 		int start, int end) {
 		return getService().getPasswordTrackers(start, end);
 	}
@@ -238,7 +238,7 @@ public class PasswordTrackerLocalServiceUtil {
 		return getService().getPasswordTrackersCount();
 	}
 
-	public static com.liferay.portal.model.PersistedModel getPersistedModel(
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getPersistedModel(primaryKeyObj);
@@ -267,8 +267,8 @@ public class PasswordTrackerLocalServiceUtil {
 	* @param passwordTracker the password tracker
 	* @return the password tracker that was updated
 	*/
-	public static com.liferay.portal.model.PasswordTracker updatePasswordTracker(
-		com.liferay.portal.model.PasswordTracker passwordTracker) {
+	public static com.liferay.portal.kernel.model.PasswordTracker updatePasswordTracker(
+		com.liferay.portal.kernel.model.PasswordTracker passwordTracker) {
 		return getService().updatePasswordTracker(passwordTracker);
 	}
 

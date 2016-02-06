@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchLayoutFriendlyURLException;
-import com.liferay.portal.model.LayoutFriendlyURL;
+import com.liferay.portal.kernel.exception.NoSuchLayoutFriendlyURLException;
+import com.liferay.portal.kernel.model.LayoutFriendlyURL;
 
 /**
  * The persistence interface for the layout friendly u r l service.

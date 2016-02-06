@@ -47,8 +47,8 @@ public class ServiceComponentLocalServiceUtil {
 	* @param serviceComponent the service component
 	* @return the service component that was added
 	*/
-	public static com.liferay.portal.model.ServiceComponent addServiceComponent(
-		com.liferay.portal.model.ServiceComponent serviceComponent) {
+	public static com.liferay.portal.kernel.model.ServiceComponent addServiceComponent(
+		com.liferay.portal.kernel.model.ServiceComponent serviceComponent) {
 		return getService().addServiceComponent(serviceComponent);
 	}
 
@@ -58,7 +58,7 @@ public class ServiceComponentLocalServiceUtil {
 	* @param serviceComponentId the primary key for the new service component
 	* @return the new service component
 	*/
-	public static com.liferay.portal.model.ServiceComponent createServiceComponent(
+	public static com.liferay.portal.kernel.model.ServiceComponent createServiceComponent(
 		long serviceComponentId) {
 		return getService().createServiceComponent(serviceComponentId);
 	}
@@ -66,8 +66,8 @@ public class ServiceComponentLocalServiceUtil {
 	/**
 	* @throws PortalException
 	*/
-	public static com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -78,8 +78,8 @@ public class ServiceComponentLocalServiceUtil {
 	* @param serviceComponent the service component
 	* @return the service component that was removed
 	*/
-	public static com.liferay.portal.model.ServiceComponent deleteServiceComponent(
-		com.liferay.portal.model.ServiceComponent serviceComponent) {
+	public static com.liferay.portal.kernel.model.ServiceComponent deleteServiceComponent(
+		com.liferay.portal.kernel.model.ServiceComponent serviceComponent) {
 		return getService().deleteServiceComponent(serviceComponent);
 	}
 
@@ -90,7 +90,7 @@ public class ServiceComponentLocalServiceUtil {
 	* @return the service component that was removed
 	* @throws PortalException if a service component with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.ServiceComponent deleteServiceComponent(
+	public static com.liferay.portal.kernel.model.ServiceComponent deleteServiceComponent(
 		long serviceComponentId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteServiceComponent(serviceComponentId);
@@ -181,7 +181,7 @@ public class ServiceComponentLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.portal.model.ServiceComponent fetchServiceComponent(
+	public static com.liferay.portal.kernel.model.ServiceComponent fetchServiceComponent(
 		long serviceComponentId) {
 		return getService().fetchServiceComponent(serviceComponentId);
 	}
@@ -194,7 +194,7 @@ public class ServiceComponentLocalServiceUtil {
 		return getService().getIndexableActionableDynamicQuery();
 	}
 
-	public static java.util.List<com.liferay.portal.model.ServiceComponent> getLatestServiceComponents() {
+	public static java.util.List<com.liferay.portal.kernel.model.ServiceComponent> getLatestServiceComponents() {
 		return getService().getLatestServiceComponents();
 	}
 
@@ -207,7 +207,7 @@ public class ServiceComponentLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.model.PersistedModel getPersistedModel(
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getPersistedModel(primaryKeyObj);
@@ -220,7 +220,7 @@ public class ServiceComponentLocalServiceUtil {
 	* @return the service component
 	* @throws PortalException if a service component with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.ServiceComponent getServiceComponent(
+	public static com.liferay.portal.kernel.model.ServiceComponent getServiceComponent(
 		long serviceComponentId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getServiceComponent(serviceComponentId);
@@ -237,7 +237,7 @@ public class ServiceComponentLocalServiceUtil {
 	* @param end the upper bound of the range of service components (not inclusive)
 	* @return the range of service components
 	*/
-	public static java.util.List<com.liferay.portal.model.ServiceComponent> getServiceComponents(
+	public static java.util.List<com.liferay.portal.kernel.model.ServiceComponent> getServiceComponents(
 		int start, int end) {
 		return getService().getServiceComponents(start, end);
 	}
@@ -251,7 +251,7 @@ public class ServiceComponentLocalServiceUtil {
 		return getService().getServiceComponentsCount();
 	}
 
-	public static com.liferay.portal.model.ServiceComponent initServiceComponent(
+	public static com.liferay.portal.kernel.model.ServiceComponent initServiceComponent(
 		com.liferay.portal.kernel.service.configuration.ServiceComponentConfiguration serviceComponentConfiguration,
 		java.lang.ClassLoader classLoader, java.lang.String buildNamespace,
 		long buildNumber, long buildDate, boolean buildAutoUpgrade)
@@ -268,15 +268,15 @@ public class ServiceComponentLocalServiceUtil {
 	* @param serviceComponent the service component
 	* @return the service component that was updated
 	*/
-	public static com.liferay.portal.model.ServiceComponent updateServiceComponent(
-		com.liferay.portal.model.ServiceComponent serviceComponent) {
+	public static com.liferay.portal.kernel.model.ServiceComponent updateServiceComponent(
+		com.liferay.portal.kernel.model.ServiceComponent serviceComponent) {
 		return getService().updateServiceComponent(serviceComponent);
 	}
 
 	public static void upgradeDB(java.lang.ClassLoader classLoader,
 		java.lang.String buildNamespace, long buildNumber,
 		boolean buildAutoUpgrade,
-		com.liferay.portal.model.ServiceComponent previousServiceComponent,
+		com.liferay.portal.kernel.model.ServiceComponent previousServiceComponent,
 		java.lang.String tablesSQL, java.lang.String sequencesSQL,
 		java.lang.String indexesSQL) throws java.lang.Exception {
 		getService()

@@ -37,27 +37,27 @@ public class TeamFinderUtil {
 		return getFinder().filterCountByG_N_D(groupId, name, description, params);
 	}
 
-	public static java.util.List<com.liferay.portal.model.Team> filterFindByG_N_D(
+	public static java.util.List<com.liferay.portal.kernel.model.Team> filterFindByG_N_D(
 		long groupId, java.lang.String name, java.lang.String description,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Team> obc) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Team> obc) {
 		return getFinder()
 				   .filterFindByG_N_D(groupId, name, description, params,
 			start, end, obc);
 	}
 
-	public static java.util.List<com.liferay.portal.model.Team> findByG_U(
+	public static java.util.List<com.liferay.portal.kernel.model.Team> findByG_U(
 		long groupId, long userId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Team> obc) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Team> obc) {
 		return getFinder().findByG_U(groupId, userId, start, end, obc);
 	}
 
-	public static java.util.List<com.liferay.portal.model.Team> findByG_N_D(
+	public static java.util.List<com.liferay.portal.kernel.model.Team> findByG_N_D(
 		long groupId, java.lang.String name, java.lang.String description,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Team> obc) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Team> obc) {
 		return getFinder()
 				   .findByG_N_D(groupId, name, description, params, start, end,
 			obc);

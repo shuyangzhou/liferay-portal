@@ -40,11 +40,11 @@ public class UserTrackerLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.portal.service.impl.UserTrackerLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.portal.model.UserTracker addUserTracker(
+	public static com.liferay.portal.kernel.model.UserTracker addUserTracker(
 		long companyId, long userId, java.util.Date modifiedDate,
 		java.lang.String sessionId, java.lang.String remoteAddr,
 		java.lang.String remoteHost, java.lang.String userAgent,
-		java.util.List<com.liferay.portal.model.UserTrackerPath> userTrackerPaths) {
+		java.util.List<com.liferay.portal.kernel.model.UserTrackerPath> userTrackerPaths) {
 		return getService()
 				   .addUserTracker(companyId, userId, modifiedDate, sessionId,
 			remoteAddr, remoteHost, userAgent, userTrackerPaths);
@@ -56,8 +56,8 @@ public class UserTrackerLocalServiceUtil {
 	* @param userTracker the user tracker
 	* @return the user tracker that was added
 	*/
-	public static com.liferay.portal.model.UserTracker addUserTracker(
-		com.liferay.portal.model.UserTracker userTracker) {
+	public static com.liferay.portal.kernel.model.UserTracker addUserTracker(
+		com.liferay.portal.kernel.model.UserTracker userTracker) {
 		return getService().addUserTracker(userTracker);
 	}
 
@@ -67,7 +67,7 @@ public class UserTrackerLocalServiceUtil {
 	* @param userTrackerId the primary key for the new user tracker
 	* @return the new user tracker
 	*/
-	public static com.liferay.portal.model.UserTracker createUserTracker(
+	public static com.liferay.portal.kernel.model.UserTracker createUserTracker(
 		long userTrackerId) {
 		return getService().createUserTracker(userTrackerId);
 	}
@@ -75,8 +75,8 @@ public class UserTrackerLocalServiceUtil {
 	/**
 	* @throws PortalException
 	*/
-	public static com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -87,8 +87,8 @@ public class UserTrackerLocalServiceUtil {
 	* @param userTracker the user tracker
 	* @return the user tracker that was removed
 	*/
-	public static com.liferay.portal.model.UserTracker deleteUserTracker(
-		com.liferay.portal.model.UserTracker userTracker) {
+	public static com.liferay.portal.kernel.model.UserTracker deleteUserTracker(
+		com.liferay.portal.kernel.model.UserTracker userTracker) {
 		return getService().deleteUserTracker(userTracker);
 	}
 
@@ -99,7 +99,7 @@ public class UserTrackerLocalServiceUtil {
 	* @return the user tracker that was removed
 	* @throws PortalException if a user tracker with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.UserTracker deleteUserTracker(
+	public static com.liferay.portal.kernel.model.UserTracker deleteUserTracker(
 		long userTrackerId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteUserTracker(userTrackerId);
@@ -183,7 +183,7 @@ public class UserTrackerLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.portal.model.UserTracker fetchUserTracker(
+	public static com.liferay.portal.kernel.model.UserTracker fetchUserTracker(
 		long userTrackerId) {
 		return getService().fetchUserTracker(userTrackerId);
 	}
@@ -205,7 +205,7 @@ public class UserTrackerLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.model.PersistedModel getPersistedModel(
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getPersistedModel(primaryKeyObj);
@@ -218,13 +218,13 @@ public class UserTrackerLocalServiceUtil {
 	* @return the user tracker
 	* @throws PortalException if a user tracker with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.UserTracker getUserTracker(
+	public static com.liferay.portal.kernel.model.UserTracker getUserTracker(
 		long userTrackerId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getUserTracker(userTrackerId);
 	}
 
-	public static java.util.List<com.liferay.portal.model.UserTracker> getUserTrackers(
+	public static java.util.List<com.liferay.portal.kernel.model.UserTracker> getUserTrackers(
 		long companyId, int start, int end) {
 		return getService().getUserTrackers(companyId, start, end);
 	}
@@ -240,7 +240,7 @@ public class UserTrackerLocalServiceUtil {
 	* @param end the upper bound of the range of user trackers (not inclusive)
 	* @return the range of user trackers
 	*/
-	public static java.util.List<com.liferay.portal.model.UserTracker> getUserTrackers(
+	public static java.util.List<com.liferay.portal.kernel.model.UserTracker> getUserTrackers(
 		int start, int end) {
 		return getService().getUserTrackers(start, end);
 	}
@@ -260,8 +260,8 @@ public class UserTrackerLocalServiceUtil {
 	* @param userTracker the user tracker
 	* @return the user tracker that was updated
 	*/
-	public static com.liferay.portal.model.UserTracker updateUserTracker(
-		com.liferay.portal.model.UserTracker userTracker) {
+	public static com.liferay.portal.kernel.model.UserTracker updateUserTracker(
+		com.liferay.portal.kernel.model.UserTracker userTracker) {
 		return getService().updateUserTracker(userTracker);
 	}
 

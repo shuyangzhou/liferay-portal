@@ -25,8 +25,8 @@ import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.service.BaseService;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.BaseService;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import com.liferay.trash.kernel.model.TrashEntry;
 import com.liferay.trash.kernel.model.TrashEntryList;
@@ -62,7 +62,7 @@ public interface TrashEntryService extends BaseService {
 	* @param entryIds the primary keys of the trash entries
 	*/
 	@Transactional(noRollbackFor =  {
-		com.liferay.portal.TrashPermissionException.class}
+		com.liferay.portal.kernel.exception.TrashPermissionException.class}
 	)
 	public void deleteEntries(long[] entryIds) throws PortalException;
 
@@ -73,7 +73,7 @@ public interface TrashEntryService extends BaseService {
 	* @param groupId the primary key of the group
 	*/
 	@Transactional(noRollbackFor =  {
-		com.liferay.portal.TrashPermissionException.class}
+		com.liferay.portal.kernel.exception.TrashPermissionException.class}
 	)
 	public void deleteEntries(long groupId) throws PortalException;
 

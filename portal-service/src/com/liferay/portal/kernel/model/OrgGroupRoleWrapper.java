@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -104,19 +104,19 @@ public class OrgGroupRoleWrapper implements OrgGroupRole,
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.model.OrgGroupRole orgGroupRole) {
+	public int compareTo(com.liferay.portal.kernel.model.OrgGroupRole orgGroupRole) {
 		return _orgGroupRole.compareTo(orgGroupRole);
 	}
 
 	@Override
 	public boolean containsGroup(
-		java.util.List<com.liferay.portal.model.Group> groups) {
+		java.util.List<com.liferay.portal.kernel.model.Group> groups) {
 		return _orgGroupRole.containsGroup(groups);
 	}
 
 	@Override
 	public boolean containsOrganization(
-		java.util.List<com.liferay.portal.model.Organization> organizations) {
+		java.util.List<com.liferay.portal.kernel.model.Organization> organizations) {
 		return _orgGroupRole.containsOrganization(organizations);
 	}
 
@@ -171,7 +171,7 @@ public class OrgGroupRoleWrapper implements OrgGroupRole,
 	* @return the primary key of this org group role
 	*/
 	@Override
-	public com.liferay.portal.service.persistence.OrgGroupRolePK getPrimaryKey() {
+	public com.liferay.portal.kernel.service.persistence.OrgGroupRolePK getPrimaryKey() {
 		return _orgGroupRole.getPrimaryKey();
 	}
 
@@ -282,7 +282,7 @@ public class OrgGroupRoleWrapper implements OrgGroupRole,
 	*/
 	@Override
 	public void setPrimaryKey(
-		com.liferay.portal.service.persistence.OrgGroupRolePK primaryKey) {
+		com.liferay.portal.kernel.service.persistence.OrgGroupRolePK primaryKey) {
 		_orgGroupRole.setPrimaryKey(primaryKey);
 	}
 
@@ -302,12 +302,12 @@ public class OrgGroupRoleWrapper implements OrgGroupRole,
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.OrgGroupRole> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.OrgGroupRole> toCacheModel() {
 		return _orgGroupRole.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.OrgGroupRole toEscapedModel() {
+	public com.liferay.portal.kernel.model.OrgGroupRole toEscapedModel() {
 		return new OrgGroupRoleWrapper(_orgGroupRole.toEscapedModel());
 	}
 
@@ -317,7 +317,7 @@ public class OrgGroupRoleWrapper implements OrgGroupRole,
 	}
 
 	@Override
-	public com.liferay.portal.model.OrgGroupRole toUnescapedModel() {
+	public com.liferay.portal.kernel.model.OrgGroupRole toUnescapedModel() {
 		return new OrgGroupRoleWrapper(_orgGroupRole.toUnescapedModel());
 	}
 

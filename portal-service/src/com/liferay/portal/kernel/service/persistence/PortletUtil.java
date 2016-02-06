@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
-import com.liferay.portal.model.Portlet;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -46,35 +46,35 @@ public class PortletUtil {
 	 */
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache()
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache()
 	 */
 	public static void clearCache() {
 		getPersistence().clearCache();
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static void clearCache(Portlet portlet) {
 		getPersistence().clearCache(portlet);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
 	public static long countWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<Portlet> findWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().findWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
 	public static List<Portlet> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
@@ -82,7 +82,7 @@ public class PortletUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
 	public static List<Portlet> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
@@ -93,14 +93,14 @@ public class PortletUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static Portlet update(Portlet portlet) {
 		return getPersistence().update(portlet);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
 	public static Portlet update(Portlet portlet, ServiceContext serviceContext) {
 		return getPersistence().update(portlet, serviceContext);
@@ -184,7 +184,7 @@ public class PortletUtil {
 	*/
 	public static Portlet findByCompanyId_First(long companyId,
 		OrderByComparator<Portlet> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchPortletException {
+		throws com.liferay.portal.kernel.exception.NoSuchPortletException {
 		return getPersistence()
 				   .findByCompanyId_First(companyId, orderByComparator);
 	}
@@ -212,7 +212,7 @@ public class PortletUtil {
 	*/
 	public static Portlet findByCompanyId_Last(long companyId,
 		OrderByComparator<Portlet> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchPortletException {
+		throws com.liferay.portal.kernel.exception.NoSuchPortletException {
 		return getPersistence()
 				   .findByCompanyId_Last(companyId, orderByComparator);
 	}
@@ -241,7 +241,7 @@ public class PortletUtil {
 	*/
 	public static Portlet[] findByCompanyId_PrevAndNext(long id,
 		long companyId, OrderByComparator<Portlet> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchPortletException {
+		throws com.liferay.portal.kernel.exception.NoSuchPortletException {
 		return getPersistence()
 				   .findByCompanyId_PrevAndNext(id, companyId, orderByComparator);
 	}
@@ -274,7 +274,7 @@ public class PortletUtil {
 	* @throws NoSuchPortletException if a matching portlet could not be found
 	*/
 	public static Portlet findByC_P(long companyId, java.lang.String portletId)
-		throws com.liferay.portal.exception.NoSuchPortletException {
+		throws com.liferay.portal.kernel.exception.NoSuchPortletException {
 		return getPersistence().findByC_P(companyId, portletId);
 	}
 
@@ -311,7 +311,7 @@ public class PortletUtil {
 	* @return the portlet that was removed
 	*/
 	public static Portlet removeByC_P(long companyId, java.lang.String portletId)
-		throws com.liferay.portal.exception.NoSuchPortletException {
+		throws com.liferay.portal.kernel.exception.NoSuchPortletException {
 		return getPersistence().removeByC_P(companyId, portletId);
 	}
 
@@ -362,7 +362,7 @@ public class PortletUtil {
 	* @throws NoSuchPortletException if a portlet with the primary key could not be found
 	*/
 	public static Portlet remove(long id)
-		throws com.liferay.portal.exception.NoSuchPortletException {
+		throws com.liferay.portal.kernel.exception.NoSuchPortletException {
 		return getPersistence().remove(id);
 	}
 
@@ -378,7 +378,7 @@ public class PortletUtil {
 	* @throws NoSuchPortletException if a portlet with the primary key could not be found
 	*/
 	public static Portlet findByPrimaryKey(long id)
-		throws com.liferay.portal.exception.NoSuchPortletException {
+		throws com.liferay.portal.kernel.exception.NoSuchPortletException {
 		return getPersistence().findByPrimaryKey(id);
 	}
 

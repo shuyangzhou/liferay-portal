@@ -38,13 +38,13 @@ public class ListTypeLocalServiceWrapper implements ListTypeLocalService,
 	* @return the list type that was added
 	*/
 	@Override
-	public com.liferay.portal.model.ListType addListType(
-		com.liferay.portal.model.ListType listType) {
+	public com.liferay.portal.kernel.model.ListType addListType(
+		com.liferay.portal.kernel.model.ListType listType) {
 		return _listTypeLocalService.addListType(listType);
 	}
 
 	@Override
-	public com.liferay.portal.model.ListType addListType(
+	public com.liferay.portal.kernel.model.ListType addListType(
 		java.lang.String name, java.lang.String type) {
 		return _listTypeLocalService.addListType(name, type);
 	}
@@ -56,7 +56,7 @@ public class ListTypeLocalServiceWrapper implements ListTypeLocalService,
 	* @return the new list type
 	*/
 	@Override
-	public com.liferay.portal.model.ListType createListType(long listTypeId) {
+	public com.liferay.portal.kernel.model.ListType createListType(long listTypeId) {
 		return _listTypeLocalService.createListType(listTypeId);
 	}
 
@@ -67,8 +67,8 @@ public class ListTypeLocalServiceWrapper implements ListTypeLocalService,
 	* @return the list type that was removed
 	*/
 	@Override
-	public com.liferay.portal.model.ListType deleteListType(
-		com.liferay.portal.model.ListType listType) {
+	public com.liferay.portal.kernel.model.ListType deleteListType(
+		com.liferay.portal.kernel.model.ListType listType) {
 		return _listTypeLocalService.deleteListType(listType);
 	}
 
@@ -80,7 +80,7 @@ public class ListTypeLocalServiceWrapper implements ListTypeLocalService,
 	* @throws PortalException if a list type with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.ListType deleteListType(long listTypeId)
+	public com.liferay.portal.kernel.model.ListType deleteListType(long listTypeId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _listTypeLocalService.deleteListType(listTypeId);
 	}
@@ -89,8 +89,8 @@ public class ListTypeLocalServiceWrapper implements ListTypeLocalService,
 	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _listTypeLocalService.deletePersistedModel(persistedModel);
 	}
@@ -180,7 +180,7 @@ public class ListTypeLocalServiceWrapper implements ListTypeLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.ListType fetchListType(long listTypeId) {
+	public com.liferay.portal.kernel.model.ListType fetchListType(long listTypeId) {
 		return _listTypeLocalService.fetchListType(listTypeId);
 	}
 
@@ -202,7 +202,7 @@ public class ListTypeLocalServiceWrapper implements ListTypeLocalService,
 	* @throws PortalException if a list type with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.ListType getListType(long listTypeId)
+	public com.liferay.portal.kernel.model.ListType getListType(long listTypeId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _listTypeLocalService.getListType(listTypeId);
 	}
@@ -219,13 +219,13 @@ public class ListTypeLocalServiceWrapper implements ListTypeLocalService,
 	* @return the range of list types
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.ListType> getListTypes(
+	public java.util.List<com.liferay.portal.kernel.model.ListType> getListTypes(
 		int start, int end) {
 		return _listTypeLocalService.getListTypes(start, end);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.ListType> getListTypes(
+	public java.util.List<com.liferay.portal.kernel.model.ListType> getListTypes(
 		java.lang.String type) {
 		return _listTypeLocalService.getListTypes(type);
 	}
@@ -251,7 +251,7 @@ public class ListTypeLocalServiceWrapper implements ListTypeLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.PersistedModel getPersistedModel(
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _listTypeLocalService.getPersistedModel(primaryKeyObj);
@@ -264,8 +264,8 @@ public class ListTypeLocalServiceWrapper implements ListTypeLocalService,
 	* @return the list type that was updated
 	*/
 	@Override
-	public com.liferay.portal.model.ListType updateListType(
-		com.liferay.portal.model.ListType listType) {
+	public com.liferay.portal.kernel.model.ListType updateListType(
+		com.liferay.portal.kernel.model.ListType listType) {
 		return _listTypeLocalService.updateListType(listType);
 	}
 

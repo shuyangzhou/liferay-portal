@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchSystemEventException;
-import com.liferay.portal.model.SystemEvent;
+import com.liferay.portal.kernel.exception.NoSuchSystemEventException;
+import com.liferay.portal.kernel.model.SystemEvent;
 
 /**
  * The persistence interface for the system event service.

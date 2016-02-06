@@ -39,8 +39,8 @@ public class UserGroupGroupRoleLocalServiceWrapper
 	* @return the user group group role that was added
 	*/
 	@Override
-	public com.liferay.portal.model.UserGroupGroupRole addUserGroupGroupRole(
-		com.liferay.portal.model.UserGroupGroupRole userGroupGroupRole) {
+	public com.liferay.portal.kernel.model.UserGroupGroupRole addUserGroupGroupRole(
+		com.liferay.portal.kernel.model.UserGroupGroupRole userGroupGroupRole) {
 		return _userGroupGroupRoleLocalService.addUserGroupGroupRole(userGroupGroupRole);
 	}
 
@@ -65,8 +65,8 @@ public class UserGroupGroupRoleLocalServiceWrapper
 	* @return the new user group group role
 	*/
 	@Override
-	public com.liferay.portal.model.UserGroupGroupRole createUserGroupGroupRole(
-		com.liferay.portal.service.persistence.UserGroupGroupRolePK userGroupGroupRolePK) {
+	public com.liferay.portal.kernel.model.UserGroupGroupRole createUserGroupGroupRole(
+		com.liferay.portal.kernel.service.persistence.UserGroupGroupRolePK userGroupGroupRolePK) {
 		return _userGroupGroupRoleLocalService.createUserGroupGroupRole(userGroupGroupRolePK);
 	}
 
@@ -74,8 +74,8 @@ public class UserGroupGroupRoleLocalServiceWrapper
 	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userGroupGroupRoleLocalService.deletePersistedModel(persistedModel);
 	}
@@ -87,8 +87,8 @@ public class UserGroupGroupRoleLocalServiceWrapper
 	* @return the user group group role that was removed
 	*/
 	@Override
-	public com.liferay.portal.model.UserGroupGroupRole deleteUserGroupGroupRole(
-		com.liferay.portal.model.UserGroupGroupRole userGroupGroupRole) {
+	public com.liferay.portal.kernel.model.UserGroupGroupRole deleteUserGroupGroupRole(
+		com.liferay.portal.kernel.model.UserGroupGroupRole userGroupGroupRole) {
 		return _userGroupGroupRoleLocalService.deleteUserGroupGroupRole(userGroupGroupRole);
 	}
 
@@ -100,8 +100,8 @@ public class UserGroupGroupRoleLocalServiceWrapper
 	* @throws PortalException if a user group group role with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.UserGroupGroupRole deleteUserGroupGroupRole(
-		com.liferay.portal.service.persistence.UserGroupGroupRolePK userGroupGroupRolePK)
+	public com.liferay.portal.kernel.model.UserGroupGroupRole deleteUserGroupGroupRole(
+		com.liferay.portal.kernel.service.persistence.UserGroupGroupRolePK userGroupGroupRolePK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userGroupGroupRoleLocalService.deleteUserGroupGroupRole(userGroupGroupRolePK);
 	}
@@ -240,8 +240,8 @@ public class UserGroupGroupRoleLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.model.UserGroupGroupRole fetchUserGroupGroupRole(
-		com.liferay.portal.service.persistence.UserGroupGroupRolePK userGroupGroupRolePK) {
+	public com.liferay.portal.kernel.model.UserGroupGroupRole fetchUserGroupGroupRole(
+		com.liferay.portal.kernel.service.persistence.UserGroupGroupRolePK userGroupGroupRolePK) {
 		return _userGroupGroupRoleLocalService.fetchUserGroupGroupRole(userGroupGroupRolePK);
 	}
 
@@ -266,7 +266,7 @@ public class UserGroupGroupRoleLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.model.PersistedModel getPersistedModel(
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userGroupGroupRoleLocalService.getPersistedModel(primaryKeyObj);
@@ -280,8 +280,8 @@ public class UserGroupGroupRoleLocalServiceWrapper
 	* @throws PortalException if a user group group role with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.UserGroupGroupRole getUserGroupGroupRole(
-		com.liferay.portal.service.persistence.UserGroupGroupRolePK userGroupGroupRolePK)
+	public com.liferay.portal.kernel.model.UserGroupGroupRole getUserGroupGroupRole(
+		com.liferay.portal.kernel.service.persistence.UserGroupGroupRolePK userGroupGroupRolePK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userGroupGroupRoleLocalService.getUserGroupGroupRole(userGroupGroupRolePK);
 	}
@@ -298,33 +298,33 @@ public class UserGroupGroupRoleLocalServiceWrapper
 	* @return the range of user group group roles
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.UserGroupGroupRole> getUserGroupGroupRoles(
+	public java.util.List<com.liferay.portal.kernel.model.UserGroupGroupRole> getUserGroupGroupRoles(
 		int start, int end) {
 		return _userGroupGroupRoleLocalService.getUserGroupGroupRoles(start, end);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.UserGroupGroupRole> getUserGroupGroupRoles(
+	public java.util.List<com.liferay.portal.kernel.model.UserGroupGroupRole> getUserGroupGroupRoles(
 		long userGroupId) {
 		return _userGroupGroupRoleLocalService.getUserGroupGroupRoles(userGroupId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.UserGroupGroupRole> getUserGroupGroupRoles(
+	public java.util.List<com.liferay.portal.kernel.model.UserGroupGroupRole> getUserGroupGroupRoles(
 		long userGroupId, long groupId) {
 		return _userGroupGroupRoleLocalService.getUserGroupGroupRoles(userGroupId,
 			groupId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.UserGroupGroupRole> getUserGroupGroupRolesByGroupAndRole(
+	public java.util.List<com.liferay.portal.kernel.model.UserGroupGroupRole> getUserGroupGroupRolesByGroupAndRole(
 		long groupId, long roleId) {
 		return _userGroupGroupRoleLocalService.getUserGroupGroupRolesByGroupAndRole(groupId,
 			roleId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.UserGroupGroupRole> getUserGroupGroupRolesByUser(
+	public java.util.List<com.liferay.portal.kernel.model.UserGroupGroupRole> getUserGroupGroupRolesByUser(
 		long userId) {
 		return _userGroupGroupRoleLocalService.getUserGroupGroupRolesByUser(userId);
 	}
@@ -361,8 +361,8 @@ public class UserGroupGroupRoleLocalServiceWrapper
 	* @return the user group group role that was updated
 	*/
 	@Override
-	public com.liferay.portal.model.UserGroupGroupRole updateUserGroupGroupRole(
-		com.liferay.portal.model.UserGroupGroupRole userGroupGroupRole) {
+	public com.liferay.portal.kernel.model.UserGroupGroupRole updateUserGroupGroupRole(
+		com.liferay.portal.kernel.model.UserGroupGroupRole userGroupGroupRole) {
 		return _userGroupGroupRoleLocalService.updateUserGroupGroupRole(userGroupGroupRole);
 	}
 

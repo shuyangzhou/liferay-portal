@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
-import com.liferay.portal.model.PortletItem;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.PortletItem;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -46,28 +46,28 @@ public class PortletItemUtil {
 	 */
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache()
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache()
 	 */
 	public static void clearCache() {
 		getPersistence().clearCache();
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static void clearCache(PortletItem portletItem) {
 		getPersistence().clearCache(portletItem);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
 	public static long countWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<PortletItem> findWithDynamicQuery(
 		DynamicQuery dynamicQuery) {
@@ -75,7 +75,7 @@ public class PortletItemUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
 	public static List<PortletItem> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
@@ -83,7 +83,7 @@ public class PortletItemUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
 	public static List<PortletItem> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
@@ -94,14 +94,14 @@ public class PortletItemUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static PortletItem update(PortletItem portletItem) {
 		return getPersistence().update(portletItem);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
 	public static PortletItem update(PortletItem portletItem,
 		ServiceContext serviceContext) {
@@ -192,7 +192,7 @@ public class PortletItemUtil {
 	*/
 	public static PortletItem findByG_C_First(long groupId, long classNameId,
 		OrderByComparator<PortletItem> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchPortletItemException {
+		throws com.liferay.portal.kernel.exception.NoSuchPortletItemException {
 		return getPersistence()
 				   .findByG_C_First(groupId, classNameId, orderByComparator);
 	}
@@ -222,7 +222,7 @@ public class PortletItemUtil {
 	*/
 	public static PortletItem findByG_C_Last(long groupId, long classNameId,
 		OrderByComparator<PortletItem> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchPortletItemException {
+		throws com.liferay.portal.kernel.exception.NoSuchPortletItemException {
 		return getPersistence()
 				   .findByG_C_Last(groupId, classNameId, orderByComparator);
 	}
@@ -254,7 +254,7 @@ public class PortletItemUtil {
 	public static PortletItem[] findByG_C_PrevAndNext(long portletItemId,
 		long groupId, long classNameId,
 		OrderByComparator<PortletItem> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchPortletItemException {
+		throws com.liferay.portal.kernel.exception.NoSuchPortletItemException {
 		return getPersistence()
 				   .findByG_C_PrevAndNext(portletItemId, groupId, classNameId,
 			orderByComparator);
@@ -375,7 +375,7 @@ public class PortletItemUtil {
 	public static PortletItem findByG_P_C_First(long groupId,
 		java.lang.String portletId, long classNameId,
 		OrderByComparator<PortletItem> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchPortletItemException {
+		throws com.liferay.portal.kernel.exception.NoSuchPortletItemException {
 		return getPersistence()
 				   .findByG_P_C_First(groupId, portletId, classNameId,
 			orderByComparator);
@@ -411,7 +411,7 @@ public class PortletItemUtil {
 	public static PortletItem findByG_P_C_Last(long groupId,
 		java.lang.String portletId, long classNameId,
 		OrderByComparator<PortletItem> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchPortletItemException {
+		throws com.liferay.portal.kernel.exception.NoSuchPortletItemException {
 		return getPersistence()
 				   .findByG_P_C_Last(groupId, portletId, classNameId,
 			orderByComparator);
@@ -448,7 +448,7 @@ public class PortletItemUtil {
 	public static PortletItem[] findByG_P_C_PrevAndNext(long portletItemId,
 		long groupId, java.lang.String portletId, long classNameId,
 		OrderByComparator<PortletItem> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchPortletItemException {
+		throws com.liferay.portal.kernel.exception.NoSuchPortletItemException {
 		return getPersistence()
 				   .findByG_P_C_PrevAndNext(portletItemId, groupId, portletId,
 			classNameId, orderByComparator);
@@ -491,7 +491,7 @@ public class PortletItemUtil {
 	*/
 	public static PortletItem findByG_N_P_C(long groupId,
 		java.lang.String name, java.lang.String portletId, long classNameId)
-		throws com.liferay.portal.exception.NoSuchPortletItemException {
+		throws com.liferay.portal.kernel.exception.NoSuchPortletItemException {
 		return getPersistence()
 				   .findByG_N_P_C(groupId, name, portletId, classNameId);
 	}
@@ -540,7 +540,7 @@ public class PortletItemUtil {
 	*/
 	public static PortletItem removeByG_N_P_C(long groupId,
 		java.lang.String name, java.lang.String portletId, long classNameId)
-		throws com.liferay.portal.exception.NoSuchPortletItemException {
+		throws com.liferay.portal.kernel.exception.NoSuchPortletItemException {
 		return getPersistence()
 				   .removeByG_N_P_C(groupId, name, portletId, classNameId);
 	}
@@ -596,7 +596,7 @@ public class PortletItemUtil {
 	* @throws NoSuchPortletItemException if a portlet item with the primary key could not be found
 	*/
 	public static PortletItem remove(long portletItemId)
-		throws com.liferay.portal.exception.NoSuchPortletItemException {
+		throws com.liferay.portal.kernel.exception.NoSuchPortletItemException {
 		return getPersistence().remove(portletItemId);
 	}
 
@@ -612,7 +612,7 @@ public class PortletItemUtil {
 	* @throws NoSuchPortletItemException if a portlet item with the primary key could not be found
 	*/
 	public static PortletItem findByPrimaryKey(long portletItemId)
-		throws com.liferay.portal.exception.NoSuchPortletItemException {
+		throws com.liferay.portal.kernel.exception.NoSuchPortletItemException {
 		return getPersistence().findByPrimaryKey(portletItemId);
 	}
 

@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -215,19 +215,19 @@ public interface PortletPreferencesModel extends BaseModel<PortletPreferences>,
 
 	@Override
 	public int compareTo(
-		com.liferay.portal.model.PortletPreferences portletPreferences);
+		com.liferay.portal.kernel.model.PortletPreferences portletPreferences);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.PortletPreferences> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.PortletPreferences> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.PortletPreferences toEscapedModel();
+	public com.liferay.portal.kernel.model.PortletPreferences toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.PortletPreferences toUnescapedModel();
+	public com.liferay.portal.kernel.model.PortletPreferences toUnescapedModel();
 
 	@Override
 	public String toString();

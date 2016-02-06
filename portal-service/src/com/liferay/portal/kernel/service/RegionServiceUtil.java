@@ -40,18 +40,18 @@ public class RegionServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.portal.service.impl.RegionServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.portal.model.Region addRegion(long countryId,
+	public static com.liferay.portal.kernel.model.Region addRegion(long countryId,
 		java.lang.String regionCode, java.lang.String name, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().addRegion(countryId, regionCode, name, active);
 	}
 
-	public static com.liferay.portal.model.Region fetchRegion(long countryId,
+	public static com.liferay.portal.kernel.model.Region fetchRegion(long countryId,
 		java.lang.String regionCode) {
 		return getService().fetchRegion(countryId, regionCode);
 	}
 
-	public static com.liferay.portal.model.Region fetchRegion(long regionId) {
+	public static com.liferay.portal.kernel.model.Region fetchRegion(long regionId) {
 		return getService().fetchRegion(regionId);
 	}
 
@@ -64,32 +64,32 @@ public class RegionServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.model.Region getRegion(long countryId,
+	public static com.liferay.portal.kernel.model.Region getRegion(long countryId,
 		java.lang.String regionCode)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getRegion(countryId, regionCode);
 	}
 
-	public static com.liferay.portal.model.Region getRegion(long regionId)
+	public static com.liferay.portal.kernel.model.Region getRegion(long regionId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getRegion(regionId);
 	}
 
-	public static java.util.List<com.liferay.portal.model.Region> getRegions() {
+	public static java.util.List<com.liferay.portal.kernel.model.Region> getRegions() {
 		return getService().getRegions();
 	}
 
-	public static java.util.List<com.liferay.portal.model.Region> getRegions(
+	public static java.util.List<com.liferay.portal.kernel.model.Region> getRegions(
 		boolean active) {
 		return getService().getRegions(active);
 	}
 
-	public static java.util.List<com.liferay.portal.model.Region> getRegions(
+	public static java.util.List<com.liferay.portal.kernel.model.Region> getRegions(
 		long countryId) {
 		return getService().getRegions(countryId);
 	}
 
-	public static java.util.List<com.liferay.portal.model.Region> getRegions(
+	public static java.util.List<com.liferay.portal.kernel.model.Region> getRegions(
 		long countryId, boolean active) {
 		return getService().getRegions(countryId, active);
 	}

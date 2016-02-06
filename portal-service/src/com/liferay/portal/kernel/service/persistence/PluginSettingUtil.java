@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
-import com.liferay.portal.model.PluginSetting;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.PluginSetting;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -46,28 +46,28 @@ public class PluginSettingUtil {
 	 */
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache()
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache()
 	 */
 	public static void clearCache() {
 		getPersistence().clearCache();
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static void clearCache(PluginSetting pluginSetting) {
 		getPersistence().clearCache(pluginSetting);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
 	public static long countWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<PluginSetting> findWithDynamicQuery(
 		DynamicQuery dynamicQuery) {
@@ -75,7 +75,7 @@ public class PluginSettingUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
 	public static List<PluginSetting> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
@@ -83,7 +83,7 @@ public class PluginSettingUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
 	public static List<PluginSetting> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
@@ -94,14 +94,14 @@ public class PluginSettingUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static PluginSetting update(PluginSetting pluginSetting) {
 		return getPersistence().update(pluginSetting);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
 	public static PluginSetting update(PluginSetting pluginSetting,
 		ServiceContext serviceContext) {
@@ -186,7 +186,7 @@ public class PluginSettingUtil {
 	*/
 	public static PluginSetting findByCompanyId_First(long companyId,
 		OrderByComparator<PluginSetting> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchPluginSettingException {
+		throws com.liferay.portal.kernel.exception.NoSuchPluginSettingException {
 		return getPersistence()
 				   .findByCompanyId_First(companyId, orderByComparator);
 	}
@@ -214,7 +214,7 @@ public class PluginSettingUtil {
 	*/
 	public static PluginSetting findByCompanyId_Last(long companyId,
 		OrderByComparator<PluginSetting> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchPluginSettingException {
+		throws com.liferay.portal.kernel.exception.NoSuchPluginSettingException {
 		return getPersistence()
 				   .findByCompanyId_Last(companyId, orderByComparator);
 	}
@@ -244,7 +244,7 @@ public class PluginSettingUtil {
 	public static PluginSetting[] findByCompanyId_PrevAndNext(
 		long pluginSettingId, long companyId,
 		OrderByComparator<PluginSetting> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchPluginSettingException {
+		throws com.liferay.portal.kernel.exception.NoSuchPluginSettingException {
 		return getPersistence()
 				   .findByCompanyId_PrevAndNext(pluginSettingId, companyId,
 			orderByComparator);
@@ -280,7 +280,7 @@ public class PluginSettingUtil {
 	*/
 	public static PluginSetting findByC_I_T(long companyId,
 		java.lang.String pluginId, java.lang.String pluginType)
-		throws com.liferay.portal.exception.NoSuchPluginSettingException {
+		throws com.liferay.portal.kernel.exception.NoSuchPluginSettingException {
 		return getPersistence().findByC_I_T(companyId, pluginId, pluginType);
 	}
 
@@ -324,7 +324,7 @@ public class PluginSettingUtil {
 	*/
 	public static PluginSetting removeByC_I_T(long companyId,
 		java.lang.String pluginId, java.lang.String pluginType)
-		throws com.liferay.portal.exception.NoSuchPluginSettingException {
+		throws com.liferay.portal.kernel.exception.NoSuchPluginSettingException {
 		return getPersistence().removeByC_I_T(companyId, pluginId, pluginType);
 	}
 
@@ -377,7 +377,7 @@ public class PluginSettingUtil {
 	* @throws NoSuchPluginSettingException if a plugin setting with the primary key could not be found
 	*/
 	public static PluginSetting remove(long pluginSettingId)
-		throws com.liferay.portal.exception.NoSuchPluginSettingException {
+		throws com.liferay.portal.kernel.exception.NoSuchPluginSettingException {
 		return getPersistence().remove(pluginSettingId);
 	}
 
@@ -393,7 +393,7 @@ public class PluginSettingUtil {
 	* @throws NoSuchPluginSettingException if a plugin setting with the primary key could not be found
 	*/
 	public static PluginSetting findByPrimaryKey(long pluginSettingId)
-		throws com.liferay.portal.exception.NoSuchPluginSettingException {
+		throws com.liferay.portal.kernel.exception.NoSuchPluginSettingException {
 		return getPersistence().findByPrimaryKey(pluginSettingId);
 	}
 

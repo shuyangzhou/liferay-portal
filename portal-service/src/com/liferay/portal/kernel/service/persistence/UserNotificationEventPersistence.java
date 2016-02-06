@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchUserNotificationEventException;
-import com.liferay.portal.model.UserNotificationEvent;
+import com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException;
+import com.liferay.portal.kernel.model.UserNotificationEvent;
 
 /**
  * The persistence interface for the user notification event service.

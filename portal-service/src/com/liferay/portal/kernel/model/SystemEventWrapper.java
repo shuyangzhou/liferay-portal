@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -175,7 +175,7 @@ public class SystemEventWrapper implements SystemEvent,
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.model.SystemEvent systemEvent) {
+	public int compareTo(com.liferay.portal.kernel.model.SystemEvent systemEvent) {
 		return _systemEvent.compareTo(systemEvent);
 	}
 
@@ -610,12 +610,12 @@ public class SystemEventWrapper implements SystemEvent,
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.SystemEvent> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.SystemEvent> toCacheModel() {
 		return _systemEvent.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.SystemEvent toEscapedModel() {
+	public com.liferay.portal.kernel.model.SystemEvent toEscapedModel() {
 		return new SystemEventWrapper(_systemEvent.toEscapedModel());
 	}
 
@@ -625,7 +625,7 @@ public class SystemEventWrapper implements SystemEvent,
 	}
 
 	@Override
-	public com.liferay.portal.model.SystemEvent toUnescapedModel() {
+	public com.liferay.portal.kernel.model.SystemEvent toUnescapedModel() {
 		return new SystemEventWrapper(_systemEvent.toUnescapedModel());
 	}
 

@@ -70,7 +70,7 @@ public interface UserGroup extends UserGroupModel, PersistedModel {
 			}
 		};
 
-	public com.liferay.portal.model.Group getGroup()
+	public com.liferay.portal.kernel.model.Group getGroup()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public long getGroupId()

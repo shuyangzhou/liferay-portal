@@ -38,8 +38,8 @@ public class SubscriptionLocalServiceWrapper implements SubscriptionLocalService
 	* @return the subscription that was added
 	*/
 	@Override
-	public com.liferay.portal.model.Subscription addSubscription(
-		com.liferay.portal.model.Subscription subscription) {
+	public com.liferay.portal.kernel.model.Subscription addSubscription(
+		com.liferay.portal.kernel.model.Subscription subscription) {
 		return _subscriptionLocalService.addSubscription(subscription);
 	}
 
@@ -65,7 +65,7 @@ public class SubscriptionLocalServiceWrapper implements SubscriptionLocalService
 	* @return the subscription
 	*/
 	@Override
-	public com.liferay.portal.model.Subscription addSubscription(long userId,
+	public com.liferay.portal.kernel.model.Subscription addSubscription(long userId,
 		long groupId, java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _subscriptionLocalService.addSubscription(userId, groupId,
@@ -94,7 +94,7 @@ public class SubscriptionLocalServiceWrapper implements SubscriptionLocalService
 	* @return the subscription
 	*/
 	@Override
-	public com.liferay.portal.model.Subscription addSubscription(long userId,
+	public com.liferay.portal.kernel.model.Subscription addSubscription(long userId,
 		long groupId, java.lang.String className, long classPK,
 		java.lang.String frequency)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -109,7 +109,7 @@ public class SubscriptionLocalServiceWrapper implements SubscriptionLocalService
 	* @return the new subscription
 	*/
 	@Override
-	public com.liferay.portal.model.Subscription createSubscription(
+	public com.liferay.portal.kernel.model.Subscription createSubscription(
 		long subscriptionId) {
 		return _subscriptionLocalService.createSubscription(subscriptionId);
 	}
@@ -118,8 +118,8 @@ public class SubscriptionLocalServiceWrapper implements SubscriptionLocalService
 	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _subscriptionLocalService.deletePersistedModel(persistedModel);
 	}
@@ -132,8 +132,8 @@ public class SubscriptionLocalServiceWrapper implements SubscriptionLocalService
 	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.portal.model.Subscription deleteSubscription(
-		com.liferay.portal.model.Subscription subscription)
+	public com.liferay.portal.kernel.model.Subscription deleteSubscription(
+		com.liferay.portal.kernel.model.Subscription subscription)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _subscriptionLocalService.deleteSubscription(subscription);
 	}
@@ -146,7 +146,7 @@ public class SubscriptionLocalServiceWrapper implements SubscriptionLocalService
 	* @throws PortalException if a subscription with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.Subscription deleteSubscription(
+	public com.liferay.portal.kernel.model.Subscription deleteSubscription(
 		long subscriptionId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _subscriptionLocalService.deleteSubscription(subscriptionId);
@@ -285,14 +285,14 @@ public class SubscriptionLocalServiceWrapper implements SubscriptionLocalService
 	}
 
 	@Override
-	public com.liferay.portal.model.Subscription fetchSubscription(
+	public com.liferay.portal.kernel.model.Subscription fetchSubscription(
 		long companyId, long userId, java.lang.String className, long classPK) {
 		return _subscriptionLocalService.fetchSubscription(companyId, userId,
 			className, classPK);
 	}
 
 	@Override
-	public com.liferay.portal.model.Subscription fetchSubscription(
+	public com.liferay.portal.kernel.model.Subscription fetchSubscription(
 		long subscriptionId) {
 		return _subscriptionLocalService.fetchSubscription(subscriptionId);
 	}
@@ -318,7 +318,7 @@ public class SubscriptionLocalServiceWrapper implements SubscriptionLocalService
 	}
 
 	@Override
-	public com.liferay.portal.model.PersistedModel getPersistedModel(
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _subscriptionLocalService.getPersistedModel(primaryKeyObj);
@@ -334,7 +334,7 @@ public class SubscriptionLocalServiceWrapper implements SubscriptionLocalService
 	* @return the subscription of the user to the entity
 	*/
 	@Override
-	public com.liferay.portal.model.Subscription getSubscription(
+	public com.liferay.portal.kernel.model.Subscription getSubscription(
 		long companyId, long userId, java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _subscriptionLocalService.getSubscription(companyId, userId,
@@ -349,7 +349,7 @@ public class SubscriptionLocalServiceWrapper implements SubscriptionLocalService
 	* @throws PortalException if a subscription with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.Subscription getSubscription(
+	public com.liferay.portal.kernel.model.Subscription getSubscription(
 		long subscriptionId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _subscriptionLocalService.getSubscription(subscriptionId);
@@ -364,7 +364,7 @@ public class SubscriptionLocalServiceWrapper implements SubscriptionLocalService
 	* @return the subscriptions to the entity
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Subscription> getSubscriptions(
+	public java.util.List<com.liferay.portal.kernel.model.Subscription> getSubscriptions(
 		long companyId, java.lang.String className, long classPK) {
 		return _subscriptionLocalService.getSubscriptions(companyId, className,
 			classPK);
@@ -380,7 +380,7 @@ public class SubscriptionLocalServiceWrapper implements SubscriptionLocalService
 	* @return the subscriptions of the user to the entities
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Subscription> getSubscriptions(
+	public java.util.List<com.liferay.portal.kernel.model.Subscription> getSubscriptions(
 		long companyId, long userId, java.lang.String className, long[] classPKs) {
 		return _subscriptionLocalService.getSubscriptions(companyId, userId,
 			className, classPKs);
@@ -398,7 +398,7 @@ public class SubscriptionLocalServiceWrapper implements SubscriptionLocalService
 	* @return the range of subscriptions
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Subscription> getSubscriptions(
+	public java.util.List<com.liferay.portal.kernel.model.Subscription> getSubscriptions(
 		int start, int end) {
 		return _subscriptionLocalService.getSubscriptions(start, end);
 	}
@@ -422,7 +422,7 @@ public class SubscriptionLocalServiceWrapper implements SubscriptionLocalService
 	* @return the subscriptions of the user to the entities with the class name
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Subscription> getUserSubscriptions(
+	public java.util.List<com.liferay.portal.kernel.model.Subscription> getUserSubscriptions(
 		long userId, java.lang.String className) {
 		return _subscriptionLocalService.getUserSubscriptions(userId, className);
 	}
@@ -437,9 +437,9 @@ public class SubscriptionLocalServiceWrapper implements SubscriptionLocalService
 	* @return the range of subscriptions of the user
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Subscription> getUserSubscriptions(
+	public java.util.List<com.liferay.portal.kernel.model.Subscription> getUserSubscriptions(
 		long userId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Subscription> orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Subscription> orderByComparator) {
 		return _subscriptionLocalService.getUserSubscriptions(userId, start,
 			end, orderByComparator);
 	}
@@ -497,8 +497,8 @@ public class SubscriptionLocalServiceWrapper implements SubscriptionLocalService
 	* @return the subscription that was updated
 	*/
 	@Override
-	public com.liferay.portal.model.Subscription updateSubscription(
-		com.liferay.portal.model.Subscription subscription) {
+	public com.liferay.portal.kernel.model.Subscription updateSubscription(
+		com.liferay.portal.kernel.model.Subscription subscription) {
 		return _subscriptionLocalService.updateSubscription(subscription);
 	}
 

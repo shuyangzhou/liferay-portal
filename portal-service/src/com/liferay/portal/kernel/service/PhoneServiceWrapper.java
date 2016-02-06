@@ -31,10 +31,10 @@ public class PhoneServiceWrapper implements PhoneService,
 	}
 
 	@Override
-	public com.liferay.portal.model.Phone addPhone(java.lang.String className,
+	public com.liferay.portal.kernel.model.Phone addPhone(java.lang.String className,
 		long classPK, java.lang.String number, java.lang.String extension,
 		long typeId, boolean primary,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _phoneService.addPhone(className, classPK, number, extension,
 			typeId, primary, serviceContext);
@@ -57,20 +57,20 @@ public class PhoneServiceWrapper implements PhoneService,
 	}
 
 	@Override
-	public com.liferay.portal.model.Phone getPhone(long phoneId)
+	public com.liferay.portal.kernel.model.Phone getPhone(long phoneId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _phoneService.getPhone(phoneId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Phone> getPhones(
+	public java.util.List<com.liferay.portal.kernel.model.Phone> getPhones(
 		java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _phoneService.getPhones(className, classPK);
 	}
 
 	@Override
-	public com.liferay.portal.model.Phone updatePhone(long phoneId,
+	public com.liferay.portal.kernel.model.Phone updatePhone(long phoneId,
 		java.lang.String number, java.lang.String extension, long typeId,
 		boolean primary)
 		throws com.liferay.portal.kernel.exception.PortalException {

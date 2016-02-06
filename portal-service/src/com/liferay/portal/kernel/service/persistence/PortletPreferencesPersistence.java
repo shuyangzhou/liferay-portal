@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchPortletPreferencesException;
-import com.liferay.portal.model.PortletPreferences;
+import com.liferay.portal.kernel.exception.NoSuchPortletPreferencesException;
+import com.liferay.portal.kernel.model.PortletPreferences;
 
 /**
  * The persistence interface for the portlet preferences service.

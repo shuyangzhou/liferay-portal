@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchMembershipRequestException;
-import com.liferay.portal.model.MembershipRequest;
+import com.liferay.portal.kernel.exception.NoSuchMembershipRequestException;
+import com.liferay.portal.kernel.model.MembershipRequest;
 
 /**
  * The persistence interface for the membership request service.

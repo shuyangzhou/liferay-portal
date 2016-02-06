@@ -47,8 +47,8 @@ public class UserIdMapperLocalServiceUtil {
 	* @param userIdMapper the user ID mapper
 	* @return the user ID mapper that was added
 	*/
-	public static com.liferay.portal.model.UserIdMapper addUserIdMapper(
-		com.liferay.portal.model.UserIdMapper userIdMapper) {
+	public static com.liferay.portal.kernel.model.UserIdMapper addUserIdMapper(
+		com.liferay.portal.kernel.model.UserIdMapper userIdMapper) {
 		return getService().addUserIdMapper(userIdMapper);
 	}
 
@@ -58,7 +58,7 @@ public class UserIdMapperLocalServiceUtil {
 	* @param userIdMapperId the primary key for the new user ID mapper
 	* @return the new user ID mapper
 	*/
-	public static com.liferay.portal.model.UserIdMapper createUserIdMapper(
+	public static com.liferay.portal.kernel.model.UserIdMapper createUserIdMapper(
 		long userIdMapperId) {
 		return getService().createUserIdMapper(userIdMapperId);
 	}
@@ -66,8 +66,8 @@ public class UserIdMapperLocalServiceUtil {
 	/**
 	* @throws PortalException
 	*/
-	public static com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -78,8 +78,8 @@ public class UserIdMapperLocalServiceUtil {
 	* @param userIdMapper the user ID mapper
 	* @return the user ID mapper that was removed
 	*/
-	public static com.liferay.portal.model.UserIdMapper deleteUserIdMapper(
-		com.liferay.portal.model.UserIdMapper userIdMapper) {
+	public static com.liferay.portal.kernel.model.UserIdMapper deleteUserIdMapper(
+		com.liferay.portal.kernel.model.UserIdMapper userIdMapper) {
 		return getService().deleteUserIdMapper(userIdMapper);
 	}
 
@@ -90,7 +90,7 @@ public class UserIdMapperLocalServiceUtil {
 	* @return the user ID mapper that was removed
 	* @throws PortalException if a user ID mapper with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.UserIdMapper deleteUserIdMapper(
+	public static com.liferay.portal.kernel.model.UserIdMapper deleteUserIdMapper(
 		long userIdMapperId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteUserIdMapper(userIdMapperId);
@@ -178,7 +178,7 @@ public class UserIdMapperLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.portal.model.UserIdMapper fetchUserIdMapper(
+	public static com.liferay.portal.kernel.model.UserIdMapper fetchUserIdMapper(
 		long userIdMapperId) {
 		return getService().fetchUserIdMapper(userIdMapperId);
 	}
@@ -200,13 +200,13 @@ public class UserIdMapperLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.model.PersistedModel getPersistedModel(
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static com.liferay.portal.model.UserIdMapper getUserIdMapper(
+	public static com.liferay.portal.kernel.model.UserIdMapper getUserIdMapper(
 		long userId, java.lang.String type)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getUserIdMapper(userId, type);
@@ -219,13 +219,13 @@ public class UserIdMapperLocalServiceUtil {
 	* @return the user ID mapper
 	* @throws PortalException if a user ID mapper with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.UserIdMapper getUserIdMapper(
+	public static com.liferay.portal.kernel.model.UserIdMapper getUserIdMapper(
 		long userIdMapperId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getUserIdMapper(userIdMapperId);
 	}
 
-	public static com.liferay.portal.model.UserIdMapper getUserIdMapperByExternalUserId(
+	public static com.liferay.portal.kernel.model.UserIdMapper getUserIdMapperByExternalUserId(
 		java.lang.String type, java.lang.String externalUserId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getUserIdMapperByExternalUserId(type, externalUserId);
@@ -242,12 +242,12 @@ public class UserIdMapperLocalServiceUtil {
 	* @param end the upper bound of the range of user ID mappers (not inclusive)
 	* @return the range of user ID mappers
 	*/
-	public static java.util.List<com.liferay.portal.model.UserIdMapper> getUserIdMappers(
+	public static java.util.List<com.liferay.portal.kernel.model.UserIdMapper> getUserIdMappers(
 		int start, int end) {
 		return getService().getUserIdMappers(start, end);
 	}
 
-	public static java.util.List<com.liferay.portal.model.UserIdMapper> getUserIdMappers(
+	public static java.util.List<com.liferay.portal.kernel.model.UserIdMapper> getUserIdMappers(
 		long userId) {
 		return getService().getUserIdMappers(userId);
 	}
@@ -261,7 +261,7 @@ public class UserIdMapperLocalServiceUtil {
 		return getService().getUserIdMappersCount();
 	}
 
-	public static com.liferay.portal.model.UserIdMapper updateUserIdMapper(
+	public static com.liferay.portal.kernel.model.UserIdMapper updateUserIdMapper(
 		long userId, java.lang.String type, java.lang.String description,
 		java.lang.String externalUserId) {
 		return getService()
@@ -274,8 +274,8 @@ public class UserIdMapperLocalServiceUtil {
 	* @param userIdMapper the user ID mapper
 	* @return the user ID mapper that was updated
 	*/
-	public static com.liferay.portal.model.UserIdMapper updateUserIdMapper(
-		com.liferay.portal.model.UserIdMapper userIdMapper) {
+	public static com.liferay.portal.kernel.model.UserIdMapper updateUserIdMapper(
+		com.liferay.portal.kernel.model.UserIdMapper userIdMapper) {
 		return getService().updateUserIdMapper(userIdMapper);
 	}
 

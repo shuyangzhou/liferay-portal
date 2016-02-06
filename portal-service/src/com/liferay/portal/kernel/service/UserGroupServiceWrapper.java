@@ -70,7 +70,7 @@ public class UserGroupServiceWrapper implements UserGroupService,
 	*/
 	@Deprecated
 	@Override
-	public com.liferay.portal.model.UserGroup addUserGroup(
+	public com.liferay.portal.kernel.model.UserGroup addUserGroup(
 		java.lang.String name, java.lang.String description)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userGroupService.addUserGroup(name, description);
@@ -92,9 +92,9 @@ public class UserGroupServiceWrapper implements UserGroupService,
 	* @return the user group
 	*/
 	@Override
-	public com.liferay.portal.model.UserGroup addUserGroup(
+	public com.liferay.portal.kernel.model.UserGroup addUserGroup(
 		java.lang.String name, java.lang.String description,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userGroupService.addUserGroup(name, description, serviceContext);
 	}
@@ -117,7 +117,7 @@ public class UserGroupServiceWrapper implements UserGroupService,
 	* @return the user group with the primary key
 	*/
 	@Override
-	public com.liferay.portal.model.UserGroup fetchUserGroup(long userGroupId)
+	public com.liferay.portal.kernel.model.UserGroup fetchUserGroup(long userGroupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userGroupService.fetchUserGroup(userGroupId);
 	}
@@ -139,7 +139,7 @@ public class UserGroupServiceWrapper implements UserGroupService,
 	* @return the user group with the name
 	*/
 	@Override
-	public com.liferay.portal.model.UserGroup getUserGroup(
+	public com.liferay.portal.kernel.model.UserGroup getUserGroup(
 		java.lang.String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userGroupService.getUserGroup(name);
@@ -152,13 +152,13 @@ public class UserGroupServiceWrapper implements UserGroupService,
 	* @return the user group with the primary key
 	*/
 	@Override
-	public com.liferay.portal.model.UserGroup getUserGroup(long userGroupId)
+	public com.liferay.portal.kernel.model.UserGroup getUserGroup(long userGroupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userGroupService.getUserGroup(userGroupId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.UserGroup> getUserGroups(
+	public java.util.List<com.liferay.portal.kernel.model.UserGroup> getUserGroups(
 		long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userGroupService.getUserGroups(companyId);
@@ -171,7 +171,7 @@ public class UserGroupServiceWrapper implements UserGroupService,
 	* @return the user groups to which the user belongs
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.UserGroup> getUserUserGroups(
+	public java.util.List<com.liferay.portal.kernel.model.UserGroup> getUserUserGroups(
 		long userId) throws com.liferay.portal.kernel.exception.PortalException {
 		return _userGroupService.getUserUserGroups(userId);
 	}
@@ -212,7 +212,7 @@ public class UserGroupServiceWrapper implements UserGroupService,
 	*/
 	@Deprecated
 	@Override
-	public com.liferay.portal.model.UserGroup updateUserGroup(
+	public com.liferay.portal.kernel.model.UserGroup updateUserGroup(
 		long userGroupId, java.lang.String name, java.lang.String description)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userGroupService.updateUserGroup(userGroupId, name, description);
@@ -230,9 +230,9 @@ public class UserGroupServiceWrapper implements UserGroupService,
 	* @return the user group
 	*/
 	@Override
-	public com.liferay.portal.model.UserGroup updateUserGroup(
+	public com.liferay.portal.kernel.model.UserGroup updateUserGroup(
 		long userGroupId, java.lang.String name, java.lang.String description,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userGroupService.updateUserGroup(userGroupId, name,
 			description, serviceContext);

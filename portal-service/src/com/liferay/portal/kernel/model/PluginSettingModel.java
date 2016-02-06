@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -208,19 +208,19 @@ public interface PluginSettingModel extends BaseModel<PluginSetting>, MVCCModel,
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.model.PluginSetting pluginSetting);
+	public int compareTo(com.liferay.portal.kernel.model.PluginSetting pluginSetting);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.PluginSetting> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.PluginSetting> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.PluginSetting toEscapedModel();
+	public com.liferay.portal.kernel.model.PluginSetting toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.PluginSetting toUnescapedModel();
+	public com.liferay.portal.kernel.model.PluginSetting toUnescapedModel();
 
 	@Override
 	public String toString();

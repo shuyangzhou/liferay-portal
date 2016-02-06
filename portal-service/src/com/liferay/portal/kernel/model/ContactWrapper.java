@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -272,7 +272,7 @@ public class ContactWrapper implements Contact, ModelWrapper<Contact> {
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.model.Contact contact) {
+	public int compareTo(com.liferay.portal.kernel.model.Contact contact) {
 		return _contact.compareTo(contact);
 	}
 
@@ -997,12 +997,12 @@ public class ContactWrapper implements Contact, ModelWrapper<Contact> {
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.Contact> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.Contact> toCacheModel() {
 		return _contact.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.Contact toEscapedModel() {
+	public com.liferay.portal.kernel.model.Contact toEscapedModel() {
 		return new ContactWrapper(_contact.toEscapedModel());
 	}
 
@@ -1012,7 +1012,7 @@ public class ContactWrapper implements Contact, ModelWrapper<Contact> {
 	}
 
 	@Override
-	public com.liferay.portal.model.Contact toUnescapedModel() {
+	public com.liferay.portal.kernel.model.Contact toUnescapedModel() {
 		return new ContactWrapper(_contact.toUnescapedModel());
 	}
 

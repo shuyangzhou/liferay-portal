@@ -38,8 +38,8 @@ public class UserIdMapperLocalServiceWrapper implements UserIdMapperLocalService
 	* @return the user ID mapper that was added
 	*/
 	@Override
-	public com.liferay.portal.model.UserIdMapper addUserIdMapper(
-		com.liferay.portal.model.UserIdMapper userIdMapper) {
+	public com.liferay.portal.kernel.model.UserIdMapper addUserIdMapper(
+		com.liferay.portal.kernel.model.UserIdMapper userIdMapper) {
 		return _userIdMapperLocalService.addUserIdMapper(userIdMapper);
 	}
 
@@ -50,7 +50,7 @@ public class UserIdMapperLocalServiceWrapper implements UserIdMapperLocalService
 	* @return the new user ID mapper
 	*/
 	@Override
-	public com.liferay.portal.model.UserIdMapper createUserIdMapper(
+	public com.liferay.portal.kernel.model.UserIdMapper createUserIdMapper(
 		long userIdMapperId) {
 		return _userIdMapperLocalService.createUserIdMapper(userIdMapperId);
 	}
@@ -59,8 +59,8 @@ public class UserIdMapperLocalServiceWrapper implements UserIdMapperLocalService
 	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userIdMapperLocalService.deletePersistedModel(persistedModel);
 	}
@@ -72,8 +72,8 @@ public class UserIdMapperLocalServiceWrapper implements UserIdMapperLocalService
 	* @return the user ID mapper that was removed
 	*/
 	@Override
-	public com.liferay.portal.model.UserIdMapper deleteUserIdMapper(
-		com.liferay.portal.model.UserIdMapper userIdMapper) {
+	public com.liferay.portal.kernel.model.UserIdMapper deleteUserIdMapper(
+		com.liferay.portal.kernel.model.UserIdMapper userIdMapper) {
 		return _userIdMapperLocalService.deleteUserIdMapper(userIdMapper);
 	}
 
@@ -85,7 +85,7 @@ public class UserIdMapperLocalServiceWrapper implements UserIdMapperLocalService
 	* @throws PortalException if a user ID mapper with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.UserIdMapper deleteUserIdMapper(
+	public com.liferay.portal.kernel.model.UserIdMapper deleteUserIdMapper(
 		long userIdMapperId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userIdMapperLocalService.deleteUserIdMapper(userIdMapperId);
@@ -182,7 +182,7 @@ public class UserIdMapperLocalServiceWrapper implements UserIdMapperLocalService
 	}
 
 	@Override
-	public com.liferay.portal.model.UserIdMapper fetchUserIdMapper(
+	public com.liferay.portal.kernel.model.UserIdMapper fetchUserIdMapper(
 		long userIdMapperId) {
 		return _userIdMapperLocalService.fetchUserIdMapper(userIdMapperId);
 	}
@@ -208,14 +208,14 @@ public class UserIdMapperLocalServiceWrapper implements UserIdMapperLocalService
 	}
 
 	@Override
-	public com.liferay.portal.model.PersistedModel getPersistedModel(
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userIdMapperLocalService.getPersistedModel(primaryKeyObj);
 	}
 
 	@Override
-	public com.liferay.portal.model.UserIdMapper getUserIdMapper(long userId,
+	public com.liferay.portal.kernel.model.UserIdMapper getUserIdMapper(long userId,
 		java.lang.String type)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userIdMapperLocalService.getUserIdMapper(userId, type);
@@ -229,14 +229,14 @@ public class UserIdMapperLocalServiceWrapper implements UserIdMapperLocalService
 	* @throws PortalException if a user ID mapper with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.UserIdMapper getUserIdMapper(
+	public com.liferay.portal.kernel.model.UserIdMapper getUserIdMapper(
 		long userIdMapperId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userIdMapperLocalService.getUserIdMapper(userIdMapperId);
 	}
 
 	@Override
-	public com.liferay.portal.model.UserIdMapper getUserIdMapperByExternalUserId(
+	public com.liferay.portal.kernel.model.UserIdMapper getUserIdMapperByExternalUserId(
 		java.lang.String type, java.lang.String externalUserId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userIdMapperLocalService.getUserIdMapperByExternalUserId(type,
@@ -255,13 +255,13 @@ public class UserIdMapperLocalServiceWrapper implements UserIdMapperLocalService
 	* @return the range of user ID mappers
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.UserIdMapper> getUserIdMappers(
+	public java.util.List<com.liferay.portal.kernel.model.UserIdMapper> getUserIdMappers(
 		int start, int end) {
 		return _userIdMapperLocalService.getUserIdMappers(start, end);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.UserIdMapper> getUserIdMappers(
+	public java.util.List<com.liferay.portal.kernel.model.UserIdMapper> getUserIdMappers(
 		long userId) {
 		return _userIdMapperLocalService.getUserIdMappers(userId);
 	}
@@ -277,7 +277,7 @@ public class UserIdMapperLocalServiceWrapper implements UserIdMapperLocalService
 	}
 
 	@Override
-	public com.liferay.portal.model.UserIdMapper updateUserIdMapper(
+	public com.liferay.portal.kernel.model.UserIdMapper updateUserIdMapper(
 		long userId, java.lang.String type, java.lang.String description,
 		java.lang.String externalUserId) {
 		return _userIdMapperLocalService.updateUserIdMapper(userId, type,
@@ -291,8 +291,8 @@ public class UserIdMapperLocalServiceWrapper implements UserIdMapperLocalService
 	* @return the user ID mapper that was updated
 	*/
 	@Override
-	public com.liferay.portal.model.UserIdMapper updateUserIdMapper(
-		com.liferay.portal.model.UserIdMapper userIdMapper) {
+	public com.liferay.portal.kernel.model.UserIdMapper updateUserIdMapper(
+		com.liferay.portal.kernel.model.UserIdMapper userIdMapper) {
 		return _userIdMapperLocalService.updateUserIdMapper(userIdMapper);
 	}
 

@@ -40,7 +40,7 @@ public class UserServiceWrapper implements UserService,
 	*/
 	@Override
 	public void addGroupUsers(long groupId, long[] userIds,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_userService.addGroupUsers(groupId, userIds, serviceContext);
 	}
@@ -145,7 +145,7 @@ public class UserServiceWrapper implements UserService,
 	* @return the new user
 	*/
 	@Override
-	public com.liferay.portal.model.User addUser(long companyId,
+	public com.liferay.portal.kernel.model.User addUser(long companyId,
 		boolean autoPassword, java.lang.String password1,
 		java.lang.String password2, boolean autoScreenName,
 		java.lang.String screenName, java.lang.String emailAddress,
@@ -155,13 +155,13 @@ public class UserServiceWrapper implements UserService,
 		int birthdayMonth, int birthdayDay, int birthdayYear,
 		java.lang.String jobTitle, long[] groupIds, long[] organizationIds,
 		long[] roleIds, long[] userGroupIds,
-		java.util.List<com.liferay.portal.model.Address> addresses,
-		java.util.List<com.liferay.portal.model.EmailAddress> emailAddresses,
-		java.util.List<com.liferay.portal.model.Phone> phones,
-		java.util.List<com.liferay.portal.model.Website> websites,
+		java.util.List<com.liferay.portal.kernel.model.Address> addresses,
+		java.util.List<com.liferay.portal.kernel.model.EmailAddress> emailAddresses,
+		java.util.List<com.liferay.portal.kernel.model.Phone> phones,
+		java.util.List<com.liferay.portal.kernel.model.Website> websites,
 		java.util.List<com.liferay.announcements.kernel.model.AnnouncementsDelivery> announcementsDelivers,
 		boolean sendEmail,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userService.addUser(companyId, autoPassword, password1,
 			password2, autoScreenName, screenName, emailAddress, facebookId,
@@ -218,7 +218,7 @@ public class UserServiceWrapper implements UserService,
 	* @return the new user
 	*/
 	@Override
-	public com.liferay.portal.model.User addUser(long companyId,
+	public com.liferay.portal.kernel.model.User addUser(long companyId,
 		boolean autoPassword, java.lang.String password1,
 		java.lang.String password2, boolean autoScreenName,
 		java.lang.String screenName, java.lang.String emailAddress,
@@ -228,7 +228,7 @@ public class UserServiceWrapper implements UserService,
 		int birthdayMonth, int birthdayDay, int birthdayYear,
 		java.lang.String jobTitle, long[] groupIds, long[] organizationIds,
 		long[] roleIds, long[] userGroupIds, boolean sendEmail,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userService.addUser(companyId, autoPassword, password1,
 			password2, autoScreenName, screenName, emailAddress, facebookId,
@@ -301,7 +301,7 @@ public class UserServiceWrapper implements UserService,
 	* @return the new user
 	*/
 	@Override
-	public com.liferay.portal.model.User addUserWithWorkflow(long companyId,
+	public com.liferay.portal.kernel.model.User addUserWithWorkflow(long companyId,
 		boolean autoPassword, java.lang.String password1,
 		java.lang.String password2, boolean autoScreenName,
 		java.lang.String screenName, java.lang.String emailAddress,
@@ -311,13 +311,13 @@ public class UserServiceWrapper implements UserService,
 		int birthdayMonth, int birthdayDay, int birthdayYear,
 		java.lang.String jobTitle, long[] groupIds, long[] organizationIds,
 		long[] roleIds, long[] userGroupIds,
-		java.util.List<com.liferay.portal.model.Address> addresses,
-		java.util.List<com.liferay.portal.model.EmailAddress> emailAddresses,
-		java.util.List<com.liferay.portal.model.Phone> phones,
-		java.util.List<com.liferay.portal.model.Website> websites,
+		java.util.List<com.liferay.portal.kernel.model.Address> addresses,
+		java.util.List<com.liferay.portal.kernel.model.EmailAddress> emailAddresses,
+		java.util.List<com.liferay.portal.kernel.model.Phone> phones,
+		java.util.List<com.liferay.portal.kernel.model.Website> websites,
 		java.util.List<com.liferay.announcements.kernel.model.AnnouncementsDelivery> announcementsDelivers,
 		boolean sendEmail,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userService.addUserWithWorkflow(companyId, autoPassword,
 			password1, password2, autoScreenName, screenName, emailAddress,
@@ -374,7 +374,7 @@ public class UserServiceWrapper implements UserService,
 	* @return the new user
 	*/
 	@Override
-	public com.liferay.portal.model.User addUserWithWorkflow(long companyId,
+	public com.liferay.portal.kernel.model.User addUserWithWorkflow(long companyId,
 		boolean autoPassword, java.lang.String password1,
 		java.lang.String password2, boolean autoScreenName,
 		java.lang.String screenName, java.lang.String emailAddress,
@@ -384,7 +384,7 @@ public class UserServiceWrapper implements UserService,
 		int birthdayMonth, int birthdayDay, int birthdayYear,
 		java.lang.String jobTitle, long[] groupIds, long[] organizationIds,
 		long[] roleIds, long[] userGroupIds, boolean sendEmail,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userService.addUserWithWorkflow(companyId, autoPassword,
 			password1, password2, autoScreenName, screenName, emailAddress,
@@ -429,7 +429,7 @@ public class UserServiceWrapper implements UserService,
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.User> getCompanyUsers(
+	public java.util.List<com.liferay.portal.kernel.model.User> getCompanyUsers(
 		long companyId, int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userService.getCompanyUsers(companyId, start, end);
@@ -442,7 +442,7 @@ public class UserServiceWrapper implements UserService,
 	}
 
 	@Override
-	public com.liferay.portal.model.User getCurrentUser()
+	public com.liferay.portal.kernel.model.User getCurrentUser()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userService.getCurrentUser();
 	}
@@ -466,7 +466,7 @@ public class UserServiceWrapper implements UserService,
 	* @return the users belonging to the group
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.User> getGroupUsers(
+	public java.util.List<com.liferay.portal.kernel.model.User> getGroupUsers(
 		long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userService.getGroupUsers(groupId);
@@ -501,7 +501,7 @@ public class UserServiceWrapper implements UserService,
 	* @return users belonging to the organization
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.User> getOrganizationUsers(
+	public java.util.List<com.liferay.portal.kernel.model.User> getOrganizationUsers(
 		long organizationId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userService.getOrganizationUsers(organizationId);
@@ -527,7 +527,7 @@ public class UserServiceWrapper implements UserService,
 	* @return the user with the email address
 	*/
 	@Override
-	public com.liferay.portal.model.User getUserByEmailAddress(long companyId,
+	public com.liferay.portal.kernel.model.User getUserByEmailAddress(long companyId,
 		java.lang.String emailAddress)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userService.getUserByEmailAddress(companyId, emailAddress);
@@ -540,7 +540,7 @@ public class UserServiceWrapper implements UserService,
 	* @return the user with the primary key
 	*/
 	@Override
-	public com.liferay.portal.model.User getUserById(long userId)
+	public com.liferay.portal.kernel.model.User getUserById(long userId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userService.getUserById(userId);
 	}
@@ -553,14 +553,14 @@ public class UserServiceWrapper implements UserService,
 	* @return the user with the screen name
 	*/
 	@Override
-	public com.liferay.portal.model.User getUserByScreenName(long companyId,
+	public com.liferay.portal.kernel.model.User getUserByScreenName(long companyId,
 		java.lang.String screenName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userService.getUserByScreenName(companyId, screenName);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.User> getUserGroupUsers(
+	public java.util.List<com.liferay.portal.kernel.model.User> getUserGroupUsers(
 		long userGroupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userService.getUserGroupUsers(userGroupId);
@@ -767,7 +767,7 @@ public class UserServiceWrapper implements UserService,
 	*/
 	@Override
 	public void unsetGroupUsers(long groupId, long[] userIds,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_userService.unsetGroupUsers(groupId, userIds, serviceContext);
 	}
@@ -840,7 +840,7 @@ public class UserServiceWrapper implements UserService,
 	* @return the user
 	*/
 	@Override
-	public com.liferay.portal.model.User updateAgreedToTermsOfUse(long userId,
+	public com.liferay.portal.kernel.model.User updateAgreedToTermsOfUse(long userId,
 		boolean agreedToTermsOfUse)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userService.updateAgreedToTermsOfUse(userId, agreedToTermsOfUse);
@@ -859,10 +859,10 @@ public class UserServiceWrapper implements UserService,
 	* @return the user
 	*/
 	@Override
-	public com.liferay.portal.model.User updateEmailAddress(long userId,
+	public com.liferay.portal.kernel.model.User updateEmailAddress(long userId,
 		java.lang.String password, java.lang.String emailAddress1,
 		java.lang.String emailAddress2,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userService.updateEmailAddress(userId, password, emailAddress1,
 			emailAddress2, serviceContext);
@@ -905,7 +905,7 @@ public class UserServiceWrapper implements UserService,
 	* @return the user
 	*/
 	@Override
-	public com.liferay.portal.model.User updateIncompleteUser(long companyId,
+	public com.liferay.portal.kernel.model.User updateIncompleteUser(long companyId,
 		boolean autoPassword, java.lang.String password1,
 		java.lang.String password2, boolean autoScreenName,
 		java.lang.String screenName, java.lang.String emailAddress,
@@ -915,7 +915,7 @@ public class UserServiceWrapper implements UserService,
 		int birthdayMonth, int birthdayDay, int birthdayYear,
 		java.lang.String jobTitle, boolean updateUserInformation,
 		boolean sendEmail,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userService.updateIncompleteUser(companyId, autoPassword,
 			password1, password2, autoScreenName, screenName, emailAddress,
@@ -932,7 +932,7 @@ public class UserServiceWrapper implements UserService,
 	* @return the user
 	*/
 	@Override
-	public com.liferay.portal.model.User updateLockoutById(long userId,
+	public com.liferay.portal.kernel.model.User updateLockoutById(long userId,
 		boolean lockout)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userService.updateLockoutById(userId, lockout);
@@ -946,7 +946,7 @@ public class UserServiceWrapper implements UserService,
 	* @return the user
 	*/
 	@Override
-	public com.liferay.portal.model.User updateOpenId(long userId,
+	public com.liferay.portal.kernel.model.User updateOpenId(long userId,
 		java.lang.String openId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userService.updateOpenId(userId, openId);
@@ -963,7 +963,7 @@ public class UserServiceWrapper implements UserService,
 	*/
 	@Override
 	public void updateOrganizations(long userId, long[] organizationIds,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_userService.updateOrganizations(userId, organizationIds, serviceContext);
 	}
@@ -979,7 +979,7 @@ public class UserServiceWrapper implements UserService,
 	* @return the user
 	*/
 	@Override
-	public com.liferay.portal.model.User updatePassword(long userId,
+	public com.liferay.portal.kernel.model.User updatePassword(long userId,
 		java.lang.String password1, java.lang.String password2,
 		boolean passwordReset)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -995,7 +995,7 @@ public class UserServiceWrapper implements UserService,
 	* @return the user
 	*/
 	@Override
-	public com.liferay.portal.model.User updatePortrait(long userId,
+	public com.liferay.portal.kernel.model.User updatePortrait(long userId,
 		byte[] bytes)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userService.updatePortrait(userId, bytes);
@@ -1010,7 +1010,7 @@ public class UserServiceWrapper implements UserService,
 	* @return the user
 	*/
 	@Override
-	public com.liferay.portal.model.User updateReminderQuery(long userId,
+	public com.liferay.portal.kernel.model.User updateReminderQuery(long userId,
 		java.lang.String question, java.lang.String answer)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userService.updateReminderQuery(userId, question, answer);
@@ -1024,7 +1024,7 @@ public class UserServiceWrapper implements UserService,
 	* @return the user
 	*/
 	@Override
-	public com.liferay.portal.model.User updateScreenName(long userId,
+	public com.liferay.portal.kernel.model.User updateScreenName(long userId,
 		java.lang.String screenName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userService.updateScreenName(userId, screenName);
@@ -1041,7 +1041,7 @@ public class UserServiceWrapper implements UserService,
 	*/
 	@Deprecated
 	@Override
-	public com.liferay.portal.model.User updateStatus(long userId, int status)
+	public com.liferay.portal.kernel.model.User updateStatus(long userId, int status)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userService.updateStatus(userId, status);
 	}
@@ -1057,8 +1057,8 @@ public class UserServiceWrapper implements UserService,
 	* @return the user
 	*/
 	@Override
-	public com.liferay.portal.model.User updateStatus(long userId, int status,
-		com.liferay.portal.service.ServiceContext serviceContext)
+	public com.liferay.portal.kernel.model.User updateStatus(long userId, int status,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userService.updateStatus(userId, status, serviceContext);
 	}
@@ -1125,7 +1125,7 @@ public class UserServiceWrapper implements UserService,
 	*/
 	@Deprecated
 	@Override
-	public com.liferay.portal.model.User updateUser(long userId,
+	public com.liferay.portal.kernel.model.User updateUser(long userId,
 		java.lang.String oldPassword, java.lang.String newPassword1,
 		java.lang.String newPassword2, boolean passwordReset,
 		java.lang.String reminderQueryQuestion,
@@ -1140,14 +1140,14 @@ public class UserServiceWrapper implements UserService,
 		java.lang.String jabberSn, java.lang.String skypeSn,
 		java.lang.String twitterSn, java.lang.String jobTitle, long[] groupIds,
 		long[] organizationIds, long[] roleIds,
-		java.util.List<com.liferay.portal.model.UserGroupRole> userGroupRoles,
+		java.util.List<com.liferay.portal.kernel.model.UserGroupRole> userGroupRoles,
 		long[] userGroupIds,
-		java.util.List<com.liferay.portal.model.Address> addresses,
-		java.util.List<com.liferay.portal.model.EmailAddress> emailAddresses,
-		java.util.List<com.liferay.portal.model.Phone> phones,
-		java.util.List<com.liferay.portal.model.Website> websites,
+		java.util.List<com.liferay.portal.kernel.model.Address> addresses,
+		java.util.List<com.liferay.portal.kernel.model.EmailAddress> emailAddresses,
+		java.util.List<com.liferay.portal.kernel.model.Phone> phones,
+		java.util.List<com.liferay.portal.kernel.model.Website> websites,
 		java.util.List<com.liferay.announcements.kernel.model.AnnouncementsDelivery> announcementsDelivers,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userService.updateUser(userId, oldPassword, newPassword1,
 			newPassword2, passwordReset, reminderQueryQuestion,
@@ -1209,7 +1209,7 @@ public class UserServiceWrapper implements UserService,
 	* @return the user
 	*/
 	@Override
-	public com.liferay.portal.model.User updateUser(long userId,
+	public com.liferay.portal.kernel.model.User updateUser(long userId,
 		java.lang.String oldPassword, java.lang.String newPassword1,
 		java.lang.String newPassword2, boolean passwordReset,
 		java.lang.String reminderQueryQuestion,
@@ -1224,9 +1224,9 @@ public class UserServiceWrapper implements UserService,
 		java.lang.String jabberSn, java.lang.String skypeSn,
 		java.lang.String twitterSn, java.lang.String jobTitle, long[] groupIds,
 		long[] organizationIds, long[] roleIds,
-		java.util.List<com.liferay.portal.model.UserGroupRole> userGroupRoles,
+		java.util.List<com.liferay.portal.kernel.model.UserGroupRole> userGroupRoles,
 		long[] userGroupIds,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userService.updateUser(userId, oldPassword, newPassword1,
 			newPassword2, passwordReset, reminderQueryQuestion,
@@ -1294,7 +1294,7 @@ public class UserServiceWrapper implements UserService,
 	* @return the user
 	*/
 	@Override
-	public com.liferay.portal.model.User updateUser(long userId,
+	public com.liferay.portal.kernel.model.User updateUser(long userId,
 		java.lang.String oldPassword, java.lang.String newPassword1,
 		java.lang.String newPassword2, boolean passwordReset,
 		java.lang.String reminderQueryQuestion,
@@ -1310,14 +1310,14 @@ public class UserServiceWrapper implements UserService,
 		java.lang.String jabberSn, java.lang.String skypeSn,
 		java.lang.String twitterSn, java.lang.String jobTitle, long[] groupIds,
 		long[] organizationIds, long[] roleIds,
-		java.util.List<com.liferay.portal.model.UserGroupRole> userGroupRoles,
+		java.util.List<com.liferay.portal.kernel.model.UserGroupRole> userGroupRoles,
 		long[] userGroupIds,
-		java.util.List<com.liferay.portal.model.Address> addresses,
-		java.util.List<com.liferay.portal.model.EmailAddress> emailAddresses,
-		java.util.List<com.liferay.portal.model.Phone> phones,
-		java.util.List<com.liferay.portal.model.Website> websites,
+		java.util.List<com.liferay.portal.kernel.model.Address> addresses,
+		java.util.List<com.liferay.portal.kernel.model.EmailAddress> emailAddresses,
+		java.util.List<com.liferay.portal.kernel.model.Phone> phones,
+		java.util.List<com.liferay.portal.kernel.model.Website> websites,
 		java.util.List<com.liferay.announcements.kernel.model.AnnouncementsDelivery> announcementsDelivers,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userService.updateUser(userId, oldPassword, newPassword1,
 			newPassword2, passwordReset, reminderQueryQuestion,

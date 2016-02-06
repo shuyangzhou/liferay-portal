@@ -49,21 +49,21 @@ public interface OrganizationFinder {
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator);
 
-	public java.util.List<com.liferay.portal.model.Organization> findByKeywords(
+	public java.util.List<com.liferay.portal.kernel.model.Organization> findByKeywords(
 		long companyId, long parentOrganizationId,
 		java.lang.String parentOrganizationIdComparator,
 		java.lang.String keywords, java.lang.String type,
 		java.lang.Long regionId, java.lang.Long countryId,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Organization> obc);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Organization> obc);
 
-	public java.util.List<com.liferay.portal.model.Organization> findByNoAssets();
+	public java.util.List<com.liferay.portal.kernel.model.Organization> findByNoAssets();
 
 	public java.util.List<java.lang.Long> findByC_P(long companyId,
 		long parentOrganizationId, long previousOrganizationId, int size);
 
-	public java.util.List<com.liferay.portal.model.Organization> findByC_PO_N_T_S_C_Z_R_C(
+	public java.util.List<com.liferay.portal.kernel.model.Organization> findByC_PO_N_T_S_C_Z_R_C(
 		long companyId, long parentOrganizationId,
 		java.lang.String parentOrganizationIdComparator, java.lang.String name,
 		java.lang.String type, java.lang.String street, java.lang.String city,
@@ -71,9 +71,9 @@ public interface OrganizationFinder {
 		java.lang.Long countryId,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Organization> obc);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Organization> obc);
 
-	public java.util.List<com.liferay.portal.model.Organization> findByC_PO_N_T_S_C_Z_R_C(
+	public java.util.List<com.liferay.portal.kernel.model.Organization> findByC_PO_N_T_S_C_Z_R_C(
 		long companyId, long parentOrganizationId,
 		java.lang.String parentOrganizationIdComparator,
 		java.lang.String[] names, java.lang.String type,
@@ -82,5 +82,5 @@ public interface OrganizationFinder {
 		java.lang.Long countryId,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Organization> obc);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Organization> obc);
 }

@@ -59,85 +59,85 @@ public interface RoleFinder {
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator);
 
-	public java.util.List<com.liferay.portal.model.Role> filterFindByKeywords(
+	public java.util.List<com.liferay.portal.kernel.model.Role> filterFindByKeywords(
 		long companyId, java.lang.String keywords, java.lang.Integer[] types,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Role> obc);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Role> obc);
 
-	public java.util.List<com.liferay.portal.model.Role> filterFindByC_N_D_T(
+	public java.util.List<com.liferay.portal.kernel.model.Role> filterFindByC_N_D_T(
 		long companyId, java.lang.String name, java.lang.String description,
 		java.lang.Integer[] types,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Role> obc);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Role> obc);
 
-	public java.util.List<com.liferay.portal.model.Role> filterFindByC_N_D_T(
+	public java.util.List<com.liferay.portal.kernel.model.Role> filterFindByC_N_D_T(
 		long companyId, java.lang.String[] names,
 		java.lang.String[] descriptions, java.lang.Integer[] types,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Role> obc);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Role> obc);
 
-	public java.util.List<com.liferay.portal.model.Role> findByKeywords(
+	public java.util.List<com.liferay.portal.kernel.model.Role> findByKeywords(
 		long companyId, java.lang.String keywords, java.lang.Integer[] types,
 		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Role> obc);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Role> obc);
 
-	public java.util.List<com.liferay.portal.model.Role> findByKeywords(
+	public java.util.List<com.liferay.portal.kernel.model.Role> findByKeywords(
 		long companyId, java.lang.String keywords, java.lang.Integer[] types,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Role> obc);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Role> obc);
 
-	public java.util.List<com.liferay.portal.model.Role> findBySystem(
+	public java.util.List<com.liferay.portal.kernel.model.Role> findBySystem(
 		long companyId);
 
-	public java.util.List<com.liferay.portal.model.Role> findByUserGroupGroupRole(
+	public java.util.List<com.liferay.portal.kernel.model.Role> findByUserGroupGroupRole(
 		long userId, long groupId);
 
-	public java.util.List<com.liferay.portal.model.Role> findByUserGroupGroupRole(
+	public java.util.List<com.liferay.portal.kernel.model.Role> findByUserGroupGroupRole(
 		long userId, long groupId, int start, int end);
 
-	public java.util.List<com.liferay.portal.model.Role> findByUserGroupRole(
+	public java.util.List<com.liferay.portal.kernel.model.Role> findByUserGroupRole(
 		long userId, long groupId);
 
-	public com.liferay.portal.model.Role findByC_N(long companyId,
+	public com.liferay.portal.kernel.model.Role findByC_N(long companyId,
 		java.lang.String name)
-		throws com.liferay.portal.exception.NoSuchRoleException;
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException;
 
-	public java.util.List<com.liferay.portal.model.Role> findByU_G(
-		long userId, java.util.List<com.liferay.portal.model.Group> groups);
+	public java.util.List<com.liferay.portal.kernel.model.Role> findByU_G(
+		long userId, java.util.List<com.liferay.portal.kernel.model.Group> groups);
 
-	public java.util.List<com.liferay.portal.model.Role> findByU_G(
+	public java.util.List<com.liferay.portal.kernel.model.Role> findByU_G(
 		long userId, long groupId);
 
-	public java.util.List<com.liferay.portal.model.Role> findByU_G(
+	public java.util.List<com.liferay.portal.kernel.model.Role> findByU_G(
 		long userId, long[] groupIds);
 
-	public java.util.List<com.liferay.portal.model.Role> findByR_N_A(
+	public java.util.List<com.liferay.portal.kernel.model.Role> findByR_N_A(
 		long resourceBlockId, java.lang.String className,
 		java.lang.String actionId);
 
-	public java.util.List<com.liferay.portal.model.Role> findByC_N_D_T(
+	public java.util.List<com.liferay.portal.kernel.model.Role> findByC_N_D_T(
 		long companyId, java.lang.String name, java.lang.String description,
 		java.lang.Integer[] types,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Role> obc);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Role> obc);
 
-	public java.util.List<com.liferay.portal.model.Role> findByC_N_D_T(
+	public java.util.List<com.liferay.portal.kernel.model.Role> findByC_N_D_T(
 		long companyId, java.lang.String[] names,
 		java.lang.String[] descriptions, java.lang.Integer[] types,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Role> obc);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Role> obc);
 
 	public java.util.Map<java.lang.String, java.util.List<java.lang.String>> findByC_N_S_P(
 		long companyId, java.lang.String name, int scope,
 		java.lang.String primKey);
 
-	public java.util.List<com.liferay.portal.model.Role> findByC_N_S_P_A(
+	public java.util.List<com.liferay.portal.kernel.model.Role> findByC_N_S_P_A(
 		long companyId, java.lang.String name, int scope,
 		java.lang.String primKey, java.lang.String actionId);
 }

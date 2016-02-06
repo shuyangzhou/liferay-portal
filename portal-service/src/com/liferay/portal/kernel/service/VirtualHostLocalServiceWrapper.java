@@ -38,8 +38,8 @@ public class VirtualHostLocalServiceWrapper implements VirtualHostLocalService,
 	* @return the virtual host that was added
 	*/
 	@Override
-	public com.liferay.portal.model.VirtualHost addVirtualHost(
-		com.liferay.portal.model.VirtualHost virtualHost) {
+	public com.liferay.portal.kernel.model.VirtualHost addVirtualHost(
+		com.liferay.portal.kernel.model.VirtualHost virtualHost) {
 		return _virtualHostLocalService.addVirtualHost(virtualHost);
 	}
 
@@ -50,7 +50,7 @@ public class VirtualHostLocalServiceWrapper implements VirtualHostLocalService,
 	* @return the new virtual host
 	*/
 	@Override
-	public com.liferay.portal.model.VirtualHost createVirtualHost(
+	public com.liferay.portal.kernel.model.VirtualHost createVirtualHost(
 		long virtualHostId) {
 		return _virtualHostLocalService.createVirtualHost(virtualHostId);
 	}
@@ -59,8 +59,8 @@ public class VirtualHostLocalServiceWrapper implements VirtualHostLocalService,
 	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _virtualHostLocalService.deletePersistedModel(persistedModel);
 	}
@@ -72,8 +72,8 @@ public class VirtualHostLocalServiceWrapper implements VirtualHostLocalService,
 	* @return the virtual host that was removed
 	*/
 	@Override
-	public com.liferay.portal.model.VirtualHost deleteVirtualHost(
-		com.liferay.portal.model.VirtualHost virtualHost) {
+	public com.liferay.portal.kernel.model.VirtualHost deleteVirtualHost(
+		com.liferay.portal.kernel.model.VirtualHost virtualHost) {
 		return _virtualHostLocalService.deleteVirtualHost(virtualHost);
 	}
 
@@ -85,7 +85,7 @@ public class VirtualHostLocalServiceWrapper implements VirtualHostLocalService,
 	* @throws PortalException if a virtual host with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.VirtualHost deleteVirtualHost(
+	public com.liferay.portal.kernel.model.VirtualHost deleteVirtualHost(
 		long virtualHostId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _virtualHostLocalService.deleteVirtualHost(virtualHostId);
@@ -177,19 +177,19 @@ public class VirtualHostLocalServiceWrapper implements VirtualHostLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.VirtualHost fetchVirtualHost(
+	public com.liferay.portal.kernel.model.VirtualHost fetchVirtualHost(
 		long companyId, long layoutSetId) {
 		return _virtualHostLocalService.fetchVirtualHost(companyId, layoutSetId);
 	}
 
 	@Override
-	public com.liferay.portal.model.VirtualHost fetchVirtualHost(
+	public com.liferay.portal.kernel.model.VirtualHost fetchVirtualHost(
 		java.lang.String hostname) {
 		return _virtualHostLocalService.fetchVirtualHost(hostname);
 	}
 
 	@Override
-	public com.liferay.portal.model.VirtualHost fetchVirtualHost(
+	public com.liferay.portal.kernel.model.VirtualHost fetchVirtualHost(
 		long virtualHostId) {
 		return _virtualHostLocalService.fetchVirtualHost(virtualHostId);
 	}
@@ -215,21 +215,21 @@ public class VirtualHostLocalServiceWrapper implements VirtualHostLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.PersistedModel getPersistedModel(
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _virtualHostLocalService.getPersistedModel(primaryKeyObj);
 	}
 
 	@Override
-	public com.liferay.portal.model.VirtualHost getVirtualHost(long companyId,
+	public com.liferay.portal.kernel.model.VirtualHost getVirtualHost(long companyId,
 		long layoutSetId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _virtualHostLocalService.getVirtualHost(companyId, layoutSetId);
 	}
 
 	@Override
-	public com.liferay.portal.model.VirtualHost getVirtualHost(
+	public com.liferay.portal.kernel.model.VirtualHost getVirtualHost(
 		java.lang.String hostname)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _virtualHostLocalService.getVirtualHost(hostname);
@@ -243,7 +243,7 @@ public class VirtualHostLocalServiceWrapper implements VirtualHostLocalService,
 	* @throws PortalException if a virtual host with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.VirtualHost getVirtualHost(
+	public com.liferay.portal.kernel.model.VirtualHost getVirtualHost(
 		long virtualHostId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _virtualHostLocalService.getVirtualHost(virtualHostId);
@@ -261,7 +261,7 @@ public class VirtualHostLocalServiceWrapper implements VirtualHostLocalService,
 	* @return the range of virtual hosts
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.VirtualHost> getVirtualHosts(
+	public java.util.List<com.liferay.portal.kernel.model.VirtualHost> getVirtualHosts(
 		int start, int end) {
 		return _virtualHostLocalService.getVirtualHosts(start, end);
 	}
@@ -277,7 +277,7 @@ public class VirtualHostLocalServiceWrapper implements VirtualHostLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.VirtualHost updateVirtualHost(
+	public com.liferay.portal.kernel.model.VirtualHost updateVirtualHost(
 		long companyId, long layoutSetId, java.lang.String hostname) {
 		return _virtualHostLocalService.updateVirtualHost(companyId,
 			layoutSetId, hostname);
@@ -290,8 +290,8 @@ public class VirtualHostLocalServiceWrapper implements VirtualHostLocalService,
 	* @return the virtual host that was updated
 	*/
 	@Override
-	public com.liferay.portal.model.VirtualHost updateVirtualHost(
-		com.liferay.portal.model.VirtualHost virtualHost) {
+	public com.liferay.portal.kernel.model.VirtualHost updateVirtualHost(
+		com.liferay.portal.kernel.model.VirtualHost virtualHost) {
 		return _virtualHostLocalService.updateVirtualHost(virtualHost);
 	}
 

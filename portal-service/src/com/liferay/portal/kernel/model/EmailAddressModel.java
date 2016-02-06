@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -334,19 +334,19 @@ public interface EmailAddressModel extends AttachedModel, BaseModel<EmailAddress
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.model.EmailAddress emailAddress);
+	public int compareTo(com.liferay.portal.kernel.model.EmailAddress emailAddress);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.EmailAddress> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.EmailAddress> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.EmailAddress toEscapedModel();
+	public com.liferay.portal.kernel.model.EmailAddress toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.EmailAddress toUnescapedModel();
+	public com.liferay.portal.kernel.model.EmailAddress toUnescapedModel();
 
 	@Override
 	public String toString();

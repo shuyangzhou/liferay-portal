@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
-import com.liferay.portal.model.UserGroupRole;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.UserGroupRole;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -46,28 +46,28 @@ public class UserGroupRoleUtil {
 	 */
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache()
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache()
 	 */
 	public static void clearCache() {
 		getPersistence().clearCache();
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static void clearCache(UserGroupRole userGroupRole) {
 		getPersistence().clearCache(userGroupRole);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
 	public static long countWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<UserGroupRole> findWithDynamicQuery(
 		DynamicQuery dynamicQuery) {
@@ -75,7 +75,7 @@ public class UserGroupRoleUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
 	public static List<UserGroupRole> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
@@ -83,7 +83,7 @@ public class UserGroupRoleUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
 	public static List<UserGroupRole> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
@@ -94,14 +94,14 @@ public class UserGroupRoleUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static UserGroupRole update(UserGroupRole userGroupRole) {
 		return getPersistence().update(userGroupRole);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
 	public static UserGroupRole update(UserGroupRole userGroupRole,
 		ServiceContext serviceContext) {
@@ -186,7 +186,7 @@ public class UserGroupRoleUtil {
 	*/
 	public static UserGroupRole findByUserId_First(long userId,
 		OrderByComparator<UserGroupRole> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserGroupRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserGroupRoleException {
 		return getPersistence().findByUserId_First(userId, orderByComparator);
 	}
 
@@ -212,7 +212,7 @@ public class UserGroupRoleUtil {
 	*/
 	public static UserGroupRole findByUserId_Last(long userId,
 		OrderByComparator<UserGroupRole> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserGroupRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserGroupRoleException {
 		return getPersistence().findByUserId_Last(userId, orderByComparator);
 	}
 
@@ -238,9 +238,9 @@ public class UserGroupRoleUtil {
 	* @throws NoSuchUserGroupRoleException if a user group role with the primary key could not be found
 	*/
 	public static UserGroupRole[] findByUserId_PrevAndNext(
-		com.liferay.portal.service.persistence.UserGroupRolePK userGroupRolePK,
+		com.liferay.portal.kernel.service.persistence.UserGroupRolePK userGroupRolePK,
 		long userId, OrderByComparator<UserGroupRole> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserGroupRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserGroupRoleException {
 		return getPersistence()
 				   .findByUserId_PrevAndNext(userGroupRolePK, userId,
 			orderByComparator);
@@ -343,7 +343,7 @@ public class UserGroupRoleUtil {
 	*/
 	public static UserGroupRole findByGroupId_First(long groupId,
 		OrderByComparator<UserGroupRole> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserGroupRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserGroupRoleException {
 		return getPersistence().findByGroupId_First(groupId, orderByComparator);
 	}
 
@@ -369,7 +369,7 @@ public class UserGroupRoleUtil {
 	*/
 	public static UserGroupRole findByGroupId_Last(long groupId,
 		OrderByComparator<UserGroupRole> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserGroupRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserGroupRoleException {
 		return getPersistence().findByGroupId_Last(groupId, orderByComparator);
 	}
 
@@ -395,9 +395,9 @@ public class UserGroupRoleUtil {
 	* @throws NoSuchUserGroupRoleException if a user group role with the primary key could not be found
 	*/
 	public static UserGroupRole[] findByGroupId_PrevAndNext(
-		com.liferay.portal.service.persistence.UserGroupRolePK userGroupRolePK,
+		com.liferay.portal.kernel.service.persistence.UserGroupRolePK userGroupRolePK,
 		long groupId, OrderByComparator<UserGroupRole> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserGroupRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserGroupRoleException {
 		return getPersistence()
 				   .findByGroupId_PrevAndNext(userGroupRolePK, groupId,
 			orderByComparator);
@@ -500,7 +500,7 @@ public class UserGroupRoleUtil {
 	*/
 	public static UserGroupRole findByRoleId_First(long roleId,
 		OrderByComparator<UserGroupRole> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserGroupRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserGroupRoleException {
 		return getPersistence().findByRoleId_First(roleId, orderByComparator);
 	}
 
@@ -526,7 +526,7 @@ public class UserGroupRoleUtil {
 	*/
 	public static UserGroupRole findByRoleId_Last(long roleId,
 		OrderByComparator<UserGroupRole> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserGroupRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserGroupRoleException {
 		return getPersistence().findByRoleId_Last(roleId, orderByComparator);
 	}
 
@@ -552,9 +552,9 @@ public class UserGroupRoleUtil {
 	* @throws NoSuchUserGroupRoleException if a user group role with the primary key could not be found
 	*/
 	public static UserGroupRole[] findByRoleId_PrevAndNext(
-		com.liferay.portal.service.persistence.UserGroupRolePK userGroupRolePK,
+		com.liferay.portal.kernel.service.persistence.UserGroupRolePK userGroupRolePK,
 		long roleId, OrderByComparator<UserGroupRole> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserGroupRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserGroupRoleException {
 		return getPersistence()
 				   .findByRoleId_PrevAndNext(userGroupRolePK, roleId,
 			orderByComparator);
@@ -662,7 +662,7 @@ public class UserGroupRoleUtil {
 	*/
 	public static UserGroupRole findByU_G_First(long userId, long groupId,
 		OrderByComparator<UserGroupRole> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserGroupRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserGroupRoleException {
 		return getPersistence()
 				   .findByU_G_First(userId, groupId, orderByComparator);
 	}
@@ -692,7 +692,7 @@ public class UserGroupRoleUtil {
 	*/
 	public static UserGroupRole findByU_G_Last(long userId, long groupId,
 		OrderByComparator<UserGroupRole> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserGroupRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserGroupRoleException {
 		return getPersistence()
 				   .findByU_G_Last(userId, groupId, orderByComparator);
 	}
@@ -722,10 +722,10 @@ public class UserGroupRoleUtil {
 	* @throws NoSuchUserGroupRoleException if a user group role with the primary key could not be found
 	*/
 	public static UserGroupRole[] findByU_G_PrevAndNext(
-		com.liferay.portal.service.persistence.UserGroupRolePK userGroupRolePK,
+		com.liferay.portal.kernel.service.persistence.UserGroupRolePK userGroupRolePK,
 		long userId, long groupId,
 		OrderByComparator<UserGroupRole> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserGroupRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserGroupRoleException {
 		return getPersistence()
 				   .findByU_G_PrevAndNext(userGroupRolePK, userId, groupId,
 			orderByComparator);
@@ -835,7 +835,7 @@ public class UserGroupRoleUtil {
 	*/
 	public static UserGroupRole findByG_R_First(long groupId, long roleId,
 		OrderByComparator<UserGroupRole> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserGroupRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserGroupRoleException {
 		return getPersistence()
 				   .findByG_R_First(groupId, roleId, orderByComparator);
 	}
@@ -865,7 +865,7 @@ public class UserGroupRoleUtil {
 	*/
 	public static UserGroupRole findByG_R_Last(long groupId, long roleId,
 		OrderByComparator<UserGroupRole> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserGroupRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserGroupRoleException {
 		return getPersistence()
 				   .findByG_R_Last(groupId, roleId, orderByComparator);
 	}
@@ -895,10 +895,10 @@ public class UserGroupRoleUtil {
 	* @throws NoSuchUserGroupRoleException if a user group role with the primary key could not be found
 	*/
 	public static UserGroupRole[] findByG_R_PrevAndNext(
-		com.liferay.portal.service.persistence.UserGroupRolePK userGroupRolePK,
+		com.liferay.portal.kernel.service.persistence.UserGroupRolePK userGroupRolePK,
 		long groupId, long roleId,
 		OrderByComparator<UserGroupRole> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserGroupRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserGroupRoleException {
 		return getPersistence()
 				   .findByG_R_PrevAndNext(userGroupRolePK, groupId, roleId,
 			orderByComparator);
@@ -950,7 +950,7 @@ public class UserGroupRoleUtil {
 	* @return the new user group role
 	*/
 	public static UserGroupRole create(
-		com.liferay.portal.service.persistence.UserGroupRolePK userGroupRolePK) {
+		com.liferay.portal.kernel.service.persistence.UserGroupRolePK userGroupRolePK) {
 		return getPersistence().create(userGroupRolePK);
 	}
 
@@ -962,8 +962,8 @@ public class UserGroupRoleUtil {
 	* @throws NoSuchUserGroupRoleException if a user group role with the primary key could not be found
 	*/
 	public static UserGroupRole remove(
-		com.liferay.portal.service.persistence.UserGroupRolePK userGroupRolePK)
-		throws com.liferay.portal.exception.NoSuchUserGroupRoleException {
+		com.liferay.portal.kernel.service.persistence.UserGroupRolePK userGroupRolePK)
+		throws com.liferay.portal.kernel.exception.NoSuchUserGroupRoleException {
 		return getPersistence().remove(userGroupRolePK);
 	}
 
@@ -979,8 +979,8 @@ public class UserGroupRoleUtil {
 	* @throws NoSuchUserGroupRoleException if a user group role with the primary key could not be found
 	*/
 	public static UserGroupRole findByPrimaryKey(
-		com.liferay.portal.service.persistence.UserGroupRolePK userGroupRolePK)
-		throws com.liferay.portal.exception.NoSuchUserGroupRoleException {
+		com.liferay.portal.kernel.service.persistence.UserGroupRolePK userGroupRolePK)
+		throws com.liferay.portal.kernel.exception.NoSuchUserGroupRoleException {
 		return getPersistence().findByPrimaryKey(userGroupRolePK);
 	}
 
@@ -991,7 +991,7 @@ public class UserGroupRoleUtil {
 	* @return the user group role, or <code>null</code> if a user group role with the primary key could not be found
 	*/
 	public static UserGroupRole fetchByPrimaryKey(
-		com.liferay.portal.service.persistence.UserGroupRolePK userGroupRolePK) {
+		com.liferay.portal.kernel.service.persistence.UserGroupRolePK userGroupRolePK) {
 		return getPersistence().fetchByPrimaryKey(userGroupRolePK);
 	}
 

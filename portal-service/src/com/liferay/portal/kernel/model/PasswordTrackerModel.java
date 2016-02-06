@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -202,19 +202,19 @@ public interface PasswordTrackerModel extends BaseModel<PasswordTracker>,
 
 	@Override
 	public int compareTo(
-		com.liferay.portal.model.PasswordTracker passwordTracker);
+		com.liferay.portal.kernel.model.PasswordTracker passwordTracker);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.PasswordTracker> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.PasswordTracker> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.PasswordTracker toEscapedModel();
+	public com.liferay.portal.kernel.model.PasswordTracker toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.PasswordTracker toUnescapedModel();
+	public com.liferay.portal.kernel.model.PasswordTracker toUnescapedModel();
 
 	@Override
 	public String toString();

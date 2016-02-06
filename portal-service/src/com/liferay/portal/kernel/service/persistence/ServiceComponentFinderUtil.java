@@ -25,7 +25,7 @@ import com.liferay.portal.kernel.util.ReferenceRegistry;
  */
 @ProviderType
 public class ServiceComponentFinderUtil {
-	public static java.util.List<com.liferay.portal.model.ServiceComponent> findByMaxBuildNumber() {
+	public static java.util.List<com.liferay.portal.kernel.model.ServiceComponent> findByMaxBuildNumber() {
 		return getFinder().findByMaxBuildNumber();
 	}
 

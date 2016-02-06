@@ -47,8 +47,8 @@ public class BrowserTrackerLocalServiceUtil {
 	* @param browserTracker the browser tracker
 	* @return the browser tracker that was added
 	*/
-	public static com.liferay.portal.model.BrowserTracker addBrowserTracker(
-		com.liferay.portal.model.BrowserTracker browserTracker) {
+	public static com.liferay.portal.kernel.model.BrowserTracker addBrowserTracker(
+		com.liferay.portal.kernel.model.BrowserTracker browserTracker) {
 		return getService().addBrowserTracker(browserTracker);
 	}
 
@@ -58,7 +58,7 @@ public class BrowserTrackerLocalServiceUtil {
 	* @param browserTrackerId the primary key for the new browser tracker
 	* @return the new browser tracker
 	*/
-	public static com.liferay.portal.model.BrowserTracker createBrowserTracker(
+	public static com.liferay.portal.kernel.model.BrowserTracker createBrowserTracker(
 		long browserTrackerId) {
 		return getService().createBrowserTracker(browserTrackerId);
 	}
@@ -69,8 +69,8 @@ public class BrowserTrackerLocalServiceUtil {
 	* @param browserTracker the browser tracker
 	* @return the browser tracker that was removed
 	*/
-	public static com.liferay.portal.model.BrowserTracker deleteBrowserTracker(
-		com.liferay.portal.model.BrowserTracker browserTracker) {
+	public static com.liferay.portal.kernel.model.BrowserTracker deleteBrowserTracker(
+		com.liferay.portal.kernel.model.BrowserTracker browserTracker) {
 		return getService().deleteBrowserTracker(browserTracker);
 	}
 
@@ -81,7 +81,7 @@ public class BrowserTrackerLocalServiceUtil {
 	* @return the browser tracker that was removed
 	* @throws PortalException if a browser tracker with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.BrowserTracker deleteBrowserTracker(
+	public static com.liferay.portal.kernel.model.BrowserTracker deleteBrowserTracker(
 		long browserTrackerId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteBrowserTracker(browserTrackerId);
@@ -90,8 +90,8 @@ public class BrowserTrackerLocalServiceUtil {
 	/**
 	* @throws PortalException
 	*/
-	public static com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -178,7 +178,7 @@ public class BrowserTrackerLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.portal.model.BrowserTracker fetchBrowserTracker(
+	public static com.liferay.portal.kernel.model.BrowserTracker fetchBrowserTracker(
 		long browserTrackerId) {
 		return getService().fetchBrowserTracker(browserTrackerId);
 	}
@@ -194,13 +194,13 @@ public class BrowserTrackerLocalServiceUtil {
 	* @return the browser tracker
 	* @throws PortalException if a browser tracker with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.BrowserTracker getBrowserTracker(
+	public static com.liferay.portal.kernel.model.BrowserTracker getBrowserTracker(
 		long browserTrackerId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getBrowserTracker(browserTrackerId);
 	}
 
-	public static com.liferay.portal.model.BrowserTracker getBrowserTracker(
+	public static com.liferay.portal.kernel.model.BrowserTracker getBrowserTracker(
 		long userId, long browserKey) {
 		return getService().getBrowserTracker(userId, browserKey);
 	}
@@ -216,7 +216,7 @@ public class BrowserTrackerLocalServiceUtil {
 	* @param end the upper bound of the range of browser trackers (not inclusive)
 	* @return the range of browser trackers
 	*/
-	public static java.util.List<com.liferay.portal.model.BrowserTracker> getBrowserTrackers(
+	public static java.util.List<com.liferay.portal.kernel.model.BrowserTracker> getBrowserTrackers(
 		int start, int end) {
 		return getService().getBrowserTrackers(start, end);
 	}
@@ -243,7 +243,7 @@ public class BrowserTrackerLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.model.PersistedModel getPersistedModel(
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getPersistedModel(primaryKeyObj);
@@ -255,12 +255,12 @@ public class BrowserTrackerLocalServiceUtil {
 	* @param browserTracker the browser tracker
 	* @return the browser tracker that was updated
 	*/
-	public static com.liferay.portal.model.BrowserTracker updateBrowserTracker(
-		com.liferay.portal.model.BrowserTracker browserTracker) {
+	public static com.liferay.portal.kernel.model.BrowserTracker updateBrowserTracker(
+		com.liferay.portal.kernel.model.BrowserTracker browserTracker) {
 		return getService().updateBrowserTracker(browserTracker);
 	}
 
-	public static com.liferay.portal.model.BrowserTracker updateBrowserTracker(
+	public static com.liferay.portal.kernel.model.BrowserTracker updateBrowserTracker(
 		long userId, long browserKey) {
 		return getService().updateBrowserTracker(userId, browserKey);
 	}

@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchUserIdMapperException;
-import com.liferay.portal.model.UserIdMapper;
+import com.liferay.portal.kernel.exception.NoSuchUserIdMapperException;
+import com.liferay.portal.kernel.model.UserIdMapper;
 
 /**
  * The persistence interface for the user ID mapper service.

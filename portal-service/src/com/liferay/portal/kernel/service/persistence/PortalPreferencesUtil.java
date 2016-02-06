@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
-import com.liferay.portal.model.PortalPreferences;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.PortalPreferences;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -46,28 +46,28 @@ public class PortalPreferencesUtil {
 	 */
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache()
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache()
 	 */
 	public static void clearCache() {
 		getPersistence().clearCache();
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static void clearCache(PortalPreferences portalPreferences) {
 		getPersistence().clearCache(portalPreferences);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
 	public static long countWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<PortalPreferences> findWithDynamicQuery(
 		DynamicQuery dynamicQuery) {
@@ -75,7 +75,7 @@ public class PortalPreferencesUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
 	public static List<PortalPreferences> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
@@ -83,7 +83,7 @@ public class PortalPreferencesUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
 	public static List<PortalPreferences> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
@@ -94,14 +94,14 @@ public class PortalPreferencesUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static PortalPreferences update(PortalPreferences portalPreferences) {
 		return getPersistence().update(portalPreferences);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
 	public static PortalPreferences update(
 		PortalPreferences portalPreferences, ServiceContext serviceContext) {
@@ -117,7 +117,7 @@ public class PortalPreferencesUtil {
 	* @throws NoSuchPreferencesException if a matching portal preferences could not be found
 	*/
 	public static PortalPreferences findByO_O(long ownerId, int ownerType)
-		throws com.liferay.portal.exception.NoSuchPreferencesException {
+		throws com.liferay.portal.kernel.exception.NoSuchPreferencesException {
 		return getPersistence().findByO_O(ownerId, ownerType);
 	}
 
@@ -153,7 +153,7 @@ public class PortalPreferencesUtil {
 	* @return the portal preferences that was removed
 	*/
 	public static PortalPreferences removeByO_O(long ownerId, int ownerType)
-		throws com.liferay.portal.exception.NoSuchPreferencesException {
+		throws com.liferay.portal.kernel.exception.NoSuchPreferencesException {
 		return getPersistence().removeByO_O(ownerId, ownerType);
 	}
 
@@ -204,7 +204,7 @@ public class PortalPreferencesUtil {
 	* @throws NoSuchPreferencesException if a portal preferences with the primary key could not be found
 	*/
 	public static PortalPreferences remove(long portalPreferencesId)
-		throws com.liferay.portal.exception.NoSuchPreferencesException {
+		throws com.liferay.portal.kernel.exception.NoSuchPreferencesException {
 		return getPersistence().remove(portalPreferencesId);
 	}
 
@@ -221,7 +221,7 @@ public class PortalPreferencesUtil {
 	* @throws NoSuchPreferencesException if a portal preferences with the primary key could not be found
 	*/
 	public static PortalPreferences findByPrimaryKey(long portalPreferencesId)
-		throws com.liferay.portal.exception.NoSuchPreferencesException {
+		throws com.liferay.portal.kernel.exception.NoSuchPreferencesException {
 		return getPersistence().findByPrimaryKey(portalPreferencesId);
 	}
 

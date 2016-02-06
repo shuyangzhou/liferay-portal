@@ -41,7 +41,7 @@ public class ThemeServiceWrapper implements ThemeService,
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Theme> getThemes(
+	public java.util.List<com.liferay.portal.kernel.model.Theme> getThemes(
 		long companyId) {
 		return _themeService.getThemes(companyId);
 	}

@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchBrowserTrackerException;
-import com.liferay.portal.model.BrowserTracker;
+import com.liferay.portal.kernel.exception.NoSuchBrowserTrackerException;
+import com.liferay.portal.kernel.model.BrowserTracker;
 
 /**
  * The persistence interface for the browser tracker service.

@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchVirtualHostException;
-import com.liferay.portal.model.VirtualHost;
+import com.liferay.portal.kernel.exception.NoSuchVirtualHostException;
+import com.liferay.portal.kernel.model.VirtualHost;
 
 /**
  * The persistence interface for the virtual host service.

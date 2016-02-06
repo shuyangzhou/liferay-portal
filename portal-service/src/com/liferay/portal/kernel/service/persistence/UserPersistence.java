@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchUserException;
-import com.liferay.portal.model.User;
+import com.liferay.portal.kernel.exception.NoSuchUserException;
+import com.liferay.portal.kernel.model.User;
 
 import java.util.Date;
 
@@ -1894,7 +1894,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @return the groups associated with the user
 	*/
-	public java.util.List<com.liferay.portal.model.Group> getGroups(long pk);
+	public java.util.List<com.liferay.portal.kernel.model.Group> getGroups(long pk);
 
 	/**
 	* Returns a range of all the groups associated with the user.
@@ -1908,7 +1908,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param end the upper bound of the range of users (not inclusive)
 	* @return the range of groups associated with the user
 	*/
-	public java.util.List<com.liferay.portal.model.Group> getGroups(long pk,
+	public java.util.List<com.liferay.portal.kernel.model.Group> getGroups(long pk,
 		int start, int end);
 
 	/**
@@ -1924,9 +1924,9 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of groups associated with the user
 	*/
-	public java.util.List<com.liferay.portal.model.Group> getGroups(long pk,
+	public java.util.List<com.liferay.portal.kernel.model.Group> getGroups(long pk,
 		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Group> orderByComparator);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Group> orderByComparator);
 
 	/**
 	* Returns the number of groups associated with the user.
@@ -1967,7 +1967,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @param group the group
 	*/
-	public void addGroup(long pk, com.liferay.portal.model.Group group);
+	public void addGroup(long pk, com.liferay.portal.kernel.model.Group group);
 
 	/**
 	* Adds an association between the user and the groups. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -1984,7 +1984,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param groups the groups
 	*/
 	public void addGroups(long pk,
-		java.util.List<com.liferay.portal.model.Group> groups);
+		java.util.List<com.liferay.portal.kernel.model.Group> groups);
 
 	/**
 	* Clears all associations between the user and its groups. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2007,7 +2007,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @param group the group
 	*/
-	public void removeGroup(long pk, com.liferay.portal.model.Group group);
+	public void removeGroup(long pk, com.liferay.portal.kernel.model.Group group);
 
 	/**
 	* Removes the association between the user and the groups. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2024,7 +2024,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param groups the groups
 	*/
 	public void removeGroups(long pk,
-		java.util.List<com.liferay.portal.model.Group> groups);
+		java.util.List<com.liferay.portal.kernel.model.Group> groups);
 
 	/**
 	* Sets the groups associated with the user, removing and adding associations as necessary. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2041,7 +2041,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param groups the groups to be associated with the user
 	*/
 	public void setGroups(long pk,
-		java.util.List<com.liferay.portal.model.Group> groups);
+		java.util.List<com.liferay.portal.kernel.model.Group> groups);
 
 	/**
 	* Returns the primaryKeys of organizations associated with the user.
@@ -2057,7 +2057,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @return the organizations associated with the user
 	*/
-	public java.util.List<com.liferay.portal.model.Organization> getOrganizations(
+	public java.util.List<com.liferay.portal.kernel.model.Organization> getOrganizations(
 		long pk);
 
 	/**
@@ -2072,7 +2072,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param end the upper bound of the range of users (not inclusive)
 	* @return the range of organizations associated with the user
 	*/
-	public java.util.List<com.liferay.portal.model.Organization> getOrganizations(
+	public java.util.List<com.liferay.portal.kernel.model.Organization> getOrganizations(
 		long pk, int start, int end);
 
 	/**
@@ -2088,9 +2088,9 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of organizations associated with the user
 	*/
-	public java.util.List<com.liferay.portal.model.Organization> getOrganizations(
+	public java.util.List<com.liferay.portal.kernel.model.Organization> getOrganizations(
 		long pk, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Organization> orderByComparator);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Organization> orderByComparator);
 
 	/**
 	* Returns the number of organizations associated with the user.
@@ -2132,7 +2132,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param organization the organization
 	*/
 	public void addOrganization(long pk,
-		com.liferay.portal.model.Organization organization);
+		com.liferay.portal.kernel.model.Organization organization);
 
 	/**
 	* Adds an association between the user and the organizations. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2149,7 +2149,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param organizations the organizations
 	*/
 	public void addOrganizations(long pk,
-		java.util.List<com.liferay.portal.model.Organization> organizations);
+		java.util.List<com.liferay.portal.kernel.model.Organization> organizations);
 
 	/**
 	* Clears all associations between the user and its organizations. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2173,7 +2173,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param organization the organization
 	*/
 	public void removeOrganization(long pk,
-		com.liferay.portal.model.Organization organization);
+		com.liferay.portal.kernel.model.Organization organization);
 
 	/**
 	* Removes the association between the user and the organizations. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2190,7 +2190,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param organizations the organizations
 	*/
 	public void removeOrganizations(long pk,
-		java.util.List<com.liferay.portal.model.Organization> organizations);
+		java.util.List<com.liferay.portal.kernel.model.Organization> organizations);
 
 	/**
 	* Sets the organizations associated with the user, removing and adding associations as necessary. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2207,7 +2207,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param organizations the organizations to be associated with the user
 	*/
 	public void setOrganizations(long pk,
-		java.util.List<com.liferay.portal.model.Organization> organizations);
+		java.util.List<com.liferay.portal.kernel.model.Organization> organizations);
 
 	/**
 	* Returns the primaryKeys of roles associated with the user.
@@ -2223,7 +2223,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @return the roles associated with the user
 	*/
-	public java.util.List<com.liferay.portal.model.Role> getRoles(long pk);
+	public java.util.List<com.liferay.portal.kernel.model.Role> getRoles(long pk);
 
 	/**
 	* Returns a range of all the roles associated with the user.
@@ -2237,7 +2237,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param end the upper bound of the range of users (not inclusive)
 	* @return the range of roles associated with the user
 	*/
-	public java.util.List<com.liferay.portal.model.Role> getRoles(long pk,
+	public java.util.List<com.liferay.portal.kernel.model.Role> getRoles(long pk,
 		int start, int end);
 
 	/**
@@ -2253,9 +2253,9 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of roles associated with the user
 	*/
-	public java.util.List<com.liferay.portal.model.Role> getRoles(long pk,
+	public java.util.List<com.liferay.portal.kernel.model.Role> getRoles(long pk,
 		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Role> orderByComparator);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Role> orderByComparator);
 
 	/**
 	* Returns the number of roles associated with the user.
@@ -2296,7 +2296,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @param role the role
 	*/
-	public void addRole(long pk, com.liferay.portal.model.Role role);
+	public void addRole(long pk, com.liferay.portal.kernel.model.Role role);
 
 	/**
 	* Adds an association between the user and the roles. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2313,7 +2313,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param roles the roles
 	*/
 	public void addRoles(long pk,
-		java.util.List<com.liferay.portal.model.Role> roles);
+		java.util.List<com.liferay.portal.kernel.model.Role> roles);
 
 	/**
 	* Clears all associations between the user and its roles. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2336,7 +2336,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @param role the role
 	*/
-	public void removeRole(long pk, com.liferay.portal.model.Role role);
+	public void removeRole(long pk, com.liferay.portal.kernel.model.Role role);
 
 	/**
 	* Removes the association between the user and the roles. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2353,7 +2353,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param roles the roles
 	*/
 	public void removeRoles(long pk,
-		java.util.List<com.liferay.portal.model.Role> roles);
+		java.util.List<com.liferay.portal.kernel.model.Role> roles);
 
 	/**
 	* Sets the roles associated with the user, removing and adding associations as necessary. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2370,7 +2370,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param roles the roles to be associated with the user
 	*/
 	public void setRoles(long pk,
-		java.util.List<com.liferay.portal.model.Role> roles);
+		java.util.List<com.liferay.portal.kernel.model.Role> roles);
 
 	/**
 	* Returns the primaryKeys of teams associated with the user.
@@ -2386,7 +2386,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @return the teams associated with the user
 	*/
-	public java.util.List<com.liferay.portal.model.Team> getTeams(long pk);
+	public java.util.List<com.liferay.portal.kernel.model.Team> getTeams(long pk);
 
 	/**
 	* Returns a range of all the teams associated with the user.
@@ -2400,7 +2400,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param end the upper bound of the range of users (not inclusive)
 	* @return the range of teams associated with the user
 	*/
-	public java.util.List<com.liferay.portal.model.Team> getTeams(long pk,
+	public java.util.List<com.liferay.portal.kernel.model.Team> getTeams(long pk,
 		int start, int end);
 
 	/**
@@ -2416,9 +2416,9 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of teams associated with the user
 	*/
-	public java.util.List<com.liferay.portal.model.Team> getTeams(long pk,
+	public java.util.List<com.liferay.portal.kernel.model.Team> getTeams(long pk,
 		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Team> orderByComparator);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Team> orderByComparator);
 
 	/**
 	* Returns the number of teams associated with the user.
@@ -2459,7 +2459,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @param team the team
 	*/
-	public void addTeam(long pk, com.liferay.portal.model.Team team);
+	public void addTeam(long pk, com.liferay.portal.kernel.model.Team team);
 
 	/**
 	* Adds an association between the user and the teams. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2476,7 +2476,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param teams the teams
 	*/
 	public void addTeams(long pk,
-		java.util.List<com.liferay.portal.model.Team> teams);
+		java.util.List<com.liferay.portal.kernel.model.Team> teams);
 
 	/**
 	* Clears all associations between the user and its teams. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2499,7 +2499,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @param team the team
 	*/
-	public void removeTeam(long pk, com.liferay.portal.model.Team team);
+	public void removeTeam(long pk, com.liferay.portal.kernel.model.Team team);
 
 	/**
 	* Removes the association between the user and the teams. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2516,7 +2516,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param teams the teams
 	*/
 	public void removeTeams(long pk,
-		java.util.List<com.liferay.portal.model.Team> teams);
+		java.util.List<com.liferay.portal.kernel.model.Team> teams);
 
 	/**
 	* Sets the teams associated with the user, removing and adding associations as necessary. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2533,7 +2533,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param teams the teams to be associated with the user
 	*/
 	public void setTeams(long pk,
-		java.util.List<com.liferay.portal.model.Team> teams);
+		java.util.List<com.liferay.portal.kernel.model.Team> teams);
 
 	/**
 	* Returns the primaryKeys of user groups associated with the user.
@@ -2549,7 +2549,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param pk the primary key of the user
 	* @return the user groups associated with the user
 	*/
-	public java.util.List<com.liferay.portal.model.UserGroup> getUserGroups(
+	public java.util.List<com.liferay.portal.kernel.model.UserGroup> getUserGroups(
 		long pk);
 
 	/**
@@ -2564,7 +2564,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param end the upper bound of the range of users (not inclusive)
 	* @return the range of user groups associated with the user
 	*/
-	public java.util.List<com.liferay.portal.model.UserGroup> getUserGroups(
+	public java.util.List<com.liferay.portal.kernel.model.UserGroup> getUserGroups(
 		long pk, int start, int end);
 
 	/**
@@ -2580,9 +2580,9 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of user groups associated with the user
 	*/
-	public java.util.List<com.liferay.portal.model.UserGroup> getUserGroups(
+	public java.util.List<com.liferay.portal.kernel.model.UserGroup> getUserGroups(
 		long pk, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.UserGroup> orderByComparator);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.UserGroup> orderByComparator);
 
 	/**
 	* Returns the number of user groups associated with the user.
@@ -2624,7 +2624,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param userGroup the user group
 	*/
 	public void addUserGroup(long pk,
-		com.liferay.portal.model.UserGroup userGroup);
+		com.liferay.portal.kernel.model.UserGroup userGroup);
 
 	/**
 	* Adds an association between the user and the user groups. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2641,7 +2641,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param userGroups the user groups
 	*/
 	public void addUserGroups(long pk,
-		java.util.List<com.liferay.portal.model.UserGroup> userGroups);
+		java.util.List<com.liferay.portal.kernel.model.UserGroup> userGroups);
 
 	/**
 	* Clears all associations between the user and its user groups. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2665,7 +2665,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param userGroup the user group
 	*/
 	public void removeUserGroup(long pk,
-		com.liferay.portal.model.UserGroup userGroup);
+		com.liferay.portal.kernel.model.UserGroup userGroup);
 
 	/**
 	* Removes the association between the user and the user groups. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2682,7 +2682,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param userGroups the user groups
 	*/
 	public void removeUserGroups(long pk,
-		java.util.List<com.liferay.portal.model.UserGroup> userGroups);
+		java.util.List<com.liferay.portal.kernel.model.UserGroup> userGroups);
 
 	/**
 	* Sets the user groups associated with the user, removing and adding associations as necessary. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2699,7 +2699,7 @@ public interface UserPersistence extends BasePersistence<User> {
 	* @param userGroups the user groups to be associated with the user
 	*/
 	public void setUserGroups(long pk,
-		java.util.List<com.liferay.portal.model.UserGroup> userGroups);
+		java.util.List<com.liferay.portal.kernel.model.UserGroup> userGroups);
 
 	@Override
 	public java.util.Set<java.lang.String> getBadColumnNames();

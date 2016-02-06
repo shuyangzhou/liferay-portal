@@ -47,25 +47,25 @@ public class LayoutBranchLocalServiceUtil {
 	* @param layoutBranch the layout branch
 	* @return the layout branch that was added
 	*/
-	public static com.liferay.portal.model.LayoutBranch addLayoutBranch(
-		com.liferay.portal.model.LayoutBranch layoutBranch) {
+	public static com.liferay.portal.kernel.model.LayoutBranch addLayoutBranch(
+		com.liferay.portal.kernel.model.LayoutBranch layoutBranch) {
 		return getService().addLayoutBranch(layoutBranch);
 	}
 
-	public static com.liferay.portal.model.LayoutBranch addLayoutBranch(
+	public static com.liferay.portal.kernel.model.LayoutBranch addLayoutBranch(
 		long layoutRevisionId, java.lang.String name,
 		java.lang.String description, boolean master,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addLayoutBranch(layoutRevisionId, name, description,
 			master, serviceContext);
 	}
 
-	public static com.liferay.portal.model.LayoutBranch addLayoutBranch(
+	public static com.liferay.portal.kernel.model.LayoutBranch addLayoutBranch(
 		long layoutSetBranchId, long plid, java.lang.String name,
 		java.lang.String description, boolean master,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addLayoutBranch(layoutSetBranchId, plid, name, description,
@@ -78,7 +78,7 @@ public class LayoutBranchLocalServiceUtil {
 	* @param layoutBranchId the primary key for the new layout branch
 	* @return the new layout branch
 	*/
-	public static com.liferay.portal.model.LayoutBranch createLayoutBranch(
+	public static com.liferay.portal.kernel.model.LayoutBranch createLayoutBranch(
 		long layoutBranchId) {
 		return getService().createLayoutBranch(layoutBranchId);
 	}
@@ -89,8 +89,8 @@ public class LayoutBranchLocalServiceUtil {
 	* @param layoutBranch the layout branch
 	* @return the layout branch that was removed
 	*/
-	public static com.liferay.portal.model.LayoutBranch deleteLayoutBranch(
-		com.liferay.portal.model.LayoutBranch layoutBranch) {
+	public static com.liferay.portal.kernel.model.LayoutBranch deleteLayoutBranch(
+		com.liferay.portal.kernel.model.LayoutBranch layoutBranch) {
 		return getService().deleteLayoutBranch(layoutBranch);
 	}
 
@@ -101,7 +101,7 @@ public class LayoutBranchLocalServiceUtil {
 	* @return the layout branch that was removed
 	* @throws PortalException if a layout branch with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.LayoutBranch deleteLayoutBranch(
+	public static com.liferay.portal.kernel.model.LayoutBranch deleteLayoutBranch(
 		long layoutBranchId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteLayoutBranch(layoutBranchId);
@@ -116,8 +116,8 @@ public class LayoutBranchLocalServiceUtil {
 	/**
 	* @throws PortalException
 	*/
-	public static com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -200,7 +200,7 @@ public class LayoutBranchLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.portal.model.LayoutBranch fetchLayoutBranch(
+	public static com.liferay.portal.kernel.model.LayoutBranch fetchLayoutBranch(
 		long layoutBranchId) {
 		return getService().fetchLayoutBranch(layoutBranchId);
 	}
@@ -220,15 +220,15 @@ public class LayoutBranchLocalServiceUtil {
 	* @return the layout branch
 	* @throws PortalException if a layout branch with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.LayoutBranch getLayoutBranch(
+	public static com.liferay.portal.kernel.model.LayoutBranch getLayoutBranch(
 		long layoutBranchId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getLayoutBranch(layoutBranchId);
 	}
 
-	public static java.util.List<com.liferay.portal.model.LayoutBranch> getLayoutBranches(
+	public static java.util.List<com.liferay.portal.kernel.model.LayoutBranch> getLayoutBranches(
 		long layoutSetBranchId, long plid, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.LayoutBranch> orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.LayoutBranch> orderByComparator) {
 		return getService()
 				   .getLayoutBranches(layoutSetBranchId, plid, start, end,
 			orderByComparator);
@@ -245,7 +245,7 @@ public class LayoutBranchLocalServiceUtil {
 	* @param end the upper bound of the range of layout branchs (not inclusive)
 	* @return the range of layout branchs
 	*/
-	public static java.util.List<com.liferay.portal.model.LayoutBranch> getLayoutBranchs(
+	public static java.util.List<com.liferay.portal.kernel.model.LayoutBranch> getLayoutBranchs(
 		int start, int end) {
 		return getService().getLayoutBranchs(start, end);
 	}
@@ -259,20 +259,20 @@ public class LayoutBranchLocalServiceUtil {
 		return getService().getLayoutBranchsCount();
 	}
 
-	public static java.util.List<com.liferay.portal.model.LayoutBranch> getLayoutSetBranchLayoutBranches(
+	public static java.util.List<com.liferay.portal.kernel.model.LayoutBranch> getLayoutSetBranchLayoutBranches(
 		long layoutSetBranchId) {
 		return getService().getLayoutSetBranchLayoutBranches(layoutSetBranchId);
 	}
 
-	public static com.liferay.portal.model.LayoutBranch getMasterLayoutBranch(
+	public static com.liferay.portal.kernel.model.LayoutBranch getMasterLayoutBranch(
 		long layoutSetBranchId, long plid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getMasterLayoutBranch(layoutSetBranchId, plid);
 	}
 
-	public static com.liferay.portal.model.LayoutBranch getMasterLayoutBranch(
+	public static com.liferay.portal.kernel.model.LayoutBranch getMasterLayoutBranch(
 		long layoutSetBranchId, long plid,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .getMasterLayoutBranch(layoutSetBranchId, plid,
@@ -288,7 +288,7 @@ public class LayoutBranchLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.model.PersistedModel getPersistedModel(
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getPersistedModel(primaryKeyObj);
@@ -300,15 +300,15 @@ public class LayoutBranchLocalServiceUtil {
 	* @param layoutBranch the layout branch
 	* @return the layout branch that was updated
 	*/
-	public static com.liferay.portal.model.LayoutBranch updateLayoutBranch(
-		com.liferay.portal.model.LayoutBranch layoutBranch) {
+	public static com.liferay.portal.kernel.model.LayoutBranch updateLayoutBranch(
+		com.liferay.portal.kernel.model.LayoutBranch layoutBranch) {
 		return getService().updateLayoutBranch(layoutBranch);
 	}
 
-	public static com.liferay.portal.model.LayoutBranch updateLayoutBranch(
+	public static com.liferay.portal.kernel.model.LayoutBranch updateLayoutBranch(
 		long layoutBranchId, java.lang.String name,
 		java.lang.String description,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateLayoutBranch(layoutBranchId, name, description,

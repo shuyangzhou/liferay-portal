@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
-import com.liferay.portal.model.ServiceComponent;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.ServiceComponent;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -46,28 +46,28 @@ public class ServiceComponentUtil {
 	 */
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache()
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache()
 	 */
 	public static void clearCache() {
 		getPersistence().clearCache();
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static void clearCache(ServiceComponent serviceComponent) {
 		getPersistence().clearCache(serviceComponent);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
 	public static long countWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<ServiceComponent> findWithDynamicQuery(
 		DynamicQuery dynamicQuery) {
@@ -75,7 +75,7 @@ public class ServiceComponentUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
 	public static List<ServiceComponent> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
@@ -83,7 +83,7 @@ public class ServiceComponentUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
 	public static List<ServiceComponent> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
@@ -94,14 +94,14 @@ public class ServiceComponentUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static ServiceComponent update(ServiceComponent serviceComponent) {
 		return getPersistence().update(serviceComponent);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
 	public static ServiceComponent update(ServiceComponent serviceComponent,
 		ServiceContext serviceContext) {
@@ -191,7 +191,7 @@ public class ServiceComponentUtil {
 	public static ServiceComponent findByBuildNamespace_First(
 		java.lang.String buildNamespace,
 		OrderByComparator<ServiceComponent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchServiceComponentException {
+		throws com.liferay.portal.kernel.exception.NoSuchServiceComponentException {
 		return getPersistence()
 				   .findByBuildNamespace_First(buildNamespace, orderByComparator);
 	}
@@ -222,7 +222,7 @@ public class ServiceComponentUtil {
 	public static ServiceComponent findByBuildNamespace_Last(
 		java.lang.String buildNamespace,
 		OrderByComparator<ServiceComponent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchServiceComponentException {
+		throws com.liferay.portal.kernel.exception.NoSuchServiceComponentException {
 		return getPersistence()
 				   .findByBuildNamespace_Last(buildNamespace, orderByComparator);
 	}
@@ -253,7 +253,7 @@ public class ServiceComponentUtil {
 	public static ServiceComponent[] findByBuildNamespace_PrevAndNext(
 		long serviceComponentId, java.lang.String buildNamespace,
 		OrderByComparator<ServiceComponent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchServiceComponentException {
+		throws com.liferay.portal.kernel.exception.NoSuchServiceComponentException {
 		return getPersistence()
 				   .findByBuildNamespace_PrevAndNext(serviceComponentId,
 			buildNamespace, orderByComparator);
@@ -288,7 +288,7 @@ public class ServiceComponentUtil {
 	*/
 	public static ServiceComponent findByBNS_BNU(
 		java.lang.String buildNamespace, long buildNumber)
-		throws com.liferay.portal.exception.NoSuchServiceComponentException {
+		throws com.liferay.portal.kernel.exception.NoSuchServiceComponentException {
 		return getPersistence().findByBNS_BNU(buildNamespace, buildNumber);
 	}
 
@@ -329,7 +329,7 @@ public class ServiceComponentUtil {
 	*/
 	public static ServiceComponent removeByBNS_BNU(
 		java.lang.String buildNamespace, long buildNumber)
-		throws com.liferay.portal.exception.NoSuchServiceComponentException {
+		throws com.liferay.portal.kernel.exception.NoSuchServiceComponentException {
 		return getPersistence().removeByBNS_BNU(buildNamespace, buildNumber);
 	}
 
@@ -381,7 +381,7 @@ public class ServiceComponentUtil {
 	* @throws NoSuchServiceComponentException if a service component with the primary key could not be found
 	*/
 	public static ServiceComponent remove(long serviceComponentId)
-		throws com.liferay.portal.exception.NoSuchServiceComponentException {
+		throws com.liferay.portal.kernel.exception.NoSuchServiceComponentException {
 		return getPersistence().remove(serviceComponentId);
 	}
 
@@ -397,7 +397,7 @@ public class ServiceComponentUtil {
 	* @throws NoSuchServiceComponentException if a service component with the primary key could not be found
 	*/
 	public static ServiceComponent findByPrimaryKey(long serviceComponentId)
-		throws com.liferay.portal.exception.NoSuchServiceComponentException {
+		throws com.liferay.portal.kernel.exception.NoSuchServiceComponentException {
 		return getPersistence().findByPrimaryKey(serviceComponentId);
 	}
 

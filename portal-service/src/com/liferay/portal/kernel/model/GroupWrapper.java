@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -235,7 +235,7 @@ public class GroupWrapper implements Group, ModelWrapper<Group> {
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.model.Group group) {
+	public int compareTo(com.liferay.portal.kernel.model.Group group) {
 		return _group.compareTo(group);
 	}
 
@@ -250,7 +250,7 @@ public class GroupWrapper implements Group, ModelWrapper<Group> {
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getAncestors()
+	public java.util.List<com.liferay.portal.kernel.model.Group> getAncestors()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _group.getAncestors();
 	}
@@ -261,7 +261,7 @@ public class GroupWrapper implements Group, ModelWrapper<Group> {
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getChildren(
+	public java.util.List<com.liferay.portal.kernel.model.Group> getChildren(
 		boolean site) {
 		return _group.getChildren(site);
 	}
@@ -273,15 +273,15 @@ public class GroupWrapper implements Group, ModelWrapper<Group> {
 	*/
 	@Deprecated
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getChildrenWithLayouts(
+	public java.util.List<com.liferay.portal.kernel.model.Group> getChildrenWithLayouts(
 		boolean site, int start, int end) {
 		return _group.getChildrenWithLayouts(site, start, end);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getChildrenWithLayouts(
+	public java.util.List<com.liferay.portal.kernel.model.Group> getChildrenWithLayouts(
 		boolean site, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Group> obc) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Group> obc) {
 		return _group.getChildrenWithLayouts(site, start, end, obc);
 	}
 
@@ -366,7 +366,7 @@ public class GroupWrapper implements Group, ModelWrapper<Group> {
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getDescendants(
+	public java.util.List<com.liferay.portal.kernel.model.Group> getDescendants(
 		boolean site) {
 		return _group.getDescendants(site);
 	}
@@ -537,7 +537,7 @@ public class GroupWrapper implements Group, ModelWrapper<Group> {
 	}
 
 	@Override
-	public com.liferay.portal.model.Group getLiveGroup() {
+	public com.liferay.portal.kernel.model.Group getLiveGroup() {
 		return _group.getLiveGroup();
 	}
 
@@ -677,7 +677,7 @@ public class GroupWrapper implements Group, ModelWrapper<Group> {
 	}
 
 	@Override
-	public com.liferay.portal.model.Group getParentGroup()
+	public com.liferay.portal.kernel.model.Group getParentGroup()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _group.getParentGroup();
 	}
@@ -719,7 +719,7 @@ public class GroupWrapper implements Group, ModelWrapper<Group> {
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutSet getPrivateLayoutSet() {
+	public com.liferay.portal.kernel.model.LayoutSet getPrivateLayoutSet() {
 		return _group.getPrivateLayoutSet();
 	}
 
@@ -729,7 +729,7 @@ public class GroupWrapper implements Group, ModelWrapper<Group> {
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutSet getPublicLayoutSet() {
+	public com.liferay.portal.kernel.model.LayoutSet getPublicLayoutSet() {
 		return _group.getPublicLayoutSet();
 	}
 
@@ -777,7 +777,7 @@ public class GroupWrapper implements Group, ModelWrapper<Group> {
 	}
 
 	@Override
-	public com.liferay.portal.model.Group getStagingGroup() {
+	public com.liferay.portal.kernel.model.Group getStagingGroup() {
 		return _group.getStagingGroup();
 	}
 
@@ -1051,14 +1051,14 @@ public class GroupWrapper implements Group, ModelWrapper<Group> {
 
 	@Override
 	public void prepareLocalizedFieldsForImport()
-		throws com.liferay.portal.LocaleException {
+		throws com.liferay.portal.kernel.exception.LocaleException {
 		_group.prepareLocalizedFieldsForImport();
 	}
 
 	@Override
 	public void prepareLocalizedFieldsForImport(
 		java.util.Locale defaultImportLocale)
-		throws com.liferay.portal.LocaleException {
+		throws com.liferay.portal.kernel.exception.LocaleException {
 		_group.prepareLocalizedFieldsForImport(defaultImportLocale);
 	}
 
@@ -1449,12 +1449,12 @@ public class GroupWrapper implements Group, ModelWrapper<Group> {
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.Group> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.Group> toCacheModel() {
 		return _group.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.Group toEscapedModel() {
+	public com.liferay.portal.kernel.model.Group toEscapedModel() {
 		return new GroupWrapper(_group.toEscapedModel());
 	}
 
@@ -1464,7 +1464,7 @@ public class GroupWrapper implements Group, ModelWrapper<Group> {
 	}
 
 	@Override
-	public com.liferay.portal.model.Group toUnescapedModel() {
+	public com.liferay.portal.kernel.model.Group toUnescapedModel() {
 		return new GroupWrapper(_group.toUnescapedModel());
 	}
 

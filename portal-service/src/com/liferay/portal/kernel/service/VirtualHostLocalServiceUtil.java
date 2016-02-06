@@ -47,8 +47,8 @@ public class VirtualHostLocalServiceUtil {
 	* @param virtualHost the virtual host
 	* @return the virtual host that was added
 	*/
-	public static com.liferay.portal.model.VirtualHost addVirtualHost(
-		com.liferay.portal.model.VirtualHost virtualHost) {
+	public static com.liferay.portal.kernel.model.VirtualHost addVirtualHost(
+		com.liferay.portal.kernel.model.VirtualHost virtualHost) {
 		return getService().addVirtualHost(virtualHost);
 	}
 
@@ -58,7 +58,7 @@ public class VirtualHostLocalServiceUtil {
 	* @param virtualHostId the primary key for the new virtual host
 	* @return the new virtual host
 	*/
-	public static com.liferay.portal.model.VirtualHost createVirtualHost(
+	public static com.liferay.portal.kernel.model.VirtualHost createVirtualHost(
 		long virtualHostId) {
 		return getService().createVirtualHost(virtualHostId);
 	}
@@ -66,8 +66,8 @@ public class VirtualHostLocalServiceUtil {
 	/**
 	* @throws PortalException
 	*/
-	public static com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -78,8 +78,8 @@ public class VirtualHostLocalServiceUtil {
 	* @param virtualHost the virtual host
 	* @return the virtual host that was removed
 	*/
-	public static com.liferay.portal.model.VirtualHost deleteVirtualHost(
-		com.liferay.portal.model.VirtualHost virtualHost) {
+	public static com.liferay.portal.kernel.model.VirtualHost deleteVirtualHost(
+		com.liferay.portal.kernel.model.VirtualHost virtualHost) {
 		return getService().deleteVirtualHost(virtualHost);
 	}
 
@@ -90,7 +90,7 @@ public class VirtualHostLocalServiceUtil {
 	* @return the virtual host that was removed
 	* @throws PortalException if a virtual host with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.VirtualHost deleteVirtualHost(
+	public static com.liferay.portal.kernel.model.VirtualHost deleteVirtualHost(
 		long virtualHostId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteVirtualHost(virtualHostId);
@@ -174,17 +174,17 @@ public class VirtualHostLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.portal.model.VirtualHost fetchVirtualHost(
+	public static com.liferay.portal.kernel.model.VirtualHost fetchVirtualHost(
 		long companyId, long layoutSetId) {
 		return getService().fetchVirtualHost(companyId, layoutSetId);
 	}
 
-	public static com.liferay.portal.model.VirtualHost fetchVirtualHost(
+	public static com.liferay.portal.kernel.model.VirtualHost fetchVirtualHost(
 		java.lang.String hostname) {
 		return getService().fetchVirtualHost(hostname);
 	}
 
-	public static com.liferay.portal.model.VirtualHost fetchVirtualHost(
+	public static com.liferay.portal.kernel.model.VirtualHost fetchVirtualHost(
 		long virtualHostId) {
 		return getService().fetchVirtualHost(virtualHostId);
 	}
@@ -206,19 +206,19 @@ public class VirtualHostLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.model.PersistedModel getPersistedModel(
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static com.liferay.portal.model.VirtualHost getVirtualHost(
+	public static com.liferay.portal.kernel.model.VirtualHost getVirtualHost(
 		long companyId, long layoutSetId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getVirtualHost(companyId, layoutSetId);
 	}
 
-	public static com.liferay.portal.model.VirtualHost getVirtualHost(
+	public static com.liferay.portal.kernel.model.VirtualHost getVirtualHost(
 		java.lang.String hostname)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getVirtualHost(hostname);
@@ -231,7 +231,7 @@ public class VirtualHostLocalServiceUtil {
 	* @return the virtual host
 	* @throws PortalException if a virtual host with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.VirtualHost getVirtualHost(
+	public static com.liferay.portal.kernel.model.VirtualHost getVirtualHost(
 		long virtualHostId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getVirtualHost(virtualHostId);
@@ -248,7 +248,7 @@ public class VirtualHostLocalServiceUtil {
 	* @param end the upper bound of the range of virtual hosts (not inclusive)
 	* @return the range of virtual hosts
 	*/
-	public static java.util.List<com.liferay.portal.model.VirtualHost> getVirtualHosts(
+	public static java.util.List<com.liferay.portal.kernel.model.VirtualHost> getVirtualHosts(
 		int start, int end) {
 		return getService().getVirtualHosts(start, end);
 	}
@@ -262,7 +262,7 @@ public class VirtualHostLocalServiceUtil {
 		return getService().getVirtualHostsCount();
 	}
 
-	public static com.liferay.portal.model.VirtualHost updateVirtualHost(
+	public static com.liferay.portal.kernel.model.VirtualHost updateVirtualHost(
 		long companyId, long layoutSetId, java.lang.String hostname) {
 		return getService().updateVirtualHost(companyId, layoutSetId, hostname);
 	}
@@ -273,8 +273,8 @@ public class VirtualHostLocalServiceUtil {
 	* @param virtualHost the virtual host
 	* @return the virtual host that was updated
 	*/
-	public static com.liferay.portal.model.VirtualHost updateVirtualHost(
-		com.liferay.portal.model.VirtualHost virtualHost) {
+	public static com.liferay.portal.kernel.model.VirtualHost updateVirtualHost(
+		com.liferay.portal.kernel.model.VirtualHost virtualHost) {
 		return getService().updateVirtualHost(virtualHost);
 	}
 

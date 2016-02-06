@@ -30,11 +30,11 @@ import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.model.PersistedModel;
-import com.liferay.portal.model.Resource;
-import com.liferay.portal.model.ResourceAction;
-import com.liferay.portal.model.ResourcePermission;
-import com.liferay.portal.model.Role;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.model.Resource;
+import com.liferay.portal.kernel.model.ResourceAction;
+import com.liferay.portal.kernel.model.ResourcePermission;
+import com.liferay.portal.kernel.model.Role;
 
 import java.io.Serializable;
 
@@ -101,7 +101,7 @@ public interface ResourcePermissionLocalService extends BaseLocalService,
 	* @param roleId the primary key of the role
 	* @param actionId the action ID
 	*/
-	@Retry(acceptor = com.liferay.portal.service.ExceptionRetryAcceptor.class, properties =  {
+	@Retry(acceptor = com.liferay.portal.kernel.service.ExceptionRetryAcceptor.class, properties =  {
 		@Property(name = ExceptionRetryAcceptor.EXCEPTION_NAME, value = "org.springframework.dao.DataIntegrityViolationException")
 	}
 	)
@@ -707,7 +707,7 @@ public interface ResourcePermissionLocalService extends BaseLocalService,
 	created the resource)
 	* @param actionIds the action IDs of the actions
 	*/
-	@Retry(acceptor = com.liferay.portal.service.ExceptionRetryAcceptor.class, properties =  {
+	@Retry(acceptor = com.liferay.portal.kernel.service.ExceptionRetryAcceptor.class, properties =  {
 		@Property(name = ExceptionRetryAcceptor.EXCEPTION_NAME, value = "org.springframework.dao.DataIntegrityViolationException")
 	}
 	)
@@ -740,7 +740,7 @@ public interface ResourcePermissionLocalService extends BaseLocalService,
 	* @param roleId the primary key of the role
 	* @param actionIds the action IDs of the actions
 	*/
-	@Retry(acceptor = com.liferay.portal.service.ExceptionRetryAcceptor.class, properties =  {
+	@Retry(acceptor = com.liferay.portal.kernel.service.ExceptionRetryAcceptor.class, properties =  {
 		@Property(name = ExceptionRetryAcceptor.EXCEPTION_NAME, value = "org.springframework.dao.DataIntegrityViolationException")
 	}
 	)
@@ -771,7 +771,7 @@ public interface ResourcePermissionLocalService extends BaseLocalService,
 	* @param primKey the primary key
 	* @param roleIdsToActionIds a map of role IDs to action IDs of the actions
 	*/
-	@Retry(acceptor = com.liferay.portal.service.ExceptionRetryAcceptor.class, properties =  {
+	@Retry(acceptor = com.liferay.portal.kernel.service.ExceptionRetryAcceptor.class, properties =  {
 		@Property(name = ExceptionRetryAcceptor.EXCEPTION_NAME, value = "org.springframework.dao.DataIntegrityViolationException")
 	}
 	)

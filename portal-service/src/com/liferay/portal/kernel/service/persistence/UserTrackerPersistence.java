@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchUserTrackerException;
-import com.liferay.portal.model.UserTracker;
+import com.liferay.portal.kernel.exception.NoSuchUserTrackerException;
+import com.liferay.portal.kernel.model.UserTracker;
 
 /**
  * The persistence interface for the user tracker service.

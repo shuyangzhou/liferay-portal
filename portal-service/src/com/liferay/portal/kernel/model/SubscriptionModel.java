@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -298,19 +298,19 @@ public interface SubscriptionModel extends AttachedModel, BaseModel<Subscription
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.model.Subscription subscription);
+	public int compareTo(com.liferay.portal.kernel.model.Subscription subscription);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.Subscription> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.Subscription> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.Subscription toEscapedModel();
+	public com.liferay.portal.kernel.model.Subscription toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.Subscription toUnescapedModel();
+	public com.liferay.portal.kernel.model.Subscription toUnescapedModel();
 
 	@Override
 	public String toString();

@@ -47,17 +47,17 @@ public class AddressLocalServiceUtil {
 	* @param address the address
 	* @return the address that was added
 	*/
-	public static com.liferay.portal.model.Address addAddress(
-		com.liferay.portal.model.Address address) {
+	public static com.liferay.portal.kernel.model.Address addAddress(
+		com.liferay.portal.kernel.model.Address address) {
 		return getService().addAddress(address);
 	}
 
-	public static com.liferay.portal.model.Address addAddress(long userId,
+	public static com.liferay.portal.kernel.model.Address addAddress(long userId,
 		java.lang.String className, long classPK, java.lang.String street1,
 		java.lang.String street2, java.lang.String street3,
 		java.lang.String city, java.lang.String zip, long regionId,
 		long countryId, long typeId, boolean mailing, boolean primary,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addAddress(userId, className, classPK, street1, street2,
@@ -71,7 +71,7 @@ public class AddressLocalServiceUtil {
 	* @param addressId the primary key for the new address
 	* @return the new address
 	*/
-	public static com.liferay.portal.model.Address createAddress(long addressId) {
+	public static com.liferay.portal.kernel.model.Address createAddress(long addressId) {
 		return getService().createAddress(addressId);
 	}
 
@@ -81,8 +81,8 @@ public class AddressLocalServiceUtil {
 	* @param address the address
 	* @return the address that was removed
 	*/
-	public static com.liferay.portal.model.Address deleteAddress(
-		com.liferay.portal.model.Address address) {
+	public static com.liferay.portal.kernel.model.Address deleteAddress(
+		com.liferay.portal.kernel.model.Address address) {
 		return getService().deleteAddress(address);
 	}
 
@@ -93,7 +93,7 @@ public class AddressLocalServiceUtil {
 	* @return the address that was removed
 	* @throws PortalException if a address with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.Address deleteAddress(long addressId)
+	public static com.liferay.portal.kernel.model.Address deleteAddress(long addressId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteAddress(addressId);
 	}
@@ -106,8 +106,8 @@ public class AddressLocalServiceUtil {
 	/**
 	* @throws PortalException
 	*/
-	public static com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -190,7 +190,7 @@ public class AddressLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.portal.model.Address fetchAddress(long addressId) {
+	public static com.liferay.portal.kernel.model.Address fetchAddress(long addressId) {
 		return getService().fetchAddress(addressId);
 	}
 
@@ -201,7 +201,7 @@ public class AddressLocalServiceUtil {
 	* @param companyId the primary key of the company
 	* @return the matching address, or <code>null</code> if a matching address could not be found
 	*/
-	public static com.liferay.portal.model.Address fetchAddressByUuidAndCompanyId(
+	public static com.liferay.portal.kernel.model.Address fetchAddressByUuidAndCompanyId(
 		java.lang.String uuid, long companyId) {
 		return getService().fetchAddressByUuidAndCompanyId(uuid, companyId);
 	}
@@ -217,7 +217,7 @@ public class AddressLocalServiceUtil {
 	* @return the address
 	* @throws PortalException if a address with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.Address getAddress(long addressId)
+	public static com.liferay.portal.kernel.model.Address getAddress(long addressId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getAddress(addressId);
 	}
@@ -230,17 +230,17 @@ public class AddressLocalServiceUtil {
 	* @return the matching address
 	* @throws PortalException if a matching address could not be found
 	*/
-	public static com.liferay.portal.model.Address getAddressByUuidAndCompanyId(
+	public static com.liferay.portal.kernel.model.Address getAddressByUuidAndCompanyId(
 		java.lang.String uuid, long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getAddressByUuidAndCompanyId(uuid, companyId);
 	}
 
-	public static java.util.List<com.liferay.portal.model.Address> getAddresses() {
+	public static java.util.List<com.liferay.portal.kernel.model.Address> getAddresses() {
 		return getService().getAddresses();
 	}
 
-	public static java.util.List<com.liferay.portal.model.Address> getAddresses(
+	public static java.util.List<com.liferay.portal.kernel.model.Address> getAddresses(
 		long companyId, java.lang.String className, long classPK) {
 		return getService().getAddresses(companyId, className, classPK);
 	}
@@ -256,7 +256,7 @@ public class AddressLocalServiceUtil {
 	* @param end the upper bound of the range of addresses (not inclusive)
 	* @return the range of addresses
 	*/
-	public static java.util.List<com.liferay.portal.model.Address> getAddresses(
+	public static java.util.List<com.liferay.portal.kernel.model.Address> getAddresses(
 		int start, int end) {
 		return getService().getAddresses(start, end);
 	}
@@ -288,7 +288,7 @@ public class AddressLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.model.PersistedModel getPersistedModel(
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getPersistedModel(primaryKeyObj);
@@ -300,12 +300,12 @@ public class AddressLocalServiceUtil {
 	* @param address the address
 	* @return the address that was updated
 	*/
-	public static com.liferay.portal.model.Address updateAddress(
-		com.liferay.portal.model.Address address) {
+	public static com.liferay.portal.kernel.model.Address updateAddress(
+		com.liferay.portal.kernel.model.Address address) {
 		return getService().updateAddress(address);
 	}
 
-	public static com.liferay.portal.model.Address updateAddress(
+	public static com.liferay.portal.kernel.model.Address updateAddress(
 		long addressId, java.lang.String street1, java.lang.String street2,
 		java.lang.String street3, java.lang.String city, java.lang.String zip,
 		long regionId, long countryId, long typeId, boolean mailing,

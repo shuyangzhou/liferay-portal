@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
-import com.liferay.portal.model.WorkflowInstanceLink;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.WorkflowInstanceLink;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -46,28 +46,28 @@ public class WorkflowInstanceLinkUtil {
 	 */
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache()
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache()
 	 */
 	public static void clearCache() {
 		getPersistence().clearCache();
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static void clearCache(WorkflowInstanceLink workflowInstanceLink) {
 		getPersistence().clearCache(workflowInstanceLink);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
 	public static long countWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<WorkflowInstanceLink> findWithDynamicQuery(
 		DynamicQuery dynamicQuery) {
@@ -75,7 +75,7 @@ public class WorkflowInstanceLinkUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
 	public static List<WorkflowInstanceLink> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
@@ -83,7 +83,7 @@ public class WorkflowInstanceLinkUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
 	public static List<WorkflowInstanceLink> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
@@ -94,7 +94,7 @@ public class WorkflowInstanceLinkUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static WorkflowInstanceLink update(
 		WorkflowInstanceLink workflowInstanceLink) {
@@ -102,7 +102,7 @@ public class WorkflowInstanceLinkUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
 	public static WorkflowInstanceLink update(
 		WorkflowInstanceLink workflowInstanceLink, ServiceContext serviceContext) {
@@ -210,7 +210,7 @@ public class WorkflowInstanceLinkUtil {
 	public static WorkflowInstanceLink findByG_C_C_C_First(long groupId,
 		long companyId, long classNameId, long classPK,
 		OrderByComparator<WorkflowInstanceLink> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException {
+		throws com.liferay.portal.kernel.exception.NoSuchWorkflowInstanceLinkException {
 		return getPersistence()
 				   .findByG_C_C_C_First(groupId, companyId, classNameId,
 			classPK, orderByComparator);
@@ -248,7 +248,7 @@ public class WorkflowInstanceLinkUtil {
 	public static WorkflowInstanceLink findByG_C_C_C_Last(long groupId,
 		long companyId, long classNameId, long classPK,
 		OrderByComparator<WorkflowInstanceLink> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException {
+		throws com.liferay.portal.kernel.exception.NoSuchWorkflowInstanceLinkException {
 		return getPersistence()
 				   .findByG_C_C_C_Last(groupId, companyId, classNameId,
 			classPK, orderByComparator);
@@ -288,7 +288,7 @@ public class WorkflowInstanceLinkUtil {
 		long workflowInstanceLinkId, long groupId, long companyId,
 		long classNameId, long classPK,
 		OrderByComparator<WorkflowInstanceLink> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException {
+		throws com.liferay.portal.kernel.exception.NoSuchWorkflowInstanceLinkException {
 		return getPersistence()
 				   .findByG_C_C_C_PrevAndNext(workflowInstanceLinkId, groupId,
 			companyId, classNameId, classPK, orderByComparator);
@@ -360,7 +360,7 @@ public class WorkflowInstanceLinkUtil {
 	* @throws NoSuchWorkflowInstanceLinkException if a workflow instance link with the primary key could not be found
 	*/
 	public static WorkflowInstanceLink remove(long workflowInstanceLinkId)
-		throws com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException {
+		throws com.liferay.portal.kernel.exception.NoSuchWorkflowInstanceLinkException {
 		return getPersistence().remove(workflowInstanceLinkId);
 	}
 
@@ -378,7 +378,7 @@ public class WorkflowInstanceLinkUtil {
 	*/
 	public static WorkflowInstanceLink findByPrimaryKey(
 		long workflowInstanceLinkId)
-		throws com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException {
+		throws com.liferay.portal.kernel.exception.NoSuchWorkflowInstanceLinkException {
 		return getPersistence().findByPrimaryKey(workflowInstanceLinkId);
 	}
 

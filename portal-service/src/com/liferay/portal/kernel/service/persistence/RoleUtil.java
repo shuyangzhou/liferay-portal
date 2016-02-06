@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
-import com.liferay.portal.model.Role;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -46,35 +46,35 @@ public class RoleUtil {
 	 */
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache()
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache()
 	 */
 	public static void clearCache() {
 		getPersistence().clearCache();
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static void clearCache(Role role) {
 		getPersistence().clearCache(role);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
 	public static long countWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<Role> findWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().findWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
 	public static List<Role> findWithDynamicQuery(DynamicQuery dynamicQuery,
 		int start, int end) {
@@ -82,7 +82,7 @@ public class RoleUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
 	public static List<Role> findWithDynamicQuery(DynamicQuery dynamicQuery,
 		int start, int end, OrderByComparator<Role> orderByComparator) {
@@ -92,14 +92,14 @@ public class RoleUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static Role update(Role role) {
 		return getPersistence().update(role);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
 	public static Role update(Role role, ServiceContext serviceContext) {
 		return getPersistence().update(role, serviceContext);
@@ -182,7 +182,7 @@ public class RoleUtil {
 	*/
 	public static Role findByUuid_First(java.lang.String uuid,
 		OrderByComparator<Role> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence().findByUuid_First(uuid, orderByComparator);
 	}
 
@@ -208,7 +208,7 @@ public class RoleUtil {
 	*/
 	public static Role findByUuid_Last(java.lang.String uuid,
 		OrderByComparator<Role> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence().findByUuid_Last(uuid, orderByComparator);
 	}
 
@@ -235,7 +235,7 @@ public class RoleUtil {
 	*/
 	public static Role[] findByUuid_PrevAndNext(long roleId,
 		java.lang.String uuid, OrderByComparator<Role> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence()
 				   .findByUuid_PrevAndNext(roleId, uuid, orderByComparator);
 	}
@@ -297,7 +297,7 @@ public class RoleUtil {
 	*/
 	public static Role[] filterFindByUuid_PrevAndNext(long roleId,
 		java.lang.String uuid, OrderByComparator<Role> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence()
 				   .filterFindByUuid_PrevAndNext(roleId, uuid, orderByComparator);
 	}
@@ -415,7 +415,7 @@ public class RoleUtil {
 	*/
 	public static Role findByUuid_C_First(java.lang.String uuid,
 		long companyId, OrderByComparator<Role> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence()
 				   .findByUuid_C_First(uuid, companyId, orderByComparator);
 	}
@@ -445,7 +445,7 @@ public class RoleUtil {
 	*/
 	public static Role findByUuid_C_Last(java.lang.String uuid, long companyId,
 		OrderByComparator<Role> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence()
 				   .findByUuid_C_Last(uuid, companyId, orderByComparator);
 	}
@@ -477,7 +477,7 @@ public class RoleUtil {
 	public static Role[] findByUuid_C_PrevAndNext(long roleId,
 		java.lang.String uuid, long companyId,
 		OrderByComparator<Role> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence()
 				   .findByUuid_C_PrevAndNext(roleId, uuid, companyId,
 			orderByComparator);
@@ -548,7 +548,7 @@ public class RoleUtil {
 	public static Role[] filterFindByUuid_C_PrevAndNext(long roleId,
 		java.lang.String uuid, long companyId,
 		OrderByComparator<Role> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence()
 				   .filterFindByUuid_C_PrevAndNext(roleId, uuid, companyId,
 			orderByComparator);
@@ -663,7 +663,7 @@ public class RoleUtil {
 	*/
 	public static Role findByCompanyId_First(long companyId,
 		OrderByComparator<Role> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence()
 				   .findByCompanyId_First(companyId, orderByComparator);
 	}
@@ -691,7 +691,7 @@ public class RoleUtil {
 	*/
 	public static Role findByCompanyId_Last(long companyId,
 		OrderByComparator<Role> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence()
 				   .findByCompanyId_Last(companyId, orderByComparator);
 	}
@@ -720,7 +720,7 @@ public class RoleUtil {
 	*/
 	public static Role[] findByCompanyId_PrevAndNext(long roleId,
 		long companyId, OrderByComparator<Role> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence()
 				   .findByCompanyId_PrevAndNext(roleId, companyId,
 			orderByComparator);
@@ -784,7 +784,7 @@ public class RoleUtil {
 	*/
 	public static Role[] filterFindByCompanyId_PrevAndNext(long roleId,
 		long companyId, OrderByComparator<Role> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence()
 				   .filterFindByCompanyId_PrevAndNext(roleId, companyId,
 			orderByComparator);
@@ -896,7 +896,7 @@ public class RoleUtil {
 	*/
 	public static Role findByName_First(java.lang.String name,
 		OrderByComparator<Role> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence().findByName_First(name, orderByComparator);
 	}
 
@@ -922,7 +922,7 @@ public class RoleUtil {
 	*/
 	public static Role findByName_Last(java.lang.String name,
 		OrderByComparator<Role> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence().findByName_Last(name, orderByComparator);
 	}
 
@@ -949,7 +949,7 @@ public class RoleUtil {
 	*/
 	public static Role[] findByName_PrevAndNext(long roleId,
 		java.lang.String name, OrderByComparator<Role> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence()
 				   .findByName_PrevAndNext(roleId, name, orderByComparator);
 	}
@@ -1011,7 +1011,7 @@ public class RoleUtil {
 	*/
 	public static Role[] filterFindByName_PrevAndNext(long roleId,
 		java.lang.String name, OrderByComparator<Role> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence()
 				   .filterFindByName_PrevAndNext(roleId, name, orderByComparator);
 	}
@@ -1120,7 +1120,7 @@ public class RoleUtil {
 	*/
 	public static Role findByType_First(int type,
 		OrderByComparator<Role> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence().findByType_First(type, orderByComparator);
 	}
 
@@ -1146,7 +1146,7 @@ public class RoleUtil {
 	*/
 	public static Role findByType_Last(int type,
 		OrderByComparator<Role> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence().findByType_Last(type, orderByComparator);
 	}
 
@@ -1173,7 +1173,7 @@ public class RoleUtil {
 	*/
 	public static Role[] findByType_PrevAndNext(long roleId, int type,
 		OrderByComparator<Role> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence()
 				   .findByType_PrevAndNext(roleId, type, orderByComparator);
 	}
@@ -1234,7 +1234,7 @@ public class RoleUtil {
 	*/
 	public static Role[] filterFindByType_PrevAndNext(long roleId, int type,
 		OrderByComparator<Role> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence()
 				   .filterFindByType_PrevAndNext(roleId, type, orderByComparator);
 	}
@@ -1346,7 +1346,7 @@ public class RoleUtil {
 	*/
 	public static Role findBySubtype_First(java.lang.String subtype,
 		OrderByComparator<Role> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence().findBySubtype_First(subtype, orderByComparator);
 	}
 
@@ -1372,7 +1372,7 @@ public class RoleUtil {
 	*/
 	public static Role findBySubtype_Last(java.lang.String subtype,
 		OrderByComparator<Role> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence().findBySubtype_Last(subtype, orderByComparator);
 	}
 
@@ -1399,7 +1399,7 @@ public class RoleUtil {
 	*/
 	public static Role[] findBySubtype_PrevAndNext(long roleId,
 		java.lang.String subtype, OrderByComparator<Role> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence()
 				   .findBySubtype_PrevAndNext(roleId, subtype, orderByComparator);
 	}
@@ -1461,7 +1461,7 @@ public class RoleUtil {
 	*/
 	public static Role[] filterFindBySubtype_PrevAndNext(long roleId,
 		java.lang.String subtype, OrderByComparator<Role> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence()
 				   .filterFindBySubtype_PrevAndNext(roleId, subtype,
 			orderByComparator);
@@ -1505,7 +1505,7 @@ public class RoleUtil {
 	* @throws NoSuchRoleException if a matching role could not be found
 	*/
 	public static Role findByC_N(long companyId, java.lang.String name)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence().findByC_N(companyId, name);
 	}
 
@@ -1541,7 +1541,7 @@ public class RoleUtil {
 	* @return the role that was removed
 	*/
 	public static Role removeByC_N(long companyId, java.lang.String name)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence().removeByC_N(companyId, name);
 	}
 
@@ -1639,7 +1639,7 @@ public class RoleUtil {
 	*/
 	public static Role findByC_T_First(long companyId, int type,
 		OrderByComparator<Role> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence()
 				   .findByC_T_First(companyId, type, orderByComparator);
 	}
@@ -1669,7 +1669,7 @@ public class RoleUtil {
 	*/
 	public static Role findByC_T_Last(long companyId, int type,
 		OrderByComparator<Role> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence()
 				   .findByC_T_Last(companyId, type, orderByComparator);
 	}
@@ -1700,7 +1700,7 @@ public class RoleUtil {
 	*/
 	public static Role[] findByC_T_PrevAndNext(long roleId, long companyId,
 		int type, OrderByComparator<Role> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence()
 				   .findByC_T_PrevAndNext(roleId, companyId, type,
 			orderByComparator);
@@ -1768,7 +1768,7 @@ public class RoleUtil {
 	*/
 	public static Role[] filterFindByC_T_PrevAndNext(long roleId,
 		long companyId, int type, OrderByComparator<Role> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence()
 				   .filterFindByC_T_PrevAndNext(roleId, companyId, type,
 			orderByComparator);
@@ -2037,7 +2037,7 @@ public class RoleUtil {
 	*/
 	public static Role findByT_S_First(int type, java.lang.String subtype,
 		OrderByComparator<Role> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence().findByT_S_First(type, subtype, orderByComparator);
 	}
 
@@ -2066,7 +2066,7 @@ public class RoleUtil {
 	*/
 	public static Role findByT_S_Last(int type, java.lang.String subtype,
 		OrderByComparator<Role> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence().findByT_S_Last(type, subtype, orderByComparator);
 	}
 
@@ -2095,7 +2095,7 @@ public class RoleUtil {
 	*/
 	public static Role[] findByT_S_PrevAndNext(long roleId, int type,
 		java.lang.String subtype, OrderByComparator<Role> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence()
 				   .findByT_S_PrevAndNext(roleId, type, subtype,
 			orderByComparator);
@@ -2163,7 +2163,7 @@ public class RoleUtil {
 	*/
 	public static Role[] filterFindByT_S_PrevAndNext(long roleId, int type,
 		java.lang.String subtype, OrderByComparator<Role> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence()
 				   .filterFindByT_S_PrevAndNext(roleId, type, subtype,
 			orderByComparator);
@@ -2211,7 +2211,7 @@ public class RoleUtil {
 	* @throws NoSuchRoleException if a matching role could not be found
 	*/
 	public static Role findByC_C_C(long companyId, long classNameId,
-		long classPK) throws com.liferay.portal.exception.NoSuchRoleException {
+		long classPK) throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence().findByC_C_C(companyId, classNameId, classPK);
 	}
 
@@ -2253,7 +2253,7 @@ public class RoleUtil {
 	* @return the role that was removed
 	*/
 	public static Role removeByC_C_C(long companyId, long classNameId,
-		long classPK) throws com.liferay.portal.exception.NoSuchRoleException {
+		long classPK) throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence().removeByC_C_C(companyId, classNameId, classPK);
 	}
 
@@ -2306,7 +2306,7 @@ public class RoleUtil {
 	* @throws NoSuchRoleException if a role with the primary key could not be found
 	*/
 	public static Role remove(long roleId)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence().remove(roleId);
 	}
 
@@ -2322,7 +2322,7 @@ public class RoleUtil {
 	* @throws NoSuchRoleException if a role with the primary key could not be found
 	*/
 	public static Role findByPrimaryKey(long roleId)
-		throws com.liferay.portal.exception.NoSuchRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchRoleException {
 		return getPersistence().findByPrimaryKey(roleId);
 	}
 
@@ -2433,7 +2433,7 @@ public class RoleUtil {
 	* @param pk the primary key of the role
 	* @return the groups associated with the role
 	*/
-	public static List<com.liferay.portal.model.Group> getGroups(long pk) {
+	public static List<com.liferay.portal.kernel.model.Group> getGroups(long pk) {
 		return getPersistence().getGroups(pk);
 	}
 
@@ -2449,7 +2449,7 @@ public class RoleUtil {
 	* @param end the upper bound of the range of roles (not inclusive)
 	* @return the range of groups associated with the role
 	*/
-	public static List<com.liferay.portal.model.Group> getGroups(long pk,
+	public static List<com.liferay.portal.kernel.model.Group> getGroups(long pk,
 		int start, int end) {
 		return getPersistence().getGroups(pk, start, end);
 	}
@@ -2467,9 +2467,9 @@ public class RoleUtil {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of groups associated with the role
 	*/
-	public static List<com.liferay.portal.model.Group> getGroups(long pk,
+	public static List<com.liferay.portal.kernel.model.Group> getGroups(long pk,
 		int start, int end,
-		OrderByComparator<com.liferay.portal.model.Group> orderByComparator) {
+		OrderByComparator<com.liferay.portal.kernel.model.Group> orderByComparator) {
 		return getPersistence().getGroups(pk, start, end, orderByComparator);
 	}
 
@@ -2520,7 +2520,7 @@ public class RoleUtil {
 	* @param pk the primary key of the role
 	* @param group the group
 	*/
-	public static void addGroup(long pk, com.liferay.portal.model.Group group) {
+	public static void addGroup(long pk, com.liferay.portal.kernel.model.Group group) {
 		getPersistence().addGroup(pk, group);
 	}
 
@@ -2541,7 +2541,7 @@ public class RoleUtil {
 	* @param groups the groups
 	*/
 	public static void addGroups(long pk,
-		List<com.liferay.portal.model.Group> groups) {
+		List<com.liferay.portal.kernel.model.Group> groups) {
 		getPersistence().addGroups(pk, groups);
 	}
 
@@ -2570,7 +2570,7 @@ public class RoleUtil {
 	* @param pk the primary key of the role
 	* @param group the group
 	*/
-	public static void removeGroup(long pk, com.liferay.portal.model.Group group) {
+	public static void removeGroup(long pk, com.liferay.portal.kernel.model.Group group) {
 		getPersistence().removeGroup(pk, group);
 	}
 
@@ -2591,7 +2591,7 @@ public class RoleUtil {
 	* @param groups the groups
 	*/
 	public static void removeGroups(long pk,
-		List<com.liferay.portal.model.Group> groups) {
+		List<com.liferay.portal.kernel.model.Group> groups) {
 		getPersistence().removeGroups(pk, groups);
 	}
 
@@ -2612,7 +2612,7 @@ public class RoleUtil {
 	* @param groups the groups to be associated with the role
 	*/
 	public static void setGroups(long pk,
-		List<com.liferay.portal.model.Group> groups) {
+		List<com.liferay.portal.kernel.model.Group> groups) {
 		getPersistence().setGroups(pk, groups);
 	}
 
@@ -2632,7 +2632,7 @@ public class RoleUtil {
 	* @param pk the primary key of the role
 	* @return the users associated with the role
 	*/
-	public static List<com.liferay.portal.model.User> getUsers(long pk) {
+	public static List<com.liferay.portal.kernel.model.User> getUsers(long pk) {
 		return getPersistence().getUsers(pk);
 	}
 
@@ -2648,7 +2648,7 @@ public class RoleUtil {
 	* @param end the upper bound of the range of roles (not inclusive)
 	* @return the range of users associated with the role
 	*/
-	public static List<com.liferay.portal.model.User> getUsers(long pk,
+	public static List<com.liferay.portal.kernel.model.User> getUsers(long pk,
 		int start, int end) {
 		return getPersistence().getUsers(pk, start, end);
 	}
@@ -2666,9 +2666,9 @@ public class RoleUtil {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of users associated with the role
 	*/
-	public static List<com.liferay.portal.model.User> getUsers(long pk,
+	public static List<com.liferay.portal.kernel.model.User> getUsers(long pk,
 		int start, int end,
-		OrderByComparator<com.liferay.portal.model.User> orderByComparator) {
+		OrderByComparator<com.liferay.portal.kernel.model.User> orderByComparator) {
 		return getPersistence().getUsers(pk, start, end, orderByComparator);
 	}
 
@@ -2719,7 +2719,7 @@ public class RoleUtil {
 	* @param pk the primary key of the role
 	* @param user the user
 	*/
-	public static void addUser(long pk, com.liferay.portal.model.User user) {
+	public static void addUser(long pk, com.liferay.portal.kernel.model.User user) {
 		getPersistence().addUser(pk, user);
 	}
 
@@ -2740,7 +2740,7 @@ public class RoleUtil {
 	* @param users the users
 	*/
 	public static void addUsers(long pk,
-		List<com.liferay.portal.model.User> users) {
+		List<com.liferay.portal.kernel.model.User> users) {
 		getPersistence().addUsers(pk, users);
 	}
 
@@ -2769,7 +2769,7 @@ public class RoleUtil {
 	* @param pk the primary key of the role
 	* @param user the user
 	*/
-	public static void removeUser(long pk, com.liferay.portal.model.User user) {
+	public static void removeUser(long pk, com.liferay.portal.kernel.model.User user) {
 		getPersistence().removeUser(pk, user);
 	}
 
@@ -2790,7 +2790,7 @@ public class RoleUtil {
 	* @param users the users
 	*/
 	public static void removeUsers(long pk,
-		List<com.liferay.portal.model.User> users) {
+		List<com.liferay.portal.kernel.model.User> users) {
 		getPersistence().removeUsers(pk, users);
 	}
 
@@ -2811,7 +2811,7 @@ public class RoleUtil {
 	* @param users the users to be associated with the role
 	*/
 	public static void setUsers(long pk,
-		List<com.liferay.portal.model.User> users) {
+		List<com.liferay.portal.kernel.model.User> users) {
 		getPersistence().setUsers(pk, users);
 	}
 

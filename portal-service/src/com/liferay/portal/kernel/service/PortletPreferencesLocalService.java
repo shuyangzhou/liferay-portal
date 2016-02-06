@@ -31,10 +31,10 @@ import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.model.PersistedModel;
-import com.liferay.portal.model.Portlet;
-import com.liferay.portal.model.PortletPreferences;
-import com.liferay.portal.model.PortletPreferencesIds;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.model.PortletPreferences;
+import com.liferay.portal.kernel.model.PortletPreferencesIds;
 
 import java.io.Serializable;
 
@@ -290,7 +290,7 @@ public interface PortletPreferencesLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getPortletPreferencesesCount();
 
-	@Retry(acceptor = com.liferay.portal.service.ExceptionRetryAcceptor.class, properties =  {
+	@Retry(acceptor = com.liferay.portal.kernel.service.ExceptionRetryAcceptor.class, properties =  {
 		@Property(name = ExceptionRetryAcceptor.EXCEPTION_NAME, value = "org.springframework.dao.DataIntegrityViolationException")
 	}
 	)
@@ -298,7 +298,7 @@ public interface PortletPreferencesLocalService extends BaseLocalService,
 	public javax.portlet.PortletPreferences getPreferences(long companyId,
 		long ownerId, int ownerType, long plid, java.lang.String portletId);
 
-	@Retry(acceptor = com.liferay.portal.service.ExceptionRetryAcceptor.class, properties =  {
+	@Retry(acceptor = com.liferay.portal.kernel.service.ExceptionRetryAcceptor.class, properties =  {
 		@Property(name = ExceptionRetryAcceptor.EXCEPTION_NAME, value = "org.springframework.dao.DataIntegrityViolationException")
 	}
 	)
@@ -307,7 +307,7 @@ public interface PortletPreferencesLocalService extends BaseLocalService,
 		long ownerId, int ownerType, long plid, java.lang.String portletId,
 		java.lang.String defaultPreferences);
 
-	@Retry(acceptor = com.liferay.portal.service.ExceptionRetryAcceptor.class, properties =  {
+	@Retry(acceptor = com.liferay.portal.kernel.service.ExceptionRetryAcceptor.class, properties =  {
 		@Property(name = ExceptionRetryAcceptor.EXCEPTION_NAME, value = "org.springframework.dao.DataIntegrityViolationException")
 	}
 	)
@@ -315,7 +315,7 @@ public interface PortletPreferencesLocalService extends BaseLocalService,
 	public javax.portlet.PortletPreferences getPreferences(
 		PortletPreferencesIds portletPreferencesIds);
 
-	@Retry(acceptor = com.liferay.portal.service.ExceptionRetryAcceptor.class, properties =  {
+	@Retry(acceptor = com.liferay.portal.kernel.service.ExceptionRetryAcceptor.class, properties =  {
 		@Property(name = ExceptionRetryAcceptor.EXCEPTION_NAME, value = "org.springframework.dao.DataIntegrityViolationException")
 	}
 	)

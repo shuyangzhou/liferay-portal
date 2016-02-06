@@ -31,7 +31,7 @@ public class OrgLaborServiceWrapper implements OrgLaborService,
 	}
 
 	@Override
-	public com.liferay.portal.model.OrgLabor addOrgLabor(long organizationId,
+	public com.liferay.portal.kernel.model.OrgLabor addOrgLabor(long organizationId,
 		long typeId, int sunOpen, int sunClose, int monOpen, int monClose,
 		int tueOpen, int tueClose, int wedOpen, int wedClose, int thuOpen,
 		int thuClose, int friOpen, int friClose, int satOpen, int satClose)
@@ -58,20 +58,20 @@ public class OrgLaborServiceWrapper implements OrgLaborService,
 	}
 
 	@Override
-	public com.liferay.portal.model.OrgLabor getOrgLabor(long orgLaborId)
+	public com.liferay.portal.kernel.model.OrgLabor getOrgLabor(long orgLaborId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _orgLaborService.getOrgLabor(orgLaborId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.OrgLabor> getOrgLabors(
+	public java.util.List<com.liferay.portal.kernel.model.OrgLabor> getOrgLabors(
 		long organizationId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _orgLaborService.getOrgLabors(organizationId);
 	}
 
 	@Override
-	public com.liferay.portal.model.OrgLabor updateOrgLabor(long orgLaborId,
+	public com.liferay.portal.kernel.model.OrgLabor updateOrgLabor(long orgLaborId,
 		long typeId, int sunOpen, int sunClose, int monOpen, int monClose,
 		int tueOpen, int tueClose, int wedOpen, int wedClose, int thuOpen,
 		int thuClose, int friOpen, int friClose, int satOpen, int satClose)

@@ -53,21 +53,21 @@ public interface Company extends CompanyModel, PersistedModel {
 			}
 		};
 
-	public com.liferay.portal.model.Account getAccount()
+	public com.liferay.portal.kernel.model.Account getAccount()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public java.lang.String getAdminName();
 
 	public java.lang.String getAuthType();
 
-	public com.liferay.portal.model.User getDefaultUser()
+	public com.liferay.portal.kernel.model.User getDefaultUser()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public java.lang.String getDefaultWebId();
 
 	public java.lang.String getEmailAddress();
 
-	public com.liferay.portal.model.Group getGroup()
+	public com.liferay.portal.kernel.model.Group getGroup()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public long getGroupId()

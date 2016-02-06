@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -686,19 +686,19 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.model.PasswordPolicy passwordPolicy);
+	public int compareTo(com.liferay.portal.kernel.model.PasswordPolicy passwordPolicy);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.PasswordPolicy> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.PasswordPolicy> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.PasswordPolicy toEscapedModel();
+	public com.liferay.portal.kernel.model.PasswordPolicy toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.PasswordPolicy toUnescapedModel();
+	public com.liferay.portal.kernel.model.PasswordPolicy toUnescapedModel();
 
 	@Override
 	public String toString();

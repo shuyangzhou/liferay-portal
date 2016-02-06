@@ -40,7 +40,7 @@ public class OrgLaborServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.portal.service.impl.OrgLaborServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.portal.model.OrgLabor addOrgLabor(
+	public static com.liferay.portal.kernel.model.OrgLabor addOrgLabor(
 		long organizationId, long typeId, int sunOpen, int sunClose,
 		int monOpen, int monClose, int tueOpen, int tueClose, int wedOpen,
 		int wedClose, int thuOpen, int thuClose, int friOpen, int friClose,
@@ -66,18 +66,18 @@ public class OrgLaborServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.model.OrgLabor getOrgLabor(long orgLaborId)
+	public static com.liferay.portal.kernel.model.OrgLabor getOrgLabor(long orgLaborId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getOrgLabor(orgLaborId);
 	}
 
-	public static java.util.List<com.liferay.portal.model.OrgLabor> getOrgLabors(
+	public static java.util.List<com.liferay.portal.kernel.model.OrgLabor> getOrgLabors(
 		long organizationId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getOrgLabors(organizationId);
 	}
 
-	public static com.liferay.portal.model.OrgLabor updateOrgLabor(
+	public static com.liferay.portal.kernel.model.OrgLabor updateOrgLabor(
 		long orgLaborId, long typeId, int sunOpen, int sunClose, int monOpen,
 		int monClose, int tueOpen, int tueClose, int wedOpen, int wedClose,
 		int thuOpen, int thuClose, int friOpen, int friClose, int satOpen,

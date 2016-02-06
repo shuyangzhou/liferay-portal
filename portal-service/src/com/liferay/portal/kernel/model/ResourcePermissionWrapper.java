@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -153,7 +153,7 @@ public class ResourcePermissionWrapper implements ResourcePermission,
 
 	@Override
 	public int compareTo(
-		com.liferay.portal.model.ResourcePermission resourcePermission) {
+		com.liferay.portal.kernel.model.ResourcePermission resourcePermission) {
 		return _resourcePermission.compareTo(resourcePermission);
 	}
 
@@ -289,7 +289,7 @@ public class ResourcePermissionWrapper implements ResourcePermission,
 
 	@Override
 	public boolean hasAction(
-		com.liferay.portal.model.ResourceAction resourceAction) {
+		com.liferay.portal.kernel.model.ResourceAction resourceAction) {
 		return _resourcePermission.hasAction(resourceAction);
 	}
 
@@ -490,12 +490,12 @@ public class ResourcePermissionWrapper implements ResourcePermission,
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.ResourcePermission> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.ResourcePermission> toCacheModel() {
 		return _resourcePermission.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.ResourcePermission toEscapedModel() {
+	public com.liferay.portal.kernel.model.ResourcePermission toEscapedModel() {
 		return new ResourcePermissionWrapper(_resourcePermission.toEscapedModel());
 	}
 
@@ -505,7 +505,7 @@ public class ResourcePermissionWrapper implements ResourcePermission,
 	}
 
 	@Override
-	public com.liferay.portal.model.ResourcePermission toUnescapedModel() {
+	public com.liferay.portal.kernel.model.ResourcePermission toUnescapedModel() {
 		return new ResourcePermissionWrapper(_resourcePermission.toUnescapedModel());
 	}
 

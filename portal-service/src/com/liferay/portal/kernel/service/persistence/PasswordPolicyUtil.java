@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
-import com.liferay.portal.model.PasswordPolicy;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.PasswordPolicy;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -46,28 +46,28 @@ public class PasswordPolicyUtil {
 	 */
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache()
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache()
 	 */
 	public static void clearCache() {
 		getPersistence().clearCache();
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static void clearCache(PasswordPolicy passwordPolicy) {
 		getPersistence().clearCache(passwordPolicy);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
 	public static long countWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<PasswordPolicy> findWithDynamicQuery(
 		DynamicQuery dynamicQuery) {
@@ -75,7 +75,7 @@ public class PasswordPolicyUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
 	public static List<PasswordPolicy> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
@@ -83,7 +83,7 @@ public class PasswordPolicyUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
 	public static List<PasswordPolicy> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
@@ -94,14 +94,14 @@ public class PasswordPolicyUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static PasswordPolicy update(PasswordPolicy passwordPolicy) {
 		return getPersistence().update(passwordPolicy);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
 	public static PasswordPolicy update(PasswordPolicy passwordPolicy,
 		ServiceContext serviceContext) {
@@ -186,7 +186,7 @@ public class PasswordPolicyUtil {
 	*/
 	public static PasswordPolicy findByUuid_First(java.lang.String uuid,
 		OrderByComparator<PasswordPolicy> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
+		throws com.liferay.portal.kernel.exception.NoSuchPasswordPolicyException {
 		return getPersistence().findByUuid_First(uuid, orderByComparator);
 	}
 
@@ -212,7 +212,7 @@ public class PasswordPolicyUtil {
 	*/
 	public static PasswordPolicy findByUuid_Last(java.lang.String uuid,
 		OrderByComparator<PasswordPolicy> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
+		throws com.liferay.portal.kernel.exception.NoSuchPasswordPolicyException {
 		return getPersistence().findByUuid_Last(uuid, orderByComparator);
 	}
 
@@ -240,7 +240,7 @@ public class PasswordPolicyUtil {
 	public static PasswordPolicy[] findByUuid_PrevAndNext(
 		long passwordPolicyId, java.lang.String uuid,
 		OrderByComparator<PasswordPolicy> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
+		throws com.liferay.portal.kernel.exception.NoSuchPasswordPolicyException {
 		return getPersistence()
 				   .findByUuid_PrevAndNext(passwordPolicyId, uuid,
 			orderByComparator);
@@ -304,7 +304,7 @@ public class PasswordPolicyUtil {
 	public static PasswordPolicy[] filterFindByUuid_PrevAndNext(
 		long passwordPolicyId, java.lang.String uuid,
 		OrderByComparator<PasswordPolicy> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
+		throws com.liferay.portal.kernel.exception.NoSuchPasswordPolicyException {
 		return getPersistence()
 				   .filterFindByUuid_PrevAndNext(passwordPolicyId, uuid,
 			orderByComparator);
@@ -425,7 +425,7 @@ public class PasswordPolicyUtil {
 	*/
 	public static PasswordPolicy findByUuid_C_First(java.lang.String uuid,
 		long companyId, OrderByComparator<PasswordPolicy> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
+		throws com.liferay.portal.kernel.exception.NoSuchPasswordPolicyException {
 		return getPersistence()
 				   .findByUuid_C_First(uuid, companyId, orderByComparator);
 	}
@@ -455,7 +455,7 @@ public class PasswordPolicyUtil {
 	*/
 	public static PasswordPolicy findByUuid_C_Last(java.lang.String uuid,
 		long companyId, OrderByComparator<PasswordPolicy> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
+		throws com.liferay.portal.kernel.exception.NoSuchPasswordPolicyException {
 		return getPersistence()
 				   .findByUuid_C_Last(uuid, companyId, orderByComparator);
 	}
@@ -487,7 +487,7 @@ public class PasswordPolicyUtil {
 	public static PasswordPolicy[] findByUuid_C_PrevAndNext(
 		long passwordPolicyId, java.lang.String uuid, long companyId,
 		OrderByComparator<PasswordPolicy> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
+		throws com.liferay.portal.kernel.exception.NoSuchPasswordPolicyException {
 		return getPersistence()
 				   .findByUuid_C_PrevAndNext(passwordPolicyId, uuid, companyId,
 			orderByComparator);
@@ -558,7 +558,7 @@ public class PasswordPolicyUtil {
 	public static PasswordPolicy[] filterFindByUuid_C_PrevAndNext(
 		long passwordPolicyId, java.lang.String uuid, long companyId,
 		OrderByComparator<PasswordPolicy> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
+		throws com.liferay.portal.kernel.exception.NoSuchPasswordPolicyException {
 		return getPersistence()
 				   .filterFindByUuid_C_PrevAndNext(passwordPolicyId, uuid,
 			companyId, orderByComparator);
@@ -675,7 +675,7 @@ public class PasswordPolicyUtil {
 	*/
 	public static PasswordPolicy findByCompanyId_First(long companyId,
 		OrderByComparator<PasswordPolicy> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
+		throws com.liferay.portal.kernel.exception.NoSuchPasswordPolicyException {
 		return getPersistence()
 				   .findByCompanyId_First(companyId, orderByComparator);
 	}
@@ -703,7 +703,7 @@ public class PasswordPolicyUtil {
 	*/
 	public static PasswordPolicy findByCompanyId_Last(long companyId,
 		OrderByComparator<PasswordPolicy> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
+		throws com.liferay.portal.kernel.exception.NoSuchPasswordPolicyException {
 		return getPersistence()
 				   .findByCompanyId_Last(companyId, orderByComparator);
 	}
@@ -733,7 +733,7 @@ public class PasswordPolicyUtil {
 	public static PasswordPolicy[] findByCompanyId_PrevAndNext(
 		long passwordPolicyId, long companyId,
 		OrderByComparator<PasswordPolicy> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
+		throws com.liferay.portal.kernel.exception.NoSuchPasswordPolicyException {
 		return getPersistence()
 				   .findByCompanyId_PrevAndNext(passwordPolicyId, companyId,
 			orderByComparator);
@@ -798,7 +798,7 @@ public class PasswordPolicyUtil {
 	public static PasswordPolicy[] filterFindByCompanyId_PrevAndNext(
 		long passwordPolicyId, long companyId,
 		OrderByComparator<PasswordPolicy> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
+		throws com.liferay.portal.kernel.exception.NoSuchPasswordPolicyException {
 		return getPersistence()
 				   .filterFindByCompanyId_PrevAndNext(passwordPolicyId,
 			companyId, orderByComparator);
@@ -843,7 +843,7 @@ public class PasswordPolicyUtil {
 	*/
 	public static PasswordPolicy findByC_DP(long companyId,
 		boolean defaultPolicy)
-		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
+		throws com.liferay.portal.kernel.exception.NoSuchPasswordPolicyException {
 		return getPersistence().findByC_DP(companyId, defaultPolicy);
 	}
 
@@ -882,7 +882,7 @@ public class PasswordPolicyUtil {
 	*/
 	public static PasswordPolicy removeByC_DP(long companyId,
 		boolean defaultPolicy)
-		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
+		throws com.liferay.portal.kernel.exception.NoSuchPasswordPolicyException {
 		return getPersistence().removeByC_DP(companyId, defaultPolicy);
 	}
 
@@ -906,7 +906,7 @@ public class PasswordPolicyUtil {
 	* @throws NoSuchPasswordPolicyException if a matching password policy could not be found
 	*/
 	public static PasswordPolicy findByC_N(long companyId, java.lang.String name)
-		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
+		throws com.liferay.portal.kernel.exception.NoSuchPasswordPolicyException {
 		return getPersistence().findByC_N(companyId, name);
 	}
 
@@ -944,7 +944,7 @@ public class PasswordPolicyUtil {
 	*/
 	public static PasswordPolicy removeByC_N(long companyId,
 		java.lang.String name)
-		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
+		throws com.liferay.portal.kernel.exception.NoSuchPasswordPolicyException {
 		return getPersistence().removeByC_N(companyId, name);
 	}
 
@@ -995,7 +995,7 @@ public class PasswordPolicyUtil {
 	* @throws NoSuchPasswordPolicyException if a password policy with the primary key could not be found
 	*/
 	public static PasswordPolicy remove(long passwordPolicyId)
-		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
+		throws com.liferay.portal.kernel.exception.NoSuchPasswordPolicyException {
 		return getPersistence().remove(passwordPolicyId);
 	}
 
@@ -1011,7 +1011,7 @@ public class PasswordPolicyUtil {
 	* @throws NoSuchPasswordPolicyException if a password policy with the primary key could not be found
 	*/
 	public static PasswordPolicy findByPrimaryKey(long passwordPolicyId)
-		throws com.liferay.portal.exception.NoSuchPasswordPolicyException {
+		throws com.liferay.portal.kernel.exception.NoSuchPasswordPolicyException {
 		return getPersistence().findByPrimaryKey(passwordPolicyId);
 	}
 

@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -125,7 +125,7 @@ public class ImageWrapper implements Image, ModelWrapper<Image> {
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.model.Image image) {
+	public int compareTo(com.liferay.portal.kernel.model.Image image) {
 		return _image.compareTo(image);
 	}
 
@@ -385,12 +385,12 @@ public class ImageWrapper implements Image, ModelWrapper<Image> {
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.Image> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.Image> toCacheModel() {
 		return _image.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.Image toEscapedModel() {
+	public com.liferay.portal.kernel.model.Image toEscapedModel() {
 		return new ImageWrapper(_image.toEscapedModel());
 	}
 
@@ -400,7 +400,7 @@ public class ImageWrapper implements Image, ModelWrapper<Image> {
 	}
 
 	@Override
-	public com.liferay.portal.model.Image toUnescapedModel() {
+	public com.liferay.portal.kernel.model.Image toUnescapedModel() {
 		return new ImageWrapper(_image.toUnescapedModel());
 	}
 

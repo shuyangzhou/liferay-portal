@@ -40,19 +40,19 @@ public class TicketLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.portal.service.impl.TicketLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.portal.model.Ticket addDistinctTicket(
+	public static com.liferay.portal.kernel.model.Ticket addDistinctTicket(
 		long companyId, java.lang.String className, long classPK, int type,
 		java.lang.String extraInfo, java.util.Date expirationDate,
-		com.liferay.portal.service.ServiceContext serviceContext) {
+		com.liferay.portal.kernel.service.ServiceContext serviceContext) {
 		return getService()
 				   .addDistinctTicket(companyId, className, classPK, type,
 			extraInfo, expirationDate, serviceContext);
 	}
 
-	public static com.liferay.portal.model.Ticket addTicket(long companyId,
+	public static com.liferay.portal.kernel.model.Ticket addTicket(long companyId,
 		java.lang.String className, long classPK, int type,
 		java.lang.String extraInfo, java.util.Date expirationDate,
-		com.liferay.portal.service.ServiceContext serviceContext) {
+		com.liferay.portal.kernel.service.ServiceContext serviceContext) {
 		return getService()
 				   .addTicket(companyId, className, classPK, type, extraInfo,
 			expirationDate, serviceContext);
@@ -64,8 +64,8 @@ public class TicketLocalServiceUtil {
 	* @param ticket the ticket
 	* @return the ticket that was added
 	*/
-	public static com.liferay.portal.model.Ticket addTicket(
-		com.liferay.portal.model.Ticket ticket) {
+	public static com.liferay.portal.kernel.model.Ticket addTicket(
+		com.liferay.portal.kernel.model.Ticket ticket) {
 		return getService().addTicket(ticket);
 	}
 
@@ -75,15 +75,15 @@ public class TicketLocalServiceUtil {
 	* @param ticketId the primary key for the new ticket
 	* @return the new ticket
 	*/
-	public static com.liferay.portal.model.Ticket createTicket(long ticketId) {
+	public static com.liferay.portal.kernel.model.Ticket createTicket(long ticketId) {
 		return getService().createTicket(ticketId);
 	}
 
 	/**
 	* @throws PortalException
 	*/
-	public static com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -94,8 +94,8 @@ public class TicketLocalServiceUtil {
 	* @param ticket the ticket
 	* @return the ticket that was removed
 	*/
-	public static com.liferay.portal.model.Ticket deleteTicket(
-		com.liferay.portal.model.Ticket ticket) {
+	public static com.liferay.portal.kernel.model.Ticket deleteTicket(
+		com.liferay.portal.kernel.model.Ticket ticket) {
 		return getService().deleteTicket(ticket);
 	}
 
@@ -106,7 +106,7 @@ public class TicketLocalServiceUtil {
 	* @return the ticket that was removed
 	* @throws PortalException if a ticket with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.Ticket deleteTicket(long ticketId)
+	public static com.liferay.portal.kernel.model.Ticket deleteTicket(long ticketId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteTicket(ticketId);
 	}
@@ -189,12 +189,12 @@ public class TicketLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.portal.model.Ticket fetchTicket(
+	public static com.liferay.portal.kernel.model.Ticket fetchTicket(
 		java.lang.String key) {
 		return getService().fetchTicket(key);
 	}
 
-	public static com.liferay.portal.model.Ticket fetchTicket(long ticketId) {
+	public static com.liferay.portal.kernel.model.Ticket fetchTicket(long ticketId) {
 		return getService().fetchTicket(ticketId);
 	}
 
@@ -215,13 +215,13 @@ public class TicketLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.model.PersistedModel getPersistedModel(
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static com.liferay.portal.model.Ticket getTicket(
+	public static com.liferay.portal.kernel.model.Ticket getTicket(
 		java.lang.String key)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getTicket(key);
@@ -234,7 +234,7 @@ public class TicketLocalServiceUtil {
 	* @return the ticket
 	* @throws PortalException if a ticket with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.Ticket getTicket(long ticketId)
+	public static com.liferay.portal.kernel.model.Ticket getTicket(long ticketId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getTicket(ticketId);
 	}
@@ -250,7 +250,7 @@ public class TicketLocalServiceUtil {
 	* @param end the upper bound of the range of tickets (not inclusive)
 	* @return the range of tickets
 	*/
-	public static java.util.List<com.liferay.portal.model.Ticket> getTickets(
+	public static java.util.List<com.liferay.portal.kernel.model.Ticket> getTickets(
 		int start, int end) {
 		return getService().getTickets(start, end);
 	}
@@ -270,8 +270,8 @@ public class TicketLocalServiceUtil {
 	* @param ticket the ticket
 	* @return the ticket that was updated
 	*/
-	public static com.liferay.portal.model.Ticket updateTicket(
-		com.liferay.portal.model.Ticket ticket) {
+	public static com.liferay.portal.kernel.model.Ticket updateTicket(
+		com.liferay.portal.kernel.model.Ticket ticket) {
 		return getService().updateTicket(ticket);
 	}
 

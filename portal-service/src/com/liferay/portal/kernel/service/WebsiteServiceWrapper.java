@@ -31,10 +31,10 @@ public class WebsiteServiceWrapper implements WebsiteService,
 	}
 
 	@Override
-	public com.liferay.portal.model.Website addWebsite(
+	public com.liferay.portal.kernel.model.Website addWebsite(
 		java.lang.String className, long classPK, java.lang.String url,
 		long typeId, boolean primary,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _websiteService.addWebsite(className, classPK, url, typeId,
 			primary, serviceContext);
@@ -57,20 +57,20 @@ public class WebsiteServiceWrapper implements WebsiteService,
 	}
 
 	@Override
-	public com.liferay.portal.model.Website getWebsite(long websiteId)
+	public com.liferay.portal.kernel.model.Website getWebsite(long websiteId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _websiteService.getWebsite(websiteId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Website> getWebsites(
+	public java.util.List<com.liferay.portal.kernel.model.Website> getWebsites(
 		java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _websiteService.getWebsites(className, classPK);
 	}
 
 	@Override
-	public com.liferay.portal.model.Website updateWebsite(long websiteId,
+	public com.liferay.portal.kernel.model.Website updateWebsite(long websiteId,
 		java.lang.String url, long typeId, boolean primary)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _websiteService.updateWebsite(websiteId, url, typeId, primary);

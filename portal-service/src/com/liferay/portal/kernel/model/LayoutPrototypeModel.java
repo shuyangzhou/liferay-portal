@@ -18,9 +18,9 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
-import com.liferay.portal.LocaleException;
+import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -495,19 +495,19 @@ public interface LayoutPrototypeModel extends BaseModel<LayoutPrototype>,
 
 	@Override
 	public int compareTo(
-		com.liferay.portal.model.LayoutPrototype layoutPrototype);
+		com.liferay.portal.kernel.model.LayoutPrototype layoutPrototype);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.LayoutPrototype> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.LayoutPrototype> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.LayoutPrototype toEscapedModel();
+	public com.liferay.portal.kernel.model.LayoutPrototype toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.LayoutPrototype toUnescapedModel();
+	public com.liferay.portal.kernel.model.LayoutPrototype toUnescapedModel();
 
 	@Override
 	public String toString();

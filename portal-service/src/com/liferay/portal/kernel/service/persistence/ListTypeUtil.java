@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
-import com.liferay.portal.model.ListType;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.ListType;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -46,35 +46,35 @@ public class ListTypeUtil {
 	 */
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache()
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache()
 	 */
 	public static void clearCache() {
 		getPersistence().clearCache();
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static void clearCache(ListType listType) {
 		getPersistence().clearCache(listType);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
 	public static long countWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<ListType> findWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().findWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
 	public static List<ListType> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
@@ -82,7 +82,7 @@ public class ListTypeUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
 	public static List<ListType> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
@@ -93,14 +93,14 @@ public class ListTypeUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static ListType update(ListType listType) {
 		return getPersistence().update(listType);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
 	public static ListType update(ListType listType,
 		ServiceContext serviceContext) {
@@ -184,7 +184,7 @@ public class ListTypeUtil {
 	*/
 	public static ListType findByType_First(java.lang.String type,
 		OrderByComparator<ListType> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchListTypeException {
+		throws com.liferay.portal.kernel.exception.NoSuchListTypeException {
 		return getPersistence().findByType_First(type, orderByComparator);
 	}
 
@@ -210,7 +210,7 @@ public class ListTypeUtil {
 	*/
 	public static ListType findByType_Last(java.lang.String type,
 		OrderByComparator<ListType> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchListTypeException {
+		throws com.liferay.portal.kernel.exception.NoSuchListTypeException {
 		return getPersistence().findByType_Last(type, orderByComparator);
 	}
 
@@ -237,7 +237,7 @@ public class ListTypeUtil {
 	*/
 	public static ListType[] findByType_PrevAndNext(long listTypeId,
 		java.lang.String type, OrderByComparator<ListType> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchListTypeException {
+		throws com.liferay.portal.kernel.exception.NoSuchListTypeException {
 		return getPersistence()
 				   .findByType_PrevAndNext(listTypeId, type, orderByComparator);
 	}
@@ -271,7 +271,7 @@ public class ListTypeUtil {
 	*/
 	public static ListType findByN_T(java.lang.String name,
 		java.lang.String type)
-		throws com.liferay.portal.exception.NoSuchListTypeException {
+		throws com.liferay.portal.kernel.exception.NoSuchListTypeException {
 		return getPersistence().findByN_T(name, type);
 	}
 
@@ -309,7 +309,7 @@ public class ListTypeUtil {
 	*/
 	public static ListType removeByN_T(java.lang.String name,
 		java.lang.String type)
-		throws com.liferay.portal.exception.NoSuchListTypeException {
+		throws com.liferay.portal.kernel.exception.NoSuchListTypeException {
 		return getPersistence().removeByN_T(name, type);
 	}
 
@@ -360,7 +360,7 @@ public class ListTypeUtil {
 	* @throws NoSuchListTypeException if a list type with the primary key could not be found
 	*/
 	public static ListType remove(long listTypeId)
-		throws com.liferay.portal.exception.NoSuchListTypeException {
+		throws com.liferay.portal.kernel.exception.NoSuchListTypeException {
 		return getPersistence().remove(listTypeId);
 	}
 
@@ -376,7 +376,7 @@ public class ListTypeUtil {
 	* @throws NoSuchListTypeException if a list type with the primary key could not be found
 	*/
 	public static ListType findByPrimaryKey(long listTypeId)
-		throws com.liferay.portal.exception.NoSuchListTypeException {
+		throws com.liferay.portal.kernel.exception.NoSuchListTypeException {
 		return getPersistence().findByPrimaryKey(listTypeId);
 	}
 

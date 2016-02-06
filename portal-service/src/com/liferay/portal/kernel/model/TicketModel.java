@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -258,19 +258,19 @@ public interface TicketModel extends AttachedModel, BaseModel<Ticket>, MVCCModel
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.model.Ticket ticket);
+	public int compareTo(com.liferay.portal.kernel.model.Ticket ticket);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.Ticket> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.Ticket> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.Ticket toEscapedModel();
+	public com.liferay.portal.kernel.model.Ticket toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.Ticket toUnescapedModel();
+	public com.liferay.portal.kernel.model.Ticket toUnescapedModel();
 
 	@Override
 	public String toString();

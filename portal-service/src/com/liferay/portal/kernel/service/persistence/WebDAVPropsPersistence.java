@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchWebDAVPropsException;
-import com.liferay.portal.model.WebDAVProps;
+import com.liferay.portal.kernel.exception.NoSuchWebDAVPropsException;
+import com.liferay.portal.kernel.model.WebDAVProps;
 
 /**
  * The persistence interface for the web d a v props service.

@@ -70,6 +70,6 @@ public interface Team extends TeamModel, PersistedModel {
 			}
 		};
 
-	public com.liferay.portal.model.Role getRole()
+	public com.liferay.portal.kernel.model.Role getRole()
 		throws com.liferay.portal.kernel.exception.PortalException;
 }

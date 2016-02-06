@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchReleaseException;
-import com.liferay.portal.model.Release;
+import com.liferay.portal.kernel.exception.NoSuchReleaseException;
+import com.liferay.portal.kernel.model.Release;
 
 /**
  * The persistence interface for the release service.

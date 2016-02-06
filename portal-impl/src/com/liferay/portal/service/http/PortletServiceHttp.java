@@ -22,7 +22,7 @@ import com.liferay.portal.kernel.security.auth.HttpPrincipal;
 import com.liferay.portal.kernel.service.http.TunnelUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
-import com.liferay.portal.service.PortletServiceUtil;
+import com.liferay.portal.kernel.service.PortletServiceUtil;
 
 /**
  * Provides the HTTP utility for the
@@ -80,7 +80,7 @@ public class PortletServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.Portlet updatePortlet(
+	public static com.liferay.portal.kernel.model.Portlet updatePortlet(
 		HttpPrincipal httpPrincipal, long companyId,
 		java.lang.String portletId, java.lang.String roles, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -104,7 +104,7 @@ public class PortletServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.Portlet)returnObj;
+			return (com.liferay.portal.kernel.model.Portlet)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);

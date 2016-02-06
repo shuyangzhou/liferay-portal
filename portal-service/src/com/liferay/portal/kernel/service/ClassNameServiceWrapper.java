@@ -31,7 +31,7 @@ public class ClassNameServiceWrapper implements ClassNameService,
 	}
 
 	@Override
-	public com.liferay.portal.model.ClassName fetchClassName(
+	public com.liferay.portal.kernel.model.ClassName fetchClassName(
 		java.lang.String value) {
 		return _classNameService.fetchClassName(value);
 	}

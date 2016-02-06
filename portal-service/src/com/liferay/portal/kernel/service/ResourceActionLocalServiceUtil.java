@@ -40,7 +40,7 @@ public class ResourceActionLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.portal.service.impl.ResourceActionLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.portal.model.ResourceAction addResourceAction(
+	public static com.liferay.portal.kernel.model.ResourceAction addResourceAction(
 		java.lang.String name, java.lang.String actionId, long bitwiseValue) {
 		return getService().addResourceAction(name, actionId, bitwiseValue);
 	}
@@ -51,8 +51,8 @@ public class ResourceActionLocalServiceUtil {
 	* @param resourceAction the resource action
 	* @return the resource action that was added
 	*/
-	public static com.liferay.portal.model.ResourceAction addResourceAction(
-		com.liferay.portal.model.ResourceAction resourceAction) {
+	public static com.liferay.portal.kernel.model.ResourceAction addResourceAction(
+		com.liferay.portal.kernel.model.ResourceAction resourceAction) {
 		return getService().addResourceAction(resourceAction);
 	}
 
@@ -76,7 +76,7 @@ public class ResourceActionLocalServiceUtil {
 	* @param resourceActionId the primary key for the new resource action
 	* @return the new resource action
 	*/
-	public static com.liferay.portal.model.ResourceAction createResourceAction(
+	public static com.liferay.portal.kernel.model.ResourceAction createResourceAction(
 		long resourceActionId) {
 		return getService().createResourceAction(resourceActionId);
 	}
@@ -84,8 +84,8 @@ public class ResourceActionLocalServiceUtil {
 	/**
 	* @throws PortalException
 	*/
-	public static com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -96,8 +96,8 @@ public class ResourceActionLocalServiceUtil {
 	* @param resourceAction the resource action
 	* @return the resource action that was removed
 	*/
-	public static com.liferay.portal.model.ResourceAction deleteResourceAction(
-		com.liferay.portal.model.ResourceAction resourceAction) {
+	public static com.liferay.portal.kernel.model.ResourceAction deleteResourceAction(
+		com.liferay.portal.kernel.model.ResourceAction resourceAction) {
 		return getService().deleteResourceAction(resourceAction);
 	}
 
@@ -108,7 +108,7 @@ public class ResourceActionLocalServiceUtil {
 	* @return the resource action that was removed
 	* @throws PortalException if a resource action with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.ResourceAction deleteResourceAction(
+	public static com.liferay.portal.kernel.model.ResourceAction deleteResourceAction(
 		long resourceActionId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteResourceAction(resourceActionId);
@@ -192,12 +192,12 @@ public class ResourceActionLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.portal.model.ResourceAction fetchResourceAction(
+	public static com.liferay.portal.kernel.model.ResourceAction fetchResourceAction(
 		java.lang.String name, java.lang.String actionId) {
 		return getService().fetchResourceAction(name, actionId);
 	}
 
-	public static com.liferay.portal.model.ResourceAction fetchResourceAction(
+	public static com.liferay.portal.kernel.model.ResourceAction fetchResourceAction(
 		long resourceActionId) {
 		return getService().fetchResourceAction(resourceActionId);
 	}
@@ -219,13 +219,13 @@ public class ResourceActionLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.model.PersistedModel getPersistedModel(
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static com.liferay.portal.model.ResourceAction getResourceAction(
+	public static com.liferay.portal.kernel.model.ResourceAction getResourceAction(
 		java.lang.String name, java.lang.String actionId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getResourceAction(name, actionId);
@@ -238,13 +238,13 @@ public class ResourceActionLocalServiceUtil {
 	* @return the resource action
 	* @throws PortalException if a resource action with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.ResourceAction getResourceAction(
+	public static com.liferay.portal.kernel.model.ResourceAction getResourceAction(
 		long resourceActionId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getResourceAction(resourceActionId);
 	}
 
-	public static java.util.List<com.liferay.portal.model.ResourceAction> getResourceActions(
+	public static java.util.List<com.liferay.portal.kernel.model.ResourceAction> getResourceActions(
 		java.lang.String name) {
 		return getService().getResourceActions(name);
 	}
@@ -260,7 +260,7 @@ public class ResourceActionLocalServiceUtil {
 	* @param end the upper bound of the range of resource actions (not inclusive)
 	* @return the range of resource actions
 	*/
-	public static java.util.List<com.liferay.portal.model.ResourceAction> getResourceActions(
+	public static java.util.List<com.liferay.portal.kernel.model.ResourceAction> getResourceActions(
 		int start, int end) {
 		return getService().getResourceActions(start, end);
 	}
@@ -284,8 +284,8 @@ public class ResourceActionLocalServiceUtil {
 	* @param resourceAction the resource action
 	* @return the resource action that was updated
 	*/
-	public static com.liferay.portal.model.ResourceAction updateResourceAction(
-		com.liferay.portal.model.ResourceAction resourceAction) {
+	public static com.liferay.portal.kernel.model.ResourceAction updateResourceAction(
+		com.liferay.portal.kernel.model.ResourceAction resourceAction) {
 		return getService().updateResourceAction(resourceAction);
 	}
 

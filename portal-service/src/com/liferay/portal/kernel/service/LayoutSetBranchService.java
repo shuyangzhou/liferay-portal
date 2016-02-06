@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
-import com.liferay.portal.model.LayoutSetBranch;
+import com.liferay.portal.kernel.model.LayoutSetBranch;
 
 import java.util.List;
 
@@ -53,7 +53,7 @@ public interface LayoutSetBranchService extends BaseService {
 		boolean privateLayout, java.lang.String name,
 		java.lang.String description, boolean master,
 		long copyLayoutSetBranchId,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	public void deleteLayoutSetBranch(long layoutSetBranchId)
@@ -72,12 +72,12 @@ public interface LayoutSetBranchService extends BaseService {
 
 	public LayoutSetBranch mergeLayoutSetBranch(long layoutSetBranchId,
 		long mergeLayoutSetBranchId,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	public LayoutSetBranch updateLayoutSetBranch(long groupId,
 		long layoutSetBranchId, java.lang.String name,
 		java.lang.String description,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 }

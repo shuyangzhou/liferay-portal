@@ -42,7 +42,7 @@ public class PluginSettingServiceWrapper implements PluginSettingService,
 	}
 
 	@Override
-	public com.liferay.portal.model.PluginSetting updatePluginSetting(
+	public com.liferay.portal.kernel.model.PluginSetting updatePluginSetting(
 		long companyId, java.lang.String pluginId, java.lang.String pluginType,
 		java.lang.String roles, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {

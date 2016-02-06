@@ -24,7 +24,7 @@ import aQute.bnd.annotation.ProviderType;
 public interface PasswordPolicyFinder {
 	public int countByC_N(long companyId, java.lang.String name);
 
-	public java.util.List<com.liferay.portal.model.PasswordPolicy> findByC_N(
+	public java.util.List<com.liferay.portal.kernel.model.PasswordPolicy> findByC_N(
 		long companyId, java.lang.String name, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.PasswordPolicy> obc);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.PasswordPolicy> obc);
 }

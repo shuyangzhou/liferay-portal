@@ -75,8 +75,8 @@ public class ResourceLocalServiceWrapper implements ResourceLocalService,
 	*/
 	@Override
 	public void addModelResources(
-		com.liferay.portal.model.AuditedModel auditedModel,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.model.AuditedModel auditedModel,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_resourceLocalService.addModelResources(auditedModel, serviceContext);
 	}
@@ -230,7 +230,7 @@ public class ResourceLocalServiceWrapper implements ResourceLocalService,
 	*/
 	@Override
 	public void deleteResource(
-		com.liferay.portal.model.AuditedModel auditedModel, int scope)
+		com.liferay.portal.kernel.model.AuditedModel auditedModel, int scope)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_resourceLocalService.deleteResource(auditedModel, scope);
 	}
@@ -291,7 +291,7 @@ public class ResourceLocalServiceWrapper implements ResourceLocalService,
 	* @return the new resource
 	*/
 	@Override
-	public com.liferay.portal.model.Resource getResource(long companyId,
+	public com.liferay.portal.kernel.model.Resource getResource(long companyId,
 		java.lang.String name, int scope, java.lang.String primKey) {
 		return _resourceLocalService.getResource(companyId, name, scope, primKey);
 	}
@@ -314,7 +314,7 @@ public class ResourceLocalServiceWrapper implements ResourceLocalService,
 	*/
 	@Override
 	public boolean hasUserPermissions(long userId, long resourceId,
-		java.util.List<com.liferay.portal.model.Resource> resources,
+		java.util.List<com.liferay.portal.kernel.model.Resource> resources,
 		java.lang.String actionId, long[] roleIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _resourceLocalService.hasUserPermissions(userId, resourceId,
@@ -331,8 +331,8 @@ public class ResourceLocalServiceWrapper implements ResourceLocalService,
 	*/
 	@Override
 	public void updateModelResources(
-		com.liferay.portal.model.AuditedModel auditedModel,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.model.AuditedModel auditedModel,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_resourceLocalService.updateModelResources(auditedModel, serviceContext);
 	}

@@ -30,8 +30,8 @@ import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.model.PersistedModel;
-import com.liferay.portal.model.UserNotificationEvent;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.model.UserNotificationEvent;
 
 import java.io.Serializable;
 
@@ -75,20 +75,20 @@ public interface UserNotificationEventLocalService extends BaseLocalService,
 	public UserNotificationEvent addUserNotificationEvent(long userId,
 		java.lang.String type, long timestamp, long deliverBy,
 		java.lang.String payload, boolean archived,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	public UserNotificationEvent addUserNotificationEvent(long userId,
 		java.lang.String type, long timestamp, int deliveryType,
 		long deliverBy, java.lang.String payload, boolean actionRequired,
 		boolean archived,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	public UserNotificationEvent addUserNotificationEvent(long userId,
 		java.lang.String type, long timestamp, int deliveryType,
 		long deliverBy, java.lang.String payload, boolean archived,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**

@@ -21,7 +21,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -376,12 +376,12 @@ public class UserWrapper implements User, ModelWrapper<User> {
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.model.User user) {
+	public int compareTo(com.liferay.portal.kernel.model.User user) {
 		return _user.compareTo(user);
 	}
 
 	@Override
-	public com.liferay.portal.model.Contact fetchContact() {
+	public com.liferay.portal.kernel.model.Contact fetchContact() {
 		return _user.fetchContact();
 	}
 
@@ -391,7 +391,7 @@ public class UserWrapper implements User, ModelWrapper<User> {
 	* @return the user's addresses
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Address> getAddresses() {
+	public java.util.List<com.liferay.portal.kernel.model.Address> getAddresses() {
 		return _user.getAddresses();
 	}
 
@@ -454,7 +454,7 @@ public class UserWrapper implements User, ModelWrapper<User> {
 	* @see Contact
 	*/
 	@Override
-	public com.liferay.portal.model.Contact getContact()
+	public com.liferay.portal.kernel.model.Contact getContact()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _user.getContact();
 	}
@@ -693,7 +693,7 @@ public class UserWrapper implements User, ModelWrapper<User> {
 	* @return the user's email addresses
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.EmailAddress> getEmailAddresses() {
+	public java.util.List<com.liferay.portal.kernel.model.EmailAddress> getEmailAddresses() {
 		return _user.getEmailAddresses();
 	}
 
@@ -795,7 +795,7 @@ public class UserWrapper implements User, ModelWrapper<User> {
 	}
 
 	@Override
-	public com.liferay.portal.model.Group getGroup() {
+	public com.liferay.portal.kernel.model.Group getGroup() {
 		return _user.getGroup();
 	}
 
@@ -810,7 +810,7 @@ public class UserWrapper implements User, ModelWrapper<User> {
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getGroups() {
+	public java.util.List<com.liferay.portal.kernel.model.Group> getGroups() {
 		return _user.getGroups();
 	}
 
@@ -983,20 +983,20 @@ public class UserWrapper implements User, ModelWrapper<User> {
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getMySiteGroups()
+	public java.util.List<com.liferay.portal.kernel.model.Group> getMySiteGroups()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _user.getMySiteGroups();
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getMySiteGroups(
+	public java.util.List<com.liferay.portal.kernel.model.Group> getMySiteGroups(
 		java.lang.String[] classNames, int max)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _user.getMySiteGroups(classNames, max);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getMySiteGroups(
+	public java.util.List<com.liferay.portal.kernel.model.Group> getMySiteGroups(
 		int max) throws com.liferay.portal.kernel.exception.PortalException {
 		return _user.getMySiteGroups(max);
 	}
@@ -1024,13 +1024,13 @@ public class UserWrapper implements User, ModelWrapper<User> {
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Organization> getOrganizations()
+	public java.util.List<com.liferay.portal.kernel.model.Organization> getOrganizations()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _user.getOrganizations();
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Organization> getOrganizations(
+	public java.util.List<com.liferay.portal.kernel.model.Organization> getOrganizations(
 		boolean includeAdministrative)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _user.getOrganizations(includeAdministrative);
@@ -1077,7 +1077,7 @@ public class UserWrapper implements User, ModelWrapper<User> {
 	}
 
 	@Override
-	public com.liferay.portal.model.PasswordPolicy getPasswordPolicy()
+	public com.liferay.portal.kernel.model.PasswordPolicy getPasswordPolicy()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _user.getPasswordPolicy();
 	}
@@ -1098,7 +1098,7 @@ public class UserWrapper implements User, ModelWrapper<User> {
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Phone> getPhones() {
+	public java.util.List<com.liferay.portal.kernel.model.Phone> getPhones() {
 		return _user.getPhones();
 	}
 
@@ -1189,7 +1189,7 @@ public class UserWrapper implements User, ModelWrapper<User> {
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Role> getRoles() {
+	public java.util.List<com.liferay.portal.kernel.model.Role> getRoles() {
 		return _user.getRoles();
 	}
 
@@ -1204,13 +1204,13 @@ public class UserWrapper implements User, ModelWrapper<User> {
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getSiteGroups()
+	public java.util.List<com.liferay.portal.kernel.model.Group> getSiteGroups()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _user.getSiteGroups();
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getSiteGroups(
+	public java.util.List<com.liferay.portal.kernel.model.Group> getSiteGroups(
 		boolean includeAdministrative)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _user.getSiteGroups(includeAdministrative);
@@ -1232,7 +1232,7 @@ public class UserWrapper implements User, ModelWrapper<User> {
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Team> getTeams() {
+	public java.util.List<com.liferay.portal.kernel.model.Team> getTeams() {
 		return _user.getTeams();
 	}
 
@@ -1259,7 +1259,7 @@ public class UserWrapper implements User, ModelWrapper<User> {
 
 	@Override
 	public Date getUnlockDate(
-		com.liferay.portal.model.PasswordPolicy passwordPolicy) {
+		com.liferay.portal.kernel.model.PasswordPolicy passwordPolicy) {
 		return _user.getUnlockDate(passwordPolicy);
 	}
 
@@ -1269,7 +1269,7 @@ public class UserWrapper implements User, ModelWrapper<User> {
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.UserGroup> getUserGroups() {
+	public java.util.List<com.liferay.portal.kernel.model.UserGroup> getUserGroups() {
 		return _user.getUserGroups();
 	}
 
@@ -1304,7 +1304,7 @@ public class UserWrapper implements User, ModelWrapper<User> {
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Website> getWebsites() {
+	public java.util.List<com.liferay.portal.kernel.model.Website> getWebsites() {
 		return _user.getWebsites();
 	}
 
@@ -1961,12 +1961,12 @@ public class UserWrapper implements User, ModelWrapper<User> {
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.User> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.User> toCacheModel() {
 		return _user.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.User toEscapedModel() {
+	public com.liferay.portal.kernel.model.User toEscapedModel() {
 		return new UserWrapper(_user.toEscapedModel());
 	}
 
@@ -1976,7 +1976,7 @@ public class UserWrapper implements User, ModelWrapper<User> {
 	}
 
 	@Override
-	public com.liferay.portal.model.User toUnescapedModel() {
+	public com.liferay.portal.kernel.model.User toUnescapedModel() {
 		return new UserWrapper(_user.toUnescapedModel());
 	}
 

@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchClassNameException;
-import com.liferay.portal.model.ClassName;
+import com.liferay.portal.kernel.exception.NoSuchClassNameException;
+import com.liferay.portal.kernel.model.ClassName;
 
 /**
  * The persistence interface for the class name service.

@@ -31,27 +31,27 @@ public class ThemeLocalServiceWrapper implements ThemeLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.ColorScheme fetchColorScheme(
+	public com.liferay.portal.kernel.model.ColorScheme fetchColorScheme(
 		long companyId, java.lang.String themeId, java.lang.String colorSchemeId) {
 		return _themeLocalService.fetchColorScheme(companyId, themeId,
 			colorSchemeId);
 	}
 
 	@Override
-	public com.liferay.portal.model.PortletDecorator fetchPortletDecorator(
+	public com.liferay.portal.kernel.model.PortletDecorator fetchPortletDecorator(
 		long companyId, java.lang.String themeId, java.lang.String colorSchemeId) {
 		return _themeLocalService.fetchPortletDecorator(companyId, themeId,
 			colorSchemeId);
 	}
 
 	@Override
-	public com.liferay.portal.model.Theme fetchTheme(long companyId,
+	public com.liferay.portal.kernel.model.Theme fetchTheme(long companyId,
 		java.lang.String themeId) {
 		return _themeLocalService.fetchTheme(companyId, themeId);
 	}
 
 	@Override
-	public com.liferay.portal.model.ColorScheme getColorScheme(long companyId,
+	public com.liferay.portal.kernel.model.ColorScheme getColorScheme(long companyId,
 		java.lang.String themeId, java.lang.String colorSchemeId,
 		boolean wapTheme) {
 		return _themeLocalService.getColorScheme(companyId, themeId,
@@ -59,7 +59,7 @@ public class ThemeLocalServiceWrapper implements ThemeLocalService,
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Theme> getControlPanelThemes(
+	public java.util.List<com.liferay.portal.kernel.model.Theme> getControlPanelThemes(
 		long companyId, long userId, boolean wapTheme) {
 		return _themeLocalService.getControlPanelThemes(companyId, userId,
 			wapTheme);
@@ -76,14 +76,14 @@ public class ThemeLocalServiceWrapper implements ThemeLocalService,
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Theme> getPageThemes(
+	public java.util.List<com.liferay.portal.kernel.model.Theme> getPageThemes(
 		long companyId, long groupId, long userId, boolean wapTheme) {
 		return _themeLocalService.getPageThemes(companyId, groupId, userId,
 			wapTheme);
 	}
 
 	@Override
-	public com.liferay.portal.model.PortletDecorator getPortletDecorator(
+	public com.liferay.portal.kernel.model.PortletDecorator getPortletDecorator(
 		long companyId, java.lang.String themeId,
 		java.lang.String portletDecoratorId) {
 		return _themeLocalService.getPortletDecorator(companyId, themeId,
@@ -91,13 +91,13 @@ public class ThemeLocalServiceWrapper implements ThemeLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.Theme getTheme(long companyId,
+	public com.liferay.portal.kernel.model.Theme getTheme(long companyId,
 		java.lang.String themeId, boolean wapTheme) {
 		return _themeLocalService.getTheme(companyId, themeId, wapTheme);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Theme> getThemes(
+	public java.util.List<com.liferay.portal.kernel.model.Theme> getThemes(
 		long companyId) {
 		return _themeLocalService.getThemes(companyId);
 	}
@@ -107,18 +107,18 @@ public class ThemeLocalServiceWrapper implements ThemeLocalService,
 	*/
 	@Deprecated
 	@Override
-	public java.util.List<com.liferay.portal.model.Theme> getThemes(
+	public java.util.List<com.liferay.portal.kernel.model.Theme> getThemes(
 		long companyId, long groupId, long userId, boolean wapTheme) {
 		return _themeLocalService.getThemes(companyId, groupId, userId, wapTheme);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Theme> getWARThemes() {
+	public java.util.List<com.liferay.portal.kernel.model.Theme> getWARThemes() {
 		return _themeLocalService.getWARThemes();
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Theme> init(
+	public java.util.List<com.liferay.portal.kernel.model.Theme> init(
 		javax.servlet.ServletContext servletContext,
 		java.lang.String themesPath, boolean loadFromServletContext,
 		java.lang.String[] xmls,
@@ -128,7 +128,7 @@ public class ThemeLocalServiceWrapper implements ThemeLocalService,
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Theme> init(
+	public java.util.List<com.liferay.portal.kernel.model.Theme> init(
 		java.lang.String servletContextName,
 		javax.servlet.ServletContext servletContext,
 		java.lang.String themesPath, boolean loadFromServletContext,
@@ -140,7 +140,7 @@ public class ThemeLocalServiceWrapper implements ThemeLocalService,
 
 	@Override
 	public void uninstallThemes(
-		java.util.List<com.liferay.portal.model.Theme> themes) {
+		java.util.List<com.liferay.portal.kernel.model.Theme> themes) {
 		_themeLocalService.uninstallThemes(themes);
 	}
 

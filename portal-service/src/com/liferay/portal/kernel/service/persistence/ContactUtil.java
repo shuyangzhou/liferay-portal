@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
-import com.liferay.portal.model.Contact;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.Contact;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -46,35 +46,35 @@ public class ContactUtil {
 	 */
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache()
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache()
 	 */
 	public static void clearCache() {
 		getPersistence().clearCache();
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static void clearCache(Contact contact) {
 		getPersistence().clearCache(contact);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
 	public static long countWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<Contact> findWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().findWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
 	public static List<Contact> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
@@ -82,7 +82,7 @@ public class ContactUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
 	public static List<Contact> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
@@ -93,14 +93,14 @@ public class ContactUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static Contact update(Contact contact) {
 		return getPersistence().update(contact);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
 	public static Contact update(Contact contact, ServiceContext serviceContext) {
 		return getPersistence().update(contact, serviceContext);
@@ -184,7 +184,7 @@ public class ContactUtil {
 	*/
 	public static Contact findByCompanyId_First(long companyId,
 		OrderByComparator<Contact> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchContactException {
+		throws com.liferay.portal.kernel.exception.NoSuchContactException {
 		return getPersistence()
 				   .findByCompanyId_First(companyId, orderByComparator);
 	}
@@ -212,7 +212,7 @@ public class ContactUtil {
 	*/
 	public static Contact findByCompanyId_Last(long companyId,
 		OrderByComparator<Contact> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchContactException {
+		throws com.liferay.portal.kernel.exception.NoSuchContactException {
 		return getPersistence()
 				   .findByCompanyId_Last(companyId, orderByComparator);
 	}
@@ -241,7 +241,7 @@ public class ContactUtil {
 	*/
 	public static Contact[] findByCompanyId_PrevAndNext(long contactId,
 		long companyId, OrderByComparator<Contact> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchContactException {
+		throws com.liferay.portal.kernel.exception.NoSuchContactException {
 		return getPersistence()
 				   .findByCompanyId_PrevAndNext(contactId, companyId,
 			orderByComparator);
@@ -344,7 +344,7 @@ public class ContactUtil {
 	*/
 	public static Contact findByAccountId_First(long accountId,
 		OrderByComparator<Contact> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchContactException {
+		throws com.liferay.portal.kernel.exception.NoSuchContactException {
 		return getPersistence()
 				   .findByAccountId_First(accountId, orderByComparator);
 	}
@@ -372,7 +372,7 @@ public class ContactUtil {
 	*/
 	public static Contact findByAccountId_Last(long accountId,
 		OrderByComparator<Contact> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchContactException {
+		throws com.liferay.portal.kernel.exception.NoSuchContactException {
 		return getPersistence()
 				   .findByAccountId_Last(accountId, orderByComparator);
 	}
@@ -401,7 +401,7 @@ public class ContactUtil {
 	*/
 	public static Contact[] findByAccountId_PrevAndNext(long contactId,
 		long accountId, OrderByComparator<Contact> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchContactException {
+		throws com.liferay.portal.kernel.exception.NoSuchContactException {
 		return getPersistence()
 				   .findByAccountId_PrevAndNext(contactId, accountId,
 			orderByComparator);
@@ -510,7 +510,7 @@ public class ContactUtil {
 	*/
 	public static Contact findByC_C_First(long classNameId, long classPK,
 		OrderByComparator<Contact> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchContactException {
+		throws com.liferay.portal.kernel.exception.NoSuchContactException {
 		return getPersistence()
 				   .findByC_C_First(classNameId, classPK, orderByComparator);
 	}
@@ -540,7 +540,7 @@ public class ContactUtil {
 	*/
 	public static Contact findByC_C_Last(long classNameId, long classPK,
 		OrderByComparator<Contact> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchContactException {
+		throws com.liferay.portal.kernel.exception.NoSuchContactException {
 		return getPersistence()
 				   .findByC_C_Last(classNameId, classPK, orderByComparator);
 	}
@@ -572,7 +572,7 @@ public class ContactUtil {
 	public static Contact[] findByC_C_PrevAndNext(long contactId,
 		long classNameId, long classPK,
 		OrderByComparator<Contact> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchContactException {
+		throws com.liferay.portal.kernel.exception.NoSuchContactException {
 		return getPersistence()
 				   .findByC_C_PrevAndNext(contactId, classNameId, classPK,
 			orderByComparator);
@@ -635,7 +635,7 @@ public class ContactUtil {
 	* @throws NoSuchContactException if a contact with the primary key could not be found
 	*/
 	public static Contact remove(long contactId)
-		throws com.liferay.portal.exception.NoSuchContactException {
+		throws com.liferay.portal.kernel.exception.NoSuchContactException {
 		return getPersistence().remove(contactId);
 	}
 
@@ -651,7 +651,7 @@ public class ContactUtil {
 	* @throws NoSuchContactException if a contact with the primary key could not be found
 	*/
 	public static Contact findByPrimaryKey(long contactId)
-		throws com.liferay.portal.exception.NoSuchContactException {
+		throws com.liferay.portal.kernel.exception.NoSuchContactException {
 		return getPersistence().findByPrimaryKey(contactId);
 	}
 

@@ -37,19 +37,19 @@ public class ReleaseLocalServiceWrapper implements ReleaseLocalService,
 	* @return the release that was added
 	*/
 	@Override
-	public com.liferay.portal.model.Release addRelease(
-		com.liferay.portal.model.Release release) {
+	public com.liferay.portal.kernel.model.Release addRelease(
+		com.liferay.portal.kernel.model.Release release) {
 		return _releaseLocalService.addRelease(release);
 	}
 
 	@Override
-	public com.liferay.portal.model.Release addRelease(
+	public com.liferay.portal.kernel.model.Release addRelease(
 		java.lang.String servletContextName, int buildNumber) {
 		return _releaseLocalService.addRelease(servletContextName, buildNumber);
 	}
 
 	@Override
-	public com.liferay.portal.model.Release addRelease(
+	public com.liferay.portal.kernel.model.Release addRelease(
 		java.lang.String servletContextName, java.lang.String schemaVersion) {
 		return _releaseLocalService.addRelease(servletContextName, schemaVersion);
 	}
@@ -61,7 +61,7 @@ public class ReleaseLocalServiceWrapper implements ReleaseLocalService,
 	* @return the new release
 	*/
 	@Override
-	public com.liferay.portal.model.Release createRelease(long releaseId) {
+	public com.liferay.portal.kernel.model.Release createRelease(long releaseId) {
 		return _releaseLocalService.createRelease(releaseId);
 	}
 
@@ -74,8 +74,8 @@ public class ReleaseLocalServiceWrapper implements ReleaseLocalService,
 	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _releaseLocalService.deletePersistedModel(persistedModel);
 	}
@@ -87,8 +87,8 @@ public class ReleaseLocalServiceWrapper implements ReleaseLocalService,
 	* @return the release that was removed
 	*/
 	@Override
-	public com.liferay.portal.model.Release deleteRelease(
-		com.liferay.portal.model.Release release) {
+	public com.liferay.portal.kernel.model.Release deleteRelease(
+		com.liferay.portal.kernel.model.Release release) {
 		return _releaseLocalService.deleteRelease(release);
 	}
 
@@ -100,7 +100,7 @@ public class ReleaseLocalServiceWrapper implements ReleaseLocalService,
 	* @throws PortalException if a release with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.Release deleteRelease(long releaseId)
+	public com.liferay.portal.kernel.model.Release deleteRelease(long releaseId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _releaseLocalService.deleteRelease(releaseId);
 	}
@@ -190,12 +190,12 @@ public class ReleaseLocalServiceWrapper implements ReleaseLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.Release fetchRelease(long releaseId) {
+	public com.liferay.portal.kernel.model.Release fetchRelease(long releaseId) {
 		return _releaseLocalService.fetchRelease(releaseId);
 	}
 
 	@Override
-	public com.liferay.portal.model.Release fetchRelease(
+	public com.liferay.portal.kernel.model.Release fetchRelease(
 		java.lang.String servletContextName) {
 		return _releaseLocalService.fetchRelease(servletContextName);
 	}
@@ -227,7 +227,7 @@ public class ReleaseLocalServiceWrapper implements ReleaseLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.PersistedModel getPersistedModel(
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _releaseLocalService.getPersistedModel(primaryKeyObj);
@@ -241,7 +241,7 @@ public class ReleaseLocalServiceWrapper implements ReleaseLocalService,
 	* @throws PortalException if a release with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.Release getRelease(long releaseId)
+	public com.liferay.portal.kernel.model.Release getRelease(long releaseId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _releaseLocalService.getRelease(releaseId);
 	}
@@ -258,7 +258,7 @@ public class ReleaseLocalServiceWrapper implements ReleaseLocalService,
 	* @return the range of releases
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Release> getReleases(
+	public java.util.List<com.liferay.portal.kernel.model.Release> getReleases(
 		int start, int end) {
 		return _releaseLocalService.getReleases(start, end);
 	}
@@ -280,13 +280,13 @@ public class ReleaseLocalServiceWrapper implements ReleaseLocalService,
 	* @return the release that was updated
 	*/
 	@Override
-	public com.liferay.portal.model.Release updateRelease(
-		com.liferay.portal.model.Release release) {
+	public com.liferay.portal.kernel.model.Release updateRelease(
+		com.liferay.portal.kernel.model.Release release) {
 		return _releaseLocalService.updateRelease(release);
 	}
 
 	@Override
-	public com.liferay.portal.model.Release updateRelease(long releaseId,
+	public com.liferay.portal.kernel.model.Release updateRelease(long releaseId,
 		int buildNumber, java.util.Date buildDate, boolean verified)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _releaseLocalService.updateRelease(releaseId, buildNumber,

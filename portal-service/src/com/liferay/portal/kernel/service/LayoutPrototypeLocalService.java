@@ -32,9 +32,9 @@ import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.model.LayoutPrototype;
-import com.liferay.portal.model.PersistedModel;
-import com.liferay.portal.model.SystemEventConstants;
+import com.liferay.portal.kernel.model.LayoutPrototype;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.model.SystemEventConstants;
 
 import java.io.Serializable;
 
@@ -81,13 +81,13 @@ public interface LayoutPrototypeLocalService extends BaseLocalService,
 	@java.lang.Deprecated
 	public LayoutPrototype addLayoutPrototype(long userId, long companyId,
 		Map<Locale, java.lang.String> nameMap, java.lang.String description,
-		boolean active, com.liferay.portal.service.ServiceContext serviceContext)
+		boolean active, com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	public LayoutPrototype addLayoutPrototype(long userId, long companyId,
 		Map<Locale, java.lang.String> nameMap,
 		Map<Locale, java.lang.String> descriptionMap, boolean active,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -296,12 +296,12 @@ public interface LayoutPrototypeLocalService extends BaseLocalService,
 	@java.lang.Deprecated
 	public LayoutPrototype updateLayoutPrototype(long layoutPrototypeId,
 		Map<Locale, java.lang.String> nameMap, java.lang.String description,
-		boolean active, com.liferay.portal.service.ServiceContext serviceContext)
+		boolean active, com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	public LayoutPrototype updateLayoutPrototype(long layoutPrototypeId,
 		Map<Locale, java.lang.String> nameMap,
 		Map<Locale, java.lang.String> descriptionMap, boolean active,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 }

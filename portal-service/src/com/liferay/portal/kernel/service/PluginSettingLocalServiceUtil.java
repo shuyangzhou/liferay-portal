@@ -47,8 +47,8 @@ public class PluginSettingLocalServiceUtil {
 	* @param pluginSetting the plugin setting
 	* @return the plugin setting that was added
 	*/
-	public static com.liferay.portal.model.PluginSetting addPluginSetting(
-		com.liferay.portal.model.PluginSetting pluginSetting) {
+	public static com.liferay.portal.kernel.model.PluginSetting addPluginSetting(
+		com.liferay.portal.kernel.model.PluginSetting pluginSetting) {
 		return getService().addPluginSetting(pluginSetting);
 	}
 
@@ -64,7 +64,7 @@ public class PluginSettingLocalServiceUtil {
 	* @param pluginSettingId the primary key for the new plugin setting
 	* @return the new plugin setting
 	*/
-	public static com.liferay.portal.model.PluginSetting createPluginSetting(
+	public static com.liferay.portal.kernel.model.PluginSetting createPluginSetting(
 		long pluginSettingId) {
 		return getService().createPluginSetting(pluginSettingId);
 	}
@@ -72,8 +72,8 @@ public class PluginSettingLocalServiceUtil {
 	/**
 	* @throws PortalException
 	*/
-	public static com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -84,8 +84,8 @@ public class PluginSettingLocalServiceUtil {
 	* @param pluginSetting the plugin setting
 	* @return the plugin setting that was removed
 	*/
-	public static com.liferay.portal.model.PluginSetting deletePluginSetting(
-		com.liferay.portal.model.PluginSetting pluginSetting) {
+	public static com.liferay.portal.kernel.model.PluginSetting deletePluginSetting(
+		com.liferay.portal.kernel.model.PluginSetting pluginSetting) {
 		return getService().deletePluginSetting(pluginSetting);
 	}
 
@@ -96,7 +96,7 @@ public class PluginSettingLocalServiceUtil {
 	* @return the plugin setting that was removed
 	* @throws PortalException if a plugin setting with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.PluginSetting deletePluginSetting(
+	public static com.liferay.portal.kernel.model.PluginSetting deletePluginSetting(
 		long pluginSettingId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deletePluginSetting(pluginSettingId);
@@ -180,7 +180,7 @@ public class PluginSettingLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.portal.model.PluginSetting fetchPluginSetting(
+	public static com.liferay.portal.kernel.model.PluginSetting fetchPluginSetting(
 		long pluginSettingId) {
 		return getService().fetchPluginSetting(pluginSettingId);
 	}
@@ -189,7 +189,7 @@ public class PluginSettingLocalServiceUtil {
 		return getService().getActionableDynamicQuery();
 	}
 
-	public static com.liferay.portal.model.PluginSetting getDefaultPluginSetting() {
+	public static com.liferay.portal.kernel.model.PluginSetting getDefaultPluginSetting() {
 		return getService().getDefaultPluginSetting();
 	}
 
@@ -206,13 +206,13 @@ public class PluginSettingLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.model.PersistedModel getPersistedModel(
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static com.liferay.portal.model.PluginSetting getPluginSetting(
+	public static com.liferay.portal.kernel.model.PluginSetting getPluginSetting(
 		long companyId, java.lang.String pluginId, java.lang.String pluginType) {
 		return getService().getPluginSetting(companyId, pluginId, pluginType);
 	}
@@ -224,7 +224,7 @@ public class PluginSettingLocalServiceUtil {
 	* @return the plugin setting
 	* @throws PortalException if a plugin setting with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.PluginSetting getPluginSetting(
+	public static com.liferay.portal.kernel.model.PluginSetting getPluginSetting(
 		long pluginSettingId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getPluginSetting(pluginSettingId);
@@ -241,7 +241,7 @@ public class PluginSettingLocalServiceUtil {
 	* @param end the upper bound of the range of plugin settings (not inclusive)
 	* @return the range of plugin settings
 	*/
-	public static java.util.List<com.liferay.portal.model.PluginSetting> getPluginSettings(
+	public static java.util.List<com.liferay.portal.kernel.model.PluginSetting> getPluginSettings(
 		int start, int end) {
 		return getService().getPluginSettings(start, end);
 	}
@@ -260,7 +260,7 @@ public class PluginSettingLocalServiceUtil {
 		return getService().hasPermission(userId, pluginId, pluginType);
 	}
 
-	public static com.liferay.portal.model.PluginSetting updatePluginSetting(
+	public static com.liferay.portal.kernel.model.PluginSetting updatePluginSetting(
 		long companyId, java.lang.String pluginId, java.lang.String pluginType,
 		java.lang.String roles, boolean active) {
 		return getService()
@@ -274,8 +274,8 @@ public class PluginSettingLocalServiceUtil {
 	* @param pluginSetting the plugin setting
 	* @return the plugin setting that was updated
 	*/
-	public static com.liferay.portal.model.PluginSetting updatePluginSetting(
-		com.liferay.portal.model.PluginSetting pluginSetting) {
+	public static com.liferay.portal.kernel.model.PluginSetting updatePluginSetting(
+		com.liferay.portal.kernel.model.PluginSetting pluginSetting) {
 		return getService().updatePluginSetting(pluginSetting);
 	}
 

@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -131,7 +131,7 @@ public class CountryWrapper implements Country, ModelWrapper<Country> {
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.model.Country country) {
+	public int compareTo(com.liferay.portal.kernel.model.Country country) {
 		return _country.compareTo(country);
 	}
 
@@ -436,12 +436,12 @@ public class CountryWrapper implements Country, ModelWrapper<Country> {
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.Country> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.Country> toCacheModel() {
 		return _country.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.Country toEscapedModel() {
+	public com.liferay.portal.kernel.model.Country toEscapedModel() {
 		return new CountryWrapper(_country.toEscapedModel());
 	}
 
@@ -451,7 +451,7 @@ public class CountryWrapper implements Country, ModelWrapper<Country> {
 	}
 
 	@Override
-	public com.liferay.portal.model.Country toUnescapedModel() {
+	public com.liferay.portal.kernel.model.Country toUnescapedModel() {
 		return new CountryWrapper(_country.toUnescapedModel());
 	}
 

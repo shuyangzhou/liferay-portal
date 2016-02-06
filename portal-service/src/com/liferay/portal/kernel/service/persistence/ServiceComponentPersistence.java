@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchServiceComponentException;
-import com.liferay.portal.model.ServiceComponent;
+import com.liferay.portal.kernel.exception.NoSuchServiceComponentException;
+import com.liferay.portal.kernel.model.ServiceComponent;
 
 /**
  * The persistence interface for the service component service.

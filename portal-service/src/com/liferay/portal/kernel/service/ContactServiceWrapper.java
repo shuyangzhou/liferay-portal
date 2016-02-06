@@ -31,15 +31,15 @@ public class ContactServiceWrapper implements ContactService,
 	}
 
 	@Override
-	public com.liferay.portal.model.Contact getContact(long contactId)
+	public com.liferay.portal.kernel.model.Contact getContact(long contactId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _contactService.getContact(contactId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Contact> getContacts(
+	public java.util.List<com.liferay.portal.kernel.model.Contact> getContacts(
 		long classNameId, long classPK, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Contact> orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Contact> orderByComparator)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _contactService.getContacts(classNameId, classPK, start, end,
 			orderByComparator);

@@ -38,13 +38,13 @@ public class ClassNameLocalServiceWrapper implements ClassNameLocalService,
 	* @return the class name that was added
 	*/
 	@Override
-	public com.liferay.portal.model.ClassName addClassName(
-		com.liferay.portal.model.ClassName className) {
+	public com.liferay.portal.kernel.model.ClassName addClassName(
+		com.liferay.portal.kernel.model.ClassName className) {
 		return _classNameLocalService.addClassName(className);
 	}
 
 	@Override
-	public com.liferay.portal.model.ClassName addClassName(
+	public com.liferay.portal.kernel.model.ClassName addClassName(
 		java.lang.String value) {
 		return _classNameLocalService.addClassName(value);
 	}
@@ -61,7 +61,7 @@ public class ClassNameLocalServiceWrapper implements ClassNameLocalService,
 	* @return the new class name
 	*/
 	@Override
-	public com.liferay.portal.model.ClassName createClassName(long classNameId) {
+	public com.liferay.portal.kernel.model.ClassName createClassName(long classNameId) {
 		return _classNameLocalService.createClassName(classNameId);
 	}
 
@@ -72,8 +72,8 @@ public class ClassNameLocalServiceWrapper implements ClassNameLocalService,
 	* @return the class name that was removed
 	*/
 	@Override
-	public com.liferay.portal.model.ClassName deleteClassName(
-		com.liferay.portal.model.ClassName className) {
+	public com.liferay.portal.kernel.model.ClassName deleteClassName(
+		com.liferay.portal.kernel.model.ClassName className) {
 		return _classNameLocalService.deleteClassName(className);
 	}
 
@@ -85,7 +85,7 @@ public class ClassNameLocalServiceWrapper implements ClassNameLocalService,
 	* @throws PortalException if a class name with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.ClassName deleteClassName(long classNameId)
+	public com.liferay.portal.kernel.model.ClassName deleteClassName(long classNameId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _classNameLocalService.deleteClassName(classNameId);
 	}
@@ -94,8 +94,8 @@ public class ClassNameLocalServiceWrapper implements ClassNameLocalService,
 	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _classNameLocalService.deletePersistedModel(persistedModel);
 	}
@@ -185,12 +185,12 @@ public class ClassNameLocalServiceWrapper implements ClassNameLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.ClassName fetchClassName(long classNameId) {
+	public com.liferay.portal.kernel.model.ClassName fetchClassName(long classNameId) {
 		return _classNameLocalService.fetchClassName(classNameId);
 	}
 
 	@Override
-	public com.liferay.portal.model.ClassName fetchClassName(
+	public com.liferay.portal.kernel.model.ClassName fetchClassName(
 		java.lang.String value) {
 		return _classNameLocalService.fetchClassName(value);
 	}
@@ -208,13 +208,13 @@ public class ClassNameLocalServiceWrapper implements ClassNameLocalService,
 	* @throws PortalException if a class name with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.ClassName getClassName(long classNameId)
+	public com.liferay.portal.kernel.model.ClassName getClassName(long classNameId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _classNameLocalService.getClassName(classNameId);
 	}
 
 	@Override
-	public com.liferay.portal.model.ClassName getClassName(
+	public com.liferay.portal.kernel.model.ClassName getClassName(
 		java.lang.String value) {
 		return _classNameLocalService.getClassName(value);
 	}
@@ -241,7 +241,7 @@ public class ClassNameLocalServiceWrapper implements ClassNameLocalService,
 	* @return the range of class names
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.ClassName> getClassNames(
+	public java.util.List<com.liferay.portal.kernel.model.ClassName> getClassNames(
 		int start, int end) {
 		return _classNameLocalService.getClassNames(start, end);
 	}
@@ -272,7 +272,7 @@ public class ClassNameLocalServiceWrapper implements ClassNameLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.PersistedModel getPersistedModel(
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _classNameLocalService.getPersistedModel(primaryKeyObj);
@@ -295,8 +295,8 @@ public class ClassNameLocalServiceWrapper implements ClassNameLocalService,
 	* @return the class name that was updated
 	*/
 	@Override
-	public com.liferay.portal.model.ClassName updateClassName(
-		com.liferay.portal.model.ClassName className) {
+	public com.liferay.portal.kernel.model.ClassName updateClassName(
+		com.liferay.portal.kernel.model.ClassName className) {
 		return _classNameLocalService.updateClassName(className);
 	}
 

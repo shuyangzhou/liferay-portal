@@ -35,9 +35,9 @@ import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.model.Organization;
-import com.liferay.portal.model.PersistedModel;
-import com.liferay.portal.model.SystemEventConstants;
+import com.liferay.portal.kernel.model.Organization;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.model.SystemEventConstants;
 
 import java.io.Serializable;
 
@@ -134,7 +134,7 @@ public interface OrganizationLocalService extends BaseLocalService,
 	public Organization addOrganization(long userId, long parentOrganizationId,
 		java.lang.String name, java.lang.String type, long regionId,
 		long countryId, long statusId, java.lang.String comments, boolean site,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -441,7 +441,7 @@ public interface OrganizationLocalService extends BaseLocalService,
 	* @param end the upper bound of the range of organizations to return (not
 	inclusive)
 	* @return the range of organizations belonging to the parent organization
-	* @see com.liferay.portal.service.persistence.OrganizationPersistence#findByC_P(
+	* @see com.liferay.portal.kernel.service.persistence.OrganizationPersistence#findByC_P(
 	long, long, int, int)
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -692,7 +692,7 @@ public interface OrganizationLocalService extends BaseLocalService,
 	considered in the determination
 	* @return <code>true</code> if the user has access to the organization;
 	<code>false</code> otherwise
-	* @see com.liferay.portal.service.persistence.OrganizationFinder
+	* @see com.liferay.portal.kernel.service.persistence.OrganizationFinder
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public boolean hasUserOrganization(long userId, long organizationId,
@@ -780,12 +780,12 @@ public interface OrganizationLocalService extends BaseLocalService,
 	* @param countryId the primary key of the organization's country
 	(optionally <code>null</code>)
 	* @param params the finder params. For more information see {@link
-	com.liferay.portal.service.persistence.OrganizationFinder}
+	com.liferay.portal.kernel.service.persistence.OrganizationFinder}
 	* @param start the lower bound of the range of organizations to return
 	* @param end the upper bound of the range of organizations to return (not
 	inclusive)
 	* @return the matching organizations ordered by name
-	* @see com.liferay.portal.service.persistence.OrganizationFinder
+	* @see com.liferay.portal.kernel.service.persistence.OrganizationFinder
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<Organization> search(long companyId, long parentOrganizationId,
@@ -823,14 +823,14 @@ public interface OrganizationLocalService extends BaseLocalService,
 	* @param countryId the primary key of the organization's country
 	(optionally <code>null</code>)
 	* @param params the finder params. For more information see {@link
-	com.liferay.portal.service.persistence.OrganizationFinder}
+	com.liferay.portal.kernel.service.persistence.OrganizationFinder}
 	* @param start the lower bound of the range of organizations to return
 	* @param end the upper bound of the range of organizations to return (not
 	inclusive)
 	* @param obc the comparator to order the organizations (optionally
 	<code>null</code>)
 	* @return the matching organizations ordered by comparator <code>obc</code>
-	* @see com.liferay.portal.service.persistence.OrganizationFinder
+	* @see com.liferay.portal.kernel.service.persistence.OrganizationFinder
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<Organization> search(long companyId, long parentOrganizationId,
@@ -917,7 +917,7 @@ public interface OrganizationLocalService extends BaseLocalService,
 	(optionally <code>null</code>)
 	* @param params the finder parameters (optionally <code>null</code>). For
 	more information see {@link
-	com.liferay.portal.service.persistence.OrganizationFinder}
+	com.liferay.portal.kernel.service.persistence.OrganizationFinder}
 	* @param andOperator whether every field must match its keywords, or just
 	one field. For example, &quot;organizations with the name
 	'Employees' and city 'Chicago'&quot; vs &quot;organizations with
@@ -926,7 +926,7 @@ public interface OrganizationLocalService extends BaseLocalService,
 	* @param end the upper bound of the range of organizations to return (not
 	inclusive)
 	* @return the matching organizations ordered by name
-	* @see com.liferay.portal.service.persistence.OrganizationFinder
+	* @see com.liferay.portal.kernel.service.persistence.OrganizationFinder
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<Organization> search(long companyId, long parentOrganizationId,
@@ -968,7 +968,7 @@ public interface OrganizationLocalService extends BaseLocalService,
 	(optionally <code>null</code>)
 	* @param params the finder parameters (optionally <code>null</code>). For
 	more information see {@link
-	com.liferay.portal.service.persistence.OrganizationFinder}
+	com.liferay.portal.kernel.service.persistence.OrganizationFinder}
 	* @param andOperator whether every field must match its keywords, or just
 	one field. For example, &quot;organizations with the name
 	'Employees' and city 'Chicago'&quot; vs &quot;organizations with
@@ -979,7 +979,7 @@ public interface OrganizationLocalService extends BaseLocalService,
 	* @param obc the comparator to order the organizations (optionally
 	<code>null</code>)
 	* @return the matching organizations ordered by comparator <code>obc</code>
-	* @see com.liferay.portal.service.persistence.OrganizationFinder
+	* @see com.liferay.portal.kernel.service.persistence.OrganizationFinder
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<Organization> search(long companyId, long parentOrganizationId,
@@ -1007,9 +1007,9 @@ public interface OrganizationLocalService extends BaseLocalService,
 	(optionally <code>null</code>)
 	* @param params the finder parameters (optionally <code>null</code>). For
 	more information see {@link
-	com.liferay.portal.service.persistence.OrganizationFinder}
+	com.liferay.portal.kernel.service.persistence.OrganizationFinder}
 	* @return the number of matching organizations
-	* @see com.liferay.portal.service.persistence.OrganizationFinder
+	* @see com.liferay.portal.kernel.service.persistence.OrganizationFinder
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(long companyId, long parentOrganizationId,
@@ -1037,13 +1037,13 @@ public interface OrganizationLocalService extends BaseLocalService,
 	(optionally <code>null</code>)
 	* @param params the finder parameters (optionally <code>null</code>). For
 	more information see {@link
-	com.liferay.portal.service.persistence.OrganizationFinder}
+	com.liferay.portal.kernel.service.persistence.OrganizationFinder}
 	* @param andOperator whether every field must match its keywords, or just
 	one field. For example, &quot;organizations with the name
 	'Employees' and city 'Chicago'&quot; vs &quot;organizations with
 	the name 'Employees' or the city 'Chicago'&quot;.
 	* @return the number of matching organizations
-	* @see com.liferay.portal.service.persistence.OrganizationFinder
+	* @see com.liferay.portal.kernel.service.persistence.OrganizationFinder
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(long companyId, long parentOrganizationId,
@@ -1130,7 +1130,7 @@ public interface OrganizationLocalService extends BaseLocalService,
 		long parentOrganizationId, java.lang.String name,
 		java.lang.String type, long regionId, long countryId, long statusId,
 		java.lang.String comments, boolean logo, byte[] logoBytes,
-		boolean site, com.liferay.portal.service.ServiceContext serviceContext)
+		boolean site, com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -1162,7 +1162,7 @@ public interface OrganizationLocalService extends BaseLocalService,
 		long parentOrganizationId, java.lang.String name,
 		java.lang.String type, long regionId, long countryId, long statusId,
 		java.lang.String comments, boolean site,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**

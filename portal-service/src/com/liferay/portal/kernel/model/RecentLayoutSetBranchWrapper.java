@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -121,7 +121,7 @@ public class RecentLayoutSetBranchWrapper implements RecentLayoutSetBranch,
 
 	@Override
 	public int compareTo(
-		com.liferay.portal.model.RecentLayoutSetBranch recentLayoutSetBranch) {
+		com.liferay.portal.kernel.model.RecentLayoutSetBranch recentLayoutSetBranch) {
 		return _recentLayoutSetBranch.compareTo(recentLayoutSetBranch);
 	}
 
@@ -371,12 +371,12 @@ public class RecentLayoutSetBranchWrapper implements RecentLayoutSetBranch,
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.RecentLayoutSetBranch> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.RecentLayoutSetBranch> toCacheModel() {
 		return _recentLayoutSetBranch.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.RecentLayoutSetBranch toEscapedModel() {
+	public com.liferay.portal.kernel.model.RecentLayoutSetBranch toEscapedModel() {
 		return new RecentLayoutSetBranchWrapper(_recentLayoutSetBranch.toEscapedModel());
 	}
 
@@ -386,7 +386,7 @@ public class RecentLayoutSetBranchWrapper implements RecentLayoutSetBranch,
 	}
 
 	@Override
-	public com.liferay.portal.model.RecentLayoutSetBranch toUnescapedModel() {
+	public com.liferay.portal.kernel.model.RecentLayoutSetBranch toUnescapedModel() {
 		return new RecentLayoutSetBranchWrapper(_recentLayoutSetBranch.toUnescapedModel());
 	}
 

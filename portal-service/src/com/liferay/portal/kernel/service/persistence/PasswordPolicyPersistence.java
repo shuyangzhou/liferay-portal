@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchPasswordPolicyException;
-import com.liferay.portal.model.PasswordPolicy;
+import com.liferay.portal.kernel.exception.NoSuchPasswordPolicyException;
+import com.liferay.portal.kernel.model.PasswordPolicy;
 
 /**
  * The persistence interface for the password policy service.
