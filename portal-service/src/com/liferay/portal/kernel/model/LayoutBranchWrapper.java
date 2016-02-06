@@ -146,7 +146,8 @@ public class LayoutBranchWrapper implements LayoutBranch,
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.model.LayoutBranch layoutBranch) {
+	public int compareTo(
+		com.liferay.portal.kernel.model.LayoutBranch layoutBranch) {
 		return _layoutBranch.compareTo(layoutBranch);
 	}
 
@@ -486,12 +487,12 @@ public class LayoutBranchWrapper implements LayoutBranch,
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.LayoutBranch> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.LayoutBranch> toCacheModel() {
 		return _layoutBranch.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutBranch toEscapedModel() {
+	public com.liferay.portal.kernel.model.LayoutBranch toEscapedModel() {
 		return new LayoutBranchWrapper(_layoutBranch.toEscapedModel());
 	}
 
@@ -501,7 +502,7 @@ public class LayoutBranchWrapper implements LayoutBranch,
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutBranch toUnescapedModel() {
+	public com.liferay.portal.kernel.model.LayoutBranch toUnescapedModel() {
 		return new LayoutBranchWrapper(_layoutBranch.toUnescapedModel());
 	}
 

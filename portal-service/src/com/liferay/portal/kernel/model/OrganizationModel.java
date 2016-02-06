@@ -392,19 +392,20 @@ public interface OrganizationModel extends BaseModel<Organization>, MVCCModel,
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.model.Organization organization);
+	public int compareTo(
+		com.liferay.portal.kernel.model.Organization organization);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.Organization> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.Organization> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.Organization toEscapedModel();
+	public com.liferay.portal.kernel.model.Organization toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.Organization toUnescapedModel();
+	public com.liferay.portal.kernel.model.Organization toUnescapedModel();
 
 	@Override
 	public String toString();

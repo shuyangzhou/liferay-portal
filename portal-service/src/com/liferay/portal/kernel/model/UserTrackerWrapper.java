@@ -128,7 +128,7 @@ public class UserTrackerWrapper implements UserTracker,
 	}
 
 	@Override
-	public void addPath(com.liferay.portal.model.UserTrackerPath path) {
+	public void addPath(com.liferay.portal.kernel.model.UserTrackerPath path) {
 		_userTracker.addPath(path);
 	}
 
@@ -138,7 +138,8 @@ public class UserTrackerWrapper implements UserTracker,
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.model.UserTracker userTracker) {
+	public int compareTo(
+		com.liferay.portal.kernel.model.UserTracker userTracker) {
 		return _userTracker.compareTo(userTracker);
 	}
 
@@ -193,7 +194,7 @@ public class UserTrackerWrapper implements UserTracker,
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.UserTrackerPath> getPaths() {
+	public java.util.List<com.liferay.portal.kernel.model.UserTrackerPath> getPaths() {
 		return _userTracker.getPaths();
 	}
 
@@ -448,12 +449,12 @@ public class UserTrackerWrapper implements UserTracker,
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.UserTracker> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.UserTracker> toCacheModel() {
 		return _userTracker.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.UserTracker toEscapedModel() {
+	public com.liferay.portal.kernel.model.UserTracker toEscapedModel() {
 		return new UserTrackerWrapper(_userTracker.toEscapedModel());
 	}
 
@@ -463,7 +464,7 @@ public class UserTrackerWrapper implements UserTracker,
 	}
 
 	@Override
-	public com.liferay.portal.model.UserTracker toUnescapedModel() {
+	public com.liferay.portal.kernel.model.UserTracker toUnescapedModel() {
 		return new UserTrackerWrapper(_userTracker.toUnescapedModel());
 	}
 

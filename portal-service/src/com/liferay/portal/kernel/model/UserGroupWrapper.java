@@ -162,7 +162,7 @@ public class UserGroupWrapper implements UserGroup, ModelWrapper<UserGroup> {
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.model.UserGroup userGroup) {
+	public int compareTo(com.liferay.portal.kernel.model.UserGroup userGroup) {
 		return _userGroup.compareTo(userGroup);
 	}
 
@@ -212,7 +212,7 @@ public class UserGroupWrapper implements UserGroup, ModelWrapper<UserGroup> {
 	}
 
 	@Override
-	public com.liferay.portal.model.Group getGroup()
+	public com.liferay.portal.kernel.model.Group getGroup()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userGroup.getGroup();
 	}
@@ -578,12 +578,12 @@ public class UserGroupWrapper implements UserGroup, ModelWrapper<UserGroup> {
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.UserGroup> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.UserGroup> toCacheModel() {
 		return _userGroup.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.UserGroup toEscapedModel() {
+	public com.liferay.portal.kernel.model.UserGroup toEscapedModel() {
 		return new UserGroupWrapper(_userGroup.toEscapedModel());
 	}
 
@@ -593,7 +593,7 @@ public class UserGroupWrapper implements UserGroup, ModelWrapper<UserGroup> {
 	}
 
 	@Override
-	public com.liferay.portal.model.UserGroup toUnescapedModel() {
+	public com.liferay.portal.kernel.model.UserGroup toUnescapedModel() {
 		return new UserGroupWrapper(_userGroup.toUnescapedModel());
 	}
 

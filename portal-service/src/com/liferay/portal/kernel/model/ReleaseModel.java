@@ -263,19 +263,19 @@ public interface ReleaseModel extends BaseModel<Release>, MVCCModel {
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.model.Release release);
+	public int compareTo(com.liferay.portal.kernel.model.Release release);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.Release> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.Release> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.Release toEscapedModel();
+	public com.liferay.portal.kernel.model.Release toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.Release toUnescapedModel();
+	public com.liferay.portal.kernel.model.Release toUnescapedModel();
 
 	@Override
 	public String toString();

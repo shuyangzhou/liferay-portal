@@ -19,10 +19,10 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
+import com.liferay.portal.kernel.service.LayoutSetBranchServiceUtil;
 import com.liferay.portal.kernel.service.http.TunnelUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
-import com.liferay.portal.service.LayoutSetBranchServiceUtil;
 
 /**
  * Provides the HTTP utility for the
@@ -54,7 +54,7 @@ import com.liferay.portal.service.LayoutSetBranchServiceUtil;
  */
 @ProviderType
 public class LayoutSetBranchServiceHttp {
-	public static com.liferay.portal.model.LayoutSetBranch addLayoutSetBranch(
+	public static com.liferay.portal.kernel.model.LayoutSetBranch addLayoutSetBranch(
 		HttpPrincipal httpPrincipal, long groupId, boolean privateLayout,
 		java.lang.String name, java.lang.String description, boolean master,
 		long copyLayoutSetBranchId,
@@ -81,7 +81,7 @@ public class LayoutSetBranchServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.LayoutSetBranch)returnObj;
+			return (com.liferay.portal.kernel.model.LayoutSetBranch)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -119,7 +119,7 @@ public class LayoutSetBranchServiceHttp {
 		}
 	}
 
-	public static java.util.List<com.liferay.portal.model.LayoutSetBranch> getLayoutSetBranches(
+	public static java.util.List<com.liferay.portal.kernel.model.LayoutSetBranch> getLayoutSetBranches(
 		HttpPrincipal httpPrincipal, long groupId, boolean privateLayout) {
 		try {
 			MethodKey methodKey = new MethodKey(LayoutSetBranchServiceUtil.class,
@@ -137,7 +137,7 @@ public class LayoutSetBranchServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (java.util.List<com.liferay.portal.model.LayoutSetBranch>)returnObj;
+			return (java.util.List<com.liferay.portal.kernel.model.LayoutSetBranch>)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -146,7 +146,7 @@ public class LayoutSetBranchServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.LayoutSetBranch mergeLayoutSetBranch(
+	public static com.liferay.portal.kernel.model.LayoutSetBranch mergeLayoutSetBranch(
 		HttpPrincipal httpPrincipal, long layoutSetBranchId,
 		long mergeLayoutSetBranchId,
 		com.liferay.portal.service.ServiceContext serviceContext)
@@ -171,7 +171,7 @@ public class LayoutSetBranchServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.LayoutSetBranch)returnObj;
+			return (com.liferay.portal.kernel.model.LayoutSetBranch)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -180,7 +180,7 @@ public class LayoutSetBranchServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.LayoutSetBranch updateLayoutSetBranch(
+	public static com.liferay.portal.kernel.model.LayoutSetBranch updateLayoutSetBranch(
 		HttpPrincipal httpPrincipal, long groupId, long layoutSetBranchId,
 		java.lang.String name, java.lang.String description,
 		com.liferay.portal.service.ServiceContext serviceContext)
@@ -206,7 +206,7 @@ public class LayoutSetBranchServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.LayoutSetBranch)returnObj;
+			return (com.liferay.portal.kernel.model.LayoutSetBranch)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);

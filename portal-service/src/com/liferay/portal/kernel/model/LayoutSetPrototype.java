@@ -55,13 +55,13 @@ public interface LayoutSetPrototype extends LayoutSetPrototypeModel,
 			}
 		};
 
-	public com.liferay.portal.model.Group getGroup()
+	public com.liferay.portal.kernel.model.Group getGroup()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public long getGroupId()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public com.liferay.portal.model.LayoutSet getLayoutSet()
+	public com.liferay.portal.kernel.model.LayoutSet getLayoutSet()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public com.liferay.portal.kernel.util.UnicodeProperties getSettingsProperties();

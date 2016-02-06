@@ -15,8 +15,8 @@
 package com.liferay.portal.service.persistence.impl;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.model.Role;
-import com.liferay.portal.service.persistence.RolePersistence;
+import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.service.persistence.RolePersistence;
 
 import java.util.Set;
 

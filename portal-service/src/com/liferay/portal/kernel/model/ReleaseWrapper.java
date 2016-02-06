@@ -146,7 +146,7 @@ public class ReleaseWrapper implements Release, ModelWrapper<Release> {
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.model.Release release) {
+	public int compareTo(com.liferay.portal.kernel.model.Release release) {
 		return _release.compareTo(release);
 	}
 
@@ -471,12 +471,12 @@ public class ReleaseWrapper implements Release, ModelWrapper<Release> {
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.Release> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.Release> toCacheModel() {
 		return _release.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.Release toEscapedModel() {
+	public com.liferay.portal.kernel.model.Release toEscapedModel() {
 		return new ReleaseWrapper(_release.toEscapedModel());
 	}
 
@@ -486,7 +486,7 @@ public class ReleaseWrapper implements Release, ModelWrapper<Release> {
 	}
 
 	@Override
-	public com.liferay.portal.model.Release toUnescapedModel() {
+	public com.liferay.portal.kernel.model.Release toUnescapedModel() {
 		return new ReleaseWrapper(_release.toUnescapedModel());
 	}
 

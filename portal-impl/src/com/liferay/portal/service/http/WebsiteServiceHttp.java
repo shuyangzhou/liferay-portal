@@ -19,10 +19,10 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
+import com.liferay.portal.kernel.service.WebsiteServiceUtil;
 import com.liferay.portal.kernel.service.http.TunnelUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
-import com.liferay.portal.service.WebsiteServiceUtil;
 
 /**
  * Provides the HTTP utility for the
@@ -54,7 +54,7 @@ import com.liferay.portal.service.WebsiteServiceUtil;
  */
 @ProviderType
 public class WebsiteServiceHttp {
-	public static com.liferay.portal.model.Website addWebsite(
+	public static com.liferay.portal.kernel.model.Website addWebsite(
 		HttpPrincipal httpPrincipal, java.lang.String className, long classPK,
 		java.lang.String url, long typeId, boolean primary,
 		com.liferay.portal.service.ServiceContext serviceContext)
@@ -79,7 +79,7 @@ public class WebsiteServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.Website)returnObj;
+			return (com.liferay.portal.kernel.model.Website)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -114,7 +114,7 @@ public class WebsiteServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.Website getWebsite(
+	public static com.liferay.portal.kernel.model.Website getWebsite(
 		HttpPrincipal httpPrincipal, long websiteId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -136,7 +136,7 @@ public class WebsiteServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.Website)returnObj;
+			return (com.liferay.portal.kernel.model.Website)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -145,7 +145,7 @@ public class WebsiteServiceHttp {
 		}
 	}
 
-	public static java.util.List<com.liferay.portal.model.Website> getWebsites(
+	public static java.util.List<com.liferay.portal.kernel.model.Website> getWebsites(
 		HttpPrincipal httpPrincipal, java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -168,7 +168,7 @@ public class WebsiteServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (java.util.List<com.liferay.portal.model.Website>)returnObj;
+			return (java.util.List<com.liferay.portal.kernel.model.Website>)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -177,7 +177,7 @@ public class WebsiteServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.Website updateWebsite(
+	public static com.liferay.portal.kernel.model.Website updateWebsite(
 		HttpPrincipal httpPrincipal, long websiteId, java.lang.String url,
 		long typeId, boolean primary)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -201,7 +201,7 @@ public class WebsiteServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.Website)returnObj;
+			return (com.liferay.portal.kernel.model.Website)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);

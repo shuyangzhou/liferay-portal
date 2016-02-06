@@ -18,8 +18,8 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.service.LayoutServiceUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
-import com.liferay.portal.service.LayoutServiceUtil;
 
 import java.rmi.RemoteException;
 
@@ -36,10 +36,10 @@ import java.util.Map;
  * <p>
  * ServiceBuilder follows certain rules in translating the methods. For example,
  * if the method in the service utility returns a {@link java.util.List}, that
- * is translated to an array of {@link com.liferay.portal.model.LayoutSoap}.
+ * is translated to an array of {@link com.liferay.portal.kernel.model.LayoutSoap}.
  * If the method in the service utility returns a
- * {@link com.liferay.portal.model.Layout}, that is translated to a
- * {@link com.liferay.portal.model.LayoutSoap}. Methods that SOAP cannot
+ * {@link com.liferay.portal.kernel.model.Layout}, that is translated to a
+ * {@link com.liferay.portal.kernel.model.LayoutSoap}. Methods that SOAP cannot
  * safely wire are skipped.
  * </p>
  *
@@ -62,7 +62,7 @@ import java.util.Map;
  *
  * @author Brian Wing Shun Chan
  * @see LayoutServiceHttp
- * @see com.liferay.portal.model.LayoutSoap
+ * @see com.liferay.portal.kernel.model.LayoutSoap
  * @see LayoutServiceUtil
  * @generated
  */
@@ -106,8 +106,8 @@ public class LayoutServiceSoap {
 	administrators can modify this page within their site.
 	* @return the layout
 	*/
-	public static com.liferay.portal.model.LayoutSoap addLayout(long groupId,
-		boolean privateLayout, long parentLayoutId,
+	public static com.liferay.portal.kernel.model.LayoutSoap addLayout(
+		long groupId, boolean privateLayout, long parentLayoutId,
 		java.lang.String[] localeNamesMapLanguageIds,
 		java.lang.String[] localeNamesMapValues,
 		java.lang.String[] localeTitlesMapLanguageIds,
@@ -137,12 +137,12 @@ public class LayoutServiceSoap {
 			Map<Locale, String> friendlyURLMap = LocalizationUtil.getLocalizationMap(friendlyURLMapLanguageIds,
 					friendlyURLMapValues);
 
-			com.liferay.portal.model.Layout returnValue = LayoutServiceUtil.addLayout(groupId,
+			com.liferay.portal.kernel.model.Layout returnValue = LayoutServiceUtil.addLayout(groupId,
 					privateLayout, parentLayoutId, localeNamesMap,
 					localeTitlesMap, descriptionMap, keywordsMap, robotsMap,
 					type, typeSettings, hidden, friendlyURLMap, serviceContext);
 
-			return com.liferay.portal.model.LayoutSoap.toSoapModel(returnValue);
+			return com.liferay.portal.kernel.model.LayoutSoap.toSoapModel(returnValue);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -185,18 +185,19 @@ public class LayoutServiceSoap {
 	administrators can modify this page within their site.
 	* @return the layout
 	*/
-	public static com.liferay.portal.model.LayoutSoap addLayout(long groupId,
-		boolean privateLayout, long parentLayoutId, java.lang.String name,
-		java.lang.String title, java.lang.String description,
-		java.lang.String type, boolean hidden, java.lang.String friendlyURL,
+	public static com.liferay.portal.kernel.model.LayoutSoap addLayout(
+		long groupId, boolean privateLayout, long parentLayoutId,
+		java.lang.String name, java.lang.String title,
+		java.lang.String description, java.lang.String type, boolean hidden,
+		java.lang.String friendlyURL,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws RemoteException {
 		try {
-			com.liferay.portal.model.Layout returnValue = LayoutServiceUtil.addLayout(groupId,
+			com.liferay.portal.kernel.model.Layout returnValue = LayoutServiceUtil.addLayout(groupId,
 					privateLayout, parentLayoutId, name, title, description,
 					type, hidden, friendlyURL, serviceContext);
 
-			return com.liferay.portal.model.LayoutSoap.toSoapModel(returnValue);
+			return com.liferay.portal.kernel.model.LayoutSoap.toSoapModel(returnValue);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -309,12 +310,12 @@ public class LayoutServiceSoap {
 	* @param plid the primary key of the layout
 	* @return the ancestor layouts of the layout
 	*/
-	public static com.liferay.portal.model.LayoutSoap[] getAncestorLayouts(
+	public static com.liferay.portal.kernel.model.LayoutSoap[] getAncestorLayouts(
 		long plid) throws RemoteException {
 		try {
-			java.util.List<com.liferay.portal.model.Layout> returnValue = LayoutServiceUtil.getAncestorLayouts(plid);
+			java.util.List<com.liferay.portal.kernel.model.Layout> returnValue = LayoutServiceUtil.getAncestorLayouts(plid);
 
-			return com.liferay.portal.model.LayoutSoap.toSoapModels(returnValue);
+			return com.liferay.portal.kernel.model.LayoutSoap.toSoapModels(returnValue);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -373,14 +374,14 @@ public class LayoutServiceSoap {
 	* @param privateLayout whether the layout is private to the group
 	* @return the matching layout
 	*/
-	public static com.liferay.portal.model.LayoutSoap getLayoutByUuidAndGroupId(
+	public static com.liferay.portal.kernel.model.LayoutSoap getLayoutByUuidAndGroupId(
 		java.lang.String uuid, long groupId, boolean privateLayout)
 		throws RemoteException {
 		try {
-			com.liferay.portal.model.Layout returnValue = LayoutServiceUtil.getLayoutByUuidAndGroupId(uuid,
+			com.liferay.portal.kernel.model.Layout returnValue = LayoutServiceUtil.getLayoutByUuidAndGroupId(uuid,
 					groupId, privateLayout);
 
-			return com.liferay.portal.model.LayoutSoap.toSoapModel(returnValue);
+			return com.liferay.portal.kernel.model.LayoutSoap.toSoapModel(returnValue);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -425,12 +426,12 @@ public class LayoutServiceSoap {
 	* @param preferencesValue the portlet's preference value
 	* @return the layout references of the matching layouts
 	*/
-	public static com.liferay.portal.model.LayoutReference[] getLayoutReferences(
+	public static com.liferay.portal.kernel.model.LayoutReference[] getLayoutReferences(
 		long companyId, java.lang.String portletId,
 		java.lang.String preferencesKey, java.lang.String preferencesValue)
 		throws RemoteException {
 		try {
-			com.liferay.portal.model.LayoutReference[] returnValue = LayoutServiceUtil.getLayoutReferences(companyId,
+			com.liferay.portal.kernel.model.LayoutReference[] returnValue = LayoutServiceUtil.getLayoutReferences(companyId,
 					portletId, preferencesKey, preferencesValue);
 
 			return returnValue;
@@ -442,13 +443,13 @@ public class LayoutServiceSoap {
 		}
 	}
 
-	public static com.liferay.portal.model.LayoutSoap[] getLayouts(
+	public static com.liferay.portal.kernel.model.LayoutSoap[] getLayouts(
 		long groupId, boolean privateLayout) throws RemoteException {
 		try {
-			java.util.List<com.liferay.portal.model.Layout> returnValue = LayoutServiceUtil.getLayouts(groupId,
+			java.util.List<com.liferay.portal.kernel.model.Layout> returnValue = LayoutServiceUtil.getLayouts(groupId,
 					privateLayout);
 
-			return com.liferay.portal.model.LayoutSoap.toSoapModels(returnValue);
+			return com.liferay.portal.kernel.model.LayoutSoap.toSoapModels(returnValue);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -457,14 +458,14 @@ public class LayoutServiceSoap {
 		}
 	}
 
-	public static com.liferay.portal.model.LayoutSoap[] getLayouts(
+	public static com.liferay.portal.kernel.model.LayoutSoap[] getLayouts(
 		long groupId, boolean privateLayout, long parentLayoutId)
 		throws RemoteException {
 		try {
-			java.util.List<com.liferay.portal.model.Layout> returnValue = LayoutServiceUtil.getLayouts(groupId,
+			java.util.List<com.liferay.portal.kernel.model.Layout> returnValue = LayoutServiceUtil.getLayouts(groupId,
 					privateLayout, parentLayoutId);
 
-			return com.liferay.portal.model.LayoutSoap.toSoapModels(returnValue);
+			return com.liferay.portal.kernel.model.LayoutSoap.toSoapModels(returnValue);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -473,14 +474,14 @@ public class LayoutServiceSoap {
 		}
 	}
 
-	public static com.liferay.portal.model.LayoutSoap[] getLayouts(
+	public static com.liferay.portal.kernel.model.LayoutSoap[] getLayouts(
 		long groupId, boolean privateLayout, long parentLayoutId,
 		boolean incomplete, int start, int end) throws RemoteException {
 		try {
-			java.util.List<com.liferay.portal.model.Layout> returnValue = LayoutServiceUtil.getLayouts(groupId,
+			java.util.List<com.liferay.portal.kernel.model.Layout> returnValue = LayoutServiceUtil.getLayouts(groupId,
 					privateLayout, parentLayoutId, incomplete, start, end);
 
-			return com.liferay.portal.model.LayoutSoap.toSoapModels(returnValue);
+			return com.liferay.portal.kernel.model.LayoutSoap.toSoapModels(returnValue);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -590,13 +591,13 @@ public class LayoutServiceSoap {
 		}
 	}
 
-	public static com.liferay.portal.model.LayoutSoap updateIconImage(
+	public static com.liferay.portal.kernel.model.LayoutSoap updateIconImage(
 		long plid, byte[] bytes) throws RemoteException {
 		try {
-			com.liferay.portal.model.Layout returnValue = LayoutServiceUtil.updateIconImage(plid,
+			com.liferay.portal.kernel.model.Layout returnValue = LayoutServiceUtil.updateIconImage(plid,
 					bytes);
 
-			return com.liferay.portal.model.LayoutSoap.toSoapModel(returnValue);
+			return com.liferay.portal.kernel.model.LayoutSoap.toSoapModel(returnValue);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -633,7 +634,7 @@ public class LayoutServiceSoap {
 	modification date and expando bridge attributes for the layout.
 	* @return the updated layout
 	*/
-	public static com.liferay.portal.model.LayoutSoap updateLayout(
+	public static com.liferay.portal.kernel.model.LayoutSoap updateLayout(
 		long groupId, boolean privateLayout, long layoutId,
 		long parentLayoutId, java.lang.String[] localeNamesMapLanguageIds,
 		java.lang.String[] localeNamesMapValues,
@@ -664,13 +665,13 @@ public class LayoutServiceSoap {
 			Map<Locale, String> friendlyURLMap = LocalizationUtil.getLocalizationMap(friendlyURLMapLanguageIds,
 					friendlyURLMapValues);
 
-			com.liferay.portal.model.Layout returnValue = LayoutServiceUtil.updateLayout(groupId,
+			com.liferay.portal.kernel.model.Layout returnValue = LayoutServiceUtil.updateLayout(groupId,
 					privateLayout, layoutId, parentLayoutId, localeNamesMap,
 					localeTitlesMap, descriptionMap, keywordsMap, robotsMap,
 					type, hidden, friendlyURLMap, iconImage, iconBytes,
 					serviceContext);
 
-			return com.liferay.portal.model.LayoutSoap.toSoapModel(returnValue);
+			return com.liferay.portal.kernel.model.LayoutSoap.toSoapModel(returnValue);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -690,14 +691,14 @@ public class LayoutServiceSoap {
 	#fastLoad(String)}.
 	* @return the updated layout
 	*/
-	public static com.liferay.portal.model.LayoutSoap updateLayout(
+	public static com.liferay.portal.kernel.model.LayoutSoap updateLayout(
 		long groupId, boolean privateLayout, long layoutId,
 		java.lang.String typeSettings) throws RemoteException {
 		try {
-			com.liferay.portal.model.Layout returnValue = LayoutServiceUtil.updateLayout(groupId,
+			com.liferay.portal.kernel.model.Layout returnValue = LayoutServiceUtil.updateLayout(groupId,
 					privateLayout, layoutId, typeSettings);
 
-			return com.liferay.portal.model.LayoutSoap.toSoapModel(returnValue);
+			return com.liferay.portal.kernel.model.LayoutSoap.toSoapModel(returnValue);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -718,16 +719,16 @@ public class LayoutServiceSoap {
 	* @param wapTheme whether the theme is for WAP browsers
 	* @return the updated layout
 	*/
-	public static com.liferay.portal.model.LayoutSoap updateLookAndFeel(
+	public static com.liferay.portal.kernel.model.LayoutSoap updateLookAndFeel(
 		long groupId, boolean privateLayout, long layoutId,
 		java.lang.String themeId, java.lang.String colorSchemeId,
 		java.lang.String css, boolean wapTheme) throws RemoteException {
 		try {
-			com.liferay.portal.model.Layout returnValue = LayoutServiceUtil.updateLookAndFeel(groupId,
+			com.liferay.portal.kernel.model.Layout returnValue = LayoutServiceUtil.updateLookAndFeel(groupId,
 					privateLayout, layoutId, themeId, colorSchemeId, css,
 					wapTheme);
 
-			return com.liferay.portal.model.LayoutSoap.toSoapModel(returnValue);
+			return com.liferay.portal.kernel.model.LayoutSoap.toSoapModel(returnValue);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -748,14 +749,15 @@ public class LayoutServiceSoap {
 	see {@link Locale}.
 	* @return the updated layout
 	*/
-	public static com.liferay.portal.model.LayoutSoap updateName(long groupId,
-		boolean privateLayout, long layoutId, java.lang.String name,
-		java.lang.String languageId) throws RemoteException {
+	public static com.liferay.portal.kernel.model.LayoutSoap updateName(
+		long groupId, boolean privateLayout, long layoutId,
+		java.lang.String name, java.lang.String languageId)
+		throws RemoteException {
 		try {
-			com.liferay.portal.model.Layout returnValue = LayoutServiceUtil.updateName(groupId,
+			com.liferay.portal.kernel.model.Layout returnValue = LayoutServiceUtil.updateName(groupId,
 					privateLayout, layoutId, name, languageId);
 
-			return com.liferay.portal.model.LayoutSoap.toSoapModel(returnValue);
+			return com.liferay.portal.kernel.model.LayoutSoap.toSoapModel(returnValue);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -773,14 +775,14 @@ public class LayoutServiceSoap {
 	see {@link Locale}.
 	* @return the updated layout
 	*/
-	public static com.liferay.portal.model.LayoutSoap updateName(long plid,
-		java.lang.String name, java.lang.String languageId)
+	public static com.liferay.portal.kernel.model.LayoutSoap updateName(
+		long plid, java.lang.String name, java.lang.String languageId)
 		throws RemoteException {
 		try {
-			com.liferay.portal.model.Layout returnValue = LayoutServiceUtil.updateName(plid,
+			com.liferay.portal.kernel.model.Layout returnValue = LayoutServiceUtil.updateName(plid,
 					name, languageId);
 
-			return com.liferay.portal.model.LayoutSoap.toSoapModel(returnValue);
+			return com.liferay.portal.kernel.model.LayoutSoap.toSoapModel(returnValue);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -800,14 +802,14 @@ public class LayoutServiceSoap {
 	layout
 	* @return the matching layout
 	*/
-	public static com.liferay.portal.model.LayoutSoap updateParentLayoutId(
+	public static com.liferay.portal.kernel.model.LayoutSoap updateParentLayoutId(
 		long groupId, boolean privateLayout, long layoutId, long parentLayoutId)
 		throws RemoteException {
 		try {
-			com.liferay.portal.model.Layout returnValue = LayoutServiceUtil.updateParentLayoutId(groupId,
+			com.liferay.portal.kernel.model.Layout returnValue = LayoutServiceUtil.updateParentLayoutId(groupId,
 					privateLayout, layoutId, parentLayoutId);
 
-			return com.liferay.portal.model.LayoutSoap.toSoapModel(returnValue);
+			return com.liferay.portal.kernel.model.LayoutSoap.toSoapModel(returnValue);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -826,13 +828,13 @@ public class LayoutServiceSoap {
 	* @param parentPlid the primary key of the parent layout
 	* @return the layout matching the primary key
 	*/
-	public static com.liferay.portal.model.LayoutSoap updateParentLayoutId(
+	public static com.liferay.portal.kernel.model.LayoutSoap updateParentLayoutId(
 		long plid, long parentPlid) throws RemoteException {
 		try {
-			com.liferay.portal.model.Layout returnValue = LayoutServiceUtil.updateParentLayoutId(plid,
+			com.liferay.portal.kernel.model.Layout returnValue = LayoutServiceUtil.updateParentLayoutId(plid,
 					parentPlid);
 
-			return com.liferay.portal.model.LayoutSoap.toSoapModel(returnValue);
+			return com.liferay.portal.kernel.model.LayoutSoap.toSoapModel(returnValue);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -849,13 +851,13 @@ public class LayoutServiceSoap {
 	* @param priority the layout's new priority
 	* @return the layout matching the primary key
 	*/
-	public static com.liferay.portal.model.LayoutSoap updateParentLayoutIdAndPriority(
+	public static com.liferay.portal.kernel.model.LayoutSoap updateParentLayoutIdAndPriority(
 		long plid, long parentPlid, int priority) throws RemoteException {
 		try {
-			com.liferay.portal.model.Layout returnValue = LayoutServiceUtil.updateParentLayoutIdAndPriority(plid,
+			com.liferay.portal.kernel.model.Layout returnValue = LayoutServiceUtil.updateParentLayoutIdAndPriority(plid,
 					parentPlid, priority);
 
-			return com.liferay.portal.model.LayoutSoap.toSoapModel(returnValue);
+			return com.liferay.portal.kernel.model.LayoutSoap.toSoapModel(returnValue);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -874,14 +876,14 @@ public class LayoutServiceSoap {
 	* @param priority the layout's new priority
 	* @return the updated layout
 	*/
-	public static com.liferay.portal.model.LayoutSoap updatePriority(
+	public static com.liferay.portal.kernel.model.LayoutSoap updatePriority(
 		long groupId, boolean privateLayout, long layoutId, int priority)
 		throws RemoteException {
 		try {
-			com.liferay.portal.model.Layout returnValue = LayoutServiceUtil.updatePriority(groupId,
+			com.liferay.portal.kernel.model.Layout returnValue = LayoutServiceUtil.updatePriority(groupId,
 					privateLayout, layoutId, priority);
 
-			return com.liferay.portal.model.LayoutSoap.toSoapModel(returnValue);
+			return com.liferay.portal.kernel.model.LayoutSoap.toSoapModel(returnValue);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -902,14 +904,14 @@ public class LayoutServiceSoap {
 	* @param previousLayoutId the primary key of the previous layout
 	* @return the updated layout
 	*/
-	public static com.liferay.portal.model.LayoutSoap updatePriority(
+	public static com.liferay.portal.kernel.model.LayoutSoap updatePriority(
 		long groupId, boolean privateLayout, long layoutId, long nextLayoutId,
 		long previousLayoutId) throws RemoteException {
 		try {
-			com.liferay.portal.model.Layout returnValue = LayoutServiceUtil.updatePriority(groupId,
+			com.liferay.portal.kernel.model.Layout returnValue = LayoutServiceUtil.updatePriority(groupId,
 					privateLayout, layoutId, nextLayoutId, previousLayoutId);
 
-			return com.liferay.portal.model.LayoutSoap.toSoapModel(returnValue);
+			return com.liferay.portal.kernel.model.LayoutSoap.toSoapModel(returnValue);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -925,13 +927,13 @@ public class LayoutServiceSoap {
 	* @param priority the layout's new priority
 	* @return the updated layout
 	*/
-	public static com.liferay.portal.model.LayoutSoap updatePriority(
+	public static com.liferay.portal.kernel.model.LayoutSoap updatePriority(
 		long plid, int priority) throws RemoteException {
 		try {
-			com.liferay.portal.model.Layout returnValue = LayoutServiceUtil.updatePriority(plid,
+			com.liferay.portal.kernel.model.Layout returnValue = LayoutServiceUtil.updatePriority(plid,
 					priority);
 
-			return com.liferay.portal.model.LayoutSoap.toSoapModel(returnValue);
+			return com.liferay.portal.kernel.model.LayoutSoap.toSoapModel(returnValue);
 		}
 		catch (Exception e) {
 			_log.error(e, e);

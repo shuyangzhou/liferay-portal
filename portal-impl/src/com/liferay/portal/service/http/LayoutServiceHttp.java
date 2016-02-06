@@ -19,10 +19,10 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
+import com.liferay.portal.kernel.service.LayoutServiceUtil;
 import com.liferay.portal.kernel.service.http.TunnelUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
-import com.liferay.portal.service.LayoutServiceUtil;
 
 /**
  * Provides the HTTP utility for the
@@ -54,7 +54,7 @@ import com.liferay.portal.service.LayoutServiceUtil;
  */
 @ProviderType
 public class LayoutServiceHttp {
-	public static com.liferay.portal.model.Layout addLayout(
+	public static com.liferay.portal.kernel.model.Layout addLayout(
 		HttpPrincipal httpPrincipal, long groupId, boolean privateLayout,
 		long parentLayoutId,
 		java.util.Map<java.util.Locale, java.lang.String> localeNamesMap,
@@ -88,7 +88,7 @@ public class LayoutServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.Layout)returnObj;
+			return (com.liferay.portal.kernel.model.Layout)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -97,7 +97,7 @@ public class LayoutServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.Layout addLayout(
+	public static com.liferay.portal.kernel.model.Layout addLayout(
 		HttpPrincipal httpPrincipal, long groupId, boolean privateLayout,
 		long parentLayoutId, java.lang.String name, java.lang.String title,
 		java.lang.String description, java.lang.String type, boolean hidden,
@@ -125,7 +125,7 @@ public class LayoutServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.Layout)returnObj;
+			return (com.liferay.portal.kernel.model.Layout)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -780,7 +780,7 @@ public class LayoutServiceHttp {
 		}
 	}
 
-	public static java.util.List<com.liferay.portal.model.Layout> getAncestorLayouts(
+	public static java.util.List<com.liferay.portal.kernel.model.Layout> getAncestorLayouts(
 		HttpPrincipal httpPrincipal, long plid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -802,7 +802,7 @@ public class LayoutServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (java.util.List<com.liferay.portal.model.Layout>)returnObj;
+			return (java.util.List<com.liferay.portal.kernel.model.Layout>)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -876,7 +876,7 @@ public class LayoutServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.Layout getLayoutByUuidAndGroupId(
+	public static com.liferay.portal.kernel.model.Layout getLayoutByUuidAndGroupId(
 		HttpPrincipal httpPrincipal, java.lang.String uuid, long groupId,
 		boolean privateLayout)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -901,7 +901,7 @@ public class LayoutServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.Layout)returnObj;
+			return (com.liferay.portal.kernel.model.Layout)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -943,7 +943,7 @@ public class LayoutServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.LayoutReference[] getLayoutReferences(
+	public static com.liferay.portal.kernel.model.LayoutReference[] getLayoutReferences(
 		HttpPrincipal httpPrincipal, long companyId,
 		java.lang.String portletId, java.lang.String preferencesKey,
 		java.lang.String preferencesValue) {
@@ -963,7 +963,7 @@ public class LayoutServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.LayoutReference[])returnObj;
+			return (com.liferay.portal.kernel.model.LayoutReference[])returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -972,7 +972,7 @@ public class LayoutServiceHttp {
 		}
 	}
 
-	public static java.util.List<com.liferay.portal.model.Layout> getLayouts(
+	public static java.util.List<com.liferay.portal.kernel.model.Layout> getLayouts(
 		HttpPrincipal httpPrincipal, long groupId, boolean privateLayout) {
 		try {
 			MethodKey methodKey = new MethodKey(LayoutServiceUtil.class,
@@ -990,7 +990,7 @@ public class LayoutServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (java.util.List<com.liferay.portal.model.Layout>)returnObj;
+			return (java.util.List<com.liferay.portal.kernel.model.Layout>)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -999,7 +999,7 @@ public class LayoutServiceHttp {
 		}
 	}
 
-	public static java.util.List<com.liferay.portal.model.Layout> getLayouts(
+	public static java.util.List<com.liferay.portal.kernel.model.Layout> getLayouts(
 		HttpPrincipal httpPrincipal, long groupId, boolean privateLayout,
 		long parentLayoutId)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -1023,7 +1023,7 @@ public class LayoutServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (java.util.List<com.liferay.portal.model.Layout>)returnObj;
+			return (java.util.List<com.liferay.portal.kernel.model.Layout>)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -1032,7 +1032,7 @@ public class LayoutServiceHttp {
 		}
 	}
 
-	public static java.util.List<com.liferay.portal.model.Layout> getLayouts(
+	public static java.util.List<com.liferay.portal.kernel.model.Layout> getLayouts(
 		HttpPrincipal httpPrincipal, long groupId, boolean privateLayout,
 		long parentLayoutId, boolean incomplete, int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -1056,7 +1056,7 @@ public class LayoutServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (java.util.List<com.liferay.portal.model.Layout>)returnObj;
+			return (java.util.List<com.liferay.portal.kernel.model.Layout>)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -1895,7 +1895,7 @@ public class LayoutServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.Layout updateIconImage(
+	public static com.liferay.portal.kernel.model.Layout updateIconImage(
 		HttpPrincipal httpPrincipal, long plid, byte[] bytes)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -1918,7 +1918,7 @@ public class LayoutServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.Layout)returnObj;
+			return (com.liferay.portal.kernel.model.Layout)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -1927,7 +1927,7 @@ public class LayoutServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.Layout updateLayout(
+	public static com.liferay.portal.kernel.model.Layout updateLayout(
 		HttpPrincipal httpPrincipal, long groupId, boolean privateLayout,
 		long layoutId, long parentLayoutId,
 		java.util.Map<java.util.Locale, java.lang.String> localeNamesMap,
@@ -1963,7 +1963,7 @@ public class LayoutServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.Layout)returnObj;
+			return (com.liferay.portal.kernel.model.Layout)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -1972,7 +1972,7 @@ public class LayoutServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.Layout updateLayout(
+	public static com.liferay.portal.kernel.model.Layout updateLayout(
 		HttpPrincipal httpPrincipal, long groupId, boolean privateLayout,
 		long layoutId, java.lang.String typeSettings)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -1996,7 +1996,7 @@ public class LayoutServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.Layout)returnObj;
+			return (com.liferay.portal.kernel.model.Layout)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -2005,7 +2005,7 @@ public class LayoutServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.Layout updateLookAndFeel(
+	public static com.liferay.portal.kernel.model.Layout updateLookAndFeel(
 		HttpPrincipal httpPrincipal, long groupId, boolean privateLayout,
 		long layoutId, java.lang.String themeId,
 		java.lang.String colorSchemeId, java.lang.String css, boolean wapTheme)
@@ -2031,7 +2031,7 @@ public class LayoutServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.Layout)returnObj;
+			return (com.liferay.portal.kernel.model.Layout)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -2040,7 +2040,7 @@ public class LayoutServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.Layout updateName(
+	public static com.liferay.portal.kernel.model.Layout updateName(
 		HttpPrincipal httpPrincipal, long groupId, boolean privateLayout,
 		long layoutId, java.lang.String name, java.lang.String languageId)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -2064,7 +2064,7 @@ public class LayoutServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.Layout)returnObj;
+			return (com.liferay.portal.kernel.model.Layout)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -2073,7 +2073,7 @@ public class LayoutServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.Layout updateName(
+	public static com.liferay.portal.kernel.model.Layout updateName(
 		HttpPrincipal httpPrincipal, long plid, java.lang.String name,
 		java.lang.String languageId)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -2097,7 +2097,7 @@ public class LayoutServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.Layout)returnObj;
+			return (com.liferay.portal.kernel.model.Layout)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -2106,7 +2106,7 @@ public class LayoutServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.Layout updateParentLayoutId(
+	public static com.liferay.portal.kernel.model.Layout updateParentLayoutId(
 		HttpPrincipal httpPrincipal, long groupId, boolean privateLayout,
 		long layoutId, long parentLayoutId)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -2131,7 +2131,7 @@ public class LayoutServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.Layout)returnObj;
+			return (com.liferay.portal.kernel.model.Layout)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -2140,7 +2140,7 @@ public class LayoutServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.Layout updateParentLayoutId(
+	public static com.liferay.portal.kernel.model.Layout updateParentLayoutId(
 		HttpPrincipal httpPrincipal, long plid, long parentPlid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -2164,7 +2164,7 @@ public class LayoutServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.Layout)returnObj;
+			return (com.liferay.portal.kernel.model.Layout)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -2173,7 +2173,7 @@ public class LayoutServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.Layout updateParentLayoutIdAndPriority(
+	public static com.liferay.portal.kernel.model.Layout updateParentLayoutIdAndPriority(
 		HttpPrincipal httpPrincipal, long plid, long parentPlid, int priority)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -2197,7 +2197,7 @@ public class LayoutServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.Layout)returnObj;
+			return (com.liferay.portal.kernel.model.Layout)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -2206,7 +2206,7 @@ public class LayoutServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.Layout updatePriority(
+	public static com.liferay.portal.kernel.model.Layout updatePriority(
 		HttpPrincipal httpPrincipal, long groupId, boolean privateLayout,
 		long layoutId, int priority)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -2230,7 +2230,7 @@ public class LayoutServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.Layout)returnObj;
+			return (com.liferay.portal.kernel.model.Layout)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -2239,7 +2239,7 @@ public class LayoutServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.Layout updatePriority(
+	public static com.liferay.portal.kernel.model.Layout updatePriority(
 		HttpPrincipal httpPrincipal, long groupId, boolean privateLayout,
 		long layoutId, long nextLayoutId, long previousLayoutId)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -2263,7 +2263,7 @@ public class LayoutServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.Layout)returnObj;
+			return (com.liferay.portal.kernel.model.Layout)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -2272,7 +2272,7 @@ public class LayoutServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.Layout updatePriority(
+	public static com.liferay.portal.kernel.model.Layout updatePriority(
 		HttpPrincipal httpPrincipal, long plid, int priority)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -2295,7 +2295,7 @@ public class LayoutServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.Layout)returnObj;
+			return (com.liferay.portal.kernel.model.Layout)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);

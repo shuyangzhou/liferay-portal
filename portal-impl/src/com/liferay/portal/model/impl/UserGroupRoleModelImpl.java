@@ -19,17 +19,17 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
+import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.model.UserGroupRole;
+import com.liferay.portal.kernel.model.UserGroupRoleModel;
+import com.liferay.portal.kernel.model.UserGroupRoleSoap;
+import com.liferay.portal.kernel.service.persistence.UserGroupRolePK;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.model.CacheModel;
-import com.liferay.portal.model.User;
-import com.liferay.portal.model.UserGroupRole;
-import com.liferay.portal.model.UserGroupRoleModel;
-import com.liferay.portal.model.UserGroupRoleSoap;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portal.service.persistence.UserGroupRolePK;
 
 import java.io.Serializable;
 
@@ -88,13 +88,13 @@ public class UserGroupRoleModelImpl extends BaseModelImpl<UserGroupRole>
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
 	public static final String TX_MANAGER = "liferayTransactionManager";
 	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
-				"value.object.entity.cache.enabled.com.liferay.portal.model.UserGroupRole"),
+				"value.object.entity.cache.enabled.com.liferay.portal.kernel.model.UserGroupRole"),
 			true);
 	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
-				"value.object.finder.cache.enabled.com.liferay.portal.model.UserGroupRole"),
+				"value.object.finder.cache.enabled.com.liferay.portal.kernel.model.UserGroupRole"),
 			true);
 	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
-				"value.object.column.bitmask.enabled.com.liferay.portal.model.UserGroupRole"),
+				"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.UserGroupRole"),
 			true);
 	public static final long GROUPID_COLUMN_BITMASK = 1L;
 	public static final long ROLEID_COLUMN_BITMASK = 2L;
@@ -143,7 +143,7 @@ public class UserGroupRoleModelImpl extends BaseModelImpl<UserGroupRole>
 	}
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.portal.util.PropsUtil.get(
-				"lock.expiration.time.com.liferay.portal.model.UserGroupRole"));
+				"lock.expiration.time.com.liferay.portal.kernel.model.UserGroupRole"));
 
 	public UserGroupRoleModelImpl() {
 	}
@@ -471,7 +471,7 @@ public class UserGroupRoleModelImpl extends BaseModelImpl<UserGroupRole>
 		StringBundler sb = new StringBundler(19);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.portal.model.UserGroupRole");
+		sb.append("com.liferay.portal.kernel.model.UserGroupRole");
 		sb.append("</model-name>");
 
 		sb.append(

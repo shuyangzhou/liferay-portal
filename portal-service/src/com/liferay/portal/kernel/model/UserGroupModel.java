@@ -321,19 +321,19 @@ public interface UserGroupModel extends BaseModel<UserGroup>, MVCCModel,
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.model.UserGroup userGroup);
+	public int compareTo(com.liferay.portal.kernel.model.UserGroup userGroup);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.UserGroup> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.UserGroup> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.UserGroup toEscapedModel();
+	public com.liferay.portal.kernel.model.UserGroup toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.UserGroup toUnescapedModel();
+	public com.liferay.portal.kernel.model.UserGroup toUnescapedModel();
 
 	@Override
 	public String toString();

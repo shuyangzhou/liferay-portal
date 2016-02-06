@@ -22,16 +22,16 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
+import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.Contact;
+import com.liferay.portal.kernel.model.ContactModel;
+import com.liferay.portal.kernel.model.ContactSoap;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.model.CacheModel;
-import com.liferay.portal.model.Contact;
-import com.liferay.portal.model.ContactModel;
-import com.liferay.portal.model.ContactSoap;
-import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
@@ -142,13 +142,13 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
 	public static final String TX_MANAGER = "liferayTransactionManager";
 	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
-				"value.object.entity.cache.enabled.com.liferay.portal.model.Contact"),
+				"value.object.entity.cache.enabled.com.liferay.portal.kernel.model.Contact"),
 			true);
 	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
-				"value.object.finder.cache.enabled.com.liferay.portal.model.Contact"),
+				"value.object.finder.cache.enabled.com.liferay.portal.kernel.model.Contact"),
 			true);
 	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
-				"value.object.column.bitmask.enabled.com.liferay.portal.model.Contact"),
+				"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.Contact"),
 			true);
 	public static final long ACCOUNTID_COLUMN_BITMASK = 1L;
 	public static final long CLASSNAMEID_COLUMN_BITMASK = 2L;
@@ -223,7 +223,7 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 	}
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.portal.util.PropsUtil.get(
-				"lock.expiration.time.com.liferay.portal.model.Contact"));
+				"lock.expiration.time.com.liferay.portal.kernel.model.Contact"));
 
 	public ContactModelImpl() {
 	}
@@ -1355,7 +1355,7 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 		StringBundler sb = new StringBundler(91);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.portal.model.Contact");
+		sb.append("com.liferay.portal.kernel.model.Contact");
 		sb.append("</model-name>");
 
 		sb.append(

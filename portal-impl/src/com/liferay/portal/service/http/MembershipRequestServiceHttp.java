@@ -19,10 +19,10 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
+import com.liferay.portal.kernel.service.MembershipRequestServiceUtil;
 import com.liferay.portal.kernel.service.http.TunnelUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
-import com.liferay.portal.service.MembershipRequestServiceUtil;
 
 /**
  * Provides the HTTP utility for the
@@ -54,7 +54,7 @@ import com.liferay.portal.service.MembershipRequestServiceUtil;
  */
 @ProviderType
 public class MembershipRequestServiceHttp {
-	public static com.liferay.portal.model.MembershipRequest addMembershipRequest(
+	public static com.liferay.portal.kernel.model.MembershipRequest addMembershipRequest(
 		HttpPrincipal httpPrincipal, long groupId, java.lang.String comments,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -78,7 +78,7 @@ public class MembershipRequestServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.MembershipRequest)returnObj;
+			return (com.liferay.portal.kernel.model.MembershipRequest)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -116,7 +116,7 @@ public class MembershipRequestServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.MembershipRequest getMembershipRequest(
+	public static com.liferay.portal.kernel.model.MembershipRequest getMembershipRequest(
 		HttpPrincipal httpPrincipal, long membershipRequestId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -139,7 +139,7 @@ public class MembershipRequestServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.MembershipRequest)returnObj;
+			return (com.liferay.portal.kernel.model.MembershipRequest)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);

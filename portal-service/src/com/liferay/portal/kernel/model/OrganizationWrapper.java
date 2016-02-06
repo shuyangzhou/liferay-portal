@@ -204,17 +204,18 @@ public class OrganizationWrapper implements Organization,
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.model.Organization organization) {
+	public int compareTo(
+		com.liferay.portal.kernel.model.Organization organization) {
 		return _organization.compareTo(organization);
 	}
 
 	@Override
-	public com.liferay.portal.model.Address getAddress() {
+	public com.liferay.portal.kernel.model.Address getAddress() {
 		return _organization.getAddress();
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Address> getAddresses() {
+	public java.util.List<com.liferay.portal.kernel.model.Address> getAddresses() {
 		return _organization.getAddresses();
 	}
 
@@ -225,7 +226,7 @@ public class OrganizationWrapper implements Organization,
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Organization> getAncestors()
+	public java.util.List<com.liferay.portal.kernel.model.Organization> getAncestors()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _organization.getAncestors();
 	}
@@ -276,7 +277,7 @@ public class OrganizationWrapper implements Organization,
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Organization> getDescendants() {
+	public java.util.List<com.liferay.portal.kernel.model.Organization> getDescendants() {
 		return _organization.getDescendants();
 	}
 
@@ -286,7 +287,7 @@ public class OrganizationWrapper implements Organization,
 	}
 
 	@Override
-	public com.liferay.portal.model.Group getGroup() {
+	public com.liferay.portal.kernel.model.Group getGroup() {
 		return _organization.getGroup();
 	}
 
@@ -346,7 +347,7 @@ public class OrganizationWrapper implements Organization,
 	}
 
 	@Override
-	public com.liferay.portal.model.Organization getParentOrganization()
+	public com.liferay.portal.kernel.model.Organization getParentOrganization()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _organization.getParentOrganization();
 	}
@@ -439,7 +440,7 @@ public class OrganizationWrapper implements Organization,
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Organization> getSuborganizations() {
+	public java.util.List<com.liferay.portal.kernel.model.Organization> getSuborganizations() {
 		return _organization.getSuborganizations();
 	}
 
@@ -804,12 +805,12 @@ public class OrganizationWrapper implements Organization,
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.Organization> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.Organization> toCacheModel() {
 		return _organization.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.Organization toEscapedModel() {
+	public com.liferay.portal.kernel.model.Organization toEscapedModel() {
 		return new OrganizationWrapper(_organization.toEscapedModel());
 	}
 
@@ -819,7 +820,7 @@ public class OrganizationWrapper implements Organization,
 	}
 
 	@Override
-	public com.liferay.portal.model.Organization toUnescapedModel() {
+	public com.liferay.portal.kernel.model.Organization toUnescapedModel() {
 		return new OrganizationWrapper(_organization.toUnescapedModel());
 	}
 

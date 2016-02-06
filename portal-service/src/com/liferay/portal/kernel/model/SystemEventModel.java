@@ -343,19 +343,20 @@ public interface SystemEventModel extends AttachedModel, BaseModel<SystemEvent>,
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.model.SystemEvent systemEvent);
+	public int compareTo(
+		com.liferay.portal.kernel.model.SystemEvent systemEvent);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.SystemEvent> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.SystemEvent> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.SystemEvent toEscapedModel();
+	public com.liferay.portal.kernel.model.SystemEvent toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.SystemEvent toUnescapedModel();
+	public com.liferay.portal.kernel.model.SystemEvent toUnescapedModel();
 
 	@Override
 	public String toString();

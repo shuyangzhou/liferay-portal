@@ -327,19 +327,19 @@ public interface WorkflowDefinitionLinkModel extends AttachedModel,
 
 	@Override
 	public int compareTo(
-		com.liferay.portal.model.WorkflowDefinitionLink workflowDefinitionLink);
+		com.liferay.portal.kernel.model.WorkflowDefinitionLink workflowDefinitionLink);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.WorkflowDefinitionLink> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.WorkflowDefinitionLink> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.WorkflowDefinitionLink toEscapedModel();
+	public com.liferay.portal.kernel.model.WorkflowDefinitionLink toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.WorkflowDefinitionLink toUnescapedModel();
+	public com.liferay.portal.kernel.model.WorkflowDefinitionLink toUnescapedModel();
 
 	@Override
 	public String toString();

@@ -19,10 +19,10 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
+import com.liferay.portal.kernel.service.OrganizationServiceUtil;
 import com.liferay.portal.kernel.service.http.TunnelUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
-import com.liferay.portal.service.OrganizationServiceUtil;
 
 /**
  * Provides the HTTP utility for the
@@ -83,15 +83,15 @@ public class OrganizationServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.Organization addOrganization(
+	public static com.liferay.portal.kernel.model.Organization addOrganization(
 		HttpPrincipal httpPrincipal, long parentOrganizationId,
 		java.lang.String name, java.lang.String type, long regionId,
 		long countryId, long statusId, java.lang.String comments, boolean site,
-		java.util.List<com.liferay.portal.model.Address> addresses,
-		java.util.List<com.liferay.portal.model.EmailAddress> emailAddresses,
-		java.util.List<com.liferay.portal.model.OrgLabor> orgLabors,
-		java.util.List<com.liferay.portal.model.Phone> phones,
-		java.util.List<com.liferay.portal.model.Website> websites,
+		java.util.List<com.liferay.portal.kernel.model.Address> addresses,
+		java.util.List<com.liferay.portal.kernel.model.EmailAddress> emailAddresses,
+		java.util.List<com.liferay.portal.kernel.model.OrgLabor> orgLabors,
+		java.util.List<com.liferay.portal.kernel.model.Phone> phones,
+		java.util.List<com.liferay.portal.kernel.model.Website> websites,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -116,7 +116,7 @@ public class OrganizationServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.Organization)returnObj;
+			return (com.liferay.portal.kernel.model.Organization)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -125,7 +125,7 @@ public class OrganizationServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.Organization addOrganization(
+	public static com.liferay.portal.kernel.model.Organization addOrganization(
 		HttpPrincipal httpPrincipal, long parentOrganizationId,
 		java.lang.String name, java.lang.String type, long regionId,
 		long countryId, long statusId, java.lang.String comments, boolean site,
@@ -152,7 +152,7 @@ public class OrganizationServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.Organization)returnObj;
+			return (com.liferay.portal.kernel.model.Organization)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -247,7 +247,7 @@ public class OrganizationServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.Organization fetchOrganization(
+	public static com.liferay.portal.kernel.model.Organization fetchOrganization(
 		HttpPrincipal httpPrincipal, long organizationId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -270,7 +270,7 @@ public class OrganizationServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.Organization)returnObj;
+			return (com.liferay.portal.kernel.model.Organization)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -279,7 +279,7 @@ public class OrganizationServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.Organization getOrganization(
+	public static com.liferay.portal.kernel.model.Organization getOrganization(
 		HttpPrincipal httpPrincipal, long organizationId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -302,7 +302,7 @@ public class OrganizationServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.Organization)returnObj;
+			return (com.liferay.portal.kernel.model.Organization)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -343,7 +343,7 @@ public class OrganizationServiceHttp {
 		}
 	}
 
-	public static java.util.List<com.liferay.portal.model.Organization> getOrganizations(
+	public static java.util.List<com.liferay.portal.kernel.model.Organization> getOrganizations(
 		HttpPrincipal httpPrincipal, long companyId, long parentOrganizationId) {
 		try {
 			MethodKey methodKey = new MethodKey(OrganizationServiceUtil.class,
@@ -361,7 +361,7 @@ public class OrganizationServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (java.util.List<com.liferay.portal.model.Organization>)returnObj;
+			return (java.util.List<com.liferay.portal.kernel.model.Organization>)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -370,7 +370,7 @@ public class OrganizationServiceHttp {
 		}
 	}
 
-	public static java.util.List<com.liferay.portal.model.Organization> getOrganizations(
+	public static java.util.List<com.liferay.portal.kernel.model.Organization> getOrganizations(
 		HttpPrincipal httpPrincipal, long companyId, long parentOrganizationId,
 		int start, int end) {
 		try {
@@ -389,7 +389,7 @@ public class OrganizationServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (java.util.List<com.liferay.portal.model.Organization>)returnObj;
+			return (java.util.List<com.liferay.portal.kernel.model.Organization>)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -426,7 +426,7 @@ public class OrganizationServiceHttp {
 		}
 	}
 
-	public static java.util.List<com.liferay.portal.model.Organization> getUserOrganizations(
+	public static java.util.List<com.liferay.portal.kernel.model.Organization> getUserOrganizations(
 		HttpPrincipal httpPrincipal, long userId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -449,7 +449,7 @@ public class OrganizationServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (java.util.List<com.liferay.portal.model.Organization>)returnObj;
+			return (java.util.List<com.liferay.portal.kernel.model.Organization>)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -546,17 +546,17 @@ public class OrganizationServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.Organization updateOrganization(
+	public static com.liferay.portal.kernel.model.Organization updateOrganization(
 		HttpPrincipal httpPrincipal, long organizationId,
 		long parentOrganizationId, java.lang.String name,
 		java.lang.String type, long regionId, long countryId, long statusId,
 		java.lang.String comments, boolean logo, byte[] logoBytes,
 		boolean site,
-		java.util.List<com.liferay.portal.model.Address> addresses,
-		java.util.List<com.liferay.portal.model.EmailAddress> emailAddresses,
-		java.util.List<com.liferay.portal.model.OrgLabor> orgLabors,
-		java.util.List<com.liferay.portal.model.Phone> phones,
-		java.util.List<com.liferay.portal.model.Website> websites,
+		java.util.List<com.liferay.portal.kernel.model.Address> addresses,
+		java.util.List<com.liferay.portal.kernel.model.EmailAddress> emailAddresses,
+		java.util.List<com.liferay.portal.kernel.model.OrgLabor> orgLabors,
+		java.util.List<com.liferay.portal.kernel.model.Phone> phones,
+		java.util.List<com.liferay.portal.kernel.model.Website> websites,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -582,7 +582,7 @@ public class OrganizationServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.Organization)returnObj;
+			return (com.liferay.portal.kernel.model.Organization)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -591,16 +591,16 @@ public class OrganizationServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.Organization updateOrganization(
+	public static com.liferay.portal.kernel.model.Organization updateOrganization(
 		HttpPrincipal httpPrincipal, long organizationId,
 		long parentOrganizationId, java.lang.String name,
 		java.lang.String type, long regionId, long countryId, long statusId,
 		java.lang.String comments, boolean site,
-		java.util.List<com.liferay.portal.model.Address> addresses,
-		java.util.List<com.liferay.portal.model.EmailAddress> emailAddresses,
-		java.util.List<com.liferay.portal.model.OrgLabor> orgLabors,
-		java.util.List<com.liferay.portal.model.Phone> phones,
-		java.util.List<com.liferay.portal.model.Website> websites,
+		java.util.List<com.liferay.portal.kernel.model.Address> addresses,
+		java.util.List<com.liferay.portal.kernel.model.EmailAddress> emailAddresses,
+		java.util.List<com.liferay.portal.kernel.model.OrgLabor> orgLabors,
+		java.util.List<com.liferay.portal.kernel.model.Phone> phones,
+		java.util.List<com.liferay.portal.kernel.model.Website> websites,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -625,7 +625,7 @@ public class OrganizationServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.Organization)returnObj;
+			return (com.liferay.portal.kernel.model.Organization)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -634,7 +634,7 @@ public class OrganizationServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.Organization updateOrganization(
+	public static com.liferay.portal.kernel.model.Organization updateOrganization(
 		HttpPrincipal httpPrincipal, long organizationId,
 		long parentOrganizationId, java.lang.String name,
 		java.lang.String type, long regionId, long countryId, long statusId,
@@ -662,7 +662,7 @@ public class OrganizationServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.Organization)returnObj;
+			return (com.liferay.portal.kernel.model.Organization)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);

@@ -198,19 +198,19 @@ public interface PasswordPolicyRelModel extends AttachedModel,
 
 	@Override
 	public int compareTo(
-		com.liferay.portal.model.PasswordPolicyRel passwordPolicyRel);
+		com.liferay.portal.kernel.model.PasswordPolicyRel passwordPolicyRel);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.PasswordPolicyRel> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.PasswordPolicyRel> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.PasswordPolicyRel toEscapedModel();
+	public com.liferay.portal.kernel.model.PasswordPolicyRel toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.PasswordPolicyRel toUnescapedModel();
+	public com.liferay.portal.kernel.model.PasswordPolicyRel toUnescapedModel();
 
 	@Override
 	public String toString();

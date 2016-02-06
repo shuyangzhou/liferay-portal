@@ -19,10 +19,10 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
+import com.liferay.portal.kernel.service.LayoutBranchServiceUtil;
 import com.liferay.portal.kernel.service.http.TunnelUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
-import com.liferay.portal.service.LayoutBranchServiceUtil;
 
 /**
  * Provides the HTTP utility for the
@@ -54,7 +54,7 @@ import com.liferay.portal.service.LayoutBranchServiceUtil;
  */
 @ProviderType
 public class LayoutBranchServiceHttp {
-	public static com.liferay.portal.model.LayoutBranch addLayoutBranch(
+	public static com.liferay.portal.kernel.model.LayoutBranch addLayoutBranch(
 		HttpPrincipal httpPrincipal, long layoutRevisionId,
 		java.lang.String name, java.lang.String description, boolean master,
 		com.liferay.portal.service.ServiceContext serviceContext)
@@ -79,7 +79,7 @@ public class LayoutBranchServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.LayoutBranch)returnObj;
+			return (com.liferay.portal.kernel.model.LayoutBranch)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -116,7 +116,7 @@ public class LayoutBranchServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.LayoutBranch updateLayoutBranch(
+	public static com.liferay.portal.kernel.model.LayoutBranch updateLayoutBranch(
 		HttpPrincipal httpPrincipal, long layoutBranchId,
 		java.lang.String name, java.lang.String description,
 		com.liferay.portal.service.ServiceContext serviceContext)
@@ -141,7 +141,7 @@ public class LayoutBranchServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.LayoutBranch)returnObj;
+			return (com.liferay.portal.kernel.model.LayoutBranch)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);

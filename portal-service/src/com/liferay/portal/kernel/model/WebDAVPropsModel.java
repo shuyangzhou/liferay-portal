@@ -229,19 +229,20 @@ public interface WebDAVPropsModel extends AttachedModel, BaseModel<WebDAVProps>,
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.model.WebDAVProps webDAVProps);
+	public int compareTo(
+		com.liferay.portal.kernel.model.WebDAVProps webDAVProps);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.WebDAVProps> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.WebDAVProps> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.WebDAVProps toEscapedModel();
+	public com.liferay.portal.kernel.model.WebDAVProps toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.WebDAVProps toUnescapedModel();
+	public com.liferay.portal.kernel.model.WebDAVProps toUnescapedModel();
 
 	@Override
 	public String toString();

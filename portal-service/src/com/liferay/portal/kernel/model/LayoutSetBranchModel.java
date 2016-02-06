@@ -455,19 +455,19 @@ public interface LayoutSetBranchModel extends BaseModel<LayoutSetBranch>,
 
 	@Override
 	public int compareTo(
-		com.liferay.portal.model.LayoutSetBranch layoutSetBranch);
+		com.liferay.portal.kernel.model.LayoutSetBranch layoutSetBranch);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.LayoutSetBranch> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.LayoutSetBranch> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.LayoutSetBranch toEscapedModel();
+	public com.liferay.portal.kernel.model.LayoutSetBranch toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.LayoutSetBranch toUnescapedModel();
+	public com.liferay.portal.kernel.model.LayoutSetBranch toUnescapedModel();
 
 	@Override
 	public String toString();

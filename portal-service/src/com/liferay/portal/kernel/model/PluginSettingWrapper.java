@@ -126,7 +126,8 @@ public class PluginSettingWrapper implements PluginSetting,
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.model.PluginSetting pluginSetting) {
+	public int compareTo(
+		com.liferay.portal.kernel.model.PluginSetting pluginSetting) {
 		return _pluginSetting.compareTo(pluginSetting);
 	}
 
@@ -408,12 +409,12 @@ public class PluginSettingWrapper implements PluginSetting,
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.PluginSetting> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.PluginSetting> toCacheModel() {
 		return _pluginSetting.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.PluginSetting toEscapedModel() {
+	public com.liferay.portal.kernel.model.PluginSetting toEscapedModel() {
 		return new PluginSettingWrapper(_pluginSetting.toEscapedModel());
 	}
 
@@ -423,7 +424,7 @@ public class PluginSettingWrapper implements PluginSetting,
 	}
 
 	@Override
-	public com.liferay.portal.model.PluginSetting toUnescapedModel() {
+	public com.liferay.portal.kernel.model.PluginSetting toUnescapedModel() {
 		return new PluginSettingWrapper(_pluginSetting.toUnescapedModel());
 	}
 

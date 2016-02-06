@@ -226,19 +226,19 @@ public interface RecentLayoutRevisionModel extends BaseModel<RecentLayoutRevisio
 
 	@Override
 	public int compareTo(
-		com.liferay.portal.model.RecentLayoutRevision recentLayoutRevision);
+		com.liferay.portal.kernel.model.RecentLayoutRevision recentLayoutRevision);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.RecentLayoutRevision> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.RecentLayoutRevision> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.RecentLayoutRevision toEscapedModel();
+	public com.liferay.portal.kernel.model.RecentLayoutRevision toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.RecentLayoutRevision toUnescapedModel();
+	public com.liferay.portal.kernel.model.RecentLayoutRevision toUnescapedModel();
 
 	@Override
 	public String toString();

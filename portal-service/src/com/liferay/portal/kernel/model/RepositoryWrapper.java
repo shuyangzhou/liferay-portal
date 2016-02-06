@@ -183,7 +183,7 @@ public class RepositoryWrapper implements Repository, ModelWrapper<Repository> {
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.model.Repository repository) {
+	public int compareTo(com.liferay.portal.kernel.model.Repository repository) {
 		return _repository.compareTo(repository);
 	}
 
@@ -639,12 +639,12 @@ public class RepositoryWrapper implements Repository, ModelWrapper<Repository> {
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.Repository> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.Repository> toCacheModel() {
 		return _repository.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.Repository toEscapedModel() {
+	public com.liferay.portal.kernel.model.Repository toEscapedModel() {
 		return new RepositoryWrapper(_repository.toEscapedModel());
 	}
 
@@ -654,7 +654,7 @@ public class RepositoryWrapper implements Repository, ModelWrapper<Repository> {
 	}
 
 	@Override
-	public com.liferay.portal.model.Repository toUnescapedModel() {
+	public com.liferay.portal.kernel.model.Repository toUnescapedModel() {
 		return new RepositoryWrapper(_repository.toUnescapedModel());
 	}
 

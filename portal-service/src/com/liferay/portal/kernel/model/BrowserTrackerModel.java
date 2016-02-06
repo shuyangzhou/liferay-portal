@@ -183,19 +183,20 @@ public interface BrowserTrackerModel extends BaseModel<BrowserTracker>, MVCCMode
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.model.BrowserTracker browserTracker);
+	public int compareTo(
+		com.liferay.portal.kernel.model.BrowserTracker browserTracker);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.BrowserTracker> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.BrowserTracker> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.BrowserTracker toEscapedModel();
+	public com.liferay.portal.kernel.model.BrowserTracker toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.BrowserTracker toUnescapedModel();
+	public com.liferay.portal.kernel.model.BrowserTracker toUnescapedModel();
 
 	@Override
 	public String toString();

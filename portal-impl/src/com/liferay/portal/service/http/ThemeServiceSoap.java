@@ -18,7 +18,7 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.service.ThemeServiceUtil;
+import com.liferay.portal.kernel.service.ThemeServiceUtil;
 
 import java.rmi.RemoteException;
 
@@ -53,6 +53,20 @@ import java.rmi.RemoteException;
  */
 @ProviderType
 public class ThemeServiceSoap {
+	public static com.liferay.portal.kernel.model.ThemeSoap[] getThemes(
+		long companyId) throws RemoteException {
+		try {
+			java.util.List<com.liferay.portal.kernel.model.Theme> returnValue = ThemeServiceUtil.getThemes(companyId);
+
+			return com.liferay.portal.kernel.model.ThemeSoap.toSoapModels(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
 	public static java.lang.String getWARThemes() throws RemoteException {
 		try {
 			com.liferay.portal.kernel.json.JSONArray returnValue = ThemeServiceUtil.getWARThemes();

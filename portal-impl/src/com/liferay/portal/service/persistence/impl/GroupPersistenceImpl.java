@@ -16,7 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchGroupException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -27,8 +26,19 @@ import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
+import com.liferay.portal.kernel.exception.NoSuchGroupException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.MVCCModel;
+import com.liferay.portal.kernel.service.persistence.CompanyProvider;
+import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
+import com.liferay.portal.kernel.service.persistence.GroupPersistence;
+import com.liferay.portal.kernel.service.persistence.OrganizationPersistence;
+import com.liferay.portal.kernel.service.persistence.RolePersistence;
+import com.liferay.portal.kernel.service.persistence.UserGroupPersistence;
+import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -36,18 +46,8 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
-import com.liferay.portal.model.CacheModel;
-import com.liferay.portal.model.Group;
-import com.liferay.portal.model.MVCCModel;
 import com.liferay.portal.model.impl.GroupImpl;
 import com.liferay.portal.model.impl.GroupModelImpl;
-import com.liferay.portal.service.persistence.CompanyProvider;
-import com.liferay.portal.service.persistence.CompanyProviderWrapper;
-import com.liferay.portal.service.persistence.GroupPersistence;
-import com.liferay.portal.service.persistence.OrganizationPersistence;
-import com.liferay.portal.service.persistence.RolePersistence;
-import com.liferay.portal.service.persistence.UserGroupPersistence;
-import com.liferay.portal.service.persistence.UserPersistence;
 
 import java.io.Serializable;
 
@@ -68,7 +68,7 @@ import java.util.Set;
  *
  * @author Brian Wing Shun Chan
  * @see GroupPersistence
- * @see com.liferay.portal.service.persistence.GroupUtil
+ * @see com.liferay.portal.kernel.service.persistence.GroupUtil
  * @generated
  */
 @ProviderType
@@ -9239,7 +9239,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	}
 
 	/**
-	 * Returns the group with the primary key or throws a {@link com.liferay.portal.exception.NoSuchModelException} if it could not be found.
+	 * Returns the group with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the group
 	 * @return the group
@@ -9632,7 +9632,8 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @return the organizations associated with the group
 	 */
 	@Override
-	public List<com.liferay.portal.model.Organization> getOrganizations(long pk) {
+	public List<com.liferay.portal.kernel.model.Organization> getOrganizations(
+		long pk) {
 		return getOrganizations(pk, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 	}
 
@@ -9649,7 +9650,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @return the range of organizations associated with the group
 	 */
 	@Override
-	public List<com.liferay.portal.model.Organization> getOrganizations(
+	public List<com.liferay.portal.kernel.model.Organization> getOrganizations(
 		long pk, int start, int end) {
 		return getOrganizations(pk, start, end, null);
 	}
@@ -9668,9 +9669,9 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @return the ordered range of organizations associated with the group
 	 */
 	@Override
-	public List<com.liferay.portal.model.Organization> getOrganizations(
+	public List<com.liferay.portal.kernel.model.Organization> getOrganizations(
 		long pk, int start, int end,
-		OrderByComparator<com.liferay.portal.model.Organization> orderByComparator) {
+		OrderByComparator<com.liferay.portal.kernel.model.Organization> orderByComparator) {
 		return groupToOrganizationTableMapper.getRightBaseModels(pk, start,
 			end, orderByComparator);
 	}
@@ -9745,7 +9746,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public void addOrganization(long pk,
-		com.liferay.portal.model.Organization organization) {
+		com.liferay.portal.kernel.model.Organization organization) {
 		Group group = fetchByPrimaryKey(pk);
 
 		if (group == null) {
@@ -9791,7 +9792,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public void addOrganizations(long pk,
-		List<com.liferay.portal.model.Organization> organizations) {
+		List<com.liferay.portal.kernel.model.Organization> organizations) {
 		long companyId = 0;
 
 		Group group = fetchByPrimaryKey(pk);
@@ -9803,7 +9804,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 			companyId = group.getCompanyId();
 		}
 
-		for (com.liferay.portal.model.Organization organization : organizations) {
+		for (com.liferay.portal.kernel.model.Organization organization : organizations) {
 			groupToOrganizationTableMapper.addTableMapping(companyId, pk,
 				organization.getPrimaryKey());
 		}
@@ -9838,7 +9839,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public void removeOrganization(long pk,
-		com.liferay.portal.model.Organization organization) {
+		com.liferay.portal.kernel.model.Organization organization) {
 		groupToOrganizationTableMapper.deleteTableMapping(pk,
 			organization.getPrimaryKey());
 	}
@@ -9864,8 +9865,8 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public void removeOrganizations(long pk,
-		List<com.liferay.portal.model.Organization> organizations) {
-		for (com.liferay.portal.model.Organization organization : organizations) {
+		List<com.liferay.portal.kernel.model.Organization> organizations) {
+		for (com.liferay.portal.kernel.model.Organization organization : organizations) {
 			groupToOrganizationTableMapper.deleteTableMapping(pk,
 				organization.getPrimaryKey());
 		}
@@ -9919,12 +9920,12 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public void setOrganizations(long pk,
-		List<com.liferay.portal.model.Organization> organizations) {
+		List<com.liferay.portal.kernel.model.Organization> organizations) {
 		try {
 			long[] organizationPKs = new long[organizations.size()];
 
 			for (int i = 0; i < organizations.size(); i++) {
-				com.liferay.portal.model.Organization organization = organizations.get(i);
+				com.liferay.portal.kernel.model.Organization organization = organizations.get(i);
 
 				organizationPKs[i] = organization.getPrimaryKey();
 			}
@@ -9956,7 +9957,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @return the roles associated with the group
 	 */
 	@Override
-	public List<com.liferay.portal.model.Role> getRoles(long pk) {
+	public List<com.liferay.portal.kernel.model.Role> getRoles(long pk) {
 		return getRoles(pk, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 	}
 
@@ -9973,8 +9974,8 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @return the range of roles associated with the group
 	 */
 	@Override
-	public List<com.liferay.portal.model.Role> getRoles(long pk, int start,
-		int end) {
+	public List<com.liferay.portal.kernel.model.Role> getRoles(long pk,
+		int start, int end) {
 		return getRoles(pk, start, end, null);
 	}
 
@@ -9992,9 +9993,9 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @return the ordered range of roles associated with the group
 	 */
 	@Override
-	public List<com.liferay.portal.model.Role> getRoles(long pk, int start,
-		int end,
-		OrderByComparator<com.liferay.portal.model.Role> orderByComparator) {
+	public List<com.liferay.portal.kernel.model.Role> getRoles(long pk,
+		int start, int end,
+		OrderByComparator<com.liferay.portal.kernel.model.Role> orderByComparator) {
 		return groupToRoleTableMapper.getRightBaseModels(pk, start, end,
 			orderByComparator);
 	}
@@ -10067,7 +10068,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param role the role
 	 */
 	@Override
-	public void addRole(long pk, com.liferay.portal.model.Role role) {
+	public void addRole(long pk, com.liferay.portal.kernel.model.Role role) {
 		Group group = fetchByPrimaryKey(pk);
 
 		if (group == null) {
@@ -10111,7 +10112,8 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param roles the roles
 	 */
 	@Override
-	public void addRoles(long pk, List<com.liferay.portal.model.Role> roles) {
+	public void addRoles(long pk,
+		List<com.liferay.portal.kernel.model.Role> roles) {
 		long companyId = 0;
 
 		Group group = fetchByPrimaryKey(pk);
@@ -10123,7 +10125,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 			companyId = group.getCompanyId();
 		}
 
-		for (com.liferay.portal.model.Role role : roles) {
+		for (com.liferay.portal.kernel.model.Role role : roles) {
 			groupToRoleTableMapper.addTableMapping(companyId, pk,
 				role.getPrimaryKey());
 		}
@@ -10157,7 +10159,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param role the role
 	 */
 	@Override
-	public void removeRole(long pk, com.liferay.portal.model.Role role) {
+	public void removeRole(long pk, com.liferay.portal.kernel.model.Role role) {
 		groupToRoleTableMapper.deleteTableMapping(pk, role.getPrimaryKey());
 	}
 
@@ -10181,8 +10183,9 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param roles the roles
 	 */
 	@Override
-	public void removeRoles(long pk, List<com.liferay.portal.model.Role> roles) {
-		for (com.liferay.portal.model.Role role : roles) {
+	public void removeRoles(long pk,
+		List<com.liferay.portal.kernel.model.Role> roles) {
+		for (com.liferay.portal.kernel.model.Role role : roles) {
 			groupToRoleTableMapper.deleteTableMapping(pk, role.getPrimaryKey());
 		}
 	}
@@ -10232,12 +10235,13 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param roles the roles to be associated with the group
 	 */
 	@Override
-	public void setRoles(long pk, List<com.liferay.portal.model.Role> roles) {
+	public void setRoles(long pk,
+		List<com.liferay.portal.kernel.model.Role> roles) {
 		try {
 			long[] rolePKs = new long[roles.size()];
 
 			for (int i = 0; i < roles.size(); i++) {
-				com.liferay.portal.model.Role role = roles.get(i);
+				com.liferay.portal.kernel.model.Role role = roles.get(i);
 
 				rolePKs[i] = role.getPrimaryKey();
 			}
@@ -10269,7 +10273,8 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @return the user groups associated with the group
 	 */
 	@Override
-	public List<com.liferay.portal.model.UserGroup> getUserGroups(long pk) {
+	public List<com.liferay.portal.kernel.model.UserGroup> getUserGroups(
+		long pk) {
 		return getUserGroups(pk, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 	}
 
@@ -10286,8 +10291,8 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @return the range of user groups associated with the group
 	 */
 	@Override
-	public List<com.liferay.portal.model.UserGroup> getUserGroups(long pk,
-		int start, int end) {
+	public List<com.liferay.portal.kernel.model.UserGroup> getUserGroups(
+		long pk, int start, int end) {
 		return getUserGroups(pk, start, end, null);
 	}
 
@@ -10305,9 +10310,9 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @return the ordered range of user groups associated with the group
 	 */
 	@Override
-	public List<com.liferay.portal.model.UserGroup> getUserGroups(long pk,
-		int start, int end,
-		OrderByComparator<com.liferay.portal.model.UserGroup> orderByComparator) {
+	public List<com.liferay.portal.kernel.model.UserGroup> getUserGroups(
+		long pk, int start, int end,
+		OrderByComparator<com.liferay.portal.kernel.model.UserGroup> orderByComparator) {
 		return groupToUserGroupTableMapper.getRightBaseModels(pk, start, end,
 			orderByComparator);
 	}
@@ -10381,7 +10386,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public void addUserGroup(long pk,
-		com.liferay.portal.model.UserGroup userGroup) {
+		com.liferay.portal.kernel.model.UserGroup userGroup) {
 		Group group = fetchByPrimaryKey(pk);
 
 		if (group == null) {
@@ -10427,7 +10432,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public void addUserGroups(long pk,
-		List<com.liferay.portal.model.UserGroup> userGroups) {
+		List<com.liferay.portal.kernel.model.UserGroup> userGroups) {
 		long companyId = 0;
 
 		Group group = fetchByPrimaryKey(pk);
@@ -10439,7 +10444,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 			companyId = group.getCompanyId();
 		}
 
-		for (com.liferay.portal.model.UserGroup userGroup : userGroups) {
+		for (com.liferay.portal.kernel.model.UserGroup userGroup : userGroups) {
 			groupToUserGroupTableMapper.addTableMapping(companyId, pk,
 				userGroup.getPrimaryKey());
 		}
@@ -10474,7 +10479,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public void removeUserGroup(long pk,
-		com.liferay.portal.model.UserGroup userGroup) {
+		com.liferay.portal.kernel.model.UserGroup userGroup) {
 		groupToUserGroupTableMapper.deleteTableMapping(pk,
 			userGroup.getPrimaryKey());
 	}
@@ -10500,8 +10505,8 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public void removeUserGroups(long pk,
-		List<com.liferay.portal.model.UserGroup> userGroups) {
-		for (com.liferay.portal.model.UserGroup userGroup : userGroups) {
+		List<com.liferay.portal.kernel.model.UserGroup> userGroups) {
+		for (com.liferay.portal.kernel.model.UserGroup userGroup : userGroups) {
 			groupToUserGroupTableMapper.deleteTableMapping(pk,
 				userGroup.getPrimaryKey());
 		}
@@ -10554,12 +10559,12 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 */
 	@Override
 	public void setUserGroups(long pk,
-		List<com.liferay.portal.model.UserGroup> userGroups) {
+		List<com.liferay.portal.kernel.model.UserGroup> userGroups) {
 		try {
 			long[] userGroupPKs = new long[userGroups.size()];
 
 			for (int i = 0; i < userGroups.size(); i++) {
-				com.liferay.portal.model.UserGroup userGroup = userGroups.get(i);
+				com.liferay.portal.kernel.model.UserGroup userGroup = userGroups.get(i);
 
 				userGroupPKs[i] = userGroup.getPrimaryKey();
 			}
@@ -10591,7 +10596,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @return the users associated with the group
 	 */
 	@Override
-	public List<com.liferay.portal.model.User> getUsers(long pk) {
+	public List<com.liferay.portal.kernel.model.User> getUsers(long pk) {
 		return getUsers(pk, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 	}
 
@@ -10608,8 +10613,8 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @return the range of users associated with the group
 	 */
 	@Override
-	public List<com.liferay.portal.model.User> getUsers(long pk, int start,
-		int end) {
+	public List<com.liferay.portal.kernel.model.User> getUsers(long pk,
+		int start, int end) {
 		return getUsers(pk, start, end, null);
 	}
 
@@ -10627,9 +10632,9 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @return the ordered range of users associated with the group
 	 */
 	@Override
-	public List<com.liferay.portal.model.User> getUsers(long pk, int start,
-		int end,
-		OrderByComparator<com.liferay.portal.model.User> orderByComparator) {
+	public List<com.liferay.portal.kernel.model.User> getUsers(long pk,
+		int start, int end,
+		OrderByComparator<com.liferay.portal.kernel.model.User> orderByComparator) {
 		return groupToUserTableMapper.getRightBaseModels(pk, start, end,
 			orderByComparator);
 	}
@@ -10702,7 +10707,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param user the user
 	 */
 	@Override
-	public void addUser(long pk, com.liferay.portal.model.User user) {
+	public void addUser(long pk, com.liferay.portal.kernel.model.User user) {
 		Group group = fetchByPrimaryKey(pk);
 
 		if (group == null) {
@@ -10746,7 +10751,8 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param users the users
 	 */
 	@Override
-	public void addUsers(long pk, List<com.liferay.portal.model.User> users) {
+	public void addUsers(long pk,
+		List<com.liferay.portal.kernel.model.User> users) {
 		long companyId = 0;
 
 		Group group = fetchByPrimaryKey(pk);
@@ -10758,7 +10764,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 			companyId = group.getCompanyId();
 		}
 
-		for (com.liferay.portal.model.User user : users) {
+		for (com.liferay.portal.kernel.model.User user : users) {
 			groupToUserTableMapper.addTableMapping(companyId, pk,
 				user.getPrimaryKey());
 		}
@@ -10792,7 +10798,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param user the user
 	 */
 	@Override
-	public void removeUser(long pk, com.liferay.portal.model.User user) {
+	public void removeUser(long pk, com.liferay.portal.kernel.model.User user) {
 		groupToUserTableMapper.deleteTableMapping(pk, user.getPrimaryKey());
 	}
 
@@ -10816,8 +10822,9 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param users the users
 	 */
 	@Override
-	public void removeUsers(long pk, List<com.liferay.portal.model.User> users) {
-		for (com.liferay.portal.model.User user : users) {
+	public void removeUsers(long pk,
+		List<com.liferay.portal.kernel.model.User> users) {
+		for (com.liferay.portal.kernel.model.User user : users) {
 			groupToUserTableMapper.deleteTableMapping(pk, user.getPrimaryKey());
 		}
 	}
@@ -10867,12 +10874,13 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * @param users the users to be associated with the group
 	 */
 	@Override
-	public void setUsers(long pk, List<com.liferay.portal.model.User> users) {
+	public void setUsers(long pk,
+		List<com.liferay.portal.kernel.model.User> users) {
 		try {
 			long[] userPKs = new long[users.size()];
 
 			for (int i = 0; i < users.size(); i++) {
-				com.liferay.portal.model.User user = users.get(i);
+				com.liferay.portal.kernel.model.User user = users.get(i);
 
 				userPKs[i] = user.getPrimaryKey();
 			}
@@ -10931,16 +10939,16 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	@BeanReference(type = OrganizationPersistence.class)
 	protected OrganizationPersistence organizationPersistence;
-	protected TableMapper<Group, com.liferay.portal.model.Organization> groupToOrganizationTableMapper;
+	protected TableMapper<Group, com.liferay.portal.kernel.model.Organization> groupToOrganizationTableMapper;
 	@BeanReference(type = RolePersistence.class)
 	protected RolePersistence rolePersistence;
-	protected TableMapper<Group, com.liferay.portal.model.Role> groupToRoleTableMapper;
+	protected TableMapper<Group, com.liferay.portal.kernel.model.Role> groupToRoleTableMapper;
 	@BeanReference(type = UserGroupPersistence.class)
 	protected UserGroupPersistence userGroupPersistence;
-	protected TableMapper<Group, com.liferay.portal.model.UserGroup> groupToUserGroupTableMapper;
+	protected TableMapper<Group, com.liferay.portal.kernel.model.UserGroup> groupToUserGroupTableMapper;
 	@BeanReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
-	protected TableMapper<Group, com.liferay.portal.model.User> groupToUserTableMapper;
+	protected TableMapper<Group, com.liferay.portal.kernel.model.User> groupToUserTableMapper;
 	private static final String _SQL_SELECT_GROUP_ = "SELECT group_ FROM Group group_";
 	private static final String _SQL_SELECT_GROUP__WHERE_PKS_IN = "SELECT group_ FROM Group group_ WHERE groupId IN (";
 	private static final String _SQL_SELECT_GROUP__WHERE = "SELECT group_ FROM Group group_ WHERE ";

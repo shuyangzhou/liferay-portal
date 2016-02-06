@@ -115,7 +115,7 @@ public class ResourceBlockPermissionWrapper implements ResourceBlockPermission,
 
 	@Override
 	public int compareTo(
-		com.liferay.portal.model.ResourceBlockPermission resourceBlockPermission) {
+		com.liferay.portal.kernel.model.ResourceBlockPermission resourceBlockPermission) {
 		return _resourceBlockPermission.compareTo(resourceBlockPermission);
 	}
 
@@ -325,12 +325,12 @@ public class ResourceBlockPermissionWrapper implements ResourceBlockPermission,
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.ResourceBlockPermission> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.ResourceBlockPermission> toCacheModel() {
 		return _resourceBlockPermission.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.ResourceBlockPermission toEscapedModel() {
+	public com.liferay.portal.kernel.model.ResourceBlockPermission toEscapedModel() {
 		return new ResourceBlockPermissionWrapper(_resourceBlockPermission.toEscapedModel());
 	}
 
@@ -340,7 +340,7 @@ public class ResourceBlockPermissionWrapper implements ResourceBlockPermission,
 	}
 
 	@Override
-	public com.liferay.portal.model.ResourceBlockPermission toUnescapedModel() {
+	public com.liferay.portal.kernel.model.ResourceBlockPermission toUnescapedModel() {
 		return new ResourceBlockPermissionWrapper(_resourceBlockPermission.toUnescapedModel());
 	}
 

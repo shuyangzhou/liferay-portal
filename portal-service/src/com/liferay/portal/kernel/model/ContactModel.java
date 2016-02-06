@@ -568,19 +568,19 @@ public interface ContactModel extends AttachedModel, AuditedModel,
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.model.Contact contact);
+	public int compareTo(com.liferay.portal.kernel.model.Contact contact);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.Contact> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.Contact> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.Contact toEscapedModel();
+	public com.liferay.portal.kernel.model.Contact toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.Contact toUnescapedModel();
+	public com.liferay.portal.kernel.model.Contact toUnescapedModel();
 
 	@Override
 	public String toString();

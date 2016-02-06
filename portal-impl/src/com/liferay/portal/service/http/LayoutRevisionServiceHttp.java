@@ -19,10 +19,10 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
+import com.liferay.portal.kernel.service.LayoutRevisionServiceUtil;
 import com.liferay.portal.kernel.service.http.TunnelUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
-import com.liferay.portal.service.LayoutRevisionServiceUtil;
 
 /**
  * Provides the HTTP utility for the
@@ -54,7 +54,7 @@ import com.liferay.portal.service.LayoutRevisionServiceUtil;
  */
 @ProviderType
 public class LayoutRevisionServiceHttp {
-	public static com.liferay.portal.model.LayoutRevision addLayoutRevision(
+	public static com.liferay.portal.kernel.model.LayoutRevision addLayoutRevision(
 		HttpPrincipal httpPrincipal, long userId, long layoutSetBranchId,
 		long layoutBranchId, long parentLayoutRevisionId, boolean head,
 		long plid, long portletPreferencesPlid, boolean privateLayout,
@@ -90,7 +90,7 @@ public class LayoutRevisionServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.LayoutRevision)returnObj;
+			return (com.liferay.portal.kernel.model.LayoutRevision)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);

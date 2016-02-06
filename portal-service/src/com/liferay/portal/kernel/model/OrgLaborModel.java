@@ -365,19 +365,19 @@ public interface OrgLaborModel extends BaseModel<OrgLabor>, MVCCModel,
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.model.OrgLabor orgLabor);
+	public int compareTo(com.liferay.portal.kernel.model.OrgLabor orgLabor);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.OrgLabor> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.OrgLabor> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.OrgLabor toEscapedModel();
+	public com.liferay.portal.kernel.model.OrgLabor toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.OrgLabor toUnescapedModel();
+	public com.liferay.portal.kernel.model.OrgLabor toUnescapedModel();
 
 	@Override
 	public String toString();

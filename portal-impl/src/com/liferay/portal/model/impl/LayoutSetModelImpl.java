@@ -21,14 +21,14 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.json.JSON;
+import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.LayoutSet;
+import com.liferay.portal.kernel.model.LayoutSetModel;
+import com.liferay.portal.kernel.model.LayoutSetSoap;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.model.CacheModel;
-import com.liferay.portal.model.LayoutSet;
-import com.liferay.portal.model.LayoutSetModel;
-import com.liferay.portal.model.LayoutSetSoap;
 import com.liferay.portal.service.ServiceContext;
 
 import java.io.Serializable;
@@ -113,13 +113,13 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
 	public static final String TX_MANAGER = "liferayTransactionManager";
 	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
-				"value.object.entity.cache.enabled.com.liferay.portal.model.LayoutSet"),
+				"value.object.entity.cache.enabled.com.liferay.portal.kernel.model.LayoutSet"),
 			true);
 	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
-				"value.object.finder.cache.enabled.com.liferay.portal.model.LayoutSet"),
+				"value.object.finder.cache.enabled.com.liferay.portal.kernel.model.LayoutSet"),
 			true);
 	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
-				"value.object.column.bitmask.enabled.com.liferay.portal.model.LayoutSet"),
+				"value.object.column.bitmask.enabled.com.liferay.portal.kernel.model.LayoutSet"),
 			true);
 	public static final long GROUPID_COLUMN_BITMASK = 1L;
 	public static final long LAYOUTSETPROTOTYPEUUID_COLUMN_BITMASK = 2L;
@@ -181,7 +181,7 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 	}
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.portal.util.PropsUtil.get(
-				"lock.expiration.time.com.liferay.portal.model.LayoutSet"));
+				"lock.expiration.time.com.liferay.portal.kernel.model.LayoutSet"));
 
 	public LayoutSetModelImpl() {
 	}
@@ -625,21 +625,6 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 		_layoutSetPrototypeLinkEnabled = layoutSetPrototypeLinkEnabled;
 	}
 
-	public java.lang.String getCompanyFallbackVirtualHostname() {
-		return null;
-	}
-
-	public void setCompanyFallbackVirtualHostname(
-		java.lang.String companyFallbackVirtualHostname) {
-	}
-
-	public java.lang.String getVirtualHostname() {
-		return null;
-	}
-
-	public void setVirtualHostname(java.lang.String virtualHostname) {
-	}
-
 	public long getColumnBitmask() {
 		return _columnBitmask;
 	}
@@ -762,10 +747,6 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 
 		layoutSetModelImpl._originalLayoutSetPrototypeUuid = layoutSetModelImpl._layoutSetPrototypeUuid;
 
-		setCompanyFallbackVirtualHostname(null);
-
-		setVirtualHostname(null);
-
 		layoutSetModelImpl._columnBitmask = 0;
 	}
 
@@ -864,10 +845,6 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 
 		layoutSetCacheModel.layoutSetPrototypeLinkEnabled = getLayoutSetPrototypeLinkEnabled();
 
-		layoutSetCacheModel._companyFallbackVirtualHostname = getCompanyFallbackVirtualHostname();
-
-		layoutSetCacheModel._virtualHostname = getVirtualHostname();
-
 		return layoutSetCacheModel;
 	}
 
@@ -919,7 +896,7 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 		StringBundler sb = new StringBundler(55);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.portal.model.LayoutSet");
+		sb.append("com.liferay.portal.kernel.model.LayoutSet");
 		sb.append("</model-name>");
 
 		sb.append(

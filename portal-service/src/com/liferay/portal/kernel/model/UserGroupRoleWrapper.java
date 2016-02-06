@@ -104,7 +104,8 @@ public class UserGroupRoleWrapper implements UserGroupRole,
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.model.UserGroupRole userGroupRole) {
+	public int compareTo(
+		com.liferay.portal.kernel.model.UserGroupRole userGroupRole) {
 		return _userGroupRole.compareTo(userGroupRole);
 	}
 
@@ -124,7 +125,7 @@ public class UserGroupRoleWrapper implements UserGroupRole,
 	}
 
 	@Override
-	public com.liferay.portal.model.Group getGroup()
+	public com.liferay.portal.kernel.model.Group getGroup()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userGroupRole.getGroup();
 	}
@@ -155,7 +156,7 @@ public class UserGroupRoleWrapper implements UserGroupRole,
 	* @return the primary key of this user group role
 	*/
 	@Override
-	public com.liferay.portal.service.persistence.UserGroupRolePK getPrimaryKey() {
+	public com.liferay.portal.kernel.service.persistence.UserGroupRolePK getPrimaryKey() {
 		return _userGroupRole.getPrimaryKey();
 	}
 
@@ -165,7 +166,7 @@ public class UserGroupRoleWrapper implements UserGroupRole,
 	}
 
 	@Override
-	public com.liferay.portal.model.Role getRole()
+	public com.liferay.portal.kernel.model.Role getRole()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userGroupRole.getRole();
 	}
@@ -181,7 +182,7 @@ public class UserGroupRoleWrapper implements UserGroupRole,
 	}
 
 	@Override
-	public com.liferay.portal.model.User getUser()
+	public com.liferay.portal.kernel.model.User getUser()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userGroupRole.getUser();
 	}
@@ -293,7 +294,7 @@ public class UserGroupRoleWrapper implements UserGroupRole,
 	*/
 	@Override
 	public void setPrimaryKey(
-		com.liferay.portal.service.persistence.UserGroupRolePK primaryKey) {
+		com.liferay.portal.kernel.service.persistence.UserGroupRolePK primaryKey) {
 		_userGroupRole.setPrimaryKey(primaryKey);
 	}
 
@@ -333,12 +334,12 @@ public class UserGroupRoleWrapper implements UserGroupRole,
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.UserGroupRole> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.UserGroupRole> toCacheModel() {
 		return _userGroupRole.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.UserGroupRole toEscapedModel() {
+	public com.liferay.portal.kernel.model.UserGroupRole toEscapedModel() {
 		return new UserGroupRoleWrapper(_userGroupRole.toEscapedModel());
 	}
 
@@ -348,7 +349,7 @@ public class UserGroupRoleWrapper implements UserGroupRole,
 	}
 
 	@Override
-	public com.liferay.portal.model.UserGroupRole toUnescapedModel() {
+	public com.liferay.portal.kernel.model.UserGroupRole toUnescapedModel() {
 		return new UserGroupRoleWrapper(_userGroupRole.toUnescapedModel());
 	}
 

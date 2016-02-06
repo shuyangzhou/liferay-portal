@@ -176,19 +176,20 @@ public interface ClusterGroupModel extends BaseModel<ClusterGroup>, MVCCModel {
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.model.ClusterGroup clusterGroup);
+	public int compareTo(
+		com.liferay.portal.kernel.model.ClusterGroup clusterGroup);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.ClusterGroup> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.ClusterGroup> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.ClusterGroup toEscapedModel();
+	public com.liferay.portal.kernel.model.ClusterGroup toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.ClusterGroup toUnescapedModel();
+	public com.liferay.portal.kernel.model.ClusterGroup toUnescapedModel();
 
 	@Override
 	public String toString();

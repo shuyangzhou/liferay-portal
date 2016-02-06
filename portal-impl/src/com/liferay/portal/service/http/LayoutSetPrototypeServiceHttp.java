@@ -19,10 +19,10 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
+import com.liferay.portal.kernel.service.LayoutSetPrototypeServiceUtil;
 import com.liferay.portal.kernel.service.http.TunnelUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
-import com.liferay.portal.service.LayoutSetPrototypeServiceUtil;
 
 /**
  * Provides the HTTP utility for the
@@ -54,7 +54,7 @@ import com.liferay.portal.service.LayoutSetPrototypeServiceUtil;
  */
 @ProviderType
 public class LayoutSetPrototypeServiceHttp {
-	public static com.liferay.portal.model.LayoutSetPrototype addLayoutSetPrototype(
+	public static com.liferay.portal.kernel.model.LayoutSetPrototype addLayoutSetPrototype(
 		HttpPrincipal httpPrincipal,
 		java.util.Map<java.util.Locale, java.lang.String> nameMap,
 		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
@@ -82,7 +82,7 @@ public class LayoutSetPrototypeServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.LayoutSetPrototype)returnObj;
+			return (com.liferay.portal.kernel.model.LayoutSetPrototype)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -91,7 +91,7 @@ public class LayoutSetPrototypeServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.LayoutSetPrototype addLayoutSetPrototype(
+	public static com.liferay.portal.kernel.model.LayoutSetPrototype addLayoutSetPrototype(
 		HttpPrincipal httpPrincipal,
 		java.util.Map<java.util.Locale, java.lang.String> nameMap,
 		java.lang.String description, boolean active,
@@ -119,7 +119,7 @@ public class LayoutSetPrototypeServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.LayoutSetPrototype)returnObj;
+			return (com.liferay.portal.kernel.model.LayoutSetPrototype)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -157,7 +157,7 @@ public class LayoutSetPrototypeServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.LayoutSetPrototype fetchLayoutSetPrototype(
+	public static com.liferay.portal.kernel.model.LayoutSetPrototype fetchLayoutSetPrototype(
 		HttpPrincipal httpPrincipal, long layoutSetPrototypeId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -181,7 +181,7 @@ public class LayoutSetPrototypeServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.LayoutSetPrototype)returnObj;
+			return (com.liferay.portal.kernel.model.LayoutSetPrototype)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -190,7 +190,7 @@ public class LayoutSetPrototypeServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.LayoutSetPrototype getLayoutSetPrototype(
+	public static com.liferay.portal.kernel.model.LayoutSetPrototype getLayoutSetPrototype(
 		HttpPrincipal httpPrincipal, long layoutSetPrototypeId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -214,7 +214,7 @@ public class LayoutSetPrototypeServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.LayoutSetPrototype)returnObj;
+			return (com.liferay.portal.kernel.model.LayoutSetPrototype)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -223,9 +223,9 @@ public class LayoutSetPrototypeServiceHttp {
 		}
 	}
 
-	public static java.util.List<com.liferay.portal.model.LayoutSetPrototype> search(
+	public static java.util.List<com.liferay.portal.kernel.model.LayoutSetPrototype> search(
 		HttpPrincipal httpPrincipal, long companyId, java.lang.Boolean active,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.LayoutSetPrototype> obc)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.LayoutSetPrototype> obc)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LayoutSetPrototypeServiceUtil.class,
@@ -247,7 +247,7 @@ public class LayoutSetPrototypeServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (java.util.List<com.liferay.portal.model.LayoutSetPrototype>)returnObj;
+			return (java.util.List<com.liferay.portal.kernel.model.LayoutSetPrototype>)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -256,7 +256,7 @@ public class LayoutSetPrototypeServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.LayoutSetPrototype updateLayoutSetPrototype(
+	public static com.liferay.portal.kernel.model.LayoutSetPrototype updateLayoutSetPrototype(
 		HttpPrincipal httpPrincipal, long layoutSetPrototypeId,
 		java.util.Map<java.util.Locale, java.lang.String> nameMap,
 		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
@@ -285,7 +285,7 @@ public class LayoutSetPrototypeServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.LayoutSetPrototype)returnObj;
+			return (com.liferay.portal.kernel.model.LayoutSetPrototype)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -294,7 +294,7 @@ public class LayoutSetPrototypeServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.LayoutSetPrototype updateLayoutSetPrototype(
+	public static com.liferay.portal.kernel.model.LayoutSetPrototype updateLayoutSetPrototype(
 		HttpPrincipal httpPrincipal, long layoutSetPrototypeId,
 		java.util.Map<java.util.Locale, java.lang.String> nameMap,
 		java.lang.String description, boolean active,
@@ -323,7 +323,7 @@ public class LayoutSetPrototypeServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.LayoutSetPrototype)returnObj;
+			return (com.liferay.portal.kernel.model.LayoutSetPrototype)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -332,7 +332,7 @@ public class LayoutSetPrototypeServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.LayoutSetPrototype updateLayoutSetPrototype(
+	public static com.liferay.portal.kernel.model.LayoutSetPrototype updateLayoutSetPrototype(
 		HttpPrincipal httpPrincipal, long layoutSetPrototypeId,
 		java.lang.String settings)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -357,7 +357,7 @@ public class LayoutSetPrototypeServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.LayoutSetPrototype)returnObj;
+			return (com.liferay.portal.kernel.model.LayoutSetPrototype)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);

@@ -19,10 +19,10 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
+import com.liferay.portal.kernel.service.RepositoryServiceUtil;
 import com.liferay.portal.kernel.service.http.TunnelUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
-import com.liferay.portal.service.RepositoryServiceUtil;
 
 /**
  * Provides the HTTP utility for the
@@ -54,7 +54,7 @@ import com.liferay.portal.service.RepositoryServiceUtil;
  */
 @ProviderType
 public class RepositoryServiceHttp {
-	public static com.liferay.portal.model.Repository addRepository(
+	public static com.liferay.portal.kernel.model.Repository addRepository(
 		HttpPrincipal httpPrincipal, long groupId, long classNameId,
 		long parentFolderId, java.lang.String name,
 		java.lang.String description, java.lang.String portletId,
@@ -82,7 +82,7 @@ public class RepositoryServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.Repository)returnObj;
+			return (com.liferay.portal.kernel.model.Repository)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -147,7 +147,7 @@ public class RepositoryServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.Repository getRepository(
+	public static com.liferay.portal.kernel.model.Repository getRepository(
 		HttpPrincipal httpPrincipal, long repositoryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -170,7 +170,7 @@ public class RepositoryServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.Repository)returnObj;
+			return (com.liferay.portal.kernel.model.Repository)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);

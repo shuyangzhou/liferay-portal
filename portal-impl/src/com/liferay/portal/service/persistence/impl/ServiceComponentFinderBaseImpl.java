@@ -15,8 +15,8 @@
 package com.liferay.portal.service.persistence.impl;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.model.ServiceComponent;
-import com.liferay.portal.service.persistence.ServiceComponentPersistence;
+import com.liferay.portal.kernel.model.ServiceComponent;
+import com.liferay.portal.kernel.service.persistence.ServiceComponentPersistence;
 
 import java.util.Set;
 

@@ -113,7 +113,7 @@ public class PasswordTrackerWrapper implements PasswordTracker,
 
 	@Override
 	public int compareTo(
-		com.liferay.portal.model.PasswordTracker passwordTracker) {
+		com.liferay.portal.kernel.model.PasswordTracker passwordTracker) {
 		return _passwordTracker.compareTo(passwordTracker);
 	}
 
@@ -343,12 +343,12 @@ public class PasswordTrackerWrapper implements PasswordTracker,
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.PasswordTracker> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.PasswordTracker> toCacheModel() {
 		return _passwordTracker.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.PasswordTracker toEscapedModel() {
+	public com.liferay.portal.kernel.model.PasswordTracker toEscapedModel() {
 		return new PasswordTrackerWrapper(_passwordTracker.toEscapedModel());
 	}
 
@@ -358,7 +358,7 @@ public class PasswordTrackerWrapper implements PasswordTracker,
 	}
 
 	@Override
-	public com.liferay.portal.model.PasswordTracker toUnescapedModel() {
+	public com.liferay.portal.kernel.model.PasswordTracker toUnescapedModel() {
 		return new PasswordTrackerWrapper(_passwordTracker.toUnescapedModel());
 	}
 

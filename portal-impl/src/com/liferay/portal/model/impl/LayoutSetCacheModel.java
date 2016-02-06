@@ -16,12 +16,12 @@ package com.liferay.portal.model.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.LayoutSet;
+import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.model.CacheModel;
-import com.liferay.portal.model.LayoutSet;
-import com.liferay.portal.model.MVCCModel;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -201,16 +201,11 @@ public class LayoutSetCacheModel implements CacheModel<LayoutSet>,
 
 		layoutSetImpl.resetOriginalValues();
 
-		layoutSetImpl.setCompanyFallbackVirtualHostname(_companyFallbackVirtualHostname);
-
-		layoutSetImpl.setVirtualHostname(_virtualHostname);
-
 		return layoutSetImpl;
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput)
-		throws ClassNotFoundException, IOException {
+	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
 
 		layoutSetId = objectInput.readLong();
@@ -235,9 +230,6 @@ public class LayoutSetCacheModel implements CacheModel<LayoutSet>,
 		layoutSetPrototypeUuid = objectInput.readUTF();
 
 		layoutSetPrototypeLinkEnabled = objectInput.readBoolean();
-
-		_companyFallbackVirtualHostname = (java.lang.String)objectInput.readObject();
-		_virtualHostname = (java.lang.String)objectInput.readObject();
 	}
 
 	@Override
@@ -309,9 +301,6 @@ public class LayoutSetCacheModel implements CacheModel<LayoutSet>,
 		}
 
 		objectOutput.writeBoolean(layoutSetPrototypeLinkEnabled);
-
-		objectOutput.writeObject(_companyFallbackVirtualHostname);
-		objectOutput.writeObject(_virtualHostname);
 	}
 
 	public long mvccVersion;
@@ -331,6 +320,4 @@ public class LayoutSetCacheModel implements CacheModel<LayoutSet>,
 	public String settings;
 	public String layoutSetPrototypeUuid;
 	public boolean layoutSetPrototypeLinkEnabled;
-	public java.lang.String _companyFallbackVirtualHostname;
-	public java.lang.String _virtualHostname;
 }

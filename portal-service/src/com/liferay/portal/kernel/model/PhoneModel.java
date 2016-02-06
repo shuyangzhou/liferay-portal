@@ -349,19 +349,19 @@ public interface PhoneModel extends AttachedModel, BaseModel<Phone>, MVCCModel,
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.model.Phone phone);
+	public int compareTo(com.liferay.portal.kernel.model.Phone phone);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.Phone> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.Phone> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.Phone toEscapedModel();
+	public com.liferay.portal.kernel.model.Phone toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.Phone toUnescapedModel();
+	public com.liferay.portal.kernel.model.Phone toUnescapedModel();
 
 	@Override
 	public String toString();

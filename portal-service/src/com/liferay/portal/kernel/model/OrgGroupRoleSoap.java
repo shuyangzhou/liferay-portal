@@ -16,7 +16,7 @@ package com.liferay.portal.kernel.model;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.service.persistence.OrgGroupRolePK;
+import com.liferay.portal.kernel.service.persistence.OrgGroupRolePK;
 
 import java.io.Serializable;
 

@@ -348,19 +348,19 @@ public interface WebsiteModel extends AttachedModel, BaseModel<Website>,
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.model.Website website);
+	public int compareTo(com.liferay.portal.kernel.model.Website website);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.Website> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.Website> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.Website toEscapedModel();
+	public com.liferay.portal.kernel.model.Website toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.Website toUnescapedModel();
+	public com.liferay.portal.kernel.model.Website toUnescapedModel();
 
 	@Override
 	public String toString();

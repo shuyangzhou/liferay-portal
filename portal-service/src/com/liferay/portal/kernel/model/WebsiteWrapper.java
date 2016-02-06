@@ -169,7 +169,7 @@ public class WebsiteWrapper implements Website, ModelWrapper<Website> {
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.model.Website website) {
+	public int compareTo(com.liferay.portal.kernel.model.Website website) {
 		return _website.compareTo(website);
 	}
 
@@ -284,7 +284,7 @@ public class WebsiteWrapper implements Website, ModelWrapper<Website> {
 	}
 
 	@Override
-	public com.liferay.portal.model.ListType getType()
+	public com.liferay.portal.kernel.model.ListType getType()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _website.getType();
 	}
@@ -590,12 +590,12 @@ public class WebsiteWrapper implements Website, ModelWrapper<Website> {
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.Website> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.Website> toCacheModel() {
 		return _website.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.Website toEscapedModel() {
+	public com.liferay.portal.kernel.model.Website toEscapedModel() {
 		return new WebsiteWrapper(_website.toEscapedModel());
 	}
 
@@ -605,7 +605,7 @@ public class WebsiteWrapper implements Website, ModelWrapper<Website> {
 	}
 
 	@Override
-	public com.liferay.portal.model.Website toUnescapedModel() {
+	public com.liferay.portal.kernel.model.Website toUnescapedModel() {
 		return new WebsiteWrapper(_website.toUnescapedModel());
 	}
 
