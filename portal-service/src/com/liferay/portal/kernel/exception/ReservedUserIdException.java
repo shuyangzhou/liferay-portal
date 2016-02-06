@@ -12,30 +12,30 @@
  * details.
  */
 
-package com.liferay.portal;
+package com.liferay.portal.kernel.exception;
 
 import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * @author     Brian Wing Shun Chan
  * @deprecated As of 7.0.0, replaced by {@link
- *             UserEmailAddressException.MustNotBeDuplicate}
+ *             UserIdException.MustNotBeReserved}
  */
 @Deprecated
-public class DuplicateUserEmailAddressException extends PortalException {
+public class ReservedUserIdException extends PortalException {
 
-	public DuplicateUserEmailAddressException() {
+	public ReservedUserIdException() {
 	}
 
-	public DuplicateUserEmailAddressException(String msg) {
+	public ReservedUserIdException(String msg) {
 		super(msg);
 	}
 
-	public DuplicateUserEmailAddressException(String msg, Throwable cause) {
+	public ReservedUserIdException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
 
-	public DuplicateUserEmailAddressException(Throwable cause) {
+	public ReservedUserIdException(Throwable cause) {
 		super(cause);
 	}
 

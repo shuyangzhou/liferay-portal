@@ -12,30 +12,30 @@
  * details.
  */
 
-package com.liferay.portal;
+package com.liferay.portal.kernel.exception;
 
 import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * @author     Brian Wing Shun Chan
  * @deprecated As of 7.0.0, replaced by {@link
- *             ContactNameException.MustHaveFirstName}
+ *             UserEmailAddressException.MustNotBeReserved}
  */
 @Deprecated
-public class ContactFirstNameException extends PortalException {
+public class ReservedUserEmailAddressException extends PortalException {
 
-	public ContactFirstNameException() {
+	public ReservedUserEmailAddressException() {
 	}
 
-	public ContactFirstNameException(String msg) {
+	public ReservedUserEmailAddressException(String msg) {
 		super(msg);
 	}
 
-	public ContactFirstNameException(String msg, Throwable cause) {
+	public ReservedUserEmailAddressException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
 
-	public ContactFirstNameException(Throwable cause) {
+	public ReservedUserEmailAddressException(Throwable cause) {
 		super(cause);
 	}
 

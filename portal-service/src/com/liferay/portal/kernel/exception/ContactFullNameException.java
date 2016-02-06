@@ -12,29 +12,30 @@
  * details.
  */
 
-package com.liferay.portal;
+package com.liferay.portal.kernel.exception;
+
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
- * @author     Brian Wing Shun Chan
- * @deprecated As of 6.1.0, replaced by {@link
- *             com.liferay.portal.kernel.exception.SystemException}
+ * @author     Amos Fong
+ * @deprecated As of 7.0.0, replaced by {@link
+ *             ContactNameException.MustHaveValidFullName}
  */
 @Deprecated
-public class SystemException
-	extends com.liferay.portal.kernel.exception.SystemException {
+public class ContactFullNameException extends PortalException {
 
-	public SystemException() {
+	public ContactFullNameException() {
 	}
 
-	public SystemException(String msg) {
+	public ContactFullNameException(String msg) {
 		super(msg);
 	}
 
-	public SystemException(String msg, Throwable cause) {
+	public ContactFullNameException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
 
-	public SystemException(Throwable cause) {
+	public ContactFullNameException(Throwable cause) {
 		super(cause);
 	}
 

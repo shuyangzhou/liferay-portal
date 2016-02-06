@@ -12,30 +12,30 @@
  * details.
  */
 
-package com.liferay.portal;
+package com.liferay.portal.kernel.exception;
 
 import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * @author     Brian Wing Shun Chan
  * @deprecated As of 7.0.0, replaced by {@link
- *             UserScreenNameException.MustNotBeDuplicate}
+ *             UserEmailAddressException.MustNotBeDuplicate}
  */
 @Deprecated
-public class DuplicateUserScreenNameException extends PortalException {
+public class DuplicateUserEmailAddressException extends PortalException {
 
-	public DuplicateUserScreenNameException() {
+	public DuplicateUserEmailAddressException() {
 	}
 
-	public DuplicateUserScreenNameException(String msg) {
+	public DuplicateUserEmailAddressException(String msg) {
 		super(msg);
 	}
 
-	public DuplicateUserScreenNameException(String msg, Throwable cause) {
+	public DuplicateUserEmailAddressException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
 
-	public DuplicateUserScreenNameException(Throwable cause) {
+	public DuplicateUserEmailAddressException(Throwable cause) {
 		super(cause);
 	}
 
