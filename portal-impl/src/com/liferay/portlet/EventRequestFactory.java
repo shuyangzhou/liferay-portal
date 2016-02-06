@@ -14,6 +14,7 @@
 
 package com.liferay.portlet;
 
+import com.liferay.portal.kernel.portlet.InvokerPortlet;
 import com.liferay.portal.model.Portlet;
 
 import javax.portlet.PortletContext;

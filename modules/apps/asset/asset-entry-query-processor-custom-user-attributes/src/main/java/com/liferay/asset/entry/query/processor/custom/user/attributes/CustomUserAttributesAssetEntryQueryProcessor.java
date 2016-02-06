@@ -14,6 +14,9 @@
 
 package com.liferay.asset.entry.query.processor.custom.user.attributes;
 
+import com.liferay.asset.kernel.service.persistence.AssetEntryQuery;
+import com.liferay.asset.kernel.util.AssetEntryQueryProcessor;
+import com.liferay.asset.kernel.util.BaseJSPAssetEntryQueryProcessor;
 import com.liferay.asset.publisher.web.constants.AssetPublisherPortletKeys;
 import com.liferay.asset.publisher.web.util.AssetPublisherUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -22,9 +25,6 @@ import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.model.User;
-import com.liferay.portlet.asset.service.persistence.AssetEntryQuery;
-import com.liferay.portlet.asset.util.AssetEntryQueryProcessor;
-import com.liferay.portlet.asset.util.BaseJSPAssetEntryQueryProcessor;
 
 import java.util.Locale;
 import java.util.ResourceBundle;

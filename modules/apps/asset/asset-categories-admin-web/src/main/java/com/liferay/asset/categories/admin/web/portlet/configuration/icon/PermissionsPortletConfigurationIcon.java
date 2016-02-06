@@ -18,9 +18,9 @@ import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.configuration.icon.BasePortletConfigurationIcon;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.User;
-import com.liferay.portal.service.permission.GroupPermissionUtil;
 import com.liferay.portlet.asset.service.permission.AssetPermission;
 import com.liferay.taglib.security.PermissionsURLTag;
 
@@ -47,7 +47,7 @@ public class PermissionsPortletConfigurationIcon
 
 		try {
 			url = PermissionsURLTag.doTag(
-				StringPool.BLANK, "com.liferay.portlet.asset",
+				StringPool.BLANK, "com.liferay.asset.kernel",
 				themeDisplay.getScopeGroupName(), null,
 				String.valueOf(themeDisplay.getSiteGroupId()),
 				LiferayWindowState.POP_UP.toString(), null,

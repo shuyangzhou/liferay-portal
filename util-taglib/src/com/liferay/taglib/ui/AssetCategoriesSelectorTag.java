@@ -14,7 +14,7 @@
 
 package com.liferay.taglib.ui;
 
-import com.liferay.portlet.asset.model.AssetCategoryConstants;
+import com.liferay.asset.kernel.model.AssetCategoryConstants;
 import com.liferay.taglib.util.IncludeTag;
 
 import javax.servlet.http.HttpServletRequest;

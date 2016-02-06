@@ -14,9 +14,9 @@
 
 package com.liferay.portlet.configuration.css.web.portlet.configuration.icon;
 
+import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.configuration.icon.BasePortletConfigurationIcon;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portlet.PortletURLFactoryUtil;
 import com.liferay.portlet.configuration.css.web.constants.PortletConfigurationCSSPortletKeys;
 
 import javax.portlet.PortletRequest;

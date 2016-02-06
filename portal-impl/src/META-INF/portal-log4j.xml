@@ -288,6 +288,10 @@
 		<priority value="WARN" />
 	</category>
 
+	<category name="com.liferay.portal.kernel.portlet.InvokerPortlet">
+		<priority value="ERROR" />
+	</category>
+
 	<category name="com.liferay.portal.kernel.portlet.RestrictPortletServletRequest">
 		<priority value="ERROR" />
 	</category>
@@ -902,10 +906,6 @@
 
 	<category name="com.liferay.portal.xml.SAXReaderFactory">
 		<priority value="WARN" />
-	</category>
-
-	<category name="com.liferay.portlet.InvokerPortlet">
-		<priority value="ERROR" />
 	</category>
 
 	<category name="com.liferay.portlet.PortletPreferencesImpl">

@@ -14,18 +14,18 @@
 
 package com.liferay.portlet.asset.social;
 
+import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.social.BaseSocialActivityManager;
 import com.liferay.portal.kernel.social.SocialActivityManager;
 import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
-import com.liferay.portlet.asset.model.AssetEntry;
 import com.liferay.social.kernel.service.SocialActivityLocalService;
 
 /**
  * @author Adolfo Pérez
  */
 @OSGiBeanProperties(
-	property = "model.class.name=com.liferay.portlet.asset.model.AssetEntry",
+	property = "model.class.name=com.liferay.asset.kernel.model.AssetEntry",
 	service = SocialActivityManager.class
 )
 public class AssetEntrySocialActivityManager

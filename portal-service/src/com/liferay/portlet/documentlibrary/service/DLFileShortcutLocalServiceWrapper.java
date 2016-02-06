@@ -68,7 +68,7 @@ public class DLFileShortcutLocalServiceWrapper
 	@Override
 	public void addFileShortcutResources(
 		com.liferay.portlet.documentlibrary.model.DLFileShortcut fileShortcut,
-		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
+		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_dlFileShortcutLocalService.addFileShortcutResources(fileShortcut,
 			modelPermissions);
@@ -84,7 +84,7 @@ public class DLFileShortcutLocalServiceWrapper
 
 	@Override
 	public void addFileShortcutResources(long fileShortcutId,
-		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
+		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_dlFileShortcutLocalService.addFileShortcutResources(fileShortcutId,
 			modelPermissions);

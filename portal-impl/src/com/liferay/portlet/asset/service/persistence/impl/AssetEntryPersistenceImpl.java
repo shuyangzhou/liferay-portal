@@ -16,6 +16,12 @@ package com.liferay.portlet.asset.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.asset.kernel.exception.NoSuchEntryException;
+import com.liferay.asset.kernel.model.AssetEntry;
+import com.liferay.asset.kernel.service.persistence.AssetCategoryPersistence;
+import com.liferay.asset.kernel.service.persistence.AssetEntryPersistence;
+import com.liferay.asset.kernel.service.persistence.AssetTagPersistence;
+
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -43,13 +49,8 @@ import com.liferay.portal.service.ServiceContextThreadLocal;
 import com.liferay.portal.service.persistence.CompanyProvider;
 import com.liferay.portal.service.persistence.CompanyProviderWrapper;
 
-import com.liferay.portlet.asset.exception.NoSuchEntryException;
-import com.liferay.portlet.asset.model.AssetEntry;
 import com.liferay.portlet.asset.model.impl.AssetEntryImpl;
 import com.liferay.portlet.asset.model.impl.AssetEntryModelImpl;
-import com.liferay.portlet.asset.service.persistence.AssetCategoryPersistence;
-import com.liferay.portlet.asset.service.persistence.AssetEntryPersistence;
-import com.liferay.portlet.asset.service.persistence.AssetTagPersistence;
 
 import java.io.Serializable;
 
@@ -73,7 +74,7 @@ import java.util.Set;
  *
  * @author Brian Wing Shun Chan
  * @see AssetEntryPersistence
- * @see com.liferay.portlet.asset.service.persistence.AssetEntryUtil
+ * @see com.liferay.asset.kernel.service.persistence.AssetEntryUtil
  * @generated
  */
 @ProviderType
@@ -4628,7 +4629,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 * @return the asset categories associated with the asset entry
 	 */
 	@Override
-	public List<com.liferay.portlet.asset.model.AssetCategory> getAssetCategories(
+	public List<com.liferay.asset.kernel.model.AssetCategory> getAssetCategories(
 		long pk) {
 		return getAssetCategories(pk, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 	}
@@ -4646,7 +4647,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 * @return the range of asset categories associated with the asset entry
 	 */
 	@Override
-	public List<com.liferay.portlet.asset.model.AssetCategory> getAssetCategories(
+	public List<com.liferay.asset.kernel.model.AssetCategory> getAssetCategories(
 		long pk, int start, int end) {
 		return getAssetCategories(pk, start, end, null);
 	}
@@ -4665,9 +4666,9 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 * @return the ordered range of asset categories associated with the asset entry
 	 */
 	@Override
-	public List<com.liferay.portlet.asset.model.AssetCategory> getAssetCategories(
+	public List<com.liferay.asset.kernel.model.AssetCategory> getAssetCategories(
 		long pk, int start, int end,
-		OrderByComparator<com.liferay.portlet.asset.model.AssetCategory> orderByComparator) {
+		OrderByComparator<com.liferay.asset.kernel.model.AssetCategory> orderByComparator) {
 		return assetEntryToAssetCategoryTableMapper.getRightBaseModels(pk,
 			start, end, orderByComparator);
 	}
@@ -4742,7 +4743,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 */
 	@Override
 	public void addAssetCategory(long pk,
-		com.liferay.portlet.asset.model.AssetCategory assetCategory) {
+		com.liferay.asset.kernel.model.AssetCategory assetCategory) {
 		AssetEntry assetEntry = fetchByPrimaryKey(pk);
 
 		if (assetEntry == null) {
@@ -4788,7 +4789,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 */
 	@Override
 	public void addAssetCategories(long pk,
-		List<com.liferay.portlet.asset.model.AssetCategory> assetCategories) {
+		List<com.liferay.asset.kernel.model.AssetCategory> assetCategories) {
 		long companyId = 0;
 
 		AssetEntry assetEntry = fetchByPrimaryKey(pk);
@@ -4800,7 +4801,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 			companyId = assetEntry.getCompanyId();
 		}
 
-		for (com.liferay.portlet.asset.model.AssetCategory assetCategory : assetCategories) {
+		for (com.liferay.asset.kernel.model.AssetCategory assetCategory : assetCategories) {
 			assetEntryToAssetCategoryTableMapper.addTableMapping(companyId, pk,
 				assetCategory.getPrimaryKey());
 		}
@@ -4836,7 +4837,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 */
 	@Override
 	public void removeAssetCategory(long pk,
-		com.liferay.portlet.asset.model.AssetCategory assetCategory) {
+		com.liferay.asset.kernel.model.AssetCategory assetCategory) {
 		assetEntryToAssetCategoryTableMapper.deleteTableMapping(pk,
 			assetCategory.getPrimaryKey());
 	}
@@ -4863,8 +4864,8 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 */
 	@Override
 	public void removeAssetCategories(long pk,
-		List<com.liferay.portlet.asset.model.AssetCategory> assetCategories) {
-		for (com.liferay.portlet.asset.model.AssetCategory assetCategory : assetCategories) {
+		List<com.liferay.asset.kernel.model.AssetCategory> assetCategories) {
+		for (com.liferay.asset.kernel.model.AssetCategory assetCategory : assetCategories) {
 			assetEntryToAssetCategoryTableMapper.deleteTableMapping(pk,
 				assetCategory.getPrimaryKey());
 		}
@@ -4918,12 +4919,12 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 */
 	@Override
 	public void setAssetCategories(long pk,
-		List<com.liferay.portlet.asset.model.AssetCategory> assetCategories) {
+		List<com.liferay.asset.kernel.model.AssetCategory> assetCategories) {
 		try {
 			long[] assetCategoryPKs = new long[assetCategories.size()];
 
 			for (int i = 0; i < assetCategories.size(); i++) {
-				com.liferay.portlet.asset.model.AssetCategory assetCategory = assetCategories.get(i);
+				com.liferay.asset.kernel.model.AssetCategory assetCategory = assetCategories.get(i);
 
 				assetCategoryPKs[i] = assetCategory.getPrimaryKey();
 			}
@@ -4955,7 +4956,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 * @return the asset tags associated with the asset entry
 	 */
 	@Override
-	public List<com.liferay.portlet.asset.model.AssetTag> getAssetTags(long pk) {
+	public List<com.liferay.asset.kernel.model.AssetTag> getAssetTags(long pk) {
 		return getAssetTags(pk, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 	}
 
@@ -4972,8 +4973,8 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 * @return the range of asset tags associated with the asset entry
 	 */
 	@Override
-	public List<com.liferay.portlet.asset.model.AssetTag> getAssetTags(
-		long pk, int start, int end) {
+	public List<com.liferay.asset.kernel.model.AssetTag> getAssetTags(long pk,
+		int start, int end) {
 		return getAssetTags(pk, start, end, null);
 	}
 
@@ -4991,9 +4992,9 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 * @return the ordered range of asset tags associated with the asset entry
 	 */
 	@Override
-	public List<com.liferay.portlet.asset.model.AssetTag> getAssetTags(
-		long pk, int start, int end,
-		OrderByComparator<com.liferay.portlet.asset.model.AssetTag> orderByComparator) {
+	public List<com.liferay.asset.kernel.model.AssetTag> getAssetTags(long pk,
+		int start, int end,
+		OrderByComparator<com.liferay.asset.kernel.model.AssetTag> orderByComparator) {
 		return assetEntryToAssetTagTableMapper.getRightBaseModels(pk, start,
 			end, orderByComparator);
 	}
@@ -5068,7 +5069,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 */
 	@Override
 	public void addAssetTag(long pk,
-		com.liferay.portlet.asset.model.AssetTag assetTag) {
+		com.liferay.asset.kernel.model.AssetTag assetTag) {
 		AssetEntry assetEntry = fetchByPrimaryKey(pk);
 
 		if (assetEntry == null) {
@@ -5114,7 +5115,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 */
 	@Override
 	public void addAssetTags(long pk,
-		List<com.liferay.portlet.asset.model.AssetTag> assetTags) {
+		List<com.liferay.asset.kernel.model.AssetTag> assetTags) {
 		long companyId = 0;
 
 		AssetEntry assetEntry = fetchByPrimaryKey(pk);
@@ -5126,7 +5127,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 			companyId = assetEntry.getCompanyId();
 		}
 
-		for (com.liferay.portlet.asset.model.AssetTag assetTag : assetTags) {
+		for (com.liferay.asset.kernel.model.AssetTag assetTag : assetTags) {
 			assetEntryToAssetTagTableMapper.addTableMapping(companyId, pk,
 				assetTag.getPrimaryKey());
 		}
@@ -5161,7 +5162,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 */
 	@Override
 	public void removeAssetTag(long pk,
-		com.liferay.portlet.asset.model.AssetTag assetTag) {
+		com.liferay.asset.kernel.model.AssetTag assetTag) {
 		assetEntryToAssetTagTableMapper.deleteTableMapping(pk,
 			assetTag.getPrimaryKey());
 	}
@@ -5187,8 +5188,8 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 */
 	@Override
 	public void removeAssetTags(long pk,
-		List<com.liferay.portlet.asset.model.AssetTag> assetTags) {
-		for (com.liferay.portlet.asset.model.AssetTag assetTag : assetTags) {
+		List<com.liferay.asset.kernel.model.AssetTag> assetTags) {
+		for (com.liferay.asset.kernel.model.AssetTag assetTag : assetTags) {
 			assetEntryToAssetTagTableMapper.deleteTableMapping(pk,
 				assetTag.getPrimaryKey());
 		}
@@ -5242,12 +5243,12 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	 */
 	@Override
 	public void setAssetTags(long pk,
-		List<com.liferay.portlet.asset.model.AssetTag> assetTags) {
+		List<com.liferay.asset.kernel.model.AssetTag> assetTags) {
 		try {
 			long[] assetTagPKs = new long[assetTags.size()];
 
 			for (int i = 0; i < assetTags.size(); i++) {
-				com.liferay.portlet.asset.model.AssetTag assetTag = assetTags.get(i);
+				com.liferay.asset.kernel.model.AssetTag assetTag = assetTags.get(i);
 
 				assetTagPKs[i] = assetTag.getPrimaryKey();
 			}
@@ -5292,10 +5293,10 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	@BeanReference(type = AssetCategoryPersistence.class)
 	protected AssetCategoryPersistence assetCategoryPersistence;
-	protected TableMapper<AssetEntry, com.liferay.portlet.asset.model.AssetCategory> assetEntryToAssetCategoryTableMapper;
+	protected TableMapper<AssetEntry, com.liferay.asset.kernel.model.AssetCategory> assetEntryToAssetCategoryTableMapper;
 	@BeanReference(type = AssetTagPersistence.class)
 	protected AssetTagPersistence assetTagPersistence;
-	protected TableMapper<AssetEntry, com.liferay.portlet.asset.model.AssetTag> assetEntryToAssetTagTableMapper;
+	protected TableMapper<AssetEntry, com.liferay.asset.kernel.model.AssetTag> assetEntryToAssetTagTableMapper;
 	private static final String _SQL_SELECT_ASSETENTRY = "SELECT assetEntry FROM AssetEntry assetEntry";
 	private static final String _SQL_SELECT_ASSETENTRY_WHERE_PKS_IN = "SELECT assetEntry FROM AssetEntry assetEntry WHERE entryId IN (";
 	private static final String _SQL_SELECT_ASSETENTRY_WHERE = "SELECT assetEntry FROM AssetEntry assetEntry WHERE ";
