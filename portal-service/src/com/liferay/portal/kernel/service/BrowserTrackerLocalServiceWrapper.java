@@ -39,8 +39,8 @@ public class BrowserTrackerLocalServiceWrapper
 	* @return the browser tracker that was added
 	*/
 	@Override
-	public com.liferay.portal.model.BrowserTracker addBrowserTracker(
-		com.liferay.portal.model.BrowserTracker browserTracker) {
+	public com.liferay.portal.kernel.model.BrowserTracker addBrowserTracker(
+		com.liferay.portal.kernel.model.BrowserTracker browserTracker) {
 		return _browserTrackerLocalService.addBrowserTracker(browserTracker);
 	}
 
@@ -51,7 +51,7 @@ public class BrowserTrackerLocalServiceWrapper
 	* @return the new browser tracker
 	*/
 	@Override
-	public com.liferay.portal.model.BrowserTracker createBrowserTracker(
+	public com.liferay.portal.kernel.model.BrowserTracker createBrowserTracker(
 		long browserTrackerId) {
 		return _browserTrackerLocalService.createBrowserTracker(browserTrackerId);
 	}
@@ -63,8 +63,8 @@ public class BrowserTrackerLocalServiceWrapper
 	* @return the browser tracker that was removed
 	*/
 	@Override
-	public com.liferay.portal.model.BrowserTracker deleteBrowserTracker(
-		com.liferay.portal.model.BrowserTracker browserTracker) {
+	public com.liferay.portal.kernel.model.BrowserTracker deleteBrowserTracker(
+		com.liferay.portal.kernel.model.BrowserTracker browserTracker) {
 		return _browserTrackerLocalService.deleteBrowserTracker(browserTracker);
 	}
 
@@ -76,7 +76,7 @@ public class BrowserTrackerLocalServiceWrapper
 	* @throws PortalException if a browser tracker with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.BrowserTracker deleteBrowserTracker(
+	public com.liferay.portal.kernel.model.BrowserTracker deleteBrowserTracker(
 		long browserTrackerId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _browserTrackerLocalService.deleteBrowserTracker(browserTrackerId);
@@ -86,8 +86,8 @@ public class BrowserTrackerLocalServiceWrapper
 	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _browserTrackerLocalService.deletePersistedModel(persistedModel);
 	}
@@ -183,7 +183,7 @@ public class BrowserTrackerLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.model.BrowserTracker fetchBrowserTracker(
+	public com.liferay.portal.kernel.model.BrowserTracker fetchBrowserTracker(
 		long browserTrackerId) {
 		return _browserTrackerLocalService.fetchBrowserTracker(browserTrackerId);
 	}
@@ -201,14 +201,14 @@ public class BrowserTrackerLocalServiceWrapper
 	* @throws PortalException if a browser tracker with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.BrowserTracker getBrowserTracker(
+	public com.liferay.portal.kernel.model.BrowserTracker getBrowserTracker(
 		long browserTrackerId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _browserTrackerLocalService.getBrowserTracker(browserTrackerId);
 	}
 
 	@Override
-	public com.liferay.portal.model.BrowserTracker getBrowserTracker(
+	public com.liferay.portal.kernel.model.BrowserTracker getBrowserTracker(
 		long userId, long browserKey) {
 		return _browserTrackerLocalService.getBrowserTracker(userId, browserKey);
 	}
@@ -225,7 +225,7 @@ public class BrowserTrackerLocalServiceWrapper
 	* @return the range of browser trackers
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.BrowserTracker> getBrowserTrackers(
+	public java.util.List<com.liferay.portal.kernel.model.BrowserTracker> getBrowserTrackers(
 		int start, int end) {
 		return _browserTrackerLocalService.getBrowserTrackers(start, end);
 	}
@@ -256,7 +256,7 @@ public class BrowserTrackerLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.model.PersistedModel getPersistedModel(
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _browserTrackerLocalService.getPersistedModel(primaryKeyObj);
@@ -269,13 +269,13 @@ public class BrowserTrackerLocalServiceWrapper
 	* @return the browser tracker that was updated
 	*/
 	@Override
-	public com.liferay.portal.model.BrowserTracker updateBrowserTracker(
-		com.liferay.portal.model.BrowserTracker browserTracker) {
+	public com.liferay.portal.kernel.model.BrowserTracker updateBrowserTracker(
+		com.liferay.portal.kernel.model.BrowserTracker browserTracker) {
 		return _browserTrackerLocalService.updateBrowserTracker(browserTracker);
 	}
 
 	@Override
-	public com.liferay.portal.model.BrowserTracker updateBrowserTracker(
+	public com.liferay.portal.kernel.model.BrowserTracker updateBrowserTracker(
 		long userId, long browserKey) {
 		return _browserTrackerLocalService.updateBrowserTracker(userId,
 			browserKey);

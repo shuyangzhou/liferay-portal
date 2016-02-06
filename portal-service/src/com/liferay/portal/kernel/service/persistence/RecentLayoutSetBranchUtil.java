@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
-import com.liferay.portal.model.RecentLayoutSetBranch;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.RecentLayoutSetBranch;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -46,28 +46,28 @@ public class RecentLayoutSetBranchUtil {
 	 */
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache()
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache()
 	 */
 	public static void clearCache() {
 		getPersistence().clearCache();
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static void clearCache(RecentLayoutSetBranch recentLayoutSetBranch) {
 		getPersistence().clearCache(recentLayoutSetBranch);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
 	public static long countWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<RecentLayoutSetBranch> findWithDynamicQuery(
 		DynamicQuery dynamicQuery) {
@@ -75,7 +75,7 @@ public class RecentLayoutSetBranchUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
 	public static List<RecentLayoutSetBranch> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
@@ -83,7 +83,7 @@ public class RecentLayoutSetBranchUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
 	public static List<RecentLayoutSetBranch> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
@@ -94,7 +94,7 @@ public class RecentLayoutSetBranchUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static RecentLayoutSetBranch update(
 		RecentLayoutSetBranch recentLayoutSetBranch) {
@@ -102,7 +102,7 @@ public class RecentLayoutSetBranchUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
 	public static RecentLayoutSetBranch update(
 		RecentLayoutSetBranch recentLayoutSetBranch,
@@ -190,7 +190,7 @@ public class RecentLayoutSetBranchUtil {
 	*/
 	public static RecentLayoutSetBranch findByGroupId_First(long groupId,
 		OrderByComparator<RecentLayoutSetBranch> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRecentLayoutSetBranchException {
+		throws com.liferay.portal.kernel.exception.NoSuchRecentLayoutSetBranchException {
 		return getPersistence().findByGroupId_First(groupId, orderByComparator);
 	}
 
@@ -216,7 +216,7 @@ public class RecentLayoutSetBranchUtil {
 	*/
 	public static RecentLayoutSetBranch findByGroupId_Last(long groupId,
 		OrderByComparator<RecentLayoutSetBranch> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRecentLayoutSetBranchException {
+		throws com.liferay.portal.kernel.exception.NoSuchRecentLayoutSetBranchException {
 		return getPersistence().findByGroupId_Last(groupId, orderByComparator);
 	}
 
@@ -244,7 +244,7 @@ public class RecentLayoutSetBranchUtil {
 	public static RecentLayoutSetBranch[] findByGroupId_PrevAndNext(
 		long recentLayoutSetBranchId, long groupId,
 		OrderByComparator<RecentLayoutSetBranch> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRecentLayoutSetBranchException {
+		throws com.liferay.portal.kernel.exception.NoSuchRecentLayoutSetBranchException {
 		return getPersistence()
 				   .findByGroupId_PrevAndNext(recentLayoutSetBranchId, groupId,
 			orderByComparator);
@@ -349,7 +349,7 @@ public class RecentLayoutSetBranchUtil {
 	*/
 	public static RecentLayoutSetBranch findByUserId_First(long userId,
 		OrderByComparator<RecentLayoutSetBranch> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRecentLayoutSetBranchException {
+		throws com.liferay.portal.kernel.exception.NoSuchRecentLayoutSetBranchException {
 		return getPersistence().findByUserId_First(userId, orderByComparator);
 	}
 
@@ -375,7 +375,7 @@ public class RecentLayoutSetBranchUtil {
 	*/
 	public static RecentLayoutSetBranch findByUserId_Last(long userId,
 		OrderByComparator<RecentLayoutSetBranch> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRecentLayoutSetBranchException {
+		throws com.liferay.portal.kernel.exception.NoSuchRecentLayoutSetBranchException {
 		return getPersistence().findByUserId_Last(userId, orderByComparator);
 	}
 
@@ -403,7 +403,7 @@ public class RecentLayoutSetBranchUtil {
 	public static RecentLayoutSetBranch[] findByUserId_PrevAndNext(
 		long recentLayoutSetBranchId, long userId,
 		OrderByComparator<RecentLayoutSetBranch> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRecentLayoutSetBranchException {
+		throws com.liferay.portal.kernel.exception.NoSuchRecentLayoutSetBranchException {
 		return getPersistence()
 				   .findByUserId_PrevAndNext(recentLayoutSetBranchId, userId,
 			orderByComparator);
@@ -512,7 +512,7 @@ public class RecentLayoutSetBranchUtil {
 	public static RecentLayoutSetBranch findByLayoutSetBranchId_First(
 		long layoutSetBranchId,
 		OrderByComparator<RecentLayoutSetBranch> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRecentLayoutSetBranchException {
+		throws com.liferay.portal.kernel.exception.NoSuchRecentLayoutSetBranchException {
 		return getPersistence()
 				   .findByLayoutSetBranchId_First(layoutSetBranchId,
 			orderByComparator);
@@ -544,7 +544,7 @@ public class RecentLayoutSetBranchUtil {
 	public static RecentLayoutSetBranch findByLayoutSetBranchId_Last(
 		long layoutSetBranchId,
 		OrderByComparator<RecentLayoutSetBranch> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRecentLayoutSetBranchException {
+		throws com.liferay.portal.kernel.exception.NoSuchRecentLayoutSetBranchException {
 		return getPersistence()
 				   .findByLayoutSetBranchId_Last(layoutSetBranchId,
 			orderByComparator);
@@ -577,7 +577,7 @@ public class RecentLayoutSetBranchUtil {
 	public static RecentLayoutSetBranch[] findByLayoutSetBranchId_PrevAndNext(
 		long recentLayoutSetBranchId, long layoutSetBranchId,
 		OrderByComparator<RecentLayoutSetBranch> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchRecentLayoutSetBranchException {
+		throws com.liferay.portal.kernel.exception.NoSuchRecentLayoutSetBranchException {
 		return getPersistence()
 				   .findByLayoutSetBranchId_PrevAndNext(recentLayoutSetBranchId,
 			layoutSetBranchId, orderByComparator);
@@ -611,7 +611,7 @@ public class RecentLayoutSetBranchUtil {
 	* @throws NoSuchRecentLayoutSetBranchException if a matching recent layout set branch could not be found
 	*/
 	public static RecentLayoutSetBranch findByU_L(long userId, long layoutSetId)
-		throws com.liferay.portal.exception.NoSuchRecentLayoutSetBranchException {
+		throws com.liferay.portal.kernel.exception.NoSuchRecentLayoutSetBranchException {
 		return getPersistence().findByU_L(userId, layoutSetId);
 	}
 
@@ -649,7 +649,7 @@ public class RecentLayoutSetBranchUtil {
 	*/
 	public static RecentLayoutSetBranch removeByU_L(long userId,
 		long layoutSetId)
-		throws com.liferay.portal.exception.NoSuchRecentLayoutSetBranchException {
+		throws com.liferay.portal.kernel.exception.NoSuchRecentLayoutSetBranchException {
 		return getPersistence().removeByU_L(userId, layoutSetId);
 	}
 
@@ -701,7 +701,7 @@ public class RecentLayoutSetBranchUtil {
 	* @throws NoSuchRecentLayoutSetBranchException if a recent layout set branch with the primary key could not be found
 	*/
 	public static RecentLayoutSetBranch remove(long recentLayoutSetBranchId)
-		throws com.liferay.portal.exception.NoSuchRecentLayoutSetBranchException {
+		throws com.liferay.portal.kernel.exception.NoSuchRecentLayoutSetBranchException {
 		return getPersistence().remove(recentLayoutSetBranchId);
 	}
 
@@ -719,7 +719,7 @@ public class RecentLayoutSetBranchUtil {
 	*/
 	public static RecentLayoutSetBranch findByPrimaryKey(
 		long recentLayoutSetBranchId)
-		throws com.liferay.portal.exception.NoSuchRecentLayoutSetBranchException {
+		throws com.liferay.portal.kernel.exception.NoSuchRecentLayoutSetBranchException {
 		return getPersistence().findByPrimaryKey(recentLayoutSetBranchId);
 	}
 

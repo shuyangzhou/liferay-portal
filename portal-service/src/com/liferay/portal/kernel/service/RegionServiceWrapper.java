@@ -31,20 +31,20 @@ public class RegionServiceWrapper implements RegionService,
 	}
 
 	@Override
-	public com.liferay.portal.model.Region addRegion(long countryId,
+	public com.liferay.portal.kernel.model.Region addRegion(long countryId,
 		java.lang.String regionCode, java.lang.String name, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _regionService.addRegion(countryId, regionCode, name, active);
 	}
 
 	@Override
-	public com.liferay.portal.model.Region fetchRegion(long countryId,
+	public com.liferay.portal.kernel.model.Region fetchRegion(long countryId,
 		java.lang.String regionCode) {
 		return _regionService.fetchRegion(countryId, regionCode);
 	}
 
 	@Override
-	public com.liferay.portal.model.Region fetchRegion(long regionId) {
+	public com.liferay.portal.kernel.model.Region fetchRegion(long regionId) {
 		return _regionService.fetchRegion(regionId);
 	}
 
@@ -59,37 +59,37 @@ public class RegionServiceWrapper implements RegionService,
 	}
 
 	@Override
-	public com.liferay.portal.model.Region getRegion(long countryId,
+	public com.liferay.portal.kernel.model.Region getRegion(long countryId,
 		java.lang.String regionCode)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _regionService.getRegion(countryId, regionCode);
 	}
 
 	@Override
-	public com.liferay.portal.model.Region getRegion(long regionId)
+	public com.liferay.portal.kernel.model.Region getRegion(long regionId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _regionService.getRegion(regionId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Region> getRegions() {
+	public java.util.List<com.liferay.portal.kernel.model.Region> getRegions() {
 		return _regionService.getRegions();
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Region> getRegions(
+	public java.util.List<com.liferay.portal.kernel.model.Region> getRegions(
 		boolean active) {
 		return _regionService.getRegions(active);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Region> getRegions(
+	public java.util.List<com.liferay.portal.kernel.model.Region> getRegions(
 		long countryId) {
 		return _regionService.getRegions(countryId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Region> getRegions(
+	public java.util.List<com.liferay.portal.kernel.model.Region> getRegions(
 		long countryId, boolean active) {
 		return _regionService.getRegions(countryId, active);
 	}

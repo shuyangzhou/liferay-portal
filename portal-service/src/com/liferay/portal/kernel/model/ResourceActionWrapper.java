@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -104,7 +104,7 @@ public class ResourceActionWrapper implements ResourceAction,
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.model.ResourceAction resourceAction) {
+	public int compareTo(com.liferay.portal.kernel.model.ResourceAction resourceAction) {
 		return _resourceAction.compareTo(resourceAction);
 	}
 
@@ -294,12 +294,12 @@ public class ResourceActionWrapper implements ResourceAction,
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.ResourceAction> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.ResourceAction> toCacheModel() {
 		return _resourceAction.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.ResourceAction toEscapedModel() {
+	public com.liferay.portal.kernel.model.ResourceAction toEscapedModel() {
 		return new ResourceActionWrapper(_resourceAction.toEscapedModel());
 	}
 
@@ -309,7 +309,7 @@ public class ResourceActionWrapper implements ResourceAction,
 	}
 
 	@Override
-	public com.liferay.portal.model.ResourceAction toUnescapedModel() {
+	public com.liferay.portal.kernel.model.ResourceAction toUnescapedModel() {
 		return new ResourceActionWrapper(_resourceAction.toUnescapedModel());
 	}
 

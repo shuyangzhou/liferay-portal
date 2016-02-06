@@ -31,10 +31,10 @@ public class WebsiteLocalServiceWrapper implements WebsiteLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.Website addWebsite(long userId,
+	public com.liferay.portal.kernel.model.Website addWebsite(long userId,
 		java.lang.String className, long classPK, java.lang.String url,
 		long typeId, boolean primary,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _websiteLocalService.addWebsite(userId, className, classPK, url,
 			typeId, primary, serviceContext);
@@ -47,8 +47,8 @@ public class WebsiteLocalServiceWrapper implements WebsiteLocalService,
 	* @return the website that was added
 	*/
 	@Override
-	public com.liferay.portal.model.Website addWebsite(
-		com.liferay.portal.model.Website website) {
+	public com.liferay.portal.kernel.model.Website addWebsite(
+		com.liferay.portal.kernel.model.Website website) {
 		return _websiteLocalService.addWebsite(website);
 	}
 
@@ -59,7 +59,7 @@ public class WebsiteLocalServiceWrapper implements WebsiteLocalService,
 	* @return the new website
 	*/
 	@Override
-	public com.liferay.portal.model.Website createWebsite(long websiteId) {
+	public com.liferay.portal.kernel.model.Website createWebsite(long websiteId) {
 		return _websiteLocalService.createWebsite(websiteId);
 	}
 
@@ -67,8 +67,8 @@ public class WebsiteLocalServiceWrapper implements WebsiteLocalService,
 	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _websiteLocalService.deletePersistedModel(persistedModel);
 	}
@@ -80,8 +80,8 @@ public class WebsiteLocalServiceWrapper implements WebsiteLocalService,
 	* @return the website that was removed
 	*/
 	@Override
-	public com.liferay.portal.model.Website deleteWebsite(
-		com.liferay.portal.model.Website website) {
+	public com.liferay.portal.kernel.model.Website deleteWebsite(
+		com.liferay.portal.kernel.model.Website website) {
 		return _websiteLocalService.deleteWebsite(website);
 	}
 
@@ -93,7 +93,7 @@ public class WebsiteLocalServiceWrapper implements WebsiteLocalService,
 	* @throws PortalException if a website with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.Website deleteWebsite(long websiteId)
+	public com.liferay.portal.kernel.model.Website deleteWebsite(long websiteId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _websiteLocalService.deleteWebsite(websiteId);
 	}
@@ -189,7 +189,7 @@ public class WebsiteLocalServiceWrapper implements WebsiteLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.Website fetchWebsite(long websiteId) {
+	public com.liferay.portal.kernel.model.Website fetchWebsite(long websiteId) {
 		return _websiteLocalService.fetchWebsite(websiteId);
 	}
 
@@ -201,7 +201,7 @@ public class WebsiteLocalServiceWrapper implements WebsiteLocalService,
 	* @return the matching website, or <code>null</code> if a matching website could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.Website fetchWebsiteByUuidAndCompanyId(
+	public com.liferay.portal.kernel.model.Website fetchWebsiteByUuidAndCompanyId(
 		java.lang.String uuid, long companyId) {
 		return _websiteLocalService.fetchWebsiteByUuidAndCompanyId(uuid,
 			companyId);
@@ -234,7 +234,7 @@ public class WebsiteLocalServiceWrapper implements WebsiteLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.PersistedModel getPersistedModel(
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _websiteLocalService.getPersistedModel(primaryKeyObj);
@@ -248,7 +248,7 @@ public class WebsiteLocalServiceWrapper implements WebsiteLocalService,
 	* @throws PortalException if a website with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.Website getWebsite(long websiteId)
+	public com.liferay.portal.kernel.model.Website getWebsite(long websiteId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _websiteLocalService.getWebsite(websiteId);
 	}
@@ -262,19 +262,19 @@ public class WebsiteLocalServiceWrapper implements WebsiteLocalService,
 	* @throws PortalException if a matching website could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.Website getWebsiteByUuidAndCompanyId(
+	public com.liferay.portal.kernel.model.Website getWebsiteByUuidAndCompanyId(
 		java.lang.String uuid, long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _websiteLocalService.getWebsiteByUuidAndCompanyId(uuid, companyId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Website> getWebsites() {
+	public java.util.List<com.liferay.portal.kernel.model.Website> getWebsites() {
 		return _websiteLocalService.getWebsites();
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Website> getWebsites(
+	public java.util.List<com.liferay.portal.kernel.model.Website> getWebsites(
 		long companyId, java.lang.String className, long classPK) {
 		return _websiteLocalService.getWebsites(companyId, className, classPK);
 	}
@@ -291,7 +291,7 @@ public class WebsiteLocalServiceWrapper implements WebsiteLocalService,
 	* @return the range of websites
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Website> getWebsites(
+	public java.util.List<com.liferay.portal.kernel.model.Website> getWebsites(
 		int start, int end) {
 		return _websiteLocalService.getWebsites(start, end);
 	}
@@ -313,13 +313,13 @@ public class WebsiteLocalServiceWrapper implements WebsiteLocalService,
 	* @return the website that was updated
 	*/
 	@Override
-	public com.liferay.portal.model.Website updateWebsite(
-		com.liferay.portal.model.Website website) {
+	public com.liferay.portal.kernel.model.Website updateWebsite(
+		com.liferay.portal.kernel.model.Website website) {
 		return _websiteLocalService.updateWebsite(website);
 	}
 
 	@Override
-	public com.liferay.portal.model.Website updateWebsite(long websiteId,
+	public com.liferay.portal.kernel.model.Website updateWebsite(long websiteId,
 		java.lang.String url, long typeId, boolean primary)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _websiteLocalService.updateWebsite(websiteId, url, typeId,

@@ -31,8 +31,8 @@ import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.model.LayoutFriendlyURL;
-import com.liferay.portal.model.PersistedModel;
+import com.liferay.portal.kernel.model.LayoutFriendlyURL;
+import com.liferay.portal.kernel.model.PersistedModel;
 
 import java.io.Serializable;
 
@@ -76,13 +76,13 @@ public interface LayoutFriendlyURLLocalService extends BaseLocalService,
 	public LayoutFriendlyURL addLayoutFriendlyURL(long userId, long companyId,
 		long groupId, long plid, boolean privateLayout,
 		java.lang.String friendlyURL, java.lang.String languageId,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	public List<LayoutFriendlyURL> addLayoutFriendlyURLs(long userId,
 		long companyId, long groupId, long plid, boolean privateLayout,
 		Map<Locale, java.lang.String> friendlyURLMap,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -337,12 +337,12 @@ public interface LayoutFriendlyURLLocalService extends BaseLocalService,
 	public LayoutFriendlyURL updateLayoutFriendlyURL(long userId,
 		long companyId, long groupId, long plid, boolean privateLayout,
 		java.lang.String friendlyURL, java.lang.String languageId,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	public List<LayoutFriendlyURL> updateLayoutFriendlyURLs(long userId,
 		long companyId, long groupId, long plid, boolean privateLayout,
 		Map<Locale, java.lang.String> friendlyURLMap,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 }

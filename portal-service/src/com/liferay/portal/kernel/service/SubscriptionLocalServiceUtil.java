@@ -47,8 +47,8 @@ public class SubscriptionLocalServiceUtil {
 	* @param subscription the subscription
 	* @return the subscription that was added
 	*/
-	public static com.liferay.portal.model.Subscription addSubscription(
-		com.liferay.portal.model.Subscription subscription) {
+	public static com.liferay.portal.kernel.model.Subscription addSubscription(
+		com.liferay.portal.kernel.model.Subscription subscription) {
 		return getService().addSubscription(subscription);
 	}
 
@@ -73,7 +73,7 @@ public class SubscriptionLocalServiceUtil {
 	* @param classPK the primary key of the entity's instance
 	* @return the subscription
 	*/
-	public static com.liferay.portal.model.Subscription addSubscription(
+	public static com.liferay.portal.kernel.model.Subscription addSubscription(
 		long userId, long groupId, java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().addSubscription(userId, groupId, className, classPK);
@@ -100,7 +100,7 @@ public class SubscriptionLocalServiceUtil {
 	* @param frequency the frequency for notifications
 	* @return the subscription
 	*/
-	public static com.liferay.portal.model.Subscription addSubscription(
+	public static com.liferay.portal.kernel.model.Subscription addSubscription(
 		long userId, long groupId, java.lang.String className, long classPK,
 		java.lang.String frequency)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -115,7 +115,7 @@ public class SubscriptionLocalServiceUtil {
 	* @param subscriptionId the primary key for the new subscription
 	* @return the new subscription
 	*/
-	public static com.liferay.portal.model.Subscription createSubscription(
+	public static com.liferay.portal.kernel.model.Subscription createSubscription(
 		long subscriptionId) {
 		return getService().createSubscription(subscriptionId);
 	}
@@ -123,8 +123,8 @@ public class SubscriptionLocalServiceUtil {
 	/**
 	* @throws PortalException
 	*/
-	public static com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -136,8 +136,8 @@ public class SubscriptionLocalServiceUtil {
 	* @return the subscription that was removed
 	* @throws PortalException
 	*/
-	public static com.liferay.portal.model.Subscription deleteSubscription(
-		com.liferay.portal.model.Subscription subscription)
+	public static com.liferay.portal.kernel.model.Subscription deleteSubscription(
+		com.liferay.portal.kernel.model.Subscription subscription)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteSubscription(subscription);
 	}
@@ -149,7 +149,7 @@ public class SubscriptionLocalServiceUtil {
 	* @return the subscription that was removed
 	* @throws PortalException if a subscription with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.Subscription deleteSubscription(
+	public static com.liferay.portal.kernel.model.Subscription deleteSubscription(
 		long subscriptionId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteSubscription(subscriptionId);
@@ -275,13 +275,13 @@ public class SubscriptionLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.portal.model.Subscription fetchSubscription(
+	public static com.liferay.portal.kernel.model.Subscription fetchSubscription(
 		long companyId, long userId, java.lang.String className, long classPK) {
 		return getService()
 				   .fetchSubscription(companyId, userId, className, classPK);
 	}
 
-	public static com.liferay.portal.model.Subscription fetchSubscription(
+	public static com.liferay.portal.kernel.model.Subscription fetchSubscription(
 		long subscriptionId) {
 		return getService().fetchSubscription(subscriptionId);
 	}
@@ -303,7 +303,7 @@ public class SubscriptionLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.model.PersistedModel getPersistedModel(
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getPersistedModel(primaryKeyObj);
@@ -318,7 +318,7 @@ public class SubscriptionLocalServiceUtil {
 	* @param classPK the primary key of the entity's instance
 	* @return the subscription of the user to the entity
 	*/
-	public static com.liferay.portal.model.Subscription getSubscription(
+	public static com.liferay.portal.kernel.model.Subscription getSubscription(
 		long companyId, long userId, java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
@@ -332,7 +332,7 @@ public class SubscriptionLocalServiceUtil {
 	* @return the subscription
 	* @throws PortalException if a subscription with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.Subscription getSubscription(
+	public static com.liferay.portal.kernel.model.Subscription getSubscription(
 		long subscriptionId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getSubscription(subscriptionId);
@@ -346,7 +346,7 @@ public class SubscriptionLocalServiceUtil {
 	* @param classPK the primary key of the entity's instance
 	* @return the subscriptions to the entity
 	*/
-	public static java.util.List<com.liferay.portal.model.Subscription> getSubscriptions(
+	public static java.util.List<com.liferay.portal.kernel.model.Subscription> getSubscriptions(
 		long companyId, java.lang.String className, long classPK) {
 		return getService().getSubscriptions(companyId, className, classPK);
 	}
@@ -360,7 +360,7 @@ public class SubscriptionLocalServiceUtil {
 	* @param classPKs the primary key of the entities
 	* @return the subscriptions of the user to the entities
 	*/
-	public static java.util.List<com.liferay.portal.model.Subscription> getSubscriptions(
+	public static java.util.List<com.liferay.portal.kernel.model.Subscription> getSubscriptions(
 		long companyId, long userId, java.lang.String className, long[] classPKs) {
 		return getService()
 				   .getSubscriptions(companyId, userId, className, classPKs);
@@ -377,7 +377,7 @@ public class SubscriptionLocalServiceUtil {
 	* @param end the upper bound of the range of subscriptions (not inclusive)
 	* @return the range of subscriptions
 	*/
-	public static java.util.List<com.liferay.portal.model.Subscription> getSubscriptions(
+	public static java.util.List<com.liferay.portal.kernel.model.Subscription> getSubscriptions(
 		int start, int end) {
 		return getService().getSubscriptions(start, end);
 	}
@@ -399,7 +399,7 @@ public class SubscriptionLocalServiceUtil {
 	* @param className the entity's class name
 	* @return the subscriptions of the user to the entities with the class name
 	*/
-	public static java.util.List<com.liferay.portal.model.Subscription> getUserSubscriptions(
+	public static java.util.List<com.liferay.portal.kernel.model.Subscription> getUserSubscriptions(
 		long userId, java.lang.String className) {
 		return getService().getUserSubscriptions(userId, className);
 	}
@@ -413,9 +413,9 @@ public class SubscriptionLocalServiceUtil {
 	* @param orderByComparator the comparator to order the subscriptions
 	* @return the range of subscriptions of the user
 	*/
-	public static java.util.List<com.liferay.portal.model.Subscription> getUserSubscriptions(
+	public static java.util.List<com.liferay.portal.kernel.model.Subscription> getUserSubscriptions(
 		long userId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Subscription> orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Subscription> orderByComparator) {
 		return getService()
 				   .getUserSubscriptions(userId, start, end, orderByComparator);
 	}
@@ -467,8 +467,8 @@ public class SubscriptionLocalServiceUtil {
 	* @param subscription the subscription
 	* @return the subscription that was updated
 	*/
-	public static com.liferay.portal.model.Subscription updateSubscription(
-		com.liferay.portal.model.Subscription subscription) {
+	public static com.liferay.portal.kernel.model.Subscription updateSubscription(
+		com.liferay.portal.kernel.model.Subscription subscription) {
 		return getService().updateSubscription(subscription);
 	}
 

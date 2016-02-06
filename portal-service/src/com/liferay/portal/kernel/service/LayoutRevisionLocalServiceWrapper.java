@@ -39,13 +39,13 @@ public class LayoutRevisionLocalServiceWrapper
 	* @return the layout revision that was added
 	*/
 	@Override
-	public com.liferay.portal.model.LayoutRevision addLayoutRevision(
-		com.liferay.portal.model.LayoutRevision layoutRevision) {
+	public com.liferay.portal.kernel.model.LayoutRevision addLayoutRevision(
+		com.liferay.portal.kernel.model.LayoutRevision layoutRevision) {
 		return _layoutRevisionLocalService.addLayoutRevision(layoutRevision);
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutRevision addLayoutRevision(
+	public com.liferay.portal.kernel.model.LayoutRevision addLayoutRevision(
 		long userId, long layoutSetBranchId, long layoutBranchId,
 		long parentLayoutRevisionId, boolean head, long plid,
 		long portletPreferencesPlid, boolean privateLayout,
@@ -54,7 +54,7 @@ public class LayoutRevisionLocalServiceWrapper
 		java.lang.String robots, java.lang.String typeSettings,
 		boolean iconImage, long iconImageId, java.lang.String themeId,
 		java.lang.String colorSchemeId, java.lang.String css,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutRevisionLocalService.addLayoutRevision(userId,
 			layoutSetBranchId, layoutBranchId, parentLayoutRevisionId, head,
@@ -70,7 +70,7 @@ public class LayoutRevisionLocalServiceWrapper
 	* @return the new layout revision
 	*/
 	@Override
-	public com.liferay.portal.model.LayoutRevision createLayoutRevision(
+	public com.liferay.portal.kernel.model.LayoutRevision createLayoutRevision(
 		long layoutRevisionId) {
 		return _layoutRevisionLocalService.createLayoutRevision(layoutRevisionId);
 	}
@@ -89,8 +89,8 @@ public class LayoutRevisionLocalServiceWrapper
 	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.portal.model.LayoutRevision deleteLayoutRevision(
-		com.liferay.portal.model.LayoutRevision layoutRevision)
+	public com.liferay.portal.kernel.model.LayoutRevision deleteLayoutRevision(
+		com.liferay.portal.kernel.model.LayoutRevision layoutRevision)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutRevisionLocalService.deleteLayoutRevision(layoutRevision);
 	}
@@ -103,7 +103,7 @@ public class LayoutRevisionLocalServiceWrapper
 	* @throws PortalException if a layout revision with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.LayoutRevision deleteLayoutRevision(
+	public com.liferay.portal.kernel.model.LayoutRevision deleteLayoutRevision(
 		long layoutRevisionId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutRevisionLocalService.deleteLayoutRevision(layoutRevisionId);
@@ -134,8 +134,8 @@ public class LayoutRevisionLocalServiceWrapper
 	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutRevisionLocalService.deletePersistedModel(persistedModel);
 	}
@@ -226,26 +226,26 @@ public class LayoutRevisionLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutRevision fetchLastLayoutRevision(
+	public com.liferay.portal.kernel.model.LayoutRevision fetchLastLayoutRevision(
 		long plid, boolean head) {
 		return _layoutRevisionLocalService.fetchLastLayoutRevision(plid, head);
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutRevision fetchLatestLayoutRevision(
+	public com.liferay.portal.kernel.model.LayoutRevision fetchLatestLayoutRevision(
 		long layoutSetBranchId, long plid) {
 		return _layoutRevisionLocalService.fetchLatestLayoutRevision(layoutSetBranchId,
 			plid);
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutRevision fetchLayoutRevision(
+	public com.liferay.portal.kernel.model.LayoutRevision fetchLayoutRevision(
 		long layoutRevisionId) {
 		return _layoutRevisionLocalService.fetchLayoutRevision(layoutRevisionId);
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutRevision fetchLayoutRevision(
+	public com.liferay.portal.kernel.model.LayoutRevision fetchLayoutRevision(
 		long layoutSetBranchId, boolean head, long plid) {
 		return _layoutRevisionLocalService.fetchLayoutRevision(layoutSetBranchId,
 			head, plid);
@@ -257,16 +257,16 @@ public class LayoutRevisionLocalServiceWrapper
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.LayoutRevision> getChildLayoutRevisions(
+	public java.util.List<com.liferay.portal.kernel.model.LayoutRevision> getChildLayoutRevisions(
 		long layoutSetBranchId, long parentLayoutRevision, long plid,
 		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.LayoutRevision> orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.LayoutRevision> orderByComparator) {
 		return _layoutRevisionLocalService.getChildLayoutRevisions(layoutSetBranchId,
 			parentLayoutRevision, plid, start, end, orderByComparator);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.LayoutRevision> getChildLayoutRevisions(
+	public java.util.List<com.liferay.portal.kernel.model.LayoutRevision> getChildLayoutRevisions(
 		long layoutSetBranchId, long parentLayoutRevisionId, long plid) {
 		return _layoutRevisionLocalService.getChildLayoutRevisions(layoutSetBranchId,
 			parentLayoutRevisionId, plid);
@@ -292,14 +292,14 @@ public class LayoutRevisionLocalServiceWrapper
 	* @throws PortalException if a layout revision with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.LayoutRevision getLayoutRevision(
+	public com.liferay.portal.kernel.model.LayoutRevision getLayoutRevision(
 		long layoutRevisionId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutRevisionLocalService.getLayoutRevision(layoutRevisionId);
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutRevision getLayoutRevision(
+	public com.liferay.portal.kernel.model.LayoutRevision getLayoutRevision(
 		long layoutSetBranchId, long layoutBranchId, long plid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutRevisionLocalService.getLayoutRevision(layoutSetBranchId,
@@ -307,7 +307,7 @@ public class LayoutRevisionLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutRevision getLayoutRevision(
+	public com.liferay.portal.kernel.model.LayoutRevision getLayoutRevision(
 		long layoutSetBranchId, long plid, boolean head)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutRevisionLocalService.getLayoutRevision(layoutSetBranchId,
@@ -315,52 +315,52 @@ public class LayoutRevisionLocalServiceWrapper
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.LayoutRevision> getLayoutRevisions(
+	public java.util.List<com.liferay.portal.kernel.model.LayoutRevision> getLayoutRevisions(
 		long layoutSetBranchId, boolean head) {
 		return _layoutRevisionLocalService.getLayoutRevisions(layoutSetBranchId,
 			head);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.LayoutRevision> getLayoutRevisions(
+	public java.util.List<com.liferay.portal.kernel.model.LayoutRevision> getLayoutRevisions(
 		long layoutSetBranchId, long layoutBranchId, long plid, int start,
 		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.LayoutRevision> orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.LayoutRevision> orderByComparator) {
 		return _layoutRevisionLocalService.getLayoutRevisions(layoutSetBranchId,
 			layoutBranchId, plid, start, end, orderByComparator);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.LayoutRevision> getLayoutRevisions(
+	public java.util.List<com.liferay.portal.kernel.model.LayoutRevision> getLayoutRevisions(
 		long layoutSetBranchId, long plid) {
 		return _layoutRevisionLocalService.getLayoutRevisions(layoutSetBranchId,
 			plid);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.LayoutRevision> getLayoutRevisions(
+	public java.util.List<com.liferay.portal.kernel.model.LayoutRevision> getLayoutRevisions(
 		long layoutSetBranchId, long plid, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.LayoutRevision> orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.LayoutRevision> orderByComparator) {
 		return _layoutRevisionLocalService.getLayoutRevisions(layoutSetBranchId,
 			plid, start, end, orderByComparator);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.LayoutRevision> getLayoutRevisions(
+	public java.util.List<com.liferay.portal.kernel.model.LayoutRevision> getLayoutRevisions(
 		long layoutSetBranchId, long plid, int status) {
 		return _layoutRevisionLocalService.getLayoutRevisions(layoutSetBranchId,
 			plid, status);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.LayoutRevision> getLayoutRevisions(
+	public java.util.List<com.liferay.portal.kernel.model.LayoutRevision> getLayoutRevisions(
 		long layoutSetBranchId, int status) {
 		return _layoutRevisionLocalService.getLayoutRevisions(layoutSetBranchId,
 			status);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.LayoutRevision> getLayoutRevisions(
+	public java.util.List<com.liferay.portal.kernel.model.LayoutRevision> getLayoutRevisions(
 		long plid) {
 		return _layoutRevisionLocalService.getLayoutRevisions(plid);
 	}
@@ -377,7 +377,7 @@ public class LayoutRevisionLocalServiceWrapper
 	* @return the range of layout revisions
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.LayoutRevision> getLayoutRevisions(
+	public java.util.List<com.liferay.portal.kernel.model.LayoutRevision> getLayoutRevisions(
 		int start, int end) {
 		return _layoutRevisionLocalService.getLayoutRevisions(start, end);
 	}
@@ -410,7 +410,7 @@ public class LayoutRevisionLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.model.PersistedModel getPersistedModel(
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutRevisionLocalService.getPersistedModel(primaryKeyObj);
@@ -423,20 +423,20 @@ public class LayoutRevisionLocalServiceWrapper
 	* @return the layout revision that was updated
 	*/
 	@Override
-	public com.liferay.portal.model.LayoutRevision updateLayoutRevision(
-		com.liferay.portal.model.LayoutRevision layoutRevision) {
+	public com.liferay.portal.kernel.model.LayoutRevision updateLayoutRevision(
+		com.liferay.portal.kernel.model.LayoutRevision layoutRevision) {
 		return _layoutRevisionLocalService.updateLayoutRevision(layoutRevision);
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutRevision updateLayoutRevision(
+	public com.liferay.portal.kernel.model.LayoutRevision updateLayoutRevision(
 		long userId, long layoutRevisionId, long layoutBranchId,
 		java.lang.String name, java.lang.String title,
 		java.lang.String description, java.lang.String keywords,
 		java.lang.String robots, java.lang.String typeSettings,
 		boolean iconImage, long iconImageId, java.lang.String themeId,
 		java.lang.String colorSchemeId, java.lang.String css,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutRevisionLocalService.updateLayoutRevision(userId,
 			layoutRevisionId, layoutBranchId, name, title, description,
@@ -445,9 +445,9 @@ public class LayoutRevisionLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutRevision updateStatus(long userId,
+	public com.liferay.portal.kernel.model.LayoutRevision updateStatus(long userId,
 		long layoutRevisionId, int status,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutRevisionLocalService.updateStatus(userId,
 			layoutRevisionId, status, serviceContext);

@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchCompanyException;
-import com.liferay.portal.model.Company;
+import com.liferay.portal.kernel.exception.NoSuchCompanyException;
+import com.liferay.portal.kernel.model.Company;
 
 /**
  * The persistence interface for the company service.

@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException;
-import com.liferay.portal.model.WorkflowDefinitionLink;
+import com.liferay.portal.kernel.exception.NoSuchWorkflowDefinitionLinkException;
+import com.liferay.portal.kernel.model.WorkflowDefinitionLink;
 
 /**
  * The persistence interface for the workflow definition link service.

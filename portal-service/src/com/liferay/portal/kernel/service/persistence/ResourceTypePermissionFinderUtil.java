@@ -25,12 +25,12 @@ import com.liferay.portal.kernel.util.ReferenceRegistry;
  */
 @ProviderType
 public class ResourceTypePermissionFinderUtil {
-	public static java.util.List<com.liferay.portal.model.ResourceTypePermission> findByEitherScopeC_G_N(
+	public static java.util.List<com.liferay.portal.kernel.model.ResourceTypePermission> findByEitherScopeC_G_N(
 		long companyId, long groupId, java.lang.String name) {
 		return getFinder().findByEitherScopeC_G_N(companyId, groupId, name);
 	}
 
-	public static java.util.List<com.liferay.portal.model.ResourceTypePermission> findByGroupScopeC_N_R(
+	public static java.util.List<com.liferay.portal.kernel.model.ResourceTypePermission> findByGroupScopeC_N_R(
 		long companyId, java.lang.String name, long roleId) {
 		return getFinder().findByGroupScopeC_N_R(companyId, name, roleId);
 	}

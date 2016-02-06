@@ -31,10 +31,10 @@ public class EmailAddressServiceWrapper implements EmailAddressService,
 	}
 
 	@Override
-	public com.liferay.portal.model.EmailAddress addEmailAddress(
+	public com.liferay.portal.kernel.model.EmailAddress addEmailAddress(
 		java.lang.String className, long classPK, java.lang.String address,
 		long typeId, boolean primary,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _emailAddressService.addEmailAddress(className, classPK,
 			address, typeId, primary, serviceContext);
@@ -55,21 +55,21 @@ public class EmailAddressServiceWrapper implements EmailAddressService,
 	the user did not have permission to view the email address
 	*/
 	@Override
-	public com.liferay.portal.model.EmailAddress fetchEmailAddress(
+	public com.liferay.portal.kernel.model.EmailAddress fetchEmailAddress(
 		long emailAddressId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _emailAddressService.fetchEmailAddress(emailAddressId);
 	}
 
 	@Override
-	public com.liferay.portal.model.EmailAddress getEmailAddress(
+	public com.liferay.portal.kernel.model.EmailAddress getEmailAddress(
 		long emailAddressId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _emailAddressService.getEmailAddress(emailAddressId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.EmailAddress> getEmailAddresses(
+	public java.util.List<com.liferay.portal.kernel.model.EmailAddress> getEmailAddresses(
 		java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _emailAddressService.getEmailAddresses(className, classPK);
@@ -86,7 +86,7 @@ public class EmailAddressServiceWrapper implements EmailAddressService,
 	}
 
 	@Override
-	public com.liferay.portal.model.EmailAddress updateEmailAddress(
+	public com.liferay.portal.kernel.model.EmailAddress updateEmailAddress(
 		long emailAddressId, java.lang.String address, long typeId,
 		boolean primary)
 		throws com.liferay.portal.kernel.exception.PortalException {

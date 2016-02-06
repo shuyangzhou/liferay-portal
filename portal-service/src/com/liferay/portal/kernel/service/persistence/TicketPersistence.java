@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchTicketException;
-import com.liferay.portal.model.Ticket;
+import com.liferay.portal.kernel.exception.NoSuchTicketException;
+import com.liferay.portal.kernel.model.Ticket;
 
 /**
  * The persistence interface for the ticket service.

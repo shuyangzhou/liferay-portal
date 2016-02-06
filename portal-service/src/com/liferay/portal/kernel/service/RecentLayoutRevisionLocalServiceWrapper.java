@@ -39,13 +39,13 @@ public class RecentLayoutRevisionLocalServiceWrapper
 	* @return the recent layout revision that was added
 	*/
 	@Override
-	public com.liferay.portal.model.RecentLayoutRevision addRecentLayoutRevision(
-		com.liferay.portal.model.RecentLayoutRevision recentLayoutRevision) {
+	public com.liferay.portal.kernel.model.RecentLayoutRevision addRecentLayoutRevision(
+		com.liferay.portal.kernel.model.RecentLayoutRevision recentLayoutRevision) {
 		return _recentLayoutRevisionLocalService.addRecentLayoutRevision(recentLayoutRevision);
 	}
 
 	@Override
-	public com.liferay.portal.model.RecentLayoutRevision addRecentLayoutRevision(
+	public com.liferay.portal.kernel.model.RecentLayoutRevision addRecentLayoutRevision(
 		long userId, long layoutRevisionId, long layoutSetBranchId, long plid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _recentLayoutRevisionLocalService.addRecentLayoutRevision(userId,
@@ -59,7 +59,7 @@ public class RecentLayoutRevisionLocalServiceWrapper
 	* @return the new recent layout revision
 	*/
 	@Override
-	public com.liferay.portal.model.RecentLayoutRevision createRecentLayoutRevision(
+	public com.liferay.portal.kernel.model.RecentLayoutRevision createRecentLayoutRevision(
 		long recentLayoutRevisionId) {
 		return _recentLayoutRevisionLocalService.createRecentLayoutRevision(recentLayoutRevisionId);
 	}
@@ -68,8 +68,8 @@ public class RecentLayoutRevisionLocalServiceWrapper
 	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _recentLayoutRevisionLocalService.deletePersistedModel(persistedModel);
 	}
@@ -81,8 +81,8 @@ public class RecentLayoutRevisionLocalServiceWrapper
 	* @return the recent layout revision that was removed
 	*/
 	@Override
-	public com.liferay.portal.model.RecentLayoutRevision deleteRecentLayoutRevision(
-		com.liferay.portal.model.RecentLayoutRevision recentLayoutRevision) {
+	public com.liferay.portal.kernel.model.RecentLayoutRevision deleteRecentLayoutRevision(
+		com.liferay.portal.kernel.model.RecentLayoutRevision recentLayoutRevision) {
 		return _recentLayoutRevisionLocalService.deleteRecentLayoutRevision(recentLayoutRevision);
 	}
 
@@ -94,7 +94,7 @@ public class RecentLayoutRevisionLocalServiceWrapper
 	* @throws PortalException if a recent layout revision with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.RecentLayoutRevision deleteRecentLayoutRevision(
+	public com.liferay.portal.kernel.model.RecentLayoutRevision deleteRecentLayoutRevision(
 		long recentLayoutRevisionId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _recentLayoutRevisionLocalService.deleteRecentLayoutRevision(recentLayoutRevisionId);
@@ -197,13 +197,13 @@ public class RecentLayoutRevisionLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.model.RecentLayoutRevision fetchRecentLayoutRevision(
+	public com.liferay.portal.kernel.model.RecentLayoutRevision fetchRecentLayoutRevision(
 		long recentLayoutRevisionId) {
 		return _recentLayoutRevisionLocalService.fetchRecentLayoutRevision(recentLayoutRevisionId);
 	}
 
 	@Override
-	public com.liferay.portal.model.RecentLayoutRevision fetchRecentLayoutRevision(
+	public com.liferay.portal.kernel.model.RecentLayoutRevision fetchRecentLayoutRevision(
 		long userId, long layoutSetBranchId, long plid) {
 		return _recentLayoutRevisionLocalService.fetchRecentLayoutRevision(userId,
 			layoutSetBranchId, plid);
@@ -230,7 +230,7 @@ public class RecentLayoutRevisionLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.model.PersistedModel getPersistedModel(
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _recentLayoutRevisionLocalService.getPersistedModel(primaryKeyObj);
@@ -244,7 +244,7 @@ public class RecentLayoutRevisionLocalServiceWrapper
 	* @throws PortalException if a recent layout revision with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.RecentLayoutRevision getRecentLayoutRevision(
+	public com.liferay.portal.kernel.model.RecentLayoutRevision getRecentLayoutRevision(
 		long recentLayoutRevisionId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _recentLayoutRevisionLocalService.getRecentLayoutRevision(recentLayoutRevisionId);
@@ -262,7 +262,7 @@ public class RecentLayoutRevisionLocalServiceWrapper
 	* @return the range of recent layout revisions
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.RecentLayoutRevision> getRecentLayoutRevisions(
+	public java.util.List<com.liferay.portal.kernel.model.RecentLayoutRevision> getRecentLayoutRevisions(
 		int start, int end) {
 		return _recentLayoutRevisionLocalService.getRecentLayoutRevisions(start,
 			end);
@@ -285,8 +285,8 @@ public class RecentLayoutRevisionLocalServiceWrapper
 	* @return the recent layout revision that was updated
 	*/
 	@Override
-	public com.liferay.portal.model.RecentLayoutRevision updateRecentLayoutRevision(
-		com.liferay.portal.model.RecentLayoutRevision recentLayoutRevision) {
+	public com.liferay.portal.kernel.model.RecentLayoutRevision updateRecentLayoutRevision(
+		com.liferay.portal.kernel.model.RecentLayoutRevision recentLayoutRevision) {
 		return _recentLayoutRevisionLocalService.updateRecentLayoutRevision(recentLayoutRevision);
 	}
 

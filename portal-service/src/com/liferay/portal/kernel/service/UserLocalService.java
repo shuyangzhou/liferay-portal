@@ -36,9 +36,9 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.KeyValuePair;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.model.PersistedModel;
-import com.liferay.portal.model.User;
-import com.liferay.portal.model.UserGroupRole;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.model.UserGroupRole;
 
 import java.io.Serializable;
 
@@ -247,7 +247,7 @@ public interface UserLocalService extends BaseLocalService,
 		int birthdayMonth, int birthdayDay, int birthdayYear,
 		java.lang.String jobTitle, long[] groupIds, long[] organizationIds,
 		long[] roleIds, long[] userGroupIds, boolean sendEmail,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -331,7 +331,7 @@ public interface UserLocalService extends BaseLocalService,
 		int birthdayMonth, int birthdayDay, int birthdayYear,
 		java.lang.String jobTitle, long[] groupIds, long[] organizationIds,
 		long[] roleIds, long[] userGroupIds, boolean sendEmail,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -561,7 +561,7 @@ public interface UserLocalService extends BaseLocalService,
 	<code>sendEmail</code> to <code>true</code>.
 	*/
 	public void completeUserRegistration(User user,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -1595,7 +1595,7 @@ public interface UserLocalService extends BaseLocalService,
 	* @param status the workflow status
 	* @param params the finder parameters (optionally <code>null</code>). For
 	more information see {@link
-	com.liferay.portal.service.persistence.UserFinder}.
+	com.liferay.portal.kernel.service.persistence.UserFinder}.
 	* @param andSearch whether every field must match its keywords, or just
 	one field. For example, &quot;users with the first name 'bob' and
 	last name 'smith'&quot; vs &quot;users with the first name 'bob'
@@ -1605,7 +1605,7 @@ public interface UserLocalService extends BaseLocalService,
 	* @param obc the comparator to order the users by (optionally
 	<code>null</code>)
 	* @return the matching users
-	* @see com.liferay.portal.service.persistence.UserFinder
+	* @see com.liferay.portal.kernel.service.persistence.UserFinder
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<User> search(long companyId, java.lang.String firstName,
@@ -1687,13 +1687,13 @@ public interface UserLocalService extends BaseLocalService,
 	* @param status the workflow status
 	* @param params the finder parameters (optionally <code>null</code>). For
 	more information see {@link
-	com.liferay.portal.service.persistence.UserFinder}.
+	com.liferay.portal.kernel.service.persistence.UserFinder}.
 	* @param start the lower bound of the range of users
 	* @param end the upper bound of the range of users (not inclusive)
 	* @param obc the comparator to order the users by (optionally
 	<code>null</code>)
 	* @return the matching users
-	* @see com.liferay.portal.service.persistence.UserFinder
+	* @see com.liferay.portal.kernel.service.persistence.UserFinder
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<User> search(long companyId, java.lang.String keywords,
@@ -1753,7 +1753,7 @@ public interface UserLocalService extends BaseLocalService,
 	* @param status the workflow status
 	* @param params the finder parameters (optionally <code>null</code>). For
 	more information see {@link
-	com.liferay.portal.service.persistence.UserFinder}.
+	com.liferay.portal.kernel.service.persistence.UserFinder}.
 	* @param andSearch whether every field must match its keywords, or just
 	one field. For example, &quot;users with the first name 'bob' and
 	last name 'smith'&quot; vs &quot;users with the first name 'bob'
@@ -1777,7 +1777,7 @@ public interface UserLocalService extends BaseLocalService,
 	* @param status the workflow status
 	* @param params the finder parameters (optionally <code>null</code>). For
 	more information see {@link
-	com.liferay.portal.service.persistence.UserFinder}.
+	com.liferay.portal.kernel.service.persistence.UserFinder}.
 	* @return the number matching users
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -1843,7 +1843,7 @@ public interface UserLocalService extends BaseLocalService,
 	*/
 	public void sendEmailAddressVerification(User user,
 		java.lang.String emailAddress,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -1865,7 +1865,7 @@ public interface UserLocalService extends BaseLocalService,
 	public boolean sendPassword(long companyId, java.lang.String emailAddress,
 		java.lang.String fromName, java.lang.String fromAddress,
 		java.lang.String subject, java.lang.String body,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -1969,7 +1969,7 @@ public interface UserLocalService extends BaseLocalService,
 	<code>null</code>)
 	*/
 	public void unsetGroupUsers(long groupId, long[] userIds,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -2085,7 +2085,7 @@ public interface UserLocalService extends BaseLocalService,
 	*/
 	public User updateEmailAddress(long userId, java.lang.String password,
 		java.lang.String emailAddress1, java.lang.String emailAddress2,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -2127,7 +2127,7 @@ public interface UserLocalService extends BaseLocalService,
 	<code>null</code>)
 	*/
 	public void updateGroups(long userId, long[] newGroupIds,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -2177,7 +2177,7 @@ public interface UserLocalService extends BaseLocalService,
 		int birthdayMonth, int birthdayDay, int birthdayYear,
 		java.lang.String jobTitle, boolean updateUserInformation,
 		boolean sendEmail,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -2273,7 +2273,7 @@ public interface UserLocalService extends BaseLocalService,
 	user indexing is enabled.
 	*/
 	public void updateOrganizations(long userId, long[] newOrganizationIds,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -2389,7 +2389,7 @@ public interface UserLocalService extends BaseLocalService,
 	* @return the user
 	*/
 	public User updateStatus(long userId, int status,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -2471,7 +2471,7 @@ public interface UserLocalService extends BaseLocalService,
 		java.lang.String twitterSn, java.lang.String jobTitle, long[] groupIds,
 		long[] organizationIds, long[] roleIds,
 		List<UserGroupRole> userGroupRoles, long[] userGroupIds,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -2540,7 +2540,7 @@ public interface UserLocalService extends BaseLocalService,
 		java.lang.String twitterSn, java.lang.String jobTitle, long[] groupIds,
 		long[] organizationIds, long[] roleIds,
 		List<UserGroupRole> userGroupRoles, long[] userGroupIds,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**

@@ -47,8 +47,8 @@ public class ImageLocalServiceUtil {
 	* @param image the image
 	* @return the image that was added
 	*/
-	public static com.liferay.portal.model.Image addImage(
-		com.liferay.portal.model.Image image) {
+	public static com.liferay.portal.kernel.model.Image addImage(
+		com.liferay.portal.kernel.model.Image image) {
 		return getService().addImage(image);
 	}
 
@@ -58,7 +58,7 @@ public class ImageLocalServiceUtil {
 	* @param imageId the primary key for the new image
 	* @return the new image
 	*/
-	public static com.liferay.portal.model.Image createImage(long imageId) {
+	public static com.liferay.portal.kernel.model.Image createImage(long imageId) {
 		return getService().createImage(imageId);
 	}
 
@@ -68,8 +68,8 @@ public class ImageLocalServiceUtil {
 	* @param image the image
 	* @return the image that was removed
 	*/
-	public static com.liferay.portal.model.Image deleteImage(
-		com.liferay.portal.model.Image image) {
+	public static com.liferay.portal.kernel.model.Image deleteImage(
+		com.liferay.portal.kernel.model.Image image) {
 		return getService().deleteImage(image);
 	}
 
@@ -80,7 +80,7 @@ public class ImageLocalServiceUtil {
 	* @return the image that was removed
 	* @throws PortalException if a image with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.Image deleteImage(long imageId)
+	public static com.liferay.portal.kernel.model.Image deleteImage(long imageId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteImage(imageId);
 	}
@@ -88,8 +88,8 @@ public class ImageLocalServiceUtil {
 	/**
 	* @throws PortalException
 	*/
-	public static com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -172,7 +172,7 @@ public class ImageLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.portal.model.Image fetchImage(long imageId) {
+	public static com.liferay.portal.kernel.model.Image fetchImage(long imageId) {
 		return getService().fetchImage(imageId);
 	}
 
@@ -180,7 +180,7 @@ public class ImageLocalServiceUtil {
 		return getService().getActionableDynamicQuery();
 	}
 
-	public static com.liferay.portal.model.Image getCompanyLogo(long imageId) {
+	public static com.liferay.portal.kernel.model.Image getCompanyLogo(long imageId) {
 		return getService().getCompanyLogo(imageId);
 	}
 
@@ -191,16 +191,16 @@ public class ImageLocalServiceUtil {
 	* @return the image
 	* @throws PortalException if a image with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.Image getImage(long imageId)
+	public static com.liferay.portal.kernel.model.Image getImage(long imageId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getImage(imageId);
 	}
 
-	public static com.liferay.portal.model.Image getImageOrDefault(long imageId) {
+	public static com.liferay.portal.kernel.model.Image getImageOrDefault(long imageId) {
 		return getService().getImageOrDefault(imageId);
 	}
 
-	public static java.util.List<com.liferay.portal.model.Image> getImages() {
+	public static java.util.List<com.liferay.portal.kernel.model.Image> getImages() {
 		return getService().getImages();
 	}
 
@@ -215,12 +215,12 @@ public class ImageLocalServiceUtil {
 	* @param end the upper bound of the range of images (not inclusive)
 	* @return the range of images
 	*/
-	public static java.util.List<com.liferay.portal.model.Image> getImages(
+	public static java.util.List<com.liferay.portal.kernel.model.Image> getImages(
 		int start, int end) {
 		return getService().getImages(start, end);
 	}
 
-	public static java.util.List<com.liferay.portal.model.Image> getImagesBySize(
+	public static java.util.List<com.liferay.portal.kernel.model.Image> getImagesBySize(
 		int size) {
 		return getService().getImagesBySize(size);
 	}
@@ -247,13 +247,13 @@ public class ImageLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.model.PersistedModel getPersistedModel(
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static com.liferay.portal.model.Image moveImage(long imageId,
+	public static com.liferay.portal.kernel.model.Image moveImage(long imageId,
 		byte[] bytes)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().moveImage(imageId, bytes);
@@ -265,37 +265,37 @@ public class ImageLocalServiceUtil {
 	* @param image the image
 	* @return the image that was updated
 	*/
-	public static com.liferay.portal.model.Image updateImage(
-		com.liferay.portal.model.Image image) {
+	public static com.liferay.portal.kernel.model.Image updateImage(
+		com.liferay.portal.kernel.model.Image image) {
 		return getService().updateImage(image);
 	}
 
-	public static com.liferay.portal.model.Image updateImage(long imageId,
+	public static com.liferay.portal.kernel.model.Image updateImage(long imageId,
 		byte[] bytes)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateImage(imageId, bytes);
 	}
 
-	public static com.liferay.portal.model.Image updateImage(long imageId,
+	public static com.liferay.portal.kernel.model.Image updateImage(long imageId,
 		byte[] bytes, java.lang.String type, int height, int width, int size)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateImage(imageId, bytes, type, height, width, size);
 	}
 
-	public static com.liferay.portal.model.Image updateImage(long imageId,
+	public static com.liferay.portal.kernel.model.Image updateImage(long imageId,
 		java.io.File file)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateImage(imageId, file);
 	}
 
-	public static com.liferay.portal.model.Image updateImage(long imageId,
+	public static com.liferay.portal.kernel.model.Image updateImage(long imageId,
 		java.io.InputStream is)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateImage(imageId, is);
 	}
 
-	public static com.liferay.portal.model.Image updateImage(long imageId,
+	public static com.liferay.portal.kernel.model.Image updateImage(long imageId,
 		java.io.InputStream is, boolean cleanUpStream)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateImage(imageId, is, cleanUpStream);

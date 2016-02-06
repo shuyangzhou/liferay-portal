@@ -18,8 +18,8 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
-import com.liferay.portal.service.ServiceContext;
-import com.liferay.portal.service.persistence.UserGroupGroupRolePK;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.persistence.UserGroupGroupRolePK;
 
 import java.io.Serializable;
 
@@ -171,19 +171,19 @@ public interface UserGroupGroupRoleModel extends BaseModel<UserGroupGroupRole>,
 
 	@Override
 	public int compareTo(
-		com.liferay.portal.model.UserGroupGroupRole userGroupGroupRole);
+		com.liferay.portal.kernel.model.UserGroupGroupRole userGroupGroupRole);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.UserGroupGroupRole> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.UserGroupGroupRole> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.UserGroupGroupRole toEscapedModel();
+	public com.liferay.portal.kernel.model.UserGroupGroupRole toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.UserGroupGroupRole toUnescapedModel();
+	public com.liferay.portal.kernel.model.UserGroupGroupRole toUnescapedModel();
 
 	@Override
 	public String toString();

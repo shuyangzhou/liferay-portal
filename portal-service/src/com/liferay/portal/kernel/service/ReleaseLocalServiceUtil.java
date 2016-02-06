@@ -47,17 +47,17 @@ public class ReleaseLocalServiceUtil {
 	* @param release the release
 	* @return the release that was added
 	*/
-	public static com.liferay.portal.model.Release addRelease(
-		com.liferay.portal.model.Release release) {
+	public static com.liferay.portal.kernel.model.Release addRelease(
+		com.liferay.portal.kernel.model.Release release) {
 		return getService().addRelease(release);
 	}
 
-	public static com.liferay.portal.model.Release addRelease(
+	public static com.liferay.portal.kernel.model.Release addRelease(
 		java.lang.String servletContextName, int buildNumber) {
 		return getService().addRelease(servletContextName, buildNumber);
 	}
 
-	public static com.liferay.portal.model.Release addRelease(
+	public static com.liferay.portal.kernel.model.Release addRelease(
 		java.lang.String servletContextName, java.lang.String schemaVersion) {
 		return getService().addRelease(servletContextName, schemaVersion);
 	}
@@ -68,7 +68,7 @@ public class ReleaseLocalServiceUtil {
 	* @param releaseId the primary key for the new release
 	* @return the new release
 	*/
-	public static com.liferay.portal.model.Release createRelease(long releaseId) {
+	public static com.liferay.portal.kernel.model.Release createRelease(long releaseId) {
 		return getService().createRelease(releaseId);
 	}
 
@@ -79,8 +79,8 @@ public class ReleaseLocalServiceUtil {
 	/**
 	* @throws PortalException
 	*/
-	public static com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -91,8 +91,8 @@ public class ReleaseLocalServiceUtil {
 	* @param release the release
 	* @return the release that was removed
 	*/
-	public static com.liferay.portal.model.Release deleteRelease(
-		com.liferay.portal.model.Release release) {
+	public static com.liferay.portal.kernel.model.Release deleteRelease(
+		com.liferay.portal.kernel.model.Release release) {
 		return getService().deleteRelease(release);
 	}
 
@@ -103,7 +103,7 @@ public class ReleaseLocalServiceUtil {
 	* @return the release that was removed
 	* @throws PortalException if a release with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.Release deleteRelease(long releaseId)
+	public static com.liferay.portal.kernel.model.Release deleteRelease(long releaseId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteRelease(releaseId);
 	}
@@ -186,11 +186,11 @@ public class ReleaseLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.portal.model.Release fetchRelease(long releaseId) {
+	public static com.liferay.portal.kernel.model.Release fetchRelease(long releaseId) {
 		return getService().fetchRelease(releaseId);
 	}
 
-	public static com.liferay.portal.model.Release fetchRelease(
+	public static com.liferay.portal.kernel.model.Release fetchRelease(
 		java.lang.String servletContextName) {
 		return getService().fetchRelease(servletContextName);
 	}
@@ -217,7 +217,7 @@ public class ReleaseLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.model.PersistedModel getPersistedModel(
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getPersistedModel(primaryKeyObj);
@@ -230,7 +230,7 @@ public class ReleaseLocalServiceUtil {
 	* @return the release
 	* @throws PortalException if a release with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.Release getRelease(long releaseId)
+	public static com.liferay.portal.kernel.model.Release getRelease(long releaseId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getRelease(releaseId);
 	}
@@ -246,7 +246,7 @@ public class ReleaseLocalServiceUtil {
 	* @param end the upper bound of the range of releases (not inclusive)
 	* @return the range of releases
 	*/
-	public static java.util.List<com.liferay.portal.model.Release> getReleases(
+	public static java.util.List<com.liferay.portal.kernel.model.Release> getReleases(
 		int start, int end) {
 		return getService().getReleases(start, end);
 	}
@@ -266,12 +266,12 @@ public class ReleaseLocalServiceUtil {
 	* @param release the release
 	* @return the release that was updated
 	*/
-	public static com.liferay.portal.model.Release updateRelease(
-		com.liferay.portal.model.Release release) {
+	public static com.liferay.portal.kernel.model.Release updateRelease(
+		com.liferay.portal.kernel.model.Release release) {
 		return getService().updateRelease(release);
 	}
 
-	public static com.liferay.portal.model.Release updateRelease(
+	public static com.liferay.portal.kernel.model.Release updateRelease(
 		long releaseId, int buildNumber, java.util.Date buildDate,
 		boolean verified)
 		throws com.liferay.portal.kernel.exception.PortalException {

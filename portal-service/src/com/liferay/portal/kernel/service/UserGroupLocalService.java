@@ -35,9 +35,9 @@ import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.model.PersistedModel;
-import com.liferay.portal.model.SystemEventConstants;
-import com.liferay.portal.model.UserGroup;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.model.SystemEventConstants;
+import com.liferay.portal.kernel.model.UserGroup;
 
 import java.io.Serializable;
 
@@ -135,7 +135,7 @@ public interface UserGroupLocalService extends BaseLocalService,
 	*/
 	public UserGroup addUserGroup(long userId, long companyId,
 		java.lang.String name, java.lang.String description,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	public void addUserUserGroup(long userId, UserGroup userGroup);
@@ -527,14 +527,14 @@ public interface UserGroupLocalService extends BaseLocalService,
 	user group's name or description (optionally <code>null</code>)
 	* @param params the finder params (optionally <code>null</code>). For more
 	information see {@link
-	com.liferay.portal.service.persistence.UserGroupFinder}
+	com.liferay.portal.kernel.service.persistence.UserGroupFinder}
 	* @param start the lower bound of the range of user groups to return
 	* @param end the upper bound of the range of user groups to return (not
 	inclusive)
 	* @param obc the comparator to order the user groups (optionally
 	<code>null</code>)
 	* @return the matching user groups ordered by comparator <code>obc</code>
-	* @see com.liferay.portal.service.persistence.UserGroupFinder
+	* @see com.liferay.portal.kernel.service.persistence.UserGroupFinder
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<UserGroup> search(long companyId, java.lang.String keywords,
@@ -593,7 +593,7 @@ public interface UserGroupLocalService extends BaseLocalService,
 	<code>null</code>)
 	* @param params the finder params (optionally <code>null</code>). For more
 	information see {@link
-	com.liferay.portal.service.persistence.UserGroupFinder}
+	com.liferay.portal.kernel.service.persistence.UserGroupFinder}
 	* @param andOperator whether every field must match its keywords or just
 	one field
 	* @param start the lower bound of the range of user groups to return
@@ -602,7 +602,7 @@ public interface UserGroupLocalService extends BaseLocalService,
 	* @param obc the comparator to order the user groups (optionally
 	<code>null</code>)
 	* @return the matching user groups ordered by comparator <code>obc</code>
-	* @see com.liferay.portal.service.persistence.UserGroupFinder
+	* @see com.liferay.portal.kernel.service.persistence.UserGroupFinder
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<UserGroup> search(long companyId, java.lang.String name,
@@ -640,7 +640,7 @@ public interface UserGroupLocalService extends BaseLocalService,
 	* @param sort the field and direction by which to sort (optionally
 	<code>null</code>)
 	* @return the matching user groups ordered by sort
-	* @see com.liferay.portal.service.persistence.UserGroupFinder
+	* @see com.liferay.portal.kernel.service.persistence.UserGroupFinder
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Hits search(long companyId, java.lang.String name,
@@ -656,9 +656,9 @@ public interface UserGroupLocalService extends BaseLocalService,
 	user group's name or description (optionally <code>null</code>)
 	* @param params the finder params (optionally <code>null</code>). For more
 	information see {@link
-	com.liferay.portal.service.persistence.UserGroupFinder}
+	com.liferay.portal.kernel.service.persistence.UserGroupFinder}
 	* @return the number of matching user groups
-	* @see com.liferay.portal.service.persistence.UserGroupFinder
+	* @see com.liferay.portal.kernel.service.persistence.UserGroupFinder
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(long companyId, java.lang.String keywords,
@@ -673,11 +673,11 @@ public interface UserGroupLocalService extends BaseLocalService,
 	<code>null</code>)
 	* @param params the finder params (optionally <code>null</code>). For more
 	information see {@link
-	com.liferay.portal.service.persistence.UserGroupFinder}
+	com.liferay.portal.kernel.service.persistence.UserGroupFinder}
 	* @param andOperator whether every field must match its keywords or just
 	one field
 	* @return the number of matching user groups
-	* @see com.liferay.portal.service.persistence.UserGroupFinder
+	* @see com.liferay.portal.kernel.service.persistence.UserGroupFinder
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(long companyId, java.lang.String name,
@@ -754,7 +754,7 @@ public interface UserGroupLocalService extends BaseLocalService,
 	*/
 	public UserGroup updateUserGroup(long companyId, long userGroupId,
 		java.lang.String name, java.lang.String description,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**

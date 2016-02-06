@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchContactException;
-import com.liferay.portal.model.Contact;
+import com.liferay.portal.kernel.exception.NoSuchContactException;
+import com.liferay.portal.kernel.model.Contact;
 
 /**
  * The persistence interface for the contact service.

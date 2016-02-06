@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchPasswordTrackerException;
-import com.liferay.portal.model.PasswordTracker;
+import com.liferay.portal.kernel.exception.NoSuchPasswordTrackerException;
+import com.liferay.portal.kernel.model.PasswordTracker;
 
 /**
  * The persistence interface for the password tracker service.

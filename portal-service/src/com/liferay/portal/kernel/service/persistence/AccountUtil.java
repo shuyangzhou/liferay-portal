@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
-import com.liferay.portal.model.Account;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.Account;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -46,35 +46,35 @@ public class AccountUtil {
 	 */
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache()
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache()
 	 */
 	public static void clearCache() {
 		getPersistence().clearCache();
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static void clearCache(Account account) {
 		getPersistence().clearCache(account);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
 	public static long countWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<Account> findWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().findWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
 	public static List<Account> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
@@ -82,7 +82,7 @@ public class AccountUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
 	public static List<Account> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
@@ -93,14 +93,14 @@ public class AccountUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static Account update(Account account) {
 		return getPersistence().update(account);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
 	public static Account update(Account account, ServiceContext serviceContext) {
 		return getPersistence().update(account, serviceContext);
@@ -142,7 +142,7 @@ public class AccountUtil {
 	* @throws NoSuchAccountException if a account with the primary key could not be found
 	*/
 	public static Account remove(long accountId)
-		throws com.liferay.portal.exception.NoSuchAccountException {
+		throws com.liferay.portal.kernel.exception.NoSuchAccountException {
 		return getPersistence().remove(accountId);
 	}
 
@@ -158,7 +158,7 @@ public class AccountUtil {
 	* @throws NoSuchAccountException if a account with the primary key could not be found
 	*/
 	public static Account findByPrimaryKey(long accountId)
-		throws com.liferay.portal.exception.NoSuchAccountException {
+		throws com.liferay.portal.kernel.exception.NoSuchAccountException {
 		return getPersistence().findByPrimaryKey(accountId);
 	}
 

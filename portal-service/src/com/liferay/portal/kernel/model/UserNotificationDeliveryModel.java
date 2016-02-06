@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -261,19 +261,19 @@ public interface UserNotificationDeliveryModel extends BaseModel<UserNotificatio
 
 	@Override
 	public int compareTo(
-		com.liferay.portal.model.UserNotificationDelivery userNotificationDelivery);
+		com.liferay.portal.kernel.model.UserNotificationDelivery userNotificationDelivery);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.UserNotificationDelivery> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.UserNotificationDelivery> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.UserNotificationDelivery toEscapedModel();
+	public com.liferay.portal.kernel.model.UserNotificationDelivery toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.UserNotificationDelivery toUnescapedModel();
+	public com.liferay.portal.kernel.model.UserNotificationDelivery toUnescapedModel();
 
 	@Override
 	public String toString();

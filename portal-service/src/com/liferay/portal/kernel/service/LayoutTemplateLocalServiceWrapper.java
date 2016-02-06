@@ -40,7 +40,7 @@ public class LayoutTemplateLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutTemplate getLayoutTemplate(
+	public com.liferay.portal.kernel.model.LayoutTemplate getLayoutTemplate(
 		java.lang.String layoutTemplateId, boolean standard,
 		java.lang.String themeId) {
 		return _layoutTemplateLocalService.getLayoutTemplate(layoutTemplateId,
@@ -48,12 +48,12 @@ public class LayoutTemplateLocalServiceWrapper
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.LayoutTemplate> getLayoutTemplates() {
+	public java.util.List<com.liferay.portal.kernel.model.LayoutTemplate> getLayoutTemplates() {
 		return _layoutTemplateLocalService.getLayoutTemplates();
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.LayoutTemplate> getLayoutTemplates(
+	public java.util.List<com.liferay.portal.kernel.model.LayoutTemplate> getLayoutTemplates(
 		java.lang.String themeId) {
 		return _layoutTemplateLocalService.getLayoutTemplates(themeId);
 	}
@@ -69,7 +69,7 @@ public class LayoutTemplateLocalServiceWrapper
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.LayoutTemplate> init(
+	public java.util.List<com.liferay.portal.kernel.model.LayoutTemplate> init(
 		javax.servlet.ServletContext servletContext, java.lang.String[] xmls,
 		com.liferay.portal.kernel.plugin.PluginPackage pluginPackage) {
 		return _layoutTemplateLocalService.init(servletContext, xmls,
@@ -77,7 +77,7 @@ public class LayoutTemplateLocalServiceWrapper
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.LayoutTemplate> init(
+	public java.util.List<com.liferay.portal.kernel.model.LayoutTemplate> init(
 		java.lang.String servletContextName,
 		javax.servlet.ServletContext servletContext, java.lang.String[] xmls,
 		com.liferay.portal.kernel.plugin.PluginPackage pluginPackage) {
@@ -88,7 +88,7 @@ public class LayoutTemplateLocalServiceWrapper
 	@Override
 	public void readLayoutTemplate(java.lang.String servletContextName,
 		javax.servlet.ServletContext servletContext,
-		java.util.Set<com.liferay.portal.model.LayoutTemplate> layoutTemplates,
+		java.util.Set<com.liferay.portal.kernel.model.LayoutTemplate> layoutTemplates,
 		com.liferay.portal.kernel.xml.Element element, boolean standard,
 		java.lang.String themeId,
 		com.liferay.portal.kernel.plugin.PluginPackage pluginPackage) {

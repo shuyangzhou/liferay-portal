@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
-import com.liferay.portal.model.PasswordPolicyRel;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.PasswordPolicyRel;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -46,28 +46,28 @@ public class PasswordPolicyRelUtil {
 	 */
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache()
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache()
 	 */
 	public static void clearCache() {
 		getPersistence().clearCache();
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static void clearCache(PasswordPolicyRel passwordPolicyRel) {
 		getPersistence().clearCache(passwordPolicyRel);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
 	public static long countWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<PasswordPolicyRel> findWithDynamicQuery(
 		DynamicQuery dynamicQuery) {
@@ -75,7 +75,7 @@ public class PasswordPolicyRelUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
 	public static List<PasswordPolicyRel> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
@@ -83,7 +83,7 @@ public class PasswordPolicyRelUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
 	public static List<PasswordPolicyRel> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
@@ -94,14 +94,14 @@ public class PasswordPolicyRelUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static PasswordPolicyRel update(PasswordPolicyRel passwordPolicyRel) {
 		return getPersistence().update(passwordPolicyRel);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
 	public static PasswordPolicyRel update(
 		PasswordPolicyRel passwordPolicyRel, ServiceContext serviceContext) {
@@ -192,7 +192,7 @@ public class PasswordPolicyRelUtil {
 	public static PasswordPolicyRel findByPasswordPolicyId_First(
 		long passwordPolicyId,
 		OrderByComparator<PasswordPolicyRel> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchPasswordPolicyRelException {
+		throws com.liferay.portal.kernel.exception.NoSuchPasswordPolicyRelException {
 		return getPersistence()
 				   .findByPasswordPolicyId_First(passwordPolicyId,
 			orderByComparator);
@@ -224,7 +224,7 @@ public class PasswordPolicyRelUtil {
 	public static PasswordPolicyRel findByPasswordPolicyId_Last(
 		long passwordPolicyId,
 		OrderByComparator<PasswordPolicyRel> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchPasswordPolicyRelException {
+		throws com.liferay.portal.kernel.exception.NoSuchPasswordPolicyRelException {
 		return getPersistence()
 				   .findByPasswordPolicyId_Last(passwordPolicyId,
 			orderByComparator);
@@ -257,7 +257,7 @@ public class PasswordPolicyRelUtil {
 	public static PasswordPolicyRel[] findByPasswordPolicyId_PrevAndNext(
 		long passwordPolicyRelId, long passwordPolicyId,
 		OrderByComparator<PasswordPolicyRel> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchPasswordPolicyRelException {
+		throws com.liferay.portal.kernel.exception.NoSuchPasswordPolicyRelException {
 		return getPersistence()
 				   .findByPasswordPolicyId_PrevAndNext(passwordPolicyRelId,
 			passwordPolicyId, orderByComparator);
@@ -291,7 +291,7 @@ public class PasswordPolicyRelUtil {
 	* @throws NoSuchPasswordPolicyRelException if a matching password policy rel could not be found
 	*/
 	public static PasswordPolicyRel findByC_C(long classNameId, long classPK)
-		throws com.liferay.portal.exception.NoSuchPasswordPolicyRelException {
+		throws com.liferay.portal.kernel.exception.NoSuchPasswordPolicyRelException {
 		return getPersistence().findByC_C(classNameId, classPK);
 	}
 
@@ -328,7 +328,7 @@ public class PasswordPolicyRelUtil {
 	* @return the password policy rel that was removed
 	*/
 	public static PasswordPolicyRel removeByC_C(long classNameId, long classPK)
-		throws com.liferay.portal.exception.NoSuchPasswordPolicyRelException {
+		throws com.liferay.portal.kernel.exception.NoSuchPasswordPolicyRelException {
 		return getPersistence().removeByC_C(classNameId, classPK);
 	}
 
@@ -379,7 +379,7 @@ public class PasswordPolicyRelUtil {
 	* @throws NoSuchPasswordPolicyRelException if a password policy rel with the primary key could not be found
 	*/
 	public static PasswordPolicyRel remove(long passwordPolicyRelId)
-		throws com.liferay.portal.exception.NoSuchPasswordPolicyRelException {
+		throws com.liferay.portal.kernel.exception.NoSuchPasswordPolicyRelException {
 		return getPersistence().remove(passwordPolicyRelId);
 	}
 
@@ -396,7 +396,7 @@ public class PasswordPolicyRelUtil {
 	* @throws NoSuchPasswordPolicyRelException if a password policy rel with the primary key could not be found
 	*/
 	public static PasswordPolicyRel findByPrimaryKey(long passwordPolicyRelId)
-		throws com.liferay.portal.exception.NoSuchPasswordPolicyRelException {
+		throws com.liferay.portal.kernel.exception.NoSuchPasswordPolicyRelException {
 		return getPersistence().findByPrimaryKey(passwordPolicyRelId);
 	}
 

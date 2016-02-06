@@ -46,7 +46,7 @@ public class PortletServiceWrapper implements PortletService,
 	}
 
 	@Override
-	public com.liferay.portal.model.Portlet updatePortlet(long companyId,
+	public com.liferay.portal.kernel.model.Portlet updatePortlet(long companyId,
 		java.lang.String portletId, java.lang.String roles, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _portletService.updatePortlet(companyId, portletId, roles, active);

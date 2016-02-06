@@ -54,9 +54,9 @@ public interface LayoutRevision extends LayoutRevisionModel, PersistedModel {
 			}
 		};
 
-	public java.util.List<com.liferay.portal.model.LayoutRevision> getChildren();
+	public java.util.List<com.liferay.portal.kernel.model.LayoutRevision> getChildren();
 
-	public com.liferay.portal.model.ColorScheme getColorScheme()
+	public com.liferay.portal.kernel.model.ColorScheme getColorScheme()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public java.lang.String getCssText()
@@ -68,17 +68,17 @@ public interface LayoutRevision extends LayoutRevisionModel, PersistedModel {
 
 	public boolean getIconImage();
 
-	public com.liferay.portal.model.LayoutBranch getLayoutBranch()
+	public com.liferay.portal.kernel.model.LayoutBranch getLayoutBranch()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public com.liferay.portal.model.LayoutSet getLayoutSet()
+	public com.liferay.portal.kernel.model.LayoutSet getLayoutSet()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public java.lang.String getRegularURL(
 		javax.servlet.http.HttpServletRequest request)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public com.liferay.portal.model.Theme getTheme()
+	public com.liferay.portal.kernel.model.Theme getTheme()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public java.lang.String getThemeSetting(java.lang.String key,

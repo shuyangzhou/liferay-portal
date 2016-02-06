@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
-import com.liferay.portal.model.UserNotificationEvent;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.UserNotificationEvent;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -46,28 +46,28 @@ public class UserNotificationEventUtil {
 	 */
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache()
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache()
 	 */
 	public static void clearCache() {
 		getPersistence().clearCache();
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static void clearCache(UserNotificationEvent userNotificationEvent) {
 		getPersistence().clearCache(userNotificationEvent);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
 	public static long countWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<UserNotificationEvent> findWithDynamicQuery(
 		DynamicQuery dynamicQuery) {
@@ -75,7 +75,7 @@ public class UserNotificationEventUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
 	public static List<UserNotificationEvent> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
@@ -83,7 +83,7 @@ public class UserNotificationEventUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
 	public static List<UserNotificationEvent> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
@@ -94,7 +94,7 @@ public class UserNotificationEventUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static UserNotificationEvent update(
 		UserNotificationEvent userNotificationEvent) {
@@ -102,7 +102,7 @@ public class UserNotificationEventUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
 	public static UserNotificationEvent update(
 		UserNotificationEvent userNotificationEvent,
@@ -190,7 +190,7 @@ public class UserNotificationEventUtil {
 	public static UserNotificationEvent findByUuid_First(
 		java.lang.String uuid,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence().findByUuid_First(uuid, orderByComparator);
 	}
 
@@ -217,7 +217,7 @@ public class UserNotificationEventUtil {
 	*/
 	public static UserNotificationEvent findByUuid_Last(java.lang.String uuid,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence().findByUuid_Last(uuid, orderByComparator);
 	}
 
@@ -246,7 +246,7 @@ public class UserNotificationEventUtil {
 	public static UserNotificationEvent[] findByUuid_PrevAndNext(
 		long userNotificationEventId, java.lang.String uuid,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByUuid_PrevAndNext(userNotificationEventId, uuid,
 			orderByComparator);
@@ -358,7 +358,7 @@ public class UserNotificationEventUtil {
 	public static UserNotificationEvent findByUuid_C_First(
 		java.lang.String uuid, long companyId,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByUuid_C_First(uuid, companyId, orderByComparator);
 	}
@@ -390,7 +390,7 @@ public class UserNotificationEventUtil {
 	public static UserNotificationEvent findByUuid_C_Last(
 		java.lang.String uuid, long companyId,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByUuid_C_Last(uuid, companyId, orderByComparator);
 	}
@@ -423,7 +423,7 @@ public class UserNotificationEventUtil {
 	public static UserNotificationEvent[] findByUuid_C_PrevAndNext(
 		long userNotificationEventId, java.lang.String uuid, long companyId,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByUuid_C_PrevAndNext(userNotificationEventId, uuid,
 			companyId, orderByComparator);
@@ -530,7 +530,7 @@ public class UserNotificationEventUtil {
 	*/
 	public static UserNotificationEvent findByUserId_First(long userId,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence().findByUserId_First(userId, orderByComparator);
 	}
 
@@ -556,7 +556,7 @@ public class UserNotificationEventUtil {
 	*/
 	public static UserNotificationEvent findByUserId_Last(long userId,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence().findByUserId_Last(userId, orderByComparator);
 	}
 
@@ -584,7 +584,7 @@ public class UserNotificationEventUtil {
 	public static UserNotificationEvent[] findByUserId_PrevAndNext(
 		long userNotificationEventId, long userId,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByUserId_PrevAndNext(userNotificationEventId, userId,
 			orderByComparator);
@@ -689,7 +689,7 @@ public class UserNotificationEventUtil {
 	public static UserNotificationEvent findByType_First(
 		java.lang.String type,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence().findByType_First(type, orderByComparator);
 	}
 
@@ -716,7 +716,7 @@ public class UserNotificationEventUtil {
 	*/
 	public static UserNotificationEvent findByType_Last(java.lang.String type,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence().findByType_Last(type, orderByComparator);
 	}
 
@@ -745,7 +745,7 @@ public class UserNotificationEventUtil {
 	public static UserNotificationEvent[] findByType_PrevAndNext(
 		long userNotificationEventId, java.lang.String type,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByType_PrevAndNext(userNotificationEventId, type,
 			orderByComparator);
@@ -858,7 +858,7 @@ public class UserNotificationEventUtil {
 	public static UserNotificationEvent findByU_DT_First(long userId,
 		int deliveryType,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByU_DT_First(userId, deliveryType, orderByComparator);
 	}
@@ -890,7 +890,7 @@ public class UserNotificationEventUtil {
 	public static UserNotificationEvent findByU_DT_Last(long userId,
 		int deliveryType,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByU_DT_Last(userId, deliveryType, orderByComparator);
 	}
@@ -923,7 +923,7 @@ public class UserNotificationEventUtil {
 	public static UserNotificationEvent[] findByU_DT_PrevAndNext(
 		long userNotificationEventId, long userId, int deliveryType,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByU_DT_PrevAndNext(userNotificationEventId, userId,
 			deliveryType, orderByComparator);
@@ -1037,7 +1037,7 @@ public class UserNotificationEventUtil {
 	public static UserNotificationEvent findByU_D_First(long userId,
 		boolean delivered,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByU_D_First(userId, delivered, orderByComparator);
 	}
@@ -1069,7 +1069,7 @@ public class UserNotificationEventUtil {
 	public static UserNotificationEvent findByU_D_Last(long userId,
 		boolean delivered,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByU_D_Last(userId, delivered, orderByComparator);
 	}
@@ -1102,7 +1102,7 @@ public class UserNotificationEventUtil {
 	public static UserNotificationEvent[] findByU_D_PrevAndNext(
 		long userNotificationEventId, long userId, boolean delivered,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByU_D_PrevAndNext(userNotificationEventId, userId,
 			delivered, orderByComparator);
@@ -1216,7 +1216,7 @@ public class UserNotificationEventUtil {
 	public static UserNotificationEvent findByU_A_First(long userId,
 		boolean archived,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByU_A_First(userId, archived, orderByComparator);
 	}
@@ -1248,7 +1248,7 @@ public class UserNotificationEventUtil {
 	public static UserNotificationEvent findByU_A_Last(long userId,
 		boolean archived,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByU_A_Last(userId, archived, orderByComparator);
 	}
@@ -1281,7 +1281,7 @@ public class UserNotificationEventUtil {
 	public static UserNotificationEvent[] findByU_A_PrevAndNext(
 		long userNotificationEventId, long userId, boolean archived,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByU_A_PrevAndNext(userNotificationEventId, userId,
 			archived, orderByComparator);
@@ -1402,7 +1402,7 @@ public class UserNotificationEventUtil {
 	public static UserNotificationEvent findByU_DT_D_First(long userId,
 		int deliveryType, boolean delivered,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByU_DT_D_First(userId, deliveryType, delivered,
 			orderByComparator);
@@ -1438,7 +1438,7 @@ public class UserNotificationEventUtil {
 	public static UserNotificationEvent findByU_DT_D_Last(long userId,
 		int deliveryType, boolean delivered,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByU_DT_D_Last(userId, deliveryType, delivered,
 			orderByComparator);
@@ -1476,7 +1476,7 @@ public class UserNotificationEventUtil {
 		long userNotificationEventId, long userId, int deliveryType,
 		boolean delivered,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByU_DT_D_PrevAndNext(userNotificationEventId, userId,
 			deliveryType, delivered, orderByComparator);
@@ -1601,7 +1601,7 @@ public class UserNotificationEventUtil {
 	public static UserNotificationEvent findByU_DT_A_First(long userId,
 		int deliveryType, boolean archived,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByU_DT_A_First(userId, deliveryType, archived,
 			orderByComparator);
@@ -1637,7 +1637,7 @@ public class UserNotificationEventUtil {
 	public static UserNotificationEvent findByU_DT_A_Last(long userId,
 		int deliveryType, boolean archived,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByU_DT_A_Last(userId, deliveryType, archived,
 			orderByComparator);
@@ -1675,7 +1675,7 @@ public class UserNotificationEventUtil {
 		long userNotificationEventId, long userId, int deliveryType,
 		boolean archived,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByU_DT_A_PrevAndNext(userNotificationEventId, userId,
 			deliveryType, archived, orderByComparator);
@@ -1800,7 +1800,7 @@ public class UserNotificationEventUtil {
 	public static UserNotificationEvent findByU_D_A_First(long userId,
 		boolean delivered, boolean actionRequired,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByU_D_A_First(userId, delivered, actionRequired,
 			orderByComparator);
@@ -1836,7 +1836,7 @@ public class UserNotificationEventUtil {
 	public static UserNotificationEvent findByU_D_A_Last(long userId,
 		boolean delivered, boolean actionRequired,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByU_D_A_Last(userId, delivered, actionRequired,
 			orderByComparator);
@@ -1874,7 +1874,7 @@ public class UserNotificationEventUtil {
 		long userNotificationEventId, long userId, boolean delivered,
 		boolean actionRequired,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByU_D_A_PrevAndNext(userNotificationEventId, userId,
 			delivered, actionRequired, orderByComparator);
@@ -1999,7 +1999,7 @@ public class UserNotificationEventUtil {
 	public static UserNotificationEvent findByU_A_A_First(long userId,
 		boolean actionRequired, boolean archived,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByU_A_A_First(userId, actionRequired, archived,
 			orderByComparator);
@@ -2035,7 +2035,7 @@ public class UserNotificationEventUtil {
 	public static UserNotificationEvent findByU_A_A_Last(long userId,
 		boolean actionRequired, boolean archived,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByU_A_A_Last(userId, actionRequired, archived,
 			orderByComparator);
@@ -2073,7 +2073,7 @@ public class UserNotificationEventUtil {
 		long userNotificationEventId, long userId, boolean actionRequired,
 		boolean archived,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByU_A_A_PrevAndNext(userNotificationEventId, userId,
 			actionRequired, archived, orderByComparator);
@@ -2206,7 +2206,7 @@ public class UserNotificationEventUtil {
 	public static UserNotificationEvent findByU_T_DT_D_First(long userId,
 		java.lang.String type, int deliveryType, boolean delivered,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByU_T_DT_D_First(userId, type, deliveryType, delivered,
 			orderByComparator);
@@ -2244,7 +2244,7 @@ public class UserNotificationEventUtil {
 	public static UserNotificationEvent findByU_T_DT_D_Last(long userId,
 		java.lang.String type, int deliveryType, boolean delivered,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByU_T_DT_D_Last(userId, type, deliveryType, delivered,
 			orderByComparator);
@@ -2284,7 +2284,7 @@ public class UserNotificationEventUtil {
 		long userNotificationEventId, long userId, java.lang.String type,
 		int deliveryType, boolean delivered,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByU_T_DT_D_PrevAndNext(userNotificationEventId, userId,
 			type, deliveryType, delivered, orderByComparator);
@@ -2421,7 +2421,7 @@ public class UserNotificationEventUtil {
 	public static UserNotificationEvent findByU_DT_D_A_First(long userId,
 		int deliveryType, boolean delivered, boolean actionRequired,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByU_DT_D_A_First(userId, deliveryType, delivered,
 			actionRequired, orderByComparator);
@@ -2459,7 +2459,7 @@ public class UserNotificationEventUtil {
 	public static UserNotificationEvent findByU_DT_D_A_Last(long userId,
 		int deliveryType, boolean delivered, boolean actionRequired,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByU_DT_D_A_Last(userId, deliveryType, delivered,
 			actionRequired, orderByComparator);
@@ -2499,7 +2499,7 @@ public class UserNotificationEventUtil {
 		long userNotificationEventId, long userId, int deliveryType,
 		boolean delivered, boolean actionRequired,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByU_DT_D_A_PrevAndNext(userNotificationEventId, userId,
 			deliveryType, delivered, actionRequired, orderByComparator);
@@ -2638,7 +2638,7 @@ public class UserNotificationEventUtil {
 	public static UserNotificationEvent findByU_DT_A_A_First(long userId,
 		int deliveryType, boolean actionRequired, boolean archived,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByU_DT_A_A_First(userId, deliveryType, actionRequired,
 			archived, orderByComparator);
@@ -2676,7 +2676,7 @@ public class UserNotificationEventUtil {
 	public static UserNotificationEvent findByU_DT_A_A_Last(long userId,
 		int deliveryType, boolean actionRequired, boolean archived,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByU_DT_A_A_Last(userId, deliveryType, actionRequired,
 			archived, orderByComparator);
@@ -2716,7 +2716,7 @@ public class UserNotificationEventUtil {
 		long userNotificationEventId, long userId, int deliveryType,
 		boolean actionRequired, boolean archived,
 		OrderByComparator<UserNotificationEvent> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence()
 				   .findByU_DT_A_A_PrevAndNext(userNotificationEventId, userId,
 			deliveryType, actionRequired, archived, orderByComparator);
@@ -2789,7 +2789,7 @@ public class UserNotificationEventUtil {
 	* @throws NoSuchUserNotificationEventException if a user notification event with the primary key could not be found
 	*/
 	public static UserNotificationEvent remove(long userNotificationEventId)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence().remove(userNotificationEventId);
 	}
 
@@ -2807,7 +2807,7 @@ public class UserNotificationEventUtil {
 	*/
 	public static UserNotificationEvent findByPrimaryKey(
 		long userNotificationEventId)
-		throws com.liferay.portal.exception.NoSuchUserNotificationEventException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException {
 		return getPersistence().findByPrimaryKey(userNotificationEventId);
 	}
 

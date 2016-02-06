@@ -84,8 +84,8 @@ public class ResourceLocalServiceUtil {
 	group permissions to apply, and set guest permissions to apply.
 	*/
 	public static void addModelResources(
-		com.liferay.portal.model.AuditedModel auditedModel,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.model.AuditedModel auditedModel,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().addModelResources(auditedModel, serviceContext);
 	}
@@ -236,7 +236,7 @@ public class ResourceLocalServiceUtil {
 	ResourceConstants}.
 	*/
 	public static void deleteResource(
-		com.liferay.portal.model.AuditedModel auditedModel, int scope)
+		com.liferay.portal.kernel.model.AuditedModel auditedModel, int scope)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().deleteResource(auditedModel, scope);
 	}
@@ -293,7 +293,7 @@ public class ResourceLocalServiceUtil {
 	* @param primKey the primary key string of the resource
 	* @return the new resource
 	*/
-	public static com.liferay.portal.model.Resource getResource(
+	public static com.liferay.portal.kernel.model.Resource getResource(
 		long companyId, java.lang.String name, int scope,
 		java.lang.String primKey) {
 		return getService().getResource(companyId, name, scope, primKey);
@@ -316,7 +316,7 @@ public class ResourceLocalServiceUtil {
 	action on the resources;<code>false</code> otherwise
 	*/
 	public static boolean hasUserPermissions(long userId, long resourceId,
-		java.util.List<com.liferay.portal.model.Resource> resources,
+		java.util.List<com.liferay.portal.kernel.model.Resource> resources,
 		java.lang.String actionId, long[] roleIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
@@ -333,8 +333,8 @@ public class ResourceLocalServiceUtil {
 	and guest permissions.
 	*/
 	public static void updateModelResources(
-		com.liferay.portal.model.AuditedModel auditedModel,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.model.AuditedModel auditedModel,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().updateModelResources(auditedModel, serviceContext);
 	}

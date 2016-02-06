@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchAccountException;
-import com.liferay.portal.model.Account;
+import com.liferay.portal.kernel.exception.NoSuchAccountException;
+import com.liferay.portal.kernel.model.Account;
 
 /**
  * The persistence interface for the account service.

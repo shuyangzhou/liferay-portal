@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -177,7 +177,7 @@ public class LayoutSetWrapper implements LayoutSet, ModelWrapper<LayoutSet> {
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.model.LayoutSet layoutSet) {
+	public int compareTo(com.liferay.portal.kernel.model.LayoutSet layoutSet) {
 		return _layoutSet.compareTo(layoutSet);
 	}
 
@@ -193,7 +193,7 @@ public class LayoutSetWrapper implements LayoutSet, ModelWrapper<LayoutSet> {
 	* @return the layout set's color scheme
 	*/
 	@Override
-	public com.liferay.portal.model.ColorScheme getColorScheme() {
+	public com.liferay.portal.kernel.model.ColorScheme getColorScheme() {
 		return _layoutSet.getColorScheme();
 	}
 
@@ -253,7 +253,7 @@ public class LayoutSetWrapper implements LayoutSet, ModelWrapper<LayoutSet> {
 	* @return the layout set's group
 	*/
 	@Override
-	public com.liferay.portal.model.Group getGroup()
+	public com.liferay.portal.kernel.model.Group getGroup()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutSet.getGroup();
 	}
@@ -411,7 +411,7 @@ public class LayoutSetWrapper implements LayoutSet, ModelWrapper<LayoutSet> {
 	}
 
 	@Override
-	public com.liferay.portal.model.Theme getTheme() {
+	public com.liferay.portal.kernel.model.Theme getTheme() {
 		return _layoutSet.getTheme();
 	}
 
@@ -723,12 +723,12 @@ public class LayoutSetWrapper implements LayoutSet, ModelWrapper<LayoutSet> {
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.LayoutSet> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.LayoutSet> toCacheModel() {
 		return _layoutSet.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutSet toEscapedModel() {
+	public com.liferay.portal.kernel.model.LayoutSet toEscapedModel() {
 		return new LayoutSetWrapper(_layoutSet.toEscapedModel());
 	}
 
@@ -738,7 +738,7 @@ public class LayoutSetWrapper implements LayoutSet, ModelWrapper<LayoutSet> {
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutSet toUnescapedModel() {
+	public com.liferay.portal.kernel.model.LayoutSet toUnescapedModel() {
 		return new LayoutSetWrapper(_layoutSet.toUnescapedModel());
 	}
 

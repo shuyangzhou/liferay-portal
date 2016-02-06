@@ -18,7 +18,7 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -226,19 +226,19 @@ public interface RecentLayoutBranchModel extends BaseModel<RecentLayoutBranch>,
 
 	@Override
 	public int compareTo(
-		com.liferay.portal.model.RecentLayoutBranch recentLayoutBranch);
+		com.liferay.portal.kernel.model.RecentLayoutBranch recentLayoutBranch);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.RecentLayoutBranch> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.RecentLayoutBranch> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.RecentLayoutBranch toEscapedModel();
+	public com.liferay.portal.kernel.model.RecentLayoutBranch toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.RecentLayoutBranch toUnescapedModel();
+	public com.liferay.portal.kernel.model.RecentLayoutBranch toUnescapedModel();
 
 	@Override
 	public String toString();

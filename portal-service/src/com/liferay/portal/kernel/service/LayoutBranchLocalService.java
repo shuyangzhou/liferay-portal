@@ -28,8 +28,8 @@ import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.model.LayoutBranch;
-import com.liferay.portal.model.PersistedModel;
+import com.liferay.portal.kernel.model.LayoutBranch;
+import com.liferay.portal.kernel.model.PersistedModel;
 
 import java.io.Serializable;
 
@@ -69,12 +69,12 @@ public interface LayoutBranchLocalService extends BaseLocalService,
 
 	public LayoutBranch addLayoutBranch(long layoutRevisionId,
 		java.lang.String name, java.lang.String description, boolean master,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	public LayoutBranch addLayoutBranch(long layoutSetBranchId, long plid,
 		java.lang.String name, java.lang.String description, boolean master,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -231,7 +231,7 @@ public interface LayoutBranchLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public LayoutBranch getMasterLayoutBranch(long layoutSetBranchId,
-		long plid, com.liferay.portal.service.ServiceContext serviceContext)
+		long plid, com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -257,6 +257,6 @@ public interface LayoutBranchLocalService extends BaseLocalService,
 
 	public LayoutBranch updateLayoutBranch(long layoutBranchId,
 		java.lang.String name, java.lang.String description,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 }

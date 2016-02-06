@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchLayoutSetBranchException;
-import com.liferay.portal.model.LayoutSetBranch;
+import com.liferay.portal.kernel.exception.NoSuchLayoutSetBranchException;
+import com.liferay.portal.kernel.model.LayoutSetBranch;
 
 /**
  * The persistence interface for the layout set branch service.

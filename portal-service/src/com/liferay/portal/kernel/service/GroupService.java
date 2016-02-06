@@ -24,10 +24,10 @@ import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.model.Group;
-import com.liferay.portal.model.Organization;
-import com.liferay.portal.model.Portlet;
-import com.liferay.portal.model.UserGroup;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.Organization;
+import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.model.UserGroup;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -91,7 +91,7 @@ public interface GroupService extends BaseService {
 		java.lang.String name, java.lang.String description, int type,
 		boolean manualMembership, int membershipRestriction,
 		java.lang.String friendlyURL, boolean site, boolean active,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	public Group addGroup(long parentGroupId, long liveGroupId,
@@ -99,7 +99,7 @@ public interface GroupService extends BaseService {
 		Map<Locale, java.lang.String> descriptionMap, int type,
 		boolean manualMembership, int membershipRestriction,
 		java.lang.String friendlyURL, boolean site, boolean active,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	public Group addGroup(long parentGroupId, long liveGroupId,
@@ -107,7 +107,7 @@ public interface GroupService extends BaseService {
 		Map<Locale, java.lang.String> descriptionMap, int type,
 		boolean manualMembership, int membershipRestriction,
 		java.lang.String friendlyURL, boolean site, boolean inheritContent,
-		boolean active, com.liferay.portal.service.ServiceContext serviceContext)
+		boolean active, com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -432,7 +432,7 @@ public interface GroupService extends BaseService {
 	search, add entries having &quot;usersGroups&quot; and
 	&quot;inherit&quot; as keys mapped to the the user's ID. For more
 	information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param start the lower bound of the range of groups to return
 	* @param end the upper bound of the range of groups to return (not
 	inclusive)
@@ -458,7 +458,7 @@ public interface GroupService extends BaseService {
 	search, add entries having &quot;usersGroups&quot; and
 	&quot;inherit&quot; as keys mapped to the the user's ID. For more
 	information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @return the number of matching groups
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -531,7 +531,7 @@ public interface GroupService extends BaseService {
 		java.lang.String name, java.lang.String description, int type,
 		boolean manualMembership, int membershipRestriction,
 		java.lang.String friendlyURL, boolean inheritContent, boolean active,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	public Group updateGroup(long groupId, long parentGroupId,
@@ -539,7 +539,7 @@ public interface GroupService extends BaseService {
 		Map<Locale, java.lang.String> descriptionMap, int type,
 		boolean manualMembership, int membershipRestriction,
 		java.lang.String friendlyURL, boolean inheritContent, boolean active,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**

@@ -50,7 +50,7 @@ public class ThemeServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static java.util.List<com.liferay.portal.model.Theme> getThemes(
+	public static java.util.List<com.liferay.portal.kernel.model.Theme> getThemes(
 		long companyId) {
 		return getService().getThemes(companyId);
 	}

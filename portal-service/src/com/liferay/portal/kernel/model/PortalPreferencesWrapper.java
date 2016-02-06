@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -105,7 +105,7 @@ public class PortalPreferencesWrapper implements PortalPreferences,
 
 	@Override
 	public int compareTo(
-		com.liferay.portal.model.PortalPreferences portalPreferences) {
+		com.liferay.portal.kernel.model.PortalPreferences portalPreferences) {
 		return _portalPreferences.compareTo(portalPreferences);
 	}
 
@@ -295,12 +295,12 @@ public class PortalPreferencesWrapper implements PortalPreferences,
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.PortalPreferences> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.PortalPreferences> toCacheModel() {
 		return _portalPreferences.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.PortalPreferences toEscapedModel() {
+	public com.liferay.portal.kernel.model.PortalPreferences toEscapedModel() {
 		return new PortalPreferencesWrapper(_portalPreferences.toEscapedModel());
 	}
 
@@ -310,7 +310,7 @@ public class PortalPreferencesWrapper implements PortalPreferences,
 	}
 
 	@Override
-	public com.liferay.portal.model.PortalPreferences toUnescapedModel() {
+	public com.liferay.portal.kernel.model.PortalPreferences toUnescapedModel() {
 		return new PortalPreferencesWrapper(_portalPreferences.toUnescapedModel());
 	}
 

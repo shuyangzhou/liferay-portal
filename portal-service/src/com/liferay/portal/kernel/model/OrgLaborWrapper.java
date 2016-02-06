@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -201,7 +201,7 @@ public class OrgLaborWrapper implements OrgLabor, ModelWrapper<OrgLabor> {
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.model.OrgLabor orgLabor) {
+	public int compareTo(com.liferay.portal.kernel.model.OrgLabor orgLabor) {
 		return _orgLabor.compareTo(orgLabor);
 	}
 
@@ -386,7 +386,7 @@ public class OrgLaborWrapper implements OrgLabor, ModelWrapper<OrgLabor> {
 	}
 
 	@Override
-	public com.liferay.portal.model.ListType getType()
+	public com.liferay.portal.kernel.model.ListType getType()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _orgLabor.getType();
 	}
@@ -677,12 +677,12 @@ public class OrgLaborWrapper implements OrgLabor, ModelWrapper<OrgLabor> {
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.OrgLabor> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.OrgLabor> toCacheModel() {
 		return _orgLabor.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.OrgLabor toEscapedModel() {
+	public com.liferay.portal.kernel.model.OrgLabor toEscapedModel() {
 		return new OrgLaborWrapper(_orgLabor.toEscapedModel());
 	}
 
@@ -692,7 +692,7 @@ public class OrgLaborWrapper implements OrgLabor, ModelWrapper<OrgLabor> {
 	}
 
 	@Override
-	public com.liferay.portal.model.OrgLabor toUnescapedModel() {
+	public com.liferay.portal.kernel.model.OrgLabor toUnescapedModel() {
 		return new OrgLaborWrapper(_orgLabor.toUnescapedModel());
 	}
 

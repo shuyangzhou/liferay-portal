@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -105,7 +105,7 @@ public class UserGroupGroupRoleWrapper implements UserGroupGroupRole,
 
 	@Override
 	public int compareTo(
-		com.liferay.portal.model.UserGroupGroupRole userGroupGroupRole) {
+		com.liferay.portal.kernel.model.UserGroupGroupRole userGroupGroupRole) {
 		return _userGroupGroupRole.compareTo(userGroupGroupRole);
 	}
 
@@ -125,7 +125,7 @@ public class UserGroupGroupRoleWrapper implements UserGroupGroupRole,
 	}
 
 	@Override
-	public com.liferay.portal.model.Group getGroup()
+	public com.liferay.portal.kernel.model.Group getGroup()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userGroupGroupRole.getGroup();
 	}
@@ -156,7 +156,7 @@ public class UserGroupGroupRoleWrapper implements UserGroupGroupRole,
 	* @return the primary key of this user group group role
 	*/
 	@Override
-	public com.liferay.portal.service.persistence.UserGroupGroupRolePK getPrimaryKey() {
+	public com.liferay.portal.kernel.service.persistence.UserGroupGroupRolePK getPrimaryKey() {
 		return _userGroupGroupRole.getPrimaryKey();
 	}
 
@@ -166,7 +166,7 @@ public class UserGroupGroupRoleWrapper implements UserGroupGroupRole,
 	}
 
 	@Override
-	public com.liferay.portal.model.Role getRole()
+	public com.liferay.portal.kernel.model.Role getRole()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userGroupGroupRole.getRole();
 	}
@@ -182,7 +182,7 @@ public class UserGroupGroupRoleWrapper implements UserGroupGroupRole,
 	}
 
 	@Override
-	public com.liferay.portal.model.UserGroup getUserGroup()
+	public com.liferay.portal.kernel.model.UserGroup getUserGroup()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userGroupGroupRole.getUserGroup();
 	}
@@ -284,7 +284,7 @@ public class UserGroupGroupRoleWrapper implements UserGroupGroupRole,
 	*/
 	@Override
 	public void setPrimaryKey(
-		com.liferay.portal.service.persistence.UserGroupGroupRolePK primaryKey) {
+		com.liferay.portal.kernel.service.persistence.UserGroupGroupRolePK primaryKey) {
 		_userGroupGroupRole.setPrimaryKey(primaryKey);
 	}
 
@@ -314,12 +314,12 @@ public class UserGroupGroupRoleWrapper implements UserGroupGroupRole,
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.UserGroupGroupRole> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.UserGroupGroupRole> toCacheModel() {
 		return _userGroupGroupRole.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.UserGroupGroupRole toEscapedModel() {
+	public com.liferay.portal.kernel.model.UserGroupGroupRole toEscapedModel() {
 		return new UserGroupGroupRoleWrapper(_userGroupGroupRole.toEscapedModel());
 	}
 
@@ -329,7 +329,7 @@ public class UserGroupGroupRoleWrapper implements UserGroupGroupRole,
 	}
 
 	@Override
-	public com.liferay.portal.model.UserGroupGroupRole toUnescapedModel() {
+	public com.liferay.portal.kernel.model.UserGroupGroupRole toUnescapedModel() {
 		return new UserGroupGroupRoleWrapper(_userGroupGroupRole.toUnescapedModel());
 	}
 

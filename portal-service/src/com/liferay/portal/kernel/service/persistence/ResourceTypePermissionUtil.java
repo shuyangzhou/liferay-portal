@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
-import com.liferay.portal.model.ResourceTypePermission;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.ResourceTypePermission;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -46,28 +46,28 @@ public class ResourceTypePermissionUtil {
 	 */
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache()
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache()
 	 */
 	public static void clearCache() {
 		getPersistence().clearCache();
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static void clearCache(ResourceTypePermission resourceTypePermission) {
 		getPersistence().clearCache(resourceTypePermission);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
 	public static long countWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<ResourceTypePermission> findWithDynamicQuery(
 		DynamicQuery dynamicQuery) {
@@ -75,7 +75,7 @@ public class ResourceTypePermissionUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
 	public static List<ResourceTypePermission> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
@@ -83,7 +83,7 @@ public class ResourceTypePermissionUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
 	public static List<ResourceTypePermission> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
@@ -94,7 +94,7 @@ public class ResourceTypePermissionUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static ResourceTypePermission update(
 		ResourceTypePermission resourceTypePermission) {
@@ -102,7 +102,7 @@ public class ResourceTypePermissionUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
 	public static ResourceTypePermission update(
 		ResourceTypePermission resourceTypePermission,
@@ -190,7 +190,7 @@ public class ResourceTypePermissionUtil {
 	*/
 	public static ResourceTypePermission findByRoleId_First(long roleId,
 		OrderByComparator<ResourceTypePermission> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchResourceTypePermissionException {
+		throws com.liferay.portal.kernel.exception.NoSuchResourceTypePermissionException {
 		return getPersistence().findByRoleId_First(roleId, orderByComparator);
 	}
 
@@ -216,7 +216,7 @@ public class ResourceTypePermissionUtil {
 	*/
 	public static ResourceTypePermission findByRoleId_Last(long roleId,
 		OrderByComparator<ResourceTypePermission> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchResourceTypePermissionException {
+		throws com.liferay.portal.kernel.exception.NoSuchResourceTypePermissionException {
 		return getPersistence().findByRoleId_Last(roleId, orderByComparator);
 	}
 
@@ -244,7 +244,7 @@ public class ResourceTypePermissionUtil {
 	public static ResourceTypePermission[] findByRoleId_PrevAndNext(
 		long resourceTypePermissionId, long roleId,
 		OrderByComparator<ResourceTypePermission> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchResourceTypePermissionException {
+		throws com.liferay.portal.kernel.exception.NoSuchResourceTypePermissionException {
 		return getPersistence()
 				   .findByRoleId_PrevAndNext(resourceTypePermissionId, roleId,
 			orderByComparator);
@@ -362,7 +362,7 @@ public class ResourceTypePermissionUtil {
 	public static ResourceTypePermission findByC_N_R_First(long companyId,
 		java.lang.String name, long roleId,
 		OrderByComparator<ResourceTypePermission> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchResourceTypePermissionException {
+		throws com.liferay.portal.kernel.exception.NoSuchResourceTypePermissionException {
 		return getPersistence()
 				   .findByC_N_R_First(companyId, name, roleId, orderByComparator);
 	}
@@ -397,7 +397,7 @@ public class ResourceTypePermissionUtil {
 	public static ResourceTypePermission findByC_N_R_Last(long companyId,
 		java.lang.String name, long roleId,
 		OrderByComparator<ResourceTypePermission> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchResourceTypePermissionException {
+		throws com.liferay.portal.kernel.exception.NoSuchResourceTypePermissionException {
 		return getPersistence()
 				   .findByC_N_R_Last(companyId, name, roleId, orderByComparator);
 	}
@@ -432,7 +432,7 @@ public class ResourceTypePermissionUtil {
 	public static ResourceTypePermission[] findByC_N_R_PrevAndNext(
 		long resourceTypePermissionId, long companyId, java.lang.String name,
 		long roleId, OrderByComparator<ResourceTypePermission> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchResourceTypePermissionException {
+		throws com.liferay.portal.kernel.exception.NoSuchResourceTypePermissionException {
 		return getPersistence()
 				   .findByC_N_R_PrevAndNext(resourceTypePermissionId,
 			companyId, name, roleId, orderByComparator);
@@ -475,7 +475,7 @@ public class ResourceTypePermissionUtil {
 	*/
 	public static ResourceTypePermission findByC_G_N_R(long companyId,
 		long groupId, java.lang.String name, long roleId)
-		throws com.liferay.portal.exception.NoSuchResourceTypePermissionException {
+		throws com.liferay.portal.kernel.exception.NoSuchResourceTypePermissionException {
 		return getPersistence().findByC_G_N_R(companyId, groupId, name, roleId);
 	}
 
@@ -522,7 +522,7 @@ public class ResourceTypePermissionUtil {
 	*/
 	public static ResourceTypePermission removeByC_G_N_R(long companyId,
 		long groupId, java.lang.String name, long roleId)
-		throws com.liferay.portal.exception.NoSuchResourceTypePermissionException {
+		throws com.liferay.portal.kernel.exception.NoSuchResourceTypePermissionException {
 		return getPersistence().removeByC_G_N_R(companyId, groupId, name, roleId);
 	}
 
@@ -578,7 +578,7 @@ public class ResourceTypePermissionUtil {
 	* @throws NoSuchResourceTypePermissionException if a resource type permission with the primary key could not be found
 	*/
 	public static ResourceTypePermission remove(long resourceTypePermissionId)
-		throws com.liferay.portal.exception.NoSuchResourceTypePermissionException {
+		throws com.liferay.portal.kernel.exception.NoSuchResourceTypePermissionException {
 		return getPersistence().remove(resourceTypePermissionId);
 	}
 
@@ -596,7 +596,7 @@ public class ResourceTypePermissionUtil {
 	*/
 	public static ResourceTypePermission findByPrimaryKey(
 		long resourceTypePermissionId)
-		throws com.liferay.portal.exception.NoSuchResourceTypePermissionException {
+		throws com.liferay.portal.kernel.exception.NoSuchResourceTypePermissionException {
 		return getPersistence().findByPrimaryKey(resourceTypePermissionId);
 	}
 

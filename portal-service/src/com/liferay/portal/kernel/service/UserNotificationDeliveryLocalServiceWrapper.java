@@ -33,7 +33,7 @@ public class UserNotificationDeliveryLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.model.UserNotificationDelivery addUserNotificationDelivery(
+	public com.liferay.portal.kernel.model.UserNotificationDelivery addUserNotificationDelivery(
 		long userId, java.lang.String portletId, long classNameId,
 		int notificationType, int deliveryType, boolean deliver)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -48,8 +48,8 @@ public class UserNotificationDeliveryLocalServiceWrapper
 	* @return the user notification delivery that was added
 	*/
 	@Override
-	public com.liferay.portal.model.UserNotificationDelivery addUserNotificationDelivery(
-		com.liferay.portal.model.UserNotificationDelivery userNotificationDelivery) {
+	public com.liferay.portal.kernel.model.UserNotificationDelivery addUserNotificationDelivery(
+		com.liferay.portal.kernel.model.UserNotificationDelivery userNotificationDelivery) {
 		return _userNotificationDeliveryLocalService.addUserNotificationDelivery(userNotificationDelivery);
 	}
 
@@ -60,7 +60,7 @@ public class UserNotificationDeliveryLocalServiceWrapper
 	* @return the new user notification delivery
 	*/
 	@Override
-	public com.liferay.portal.model.UserNotificationDelivery createUserNotificationDelivery(
+	public com.liferay.portal.kernel.model.UserNotificationDelivery createUserNotificationDelivery(
 		long userNotificationDeliveryId) {
 		return _userNotificationDeliveryLocalService.createUserNotificationDelivery(userNotificationDeliveryId);
 	}
@@ -69,8 +69,8 @@ public class UserNotificationDeliveryLocalServiceWrapper
 	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userNotificationDeliveryLocalService.deletePersistedModel(persistedModel);
 	}
@@ -95,8 +95,8 @@ public class UserNotificationDeliveryLocalServiceWrapper
 	* @return the user notification delivery that was removed
 	*/
 	@Override
-	public com.liferay.portal.model.UserNotificationDelivery deleteUserNotificationDelivery(
-		com.liferay.portal.model.UserNotificationDelivery userNotificationDelivery) {
+	public com.liferay.portal.kernel.model.UserNotificationDelivery deleteUserNotificationDelivery(
+		com.liferay.portal.kernel.model.UserNotificationDelivery userNotificationDelivery) {
 		return _userNotificationDeliveryLocalService.deleteUserNotificationDelivery(userNotificationDelivery);
 	}
 
@@ -108,7 +108,7 @@ public class UserNotificationDeliveryLocalServiceWrapper
 	* @throws PortalException if a user notification delivery with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.UserNotificationDelivery deleteUserNotificationDelivery(
+	public com.liferay.portal.kernel.model.UserNotificationDelivery deleteUserNotificationDelivery(
 		long userNotificationDeliveryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userNotificationDeliveryLocalService.deleteUserNotificationDelivery(userNotificationDeliveryId);
@@ -201,7 +201,7 @@ public class UserNotificationDeliveryLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.model.UserNotificationDelivery fetchUserNotificationDelivery(
+	public com.liferay.portal.kernel.model.UserNotificationDelivery fetchUserNotificationDelivery(
 		long userId, java.lang.String portletId, long classNameId,
 		int notificationType, int deliveryType) {
 		return _userNotificationDeliveryLocalService.fetchUserNotificationDelivery(userId,
@@ -209,7 +209,7 @@ public class UserNotificationDeliveryLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.model.UserNotificationDelivery fetchUserNotificationDelivery(
+	public com.liferay.portal.kernel.model.UserNotificationDelivery fetchUserNotificationDelivery(
 		long userNotificationDeliveryId) {
 		return _userNotificationDeliveryLocalService.fetchUserNotificationDelivery(userNotificationDeliveryId);
 	}
@@ -235,7 +235,7 @@ public class UserNotificationDeliveryLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.model.PersistedModel getPersistedModel(
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userNotificationDeliveryLocalService.getPersistedModel(primaryKeyObj);
@@ -253,7 +253,7 @@ public class UserNotificationDeliveryLocalServiceWrapper
 	* @return the range of user notification deliveries
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.UserNotificationDelivery> getUserNotificationDeliveries(
+	public java.util.List<com.liferay.portal.kernel.model.UserNotificationDelivery> getUserNotificationDeliveries(
 		int start, int end) {
 		return _userNotificationDeliveryLocalService.getUserNotificationDeliveries(start,
 			end);
@@ -270,7 +270,7 @@ public class UserNotificationDeliveryLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.model.UserNotificationDelivery getUserNotificationDelivery(
+	public com.liferay.portal.kernel.model.UserNotificationDelivery getUserNotificationDelivery(
 		long userId, java.lang.String portletId, long classNameId,
 		int notificationType, int deliveryType, boolean deliver)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -286,7 +286,7 @@ public class UserNotificationDeliveryLocalServiceWrapper
 	* @throws PortalException if a user notification delivery with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.UserNotificationDelivery getUserNotificationDelivery(
+	public com.liferay.portal.kernel.model.UserNotificationDelivery getUserNotificationDelivery(
 		long userNotificationDeliveryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userNotificationDeliveryLocalService.getUserNotificationDelivery(userNotificationDeliveryId);
@@ -299,13 +299,13 @@ public class UserNotificationDeliveryLocalServiceWrapper
 	* @return the user notification delivery that was updated
 	*/
 	@Override
-	public com.liferay.portal.model.UserNotificationDelivery updateUserNotificationDelivery(
-		com.liferay.portal.model.UserNotificationDelivery userNotificationDelivery) {
+	public com.liferay.portal.kernel.model.UserNotificationDelivery updateUserNotificationDelivery(
+		com.liferay.portal.kernel.model.UserNotificationDelivery userNotificationDelivery) {
 		return _userNotificationDeliveryLocalService.updateUserNotificationDelivery(userNotificationDelivery);
 	}
 
 	@Override
-	public com.liferay.portal.model.UserNotificationDelivery updateUserNotificationDelivery(
+	public com.liferay.portal.kernel.model.UserNotificationDelivery updateUserNotificationDelivery(
 		long userNotificationDeliveryId, boolean deliver) {
 		return _userNotificationDeliveryLocalService.updateUserNotificationDelivery(userNotificationDeliveryId,
 			deliver);

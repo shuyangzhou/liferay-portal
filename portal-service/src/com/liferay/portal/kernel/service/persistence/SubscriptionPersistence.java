@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchSubscriptionException;
-import com.liferay.portal.model.Subscription;
+import com.liferay.portal.kernel.exception.NoSuchSubscriptionException;
+import com.liferay.portal.kernel.model.Subscription;
 
 /**
  * The persistence interface for the subscription service.

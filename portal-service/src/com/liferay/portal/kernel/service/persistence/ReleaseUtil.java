@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
-import com.liferay.portal.model.Release;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.Release;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -46,35 +46,35 @@ public class ReleaseUtil {
 	 */
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache()
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache()
 	 */
 	public static void clearCache() {
 		getPersistence().clearCache();
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static void clearCache(Release release) {
 		getPersistence().clearCache(release);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
 	public static long countWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<Release> findWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().findWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
 	public static List<Release> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
@@ -82,7 +82,7 @@ public class ReleaseUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
 	public static List<Release> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
@@ -93,14 +93,14 @@ public class ReleaseUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static Release update(Release release) {
 		return getPersistence().update(release);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
 	public static Release update(Release release, ServiceContext serviceContext) {
 		return getPersistence().update(release, serviceContext);
@@ -115,7 +115,7 @@ public class ReleaseUtil {
 	*/
 	public static Release findByServletContextName(
 		java.lang.String servletContextName)
-		throws com.liferay.portal.exception.NoSuchReleaseException {
+		throws com.liferay.portal.kernel.exception.NoSuchReleaseException {
 		return getPersistence().findByServletContextName(servletContextName);
 	}
 
@@ -152,7 +152,7 @@ public class ReleaseUtil {
 	*/
 	public static Release removeByServletContextName(
 		java.lang.String servletContextName)
-		throws com.liferay.portal.exception.NoSuchReleaseException {
+		throws com.liferay.portal.kernel.exception.NoSuchReleaseException {
 		return getPersistence().removeByServletContextName(servletContextName);
 	}
 
@@ -203,7 +203,7 @@ public class ReleaseUtil {
 	* @throws NoSuchReleaseException if a release with the primary key could not be found
 	*/
 	public static Release remove(long releaseId)
-		throws com.liferay.portal.exception.NoSuchReleaseException {
+		throws com.liferay.portal.kernel.exception.NoSuchReleaseException {
 		return getPersistence().remove(releaseId);
 	}
 
@@ -219,7 +219,7 @@ public class ReleaseUtil {
 	* @throws NoSuchReleaseException if a release with the primary key could not be found
 	*/
 	public static Release findByPrimaryKey(long releaseId)
-		throws com.liferay.portal.exception.NoSuchReleaseException {
+		throws com.liferay.portal.kernel.exception.NoSuchReleaseException {
 		return getPersistence().findByPrimaryKey(releaseId);
 	}
 

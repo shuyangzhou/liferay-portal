@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
-import com.liferay.portal.model.Website;
+import com.liferay.portal.kernel.model.Website;
 
 import java.util.List;
 
@@ -51,7 +51,7 @@ public interface WebsiteService extends BaseService {
 	 */
 	public Website addWebsite(java.lang.String className, long classPK,
 		java.lang.String url, long typeId, boolean primary,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	public void deleteWebsite(long websiteId) throws PortalException;

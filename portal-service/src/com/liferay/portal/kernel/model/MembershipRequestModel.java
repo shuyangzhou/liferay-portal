@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -287,19 +287,19 @@ public interface MembershipRequestModel extends BaseModel<MembershipRequest>,
 
 	@Override
 	public int compareTo(
-		com.liferay.portal.model.MembershipRequest membershipRequest);
+		com.liferay.portal.kernel.model.MembershipRequest membershipRequest);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.MembershipRequest> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.MembershipRequest> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.MembershipRequest toEscapedModel();
+	public com.liferay.portal.kernel.model.MembershipRequest toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.MembershipRequest toUnescapedModel();
+	public com.liferay.portal.kernel.model.MembershipRequest toUnescapedModel();
 
 	@Override
 	public String toString();

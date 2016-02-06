@@ -40,7 +40,7 @@ public class ImageServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.portal.service.impl.ImageServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.portal.model.Image getImage(long imageId)
+	public static com.liferay.portal.kernel.model.Image getImage(long imageId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getImage(imageId);
 	}

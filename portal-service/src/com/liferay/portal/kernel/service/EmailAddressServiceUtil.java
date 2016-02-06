@@ -40,10 +40,10 @@ public class EmailAddressServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.portal.service.impl.EmailAddressServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.portal.model.EmailAddress addEmailAddress(
+	public static com.liferay.portal.kernel.model.EmailAddress addEmailAddress(
 		java.lang.String className, long classPK, java.lang.String address,
 		long typeId, boolean primary,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addEmailAddress(className, classPK, address, typeId,
@@ -63,19 +63,19 @@ public class EmailAddressServiceUtil {
 	an email address with the primary key could not be found or if
 	the user did not have permission to view the email address
 	*/
-	public static com.liferay.portal.model.EmailAddress fetchEmailAddress(
+	public static com.liferay.portal.kernel.model.EmailAddress fetchEmailAddress(
 		long emailAddressId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().fetchEmailAddress(emailAddressId);
 	}
 
-	public static com.liferay.portal.model.EmailAddress getEmailAddress(
+	public static com.liferay.portal.kernel.model.EmailAddress getEmailAddress(
 		long emailAddressId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getEmailAddress(emailAddressId);
 	}
 
-	public static java.util.List<com.liferay.portal.model.EmailAddress> getEmailAddresses(
+	public static java.util.List<com.liferay.portal.kernel.model.EmailAddress> getEmailAddresses(
 		java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getEmailAddresses(className, classPK);
@@ -90,7 +90,7 @@ public class EmailAddressServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.model.EmailAddress updateEmailAddress(
+	public static com.liferay.portal.kernel.model.EmailAddress updateEmailAddress(
 		long emailAddressId, java.lang.String address, long typeId,
 		boolean primary)
 		throws com.liferay.portal.kernel.exception.PortalException {

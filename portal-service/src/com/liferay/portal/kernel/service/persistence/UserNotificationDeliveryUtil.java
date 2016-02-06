@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
-import com.liferay.portal.model.UserNotificationDelivery;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.UserNotificationDelivery;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -46,14 +46,14 @@ public class UserNotificationDeliveryUtil {
 	 */
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache()
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache()
 	 */
 	public static void clearCache() {
 		getPersistence().clearCache();
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static void clearCache(
 		UserNotificationDelivery userNotificationDelivery) {
@@ -61,14 +61,14 @@ public class UserNotificationDeliveryUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
 	public static long countWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<UserNotificationDelivery> findWithDynamicQuery(
 		DynamicQuery dynamicQuery) {
@@ -76,7 +76,7 @@ public class UserNotificationDeliveryUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
 	public static List<UserNotificationDelivery> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
@@ -84,7 +84,7 @@ public class UserNotificationDeliveryUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
 	public static List<UserNotificationDelivery> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
@@ -95,7 +95,7 @@ public class UserNotificationDeliveryUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static UserNotificationDelivery update(
 		UserNotificationDelivery userNotificationDelivery) {
@@ -103,7 +103,7 @@ public class UserNotificationDeliveryUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
 	public static UserNotificationDelivery update(
 		UserNotificationDelivery userNotificationDelivery,
@@ -191,7 +191,7 @@ public class UserNotificationDeliveryUtil {
 	*/
 	public static UserNotificationDelivery findByUserId_First(long userId,
 		OrderByComparator<UserNotificationDelivery> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationDeliveryException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationDeliveryException {
 		return getPersistence().findByUserId_First(userId, orderByComparator);
 	}
 
@@ -217,7 +217,7 @@ public class UserNotificationDeliveryUtil {
 	*/
 	public static UserNotificationDelivery findByUserId_Last(long userId,
 		OrderByComparator<UserNotificationDelivery> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationDeliveryException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationDeliveryException {
 		return getPersistence().findByUserId_Last(userId, orderByComparator);
 	}
 
@@ -245,7 +245,7 @@ public class UserNotificationDeliveryUtil {
 	public static UserNotificationDelivery[] findByUserId_PrevAndNext(
 		long userNotificationDeliveryId, long userId,
 		OrderByComparator<UserNotificationDelivery> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserNotificationDeliveryException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationDeliveryException {
 		return getPersistence()
 				   .findByUserId_PrevAndNext(userNotificationDeliveryId,
 			userId, orderByComparator);
@@ -284,7 +284,7 @@ public class UserNotificationDeliveryUtil {
 	public static UserNotificationDelivery findByU_P_C_N_D(long userId,
 		java.lang.String portletId, long classNameId, int notificationType,
 		int deliveryType)
-		throws com.liferay.portal.exception.NoSuchUserNotificationDeliveryException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationDeliveryException {
 		return getPersistence()
 				   .findByU_P_C_N_D(userId, portletId, classNameId,
 			notificationType, deliveryType);
@@ -340,7 +340,7 @@ public class UserNotificationDeliveryUtil {
 	public static UserNotificationDelivery removeByU_P_C_N_D(long userId,
 		java.lang.String portletId, long classNameId, int notificationType,
 		int deliveryType)
-		throws com.liferay.portal.exception.NoSuchUserNotificationDeliveryException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationDeliveryException {
 		return getPersistence()
 				   .removeByU_P_C_N_D(userId, portletId, classNameId,
 			notificationType, deliveryType);
@@ -403,7 +403,7 @@ public class UserNotificationDeliveryUtil {
 	*/
 	public static UserNotificationDelivery remove(
 		long userNotificationDeliveryId)
-		throws com.liferay.portal.exception.NoSuchUserNotificationDeliveryException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationDeliveryException {
 		return getPersistence().remove(userNotificationDeliveryId);
 	}
 
@@ -421,7 +421,7 @@ public class UserNotificationDeliveryUtil {
 	*/
 	public static UserNotificationDelivery findByPrimaryKey(
 		long userNotificationDeliveryId)
-		throws com.liferay.portal.exception.NoSuchUserNotificationDeliveryException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserNotificationDeliveryException {
 		return getPersistence().findByPrimaryKey(userNotificationDeliveryId);
 	}
 

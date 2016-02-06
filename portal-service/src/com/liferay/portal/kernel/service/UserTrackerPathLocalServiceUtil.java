@@ -47,8 +47,8 @@ public class UserTrackerPathLocalServiceUtil {
 	* @param userTrackerPath the user tracker path
 	* @return the user tracker path that was added
 	*/
-	public static com.liferay.portal.model.UserTrackerPath addUserTrackerPath(
-		com.liferay.portal.model.UserTrackerPath userTrackerPath) {
+	public static com.liferay.portal.kernel.model.UserTrackerPath addUserTrackerPath(
+		com.liferay.portal.kernel.model.UserTrackerPath userTrackerPath) {
 		return getService().addUserTrackerPath(userTrackerPath);
 	}
 
@@ -58,7 +58,7 @@ public class UserTrackerPathLocalServiceUtil {
 	* @param userTrackerPathId the primary key for the new user tracker path
 	* @return the new user tracker path
 	*/
-	public static com.liferay.portal.model.UserTrackerPath createUserTrackerPath(
+	public static com.liferay.portal.kernel.model.UserTrackerPath createUserTrackerPath(
 		long userTrackerPathId) {
 		return getService().createUserTrackerPath(userTrackerPathId);
 	}
@@ -66,8 +66,8 @@ public class UserTrackerPathLocalServiceUtil {
 	/**
 	* @throws PortalException
 	*/
-	public static com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -78,8 +78,8 @@ public class UserTrackerPathLocalServiceUtil {
 	* @param userTrackerPath the user tracker path
 	* @return the user tracker path that was removed
 	*/
-	public static com.liferay.portal.model.UserTrackerPath deleteUserTrackerPath(
-		com.liferay.portal.model.UserTrackerPath userTrackerPath) {
+	public static com.liferay.portal.kernel.model.UserTrackerPath deleteUserTrackerPath(
+		com.liferay.portal.kernel.model.UserTrackerPath userTrackerPath) {
 		return getService().deleteUserTrackerPath(userTrackerPath);
 	}
 
@@ -90,7 +90,7 @@ public class UserTrackerPathLocalServiceUtil {
 	* @return the user tracker path that was removed
 	* @throws PortalException if a user tracker path with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.UserTrackerPath deleteUserTrackerPath(
+	public static com.liferay.portal.kernel.model.UserTrackerPath deleteUserTrackerPath(
 		long userTrackerPathId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteUserTrackerPath(userTrackerPathId);
@@ -174,7 +174,7 @@ public class UserTrackerPathLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.portal.model.UserTrackerPath fetchUserTrackerPath(
+	public static com.liferay.portal.kernel.model.UserTrackerPath fetchUserTrackerPath(
 		long userTrackerPathId) {
 		return getService().fetchUserTrackerPath(userTrackerPathId);
 	}
@@ -196,7 +196,7 @@ public class UserTrackerPathLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.model.PersistedModel getPersistedModel(
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getPersistedModel(primaryKeyObj);
@@ -209,7 +209,7 @@ public class UserTrackerPathLocalServiceUtil {
 	* @return the user tracker path
 	* @throws PortalException if a user tracker path with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.UserTrackerPath getUserTrackerPath(
+	public static com.liferay.portal.kernel.model.UserTrackerPath getUserTrackerPath(
 		long userTrackerPathId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getUserTrackerPath(userTrackerPathId);
@@ -226,12 +226,12 @@ public class UserTrackerPathLocalServiceUtil {
 	* @param end the upper bound of the range of user tracker paths (not inclusive)
 	* @return the range of user tracker paths
 	*/
-	public static java.util.List<com.liferay.portal.model.UserTrackerPath> getUserTrackerPaths(
+	public static java.util.List<com.liferay.portal.kernel.model.UserTrackerPath> getUserTrackerPaths(
 		int start, int end) {
 		return getService().getUserTrackerPaths(start, end);
 	}
 
-	public static java.util.List<com.liferay.portal.model.UserTrackerPath> getUserTrackerPaths(
+	public static java.util.List<com.liferay.portal.kernel.model.UserTrackerPath> getUserTrackerPaths(
 		long userTrackerId, int start, int end) {
 		return getService().getUserTrackerPaths(userTrackerId, start, end);
 	}
@@ -251,8 +251,8 @@ public class UserTrackerPathLocalServiceUtil {
 	* @param userTrackerPath the user tracker path
 	* @return the user tracker path that was updated
 	*/
-	public static com.liferay.portal.model.UserTrackerPath updateUserTrackerPath(
-		com.liferay.portal.model.UserTrackerPath userTrackerPath) {
+	public static com.liferay.portal.kernel.model.UserTrackerPath updateUserTrackerPath(
+		com.liferay.portal.kernel.model.UserTrackerPath userTrackerPath) {
 		return getService().updateUserTrackerPath(userTrackerPath);
 	}
 

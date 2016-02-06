@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
-import com.liferay.portal.model.VirtualHost;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.VirtualHost;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -46,28 +46,28 @@ public class VirtualHostUtil {
 	 */
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache()
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache()
 	 */
 	public static void clearCache() {
 		getPersistence().clearCache();
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static void clearCache(VirtualHost virtualHost) {
 		getPersistence().clearCache(virtualHost);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
 	public static long countWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<VirtualHost> findWithDynamicQuery(
 		DynamicQuery dynamicQuery) {
@@ -75,7 +75,7 @@ public class VirtualHostUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
 	public static List<VirtualHost> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
@@ -83,7 +83,7 @@ public class VirtualHostUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
 	public static List<VirtualHost> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
@@ -94,14 +94,14 @@ public class VirtualHostUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static VirtualHost update(VirtualHost virtualHost) {
 		return getPersistence().update(virtualHost);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
 	public static VirtualHost update(VirtualHost virtualHost,
 		ServiceContext serviceContext) {
@@ -116,7 +116,7 @@ public class VirtualHostUtil {
 	* @throws NoSuchVirtualHostException if a matching virtual host could not be found
 	*/
 	public static VirtualHost findByHostname(java.lang.String hostname)
-		throws com.liferay.portal.exception.NoSuchVirtualHostException {
+		throws com.liferay.portal.kernel.exception.NoSuchVirtualHostException {
 		return getPersistence().findByHostname(hostname);
 	}
 
@@ -149,7 +149,7 @@ public class VirtualHostUtil {
 	* @return the virtual host that was removed
 	*/
 	public static VirtualHost removeByHostname(java.lang.String hostname)
-		throws com.liferay.portal.exception.NoSuchVirtualHostException {
+		throws com.liferay.portal.kernel.exception.NoSuchVirtualHostException {
 		return getPersistence().removeByHostname(hostname);
 	}
 
@@ -172,7 +172,7 @@ public class VirtualHostUtil {
 	* @throws NoSuchVirtualHostException if a matching virtual host could not be found
 	*/
 	public static VirtualHost findByC_L(long companyId, long layoutSetId)
-		throws com.liferay.portal.exception.NoSuchVirtualHostException {
+		throws com.liferay.portal.kernel.exception.NoSuchVirtualHostException {
 		return getPersistence().findByC_L(companyId, layoutSetId);
 	}
 
@@ -209,7 +209,7 @@ public class VirtualHostUtil {
 	* @return the virtual host that was removed
 	*/
 	public static VirtualHost removeByC_L(long companyId, long layoutSetId)
-		throws com.liferay.portal.exception.NoSuchVirtualHostException {
+		throws com.liferay.portal.kernel.exception.NoSuchVirtualHostException {
 		return getPersistence().removeByC_L(companyId, layoutSetId);
 	}
 
@@ -260,7 +260,7 @@ public class VirtualHostUtil {
 	* @throws NoSuchVirtualHostException if a virtual host with the primary key could not be found
 	*/
 	public static VirtualHost remove(long virtualHostId)
-		throws com.liferay.portal.exception.NoSuchVirtualHostException {
+		throws com.liferay.portal.kernel.exception.NoSuchVirtualHostException {
 		return getPersistence().remove(virtualHostId);
 	}
 
@@ -276,7 +276,7 @@ public class VirtualHostUtil {
 	* @throws NoSuchVirtualHostException if a virtual host with the primary key could not be found
 	*/
 	public static VirtualHost findByPrimaryKey(long virtualHostId)
-		throws com.liferay.portal.exception.NoSuchVirtualHostException {
+		throws com.liferay.portal.kernel.exception.NoSuchVirtualHostException {
 		return getPersistence().findByPrimaryKey(virtualHostId);
 	}
 

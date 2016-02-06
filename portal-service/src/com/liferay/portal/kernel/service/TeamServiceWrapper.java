@@ -36,16 +36,16 @@ public class TeamServiceWrapper implements TeamService,
 	*/
 	@Deprecated
 	@Override
-	public com.liferay.portal.model.Team addTeam(long groupId,
+	public com.liferay.portal.kernel.model.Team addTeam(long groupId,
 		java.lang.String name, java.lang.String description)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _teamService.addTeam(groupId, name, description);
 	}
 
 	@Override
-	public com.liferay.portal.model.Team addTeam(long groupId,
+	public com.liferay.portal.kernel.model.Team addTeam(long groupId,
 		java.lang.String name, java.lang.String description,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _teamService.addTeam(groupId, name, description, serviceContext);
 	}
@@ -57,7 +57,7 @@ public class TeamServiceWrapper implements TeamService,
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Team> getGroupTeams(
+	public java.util.List<com.liferay.portal.kernel.model.Team> getGroupTeams(
 		long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _teamService.getGroupTeams(groupId);
@@ -74,26 +74,26 @@ public class TeamServiceWrapper implements TeamService,
 	}
 
 	@Override
-	public com.liferay.portal.model.Team getTeam(long groupId,
+	public com.liferay.portal.kernel.model.Team getTeam(long groupId,
 		java.lang.String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _teamService.getTeam(groupId, name);
 	}
 
 	@Override
-	public com.liferay.portal.model.Team getTeam(long teamId)
+	public com.liferay.portal.kernel.model.Team getTeam(long teamId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _teamService.getTeam(teamId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Team> getUserTeams(
+	public java.util.List<com.liferay.portal.kernel.model.Team> getUserTeams(
 		long userId) throws com.liferay.portal.kernel.exception.PortalException {
 		return _teamService.getUserTeams(userId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Team> getUserTeams(
+	public java.util.List<com.liferay.portal.kernel.model.Team> getUserTeams(
 		long userId, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _teamService.getUserTeams(userId, groupId);
@@ -106,11 +106,11 @@ public class TeamServiceWrapper implements TeamService,
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Team> search(long groupId,
+	public java.util.List<com.liferay.portal.kernel.model.Team> search(long groupId,
 		java.lang.String name, java.lang.String description,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Team> obc) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Team> obc) {
 		return _teamService.search(groupId, name, description, params, start,
 			end, obc);
 	}
@@ -123,7 +123,7 @@ public class TeamServiceWrapper implements TeamService,
 	}
 
 	@Override
-	public com.liferay.portal.model.Team updateTeam(long teamId,
+	public com.liferay.portal.kernel.model.Team updateTeam(long teamId,
 		java.lang.String name, java.lang.String description)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _teamService.updateTeam(teamId, name, description);

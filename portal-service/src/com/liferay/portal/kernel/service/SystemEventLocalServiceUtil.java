@@ -40,7 +40,7 @@ public class SystemEventLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.portal.service.impl.SystemEventLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.portal.model.SystemEvent addSystemEvent(
+	public static com.liferay.portal.kernel.model.SystemEvent addSystemEvent(
 		long companyId, java.lang.String className, long classPK,
 		java.lang.String classUuid, java.lang.String referrerClassName,
 		int type, java.lang.String extraData)
@@ -56,12 +56,12 @@ public class SystemEventLocalServiceUtil {
 	* @param systemEvent the system event
 	* @return the system event that was added
 	*/
-	public static com.liferay.portal.model.SystemEvent addSystemEvent(
-		com.liferay.portal.model.SystemEvent systemEvent) {
+	public static com.liferay.portal.kernel.model.SystemEvent addSystemEvent(
+		com.liferay.portal.kernel.model.SystemEvent systemEvent) {
 		return getService().addSystemEvent(systemEvent);
 	}
 
-	public static com.liferay.portal.model.SystemEvent addSystemEvent(
+	public static com.liferay.portal.kernel.model.SystemEvent addSystemEvent(
 		long userId, long groupId, java.lang.String className, long classPK,
 		java.lang.String classUuid, java.lang.String referrerClassName,
 		int type, java.lang.String extraData)
@@ -77,7 +77,7 @@ public class SystemEventLocalServiceUtil {
 	* @param systemEventId the primary key for the new system event
 	* @return the new system event
 	*/
-	public static com.liferay.portal.model.SystemEvent createSystemEvent(
+	public static com.liferay.portal.kernel.model.SystemEvent createSystemEvent(
 		long systemEventId) {
 		return getService().createSystemEvent(systemEventId);
 	}
@@ -85,8 +85,8 @@ public class SystemEventLocalServiceUtil {
 	/**
 	* @throws PortalException
 	*/
-	public static com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -97,8 +97,8 @@ public class SystemEventLocalServiceUtil {
 	* @param systemEvent the system event
 	* @return the system event that was removed
 	*/
-	public static com.liferay.portal.model.SystemEvent deleteSystemEvent(
-		com.liferay.portal.model.SystemEvent systemEvent) {
+	public static com.liferay.portal.kernel.model.SystemEvent deleteSystemEvent(
+		com.liferay.portal.kernel.model.SystemEvent systemEvent) {
 		return getService().deleteSystemEvent(systemEvent);
 	}
 
@@ -109,7 +109,7 @@ public class SystemEventLocalServiceUtil {
 	* @return the system event that was removed
 	* @throws PortalException if a system event with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.SystemEvent deleteSystemEvent(
+	public static com.liferay.portal.kernel.model.SystemEvent deleteSystemEvent(
 		long systemEventId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteSystemEvent(systemEventId);
@@ -201,12 +201,12 @@ public class SystemEventLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.portal.model.SystemEvent fetchSystemEvent(
+	public static com.liferay.portal.kernel.model.SystemEvent fetchSystemEvent(
 		long groupId, long classNameId, long classPK, int type) {
 		return getService().fetchSystemEvent(groupId, classNameId, classPK, type);
 	}
 
-	public static com.liferay.portal.model.SystemEvent fetchSystemEvent(
+	public static com.liferay.portal.kernel.model.SystemEvent fetchSystemEvent(
 		long systemEventId) {
 		return getService().fetchSystemEvent(systemEventId);
 	}
@@ -228,7 +228,7 @@ public class SystemEventLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.model.PersistedModel getPersistedModel(
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getPersistedModel(primaryKeyObj);
@@ -241,18 +241,18 @@ public class SystemEventLocalServiceUtil {
 	* @return the system event
 	* @throws PortalException if a system event with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.SystemEvent getSystemEvent(
+	public static com.liferay.portal.kernel.model.SystemEvent getSystemEvent(
 		long systemEventId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getSystemEvent(systemEventId);
 	}
 
-	public static java.util.List<com.liferay.portal.model.SystemEvent> getSystemEvents(
+	public static java.util.List<com.liferay.portal.kernel.model.SystemEvent> getSystemEvents(
 		long groupId, long classNameId, long classPK) {
 		return getService().getSystemEvents(groupId, classNameId, classPK);
 	}
 
-	public static java.util.List<com.liferay.portal.model.SystemEvent> getSystemEvents(
+	public static java.util.List<com.liferay.portal.kernel.model.SystemEvent> getSystemEvents(
 		long groupId, long classNameId, long classPK, int type) {
 		return getService().getSystemEvents(groupId, classNameId, classPK, type);
 	}
@@ -268,7 +268,7 @@ public class SystemEventLocalServiceUtil {
 	* @param end the upper bound of the range of system events (not inclusive)
 	* @return the range of system events
 	*/
-	public static java.util.List<com.liferay.portal.model.SystemEvent> getSystemEvents(
+	public static java.util.List<com.liferay.portal.kernel.model.SystemEvent> getSystemEvents(
 		int start, int end) {
 		return getService().getSystemEvents(start, end);
 	}
@@ -288,8 +288,8 @@ public class SystemEventLocalServiceUtil {
 	* @param systemEvent the system event
 	* @return the system event that was updated
 	*/
-	public static com.liferay.portal.model.SystemEvent updateSystemEvent(
-		com.liferay.portal.model.SystemEvent systemEvent) {
+	public static com.liferay.portal.kernel.model.SystemEvent updateSystemEvent(
+		com.liferay.portal.kernel.model.SystemEvent systemEvent) {
 		return getService().updateSystemEvent(systemEvent);
 	}
 

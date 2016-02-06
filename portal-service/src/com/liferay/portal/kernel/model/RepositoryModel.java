@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -374,19 +374,19 @@ public interface RepositoryModel extends BaseModel<Repository>, MVCCModel,
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.model.Repository repository);
+	public int compareTo(com.liferay.portal.kernel.model.Repository repository);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.Repository> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.Repository> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.Repository toEscapedModel();
+	public com.liferay.portal.kernel.model.Repository toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.Repository toUnescapedModel();
+	public com.liferay.portal.kernel.model.Repository toUnescapedModel();
 
 	@Override
 	public String toString();

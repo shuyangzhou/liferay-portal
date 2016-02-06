@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchRepositoryEntryException;
-import com.liferay.portal.model.RepositoryEntry;
+import com.liferay.portal.kernel.exception.NoSuchRepositoryEntryException;
+import com.liferay.portal.kernel.model.RepositoryEntry;
 
 /**
  * The persistence interface for the repository entry service.

@@ -47,12 +47,12 @@ public class ClassNameLocalServiceUtil {
 	* @param className the class name
 	* @return the class name that was added
 	*/
-	public static com.liferay.portal.model.ClassName addClassName(
-		com.liferay.portal.model.ClassName className) {
+	public static com.liferay.portal.kernel.model.ClassName addClassName(
+		com.liferay.portal.kernel.model.ClassName className) {
 		return getService().addClassName(className);
 	}
 
-	public static com.liferay.portal.model.ClassName addClassName(
+	public static com.liferay.portal.kernel.model.ClassName addClassName(
 		java.lang.String value) {
 		return getService().addClassName(value);
 	}
@@ -67,7 +67,7 @@ public class ClassNameLocalServiceUtil {
 	* @param classNameId the primary key for the new class name
 	* @return the new class name
 	*/
-	public static com.liferay.portal.model.ClassName createClassName(
+	public static com.liferay.portal.kernel.model.ClassName createClassName(
 		long classNameId) {
 		return getService().createClassName(classNameId);
 	}
@@ -78,8 +78,8 @@ public class ClassNameLocalServiceUtil {
 	* @param className the class name
 	* @return the class name that was removed
 	*/
-	public static com.liferay.portal.model.ClassName deleteClassName(
-		com.liferay.portal.model.ClassName className) {
+	public static com.liferay.portal.kernel.model.ClassName deleteClassName(
+		com.liferay.portal.kernel.model.ClassName className) {
 		return getService().deleteClassName(className);
 	}
 
@@ -90,7 +90,7 @@ public class ClassNameLocalServiceUtil {
 	* @return the class name that was removed
 	* @throws PortalException if a class name with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.ClassName deleteClassName(
+	public static com.liferay.portal.kernel.model.ClassName deleteClassName(
 		long classNameId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteClassName(classNameId);
@@ -99,8 +99,8 @@ public class ClassNameLocalServiceUtil {
 	/**
 	* @throws PortalException
 	*/
-	public static com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -183,12 +183,12 @@ public class ClassNameLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.portal.model.ClassName fetchClassName(
+	public static com.liferay.portal.kernel.model.ClassName fetchClassName(
 		long classNameId) {
 		return getService().fetchClassName(classNameId);
 	}
 
-	public static com.liferay.portal.model.ClassName fetchClassName(
+	public static com.liferay.portal.kernel.model.ClassName fetchClassName(
 		java.lang.String value) {
 		return getService().fetchClassName(value);
 	}
@@ -204,13 +204,13 @@ public class ClassNameLocalServiceUtil {
 	* @return the class name
 	* @throws PortalException if a class name with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.ClassName getClassName(
+	public static com.liferay.portal.kernel.model.ClassName getClassName(
 		long classNameId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getClassName(classNameId);
 	}
 
-	public static com.liferay.portal.model.ClassName getClassName(
+	public static com.liferay.portal.kernel.model.ClassName getClassName(
 		java.lang.String value) {
 		return getService().getClassName(value);
 	}
@@ -234,7 +234,7 @@ public class ClassNameLocalServiceUtil {
 	* @param end the upper bound of the range of class names (not inclusive)
 	* @return the range of class names
 	*/
-	public static java.util.List<com.liferay.portal.model.ClassName> getClassNames(
+	public static java.util.List<com.liferay.portal.kernel.model.ClassName> getClassNames(
 		int start, int end) {
 		return getService().getClassNames(start, end);
 	}
@@ -261,7 +261,7 @@ public class ClassNameLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.model.PersistedModel getPersistedModel(
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getPersistedModel(primaryKeyObj);
@@ -281,8 +281,8 @@ public class ClassNameLocalServiceUtil {
 	* @param className the class name
 	* @return the class name that was updated
 	*/
-	public static com.liferay.portal.model.ClassName updateClassName(
-		com.liferay.portal.model.ClassName className) {
+	public static com.liferay.portal.kernel.model.ClassName updateClassName(
+		com.liferay.portal.kernel.model.ClassName className) {
 		return getService().updateClassName(className);
 	}
 

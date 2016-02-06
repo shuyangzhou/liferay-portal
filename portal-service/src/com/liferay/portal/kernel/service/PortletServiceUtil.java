@@ -54,7 +54,7 @@ public class PortletServiceUtil {
 		return getService().getWARPortlets();
 	}
 
-	public static com.liferay.portal.model.Portlet updatePortlet(
+	public static com.liferay.portal.kernel.model.Portlet updatePortlet(
 		long companyId, java.lang.String portletId, java.lang.String roles,
 		boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {

@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
-import com.liferay.portal.model.Group;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -46,35 +46,35 @@ public class GroupUtil {
 	 */
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache()
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache()
 	 */
 	public static void clearCache() {
 		getPersistence().clearCache();
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static void clearCache(Group group) {
 		getPersistence().clearCache(group);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
 	public static long countWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<Group> findWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().findWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
 	public static List<Group> findWithDynamicQuery(DynamicQuery dynamicQuery,
 		int start, int end) {
@@ -82,7 +82,7 @@ public class GroupUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
 	public static List<Group> findWithDynamicQuery(DynamicQuery dynamicQuery,
 		int start, int end, OrderByComparator<Group> orderByComparator) {
@@ -92,14 +92,14 @@ public class GroupUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static Group update(Group group) {
 		return getPersistence().update(group);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
 	public static Group update(Group group, ServiceContext serviceContext) {
 		return getPersistence().update(group, serviceContext);
@@ -182,7 +182,7 @@ public class GroupUtil {
 	*/
 	public static Group findByUuid_First(java.lang.String uuid,
 		OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence().findByUuid_First(uuid, orderByComparator);
 	}
 
@@ -208,7 +208,7 @@ public class GroupUtil {
 	*/
 	public static Group findByUuid_Last(java.lang.String uuid,
 		OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence().findByUuid_Last(uuid, orderByComparator);
 	}
 
@@ -235,7 +235,7 @@ public class GroupUtil {
 	*/
 	public static Group[] findByUuid_PrevAndNext(long groupId,
 		java.lang.String uuid, OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence()
 				   .findByUuid_PrevAndNext(groupId, uuid, orderByComparator);
 	}
@@ -268,7 +268,7 @@ public class GroupUtil {
 	* @throws NoSuchGroupException if a matching group could not be found
 	*/
 	public static Group findByUUID_G(java.lang.String uuid, long groupId)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence().findByUUID_G(uuid, groupId);
 	}
 
@@ -304,7 +304,7 @@ public class GroupUtil {
 	* @return the group that was removed
 	*/
 	public static Group removeByUUID_G(java.lang.String uuid, long groupId)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence().removeByUUID_G(uuid, groupId);
 	}
 
@@ -403,7 +403,7 @@ public class GroupUtil {
 	*/
 	public static Group findByUuid_C_First(java.lang.String uuid,
 		long companyId, OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence()
 				   .findByUuid_C_First(uuid, companyId, orderByComparator);
 	}
@@ -433,7 +433,7 @@ public class GroupUtil {
 	*/
 	public static Group findByUuid_C_Last(java.lang.String uuid,
 		long companyId, OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence()
 				   .findByUuid_C_Last(uuid, companyId, orderByComparator);
 	}
@@ -465,7 +465,7 @@ public class GroupUtil {
 	public static Group[] findByUuid_C_PrevAndNext(long groupId,
 		java.lang.String uuid, long companyId,
 		OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence()
 				   .findByUuid_C_PrevAndNext(groupId, uuid, companyId,
 			orderByComparator);
@@ -569,7 +569,7 @@ public class GroupUtil {
 	*/
 	public static Group findByCompanyId_First(long companyId,
 		OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence()
 				   .findByCompanyId_First(companyId, orderByComparator);
 	}
@@ -597,7 +597,7 @@ public class GroupUtil {
 	*/
 	public static Group findByCompanyId_Last(long companyId,
 		OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence()
 				   .findByCompanyId_Last(companyId, orderByComparator);
 	}
@@ -626,7 +626,7 @@ public class GroupUtil {
 	*/
 	public static Group[] findByCompanyId_PrevAndNext(long groupId,
 		long companyId, OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence()
 				   .findByCompanyId_PrevAndNext(groupId, companyId,
 			orderByComparator);
@@ -659,7 +659,7 @@ public class GroupUtil {
 	* @throws NoSuchGroupException if a matching group could not be found
 	*/
 	public static Group findByLiveGroupId(long liveGroupId)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence().findByLiveGroupId(liveGroupId);
 	}
 
@@ -693,7 +693,7 @@ public class GroupUtil {
 	* @return the group that was removed
 	*/
 	public static Group removeByLiveGroupId(long liveGroupId)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence().removeByLiveGroupId(liveGroupId);
 	}
 
@@ -791,7 +791,7 @@ public class GroupUtil {
 	*/
 	public static Group findByC_C_First(long companyId, long classNameId,
 		OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence()
 				   .findByC_C_First(companyId, classNameId, orderByComparator);
 	}
@@ -821,7 +821,7 @@ public class GroupUtil {
 	*/
 	public static Group findByC_C_Last(long companyId, long classNameId,
 		OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence()
 				   .findByC_C_Last(companyId, classNameId, orderByComparator);
 	}
@@ -852,7 +852,7 @@ public class GroupUtil {
 	*/
 	public static Group[] findByC_C_PrevAndNext(long groupId, long companyId,
 		long classNameId, OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence()
 				   .findByC_C_PrevAndNext(groupId, companyId, classNameId,
 			orderByComparator);
@@ -963,7 +963,7 @@ public class GroupUtil {
 	*/
 	public static Group findByC_P_First(long companyId, long parentGroupId,
 		OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence()
 				   .findByC_P_First(companyId, parentGroupId, orderByComparator);
 	}
@@ -993,7 +993,7 @@ public class GroupUtil {
 	*/
 	public static Group findByC_P_Last(long companyId, long parentGroupId,
 		OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence()
 				   .findByC_P_Last(companyId, parentGroupId, orderByComparator);
 	}
@@ -1024,7 +1024,7 @@ public class GroupUtil {
 	*/
 	public static Group[] findByC_P_PrevAndNext(long groupId, long companyId,
 		long parentGroupId, OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence()
 				   .findByC_P_PrevAndNext(groupId, companyId, parentGroupId,
 			orderByComparator);
@@ -1060,7 +1060,7 @@ public class GroupUtil {
 	* @throws NoSuchGroupException if a matching group could not be found
 	*/
 	public static Group findByC_GK(long companyId, java.lang.String groupKey)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence().findByC_GK(companyId, groupKey);
 	}
 
@@ -1097,7 +1097,7 @@ public class GroupUtil {
 	* @return the group that was removed
 	*/
 	public static Group removeByC_GK(long companyId, java.lang.String groupKey)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence().removeByC_GK(companyId, groupKey);
 	}
 
@@ -1121,7 +1121,7 @@ public class GroupUtil {
 	* @throws NoSuchGroupException if a matching group could not be found
 	*/
 	public static Group findByC_F(long companyId, java.lang.String friendlyURL)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence().findByC_F(companyId, friendlyURL);
 	}
 
@@ -1158,7 +1158,7 @@ public class GroupUtil {
 	* @return the group that was removed
 	*/
 	public static Group removeByC_F(long companyId, java.lang.String friendlyURL)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence().removeByC_F(companyId, friendlyURL);
 	}
 
@@ -1256,7 +1256,7 @@ public class GroupUtil {
 	*/
 	public static Group findByC_S_First(long companyId, boolean site,
 		OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence()
 				   .findByC_S_First(companyId, site, orderByComparator);
 	}
@@ -1286,7 +1286,7 @@ public class GroupUtil {
 	*/
 	public static Group findByC_S_Last(long companyId, boolean site,
 		OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence()
 				   .findByC_S_Last(companyId, site, orderByComparator);
 	}
@@ -1317,7 +1317,7 @@ public class GroupUtil {
 	*/
 	public static Group[] findByC_S_PrevAndNext(long groupId, long companyId,
 		boolean site, OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence()
 				   .findByC_S_PrevAndNext(groupId, companyId, site,
 			orderByComparator);
@@ -1427,7 +1427,7 @@ public class GroupUtil {
 	*/
 	public static Group findByC_A_First(long companyId, boolean active,
 		OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence()
 				   .findByC_A_First(companyId, active, orderByComparator);
 	}
@@ -1457,7 +1457,7 @@ public class GroupUtil {
 	*/
 	public static Group findByC_A_Last(long companyId, boolean active,
 		OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence()
 				   .findByC_A_Last(companyId, active, orderByComparator);
 	}
@@ -1488,7 +1488,7 @@ public class GroupUtil {
 	*/
 	public static Group[] findByC_A_PrevAndNext(long groupId, long companyId,
 		boolean active, OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence()
 				   .findByC_A_PrevAndNext(groupId, companyId, active,
 			orderByComparator);
@@ -1598,7 +1598,7 @@ public class GroupUtil {
 	*/
 	public static Group findByT_A_First(int type, boolean active,
 		OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence().findByT_A_First(type, active, orderByComparator);
 	}
 
@@ -1626,7 +1626,7 @@ public class GroupUtil {
 	*/
 	public static Group findByT_A_Last(int type, boolean active,
 		OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence().findByT_A_Last(type, active, orderByComparator);
 	}
 
@@ -1655,7 +1655,7 @@ public class GroupUtil {
 	*/
 	public static Group[] findByT_A_PrevAndNext(long groupId, int type,
 		boolean active, OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence()
 				   .findByT_A_PrevAndNext(groupId, type, active,
 			orderByComparator);
@@ -1774,7 +1774,7 @@ public class GroupUtil {
 	*/
 	public static Group findByG_C_P_First(long groupId, long companyId,
 		long parentGroupId, OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence()
 				   .findByG_C_P_First(groupId, companyId, parentGroupId,
 			orderByComparator);
@@ -1808,7 +1808,7 @@ public class GroupUtil {
 	*/
 	public static Group findByG_C_P_Last(long groupId, long companyId,
 		long parentGroupId, OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence()
 				   .findByG_C_P_Last(groupId, companyId, parentGroupId,
 			orderByComparator);
@@ -1865,7 +1865,7 @@ public class GroupUtil {
 	* @throws NoSuchGroupException if a matching group could not be found
 	*/
 	public static Group findByC_C_C(long companyId, long classNameId,
-		long classPK) throws com.liferay.portal.exception.NoSuchGroupException {
+		long classPK) throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence().findByC_C_C(companyId, classNameId, classPK);
 	}
 
@@ -1907,7 +1907,7 @@ public class GroupUtil {
 	* @return the group that was removed
 	*/
 	public static Group removeByC_C_C(long companyId, long classNameId,
-		long classPK) throws com.liferay.portal.exception.NoSuchGroupException {
+		long classPK) throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence().removeByC_C_C(companyId, classNameId, classPK);
 	}
 
@@ -2018,7 +2018,7 @@ public class GroupUtil {
 	*/
 	public static Group findByC_C_P_First(long companyId, long classNameId,
 		long parentGroupId, OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence()
 				   .findByC_C_P_First(companyId, classNameId, parentGroupId,
 			orderByComparator);
@@ -2052,7 +2052,7 @@ public class GroupUtil {
 	*/
 	public static Group findByC_C_P_Last(long companyId, long classNameId,
 		long parentGroupId, OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence()
 				   .findByC_C_P_Last(companyId, classNameId, parentGroupId,
 			orderByComparator);
@@ -2088,7 +2088,7 @@ public class GroupUtil {
 	public static Group[] findByC_C_P_PrevAndNext(long groupId, long companyId,
 		long classNameId, long parentGroupId,
 		OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence()
 				   .findByC_C_P_PrevAndNext(groupId, companyId, classNameId,
 			parentGroupId, orderByComparator);
@@ -2212,7 +2212,7 @@ public class GroupUtil {
 	*/
 	public static Group findByC_P_S_First(long companyId, long parentGroupId,
 		boolean site, OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence()
 				   .findByC_P_S_First(companyId, parentGroupId, site,
 			orderByComparator);
@@ -2246,7 +2246,7 @@ public class GroupUtil {
 	*/
 	public static Group findByC_P_S_Last(long companyId, long parentGroupId,
 		boolean site, OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence()
 				   .findByC_P_S_Last(companyId, parentGroupId, site,
 			orderByComparator);
@@ -2282,7 +2282,7 @@ public class GroupUtil {
 	public static Group[] findByC_P_S_PrevAndNext(long groupId, long companyId,
 		long parentGroupId, boolean site,
 		OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence()
 				   .findByC_P_S_PrevAndNext(groupId, companyId, parentGroupId,
 			site, orderByComparator);
@@ -2324,7 +2324,7 @@ public class GroupUtil {
 	*/
 	public static Group findByC_L_GK(long companyId, long liveGroupId,
 		java.lang.String groupKey)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence().findByC_L_GK(companyId, liveGroupId, groupKey);
 	}
 
@@ -2367,7 +2367,7 @@ public class GroupUtil {
 	*/
 	public static Group removeByC_L_GK(long companyId, long liveGroupId,
 		java.lang.String groupKey)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence().removeByC_L_GK(companyId, liveGroupId, groupKey);
 	}
 
@@ -2396,7 +2396,7 @@ public class GroupUtil {
 	*/
 	public static Group findByC_C_L_GK(long companyId, long classNameId,
 		long liveGroupId, java.lang.String groupKey)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence()
 				   .findByC_C_L_GK(companyId, classNameId, liveGroupId, groupKey);
 	}
@@ -2445,7 +2445,7 @@ public class GroupUtil {
 	*/
 	public static Group removeByC_C_L_GK(long companyId, long classNameId,
 		long liveGroupId, java.lang.String groupKey)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence()
 				   .removeByC_C_L_GK(companyId, classNameId, liveGroupId,
 			groupKey);
@@ -2567,7 +2567,7 @@ public class GroupUtil {
 	public static Group findByC_P_S_I_First(long companyId, long parentGroupId,
 		boolean site, boolean inheritContent,
 		OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence()
 				   .findByC_P_S_I_First(companyId, parentGroupId, site,
 			inheritContent, orderByComparator);
@@ -2605,7 +2605,7 @@ public class GroupUtil {
 	public static Group findByC_P_S_I_Last(long companyId, long parentGroupId,
 		boolean site, boolean inheritContent,
 		OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence()
 				   .findByC_P_S_I_Last(companyId, parentGroupId, site,
 			inheritContent, orderByComparator);
@@ -2644,7 +2644,7 @@ public class GroupUtil {
 	public static Group[] findByC_P_S_I_PrevAndNext(long groupId,
 		long companyId, long parentGroupId, boolean site,
 		boolean inheritContent, OrderByComparator<Group> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence()
 				   .findByC_P_S_I_PrevAndNext(groupId, companyId,
 			parentGroupId, site, inheritContent, orderByComparator);
@@ -2716,7 +2716,7 @@ public class GroupUtil {
 	* @throws NoSuchGroupException if a group with the primary key could not be found
 	*/
 	public static Group remove(long groupId)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence().remove(groupId);
 	}
 
@@ -2732,7 +2732,7 @@ public class GroupUtil {
 	* @throws NoSuchGroupException if a group with the primary key could not be found
 	*/
 	public static Group findByPrimaryKey(long groupId)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getPersistence().findByPrimaryKey(groupId);
 	}
 
@@ -2843,7 +2843,7 @@ public class GroupUtil {
 	* @param pk the primary key of the group
 	* @return the organizations associated with the group
 	*/
-	public static List<com.liferay.portal.model.Organization> getOrganizations(
+	public static List<com.liferay.portal.kernel.model.Organization> getOrganizations(
 		long pk) {
 		return getPersistence().getOrganizations(pk);
 	}
@@ -2860,7 +2860,7 @@ public class GroupUtil {
 	* @param end the upper bound of the range of groups (not inclusive)
 	* @return the range of organizations associated with the group
 	*/
-	public static List<com.liferay.portal.model.Organization> getOrganizations(
+	public static List<com.liferay.portal.kernel.model.Organization> getOrganizations(
 		long pk, int start, int end) {
 		return getPersistence().getOrganizations(pk, start, end);
 	}
@@ -2878,9 +2878,9 @@ public class GroupUtil {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of organizations associated with the group
 	*/
-	public static List<com.liferay.portal.model.Organization> getOrganizations(
+	public static List<com.liferay.portal.kernel.model.Organization> getOrganizations(
 		long pk, int start, int end,
-		OrderByComparator<com.liferay.portal.model.Organization> orderByComparator) {
+		OrderByComparator<com.liferay.portal.kernel.model.Organization> orderByComparator) {
 		return getPersistence()
 				   .getOrganizations(pk, start, end, orderByComparator);
 	}
@@ -2933,7 +2933,7 @@ public class GroupUtil {
 	* @param organization the organization
 	*/
 	public static void addOrganization(long pk,
-		com.liferay.portal.model.Organization organization) {
+		com.liferay.portal.kernel.model.Organization organization) {
 		getPersistence().addOrganization(pk, organization);
 	}
 
@@ -2954,7 +2954,7 @@ public class GroupUtil {
 	* @param organizations the organizations
 	*/
 	public static void addOrganizations(long pk,
-		List<com.liferay.portal.model.Organization> organizations) {
+		List<com.liferay.portal.kernel.model.Organization> organizations) {
 		getPersistence().addOrganizations(pk, organizations);
 	}
 
@@ -2984,7 +2984,7 @@ public class GroupUtil {
 	* @param organization the organization
 	*/
 	public static void removeOrganization(long pk,
-		com.liferay.portal.model.Organization organization) {
+		com.liferay.portal.kernel.model.Organization organization) {
 		getPersistence().removeOrganization(pk, organization);
 	}
 
@@ -3005,7 +3005,7 @@ public class GroupUtil {
 	* @param organizations the organizations
 	*/
 	public static void removeOrganizations(long pk,
-		List<com.liferay.portal.model.Organization> organizations) {
+		List<com.liferay.portal.kernel.model.Organization> organizations) {
 		getPersistence().removeOrganizations(pk, organizations);
 	}
 
@@ -3026,7 +3026,7 @@ public class GroupUtil {
 	* @param organizations the organizations to be associated with the group
 	*/
 	public static void setOrganizations(long pk,
-		List<com.liferay.portal.model.Organization> organizations) {
+		List<com.liferay.portal.kernel.model.Organization> organizations) {
 		getPersistence().setOrganizations(pk, organizations);
 	}
 
@@ -3046,7 +3046,7 @@ public class GroupUtil {
 	* @param pk the primary key of the group
 	* @return the roles associated with the group
 	*/
-	public static List<com.liferay.portal.model.Role> getRoles(long pk) {
+	public static List<com.liferay.portal.kernel.model.Role> getRoles(long pk) {
 		return getPersistence().getRoles(pk);
 	}
 
@@ -3062,7 +3062,7 @@ public class GroupUtil {
 	* @param end the upper bound of the range of groups (not inclusive)
 	* @return the range of roles associated with the group
 	*/
-	public static List<com.liferay.portal.model.Role> getRoles(long pk,
+	public static List<com.liferay.portal.kernel.model.Role> getRoles(long pk,
 		int start, int end) {
 		return getPersistence().getRoles(pk, start, end);
 	}
@@ -3080,9 +3080,9 @@ public class GroupUtil {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of roles associated with the group
 	*/
-	public static List<com.liferay.portal.model.Role> getRoles(long pk,
+	public static List<com.liferay.portal.kernel.model.Role> getRoles(long pk,
 		int start, int end,
-		OrderByComparator<com.liferay.portal.model.Role> orderByComparator) {
+		OrderByComparator<com.liferay.portal.kernel.model.Role> orderByComparator) {
 		return getPersistence().getRoles(pk, start, end, orderByComparator);
 	}
 
@@ -3133,7 +3133,7 @@ public class GroupUtil {
 	* @param pk the primary key of the group
 	* @param role the role
 	*/
-	public static void addRole(long pk, com.liferay.portal.model.Role role) {
+	public static void addRole(long pk, com.liferay.portal.kernel.model.Role role) {
 		getPersistence().addRole(pk, role);
 	}
 
@@ -3154,7 +3154,7 @@ public class GroupUtil {
 	* @param roles the roles
 	*/
 	public static void addRoles(long pk,
-		List<com.liferay.portal.model.Role> roles) {
+		List<com.liferay.portal.kernel.model.Role> roles) {
 		getPersistence().addRoles(pk, roles);
 	}
 
@@ -3183,7 +3183,7 @@ public class GroupUtil {
 	* @param pk the primary key of the group
 	* @param role the role
 	*/
-	public static void removeRole(long pk, com.liferay.portal.model.Role role) {
+	public static void removeRole(long pk, com.liferay.portal.kernel.model.Role role) {
 		getPersistence().removeRole(pk, role);
 	}
 
@@ -3204,7 +3204,7 @@ public class GroupUtil {
 	* @param roles the roles
 	*/
 	public static void removeRoles(long pk,
-		List<com.liferay.portal.model.Role> roles) {
+		List<com.liferay.portal.kernel.model.Role> roles) {
 		getPersistence().removeRoles(pk, roles);
 	}
 
@@ -3225,7 +3225,7 @@ public class GroupUtil {
 	* @param roles the roles to be associated with the group
 	*/
 	public static void setRoles(long pk,
-		List<com.liferay.portal.model.Role> roles) {
+		List<com.liferay.portal.kernel.model.Role> roles) {
 		getPersistence().setRoles(pk, roles);
 	}
 
@@ -3245,7 +3245,7 @@ public class GroupUtil {
 	* @param pk the primary key of the group
 	* @return the user groups associated with the group
 	*/
-	public static List<com.liferay.portal.model.UserGroup> getUserGroups(
+	public static List<com.liferay.portal.kernel.model.UserGroup> getUserGroups(
 		long pk) {
 		return getPersistence().getUserGroups(pk);
 	}
@@ -3262,7 +3262,7 @@ public class GroupUtil {
 	* @param end the upper bound of the range of groups (not inclusive)
 	* @return the range of user groups associated with the group
 	*/
-	public static List<com.liferay.portal.model.UserGroup> getUserGroups(
+	public static List<com.liferay.portal.kernel.model.UserGroup> getUserGroups(
 		long pk, int start, int end) {
 		return getPersistence().getUserGroups(pk, start, end);
 	}
@@ -3280,9 +3280,9 @@ public class GroupUtil {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of user groups associated with the group
 	*/
-	public static List<com.liferay.portal.model.UserGroup> getUserGroups(
+	public static List<com.liferay.portal.kernel.model.UserGroup> getUserGroups(
 		long pk, int start, int end,
-		OrderByComparator<com.liferay.portal.model.UserGroup> orderByComparator) {
+		OrderByComparator<com.liferay.portal.kernel.model.UserGroup> orderByComparator) {
 		return getPersistence().getUserGroups(pk, start, end, orderByComparator);
 	}
 
@@ -3334,7 +3334,7 @@ public class GroupUtil {
 	* @param userGroup the user group
 	*/
 	public static void addUserGroup(long pk,
-		com.liferay.portal.model.UserGroup userGroup) {
+		com.liferay.portal.kernel.model.UserGroup userGroup) {
 		getPersistence().addUserGroup(pk, userGroup);
 	}
 
@@ -3355,7 +3355,7 @@ public class GroupUtil {
 	* @param userGroups the user groups
 	*/
 	public static void addUserGroups(long pk,
-		List<com.liferay.portal.model.UserGroup> userGroups) {
+		List<com.liferay.portal.kernel.model.UserGroup> userGroups) {
 		getPersistence().addUserGroups(pk, userGroups);
 	}
 
@@ -3385,7 +3385,7 @@ public class GroupUtil {
 	* @param userGroup the user group
 	*/
 	public static void removeUserGroup(long pk,
-		com.liferay.portal.model.UserGroup userGroup) {
+		com.liferay.portal.kernel.model.UserGroup userGroup) {
 		getPersistence().removeUserGroup(pk, userGroup);
 	}
 
@@ -3406,7 +3406,7 @@ public class GroupUtil {
 	* @param userGroups the user groups
 	*/
 	public static void removeUserGroups(long pk,
-		List<com.liferay.portal.model.UserGroup> userGroups) {
+		List<com.liferay.portal.kernel.model.UserGroup> userGroups) {
 		getPersistence().removeUserGroups(pk, userGroups);
 	}
 
@@ -3427,7 +3427,7 @@ public class GroupUtil {
 	* @param userGroups the user groups to be associated with the group
 	*/
 	public static void setUserGroups(long pk,
-		List<com.liferay.portal.model.UserGroup> userGroups) {
+		List<com.liferay.portal.kernel.model.UserGroup> userGroups) {
 		getPersistence().setUserGroups(pk, userGroups);
 	}
 
@@ -3447,7 +3447,7 @@ public class GroupUtil {
 	* @param pk the primary key of the group
 	* @return the users associated with the group
 	*/
-	public static List<com.liferay.portal.model.User> getUsers(long pk) {
+	public static List<com.liferay.portal.kernel.model.User> getUsers(long pk) {
 		return getPersistence().getUsers(pk);
 	}
 
@@ -3463,7 +3463,7 @@ public class GroupUtil {
 	* @param end the upper bound of the range of groups (not inclusive)
 	* @return the range of users associated with the group
 	*/
-	public static List<com.liferay.portal.model.User> getUsers(long pk,
+	public static List<com.liferay.portal.kernel.model.User> getUsers(long pk,
 		int start, int end) {
 		return getPersistence().getUsers(pk, start, end);
 	}
@@ -3481,9 +3481,9 @@ public class GroupUtil {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of users associated with the group
 	*/
-	public static List<com.liferay.portal.model.User> getUsers(long pk,
+	public static List<com.liferay.portal.kernel.model.User> getUsers(long pk,
 		int start, int end,
-		OrderByComparator<com.liferay.portal.model.User> orderByComparator) {
+		OrderByComparator<com.liferay.portal.kernel.model.User> orderByComparator) {
 		return getPersistence().getUsers(pk, start, end, orderByComparator);
 	}
 
@@ -3534,7 +3534,7 @@ public class GroupUtil {
 	* @param pk the primary key of the group
 	* @param user the user
 	*/
-	public static void addUser(long pk, com.liferay.portal.model.User user) {
+	public static void addUser(long pk, com.liferay.portal.kernel.model.User user) {
 		getPersistence().addUser(pk, user);
 	}
 
@@ -3555,7 +3555,7 @@ public class GroupUtil {
 	* @param users the users
 	*/
 	public static void addUsers(long pk,
-		List<com.liferay.portal.model.User> users) {
+		List<com.liferay.portal.kernel.model.User> users) {
 		getPersistence().addUsers(pk, users);
 	}
 
@@ -3584,7 +3584,7 @@ public class GroupUtil {
 	* @param pk the primary key of the group
 	* @param user the user
 	*/
-	public static void removeUser(long pk, com.liferay.portal.model.User user) {
+	public static void removeUser(long pk, com.liferay.portal.kernel.model.User user) {
 		getPersistence().removeUser(pk, user);
 	}
 
@@ -3605,7 +3605,7 @@ public class GroupUtil {
 	* @param users the users
 	*/
 	public static void removeUsers(long pk,
-		List<com.liferay.portal.model.User> users) {
+		List<com.liferay.portal.kernel.model.User> users) {
 		getPersistence().removeUsers(pk, users);
 	}
 
@@ -3626,7 +3626,7 @@ public class GroupUtil {
 	* @param users the users to be associated with the group
 	*/
 	public static void setUsers(long pk,
-		List<com.liferay.portal.model.User> users) {
+		List<com.liferay.portal.kernel.model.User> users) {
 		getPersistence().setUsers(pk, users);
 	}
 

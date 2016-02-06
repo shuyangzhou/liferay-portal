@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -304,19 +304,19 @@ public interface TeamModel extends BaseModel<Team>, MVCCModel, ShardedModel,
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.model.Team team);
+	public int compareTo(com.liferay.portal.kernel.model.Team team);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.Team> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.Team> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.Team toEscapedModel();
+	public com.liferay.portal.kernel.model.Team toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.Team toUnescapedModel();
+	public com.liferay.portal.kernel.model.Team toUnescapedModel();
 
 	@Override
 	public String toString();

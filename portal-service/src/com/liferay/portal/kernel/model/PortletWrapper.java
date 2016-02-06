@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -131,7 +131,7 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	*/
 	@Override
 	public void addPublicRenderParameter(
-		com.liferay.portal.model.PublicRenderParameter publicRenderParameter) {
+		com.liferay.portal.kernel.model.PublicRenderParameter publicRenderParameter) {
 		_portlet.addPublicRenderParameter(publicRenderParameter);
 	}
 
@@ -159,7 +159,7 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.model.Portlet portlet) {
+	public int compareTo(com.liferay.portal.kernel.model.Portlet portlet) {
 		return _portlet.compareTo(portlet);
 	}
 
@@ -310,7 +310,7 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	* @return a cloned instance of the portlet
 	*/
 	@Override
-	public com.liferay.portal.model.Portlet getClonedInstance(
+	public com.liferay.portal.kernel.model.Portlet getClonedInstance(
 		java.lang.String portletId) {
 		return _portlet.getClonedInstance(portletId);
 	}
@@ -453,7 +453,7 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	* @return the plugin settings
 	*/
 	@Override
-	public com.liferay.portal.model.PluginSetting getDefaultPluginSetting() {
+	public com.liferay.portal.kernel.model.PluginSetting getDefaultPluginSetting() {
 		return _portlet.getDefaultPluginSetting();
 	}
 
@@ -909,7 +909,7 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	* @return this portlet's application
 	*/
 	@Override
-	public com.liferay.portal.model.PortletApp getPortletApp() {
+	public com.liferay.portal.kernel.model.PortletApp getPortletApp() {
 		return _portlet.getPortletApp();
 	}
 
@@ -949,7 +949,7 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	* @return filters of the portlet
 	*/
 	@Override
-	public Map<java.lang.String, com.liferay.portal.model.PortletFilter> getPortletFilters() {
+	public Map<java.lang.String, com.liferay.portal.kernel.model.PortletFilter> getPortletFilters() {
 		return _portlet.getPortletFilters();
 	}
 
@@ -969,7 +969,7 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	* @return portlet info of the portlet
 	*/
 	@Override
-	public com.liferay.portal.model.PortletInfo getPortletInfo() {
+	public com.liferay.portal.kernel.model.PortletInfo getPortletInfo() {
 		return _portlet.getPortletInfo();
 	}
 
@@ -1138,7 +1138,7 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	* @return the public render parameter from an identifier
 	*/
 	@Override
-	public com.liferay.portal.model.PublicRenderParameter getPublicRenderParameter(
+	public com.liferay.portal.kernel.model.PublicRenderParameter getPublicRenderParameter(
 		java.lang.String identifier) {
 		return _portlet.getPublicRenderParameter(identifier);
 	}
@@ -1153,7 +1153,7 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	part
 	*/
 	@Override
-	public com.liferay.portal.model.PublicRenderParameter getPublicRenderParameter(
+	public com.liferay.portal.kernel.model.PublicRenderParameter getPublicRenderParameter(
 		java.lang.String uri, java.lang.String localPart) {
 		return _portlet.getPublicRenderParameter(uri, localPart);
 	}
@@ -1164,7 +1164,7 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	* @return the public render parameters of the portlet
 	*/
 	@Override
-	public java.util.Set<com.liferay.portal.model.PublicRenderParameter> getPublicRenderParameters() {
+	public java.util.Set<com.liferay.portal.kernel.model.PublicRenderParameter> getPublicRenderParameters() {
 		return _portlet.getPublicRenderParameters();
 	}
 
@@ -1276,7 +1276,7 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	* @return the root portlet of this portlet instance
 	*/
 	@Override
-	public com.liferay.portal.model.Portlet getRootPortlet() {
+	public com.liferay.portal.kernel.model.Portlet getRootPortlet() {
 		return _portlet.getRootPortlet();
 	}
 
@@ -2417,7 +2417,7 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	*/
 	@Override
 	public void setDefaultPluginSetting(
-		com.liferay.portal.model.PluginSetting pluginSetting) {
+		com.liferay.portal.kernel.model.PluginSetting pluginSetting) {
 		_portlet.setDefaultPluginSetting(pluginSetting);
 	}
 
@@ -2819,7 +2819,7 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	* @param portletApp this portlet's application
 	*/
 	@Override
-	public void setPortletApp(com.liferay.portal.model.PortletApp portletApp) {
+	public void setPortletApp(com.liferay.portal.kernel.model.PortletApp portletApp) {
 		_portlet.setPortletApp(portletApp);
 	}
 
@@ -2852,7 +2852,7 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	*/
 	@Override
 	public void setPortletFilters(
-		Map<java.lang.String, com.liferay.portal.model.PortletFilter> portletFilters) {
+		Map<java.lang.String, com.liferay.portal.kernel.model.PortletFilter> portletFilters) {
 		_portlet.setPortletFilters(portletFilters);
 	}
 
@@ -2872,7 +2872,7 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	* @param portletInfo the portlet info of the portlet
 	*/
 	@Override
-	public void setPortletInfo(com.liferay.portal.model.PortletInfo portletInfo) {
+	public void setPortletInfo(com.liferay.portal.kernel.model.PortletInfo portletInfo) {
 		_portlet.setPortletInfo(portletInfo);
 	}
 
@@ -3026,7 +3026,7 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	*/
 	@Override
 	public void setPublicRenderParameters(
-		java.util.Set<com.liferay.portal.model.PublicRenderParameter> publicRenderParameters) {
+		java.util.Set<com.liferay.portal.kernel.model.PublicRenderParameter> publicRenderParameters) {
 		_portlet.setPublicRenderParameters(publicRenderParameters);
 	}
 
@@ -3469,12 +3469,12 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.Portlet> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.Portlet> toCacheModel() {
 		return _portlet.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.Portlet toEscapedModel() {
+	public com.liferay.portal.kernel.model.Portlet toEscapedModel() {
 		return new PortletWrapper(_portlet.toEscapedModel());
 	}
 
@@ -3484,7 +3484,7 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	}
 
 	@Override
-	public com.liferay.portal.model.Portlet toUnescapedModel() {
+	public com.liferay.portal.kernel.model.Portlet toUnescapedModel() {
 		return new PortletWrapper(_portlet.toUnescapedModel());
 	}
 

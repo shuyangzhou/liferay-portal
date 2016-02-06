@@ -34,11 +34,11 @@ import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.model.Group;
-import com.liferay.portal.model.PersistedModel;
-import com.liferay.portal.model.Role;
-import com.liferay.portal.model.SystemEventConstants;
-import com.liferay.portal.model.Team;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.model.SystemEventConstants;
+import com.liferay.portal.kernel.model.Team;
 
 import java.io.Serializable;
 
@@ -111,7 +111,7 @@ public interface RoleLocalService extends BaseLocalService,
 		java.lang.String name, Map<Locale, java.lang.String> titleMap,
 		Map<Locale, java.lang.String> descriptionMap, int type,
 		java.lang.String subtype,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	public void addUserRole(long userId, Role role);
@@ -370,7 +370,7 @@ public interface RoleLocalService extends BaseLocalService,
 	* @param scope the permission scope
 	* @param primKey the primary key of the resource's class
 	* @return the role names and action IDs
-	* @see com.liferay.portal.service.persistence.RoleFinder#findByC_N_S_P(
+	* @see com.liferay.portal.kernel.service.persistence.RoleFinder#findByC_N_S_P(
 	long, String, int, String)
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -388,7 +388,7 @@ public interface RoleLocalService extends BaseLocalService,
 	* @param primKey the primary key of the resource's class
 	* @param actionId the name of the resource action
 	* @return the roles
-	* @see com.liferay.portal.service.persistence.RoleFinder#findByC_N_S_P_A(
+	* @see com.liferay.portal.kernel.service.persistence.RoleFinder#findByC_N_S_P_A(
 	long, String, int, String, String)
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -590,7 +590,7 @@ public interface RoleLocalService extends BaseLocalService,
 	* @param userId the primary key of the user
 	* @param groupId the primary key of the group
 	* @return the user's roles within the user group
-	* @see com.liferay.portal.service.persistence.RoleFinder#findByUserGroupGroupRole(
+	* @see com.liferay.portal.kernel.service.persistence.RoleFinder#findByUserGroupGroupRole(
 	long, long)
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -609,7 +609,7 @@ public interface RoleLocalService extends BaseLocalService,
 	* @param userId the primary key of the user
 	* @param groupId the primary key of the group
 	* @return the user's roles within the user group
-	* @see com.liferay.portal.service.persistence.RoleFinder#findByUserGroupRole(
+	* @see com.liferay.portal.kernel.service.persistence.RoleFinder#findByUserGroupRole(
 	long, long)
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -630,7 +630,7 @@ public interface RoleLocalService extends BaseLocalService,
 	* @param userId the primary key of the user
 	* @param groupId the primary key of the group
 	* @return the user's roles within the group
-	* @see com.liferay.portal.service.persistence.RoleFinder#findByU_G(long,
+	* @see com.liferay.portal.kernel.service.persistence.RoleFinder#findByU_G(long,
 	long)
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -642,7 +642,7 @@ public interface RoleLocalService extends BaseLocalService,
 	* @param userId the primary key of the user
 	* @param groupIds the primary keys of the groups
 	* @return the union of all the user's roles within the groups
-	* @see com.liferay.portal.service.persistence.RoleFinder#findByU_G(long,
+	* @see com.liferay.portal.kernel.service.persistence.RoleFinder#findByU_G(long,
 	long[])
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -654,7 +654,7 @@ public interface RoleLocalService extends BaseLocalService,
 	* @param userId the primary key of the user
 	* @param groups the groups (optionally <code>null</code>)
 	* @return the union of all the user's roles within the groups
-	* @see com.liferay.portal.service.persistence.RoleFinder#findByU_G(long,
+	* @see com.liferay.portal.kernel.service.persistence.RoleFinder#findByU_G(long,
 	List)
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -760,7 +760,7 @@ public interface RoleLocalService extends BaseLocalService,
 	* @param types the role types (optionally <code>null</code>)
 	* @param params the finder parameters. Can specify values for the
 	"usersRoles" key. For more information, see {@link
-	com.liferay.portal.service.persistence.RoleFinder}
+	com.liferay.portal.kernel.service.persistence.RoleFinder}
 	* @param start the lower bound of the range of roles to return
 	* @param end the upper bound of the range of roles to return (not
 	inclusive)
@@ -768,7 +768,7 @@ public interface RoleLocalService extends BaseLocalService,
 	<code>null</code>)
 	* @return the ordered range of the matching roles, ordered by
 	<code>obc</code>
-	* @see com.liferay.portal.service.persistence.RoleFinder
+	* @see com.liferay.portal.kernel.service.persistence.RoleFinder
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<Role> search(long companyId, java.lang.String keywords,
@@ -801,7 +801,7 @@ public interface RoleLocalService extends BaseLocalService,
 	<code>null</code>)
 	* @return the ordered range of the matching roles, ordered by
 	<code>obc</code>
-	* @see com.liferay.portal.service.persistence.RoleFinder
+	* @see com.liferay.portal.kernel.service.persistence.RoleFinder
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<Role> search(long companyId, java.lang.String keywords,
@@ -828,7 +828,7 @@ public interface RoleLocalService extends BaseLocalService,
 	* @param types the role types (optionally <code>null</code>)
 	* @param params the finder's parameters. Can specify values for the
 	"usersRoles" key. For more information, see {@link
-	com.liferay.portal.service.persistence.RoleFinder}
+	com.liferay.portal.kernel.service.persistence.RoleFinder}
 	* @param start the lower bound of the range of the roles to return
 	* @param end the upper bound of the range of the roles to return (not
 	inclusive)
@@ -836,7 +836,7 @@ public interface RoleLocalService extends BaseLocalService,
 	<code>null</code>)
 	* @return the ordered range of the matching roles, ordered by
 	<code>obc</code>
-	* @see com.liferay.portal.service.persistence.RoleFinder
+	* @see com.liferay.portal.kernel.service.persistence.RoleFinder
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<Role> search(long companyId, java.lang.String name,
@@ -869,7 +869,7 @@ public interface RoleLocalService extends BaseLocalService,
 	<code>null</code>)
 	* @return the ordered range of the matching roles, ordered by
 	<code>obc</code>
-	* @see com.liferay.portal.service.persistence.RoleFinder
+	* @see com.liferay.portal.kernel.service.persistence.RoleFinder
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<Role> search(long companyId, java.lang.String name,
@@ -897,7 +897,7 @@ public interface RoleLocalService extends BaseLocalService,
 	role's name or description (optionally <code>null</code>)
 	* @param types the role types (optionally <code>null</code>)
 	* @param params the finder parameters. For more information, see {@link
-	com.liferay.portal.service.persistence.RoleFinder}
+	com.liferay.portal.kernel.service.persistence.RoleFinder}
 	* @return the number of matching roles
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -928,7 +928,7 @@ public interface RoleLocalService extends BaseLocalService,
 	* @param types the role types (optionally <code>null</code>)
 	* @param params the finder parameters. Can specify values for the
 	"usersRoles" key. For more information, see {@link
-	com.liferay.portal.service.persistence.RoleFinder}
+	com.liferay.portal.kernel.service.persistence.RoleFinder}
 	* @return the number of matching roles
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -981,6 +981,6 @@ public interface RoleLocalService extends BaseLocalService,
 	public Role updateRole(long roleId, java.lang.String name,
 		Map<Locale, java.lang.String> titleMap,
 		Map<Locale, java.lang.String> descriptionMap, java.lang.String subtype,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 }

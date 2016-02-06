@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.UnicodeProperties;
-import com.liferay.portal.model.Repository;
+import com.liferay.portal.kernel.model.Repository;
 
 /**
  * Provides the remote service interface for Repository. Methods of this
@@ -52,7 +52,7 @@ public interface RepositoryService extends BaseService {
 		long parentFolderId, java.lang.String name,
 		java.lang.String description, java.lang.String portletId,
 		UnicodeProperties typeSettingsProperties,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	public void checkRepository(long repositoryId) throws PortalException;

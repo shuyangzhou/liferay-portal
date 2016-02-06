@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchResourceBlockException;
-import com.liferay.portal.model.ResourceBlock;
+import com.liferay.portal.kernel.exception.NoSuchResourceBlockException;
+import com.liferay.portal.kernel.model.ResourceBlock;
 
 /**
  * The persistence interface for the resource block service.

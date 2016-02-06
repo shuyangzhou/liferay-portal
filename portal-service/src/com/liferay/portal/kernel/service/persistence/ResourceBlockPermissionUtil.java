@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
-import com.liferay.portal.model.ResourceBlockPermission;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.ResourceBlockPermission;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -46,14 +46,14 @@ public class ResourceBlockPermissionUtil {
 	 */
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache()
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache()
 	 */
 	public static void clearCache() {
 		getPersistence().clearCache();
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static void clearCache(
 		ResourceBlockPermission resourceBlockPermission) {
@@ -61,14 +61,14 @@ public class ResourceBlockPermissionUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
 	public static long countWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<ResourceBlockPermission> findWithDynamicQuery(
 		DynamicQuery dynamicQuery) {
@@ -76,7 +76,7 @@ public class ResourceBlockPermissionUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
 	public static List<ResourceBlockPermission> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
@@ -84,7 +84,7 @@ public class ResourceBlockPermissionUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
 	public static List<ResourceBlockPermission> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
@@ -95,7 +95,7 @@ public class ResourceBlockPermissionUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static ResourceBlockPermission update(
 		ResourceBlockPermission resourceBlockPermission) {
@@ -103,7 +103,7 @@ public class ResourceBlockPermissionUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
 	public static ResourceBlockPermission update(
 		ResourceBlockPermission resourceBlockPermission,
@@ -195,7 +195,7 @@ public class ResourceBlockPermissionUtil {
 	public static ResourceBlockPermission findByResourceBlockId_First(
 		long resourceBlockId,
 		OrderByComparator<ResourceBlockPermission> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException {
+		throws com.liferay.portal.kernel.exception.NoSuchResourceBlockPermissionException {
 		return getPersistence()
 				   .findByResourceBlockId_First(resourceBlockId,
 			orderByComparator);
@@ -227,7 +227,7 @@ public class ResourceBlockPermissionUtil {
 	public static ResourceBlockPermission findByResourceBlockId_Last(
 		long resourceBlockId,
 		OrderByComparator<ResourceBlockPermission> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException {
+		throws com.liferay.portal.kernel.exception.NoSuchResourceBlockPermissionException {
 		return getPersistence()
 				   .findByResourceBlockId_Last(resourceBlockId,
 			orderByComparator);
@@ -260,7 +260,7 @@ public class ResourceBlockPermissionUtil {
 	public static ResourceBlockPermission[] findByResourceBlockId_PrevAndNext(
 		long resourceBlockPermissionId, long resourceBlockId,
 		OrderByComparator<ResourceBlockPermission> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException {
+		throws com.liferay.portal.kernel.exception.NoSuchResourceBlockPermissionException {
 		return getPersistence()
 				   .findByResourceBlockId_PrevAndNext(resourceBlockPermissionId,
 			resourceBlockId, orderByComparator);
@@ -365,7 +365,7 @@ public class ResourceBlockPermissionUtil {
 	*/
 	public static ResourceBlockPermission findByRoleId_First(long roleId,
 		OrderByComparator<ResourceBlockPermission> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException {
+		throws com.liferay.portal.kernel.exception.NoSuchResourceBlockPermissionException {
 		return getPersistence().findByRoleId_First(roleId, orderByComparator);
 	}
 
@@ -391,7 +391,7 @@ public class ResourceBlockPermissionUtil {
 	*/
 	public static ResourceBlockPermission findByRoleId_Last(long roleId,
 		OrderByComparator<ResourceBlockPermission> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException {
+		throws com.liferay.portal.kernel.exception.NoSuchResourceBlockPermissionException {
 		return getPersistence().findByRoleId_Last(roleId, orderByComparator);
 	}
 
@@ -419,7 +419,7 @@ public class ResourceBlockPermissionUtil {
 	public static ResourceBlockPermission[] findByRoleId_PrevAndNext(
 		long resourceBlockPermissionId, long roleId,
 		OrderByComparator<ResourceBlockPermission> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException {
+		throws com.liferay.portal.kernel.exception.NoSuchResourceBlockPermissionException {
 		return getPersistence()
 				   .findByRoleId_PrevAndNext(resourceBlockPermissionId, roleId,
 			orderByComparator);
@@ -454,7 +454,7 @@ public class ResourceBlockPermissionUtil {
 	*/
 	public static ResourceBlockPermission findByR_R(long resourceBlockId,
 		long roleId)
-		throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException {
+		throws com.liferay.portal.kernel.exception.NoSuchResourceBlockPermissionException {
 		return getPersistence().findByR_R(resourceBlockId, roleId);
 	}
 
@@ -493,7 +493,7 @@ public class ResourceBlockPermissionUtil {
 	*/
 	public static ResourceBlockPermission removeByR_R(long resourceBlockId,
 		long roleId)
-		throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException {
+		throws com.liferay.portal.kernel.exception.NoSuchResourceBlockPermissionException {
 		return getPersistence().removeByR_R(resourceBlockId, roleId);
 	}
 
@@ -546,7 +546,7 @@ public class ResourceBlockPermissionUtil {
 	* @throws NoSuchResourceBlockPermissionException if a resource block permission with the primary key could not be found
 	*/
 	public static ResourceBlockPermission remove(long resourceBlockPermissionId)
-		throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException {
+		throws com.liferay.portal.kernel.exception.NoSuchResourceBlockPermissionException {
 		return getPersistence().remove(resourceBlockPermissionId);
 	}
 
@@ -564,7 +564,7 @@ public class ResourceBlockPermissionUtil {
 	*/
 	public static ResourceBlockPermission findByPrimaryKey(
 		long resourceBlockPermissionId)
-		throws com.liferay.portal.exception.NoSuchResourceBlockPermissionException {
+		throws com.liferay.portal.kernel.exception.NoSuchResourceBlockPermissionException {
 		return getPersistence().findByPrimaryKey(resourceBlockPermissionId);
 	}
 

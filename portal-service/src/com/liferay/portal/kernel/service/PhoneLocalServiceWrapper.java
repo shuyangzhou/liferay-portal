@@ -37,16 +37,16 @@ public class PhoneLocalServiceWrapper implements PhoneLocalService,
 	* @return the phone that was added
 	*/
 	@Override
-	public com.liferay.portal.model.Phone addPhone(
-		com.liferay.portal.model.Phone phone) {
+	public com.liferay.portal.kernel.model.Phone addPhone(
+		com.liferay.portal.kernel.model.Phone phone) {
 		return _phoneLocalService.addPhone(phone);
 	}
 
 	@Override
-	public com.liferay.portal.model.Phone addPhone(long userId,
+	public com.liferay.portal.kernel.model.Phone addPhone(long userId,
 		java.lang.String className, long classPK, java.lang.String number,
 		java.lang.String extension, long typeId, boolean primary,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _phoneLocalService.addPhone(userId, className, classPK, number,
 			extension, typeId, primary, serviceContext);
@@ -59,7 +59,7 @@ public class PhoneLocalServiceWrapper implements PhoneLocalService,
 	* @return the new phone
 	*/
 	@Override
-	public com.liferay.portal.model.Phone createPhone(long phoneId) {
+	public com.liferay.portal.kernel.model.Phone createPhone(long phoneId) {
 		return _phoneLocalService.createPhone(phoneId);
 	}
 
@@ -67,8 +67,8 @@ public class PhoneLocalServiceWrapper implements PhoneLocalService,
 	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _phoneLocalService.deletePersistedModel(persistedModel);
 	}
@@ -80,8 +80,8 @@ public class PhoneLocalServiceWrapper implements PhoneLocalService,
 	* @return the phone that was removed
 	*/
 	@Override
-	public com.liferay.portal.model.Phone deletePhone(
-		com.liferay.portal.model.Phone phone) {
+	public com.liferay.portal.kernel.model.Phone deletePhone(
+		com.liferay.portal.kernel.model.Phone phone) {
 		return _phoneLocalService.deletePhone(phone);
 	}
 
@@ -93,7 +93,7 @@ public class PhoneLocalServiceWrapper implements PhoneLocalService,
 	* @throws PortalException if a phone with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.Phone deletePhone(long phoneId)
+	public com.liferay.portal.kernel.model.Phone deletePhone(long phoneId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _phoneLocalService.deletePhone(phoneId);
 	}
@@ -189,7 +189,7 @@ public class PhoneLocalServiceWrapper implements PhoneLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.Phone fetchPhone(long phoneId) {
+	public com.liferay.portal.kernel.model.Phone fetchPhone(long phoneId) {
 		return _phoneLocalService.fetchPhone(phoneId);
 	}
 
@@ -201,7 +201,7 @@ public class PhoneLocalServiceWrapper implements PhoneLocalService,
 	* @return the matching phone, or <code>null</code> if a matching phone could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.Phone fetchPhoneByUuidAndCompanyId(
+	public com.liferay.portal.kernel.model.Phone fetchPhoneByUuidAndCompanyId(
 		java.lang.String uuid, long companyId) {
 		return _phoneLocalService.fetchPhoneByUuidAndCompanyId(uuid, companyId);
 	}
@@ -233,7 +233,7 @@ public class PhoneLocalServiceWrapper implements PhoneLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.PersistedModel getPersistedModel(
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _phoneLocalService.getPersistedModel(primaryKeyObj);
@@ -247,7 +247,7 @@ public class PhoneLocalServiceWrapper implements PhoneLocalService,
 	* @throws PortalException if a phone with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.Phone getPhone(long phoneId)
+	public com.liferay.portal.kernel.model.Phone getPhone(long phoneId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _phoneLocalService.getPhone(phoneId);
 	}
@@ -261,19 +261,19 @@ public class PhoneLocalServiceWrapper implements PhoneLocalService,
 	* @throws PortalException if a matching phone could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.Phone getPhoneByUuidAndCompanyId(
+	public com.liferay.portal.kernel.model.Phone getPhoneByUuidAndCompanyId(
 		java.lang.String uuid, long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _phoneLocalService.getPhoneByUuidAndCompanyId(uuid, companyId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Phone> getPhones() {
+	public java.util.List<com.liferay.portal.kernel.model.Phone> getPhones() {
 		return _phoneLocalService.getPhones();
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Phone> getPhones(
+	public java.util.List<com.liferay.portal.kernel.model.Phone> getPhones(
 		long companyId, java.lang.String className, long classPK) {
 		return _phoneLocalService.getPhones(companyId, className, classPK);
 	}
@@ -290,7 +290,7 @@ public class PhoneLocalServiceWrapper implements PhoneLocalService,
 	* @return the range of phones
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Phone> getPhones(int start,
+	public java.util.List<com.liferay.portal.kernel.model.Phone> getPhones(int start,
 		int end) {
 		return _phoneLocalService.getPhones(start, end);
 	}
@@ -312,13 +312,13 @@ public class PhoneLocalServiceWrapper implements PhoneLocalService,
 	* @return the phone that was updated
 	*/
 	@Override
-	public com.liferay.portal.model.Phone updatePhone(
-		com.liferay.portal.model.Phone phone) {
+	public com.liferay.portal.kernel.model.Phone updatePhone(
+		com.liferay.portal.kernel.model.Phone phone) {
 		return _phoneLocalService.updatePhone(phone);
 	}
 
 	@Override
-	public com.liferay.portal.model.Phone updatePhone(long phoneId,
+	public com.liferay.portal.kernel.model.Phone updatePhone(long phoneId,
 		java.lang.String number, java.lang.String extension, long typeId,
 		boolean primary)
 		throws com.liferay.portal.kernel.exception.PortalException {

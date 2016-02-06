@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -150,7 +150,7 @@ public class WorkflowInstanceLinkWrapper implements WorkflowInstanceLink,
 
 	@Override
 	public int compareTo(
-		com.liferay.portal.model.WorkflowInstanceLink workflowInstanceLink) {
+		com.liferay.portal.kernel.model.WorkflowInstanceLink workflowInstanceLink) {
 		return _workflowInstanceLink.compareTo(workflowInstanceLink);
 	}
 
@@ -495,12 +495,12 @@ public class WorkflowInstanceLinkWrapper implements WorkflowInstanceLink,
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.WorkflowInstanceLink> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.WorkflowInstanceLink> toCacheModel() {
 		return _workflowInstanceLink.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.WorkflowInstanceLink toEscapedModel() {
+	public com.liferay.portal.kernel.model.WorkflowInstanceLink toEscapedModel() {
 		return new WorkflowInstanceLinkWrapper(_workflowInstanceLink.toEscapedModel());
 	}
 
@@ -510,7 +510,7 @@ public class WorkflowInstanceLinkWrapper implements WorkflowInstanceLink,
 	}
 
 	@Override
-	public com.liferay.portal.model.WorkflowInstanceLink toUnescapedModel() {
+	public com.liferay.portal.kernel.model.WorkflowInstanceLink toUnescapedModel() {
 		return new WorkflowInstanceLinkWrapper(_workflowInstanceLink.toUnescapedModel());
 	}
 

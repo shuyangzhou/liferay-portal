@@ -22,7 +22,7 @@ import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Transactional;
-import com.liferay.portal.model.LayoutBranch;
+import com.liferay.portal.kernel.model.LayoutBranch;
 
 /**
  * Provides the remote service interface for LayoutBranch. Methods of this
@@ -48,7 +48,7 @@ public interface LayoutBranchService extends BaseService {
 	 */
 	public LayoutBranch addLayoutBranch(long layoutRevisionId,
 		java.lang.String name, java.lang.String description, boolean master,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	public void deleteLayoutBranch(long layoutBranchId)
@@ -63,6 +63,6 @@ public interface LayoutBranchService extends BaseService {
 
 	public LayoutBranch updateLayoutBranch(long layoutBranchId,
 		java.lang.String name, java.lang.String description,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 }

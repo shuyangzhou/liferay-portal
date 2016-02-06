@@ -24,8 +24,8 @@ import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.model.Group;
-import com.liferay.portal.model.Role;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.Role;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -77,7 +77,7 @@ public interface RoleService extends BaseService {
 		java.lang.String name, Map<Locale, java.lang.String> titleMap,
 		Map<Locale, java.lang.String> descriptionMap, int type,
 		java.lang.String subtype,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -262,6 +262,6 @@ public interface RoleService extends BaseService {
 	public Role updateRole(long roleId, java.lang.String name,
 		Map<Locale, java.lang.String> titleMap,
 		Map<Locale, java.lang.String> descriptionMap, java.lang.String subtype,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 }

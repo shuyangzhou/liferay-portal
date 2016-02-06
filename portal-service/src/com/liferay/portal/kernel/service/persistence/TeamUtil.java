@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
-import com.liferay.portal.model.Team;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.Team;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -46,35 +46,35 @@ public class TeamUtil {
 	 */
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache()
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache()
 	 */
 	public static void clearCache() {
 		getPersistence().clearCache();
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static void clearCache(Team team) {
 		getPersistence().clearCache(team);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
 	public static long countWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<Team> findWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().findWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
 	public static List<Team> findWithDynamicQuery(DynamicQuery dynamicQuery,
 		int start, int end) {
@@ -82,7 +82,7 @@ public class TeamUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
 	public static List<Team> findWithDynamicQuery(DynamicQuery dynamicQuery,
 		int start, int end, OrderByComparator<Team> orderByComparator) {
@@ -92,14 +92,14 @@ public class TeamUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static Team update(Team team) {
 		return getPersistence().update(team);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
 	public static Team update(Team team, ServiceContext serviceContext) {
 		return getPersistence().update(team, serviceContext);
@@ -182,7 +182,7 @@ public class TeamUtil {
 	*/
 	public static Team findByUuid_First(java.lang.String uuid,
 		OrderByComparator<Team> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchTeamException {
+		throws com.liferay.portal.kernel.exception.NoSuchTeamException {
 		return getPersistence().findByUuid_First(uuid, orderByComparator);
 	}
 
@@ -208,7 +208,7 @@ public class TeamUtil {
 	*/
 	public static Team findByUuid_Last(java.lang.String uuid,
 		OrderByComparator<Team> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchTeamException {
+		throws com.liferay.portal.kernel.exception.NoSuchTeamException {
 		return getPersistence().findByUuid_Last(uuid, orderByComparator);
 	}
 
@@ -235,7 +235,7 @@ public class TeamUtil {
 	*/
 	public static Team[] findByUuid_PrevAndNext(long teamId,
 		java.lang.String uuid, OrderByComparator<Team> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchTeamException {
+		throws com.liferay.portal.kernel.exception.NoSuchTeamException {
 		return getPersistence()
 				   .findByUuid_PrevAndNext(teamId, uuid, orderByComparator);
 	}
@@ -268,7 +268,7 @@ public class TeamUtil {
 	* @throws NoSuchTeamException if a matching team could not be found
 	*/
 	public static Team findByUUID_G(java.lang.String uuid, long groupId)
-		throws com.liferay.portal.exception.NoSuchTeamException {
+		throws com.liferay.portal.kernel.exception.NoSuchTeamException {
 		return getPersistence().findByUUID_G(uuid, groupId);
 	}
 
@@ -304,7 +304,7 @@ public class TeamUtil {
 	* @return the team that was removed
 	*/
 	public static Team removeByUUID_G(java.lang.String uuid, long groupId)
-		throws com.liferay.portal.exception.NoSuchTeamException {
+		throws com.liferay.portal.kernel.exception.NoSuchTeamException {
 		return getPersistence().removeByUUID_G(uuid, groupId);
 	}
 
@@ -403,7 +403,7 @@ public class TeamUtil {
 	*/
 	public static Team findByUuid_C_First(java.lang.String uuid,
 		long companyId, OrderByComparator<Team> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchTeamException {
+		throws com.liferay.portal.kernel.exception.NoSuchTeamException {
 		return getPersistence()
 				   .findByUuid_C_First(uuid, companyId, orderByComparator);
 	}
@@ -433,7 +433,7 @@ public class TeamUtil {
 	*/
 	public static Team findByUuid_C_Last(java.lang.String uuid, long companyId,
 		OrderByComparator<Team> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchTeamException {
+		throws com.liferay.portal.kernel.exception.NoSuchTeamException {
 		return getPersistence()
 				   .findByUuid_C_Last(uuid, companyId, orderByComparator);
 	}
@@ -465,7 +465,7 @@ public class TeamUtil {
 	public static Team[] findByUuid_C_PrevAndNext(long teamId,
 		java.lang.String uuid, long companyId,
 		OrderByComparator<Team> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchTeamException {
+		throws com.liferay.portal.kernel.exception.NoSuchTeamException {
 		return getPersistence()
 				   .findByUuid_C_PrevAndNext(teamId, uuid, companyId,
 			orderByComparator);
@@ -568,7 +568,7 @@ public class TeamUtil {
 	*/
 	public static Team findByGroupId_First(long groupId,
 		OrderByComparator<Team> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchTeamException {
+		throws com.liferay.portal.kernel.exception.NoSuchTeamException {
 		return getPersistence().findByGroupId_First(groupId, orderByComparator);
 	}
 
@@ -594,7 +594,7 @@ public class TeamUtil {
 	*/
 	public static Team findByGroupId_Last(long groupId,
 		OrderByComparator<Team> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchTeamException {
+		throws com.liferay.portal.kernel.exception.NoSuchTeamException {
 		return getPersistence().findByGroupId_Last(groupId, orderByComparator);
 	}
 
@@ -621,7 +621,7 @@ public class TeamUtil {
 	*/
 	public static Team[] findByGroupId_PrevAndNext(long teamId, long groupId,
 		OrderByComparator<Team> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchTeamException {
+		throws com.liferay.portal.kernel.exception.NoSuchTeamException {
 		return getPersistence()
 				   .findByGroupId_PrevAndNext(teamId, groupId, orderByComparator);
 	}
@@ -683,7 +683,7 @@ public class TeamUtil {
 	*/
 	public static Team[] filterFindByGroupId_PrevAndNext(long teamId,
 		long groupId, OrderByComparator<Team> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchTeamException {
+		throws com.liferay.portal.kernel.exception.NoSuchTeamException {
 		return getPersistence()
 				   .filterFindByGroupId_PrevAndNext(teamId, groupId,
 			orderByComparator);
@@ -727,7 +727,7 @@ public class TeamUtil {
 	* @throws NoSuchTeamException if a matching team could not be found
 	*/
 	public static Team findByG_N(long groupId, java.lang.String name)
-		throws com.liferay.portal.exception.NoSuchTeamException {
+		throws com.liferay.portal.kernel.exception.NoSuchTeamException {
 		return getPersistence().findByG_N(groupId, name);
 	}
 
@@ -763,7 +763,7 @@ public class TeamUtil {
 	* @return the team that was removed
 	*/
 	public static Team removeByG_N(long groupId, java.lang.String name)
-		throws com.liferay.portal.exception.NoSuchTeamException {
+		throws com.liferay.portal.kernel.exception.NoSuchTeamException {
 		return getPersistence().removeByG_N(groupId, name);
 	}
 
@@ -814,7 +814,7 @@ public class TeamUtil {
 	* @throws NoSuchTeamException if a team with the primary key could not be found
 	*/
 	public static Team remove(long teamId)
-		throws com.liferay.portal.exception.NoSuchTeamException {
+		throws com.liferay.portal.kernel.exception.NoSuchTeamException {
 		return getPersistence().remove(teamId);
 	}
 
@@ -830,7 +830,7 @@ public class TeamUtil {
 	* @throws NoSuchTeamException if a team with the primary key could not be found
 	*/
 	public static Team findByPrimaryKey(long teamId)
-		throws com.liferay.portal.exception.NoSuchTeamException {
+		throws com.liferay.portal.kernel.exception.NoSuchTeamException {
 		return getPersistence().findByPrimaryKey(teamId);
 	}
 
@@ -941,7 +941,7 @@ public class TeamUtil {
 	* @param pk the primary key of the team
 	* @return the users associated with the team
 	*/
-	public static List<com.liferay.portal.model.User> getUsers(long pk) {
+	public static List<com.liferay.portal.kernel.model.User> getUsers(long pk) {
 		return getPersistence().getUsers(pk);
 	}
 
@@ -957,7 +957,7 @@ public class TeamUtil {
 	* @param end the upper bound of the range of teams (not inclusive)
 	* @return the range of users associated with the team
 	*/
-	public static List<com.liferay.portal.model.User> getUsers(long pk,
+	public static List<com.liferay.portal.kernel.model.User> getUsers(long pk,
 		int start, int end) {
 		return getPersistence().getUsers(pk, start, end);
 	}
@@ -975,9 +975,9 @@ public class TeamUtil {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of users associated with the team
 	*/
-	public static List<com.liferay.portal.model.User> getUsers(long pk,
+	public static List<com.liferay.portal.kernel.model.User> getUsers(long pk,
 		int start, int end,
-		OrderByComparator<com.liferay.portal.model.User> orderByComparator) {
+		OrderByComparator<com.liferay.portal.kernel.model.User> orderByComparator) {
 		return getPersistence().getUsers(pk, start, end, orderByComparator);
 	}
 
@@ -1028,7 +1028,7 @@ public class TeamUtil {
 	* @param pk the primary key of the team
 	* @param user the user
 	*/
-	public static void addUser(long pk, com.liferay.portal.model.User user) {
+	public static void addUser(long pk, com.liferay.portal.kernel.model.User user) {
 		getPersistence().addUser(pk, user);
 	}
 
@@ -1049,7 +1049,7 @@ public class TeamUtil {
 	* @param users the users
 	*/
 	public static void addUsers(long pk,
-		List<com.liferay.portal.model.User> users) {
+		List<com.liferay.portal.kernel.model.User> users) {
 		getPersistence().addUsers(pk, users);
 	}
 
@@ -1078,7 +1078,7 @@ public class TeamUtil {
 	* @param pk the primary key of the team
 	* @param user the user
 	*/
-	public static void removeUser(long pk, com.liferay.portal.model.User user) {
+	public static void removeUser(long pk, com.liferay.portal.kernel.model.User user) {
 		getPersistence().removeUser(pk, user);
 	}
 
@@ -1099,7 +1099,7 @@ public class TeamUtil {
 	* @param users the users
 	*/
 	public static void removeUsers(long pk,
-		List<com.liferay.portal.model.User> users) {
+		List<com.liferay.portal.kernel.model.User> users) {
 		getPersistence().removeUsers(pk, users);
 	}
 
@@ -1120,7 +1120,7 @@ public class TeamUtil {
 	* @param users the users to be associated with the team
 	*/
 	public static void setUsers(long pk,
-		List<com.liferay.portal.model.User> users) {
+		List<com.liferay.portal.kernel.model.User> users) {
 		getPersistence().setUsers(pk, users);
 	}
 
@@ -1140,7 +1140,7 @@ public class TeamUtil {
 	* @param pk the primary key of the team
 	* @return the user groups associated with the team
 	*/
-	public static List<com.liferay.portal.model.UserGroup> getUserGroups(
+	public static List<com.liferay.portal.kernel.model.UserGroup> getUserGroups(
 		long pk) {
 		return getPersistence().getUserGroups(pk);
 	}
@@ -1157,7 +1157,7 @@ public class TeamUtil {
 	* @param end the upper bound of the range of teams (not inclusive)
 	* @return the range of user groups associated with the team
 	*/
-	public static List<com.liferay.portal.model.UserGroup> getUserGroups(
+	public static List<com.liferay.portal.kernel.model.UserGroup> getUserGroups(
 		long pk, int start, int end) {
 		return getPersistence().getUserGroups(pk, start, end);
 	}
@@ -1175,9 +1175,9 @@ public class TeamUtil {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of user groups associated with the team
 	*/
-	public static List<com.liferay.portal.model.UserGroup> getUserGroups(
+	public static List<com.liferay.portal.kernel.model.UserGroup> getUserGroups(
 		long pk, int start, int end,
-		OrderByComparator<com.liferay.portal.model.UserGroup> orderByComparator) {
+		OrderByComparator<com.liferay.portal.kernel.model.UserGroup> orderByComparator) {
 		return getPersistence().getUserGroups(pk, start, end, orderByComparator);
 	}
 
@@ -1229,7 +1229,7 @@ public class TeamUtil {
 	* @param userGroup the user group
 	*/
 	public static void addUserGroup(long pk,
-		com.liferay.portal.model.UserGroup userGroup) {
+		com.liferay.portal.kernel.model.UserGroup userGroup) {
 		getPersistence().addUserGroup(pk, userGroup);
 	}
 
@@ -1250,7 +1250,7 @@ public class TeamUtil {
 	* @param userGroups the user groups
 	*/
 	public static void addUserGroups(long pk,
-		List<com.liferay.portal.model.UserGroup> userGroups) {
+		List<com.liferay.portal.kernel.model.UserGroup> userGroups) {
 		getPersistence().addUserGroups(pk, userGroups);
 	}
 
@@ -1280,7 +1280,7 @@ public class TeamUtil {
 	* @param userGroup the user group
 	*/
 	public static void removeUserGroup(long pk,
-		com.liferay.portal.model.UserGroup userGroup) {
+		com.liferay.portal.kernel.model.UserGroup userGroup) {
 		getPersistence().removeUserGroup(pk, userGroup);
 	}
 
@@ -1301,7 +1301,7 @@ public class TeamUtil {
 	* @param userGroups the user groups
 	*/
 	public static void removeUserGroups(long pk,
-		List<com.liferay.portal.model.UserGroup> userGroups) {
+		List<com.liferay.portal.kernel.model.UserGroup> userGroups) {
 		getPersistence().removeUserGroups(pk, userGroups);
 	}
 
@@ -1322,7 +1322,7 @@ public class TeamUtil {
 	* @param userGroups the user groups to be associated with the team
 	*/
 	public static void setUserGroups(long pk,
-		List<com.liferay.portal.model.UserGroup> userGroups) {
+		List<com.liferay.portal.kernel.model.UserGroup> userGroups) {
 		getPersistence().setUserGroups(pk, userGroups);
 	}
 

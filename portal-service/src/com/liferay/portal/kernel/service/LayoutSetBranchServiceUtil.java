@@ -40,11 +40,11 @@ public class LayoutSetBranchServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.portal.service.impl.LayoutSetBranchServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.portal.model.LayoutSetBranch addLayoutSetBranch(
+	public static com.liferay.portal.kernel.model.LayoutSetBranch addLayoutSetBranch(
 		long groupId, boolean privateLayout, java.lang.String name,
 		java.lang.String description, boolean master,
 		long copyLayoutSetBranchId,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addLayoutSetBranch(groupId, privateLayout, name,
@@ -56,7 +56,7 @@ public class LayoutSetBranchServiceUtil {
 		getService().deleteLayoutSetBranch(layoutSetBranchId);
 	}
 
-	public static java.util.List<com.liferay.portal.model.LayoutSetBranch> getLayoutSetBranches(
+	public static java.util.List<com.liferay.portal.kernel.model.LayoutSetBranch> getLayoutSetBranches(
 		long groupId, boolean privateLayout) {
 		return getService().getLayoutSetBranches(groupId, privateLayout);
 	}
@@ -70,19 +70,19 @@ public class LayoutSetBranchServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.model.LayoutSetBranch mergeLayoutSetBranch(
+	public static com.liferay.portal.kernel.model.LayoutSetBranch mergeLayoutSetBranch(
 		long layoutSetBranchId, long mergeLayoutSetBranchId,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .mergeLayoutSetBranch(layoutSetBranchId,
 			mergeLayoutSetBranchId, serviceContext);
 	}
 
-	public static com.liferay.portal.model.LayoutSetBranch updateLayoutSetBranch(
+	public static com.liferay.portal.kernel.model.LayoutSetBranch updateLayoutSetBranch(
 		long groupId, long layoutSetBranchId, java.lang.String name,
 		java.lang.String description,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateLayoutSetBranch(groupId, layoutSetBranchId, name,

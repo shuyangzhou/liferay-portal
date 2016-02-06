@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchWorkflowInstanceLinkException;
-import com.liferay.portal.model.WorkflowInstanceLink;
+import com.liferay.portal.kernel.exception.NoSuchWorkflowInstanceLinkException;
+import com.liferay.portal.kernel.model.WorkflowInstanceLink;
 
 /**
  * The persistence interface for the workflow instance link service.

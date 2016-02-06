@@ -40,12 +40,12 @@ public class AddressServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.portal.service.impl.AddressServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.portal.model.Address addAddress(
+	public static com.liferay.portal.kernel.model.Address addAddress(
 		java.lang.String className, long classPK, java.lang.String street1,
 		java.lang.String street2, java.lang.String street3,
 		java.lang.String city, java.lang.String zip, long regionId,
 		long countryId, long typeId, boolean mailing, boolean primary,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addAddress(className, classPK, street1, street2, street3,
@@ -58,12 +58,12 @@ public class AddressServiceUtil {
 		getService().deleteAddress(addressId);
 	}
 
-	public static com.liferay.portal.model.Address getAddress(long addressId)
+	public static com.liferay.portal.kernel.model.Address getAddress(long addressId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getAddress(addressId);
 	}
 
-	public static java.util.List<com.liferay.portal.model.Address> getAddresses(
+	public static java.util.List<com.liferay.portal.kernel.model.Address> getAddresses(
 		java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getAddresses(className, classPK);
@@ -78,7 +78,7 @@ public class AddressServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.model.Address updateAddress(
+	public static com.liferay.portal.kernel.model.Address updateAddress(
 		long addressId, java.lang.String street1, java.lang.String street2,
 		java.lang.String street3, java.lang.String city, java.lang.String zip,
 		long regionId, long countryId, long typeId, boolean mailing,

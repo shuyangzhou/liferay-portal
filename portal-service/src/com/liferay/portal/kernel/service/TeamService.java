@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.model.Team;
+import com.liferay.portal.kernel.model.Team;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -62,7 +62,7 @@ public interface TeamService extends BaseService {
 
 	public Team addTeam(long groupId, java.lang.String name,
 		java.lang.String description,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	public void deleteTeam(long teamId) throws PortalException;

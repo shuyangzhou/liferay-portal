@@ -22,9 +22,9 @@ import com.liferay.portal.kernel.plugin.PluginPackage;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
-import com.liferay.portal.model.ColorScheme;
-import com.liferay.portal.model.PortletDecorator;
-import com.liferay.portal.model.Theme;
+import com.liferay.portal.kernel.model.ColorScheme;
+import com.liferay.portal.kernel.model.PortletDecorator;
+import com.liferay.portal.kernel.model.Theme;
 
 import java.util.List;
 

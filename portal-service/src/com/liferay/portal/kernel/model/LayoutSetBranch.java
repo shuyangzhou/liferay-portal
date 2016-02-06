@@ -54,12 +54,12 @@ public interface LayoutSetBranch extends LayoutSetBranchModel, PersistedModel {
 			}
 		};
 
-	public com.liferay.portal.model.ColorScheme getColorScheme();
+	public com.liferay.portal.kernel.model.ColorScheme getColorScheme();
 
-	public com.liferay.portal.model.Group getGroup()
+	public com.liferay.portal.kernel.model.Group getGroup()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public com.liferay.portal.model.LayoutSet getLayoutSet();
+	public com.liferay.portal.kernel.model.LayoutSet getLayoutSet();
 
 	public long getLiveLogoId();
 
@@ -69,7 +69,7 @@ public interface LayoutSetBranch extends LayoutSetBranchModel, PersistedModel {
 
 	public java.lang.String getSettingsProperty(java.lang.String key);
 
-	public com.liferay.portal.model.Theme getTheme();
+	public com.liferay.portal.kernel.model.Theme getTheme();
 
 	public java.lang.String getThemeSetting(java.lang.String key,
 		java.lang.String device);

@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchEmailAddressException;
-import com.liferay.portal.model.EmailAddress;
+import com.liferay.portal.kernel.exception.NoSuchEmailAddressException;
+import com.liferay.portal.kernel.model.EmailAddress;
 
 /**
  * The persistence interface for the email address service.

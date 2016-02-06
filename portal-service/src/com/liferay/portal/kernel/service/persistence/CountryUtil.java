@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
-import com.liferay.portal.model.Country;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.Country;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -46,35 +46,35 @@ public class CountryUtil {
 	 */
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache()
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache()
 	 */
 	public static void clearCache() {
 		getPersistence().clearCache();
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static void clearCache(Country country) {
 		getPersistence().clearCache(country);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
 	public static long countWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<Country> findWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().findWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
 	public static List<Country> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
@@ -82,7 +82,7 @@ public class CountryUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
 	public static List<Country> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
@@ -93,14 +93,14 @@ public class CountryUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static Country update(Country country) {
 		return getPersistence().update(country);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
 	public static Country update(Country country, ServiceContext serviceContext) {
 		return getPersistence().update(country, serviceContext);
@@ -114,7 +114,7 @@ public class CountryUtil {
 	* @throws NoSuchCountryException if a matching country could not be found
 	*/
 	public static Country findByName(java.lang.String name)
-		throws com.liferay.portal.exception.NoSuchCountryException {
+		throws com.liferay.portal.kernel.exception.NoSuchCountryException {
 		return getPersistence().findByName(name);
 	}
 
@@ -147,7 +147,7 @@ public class CountryUtil {
 	* @return the country that was removed
 	*/
 	public static Country removeByName(java.lang.String name)
-		throws com.liferay.portal.exception.NoSuchCountryException {
+		throws com.liferay.portal.kernel.exception.NoSuchCountryException {
 		return getPersistence().removeByName(name);
 	}
 
@@ -169,7 +169,7 @@ public class CountryUtil {
 	* @throws NoSuchCountryException if a matching country could not be found
 	*/
 	public static Country findByA2(java.lang.String a2)
-		throws com.liferay.portal.exception.NoSuchCountryException {
+		throws com.liferay.portal.kernel.exception.NoSuchCountryException {
 		return getPersistence().findByA2(a2);
 	}
 
@@ -202,7 +202,7 @@ public class CountryUtil {
 	* @return the country that was removed
 	*/
 	public static Country removeByA2(java.lang.String a2)
-		throws com.liferay.portal.exception.NoSuchCountryException {
+		throws com.liferay.portal.kernel.exception.NoSuchCountryException {
 		return getPersistence().removeByA2(a2);
 	}
 
@@ -224,7 +224,7 @@ public class CountryUtil {
 	* @throws NoSuchCountryException if a matching country could not be found
 	*/
 	public static Country findByA3(java.lang.String a3)
-		throws com.liferay.portal.exception.NoSuchCountryException {
+		throws com.liferay.portal.kernel.exception.NoSuchCountryException {
 		return getPersistence().findByA3(a3);
 	}
 
@@ -257,7 +257,7 @@ public class CountryUtil {
 	* @return the country that was removed
 	*/
 	public static Country removeByA3(java.lang.String a3)
-		throws com.liferay.portal.exception.NoSuchCountryException {
+		throws com.liferay.portal.kernel.exception.NoSuchCountryException {
 		return getPersistence().removeByA3(a3);
 	}
 
@@ -348,7 +348,7 @@ public class CountryUtil {
 	*/
 	public static Country findByActive_First(boolean active,
 		OrderByComparator<Country> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchCountryException {
+		throws com.liferay.portal.kernel.exception.NoSuchCountryException {
 		return getPersistence().findByActive_First(active, orderByComparator);
 	}
 
@@ -374,7 +374,7 @@ public class CountryUtil {
 	*/
 	public static Country findByActive_Last(boolean active,
 		OrderByComparator<Country> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchCountryException {
+		throws com.liferay.portal.kernel.exception.NoSuchCountryException {
 		return getPersistence().findByActive_Last(active, orderByComparator);
 	}
 
@@ -401,7 +401,7 @@ public class CountryUtil {
 	*/
 	public static Country[] findByActive_PrevAndNext(long countryId,
 		boolean active, OrderByComparator<Country> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchCountryException {
+		throws com.liferay.portal.kernel.exception.NoSuchCountryException {
 		return getPersistence()
 				   .findByActive_PrevAndNext(countryId, active,
 			orderByComparator);
@@ -462,7 +462,7 @@ public class CountryUtil {
 	* @throws NoSuchCountryException if a country with the primary key could not be found
 	*/
 	public static Country remove(long countryId)
-		throws com.liferay.portal.exception.NoSuchCountryException {
+		throws com.liferay.portal.kernel.exception.NoSuchCountryException {
 		return getPersistence().remove(countryId);
 	}
 
@@ -478,7 +478,7 @@ public class CountryUtil {
 	* @throws NoSuchCountryException if a country with the primary key could not be found
 	*/
 	public static Country findByPrimaryKey(long countryId)
-		throws com.liferay.portal.exception.NoSuchCountryException {
+		throws com.liferay.portal.kernel.exception.NoSuchCountryException {
 		return getPersistence().findByPrimaryKey(countryId);
 	}
 

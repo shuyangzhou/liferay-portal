@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
-import com.liferay.portal.model.ResourceBlock;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.ResourceBlock;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -46,28 +46,28 @@ public class ResourceBlockUtil {
 	 */
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache()
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache()
 	 */
 	public static void clearCache() {
 		getPersistence().clearCache();
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static void clearCache(ResourceBlock resourceBlock) {
 		getPersistence().clearCache(resourceBlock);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
 	public static long countWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<ResourceBlock> findWithDynamicQuery(
 		DynamicQuery dynamicQuery) {
@@ -75,7 +75,7 @@ public class ResourceBlockUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
 	public static List<ResourceBlock> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
@@ -83,7 +83,7 @@ public class ResourceBlockUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
 	public static List<ResourceBlock> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
@@ -94,14 +94,14 @@ public class ResourceBlockUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static ResourceBlock update(ResourceBlock resourceBlock) {
 		return getPersistence().update(resourceBlock);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
 	public static ResourceBlock update(ResourceBlock resourceBlock,
 		ServiceContext serviceContext) {
@@ -195,7 +195,7 @@ public class ResourceBlockUtil {
 	public static ResourceBlock findByC_N_First(long companyId,
 		java.lang.String name,
 		OrderByComparator<ResourceBlock> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchResourceBlockException {
+		throws com.liferay.portal.kernel.exception.NoSuchResourceBlockException {
 		return getPersistence()
 				   .findByC_N_First(companyId, name, orderByComparator);
 	}
@@ -227,7 +227,7 @@ public class ResourceBlockUtil {
 	public static ResourceBlock findByC_N_Last(long companyId,
 		java.lang.String name,
 		OrderByComparator<ResourceBlock> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchResourceBlockException {
+		throws com.liferay.portal.kernel.exception.NoSuchResourceBlockException {
 		return getPersistence()
 				   .findByC_N_Last(companyId, name, orderByComparator);
 	}
@@ -260,7 +260,7 @@ public class ResourceBlockUtil {
 	public static ResourceBlock[] findByC_N_PrevAndNext(long resourceBlockId,
 		long companyId, java.lang.String name,
 		OrderByComparator<ResourceBlock> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchResourceBlockException {
+		throws com.liferay.portal.kernel.exception.NoSuchResourceBlockException {
 		return getPersistence()
 				   .findByC_N_PrevAndNext(resourceBlockId, companyId, name,
 			orderByComparator);
@@ -380,7 +380,7 @@ public class ResourceBlockUtil {
 	public static ResourceBlock findByC_G_N_First(long companyId, long groupId,
 		java.lang.String name,
 		OrderByComparator<ResourceBlock> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchResourceBlockException {
+		throws com.liferay.portal.kernel.exception.NoSuchResourceBlockException {
 		return getPersistence()
 				   .findByC_G_N_First(companyId, groupId, name,
 			orderByComparator);
@@ -416,7 +416,7 @@ public class ResourceBlockUtil {
 	public static ResourceBlock findByC_G_N_Last(long companyId, long groupId,
 		java.lang.String name,
 		OrderByComparator<ResourceBlock> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchResourceBlockException {
+		throws com.liferay.portal.kernel.exception.NoSuchResourceBlockException {
 		return getPersistence()
 				   .findByC_G_N_Last(companyId, groupId, name, orderByComparator);
 	}
@@ -453,7 +453,7 @@ public class ResourceBlockUtil {
 		long resourceBlockId, long companyId, long groupId,
 		java.lang.String name,
 		OrderByComparator<ResourceBlock> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchResourceBlockException {
+		throws com.liferay.portal.kernel.exception.NoSuchResourceBlockException {
 		return getPersistence()
 				   .findByC_G_N_PrevAndNext(resourceBlockId, companyId,
 			groupId, name, orderByComparator);
@@ -496,7 +496,7 @@ public class ResourceBlockUtil {
 	*/
 	public static ResourceBlock findByC_G_N_P(long companyId, long groupId,
 		java.lang.String name, java.lang.String permissionsHash)
-		throws com.liferay.portal.exception.NoSuchResourceBlockException {
+		throws com.liferay.portal.kernel.exception.NoSuchResourceBlockException {
 		return getPersistence()
 				   .findByC_G_N_P(companyId, groupId, name, permissionsHash);
 	}
@@ -545,7 +545,7 @@ public class ResourceBlockUtil {
 	*/
 	public static ResourceBlock removeByC_G_N_P(long companyId, long groupId,
 		java.lang.String name, java.lang.String permissionsHash)
-		throws com.liferay.portal.exception.NoSuchResourceBlockException {
+		throws com.liferay.portal.kernel.exception.NoSuchResourceBlockException {
 		return getPersistence()
 				   .removeByC_G_N_P(companyId, groupId, name, permissionsHash);
 	}
@@ -601,7 +601,7 @@ public class ResourceBlockUtil {
 	* @throws NoSuchResourceBlockException if a resource block with the primary key could not be found
 	*/
 	public static ResourceBlock remove(long resourceBlockId)
-		throws com.liferay.portal.exception.NoSuchResourceBlockException {
+		throws com.liferay.portal.kernel.exception.NoSuchResourceBlockException {
 		return getPersistence().remove(resourceBlockId);
 	}
 
@@ -617,7 +617,7 @@ public class ResourceBlockUtil {
 	* @throws NoSuchResourceBlockException if a resource block with the primary key could not be found
 	*/
 	public static ResourceBlock findByPrimaryKey(long resourceBlockId)
-		throws com.liferay.portal.exception.NoSuchResourceBlockException {
+		throws com.liferay.portal.kernel.exception.NoSuchResourceBlockException {
 		return getPersistence().findByPrimaryKey(resourceBlockId);
 	}
 

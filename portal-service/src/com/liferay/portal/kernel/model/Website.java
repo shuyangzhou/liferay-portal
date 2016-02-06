@@ -53,6 +53,6 @@ public interface Website extends WebsiteModel, PersistedModel {
 			}
 		};
 
-	public com.liferay.portal.model.ListType getType()
+	public com.liferay.portal.kernel.model.ListType getType()
 		throws com.liferay.portal.kernel.exception.PortalException;
 }

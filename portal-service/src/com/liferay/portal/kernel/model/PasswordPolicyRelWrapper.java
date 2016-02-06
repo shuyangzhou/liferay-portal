@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -112,7 +112,7 @@ public class PasswordPolicyRelWrapper implements PasswordPolicyRel,
 
 	@Override
 	public int compareTo(
-		com.liferay.portal.model.PasswordPolicyRel passwordPolicyRel) {
+		com.liferay.portal.kernel.model.PasswordPolicyRel passwordPolicyRel) {
 		return _passwordPolicyRel.compareTo(passwordPolicyRel);
 	}
 
@@ -337,12 +337,12 @@ public class PasswordPolicyRelWrapper implements PasswordPolicyRel,
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.PasswordPolicyRel> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.PasswordPolicyRel> toCacheModel() {
 		return _passwordPolicyRel.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.PasswordPolicyRel toEscapedModel() {
+	public com.liferay.portal.kernel.model.PasswordPolicyRel toEscapedModel() {
 		return new PasswordPolicyRelWrapper(_passwordPolicyRel.toEscapedModel());
 	}
 
@@ -352,7 +352,7 @@ public class PasswordPolicyRelWrapper implements PasswordPolicyRel,
 	}
 
 	@Override
-	public com.liferay.portal.model.PasswordPolicyRel toUnescapedModel() {
+	public com.liferay.portal.kernel.model.PasswordPolicyRel toUnescapedModel() {
 		return new PasswordPolicyRelWrapper(_passwordPolicyRel.toUnescapedModel());
 	}
 

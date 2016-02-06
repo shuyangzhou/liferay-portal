@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchRoleException;
-import com.liferay.portal.model.Role;
+import com.liferay.portal.kernel.exception.NoSuchRoleException;
+import com.liferay.portal.kernel.model.Role;
 
 /**
  * The persistence interface for the role service.
@@ -1996,7 +1996,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param pk the primary key of the role
 	* @return the groups associated with the role
 	*/
-	public java.util.List<com.liferay.portal.model.Group> getGroups(long pk);
+	public java.util.List<com.liferay.portal.kernel.model.Group> getGroups(long pk);
 
 	/**
 	* Returns a range of all the groups associated with the role.
@@ -2010,7 +2010,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param end the upper bound of the range of roles (not inclusive)
 	* @return the range of groups associated with the role
 	*/
-	public java.util.List<com.liferay.portal.model.Group> getGroups(long pk,
+	public java.util.List<com.liferay.portal.kernel.model.Group> getGroups(long pk,
 		int start, int end);
 
 	/**
@@ -2026,9 +2026,9 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of groups associated with the role
 	*/
-	public java.util.List<com.liferay.portal.model.Group> getGroups(long pk,
+	public java.util.List<com.liferay.portal.kernel.model.Group> getGroups(long pk,
 		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Group> orderByComparator);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Group> orderByComparator);
 
 	/**
 	* Returns the number of groups associated with the role.
@@ -2069,7 +2069,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param pk the primary key of the role
 	* @param group the group
 	*/
-	public void addGroup(long pk, com.liferay.portal.model.Group group);
+	public void addGroup(long pk, com.liferay.portal.kernel.model.Group group);
 
 	/**
 	* Adds an association between the role and the groups. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2086,7 +2086,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param groups the groups
 	*/
 	public void addGroups(long pk,
-		java.util.List<com.liferay.portal.model.Group> groups);
+		java.util.List<com.liferay.portal.kernel.model.Group> groups);
 
 	/**
 	* Clears all associations between the role and its groups. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2109,7 +2109,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param pk the primary key of the role
 	* @param group the group
 	*/
-	public void removeGroup(long pk, com.liferay.portal.model.Group group);
+	public void removeGroup(long pk, com.liferay.portal.kernel.model.Group group);
 
 	/**
 	* Removes the association between the role and the groups. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2126,7 +2126,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param groups the groups
 	*/
 	public void removeGroups(long pk,
-		java.util.List<com.liferay.portal.model.Group> groups);
+		java.util.List<com.liferay.portal.kernel.model.Group> groups);
 
 	/**
 	* Sets the groups associated with the role, removing and adding associations as necessary. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2143,7 +2143,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param groups the groups to be associated with the role
 	*/
 	public void setGroups(long pk,
-		java.util.List<com.liferay.portal.model.Group> groups);
+		java.util.List<com.liferay.portal.kernel.model.Group> groups);
 
 	/**
 	* Returns the primaryKeys of users associated with the role.
@@ -2159,7 +2159,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param pk the primary key of the role
 	* @return the users associated with the role
 	*/
-	public java.util.List<com.liferay.portal.model.User> getUsers(long pk);
+	public java.util.List<com.liferay.portal.kernel.model.User> getUsers(long pk);
 
 	/**
 	* Returns a range of all the users associated with the role.
@@ -2173,7 +2173,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param end the upper bound of the range of roles (not inclusive)
 	* @return the range of users associated with the role
 	*/
-	public java.util.List<com.liferay.portal.model.User> getUsers(long pk,
+	public java.util.List<com.liferay.portal.kernel.model.User> getUsers(long pk,
 		int start, int end);
 
 	/**
@@ -2189,9 +2189,9 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of users associated with the role
 	*/
-	public java.util.List<com.liferay.portal.model.User> getUsers(long pk,
+	public java.util.List<com.liferay.portal.kernel.model.User> getUsers(long pk,
 		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.User> orderByComparator);
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.User> orderByComparator);
 
 	/**
 	* Returns the number of users associated with the role.
@@ -2232,7 +2232,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param pk the primary key of the role
 	* @param user the user
 	*/
-	public void addUser(long pk, com.liferay.portal.model.User user);
+	public void addUser(long pk, com.liferay.portal.kernel.model.User user);
 
 	/**
 	* Adds an association between the role and the users. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2249,7 +2249,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param users the users
 	*/
 	public void addUsers(long pk,
-		java.util.List<com.liferay.portal.model.User> users);
+		java.util.List<com.liferay.portal.kernel.model.User> users);
 
 	/**
 	* Clears all associations between the role and its users. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2272,7 +2272,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param pk the primary key of the role
 	* @param user the user
 	*/
-	public void removeUser(long pk, com.liferay.portal.model.User user);
+	public void removeUser(long pk, com.liferay.portal.kernel.model.User user);
 
 	/**
 	* Removes the association between the role and the users. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2289,7 +2289,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param users the users
 	*/
 	public void removeUsers(long pk,
-		java.util.List<com.liferay.portal.model.User> users);
+		java.util.List<com.liferay.portal.kernel.model.User> users);
 
 	/**
 	* Sets the users associated with the role, removing and adding associations as necessary. Also notifies the appropriate model listeners and clears the mapping table finder cache.
@@ -2306,7 +2306,7 @@ public interface RolePersistence extends BasePersistence<Role> {
 	* @param users the users to be associated with the role
 	*/
 	public void setUsers(long pk,
-		java.util.List<com.liferay.portal.model.User> users);
+		java.util.List<com.liferay.portal.kernel.model.User> users);
 
 	@Override
 	public java.util.Set<java.lang.String> getBadColumnNames();

@@ -21,7 +21,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -286,7 +286,7 @@ public class LayoutWrapper implements Layout, ModelWrapper<Layout> {
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.model.Layout layout) {
+	public int compareTo(com.liferay.portal.kernel.model.Layout layout) {
 		return _layout.compareTo(layout);
 	}
 
@@ -298,7 +298,7 @@ public class LayoutWrapper implements Layout, ModelWrapper<Layout> {
 	layout
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Layout> getAllChildren() {
+	public java.util.List<com.liferay.portal.kernel.model.Layout> getAllChildren() {
 		return _layout.getAllChildren();
 	}
 
@@ -334,7 +334,7 @@ public class LayoutWrapper implements Layout, ModelWrapper<Layout> {
 	* @return the current layout's list of parent layouts
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Layout> getAncestors()
+	public java.util.List<com.liferay.portal.kernel.model.Layout> getAncestors()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layout.getAncestors();
 	}
@@ -351,7 +351,7 @@ public class LayoutWrapper implements Layout, ModelWrapper<Layout> {
 	* @return the list of all child layouts
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Layout> getChildren() {
+	public java.util.List<com.liferay.portal.kernel.model.Layout> getChildren() {
 		return _layout.getChildren();
 	}
 
@@ -364,7 +364,7 @@ public class LayoutWrapper implements Layout, ModelWrapper<Layout> {
 	access
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Layout> getChildren(
+	public java.util.List<com.liferay.portal.kernel.model.Layout> getChildren(
 		com.liferay.portal.kernel.security.permission.PermissionChecker permissionChecker)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layout.getChildren(permissionChecker);
@@ -380,7 +380,7 @@ public class LayoutWrapper implements Layout, ModelWrapper<Layout> {
 	layout if no color scheme is configured
 	*/
 	@Override
-	public com.liferay.portal.model.ColorScheme getColorScheme()
+	public com.liferay.portal.kernel.model.ColorScheme getColorScheme()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layout.getColorScheme();
 	}
@@ -533,12 +533,12 @@ public class LayoutWrapper implements Layout, ModelWrapper<Layout> {
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Portlet> getEmbeddedPortlets() {
+	public java.util.List<com.liferay.portal.kernel.model.Portlet> getEmbeddedPortlets() {
 		return _layout.getEmbeddedPortlets();
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Portlet> getEmbeddedPortlets(
+	public java.util.List<com.liferay.portal.kernel.model.Portlet> getEmbeddedPortlets(
 		long groupId) {
 		return _layout.getEmbeddedPortlets(groupId);
 	}
@@ -594,7 +594,7 @@ public class LayoutWrapper implements Layout, ModelWrapper<Layout> {
 	* @return the current layout's group
 	*/
 	@Override
-	public com.liferay.portal.model.Group getGroup()
+	public com.liferay.portal.kernel.model.Group getGroup()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layout.getGroup();
 	}
@@ -793,7 +793,7 @@ public class LayoutWrapper implements Layout, ModelWrapper<Layout> {
 	* @return the current layout's layout set
 	*/
 	@Override
-	public com.liferay.portal.model.LayoutSet getLayoutSet()
+	public com.liferay.portal.kernel.model.LayoutSet getLayoutSet()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layout.getLayoutSet();
 	}
@@ -804,7 +804,7 @@ public class LayoutWrapper implements Layout, ModelWrapper<Layout> {
 	* @return the current layout's layout type
 	*/
 	@Override
-	public com.liferay.portal.model.LayoutType getLayoutType() {
+	public com.liferay.portal.kernel.model.LayoutType getLayoutType() {
 		return _layout.getLayoutType();
 	}
 
@@ -815,7 +815,7 @@ public class LayoutWrapper implements Layout, ModelWrapper<Layout> {
 	linked layout could be found
 	*/
 	@Override
-	public com.liferay.portal.model.Layout getLinkedToLayout() {
+	public com.liferay.portal.kernel.model.Layout getLinkedToLayout() {
 		return _layout.getLinkedToLayout();
 	}
 
@@ -1083,7 +1083,7 @@ public class LayoutWrapper implements Layout, ModelWrapper<Layout> {
 	}
 
 	@Override
-	public com.liferay.portal.model.Group getScopeGroup()
+	public com.liferay.portal.kernel.model.Group getScopeGroup()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layout.getScopeGroup();
 	}
@@ -1111,7 +1111,7 @@ public class LayoutWrapper implements Layout, ModelWrapper<Layout> {
 	layout theme is configured
 	*/
 	@Override
-	public com.liferay.portal.model.Theme getTheme()
+	public com.liferay.portal.kernel.model.Theme getTheme()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layout.getTheme();
 	}
@@ -1349,7 +1349,7 @@ public class LayoutWrapper implements Layout, ModelWrapper<Layout> {
 
 	@Override
 	public boolean isChildSelected(boolean selectable,
-		com.liferay.portal.model.Layout layout)
+		com.liferay.portal.kernel.model.Layout layout)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layout.isChildSelected(selectable, layout);
 	}
@@ -1501,7 +1501,7 @@ public class LayoutWrapper implements Layout, ModelWrapper<Layout> {
 
 	@Override
 	public boolean isSelected(boolean selectable,
-		com.liferay.portal.model.Layout layout, long ancestorPlid) {
+		com.liferay.portal.kernel.model.Layout layout, long ancestorPlid) {
 		return _layout.isSelected(selectable, layout, ancestorPlid);
 	}
 
@@ -1574,14 +1574,14 @@ public class LayoutWrapper implements Layout, ModelWrapper<Layout> {
 
 	@Override
 	public void prepareLocalizedFieldsForImport()
-		throws com.liferay.portal.LocaleException {
+		throws com.liferay.portal.kernel.exception.LocaleException {
 		_layout.prepareLocalizedFieldsForImport();
 	}
 
 	@Override
 	public void prepareLocalizedFieldsForImport(
 		java.util.Locale defaultImportLocale)
-		throws com.liferay.portal.LocaleException {
+		throws com.liferay.portal.kernel.exception.LocaleException {
 		_layout.prepareLocalizedFieldsForImport(defaultImportLocale);
 	}
 
@@ -1854,7 +1854,7 @@ public class LayoutWrapper implements Layout, ModelWrapper<Layout> {
 	}
 
 	@Override
-	public void setLayoutSet(com.liferay.portal.model.LayoutSet layoutSet) {
+	public void setLayoutSet(com.liferay.portal.kernel.model.LayoutSet layoutSet) {
 		_layout.setLayoutSet(layoutSet);
 	}
 
@@ -2210,12 +2210,12 @@ public class LayoutWrapper implements Layout, ModelWrapper<Layout> {
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.Layout> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.Layout> toCacheModel() {
 		return _layout.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.Layout toEscapedModel() {
+	public com.liferay.portal.kernel.model.Layout toEscapedModel() {
 		return new LayoutWrapper(_layout.toEscapedModel());
 	}
 
@@ -2225,7 +2225,7 @@ public class LayoutWrapper implements Layout, ModelWrapper<Layout> {
 	}
 
 	@Override
-	public com.liferay.portal.model.Layout toUnescapedModel() {
+	public com.liferay.portal.kernel.model.Layout toUnescapedModel() {
 		return new LayoutWrapper(_layout.toUnescapedModel());
 	}
 

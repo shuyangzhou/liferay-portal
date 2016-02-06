@@ -40,7 +40,7 @@ public class LayoutRevisionServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.portal.service.impl.LayoutRevisionServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.portal.model.LayoutRevision addLayoutRevision(
+	public static com.liferay.portal.kernel.model.LayoutRevision addLayoutRevision(
 		long userId, long layoutSetBranchId, long layoutBranchId,
 		long parentLayoutRevisionId, boolean head, long plid,
 		long portletPreferencesPlid, boolean privateLayout,
@@ -49,7 +49,7 @@ public class LayoutRevisionServiceUtil {
 		java.lang.String robots, java.lang.String typeSettings,
 		boolean iconImage, long iconImageId, java.lang.String themeId,
 		java.lang.String colorSchemeId, java.lang.String css,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addLayoutRevision(userId, layoutSetBranchId,

@@ -97,7 +97,7 @@ public class LayoutSetServiceWrapper implements LayoutSetService,
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutSet updateLookAndFeel(long groupId,
+	public com.liferay.portal.kernel.model.LayoutSet updateLookAndFeel(long groupId,
 		boolean privateLayout, java.lang.String themeId,
 		java.lang.String colorSchemeId, java.lang.String css)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -106,14 +106,14 @@ public class LayoutSetServiceWrapper implements LayoutSetService,
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutSet updateSettings(long groupId,
+	public com.liferay.portal.kernel.model.LayoutSet updateSettings(long groupId,
 		boolean privateLayout, java.lang.String settings)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutSetService.updateSettings(groupId, privateLayout, settings);
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutSet updateVirtualHost(long groupId,
+	public com.liferay.portal.kernel.model.LayoutSet updateVirtualHost(long groupId,
 		boolean privateLayout, java.lang.String virtualHost)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutSetService.updateVirtualHost(groupId, privateLayout,

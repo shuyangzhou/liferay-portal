@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -169,19 +169,19 @@ public interface ResourceActionModel extends BaseModel<ResourceAction>, MVCCMode
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.model.ResourceAction resourceAction);
+	public int compareTo(com.liferay.portal.kernel.model.ResourceAction resourceAction);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.ResourceAction> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.ResourceAction> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.ResourceAction toEscapedModel();
+	public com.liferay.portal.kernel.model.ResourceAction toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.ResourceAction toUnescapedModel();
+	public com.liferay.portal.kernel.model.ResourceAction toUnescapedModel();
 
 	@Override
 	public String toString();

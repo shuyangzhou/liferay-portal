@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
-import com.liferay.portal.model.UserGroup;
+import com.liferay.portal.kernel.model.UserGroup;
 
 import java.util.List;
 
@@ -103,7 +103,7 @@ public interface UserGroupService extends BaseService {
 	*/
 	public UserGroup addUserGroup(java.lang.String name,
 		java.lang.String description,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -207,6 +207,6 @@ public interface UserGroupService extends BaseService {
 	*/
 	public UserGroup updateUserGroup(long userGroupId, java.lang.String name,
 		java.lang.String description,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 }

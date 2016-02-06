@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchClusterGroupException;
-import com.liferay.portal.model.ClusterGroup;
+import com.liferay.portal.kernel.exception.NoSuchClusterGroupException;
+import com.liferay.portal.kernel.model.ClusterGroup;
 
 /**
  * The persistence interface for the cluster group service.

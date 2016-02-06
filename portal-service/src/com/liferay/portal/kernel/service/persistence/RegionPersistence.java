@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchRegionException;
-import com.liferay.portal.model.Region;
+import com.liferay.portal.kernel.exception.NoSuchRegionException;
+import com.liferay.portal.kernel.model.Region;
 
 /**
  * The persistence interface for the region service.

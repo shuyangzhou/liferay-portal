@@ -22,8 +22,8 @@ import com.liferay.portal.kernel.service.permission.ModelPermissions;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
-import com.liferay.portal.model.AuditedModel;
-import com.liferay.portal.model.Resource;
+import com.liferay.portal.kernel.model.AuditedModel;
+import com.liferay.portal.kernel.model.Resource;
 
 import java.util.List;
 
@@ -92,7 +92,7 @@ public interface ResourceLocalService extends BaseLocalService {
 	group permissions to apply, and set guest permissions to apply.
 	*/
 	public void addModelResources(AuditedModel auditedModel,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -292,7 +292,7 @@ public interface ResourceLocalService extends BaseLocalService {
 	and guest permissions.
 	*/
 	public void updateModelResources(AuditedModel auditedModel,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**

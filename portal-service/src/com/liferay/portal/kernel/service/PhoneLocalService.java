@@ -32,9 +32,9 @@ import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.model.PersistedModel;
-import com.liferay.portal.model.Phone;
-import com.liferay.portal.model.SystemEventConstants;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.model.Phone;
+import com.liferay.portal.kernel.model.SystemEventConstants;
 
 import java.io.Serializable;
 
@@ -75,7 +75,7 @@ public interface PhoneLocalService extends BaseLocalService,
 	public Phone addPhone(long userId, java.lang.String className,
 		long classPK, java.lang.String number, java.lang.String extension,
 		long typeId, boolean primary,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**

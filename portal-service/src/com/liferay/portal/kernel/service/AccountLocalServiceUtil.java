@@ -47,8 +47,8 @@ public class AccountLocalServiceUtil {
 	* @param account the account
 	* @return the account that was added
 	*/
-	public static com.liferay.portal.model.Account addAccount(
-		com.liferay.portal.model.Account account) {
+	public static com.liferay.portal.kernel.model.Account addAccount(
+		com.liferay.portal.kernel.model.Account account) {
 		return getService().addAccount(account);
 	}
 
@@ -58,7 +58,7 @@ public class AccountLocalServiceUtil {
 	* @param accountId the primary key for the new account
 	* @return the new account
 	*/
-	public static com.liferay.portal.model.Account createAccount(long accountId) {
+	public static com.liferay.portal.kernel.model.Account createAccount(long accountId) {
 		return getService().createAccount(accountId);
 	}
 
@@ -68,8 +68,8 @@ public class AccountLocalServiceUtil {
 	* @param account the account
 	* @return the account that was removed
 	*/
-	public static com.liferay.portal.model.Account deleteAccount(
-		com.liferay.portal.model.Account account) {
+	public static com.liferay.portal.kernel.model.Account deleteAccount(
+		com.liferay.portal.kernel.model.Account account) {
 		return getService().deleteAccount(account);
 	}
 
@@ -80,7 +80,7 @@ public class AccountLocalServiceUtil {
 	* @return the account that was removed
 	* @throws PortalException if a account with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.Account deleteAccount(long accountId)
+	public static com.liferay.portal.kernel.model.Account deleteAccount(long accountId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteAccount(accountId);
 	}
@@ -88,8 +88,8 @@ public class AccountLocalServiceUtil {
 	/**
 	* @throws PortalException
 	*/
-	public static com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -172,7 +172,7 @@ public class AccountLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.portal.model.Account fetchAccount(long accountId) {
+	public static com.liferay.portal.kernel.model.Account fetchAccount(long accountId) {
 		return getService().fetchAccount(accountId);
 	}
 
@@ -183,12 +183,12 @@ public class AccountLocalServiceUtil {
 	* @return the account
 	* @throws PortalException if a account with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.Account getAccount(long accountId)
+	public static com.liferay.portal.kernel.model.Account getAccount(long accountId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getAccount(accountId);
 	}
 
-	public static com.liferay.portal.model.Account getAccount(long companyId,
+	public static com.liferay.portal.kernel.model.Account getAccount(long companyId,
 		long accountId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getAccount(companyId, accountId);
@@ -205,7 +205,7 @@ public class AccountLocalServiceUtil {
 	* @param end the upper bound of the range of accounts (not inclusive)
 	* @return the range of accounts
 	*/
-	public static java.util.List<com.liferay.portal.model.Account> getAccounts(
+	public static java.util.List<com.liferay.portal.kernel.model.Account> getAccounts(
 		int start, int end) {
 		return getService().getAccounts(start, end);
 	}
@@ -236,7 +236,7 @@ public class AccountLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.model.PersistedModel getPersistedModel(
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getPersistedModel(primaryKeyObj);
@@ -248,8 +248,8 @@ public class AccountLocalServiceUtil {
 	* @param account the account
 	* @return the account that was updated
 	*/
-	public static com.liferay.portal.model.Account updateAccount(
-		com.liferay.portal.model.Account account) {
+	public static com.liferay.portal.kernel.model.Account updateAccount(
+		com.liferay.portal.kernel.model.Account account) {
 		return getService().updateAccount(account);
 	}
 

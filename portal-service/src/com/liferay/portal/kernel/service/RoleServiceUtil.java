@@ -59,12 +59,12 @@ public class RoleServiceUtil {
 	role.
 	* @return the role
 	*/
-	public static com.liferay.portal.model.Role addRole(
+	public static com.liferay.portal.kernel.model.Role addRole(
 		java.lang.String className, long classPK, java.lang.String name,
 		java.util.Map<java.util.Locale, java.lang.String> titleMap,
 		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
 		int type, java.lang.String subtype,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addRole(className, classPK, name, titleMap, descriptionMap,
@@ -93,7 +93,7 @@ public class RoleServiceUtil {
 		getService().deleteRole(roleId);
 	}
 
-	public static com.liferay.portal.model.Role fetchRole(long roleId)
+	public static com.liferay.portal.kernel.model.Role fetchRole(long roleId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().fetchRole(roleId);
 	}
@@ -104,7 +104,7 @@ public class RoleServiceUtil {
 	* @param groupId the primary key of the group
 	* @return the roles associated with the group
 	*/
-	public static java.util.List<com.liferay.portal.model.Role> getGroupRoles(
+	public static java.util.List<com.liferay.portal.kernel.model.Role> getGroupRoles(
 		long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getGroupRoles(groupId);
@@ -131,7 +131,7 @@ public class RoleServiceUtil {
 	* @param name the role's name
 	* @return the role with the name
 	*/
-	public static com.liferay.portal.model.Role getRole(long companyId,
+	public static com.liferay.portal.kernel.model.Role getRole(long companyId,
 		java.lang.String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getRole(companyId, name);
@@ -143,18 +143,18 @@ public class RoleServiceUtil {
 	* @param roleId the primary key of the role
 	* @return the role with the primary key
 	*/
-	public static com.liferay.portal.model.Role getRole(long roleId)
+	public static com.liferay.portal.kernel.model.Role getRole(long roleId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getRole(roleId);
 	}
 
-	public static java.util.List<com.liferay.portal.model.Role> getRoles(
+	public static java.util.List<com.liferay.portal.kernel.model.Role> getRoles(
 		long companyId, int[] types)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getRoles(companyId, types);
 	}
 
-	public static java.util.List<com.liferay.portal.model.Role> getRoles(
+	public static java.util.List<com.liferay.portal.kernel.model.Role> getRoles(
 		int type, java.lang.String subtype)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getRoles(type, subtype);
@@ -167,7 +167,7 @@ public class RoleServiceUtil {
 	* @param groupId the primary key of the group
 	* @return the user's roles within the user group
 	*/
-	public static java.util.List<com.liferay.portal.model.Role> getUserGroupGroupRoles(
+	public static java.util.List<com.liferay.portal.kernel.model.Role> getUserGroupGroupRoles(
 		long userId, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getUserGroupGroupRoles(userId, groupId);
@@ -180,7 +180,7 @@ public class RoleServiceUtil {
 	* @param groupId the primary key of the group
 	* @return the user's roles within the user group
 	*/
-	public static java.util.List<com.liferay.portal.model.Role> getUserGroupRoles(
+	public static java.util.List<com.liferay.portal.kernel.model.Role> getUserGroupRoles(
 		long userId, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getUserGroupRoles(userId, groupId);
@@ -193,8 +193,8 @@ public class RoleServiceUtil {
 	* @param groups the groups (optionally <code>null</code>)
 	* @return the union of all the user's roles within the groups
 	*/
-	public static java.util.List<com.liferay.portal.model.Role> getUserRelatedRoles(
-		long userId, java.util.List<com.liferay.portal.model.Group> groups)
+	public static java.util.List<com.liferay.portal.kernel.model.Role> getUserRelatedRoles(
+		long userId, java.util.List<com.liferay.portal.kernel.model.Group> groups)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getUserRelatedRoles(userId, groups);
 	}
@@ -205,7 +205,7 @@ public class RoleServiceUtil {
 	* @param userId the primary key of the user
 	* @return the roles associated with the user
 	*/
-	public static java.util.List<com.liferay.portal.model.Role> getUserRoles(
+	public static java.util.List<com.liferay.portal.kernel.model.Role> getUserRoles(
 		long userId) throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getUserRoles(userId);
 	}
@@ -246,11 +246,11 @@ public class RoleServiceUtil {
 		return getService().hasUserRoles(userId, companyId, names, inherited);
 	}
 
-	public static java.util.List<com.liferay.portal.model.Role> search(
+	public static java.util.List<com.liferay.portal.kernel.model.Role> search(
 		long companyId, java.lang.String keywords, java.lang.Integer[] types,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Role> obc) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Role> obc) {
 		return getService()
 				   .search(companyId, keywords, types, params, start, end, obc);
 	}
@@ -288,12 +288,12 @@ public class RoleServiceUtil {
 	role.
 	* @return the role with the primary key
 	*/
-	public static com.liferay.portal.model.Role updateRole(long roleId,
+	public static com.liferay.portal.kernel.model.Role updateRole(long roleId,
 		java.lang.String name,
 		java.util.Map<java.util.Locale, java.lang.String> titleMap,
 		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
 		java.lang.String subtype,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateRole(roleId, name, titleMap, descriptionMap, subtype,

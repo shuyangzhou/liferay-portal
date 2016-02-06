@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchResourceActionException;
-import com.liferay.portal.model.ResourceAction;
+import com.liferay.portal.kernel.exception.NoSuchResourceActionException;
+import com.liferay.portal.kernel.model.ResourceAction;
 
 /**
  * The persistence interface for the resource action service.

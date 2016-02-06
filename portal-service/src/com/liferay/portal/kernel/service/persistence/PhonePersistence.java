@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchPhoneException;
-import com.liferay.portal.model.Phone;
+import com.liferay.portal.kernel.exception.NoSuchPhoneException;
+import com.liferay.portal.kernel.model.Phone;
 
 /**
  * The persistence interface for the phone service.

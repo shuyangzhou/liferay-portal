@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchLayoutPrototypeException;
-import com.liferay.portal.model.LayoutPrototype;
+import com.liferay.portal.kernel.exception.NoSuchLayoutPrototypeException;
+import com.liferay.portal.kernel.model.LayoutPrototype;
 
 /**
  * The persistence interface for the layout prototype service.

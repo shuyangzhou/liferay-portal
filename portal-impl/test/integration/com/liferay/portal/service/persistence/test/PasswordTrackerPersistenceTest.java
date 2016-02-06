@@ -14,7 +14,7 @@
 
 package com.liferay.portal.service.persistence.test;
 
-import com.liferay.portal.exception.NoSuchPasswordTrackerException;
+import com.liferay.portal.kernel.exception.NoSuchPasswordTrackerException;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -29,10 +29,10 @@ import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.Time;
-import com.liferay.portal.model.PasswordTracker;
-import com.liferay.portal.service.PasswordTrackerLocalServiceUtil;
-import com.liferay.portal.service.persistence.PasswordTrackerPersistence;
-import com.liferay.portal.service.persistence.PasswordTrackerUtil;
+import com.liferay.portal.kernel.model.PasswordTracker;
+import com.liferay.portal.kernel.service.PasswordTrackerLocalServiceUtil;
+import com.liferay.portal.kernel.service.persistence.PasswordTrackerPersistence;
+import com.liferay.portal.kernel.service.persistence.PasswordTrackerUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 

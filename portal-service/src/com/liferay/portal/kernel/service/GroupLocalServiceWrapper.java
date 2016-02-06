@@ -37,8 +37,8 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @return the group that was added
 	*/
 	@Override
-	public com.liferay.portal.model.Group addGroup(
-		com.liferay.portal.model.Group group) {
+	public com.liferay.portal.kernel.model.Group addGroup(
+		com.liferay.portal.kernel.model.Group group) {
 		return _groupLocalService.addGroup(group);
 	}
 
@@ -74,12 +74,12 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	*/
 	@Deprecated
 	@Override
-	public com.liferay.portal.model.Group addGroup(long userId,
+	public com.liferay.portal.kernel.model.Group addGroup(long userId,
 		long parentGroupId, java.lang.String className, long classPK,
 		long liveGroupId, java.lang.String name, java.lang.String description,
 		int type, boolean manualMembership, int membershipRestriction,
 		java.lang.String friendlyURL, boolean site, boolean active,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.addGroup(userId, parentGroupId, className,
 			classPK, liveGroupId, name, description, type, manualMembership,
@@ -87,14 +87,14 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.Group addGroup(long userId,
+	public com.liferay.portal.kernel.model.Group addGroup(long userId,
 		long parentGroupId, java.lang.String className, long classPK,
 		long liveGroupId,
 		java.util.Map<java.util.Locale, java.lang.String> nameMap,
 		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
 		int type, boolean manualMembership, int membershipRestriction,
 		java.lang.String friendlyURL, boolean site, boolean active,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.addGroup(userId, parentGroupId, className,
 			classPK, liveGroupId, nameMap, descriptionMap, type,
@@ -103,14 +103,14 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.Group addGroup(long userId,
+	public com.liferay.portal.kernel.model.Group addGroup(long userId,
 		long parentGroupId, java.lang.String className, long classPK,
 		long liveGroupId,
 		java.util.Map<java.util.Locale, java.lang.String> nameMap,
 		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
 		int type, boolean manualMembership, int membershipRestriction,
 		java.lang.String friendlyURL, boolean site, boolean inheritContent,
-		boolean active, com.liferay.portal.service.ServiceContext serviceContext)
+		boolean active, com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.addGroup(userId, parentGroupId, className,
 			classPK, liveGroupId, nameMap, descriptionMap, type,
@@ -120,7 +120,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 
 	@Override
 	public void addOrganizationGroup(long organizationId,
-		com.liferay.portal.model.Group group) {
+		com.liferay.portal.kernel.model.Group group) {
 		_groupLocalService.addOrganizationGroup(organizationId, group);
 	}
 
@@ -131,7 +131,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 
 	@Override
 	public void addOrganizationGroups(long organizationId,
-		java.util.List<com.liferay.portal.model.Group> Groups) {
+		java.util.List<com.liferay.portal.kernel.model.Group> Groups) {
 		_groupLocalService.addOrganizationGroups(organizationId, Groups);
 	}
 
@@ -141,7 +141,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	}
 
 	@Override
-	public void addRoleGroup(long roleId, com.liferay.portal.model.Group group) {
+	public void addRoleGroup(long roleId, com.liferay.portal.kernel.model.Group group) {
 		_groupLocalService.addRoleGroup(roleId, group);
 	}
 
@@ -152,7 +152,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 
 	@Override
 	public void addRoleGroups(long roleId,
-		java.util.List<com.liferay.portal.model.Group> Groups) {
+		java.util.List<com.liferay.portal.kernel.model.Group> Groups) {
 		_groupLocalService.addRoleGroups(roleId, Groups);
 	}
 
@@ -162,7 +162,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	}
 
 	@Override
-	public void addUserGroup(long userId, com.liferay.portal.model.Group group) {
+	public void addUserGroup(long userId, com.liferay.portal.kernel.model.Group group) {
 		_groupLocalService.addUserGroup(userId, group);
 	}
 
@@ -173,7 +173,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 
 	@Override
 	public void addUserGroupGroup(long userGroupId,
-		com.liferay.portal.model.Group group) {
+		com.liferay.portal.kernel.model.Group group) {
 		_groupLocalService.addUserGroupGroup(userGroupId, group);
 	}
 
@@ -184,7 +184,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 
 	@Override
 	public void addUserGroupGroups(long userGroupId,
-		java.util.List<com.liferay.portal.model.Group> Groups) {
+		java.util.List<com.liferay.portal.kernel.model.Group> Groups) {
 		_groupLocalService.addUserGroupGroups(userGroupId, Groups);
 	}
 
@@ -195,7 +195,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 
 	@Override
 	public void addUserGroups(long userId,
-		java.util.List<com.liferay.portal.model.Group> Groups) {
+		java.util.List<com.liferay.portal.kernel.model.Group> Groups) {
 		_groupLocalService.addUserGroups(userId, Groups);
 	}
 
@@ -218,8 +218,8 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.Group checkScopeGroup(
-		com.liferay.portal.model.Layout layout, long userId)
+	public com.liferay.portal.kernel.model.Group checkScopeGroup(
+		com.liferay.portal.kernel.model.Layout layout, long userId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.checkScopeGroup(layout, userId);
 	}
@@ -265,7 +265,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @return the new group
 	*/
 	@Override
-	public com.liferay.portal.model.Group createGroup(long groupId) {
+	public com.liferay.portal.kernel.model.Group createGroup(long groupId) {
 		return _groupLocalService.createGroup(groupId);
 	}
 
@@ -277,8 +277,8 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.portal.model.Group deleteGroup(
-		com.liferay.portal.model.Group group)
+	public com.liferay.portal.kernel.model.Group deleteGroup(
+		com.liferay.portal.kernel.model.Group group)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.deleteGroup(group);
 	}
@@ -291,14 +291,14 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @throws PortalException if a group with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.Group deleteGroup(long groupId)
+	public com.liferay.portal.kernel.model.Group deleteGroup(long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.deleteGroup(groupId);
 	}
 
 	@Override
 	public void deleteOrganizationGroup(long organizationId,
-		com.liferay.portal.model.Group group) {
+		com.liferay.portal.kernel.model.Group group) {
 		_groupLocalService.deleteOrganizationGroup(organizationId, group);
 	}
 
@@ -309,7 +309,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 
 	@Override
 	public void deleteOrganizationGroups(long organizationId,
-		java.util.List<com.liferay.portal.model.Group> Groups) {
+		java.util.List<com.liferay.portal.kernel.model.Group> Groups) {
 		_groupLocalService.deleteOrganizationGroups(organizationId, Groups);
 	}
 
@@ -322,15 +322,15 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.deletePersistedModel(persistedModel);
 	}
 
 	@Override
 	public void deleteRoleGroup(long roleId,
-		com.liferay.portal.model.Group group) {
+		com.liferay.portal.kernel.model.Group group) {
 		_groupLocalService.deleteRoleGroup(roleId, group);
 	}
 
@@ -341,7 +341,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 
 	@Override
 	public void deleteRoleGroups(long roleId,
-		java.util.List<com.liferay.portal.model.Group> Groups) {
+		java.util.List<com.liferay.portal.kernel.model.Group> Groups) {
 		_groupLocalService.deleteRoleGroups(roleId, Groups);
 	}
 
@@ -352,7 +352,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 
 	@Override
 	public void deleteUserGroup(long userId,
-		com.liferay.portal.model.Group group) {
+		com.liferay.portal.kernel.model.Group group) {
 		_groupLocalService.deleteUserGroup(userId, group);
 	}
 
@@ -363,7 +363,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 
 	@Override
 	public void deleteUserGroupGroup(long userGroupId,
-		com.liferay.portal.model.Group group) {
+		com.liferay.portal.kernel.model.Group group) {
 		_groupLocalService.deleteUserGroupGroup(userGroupId, group);
 	}
 
@@ -374,7 +374,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 
 	@Override
 	public void deleteUserGroupGroups(long userGroupId,
-		java.util.List<com.liferay.portal.model.Group> Groups) {
+		java.util.List<com.liferay.portal.kernel.model.Group> Groups) {
 		_groupLocalService.deleteUserGroupGroups(userGroupId, Groups);
 	}
 
@@ -385,7 +385,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 
 	@Override
 	public void deleteUserGroups(long userId,
-		java.util.List<com.liferay.portal.model.Group> Groups) {
+		java.util.List<com.liferay.portal.kernel.model.Group> Groups) {
 		_groupLocalService.deleteUserGroups(userId, Groups);
 	}
 
@@ -498,7 +498,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.Group fetchCompanyGroup(long companyId) {
+	public com.liferay.portal.kernel.model.Group fetchCompanyGroup(long companyId) {
 		return _groupLocalService.fetchCompanyGroup(companyId);
 	}
 
@@ -511,7 +511,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	matching group could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.Group fetchFriendlyURLGroup(
+	public com.liferay.portal.kernel.model.Group fetchFriendlyURLGroup(
 		long companyId, java.lang.String friendlyURL) {
 		return _groupLocalService.fetchFriendlyURLGroup(companyId, friendlyURL);
 	}
@@ -526,13 +526,13 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	<code>null</code> if a matching group could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.Group fetchGroup(long companyId,
+	public com.liferay.portal.kernel.model.Group fetchGroup(long companyId,
 		java.lang.String groupKey) {
 		return _groupLocalService.fetchGroup(companyId, groupKey);
 	}
 
 	@Override
-	public com.liferay.portal.model.Group fetchGroup(long groupId) {
+	public com.liferay.portal.kernel.model.Group fetchGroup(long groupId) {
 		return _groupLocalService.fetchGroup(groupId);
 	}
 
@@ -544,13 +544,13 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @return the matching group, or <code>null</code> if a matching group could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.Group fetchGroupByUuidAndCompanyId(
+	public com.liferay.portal.kernel.model.Group fetchGroupByUuidAndCompanyId(
 		java.lang.String uuid, long companyId) {
 		return _groupLocalService.fetchGroupByUuidAndCompanyId(uuid, companyId);
 	}
 
 	@Override
-	public com.liferay.portal.model.Group fetchUserGroup(long companyId,
+	public com.liferay.portal.kernel.model.Group fetchUserGroup(long companyId,
 		long userId) {
 		return _groupLocalService.fetchUserGroup(companyId, userId);
 	}
@@ -564,7 +564,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @throws PortalException if a portal exception occurred
 	*/
 	@Override
-	public com.liferay.portal.model.Group fetchUserPersonalSiteGroup(
+	public com.liferay.portal.kernel.model.Group fetchUserPersonalSiteGroup(
 		long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.fetchUserPersonalSiteGroup(companyId);
@@ -584,7 +584,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @return the active or inactive groups associated with the company
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getActiveGroups(
+	public java.util.List<com.liferay.portal.kernel.model.Group> getActiveGroups(
 		long companyId, boolean active) {
 		return _groupLocalService.getActiveGroups(companyId, active);
 	}
@@ -597,7 +597,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @throws PortalException if a portal exception occurred
 	*/
 	@Override
-	public com.liferay.portal.model.Group getCompanyGroup(long companyId)
+	public com.liferay.portal.kernel.model.Group getCompanyGroup(long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.getCompanyGroup(companyId);
 	}
@@ -621,7 +621,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @return the range of groups associated with the company
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getCompanyGroups(
+	public java.util.List<com.liferay.portal.kernel.model.Group> getCompanyGroups(
 		long companyId, int start, int end) {
 		return _groupLocalService.getCompanyGroups(companyId, start, end);
 	}
@@ -646,7 +646,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @throws PortalException if a portal exception occurred
 	*/
 	@Override
-	public com.liferay.portal.model.Group getFriendlyURLGroup(long companyId,
+	public com.liferay.portal.kernel.model.Group getFriendlyURLGroup(long companyId,
 		java.lang.String friendlyURL)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.getFriendlyURLGroup(companyId, friendlyURL);
@@ -661,7 +661,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @throws PortalException if a portal exception occurred
 	*/
 	@Override
-	public com.liferay.portal.model.Group getGroup(long companyId,
+	public com.liferay.portal.kernel.model.Group getGroup(long companyId,
 		java.lang.String groupKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.getGroup(companyId, groupKey);
@@ -675,7 +675,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @throws PortalException if a group with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.Group getGroup(long groupId)
+	public com.liferay.portal.kernel.model.Group getGroup(long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.getGroup(groupId);
 	}
@@ -689,7 +689,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @throws PortalException if a matching group could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.Group getGroupByUuidAndCompanyId(
+	public com.liferay.portal.kernel.model.Group getGroupByUuidAndCompanyId(
 		java.lang.String uuid, long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.getGroupByUuidAndCompanyId(uuid, companyId);
@@ -702,7 +702,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	@Deprecated
 	@Override
 	public java.lang.String getGroupDescriptiveName(
-		com.liferay.portal.model.Group group, java.util.Locale locale)
+		com.liferay.portal.kernel.model.Group group, java.util.Locale locale)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.getGroupDescriptiveName(group, locale);
 	}
@@ -730,7 +730,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	found
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getGroups(
+	public java.util.List<com.liferay.portal.kernel.model.Group> getGroups(
 		long companyId, java.lang.String className, long parentGroupId) {
 		return _groupLocalService.getGroups(companyId, className, parentGroupId);
 	}
@@ -747,7 +747,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @return the range of matching groups
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getGroups(
+	public java.util.List<com.liferay.portal.kernel.model.Group> getGroups(
 		long companyId, java.lang.String className, long parentGroupId,
 		int start, int end) {
 		return _groupLocalService.getGroups(companyId, className,
@@ -764,13 +764,13 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	found
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getGroups(
+	public java.util.List<com.liferay.portal.kernel.model.Group> getGroups(
 		long companyId, long parentGroupId, boolean site) {
 		return _groupLocalService.getGroups(companyId, parentGroupId, site);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getGroups(
+	public java.util.List<com.liferay.portal.kernel.model.Group> getGroups(
 		long companyId, long parentGroupId, boolean site, boolean inheritContent) {
 		return _groupLocalService.getGroups(companyId, parentGroupId, site,
 			inheritContent);
@@ -784,7 +784,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @throws PortalException if a portal exception occurred
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getGroups(
+	public java.util.List<com.liferay.portal.kernel.model.Group> getGroups(
 		long[] groupIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.getGroups(groupIds);
@@ -802,7 +802,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @return the range of groups
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getGroups(int start,
+	public java.util.List<com.liferay.portal.kernel.model.Group> getGroups(int start,
 		int end) {
 		return _groupLocalService.getGroups(start, end);
 	}
@@ -861,7 +861,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @throws PortalException if a portal exception occurred
 	*/
 	@Override
-	public com.liferay.portal.model.Group getLayoutGroup(long companyId,
+	public com.liferay.portal.kernel.model.Group getLayoutGroup(long companyId,
 		long plid) throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.getLayoutGroup(companyId, plid);
 	}
@@ -875,7 +875,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @throws PortalException if a portal exception occurred
 	*/
 	@Override
-	public com.liferay.portal.model.Group getLayoutPrototypeGroup(
+	public com.liferay.portal.kernel.model.Group getLayoutPrototypeGroup(
 		long companyId, long layoutPrototypeId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.getLayoutPrototypeGroup(companyId,
@@ -891,7 +891,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @throws PortalException if a portal exception occurred
 	*/
 	@Override
-	public com.liferay.portal.model.Group getLayoutSetPrototypeGroup(
+	public com.liferay.portal.kernel.model.Group getLayoutSetPrototypeGroup(
 		long companyId, long layoutSetPrototypeId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.getLayoutSetPrototypeGroup(companyId,
@@ -923,9 +923,9 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	<code>obc</code>
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getLayoutsGroups(
+	public java.util.List<com.liferay.portal.kernel.model.Group> getLayoutsGroups(
 		long companyId, long parentGroupId, boolean site, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Group> obc) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Group> obc) {
 		return _groupLocalService.getLayoutsGroups(companyId, parentGroupId,
 			site, start, end, obc);
 	}
@@ -952,7 +952,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @return all live groups
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getLiveGroups() {
+	public java.util.List<com.liferay.portal.kernel.model.Group> getLiveGroups() {
 		return _groupLocalService.getLiveGroups();
 	}
 
@@ -978,7 +978,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @return the range of matching groups
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getNoLayoutsGroups(
+	public java.util.List<com.liferay.portal.kernel.model.Group> getNoLayoutsGroups(
 		java.lang.String className, boolean privateLayout, int start, int end) {
 		return _groupLocalService.getNoLayoutsGroups(className, privateLayout,
 			start, end);
@@ -992,7 +992,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	URLs
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getNullFriendlyURLGroups() {
+	public java.util.List<com.liferay.portal.kernel.model.Group> getNullFriendlyURLGroups() {
 		return _groupLocalService.getNullFriendlyURLGroups();
 	}
 
@@ -1015,29 +1015,29 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @throws PortalException if a portal exception occurred
 	*/
 	@Override
-	public com.liferay.portal.model.Group getOrganizationGroup(long companyId,
+	public com.liferay.portal.kernel.model.Group getOrganizationGroup(long companyId,
 		long organizationId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.getOrganizationGroup(companyId, organizationId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getOrganizationGroups(
+	public java.util.List<com.liferay.portal.kernel.model.Group> getOrganizationGroups(
 		long organizationId) {
 		return _groupLocalService.getOrganizationGroups(organizationId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getOrganizationGroups(
+	public java.util.List<com.liferay.portal.kernel.model.Group> getOrganizationGroups(
 		long organizationId, int start, int end) {
 		return _groupLocalService.getOrganizationGroups(organizationId, start,
 			end);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getOrganizationGroups(
+	public java.util.List<com.liferay.portal.kernel.model.Group> getOrganizationGroups(
 		long organizationId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Group> orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Group> orderByComparator) {
 		return _groupLocalService.getOrganizationGroups(organizationId, start,
 			end, orderByComparator);
 	}
@@ -1065,8 +1065,8 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @return the groups associated with the organizations
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getOrganizationsGroups(
-		java.util.List<com.liferay.portal.model.Organization> organizations) {
+	public java.util.List<com.liferay.portal.kernel.model.Group> getOrganizationsGroups(
+		java.util.List<com.liferay.portal.kernel.model.Organization> organizations) {
 		return _groupLocalService.getOrganizationsGroups(organizations);
 	}
 
@@ -1077,8 +1077,8 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @return the groups related to the organizations
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getOrganizationsRelatedGroups(
-		java.util.List<com.liferay.portal.model.Organization> organizations) {
+	public java.util.List<com.liferay.portal.kernel.model.Group> getOrganizationsRelatedGroups(
+		java.util.List<com.liferay.portal.kernel.model.Organization> organizations) {
 		return _groupLocalService.getOrganizationsRelatedGroups(organizations);
 	}
 
@@ -1092,35 +1092,35 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @throws PortalException if a portal exception occurred
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getParentGroups(
+	public java.util.List<com.liferay.portal.kernel.model.Group> getParentGroups(
 		long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.getParentGroups(groupId);
 	}
 
 	@Override
-	public com.liferay.portal.model.PersistedModel getPersistedModel(
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.getPersistedModel(primaryKeyObj);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getRoleGroups(
+	public java.util.List<com.liferay.portal.kernel.model.Group> getRoleGroups(
 		long roleId) {
 		return _groupLocalService.getRoleGroups(roleId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getRoleGroups(
+	public java.util.List<com.liferay.portal.kernel.model.Group> getRoleGroups(
 		long roleId, int start, int end) {
 		return _groupLocalService.getRoleGroups(roleId, start, end);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getRoleGroups(
+	public java.util.List<com.liferay.portal.kernel.model.Group> getRoleGroups(
 		long roleId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Group> orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Group> orderByComparator) {
 		return _groupLocalService.getRoleGroups(roleId, start, end,
 			orderByComparator);
 	}
@@ -1149,7 +1149,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @throws PortalException if a portal exception occurred
 	*/
 	@Override
-	public com.liferay.portal.model.Group getStagingGroup(long liveGroupId)
+	public com.liferay.portal.kernel.model.Group getStagingGroup(long liveGroupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.getStagingGroup(liveGroupId);
 	}
@@ -1163,7 +1163,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @throws PortalException if a portal exception occurred
 	*/
 	@Override
-	public com.liferay.portal.model.Group getUserGroup(long companyId,
+	public com.liferay.portal.kernel.model.Group getUserGroup(long companyId,
 		long userId) throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.getUserGroup(companyId, userId);
 	}
@@ -1178,28 +1178,28 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @throws PortalException if a portal exception occurred
 	*/
 	@Override
-	public com.liferay.portal.model.Group getUserGroupGroup(long companyId,
+	public com.liferay.portal.kernel.model.Group getUserGroupGroup(long companyId,
 		long userGroupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.getUserGroupGroup(companyId, userGroupId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getUserGroupGroups(
+	public java.util.List<com.liferay.portal.kernel.model.Group> getUserGroupGroups(
 		long userGroupId) {
 		return _groupLocalService.getUserGroupGroups(userGroupId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getUserGroupGroups(
+	public java.util.List<com.liferay.portal.kernel.model.Group> getUserGroupGroups(
 		long userGroupId, int start, int end) {
 		return _groupLocalService.getUserGroupGroups(userGroupId, start, end);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getUserGroupGroups(
+	public java.util.List<com.liferay.portal.kernel.model.Group> getUserGroupGroups(
 		long userGroupId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Group> orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Group> orderByComparator) {
 		return _groupLocalService.getUserGroupGroups(userGroupId, start, end,
 			orderByComparator);
 	}
@@ -1221,7 +1221,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getUserGroups(
+	public java.util.List<com.liferay.portal.kernel.model.Group> getUserGroups(
 		long userId) {
 		return _groupLocalService.getUserGroups(userId);
 	}
@@ -1238,7 +1238,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @throws PortalException if a portal exception occurred
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getUserGroups(
+	public java.util.List<com.liferay.portal.kernel.model.Group> getUserGroups(
 		long userId, boolean inherit)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.getUserGroups(userId, inherit);
@@ -1270,14 +1270,14 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @throws PortalException if a portal exception occurred
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getUserGroups(
+	public java.util.List<com.liferay.portal.kernel.model.Group> getUserGroups(
 		long userId, boolean inherit, int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.getUserGroups(userId, inherit, start, end);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getUserGroups(
+	public java.util.List<com.liferay.portal.kernel.model.Group> getUserGroups(
 		long userId, int start, int end) {
 		return _groupLocalService.getUserGroups(userId, start, end);
 	}
@@ -1286,9 +1286,9 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @throws PortalException
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getUserGroups(
+	public java.util.List<com.liferay.portal.kernel.model.Group> getUserGroups(
 		long userId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Group> orderByComparator)
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Group> orderByComparator)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.getUserGroups(userId, start, end,
 			orderByComparator);
@@ -1307,8 +1307,8 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @throws PortalException if a portal exception occurred
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getUserGroupsGroups(
-		java.util.List<com.liferay.portal.model.UserGroup> userGroups)
+	public java.util.List<com.liferay.portal.kernel.model.Group> getUserGroupsGroups(
+		java.util.List<com.liferay.portal.kernel.model.UserGroup> userGroups)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.getUserGroupsGroups(userGroups);
 	}
@@ -1320,8 +1320,8 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @return the groups related to the user groups
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getUserGroupsRelatedGroups(
-		java.util.List<com.liferay.portal.model.UserGroup> userGroups) {
+	public java.util.List<com.liferay.portal.kernel.model.Group> getUserGroupsRelatedGroups(
+		java.util.List<com.liferay.portal.kernel.model.UserGroup> userGroups) {
 		return _groupLocalService.getUserGroupsRelatedGroups(userGroups);
 	}
 
@@ -1349,7 +1349,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @throws PortalException if a portal exception occurred
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getUserOrganizationsGroups(
+	public java.util.List<com.liferay.portal.kernel.model.Group> getUserOrganizationsGroups(
 		long userId, int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.getUserOrganizationsGroups(userId, start, end);
@@ -1363,7 +1363,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @throws PortalException if a portal exception occurred
 	*/
 	@Override
-	public com.liferay.portal.model.Group getUserPersonalSiteGroup(
+	public com.liferay.portal.kernel.model.Group getUserPersonalSiteGroup(
 		long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.getUserPersonalSiteGroup(companyId);
@@ -1381,13 +1381,13 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getUserSitesGroups(
+	public java.util.List<com.liferay.portal.kernel.model.Group> getUserSitesGroups(
 		long userId) throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.getUserSitesGroups(userId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> getUserSitesGroups(
+	public java.util.List<com.liferay.portal.kernel.model.Group> getUserSitesGroups(
 		long userId, boolean includeAdministrative)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.getUserSitesGroups(userId,
@@ -1473,7 +1473,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	<code>null</code> if a matching group could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.Group loadFetchGroup(long companyId,
+	public com.liferay.portal.kernel.model.Group loadFetchGroup(long companyId,
 		java.lang.String groupKey) {
 		return _groupLocalService.loadFetchGroup(companyId, groupKey);
 	}
@@ -1487,7 +1487,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @throws PortalException if a portal exception occurred
 	*/
 	@Override
-	public com.liferay.portal.model.Group loadGetGroup(long companyId,
+	public com.liferay.portal.kernel.model.Group loadGetGroup(long companyId,
 		java.lang.String groupKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.loadGetGroup(companyId, groupKey);
@@ -1536,14 +1536,14 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	&quot;usersGroups&quot; mapped to the user's ID and an entry with
 	key &quot;inherit&quot; mapped to a non-<code>null</code> object.
 	For more information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param start the lower bound of the range of groups to return
 	* @param end the upper bound of the range of groups to return (not
 	inclusive)
 	* @return the matching groups ordered by name
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> search(
+	public java.util.List<com.liferay.portal.kernel.model.Group> search(
 		long companyId, long[] classNameIds, java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		int start, int end) {
@@ -1576,7 +1576,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	&quot;usersGroups&quot; mapped to the user's ID and an entry with
 	key &quot;inherit&quot; mapped to a non-<code>null</code> object.
 	For more information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param start the lower bound of the range of groups to return
 	* @param end the upper bound of the range of groups to return (not
 	inclusive)
@@ -1585,11 +1585,11 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @return the matching groups ordered by comparator <code>obc</code>
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> search(
+	public java.util.List<com.liferay.portal.kernel.model.Group> search(
 		long companyId, long[] classNameIds, java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Group> obc) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Group> obc) {
 		return _groupLocalService.search(companyId, classNameIds, keywords,
 			params, start, end, obc);
 	}
@@ -1621,7 +1621,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	&quot;usersGroups&quot; mapped to the user's ID and an entry with
 	key &quot;inherit&quot; mapped to a non-<code>null</code> object.
 	For more information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param andOperator whether every field must match its keywords, or just
 	one field.
 	* @param start the lower bound of the range of groups to return
@@ -1630,7 +1630,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @return the matching groups ordered by name
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> search(
+	public java.util.List<com.liferay.portal.kernel.model.Group> search(
 		long companyId, long[] classNameIds, java.lang.String name,
 		java.lang.String description,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
@@ -1666,7 +1666,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	&quot;usersGroups&quot; mapped to the user's ID and an entry with
 	key &quot;inherit&quot; mapped to a non-<code>null</code> object.
 	For more information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param andOperator whether every field must match its keywords, or just
 	one field.
 	* @param start the lower bound of the range of groups to return
@@ -1677,12 +1677,12 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @return the matching groups ordered by comparator <code>obc</code>
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> search(
+	public java.util.List<com.liferay.portal.kernel.model.Group> search(
 		long companyId, long[] classNameIds, java.lang.String name,
 		java.lang.String description,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Group> obc) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Group> obc) {
 		return _groupLocalService.search(companyId, classNameIds, name,
 			description, params, andOperator, start, end, obc);
 	}
@@ -1714,14 +1714,14 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	&quot;usersGroups&quot; mapped to the user's ID and an entry with
 	key &quot;inherit&quot; mapped to a non-<code>null</code> object.
 	For more information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param start the lower bound of the range of groups to return
 	* @param end the upper bound of the range of groups to return (not
 	inclusive)
 	* @return the matching groups ordered by name
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> search(
+	public java.util.List<com.liferay.portal.kernel.model.Group> search(
 		long companyId, long[] classNameIds, long parentGroupId,
 		java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
@@ -1757,7 +1757,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	&quot;usersGroups&quot; mapped to the user's ID and an entry with
 	key &quot;inherit&quot; mapped to a non-<code>null</code> object.
 	For more information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param start the lower bound of the range of groups to return
 	* @param end the upper bound of the range of groups to return (not
 	inclusive)
@@ -1766,12 +1766,12 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @return the matching groups ordered by comparator <code>obc</code>
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> search(
+	public java.util.List<com.liferay.portal.kernel.model.Group> search(
 		long companyId, long[] classNameIds, long parentGroupId,
 		java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Group> obc) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Group> obc) {
 		return _groupLocalService.search(companyId, classNameIds,
 			parentGroupId, keywords, params, start, end, obc);
 	}
@@ -1804,7 +1804,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	&quot;usersGroups&quot; mapped to the user's ID and an entry with
 	key &quot;inherit&quot; mapped to a non-<code>null</code> object.
 	For more information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param andOperator whether every field must match its keywords, or just
 	one field.
 	* @param start the lower bound of the range of groups to return
@@ -1813,7 +1813,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @return the matching groups ordered by name
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> search(
+	public java.util.List<com.liferay.portal.kernel.model.Group> search(
 		long companyId, long[] classNameIds, long parentGroupId,
 		java.lang.String name, java.lang.String description,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
@@ -1850,7 +1850,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	&quot;usersGroups&quot; mapped to the user's ID and an entry with
 	key &quot;inherit&quot; mapped to a non-<code>null</code> object.
 	For more information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param andOperator whether every field must match its keywords, or just
 	one field.
 	* @param start the lower bound of the range of groups to return
@@ -1861,12 +1861,12 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @return the matching groups ordered by comparator <code>obc</code>
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> search(
+	public java.util.List<com.liferay.portal.kernel.model.Group> search(
 		long companyId, long[] classNameIds, long parentGroupId,
 		java.lang.String name, java.lang.String description,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Group> obc) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Group> obc) {
 		return _groupLocalService.search(companyId, classNameIds,
 			parentGroupId, name, description, params, andOperator, start, end,
 			obc);
@@ -1894,14 +1894,14 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	search, add entries having &quot;usersGroups&quot; and
 	&quot;inherit&quot; as keys mapped to the the user's ID. For more
 	information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param start the lower bound of the range of groups to return
 	* @param end the upper bound of the range of groups to return (not
 	inclusive)
 	* @return the matching groups ordered by name
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> search(
+	public java.util.List<com.liferay.portal.kernel.model.Group> search(
 		long companyId, java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		int start, int end) {
@@ -1930,7 +1930,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	search, add entries having &quot;usersGroups&quot; and
 	&quot;inherit&quot; as keys mapped to the the user's ID. For more
 	information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param start the lower bound of the range of groups to return
 	* @param end the upper bound of the range of groups to return (not
 	inclusive)
@@ -1939,11 +1939,11 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @return the matching groups ordered by comparator <code>obc</code>
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> search(
+	public java.util.List<com.liferay.portal.kernel.model.Group> search(
 		long companyId, java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Group> obc) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Group> obc) {
 		return _groupLocalService.search(companyId, keywords, params, start,
 			end, obc);
 	}
@@ -1972,7 +1972,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	search, add entries having &quot;usersGroups&quot; and
 	&quot;inherit&quot; as keys mapped to the the user's ID. For more
 	information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param andOperator whether every field must match its keywords, or just
 	one field.
 	* @param start the lower bound of the range of groups to return
@@ -1981,7 +1981,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @return the matching groups ordered by name
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> search(
+	public java.util.List<com.liferay.portal.kernel.model.Group> search(
 		long companyId, java.lang.String name, java.lang.String description,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator, int start, int end) {
@@ -2013,7 +2013,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	search, add entries having &quot;usersGroups&quot; and
 	&quot;inherit&quot; as keys mapped to the the user's ID. For more
 	information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param andOperator whether every field must match its keywords, or just
 	one field.
 	* @param start the lower bound of the range of groups to return
@@ -2024,11 +2024,11 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @return the matching groups ordered by comparator <code>obc</code>
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> search(
+	public java.util.List<com.liferay.portal.kernel.model.Group> search(
 		long companyId, java.lang.String name, java.lang.String description,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Group> obc) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Group> obc) {
 		return _groupLocalService.search(companyId, name, description, params,
 			andOperator, start, end, obc);
 	}
@@ -2054,14 +2054,14 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	&quot;usersGroups&quot; mapped to the user's ID and an entry with
 	key &quot;inherit&quot; mapped to a non-<code>null</code> object.
 	For more information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param start the lower bound of the range of groups to return
 	* @param end the upper bound of the range of groups to return (not
 	inclusive)
 	* @return the matching groups ordered by name
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> search(
+	public java.util.List<com.liferay.portal.kernel.model.Group> search(
 		long companyId,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		int start, int end) {
@@ -2092,14 +2092,14 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	search, add entries having &quot;usersGroups&quot; and
 	&quot;inherit&quot; as keys mapped to the the user's ID. For more
 	information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param start the lower bound of the range of groups to return
 	* @param end the upper bound of the range of groups to return (not
 	inclusive)
 	* @return the matching groups ordered by name
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> search(
+	public java.util.List<com.liferay.portal.kernel.model.Group> search(
 		long companyId, long parentGroupId, java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		int start, int end) {
@@ -2131,7 +2131,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	search, add entries having &quot;usersGroups&quot; and
 	&quot;inherit&quot; as keys mapped to the the user's ID. For more
 	information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param start the lower bound of the range of groups to return
 	* @param end the upper bound of the range of groups to return (not
 	inclusive)
@@ -2140,11 +2140,11 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @return the matching groups ordered by comparator <code>obc</code>
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> search(
+	public java.util.List<com.liferay.portal.kernel.model.Group> search(
 		long companyId, long parentGroupId, java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Group> obc) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Group> obc) {
 		return _groupLocalService.search(companyId, parentGroupId, keywords,
 			params, start, end, obc);
 	}
@@ -2174,7 +2174,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	search, add entries having &quot;usersGroups&quot; and
 	&quot;inherit&quot; as keys mapped to the the user's ID. For more
 	information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param andOperator whether every field must match its keywords, or just
 	one field.
 	* @param start the lower bound of the range of groups to return
@@ -2183,7 +2183,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @return the matching groups ordered by name
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> search(
+	public java.util.List<com.liferay.portal.kernel.model.Group> search(
 		long companyId, long parentGroupId, java.lang.String name,
 		java.lang.String description,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
@@ -2217,7 +2217,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	search, add entries having &quot;usersGroups&quot; and
 	&quot;inherit&quot; as keys mapped to the the user's ID. For more
 	information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param andOperator whether every field must match its keywords, or just
 	one field.
 	* @param start the lower bound of the range of groups to return
@@ -2228,12 +2228,12 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @return the matching groups ordered by comparator <code>obc</code>
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.Group> search(
+	public java.util.List<com.liferay.portal.kernel.model.Group> search(
 		long companyId, long parentGroupId, java.lang.String name,
 		java.lang.String description,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Group> obc) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Group> obc) {
 		return _groupLocalService.search(companyId, parentGroupId, name,
 			description, params, andOperator, start, end, obc);
 	}
@@ -2253,7 +2253,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	in the search, add entries having &quot;usersGroups&quot; and
 	&quot;inherit&quot; as keys mapped to the the user's ID. For more
 	information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @return the number of matching groups
 	*/
 	@Override
@@ -2280,7 +2280,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	in the search, add entries having &quot;usersGroups&quot; and
 	&quot;inherit&quot; as keys mapped to the the user's ID. For more
 	information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param andOperator whether every field must match its keywords, or just
 	one field.
 	* @return the number of matching groups
@@ -2311,7 +2311,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	in the search, add entries having &quot;usersGroups&quot; and
 	&quot;inherit&quot; as keys mapped to the the user's ID. For more
 	information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @return the number of matching groups
 	*/
 	@Override
@@ -2340,7 +2340,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	in the search, add entries having &quot;usersGroups&quot; and
 	&quot;inherit&quot; as keys mapped to the the user's ID. For more
 	information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param andOperator whether every field must match its keywords, or just
 	one field.
 	* @return the number of matching groups
@@ -2368,7 +2368,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	in the search, add entries having &quot;usersGroups&quot; and
 	&quot;inherit&quot; as keys mapped to the the user's ID. For more
 	information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @return the number of matching groups
 	*/
 	@Override
@@ -2392,7 +2392,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	in the search, add entries having &quot;usersGroups&quot; and
 	&quot;inherit&quot; as keys mapped to the the user's ID. For more
 	information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param andOperator whether every field must match its keywords, or just
 	one field.
 	* @return the number of matching groups
@@ -2420,7 +2420,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	in the search, add entries having &quot;usersGroups&quot; and
 	&quot;inherit&quot; as keys mapped to the the user's ID. For more
 	information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @return the number of matching groups
 	*/
 	@Override
@@ -2447,7 +2447,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	in the search, add entries having &quot;usersGroups&quot; and
 	&quot;inherit&quot; as keys mapped to the the user's ID. For more
 	information see {@link
-	com.liferay.portal.service.persistence.GroupFinder}.
+	com.liferay.portal.kernel.service.persistence.GroupFinder}.
 	* @param andOperator whether every field must match its keywords, or just
 	one field.
 	* @return the number of matching groups
@@ -2514,7 +2514,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @throws PortalException if a portal exception occurred
 	*/
 	@Override
-	public void updateAsset(long userId, com.liferay.portal.model.Group group,
+	public void updateAsset(long userId, com.liferay.portal.kernel.model.Group group,
 		long[] assetCategoryIds, java.lang.String[] assetTagNames)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_groupLocalService.updateAsset(userId, group, assetCategoryIds,
@@ -2531,7 +2531,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @throws PortalException if a portal exception occurred
 	*/
 	@Override
-	public com.liferay.portal.model.Group updateFriendlyURL(long groupId,
+	public com.liferay.portal.kernel.model.Group updateFriendlyURL(long groupId,
 		java.lang.String friendlyURL)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.updateFriendlyURL(groupId, friendlyURL);
@@ -2544,8 +2544,8 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @return the group that was updated
 	*/
 	@Override
-	public com.liferay.portal.model.Group updateGroup(
-		com.liferay.portal.model.Group group) {
+	public com.liferay.portal.kernel.model.Group updateGroup(
+		com.liferay.portal.kernel.model.Group group) {
 		return _groupLocalService.updateGroup(group);
 	}
 
@@ -2579,12 +2579,12 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	*/
 	@Deprecated
 	@Override
-	public com.liferay.portal.model.Group updateGroup(long groupId,
+	public com.liferay.portal.kernel.model.Group updateGroup(long groupId,
 		long parentGroupId, java.lang.String name,
 		java.lang.String description, int type, boolean manualMembership,
 		int membershipRestriction, java.lang.String friendlyURL,
 		boolean inheritContent, boolean active,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.updateGroup(groupId, parentGroupId, name,
 			description, type, manualMembership, membershipRestriction,
@@ -2592,13 +2592,13 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.Group updateGroup(long groupId,
+	public com.liferay.portal.kernel.model.Group updateGroup(long groupId,
 		long parentGroupId,
 		java.util.Map<java.util.Locale, java.lang.String> nameMap,
 		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
 		int type, boolean manualMembership, int membershipRestriction,
 		java.lang.String friendlyURL, boolean inheritContent, boolean active,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.updateGroup(groupId, parentGroupId, nameMap,
 			descriptionMap, type, manualMembership, membershipRestriction,
@@ -2615,7 +2615,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @throws PortalException if a portal exception occurred
 	*/
 	@Override
-	public com.liferay.portal.model.Group updateGroup(long groupId,
+	public com.liferay.portal.kernel.model.Group updateGroup(long groupId,
 		java.lang.String typeSettings)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.updateGroup(groupId, typeSettings);
@@ -2630,7 +2630,7 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	* @throws PortalException if a portal exception occurred
 	*/
 	@Override
-	public com.liferay.portal.model.Group updateSite(long groupId, boolean site)
+	public com.liferay.portal.kernel.model.Group updateSite(long groupId, boolean site)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _groupLocalService.updateSite(groupId, site);
 	}

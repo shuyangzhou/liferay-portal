@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchWebsiteException;
-import com.liferay.portal.model.Website;
+import com.liferay.portal.kernel.exception.NoSuchWebsiteException;
+import com.liferay.portal.kernel.model.Website;
 
 /**
  * The persistence interface for the website service.

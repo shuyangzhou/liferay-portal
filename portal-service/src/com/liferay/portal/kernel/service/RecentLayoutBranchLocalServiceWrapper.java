@@ -39,13 +39,13 @@ public class RecentLayoutBranchLocalServiceWrapper
 	* @return the recent layout branch that was added
 	*/
 	@Override
-	public com.liferay.portal.model.RecentLayoutBranch addRecentLayoutBranch(
-		com.liferay.portal.model.RecentLayoutBranch recentLayoutBranch) {
+	public com.liferay.portal.kernel.model.RecentLayoutBranch addRecentLayoutBranch(
+		com.liferay.portal.kernel.model.RecentLayoutBranch recentLayoutBranch) {
 		return _recentLayoutBranchLocalService.addRecentLayoutBranch(recentLayoutBranch);
 	}
 
 	@Override
-	public com.liferay.portal.model.RecentLayoutBranch addRecentLayoutBranch(
+	public com.liferay.portal.kernel.model.RecentLayoutBranch addRecentLayoutBranch(
 		long userId, long layoutBranchId, long layoutSetBranchId, long plid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _recentLayoutBranchLocalService.addRecentLayoutBranch(userId,
@@ -59,7 +59,7 @@ public class RecentLayoutBranchLocalServiceWrapper
 	* @return the new recent layout branch
 	*/
 	@Override
-	public com.liferay.portal.model.RecentLayoutBranch createRecentLayoutBranch(
+	public com.liferay.portal.kernel.model.RecentLayoutBranch createRecentLayoutBranch(
 		long recentLayoutBranchId) {
 		return _recentLayoutBranchLocalService.createRecentLayoutBranch(recentLayoutBranchId);
 	}
@@ -68,8 +68,8 @@ public class RecentLayoutBranchLocalServiceWrapper
 	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _recentLayoutBranchLocalService.deletePersistedModel(persistedModel);
 	}
@@ -81,8 +81,8 @@ public class RecentLayoutBranchLocalServiceWrapper
 	* @return the recent layout branch that was removed
 	*/
 	@Override
-	public com.liferay.portal.model.RecentLayoutBranch deleteRecentLayoutBranch(
-		com.liferay.portal.model.RecentLayoutBranch recentLayoutBranch) {
+	public com.liferay.portal.kernel.model.RecentLayoutBranch deleteRecentLayoutBranch(
+		com.liferay.portal.kernel.model.RecentLayoutBranch recentLayoutBranch) {
 		return _recentLayoutBranchLocalService.deleteRecentLayoutBranch(recentLayoutBranch);
 	}
 
@@ -94,7 +94,7 @@ public class RecentLayoutBranchLocalServiceWrapper
 	* @throws PortalException if a recent layout branch with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.RecentLayoutBranch deleteRecentLayoutBranch(
+	public com.liferay.portal.kernel.model.RecentLayoutBranch deleteRecentLayoutBranch(
 		long recentLayoutBranchId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _recentLayoutBranchLocalService.deleteRecentLayoutBranch(recentLayoutBranchId);
@@ -197,13 +197,13 @@ public class RecentLayoutBranchLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.model.RecentLayoutBranch fetchRecentLayoutBranch(
+	public com.liferay.portal.kernel.model.RecentLayoutBranch fetchRecentLayoutBranch(
 		long recentLayoutBranchId) {
 		return _recentLayoutBranchLocalService.fetchRecentLayoutBranch(recentLayoutBranchId);
 	}
 
 	@Override
-	public com.liferay.portal.model.RecentLayoutBranch fetchRecentLayoutBranch(
+	public com.liferay.portal.kernel.model.RecentLayoutBranch fetchRecentLayoutBranch(
 		long userId, long layoutSetBranchId, long plid) {
 		return _recentLayoutBranchLocalService.fetchRecentLayoutBranch(userId,
 			layoutSetBranchId, plid);
@@ -230,7 +230,7 @@ public class RecentLayoutBranchLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.model.PersistedModel getPersistedModel(
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _recentLayoutBranchLocalService.getPersistedModel(primaryKeyObj);
@@ -244,7 +244,7 @@ public class RecentLayoutBranchLocalServiceWrapper
 	* @throws PortalException if a recent layout branch with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.RecentLayoutBranch getRecentLayoutBranch(
+	public com.liferay.portal.kernel.model.RecentLayoutBranch getRecentLayoutBranch(
 		long recentLayoutBranchId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _recentLayoutBranchLocalService.getRecentLayoutBranch(recentLayoutBranchId);
@@ -262,7 +262,7 @@ public class RecentLayoutBranchLocalServiceWrapper
 	* @return the range of recent layout branchs
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.RecentLayoutBranch> getRecentLayoutBranchs(
+	public java.util.List<com.liferay.portal.kernel.model.RecentLayoutBranch> getRecentLayoutBranchs(
 		int start, int end) {
 		return _recentLayoutBranchLocalService.getRecentLayoutBranchs(start, end);
 	}
@@ -284,8 +284,8 @@ public class RecentLayoutBranchLocalServiceWrapper
 	* @return the recent layout branch that was updated
 	*/
 	@Override
-	public com.liferay.portal.model.RecentLayoutBranch updateRecentLayoutBranch(
-		com.liferay.portal.model.RecentLayoutBranch recentLayoutBranch) {
+	public com.liferay.portal.kernel.model.RecentLayoutBranch updateRecentLayoutBranch(
+		com.liferay.portal.kernel.model.RecentLayoutBranch recentLayoutBranch) {
 		return _recentLayoutBranchLocalService.updateRecentLayoutBranch(recentLayoutBranch);
 	}
 

@@ -38,26 +38,26 @@ public class LayoutBranchLocalServiceWrapper implements LayoutBranchLocalService
 	* @return the layout branch that was added
 	*/
 	@Override
-	public com.liferay.portal.model.LayoutBranch addLayoutBranch(
-		com.liferay.portal.model.LayoutBranch layoutBranch) {
+	public com.liferay.portal.kernel.model.LayoutBranch addLayoutBranch(
+		com.liferay.portal.kernel.model.LayoutBranch layoutBranch) {
 		return _layoutBranchLocalService.addLayoutBranch(layoutBranch);
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutBranch addLayoutBranch(
+	public com.liferay.portal.kernel.model.LayoutBranch addLayoutBranch(
 		long layoutRevisionId, java.lang.String name,
 		java.lang.String description, boolean master,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutBranchLocalService.addLayoutBranch(layoutRevisionId,
 			name, description, master, serviceContext);
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutBranch addLayoutBranch(
+	public com.liferay.portal.kernel.model.LayoutBranch addLayoutBranch(
 		long layoutSetBranchId, long plid, java.lang.String name,
 		java.lang.String description, boolean master,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutBranchLocalService.addLayoutBranch(layoutSetBranchId,
 			plid, name, description, master, serviceContext);
@@ -70,7 +70,7 @@ public class LayoutBranchLocalServiceWrapper implements LayoutBranchLocalService
 	* @return the new layout branch
 	*/
 	@Override
-	public com.liferay.portal.model.LayoutBranch createLayoutBranch(
+	public com.liferay.portal.kernel.model.LayoutBranch createLayoutBranch(
 		long layoutBranchId) {
 		return _layoutBranchLocalService.createLayoutBranch(layoutBranchId);
 	}
@@ -82,8 +82,8 @@ public class LayoutBranchLocalServiceWrapper implements LayoutBranchLocalService
 	* @return the layout branch that was removed
 	*/
 	@Override
-	public com.liferay.portal.model.LayoutBranch deleteLayoutBranch(
-		com.liferay.portal.model.LayoutBranch layoutBranch) {
+	public com.liferay.portal.kernel.model.LayoutBranch deleteLayoutBranch(
+		com.liferay.portal.kernel.model.LayoutBranch layoutBranch) {
 		return _layoutBranchLocalService.deleteLayoutBranch(layoutBranch);
 	}
 
@@ -95,7 +95,7 @@ public class LayoutBranchLocalServiceWrapper implements LayoutBranchLocalService
 	* @throws PortalException if a layout branch with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.LayoutBranch deleteLayoutBranch(
+	public com.liferay.portal.kernel.model.LayoutBranch deleteLayoutBranch(
 		long layoutBranchId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutBranchLocalService.deleteLayoutBranch(layoutBranchId);
@@ -111,8 +111,8 @@ public class LayoutBranchLocalServiceWrapper implements LayoutBranchLocalService
 	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutBranchLocalService.deletePersistedModel(persistedModel);
 	}
@@ -203,7 +203,7 @@ public class LayoutBranchLocalServiceWrapper implements LayoutBranchLocalService
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutBranch fetchLayoutBranch(
+	public com.liferay.portal.kernel.model.LayoutBranch fetchLayoutBranch(
 		long layoutBranchId) {
 		return _layoutBranchLocalService.fetchLayoutBranch(layoutBranchId);
 	}
@@ -226,16 +226,16 @@ public class LayoutBranchLocalServiceWrapper implements LayoutBranchLocalService
 	* @throws PortalException if a layout branch with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.LayoutBranch getLayoutBranch(
+	public com.liferay.portal.kernel.model.LayoutBranch getLayoutBranch(
 		long layoutBranchId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutBranchLocalService.getLayoutBranch(layoutBranchId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.LayoutBranch> getLayoutBranches(
+	public java.util.List<com.liferay.portal.kernel.model.LayoutBranch> getLayoutBranches(
 		long layoutSetBranchId, long plid, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.LayoutBranch> orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.LayoutBranch> orderByComparator) {
 		return _layoutBranchLocalService.getLayoutBranches(layoutSetBranchId,
 			plid, start, end, orderByComparator);
 	}
@@ -252,7 +252,7 @@ public class LayoutBranchLocalServiceWrapper implements LayoutBranchLocalService
 	* @return the range of layout branchs
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.LayoutBranch> getLayoutBranchs(
+	public java.util.List<com.liferay.portal.kernel.model.LayoutBranch> getLayoutBranchs(
 		int start, int end) {
 		return _layoutBranchLocalService.getLayoutBranchs(start, end);
 	}
@@ -268,13 +268,13 @@ public class LayoutBranchLocalServiceWrapper implements LayoutBranchLocalService
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.LayoutBranch> getLayoutSetBranchLayoutBranches(
+	public java.util.List<com.liferay.portal.kernel.model.LayoutBranch> getLayoutSetBranchLayoutBranches(
 		long layoutSetBranchId) {
 		return _layoutBranchLocalService.getLayoutSetBranchLayoutBranches(layoutSetBranchId);
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutBranch getMasterLayoutBranch(
+	public com.liferay.portal.kernel.model.LayoutBranch getMasterLayoutBranch(
 		long layoutSetBranchId, long plid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutBranchLocalService.getMasterLayoutBranch(layoutSetBranchId,
@@ -282,9 +282,9 @@ public class LayoutBranchLocalServiceWrapper implements LayoutBranchLocalService
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutBranch getMasterLayoutBranch(
+	public com.liferay.portal.kernel.model.LayoutBranch getMasterLayoutBranch(
 		long layoutSetBranchId, long plid,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutBranchLocalService.getMasterLayoutBranch(layoutSetBranchId,
 			plid, serviceContext);
@@ -301,7 +301,7 @@ public class LayoutBranchLocalServiceWrapper implements LayoutBranchLocalService
 	}
 
 	@Override
-	public com.liferay.portal.model.PersistedModel getPersistedModel(
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutBranchLocalService.getPersistedModel(primaryKeyObj);
@@ -314,16 +314,16 @@ public class LayoutBranchLocalServiceWrapper implements LayoutBranchLocalService
 	* @return the layout branch that was updated
 	*/
 	@Override
-	public com.liferay.portal.model.LayoutBranch updateLayoutBranch(
-		com.liferay.portal.model.LayoutBranch layoutBranch) {
+	public com.liferay.portal.kernel.model.LayoutBranch updateLayoutBranch(
+		com.liferay.portal.kernel.model.LayoutBranch layoutBranch) {
 		return _layoutBranchLocalService.updateLayoutBranch(layoutBranch);
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutBranch updateLayoutBranch(
+	public com.liferay.portal.kernel.model.LayoutBranch updateLayoutBranch(
 		long layoutBranchId, java.lang.String name,
 		java.lang.String description,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutBranchLocalService.updateLayoutBranch(layoutBranchId,
 			name, description, serviceContext);

@@ -79,7 +79,7 @@ public class LayoutServiceUtil {
 	administrators can modify this page within their site.
 	* @return the layout
 	*/
-	public static com.liferay.portal.model.Layout addLayout(long groupId,
+	public static com.liferay.portal.kernel.model.Layout addLayout(long groupId,
 		boolean privateLayout, long parentLayoutId,
 		java.util.Map<java.util.Locale, java.lang.String> localeNamesMap,
 		java.util.Map<java.util.Locale, java.lang.String> localeTitlesMap,
@@ -88,7 +88,7 @@ public class LayoutServiceUtil {
 		java.util.Map<java.util.Locale, java.lang.String> robotsMap,
 		java.lang.String type, java.lang.String typeSettings, boolean hidden,
 		java.util.Map<java.util.Locale, java.lang.String> friendlyURLMap,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addLayout(groupId, privateLayout, parentLayoutId,
@@ -131,11 +131,11 @@ public class LayoutServiceUtil {
 	administrators can modify this page within their site.
 	* @return the layout
 	*/
-	public static com.liferay.portal.model.Layout addLayout(long groupId,
+	public static com.liferay.portal.kernel.model.Layout addLayout(long groupId,
 		boolean privateLayout, long parentLayoutId, java.lang.String name,
 		java.lang.String title, java.lang.String description,
 		java.lang.String type, boolean hidden, java.lang.String friendlyURL,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addLayout(groupId, privateLayout, parentLayoutId, name,
@@ -161,7 +161,7 @@ public class LayoutServiceUtil {
 	* @param serviceContext the service context to be applied
 	*/
 	public static void deleteLayout(long groupId, boolean privateLayout,
-		long layoutId, com.liferay.portal.service.ServiceContext serviceContext)
+		long layoutId, com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService()
 			.deleteLayout(groupId, privateLayout, layoutId, serviceContext);
@@ -175,7 +175,7 @@ public class LayoutServiceUtil {
 	* @param serviceContext the service context to be applied
 	*/
 	public static void deleteLayout(long plid,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().deleteLayout(plid, serviceContext);
 	}
@@ -464,7 +464,7 @@ public class LayoutServiceUtil {
 	* @param plid the primary key of the layout
 	* @return the ancestor layouts of the layout
 	*/
-	public static java.util.List<com.liferay.portal.model.Layout> getAncestorLayouts(
+	public static java.util.List<com.liferay.portal.kernel.model.Layout> getAncestorLayouts(
 		long plid) throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getAncestorLayouts(plid);
 	}
@@ -502,7 +502,7 @@ public class LayoutServiceUtil {
 	* @param privateLayout whether the layout is private to the group
 	* @return the matching layout
 	*/
-	public static com.liferay.portal.model.Layout getLayoutByUuidAndGroupId(
+	public static com.liferay.portal.kernel.model.Layout getLayoutByUuidAndGroupId(
 		java.lang.String uuid, long groupId, boolean privateLayout)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
@@ -536,7 +536,7 @@ public class LayoutServiceUtil {
 	* @param preferencesValue the portlet's preference value
 	* @return the layout references of the matching layouts
 	*/
-	public static com.liferay.portal.model.LayoutReference[] getLayoutReferences(
+	public static com.liferay.portal.kernel.model.LayoutReference[] getLayoutReferences(
 		long companyId, java.lang.String portletId,
 		java.lang.String preferencesKey, java.lang.String preferencesValue) {
 		return getService()
@@ -544,18 +544,18 @@ public class LayoutServiceUtil {
 			preferencesValue);
 	}
 
-	public static java.util.List<com.liferay.portal.model.Layout> getLayouts(
+	public static java.util.List<com.liferay.portal.kernel.model.Layout> getLayouts(
 		long groupId, boolean privateLayout) {
 		return getService().getLayouts(groupId, privateLayout);
 	}
 
-	public static java.util.List<com.liferay.portal.model.Layout> getLayouts(
+	public static java.util.List<com.liferay.portal.kernel.model.Layout> getLayouts(
 		long groupId, boolean privateLayout, long parentLayoutId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getLayouts(groupId, privateLayout, parentLayoutId);
 	}
 
-	public static java.util.List<com.liferay.portal.model.Layout> getLayouts(
+	public static java.util.List<com.liferay.portal.kernel.model.Layout> getLayouts(
 		long groupId, boolean privateLayout, long parentLayoutId,
 		boolean incomplete, int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -1031,7 +1031,7 @@ public class LayoutServiceUtil {
 	*/
 	public static void setLayouts(long groupId, boolean privateLayout,
 		long parentLayoutId, long[] layoutIds,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService()
 			.setLayouts(groupId, privateLayout, parentLayoutId, layoutIds,
@@ -1068,7 +1068,7 @@ public class LayoutServiceUtil {
 		getService().unschedulePublishToRemote(groupId, jobName, groupName);
 	}
 
-	public static com.liferay.portal.model.Layout updateIconImage(long plid,
+	public static com.liferay.portal.kernel.model.Layout updateIconImage(long plid,
 		byte[] bytes)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateIconImage(plid, bytes);
@@ -1102,7 +1102,7 @@ public class LayoutServiceUtil {
 	modification date and expando bridge attributes for the layout.
 	* @return the updated layout
 	*/
-	public static com.liferay.portal.model.Layout updateLayout(long groupId,
+	public static com.liferay.portal.kernel.model.Layout updateLayout(long groupId,
 		boolean privateLayout, long layoutId, long parentLayoutId,
 		java.util.Map<java.util.Locale, java.lang.String> localeNamesMap,
 		java.util.Map<java.util.Locale, java.lang.String> localeTitlesMap,
@@ -1112,7 +1112,7 @@ public class LayoutServiceUtil {
 		java.lang.String type, boolean hidden,
 		java.util.Map<java.util.Locale, java.lang.String> friendlyURLMap,
 		boolean iconImage, byte[] iconBytes,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateLayout(groupId, privateLayout, layoutId,
@@ -1132,7 +1132,7 @@ public class LayoutServiceUtil {
 	#fastLoad(String)}.
 	* @return the updated layout
 	*/
-	public static com.liferay.portal.model.Layout updateLayout(long groupId,
+	public static com.liferay.portal.kernel.model.Layout updateLayout(long groupId,
 		boolean privateLayout, long layoutId, java.lang.String typeSettings)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
@@ -1150,7 +1150,7 @@ public class LayoutServiceUtil {
 	* @param css the layout's new CSS
 	* @return the updated layout
 	*/
-	public static com.liferay.portal.model.Layout updateLookAndFeel(
+	public static com.liferay.portal.kernel.model.Layout updateLookAndFeel(
 		long groupId, boolean privateLayout, long layoutId,
 		java.lang.String themeId, java.lang.String colorSchemeId,
 		java.lang.String css)
@@ -1172,7 +1172,7 @@ public class LayoutServiceUtil {
 	see {@link Locale}.
 	* @return the updated layout
 	*/
-	public static com.liferay.portal.model.Layout updateName(long groupId,
+	public static com.liferay.portal.kernel.model.Layout updateName(long groupId,
 		boolean privateLayout, long layoutId, java.lang.String name,
 		java.lang.String languageId)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -1190,7 +1190,7 @@ public class LayoutServiceUtil {
 	see {@link Locale}.
 	* @return the updated layout
 	*/
-	public static com.liferay.portal.model.Layout updateName(long plid,
+	public static com.liferay.portal.kernel.model.Layout updateName(long plid,
 		java.lang.String name, java.lang.String languageId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateName(plid, name, languageId);
@@ -1207,7 +1207,7 @@ public class LayoutServiceUtil {
 	layout
 	* @return the matching layout
 	*/
-	public static com.liferay.portal.model.Layout updateParentLayoutId(
+	public static com.liferay.portal.kernel.model.Layout updateParentLayoutId(
 		long groupId, boolean privateLayout, long layoutId, long parentLayoutId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
@@ -1225,7 +1225,7 @@ public class LayoutServiceUtil {
 	* @param parentPlid the primary key of the parent layout
 	* @return the layout matching the primary key
 	*/
-	public static com.liferay.portal.model.Layout updateParentLayoutId(
+	public static com.liferay.portal.kernel.model.Layout updateParentLayoutId(
 		long plid, long parentPlid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateParentLayoutId(plid, parentPlid);
@@ -1239,7 +1239,7 @@ public class LayoutServiceUtil {
 	* @param priority the layout's new priority
 	* @return the layout matching the primary key
 	*/
-	public static com.liferay.portal.model.Layout updateParentLayoutIdAndPriority(
+	public static com.liferay.portal.kernel.model.Layout updateParentLayoutIdAndPriority(
 		long plid, long parentPlid, int priority)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
@@ -1258,7 +1258,7 @@ public class LayoutServiceUtil {
 	* @param previousLayoutId the primary key of the previous layout
 	* @return the updated layout
 	*/
-	public static com.liferay.portal.model.Layout updatePriority(long groupId,
+	public static com.liferay.portal.kernel.model.Layout updatePriority(long groupId,
 		boolean privateLayout, long layoutId, long nextLayoutId,
 		long previousLayoutId)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -1277,7 +1277,7 @@ public class LayoutServiceUtil {
 	* @param priority the layout's new priority
 	* @return the updated layout
 	*/
-	public static com.liferay.portal.model.Layout updatePriority(long groupId,
+	public static com.liferay.portal.kernel.model.Layout updatePriority(long groupId,
 		boolean privateLayout, long layoutId, int priority)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
@@ -1291,7 +1291,7 @@ public class LayoutServiceUtil {
 	* @param priority the layout's new priority
 	* @return the updated layout
 	*/
-	public static com.liferay.portal.model.Layout updatePriority(long plid,
+	public static com.liferay.portal.kernel.model.Layout updatePriority(long plid,
 		int priority)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updatePriority(plid, priority);

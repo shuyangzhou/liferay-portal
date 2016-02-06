@@ -47,8 +47,8 @@ public class ResourceTypePermissionLocalServiceUtil {
 	* @param resourceTypePermission the resource type permission
 	* @return the resource type permission that was added
 	*/
-	public static com.liferay.portal.model.ResourceTypePermission addResourceTypePermission(
-		com.liferay.portal.model.ResourceTypePermission resourceTypePermission) {
+	public static com.liferay.portal.kernel.model.ResourceTypePermission addResourceTypePermission(
+		com.liferay.portal.kernel.model.ResourceTypePermission resourceTypePermission) {
 		return getService().addResourceTypePermission(resourceTypePermission);
 	}
 
@@ -58,7 +58,7 @@ public class ResourceTypePermissionLocalServiceUtil {
 	* @param resourceTypePermissionId the primary key for the new resource type permission
 	* @return the new resource type permission
 	*/
-	public static com.liferay.portal.model.ResourceTypePermission createResourceTypePermission(
+	public static com.liferay.portal.kernel.model.ResourceTypePermission createResourceTypePermission(
 		long resourceTypePermissionId) {
 		return getService()
 				   .createResourceTypePermission(resourceTypePermissionId);
@@ -67,8 +67,8 @@ public class ResourceTypePermissionLocalServiceUtil {
 	/**
 	* @throws PortalException
 	*/
-	public static com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -79,8 +79,8 @@ public class ResourceTypePermissionLocalServiceUtil {
 	* @param resourceTypePermission the resource type permission
 	* @return the resource type permission that was removed
 	*/
-	public static com.liferay.portal.model.ResourceTypePermission deleteResourceTypePermission(
-		com.liferay.portal.model.ResourceTypePermission resourceTypePermission) {
+	public static com.liferay.portal.kernel.model.ResourceTypePermission deleteResourceTypePermission(
+		com.liferay.portal.kernel.model.ResourceTypePermission resourceTypePermission) {
 		return getService().deleteResourceTypePermission(resourceTypePermission);
 	}
 
@@ -91,7 +91,7 @@ public class ResourceTypePermissionLocalServiceUtil {
 	* @return the resource type permission that was removed
 	* @throws PortalException if a resource type permission with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.ResourceTypePermission deleteResourceTypePermission(
+	public static com.liferay.portal.kernel.model.ResourceTypePermission deleteResourceTypePermission(
 		long resourceTypePermissionId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
@@ -176,7 +176,7 @@ public class ResourceTypePermissionLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.portal.model.ResourceTypePermission fetchResourceTypePermission(
+	public static com.liferay.portal.kernel.model.ResourceTypePermission fetchResourceTypePermission(
 		long resourceTypePermissionId) {
 		return getService().fetchResourceTypePermission(resourceTypePermissionId);
 	}
@@ -196,7 +196,7 @@ public class ResourceTypePermissionLocalServiceUtil {
 				   .getGroupScopeActionIds(companyId, groupId, name, roleId);
 	}
 
-	public static java.util.List<com.liferay.portal.model.ResourceTypePermission> getGroupScopeResourceTypePermissions(
+	public static java.util.List<com.liferay.portal.kernel.model.ResourceTypePermission> getGroupScopeResourceTypePermissions(
 		long companyId, java.lang.String name, long roleId) {
 		return getService()
 				   .getGroupScopeResourceTypePermissions(companyId, name, roleId);
@@ -215,13 +215,13 @@ public class ResourceTypePermissionLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.model.PersistedModel getPersistedModel(
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static com.liferay.portal.model.ResourceBlockPermissionsContainer getResourceBlockPermissionsContainer(
+	public static com.liferay.portal.kernel.model.ResourceBlockPermissionsContainer getResourceBlockPermissionsContainer(
 		long companyId, long groupId, java.lang.String name) {
 		return getService()
 				   .getResourceBlockPermissionsContainer(companyId, groupId,
@@ -235,7 +235,7 @@ public class ResourceTypePermissionLocalServiceUtil {
 	* @return the resource type permission
 	* @throws PortalException if a resource type permission with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.ResourceTypePermission getResourceTypePermission(
+	public static com.liferay.portal.kernel.model.ResourceTypePermission getResourceTypePermission(
 		long resourceTypePermissionId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getResourceTypePermission(resourceTypePermissionId);
@@ -252,7 +252,7 @@ public class ResourceTypePermissionLocalServiceUtil {
 	* @param end the upper bound of the range of resource type permissions (not inclusive)
 	* @return the range of resource type permissions
 	*/
-	public static java.util.List<com.liferay.portal.model.ResourceTypePermission> getResourceTypePermissions(
+	public static java.util.List<com.liferay.portal.kernel.model.ResourceTypePermission> getResourceTypePermissions(
 		int start, int end) {
 		return getService().getResourceTypePermissions(start, end);
 	}
@@ -266,7 +266,7 @@ public class ResourceTypePermissionLocalServiceUtil {
 		return getService().getResourceTypePermissionsCount();
 	}
 
-	public static java.util.List<com.liferay.portal.model.ResourceTypePermission> getRoleResourceTypePermissions(
+	public static java.util.List<com.liferay.portal.kernel.model.ResourceTypePermission> getRoleResourceTypePermissions(
 		long roleId) {
 		return getService().getRoleResourceTypePermissions(roleId);
 	}
@@ -315,8 +315,8 @@ public class ResourceTypePermissionLocalServiceUtil {
 	* @param resourceTypePermission the resource type permission
 	* @return the resource type permission that was updated
 	*/
-	public static com.liferay.portal.model.ResourceTypePermission updateResourceTypePermission(
-		com.liferay.portal.model.ResourceTypePermission resourceTypePermission) {
+	public static com.liferay.portal.kernel.model.ResourceTypePermission updateResourceTypePermission(
+		com.liferay.portal.kernel.model.ResourceTypePermission resourceTypePermission) {
 		return getService().updateResourceTypePermission(resourceTypePermission);
 	}
 

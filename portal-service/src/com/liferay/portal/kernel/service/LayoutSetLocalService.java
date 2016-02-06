@@ -28,8 +28,8 @@ import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.model.LayoutSet;
-import com.liferay.portal.model.PersistedModel;
+import com.liferay.portal.kernel.model.LayoutSet;
+import com.liferay.portal.kernel.model.PersistedModel;
 
 import java.io.File;
 import java.io.InputStream;
@@ -80,7 +80,7 @@ public interface LayoutSetLocalService extends BaseLocalService,
 	public LayoutSet createLayoutSet(long layoutSetId);
 
 	public void deleteLayoutSet(long groupId, boolean privateLayout,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**

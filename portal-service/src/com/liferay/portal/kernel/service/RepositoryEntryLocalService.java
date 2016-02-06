@@ -31,8 +31,8 @@ import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.model.PersistedModel;
-import com.liferay.portal.model.RepositoryEntry;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.model.RepositoryEntry;
 
 import java.io.Serializable;
 
@@ -72,7 +72,7 @@ public interface RepositoryEntryLocalService extends BaseLocalService,
 
 	public RepositoryEntry addRepositoryEntry(long userId, long groupId,
 		long repositoryId, java.lang.String mappedId,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**

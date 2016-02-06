@@ -32,7 +32,7 @@ public class LayoutSetLocalServiceWrapper implements LayoutSetLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutSet addLayoutSet(long groupId,
+	public com.liferay.portal.kernel.model.LayoutSet addLayoutSet(long groupId,
 		boolean privateLayout)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutSetLocalService.addLayoutSet(groupId, privateLayout);
@@ -45,8 +45,8 @@ public class LayoutSetLocalServiceWrapper implements LayoutSetLocalService,
 	* @return the layout set that was added
 	*/
 	@Override
-	public com.liferay.portal.model.LayoutSet addLayoutSet(
-		com.liferay.portal.model.LayoutSet layoutSet) {
+	public com.liferay.portal.kernel.model.LayoutSet addLayoutSet(
+		com.liferay.portal.kernel.model.LayoutSet layoutSet) {
 		return _layoutSetLocalService.addLayoutSet(layoutSet);
 	}
 
@@ -57,13 +57,13 @@ public class LayoutSetLocalServiceWrapper implements LayoutSetLocalService,
 	* @return the new layout set
 	*/
 	@Override
-	public com.liferay.portal.model.LayoutSet createLayoutSet(long layoutSetId) {
+	public com.liferay.portal.kernel.model.LayoutSet createLayoutSet(long layoutSetId) {
 		return _layoutSetLocalService.createLayoutSet(layoutSetId);
 	}
 
 	@Override
 	public void deleteLayoutSet(long groupId, boolean privateLayout,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_layoutSetLocalService.deleteLayoutSet(groupId, privateLayout,
 			serviceContext);
@@ -76,8 +76,8 @@ public class LayoutSetLocalServiceWrapper implements LayoutSetLocalService,
 	* @return the layout set that was removed
 	*/
 	@Override
-	public com.liferay.portal.model.LayoutSet deleteLayoutSet(
-		com.liferay.portal.model.LayoutSet layoutSet) {
+	public com.liferay.portal.kernel.model.LayoutSet deleteLayoutSet(
+		com.liferay.portal.kernel.model.LayoutSet layoutSet) {
 		return _layoutSetLocalService.deleteLayoutSet(layoutSet);
 	}
 
@@ -89,7 +89,7 @@ public class LayoutSetLocalServiceWrapper implements LayoutSetLocalService,
 	* @throws PortalException if a layout set with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.LayoutSet deleteLayoutSet(long layoutSetId)
+	public com.liferay.portal.kernel.model.LayoutSet deleteLayoutSet(long layoutSetId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutSetLocalService.deleteLayoutSet(layoutSetId);
 	}
@@ -98,8 +98,8 @@ public class LayoutSetLocalServiceWrapper implements LayoutSetLocalService,
 	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutSetLocalService.deletePersistedModel(persistedModel);
 	}
@@ -189,12 +189,12 @@ public class LayoutSetLocalServiceWrapper implements LayoutSetLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutSet fetchLayoutSet(long layoutSetId) {
+	public com.liferay.portal.kernel.model.LayoutSet fetchLayoutSet(long layoutSetId) {
 		return _layoutSetLocalService.fetchLayoutSet(layoutSetId);
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutSet fetchLayoutSet(
+	public com.liferay.portal.kernel.model.LayoutSet fetchLayoutSet(
 		java.lang.String virtualHostname) {
 		return _layoutSetLocalService.fetchLayoutSet(virtualHostname);
 	}
@@ -210,7 +210,7 @@ public class LayoutSetLocalServiceWrapper implements LayoutSetLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutSet getLayoutSet(long groupId,
+	public com.liferay.portal.kernel.model.LayoutSet getLayoutSet(long groupId,
 		boolean privateLayout)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutSetLocalService.getLayoutSet(groupId, privateLayout);
@@ -224,13 +224,13 @@ public class LayoutSetLocalServiceWrapper implements LayoutSetLocalService,
 	* @throws PortalException if a layout set with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.LayoutSet getLayoutSet(long layoutSetId)
+	public com.liferay.portal.kernel.model.LayoutSet getLayoutSet(long layoutSetId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutSetLocalService.getLayoutSet(layoutSetId);
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutSet getLayoutSet(
+	public com.liferay.portal.kernel.model.LayoutSet getLayoutSet(
 		java.lang.String virtualHostname)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutSetLocalService.getLayoutSet(virtualHostname);
@@ -248,13 +248,13 @@ public class LayoutSetLocalServiceWrapper implements LayoutSetLocalService,
 	* @return the range of layout sets
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.LayoutSet> getLayoutSets(
+	public java.util.List<com.liferay.portal.kernel.model.LayoutSet> getLayoutSets(
 		int start, int end) {
 		return _layoutSetLocalService.getLayoutSets(start, end);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.LayoutSet> getLayoutSetsByLayoutSetPrototypeUuid(
+	public java.util.List<com.liferay.portal.kernel.model.LayoutSet> getLayoutSetsByLayoutSetPrototypeUuid(
 		java.lang.String layoutSetPrototypeUuid) {
 		return _layoutSetLocalService.getLayoutSetsByLayoutSetPrototypeUuid(layoutSetPrototypeUuid);
 	}
@@ -280,7 +280,7 @@ public class LayoutSetLocalServiceWrapper implements LayoutSetLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.PersistedModel getPersistedModel(
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutSetLocalService.getPersistedModel(primaryKeyObj);
@@ -293,8 +293,8 @@ public class LayoutSetLocalServiceWrapper implements LayoutSetLocalService,
 	* @return the layout set that was updated
 	*/
 	@Override
-	public com.liferay.portal.model.LayoutSet updateLayoutSet(
-		com.liferay.portal.model.LayoutSet layoutSet) {
+	public com.liferay.portal.kernel.model.LayoutSet updateLayoutSet(
+		com.liferay.portal.kernel.model.LayoutSet layoutSet) {
 		return _layoutSetLocalService.updateLayoutSet(layoutSet);
 	}
 
@@ -318,7 +318,7 @@ public class LayoutSetLocalServiceWrapper implements LayoutSetLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutSet updateLogo(long groupId,
+	public com.liferay.portal.kernel.model.LayoutSet updateLogo(long groupId,
 		boolean privateLayout, boolean logo, byte[] bytes)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutSetLocalService.updateLogo(groupId, privateLayout, logo,
@@ -326,7 +326,7 @@ public class LayoutSetLocalServiceWrapper implements LayoutSetLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutSet updateLogo(long groupId,
+	public com.liferay.portal.kernel.model.LayoutSet updateLogo(long groupId,
 		boolean privateLayout, boolean logo, java.io.File file)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutSetLocalService.updateLogo(groupId, privateLayout, logo,
@@ -334,7 +334,7 @@ public class LayoutSetLocalServiceWrapper implements LayoutSetLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutSet updateLogo(long groupId,
+	public com.liferay.portal.kernel.model.LayoutSet updateLogo(long groupId,
 		boolean privateLayout, boolean logo, java.io.InputStream is)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutSetLocalService.updateLogo(groupId, privateLayout, logo,
@@ -342,7 +342,7 @@ public class LayoutSetLocalServiceWrapper implements LayoutSetLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutSet updateLogo(long groupId,
+	public com.liferay.portal.kernel.model.LayoutSet updateLogo(long groupId,
 		boolean privateLayout, boolean logo, java.io.InputStream is,
 		boolean cleanUpStream)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -351,7 +351,7 @@ public class LayoutSetLocalServiceWrapper implements LayoutSetLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutSet updateLookAndFeel(long groupId,
+	public com.liferay.portal.kernel.model.LayoutSet updateLookAndFeel(long groupId,
 		boolean privateLayout, java.lang.String themeId,
 		java.lang.String colorSchemeId, java.lang.String css)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -368,14 +368,14 @@ public class LayoutSetLocalServiceWrapper implements LayoutSetLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutSet updatePageCount(long groupId,
+	public com.liferay.portal.kernel.model.LayoutSet updatePageCount(long groupId,
 		boolean privateLayout)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutSetLocalService.updatePageCount(groupId, privateLayout);
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutSet updateSettings(long groupId,
+	public com.liferay.portal.kernel.model.LayoutSet updateSettings(long groupId,
 		boolean privateLayout, java.lang.String settings)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutSetLocalService.updateSettings(groupId, privateLayout,
@@ -383,7 +383,7 @@ public class LayoutSetLocalServiceWrapper implements LayoutSetLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutSet updateVirtualHost(long groupId,
+	public com.liferay.portal.kernel.model.LayoutSet updateVirtualHost(long groupId,
 		boolean privateLayout, java.lang.String virtualHostname)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutSetLocalService.updateVirtualHost(groupId, privateLayout,

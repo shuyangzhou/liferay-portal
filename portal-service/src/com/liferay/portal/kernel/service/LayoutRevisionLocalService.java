@@ -28,8 +28,8 @@ import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.model.LayoutRevision;
-import com.liferay.portal.model.PersistedModel;
+import com.liferay.portal.kernel.model.LayoutRevision;
+import com.liferay.portal.kernel.model.PersistedModel;
 
 import java.io.Serializable;
 
@@ -76,7 +76,7 @@ public interface LayoutRevisionLocalService extends BaseLocalService,
 		java.lang.String robots, java.lang.String typeSettings,
 		boolean iconImage, long iconImageId, java.lang.String themeId,
 		java.lang.String colorSchemeId, java.lang.String css,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -322,10 +322,10 @@ public interface LayoutRevisionLocalService extends BaseLocalService,
 		java.lang.String typeSettings, boolean iconImage, long iconImageId,
 		java.lang.String themeId, java.lang.String colorSchemeId,
 		java.lang.String css,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	public LayoutRevision updateStatus(long userId, long layoutRevisionId,
-		int status, com.liferay.portal.service.ServiceContext serviceContext)
+		int status, com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 }

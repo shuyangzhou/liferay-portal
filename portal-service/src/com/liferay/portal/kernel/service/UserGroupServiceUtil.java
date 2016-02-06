@@ -78,7 +78,7 @@ public class UserGroupServiceUtil {
 	ServiceContext)}
 	*/
 	@Deprecated
-	public static com.liferay.portal.model.UserGroup addUserGroup(
+	public static com.liferay.portal.kernel.model.UserGroup addUserGroup(
 		java.lang.String name, java.lang.String description)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().addUserGroup(name, description);
@@ -99,9 +99,9 @@ public class UserGroupServiceUtil {
 	user group.
 	* @return the user group
 	*/
-	public static com.liferay.portal.model.UserGroup addUserGroup(
+	public static com.liferay.portal.kernel.model.UserGroup addUserGroup(
 		java.lang.String name, java.lang.String description,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().addUserGroup(name, description, serviceContext);
 	}
@@ -122,7 +122,7 @@ public class UserGroupServiceUtil {
 	* @param userGroupId the primary key of the user group
 	* @return the user group with the primary key
 	*/
-	public static com.liferay.portal.model.UserGroup fetchUserGroup(
+	public static com.liferay.portal.kernel.model.UserGroup fetchUserGroup(
 		long userGroupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().fetchUserGroup(userGroupId);
@@ -143,7 +143,7 @@ public class UserGroupServiceUtil {
 	* @param name the user group's name
 	* @return the user group with the name
 	*/
-	public static com.liferay.portal.model.UserGroup getUserGroup(
+	public static com.liferay.portal.kernel.model.UserGroup getUserGroup(
 		java.lang.String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getUserGroup(name);
@@ -155,13 +155,13 @@ public class UserGroupServiceUtil {
 	* @param userGroupId the primary key of the user group
 	* @return the user group with the primary key
 	*/
-	public static com.liferay.portal.model.UserGroup getUserGroup(
+	public static com.liferay.portal.kernel.model.UserGroup getUserGroup(
 		long userGroupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getUserGroup(userGroupId);
 	}
 
-	public static java.util.List<com.liferay.portal.model.UserGroup> getUserGroups(
+	public static java.util.List<com.liferay.portal.kernel.model.UserGroup> getUserGroups(
 		long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getUserGroups(companyId);
@@ -173,7 +173,7 @@ public class UserGroupServiceUtil {
 	* @param userId the primary key of the user
 	* @return the user groups to which the user belongs
 	*/
-	public static java.util.List<com.liferay.portal.model.UserGroup> getUserUserGroups(
+	public static java.util.List<com.liferay.portal.kernel.model.UserGroup> getUserUserGroups(
 		long userId) throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getUserUserGroups(userId);
 	}
@@ -211,7 +211,7 @@ public class UserGroupServiceUtil {
 	String, String, ServiceContext)}
 	*/
 	@Deprecated
-	public static com.liferay.portal.model.UserGroup updateUserGroup(
+	public static com.liferay.portal.kernel.model.UserGroup updateUserGroup(
 		long userGroupId, java.lang.String name, java.lang.String description)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateUserGroup(userGroupId, name, description);
@@ -228,9 +228,9 @@ public class UserGroupServiceUtil {
 	user group.
 	* @return the user group
 	*/
-	public static com.liferay.portal.model.UserGroup updateUserGroup(
+	public static com.liferay.portal.kernel.model.UserGroup updateUserGroup(
 		long userGroupId, java.lang.String name, java.lang.String description,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateUserGroup(userGroupId, name, description,

@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -148,7 +148,7 @@ public class MembershipRequestWrapper implements MembershipRequest,
 
 	@Override
 	public int compareTo(
-		com.liferay.portal.model.MembershipRequest membershipRequest) {
+		com.liferay.portal.kernel.model.MembershipRequest membershipRequest) {
 		return _membershipRequest.compareTo(membershipRequest);
 	}
 
@@ -498,12 +498,12 @@ public class MembershipRequestWrapper implements MembershipRequest,
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.MembershipRequest> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.MembershipRequest> toCacheModel() {
 		return _membershipRequest.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.MembershipRequest toEscapedModel() {
+	public com.liferay.portal.kernel.model.MembershipRequest toEscapedModel() {
 		return new MembershipRequestWrapper(_membershipRequest.toEscapedModel());
 	}
 
@@ -513,7 +513,7 @@ public class MembershipRequestWrapper implements MembershipRequest,
 	}
 
 	@Override
-	public com.liferay.portal.model.MembershipRequest toUnescapedModel() {
+	public com.liferay.portal.kernel.model.MembershipRequest toUnescapedModel() {
 		return new MembershipRequestWrapper(_membershipRequest.toUnescapedModel());
 	}
 

@@ -23,12 +23,12 @@ import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
-import com.liferay.portal.model.Address;
-import com.liferay.portal.model.EmailAddress;
-import com.liferay.portal.model.OrgLabor;
-import com.liferay.portal.model.Organization;
-import com.liferay.portal.model.Phone;
-import com.liferay.portal.model.Website;
+import com.liferay.portal.kernel.model.Address;
+import com.liferay.portal.kernel.model.EmailAddress;
+import com.liferay.portal.kernel.model.OrgLabor;
+import com.liferay.portal.kernel.model.Organization;
+import com.liferay.portal.kernel.model.Phone;
+import com.liferay.portal.kernel.model.Website;
 
 import java.util.List;
 
@@ -97,7 +97,7 @@ public interface OrganizationService extends BaseService {
 		long countryId, long statusId, java.lang.String comments, boolean site,
 		List<Address> addresses, List<EmailAddress> emailAddresses,
 		List<OrgLabor> orgLabors, List<Phone> phones, List<Website> websites,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -126,7 +126,7 @@ public interface OrganizationService extends BaseService {
 	public Organization addOrganization(long parentOrganizationId,
 		java.lang.String name, java.lang.String type, long regionId,
 		long countryId, long statusId, java.lang.String comments, boolean site,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -324,7 +324,7 @@ public interface OrganizationService extends BaseService {
 		boolean site, List<Address> addresses,
 		List<EmailAddress> emailAddresses, List<OrgLabor> orgLabors,
 		List<Phone> phones, List<Website> websites,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -363,7 +363,7 @@ public interface OrganizationService extends BaseService {
 		java.lang.String comments, boolean site, List<Address> addresses,
 		List<EmailAddress> emailAddresses, List<OrgLabor> orgLabors,
 		List<Phone> phones, List<Website> websites,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -390,6 +390,6 @@ public interface OrganizationService extends BaseService {
 		long parentOrganizationId, java.lang.String name,
 		java.lang.String type, long regionId, long countryId, long statusId,
 		java.lang.String comments, boolean site,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 }

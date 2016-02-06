@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -332,19 +332,19 @@ public interface LayoutSetModel extends BaseModel<LayoutSet>, MVCCModel,
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.model.LayoutSet layoutSet);
+	public int compareTo(com.liferay.portal.kernel.model.LayoutSet layoutSet);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.LayoutSet> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.LayoutSet> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.LayoutSet toEscapedModel();
+	public com.liferay.portal.kernel.model.LayoutSet toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.LayoutSet toUnescapedModel();
+	public com.liferay.portal.kernel.model.LayoutSet toUnescapedModel();
 
 	@Override
 	public String toString();

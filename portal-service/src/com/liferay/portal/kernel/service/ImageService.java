@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
-import com.liferay.portal.model.Image;
+import com.liferay.portal.kernel.model.Image;
 
 /**
  * Provides the remote service interface for Image. Methods of this

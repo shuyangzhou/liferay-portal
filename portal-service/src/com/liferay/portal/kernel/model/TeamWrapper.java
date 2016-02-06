@@ -21,7 +21,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -155,7 +155,7 @@ public class TeamWrapper implements Team, ModelWrapper<Team> {
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.model.Team team) {
+	public int compareTo(com.liferay.portal.kernel.model.Team team) {
 		return _team.compareTo(team);
 	}
 
@@ -260,7 +260,7 @@ public class TeamWrapper implements Team, ModelWrapper<Team> {
 	}
 
 	@Override
-	public com.liferay.portal.model.Role getRole()
+	public com.liferay.portal.kernel.model.Role getRole()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _team.getRole();
 	}
@@ -511,12 +511,12 @@ public class TeamWrapper implements Team, ModelWrapper<Team> {
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.Team> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.Team> toCacheModel() {
 		return _team.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.Team toEscapedModel() {
+	public com.liferay.portal.kernel.model.Team toEscapedModel() {
 		return new TeamWrapper(_team.toEscapedModel());
 	}
 
@@ -526,7 +526,7 @@ public class TeamWrapper implements Team, ModelWrapper<Team> {
 	}
 
 	@Override
-	public com.liferay.portal.model.Team toUnescapedModel() {
+	public com.liferay.portal.kernel.model.Team toUnescapedModel() {
 		return new TeamWrapper(_team.toUnescapedModel());
 	}
 

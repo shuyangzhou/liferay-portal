@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -128,7 +128,7 @@ public class RecentLayoutRevisionWrapper implements RecentLayoutRevision,
 
 	@Override
 	public int compareTo(
-		com.liferay.portal.model.RecentLayoutRevision recentLayoutRevision) {
+		com.liferay.portal.kernel.model.RecentLayoutRevision recentLayoutRevision) {
 		return _recentLayoutRevision.compareTo(recentLayoutRevision);
 	}
 
@@ -398,12 +398,12 @@ public class RecentLayoutRevisionWrapper implements RecentLayoutRevision,
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.RecentLayoutRevision> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.RecentLayoutRevision> toCacheModel() {
 		return _recentLayoutRevision.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.RecentLayoutRevision toEscapedModel() {
+	public com.liferay.portal.kernel.model.RecentLayoutRevision toEscapedModel() {
 		return new RecentLayoutRevisionWrapper(_recentLayoutRevision.toEscapedModel());
 	}
 
@@ -413,7 +413,7 @@ public class RecentLayoutRevisionWrapper implements RecentLayoutRevision,
 	}
 
 	@Override
-	public com.liferay.portal.model.RecentLayoutRevision toUnescapedModel() {
+	public com.liferay.portal.kernel.model.RecentLayoutRevision toUnescapedModel() {
 		return new RecentLayoutRevisionWrapper(_recentLayoutRevision.toUnescapedModel());
 	}
 

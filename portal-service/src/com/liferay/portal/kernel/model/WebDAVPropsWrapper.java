@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -138,7 +138,7 @@ public class WebDAVPropsWrapper implements WebDAVProps,
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.model.WebDAVProps webDAVProps) {
+	public int compareTo(com.liferay.portal.kernel.model.WebDAVProps webDAVProps) {
 		return _webDAVProps.compareTo(webDAVProps);
 	}
 
@@ -427,12 +427,12 @@ public class WebDAVPropsWrapper implements WebDAVProps,
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.WebDAVProps> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.WebDAVProps> toCacheModel() {
 		return _webDAVProps.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.WebDAVProps toEscapedModel() {
+	public com.liferay.portal.kernel.model.WebDAVProps toEscapedModel() {
 		return new WebDAVPropsWrapper(_webDAVProps.toEscapedModel());
 	}
 
@@ -442,7 +442,7 @@ public class WebDAVPropsWrapper implements WebDAVProps,
 	}
 
 	@Override
-	public com.liferay.portal.model.WebDAVProps toUnescapedModel() {
+	public com.liferay.portal.kernel.model.WebDAVProps toUnescapedModel() {
 		return new WebDAVPropsWrapper(_webDAVProps.toUnescapedModel());
 	}
 

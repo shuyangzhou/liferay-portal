@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchOrgLaborException;
-import com.liferay.portal.model.OrgLabor;
+import com.liferay.portal.kernel.exception.NoSuchOrgLaborException;
+import com.liferay.portal.kernel.model.OrgLabor;
 
 /**
  * The persistence interface for the org labor service.

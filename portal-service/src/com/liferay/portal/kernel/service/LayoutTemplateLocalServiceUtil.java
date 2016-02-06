@@ -46,18 +46,18 @@ public class LayoutTemplateLocalServiceUtil {
 		return getService().getContent(layoutTemplateId, standard, themeId);
 	}
 
-	public static com.liferay.portal.model.LayoutTemplate getLayoutTemplate(
+	public static com.liferay.portal.kernel.model.LayoutTemplate getLayoutTemplate(
 		java.lang.String layoutTemplateId, boolean standard,
 		java.lang.String themeId) {
 		return getService()
 				   .getLayoutTemplate(layoutTemplateId, standard, themeId);
 	}
 
-	public static java.util.List<com.liferay.portal.model.LayoutTemplate> getLayoutTemplates() {
+	public static java.util.List<com.liferay.portal.kernel.model.LayoutTemplate> getLayoutTemplates() {
 		return getService().getLayoutTemplates();
 	}
 
-	public static java.util.List<com.liferay.portal.model.LayoutTemplate> getLayoutTemplates(
+	public static java.util.List<com.liferay.portal.kernel.model.LayoutTemplate> getLayoutTemplates(
 		java.lang.String themeId) {
 		return getService().getLayoutTemplates(themeId);
 	}
@@ -71,13 +71,13 @@ public class LayoutTemplateLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static java.util.List<com.liferay.portal.model.LayoutTemplate> init(
+	public static java.util.List<com.liferay.portal.kernel.model.LayoutTemplate> init(
 		javax.servlet.ServletContext servletContext, java.lang.String[] xmls,
 		com.liferay.portal.kernel.plugin.PluginPackage pluginPackage) {
 		return getService().init(servletContext, xmls, pluginPackage);
 	}
 
-	public static java.util.List<com.liferay.portal.model.LayoutTemplate> init(
+	public static java.util.List<com.liferay.portal.kernel.model.LayoutTemplate> init(
 		java.lang.String servletContextName,
 		javax.servlet.ServletContext servletContext, java.lang.String[] xmls,
 		com.liferay.portal.kernel.plugin.PluginPackage pluginPackage) {
@@ -87,7 +87,7 @@ public class LayoutTemplateLocalServiceUtil {
 
 	public static void readLayoutTemplate(java.lang.String servletContextName,
 		javax.servlet.ServletContext servletContext,
-		java.util.Set<com.liferay.portal.model.LayoutTemplate> layoutTemplates,
+		java.util.Set<com.liferay.portal.kernel.model.LayoutTemplate> layoutTemplates,
 		com.liferay.portal.kernel.xml.Element element, boolean standard,
 		java.lang.String themeId,
 		com.liferay.portal.kernel.plugin.PluginPackage pluginPackage) {

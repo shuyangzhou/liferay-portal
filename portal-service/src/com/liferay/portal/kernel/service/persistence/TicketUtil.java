@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
-import com.liferay.portal.model.Ticket;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.Ticket;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -46,35 +46,35 @@ public class TicketUtil {
 	 */
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache()
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache()
 	 */
 	public static void clearCache() {
 		getPersistence().clearCache();
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static void clearCache(Ticket ticket) {
 		getPersistence().clearCache(ticket);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
 	public static long countWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<Ticket> findWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().findWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
 	public static List<Ticket> findWithDynamicQuery(DynamicQuery dynamicQuery,
 		int start, int end) {
@@ -82,7 +82,7 @@ public class TicketUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
 	public static List<Ticket> findWithDynamicQuery(DynamicQuery dynamicQuery,
 		int start, int end, OrderByComparator<Ticket> orderByComparator) {
@@ -92,14 +92,14 @@ public class TicketUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static Ticket update(Ticket ticket) {
 		return getPersistence().update(ticket);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
 	public static Ticket update(Ticket ticket, ServiceContext serviceContext) {
 		return getPersistence().update(ticket, serviceContext);
@@ -113,7 +113,7 @@ public class TicketUtil {
 	* @throws NoSuchTicketException if a matching ticket could not be found
 	*/
 	public static Ticket findByKey(java.lang.String key)
-		throws com.liferay.portal.exception.NoSuchTicketException {
+		throws com.liferay.portal.kernel.exception.NoSuchTicketException {
 		return getPersistence().findByKey(key);
 	}
 
@@ -146,7 +146,7 @@ public class TicketUtil {
 	* @return the ticket that was removed
 	*/
 	public static Ticket removeByKey(java.lang.String key)
-		throws com.liferay.portal.exception.NoSuchTicketException {
+		throws com.liferay.portal.kernel.exception.NoSuchTicketException {
 		return getPersistence().removeByKey(key);
 	}
 
@@ -252,7 +252,7 @@ public class TicketUtil {
 	*/
 	public static Ticket findByC_C_T_First(long classNameId, long classPK,
 		int type, OrderByComparator<Ticket> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchTicketException {
+		throws com.liferay.portal.kernel.exception.NoSuchTicketException {
 		return getPersistence()
 				   .findByC_C_T_First(classNameId, classPK, type,
 			orderByComparator);
@@ -286,7 +286,7 @@ public class TicketUtil {
 	*/
 	public static Ticket findByC_C_T_Last(long classNameId, long classPK,
 		int type, OrderByComparator<Ticket> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchTicketException {
+		throws com.liferay.portal.kernel.exception.NoSuchTicketException {
 		return getPersistence()
 				   .findByC_C_T_Last(classNameId, classPK, type,
 			orderByComparator);
@@ -322,7 +322,7 @@ public class TicketUtil {
 	public static Ticket[] findByC_C_T_PrevAndNext(long ticketId,
 		long classNameId, long classPK, int type,
 		OrderByComparator<Ticket> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchTicketException {
+		throws com.liferay.portal.kernel.exception.NoSuchTicketException {
 		return getPersistence()
 				   .findByC_C_T_PrevAndNext(ticketId, classNameId, classPK,
 			type, orderByComparator);
@@ -387,7 +387,7 @@ public class TicketUtil {
 	* @throws NoSuchTicketException if a ticket with the primary key could not be found
 	*/
 	public static Ticket remove(long ticketId)
-		throws com.liferay.portal.exception.NoSuchTicketException {
+		throws com.liferay.portal.kernel.exception.NoSuchTicketException {
 		return getPersistence().remove(ticketId);
 	}
 
@@ -403,7 +403,7 @@ public class TicketUtil {
 	* @throws NoSuchTicketException if a ticket with the primary key could not be found
 	*/
 	public static Ticket findByPrimaryKey(long ticketId)
-		throws com.liferay.portal.exception.NoSuchTicketException {
+		throws com.liferay.portal.kernel.exception.NoSuchTicketException {
 		return getPersistence().findByPrimaryKey(ticketId);
 	}
 

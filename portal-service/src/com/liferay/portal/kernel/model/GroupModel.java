@@ -18,9 +18,9 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
-import com.liferay.portal.LocaleException;
+import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -658,19 +658,19 @@ public interface GroupModel extends AttachedModel, BaseModel<Group>,
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.model.Group group);
+	public int compareTo(com.liferay.portal.kernel.model.Group group);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.Group> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.Group> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.Group toEscapedModel();
+	public com.liferay.portal.kernel.model.Group toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.Group toUnescapedModel();
+	public com.liferay.portal.kernel.model.Group toUnescapedModel();
 
 	@Override
 	public String toString();

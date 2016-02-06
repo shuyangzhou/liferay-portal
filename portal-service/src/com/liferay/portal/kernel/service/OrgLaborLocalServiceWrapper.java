@@ -38,13 +38,13 @@ public class OrgLaborLocalServiceWrapper implements OrgLaborLocalService,
 	* @return the org labor that was added
 	*/
 	@Override
-	public com.liferay.portal.model.OrgLabor addOrgLabor(
-		com.liferay.portal.model.OrgLabor orgLabor) {
+	public com.liferay.portal.kernel.model.OrgLabor addOrgLabor(
+		com.liferay.portal.kernel.model.OrgLabor orgLabor) {
 		return _orgLaborLocalService.addOrgLabor(orgLabor);
 	}
 
 	@Override
-	public com.liferay.portal.model.OrgLabor addOrgLabor(long organizationId,
+	public com.liferay.portal.kernel.model.OrgLabor addOrgLabor(long organizationId,
 		long typeId, int sunOpen, int sunClose, int monOpen, int monClose,
 		int tueOpen, int tueClose, int wedOpen, int wedClose, int thuOpen,
 		int thuClose, int friOpen, int friClose, int satOpen, int satClose)
@@ -61,7 +61,7 @@ public class OrgLaborLocalServiceWrapper implements OrgLaborLocalService,
 	* @return the new org labor
 	*/
 	@Override
-	public com.liferay.portal.model.OrgLabor createOrgLabor(long orgLaborId) {
+	public com.liferay.portal.kernel.model.OrgLabor createOrgLabor(long orgLaborId) {
 		return _orgLaborLocalService.createOrgLabor(orgLaborId);
 	}
 
@@ -72,8 +72,8 @@ public class OrgLaborLocalServiceWrapper implements OrgLaborLocalService,
 	* @return the org labor that was removed
 	*/
 	@Override
-	public com.liferay.portal.model.OrgLabor deleteOrgLabor(
-		com.liferay.portal.model.OrgLabor orgLabor) {
+	public com.liferay.portal.kernel.model.OrgLabor deleteOrgLabor(
+		com.liferay.portal.kernel.model.OrgLabor orgLabor) {
 		return _orgLaborLocalService.deleteOrgLabor(orgLabor);
 	}
 
@@ -85,7 +85,7 @@ public class OrgLaborLocalServiceWrapper implements OrgLaborLocalService,
 	* @throws PortalException if a org labor with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.OrgLabor deleteOrgLabor(long orgLaborId)
+	public com.liferay.portal.kernel.model.OrgLabor deleteOrgLabor(long orgLaborId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _orgLaborLocalService.deleteOrgLabor(orgLaborId);
 	}
@@ -94,8 +94,8 @@ public class OrgLaborLocalServiceWrapper implements OrgLaborLocalService,
 	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _orgLaborLocalService.deletePersistedModel(persistedModel);
 	}
@@ -185,7 +185,7 @@ public class OrgLaborLocalServiceWrapper implements OrgLaborLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.OrgLabor fetchOrgLabor(long orgLaborId) {
+	public com.liferay.portal.kernel.model.OrgLabor fetchOrgLabor(long orgLaborId) {
 		return _orgLaborLocalService.fetchOrgLabor(orgLaborId);
 	}
 
@@ -217,13 +217,13 @@ public class OrgLaborLocalServiceWrapper implements OrgLaborLocalService,
 	* @throws PortalException if a org labor with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.OrgLabor getOrgLabor(long orgLaborId)
+	public com.liferay.portal.kernel.model.OrgLabor getOrgLabor(long orgLaborId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _orgLaborLocalService.getOrgLabor(orgLaborId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.OrgLabor> getOrgLabors(
+	public java.util.List<com.liferay.portal.kernel.model.OrgLabor> getOrgLabors(
 		long organizationId) {
 		return _orgLaborLocalService.getOrgLabors(organizationId);
 	}
@@ -240,7 +240,7 @@ public class OrgLaborLocalServiceWrapper implements OrgLaborLocalService,
 	* @return the range of org labors
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.OrgLabor> getOrgLabors(
+	public java.util.List<com.liferay.portal.kernel.model.OrgLabor> getOrgLabors(
 		int start, int end) {
 		return _orgLaborLocalService.getOrgLabors(start, end);
 	}
@@ -256,7 +256,7 @@ public class OrgLaborLocalServiceWrapper implements OrgLaborLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.PersistedModel getPersistedModel(
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _orgLaborLocalService.getPersistedModel(primaryKeyObj);
@@ -269,13 +269,13 @@ public class OrgLaborLocalServiceWrapper implements OrgLaborLocalService,
 	* @return the org labor that was updated
 	*/
 	@Override
-	public com.liferay.portal.model.OrgLabor updateOrgLabor(
-		com.liferay.portal.model.OrgLabor orgLabor) {
+	public com.liferay.portal.kernel.model.OrgLabor updateOrgLabor(
+		com.liferay.portal.kernel.model.OrgLabor orgLabor) {
 		return _orgLaborLocalService.updateOrgLabor(orgLabor);
 	}
 
 	@Override
-	public com.liferay.portal.model.OrgLabor updateOrgLabor(long orgLaborId,
+	public com.liferay.portal.kernel.model.OrgLabor updateOrgLabor(long orgLaborId,
 		long typeId, int sunOpen, int sunClose, int monOpen, int monClose,
 		int tueOpen, int tueClose, int wedOpen, int wedClose, int thuOpen,
 		int thuClose, int friOpen, int friClose, int satOpen, int satClose)

@@ -34,12 +34,12 @@ import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.model.Group;
-import com.liferay.portal.model.Layout;
-import com.liferay.portal.model.LayoutReference;
-import com.liferay.portal.model.PersistedModel;
-import com.liferay.portal.model.SystemEventConstants;
-import com.liferay.portal.model.User;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.LayoutReference;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.model.SystemEventConstants;
+import com.liferay.portal.kernel.model.User;
 
 import java.io.File;
 import java.io.InputStream;
@@ -132,7 +132,7 @@ public interface LayoutLocalService extends BaseLocalService,
 		long parentLayoutId, java.lang.String name, java.lang.String title,
 		java.lang.String description, java.lang.String type, boolean hidden,
 		java.lang.String friendlyURL,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -188,7 +188,7 @@ public interface LayoutLocalService extends BaseLocalService,
 		Map<Locale, java.lang.String> robotsMap, java.lang.String type,
 		java.lang.String typeSettings, boolean hidden,
 		Map<Locale, java.lang.String> friendlyURLMap,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -209,7 +209,7 @@ public interface LayoutLocalService extends BaseLocalService,
 	* @param serviceContext the service context to be applied
 	*/
 	public void deleteLayout(long groupId, boolean privateLayout,
-		long layoutId, com.liferay.portal.service.ServiceContext serviceContext)
+		long layoutId, com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -231,7 +231,7 @@ public interface LayoutLocalService extends BaseLocalService,
 	*/
 	@SystemEvent(action = SystemEventConstants.ACTION_SKIP, type = SystemEventConstants.TYPE_DELETE)
 	public void deleteLayout(Layout layout, boolean updateLayoutSet,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -252,7 +252,7 @@ public interface LayoutLocalService extends BaseLocalService,
 	* @param serviceContext the service context to be applied
 	*/
 	public void deleteLayout(long plid,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -267,7 +267,7 @@ public interface LayoutLocalService extends BaseLocalService,
 	<code>false</code>.
 	*/
 	public void deleteLayouts(long groupId, boolean privateLayout,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -1274,7 +1274,7 @@ public interface LayoutLocalService extends BaseLocalService,
 	*/
 	public void setLayouts(long groupId, boolean privateLayout,
 		long parentLayoutId, long[] layoutIds,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	public void updateAsset(long userId, Layout layout,
@@ -1357,7 +1357,7 @@ public interface LayoutLocalService extends BaseLocalService,
 		Map<Locale, java.lang.String> robotsMap, java.lang.String type,
 		boolean hidden, Map<Locale, java.lang.String> friendlyURLMap,
 		boolean iconImage, byte[] iconBytes,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	/**

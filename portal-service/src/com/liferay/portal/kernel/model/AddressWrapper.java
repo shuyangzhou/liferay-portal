@@ -21,7 +21,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -211,7 +211,7 @@ public class AddressWrapper implements Address, ModelWrapper<Address> {
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.model.Address address) {
+	public int compareTo(com.liferay.portal.kernel.model.Address address) {
 		return _address.compareTo(address);
 	}
 
@@ -276,7 +276,7 @@ public class AddressWrapper implements Address, ModelWrapper<Address> {
 	}
 
 	@Override
-	public com.liferay.portal.model.Country getCountry() {
+	public com.liferay.portal.kernel.model.Country getCountry() {
 		return _address.getCountry();
 	}
 
@@ -361,7 +361,7 @@ public class AddressWrapper implements Address, ModelWrapper<Address> {
 	}
 
 	@Override
-	public com.liferay.portal.model.Region getRegion() {
+	public com.liferay.portal.kernel.model.Region getRegion() {
 		return _address.getRegion();
 	}
 
@@ -406,7 +406,7 @@ public class AddressWrapper implements Address, ModelWrapper<Address> {
 	}
 
 	@Override
-	public com.liferay.portal.model.ListType getType() {
+	public com.liferay.portal.kernel.model.ListType getType() {
 		return _address.getType();
 	}
 
@@ -771,12 +771,12 @@ public class AddressWrapper implements Address, ModelWrapper<Address> {
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.Address> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.Address> toCacheModel() {
 		return _address.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.Address toEscapedModel() {
+	public com.liferay.portal.kernel.model.Address toEscapedModel() {
 		return new AddressWrapper(_address.toEscapedModel());
 	}
 
@@ -786,7 +786,7 @@ public class AddressWrapper implements Address, ModelWrapper<Address> {
 	}
 
 	@Override
-	public com.liferay.portal.model.Address toUnescapedModel() {
+	public com.liferay.portal.kernel.model.Address toUnescapedModel() {
 		return new AddressWrapper(_address.toUnescapedModel());
 	}
 

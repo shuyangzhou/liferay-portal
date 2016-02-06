@@ -25,11 +25,11 @@ import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.UnicodeProperties;
-import com.liferay.portal.model.Address;
-import com.liferay.portal.model.Company;
-import com.liferay.portal.model.EmailAddress;
-import com.liferay.portal.model.Phone;
-import com.liferay.portal.model.Website;
+import com.liferay.portal.kernel.model.Address;
+import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.model.EmailAddress;
+import com.liferay.portal.kernel.model.Phone;
+import com.liferay.portal.kernel.model.Website;
 
 import java.io.InputStream;
 
@@ -145,7 +145,7 @@ public interface CompanyService extends BaseService {
 	*
 	* This method is called by {@link
 	* com.liferay.portlet.portalsettings.action.EditLDAPServerAction} remotely
-	* through {@link com.liferay.portal.service.CompanyService}.
+	* through {@link com.liferay.portal.kernel.service.CompanyService}.
 	*
 	* @param companyId the primary key of the company
 	* @param keys the company's preferences keys to be remove

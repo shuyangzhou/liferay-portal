@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -264,19 +264,19 @@ public interface ResourcePermissionModel extends BaseModel<ResourcePermission>,
 
 	@Override
 	public int compareTo(
-		com.liferay.portal.model.ResourcePermission resourcePermission);
+		com.liferay.portal.kernel.model.ResourcePermission resourcePermission);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.ResourcePermission> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.ResourcePermission> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.ResourcePermission toEscapedModel();
+	public com.liferay.portal.kernel.model.ResourcePermission toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.ResourcePermission toUnescapedModel();
+	public com.liferay.portal.kernel.model.ResourcePermission toUnescapedModel();
 
 	@Override
 	public String toString();

@@ -49,37 +49,37 @@ public class UserGroupFinderUtil {
 			andOperator);
 	}
 
-	public static java.util.List<com.liferay.portal.model.UserGroup> findByKeywords(
+	public static java.util.List<com.liferay.portal.kernel.model.UserGroup> findByKeywords(
 		long companyId, java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.UserGroup> obc) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.UserGroup> obc) {
 		return getFinder()
 				   .findByKeywords(companyId, keywords, params, start, end, obc);
 	}
 
-	public static com.liferay.portal.model.UserGroup findByC_N(long companyId,
+	public static com.liferay.portal.kernel.model.UserGroup findByC_N(long companyId,
 		java.lang.String name)
-		throws com.liferay.portal.exception.NoSuchUserGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserGroupException {
 		return getFinder().findByC_N(companyId, name);
 	}
 
-	public static java.util.List<com.liferay.portal.model.UserGroup> findByC_N_D(
+	public static java.util.List<com.liferay.portal.kernel.model.UserGroup> findByC_N_D(
 		long companyId, java.lang.String name, java.lang.String description,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.UserGroup> obc) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.UserGroup> obc) {
 		return getFinder()
 				   .findByC_N_D(companyId, name, description, params,
 			andOperator, start, end, obc);
 	}
 
-	public static java.util.List<com.liferay.portal.model.UserGroup> findByC_N_D(
+	public static java.util.List<com.liferay.portal.kernel.model.UserGroup> findByC_N_D(
 		long companyId, java.lang.String[] names,
 		java.lang.String[] descriptions,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.UserGroup> obc) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.UserGroup> obc) {
 		return getFinder()
 				   .findByC_N_D(companyId, names, descriptions, params,
 			andOperator, start, end, obc);

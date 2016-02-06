@@ -40,10 +40,10 @@ public class LayoutBranchServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.portal.service.impl.LayoutBranchServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.portal.model.LayoutBranch addLayoutBranch(
+	public static com.liferay.portal.kernel.model.LayoutBranch addLayoutBranch(
 		long layoutRevisionId, java.lang.String name,
 		java.lang.String description, boolean master,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addLayoutBranch(layoutRevisionId, name, description,
@@ -64,10 +64,10 @@ public class LayoutBranchServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.model.LayoutBranch updateLayoutBranch(
+	public static com.liferay.portal.kernel.model.LayoutBranch updateLayoutBranch(
 		long layoutBranchId, java.lang.String name,
 		java.lang.String description,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateLayoutBranch(layoutBranchId, name, description,

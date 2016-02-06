@@ -40,10 +40,10 @@ public class WebsiteServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.portal.service.impl.WebsiteServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.portal.model.Website addWebsite(
+	public static com.liferay.portal.kernel.model.Website addWebsite(
 		java.lang.String className, long classPK, java.lang.String url,
 		long typeId, boolean primary,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addWebsite(className, classPK, url, typeId, primary,
@@ -64,18 +64,18 @@ public class WebsiteServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.model.Website getWebsite(long websiteId)
+	public static com.liferay.portal.kernel.model.Website getWebsite(long websiteId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getWebsite(websiteId);
 	}
 
-	public static java.util.List<com.liferay.portal.model.Website> getWebsites(
+	public static java.util.List<com.liferay.portal.kernel.model.Website> getWebsites(
 		java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getWebsites(className, classPK);
 	}
 
-	public static com.liferay.portal.model.Website updateWebsite(
+	public static com.liferay.portal.kernel.model.Website updateWebsite(
 		long websiteId, java.lang.String url, long typeId, boolean primary)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateWebsite(websiteId, url, typeId, primary);

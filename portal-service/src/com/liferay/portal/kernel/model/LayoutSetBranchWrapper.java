@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -207,12 +207,12 @@ public class LayoutSetBranchWrapper implements LayoutSetBranch,
 
 	@Override
 	public int compareTo(
-		com.liferay.portal.model.LayoutSetBranch layoutSetBranch) {
+		com.liferay.portal.kernel.model.LayoutSetBranch layoutSetBranch) {
 		return _layoutSetBranch.compareTo(layoutSetBranch);
 	}
 
 	@Override
-	public com.liferay.portal.model.ColorScheme getColorScheme() {
+	public com.liferay.portal.kernel.model.ColorScheme getColorScheme() {
 		return _layoutSetBranch.getColorScheme();
 	}
 
@@ -272,7 +272,7 @@ public class LayoutSetBranchWrapper implements LayoutSetBranch,
 	}
 
 	@Override
-	public com.liferay.portal.model.Group getGroup()
+	public com.liferay.portal.kernel.model.Group getGroup()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutSetBranch.getGroup();
 	}
@@ -288,7 +288,7 @@ public class LayoutSetBranchWrapper implements LayoutSetBranch,
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutSet getLayoutSet() {
+	public com.liferay.portal.kernel.model.LayoutSet getLayoutSet() {
 		return _layoutSetBranch.getLayoutSet();
 	}
 
@@ -428,7 +428,7 @@ public class LayoutSetBranchWrapper implements LayoutSetBranch,
 	}
 
 	@Override
-	public com.liferay.portal.model.Theme getTheme() {
+	public com.liferay.portal.kernel.model.Theme getTheme() {
 		return _layoutSetBranch.getTheme();
 	}
 
@@ -792,12 +792,12 @@ public class LayoutSetBranchWrapper implements LayoutSetBranch,
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.LayoutSetBranch> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.LayoutSetBranch> toCacheModel() {
 		return _layoutSetBranch.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutSetBranch toEscapedModel() {
+	public com.liferay.portal.kernel.model.LayoutSetBranch toEscapedModel() {
 		return new LayoutSetBranchWrapper(_layoutSetBranch.toEscapedModel());
 	}
 
@@ -807,7 +807,7 @@ public class LayoutSetBranchWrapper implements LayoutSetBranch,
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutSetBranch toUnescapedModel() {
+	public com.liferay.portal.kernel.model.LayoutSetBranch toUnescapedModel() {
 		return new LayoutSetBranchWrapper(_layoutSetBranch.toUnescapedModel());
 	}
 

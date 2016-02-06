@@ -44,44 +44,44 @@ public class GroupFinderUtil {
 			names, descriptions, params, andOperator);
 	}
 
-	public static java.util.List<com.liferay.portal.model.Group> findByLayouts(
+	public static java.util.List<com.liferay.portal.kernel.model.Group> findByLayouts(
 		long companyId, long parentGroupId, boolean site, int start, int end) {
 		return getFinder()
 				   .findByLayouts(companyId, parentGroupId, site, start, end);
 	}
 
-	public static java.util.List<com.liferay.portal.model.Group> findByLayouts(
+	public static java.util.List<com.liferay.portal.kernel.model.Group> findByLayouts(
 		long companyId, long parentGroupId, boolean site, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Group> obc) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Group> obc) {
 		return getFinder()
 				   .findByLayouts(companyId, parentGroupId, site, start, end,
 			obc);
 	}
 
-	public static java.util.List<com.liferay.portal.model.Group> findByLiveGroups() {
+	public static java.util.List<com.liferay.portal.kernel.model.Group> findByLiveGroups() {
 		return getFinder().findByLiveGroups();
 	}
 
-	public static java.util.List<com.liferay.portal.model.Group> findByNoLayouts(
+	public static java.util.List<com.liferay.portal.kernel.model.Group> findByNoLayouts(
 		long classNameId, boolean privateLayout, int start, int end) {
 		return getFinder()
 				   .findByNoLayouts(classNameId, privateLayout, start, end);
 	}
 
-	public static java.util.List<com.liferay.portal.model.Group> findByNullFriendlyURL() {
+	public static java.util.List<com.liferay.portal.kernel.model.Group> findByNullFriendlyURL() {
 		return getFinder().findByNullFriendlyURL();
 	}
 
-	public static java.util.List<com.liferay.portal.model.Group> findBySystem(
+	public static java.util.List<com.liferay.portal.kernel.model.Group> findBySystem(
 		long companyId) {
 		return getFinder().findBySystem(companyId);
 	}
 
-	public static java.util.List<com.liferay.portal.model.Group> findByCompanyId(
+	public static java.util.List<com.liferay.portal.kernel.model.Group> findByCompanyId(
 		long companyId,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Group> obc) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Group> obc) {
 		return getFinder().findByCompanyId(companyId, params, start, end, obc);
 	}
 
@@ -91,18 +91,18 @@ public class GroupFinderUtil {
 				   .findByC_P(companyId, parentGroupId, previousGroupId, size);
 	}
 
-	public static com.liferay.portal.model.Group findByC_GK(long companyId,
+	public static com.liferay.portal.kernel.model.Group findByC_GK(long companyId,
 		java.lang.String groupKey)
-		throws com.liferay.portal.exception.NoSuchGroupException {
+		throws com.liferay.portal.kernel.exception.NoSuchGroupException {
 		return getFinder().findByC_GK(companyId, groupKey);
 	}
 
-	public static java.util.List<com.liferay.portal.model.Group> findByC_C_PG_N_D(
+	public static java.util.List<com.liferay.portal.kernel.model.Group> findByC_C_PG_N_D(
 		long companyId, long[] classNameIds, long parentGroupId,
 		java.lang.String[] names, java.lang.String[] descriptions,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.model.Group> obc) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.Group> obc) {
 		return getFinder()
 				   .findByC_C_PG_N_D(companyId, classNameIds, parentGroupId,
 			names, descriptions, params, andOperator, start, end, obc);

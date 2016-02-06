@@ -39,8 +39,8 @@ public class PluginSettingLocalServiceWrapper
 	* @return the plugin setting that was added
 	*/
 	@Override
-	public com.liferay.portal.model.PluginSetting addPluginSetting(
-		com.liferay.portal.model.PluginSetting pluginSetting) {
+	public com.liferay.portal.kernel.model.PluginSetting addPluginSetting(
+		com.liferay.portal.kernel.model.PluginSetting pluginSetting) {
 		return _pluginSettingLocalService.addPluginSetting(pluginSetting);
 	}
 
@@ -58,7 +58,7 @@ public class PluginSettingLocalServiceWrapper
 	* @return the new plugin setting
 	*/
 	@Override
-	public com.liferay.portal.model.PluginSetting createPluginSetting(
+	public com.liferay.portal.kernel.model.PluginSetting createPluginSetting(
 		long pluginSettingId) {
 		return _pluginSettingLocalService.createPluginSetting(pluginSettingId);
 	}
@@ -67,8 +67,8 @@ public class PluginSettingLocalServiceWrapper
 	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _pluginSettingLocalService.deletePersistedModel(persistedModel);
 	}
@@ -80,8 +80,8 @@ public class PluginSettingLocalServiceWrapper
 	* @return the plugin setting that was removed
 	*/
 	@Override
-	public com.liferay.portal.model.PluginSetting deletePluginSetting(
-		com.liferay.portal.model.PluginSetting pluginSetting) {
+	public com.liferay.portal.kernel.model.PluginSetting deletePluginSetting(
+		com.liferay.portal.kernel.model.PluginSetting pluginSetting) {
 		return _pluginSettingLocalService.deletePluginSetting(pluginSetting);
 	}
 
@@ -93,7 +93,7 @@ public class PluginSettingLocalServiceWrapper
 	* @throws PortalException if a plugin setting with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.PluginSetting deletePluginSetting(
+	public com.liferay.portal.kernel.model.PluginSetting deletePluginSetting(
 		long pluginSettingId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _pluginSettingLocalService.deletePluginSetting(pluginSettingId);
@@ -185,7 +185,7 @@ public class PluginSettingLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.model.PluginSetting fetchPluginSetting(
+	public com.liferay.portal.kernel.model.PluginSetting fetchPluginSetting(
 		long pluginSettingId) {
 		return _pluginSettingLocalService.fetchPluginSetting(pluginSettingId);
 	}
@@ -196,7 +196,7 @@ public class PluginSettingLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.model.PluginSetting getDefaultPluginSetting() {
+	public com.liferay.portal.kernel.model.PluginSetting getDefaultPluginSetting() {
 		return _pluginSettingLocalService.getDefaultPluginSetting();
 	}
 
@@ -216,14 +216,14 @@ public class PluginSettingLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.model.PersistedModel getPersistedModel(
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _pluginSettingLocalService.getPersistedModel(primaryKeyObj);
 	}
 
 	@Override
-	public com.liferay.portal.model.PluginSetting getPluginSetting(
+	public com.liferay.portal.kernel.model.PluginSetting getPluginSetting(
 		long companyId, java.lang.String pluginId, java.lang.String pluginType) {
 		return _pluginSettingLocalService.getPluginSetting(companyId, pluginId,
 			pluginType);
@@ -237,7 +237,7 @@ public class PluginSettingLocalServiceWrapper
 	* @throws PortalException if a plugin setting with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.PluginSetting getPluginSetting(
+	public com.liferay.portal.kernel.model.PluginSetting getPluginSetting(
 		long pluginSettingId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _pluginSettingLocalService.getPluginSetting(pluginSettingId);
@@ -255,7 +255,7 @@ public class PluginSettingLocalServiceWrapper
 	* @return the range of plugin settings
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.PluginSetting> getPluginSettings(
+	public java.util.List<com.liferay.portal.kernel.model.PluginSetting> getPluginSettings(
 		int start, int end) {
 		return _pluginSettingLocalService.getPluginSettings(start, end);
 	}
@@ -278,7 +278,7 @@ public class PluginSettingLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.model.PluginSetting updatePluginSetting(
+	public com.liferay.portal.kernel.model.PluginSetting updatePluginSetting(
 		long companyId, java.lang.String pluginId, java.lang.String pluginType,
 		java.lang.String roles, boolean active) {
 		return _pluginSettingLocalService.updatePluginSetting(companyId,
@@ -292,8 +292,8 @@ public class PluginSettingLocalServiceWrapper
 	* @return the plugin setting that was updated
 	*/
 	@Override
-	public com.liferay.portal.model.PluginSetting updatePluginSetting(
-		com.liferay.portal.model.PluginSetting pluginSetting) {
+	public com.liferay.portal.kernel.model.PluginSetting updatePluginSetting(
+		com.liferay.portal.kernel.model.PluginSetting pluginSetting) {
 		return _pluginSettingLocalService.updatePluginSetting(pluginSetting);
 	}
 

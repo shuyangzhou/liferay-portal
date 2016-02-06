@@ -102,7 +102,7 @@ public class LayoutSetServiceUtil {
 			.updateLogo(groupId, privateLayout, logo, inputStream, cleanUpStream);
 	}
 
-	public static com.liferay.portal.model.LayoutSet updateLookAndFeel(
+	public static com.liferay.portal.kernel.model.LayoutSet updateLookAndFeel(
 		long groupId, boolean privateLayout, java.lang.String themeId,
 		java.lang.String colorSchemeId, java.lang.String css)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -111,13 +111,13 @@ public class LayoutSetServiceUtil {
 			colorSchemeId, css);
 	}
 
-	public static com.liferay.portal.model.LayoutSet updateSettings(
+	public static com.liferay.portal.kernel.model.LayoutSet updateSettings(
 		long groupId, boolean privateLayout, java.lang.String settings)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateSettings(groupId, privateLayout, settings);
 	}
 
-	public static com.liferay.portal.model.LayoutSet updateVirtualHost(
+	public static com.liferay.portal.kernel.model.LayoutSet updateVirtualHost(
 		long groupId, boolean privateLayout, java.lang.String virtualHost)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()

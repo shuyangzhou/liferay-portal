@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchResourceTypePermissionException;
-import com.liferay.portal.model.ResourceTypePermission;
+import com.liferay.portal.kernel.exception.NoSuchResourceTypePermissionException;
+import com.liferay.portal.kernel.model.ResourceTypePermission;
 
 /**
  * The persistence interface for the resource type permission service.

@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.model.LayoutSetPrototype;
+import com.liferay.portal.kernel.model.LayoutSetPrototype;
 
 import java.util.List;
 import java.util.Locale;
@@ -61,14 +61,14 @@ public interface LayoutSetPrototypeService extends BaseService {
 	public LayoutSetPrototype addLayoutSetPrototype(
 		Map<Locale, java.lang.String> nameMap, java.lang.String description,
 		boolean active, boolean layoutsUpdateable,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	public LayoutSetPrototype addLayoutSetPrototype(
 		Map<Locale, java.lang.String> nameMap,
 		Map<Locale, java.lang.String> descriptionMap, boolean active,
 		boolean layoutsUpdateable,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	public void deleteLayoutSetPrototype(long layoutSetPrototypeId)
@@ -104,14 +104,14 @@ public interface LayoutSetPrototypeService extends BaseService {
 		long layoutSetPrototypeId, Map<Locale, java.lang.String> nameMap,
 		java.lang.String description, boolean active,
 		boolean layoutsUpdateable,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	public LayoutSetPrototype updateLayoutSetPrototype(
 		long layoutSetPrototypeId, Map<Locale, java.lang.String> nameMap,
 		Map<Locale, java.lang.String> descriptionMap, boolean active,
 		boolean layoutsUpdateable,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	public LayoutSetPrototype updateLayoutSetPrototype(

@@ -21,7 +21,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -163,7 +163,7 @@ public class EmailAddressWrapper implements EmailAddress,
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.model.EmailAddress emailAddress) {
+	public int compareTo(com.liferay.portal.kernel.model.EmailAddress emailAddress) {
 		return _emailAddress.compareTo(emailAddress);
 	}
 
@@ -288,7 +288,7 @@ public class EmailAddressWrapper implements EmailAddress,
 	}
 
 	@Override
-	public com.liferay.portal.model.ListType getType()
+	public com.liferay.portal.kernel.model.ListType getType()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _emailAddress.getType();
 	}
@@ -564,12 +564,12 @@ public class EmailAddressWrapper implements EmailAddress,
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.EmailAddress> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.EmailAddress> toCacheModel() {
 		return _emailAddress.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.EmailAddress toEscapedModel() {
+	public com.liferay.portal.kernel.model.EmailAddress toEscapedModel() {
 		return new EmailAddressWrapper(_emailAddress.toEscapedModel());
 	}
 
@@ -579,7 +579,7 @@ public class EmailAddressWrapper implements EmailAddress,
 	}
 
 	@Override
-	public com.liferay.portal.model.EmailAddress toUnescapedModel() {
+	public com.liferay.portal.kernel.model.EmailAddress toUnescapedModel() {
 		return new EmailAddressWrapper(_emailAddress.toUnescapedModel());
 	}
 

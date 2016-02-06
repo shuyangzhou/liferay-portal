@@ -18,7 +18,7 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -184,19 +184,19 @@ public interface ResourceBlockPermissionModel extends BaseModel<ResourceBlockPer
 
 	@Override
 	public int compareTo(
-		com.liferay.portal.model.ResourceBlockPermission resourceBlockPermission);
+		com.liferay.portal.kernel.model.ResourceBlockPermission resourceBlockPermission);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.ResourceBlockPermission> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.ResourceBlockPermission> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.ResourceBlockPermission toEscapedModel();
+	public com.liferay.portal.kernel.model.ResourceBlockPermission toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.ResourceBlockPermission toUnescapedModel();
+	public com.liferay.portal.kernel.model.ResourceBlockPermission toUnescapedModel();
 
 	@Override
 	public String toString();

@@ -32,11 +32,11 @@ public class UserTrackerLocalServiceWrapper implements UserTrackerLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.UserTracker addUserTracker(long companyId,
+	public com.liferay.portal.kernel.model.UserTracker addUserTracker(long companyId,
 		long userId, java.util.Date modifiedDate, java.lang.String sessionId,
 		java.lang.String remoteAddr, java.lang.String remoteHost,
 		java.lang.String userAgent,
-		java.util.List<com.liferay.portal.model.UserTrackerPath> userTrackerPaths) {
+		java.util.List<com.liferay.portal.kernel.model.UserTrackerPath> userTrackerPaths) {
 		return _userTrackerLocalService.addUserTracker(companyId, userId,
 			modifiedDate, sessionId, remoteAddr, remoteHost, userAgent,
 			userTrackerPaths);
@@ -49,8 +49,8 @@ public class UserTrackerLocalServiceWrapper implements UserTrackerLocalService,
 	* @return the user tracker that was added
 	*/
 	@Override
-	public com.liferay.portal.model.UserTracker addUserTracker(
-		com.liferay.portal.model.UserTracker userTracker) {
+	public com.liferay.portal.kernel.model.UserTracker addUserTracker(
+		com.liferay.portal.kernel.model.UserTracker userTracker) {
 		return _userTrackerLocalService.addUserTracker(userTracker);
 	}
 
@@ -61,7 +61,7 @@ public class UserTrackerLocalServiceWrapper implements UserTrackerLocalService,
 	* @return the new user tracker
 	*/
 	@Override
-	public com.liferay.portal.model.UserTracker createUserTracker(
+	public com.liferay.portal.kernel.model.UserTracker createUserTracker(
 		long userTrackerId) {
 		return _userTrackerLocalService.createUserTracker(userTrackerId);
 	}
@@ -70,8 +70,8 @@ public class UserTrackerLocalServiceWrapper implements UserTrackerLocalService,
 	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userTrackerLocalService.deletePersistedModel(persistedModel);
 	}
@@ -83,8 +83,8 @@ public class UserTrackerLocalServiceWrapper implements UserTrackerLocalService,
 	* @return the user tracker that was removed
 	*/
 	@Override
-	public com.liferay.portal.model.UserTracker deleteUserTracker(
-		com.liferay.portal.model.UserTracker userTracker) {
+	public com.liferay.portal.kernel.model.UserTracker deleteUserTracker(
+		com.liferay.portal.kernel.model.UserTracker userTracker) {
 		return _userTrackerLocalService.deleteUserTracker(userTracker);
 	}
 
@@ -96,7 +96,7 @@ public class UserTrackerLocalServiceWrapper implements UserTrackerLocalService,
 	* @throws PortalException if a user tracker with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.UserTracker deleteUserTracker(
+	public com.liferay.portal.kernel.model.UserTracker deleteUserTracker(
 		long userTrackerId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userTrackerLocalService.deleteUserTracker(userTrackerId);
@@ -188,7 +188,7 @@ public class UserTrackerLocalServiceWrapper implements UserTrackerLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.UserTracker fetchUserTracker(
+	public com.liferay.portal.kernel.model.UserTracker fetchUserTracker(
 		long userTrackerId) {
 		return _userTrackerLocalService.fetchUserTracker(userTrackerId);
 	}
@@ -214,7 +214,7 @@ public class UserTrackerLocalServiceWrapper implements UserTrackerLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.model.PersistedModel getPersistedModel(
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userTrackerLocalService.getPersistedModel(primaryKeyObj);
@@ -228,14 +228,14 @@ public class UserTrackerLocalServiceWrapper implements UserTrackerLocalService,
 	* @throws PortalException if a user tracker with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.portal.model.UserTracker getUserTracker(
+	public com.liferay.portal.kernel.model.UserTracker getUserTracker(
 		long userTrackerId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _userTrackerLocalService.getUserTracker(userTrackerId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.UserTracker> getUserTrackers(
+	public java.util.List<com.liferay.portal.kernel.model.UserTracker> getUserTrackers(
 		long companyId, int start, int end) {
 		return _userTrackerLocalService.getUserTrackers(companyId, start, end);
 	}
@@ -252,7 +252,7 @@ public class UserTrackerLocalServiceWrapper implements UserTrackerLocalService,
 	* @return the range of user trackers
 	*/
 	@Override
-	public java.util.List<com.liferay.portal.model.UserTracker> getUserTrackers(
+	public java.util.List<com.liferay.portal.kernel.model.UserTracker> getUserTrackers(
 		int start, int end) {
 		return _userTrackerLocalService.getUserTrackers(start, end);
 	}
@@ -274,8 +274,8 @@ public class UserTrackerLocalServiceWrapper implements UserTrackerLocalService,
 	* @return the user tracker that was updated
 	*/
 	@Override
-	public com.liferay.portal.model.UserTracker updateUserTracker(
-		com.liferay.portal.model.UserTracker userTracker) {
+	public com.liferay.portal.kernel.model.UserTracker updateUserTracker(
+		com.liferay.portal.kernel.model.UserTracker userTracker) {
 		return _userTrackerLocalService.updateUserTracker(userTracker);
 	}
 

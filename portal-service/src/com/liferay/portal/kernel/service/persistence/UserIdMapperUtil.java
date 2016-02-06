@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
-import com.liferay.portal.model.UserIdMapper;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.UserIdMapper;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -46,28 +46,28 @@ public class UserIdMapperUtil {
 	 */
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache()
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache()
 	 */
 	public static void clearCache() {
 		getPersistence().clearCache();
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static void clearCache(UserIdMapper userIdMapper) {
 		getPersistence().clearCache(userIdMapper);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
 	public static long countWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<UserIdMapper> findWithDynamicQuery(
 		DynamicQuery dynamicQuery) {
@@ -75,7 +75,7 @@ public class UserIdMapperUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
 	public static List<UserIdMapper> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
@@ -83,7 +83,7 @@ public class UserIdMapperUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
 	public static List<UserIdMapper> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
@@ -94,14 +94,14 @@ public class UserIdMapperUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static UserIdMapper update(UserIdMapper userIdMapper) {
 		return getPersistence().update(userIdMapper);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
 	public static UserIdMapper update(UserIdMapper userIdMapper,
 		ServiceContext serviceContext) {
@@ -186,7 +186,7 @@ public class UserIdMapperUtil {
 	*/
 	public static UserIdMapper findByUserId_First(long userId,
 		OrderByComparator<UserIdMapper> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserIdMapperException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserIdMapperException {
 		return getPersistence().findByUserId_First(userId, orderByComparator);
 	}
 
@@ -212,7 +212,7 @@ public class UserIdMapperUtil {
 	*/
 	public static UserIdMapper findByUserId_Last(long userId,
 		OrderByComparator<UserIdMapper> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserIdMapperException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserIdMapperException {
 		return getPersistence().findByUserId_Last(userId, orderByComparator);
 	}
 
@@ -239,7 +239,7 @@ public class UserIdMapperUtil {
 	*/
 	public static UserIdMapper[] findByUserId_PrevAndNext(long userIdMapperId,
 		long userId, OrderByComparator<UserIdMapper> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchUserIdMapperException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserIdMapperException {
 		return getPersistence()
 				   .findByUserId_PrevAndNext(userIdMapperId, userId,
 			orderByComparator);
@@ -273,7 +273,7 @@ public class UserIdMapperUtil {
 	* @throws NoSuchUserIdMapperException if a matching user ID mapper could not be found
 	*/
 	public static UserIdMapper findByU_T(long userId, java.lang.String type)
-		throws com.liferay.portal.exception.NoSuchUserIdMapperException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserIdMapperException {
 		return getPersistence().findByU_T(userId, type);
 	}
 
@@ -309,7 +309,7 @@ public class UserIdMapperUtil {
 	* @return the user ID mapper that was removed
 	*/
 	public static UserIdMapper removeByU_T(long userId, java.lang.String type)
-		throws com.liferay.portal.exception.NoSuchUserIdMapperException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserIdMapperException {
 		return getPersistence().removeByU_T(userId, type);
 	}
 
@@ -334,7 +334,7 @@ public class UserIdMapperUtil {
 	*/
 	public static UserIdMapper findByT_E(java.lang.String type,
 		java.lang.String externalUserId)
-		throws com.liferay.portal.exception.NoSuchUserIdMapperException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserIdMapperException {
 		return getPersistence().findByT_E(type, externalUserId);
 	}
 
@@ -373,7 +373,7 @@ public class UserIdMapperUtil {
 	*/
 	public static UserIdMapper removeByT_E(java.lang.String type,
 		java.lang.String externalUserId)
-		throws com.liferay.portal.exception.NoSuchUserIdMapperException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserIdMapperException {
 		return getPersistence().removeByT_E(type, externalUserId);
 	}
 
@@ -425,7 +425,7 @@ public class UserIdMapperUtil {
 	* @throws NoSuchUserIdMapperException if a user ID mapper with the primary key could not be found
 	*/
 	public static UserIdMapper remove(long userIdMapperId)
-		throws com.liferay.portal.exception.NoSuchUserIdMapperException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserIdMapperException {
 		return getPersistence().remove(userIdMapperId);
 	}
 
@@ -441,7 +441,7 @@ public class UserIdMapperUtil {
 	* @throws NoSuchUserIdMapperException if a user ID mapper with the primary key could not be found
 	*/
 	public static UserIdMapper findByPrimaryKey(long userIdMapperId)
-		throws com.liferay.portal.exception.NoSuchUserIdMapperException {
+		throws com.liferay.portal.kernel.exception.NoSuchUserIdMapperException {
 		return getPersistence().findByPrimaryKey(userIdMapperId);
 	}
 

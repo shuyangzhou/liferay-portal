@@ -47,15 +47,15 @@ public class EmailAddressLocalServiceUtil {
 	* @param emailAddress the email address
 	* @return the email address that was added
 	*/
-	public static com.liferay.portal.model.EmailAddress addEmailAddress(
-		com.liferay.portal.model.EmailAddress emailAddress) {
+	public static com.liferay.portal.kernel.model.EmailAddress addEmailAddress(
+		com.liferay.portal.kernel.model.EmailAddress emailAddress) {
 		return getService().addEmailAddress(emailAddress);
 	}
 
-	public static com.liferay.portal.model.EmailAddress addEmailAddress(
+	public static com.liferay.portal.kernel.model.EmailAddress addEmailAddress(
 		long userId, java.lang.String className, long classPK,
 		java.lang.String address, long typeId, boolean primary,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addEmailAddress(userId, className, classPK, address,
@@ -68,7 +68,7 @@ public class EmailAddressLocalServiceUtil {
 	* @param emailAddressId the primary key for the new email address
 	* @return the new email address
 	*/
-	public static com.liferay.portal.model.EmailAddress createEmailAddress(
+	public static com.liferay.portal.kernel.model.EmailAddress createEmailAddress(
 		long emailAddressId) {
 		return getService().createEmailAddress(emailAddressId);
 	}
@@ -79,8 +79,8 @@ public class EmailAddressLocalServiceUtil {
 	* @param emailAddress the email address
 	* @return the email address that was removed
 	*/
-	public static com.liferay.portal.model.EmailAddress deleteEmailAddress(
-		com.liferay.portal.model.EmailAddress emailAddress) {
+	public static com.liferay.portal.kernel.model.EmailAddress deleteEmailAddress(
+		com.liferay.portal.kernel.model.EmailAddress emailAddress) {
 		return getService().deleteEmailAddress(emailAddress);
 	}
 
@@ -91,7 +91,7 @@ public class EmailAddressLocalServiceUtil {
 	* @return the email address that was removed
 	* @throws PortalException if a email address with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.EmailAddress deleteEmailAddress(
+	public static com.liferay.portal.kernel.model.EmailAddress deleteEmailAddress(
 		long emailAddressId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteEmailAddress(emailAddressId);
@@ -105,8 +105,8 @@ public class EmailAddressLocalServiceUtil {
 	/**
 	* @throws PortalException
 	*/
-	public static com.liferay.portal.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.model.PersistedModel persistedModel)
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -189,7 +189,7 @@ public class EmailAddressLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.portal.model.EmailAddress fetchEmailAddress(
+	public static com.liferay.portal.kernel.model.EmailAddress fetchEmailAddress(
 		long emailAddressId) {
 		return getService().fetchEmailAddress(emailAddressId);
 	}
@@ -201,7 +201,7 @@ public class EmailAddressLocalServiceUtil {
 	* @param companyId the primary key of the company
 	* @return the matching email address, or <code>null</code> if a matching email address could not be found
 	*/
-	public static com.liferay.portal.model.EmailAddress fetchEmailAddressByUuidAndCompanyId(
+	public static com.liferay.portal.kernel.model.EmailAddress fetchEmailAddressByUuidAndCompanyId(
 		java.lang.String uuid, long companyId) {
 		return getService().fetchEmailAddressByUuidAndCompanyId(uuid, companyId);
 	}
@@ -217,7 +217,7 @@ public class EmailAddressLocalServiceUtil {
 	* @return the email address
 	* @throws PortalException if a email address with the primary key could not be found
 	*/
-	public static com.liferay.portal.model.EmailAddress getEmailAddress(
+	public static com.liferay.portal.kernel.model.EmailAddress getEmailAddress(
 		long emailAddressId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getEmailAddress(emailAddressId);
@@ -231,17 +231,17 @@ public class EmailAddressLocalServiceUtil {
 	* @return the matching email address
 	* @throws PortalException if a matching email address could not be found
 	*/
-	public static com.liferay.portal.model.EmailAddress getEmailAddressByUuidAndCompanyId(
+	public static com.liferay.portal.kernel.model.EmailAddress getEmailAddressByUuidAndCompanyId(
 		java.lang.String uuid, long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getEmailAddressByUuidAndCompanyId(uuid, companyId);
 	}
 
-	public static java.util.List<com.liferay.portal.model.EmailAddress> getEmailAddresses() {
+	public static java.util.List<com.liferay.portal.kernel.model.EmailAddress> getEmailAddresses() {
 		return getService().getEmailAddresses();
 	}
 
-	public static java.util.List<com.liferay.portal.model.EmailAddress> getEmailAddresses(
+	public static java.util.List<com.liferay.portal.kernel.model.EmailAddress> getEmailAddresses(
 		long companyId, java.lang.String className, long classPK) {
 		return getService().getEmailAddresses(companyId, className, classPK);
 	}
@@ -257,7 +257,7 @@ public class EmailAddressLocalServiceUtil {
 	* @param end the upper bound of the range of email addresses (not inclusive)
 	* @return the range of email addresses
 	*/
-	public static java.util.List<com.liferay.portal.model.EmailAddress> getEmailAddresses(
+	public static java.util.List<com.liferay.portal.kernel.model.EmailAddress> getEmailAddresses(
 		int start, int end) {
 		return getService().getEmailAddresses(start, end);
 	}
@@ -289,7 +289,7 @@ public class EmailAddressLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.model.PersistedModel getPersistedModel(
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getPersistedModel(primaryKeyObj);
@@ -301,12 +301,12 @@ public class EmailAddressLocalServiceUtil {
 	* @param emailAddress the email address
 	* @return the email address that was updated
 	*/
-	public static com.liferay.portal.model.EmailAddress updateEmailAddress(
-		com.liferay.portal.model.EmailAddress emailAddress) {
+	public static com.liferay.portal.kernel.model.EmailAddress updateEmailAddress(
+		com.liferay.portal.kernel.model.EmailAddress emailAddress) {
 		return getService().updateEmailAddress(emailAddress);
 	}
 
-	public static com.liferay.portal.model.EmailAddress updateEmailAddress(
+	public static com.liferay.portal.kernel.model.EmailAddress updateEmailAddress(
 		long emailAddressId, java.lang.String address, long typeId,
 		boolean primary)
 		throws com.liferay.portal.kernel.exception.PortalException {

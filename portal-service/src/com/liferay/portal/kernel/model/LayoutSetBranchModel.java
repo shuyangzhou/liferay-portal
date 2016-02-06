@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -425,19 +425,19 @@ public interface LayoutSetBranchModel extends BaseModel<LayoutSetBranch>,
 
 	@Override
 	public int compareTo(
-		com.liferay.portal.model.LayoutSetBranch layoutSetBranch);
+		com.liferay.portal.kernel.model.LayoutSetBranch layoutSetBranch);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.LayoutSetBranch> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.LayoutSetBranch> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.LayoutSetBranch toEscapedModel();
+	public com.liferay.portal.kernel.model.LayoutSetBranch toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.LayoutSetBranch toUnescapedModel();
+	public com.liferay.portal.kernel.model.LayoutSetBranch toUnescapedModel();
 
 	@Override
 	public String toString();

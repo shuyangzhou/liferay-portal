@@ -21,7 +21,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -165,7 +165,7 @@ public class RepositoryEntryWrapper implements RepositoryEntry,
 
 	@Override
 	public int compareTo(
-		com.liferay.portal.model.RepositoryEntry repositoryEntry) {
+		com.liferay.portal.kernel.model.RepositoryEntry repositoryEntry) {
 		return _repositoryEntry.compareTo(repositoryEntry);
 	}
 
@@ -545,12 +545,12 @@ public class RepositoryEntryWrapper implements RepositoryEntry,
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.RepositoryEntry> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.RepositoryEntry> toCacheModel() {
 		return _repositoryEntry.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.RepositoryEntry toEscapedModel() {
+	public com.liferay.portal.kernel.model.RepositoryEntry toEscapedModel() {
 		return new RepositoryEntryWrapper(_repositoryEntry.toEscapedModel());
 	}
 
@@ -560,7 +560,7 @@ public class RepositoryEntryWrapper implements RepositoryEntry,
 	}
 
 	@Override
-	public com.liferay.portal.model.RepositoryEntry toUnescapedModel() {
+	public com.liferay.portal.kernel.model.RepositoryEntry toUnescapedModel() {
 		return new RepositoryEntryWrapper(_repositoryEntry.toUnescapedModel());
 	}
 

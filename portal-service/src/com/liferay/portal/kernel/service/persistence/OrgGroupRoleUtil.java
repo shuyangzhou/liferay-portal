@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
-import com.liferay.portal.model.OrgGroupRole;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.model.OrgGroupRole;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -46,28 +46,28 @@ public class OrgGroupRoleUtil {
 	 */
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache()
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache()
 	 */
 	public static void clearCache() {
 		getPersistence().clearCache();
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#clearCache(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static void clearCache(OrgGroupRole orgGroupRole) {
 		getPersistence().clearCache(orgGroupRole);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
 	public static long countWithDynamicQuery(DynamicQuery dynamicQuery) {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<OrgGroupRole> findWithDynamicQuery(
 		DynamicQuery dynamicQuery) {
@@ -75,7 +75,7 @@ public class OrgGroupRoleUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
 	public static List<OrgGroupRole> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
@@ -83,7 +83,7 @@ public class OrgGroupRoleUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
 	public static List<OrgGroupRole> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
@@ -94,14 +94,14 @@ public class OrgGroupRoleUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static OrgGroupRole update(OrgGroupRole orgGroupRole) {
 		return getPersistence().update(orgGroupRole);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
 	public static OrgGroupRole update(OrgGroupRole orgGroupRole,
 		ServiceContext serviceContext) {
@@ -186,7 +186,7 @@ public class OrgGroupRoleUtil {
 	*/
 	public static OrgGroupRole findByGroupId_First(long groupId,
 		OrderByComparator<OrgGroupRole> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchOrgGroupRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchOrgGroupRoleException {
 		return getPersistence().findByGroupId_First(groupId, orderByComparator);
 	}
 
@@ -212,7 +212,7 @@ public class OrgGroupRoleUtil {
 	*/
 	public static OrgGroupRole findByGroupId_Last(long groupId,
 		OrderByComparator<OrgGroupRole> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchOrgGroupRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchOrgGroupRoleException {
 		return getPersistence().findByGroupId_Last(groupId, orderByComparator);
 	}
 
@@ -238,9 +238,9 @@ public class OrgGroupRoleUtil {
 	* @throws NoSuchOrgGroupRoleException if a org group role with the primary key could not be found
 	*/
 	public static OrgGroupRole[] findByGroupId_PrevAndNext(
-		com.liferay.portal.service.persistence.OrgGroupRolePK orgGroupRolePK,
+		com.liferay.portal.kernel.service.persistence.OrgGroupRolePK orgGroupRolePK,
 		long groupId, OrderByComparator<OrgGroupRole> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchOrgGroupRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchOrgGroupRoleException {
 		return getPersistence()
 				   .findByGroupId_PrevAndNext(orgGroupRolePK, groupId,
 			orderByComparator);
@@ -343,7 +343,7 @@ public class OrgGroupRoleUtil {
 	*/
 	public static OrgGroupRole findByRoleId_First(long roleId,
 		OrderByComparator<OrgGroupRole> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchOrgGroupRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchOrgGroupRoleException {
 		return getPersistence().findByRoleId_First(roleId, orderByComparator);
 	}
 
@@ -369,7 +369,7 @@ public class OrgGroupRoleUtil {
 	*/
 	public static OrgGroupRole findByRoleId_Last(long roleId,
 		OrderByComparator<OrgGroupRole> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchOrgGroupRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchOrgGroupRoleException {
 		return getPersistence().findByRoleId_Last(roleId, orderByComparator);
 	}
 
@@ -395,9 +395,9 @@ public class OrgGroupRoleUtil {
 	* @throws NoSuchOrgGroupRoleException if a org group role with the primary key could not be found
 	*/
 	public static OrgGroupRole[] findByRoleId_PrevAndNext(
-		com.liferay.portal.service.persistence.OrgGroupRolePK orgGroupRolePK,
+		com.liferay.portal.kernel.service.persistence.OrgGroupRolePK orgGroupRolePK,
 		long roleId, OrderByComparator<OrgGroupRole> orderByComparator)
-		throws com.liferay.portal.exception.NoSuchOrgGroupRoleException {
+		throws com.liferay.portal.kernel.exception.NoSuchOrgGroupRoleException {
 		return getPersistence()
 				   .findByRoleId_PrevAndNext(orgGroupRolePK, roleId,
 			orderByComparator);
@@ -447,7 +447,7 @@ public class OrgGroupRoleUtil {
 	* @return the new org group role
 	*/
 	public static OrgGroupRole create(
-		com.liferay.portal.service.persistence.OrgGroupRolePK orgGroupRolePK) {
+		com.liferay.portal.kernel.service.persistence.OrgGroupRolePK orgGroupRolePK) {
 		return getPersistence().create(orgGroupRolePK);
 	}
 
@@ -459,8 +459,8 @@ public class OrgGroupRoleUtil {
 	* @throws NoSuchOrgGroupRoleException if a org group role with the primary key could not be found
 	*/
 	public static OrgGroupRole remove(
-		com.liferay.portal.service.persistence.OrgGroupRolePK orgGroupRolePK)
-		throws com.liferay.portal.exception.NoSuchOrgGroupRoleException {
+		com.liferay.portal.kernel.service.persistence.OrgGroupRolePK orgGroupRolePK)
+		throws com.liferay.portal.kernel.exception.NoSuchOrgGroupRoleException {
 		return getPersistence().remove(orgGroupRolePK);
 	}
 
@@ -476,8 +476,8 @@ public class OrgGroupRoleUtil {
 	* @throws NoSuchOrgGroupRoleException if a org group role with the primary key could not be found
 	*/
 	public static OrgGroupRole findByPrimaryKey(
-		com.liferay.portal.service.persistence.OrgGroupRolePK orgGroupRolePK)
-		throws com.liferay.portal.exception.NoSuchOrgGroupRoleException {
+		com.liferay.portal.kernel.service.persistence.OrgGroupRolePK orgGroupRolePK)
+		throws com.liferay.portal.kernel.exception.NoSuchOrgGroupRoleException {
 		return getPersistence().findByPrimaryKey(orgGroupRolePK);
 	}
 
@@ -488,7 +488,7 @@ public class OrgGroupRoleUtil {
 	* @return the org group role, or <code>null</code> if a org group role with the primary key could not be found
 	*/
 	public static OrgGroupRole fetchByPrimaryKey(
-		com.liferay.portal.service.persistence.OrgGroupRolePK orgGroupRolePK) {
+		com.liferay.portal.kernel.service.persistence.OrgGroupRolePK orgGroupRolePK) {
 		return getPersistence().fetchByPrimaryKey(orgGroupRolePK);
 	}
 

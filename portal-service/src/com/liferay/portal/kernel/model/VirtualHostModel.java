@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -171,19 +171,19 @@ public interface VirtualHostModel extends BaseModel<VirtualHost>, MVCCModel,
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.portal.model.VirtualHost virtualHost);
+	public int compareTo(com.liferay.portal.kernel.model.VirtualHost virtualHost);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.portal.model.VirtualHost> toCacheModel();
+	public CacheModel<com.liferay.portal.kernel.model.VirtualHost> toCacheModel();
 
 	@Override
-	public com.liferay.portal.model.VirtualHost toEscapedModel();
+	public com.liferay.portal.kernel.model.VirtualHost toEscapedModel();
 
 	@Override
-	public com.liferay.portal.model.VirtualHost toUnescapedModel();
+	public com.liferay.portal.kernel.model.VirtualHost toUnescapedModel();
 
 	@Override
 	public String toString();

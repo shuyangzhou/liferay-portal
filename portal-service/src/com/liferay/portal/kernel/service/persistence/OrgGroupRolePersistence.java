@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.exception.NoSuchOrgGroupRoleException;
-import com.liferay.portal.model.OrgGroupRole;
+import com.liferay.portal.kernel.exception.NoSuchOrgGroupRoleException;
+import com.liferay.portal.kernel.model.OrgGroupRole;
 
 /**
  * The persistence interface for the org group role service.
@@ -152,7 +152,7 @@ public interface OrgGroupRolePersistence extends BasePersistence<OrgGroupRole> {
 	* @throws NoSuchOrgGroupRoleException if a org group role with the primary key could not be found
 	*/
 	public OrgGroupRole[] findByGroupId_PrevAndNext(
-		com.liferay.portal.service.persistence.OrgGroupRolePK orgGroupRolePK,
+		com.liferay.portal.kernel.service.persistence.OrgGroupRolePK orgGroupRolePK,
 		long groupId,
 		com.liferay.portal.kernel.util.OrderByComparator<OrgGroupRole> orderByComparator)
 		throws NoSuchOrgGroupRoleException;
@@ -285,7 +285,7 @@ public interface OrgGroupRolePersistence extends BasePersistence<OrgGroupRole> {
 	* @throws NoSuchOrgGroupRoleException if a org group role with the primary key could not be found
 	*/
 	public OrgGroupRole[] findByRoleId_PrevAndNext(
-		com.liferay.portal.service.persistence.OrgGroupRolePK orgGroupRolePK,
+		com.liferay.portal.kernel.service.persistence.OrgGroupRolePK orgGroupRolePK,
 		long roleId,
 		com.liferay.portal.kernel.util.OrderByComparator<OrgGroupRole> orderByComparator)
 		throws NoSuchOrgGroupRoleException;
@@ -326,7 +326,7 @@ public interface OrgGroupRolePersistence extends BasePersistence<OrgGroupRole> {
 	* @return the new org group role
 	*/
 	public OrgGroupRole create(
-		com.liferay.portal.service.persistence.OrgGroupRolePK orgGroupRolePK);
+		com.liferay.portal.kernel.service.persistence.OrgGroupRolePK orgGroupRolePK);
 
 	/**
 	* Removes the org group role with the primary key from the database. Also notifies the appropriate model listeners.
@@ -336,7 +336,7 @@ public interface OrgGroupRolePersistence extends BasePersistence<OrgGroupRole> {
 	* @throws NoSuchOrgGroupRoleException if a org group role with the primary key could not be found
 	*/
 	public OrgGroupRole remove(
-		com.liferay.portal.service.persistence.OrgGroupRolePK orgGroupRolePK)
+		com.liferay.portal.kernel.service.persistence.OrgGroupRolePK orgGroupRolePK)
 		throws NoSuchOrgGroupRoleException;
 
 	public OrgGroupRole updateImpl(OrgGroupRole orgGroupRole);
@@ -349,7 +349,7 @@ public interface OrgGroupRolePersistence extends BasePersistence<OrgGroupRole> {
 	* @throws NoSuchOrgGroupRoleException if a org group role with the primary key could not be found
 	*/
 	public OrgGroupRole findByPrimaryKey(
-		com.liferay.portal.service.persistence.OrgGroupRolePK orgGroupRolePK)
+		com.liferay.portal.kernel.service.persistence.OrgGroupRolePK orgGroupRolePK)
 		throws NoSuchOrgGroupRoleException;
 
 	/**
@@ -359,7 +359,7 @@ public interface OrgGroupRolePersistence extends BasePersistence<OrgGroupRole> {
 	* @return the org group role, or <code>null</code> if a org group role with the primary key could not be found
 	*/
 	public OrgGroupRole fetchByPrimaryKey(
-		com.liferay.portal.service.persistence.OrgGroupRolePK orgGroupRolePK);
+		com.liferay.portal.kernel.service.persistence.OrgGroupRolePK orgGroupRolePK);
 
 	@Override
 	public java.util.Map<java.io.Serializable, OrgGroupRole> fetchByPrimaryKeys(

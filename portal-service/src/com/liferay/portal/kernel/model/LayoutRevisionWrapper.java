@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -274,7 +274,7 @@ public class LayoutRevisionWrapper implements LayoutRevision,
 	}
 
 	@Override
-	public int compareTo(com.liferay.portal.model.LayoutRevision layoutRevision) {
+	public int compareTo(com.liferay.portal.kernel.model.LayoutRevision layoutRevision) {
 		return _layoutRevision.compareTo(layoutRevision);
 	}
 
@@ -284,12 +284,12 @@ public class LayoutRevisionWrapper implements LayoutRevision,
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.model.LayoutRevision> getChildren() {
+	public java.util.List<com.liferay.portal.kernel.model.LayoutRevision> getChildren() {
 		return _layoutRevision.getChildren();
 	}
 
 	@Override
-	public com.liferay.portal.model.ColorScheme getColorScheme()
+	public com.liferay.portal.kernel.model.ColorScheme getColorScheme()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutRevision.getColorScheme();
 	}
@@ -552,7 +552,7 @@ public class LayoutRevisionWrapper implements LayoutRevision,
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutBranch getLayoutBranch()
+	public com.liferay.portal.kernel.model.LayoutBranch getLayoutBranch()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutRevision.getLayoutBranch();
 	}
@@ -578,7 +578,7 @@ public class LayoutRevisionWrapper implements LayoutRevision,
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutSet getLayoutSet()
+	public com.liferay.portal.kernel.model.LayoutSet getLayoutSet()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutRevision.getLayoutSet();
 	}
@@ -881,7 +881,7 @@ public class LayoutRevisionWrapper implements LayoutRevision,
 	}
 
 	@Override
-	public com.liferay.portal.model.Theme getTheme()
+	public com.liferay.portal.kernel.model.Theme getTheme()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _layoutRevision.getTheme();
 	}
@@ -1192,14 +1192,14 @@ public class LayoutRevisionWrapper implements LayoutRevision,
 
 	@Override
 	public void prepareLocalizedFieldsForImport()
-		throws com.liferay.portal.LocaleException {
+		throws com.liferay.portal.kernel.exception.LocaleException {
 		_layoutRevision.prepareLocalizedFieldsForImport();
 	}
 
 	@Override
 	public void prepareLocalizedFieldsForImport(
 		java.util.Locale defaultImportLocale)
-		throws com.liferay.portal.LocaleException {
+		throws com.liferay.portal.kernel.exception.LocaleException {
 		_layoutRevision.prepareLocalizedFieldsForImport(defaultImportLocale);
 	}
 
@@ -1821,12 +1821,12 @@ public class LayoutRevisionWrapper implements LayoutRevision,
 	}
 
 	@Override
-	public CacheModel<com.liferay.portal.model.LayoutRevision> toCacheModel() {
+	public CacheModel<com.liferay.portal.kernel.model.LayoutRevision> toCacheModel() {
 		return _layoutRevision.toCacheModel();
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutRevision toEscapedModel() {
+	public com.liferay.portal.kernel.model.LayoutRevision toEscapedModel() {
 		return new LayoutRevisionWrapper(_layoutRevision.toEscapedModel());
 	}
 
@@ -1836,7 +1836,7 @@ public class LayoutRevisionWrapper implements LayoutRevision,
 	}
 
 	@Override
-	public com.liferay.portal.model.LayoutRevision toUnescapedModel() {
+	public com.liferay.portal.kernel.model.LayoutRevision toUnescapedModel() {
 		return new LayoutRevisionWrapper(_layoutRevision.toUnescapedModel());
 	}
 

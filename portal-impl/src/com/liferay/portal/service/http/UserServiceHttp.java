@@ -22,7 +22,7 @@ import com.liferay.portal.kernel.security.auth.HttpPrincipal;
 import com.liferay.portal.kernel.service.http.TunnelUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
-import com.liferay.portal.service.UserServiceUtil;
+import com.liferay.portal.kernel.service.UserServiceUtil;
 
 /**
  * Provides the HTTP utility for the
@@ -55,7 +55,7 @@ import com.liferay.portal.service.UserServiceUtil;
 @ProviderType
 public class UserServiceHttp {
 	public static void addGroupUsers(HttpPrincipal httpPrincipal, long groupId,
-		long[] userIds, com.liferay.portal.service.ServiceContext serviceContext)
+		long[] userIds, com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(UserServiceUtil.class,
@@ -195,7 +195,7 @@ public class UserServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.User addUser(
+	public static com.liferay.portal.kernel.model.User addUser(
 		HttpPrincipal httpPrincipal, long companyId, boolean autoPassword,
 		java.lang.String password1, java.lang.String password2,
 		boolean autoScreenName, java.lang.String screenName,
@@ -206,7 +206,7 @@ public class UserServiceHttp {
 		int birthdayMonth, int birthdayDay, int birthdayYear,
 		java.lang.String jobTitle, long[] groupIds, long[] organizationIds,
 		long[] roleIds, long[] userGroupIds, boolean sendEmail,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(UserServiceUtil.class,
@@ -233,7 +233,7 @@ public class UserServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.User)returnObj;
+			return (com.liferay.portal.kernel.model.User)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -242,7 +242,7 @@ public class UserServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.User addUser(
+	public static com.liferay.portal.kernel.model.User addUser(
 		HttpPrincipal httpPrincipal, long companyId, boolean autoPassword,
 		java.lang.String password1, java.lang.String password2,
 		boolean autoScreenName, java.lang.String screenName,
@@ -253,13 +253,13 @@ public class UserServiceHttp {
 		int birthdayMonth, int birthdayDay, int birthdayYear,
 		java.lang.String jobTitle, long[] groupIds, long[] organizationIds,
 		long[] roleIds, long[] userGroupIds,
-		java.util.List<com.liferay.portal.model.Address> addresses,
-		java.util.List<com.liferay.portal.model.EmailAddress> emailAddresses,
-		java.util.List<com.liferay.portal.model.Phone> phones,
-		java.util.List<com.liferay.portal.model.Website> websites,
+		java.util.List<com.liferay.portal.kernel.model.Address> addresses,
+		java.util.List<com.liferay.portal.kernel.model.EmailAddress> emailAddresses,
+		java.util.List<com.liferay.portal.kernel.model.Phone> phones,
+		java.util.List<com.liferay.portal.kernel.model.Website> websites,
 		java.util.List<com.liferay.announcements.kernel.model.AnnouncementsDelivery> announcementsDelivers,
 		boolean sendEmail,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(UserServiceUtil.class,
@@ -287,7 +287,7 @@ public class UserServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.User)returnObj;
+			return (com.liferay.portal.kernel.model.User)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -324,7 +324,7 @@ public class UserServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.User addUserWithWorkflow(
+	public static com.liferay.portal.kernel.model.User addUserWithWorkflow(
 		HttpPrincipal httpPrincipal, long companyId, boolean autoPassword,
 		java.lang.String password1, java.lang.String password2,
 		boolean autoScreenName, java.lang.String screenName,
@@ -335,7 +335,7 @@ public class UserServiceHttp {
 		int birthdayMonth, int birthdayDay, int birthdayYear,
 		java.lang.String jobTitle, long[] groupIds, long[] organizationIds,
 		long[] roleIds, long[] userGroupIds, boolean sendEmail,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(UserServiceUtil.class,
@@ -362,7 +362,7 @@ public class UserServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.User)returnObj;
+			return (com.liferay.portal.kernel.model.User)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -371,7 +371,7 @@ public class UserServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.User addUserWithWorkflow(
+	public static com.liferay.portal.kernel.model.User addUserWithWorkflow(
 		HttpPrincipal httpPrincipal, long companyId, boolean autoPassword,
 		java.lang.String password1, java.lang.String password2,
 		boolean autoScreenName, java.lang.String screenName,
@@ -382,13 +382,13 @@ public class UserServiceHttp {
 		int birthdayMonth, int birthdayDay, int birthdayYear,
 		java.lang.String jobTitle, long[] groupIds, long[] organizationIds,
 		long[] roleIds, long[] userGroupIds,
-		java.util.List<com.liferay.portal.model.Address> addresses,
-		java.util.List<com.liferay.portal.model.EmailAddress> emailAddresses,
-		java.util.List<com.liferay.portal.model.Phone> phones,
-		java.util.List<com.liferay.portal.model.Website> websites,
+		java.util.List<com.liferay.portal.kernel.model.Address> addresses,
+		java.util.List<com.liferay.portal.kernel.model.EmailAddress> emailAddresses,
+		java.util.List<com.liferay.portal.kernel.model.Phone> phones,
+		java.util.List<com.liferay.portal.kernel.model.Website> websites,
 		java.util.List<com.liferay.announcements.kernel.model.AnnouncementsDelivery> announcementsDelivers,
 		boolean sendEmail,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(UserServiceUtil.class,
@@ -416,7 +416,7 @@ public class UserServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.User)returnObj;
+			return (com.liferay.portal.kernel.model.User)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -504,7 +504,7 @@ public class UserServiceHttp {
 		}
 	}
 
-	public static java.util.List<com.liferay.portal.model.User> getCompanyUsers(
+	public static java.util.List<com.liferay.portal.kernel.model.User> getCompanyUsers(
 		HttpPrincipal httpPrincipal, long companyId, int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -527,7 +527,7 @@ public class UserServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (java.util.List<com.liferay.portal.model.User>)returnObj;
+			return (java.util.List<com.liferay.portal.kernel.model.User>)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -568,7 +568,7 @@ public class UserServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.User getCurrentUser(
+	public static com.liferay.portal.kernel.model.User getCurrentUser(
 		HttpPrincipal httpPrincipal)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -590,7 +590,7 @@ public class UserServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.User)returnObj;
+			return (com.liferay.portal.kernel.model.User)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -630,7 +630,7 @@ public class UserServiceHttp {
 		}
 	}
 
-	public static java.util.List<com.liferay.portal.model.User> getGroupUsers(
+	public static java.util.List<com.liferay.portal.kernel.model.User> getGroupUsers(
 		HttpPrincipal httpPrincipal, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -652,7 +652,7 @@ public class UserServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (java.util.List<com.liferay.portal.model.User>)returnObj;
+			return (java.util.List<com.liferay.portal.kernel.model.User>)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -694,7 +694,7 @@ public class UserServiceHttp {
 		}
 	}
 
-	public static java.util.List<com.liferay.portal.model.User> getOrganizationUsers(
+	public static java.util.List<com.liferay.portal.kernel.model.User> getOrganizationUsers(
 		HttpPrincipal httpPrincipal, long organizationId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -718,7 +718,7 @@ public class UserServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (java.util.List<com.liferay.portal.model.User>)returnObj;
+			return (java.util.List<com.liferay.portal.kernel.model.User>)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -757,7 +757,7 @@ public class UserServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.User getUserByEmailAddress(
+	public static com.liferay.portal.kernel.model.User getUserByEmailAddress(
 		HttpPrincipal httpPrincipal, long companyId,
 		java.lang.String emailAddress)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -782,7 +782,7 @@ public class UserServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.User)returnObj;
+			return (com.liferay.portal.kernel.model.User)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -791,7 +791,7 @@ public class UserServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.User getUserById(
+	public static com.liferay.portal.kernel.model.User getUserById(
 		HttpPrincipal httpPrincipal, long userId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -813,7 +813,7 @@ public class UserServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.User)returnObj;
+			return (com.liferay.portal.kernel.model.User)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -822,7 +822,7 @@ public class UserServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.User getUserByScreenName(
+	public static com.liferay.portal.kernel.model.User getUserByScreenName(
 		HttpPrincipal httpPrincipal, long companyId, java.lang.String screenName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -845,7 +845,7 @@ public class UserServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.User)returnObj;
+			return (com.liferay.portal.kernel.model.User)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -854,7 +854,7 @@ public class UserServiceHttp {
 		}
 	}
 
-	public static java.util.List<com.liferay.portal.model.User> getUserGroupUsers(
+	public static java.util.List<com.liferay.portal.kernel.model.User> getUserGroupUsers(
 		HttpPrincipal httpPrincipal, long userGroupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -877,7 +877,7 @@ public class UserServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (java.util.List<com.liferay.portal.model.User>)returnObj;
+			return (java.util.List<com.liferay.portal.kernel.model.User>)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -1232,7 +1232,7 @@ public class UserServiceHttp {
 
 	public static void unsetGroupUsers(HttpPrincipal httpPrincipal,
 		long groupId, long[] userIds,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(UserServiceUtil.class,
@@ -1401,7 +1401,7 @@ public class UserServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.User updateAgreedToTermsOfUse(
+	public static com.liferay.portal.kernel.model.User updateAgreedToTermsOfUse(
 		HttpPrincipal httpPrincipal, long userId, boolean agreedToTermsOfUse)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -1425,7 +1425,7 @@ public class UserServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.User)returnObj;
+			return (com.liferay.portal.kernel.model.User)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -1434,10 +1434,10 @@ public class UserServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.User updateEmailAddress(
+	public static com.liferay.portal.kernel.model.User updateEmailAddress(
 		HttpPrincipal httpPrincipal, long userId, java.lang.String password,
 		java.lang.String emailAddress1, java.lang.String emailAddress2,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(UserServiceUtil.class,
@@ -1459,7 +1459,7 @@ public class UserServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.User)returnObj;
+			return (com.liferay.portal.kernel.model.User)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -1468,7 +1468,7 @@ public class UserServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.User updateIncompleteUser(
+	public static com.liferay.portal.kernel.model.User updateIncompleteUser(
 		HttpPrincipal httpPrincipal, long companyId, boolean autoPassword,
 		java.lang.String password1, java.lang.String password2,
 		boolean autoScreenName, java.lang.String screenName,
@@ -1479,7 +1479,7 @@ public class UserServiceHttp {
 		int birthdayMonth, int birthdayDay, int birthdayYear,
 		java.lang.String jobTitle, boolean updateUserInformation,
 		boolean sendEmail,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(UserServiceUtil.class,
@@ -1506,7 +1506,7 @@ public class UserServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.User)returnObj;
+			return (com.liferay.portal.kernel.model.User)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -1515,7 +1515,7 @@ public class UserServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.User updateLockoutById(
+	public static com.liferay.portal.kernel.model.User updateLockoutById(
 		HttpPrincipal httpPrincipal, long userId, boolean lockout)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -1538,7 +1538,7 @@ public class UserServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.User)returnObj;
+			return (com.liferay.portal.kernel.model.User)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -1547,7 +1547,7 @@ public class UserServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.User updateOpenId(
+	public static com.liferay.portal.kernel.model.User updateOpenId(
 		HttpPrincipal httpPrincipal, long userId, java.lang.String openId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -1570,7 +1570,7 @@ public class UserServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.User)returnObj;
+			return (com.liferay.portal.kernel.model.User)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -1581,7 +1581,7 @@ public class UserServiceHttp {
 
 	public static void updateOrganizations(HttpPrincipal httpPrincipal,
 		long userId, long[] organizationIds,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(UserServiceUtil.class,
@@ -1608,7 +1608,7 @@ public class UserServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.User updatePassword(
+	public static com.liferay.portal.kernel.model.User updatePassword(
 		HttpPrincipal httpPrincipal, long userId, java.lang.String password1,
 		java.lang.String password2, boolean passwordReset)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -1632,7 +1632,7 @@ public class UserServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.User)returnObj;
+			return (com.liferay.portal.kernel.model.User)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -1641,7 +1641,7 @@ public class UserServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.User updatePortrait(
+	public static com.liferay.portal.kernel.model.User updatePortrait(
 		HttpPrincipal httpPrincipal, long userId, byte[] bytes)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -1664,7 +1664,7 @@ public class UserServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.User)returnObj;
+			return (com.liferay.portal.kernel.model.User)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -1673,7 +1673,7 @@ public class UserServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.User updateReminderQuery(
+	public static com.liferay.portal.kernel.model.User updateReminderQuery(
 		HttpPrincipal httpPrincipal, long userId, java.lang.String question,
 		java.lang.String answer)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -1697,7 +1697,7 @@ public class UserServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.User)returnObj;
+			return (com.liferay.portal.kernel.model.User)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -1706,7 +1706,7 @@ public class UserServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.User updateScreenName(
+	public static com.liferay.portal.kernel.model.User updateScreenName(
 		HttpPrincipal httpPrincipal, long userId, java.lang.String screenName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -1729,7 +1729,7 @@ public class UserServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.User)returnObj;
+			return (com.liferay.portal.kernel.model.User)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -1738,7 +1738,7 @@ public class UserServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.User updateStatus(
+	public static com.liferay.portal.kernel.model.User updateStatus(
 		HttpPrincipal httpPrincipal, long userId, int status)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -1761,7 +1761,7 @@ public class UserServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.User)returnObj;
+			return (com.liferay.portal.kernel.model.User)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -1770,9 +1770,9 @@ public class UserServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.User updateStatus(
+	public static com.liferay.portal.kernel.model.User updateStatus(
 		HttpPrincipal httpPrincipal, long userId, int status,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(UserServiceUtil.class,
@@ -1794,7 +1794,7 @@ public class UserServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.User)returnObj;
+			return (com.liferay.portal.kernel.model.User)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -1803,7 +1803,7 @@ public class UserServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.User updateUser(
+	public static com.liferay.portal.kernel.model.User updateUser(
 		HttpPrincipal httpPrincipal, long userId, java.lang.String oldPassword,
 		java.lang.String newPassword1, java.lang.String newPassword2,
 		boolean passwordReset, java.lang.String reminderQueryQuestion,
@@ -1819,14 +1819,14 @@ public class UserServiceHttp {
 		java.lang.String jabberSn, java.lang.String skypeSn,
 		java.lang.String twitterSn, java.lang.String jobTitle, long[] groupIds,
 		long[] organizationIds, long[] roleIds,
-		java.util.List<com.liferay.portal.model.UserGroupRole> userGroupRoles,
+		java.util.List<com.liferay.portal.kernel.model.UserGroupRole> userGroupRoles,
 		long[] userGroupIds,
-		java.util.List<com.liferay.portal.model.Address> addresses,
-		java.util.List<com.liferay.portal.model.EmailAddress> emailAddresses,
-		java.util.List<com.liferay.portal.model.Phone> phones,
-		java.util.List<com.liferay.portal.model.Website> websites,
+		java.util.List<com.liferay.portal.kernel.model.Address> addresses,
+		java.util.List<com.liferay.portal.kernel.model.EmailAddress> emailAddresses,
+		java.util.List<com.liferay.portal.kernel.model.Phone> phones,
+		java.util.List<com.liferay.portal.kernel.model.Website> websites,
 		java.util.List<com.liferay.announcements.kernel.model.AnnouncementsDelivery> announcementsDelivers,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(UserServiceUtil.class,
@@ -1857,7 +1857,7 @@ public class UserServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.User)returnObj;
+			return (com.liferay.portal.kernel.model.User)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -1866,7 +1866,7 @@ public class UserServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.User updateUser(
+	public static com.liferay.portal.kernel.model.User updateUser(
 		HttpPrincipal httpPrincipal, long userId, java.lang.String oldPassword,
 		java.lang.String newPassword1, java.lang.String newPassword2,
 		boolean passwordReset, java.lang.String reminderQueryQuestion,
@@ -1881,14 +1881,14 @@ public class UserServiceHttp {
 		java.lang.String jabberSn, java.lang.String skypeSn,
 		java.lang.String twitterSn, java.lang.String jobTitle, long[] groupIds,
 		long[] organizationIds, long[] roleIds,
-		java.util.List<com.liferay.portal.model.UserGroupRole> userGroupRoles,
+		java.util.List<com.liferay.portal.kernel.model.UserGroupRole> userGroupRoles,
 		long[] userGroupIds,
-		java.util.List<com.liferay.portal.model.Address> addresses,
-		java.util.List<com.liferay.portal.model.EmailAddress> emailAddresses,
-		java.util.List<com.liferay.portal.model.Phone> phones,
-		java.util.List<com.liferay.portal.model.Website> websites,
+		java.util.List<com.liferay.portal.kernel.model.Address> addresses,
+		java.util.List<com.liferay.portal.kernel.model.EmailAddress> emailAddresses,
+		java.util.List<com.liferay.portal.kernel.model.Phone> phones,
+		java.util.List<com.liferay.portal.kernel.model.Website> websites,
 		java.util.List<com.liferay.announcements.kernel.model.AnnouncementsDelivery> announcementsDelivers,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(UserServiceUtil.class,
@@ -1918,7 +1918,7 @@ public class UserServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.User)returnObj;
+			return (com.liferay.portal.kernel.model.User)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -1927,7 +1927,7 @@ public class UserServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.model.User updateUser(
+	public static com.liferay.portal.kernel.model.User updateUser(
 		HttpPrincipal httpPrincipal, long userId, java.lang.String oldPassword,
 		java.lang.String newPassword1, java.lang.String newPassword2,
 		boolean passwordReset, java.lang.String reminderQueryQuestion,
@@ -1942,9 +1942,9 @@ public class UserServiceHttp {
 		java.lang.String jabberSn, java.lang.String skypeSn,
 		java.lang.String twitterSn, java.lang.String jobTitle, long[] groupIds,
 		long[] organizationIds, long[] roleIds,
-		java.util.List<com.liferay.portal.model.UserGroupRole> userGroupRoles,
+		java.util.List<com.liferay.portal.kernel.model.UserGroupRole> userGroupRoles,
 		long[] userGroupIds,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(UserServiceUtil.class,
@@ -1973,7 +1973,7 @@ public class UserServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portal.model.User)returnObj;
+			return (com.liferay.portal.kernel.model.User)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -1985,7 +1985,7 @@ public class UserServiceHttp {
 	private static Log _log = LogFactoryUtil.getLog(UserServiceHttp.class);
 	private static final Class<?>[] _addGroupUsersParameterTypes0 = new Class[] {
 			long.class, long[].class,
-			com.liferay.portal.service.ServiceContext.class
+			com.liferay.portal.kernel.service.ServiceContext.class
 		};
 	private static final Class<?>[] _addOrganizationUsersParameterTypes1 = new Class[] {
 			long.class, long[].class
@@ -2008,7 +2008,7 @@ public class UserServiceHttp {
 			long.class, boolean.class, int.class, int.class, int.class,
 			java.lang.String.class, long[].class, long[].class, long[].class,
 			long[].class, boolean.class,
-			com.liferay.portal.service.ServiceContext.class
+			com.liferay.portal.kernel.service.ServiceContext.class
 		};
 	private static final Class<?>[] _addUserParameterTypes6 = new Class[] {
 			long.class, boolean.class, java.lang.String.class,
@@ -2020,7 +2020,7 @@ public class UserServiceHttp {
 			java.lang.String.class, long[].class, long[].class, long[].class,
 			long[].class, java.util.List.class, java.util.List.class,
 			java.util.List.class, java.util.List.class, java.util.List.class,
-			boolean.class, com.liferay.portal.service.ServiceContext.class
+			boolean.class, com.liferay.portal.kernel.service.ServiceContext.class
 		};
 	private static final Class<?>[] _addUserGroupUsersParameterTypes7 = new Class[] {
 			long.class, long[].class
@@ -2034,7 +2034,7 @@ public class UserServiceHttp {
 			long.class, boolean.class, int.class, int.class, int.class,
 			java.lang.String.class, long[].class, long[].class, long[].class,
 			long[].class, boolean.class,
-			com.liferay.portal.service.ServiceContext.class
+			com.liferay.portal.kernel.service.ServiceContext.class
 		};
 	private static final Class<?>[] _addUserWithWorkflowParameterTypes9 = new Class[] {
 			long.class, boolean.class, java.lang.String.class,
@@ -2046,7 +2046,7 @@ public class UserServiceHttp {
 			java.lang.String.class, long[].class, long[].class, long[].class,
 			long[].class, java.util.List.class, java.util.List.class,
 			java.util.List.class, java.util.List.class, java.util.List.class,
-			boolean.class, com.liferay.portal.service.ServiceContext.class
+			boolean.class, com.liferay.portal.kernel.service.ServiceContext.class
 		};
 	private static final Class<?>[] _deletePortraitParameterTypes10 = new Class[] {
 			long.class
@@ -2128,7 +2128,7 @@ public class UserServiceHttp {
 		};
 	private static final Class<?>[] _unsetGroupUsersParameterTypes36 = new Class[] {
 			long.class, long[].class,
-			com.liferay.portal.service.ServiceContext.class
+			com.liferay.portal.kernel.service.ServiceContext.class
 		};
 	private static final Class<?>[] _unsetOrganizationUsersParameterTypes37 = new Class[] {
 			long.class, long[].class
@@ -2151,7 +2151,7 @@ public class UserServiceHttp {
 	private static final Class<?>[] _updateEmailAddressParameterTypes43 = new Class[] {
 			long.class, java.lang.String.class, java.lang.String.class,
 			java.lang.String.class,
-			com.liferay.portal.service.ServiceContext.class
+			com.liferay.portal.kernel.service.ServiceContext.class
 		};
 	private static final Class<?>[] _updateIncompleteUserParameterTypes44 = new Class[] {
 			long.class, boolean.class, java.lang.String.class,
@@ -2161,7 +2161,7 @@ public class UserServiceHttp {
 			java.lang.String.class, java.lang.String.class, long.class,
 			long.class, boolean.class, int.class, int.class, int.class,
 			java.lang.String.class, boolean.class, boolean.class,
-			com.liferay.portal.service.ServiceContext.class
+			com.liferay.portal.kernel.service.ServiceContext.class
 		};
 	private static final Class<?>[] _updateLockoutByIdParameterTypes45 = new Class[] {
 			long.class, boolean.class
@@ -2171,7 +2171,7 @@ public class UserServiceHttp {
 		};
 	private static final Class<?>[] _updateOrganizationsParameterTypes47 = new Class[] {
 			long.class, long[].class,
-			com.liferay.portal.service.ServiceContext.class
+			com.liferay.portal.kernel.service.ServiceContext.class
 		};
 	private static final Class<?>[] _updatePasswordParameterTypes48 = new Class[] {
 			long.class, java.lang.String.class, java.lang.String.class,
@@ -2191,7 +2191,7 @@ public class UserServiceHttp {
 		};
 	private static final Class<?>[] _updateStatusParameterTypes53 = new Class[] {
 			long.class, int.class,
-			com.liferay.portal.service.ServiceContext.class
+			com.liferay.portal.kernel.service.ServiceContext.class
 		};
 	private static final Class<?>[] _updateUserParameterTypes54 = new Class[] {
 			long.class, java.lang.String.class, java.lang.String.class,
@@ -2209,7 +2209,7 @@ public class UserServiceHttp {
 			long[].class, long[].class, java.util.List.class, long[].class,
 			java.util.List.class, java.util.List.class, java.util.List.class,
 			java.util.List.class, java.util.List.class,
-			com.liferay.portal.service.ServiceContext.class
+			com.liferay.portal.kernel.service.ServiceContext.class
 		};
 	private static final Class<?>[] _updateUserParameterTypes55 = new Class[] {
 			long.class, java.lang.String.class, java.lang.String.class,
@@ -2227,7 +2227,7 @@ public class UserServiceHttp {
 			java.util.List.class, long[].class, java.util.List.class,
 			java.util.List.class, java.util.List.class, java.util.List.class,
 			java.util.List.class,
-			com.liferay.portal.service.ServiceContext.class
+			com.liferay.portal.kernel.service.ServiceContext.class
 		};
 	private static final Class<?>[] _updateUserParameterTypes56 = new Class[] {
 			long.class, java.lang.String.class, java.lang.String.class,
@@ -2243,6 +2243,6 @@ public class UserServiceHttp {
 			java.lang.String.class, java.lang.String.class,
 			java.lang.String.class, long[].class, long[].class, long[].class,
 			java.util.List.class, long[].class,
-			com.liferay.portal.service.ServiceContext.class
+			com.liferay.portal.kernel.service.ServiceContext.class
 		};
 }

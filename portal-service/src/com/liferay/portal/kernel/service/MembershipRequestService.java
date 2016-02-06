@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
-import com.liferay.portal.model.MembershipRequest;
+import com.liferay.portal.kernel.model.MembershipRequest;
 
 /**
  * Provides the remote service interface for MembershipRequest. Methods of this
@@ -49,7 +49,7 @@ public interface MembershipRequestService extends BaseService {
 	 */
 	public MembershipRequest addMembershipRequest(long groupId,
 		java.lang.String comments,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 
 	public void deleteMembershipRequests(long groupId, long statusId)
@@ -68,6 +68,6 @@ public interface MembershipRequestService extends BaseService {
 
 	public void updateStatus(long membershipRequestId,
 		java.lang.String reviewComments, long statusId,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException;
 }

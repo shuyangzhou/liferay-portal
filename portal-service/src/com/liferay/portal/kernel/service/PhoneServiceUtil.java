@@ -40,10 +40,10 @@ public class PhoneServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.portal.service.impl.PhoneServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.portal.model.Phone addPhone(
+	public static com.liferay.portal.kernel.model.Phone addPhone(
 		java.lang.String className, long classPK, java.lang.String number,
 		java.lang.String extension, long typeId, boolean primary,
-		com.liferay.portal.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addPhone(className, classPK, number, extension, typeId,
@@ -64,18 +64,18 @@ public class PhoneServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.model.Phone getPhone(long phoneId)
+	public static com.liferay.portal.kernel.model.Phone getPhone(long phoneId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getPhone(phoneId);
 	}
 
-	public static java.util.List<com.liferay.portal.model.Phone> getPhones(
+	public static java.util.List<com.liferay.portal.kernel.model.Phone> getPhones(
 		java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getPhones(className, classPK);
 	}
 
-	public static com.liferay.portal.model.Phone updatePhone(long phoneId,
+	public static com.liferay.portal.kernel.model.Phone updatePhone(long phoneId,
 		java.lang.String number, java.lang.String extension, long typeId,
 		boolean primary)
 		throws com.liferay.portal.kernel.exception.PortalException {
