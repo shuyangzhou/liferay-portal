@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.liferay</groupId>
   <artifactId>com.liferay.gradle.plugins</artifactId>
-  <version>1.0.133</version>
+  <version>1.0.134</version>
   <licenses>
     <license>
       <name>LGPL 2.1</name>
@@ -19,9 +19,9 @@
     </developer>
   </developers>
   <scm>
-    <connection>scm:git:git@github.com:liferay/liferay-portal.git</connection>
-    <developerConnection>scm:git:git@github.com:liferay/liferay-portal.git</developerConnection>
-    <url>http://github.com/liferay/liferay-portal</url>
+    <connection>scm:git:git@github.com:liferay/liferay-plugins.git</connection>
+    <developerConnection>scm:git:git@github.com:liferay/liferay-plugins.git</developerConnection>
+    <url>http://github.com/liferay/liferay-plugins</url>
   </scm>
   <dependencies>
     <dependency>
@@ -134,6 +134,12 @@
     </dependency>
     <dependency>
       <groupId>com.liferay</groupId>
+      <artifactId>com.liferay.ant.bnd</artifactId>
+      <version>2.0.9</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.liferay</groupId>
       <artifactId>com.liferay.gradle.plugins.tld.formatter</artifactId>
       <version>1.0.3</version>
       <scope>compile</scope>
@@ -166,12 +172,6 @@
       <groupId>org.dm.gradle</groupId>
       <artifactId>gradle-bundle-plugin</artifactId>
       <version>0.8</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.liferay</groupId>
-      <artifactId>com.liferay.ant.bnd</artifactId>
-      <version>2.0.8</version>
       <scope>compile</scope>
     </dependency>
   </dependencies>
