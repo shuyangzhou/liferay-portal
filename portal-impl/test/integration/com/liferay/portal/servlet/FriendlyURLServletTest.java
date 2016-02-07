@@ -14,8 +14,12 @@
 
 package com.liferay.portal.servlet;
 
-import com.liferay.portal.exception.NoSuchGroupException;
+import com.liferay.portal.kernel.exception.NoSuchGroupException;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
@@ -28,10 +32,6 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.Group;
-import com.liferay.portal.model.Layout;
-import com.liferay.portal.service.ServiceContext;
-import com.liferay.portal.service.ServiceContextThreadLocal;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.util.test.LayoutTestUtil;
@@ -160,6 +160,9 @@ public class FriendlyURLServletTest {
 		MockHttpServletRequest mockHttpServletRequest =
 			new MockHttpServletRequest();
 
+		mockHttpServletRequest.setPathInfo(StringPool.SLASH);
+		mockHttpServletRequest.setServletPath(i18nPath);
+
 		I18nServlet.I18nData i18nData = _i18nServlet.getI18nData(
 			mockHttpServletRequest);
 
@@ -167,15 +170,11 @@ public class FriendlyURLServletTest {
 			WebKeys.I18N_LANGUAGE_ID,
 			(i18nData == null) ? null : i18nData.getLanguageId());
 
-		mockHttpServletRequest.setPathInfo(StringPool.SLASH);
-
 		String requestURI =
 			PropsValues.LAYOUT_FRIENDLY_URL_PUBLIC_SERVLET_MAPPING +
 				getPath(_group, _layout);
 
 		mockHttpServletRequest.setRequestURI(requestURI);
-
-		mockHttpServletRequest.setServletPath(i18nPath);
 
 		Object[] expectedRedirectArray = null;
 
