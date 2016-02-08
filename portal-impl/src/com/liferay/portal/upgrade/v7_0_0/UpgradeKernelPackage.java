@@ -90,9 +90,9 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 
 		String updateSQL = updateSB.toString();
 
-		for (String[] name : names) {
-			StringBundler selectSB = new StringBundler(11);
+		StringBundler selectSB = new StringBundler(11);
 
+		for (String[] name : names) {
 			selectSB.append("select ");
 			selectSB.append(columnName);
 			selectSB.append(" from ");
@@ -118,6 +118,8 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 			selectSB.append(StringPool.APOSTROPHE);
 
 			upgradeTable(columnName, selectSB.toString(), updateSQL, name);
+
+			selectSB.setIndex(0);
 		}
 	}
 
