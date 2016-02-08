@@ -48,6 +48,32 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 	}
 
 	protected void upgradeTable(
+			String columnName, String selectSQL, String updateSQL,
+			String[] name)
+		throws SQLException {
+
+		try (PreparedStatement ps1 = connection.prepareStatement(selectSQL);
+			ResultSet rs = ps1.executeQuery();
+			PreparedStatement ps2 = AutoBatchPreparedStatementUtil.autoBatch(
+				connection.prepareStatement(updateSQL))) {
+
+			while (rs.next()) {
+				String oldValue = rs.getString(columnName);
+
+				String newValue = StringUtil.replace(
+					oldValue, name[0], name[1]);
+
+				ps2.setString(1, newValue);
+				ps2.setString(2, oldValue);
+
+				ps2.addBatch();
+			}
+
+			ps2.executeBatch();
+		}
+	}
+
+	protected void upgradeTable(
 			String tableName, String columnName, String[][] names,
 			WildcardMode wildcardMode)
 		throws SQLException {
@@ -92,32 +118,6 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 			selectSB.append(StringPool.APOSTROPHE);
 
 			upgradeTable(columnName, selectSB.toString(), updateSQL, name);
-		}
-	}
-
-	protected void upgradeTable(
-			String columnName, String selectSQL, String updateSQL,
-			String[] name)
-		throws SQLException {
-
-		try (PreparedStatement ps1 = connection.prepareStatement(selectSQL);
-			ResultSet rs = ps1.executeQuery();
-			PreparedStatement ps2 = AutoBatchPreparedStatementUtil.autoBatch(
-				connection.prepareStatement(updateSQL))) {
-
-			while (rs.next()) {
-				String oldValue = rs.getString(columnName);
-
-				String newValue = StringUtil.replace(
-					oldValue, name[0], name[1]);
-
-				ps2.setString(1, newValue);
-				ps2.setString(2, oldValue);
-
-				ps2.addBatch();
-			}
-
-			ps2.executeBatch();
 		}
 	}
 
