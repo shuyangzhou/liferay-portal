@@ -14,8 +14,10 @@
 
 package com.liferay.portal.upgrade.v7_0_0;
 
+import com.liferay.portal.kernel.dao.orm.WildcardMode;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.upgrade.AutoBatchPreparedStatementUtil;
 
@@ -30,17 +32,24 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws SQLException {
-		upgradeTable("Counter", "name");
-		upgradeTable("ClassName_", "value");
-		upgradeTable("ResourceBlock", "name");
-		upgradeTable("ResourcePermission", "name");
+		upgradeTable("Counter", "name", _CLASS_NAMES, WildcardMode.SURROUND);
+		upgradeTable(
+			"ClassName_", "value", _CLASS_NAMES, WildcardMode.SURROUND);
+		upgradeTable(
+			"ResourceBlock", "name", _CLASS_NAMES, WildcardMode.SURROUND);
+		upgradeTable(
+			"ResourcePermission", "name", _CLASS_NAMES, WildcardMode.SURROUND);
+
+		upgradeTable(
+			"ResourceBlock", "name", _RESOURCE_NAMES, WildcardMode.LEADING);
+		upgradeTable(
+			"ResourcePermission", "name", _RESOURCE_NAMES,
+			WildcardMode.LEADING);
 	}
 
-	protected String[][] getClassNames() {
-		return _CLASS_NAMES;
-	}
-
-	protected void upgradeTable(String tableName, String columnName)
+	protected void upgradeTable(
+			String tableName, String columnName, String[][] names,
+			WildcardMode wildcardMode)
 		throws SQLException {
 
 		StringBundler updateSB = new StringBundler(7);
@@ -55,8 +64,8 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 
 		String updateSQL = updateSB.toString();
 
-		for (String[] className : getClassNames()) {
-			StringBundler selectSB = new StringBundler(9);
+		for (String[] name : names) {
+			StringBundler selectSB = new StringBundler(11);
 
 			selectSB.append("select ");
 			selectSB.append(columnName);
@@ -64,17 +73,31 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 			selectSB.append(tableName);
 			selectSB.append(" where ");
 			selectSB.append(columnName);
-			selectSB.append(" like '%");
-			selectSB.append(className[0]);
-			selectSB.append("%'");
+			selectSB.append(" like '");
 
-			upgradeTable(columnName, selectSB.toString(), updateSQL, className);
+			if (wildcardMode.equals(WildcardMode.LEADING) ||
+				wildcardMode.equals(WildcardMode.SURROUND)) {
+
+				selectSB.append(StringPool.PERCENT);
+			}
+
+			selectSB.append(name[0]);
+
+			if (wildcardMode.equals(WildcardMode.SURROUND) ||
+				wildcardMode.equals(WildcardMode.TRAILING)) {
+
+				selectSB.append(StringPool.PERCENT);
+			}
+
+			selectSB.append(StringPool.APOSTROPHE);
+
+			upgradeTable(columnName, selectSB.toString(), updateSQL, name);
 		}
 	}
 
 	protected void upgradeTable(
 			String columnName, String selectSQL, String updateSQL,
-			String[] className)
+			String[] name)
 		throws SQLException {
 
 		try (PreparedStatement ps1 = connection.prepareStatement(selectSQL);
@@ -86,7 +109,7 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 				String oldValue = rs.getString(columnName);
 
 				String newValue = StringUtil.replace(
-					oldValue, className[0], className[1]);
+					oldValue, name[0], name[1]);
 
 				ps2.setString(1, newValue);
 				ps2.setString(2, oldValue);
@@ -110,6 +133,48 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 		{
 			"com.liferay.portlet.announcements.model.AnnouncementsFlag",
 			"com.liferay.announcements.kernel.model.AnnouncementsFlag"
+		}
+	};
+
+	private static final String[][] _RESOURCE_NAMES = new String[][] {
+		{
+			"com.liferay.portlet.asset", "com.liferay.asset"
+		},
+		{
+			"com.liferay.portlet.blogs", "com.liferay.blogs"
+		},
+		{
+			"com.liferay.portlet.bookmarks", "com.liferay.bookmarks"
+		},
+		{
+			"com.liferay.portlet.calendar", "com.liferay.calendar"
+		},
+		{
+			"com.liferay.portlet.documentlibrary",
+			"com.liferay.document.library"
+		},
+		{
+			"com.liferay.portlet.dynamicdatalists",
+			"com.liferay.dynamic.data.lists"
+		},
+		{
+			"com.liferay.portlet.dynamicdatamapping",
+			"com.liferay.dynamic.data.mapping"
+		},
+		{
+			"com.liferay.portlet.journal", "com.liferay.journal"
+		},
+		{
+			"com.liferay.portlet.messageboards", "com.liferay.message.boards"
+		},
+		{
+			"com.liferay.portlet.polls", "com.liferay.polls"
+		},
+		{
+			"com.liferay.portlet.shopping", "com.liferay.shopping"
+		},
+		{
+			"com.liferay.portlet.wiki", "com.liferay.wiki"
 		}
 	};
 
