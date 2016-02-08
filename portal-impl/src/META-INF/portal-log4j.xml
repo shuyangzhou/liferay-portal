@@ -372,6 +372,10 @@
 		<priority value="WARN" />
 	</category>
 
+	<category name="com.liferay.portal.kernel.model.Image">
+		<priority value="ERROR" />
+	</category>
+
 	<category name="com.liferay.portal.kernel.servlet.ServletRequestUtil">
 		<priority value="INFO" />
 	</category>
@@ -401,10 +405,6 @@
 	</category>
 
 	<category name="com.liferay.portal.model.DefaultModelHintsImpl">
-		<priority value="ERROR" />
-	</category>
-
-	<category name="com.liferay.portal.model.Image">
 		<priority value="ERROR" />
 	</category>
 
