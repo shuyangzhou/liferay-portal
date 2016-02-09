@@ -427,6 +427,10 @@ public class PortletURLImpl
 
 		QName qName = publicRenderParameter.getQName();
 
+		if (_removePublicRenderParameters == null) {
+			_removePublicRenderParameters = new LinkedHashMap<>();
+		}
+
 		_removePublicRenderParameters.put(
 			PortletQNameUtil.getRemovePublicRenderParameterName(qName),
 			new String[] {"1"});
@@ -772,7 +776,6 @@ public class PortletURLImpl
 
 		_plid = plid;
 		_lifecycle = lifecycle;
-		_removePublicRenderParameters = new LinkedHashMap<>();
 		_secure = PortalUtil.isSecure(request);
 		_wsrp = ParamUtil.getBoolean(request, "wsrp");
 
@@ -1019,21 +1022,23 @@ public class PortletURLImpl
 			sb.append(StringPool.AMPERSAND);
 		}
 
-		for (Map.Entry<String, String[]> entry :
-				_removePublicRenderParameters.entrySet()) {
+		if (_removePublicRenderParameters != null) {
+			for (Map.Entry<String, String[]> entry :
+					_removePublicRenderParameters.entrySet()) {
 
-			String lastString = sb.stringAt(sb.index() - 1);
+				String lastString = sb.stringAt(sb.index() - 1);
 
-			if (lastString.charAt(lastString.length() - 1) !=
-					CharPool.AMPERSAND) {
+				if (lastString.charAt(lastString.length() - 1) !=
+						CharPool.AMPERSAND) {
 
+					sb.append(StringPool.AMPERSAND);
+				}
+
+				sb.append(HttpUtil.encodeURL(entry.getKey()));
+				sb.append(StringPool.EQUAL);
+				sb.append(processValue(key, entry.getValue()[0]));
 				sb.append(StringPool.AMPERSAND);
 			}
-
-			sb.append(HttpUtil.encodeURL(entry.getKey()));
-			sb.append(StringPool.EQUAL);
-			sb.append(processValue(key, entry.getValue()[0]));
-			sb.append(StringPool.AMPERSAND);
 		}
 
 		if (_copyCurrentRenderParameters) {
@@ -1410,7 +1415,7 @@ public class PortletURLImpl
 	private long _refererGroupId;
 	private long _refererPlid;
 	private Set<String> _removedParameterNames;
-	private final Map<String, String[]> _removePublicRenderParameters;
+	private Map<String, String[]> _removePublicRenderParameters;
 	private final HttpServletRequest _request;
 	private Map<String, String> _reservedParameters;
 	private String _resourceID;
