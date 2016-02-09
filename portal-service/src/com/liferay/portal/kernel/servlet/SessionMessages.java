@@ -375,20 +375,21 @@ public class SessionMessages {
 			return null;
 		}
 
-		if (portletKey == null) {
-			portletKey = StringPool.BLANK;
+		String key = _CLASS_NAME;
+
+		if (portletKey != null) {
+			key = portletKey.concat(_CLASS_NAME);
 		}
 
 		Map<String, Object> map = null;
 
 		try {
-			map = (Map<String, Object>)session.getAttribute(
-				portletKey + _CLASS_NAME);
+			map = (Map<String, Object>)session.getAttribute(key);
 
 			if ((map == null) && createIfAbsent) {
 				map = new SessionMessagesMap();
 
-				session.setAttribute(portletKey + _CLASS_NAME, map);
+				session.setAttribute(key, map);
 			}
 		}
 		catch (IllegalStateException ise) {
