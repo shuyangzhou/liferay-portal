@@ -188,6 +188,10 @@ public class PortletURLImpl
 
 	@Override
 	public String getParameter(String name) {
+		if (_params == null) {
+			return null;
+		}
+
 		String[] values = _params.get(name);
 
 		if (ArrayUtil.isNotEmpty(values)) {
@@ -200,6 +204,10 @@ public class PortletURLImpl
 
 	@Override
 	public Map<String, String[]> getParameterMap() {
+		if (_params == null) {
+			return Collections.emptyMap();
+		}
+
 		return _params;
 	}
 
@@ -549,6 +557,10 @@ public class PortletURLImpl
 			}
 		}
 
+		if (_params == null) {
+			_params = new LinkedHashMap<>();
+		}
+
 		if (!append) {
 			_params.put(name, values);
 		}
@@ -760,7 +772,6 @@ public class PortletURLImpl
 
 		_plid = plid;
 		_lifecycle = lifecycle;
-		_params = new LinkedHashMap<>();
 		_removePublicRenderParameters = new LinkedHashMap<>();
 		_secure = PortalUtil.isSecure(request);
 		_wsrp = ParamUtil.getBoolean(request, "wsrp");
@@ -1031,7 +1042,7 @@ public class PortletURLImpl
 
 		int previousSbIndex = sb.index();
 
-		for (Map.Entry<String, String[]> entry : _params.entrySet()) {
+		for (Map.Entry<String, String[]> entry : getParameterMap().entrySet()) {
 			String name = entry.getKey();
 			String[] values = entry.getValue();
 
@@ -1202,7 +1213,7 @@ public class PortletURLImpl
 
 		int previousSbIndex = sb.index();
 
-		for (Map.Entry<String, String[]> entry : _params.entrySet()) {
+		for (Map.Entry<String, String[]> entry : getParameterMap().entrySet()) {
 			String name = entry.getKey();
 			String[] values = entry.getValue();
 
@@ -1296,8 +1307,12 @@ public class PortletURLImpl
 		Map<String, String[]> renderParameters = RenderParametersPool.get(
 			_request, layout.getPlid(), getPortlet().getPortletId());
 
-		if (renderParameters == null) {
+		if ((renderParameters == null) || renderParameters.isEmpty()) {
 			return;
+		}
+
+		if (_params == null) {
+			_params = new LinkedHashMap<>();
 		}
 
 		for (Map.Entry<String, String[]> entry : renderParameters.entrySet()) {
@@ -1366,7 +1381,7 @@ public class PortletURLImpl
 	}
 
 	protected void removeParameter(String name) {
-		if (_params.containsKey(name)) {
+		if (_params != null) {
 			_params.remove(name);
 		}
 	}
