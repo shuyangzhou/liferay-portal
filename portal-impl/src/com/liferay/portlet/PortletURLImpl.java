@@ -169,10 +169,6 @@ public class PortletURLImpl
 		return _layout;
 	}
 
-	public String getLayoutFriendlyURL() {
-		return _layoutFriendlyURL;
-	}
-
 	@Override
 	public String getLifecycle() {
 		return _lifecycle;
@@ -842,19 +838,19 @@ public class PortletURLImpl
 			return StringPool.BLANK;
 		}
 
+		String layoutFriendlyURL = null;
+
 		try {
-			if (_layoutFriendlyURL == null) {
-				Layout layout = getLayout();
+			Layout layout = getLayout();
 
-				if (layout != null) {
-					_layoutFriendlyURL = GetterUtil.getString(
-						PortalUtil.getLayoutFriendlyURL(layout, themeDisplay));
+			if (layout != null) {
+				layoutFriendlyURL = GetterUtil.getString(
+					PortalUtil.getLayoutFriendlyURL(layout, themeDisplay));
 
-					if (_secure) {
-						_layoutFriendlyURL = HttpUtil.protocolize(
-							_layoutFriendlyURL,
-							PropsValues.WEB_SERVER_HTTPS_PORT, true);
-					}
+				if (_secure) {
+					layoutFriendlyURL = HttpUtil.protocolize(
+						layoutFriendlyURL, PropsValues.WEB_SERVER_HTTPS_PORT,
+						true);
 				}
 			}
 		}
@@ -875,7 +871,7 @@ public class PortletURLImpl
 			_log.error(e);
 		}
 
-		if (Validator.isNull(_layoutFriendlyURL)) {
+		if (Validator.isNull(layoutFriendlyURL)) {
 			sb.append(PortalUtil.getPortalURL(_request, _secure));
 			sb.append(themeDisplay.getPathMain());
 			sb.append("/portal/layout?");
@@ -898,13 +894,13 @@ public class PortletURLImpl
 				// append the portal URL if the virtual host URL starts with
 				// "http://" or "https://".
 
-				if (!_layoutFriendlyURL.startsWith(Http.HTTP_WITH_SLASH) &&
-					!_layoutFriendlyURL.startsWith(Http.HTTPS_WITH_SLASH)) {
+				if (!layoutFriendlyURL.startsWith(Http.HTTP_WITH_SLASH) &&
+					!layoutFriendlyURL.startsWith(Http.HTTPS_WITH_SLASH)) {
 
 					sb.append(PortalUtil.getPortalURL(_request, _secure));
 				}
 
-				sb.append(_layoutFriendlyURL);
+				sb.append(layoutFriendlyURL);
 			}
 
 			String friendlyURLPath = getPortletFriendlyURLPath();
@@ -1402,7 +1398,6 @@ public class PortletURLImpl
 	private boolean _encrypt;
 	private boolean _escapeXml = PropsValues.PORTLET_URL_ESCAPE_XML;
 	private Layout _layout;
-	private String _layoutFriendlyURL;
 	private String _lifecycle;
 	private String _namespace;
 	private Set<String> _parametersIncludedInPath;
