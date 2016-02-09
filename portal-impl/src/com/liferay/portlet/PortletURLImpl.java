@@ -152,23 +152,6 @@ public class PortletURLImpl
 		return _request;
 	}
 
-	public Layout getLayout() {
-		if (_layout == null) {
-			try {
-				if (_plid > 0) {
-					_layout = LayoutLocalServiceUtil.getLayout(_plid);
-				}
-			}
-			catch (Exception e) {
-				if (_log.isWarnEnabled()) {
-					_log.warn("Layout cannot be found for " + _plid);
-				}
-			}
-		}
-
-		return _layout;
-	}
-
 	@Override
 	public String getLifecycle() {
 		return _lifecycle;
@@ -838,11 +821,20 @@ public class PortletURLImpl
 			return StringPool.BLANK;
 		}
 
+		Layout layout = null;
+
+		if (_layout == null) {
+			if (_plid > 0) {
+				layout = LayoutLocalServiceUtil.fetchLayout(_plid);
+			}
+		}
+		else {
+			layout = _layout;
+		}
+
 		String layoutFriendlyURL = null;
 
 		try {
-			Layout layout = getLayout();
-
 			if (layout != null) {
 				layoutFriendlyURL = GetterUtil.getString(
 					PortalUtil.getLayoutFriendlyURL(layout, themeDisplay));
@@ -1303,10 +1295,8 @@ public class PortletURLImpl
 	protected void mergeRenderParameters() {
 		String namespace = getNamespace();
 
-		Layout layout = getLayout();
-
 		Map<String, String[]> renderParameters = RenderParametersPool.get(
-			_request, layout.getPlid(), getPortlet().getPortletId());
+			_request, getPlid(), getPortlet().getPortletId());
 
 		if ((renderParameters == null) || renderParameters.isEmpty()) {
 			return;
