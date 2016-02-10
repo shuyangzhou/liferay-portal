@@ -7,4 +7,4 @@ Import-Package:\
 	*
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Runtime
--include: ../../../marketplace/platform/bnd.bnd
+-include: ../../../../marketplace/platform/bnd.bnd
