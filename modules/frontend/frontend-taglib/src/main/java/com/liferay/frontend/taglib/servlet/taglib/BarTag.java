@@ -12,15 +12,13 @@
  * details.
  */
 
-package com.liferay.taglib.aui;
-
-import com.liferay.taglib.aui.base.BaseVideoTag;
+package com.liferay.frontend.taglib.servlet.taglib;
 
 /**
- * @author Eduardo Lundgren
- * @author Bruno Basto
- * @author Nathan Cavanaugh
- * @author Julio Camarero
+ * @author Roberto Díaz
  */
-public class VideoTag extends BaseVideoTag {
+public interface BarTag {
+
+	public void setButtons(String buttons);
+
 }

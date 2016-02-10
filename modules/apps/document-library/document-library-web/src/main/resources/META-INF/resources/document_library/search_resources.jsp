@@ -159,10 +159,10 @@ SearchContainer searchContainer = new SearchContainer(liferayPortletRequest, por
 
 				searchContainer.setTotal(hits.getLength());
 
-				List<SearchResult> searchResultsList = SearchResultUtil.getSearchResults(hits, locale);
+				List<SearchResult> searchResults = SearchResultUtil.getSearchResults(hits, locale);
 
-				for (int i = 0; i < searchResultsList.size(); i++) {
-					SearchResult searchResult = searchResultsList.get(i);
+				for (int i = 0; i < searchResults.size(); i++) {
+					SearchResult searchResult = searchResults.get(i);
 
 					Summary summary = searchResult.getSummary();
 
@@ -270,7 +270,7 @@ SearchContainer searchContainer = new SearchContainer(liferayPortletRequest, por
 				}
 				%>
 
-				<c:if test="<%= searchResultsList.isEmpty() %>">
+				<c:if test="<%= searchResults.isEmpty() %>">
 					<div class="alert alert-info">
 						<liferay-ui:message arguments='<%= "<strong>" + HtmlUtil.escape(keywords) + "</strong>" %>' key="no-documents-were-found-that-matched-the-keywords-x" translateArguments="<%= false %>" />
 					</div>

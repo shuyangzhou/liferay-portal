@@ -21,7 +21,9 @@ import com.liferay.taglib.ui.IconTag;
 /**
  * @author Brian Wing Shun Chan
  * @author Shuyang Zhou
+ * @deprecated As of 7.0.0, with no direct replacement
  */
+@Deprecated
 public class IconBackTag extends IconTag {
 
 	@Override

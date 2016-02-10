@@ -12,25 +12,10 @@
  * details.
  */
 
-package com.liferay.wiki.display.context;
-
-import java.util.UUID;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+package com.liferay.frontend.taglib.servlet.taglib;
 
 /**
- * @author Adolfo Pérez
+ * @author Roberto Díaz
  */
-public abstract class BaseWikiInfoPanelDisplayContext
-	extends BaseWikiDisplayContext<WikiInfoPanelDisplayContext>
-	implements WikiInfoPanelDisplayContext {
-
-	public BaseWikiInfoPanelDisplayContext(
-		UUID uuid, WikiInfoPanelDisplayContext parentDisplayContext,
-		HttpServletRequest request, HttpServletResponse response) {
-
-		super(uuid, parentDisplayContext, request, response);
-	}
-
+public class InfoBarButtonsTag extends ManagementBarButtonsTag {
 }

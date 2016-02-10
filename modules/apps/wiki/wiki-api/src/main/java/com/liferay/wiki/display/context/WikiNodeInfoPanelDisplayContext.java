@@ -1,4 +1,3 @@
-<%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -12,23 +11,24 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
---%>
 
-<%@ include file="/html/taglib/aui/video/init.jsp" %>
+package com.liferay.wiki.display.context;
 
-<div class="video <%= cssClass %>" id="<%= id %>"></div>
+import com.liferay.wiki.model.WikiNode;
 
-<aui:script use="aui-video">
-	new A.Video(
-		{
-			boundingBox: '#<%= id %>',
-			flashPlayerVersion: '<%= flashPlayerVersion %>',
-			height: <%= height %>,
-			ogvUrl: '<%= ogvURL %>',
-			poster: '<%= poster %>',
-			swfUrl: '<%= swfURL %>',
-			url: '<%= url %>',
-			width: <%= width %>
-		}
-	);
-</aui:script>
+/**
+ * @author Roberto Díaz
+ */
+public interface WikiNodeInfoPanelDisplayContext extends WikiDisplayContext {
+
+	public WikiNode getFirstNode();
+
+	public int getNodesCount();
+
+	public int getSelectedNodesCount();
+
+	public boolean isMultipleNodeSelection();
+
+	public boolean isSingleNodeSelection();
+
+}
