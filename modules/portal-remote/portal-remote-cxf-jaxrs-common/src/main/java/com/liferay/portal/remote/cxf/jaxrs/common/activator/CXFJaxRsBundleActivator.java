@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.cxf.jaxrs.common.activator;
+package com.liferay.portal.remote.cxf.jaxrs.common.activator;
 
 import java.util.Collection;
 
