@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.rest.extender.configuration;
+package com.liferay.portal.remote.rest.extender.configuration;
 
 import aQute.bnd.annotation.metatype.Meta;
 
@@ -26,7 +26,7 @@ import com.liferay.portal.metatype.annotations.ExtendedObjectClassDefinition;
 )
 @Meta.OCD(
 	factory = true,
-	id = "com.liferay.portal.rest.extender.configuration.RestExtenderConfiguration",
+	id = "com.liferay.portal.remote.rest.extender.configuration.RestExtenderConfiguration",
 	localization = "content/Language",
 	name = "%rest.extender.configuration.name"
 )

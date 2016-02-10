@@ -12,12 +12,12 @@
  * details.
  */
 
-package com.liferay.portal.rest.extender.internal;
+package com.liferay.portal.remote.rest.extender.internal;
 
 import aQute.bnd.annotation.metatype.Configurable;
 
 import com.liferay.portal.remote.dependency.manager.tccl.TCCLDependencyManager;
-import com.liferay.portal.rest.extender.configuration.RestExtenderConfiguration;
+import com.liferay.portal.remote.rest.extender.configuration.RestExtenderConfiguration;
 
 import java.util.Map;
 
@@ -38,7 +38,7 @@ import org.osgi.service.http.whiteboard.HttpWhiteboardConstants;
  * @author Carlos Sierra Andrés
  */
 @Component(
-	configurationPid = "com.liferay.portal.rest.extender.configuration.RestExtenderConfiguration",
+	configurationPid = "com.liferay.portal.remote.rest.extender.configuration.RestExtenderConfiguration",
 	configurationPolicy = ConfigurationPolicy.REQUIRE
 )
 public class RestExtender {
