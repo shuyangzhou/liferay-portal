@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.http.tunnel.configuration;
+package com.liferay.portal.remote.http.tunnel.configuration;
 
 import aQute.bnd.annotation.metatype.Meta;
 
@@ -23,7 +23,7 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
  */
 @ExtendedObjectClassDefinition(category = "platform")
 @Meta.OCD(
-	id = "com.liferay.portal.http.tunnel.configuration.HttpTunnelExtenderConfiguration",
+	id = "com.liferay.portal.remote.http.tunnel.configuration.HttpTunnelExtenderConfiguration",
 	localization = "content/Language",
 	name = "%http.tunnel.extender.configuration.name"
 )
