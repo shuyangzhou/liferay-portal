@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.json.web.service.extender.internal;
+package com.liferay.portal.remote.json.web.service.extender.internal;
 
 import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceActionsManager;
