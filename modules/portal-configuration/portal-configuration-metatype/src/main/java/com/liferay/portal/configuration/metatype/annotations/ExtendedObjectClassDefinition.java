@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.metatype.annotations;
+package com.liferay.portal.configuration.metatype.annotations;
 
 import aQute.bnd.annotation.xml.XMLAttribute;
 

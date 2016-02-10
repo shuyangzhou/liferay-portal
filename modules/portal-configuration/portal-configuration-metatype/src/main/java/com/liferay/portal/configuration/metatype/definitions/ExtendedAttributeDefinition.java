@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.metatype.definitions;
+package com.liferay.portal.configuration.metatype.definitions;
 
 import java.util.Map;
 import java.util.Set;
