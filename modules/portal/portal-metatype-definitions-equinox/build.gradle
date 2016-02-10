@@ -1,6 +1,6 @@
 dependencies {
 	compile group: "org.eclipse.equinox", name: "org.eclipse.equinox.metatype", version: "1.4.200-20150831.175616-1"
-	compile project(":portal:portal-metatype")
+	compile project(":portal-configuration:portal-configuration-metatype")
 }
 
 liferay {

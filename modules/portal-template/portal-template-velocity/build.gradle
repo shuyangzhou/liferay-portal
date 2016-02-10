@@ -15,7 +15,7 @@ dependencies {
 	provided group: "org.osgi", name: "org.osgi.core", version: "5.0.0"
 	provided group: "velocity-tools", name: "velocity-tools", version: "1.4"
 	provided project(":core:registry-api")
-	provided project(":portal:portal-metatype")
+	provided project(":portal-configuration:portal-configuration-metatype")
 }
 
 liferay {

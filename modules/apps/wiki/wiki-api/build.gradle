@@ -3,7 +3,7 @@ dependencies {
 	compile group: "com.liferay", name: "com.liferay.osgi.util", version: "2.0.7"
 	compile project(":apps:item-selector:item-selector-api")
 	compile project(":apps:item-selector:item-selector-criteria-api")
-	compile project(":portal:portal-metatype")
+	compile project(":portal-configuration:portal-configuration-metatype")
 	compile project(":portal:portal-settings")
 }
 

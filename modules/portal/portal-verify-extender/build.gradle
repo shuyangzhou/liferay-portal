@@ -4,7 +4,7 @@ dependencies {
 	compile group: "com.liferay.portal", name: "portal-service", version: liferay.portalVersion
 	compile group: "org.glassfish", name: "javax.servlet", transitive: false, version: "3.2-b06"
 	compile project(":core:osgi-service-tracker-collections")
-	compile project(":portal:portal-metatype")
+	compile project(":portal-configuration:portal-configuration-metatype")
 	compile project(":portal:portal-output-stream-container")
 }
 

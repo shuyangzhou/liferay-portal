@@ -11,7 +11,7 @@ dependencies {
 	compile project(":apps:trash:trash-taglib")
 	compile project(":apps:wiki:wiki-service")
 	compile project(":frontend:frontend-taglib")
-	compile project(":portal:portal-metatype")
+	compile project(":portal-configuration:portal-configuration-metatype")
 	compile project(":portal:portal-upgrade")
 }
 

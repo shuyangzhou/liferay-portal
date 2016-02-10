@@ -1,5 +1,5 @@
 dependencies {
-	compile project(":portal:portal-metatype")
+	compile project(":portal-configuration:portal-configuration-metatype")
 }
 
 liferay {
