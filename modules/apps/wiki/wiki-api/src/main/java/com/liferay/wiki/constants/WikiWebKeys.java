@@ -22,6 +22,8 @@ public class WikiWebKeys {
 	public static final String DL_MIME_TYPE_DISPLAY_CONTEXT =
 		"DL_MIME_TYPE_DISPLAY_CONTEXT";
 
+	public static final String SHOW_SIDEBAR_HEADER = "SHOW_SIDEBAR_HEADER";
+
 	public static final String WIKI_NODE = "WIKI_NODE";
 
 	public static final String WIKI_NODE_ID = "WIKI_NODE_ID";
