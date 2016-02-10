@@ -99,6 +99,7 @@ Liferay-Releng-Dependent-Apps:\
 	com.liferay.portal.remote.json.web.service.extender:1.0.0,\
 	com.liferay.portal.remote.rest.extender:1.0.0,\
 	com.liferay.portal.remote.rest.extender.test:1.0.0,\
+	com.liferay.portal.remote.soap.extender:1.0.0,\
 	com.liferay.portal.rtl.servlet:1.0.0,\
 	com.liferay.portal.scheduler.quartz:1.0.0,\
 	com.liferay.portal.scheduler.single:1.0.0,\
@@ -127,7 +128,6 @@ Liferay-Releng-Dependent-Apps:\
 	com.liferay.portal.settings.web:1.0.0,\
 	com.liferay.portal.settings:1.0.0,\
 	com.liferay.portal.soap.extender.test:1.0.0,\
-	com.liferay.portal.soap.extender:1.0.0,\
 	com.liferay.portal.spring.extender:1.0.0,\
 	com.liferay.portal.store.cmis.test:1.0.0,\
 	com.liferay.portal.store.cmis:1.0.0,\
