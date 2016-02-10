@@ -224,19 +224,40 @@ public class PortletImpl extends PortletBaseImpl {
 
 		_socialRequestInterpreterClass = socialRequestInterpreterClass;
 		_userNotificationDefinitions = userNotificationDefinitions;
-		_userNotificationHandlerClasses = userNotificationHandlerClasses;
+
+		if (!userNotificationHandlerClasses.isEmpty()) {
+			_userNotificationHandlerClasses = userNotificationHandlerClasses;
+		}
+
 		_webDAVStorageToken = webDAVStorageToken;
 		_webDAVStorageClass = webDAVStorageClass;
 		_xmlRpcMethodClass = xmlRpcMethodClass;
 		_controlPanelEntryCategory = controlPanelEntryCategory;
 		_controlPanelEntryWeight = controlPanelEntryWeight;
 		_controlPanelEntryClass = controlPanelClass;
-		_assetRendererFactoryClasses = assetRendererFactoryClasses;
-		_atomCollectionAdapterClasses = atomCollectionAdapterClasses;
-		_customAttributesDisplayClasses = customAttributesDisplayClasses;
+
+		if (!assetRendererFactoryClasses.isEmpty()) {
+			_assetRendererFactoryClasses = assetRendererFactoryClasses;
+		}
+
+		if (!atomCollectionAdapterClasses.isEmpty()) {
+			_atomCollectionAdapterClasses = atomCollectionAdapterClasses;
+		}
+
+		if (!customAttributesDisplayClasses.isEmpty()) {
+			_customAttributesDisplayClasses = customAttributesDisplayClasses;
+		}
+
 		_permissionPropagatorClass = permissionPropagatorClass;
-		_trashHandlerClasses = trashHandlerClasses;
-		_workflowHandlerClasses = workflowHandlerClasses;
+
+		if (!trashHandlerClasses.isEmpty()) {
+			_trashHandlerClasses = trashHandlerClasses;
+		}
+
+		if (!workflowHandlerClasses.isEmpty()) {
+			_workflowHandlerClasses = workflowHandlerClasses;
+		}
+
 		_defaultPreferences = defaultPreferences;
 		_preferencesValidator = preferencesValidator;
 		_preferencesCompanyWide = preferencesCompanyWide;
@@ -258,35 +279,89 @@ public class PortletImpl extends PortletBaseImpl {
 		_userPrincipalStrategy = userPrincipalStrategy;
 		_privateRequestAttributes = privateRequestAttributes;
 		_privateSessionAttributes = privateSessionAttributes;
-		_autopropagatedParameters = autopropagatedParameters;
+
+		if (!autopropagatedParameters.isEmpty()) {
+			_autopropagatedParameters = autopropagatedParameters;
+		}
+
 		_requiresNamespacedParameters = requiresNamespacedParameters;
 		_actionTimeout = actionTimeout;
 		_renderTimeout = renderTimeout;
 		_renderWeight = renderWeight;
 		_ajaxable = ajaxable;
-		_headerPortalCss = headerPortalCss;
-		_headerPortletCss = headerPortletCss;
-		_headerPortalJavaScript = headerPortalJavaScript;
-		_headerPortletJavaScript = headerPortletJavaScript;
-		_footerPortalCss = footerPortalCss;
-		_footerPortletCss = footerPortletCss;
-		_footerPortalJavaScript = footerPortalJavaScript;
-		_footerPortletJavaScript = footerPortletJavaScript;
+
+		if (!headerPortalCss.isEmpty()) {
+			_headerPortalCss = headerPortalCss;
+		}
+
+		if (!headerPortletCss.isEmpty()) {
+			_headerPortletCss = headerPortletCss;
+		}
+
+		if (!headerPortalJavaScript.isEmpty()) {
+			_headerPortalJavaScript = headerPortalJavaScript;
+		}
+
+		if (!headerPortletJavaScript.isEmpty()) {
+			_headerPortletJavaScript = headerPortletJavaScript;
+		}
+
+		if (!footerPortalCss.isEmpty()) {
+			_footerPortalCss = footerPortalCss;
+		}
+
+		if (!footerPortletCss.isEmpty()) {
+			_footerPortletCss = footerPortletCss;
+		}
+
+		if (!footerPortalJavaScript.isEmpty()) {
+			_footerPortalJavaScript = footerPortalJavaScript;
+		}
+
+		if (!footerPortletJavaScript.isEmpty()) {
+			_footerPortletJavaScript = footerPortletJavaScript;
+		}
+
 		_cssClassWrapper = cssClassWrapper;
 		_facebookIntegration = facebookIntegration;
 		_addDefaultResource = addDefaultResource;
-		_unlinkedRoles = unlinkedRoles;
-		_roleMappers = roleMappers;
+
+		if (!unlinkedRoles.isEmpty()) {
+			_unlinkedRoles = unlinkedRoles;
+		}
+
+		if (!roleMappers.isEmpty()) {
+			_roleMappers = roleMappers;
+		}
+
 		_system = system;
 		_include = include;
-		_initParams = initParams;
+
+		if (!initParams.isEmpty()) {
+			_initParams = initParams;
+		}
+
 		_expCache = expCache;
-		_portletModes = portletModes;
-		_windowStates = windowStates;
-		_supportedLocales = supportedLocales;
+
+		if (!portletModes.isEmpty()) {
+			_portletModes = portletModes;
+		}
+
+		if (!windowStates.isEmpty()) {
+			_windowStates = windowStates;
+		}
+
+		if (!supportedLocales.isEmpty()) {
+			_supportedLocales = supportedLocales;
+		}
+
 		_resourceBundle = resourceBundle;
 		_portletInfo = portletInfo;
-		_portletFilters = portletFilters;
+
+		if (!portletFilters.isEmpty()) {
+			_portletFilters = portletFilters;
+		}
+
 		_portletApp = portletApp;
 	}
 
