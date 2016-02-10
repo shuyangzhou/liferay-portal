@@ -12,12 +12,12 @@
  * details.
  */
 
-package com.liferay.portal.soap.extender.internal;
+package com.liferay.portal.remote.soap.extender.internal;
 
 import aQute.bnd.annotation.metatype.Configurable;
 
 import com.liferay.osgi.util.ServiceTrackerFactory;
-import com.liferay.portal.soap.extender.configuration.JaxWsApiConfiguration;
+import com.liferay.portal.remote.soap.extender.configuration.JaxWsApiConfiguration;
 
 import java.util.Dictionary;
 import java.util.Hashtable;
@@ -43,7 +43,7 @@ import org.osgi.util.tracker.ServiceTracker;
  * @author Carlos Sierra Andrés
  */
 @Component(
-	configurationPid = "com.liferay.portal.soap.extender.configuration.JaxWsApiConfiguration",
+	configurationPid = "com.liferay.portal.remote.soap.extender.configuration.JaxWsApiConfiguration",
 	configurationPolicy = ConfigurationPolicy.REQUIRE
 )
 public class JaxWsApiEnabler {
