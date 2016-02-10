@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.rest.extender.internal;
+package com.liferay.portal.remote.rest.extender.internal;
 
 import java.util.ArrayList;
 import java.util.Collection;
