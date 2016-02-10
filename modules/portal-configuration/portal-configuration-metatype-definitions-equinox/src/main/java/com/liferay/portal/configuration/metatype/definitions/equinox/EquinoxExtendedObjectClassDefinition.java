@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.metatype.definitions.equinox;
+package com.liferay.portal.configuration.metatype.definitions.equinox;
 
 import com.liferay.portal.configuration.metatype.definitions.ExtendedAttributeDefinition;
 import com.liferay.portal.configuration.metatype.definitions.ExtendedObjectClassDefinition;
