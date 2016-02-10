@@ -16,8 +16,8 @@ package com.liferay.portal.configuration.settings;
 
 import aQute.bnd.annotation.metatype.Configurable;
 
+import com.liferay.portal.configuration.settings.util.ConfigurationPidUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
-import com.liferay.portal.settings.util.ConfigurationPidUtil;
 
 import java.security.AccessController;
 import java.security.PrivilegedAction;

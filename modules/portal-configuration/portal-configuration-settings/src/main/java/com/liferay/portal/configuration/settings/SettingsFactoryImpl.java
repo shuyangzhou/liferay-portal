@@ -14,6 +14,7 @@
 
 package com.liferay.portal.configuration.settings;
 
+import com.liferay.portal.configuration.settings.util.ConfigurationPidUtil;
 import com.liferay.portal.kernel.exception.NoSuchPortletItemException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
@@ -35,7 +36,6 @@ import com.liferay.portal.kernel.settings.SettingsLocator;
 import com.liferay.portal.kernel.settings.SettingsLocatorHelper;
 import com.liferay.portal.kernel.settings.definition.ConfigurationBeanDeclaration;
 import com.liferay.portal.kernel.settings.definition.ConfigurationPidMapping;
-import com.liferay.portal.settings.util.ConfigurationPidUtil;
 
 import java.util.ArrayList;
 import java.util.List;
