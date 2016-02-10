@@ -14,21 +14,20 @@
 
 package com.liferay.frontend.taglib.servlet.taglib;
 
-import com.liferay.frontend.taglib.servlet.ServletContextUtil;
-import com.liferay.taglib.util.IncludeTag;
+import com.liferay.frontend.taglib.servlet.taglib.base.BaseBarTag;
 
-import javax.servlet.jsp.PageContext;
+import javax.servlet.jsp.JspException;
 
 /**
  * @author Roberto Díaz
  */
-public class InfoBarTag extends IncludeTag {
+public class InfoBarTag extends BaseBarTag {
 
 	@Override
-	public void setPageContext(PageContext pageContext) {
-		super.setPageContext(pageContext);
+	public int doEndTag() throws JspException {
+		request.setAttribute("liferay-frontend:info-bar:buttons", buttons);
 
-		servletContext = ServletContextUtil.getServletContext();
+		return super.doEndTag();
 	}
 
 	@Override
