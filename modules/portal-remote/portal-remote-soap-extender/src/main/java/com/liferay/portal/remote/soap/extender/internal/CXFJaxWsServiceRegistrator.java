@@ -12,9 +12,9 @@
  * details.
  */
 
-package com.liferay.portal.soap.extender.internal;
+package com.liferay.portal.remote.soap.extender.internal;
 
-import com.liferay.portal.soap.extender.SoapDescriptorBuilder;
+import com.liferay.portal.remote.soap.extender.SoapDescriptorBuilder;
 
 import java.util.ArrayList;
 import java.util.Collection;
