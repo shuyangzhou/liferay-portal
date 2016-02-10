@@ -45,7 +45,7 @@ public class ConfigurationAdminBundleActivator implements BundleActivator {
 				serviceReference);
 
 			_cxfConfiguration = configurationAdmin.createFactoryConfiguration(
-				"com.liferay.portal.cxf.common.configuration." +
+				"com.liferay.portal.remote.cxf.common.configuration." +
 					"CXFEndpointPublisherConfiguration",
 				null);
 
