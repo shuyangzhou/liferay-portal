@@ -70,7 +70,6 @@ Liferay-Releng-Dependent-Apps:\
 	com.liferay.portal.executor:1.0.0,\
 	com.liferay.portal.expression:1.0.0,\
 	com.liferay.portal.http.service.api:1.0.0,\
-	com.liferay.portal.http.tunnel.extender:1.0.0,\
 	com.liferay.portal.instances.web:1.0.0,\
 	com.liferay.portal.jmx:1.0.0,\
 	com.liferay.portal.js.bundle.config.extender:1.0.0,\
@@ -97,6 +96,7 @@ Liferay-Releng-Dependent-Apps:\
 	com.liferay.portal.pop.notifications:1.0.0,\
 	com.liferay.portal.portlet.bridge.soy:1.0.0,\
 	com.liferay.portal.remote.dependency.manager.tccl:1.0.0,\
+	com.liferay.portal.remote.http.tunnel.extender:1.0.0,\
 	com.liferay.portal.rest.extender.test:1.0.0,\
 	com.liferay.portal.rest.extender:1.0.0,\
 	com.liferay.portal.rtl.servlet:1.0.0,\
