@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.settings;
+package com.liferay.portal.configuration.settings;
 
 import aQute.bnd.annotation.metatype.Configurable;
 
