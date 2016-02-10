@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.json.web.service.extender.test;
+package com.liferay.portal.remote.json.web.service.extender.test;
 
 import java.util.Dictionary;
 import java.util.Hashtable;
