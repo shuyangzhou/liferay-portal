@@ -4,7 +4,7 @@ dependencies {
 	compile project(":apps:item-selector:item-selector-api")
 	compile project(":apps:item-selector:item-selector-criteria-api")
 	compile project(":portal:portal-metatype")
-	compile project(":portal:portal-settings")
+	compile project(":portal-configuration:portal-configuration-settings")
 }
 
 liferay {
