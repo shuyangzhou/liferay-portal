@@ -16,7 +16,7 @@ package com.liferay.portal.security.sso.ntlm.configuration;
 
 import aQute.bnd.annotation.metatype.Meta;
 
-import com.liferay.portal.metatype.annotations.ExtendedObjectClassDefinition;
+import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
 
 /**
  * Defines the configuration property keys and sensible default values.

@@ -14,8 +14,8 @@
 
 package com.liferay.portal.metatype.definitions.equinox;
 
-import com.liferay.portal.metatype.definitions.ExtendedMetaTypeInformation;
-import com.liferay.portal.metatype.definitions.ExtendedObjectClassDefinition;
+import com.liferay.portal.configuration.metatype.definitions.ExtendedMetaTypeInformation;
+import com.liferay.portal.configuration.metatype.definitions.ExtendedObjectClassDefinition;
 
 import org.osgi.framework.Bundle;
 import org.osgi.service.metatype.MetaTypeInformation;

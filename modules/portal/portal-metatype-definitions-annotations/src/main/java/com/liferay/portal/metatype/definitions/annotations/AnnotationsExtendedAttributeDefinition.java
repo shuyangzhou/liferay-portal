@@ -14,7 +14,7 @@
 
 package com.liferay.portal.metatype.definitions.annotations;
 
-import com.liferay.portal.metatype.definitions.ExtendedAttributeDefinition;
+import com.liferay.portal.configuration.metatype.definitions.ExtendedAttributeDefinition;
 
 import java.util.Collections;
 import java.util.HashMap;

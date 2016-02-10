@@ -14,7 +14,7 @@
 
 package com.liferay.portal.metatype.definitions.equinox;
 
-import com.liferay.portal.metatype.definitions.ExtendedAttributeDefinition;
+import com.liferay.portal.configuration.metatype.definitions.ExtendedAttributeDefinition;
 
 import java.util.Map;
 import java.util.Set;

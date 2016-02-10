@@ -14,12 +14,12 @@
 
 package com.liferay.configuration.admin.web.model;
 
+import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
+import com.liferay.portal.configuration.metatype.definitions.ExtendedAttributeDefinition;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.metatype.annotations.ExtendedObjectClassDefinition;
-import com.liferay.portal.metatype.definitions.ExtendedAttributeDefinition;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,15 +37,14 @@ import org.osgi.service.metatype.ObjectClassDefinition;
  * @author Raymond Augé
  */
 public class ConfigurationModel
-	implements
-		com.liferay.portal.metatype.definitions.ExtendedObjectClassDefinition {
+	implements com.liferay.portal.configuration.metatype.definitions.ExtendedObjectClassDefinition {
 
 	public static final String PROPERTY_KEY_COMPANY_ID = "companyId";
 
 	public static final String PROPERTY_VALUE_COMPANY_ID_DEFAULT = "0";
 
 	public ConfigurationModel(
-		com.liferay.portal.metatype.definitions.ExtendedObjectClassDefinition
+		com.liferay.portal.configuration.metatype.definitions.ExtendedObjectClassDefinition
 			extendedObjectClassDefinition,
 		Configuration configuration, String bundleLocation, boolean factory) {
 
@@ -103,7 +102,7 @@ public class ConfigurationModel
 		return null;
 	}
 
-	public com.liferay.portal.metatype.definitions.ExtendedObjectClassDefinition
+	public com.liferay.portal.configuration.metatype.definitions.ExtendedObjectClassDefinition
 		getExtendedObjectClassDefinition() {
 
 		return _extendedObjectClassDefinition;
@@ -254,9 +253,8 @@ public class ConfigurationModel
 
 	private final String _bundleLocation;
 	private final Configuration _configuration;
-	private final
-		com.liferay.portal.metatype.definitions.ExtendedObjectClassDefinition
-			_extendedObjectClassDefinition;
+	private final com.liferay.portal.configuration.metatype.definitions.ExtendedObjectClassDefinition
+		_extendedObjectClassDefinition;
 	private final boolean _factory;
 
 }

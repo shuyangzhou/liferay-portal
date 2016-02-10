@@ -29,10 +29,10 @@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 <%@ page import="com.liferay.configuration.admin.web.constants.ConfigurationAdminWebKeys" %><%@
 page import="com.liferay.configuration.admin.web.model.ConfigurationModel" %><%@
 page import="com.liferay.configuration.admin.web.util.ConfigurationModelIterator" %><%@
+page import="com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
 page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
-page import="com.liferay.portal.kernel.util.Validator" %><%@
-page import="com.liferay.portal.metatype.annotations.ExtendedObjectClassDefinition" %>
+page import="com.liferay.portal.kernel.util.Validator" %>
 
 <%@ page import="java.util.List" %>
 

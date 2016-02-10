@@ -14,8 +14,8 @@
 
 package com.liferay.portal.metatype.definitions.annotations;
 
-import com.liferay.portal.metatype.annotations.ExtendedObjectClassDefinition;
-import com.liferay.portal.metatype.definitions.ExtendedAttributeDefinition;
+import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
+import com.liferay.portal.configuration.metatype.definitions.ExtendedAttributeDefinition;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,8 +34,7 @@ import org.osgi.service.metatype.ObjectClassDefinition;
  * @author Iván Zaera
  */
 public class AnnotationsExtendedObjectClassDefinition
-	implements
-		com.liferay.portal.metatype.definitions.ExtendedObjectClassDefinition {
+	implements com.liferay.portal.configuration.metatype.definitions.ExtendedObjectClassDefinition {
 
 	public AnnotationsExtendedObjectClassDefinition(
 		Bundle bundle, ObjectClassDefinition objectClassDefinition) {
