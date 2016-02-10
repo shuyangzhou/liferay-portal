@@ -16,7 +16,7 @@ package com.liferay.portal.soap.extender.internal;
 
 import aQute.bnd.annotation.metatype.Configurable;
 
-import com.liferay.portal.dependency.manager.tccl.TCCLDependencyManager;
+import com.liferay.portal.remote.dependency.manager.tccl.TCCLDependencyManager;
 import com.liferay.portal.soap.extender.SoapDescriptorBuilder;
 import com.liferay.portal.soap.extender.configuration.SoapExtenderConfiguration;
 
