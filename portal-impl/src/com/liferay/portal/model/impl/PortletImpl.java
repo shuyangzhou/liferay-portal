@@ -618,12 +618,8 @@ public class PortletImpl extends PortletBaseImpl {
 
 		Set<String> allPortletModes = new TreeSet<>();
 
-		for (Map.Entry<String, Set<String>> entry : _portletModes.entrySet()) {
-			Set<String> mimeTypePortletModes = entry.getValue();
-
-			for (String portletMode : mimeTypePortletModes) {
-				allPortletModes.add(portletMode);
-			}
+		for (Set<String> mimeTypePortletModes : _portletModes.values()) {
+			allPortletModes.addAll(mimeTypePortletModes);
 		}
 
 		return allPortletModes;
