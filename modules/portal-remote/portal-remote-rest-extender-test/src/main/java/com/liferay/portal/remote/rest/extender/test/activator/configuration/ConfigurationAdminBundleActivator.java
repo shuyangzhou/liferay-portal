@@ -12,11 +12,11 @@
  * details.
  */
 
-package com.liferay.portal.rest.extender.test.activator.configuration;
+package com.liferay.portal.remote.rest.extender.test.activator.configuration;
 
 import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.rest.extender.test.service.Greeter;
+import com.liferay.portal.remote.rest.extender.test.service.Greeter;
 
 import java.util.Dictionary;
 import java.util.Hashtable;
@@ -67,7 +67,7 @@ public class ConfigurationAdminBundleActivator implements BundleActivator {
 			_cxfConfiguration.update(properties);
 
 			_restConfiguration = configurationAdmin.createFactoryConfiguration(
-				"com.liferay.portal.rest.extender.configuration." +
+				"com.liferay.portal.remote.rest.extender.configuration." +
 					"RestExtenderConfiguration",
 				null);
 
