@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.dependency.manager.tccl;
+package com.liferay.portal.remote.dependency.manager.tccl;
 
 import org.apache.felix.dm.DependencyService;
 import org.apache.felix.dm.impl.Logger;
