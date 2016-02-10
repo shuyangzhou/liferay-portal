@@ -1,4 +1,4 @@
-Bundle-Activator: com.liferay.portal.cxf.jaxrs.common.activator.CXFJaxRsBundleActivator
+Bundle-Activator: com.liferay.portal.remote.cxf.jaxrs.common.activator.CXFJaxRsBundleActivator
 Bundle-ClassPath:\
 	.,\
 	lib/cxf-rt-frontend-jaxrs.jar,\
@@ -7,8 +7,8 @@ Bundle-ClassPath:\
 	lib/javax.json-api.jar,\
 	lib/javax.ws.rs-api.jar,\
 	lib/jettison.jar
-Bundle-Name: Liferay Portal CXF JAX-RS Common
-Bundle-SymbolicName: com.liferay.portal.cxf.jaxrs.common
+Bundle-Name: Liferay Portal Remote CXF JAX-RS Common
+Bundle-SymbolicName: com.liferay.portal.remote.cxf.jaxrs.common
 Bundle-Version: 1.0.0
 Export-Package:\
 	javax.json.*,\
