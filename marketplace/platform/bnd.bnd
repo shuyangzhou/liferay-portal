@@ -98,7 +98,7 @@ Liferay-Releng-Dependent-Apps:\
 	com.liferay.portal.remote.http.tunnel.extender:1.0.0,\
 	com.liferay.portal.remote.json.web.service.extender:1.0.0,\
 	com.liferay.portal.remote.rest.extender:1.0.0,\
-	com.liferay.portal.rest.extender.test:1.0.0,\
+	com.liferay.portal.remote.rest.extender.test:1.0.0,\
 	com.liferay.portal.rtl.servlet:1.0.0,\
 	com.liferay.portal.scheduler.quartz:1.0.0,\
 	com.liferay.portal.scheduler.single:1.0.0,\
