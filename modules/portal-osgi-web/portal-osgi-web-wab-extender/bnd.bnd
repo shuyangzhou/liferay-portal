@@ -1,4 +1,4 @@
-Bundle-Name: Liferay Portal WAB Extender
+Bundle-Name: Liferay Portal OSGI WEB WAB Extender
 Bundle-SymbolicName: com.liferay.portal.wab.extender
 Bundle-Version: 1.0.0
 Export-Package: com.liferay.portal.wab.extender.ws.axis
