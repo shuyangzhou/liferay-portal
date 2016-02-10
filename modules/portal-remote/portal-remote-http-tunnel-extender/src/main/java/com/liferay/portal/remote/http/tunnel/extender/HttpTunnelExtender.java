@@ -12,12 +12,12 @@
  * details.
  */
 
-package com.liferay.portal.http.tunnel.extender;
+package com.liferay.portal.remote.http.tunnel.extender;
 
 import aQute.bnd.annotation.metatype.Configurable;
 
-import com.liferay.portal.http.tunnel.configuration.HttpTunnelExtenderConfiguration;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.remote.http.tunnel.configuration.HttpTunnelExtenderConfiguration;
 import com.liferay.portal.servlet.TunnelServlet;
 import com.liferay.portal.servlet.filters.authverifier.AuthVerifierFilter;
 
@@ -49,7 +49,7 @@ import org.osgi.service.http.whiteboard.HttpWhiteboardConstants;
  * @author Miguel Pastor
  */
 @Component(
-	configurationPid = "com.liferay.portal.http.tunnel.configuration.HttpTunnelExtenderConfiguration",
+	configurationPid = "com.liferay.portal.remote.http.tunnel.configuration.HttpTunnelExtenderConfiguration",
 	configurationPolicy = ConfigurationPolicy.REQUIRE, immediate = true
 )
 public class HttpTunnelExtender extends AbstractExtender {
