@@ -11,8 +11,8 @@ Bundle-ClassPath:\
 	lib/woodstox-core-asl.jar,\
 	lib/wsdl4j.jar,\
 	lib/xmlschema-core.jar
-Bundle-Name: Liferay Portal CXF Common
-Bundle-SymbolicName: com.liferay.portal.cxf.common
+Bundle-Name: Liferay Portal Remote CXF Common
+Bundle-SymbolicName: com.liferay.portal.remote.cxf.common
 Bundle-Version: 1.0.0
 Export-Package: \
 	javax.wsdl.*;version="1.2",\

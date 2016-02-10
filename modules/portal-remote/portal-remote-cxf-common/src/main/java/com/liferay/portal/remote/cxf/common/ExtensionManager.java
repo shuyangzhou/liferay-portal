@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.cxf.common;
+package com.liferay.portal.remote.cxf.common;
 
 import java.util.HashMap;
 import java.util.Map;

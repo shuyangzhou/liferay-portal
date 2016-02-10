@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.cxf.common.configuration;
+package com.liferay.portal.remote.cxf.common.configuration;
 
 import aQute.bnd.annotation.metatype.Meta;
 
@@ -26,7 +26,7 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 )
 @Meta.OCD(
 	factory = true,
-	id = "com.liferay.portal.cxf.common.configuration.CXFEndpointPublisherConfiguration",
+	id = "com.liferay.portal.remote.cxf.common.configuration.CXFEndpointPublisherConfiguration",
 	localization = "content/Language", name = "%cxf.endpoint.configuration.name"
 )
 public interface CXFEndpointPublisherConfiguration {

@@ -12,12 +12,12 @@
  * details.
  */
 
-package com.liferay.portal.cxf.common;
+package com.liferay.portal.remote.cxf.common;
 
 import aQute.bnd.annotation.metatype.Configurable;
 
-import com.liferay.portal.cxf.common.configuration.CXFEndpointPublisherConfiguration;
 import com.liferay.portal.kernel.security.access.control.AccessControlThreadLocal;
+import com.liferay.portal.remote.cxf.common.configuration.CXFEndpointPublisherConfiguration;
 import com.liferay.portal.servlet.filters.authverifier.AuthVerifierFilter;
 
 import java.io.IOException;
@@ -58,7 +58,7 @@ import org.slf4j.LoggerFactory;
  * @author Carlos Sierra Andrés
  */
 @Component(
-	configurationPid = "com.liferay.portal.cxf.common.configuration.CXFEndpointPublisherConfiguration",
+	configurationPid = "com.liferay.portal.remote.cxf.common.configuration.CXFEndpointPublisherConfiguration",
 	configurationPolicy = ConfigurationPolicy.REQUIRE
 )
 public class CXFEndpointPublisher {
