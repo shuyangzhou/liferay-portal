@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.servlet.jsp.compiler.internal;
+package com.liferay.portal.osgi.web.servlet.jsp.compiler.internal;
 
 import java.util.Collection;
 

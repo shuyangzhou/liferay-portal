@@ -12,14 +12,14 @@
  * details.
  */
 
-package com.liferay.portal.servlet.jsp.compiler;
+package com.liferay.portal.osgi.web.servlet.jsp.compiler;
 
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.servlet.jsp.compiler.internal.JspBundleClassloader;
-import com.liferay.portal.servlet.jsp.compiler.internal.JspTagHandlerPool;
+import com.liferay.portal.osgi.web.servlet.jsp.compiler.internal.JspBundleClassloader;
+import com.liferay.portal.osgi.web.servlet.jsp.compiler.internal.JspTagHandlerPool;
 import com.liferay.taglib.servlet.JspFactorySwapper;
 
 import java.io.File;
@@ -191,7 +191,7 @@ public class JspServlet extends HttpServlet {
 
 		defaults.put(
 			"compilerClassName",
-			"com.liferay.portal.servlet.jsp.compiler.internal.JspCompiler");
+			"com.liferay.portal.osgi.web.servlet.jsp.compiler.internal.JspCompiler");
 		defaults.put("compilerSourceVM", "1.7");
 		defaults.put("compilerTargetVM", "1.7");
 		defaults.put("development", "false");

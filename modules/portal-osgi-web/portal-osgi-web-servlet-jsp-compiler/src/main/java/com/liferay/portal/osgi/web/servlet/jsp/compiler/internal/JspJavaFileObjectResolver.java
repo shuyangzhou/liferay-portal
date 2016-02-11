@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.servlet.jsp.compiler.internal;
+package com.liferay.portal.osgi.web.servlet.jsp.compiler.internal;
 
 import com.liferay.portal.kernel.concurrent.ConcurrentReferenceValueHashMap;
 import com.liferay.portal.kernel.memory.FinalizeManager;

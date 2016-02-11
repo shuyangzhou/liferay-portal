@@ -608,7 +608,7 @@ public class WabBundleProcessor implements ServletContextListener {
 		}
 
 		private final Servlet _servlet =
-			new com.liferay.portal.servlet.jsp.compiler.JspServlet();
+			new com.liferay.portal.osgi.web.servlet.jsp.compiler.JspServlet();
 
 	}
 

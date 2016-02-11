@@ -63,7 +63,7 @@ import com.liferay.portal.kernel.xml.QName;
 import com.liferay.portal.kernel.xml.SAXReader;
 import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.model.impl.PublicRenderParameterImpl;
-import com.liferay.portal.servlet.jsp.compiler.JspServlet;
+import com.liferay.portal.osgi.web.servlet.jsp.compiler.JspServlet;
 import com.liferay.portal.util.WebAppPool;
 import com.liferay.portlet.PortletBagFactory;
 import com.liferay.portlet.PortletContextBag;

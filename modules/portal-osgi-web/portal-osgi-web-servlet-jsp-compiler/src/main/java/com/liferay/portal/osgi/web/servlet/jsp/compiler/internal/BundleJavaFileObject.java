@@ -12,39 +12,43 @@
  * details.
  */
 
-package com.liferay.portal.servlet.jsp.compiler.internal;
+package com.liferay.portal.osgi.web.servlet.jsp.compiler.internal;
 
-import com.liferay.portal.kernel.zip.ZipFileUtil;
+import com.liferay.portal.kernel.util.ReflectionUtil;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 /**
  * @author Shuyang Zhou
  */
-public class JarJavaFileObject extends BaseJavaFileObject {
+public class BundleJavaFileObject extends BaseJavaFileObject {
 
-	public JarJavaFileObject(String className, File file, String entryName) {
+	public BundleJavaFileObject(String className, URL url) {
 		super(Kind.CLASS, className);
 
-		_file = file;
-		_entryName = entryName;
+		_url = url;
 	}
 
 	@Override
 	public InputStream openInputStream() throws IOException {
-		return ZipFileUtil.openInputStream(_file, _entryName);
+		return _url.openStream();
 	}
 
 	@Override
 	public URI toUri() {
-		return _file.toURI();
+		try {
+			return _url.toURI();
+		}
+		catch (URISyntaxException urise) {
+			return ReflectionUtil.throwException(urise);
+		}
 	}
 
-	private final String _entryName;
-	private final File _file;
+	private final URL _url;
 
 }

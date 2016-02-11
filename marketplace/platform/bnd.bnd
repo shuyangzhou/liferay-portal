@@ -119,7 +119,7 @@ Liferay-Releng-Dependent-Apps:\
 	com.liferay.portal.security.sso.openid:1.0.0,\
 	com.liferay.portal.security.sso.opensso:1.0.0,\
 	com.liferay.portal.security.sso.token:1.0.0,\
-	com.liferay.portal.servlet.jsp.compiler:1.0.0,\
+	com.liferay.portal.osgi.web.servlet.jsp.compiler:1.0.0,\
 	com.liferay.portal.servlet.jstl:1.0.0,\
 	com.liferay.portal.settings.api:1.0.0,\
 	com.liferay.portal.settings.web:1.0.0,\
