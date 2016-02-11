@@ -50,6 +50,7 @@ import java.lang.reflect.Constructor;
 import java.security.PrivilegedAction;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -116,6 +117,12 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 			throw new IllegalArgumentException();
 		}
 
+		if (_headers == null) {
+			setDateHeader(name, date);
+
+			return;
+		}
+
 		Long[] values = (Long[])_headers.get(name);
 
 		if (values == null) {
@@ -132,6 +139,12 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 	public void addHeader(String name, String value) {
 		if (Validator.isNull(name)) {
 			throw new IllegalArgumentException();
+		}
+
+		if (_headers == null) {
+			setHeader(name, value);
+
+			return;
 		}
 
 		String[] values = (String[])_headers.get(name);
@@ -152,6 +165,12 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 			throw new IllegalArgumentException();
 		}
 
+		if (_headers == null) {
+			setIntHeader(name, value);
+
+			return;
+		}
+
 		Integer[] values = (Integer[])_headers.get(name);
 
 		if (values == null) {
@@ -168,6 +187,10 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 	public void addProperty(Cookie cookie) {
 		if (cookie == null) {
 			throw new IllegalArgumentException();
+		}
+
+		if (_headers == null) {
+			_headers = new LinkedHashMap<>();
 		}
 
 		Cookie[] cookies = (Cookie[])_headers.get("cookies");
@@ -191,24 +214,29 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 		if (StringUtil.equalsIgnoreCase(
 				key, MimeResponse.MARKUP_HEAD_ELEMENT)) {
 
-			List<Element> values = _markupHeadElements.get(key);
-
-			if (values != null) {
-				if (element != null) {
-					values.add(element);
-				}
-				else {
+			if (element == null) {
+				if (_markupHeadElements != null) {
 					_markupHeadElements.remove(key);
 				}
+
+				return;
+			}
+
+			if (_markupHeadElements == null) {
+				_markupHeadElements = new LinkedHashMap<>();
+			}
+
+			List<Element> values = _markupHeadElements.get(key);
+
+			if (values == null) {
+				values = new ArrayList<>();
+
+				values.add(element);
+
+				_markupHeadElements.put(key, values);
 			}
 			else {
-				if (element != null) {
-					values = new ArrayList<>();
-
-					values.add(element);
-
-					_markupHeadElements.put(key, values);
-				}
+				values.add(element);
 			}
 		}
 	}
@@ -318,7 +346,7 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 		}
 
 		if (_urlEncoder != null) {
-			return _urlEncoder.encodeURL(_response, path);
+			return _urlEncoder.encodeURL(response, path);
 		}
 		else {
 			return path;
@@ -330,22 +358,18 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 	}
 
 	public HttpServletRequest getHttpServletRequest() {
-		return _portletRequestImpl.getHttpServletRequest();
+		return portletRequestImpl.getHttpServletRequest();
 	}
 
 	@Override
 	public HttpServletResponse getHttpServletResponse() {
-		return _response;
+		return response;
 	}
 
 	public abstract String getLifecycle();
 
 	@Override
 	public String getNamespace() {
-		if (_wsrp) {
-			return "wsrp_rewrite_";
-		}
-
 		if (_namespace == null) {
 			_namespace = PortalUtil.getPortletNamespace(_portletName);
 		}
@@ -377,11 +401,15 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 	}
 
 	public PortletRequestImpl getPortletRequest() {
-		return _portletRequestImpl;
+		return portletRequestImpl;
 	}
 
 	@Override
 	public Map<String, String[]> getProperties() {
+		if (_headers == null) {
+			return Collections.emptyMap();
+		}
+
 		Map<String, String[]> properties = new LinkedHashMap<>();
 
 		for (Map.Entry<String, Object> entry : _headers.entrySet()) {
@@ -411,9 +439,15 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 		}
 
 		if (date <= 0) {
-			_headers.remove(name);
+			if (_headers != null) {
+				_headers.remove(name);
+			}
 		}
 		else {
+			if (_headers == null) {
+				_headers = new LinkedHashMap<>();
+			}
+
 			_headers.put(name, new Long[] {Long.valueOf(date)});
 		}
 	}
@@ -425,9 +459,15 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 		}
 
 		if (Validator.isNull(value)) {
-			_headers.remove(name);
+			if (_headers != null) {
+				_headers.remove(name);
+			}
 		}
 		else {
+			if (_headers == null) {
+				_headers = new LinkedHashMap<>();
+			}
+
 			_headers.put(name, new String[] {value});
 		}
 	}
@@ -439,9 +479,15 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 		}
 
 		if (value <= 0) {
-			_headers.remove(name);
+			if (_headers != null) {
+				_headers.remove(name);
+			}
 		}
 		else {
+			if (_headers == null) {
+				_headers = new LinkedHashMap<>();
+			}
+
 			_headers.put(name, new Integer[] {Integer.valueOf(value)});
 		}
 	}
@@ -450,7 +496,7 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 		_plid = plid;
 
 		if (_plid <= 0) {
-			Layout layout = (Layout)_portletRequestImpl.getAttribute(
+			Layout layout = (Layout)portletRequestImpl.getAttribute(
 				WebKeys.LAYOUT);
 
 			if (layout != null) {
@@ -473,6 +519,10 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 	}
 
 	public void transferHeaders(HttpServletResponse response) {
+		if (_headers == null) {
+			return;
+		}
+
 		for (Map.Entry<String, Object> entry : _headers.entrySet()) {
 			String name = entry.getKey();
 			Object values = entry.getValue();
@@ -525,6 +575,10 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 
 	@Override
 	public void transferMarkupHeadElements() {
+		if (_markupHeadElements == null) {
+			return;
+		}
+
 		List<Element> elements = _markupHeadElements.get(
 			MimeResponse.MARKUP_HEAD_ELEMENT);
 
@@ -574,12 +628,12 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 		boolean includeLinkToLayoutUuid) {
 
 		try {
-			Layout layout = (Layout)_portletRequestImpl.getAttribute(
+			Layout layout = (Layout)portletRequestImpl.getAttribute(
 				WebKeys.LAYOUT);
 
 			if (layout == null) {
 				ThemeDisplay themeDisplay =
-					(ThemeDisplay)_portletRequestImpl.getAttribute(
+					(ThemeDisplay)portletRequestImpl.getAttribute(
 						WebKeys.THEME_DISPLAY);
 
 				if (themeDisplay != null) {
@@ -674,7 +728,7 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 
 		if (portletURLImpl == null) {
 			portletURLImpl = new PortletURLImpl(
-				_portletRequestImpl, portletName, plid, lifecycle);
+				portletRequestImpl, portletName, plid, lifecycle);
 		}
 
 		PortletApp portletApp = portlet.getPortletApp();
@@ -706,14 +760,14 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 		}
 
 		try {
-			portletURLImpl.setWindowState(_portletRequestImpl.getWindowState());
+			portletURLImpl.setWindowState(portletRequestImpl.getWindowState());
 		}
 		catch (WindowStateException wse) {
 			_log.error(wse.getMessage());
 		}
 
 		try {
-			portletURLImpl.setPortletMode(_portletRequestImpl.getPortletMode());
+			portletURLImpl.setPortletMode(portletRequestImpl.getPortletMode());
 		}
 		catch (PortletModeException pme) {
 			_log.error(pme.getMessage());
@@ -730,34 +784,38 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 		PortletRequestImpl portletRequestImpl, HttpServletResponse response,
 		String portletName, long companyId, long plid) {
 
-		_portletRequestImpl = portletRequestImpl;
-		_response = response;
+		this.portletRequestImpl = portletRequestImpl;
+		this.response = response;
+
 		_portletName = portletName;
 		_companyId = companyId;
-		_wsrp = ParamUtil.getBoolean(getHttpServletRequest(), "wsrp");
+
+		if (ParamUtil.getBoolean(getHttpServletRequest(), "wsrp")) {
+			_namespace = "wsrp_rewrite_";
+		}
 
 		setPlid(plid);
 	}
 
+	protected PortletRequestImpl portletRequestImpl;
+	protected HttpServletResponse response;
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortletResponseImpl.class);
 
-	private long _companyId;
-	private final Map<String, Constructor<? extends PortletURLImpl>>
+	private static final Map<String, Constructor<? extends PortletURLImpl>>
 		_constructors = new ConcurrentHashMap<>();
+
+	private long _companyId;
 	private Document _document;
-	private final Map<String, Object> _headers = new LinkedHashMap<>();
-	private final Map<String, List<Element>> _markupHeadElements =
-		new LinkedHashMap<>();
+	private Map<String, Object> _headers;
+	private Map<String, List<Element>> _markupHeadElements;
 	private String _namespace;
 	private long _plid;
 	private Portlet _portlet;
 	private String _portletName;
-	private PortletRequestImpl _portletRequestImpl;
 	private PortletPreferences _portletSetup;
-	private HttpServletResponse _response;
 	private URLEncoder _urlEncoder;
-	private boolean _wsrp;
 
 	private class LiferayPortletURLPrivilegedAction
 		implements PrivilegedAction<LiferayPortletURL> {
@@ -780,8 +838,8 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 
 		private final boolean _includeLinkToLayoutUuid;
 		private final String _lifecycle;
-		private long _plid;
-		private String _portletName;
+		private final long _plid;
+		private final String _portletName;
 
 	}
 

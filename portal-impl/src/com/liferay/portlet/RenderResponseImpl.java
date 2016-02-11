@@ -24,8 +24,6 @@ import java.util.Collection;
 import javax.portlet.PortletMode;
 import javax.portlet.PortletRequest;
 
-import javax.servlet.http.HttpServletResponse;
-
 /**
  * @author Brian Wing Shun Chan
  * @author Eduardo Lundgren
@@ -67,7 +65,7 @@ public class RenderResponseImpl
 		// See LEP-2188
 
 		ThemeDisplay themeDisplay =
-			(ThemeDisplay)_portletRequestImpl.getAttribute(
+			(ThemeDisplay)portletRequestImpl.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
 		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
@@ -79,17 +77,6 @@ public class RenderResponseImpl
 		_useDefaultTemplate = useDefaultTemplate;
 	}
 
-	@Override
-	protected void init(
-		PortletRequestImpl portletRequestImpl, HttpServletResponse response,
-		String portletName, long companyId, long plid) {
-
-		super.init(portletRequestImpl, response, portletName, companyId, plid);
-
-		_portletRequestImpl = portletRequestImpl;
-	}
-
-	private PortletRequestImpl _portletRequestImpl;
 	private String _resourceName;
 	private String _title;
 	private Boolean _useDefaultTemplate;
