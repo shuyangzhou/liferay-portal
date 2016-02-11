@@ -746,9 +746,10 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortletResponseImpl.class);
 
-	private long _companyId;
-	private final Map<String, Constructor<? extends PortletURLImpl>>
+	private static final Map<String, Constructor<? extends PortletURLImpl>>
 		_constructors = new ConcurrentHashMap<>();
+
+	private long _companyId;
 	private Document _document;
 	private final Map<String, Object> _headers = new LinkedHashMap<>();
 	private final Map<String, List<Element>> _markupHeadElements =
