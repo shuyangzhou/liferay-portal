@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.wab.generator.internal.introspection;
+package com.liferay.portal.osgi.web.wab.generator.internal.introspection;
 
 import java.io.InputStream;
 
