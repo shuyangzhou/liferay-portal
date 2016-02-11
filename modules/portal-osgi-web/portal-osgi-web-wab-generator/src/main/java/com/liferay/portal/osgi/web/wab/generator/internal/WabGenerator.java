@@ -12,12 +12,12 @@
  * details.
  */
 
-package com.liferay.portal.wab.generator.internal;
+package com.liferay.portal.osgi.web.wab.generator.internal;
 
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.util.HashMapDictionary;
-import com.liferay.portal.wab.generator.internal.artifact.WarArtifactUrlTransformer;
-import com.liferay.portal.wab.generator.internal.handler.WabURLStreamHandlerService;
+import com.liferay.portal.osgi.web.wab.generator.internal.artifact.WarArtifactUrlTransformer;
+import com.liferay.portal.osgi.web.wab.generator.internal.handler.WabURLStreamHandlerService;
 
 import java.util.Dictionary;
 

@@ -1,7 +1,7 @@
 Bundle-Name: Liferay Portal OSGI WEB WAB Generator
-Bundle-SymbolicName: com.liferay.portal.wab.generator
+Bundle-SymbolicName: com.liferay.portal.osgi.web.wab.generator
 Bundle-Version: 1.0.0
-Export-Package: com.liferay.portal.wab.generator
+Export-Package: com.liferay.portal.osgi.web.wab.generator
 Import-Package:\
 	!com.liferay.util.xml,\
 	*

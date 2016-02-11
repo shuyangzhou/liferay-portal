@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.wab.generator.internal.connection;
+package com.liferay.portal.osgi.web.wab.generator.internal.connection;
 
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
@@ -22,7 +22,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.util.FastDateFormatFactoryImpl;
 import com.liferay.portal.util.FileImpl;
 import com.liferay.portal.util.HttpImpl;
-import com.liferay.portal.wab.generator.internal.processor.WabProcessor;
+import com.liferay.portal.osgi.web.wab.generator.internal.processor.WabProcessor;
 
 import java.io.File;
 import java.io.FileOutputStream;

@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.wab.generator.internal.artifact;
+package com.liferay.portal.osgi.web.wab.generator.internal.artifact;
 
 import java.io.File;
 

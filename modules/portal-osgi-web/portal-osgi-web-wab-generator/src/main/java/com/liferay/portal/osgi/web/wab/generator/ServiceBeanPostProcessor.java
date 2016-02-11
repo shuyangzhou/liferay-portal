@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.wab.generator;
+package com.liferay.portal.osgi.web.wab.generator;
 
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.ReflectionUtil;
