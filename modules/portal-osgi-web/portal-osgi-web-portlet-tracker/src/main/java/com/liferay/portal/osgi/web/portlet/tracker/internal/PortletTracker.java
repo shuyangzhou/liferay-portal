@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.portlet.tracker.internal;
+package com.liferay.portal.osgi.web.portlet.tracker.internal;
 
 import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.portal.kernel.application.type.ApplicationType;
