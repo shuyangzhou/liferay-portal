@@ -370,10 +370,6 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 
 	@Override
 	public String getNamespace() {
-		if (_wsrp) {
-			return "wsrp_rewrite_";
-		}
-
 		if (_namespace == null) {
 			_namespace = PortalUtil.getPortletNamespace(_portletName);
 		}
@@ -793,7 +789,10 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 
 		_portletName = portletName;
 		_companyId = companyId;
-		_wsrp = ParamUtil.getBoolean(getHttpServletRequest(), "wsrp");
+
+		if (ParamUtil.getBoolean(getHttpServletRequest(), "wsrp")) {
+			_namespace = "wsrp_rewrite_";
+		}
 
 		setPlid(plid);
 	}
@@ -817,7 +816,6 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 	private String _portletName;
 	private PortletPreferences _portletSetup;
 	private URLEncoder _urlEncoder;
-	private boolean _wsrp;
 
 	private class LiferayPortletURLPrivilegedAction
 		implements PrivilegedAction<LiferayPortletURL> {
