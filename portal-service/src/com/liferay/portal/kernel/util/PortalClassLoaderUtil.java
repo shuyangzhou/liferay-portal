@@ -31,7 +31,16 @@ public class PortalClassLoaderUtil {
 		PortalRuntimePermission.checkSetBeanProperty(
 			PortalClassLoaderUtil.class);
 
-		_classLoader = classLoader;
+		Class<?> clazz = classLoader.getClass();
+
+		try {
+			clazz.getMethod("destroy");
+
+			_classLoader = new ClassLoader(classLoader) {};
+		}
+		catch (NoSuchMethodException nsme) {
+			_classLoader = classLoader;
+		}
 	}
 
 	private static ClassLoader _classLoader;
