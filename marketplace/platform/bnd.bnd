@@ -60,11 +60,11 @@ Liferay-Releng-Dependent-Apps:\
 	com.liferay.portal.cluster:1.0.0,\
 	com.liferay.portal.compound.session.id:1.0.0,\
 	com.liferay.portal.configuration.cluster:1.0.0,\
+	com.liferay.portal.configuration.extender:1.0.0,\
 	com.liferay.portal.configuration.metatype.definitions.annotations:1.0.0,\
 	com.liferay.portal.configuration.metatype.definitions.equinox:1.0.0,\
 	com.liferay.portal.configuration.persistence.test:1.0.0,\
 	com.liferay.portal.configuration.persistence:1.0.0,\
-	com.liferay.portal.configurator.extender:1.0.0,\
 	com.liferay.portal.cxf.common:1.0.0,\
 	com.liferay.portal.cxf.jaxrs.common:1.0.0,\
 	com.liferay.portal.dependency.manager.tccl:1.0.0,\
