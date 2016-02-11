@@ -21,7 +21,7 @@
 
 <%@ page import="com.liferay.portal.kernel.util.GetterUtil" %>
 <%@ page import="com.liferay.portal.kernel.util.StringPool" %>
-<%@ page import="com.liferay.portal.portlet.container.test.TestPortlet" %>
+<%@ page import="com.liferay.portal.osgi.web.portlet.container.test.TestPortlet" %>
 
 <%@ page import="java.util.Collections" %>
 <%@ page import="java.util.HashMap" %>
