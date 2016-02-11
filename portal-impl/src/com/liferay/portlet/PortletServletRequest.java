@@ -63,8 +63,6 @@ public class PortletServletRequest extends HttpServletRequestWrapper {
 
 		_request = request;
 		_portletRequest = portletRequest;
-		_portletRequestImpl = PortletRequestImpl.getPortletRequestImpl(
-			_portletRequest);
 		_pathInfo = pathInfo;
 		_queryString = queryString;
 		_requestURI = GetterUtil.getString(requestURI);
@@ -72,10 +70,13 @@ public class PortletServletRequest extends HttpServletRequestWrapper {
 		_named = named;
 		_include = include;
 
-		_lifecycle = _portletRequestImpl.getLifecycle();
+		PortletRequestImpl portletRequestImpl =
+			PortletRequestImpl.getPortletRequestImpl(_portletRequest);
+
+		_lifecycle = portletRequestImpl.getLifecycle();
 
 		if (Validator.isNotNull(_queryString)) {
-			_portletRequestImpl.setPortletRequestDispatcherRequest(request);
+			portletRequestImpl.setPortletRequestDispatcherRequest(request);
 		}
 	}
 
@@ -414,7 +415,7 @@ public class PortletServletRequest extends HttpServletRequestWrapper {
 			return null;
 		}
 
-		session = new PortletServletSession(session, _portletRequestImpl);
+		session = new PortletServletSession(session, _portletRequest);
 
 		if (ServerDetector.isJetty()) {
 			try {
@@ -524,7 +525,6 @@ public class PortletServletRequest extends HttpServletRequestWrapper {
 	private final boolean _named;
 	private final String _pathInfo;
 	private final PortletRequest _portletRequest;
-	private final PortletRequestImpl _portletRequestImpl;
 	private final String _queryString;
 	private final HttpServletRequest _request;
 	private final String _requestURI;
