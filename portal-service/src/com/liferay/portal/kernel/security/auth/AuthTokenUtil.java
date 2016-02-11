@@ -181,10 +181,6 @@ public class AuthTokenUtil {
 			request, layout, portlet);
 	}
 
-	/**
-	 * @deprecated As of 7.0.0
-	 */
-	@Deprecated
 	private boolean _isValidPortletInvocationToken(
 		HttpServletRequest request, long plid, String portletId,
 		String strutsAction, String tokenValue) {
