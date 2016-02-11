@@ -50,6 +50,7 @@ import java.lang.reflect.Constructor;
 import java.security.PrivilegedAction;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -116,6 +117,12 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 			throw new IllegalArgumentException();
 		}
 
+		if (_headers == null) {
+			setDateHeader(name, date);
+
+			return;
+		}
+
 		Long[] values = (Long[])_headers.get(name);
 
 		if (values == null) {
@@ -132,6 +139,12 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 	public void addHeader(String name, String value) {
 		if (Validator.isNull(name)) {
 			throw new IllegalArgumentException();
+		}
+
+		if (_headers == null) {
+			setHeader(name, value);
+
+			return;
 		}
 
 		String[] values = (String[])_headers.get(name);
@@ -152,6 +165,12 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 			throw new IllegalArgumentException();
 		}
 
+		if (_headers == null) {
+			setIntHeader(name, value);
+
+			return;
+		}
+
 		Integer[] values = (Integer[])_headers.get(name);
 
 		if (values == null) {
@@ -168,6 +187,10 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 	public void addProperty(Cookie cookie) {
 		if (cookie == null) {
 			throw new IllegalArgumentException();
+		}
+
+		if (_headers == null) {
+			_headers = new LinkedHashMap<>();
 		}
 
 		Cookie[] cookies = (Cookie[])_headers.get("cookies");
@@ -382,6 +405,10 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 
 	@Override
 	public Map<String, String[]> getProperties() {
+		if (_headers == null) {
+			return Collections.emptyMap();
+		}
+
 		Map<String, String[]> properties = new LinkedHashMap<>();
 
 		for (Map.Entry<String, Object> entry : _headers.entrySet()) {
@@ -411,9 +438,15 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 		}
 
 		if (date <= 0) {
-			_headers.remove(name);
+			if (_headers != null) {
+				_headers.remove(name);
+			}
 		}
 		else {
+			if (_headers == null) {
+				_headers = new LinkedHashMap<>();
+			}
+
 			_headers.put(name, new Long[] {Long.valueOf(date)});
 		}
 	}
@@ -425,9 +458,15 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 		}
 
 		if (Validator.isNull(value)) {
-			_headers.remove(name);
+			if (_headers != null) {
+				_headers.remove(name);
+			}
 		}
 		else {
+			if (_headers == null) {
+				_headers = new LinkedHashMap<>();
+			}
+
 			_headers.put(name, new String[] {value});
 		}
 	}
@@ -439,9 +478,15 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 		}
 
 		if (value <= 0) {
-			_headers.remove(name);
+			if (_headers != null) {
+				_headers.remove(name);
+			}
 		}
 		else {
+			if (_headers == null) {
+				_headers = new LinkedHashMap<>();
+			}
+
 			_headers.put(name, new Integer[] {Integer.valueOf(value)});
 		}
 	}
@@ -473,6 +518,10 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 	}
 
 	public void transferHeaders(HttpServletResponse response) {
+		if (_headers == null) {
+			return;
+		}
+
 		for (Map.Entry<String, Object> entry : _headers.entrySet()) {
 			String name = entry.getKey();
 			Object values = entry.getValue();
@@ -751,7 +800,7 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 
 	private long _companyId;
 	private Document _document;
-	private final Map<String, Object> _headers = new LinkedHashMap<>();
+	private Map<String, Object> _headers;
 	private final Map<String, List<Element>> _markupHeadElements =
 		new LinkedHashMap<>();
 	private String _namespace;
