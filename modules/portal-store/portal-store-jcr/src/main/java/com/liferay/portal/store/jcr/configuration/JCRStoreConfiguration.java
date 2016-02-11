@@ -16,7 +16,7 @@ package com.liferay.portal.store.jcr.configuration;
 
 import aQute.bnd.annotation.metatype.Meta;
 
-import com.liferay.portal.metatype.annotations.ExtendedObjectClassDefinition;
+import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
 
 /**
  * @author Manuel de la Peña

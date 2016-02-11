@@ -16,8 +16,8 @@ package com.liferay.bookmarks.configuration;
 
 import aQute.bnd.annotation.metatype.Meta;
 
+import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
 import com.liferay.portal.kernel.settings.LocalizedValuesMap;
-import com.liferay.portal.metatype.annotations.ExtendedObjectClassDefinition;
 
 /**
  * @author Adolfo Pérez

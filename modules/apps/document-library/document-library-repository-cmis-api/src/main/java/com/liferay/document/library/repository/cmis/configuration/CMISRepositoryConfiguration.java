@@ -16,7 +16,7 @@ package com.liferay.document.library.repository.cmis.configuration;
 
 import aQute.bnd.annotation.metatype.Meta;
 
-import com.liferay.portal.metatype.annotations.ExtendedObjectClassDefinition;
+import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
 
 /**
  * @author Adolfo Pérez

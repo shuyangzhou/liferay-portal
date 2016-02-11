@@ -16,8 +16,8 @@ package com.liferay.server.admin.web.configuration;
 
 import aQute.bnd.annotation.metatype.Meta;
 
+import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
 import com.liferay.portal.kernel.scheduler.TimeUnit;
-import com.liferay.portal.metatype.annotations.ExtendedObjectClassDefinition;
 
 /**
  * @author Michael C. Han

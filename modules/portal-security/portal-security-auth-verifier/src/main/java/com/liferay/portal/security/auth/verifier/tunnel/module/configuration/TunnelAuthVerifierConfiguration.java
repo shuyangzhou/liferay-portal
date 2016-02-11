@@ -16,7 +16,7 @@ package com.liferay.portal.security.auth.verifier.tunnel.module.configuration;
 
 import aQute.bnd.annotation.metatype.Meta;
 
-import com.liferay.portal.metatype.annotations.ExtendedObjectClassDefinition;
+import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
 import com.liferay.portal.security.auth.verifier.module.configuration.BaseAuthVerifierConfiguration;
 
 /**

@@ -17,7 +17,7 @@ dependencies {
 	provided project(":apps:dynamic-data-mapping:dynamic-data-mapping-form-renderer")
 	provided project(":apps:dynamic-data-mapping:dynamic-data-mapping-form-values-factory")
 	provided project(":frontend:frontend-taglib")
-	provided project(":portal:portal-metatype")
+	provided project(":portal-configuration:portal-configuration-metatype")
 
 	testCompile project(":apps:dynamic-data-mapping:dynamic-data-mapping-test-util")
 }
