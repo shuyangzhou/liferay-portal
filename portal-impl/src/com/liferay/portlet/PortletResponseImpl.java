@@ -215,9 +215,15 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 				key, MimeResponse.MARKUP_HEAD_ELEMENT)) {
 
 			if (element == null) {
-				_markupHeadElements.remove(key);
+				if (_markupHeadElements != null) {
+					_markupHeadElements.remove(key);
+				}
 
 				return;
+			}
+
+			if (_markupHeadElements == null) {
+				_markupHeadElements = new LinkedHashMap<>();
 			}
 
 			List<Element> values = _markupHeadElements.get(key);
@@ -573,6 +579,10 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 
 	@Override
 	public void transferMarkupHeadElements() {
+		if (_markupHeadElements == null) {
+			return;
+		}
+
 		List<Element> elements = _markupHeadElements.get(
 			MimeResponse.MARKUP_HEAD_ELEMENT);
 
@@ -800,8 +810,7 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 	private long _companyId;
 	private Document _document;
 	private Map<String, Object> _headers;
-	private final Map<String, List<Element>> _markupHeadElements =
-		new LinkedHashMap<>();
+	private Map<String, List<Element>> _markupHeadElements;
 	private String _namespace;
 	private long _plid;
 	private Portlet _portlet;
