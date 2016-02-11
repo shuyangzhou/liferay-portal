@@ -330,7 +330,7 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 	}
 
 	public HttpServletRequest getHttpServletRequest() {
-		return _portletRequestImpl.getHttpServletRequest();
+		return portletRequestImpl.getHttpServletRequest();
 	}
 
 	@Override
@@ -377,7 +377,7 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 	}
 
 	public PortletRequestImpl getPortletRequest() {
-		return _portletRequestImpl;
+		return portletRequestImpl;
 	}
 
 	@Override
@@ -450,7 +450,7 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 		_plid = plid;
 
 		if (_plid <= 0) {
-			Layout layout = (Layout)_portletRequestImpl.getAttribute(
+			Layout layout = (Layout)portletRequestImpl.getAttribute(
 				WebKeys.LAYOUT);
 
 			if (layout != null) {
@@ -574,12 +574,12 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 		boolean includeLinkToLayoutUuid) {
 
 		try {
-			Layout layout = (Layout)_portletRequestImpl.getAttribute(
+			Layout layout = (Layout)portletRequestImpl.getAttribute(
 				WebKeys.LAYOUT);
 
 			if (layout == null) {
 				ThemeDisplay themeDisplay =
-					(ThemeDisplay)_portletRequestImpl.getAttribute(
+					(ThemeDisplay)portletRequestImpl.getAttribute(
 						WebKeys.THEME_DISPLAY);
 
 				if (themeDisplay != null) {
@@ -674,7 +674,7 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 
 		if (portletURLImpl == null) {
 			portletURLImpl = new PortletURLImpl(
-				_portletRequestImpl, portletName, plid, lifecycle);
+				portletRequestImpl, portletName, plid, lifecycle);
 		}
 
 		PortletApp portletApp = portlet.getPortletApp();
@@ -706,14 +706,14 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 		}
 
 		try {
-			portletURLImpl.setWindowState(_portletRequestImpl.getWindowState());
+			portletURLImpl.setWindowState(portletRequestImpl.getWindowState());
 		}
 		catch (WindowStateException wse) {
 			_log.error(wse.getMessage());
 		}
 
 		try {
-			portletURLImpl.setPortletMode(_portletRequestImpl.getPortletMode());
+			portletURLImpl.setPortletMode(portletRequestImpl.getPortletMode());
 		}
 		catch (PortletModeException pme) {
 			_log.error(pme.getMessage());
@@ -730,7 +730,8 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 		PortletRequestImpl portletRequestImpl, HttpServletResponse response,
 		String portletName, long companyId, long plid) {
 
-		_portletRequestImpl = portletRequestImpl;
+		this.portletRequestImpl = portletRequestImpl;
+
 		_response = response;
 		_portletName = portletName;
 		_companyId = companyId;
@@ -738,6 +739,8 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 
 		setPlid(plid);
 	}
+
+	protected PortletRequestImpl portletRequestImpl;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortletResponseImpl.class);
@@ -753,7 +756,6 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 	private long _plid;
 	private Portlet _portlet;
 	private String _portletName;
-	private PortletRequestImpl _portletRequestImpl;
 	private PortletPreferences _portletSetup;
 	private HttpServletResponse _response;
 	private URLEncoder _urlEncoder;
