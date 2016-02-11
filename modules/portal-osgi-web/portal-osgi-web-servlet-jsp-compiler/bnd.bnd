@@ -1,7 +1,7 @@
 Bundle-Name: Liferay Portal OSGI WEB Servlet JSP Compiler
-Bundle-SymbolicName: com.liferay.portal.servlet.jsp.compiler
+Bundle-SymbolicName: com.liferay.portal.osgi.web.servlet.jsp.compiler
 Bundle-Version: 1.0.6
-Export-Package: com.liferay.portal.servlet.jsp.compiler
+Export-Package: com.liferay.portal.osgi.web.servlet.jsp.compiler
 Import-Package:\
 	com.sun.el;version='[3.0.0,4.0)',\
 	com.sun.el.lang;version='[3.0.0,4.0)',\
