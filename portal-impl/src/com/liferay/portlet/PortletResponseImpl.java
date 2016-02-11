@@ -318,7 +318,7 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 		}
 
 		if (_urlEncoder != null) {
-			return _urlEncoder.encodeURL(_response, path);
+			return _urlEncoder.encodeURL(response, path);
 		}
 		else {
 			return path;
@@ -335,7 +335,7 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 
 	@Override
 	public HttpServletResponse getHttpServletResponse() {
-		return _response;
+		return response;
 	}
 
 	public abstract String getLifecycle();
@@ -731,8 +731,8 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 		String portletName, long companyId, long plid) {
 
 		this.portletRequestImpl = portletRequestImpl;
+		this.response = response;
 
-		_response = response;
 		_portletName = portletName;
 		_companyId = companyId;
 		_wsrp = ParamUtil.getBoolean(getHttpServletRequest(), "wsrp");
@@ -741,6 +741,7 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 	}
 
 	protected PortletRequestImpl portletRequestImpl;
+	protected HttpServletResponse response;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortletResponseImpl.class);
@@ -757,7 +758,6 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 	private Portlet _portlet;
 	private String _portletName;
 	private PortletPreferences _portletSetup;
-	private HttpServletResponse _response;
 	private URLEncoder _urlEncoder;
 	private boolean _wsrp;
 
