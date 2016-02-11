@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.portlet.container.upload.test;
+package com.liferay.portal.osgi.web.portlet.container.upload.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -32,7 +32,7 @@ import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.portlet.container.test.BasePortletContainerTestCase;
+import com.liferay.portal.osgi.web.portlet.container.test.BasePortletContainerTestCase;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.theme.ThemeDisplayFactory;
 import com.liferay.portal.upload.LiferayServletRequest;

@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.portlet.container.test;
+package com.liferay.portal.osgi.web.portlet.container.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
@@ -41,6 +41,8 @@ import javax.portlet.PortletException;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletRequestDispatcher;
 import javax.portlet.PortletURL;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import javax.portlet.WindowState;
@@ -60,7 +62,7 @@ import org.junit.runner.RunWith;
  * @author Raymond Augé
  */
 @RunWith(Arquillian.class)
-public class ResourceRequestPortletContainerTest
+public class RenderRequestPortletContainerTest
 	extends BasePortletContainerTestCase {
 
 	@ClassRule
@@ -73,11 +75,10 @@ public class ResourceRequestPortletContainerTest
 		HttpServletRequest httpServletRequest =
 			PortletContainerTestUtil.getHttpServletRequest(group, layout);
 
-		String layoutURL = layout.getRegularURL(httpServletRequest);
-
 		String url =
-			layoutURL +
-				"?p_p_id='\"><script>alert(1)</script>&p_p_lifecycle=2&";
+			layout.getRegularURL(httpServletRequest) +
+				"?p_p_id='\"><script>alert(1)</script>&p_p_lifecycle=0&" +
+					"p_p_state=exclusive";
 
 		try (CaptureAppender captureAppender =
 				Log4JLoggerTestUtil.configureLog4JLogger(
@@ -89,21 +90,14 @@ public class ResourceRequestPortletContainerTest
 			List<LoggingEvent> loggingEvents =
 				captureAppender.getLoggingEvents();
 
-			Assert.assertEquals(2, loggingEvents.size());
+			Assert.assertEquals(1, loggingEvents.size());
 
 			LoggingEvent loggingEvent = loggingEvents.get(0);
 
 			Assert.assertEquals(
 				"Invalid portlet ID '\"><script>alert(1)</script>",
 				loggingEvent.getMessage());
-
-			loggingEvent = loggingEvents.get(1);
-
-			Assert.assertEquals(
-				"Reject serveResource for " + layoutURL +
-					" on '\"><script>alert(1)</script>",
-				loggingEvent.getMessage());
-			Assert.assertEquals(400, response.getCode());
+			Assert.assertEquals(200, response.getCode());
 		}
 	}
 
@@ -169,12 +163,12 @@ public class ResourceRequestPortletContainerTest
 
 		testTargetPortlet.reset();
 
-		// Make a resource request to the target portlet using the portlet
+		// Make a render request to the target portlet using the portlet
 		// authentication token
 
 		portletURL = new PortletURLImpl(
 			httpServletRequest, testTargetPortletId, layout.getPlid(),
-			PortletRequest.RESOURCE_PHASE);
+			PortletRequest.RENDER_PHASE);
 
 		portletURL.setWindowState(WindowState.MAXIMIZED);
 
@@ -186,7 +180,7 @@ public class ResourceRequestPortletContainerTest
 			url, Collections.singletonMap("Cookie", response.getCookies()));
 
 		Assert.assertEquals(200, response.getCode());
-		Assert.assertTrue(testTargetPortlet.isCalledServeResource());
+		Assert.assertTrue(testTargetPortlet.isCalledRender());
 	}
 
 	@Test
@@ -200,13 +194,13 @@ public class ResourceRequestPortletContainerTest
 
 		PortletURL portletURL = new PortletURLImpl(
 			httpServletRequest, TEST_PORTLET_ID, layout.getPlid(),
-			PortletRequest.RESOURCE_PHASE);
+			PortletRequest.RENDER_PHASE);
 
 		Response response = PortletContainerTestUtil.request(
 			portletURL.toString());
 
 		Assert.assertEquals(200, response.getCode());
-		Assert.assertTrue(testPortlet.isCalledServeResource());
+		Assert.assertTrue(testPortlet.isCalledRender());
 	}
 
 	@Test
@@ -214,9 +208,8 @@ public class ResourceRequestPortletContainerTest
 		testPortlet = new TestPortlet() {
 
 			@Override
-			public void serveResource(
-					ResourceRequest resourceRequest,
-					ResourceResponse resourceResponse)
+			public void render(
+					RenderRequest renderRequest, RenderResponse renderResponse)
 				throws IOException, PortletException {
 
 				PortletContext portletContext = getPortletContext();
@@ -224,8 +217,7 @@ public class ResourceRequestPortletContainerTest
 				PortletRequestDispatcher portletRequestDispatcher =
 					portletContext.getRequestDispatcher("/runtime_portlet.jsp");
 
-				portletRequestDispatcher.include(
-					resourceRequest, resourceResponse);
+				portletRequestDispatcher.include(renderRequest, renderResponse);
 			}
 
 		};
@@ -239,7 +231,7 @@ public class ResourceRequestPortletContainerTest
 
 		PortletURL portletURL = new PortletURLImpl(
 			httpServletRequest, TEST_PORTLET_ID, layout.getPlid(),
-			PortletRequest.RESOURCE_PHASE);
+			PortletRequest.RENDER_PHASE);
 
 		TestPortlet testRuntimePortlet = new TestPortlet();
 		String testRuntimePortletId = "testRuntimePortletId";
