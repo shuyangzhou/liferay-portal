@@ -28,6 +28,8 @@ public class LiferayObjectWrapper extends DefaultObjectWrapper {
 
 	public LiferayObjectWrapper() {
 		super(Configuration.getVersion());
+
+		setUseCache(true);
 	}
 
 	@Override
