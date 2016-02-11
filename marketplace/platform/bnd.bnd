@@ -89,11 +89,14 @@ Liferay-Releng-Dependent-Apps:\
 	com.liferay.portal.mobile.device:1.0.0,\
 	com.liferay.portal.module.configuration:1.0.0,\
 	com.liferay.portal.monitoring:1.0.0,\
+	com.liferay.portal.osgi.web.portlet.container.test:1.0.0,\
+	com.liferay.portal.osgi.web.portlet.tracker:1.0.0,\
+	com.liferay.portal.osgi.web.servlet.jsp.compiler:1.0.0,\
+	com.liferay.portal.osgi.web.wab.extender:1.0.0,\
+	com.liferay.portal.osgi.web.wab.generator:1.0.0,\
 	com.liferay.portal.output.stream.container:1.0.0,\
 	com.liferay.portal.pop.notifications:1.0.0,\
 	com.liferay.portal.portlet.bridge.soy:1.0.0,\
-	com.liferay.portal.osgi.web.portlet.container.test:1.0.0,\
-	com.liferay.portal.osgi.web.portlet.tracker:1.0.0,\
 	com.liferay.portal.rest.extender.test:1.0.0,\
 	com.liferay.portal.rest.extender:1.0.0,\
 	com.liferay.portal.rtl.servlet:1.0.0,\
@@ -119,7 +122,6 @@ Liferay-Releng-Dependent-Apps:\
 	com.liferay.portal.security.sso.openid:1.0.0,\
 	com.liferay.portal.security.sso.opensso:1.0.0,\
 	com.liferay.portal.security.sso.token:1.0.0,\
-	com.liferay.portal.osgi.web.servlet.jsp.compiler:1.0.0,\
 	com.liferay.portal.servlet.jstl:1.0.0,\
 	com.liferay.portal.settings.api:1.0.0,\
 	com.liferay.portal.settings.web:1.0.0,\
@@ -146,8 +148,6 @@ Liferay-Releng-Dependent-Apps:\
 	com.liferay.portal.upgrade:1.0.0,\
 	com.liferay.portal.util.taglib.freemarker.contributor:1.0.0,\
 	com.liferay.portal.verify.extender:1.0.0,\
-	com.liferay.portal.osgi.web.wab.extender:1.0.0,\
-	com.liferay.portal.osgi.web.wab.generator:1.0.0,\
 	com.liferay.portal.weblogic.support:1.0.0,\
 	com.liferay.roles.admin.api:1.0.0,\
 	com.liferay.roles.admin.impl:1.0.0,\
