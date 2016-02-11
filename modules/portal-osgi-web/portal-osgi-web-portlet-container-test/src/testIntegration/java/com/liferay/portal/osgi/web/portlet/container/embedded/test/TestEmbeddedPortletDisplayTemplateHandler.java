@@ -12,11 +12,11 @@
  * details.
  */
 
-package com.liferay.portal.portlet.container.embedded.test;
+package com.liferay.portal.osgi.web.portlet.container.embedded.test;
 
 import com.liferay.portal.kernel.portletdisplaytemplate.BasePortletDisplayTemplateHandler;
 import com.liferay.portal.kernel.template.TemplateHandler;
-import com.liferay.portal.portlet.container.test.TestPortlet;
+import com.liferay.portal.osgi.web.portlet.container.test.TestPortlet;
 
 import java.util.Locale;
 
@@ -51,7 +51,7 @@ public class TestEmbeddedPortletDisplayTemplateHandler
 
 	@Override
 	protected String getTemplatesConfigPath() {
-		return "/com/liferay/portal/portlet/container/embedded/test/template/" +
+		return "/com/liferay/portal/osgi/web/portlet/container/embedded/test/template/" +
 			"dependencies/portlet-display-templates.xml";
 	}
 

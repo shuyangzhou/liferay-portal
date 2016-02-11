@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.portlet.container.upload.test;
+package com.liferay.portal.osgi.web.portlet.container.upload.test;
 
 import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.document.library.kernel.service.DLAppLocalServiceUtil;

@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.portlet.container.embedded.test;
+package com.liferay.portal.osgi.web.portlet.container.embedded.test;
 
 import com.liferay.portal.model.impl.PortletImpl;
 

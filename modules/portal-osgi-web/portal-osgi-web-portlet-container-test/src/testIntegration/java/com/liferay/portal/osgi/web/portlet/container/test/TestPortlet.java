@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.portlet.container.test;
+package com.liferay.portal.osgi.web.portlet.container.test;
 
 import java.io.IOException;
 

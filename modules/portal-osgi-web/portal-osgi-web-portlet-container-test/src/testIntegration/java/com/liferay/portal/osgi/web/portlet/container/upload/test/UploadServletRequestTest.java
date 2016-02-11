@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.portlet.container.upload.test;
+package com.liferay.portal.osgi.web.portlet.container.upload.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.portal.kernel.servlet.ServletInputStreamAdapter;
