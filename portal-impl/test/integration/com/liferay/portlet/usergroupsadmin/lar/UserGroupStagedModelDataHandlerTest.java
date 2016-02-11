@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.service.UserGroupLocalServiceUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
+import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.UserGroupTestUtil;
 import com.liferay.portal.lar.test.BaseStagedModelDataHandlerTestCase;
@@ -36,6 +37,7 @@ import org.junit.Rule;
 /**
  * @author David Mendez Gonzalez
  */
+@Sync
 public class UserGroupStagedModelDataHandlerTest
 	extends BaseStagedModelDataHandlerTestCase {
 

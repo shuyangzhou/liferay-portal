@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.service.LayoutFriendlyURLLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutPrototypeLocalServiceUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
@@ -44,6 +45,7 @@ import org.junit.runner.RunWith;
  * @author Daniela Zapata Riesco
  */
 @RunWith(Arquillian.class)
+@Sync
 public class LayoutPrototypeStagedModelDataHandlerTest
 	extends BaseStagedModelDataHandlerTestCase {
 

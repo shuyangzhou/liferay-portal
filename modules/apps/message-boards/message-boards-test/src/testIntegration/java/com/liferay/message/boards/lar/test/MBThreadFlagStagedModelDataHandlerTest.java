@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.StagedModel;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
@@ -44,6 +45,7 @@ import org.junit.runner.RunWith;
  * @author Daniel Kocsis
  */
 @RunWith(Arquillian.class)
+@Sync
 public class MBThreadFlagStagedModelDataHandlerTest
 	extends BaseStagedModelDataHandlerTestCase {
 
