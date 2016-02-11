@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.service.TeamLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserGroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
@@ -43,6 +44,7 @@ import org.junit.Rule;
 /**
  * @author Akos Thurzo
  */
+@Sync
 public class TeamStagedModelDataHandlerTest
 	extends BaseStagedModelDataHandlerTestCase {
 
