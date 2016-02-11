@@ -14,8 +14,11 @@
 
 package com.liferay.configuration.admin.web.model;
 
-import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
+import static com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition.XML_NAMESPACE;
+
+import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition.Scope;
 import com.liferay.portal.configuration.metatype.definitions.ExtendedAttributeDefinition;
+import com.liferay.portal.configuration.metatype.definitions.ExtendedObjectClassDefinition;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -36,16 +39,14 @@ import org.osgi.service.metatype.ObjectClassDefinition;
 /**
  * @author Raymond Augé
  */
-public class ConfigurationModel
-	implements com.liferay.portal.configuration.metatype.definitions.ExtendedObjectClassDefinition {
+public class ConfigurationModel implements ExtendedObjectClassDefinition {
 
 	public static final String PROPERTY_KEY_COMPANY_ID = "companyId";
 
 	public static final String PROPERTY_VALUE_COMPANY_ID_DEFAULT = "0";
 
 	public ConfigurationModel(
-		com.liferay.portal.configuration.metatype.definitions.ExtendedObjectClassDefinition
-			extendedObjectClassDefinition,
+		ExtendedObjectClassDefinition extendedObjectClassDefinition,
 		Configuration configuration, String bundleLocation, boolean factory) {
 
 		_extendedObjectClassDefinition = extendedObjectClassDefinition;
@@ -70,7 +71,7 @@ public class ConfigurationModel
 	public String getCategory() {
 		Map<String, String> extensionAttributes =
 			_extendedObjectClassDefinition.getExtensionAttributes(
-				ExtendedObjectClassDefinition.XML_NAMESPACE);
+				XML_NAMESPACE);
 
 		return GetterUtil.get(extensionAttributes.get("category"), "other");
 	}
@@ -102,7 +103,7 @@ public class ConfigurationModel
 		return null;
 	}
 
-	public com.liferay.portal.configuration.metatype.definitions.ExtendedObjectClassDefinition
+	public ExtendedObjectClassDefinition
 		getExtendedObjectClassDefinition() {
 
 		return _extendedObjectClassDefinition;
@@ -154,7 +155,7 @@ public class ConfigurationModel
 	public String getLabelAttribute() {
 		Map<String, String> extensionAttributes =
 			_extendedObjectClassDefinition.getExtensionAttributes(
-				ExtendedObjectClassDefinition.XML_NAMESPACE);
+				XML_NAMESPACE);
 
 		return GetterUtil.get(
 			extensionAttributes.get("factoryInstanceLabelAttribute"),
@@ -169,7 +170,7 @@ public class ConfigurationModel
 	public String getScope() {
 		Map<String, String> extensionAttributes =
 			_extendedObjectClassDefinition.getExtensionAttributes(
-				ExtendedObjectClassDefinition.XML_NAMESPACE);
+				XML_NAMESPACE);
 
 		return extensionAttributes.get("scope");
 	}
@@ -187,9 +188,7 @@ public class ConfigurationModel
 			return false;
 		}
 
-		if (Validator.equals(
-				getScope(),
-				ExtendedObjectClassDefinition.Scope.COMPANY.toString()) &&
+		if (Validator.equals(getScope(), Scope.COMPANY.toString()) &&
 			Validator.equals(getLabelAttribute(), PROPERTY_KEY_COMPANY_ID)) {
 
 			return true;
@@ -253,8 +252,7 @@ public class ConfigurationModel
 
 	private final String _bundleLocation;
 	private final Configuration _configuration;
-	private final com.liferay.portal.configuration.metatype.definitions.ExtendedObjectClassDefinition
-		_extendedObjectClassDefinition;
+	private final ExtendedObjectClassDefinition _extendedObjectClassDefinition;
 	private final boolean _factory;
 
 }
