@@ -146,7 +146,7 @@ Liferay-Releng-Dependent-Apps:\
 	com.liferay.portal.upgrade:1.0.0,\
 	com.liferay.portal.util.taglib.freemarker.contributor:1.0.0,\
 	com.liferay.portal.verify.extender:1.0.0,\
-	com.liferay.portal.wab.extender:1.0.0,\
+	com.liferay.portal.osgi.web.wab.extender:1.0.0,\
 	com.liferay.portal.wab.generator:1.0.0,\
 	com.liferay.portal.weblogic.support:1.0.0,\
 	com.liferay.roles.admin.api:1.0.0,\
