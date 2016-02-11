@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.portlet.tracker.internal;
+package com.liferay.portal.osgi.web.portlet.tracker.internal;
 
 import com.liferay.portal.kernel.model.PortletApp;
 import com.liferay.portal.kernel.plugin.License;
