@@ -19,10 +19,10 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.osgi.web.wab.generator.internal.processor.WabProcessor;
 import com.liferay.portal.util.FastDateFormatFactoryImpl;
 import com.liferay.portal.util.FileImpl;
 import com.liferay.portal.util.HttpImpl;
-import com.liferay.portal.osgi.web.wab.generator.internal.processor.WabProcessor;
 
 import java.io.File;
 import java.io.FileOutputStream;
