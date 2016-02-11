@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.jsonwebservice;
+package com.liferay.portal.remote.json.web.service.extender.internal;
 
 import com.liferay.portal.kernel.bean.ClassLoaderBeanHandler;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceScannerStrategy;
@@ -25,10 +25,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 import org.springframework.aop.TargetSource;
 import org.springframework.aop.framework.AdvisedSupport;
@@ -36,7 +33,7 @@ import org.springframework.aop.framework.AdvisedSupport;
 /**
  * @author Miguel Pastor
  */
-public class SpringJSONWebServiceScannerStrategy
+public class ServiceJSONWebServiceScannerStrategy
 	implements JSONWebServiceScannerStrategy {
 
 	@Override
@@ -58,7 +55,7 @@ public class SpringJSONWebServiceScannerStrategy
 		for (Method method : methods) {
 			Class<?> declaringClass = method.getDeclaringClass();
 
-			if ((declaringClass != clazz) || !isInterfaceMethod(method)) {
+			if (declaringClass != clazz) {
 				continue;
 			}
 
@@ -70,7 +67,7 @@ public class SpringJSONWebServiceScannerStrategy
 	}
 
 	/**
-	 * @see com.liferay.portal.remote.json.web.service.extender.internal.ServiceJSONWebServiceScannerStrategy#getTargetClass(Object)
+	 * @see com.liferay.portal.jsonwebservice.SpringJSONWebServiceScannerStrategy#getTargetClass(Object)
 	 */
 	protected Class<?> getTargetClass(Object service) throws Exception {
 		while (ProxyUtil.isProxyClass(service.getClass())) {
@@ -103,49 +100,6 @@ public class SpringJSONWebServiceScannerStrategy
 		}
 
 		return service.getClass();
-	}
-
-	protected boolean isInterfaceMethod(Method method) {
-		Class<?> declaringClass = method.getDeclaringClass();
-
-		if (declaringClass.isInterface()) {
-			return true;
-		}
-
-		Queue<Class<?>> queue = new LinkedList<>(
-			Arrays.asList(declaringClass.getInterfaces()));
-
-		Class<?> superClass = declaringClass.getSuperclass();
-
-		if (superClass != null) {
-			queue.add(superClass);
-		}
-
-		Class<?> clazz = null;
-
-		while ((clazz = queue.poll()) != null) {
-			if (clazz.isInterface()) {
-				try {
-					clazz.getMethod(
-						method.getName(), method.getParameterTypes());
-
-					return true;
-				}
-				catch (ReflectiveOperationException roe) {
-				}
-			}
-			else {
-				queue.addAll(Arrays.asList(clazz.getInterfaces()));
-
-				superClass = clazz.getSuperclass();
-
-				if (superClass != null) {
-					queue.add(superClass);
-				}
-			}
-		}
-
-		return false;
 	}
 
 }
