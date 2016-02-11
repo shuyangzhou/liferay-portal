@@ -28,8 +28,6 @@ import javax.portlet.MimeResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.WindowState;
 
-import javax.servlet.http.HttpServletResponse;
-
 /**
  * @author Brian Wing Shun Chan
  * @author Shuyang Zhou
@@ -39,14 +37,14 @@ public abstract class MimeResponseImpl
 
 	@Override
 	public void flushBuffer() throws IOException {
-		_response.flushBuffer();
+		response.flushBuffer();
 
 		_calledFlushBuffer = true;
 	}
 
 	@Override
 	public int getBufferSize() {
-		return _response.getBufferSize();
+		return response.getBufferSize();
 	}
 
 	@Override
@@ -56,7 +54,7 @@ public abstract class MimeResponseImpl
 
 	@Override
 	public String getCharacterEncoding() {
-		return _response.getCharacterEncoding();
+		return response.getCharacterEncoding();
 	}
 
 	@Override
@@ -83,7 +81,7 @@ public abstract class MimeResponseImpl
 
 		_calledGetPortletOutputStream = true;
 
-		return _response.getOutputStream();
+		return response.getOutputStream();
 	}
 
 	@Override
@@ -99,7 +97,7 @@ public abstract class MimeResponseImpl
 
 		_calledGetWriter = true;
 
-		return _response.getWriter();
+		return response.getWriter();
 	}
 
 	public boolean isCalledFlushBuffer() {
@@ -134,12 +132,12 @@ public abstract class MimeResponseImpl
 				"Cannot reset a buffer that has been flushed");
 		}
 
-		_response.resetBuffer();
+		response.resetBuffer();
 	}
 
 	@Override
 	public void setBufferSize(int bufferSize) {
-		_response.setBufferSize(bufferSize);
+		response.setBufferSize(bufferSize);
 	}
 
 	@Override
@@ -162,23 +160,12 @@ public abstract class MimeResponseImpl
 
 		_contentType = contentType;
 
-		_response.setContentType(contentType);
-	}
-
-	@Override
-	protected void init(
-		PortletRequestImpl portletRequestImpl, HttpServletResponse response,
-		String portletName, long companyId, long plid) {
-
-		super.init(portletRequestImpl, response, portletName, companyId, plid);
-
-		_response = response;
+		response.setContentType(contentType);
 	}
 
 	private boolean _calledFlushBuffer;
 	private boolean _calledGetPortletOutputStream;
 	private boolean _calledGetWriter;
 	private String _contentType;
-	private HttpServletResponse _response;
 
 }
