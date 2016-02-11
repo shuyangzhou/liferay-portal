@@ -50,10 +50,10 @@ import com.liferay.portal.kernel.xml.Node;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.kernel.xml.UnsecureSAXReaderUtil;
 import com.liferay.portal.kernel.xml.XPath;
-import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.osgi.web.wab.generator.internal.introspection.ClassLoaderSource;
 import com.liferay.portal.osgi.web.wab.generator.internal.introspection.Source;
 import com.liferay.portal.osgi.web.wab.generator.internal.util.AntUtil;
+import com.liferay.portal.util.PropsValues;
 import com.liferay.util.xml.XMLUtil;
 
 import java.io.File;
@@ -919,7 +919,8 @@ public class WabProcessor {
 					getVersionedServicePackageName(partialPackageName));
 			}
 
-			_importPackageNames.add("com.liferay.portal.osgi.web.wab.generator");
+			_importPackageNames.add(
+				"com.liferay.portal.osgi.web.wab.generator");
 
 			File metaInfDir = new File(uri.resolve("WEB-INF/classes/META-INF"));
 
@@ -930,8 +931,8 @@ public class WabProcessor {
 			FileUtil.write(
 				new File(metaInfDir, "service-bean-post-processor-spring.xml"),
 				clazz.getResourceAsStream(
-					"/com/liferay/portal/osgi/web/wab/generator/internal/dependencies" +
-						"/service-bean-post-processor-spring.xml"));
+					"/com/liferay/portal/osgi/web/wab/generator/internal/" +
+						"dependencies/service-bean-post-processor-spring.xml"));
 		}
 		catch (Exception e) {
 			_log.error(e, e);
