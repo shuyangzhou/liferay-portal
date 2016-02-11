@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.wab.generator.internal.util;
+package com.liferay.portal.osgi.web.wab.generator.internal.util;
 
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
