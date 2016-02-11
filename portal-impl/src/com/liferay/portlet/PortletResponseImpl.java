@@ -214,24 +214,23 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 		if (StringUtil.equalsIgnoreCase(
 				key, MimeResponse.MARKUP_HEAD_ELEMENT)) {
 
+			if (element == null) {
+				_markupHeadElements.remove(key);
+
+				return;
+			}
+
 			List<Element> values = _markupHeadElements.get(key);
 
-			if (values != null) {
-				if (element != null) {
-					values.add(element);
-				}
-				else {
-					_markupHeadElements.remove(key);
-				}
+			if (values == null) {
+				values = new ArrayList<>();
+
+				values.add(element);
+
+				_markupHeadElements.put(key, values);
 			}
 			else {
-				if (element != null) {
-					values = new ArrayList<>();
-
-					values.add(element);
-
-					_markupHeadElements.put(key, values);
-				}
+				values.add(element);
 			}
 		}
 	}
