@@ -12,43 +12,40 @@
  * details.
  */
 
-package com.liferay.portal.servlet.jsp.compiler.internal;
-
-import com.liferay.portal.kernel.util.ReflectionUtil;
-
-import java.io.IOException;
-import java.io.InputStream;
+package com.liferay.portal.osgi.web.servlet.jsp.compiler.internal;
 
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 
 /**
  * @author Shuyang Zhou
  */
-public class BundleJavaFileObject extends BaseJavaFileObject {
+public class StringJavaFileObject extends BaseJavaFileObject {
 
-	public BundleJavaFileObject(String className, URL url) {
-		super(Kind.CLASS, className);
+	public StringJavaFileObject(String simpleName, String content) {
+		super(Kind.SOURCE, simpleName);
 
-		_url = url;
+		_content = content;
 	}
 
 	@Override
-	public InputStream openInputStream() throws IOException {
-		return _url.openStream();
+	public CharSequence getCharContent(boolean ignoreEncodingErrors) {
+		return _content;
+	}
+
+	@Override
+	public boolean isNameCompatible(String simpleName, Kind kind) {
+		if (className.equals(simpleName) && (Kind.SOURCE == kind)) {
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override
 	public URI toUri() {
-		try {
-			return _url.toURI();
-		}
-		catch (URISyntaxException urise) {
-			return ReflectionUtil.throwException(urise);
-		}
+		return URI.create("string:///".concat(className));
 	}
 
-	private final URL _url;
+	private final String _content;
 
 }

@@ -12,40 +12,39 @@
  * details.
  */
 
-package com.liferay.portal.servlet.jsp.compiler.internal;
+package com.liferay.portal.osgi.web.servlet.jsp.compiler.internal;
+
+import com.liferay.portal.kernel.zip.ZipFileUtil;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
 import java.net.URI;
 
 /**
  * @author Shuyang Zhou
  */
-public class StringJavaFileObject extends BaseJavaFileObject {
+public class JarJavaFileObject extends BaseJavaFileObject {
 
-	public StringJavaFileObject(String simpleName, String content) {
-		super(Kind.SOURCE, simpleName);
+	public JarJavaFileObject(String className, File file, String entryName) {
+		super(Kind.CLASS, className);
 
-		_content = content;
+		_file = file;
+		_entryName = entryName;
 	}
 
 	@Override
-	public CharSequence getCharContent(boolean ignoreEncodingErrors) {
-		return _content;
-	}
-
-	@Override
-	public boolean isNameCompatible(String simpleName, Kind kind) {
-		if (className.equals(simpleName) && (Kind.SOURCE == kind)) {
-			return true;
-		}
-
-		return false;
+	public InputStream openInputStream() throws IOException {
+		return ZipFileUtil.openInputStream(_file, _entryName);
 	}
 
 	@Override
 	public URI toUri() {
-		return URI.create("string:///".concat(className));
+		return _file.toURI();
 	}
 
-	private final String _content;
+	private final String _entryName;
+	private final File _file;
 
 }
