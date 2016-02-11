@@ -838,8 +838,8 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 
 		private final boolean _includeLinkToLayoutUuid;
 		private final String _lifecycle;
-		private long _plid;
-		private String _portletName;
+		private final long _plid;
+		private final String _portletName;
 
 	}
 
