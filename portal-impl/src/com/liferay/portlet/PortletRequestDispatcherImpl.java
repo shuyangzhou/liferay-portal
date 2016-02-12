@@ -189,17 +189,15 @@ public class PortletRequestDispatcherImpl
 
 			for (String urlPattern : servletURLPatterns) {
 				if (urlPattern.endsWith("/*")) {
-					urlPattern = urlPattern.substring(
-						0, urlPattern.length() - 2);
+					int length = urlPattern.length() - 2;
 
-					if ((pathNoQueryString.length() > urlPattern.length()) &&
-						pathNoQueryString.startsWith(urlPattern) &&
-						(pathNoQueryString.charAt(urlPattern.length()) ==
-							CharPool.SLASH)) {
+					if ((pathNoQueryString.length() > length) &&
+						pathNoQueryString.regionMatches(
+							0, urlPattern, 0, length) &&
+						(pathNoQueryString.charAt(length) == CharPool.SLASH)) {
 
-						pathInfo = pathNoQueryString.substring(
-							urlPattern.length());
-						servletPath = urlPattern;
+						pathInfo = pathNoQueryString.substring(length);
+						servletPath = urlPattern.substring(0, length);
 
 						break;
 					}
