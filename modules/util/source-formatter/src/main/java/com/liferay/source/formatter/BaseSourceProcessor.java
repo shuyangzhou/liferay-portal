@@ -896,7 +896,7 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		}
 
 		JavaClass javaClass = new JavaClass(
-			javaClassName, packagePath, file, fileName, absolutePath,
+			javaClassName, packagePath, file, fileName, absolutePath, content,
 			javaClassContent, javaClassLineCount, StringPool.TAB, null,
 			javaTermAccessLevelModifierExcludes, javaSourceProcessor);
 
@@ -1134,8 +1134,8 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 
 		_annotationsExclusions = SetUtil.fromArray(
 			new String[] {
-				"ArquillianResource", "BeanReference", "Inject", "Mock",
-				"Reference", "ServiceReference", "SuppressWarnings"
+				"ArquillianResource", "BeanReference", "Captor", "Inject",
+				"Mock", "Reference", "ServiceReference", "SuppressWarnings"
 			});
 
 		return _annotationsExclusions;
