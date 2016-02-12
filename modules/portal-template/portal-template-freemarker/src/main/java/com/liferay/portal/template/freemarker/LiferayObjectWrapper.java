@@ -14,6 +14,8 @@
 
 package com.liferay.portal.template.freemarker;
 
+import com.liferay.portal.kernel.concurrent.ConcurrentReferenceKeyHashMap;
+import com.liferay.portal.kernel.memory.FinalizeManager;
 import com.liferay.portal.kernel.templateparser.TemplateNode;
 
 import freemarker.ext.beans.BeansWrapper;
@@ -29,6 +31,7 @@ import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
 import java.util.Enumeration;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import org.w3c.dom.Node;
@@ -44,6 +47,16 @@ public class LiferayObjectWrapper extends DefaultObjectWrapper {
 
 	@Override
 	public TemplateModel wrap(Object object) throws TemplateModelException {
+		if (object == null) {
+			return null;
+		}
+
+		ModelFactory modelFactory = _stringModelClasses.get(object.getClass());
+
+		if (modelFactory != null) {
+			return modelFactory.create(object, this);
+		}
+
 		if (object instanceof TemplateNode) {
 			return new LiferayTemplateModel((TemplateNode)object, this);
 		}
@@ -68,6 +81,8 @@ public class LiferayObjectWrapper extends DefaultObjectWrapper {
 		if (object instanceof Enumeration) {
 			return _ENUMERATION_MODEL_FACTORY.create(object, this);
 		}
+
+		_stringModelClasses.put(object.getClass(), _STRING_MODEL_FACTORY);
 
 		return _STRING_MODEL_FACTORY.create(object, this);
 	}
@@ -109,5 +124,9 @@ public class LiferayObjectWrapper extends DefaultObjectWrapper {
 			}
 
 		};
+
+	private static final Map<Class<?>, ModelFactory> _stringModelClasses =
+		new ConcurrentReferenceKeyHashMap<>(
+			FinalizeManager.SOFT_REFERENCE_FACTORY);
 
 }
