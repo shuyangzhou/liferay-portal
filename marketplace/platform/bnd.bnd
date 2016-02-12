@@ -60,23 +60,20 @@ Liferay-Releng-Dependent-Apps:\
 	com.liferay.portal.cluster:1.0.0,\
 	com.liferay.portal.compound.session.id:1.0.0,\
 	com.liferay.portal.configuration.cluster:1.0.0,\
+	com.liferay.portal.configuration.extender:1.0.0,\
 	com.liferay.portal.configuration.metatype.definitions.annotations:1.0.0,\
 	com.liferay.portal.configuration.metatype.definitions.equinox:1.0.0,\
 	com.liferay.portal.configuration.persistence.test:1.0.0,\
 	com.liferay.portal.configuration.persistence:1.0.0,\
-	com.liferay.portal.configurator.extender:1.0.0,\
 	com.liferay.portal.cxf.common:1.0.0,\
 	com.liferay.portal.cxf.jaxrs.common:1.0.0,\
-	com.liferay.portal.dependency.manager.tccl:1.0.0,\
 	com.liferay.portal.executor:1.0.0,\
 	com.liferay.portal.expression:1.0.0,\
 	com.liferay.portal.http.service.api:1.0.0,\
-	com.liferay.portal.http.tunnel.extender:1.0.0,\
 	com.liferay.portal.instances.web:1.0.0,\
 	com.liferay.portal.jmx:1.0.0,\
 	com.liferay.portal.js.bundle.config.extender:1.0.0,\
 	com.liferay.portal.js.loader.modules.extender:1.0.0,\
-	com.liferay.portal.json.web.service.extender:1.0.0,\
 	com.liferay.portal.language.resource.bundle:1.0.0,\
 	com.liferay.portal.language.servlet.filter:1.0.0,\
 	com.liferay.portal.ldap.test:1.0.0,\
@@ -97,8 +94,13 @@ Liferay-Releng-Dependent-Apps:\
 	com.liferay.portal.output.stream.container:1.0.0,\
 	com.liferay.portal.pop.notifications:1.0.0,\
 	com.liferay.portal.portlet.bridge.soy:1.0.0,\
-	com.liferay.portal.rest.extender.test:1.0.0,\
-	com.liferay.portal.rest.extender:1.0.0,\
+	com.liferay.portal.remote.dependency.manager.tccl:1.0.0,\
+	com.liferay.portal.remote.http.tunnel.extender:1.0.0,\
+	com.liferay.portal.remote.json.web.service.extender:1.0.0,\
+	com.liferay.portal.remote.rest.extender:1.0.0,\
+	com.liferay.portal.remote.rest.extender.test:1.0.0,\
+	com.liferay.portal.remote.soap.extender:1.0.0,\
+	com.liferay.portal.remote.soap.extender.test:1.0.0,\
 	com.liferay.portal.rtl.servlet:1.0.0,\
 	com.liferay.portal.scheduler.quartz:1.0.0,\
 	com.liferay.portal.scheduler.single:1.0.0,\
@@ -126,8 +128,6 @@ Liferay-Releng-Dependent-Apps:\
 	com.liferay.portal.settings.api:1.0.0,\
 	com.liferay.portal.settings.web:1.0.0,\
 	com.liferay.portal.settings:1.0.0,\
-	com.liferay.portal.soap.extender.test:1.0.0,\
-	com.liferay.portal.soap.extender:1.0.0,\
 	com.liferay.portal.spring.extender:1.0.0,\
 	com.liferay.portal.store.cmis.test:1.0.0,\
 	com.liferay.portal.store.cmis:1.0.0,\

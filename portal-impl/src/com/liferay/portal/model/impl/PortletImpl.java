@@ -77,10 +77,9 @@ import com.liferay.social.kernel.model.SocialRequestInterpreter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -114,33 +113,7 @@ public class PortletImpl extends PortletBaseImpl {
 		setActive(true);
 		setStrutsPath(portletId);
 
-		_assetRendererFactoryClasses = new ArrayList<>();
-		_atomCollectionAdapterClasses = new ArrayList<>();
-		_autopropagatedParameters = new LinkedHashSet<>();
-		_customAttributesDisplayClasses = new ArrayList<>();
-		_footerPortalCss = new ArrayList<>();
-		_footerPortalJavaScript = new ArrayList<>();
-		_footerPortletCss = new ArrayList<>();
-		_footerPortletJavaScript = new ArrayList<>();
-		_headerPortalCss = new ArrayList<>();
-		_headerPortalJavaScript = new ArrayList<>();
-		_headerPortletCss = new ArrayList<>();
-		_headerPortletJavaScript = new ArrayList<>();
-		_indexerClasses = new ArrayList<>();
-		_initParams = new HashMap<>();
-		_portletFilters = new LinkedHashMap<>();
-		_portletModes = new HashMap<>();
-		_roleMappers = new LinkedHashMap<>();
 		_rootPortlet = this;
-		_schedulerEntries = new ArrayList<>();
-		_socialActivityInterpreterClasses = new ArrayList<>();
-		_stagedModelDataHandlerClasses = new ArrayList<>();
-		_supportedLocales = new HashSet<>();
-		_trashHandlerClasses = new ArrayList<>();
-		_unlinkedRoles = new HashSet<>();
-		_userNotificationHandlerClasses = new ArrayList<>();
-		_windowStates = new HashMap<>();
-		_workflowHandlerClasses = new ArrayList<>();
 	}
 
 	/**
@@ -217,36 +190,74 @@ public class PortletImpl extends PortletBaseImpl {
 		_displayName = displayName;
 		_portletClass = portletClass;
 		_configurationActionClass = configurationActionClass;
-		_indexerClasses = indexerClasses;
+
+		if (!indexerClasses.isEmpty()) {
+			_indexerClasses = indexerClasses;
+		}
+
 		_openSearchClass = openSearchClass;
-		_schedulerEntries = schedulerEntries;
+
+		if (!schedulerEntries.isEmpty()) {
+			_schedulerEntries = schedulerEntries;
+		}
+
 		_portletURLClass = portletURLClass;
 		_friendlyURLMapperClass = friendlyURLMapperClass;
 		_friendlyURLMapping = friendlyURLMapping;
 		_friendlyURLRoutes = friendlyURLRoutes;
 		_urlEncoderClass = urlEncoderClass;
 		_portletDataHandlerClass = portletDataHandlerClass;
-		_stagedModelDataHandlerClasses = stagedModelDataHandlerClasses;
+
+		if (!stagedModelDataHandlerClasses.isEmpty()) {
+			_stagedModelDataHandlerClasses = stagedModelDataHandlerClasses;
+		}
+
 		_templateHandlerClass = templateHandlerClass;
 		_portletLayoutListenerClass = portletLayoutListenerClass;
 		_pollerProcessorClass = pollerProcessorClass;
 		_popMessageListenerClass = popMessageListenerClass;
-		_socialActivityInterpreterClasses = socialActivityInterpreterClasses;
+
+		if (!socialActivityInterpreterClasses.isEmpty()) {
+			_socialActivityInterpreterClasses =
+				socialActivityInterpreterClasses;
+		}
+
 		_socialRequestInterpreterClass = socialRequestInterpreterClass;
 		_userNotificationDefinitions = userNotificationDefinitions;
-		_userNotificationHandlerClasses = userNotificationHandlerClasses;
+
+		if (!userNotificationHandlerClasses.isEmpty()) {
+			_userNotificationHandlerClasses = userNotificationHandlerClasses;
+		}
+
 		_webDAVStorageToken = webDAVStorageToken;
 		_webDAVStorageClass = webDAVStorageClass;
 		_xmlRpcMethodClass = xmlRpcMethodClass;
 		_controlPanelEntryCategory = controlPanelEntryCategory;
 		_controlPanelEntryWeight = controlPanelEntryWeight;
 		_controlPanelEntryClass = controlPanelClass;
-		_assetRendererFactoryClasses = assetRendererFactoryClasses;
-		_atomCollectionAdapterClasses = atomCollectionAdapterClasses;
-		_customAttributesDisplayClasses = customAttributesDisplayClasses;
+
+		if (!assetRendererFactoryClasses.isEmpty()) {
+			_assetRendererFactoryClasses = assetRendererFactoryClasses;
+		}
+
+		if (!atomCollectionAdapterClasses.isEmpty()) {
+			_atomCollectionAdapterClasses = atomCollectionAdapterClasses;
+		}
+
+		if (!customAttributesDisplayClasses.isEmpty()) {
+			_customAttributesDisplayClasses = customAttributesDisplayClasses;
+		}
+
 		_permissionPropagatorClass = permissionPropagatorClass;
-		_trashHandlerClasses = trashHandlerClasses;
-		_workflowHandlerClasses = workflowHandlerClasses;
+
+		if (!trashHandlerClasses.isEmpty()) {
+			_trashHandlerClasses = trashHandlerClasses;
+		}
+
+		if (!workflowHandlerClasses.isEmpty()) {
+			_workflowHandlerClasses = workflowHandlerClasses;
+		}
+
 		_defaultPreferences = defaultPreferences;
 		_preferencesValidator = preferencesValidator;
 		_preferencesCompanyWide = preferencesCompanyWide;
@@ -268,35 +279,89 @@ public class PortletImpl extends PortletBaseImpl {
 		_userPrincipalStrategy = userPrincipalStrategy;
 		_privateRequestAttributes = privateRequestAttributes;
 		_privateSessionAttributes = privateSessionAttributes;
-		_autopropagatedParameters = autopropagatedParameters;
+
+		if (!autopropagatedParameters.isEmpty()) {
+			_autopropagatedParameters = autopropagatedParameters;
+		}
+
 		_requiresNamespacedParameters = requiresNamespacedParameters;
 		_actionTimeout = actionTimeout;
 		_renderTimeout = renderTimeout;
 		_renderWeight = renderWeight;
 		_ajaxable = ajaxable;
-		_headerPortalCss = headerPortalCss;
-		_headerPortletCss = headerPortletCss;
-		_headerPortalJavaScript = headerPortalJavaScript;
-		_headerPortletJavaScript = headerPortletJavaScript;
-		_footerPortalCss = footerPortalCss;
-		_footerPortletCss = footerPortletCss;
-		_footerPortalJavaScript = footerPortalJavaScript;
-		_footerPortletJavaScript = footerPortletJavaScript;
+
+		if (!headerPortalCss.isEmpty()) {
+			_headerPortalCss = headerPortalCss;
+		}
+
+		if (!headerPortletCss.isEmpty()) {
+			_headerPortletCss = headerPortletCss;
+		}
+
+		if (!headerPortalJavaScript.isEmpty()) {
+			_headerPortalJavaScript = headerPortalJavaScript;
+		}
+
+		if (!headerPortletJavaScript.isEmpty()) {
+			_headerPortletJavaScript = headerPortletJavaScript;
+		}
+
+		if (!footerPortalCss.isEmpty()) {
+			_footerPortalCss = footerPortalCss;
+		}
+
+		if (!footerPortletCss.isEmpty()) {
+			_footerPortletCss = footerPortletCss;
+		}
+
+		if (!footerPortalJavaScript.isEmpty()) {
+			_footerPortalJavaScript = footerPortalJavaScript;
+		}
+
+		if (!footerPortletJavaScript.isEmpty()) {
+			_footerPortletJavaScript = footerPortletJavaScript;
+		}
+
 		_cssClassWrapper = cssClassWrapper;
 		_facebookIntegration = facebookIntegration;
 		_addDefaultResource = addDefaultResource;
-		_unlinkedRoles = unlinkedRoles;
-		_roleMappers = roleMappers;
+
+		if (!unlinkedRoles.isEmpty()) {
+			_unlinkedRoles = unlinkedRoles;
+		}
+
+		if (!roleMappers.isEmpty()) {
+			_roleMappers = roleMappers;
+		}
+
 		_system = system;
 		_include = include;
-		_initParams = initParams;
+
+		if (!initParams.isEmpty()) {
+			_initParams = initParams;
+		}
+
 		_expCache = expCache;
-		_portletModes = portletModes;
-		_windowStates = windowStates;
-		_supportedLocales = supportedLocales;
+
+		if (!portletModes.isEmpty()) {
+			_portletModes = portletModes;
+		}
+
+		if (!windowStates.isEmpty()) {
+			_windowStates = windowStates;
+		}
+
+		if (!supportedLocales.isEmpty()) {
+			_supportedLocales = supportedLocales;
+		}
+
 		_resourceBundle = resourceBundle;
 		_portletInfo = portletInfo;
-		_portletFilters = portletFilters;
+
+		if (!portletFilters.isEmpty()) {
+			_portletFilters = portletFilters;
+		}
+
 		_portletApp = portletApp;
 	}
 
@@ -307,6 +372,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public void addApplicationType(ApplicationType applicationType) {
+		if (_applicationTypes == null) {
+			_applicationTypes = new HashSet<>();
+		}
+
 		_applicationTypes.add(applicationType);
 	}
 
@@ -315,7 +384,16 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public void addProcessingEvent(QName processingEvent) {
+		if (_processingEvents == null) {
+			_processingEvents = new HashSet<>();
+		}
+
 		_processingEvents.add(processingEvent);
+
+		if (_processingEventsByQName == null) {
+			_processingEventsByQName = new HashMap<>();
+		}
+
 		_processingEventsByQName.put(
 			PortletQNameUtil.getKey(processingEvent), processingEvent);
 	}
@@ -329,14 +407,26 @@ public class PortletImpl extends PortletBaseImpl {
 	public void addPublicRenderParameter(
 		PublicRenderParameter publicRenderParameter) {
 
+		if (_publicRenderParameters == null) {
+			_publicRenderParameters = new HashSet<>();
+		}
+
 		_publicRenderParameters.add(publicRenderParameter);
 
 		String identifier = publicRenderParameter.getIdentifier();
+
+		if (_publicRenderParametersByIdentifier == null) {
+			_publicRenderParametersByIdentifier = new HashMap<>();
+		}
 
 		_publicRenderParametersByIdentifier.put(
 			identifier, publicRenderParameter);
 
 		QName qName = publicRenderParameter.getQName();
+
+		if (_publicRenderParametersByQName == null) {
+			_publicRenderParametersByQName = new HashMap<>();
+		}
 
 		_publicRenderParametersByQName.put(
 			PortletQNameUtil.getKey(qName), publicRenderParameter);
@@ -353,6 +443,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public void addPublishingEvent(QName publishingEvent) {
+		if (_publishingEvents == null) {
+			_publishingEvents = new HashSet<>();
+		}
+
 		_publishingEvents.add(publishingEvent);
 	}
 
@@ -361,6 +455,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public void addSchedulerEntry(SchedulerEntry schedulerEntry) {
+		if (_schedulerEntries == null) {
+			_schedulerEntries = new ArrayList<>();
+		}
+
 		_schedulerEntries.add(schedulerEntry);
 	}
 
@@ -514,14 +612,14 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public Set<String> getAllPortletModes() {
+		if (_portletModes == null) {
+			return Collections.emptySet();
+		}
+
 		Set<String> allPortletModes = new TreeSet<>();
 
-		for (Map.Entry<String, Set<String>> entry : _portletModes.entrySet()) {
-			Set<String> mimeTypePortletModes = entry.getValue();
-
-			for (String portletMode : mimeTypePortletModes) {
-				allPortletModes.add(portletMode);
-			}
+		for (Set<String> mimeTypePortletModes : _portletModes.values()) {
+			allPortletModes.addAll(mimeTypePortletModes);
 		}
 
 		return allPortletModes;
@@ -534,6 +632,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public Set<String> getAllWindowStates() {
+		if (_windowStates == null) {
+			return Collections.emptySet();
+		}
+
 		Set<String> allWindowStates = new TreeSet<>();
 
 		for (Map.Entry<String, Set<String>> entry : _windowStates.entrySet()) {
@@ -554,6 +656,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public Set<ApplicationType> getApplicationTypes() {
+		if (_applicationTypes == null) {
+			return Collections.emptySet();
+		}
+
 		return _applicationTypes;
 	}
 
@@ -566,6 +672,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public List<String> getAssetRendererFactoryClasses() {
+		if (_assetRendererFactoryClasses == null) {
+			return Collections.emptyList();
+		}
+
 		return _assetRendererFactoryClasses;
 	}
 
@@ -576,7 +686,9 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public List<AssetRendererFactory<?>> getAssetRendererFactoryInstances() {
-		if (_assetRendererFactoryClasses.isEmpty()) {
+		if ((_assetRendererFactoryClasses == null) ||
+			_assetRendererFactoryClasses.isEmpty()) {
+
 			return null;
 		}
 
@@ -594,6 +706,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public List<String> getAtomCollectionAdapterClasses() {
+		if (_atomCollectionAdapterClasses == null) {
+			return Collections.emptyList();
+		}
+
 		return _atomCollectionAdapterClasses;
 	}
 
@@ -604,7 +720,9 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public List<AtomCollectionAdapter<?>> getAtomCollectionAdapterInstances() {
-		if (_atomCollectionAdapterClasses.isEmpty()) {
+		if ((_atomCollectionAdapterClasses == null) ||
+			_atomCollectionAdapterClasses.isEmpty()) {
+
 			return null;
 		}
 
@@ -622,6 +740,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public Set<String> getAutopropagatedParameters() {
+		if (_autopropagatedParameters == null) {
+			return Collections.emptySet();
+		}
+
 		return _autopropagatedParameters;
 	}
 
@@ -771,6 +893,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public List<String> getCustomAttributesDisplayClasses() {
+		if (_customAttributesDisplayClasses == null) {
+			return Collections.emptyList();
+		}
+
 		return _customAttributesDisplayClasses;
 	}
 
@@ -850,6 +976,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public List<String> getFooterPortalCss() {
+		if (_footerPortalCss == null) {
+			return Collections.emptyList();
+		}
+
 		return _footerPortalCss;
 	}
 
@@ -862,6 +992,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public List<String> getFooterPortalJavaScript() {
+		if (_footerPortalJavaScript == null) {
+			return Collections.emptyList();
+		}
+
 		return _footerPortalJavaScript;
 	}
 
@@ -874,6 +1008,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public List<String> getFooterPortletCss() {
+		if (_footerPortletCss == null) {
+			return Collections.emptyList();
+		}
+
 		return _footerPortletCss;
 	}
 
@@ -886,6 +1024,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public List<String> getFooterPortletJavaScript() {
+		if (_footerPortletJavaScript == null) {
+			return Collections.emptyList();
+		}
+
 		return _footerPortletJavaScript;
 	}
 
@@ -945,6 +1087,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public List<String> getHeaderPortalCss() {
+		if (_headerPortalCss == null) {
+			return Collections.emptyList();
+		}
+
 		return _headerPortalCss;
 	}
 
@@ -957,6 +1103,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public List<String> getHeaderPortalJavaScript() {
+		if (_headerPortalJavaScript == null) {
+			return Collections.emptyList();
+		}
+
 		return _headerPortalJavaScript;
 	}
 
@@ -969,6 +1119,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public List<String> getHeaderPortletCss() {
+		if (_headerPortletCss == null) {
+			return Collections.emptyList();
+		}
+
 		return _headerPortletCss;
 	}
 
@@ -981,6 +1135,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public List<String> getHeaderPortletJavaScript() {
+		if (_headerPortletJavaScript == null) {
+			return Collections.emptyList();
+		}
+
 		return _headerPortletJavaScript;
 	}
 
@@ -1015,6 +1173,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public List<String> getIndexerClasses() {
+		if (_indexerClasses == null) {
+			return Collections.emptyList();
+		}
+
 		return _indexerClasses;
 	}
 
@@ -1037,6 +1199,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public Map<String, String> getInitParams() {
+		if (_initParams == null) {
+			return Collections.emptyMap();
+		}
+
 		return _initParams;
 	}
 
@@ -1327,6 +1493,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public Map<String, PortletFilter> getPortletFilters() {
+		if (_portletFilters == null) {
+			return Collections.emptyMap();
+		}
+
 		return _portletFilters;
 	}
 
@@ -1380,6 +1550,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public Map<String, Set<String>> getPortletModes() {
+		if (_portletModes == null) {
+			return Collections.emptyMap();
+		}
+
 		return _portletModes;
 	}
 
@@ -1482,6 +1656,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public QName getProcessingEvent(String uri, String localPart) {
+		if (_processingEventsByQName == null) {
+			return null;
+		}
+
 		return _processingEventsByQName.get(
 			PortletQNameUtil.getKey(uri, localPart));
 	}
@@ -1493,6 +1671,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public Set<QName> getProcessingEvents() {
+		if (_processingEventsByQName == null) {
+			return Collections.emptySet();
+		}
+
 		return _processingEvents;
 	}
 
@@ -1504,6 +1686,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public PublicRenderParameter getPublicRenderParameter(String identifier) {
+		if (_publicRenderParametersByIdentifier == null) {
+			return null;
+		}
+
 		return _publicRenderParametersByIdentifier.get(identifier);
 	}
 
@@ -1520,6 +1706,10 @@ public class PortletImpl extends PortletBaseImpl {
 	public PublicRenderParameter getPublicRenderParameter(
 		String uri, String localPart) {
 
+		if (_publicRenderParametersByQName == null) {
+			return null;
+		}
+
 		return _publicRenderParametersByQName.get(
 			PortletQNameUtil.getKey(uri, localPart));
 	}
@@ -1531,6 +1721,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public Set<PublicRenderParameter> getPublicRenderParameters() {
+		if (_publicRenderParameters == null) {
+			return Collections.emptySet();
+		}
+
 		return _publicRenderParameters;
 	}
 
@@ -1541,6 +1735,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public Set<QName> getPublishingEvents() {
+		if (_publishingEvents == null) {
+			return Collections.emptySet();
+		}
+
 		return _publishingEvents;
 	}
 
@@ -1613,6 +1811,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public Map<String, String> getRoleMappers() {
+		if (_roleMappers == null) {
+			return Collections.emptyMap();
+		}
+
 		return _roleMappers;
 	}
 
@@ -1653,6 +1855,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public List<SchedulerEntry> getSchedulerEntries() {
+		if (_schedulerEntries == null) {
+			return Collections.emptyList();
+		}
+
 		return _schedulerEntries;
 	}
 
@@ -1708,6 +1914,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public List<String> getSocialActivityInterpreterClasses() {
+		if (_socialActivityInterpreterClasses == null) {
+			return Collections.emptyList();
+		}
+
 		return _socialActivityInterpreterClasses;
 	}
 
@@ -1720,7 +1930,9 @@ public class PortletImpl extends PortletBaseImpl {
 	public List<SocialActivityInterpreter>
 		getSocialActivityInterpreterInstances() {
 
-		if (_socialActivityInterpreterClasses.isEmpty()) {
+		if ((_socialActivityInterpreterClasses == null) ||
+			_socialActivityInterpreterClasses.isEmpty()) {
+
 			return null;
 		}
 
@@ -1769,6 +1981,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public List<String> getStagedModelDataHandlerClasses() {
+		if (_stagedModelDataHandlerClasses == null) {
+			return Collections.emptyList();
+		}
+
 		return _stagedModelDataHandlerClasses;
 	}
 
@@ -1781,7 +1997,9 @@ public class PortletImpl extends PortletBaseImpl {
 	public List<StagedModelDataHandler<?>>
 		getStagedModelDataHandlerInstances() {
 
-		if (_stagedModelDataHandlerClasses.isEmpty()) {
+		if ((_stagedModelDataHandlerClasses == null) ||
+			_stagedModelDataHandlerClasses.isEmpty()) {
+
 			return null;
 		}
 
@@ -1867,6 +2085,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public Set<String> getSupportedLocales() {
+		if (_supportedLocales == null) {
+			return Collections.emptySet();
+		}
+
 		return _supportedLocales;
 	}
 
@@ -1939,6 +2161,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public List<String> getTrashHandlerClasses() {
+		if (_trashHandlerClasses == null) {
+			return Collections.emptyList();
+		}
+
 		return _trashHandlerClasses;
 	}
 
@@ -1949,7 +2175,7 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public List<TrashHandler> getTrashHandlerInstances() {
-		if (_trashHandlerClasses.isEmpty()) {
+		if ((_trashHandlerClasses == null) || _trashHandlerClasses.isEmpty()) {
 			return null;
 		}
 
@@ -1976,6 +2202,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public Set<String> getUnlinkedRoles() {
+		if (_unlinkedRoles == null) {
+			return Collections.emptySet();
+		}
+
 		return _unlinkedRoles;
 	}
 
@@ -2050,6 +2280,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public List<String> getUserNotificationHandlerClasses() {
+		if (_userNotificationHandlerClasses == null) {
+			return Collections.emptyList();
+		}
+
 		return _userNotificationHandlerClasses;
 	}
 
@@ -2062,7 +2296,9 @@ public class PortletImpl extends PortletBaseImpl {
 	public List<UserNotificationHandler>
 		getUserNotificationHandlerInstances() {
 
-		if (_userNotificationHandlerClasses.isEmpty()) {
+		if ((_userNotificationHandlerClasses == null) ||
+			_userNotificationHandlerClasses.isEmpty()) {
+
 			return null;
 		}
 
@@ -2137,6 +2373,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public Map<String, Set<String>> getWindowStates() {
+		if (_windowStates == null) {
+			return Collections.emptyMap();
+		}
+
 		return _windowStates;
 	}
 
@@ -2149,6 +2389,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public List<String> getWorkflowHandlerClasses() {
+		if (_workflowHandlerClasses == null) {
+			return Collections.emptyList();
+		}
+
 		return _workflowHandlerClasses;
 	}
 
@@ -2159,7 +2403,9 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public List<WorkflowHandler<?>> getWorkflowHandlerInstances() {
-		if (_workflowHandlerClasses.isEmpty()) {
+		if ((_workflowHandlerClasses == null) ||
+			_workflowHandlerClasses.isEmpty()) {
+
 			return null;
 		}
 
@@ -2235,22 +2481,24 @@ public class PortletImpl extends PortletBaseImpl {
 
 	@Override
 	public boolean hasFooterPortalCss() {
-		return !_footerPortalCss.isEmpty();
+		return ((_footerPortalCss != null) && !_footerPortalCss.isEmpty());
 	}
 
 	@Override
 	public boolean hasFooterPortalJavaScript() {
-		return !_footerPortalJavaScript.isEmpty();
+		return ((_footerPortalJavaScript != null) &&
+			!_footerPortalJavaScript.isEmpty());
 	}
 
 	@Override
 	public boolean hasFooterPortletCss() {
-		return !_footerPortletCss.isEmpty();
+		return ((_footerPortletCss != null) && !_footerPortletCss.isEmpty());
 	}
 
 	@Override
 	public boolean hasFooterPortletJavaScript() {
-		return !_footerPortletJavaScript.isEmpty();
+		return ((_footerPortletJavaScript != null) &&
+			!_footerPortletJavaScript.isEmpty());
 	}
 
 	@Override
@@ -2262,22 +2510,24 @@ public class PortletImpl extends PortletBaseImpl {
 
 	@Override
 	public boolean hasHeaderPortalCss() {
-		return !_headerPortalCss.isEmpty();
+		return ((_headerPortalCss != null) && !_headerPortalCss.isEmpty());
 	}
 
 	@Override
 	public boolean hasHeaderPortalJavaScript() {
-		return !_headerPortalJavaScript.isEmpty();
+		return ((_headerPortalJavaScript != null) &&
+			!_headerPortalJavaScript.isEmpty());
 	}
 
 	@Override
 	public boolean hasHeaderPortletCss() {
-		return !_headerPortletCss.isEmpty();
+		return ((_headerPortletCss != null) && !_headerPortletCss.isEmpty());
 	}
 
 	@Override
 	public boolean hasHeaderPortletJavaScript() {
-		return !_headerPortletJavaScript.isEmpty();
+		return ((_headerPortletJavaScript != null) &&
+			!_headerPortletJavaScript.isEmpty());
 	}
 
 	/**
@@ -2288,7 +2538,7 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public boolean hasMultipleMimeTypes() {
-		if (_portletModes.size() > 1) {
+		if ((_portletModes != null) && (_portletModes.size() > 1)) {
 			return true;
 		}
 		else {
@@ -2309,6 +2559,10 @@ public class PortletImpl extends PortletBaseImpl {
 	public boolean hasPortletMode(String mimeType, PortletMode portletMode) {
 		if (mimeType == null) {
 			mimeType = ContentTypes.TEXT_HTML;
+		}
+
+		if (_portletModes == null) {
+			return false;
 		}
 
 		Set<String> mimeTypePortletModes = _portletModes.get(mimeType);
@@ -2359,6 +2613,10 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public boolean hasWindowState(String mimeType, WindowState windowState) {
+		if (_windowStates == null) {
+			return false;
+		}
+
 		if (mimeType == null) {
 			mimeType = ContentTypes.TEXT_HTML;
 		}
@@ -2413,7 +2671,7 @@ public class PortletImpl extends PortletBaseImpl {
 
 	@Override
 	public boolean isFullPageDisplayable() {
-		return _applicationTypes.contains(
+		return getApplicationTypes().contains(
 			ApplicationType.FULL_PAGE_APPLICATION);
 	}
 
@@ -2717,6 +2975,12 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public void linkRoles() {
+		if ((_roleMappers == null) || (_unlinkedRoles == null)) {
+			setRolesArray(new String[0]);
+
+			return;
+		}
+
 		List<String> linkedRoles = new ArrayList<>();
 
 		for (String unlinkedRole : _unlinkedRoles) {
@@ -4014,7 +4278,7 @@ public class PortletImpl extends PortletBaseImpl {
 	/**
 	 * The application types of the portlet.
 	 */
-	private final Set<ApplicationType> _applicationTypes = new HashSet<>();
+	private Set<ApplicationType> _applicationTypes;
 
 	/**
 	 * The names of the classes that represents asset types associated with the
@@ -4321,36 +4585,34 @@ public class PortletImpl extends PortletBaseImpl {
 	/**
 	 * The processing events of the portlet.
 	 */
-	private final Set<QName> _processingEvents = new HashSet<>();
+	private Set<QName> _processingEvents;
 
 	/**
 	 * Map of the processing events of the portlet keyed by the QName.
 	 */
-	private final Map<String, QName> _processingEventsByQName = new HashMap<>();
+	private Map<String, QName> _processingEventsByQName;
 
 	/**
 	 * The public render parameters of the portlet.
 	 */
-	private final Set<PublicRenderParameter> _publicRenderParameters =
-		new HashSet<>();
+	private Set<PublicRenderParameter> _publicRenderParameters;
 
 	/**
 	 * Map of the public render parameters of the portlet keyed by the
 	 * identifier.
 	 */
-	private final Map<String, PublicRenderParameter>
-		_publicRenderParametersByIdentifier = new HashMap<>();
+	private Map<String, PublicRenderParameter>
+		_publicRenderParametersByIdentifier;
 
 	/**
 	 * Map of the public render parameters of the portlet keyed by the QName.
 	 */
-	private final Map<String, PublicRenderParameter>
-		_publicRenderParametersByQName = new HashMap<>();
+	private Map<String, PublicRenderParameter> _publicRenderParametersByQName;
 
 	/**
 	 * The publishing events of the portlet.
 	 */
-	private final Set<QName> _publishingEvents = new HashSet<>();
+	private Set<QName> _publishingEvents;
 
 	/**
 	 * <code>True</code> if the portlet supports remoting.
@@ -4401,7 +4663,7 @@ public class PortletImpl extends PortletBaseImpl {
 	/**
 	 * The scheduler entries of the portlet.
 	 */
-	private final List<SchedulerEntry> _schedulerEntries;
+	private List<SchedulerEntry> _schedulerEntries;
 
 	/**
 	 * <code>True</code> if the portlet supports scoping of data.
