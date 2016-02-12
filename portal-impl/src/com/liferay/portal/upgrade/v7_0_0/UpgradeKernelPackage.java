@@ -93,7 +93,7 @@ public class UpgradeKernelPackage extends UpgradeProcess {
 		StringBundler selectSB = new StringBundler(11);
 
 		for (String[] name : names) {
-			selectSB.append("select ");
+			selectSB.append("select distinct ");
 			selectSB.append(columnName);
 			selectSB.append(" from ");
 			selectSB.append(tableName);

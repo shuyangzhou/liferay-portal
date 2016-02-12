@@ -88,8 +88,11 @@ public class FailureMessageUtilTest extends BaseJenkinsResultsParserTestCase {
 	protected String getMessage(String urlString) throws Exception {
 		Project project = getProject();
 
-		return FailureMessageUtil.getFailureMessage(
-			project, JenkinsResultsParserUtil.getLocalURL(urlString));
+		String failureMessage = FailureMessageUtil.getFailureMessage(
+			project,
+			JenkinsResultsParserUtil.getLocalURL(urlString));
+
+		return formatXML("<div>" + failureMessage + "</div>");
 	}
 
 	protected Project getProject() {
