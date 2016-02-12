@@ -34,13 +34,25 @@ public class AuthTokenUtil {
 	public static void addCSRFToken(
 		HttpServletRequest request, LiferayPortletURL liferayPortletURL) {
 
-		_instance._addCSRFToken(request, liferayPortletURL);
+		if (_serviceTracker.isEmpty()) {
+			return;
+		}
+
+		AuthToken authToken = _serviceTracker.getService();
+
+		authToken.addCSRFToken(request, liferayPortletURL);
 	}
 
 	public static void addPortletInvocationToken(
 		HttpServletRequest request, LiferayPortletURL liferayPortletURL) {
 
-		_instance._addPortletInvocationToken(request, liferayPortletURL);
+		if (_serviceTracker.isEmpty()) {
+			return;
+		}
+
+		AuthToken authToken = _serviceTracker.getService();
+
+		authToken.addPortletInvocationToken(request, liferayPortletURL);
 	}
 
 	/**
@@ -51,29 +63,59 @@ public class AuthTokenUtil {
 	public static void check(HttpServletRequest request)
 		throws PortalException {
 
-		_instance._check(request);
+		if (_serviceTracker.isEmpty()) {
+			return;
+		}
+
+		AuthToken authToken = _serviceTracker.getService();
+
+		authToken.check(request);
 	}
 
 	public static void checkCSRFToken(HttpServletRequest request, String origin)
 		throws PrincipalException {
 
-		_instance._checkCSRFToken(request, origin);
+		if (_serviceTracker.isEmpty()) {
+			return;
+		}
+
+		AuthToken authToken = _serviceTracker.getService();
+
+		authToken.checkCSRFToken(request, origin);
 	}
 
 	public static String getToken(HttpServletRequest request) {
-		return _instance._getToken(request);
+		if (_serviceTracker.isEmpty()) {
+			return null;
+		}
+
+		AuthToken authToken = _serviceTracker.getService();
+
+		return authToken.getToken(request);
 	}
 
 	public static String getToken(
 		HttpServletRequest request, long plid, String portletId) {
 
-		return _instance._getToken(request, plid, portletId);
+		if (_serviceTracker.isEmpty()) {
+			return null;
+		}
+
+		AuthToken authToken = _serviceTracker.getService();
+
+		return authToken.getToken(request, plid, portletId);
 	}
 
 	public static boolean isValidPortletInvocationToken(
 		HttpServletRequest request, Layout layout, Portlet portlet) {
 
-		return _instance._isValidPortletInvocationToken(
+		if (_serviceTracker.isEmpty()) {
+			return false;
+		}
+
+		AuthToken authToken = _serviceTracker.getService();
+
+		return authToken.isValidPortletInvocationToken(
 			request, layout, portlet);
 	}
 
@@ -87,116 +129,24 @@ public class AuthTokenUtil {
 		HttpServletRequest request, long plid, String portletId,
 		String strutsAction, String tokenValue) {
 
-		return _instance._isValidPortletInvocationToken(
+		if (_serviceTracker.isEmpty()) {
+			return false;
+		}
+
+		AuthToken authToken = _serviceTracker.getService();
+
+		return authToken.isValidPortletInvocationToken(
 			request, plid, portletId, strutsAction, tokenValue);
 	}
 
-	private AuthTokenUtil() {
+	private static final ServiceTracker<?, AuthToken> _serviceTracker;
+
+	static {
 		Registry registry = RegistryUtil.getRegistry();
 
 		_serviceTracker = registry.trackServices(AuthToken.class.getName());
 
 		_serviceTracker.open();
 	}
-
-	private void _addCSRFToken(
-		HttpServletRequest request, LiferayPortletURL liferayPortletURL) {
-
-		if (_serviceTracker.isEmpty()) {
-			return;
-		}
-
-		AuthToken authToken = _serviceTracker.getService();
-
-		authToken.addCSRFToken(request, liferayPortletURL);
-	}
-
-	private void _addPortletInvocationToken(
-		HttpServletRequest request, LiferayPortletURL liferayPortletURL) {
-
-		if (_serviceTracker.isEmpty()) {
-			return;
-		}
-
-		AuthToken authToken = _serviceTracker.getService();
-
-		authToken.addPortletInvocationToken(request, liferayPortletURL);
-	}
-
-	@SuppressWarnings("deprecation")
-	private void _check(HttpServletRequest request) throws PortalException {
-		if (_serviceTracker.isEmpty()) {
-			return;
-		}
-
-		AuthToken authToken = _serviceTracker.getService();
-
-		authToken.check(request);
-	}
-
-	private void _checkCSRFToken(HttpServletRequest request, String origin)
-		throws PrincipalException {
-
-		if (_serviceTracker.isEmpty()) {
-			return;
-		}
-
-		AuthToken authToken = _serviceTracker.getService();
-
-		authToken.checkCSRFToken(request, origin);
-	}
-
-	private String _getToken(HttpServletRequest request) {
-		if (_serviceTracker.isEmpty()) {
-			return null;
-		}
-
-		AuthToken authToken = _serviceTracker.getService();
-
-		return authToken.getToken(request);
-	}
-
-	private String _getToken(
-		HttpServletRequest request, long plid, String portletId) {
-
-		if (_serviceTracker.isEmpty()) {
-			return null;
-		}
-
-		AuthToken authToken = _serviceTracker.getService();
-
-		return authToken.getToken(request, plid, portletId);
-	}
-
-	private boolean _isValidPortletInvocationToken(
-		HttpServletRequest request, Layout layout, Portlet portlet) {
-
-		if (_serviceTracker.isEmpty()) {
-			return false;
-		}
-
-		AuthToken authToken = _serviceTracker.getService();
-
-		return authToken.isValidPortletInvocationToken(
-			request, layout, portlet);
-	}
-
-	private boolean _isValidPortletInvocationToken(
-		HttpServletRequest request, long plid, String portletId,
-		String strutsAction, String tokenValue) {
-
-		if (_serviceTracker.isEmpty()) {
-			return false;
-		}
-
-		AuthToken authToken = _serviceTracker.getService();
-
-		return authToken.isValidPortletInvocationToken(
-			request, plid, portletId, strutsAction, tokenValue);
-	}
-
-	private static final AuthTokenUtil _instance = new AuthTokenUtil();
-
-	private final ServiceTracker<?, AuthToken> _serviceTracker;
 
 }
