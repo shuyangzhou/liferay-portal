@@ -756,13 +756,10 @@ public class HttpImpl implements Http {
 
 		List<String> parts = new ArrayList<>(uriParts.length);
 
+		String prevUriPart = null;
+
 		for (int i = 0; i < uriParts.length; i++) {
 			String curUriPart = URLCodec.decodeURL(uriParts[i]);
-			String prevUriPart = null;
-
-			if (i > 0) {
-				prevUriPart = URLCodec.decodeURL(uriParts[i - 1]);
-			}
 
 			if (curUriPart.equals(StringPool.DOUBLE_PERIOD)) {
 				if (!prevUriPart.equals(StringPool.PERIOD)) {
@@ -774,6 +771,8 @@ public class HttpImpl implements Http {
 
 				parts.add(URLCodec.encodeURL(curUriPart));
 			}
+
+			prevUriPart = curUriPart;
 		}
 
 		if (parts.isEmpty()) {
