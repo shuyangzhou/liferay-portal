@@ -390,6 +390,14 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 
 		UserBag userBag = permissionChecker.getUserBag();
 
+		groups.addAll(userBag.getGroups());
+
+		if (ArrayUtil.isNotEmpty(groupIds)) {
+			for (long groupId : groupIds) {
+				groups.add(_groupLocalService.getGroup(groupId));
+			}
+		}
+
 		if (permissionChecker.isSignedIn()) {
 			roles.addAll(userBag.getRoles());
 
@@ -403,14 +411,6 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 			roles.addAll(
 				_roleLocalService.getUserRelatedRoles(
 					userId, Collections.singletonList(guestGroup)));
-		}
-
-		groups.addAll(userBag.getGroups());
-
-		if (ArrayUtil.isNotEmpty(groupIds)) {
-			for (long groupId : groupIds) {
-				groups.add(_groupLocalService.getGroup(groupId));
-			}
 		}
 
 		for (Group group : groups) {
