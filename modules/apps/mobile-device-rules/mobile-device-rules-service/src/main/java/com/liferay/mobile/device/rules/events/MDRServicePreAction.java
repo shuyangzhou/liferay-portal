@@ -28,11 +28,11 @@ import com.liferay.portal.kernel.mobile.device.Device;
 import com.liferay.portal.kernel.mobile.device.DeviceDetectionUtil;
 import com.liferay.portal.kernel.mobile.device.UnknownDevice;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.TransientValue;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.util.PropsValues;
 
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -60,11 +60,11 @@ public class MDRServicePreAction extends Action {
 		Device device = null;
 
 		if (PropsValues.MOBILE_DEVICE_SESSION_CACHE_ENABLED) {
-			TransientValue<Device> transientValue =
-				(TransientValue<Device>)session.getAttribute(WebKeys.DEVICE);
+			String sessionDeviceKey = (String)session.getAttribute(
+				WebKeys.DEVICE_KEY);
 
-			if (transientValue != null) {
-				device = transientValue.getValue();
+			if (sessionDeviceKey != null) {
+				device = _DEVICE_CACHE.get(sessionDeviceKey);
 			}
 		}
 
@@ -72,8 +72,11 @@ public class MDRServicePreAction extends Action {
 			device = DeviceDetectionUtil.detectDevice(request);
 
 			if (PropsValues.MOBILE_DEVICE_SESSION_CACHE_ENABLED) {
-				session.setAttribute(
-					WebKeys.DEVICE, new TransientValue<Device>(device));
+				String deviceKey = device.toString();
+
+				_DEVICE_CACHE.put(deviceKey, device);
+
+				session.setAttribute(WebKeys.DEVICE_KEY, deviceKey);
 			}
 		}
 
@@ -140,6 +143,9 @@ public class MDRServicePreAction extends Action {
 
 		_mdrActionLocalService = mdrActionLocalService;
 	}
+
+	private static final ConcurrentHashMap<String, Device> _DEVICE_CACHE =
+		new ConcurrentHashMap<>();
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		MDRServicePreAction.class);
