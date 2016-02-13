@@ -762,7 +762,9 @@ public class HttpImpl implements Http {
 			String curUriPart = URLCodec.decodeURL(uriPart);
 
 			if (curUriPart.equals(StringPool.DOUBLE_PERIOD)) {
-				if (!prevUriPart.equals(StringPool.PERIOD)) {
+				if ((prevUriPart != null) &&
+					!prevUriPart.equals(StringPool.PERIOD)) {
+
 					parts.remove(parts.size() - 1);
 				}
 			}
