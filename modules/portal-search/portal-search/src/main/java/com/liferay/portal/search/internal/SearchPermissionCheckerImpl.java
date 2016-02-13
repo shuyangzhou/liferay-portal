@@ -144,29 +144,6 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 		}
 	}
 
-	protected void addRequiredMemberRole(
-			Group group, TermsFilter groupRolesTermsFilter)
-		throws Exception {
-
-		if (group.isOrganization()) {
-			Role organizationUserRole = _roleLocalService.getRole(
-				group.getCompanyId(), RoleConstants.ORGANIZATION_USER);
-
-			groupRolesTermsFilter.addValue(
-				group.getGroupId() + StringPool.DASH +
-					organizationUserRole.getRoleId());
-		}
-
-		if (group.isSite()) {
-			Role siteMemberRole = _roleLocalService.getRole(
-				group.getCompanyId(), RoleConstants.SITE_MEMBER);
-
-			groupRolesTermsFilter.addValue(
-				group.getGroupId() + StringPool.DASH +
-					siteMemberRole.getRoleId());
-		}
-	}
-
 	protected void doAddPermissionFields_6(
 			long companyId, long groupId, String className, String classPK,
 			Document doc)
@@ -341,7 +318,23 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 		}
 
 		for (Group group : groups) {
-			addRequiredMemberRole(group, groupRolesTermsFilter);
+			if (group.isOrganization()) {
+				Role organizationUserRole = _roleLocalService.getRole(
+					group.getCompanyId(), RoleConstants.ORGANIZATION_USER);
+
+				groupRolesTermsFilter.addValue(
+					group.getGroupId() + StringPool.DASH +
+						organizationUserRole.getRoleId());
+			}
+
+			if (group.isSite()) {
+				Role siteMemberRole = _roleLocalService.getRole(
+					group.getCompanyId(), RoleConstants.SITE_MEMBER);
+
+				groupRolesTermsFilter.addValue(
+					group.getGroupId() + StringPool.DASH +
+						siteMemberRole.getRoleId());
+			}
 		}
 
 		if (!groupsTermsFilter.isEmpty()) {
