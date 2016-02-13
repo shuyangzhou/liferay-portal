@@ -1,6 +1,6 @@
 Bundle-Name: Liferay CSS Builder
 Bundle-SymbolicName: com.liferay.css.builder
-Bundle-Version: 1.0.14
+Bundle-Version: 1.0.15
 Export-Package: com.liferay.css.builder
 Include-Resource:\
 	@../../../portal-impl/portal-impl.jar!/com/liferay/portal/tools/ArgumentsMap.class,\
@@ -34,4 +34,3 @@ Include-Resource:\
 	@../../../portal-service/portal-service.jar!/com/liferay/portal/kernel/util/SystemProperties.class,\
 	@../../../portal-service/portal-service.jar!/com/liferay/portal/kernel/util/Validator.class
 Main-Class: com.liferay.css.builder.CSSBuilder
-Private-Package: com.liferay.css.builder.sass

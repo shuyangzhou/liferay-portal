@@ -1721,6 +1721,7 @@ public class VerifyProperties extends VerifyProcess {
 		"buffered.increment.serial.queue.size", "cas.validate.url",
 		"cluster.executor.heartbeat.interval",
 		"com.liferay.filters.doubleclick.DoubleClickFilter",
+		"com.liferay.portal.servlet.filters.audit.AuditFilter",
 		"com.liferay.portal.servlet.filters.doubleclick.DoubleClickFilter",
 		"com.liferay.portal.servlet.filters.charbufferpool." +
 			"CharBufferPoolFilter",

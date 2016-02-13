@@ -22,9 +22,9 @@ ResultRow row = (ResultRow)request.getAttribute(WebKeys.SEARCH_CONTAINER_RESULT_
 BackgroundTask backgroundTask = (BackgroundTask)row.getObject();
 %>
 
-<strong class="background-task-status-<%= BackgroundTaskConstants.getStatusLabel(backgroundTask.getStatus()) %> <%= BackgroundTaskConstants.getStatusCssClass(backgroundTask.getStatus()) %> label">
+<h5 class="background-task-status-<%= BackgroundTaskConstants.getStatusLabel(backgroundTask.getStatus()) %> <%= BackgroundTaskConstants.getStatusCssClass(backgroundTask.getStatus()) %>">
 	<liferay-ui:message key="<%= backgroundTask.getStatusLabel() %>" />
-</strong>
+</h5>
 
 <c:if test="<%= backgroundTask.isInProgress() %>">
 
@@ -62,7 +62,7 @@ BackgroundTask backgroundTask = (BackgroundTask)row.getObject();
 		}
 		%>
 
-		<div class="active progress progress-striped">
+		<div class="active progress progress-striped progress-xs">
 			<div class="progress-bar" style="width: <%= percentage %>%;">
 				<c:if test="<%= (allProgressBarCountersTotal > 0) && (!Validator.equals(cmd, Constants.PUBLISH_TO_REMOTE) || (percentage < 100)) %>">
 					<%= percentage + StringPool.PERCENT %>
@@ -82,20 +82,8 @@ BackgroundTask backgroundTask = (BackgroundTask)row.getObject();
 				</div>
 			</c:when>
 			<c:when test="<%= Validator.isNotNull(stagedModelName) && Validator.isNotNull(stagedModelType) %>">
-
-				<%
-				String messageKey = "exporting";
-
-				if (Validator.equals(cmd, Constants.IMPORT)) {
-					messageKey = "importing";
-				}
-				else if (Validator.equals(cmd, Constants.PUBLISH_TO_LIVE) || Validator.equals(cmd, Constants.PUBLISH_TO_REMOTE)) {
-					messageKey = "publishing";
-				}
-				%>
-
 				<div class="progress-current-item">
-					<strong><liferay-ui:message key="<%= messageKey %>" /><%= StringPool.TRIPLE_PERIOD %></strong> <%= ResourceActionsUtil.getModelResource(locale, stagedModelType) %> <em><%= HtmlUtil.escape(stagedModelName) %></em>
+					<strong><liferay-ui:message key="publishing" /><%= StringPool.TRIPLE_PERIOD %></strong> <%= ResourceActionsUtil.getModelResource(locale, stagedModelType) %> <em><%= HtmlUtil.escape(stagedModelName) %></em>
 				</div>
 			</c:when>
 		</c:choose>
