@@ -23,7 +23,6 @@ import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.model.UserGroupRole;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
@@ -42,7 +41,6 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ResourceBlockLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
-import com.liferay.portal.kernel.service.UserGroupRoleLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -243,23 +241,21 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 
 		Set<Group> groups = new LinkedHashSet<>();
 		Set<Role> roles = new LinkedHashSet<>();
-		Set<UserGroupRole> userGroupRoles = new LinkedHashSet<>();
 		Map<Long, List<Role>> groupIdsToRoles = new HashMap<>();
 
 		populate(
 			companyId, groupIds, userId, permissionChecker, groups, roles,
-			userGroupRoles, groupIdsToRoles);
+			groupIdsToRoles);
 
 		return doGetPermissionFilter_6(
 			companyId, groupIds, userId, permissionChecker, className,
-			booleanFilter, groups, roles, userGroupRoles, groupIdsToRoles);
+			booleanFilter, groups, roles, groupIdsToRoles);
 	}
 
 	protected BooleanFilter doGetPermissionFilter_6(
 			long companyId, long[] groupIds, long userId,
 			PermissionChecker permissionChecker, String className,
 			BooleanFilter booleanFilter, Set<Group> groups, Set<Role> roles,
-			Set<UserGroupRole> userGroupRoles,
 			Map<Long, List<Role>> groupIdsToRoles)
 		throws Exception {
 
@@ -356,12 +352,6 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 			addRequiredMemberRole(group, groupRolesTermsFilter);
 		}
 
-		for (UserGroupRole userGroupRole : userGroupRoles) {
-			groupRolesTermsFilter.addValue(
-				userGroupRole.getGroupId() + StringPool.DASH +
-					userGroupRole.getRoleId());
-		}
-
 		if (!groupsTermsFilter.isEmpty()) {
 			permissionBooleanFilter.add(groupsTermsFilter);
 		}
@@ -403,8 +393,7 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 	protected void populate(
 			long companyId, long[] groupIds, long userId,
 			PermissionChecker permissionChecker, Set<Group> groups,
-			Set<Role> roles, Set<UserGroupRole> userGroupRoles,
-			Map<Long, List<Role>> groupIdsToRoles)
+			Set<Role> roles, Map<Long, List<Role>> groupIdsToRoles)
 		throws Exception {
 
 		UserBag userBag = permissionChecker.getUserBag();
@@ -426,9 +415,6 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 
 		if (ArrayUtil.isEmpty(groupIds)) {
 			groups.addAll(userBag.getGroups());
-
-			userGroupRoles.addAll(
-				_userGroupRoleLocalService.getUserGroupRoles(userId));
 		}
 		else {
 			groups.addAll(userBag.getGroups());
@@ -439,14 +425,6 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 
 					groups.add(group);
 				}
-
-				userGroupRoles.addAll(
-					_userGroupRoleLocalService.getUserGroupRoles(
-						userId, groupId));
-				userGroupRoles.addAll(
-					_userGroupRoleLocalService.
-						getUserGroupRolesByUserUserGroupAndGroup(
-							userId, groupId));
 			}
 		}
 
@@ -502,13 +480,6 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 	}
 
 	@Reference(unbind = "-")
-	protected void setUserGroupRoleLocalService(
-		UserGroupRoleLocalService userGroupRoleLocalService) {
-
-		_userGroupRoleLocalService = userGroupRoleLocalService;
-	}
-
-	@Reference(unbind = "-")
 	protected void setUserLocalService(UserLocalService userLocalService) {
 		_userLocalService = userLocalService;
 	}
@@ -522,7 +493,6 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 	private ResourceBlockLocalService _resourceBlockLocalService;
 	private ResourcePermissionLocalService _resourcePermissionLocalService;
 	private RoleLocalService _roleLocalService;
-	private UserGroupRoleLocalService _userGroupRoleLocalService;
 	private UserLocalService _userLocalService;
 
 }
