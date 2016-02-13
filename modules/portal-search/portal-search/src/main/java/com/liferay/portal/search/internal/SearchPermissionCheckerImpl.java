@@ -400,12 +400,9 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 					userId, Collections.singletonList(guestGroup)));
 		}
 
-		if (ArrayUtil.isEmpty(groupIds)) {
-			groups.addAll(userBag.getGroups());
-		}
-		else {
-			groups.addAll(userBag.getGroups());
+		groups.addAll(userBag.getGroups());
 
+		if (ArrayUtil.isNotEmpty(groupIds)) {
 			for (long groupId : groupIds) {
 				groups.add(_groupLocalService.getGroup(groupId));
 			}
