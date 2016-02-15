@@ -323,8 +323,35 @@ public class ActionURLTag extends ParamAndPropertyAncestorTagImpl {
 		LiferayPortletResponse liferayPortletResponse =
 			PortalUtil.getLiferayPortletResponse(portletResponse);
 
-		return liferayPortletResponse.createLiferayPortletURL(
-			plid, portletName, lifecycle);
+		String requestPortletName = _getPortletName(request);
+
+		if (Validator.isNull(requestPortletName) ||
+			requestPortletName.equals(portletName)) {
+
+			return liferayPortletResponse.createLiferayPortletURL(
+				plid, portletName, lifecycle);
+		}
+
+		LiferayPortletURL liferayPortletURL = null;
+
+		if (lifecycle.equals(PortletRequest.ACTION_PHASE)) {
+			liferayPortletURL =
+				(LiferayPortletURL)liferayPortletResponse.createActionURL();
+		}
+		else if (lifecycle.equals(PortletRequest.RENDER_PHASE)) {
+			liferayPortletURL =
+				(LiferayPortletURL)liferayPortletResponse.createRenderURL();
+		}
+		else {
+			liferayPortletURL =
+				(LiferayPortletURL)liferayPortletResponse.createResourceURL();
+		}
+
+		liferayPortletURL.setPlid(plid);
+		liferayPortletURL.setPortletId(portletName);
+		liferayPortletURL.setLifecycle(lifecycle);
+
+		return liferayPortletURL;
 	}
 
 	private static String _getPortletName(HttpServletRequest request) {
