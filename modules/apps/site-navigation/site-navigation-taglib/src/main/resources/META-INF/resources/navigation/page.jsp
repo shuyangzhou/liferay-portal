@@ -17,7 +17,7 @@
 <%@ include file="/navigation/init.jsp" %>
 
 <%
-DDMTemplate portletDisplayDDMTemplate = PortletDisplayTemplateManagerUtil.getDDMTemplate(displayStyleGroupId, PortalUtil.getClassNameId(NavItem.class), displayStyle, true);
+DDMTemplate portletDisplayDDMTemplate = PortletDisplayTemplateUtil.getPortletDisplayTemplateDDMTemplate(displayStyleGroupId, PortalUtil.getClassNameId(NavItem.class), displayStyle, true);
 
 if (portletDisplayDDMTemplate != null) {
 	Map<String, Object> contextObjects = new HashMap<String, Object>();
@@ -29,7 +29,7 @@ if (portletDisplayDDMTemplate != null) {
 	contextObjects.put("rootLayoutType", rootLayoutType);
 %>
 
-	<%= PortletDisplayTemplateManagerUtil.renderDDMTemplate(request, response, portletDisplayDDMTemplate.getTemplateId(), navItems, contextObjects) %>
+	<%= PortletDisplayTemplateUtil.renderDDMTemplate(request, response, portletDisplayDDMTemplate.getTemplateId(), navItems, contextObjects) %>
 
 <%
 }
