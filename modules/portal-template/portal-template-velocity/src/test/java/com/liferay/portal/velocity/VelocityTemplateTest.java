@@ -82,6 +82,9 @@ public class VelocityTemplateTest {
 
 		_serviceRegistration = registry.registerService(
 			TemplateResourceLoader.class, _templateResourceLoader);
+
+		_multiVMPool = registry.getService(MultiVMPool.class);
+		_singleVMPool = registry.getService(SingleVMPool.class);
 	}
 
 	@AfterClass
@@ -170,7 +173,8 @@ public class VelocityTemplateTest {
 	public void testGet() throws Exception {
 		Template template = new VelocityTemplate(
 			new MockTemplateResource(_TEMPLATE_FILE_NAME), null, null,
-			_velocityEngine, _templateContextHelper, 60, false);
+			_velocityEngine, _templateContextHelper, 60, false, _multiVMPool,
+			_singleVMPool);
 
 		template.put(_TEST_KEY, _TEST_VALUE);
 
@@ -189,7 +193,8 @@ public class VelocityTemplateTest {
 	public void testPrepare() throws Exception {
 		Template template = new VelocityTemplate(
 			new MockTemplateResource(_TEMPLATE_FILE_NAME), null, null,
-			_velocityEngine, _templateContextHelper, 60, false);
+			_velocityEngine, _templateContextHelper, 60, false, _multiVMPool,
+			_singleVMPool);
 
 		template.put(_TEST_KEY, _TEST_VALUE);
 
@@ -210,7 +215,8 @@ public class VelocityTemplateTest {
 	public void testProcessTemplate1() throws Exception {
 		Template template = new VelocityTemplate(
 			new MockTemplateResource(_TEMPLATE_FILE_NAME), null, null,
-			_velocityEngine, _templateContextHelper, 60, false);
+			_velocityEngine, _templateContextHelper, 60, false, _multiVMPool,
+			_singleVMPool);
 
 		template.put(_TEST_KEY, _TEST_VALUE);
 
@@ -227,7 +233,8 @@ public class VelocityTemplateTest {
 	public void testProcessTemplate2() throws Exception {
 		Template template = new VelocityTemplate(
 			new MockTemplateResource(_WRONG_TEMPLATE_ID), null, null,
-			_velocityEngine, _templateContextHelper, 60, false);
+			_velocityEngine, _templateContextHelper, 60, false, _multiVMPool,
+			_singleVMPool);
 
 		template.put(_TEST_KEY, _TEST_VALUE);
 
@@ -250,7 +257,8 @@ public class VelocityTemplateTest {
 		Template template = new VelocityTemplate(
 			new StringTemplateResource(
 				_WRONG_TEMPLATE_ID, _TEST_TEMPLATE_CONTENT),
-			null, null, _velocityEngine, _templateContextHelper, 60, false);
+			null, null, _velocityEngine, _templateContextHelper, 60, false,
+			_multiVMPool, _singleVMPool);
 
 		template.put(_TEST_KEY, _TEST_VALUE);
 
@@ -268,7 +276,8 @@ public class VelocityTemplateTest {
 		Template template = new VelocityTemplate(
 			new MockTemplateResource(_TEMPLATE_FILE_NAME),
 			new MockTemplateResource(_WRONG_ERROR_TEMPLATE_ID), null,
-			_velocityEngine, _templateContextHelper, 60, false);
+			_velocityEngine, _templateContextHelper, 60, false, _multiVMPool,
+			_singleVMPool);
 
 		template.put(_TEST_KEY, _TEST_VALUE);
 
@@ -286,7 +295,8 @@ public class VelocityTemplateTest {
 		Template template = new VelocityTemplate(
 			new MockTemplateResource(_WRONG_TEMPLATE_ID),
 			new MockTemplateResource(_TEMPLATE_FILE_NAME), null,
-			_velocityEngine, _templateContextHelper, 60, false);
+			_velocityEngine, _templateContextHelper, 60, false, _multiVMPool,
+			_singleVMPool);
 
 		template.put(_TEST_KEY, _TEST_VALUE);
 
@@ -304,7 +314,8 @@ public class VelocityTemplateTest {
 		Template template = new VelocityTemplate(
 			new MockTemplateResource(_WRONG_TEMPLATE_ID),
 			new MockTemplateResource(_WRONG_ERROR_TEMPLATE_ID), null,
-			_velocityEngine, _templateContextHelper, 60, false);
+			_velocityEngine, _templateContextHelper, 60, false, _multiVMPool,
+			_singleVMPool);
 
 		template.put(_TEST_KEY, _TEST_VALUE);
 
@@ -328,7 +339,8 @@ public class VelocityTemplateTest {
 			new MockTemplateResource(_WRONG_TEMPLATE_ID),
 			new StringTemplateResource(
 				_WRONG_ERROR_TEMPLATE_ID, _TEST_TEMPLATE_CONTENT),
-			null, _velocityEngine, _templateContextHelper, 60, false);
+			null, _velocityEngine, _templateContextHelper, 60, false,
+			_multiVMPool, _singleVMPool);
 
 		template.put(_TEST_KEY, _TEST_VALUE);
 
@@ -349,7 +361,8 @@ public class VelocityTemplateTest {
 
 		Template template = new VelocityTemplate(
 			new MockTemplateResource(_TEMPLATE_FILE_NAME), null, context,
-			_velocityEngine, _templateContextHelper, 60, false);
+			_velocityEngine, _templateContextHelper, 60, false, _multiVMPool,
+			_singleVMPool);
 
 		UnsyncStringWriter unsyncStringWriter = new UnsyncStringWriter();
 
@@ -373,8 +386,10 @@ public class VelocityTemplateTest {
 
 	private static final String _WRONG_TEMPLATE_ID = "WRONG_TEMPLATE_ID";
 
+	private static MultiVMPool _multiVMPool;
 	private static ServiceRegistration<TemplateResourceLoader>
 		_serviceRegistration;
+	private static SingleVMPool _singleVMPool;
 	private static MockTemplateResourceLoader _templateResourceLoader;
 
 	private TemplateContextHelper _templateContextHelper;
