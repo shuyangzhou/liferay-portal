@@ -17,7 +17,6 @@ package com.liferay.portal.kernel.cluster;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Message;
-import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
 import com.liferay.portal.kernel.util.ProxyFactory;
 
 /**
@@ -30,30 +29,10 @@ public class ClusterLinkUtil {
 		return (Address)message.get(_ADDRESS);
 	}
 
-	public static ClusterLink getClusterLink() {
-		PortalRuntimePermission.checkGetBeanProperty(ClusterLinkUtil.class);
-
-		if ((_clusterLink == null) || !_clusterLink.isEnabled()) {
-			if (_log.isWarnEnabled()) {
-				_log.warn("ClusterLinkUtil is not initialized");
-			}
-
-			return null;
-		}
-
-		return _clusterLink;
-	}
-
 	public static void sendMulticastMessage(
 		Message message, Priority priority) {
 
-		ClusterLink clusterLink = getClusterLink();
-
-		if (clusterLink == null) {
-			return;
-		}
-
-		clusterLink.sendMulticastMessage(message, priority);
+		_clusterLink.sendMulticastMessage(message, priority);
 	}
 
 	public static void sendMulticastMessage(Object payload, Priority priority) {
@@ -67,13 +46,7 @@ public class ClusterLinkUtil {
 	public static void sendUnicastMessage(
 		Address address, Message message, Priority priority) {
 
-		ClusterLink clusterLink = getClusterLink();
-
-		if (clusterLink == null) {
-			return;
-		}
-
-		clusterLink.sendUnicastMessage(address, message, priority);
+		_clusterLink.sendUnicastMessage(address, message, priority);
 	}
 
 	public static Message setAddress(Message message, Address address) {
