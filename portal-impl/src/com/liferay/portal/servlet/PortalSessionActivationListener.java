@@ -59,7 +59,11 @@ public class PortalSessionActivationListener
 
 	@Override
 	public void sessionDidActivate(HttpSessionEvent httpSessionEvent) {
-		new PortalSessionCreator(httpSessionEvent);
+		PortalSessionCreator portalSessionCreator = new PortalSessionCreator(
+			httpSessionEvent);
+
+		portalSessionCreator.registerPortalLifecycle(
+			PortalSessionCreator.METHOD_INIT);
 	}
 
 	@Override

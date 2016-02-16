@@ -44,7 +44,11 @@ public class PortalSessionListener implements HttpSessionListener {
 				compoundSessionIdHttpSession);
 		}
 
-		new PortalSessionCreator(httpSessionEvent);
+		PortalSessionCreator portalSessionCreator = new PortalSessionCreator(
+			httpSessionEvent);
+
+		portalSessionCreator.registerPortalLifecycle(
+			PortalSessionCreator.METHOD_INIT);
 
 		HttpSession session = httpSessionEvent.getSession();
 
