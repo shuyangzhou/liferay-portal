@@ -16,6 +16,8 @@ package com.liferay.portal.template.velocity;
 
 import aQute.bnd.annotation.metatype.Configurable;
 
+import com.liferay.portal.kernel.cache.MultiVMPool;
+import com.liferay.portal.kernel.cache.SingleVMPool;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateConstants;
@@ -275,7 +277,7 @@ public class VelocityManager extends BaseSingleTemplateManager {
 			templateResource, errorTemplateResource, helperUtilities,
 			_velocityEngine, templateContextHelper,
 			_velocityEngineConfiguration.resourceModificationCheckInterval(),
-			privileged);
+			privileged, _multiVMPool, _singleVMPool);
 
 		if (restricted) {
 			template = new RestrictedTemplate(
@@ -285,9 +287,21 @@ public class VelocityManager extends BaseSingleTemplateManager {
 		return template;
 	}
 
+	@Reference(unbind = "-")
+	protected void setMultiVMPool(MultiVMPool multiVMPool) {
+		_multiVMPool = multiVMPool;
+	}
+
+	@Reference(unbind = "-")
+	protected void setSingleVMPool(SingleVMPool singleVMPool) {
+		_singleVMPool = singleVMPool;
+	}
+
 	private static volatile VelocityEngineConfiguration
 		_velocityEngineConfiguration;
 
+	private MultiVMPool _multiVMPool;
+	private SingleVMPool _singleVMPool;
 	private VelocityEngine _velocityEngine;
 
 }

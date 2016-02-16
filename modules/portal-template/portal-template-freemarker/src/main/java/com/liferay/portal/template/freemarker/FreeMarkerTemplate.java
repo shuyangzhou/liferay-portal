@@ -14,6 +14,8 @@
 
 package com.liferay.portal.template.freemarker;
 
+import com.liferay.portal.kernel.cache.MultiVMPool;
+import com.liferay.portal.kernel.cache.SingleVMPool;
 import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateException;
@@ -46,11 +48,12 @@ public class FreeMarkerTemplate extends AbstractSingleResourceTemplate {
 		TemplateResource errorTemplateResource, Map<String, Object> context,
 		Configuration configuration,
 		TemplateContextHelper templateContextHelper, boolean privileged,
-		long interval) {
+		long interval, MultiVMPool multiVMPool, SingleVMPool singleVMPool) {
 
 		super(
 			templateResource, errorTemplateResource, context,
-			templateContextHelper, TemplateConstants.LANG_TYPE_FTL, interval);
+			templateContextHelper, TemplateConstants.LANG_TYPE_FTL, interval,
+			multiVMPool, singleVMPool);
 
 		_configuration = configuration;
 		_privileged = privileged;

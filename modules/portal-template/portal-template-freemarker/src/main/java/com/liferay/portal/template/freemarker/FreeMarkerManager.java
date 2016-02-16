@@ -16,6 +16,8 @@ package com.liferay.portal.template.freemarker;
 
 import aQute.bnd.annotation.metatype.Configurable;
 
+import com.liferay.portal.kernel.cache.MultiVMPool;
+import com.liferay.portal.kernel.cache.SingleVMPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.JSPSupportServlet;
@@ -328,7 +330,8 @@ public class FreeMarkerManager extends BaseSingleTemplateManager {
 		Template template = new FreeMarkerTemplate(
 			templateResource, errorTemplateResource, helperUtilities,
 			_configuration, templateContextHelper, privileged,
-			_freemarkerEngineConfiguration.resourceModificationCheck());
+			_freemarkerEngineConfiguration.resourceModificationCheck(),
+			_multiVMPool, _singleVMPool);
 
 		if (restricted) {
 			template = new RestrictedTemplate(
@@ -388,6 +391,16 @@ public class FreeMarkerManager extends BaseSingleTemplateManager {
 		return false;
 	}
 
+	@Reference(unbind = "-")
+	protected void setMultiVMPool(MultiVMPool multiVMPool) {
+		_multiVMPool = multiVMPool;
+	}
+
+	@Reference(unbind = "-")
+	protected void setSingleVMPool(SingleVMPool singleVMPool) {
+		_singleVMPool = singleVMPool;
+	}
+
 	private static final Class<?>[] _INTERFACES = {ServletContext.class};
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -398,6 +411,8 @@ public class FreeMarkerManager extends BaseSingleTemplateManager {
 	private Configuration _configuration;
 	private volatile FreeMarkerEngineConfiguration
 		_freemarkerEngineConfiguration;
+	private MultiVMPool _multiVMPool;
+	private SingleVMPool _singleVMPool;
 	private final Map<String, String> _taglibMappings =
 		new ConcurrentHashMap<>();
 	private TemplateClassResolver _templateClassResolver;
