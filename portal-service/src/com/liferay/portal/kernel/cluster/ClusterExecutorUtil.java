@@ -16,10 +16,8 @@ package com.liferay.portal.kernel.cluster;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
 import com.liferay.portal.kernel.util.ProxyFactory;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -31,91 +29,35 @@ public class ClusterExecutorUtil {
 	public static void addClusterEventListener(
 		ClusterEventListener clusterEventListener) {
 
-		ClusterExecutor clusterExecutor = getClusterExecutor();
-
-		if (clusterExecutor == null) {
-			return;
-		}
-
-		clusterExecutor.addClusterEventListener(clusterEventListener);
+		_clusterExecutor.addClusterEventListener(clusterEventListener);
 	}
 
 	public static FutureClusterResponses execute(
 		ClusterRequest clusterRequest) {
 
-		ClusterExecutor clusterExecutor = getClusterExecutor();
-
-		if (clusterExecutor == null) {
-			return null;
-		}
-
-		return clusterExecutor.execute(clusterRequest);
-	}
-
-	public static ClusterExecutor getClusterExecutor() {
-		PortalRuntimePermission.checkGetBeanProperty(ClusterExecutorUtil.class);
-
-		if ((_clusterExecutor == null) || !_clusterExecutor.isEnabled()) {
-			if (_log.isWarnEnabled()) {
-				_log.warn("ClusterExecutorUtil is not initialized");
-			}
-
-			return null;
-		}
-
-		return _clusterExecutor;
+		return _clusterExecutor.execute(clusterRequest);
 	}
 
 	public static List<ClusterNode> getClusterNodes() {
-		ClusterExecutor clusterExecutor = getClusterExecutor();
-
-		if (clusterExecutor == null) {
-			return Collections.emptyList();
-		}
-
-		return clusterExecutor.getClusterNodes();
+		return _clusterExecutor.getClusterNodes();
 	}
 
 	public static ClusterNode getLocalClusterNode() {
-		ClusterExecutor clusterExecutor = getClusterExecutor();
-
-		if (clusterExecutor == null) {
-			return null;
-		}
-
-		return clusterExecutor.getLocalClusterNode();
+		return _clusterExecutor.getLocalClusterNode();
 	}
 
 	public static boolean isClusterNodeAlive(String clusterNodeId) {
-		ClusterExecutor clusterExecutor = getClusterExecutor();
-
-		if (clusterExecutor == null) {
-			return false;
-		}
-
-		return clusterExecutor.isClusterNodeAlive(clusterNodeId);
+		return _clusterExecutor.isClusterNodeAlive(clusterNodeId);
 	}
 
 	public static boolean isEnabled() {
-		ClusterExecutor clusterExecutor = getClusterExecutor();
-
-		if (clusterExecutor == null) {
-			return false;
-		}
-
-		return true;
+		return _clusterExecutor.isEnabled();
 	}
 
 	public static void removeClusterEventListener(
 		ClusterEventListener clusterEventListener) {
 
-		ClusterExecutor clusterExecutor = getClusterExecutor();
-
-		if (clusterExecutor == null) {
-			return;
-		}
-
-		clusterExecutor.removeClusterEventListener(clusterEventListener);
+		_clusterExecutor.removeClusterEventListener(clusterEventListener);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

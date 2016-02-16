@@ -16,7 +16,7 @@
 
 <%@ include file="/init.jsp" %>
 
-<%@ page import="com.liferay.dynamic.data.mapping.kernel.DDMTemplate" %><%@
+<%@ page import="com.liferay.dynamic.data.mapping.model.DDMTemplate" %><%@
 page import="com.liferay.portal.kernel.theme.NavItem" %>
 
 <%
