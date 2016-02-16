@@ -14,9 +14,9 @@
 
 package com.liferay.portal.servlet;
 
-import com.liferay.portal.kernel.util.TransientValue;
-
 import java.io.Serializable;
+
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionActivationListener;
@@ -35,26 +35,11 @@ public class PortalSessionActivationListener
 	public static PortalSessionActivationListener getInstance(
 		HttpSession session) {
 
-		TransientValue<PortalSessionActivationListener> transientValue =
-			(TransientValue<PortalSessionActivationListener>)
-				session.getAttribute(
-					PortalSessionActivationListener.class.getName());
-
-		PortalSessionActivationListener portalSessionActivationListener = null;
-
-		if (transientValue != null) {
-			portalSessionActivationListener = transientValue.getValue();
-		}
-
-		return portalSessionActivationListener;
+		return _PORTAL_SESSION_ACTIVATION_LISTENERS.get(session.getId());
 	}
 
 	public static void setInstance(HttpSession session) {
-		TransientValue<PortalSessionActivationListener> transientValue =
-			new TransientValue<>(PortalSessionActivationListener.getInstance());
-
-		session.setAttribute(
-			PortalSessionActivationListener.class.getName(), transientValue);
+		_PORTAL_SESSION_ACTIVATION_LISTENERS.put(session.getId(), _instance);
 	}
 
 	@Override
@@ -69,6 +54,10 @@ public class PortalSessionActivationListener
 	@Override
 	public void sessionWillPassivate(HttpSessionEvent httpSessionEvent) {
 	}
+
+	private static final
+		ConcurrentHashMap<String, PortalSessionActivationListener>
+			_PORTAL_SESSION_ACTIVATION_LISTENERS = new ConcurrentHashMap<>();
 
 	private static final PortalSessionActivationListener _instance =
 		new PortalSessionActivationListener();
