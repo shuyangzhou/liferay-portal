@@ -488,7 +488,7 @@ urlConfiguration.setParameter("resourcePrimKey", portletPrimaryKey);
 
 portletDisplay.setURLConfiguration(urlConfiguration.toString());
 
-StringBuilder urlConfigurationJSSB = new StringBuilder(14);
+StringBundler urlConfigurationJSSB = new StringBundler(14);
 
 urlConfigurationJSSB.append("Liferay.Portlet.openWindow({bodyCssClass: 'dialog-with-footer',");
 urlConfigurationJSSB.append("namespace: '");
