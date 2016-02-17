@@ -18,22 +18,23 @@ import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.Signature;
+import java.lang.reflect.Method;
+
+import org.aopalliance.intercept.MethodInterceptor;
+import org.aopalliance.intercept.MethodInvocation;
 
 /**
  * @author Brian Wing Shun Chan
  */
-public class WorkflowPermissionAdvice {
+public class WorkflowPermissionAdvice implements MethodInterceptor {
 
-	public Object invoke(ProceedingJoinPoint proceedingJoinPoint)
-		throws Throwable {
+	@Override
+	public Object invoke(MethodInvocation methodInvocation) throws Throwable {
+		Method method = methodInvocation.getMethod();
 
-		Signature signature = proceedingJoinPoint.getSignature();
+		String methodName = method.getName();
 
-		String methodName = signature.getName();
-
-		Object[] arguments = proceedingJoinPoint.getArgs();
+		Object[] arguments = methodInvocation.getArguments();
 
 		if (methodName.equals(_ASSIGN_WORKFLOW_TASK_TO_USER_METHOD_NAME)) {
 			long userId = (Long)arguments[1];
@@ -46,7 +47,7 @@ public class WorkflowPermissionAdvice {
 			}
 		}
 
-		return proceedingJoinPoint.proceed();
+		return methodInvocation.proceed();
 	}
 
 	private static final String _ASSIGN_WORKFLOW_TASK_TO_USER_METHOD_NAME =

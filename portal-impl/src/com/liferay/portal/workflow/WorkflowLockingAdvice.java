@@ -21,23 +21,24 @@ import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.workflow.WorkflowDefinition;
 import com.liferay.portal.kernel.workflow.WorkflowException;
 
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.Signature;
+import java.lang.reflect.Method;
+
+import org.aopalliance.intercept.MethodInterceptor;
+import org.aopalliance.intercept.MethodInvocation;
 
 /**
  * @author Shuyang Zhou
  * @author Brian Wing Shun Chan
  */
-public class WorkflowLockingAdvice {
+public class WorkflowLockingAdvice implements MethodInterceptor {
 
-	public Object invoke(ProceedingJoinPoint proceedingJoinPoint)
-		throws Throwable {
+	@Override
+	public Object invoke(MethodInvocation methodInvocation) throws Throwable {
+		Method method = methodInvocation.getMethod();
 
-		Signature signature = proceedingJoinPoint.getSignature();
+		String methodName = method.getName();
 
-		String methodName = signature.getName();
-
-		Object[] arguments = proceedingJoinPoint.getArgs();
+		Object[] arguments = methodInvocation.getArguments();
 
 		if (methodName.equals(_START_WORKFLOW_INSTANCE_METHOD_NAME)) {
 			String workflowDefinitionName = (String)arguments[3];
@@ -54,12 +55,12 @@ public class WorkflowLockingAdvice {
 							" is being undeployed");
 			}
 
-			return proceedingJoinPoint.proceed();
+			return methodInvocation.proceed();
 		}
 		else if (!methodName.equals(
 					_UNDEPLOY_WORKFLOW_DEFINITION_METHOD_NAME)) {
 
-			return proceedingJoinPoint.proceed();
+			return methodInvocation.proceed();
 		}
 
 		long userId = (Long)arguments[1];
@@ -80,7 +81,7 @@ public class WorkflowLockingAdvice {
 				userId, className, key, String.valueOf(userId), false,
 				Time.HOUR);
 
-			return proceedingJoinPoint.proceed();
+			return methodInvocation.proceed();
 		}
 		finally {
 			LockManagerUtil.unlock(className, key);

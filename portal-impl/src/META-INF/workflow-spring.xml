@@ -26,17 +26,38 @@
 	<bean id="com.liferay.portal.workflow.WorkflowLinkAdvice" class="com.liferay.portal.workflow.WorkflowLinkAdvice" />
 	<bean id="com.liferay.portal.workflow.WorkflowLockingAdvice" class="com.liferay.portal.workflow.WorkflowLockingAdvice" />
 	<bean id="com.liferay.portal.workflow.WorkflowPermissionAdvice" class="com.liferay.portal.workflow.WorkflowPermissionAdvice" />
-	<aop:config>
-		<aop:aspect ref="com.liferay.portal.workflow.WorkflowLockingAdvice" order="1">
-			<aop:around pointcut="bean(com.liferay.portal.workflow.WorkflowDefinitionManagerProxyBean) || bean(com.liferay.portal.workflow.WorkflowInstanceManagerProxyBean)" method="invoke" />
-		</aop:aspect>
-		<aop:aspect ref="com.liferay.portal.workflow.WorkflowPermissionAdvice" order="2">
-			<aop:around pointcut="bean(com.liferay.portal.workflow.WorkflowTaskManagerProxyBean)" method="invoke" />
-		</aop:aspect>
-		<aop:aspect ref="com.liferay.portal.workflow.WorkflowLinkAdvice" order="3">
-			<aop:around pointcut="bean(com.liferay.portal.workflow.WorkflowDefinitionManagerProxyBean)" method="invoke" />
-		</aop:aspect>
-	</aop:config>
+	<bean class="com.liferay.portal.spring.aop.ServiceBeanAutoProxyCreator">
+		<property name="beanMatcher">
+			<bean class="com.liferay.portal.spring.aop.BeanNameMatcher">
+				<property name="beanNamePattern" value="com.liferay.portal.workflow.WorkflowDefinitionManagerProxyBean" />
+			</bean>
+		</property>
+		<property name="methodInterceptor" ref="com.liferay.portal.workflow.WorkflowLockingAdvice" />
+	</bean>
+	<bean class="com.liferay.portal.spring.aop.ServiceBeanAutoProxyCreator">
+		<property name="beanMatcher">
+			<bean class="com.liferay.portal.spring.aop.BeanNameMatcher">
+				<property name="beanNamePattern" value="com.liferay.portal.workflow.WorkflowInstanceManagerProxyBean" />
+			</bean>
+		</property>
+		<property name="methodInterceptor" ref="com.liferay.portal.workflow.WorkflowLockingAdvice" />
+	</bean>
+	<bean class="com.liferay.portal.spring.aop.ServiceBeanAutoProxyCreator">
+		<property name="beanMatcher">
+			<bean class="com.liferay.portal.spring.aop.BeanNameMatcher">
+				<property name="beanNamePattern" value="com.liferay.portal.workflow.WorkflowTaskManagerProxyBean" />
+			</bean>
+		</property>
+		<property name="methodInterceptor" ref="com.liferay.portal.workflow.WorkflowPermissionAdvice" />
+	</bean>
+	<bean class="com.liferay.portal.spring.aop.ServiceBeanAutoProxyCreator">
+		<property name="beanMatcher">
+			<bean class="com.liferay.portal.spring.aop.BeanNameMatcher">
+				<property name="beanNamePattern" value="com.liferay.portal.workflow.WorkflowDefinitionManagerProxyBean" />
+			</bean>
+		</property>
+		<property name="methodInterceptor" ref="com.liferay.portal.workflow.WorkflowLinkAdvice" />
+	</bean>
 
 	<!-- Proxy -->
 
