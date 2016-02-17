@@ -5,11 +5,10 @@
 		<if>
 			<isset var="siteName" />
 			<then>
-				<execute function="Type" locator1="NavBar#BASIC_SEARCH_FIELD" value1="${siteName}" />
-				<execute function="Click" locator1="Icon#BASIC_SEARCH" />
-
 				<var name="key_rowEntry" value="${siteName}" />
+
 				<execute function="ClickNoError" locator1="Icon#ROW_VERTICAL_ELLIPSIS" />
+
 				<execute function="AssertClick" locator1="MenuItem#SITE_ADMINISTRATION" value1="Site Administration" />
 			</then>
 		</if>
@@ -180,7 +179,7 @@
 			<var name="page" value="${page}" />
 		</execute>
 
-		<execute function="Click" locator1="DETAILS_NAVIGATION_ADVANCED" />
+		<execute function="Click" locator1="SitePages#DETAILS_NAVIGATION_ADVANCED" />
 
 		<execute function="AssertClick" locator1="Button#CHANGE_LOGO" value1="Change" />
 		<execute function="SelectFrame" locator1="SitePages#LOGO_UPLOAD_IMAGE_IFRAME" />

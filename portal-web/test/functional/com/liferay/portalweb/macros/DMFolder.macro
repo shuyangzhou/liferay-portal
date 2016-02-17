@@ -73,7 +73,7 @@
 	</command>
 
 	<command name="addPGViaMG">
-		<execute function="Click" locator1="Icon#BODY_VERTICAL_ELLIPSIS" />
+		<execute function="Click#waitForMenuToggleJSClick" locator1="Icon#BODY_VERTICAL_ELLIPSIS" />
 
 		<execute function="AssertClick#assertTextClickAtAndWait" locator1="MenuItem#ADD_FOLDER" value1="Add Folder" />
 
@@ -171,7 +171,7 @@
 	</command>
 
 	<command name="addSubfolderPGViaMG">
-		<execute function="Click" locator1="Icon#BODY_VERTICAL_ELLIPSIS" />
+		<execute function="Click#waitForMenuToggleJSClick" locator1="Icon#BODY_VERTICAL_ELLIPSIS" />
 
 		<execute function="AssertClick#assertTextClickAtAndWait" locator1="MenuItem#ADD_SUBFOLDER" value1="Add Subfolder" />
 
@@ -268,7 +268,7 @@
 
 		<execute function="AssertTextEquals" locator1="DocumentsAndMedia#DESCRIPTIVE_LIST_FOLDER_TITLE" value1="${dmFolderName}" />
 		<execute function="Check" locator1="DocumentsAndMedia#DESCRIPTIVE_LIST_FOLDER_CHECKBOX" />
-		<execute function="Click" locator1="Icon#DELETE" />
+		<execute function="Click" locator1="Icon#MOVE_TO_RECYCLE_BIN" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="The ${assetType} ${dmFolderName} was moved to the Recycle Bin. Undo" />
 		<execute function="AssertElementNotPresent" locator1="DocumentsAndMedia#DESCRIPTIVE_LIST_FOLDER_ICON" />
 	</command>
@@ -315,7 +315,7 @@
 	</command>
 
 	<command name="editPGViaMG">
-		<execute function="Click" locator1="Icon#BODY_VERTICAL_ELLIPSIS" />
+		<execute function="Click#waitForMenuToggleJSClick" locator1="Icon#BODY_VERTICAL_ELLIPSIS" />
 
 		<execute function="AssertClick" locator1="MediaGallery#ENTRY_EDIT_ICON" value1="Edit" />
 

@@ -5829,13 +5829,13 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		try {
 			if (authType.equals(CompanyConstants.AUTH_TYPE_EA)) {
 				AuthPipeline.onFailureByEmailAddress(
-					PropsKeys.AUTH_FAILURE, user.getCompanyId(), login,
-					headerMap, parameterMap);
+					PropsKeys.AUTH_FAILURE, user.getCompanyId(),
+					user.getEmailAddress(), headerMap, parameterMap);
 			}
 			else if (authType.equals(CompanyConstants.AUTH_TYPE_SN)) {
 				AuthPipeline.onFailureByScreenName(
-					PropsKeys.AUTH_FAILURE, user.getCompanyId(), login,
-					headerMap, parameterMap);
+					PropsKeys.AUTH_FAILURE, user.getCompanyId(),
+					user.getScreenName(), headerMap, parameterMap);
 			}
 			else if (authType.equals(CompanyConstants.AUTH_TYPE_ID)) {
 				AuthPipeline.onFailureByUserId(
@@ -5867,12 +5867,12 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 					if (authType.equals(CompanyConstants.AUTH_TYPE_EA)) {
 						AuthPipeline.onMaxFailuresByEmailAddress(
 							PropsKeys.AUTH_MAX_FAILURES, user.getCompanyId(),
-							login, headerMap, parameterMap);
+							user.getEmailAddress(), headerMap, parameterMap);
 					}
 					else if (authType.equals(CompanyConstants.AUTH_TYPE_SN)) {
 						AuthPipeline.onMaxFailuresByScreenName(
 							PropsKeys.AUTH_MAX_FAILURES, user.getCompanyId(),
-							login, headerMap, parameterMap);
+							user.getScreenName(), headerMap, parameterMap);
 					}
 					else if (authType.equals(CompanyConstants.AUTH_TYPE_ID)) {
 						AuthPipeline.onMaxFailuresByUserId(
