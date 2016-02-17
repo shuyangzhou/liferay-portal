@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.PortalRunMode;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.elasticsearch.configuration.ElasticsearchConfiguration;
@@ -177,6 +178,19 @@ public class EmbeddedElasticsearchConnection
 		StopWatch stopWatch = new StopWatch();
 
 		stopWatch.start();
+
+		if (_log.isWarnEnabled()) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append("Liferay is configured to use embedded Elasticsearch ");
+			sb.append("as its search engine. Do NOT use embedded ");
+			sb.append("Elasticsearch in production. Embedded Elasticsearch ");
+			sb.append("is useful for development and demonstration purposes. ");
+			sb.append("Remote Elasticsearch connections can be configured in ");
+			sb.append("the Control Panel.");
+
+			_log.warn(sb);
+		}
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(

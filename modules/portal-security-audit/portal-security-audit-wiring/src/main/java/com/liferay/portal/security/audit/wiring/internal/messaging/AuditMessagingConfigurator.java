@@ -92,13 +92,13 @@ public class AuditMessagingConfigurator {
 		destinationConfiguration.setRejectedExecutionHandler(
 			rejectedExecutionHandler);
 
-		Dictionary<String, Object> destinationDictionary =
+		Dictionary<String, Object> destinationProperties =
 			new HashMapDictionary<>();
 
-		destinationDictionary.put("destination.name", destination.getName());
+		destinationProperties.put("destination.name", destination.getName());
 
 		_destinationServiceRegistration = _bundleContext.registerService(
-			Destination.class, destination, destinationDictionary);
+			Destination.class, destination, destinationProperties);
 
 		destination.register(_proxyMessageListener);
 	}
