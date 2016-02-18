@@ -17,22 +17,23 @@ package com.liferay.portal.workflow;
 import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalServiceUtil;
 import com.liferay.portal.kernel.workflow.RequiredWorkflowDefinitionException;
 
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.Signature;
+import java.lang.reflect.Method;
+
+import org.aopalliance.intercept.MethodInterceptor;
+import org.aopalliance.intercept.MethodInvocation;
 
 /**
  * @author Brian Wing Shun Chan
  */
-public class WorkflowLinkAdvice {
+public class WorkflowLinkAdvice implements MethodInterceptor {
 
-	public Object invoke(ProceedingJoinPoint proceedingJoinPoint)
-		throws Throwable {
+	@Override
+	public Object invoke(MethodInvocation methodInvocation) throws Throwable {
+		Method method = methodInvocation.getMethod();
 
-		Signature signature = proceedingJoinPoint.getSignature();
+		String methodName = method.getName();
 
-		String methodName = signature.getName();
-
-		Object[] arguments = proceedingJoinPoint.getArgs();
+		Object[] arguments = methodInvocation.getArguments();
 
 		if (methodName.equals(_UPDATE_ACTIVE)) {
 			long companyId = (Long)arguments[0];
@@ -52,7 +53,7 @@ public class WorkflowLinkAdvice {
 			}
 		}
 
-		return proceedingJoinPoint.proceed();
+		return methodInvocation.proceed();
 	}
 
 	private static final String _UPDATE_ACTIVE = "updateActive";

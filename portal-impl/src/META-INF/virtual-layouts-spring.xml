@@ -10,7 +10,12 @@
 >
 	<bean id="com.liferay.portal.kernel.portlet.VirtualLayoutFriendlyURLResolver" class="com.liferay.portal.kernel.portlet.VirtualLayoutFriendlyURLResolver" />
 	<bean id="com.liferay.portal.service.impl.LayoutLocalServiceVirtualLayoutsAdvice" class="com.liferay.portal.service.impl.LayoutLocalServiceVirtualLayoutsAdvice" />
-	<aop:config proxy-target-class="false">
-		<aop:advisor advice-ref="com.liferay.portal.service.impl.LayoutLocalServiceVirtualLayoutsAdvice" pointcut="bean(com.liferay.portal.kernel.service.LayoutLocalService)" />
-	</aop:config>
+	<bean class="com.liferay.portal.spring.aop.ServiceBeanAutoProxyCreator">
+		<property name="beanMatcher">
+			<bean class="com.liferay.portal.spring.aop.BeanNameMatcher">
+				<property name="beanNamePattern" value="com.liferay.portal.kernel.service.LayoutLocalService" />
+			</bean>
+		</property>
+		<property name="methodInterceptor" ref="com.liferay.portal.service.impl.LayoutLocalServiceVirtualLayoutsAdvice" />
+	</bean>
 </beans>
