@@ -22,6 +22,8 @@ import com.liferay.layouts.admin.kernel.util.SitemapUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.LayoutSet;
+import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutSetLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -50,19 +52,21 @@ public class JournalArticleSitemapURLProvider implements SitemapURLProvider {
 	}
 
 	@Override
-	public void visitLayout(
-			Element element, Layout layout, ThemeDisplay themeDisplay)
+	public void visitLayoutSet(
+			Element element, LayoutSet layoutSet, ThemeDisplay themeDisplay)
 		throws PortalException {
 
 		List<JournalArticle> journalArticles =
-			_journalArticleService.getArticlesByLayoutUuid(
-				layout.getGroupId(), layout.getUuid());
+			_journalArticleService.getArticlesWithLayouts(
+				layoutSet.getGroupId());
 
 		if (journalArticles.isEmpty()) {
 			return;
 		}
 
 		Set<String> processedArticleIds = new HashSet<>();
+
+		String portalURL = PortalUtil.getPortalURL(layoutSet, themeDisplay);
 
 		for (JournalArticle journalArticle : journalArticles) {
 			if (processedArticleIds.contains(journalArticle.getArticleId()) ||
@@ -72,8 +76,6 @@ public class JournalArticleSitemapURLProvider implements SitemapURLProvider {
 
 				continue;
 			}
-
-			String portalURL = PortalUtil.getPortalURL(layout, themeDisplay);
 
 			String groupFriendlyURL = PortalUtil.getGroupFriendlyURL(
 				_layoutSetLocalService.getLayoutSet(
@@ -89,6 +91,10 @@ public class JournalArticleSitemapURLProvider implements SitemapURLProvider {
 			sb.append(groupFriendlyURL);
 			sb.append(JournalArticleConstants.CANONICAL_URL_SEPARATOR);
 			sb.append(journalArticle.getUrlTitle());
+
+			Layout layout = LayoutLocalServiceUtil.getLayoutByUuidAndGroupId(
+				journalArticle.getLayoutUuid(), layoutSet.getGroupId(),
+				layoutSet.getPrivateLayout());
 
 			String articleURL = PortalUtil.getCanonicalURL(
 				sb.toString(), themeDisplay, layout);
