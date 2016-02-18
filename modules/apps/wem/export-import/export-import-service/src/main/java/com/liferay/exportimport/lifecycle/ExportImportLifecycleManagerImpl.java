@@ -25,8 +25,6 @@ import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 
-import java.io.Serializable;
-
 import java.util.Dictionary;
 import java.util.HashSet;
 import java.util.Set;
@@ -47,7 +45,7 @@ public class ExportImportLifecycleManagerImpl
 
 	@Override
 	public void fireExportImportLifecycleEvent(
-		int code, int processFlag, Serializable... arguments) {
+		int code, int processFlag, Object... arguments) {
 
 		Message message = new Message();
 

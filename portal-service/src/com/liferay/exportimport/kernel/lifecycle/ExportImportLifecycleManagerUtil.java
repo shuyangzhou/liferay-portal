@@ -16,15 +16,13 @@ package com.liferay.exportimport.kernel.lifecycle;
 
 import com.liferay.portal.kernel.util.ProxyFactory;
 
-import java.io.Serializable;
-
 /**
  * @author Michael C. Han
  */
 public class ExportImportLifecycleManagerUtil {
 
 	public static void fireExportImportLifecycleEvent(
-		int code, int processFlag, Serializable... arguments) {
+		int code, int processFlag, Object... arguments) {
 
 		_exportImportLifecycleManager.fireExportImportLifecycleEvent(
 			code, processFlag, arguments);

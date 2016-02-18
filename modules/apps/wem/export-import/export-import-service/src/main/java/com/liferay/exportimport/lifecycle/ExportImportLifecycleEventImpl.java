@@ -15,7 +15,7 @@
 package com.liferay.exportimport.lifecycle;
 
 import com.liferay.exportimport.kernel.lifecycle.ExportImportLifecycleEvent;
-import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.model.StagedModel;
 
 import java.io.Serializable;
 
@@ -44,8 +44,21 @@ public class ExportImportLifecycleEventImpl
 	}
 
 	@Override
-	public void setAttributes(Serializable... attributes) {
-		_attributes.addAll(ListUtil.fromArray(attributes));
+	public StagedModel getStagedModel() {
+		return _stagedModel;
+	}
+
+	@Override
+	public void setAttributes(Object... attributes) {
+		for (Object attribute : attributes) {
+			if (attribute instanceof StagedModel) {
+				_stagedModel = (StagedModel)attribute;
+
+				continue;
+			}
+
+			_attributes.add((Serializable)attribute);
+		}
 	}
 
 	@Override
@@ -61,5 +74,6 @@ public class ExportImportLifecycleEventImpl
 	private final List<Serializable> _attributes = new ArrayList<>();
 	private int _code;
 	private int _processFlag;
+	private transient StagedModel _stagedModel;
 
 }

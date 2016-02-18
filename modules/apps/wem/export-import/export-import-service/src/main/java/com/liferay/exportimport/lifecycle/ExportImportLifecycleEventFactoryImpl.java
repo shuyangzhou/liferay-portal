@@ -17,8 +17,6 @@ package com.liferay.exportimport.lifecycle;
 import com.liferay.exportimport.kernel.lifecycle.ExportImportLifecycleEvent;
 import com.liferay.exportimport.kernel.lifecycle.ExportImportLifecycleEventFactory;
 
-import java.io.Serializable;
-
 import org.osgi.service.component.annotations.Component;
 
 /**
@@ -30,7 +28,7 @@ public class ExportImportLifecycleEventFactoryImpl
 
 	@Override
 	public ExportImportLifecycleEvent create(
-		int code, int processFlag, Serializable... attributes) {
+		int code, int processFlag, Object... attributes) {
 
 		ExportImportLifecycleEvent exportImportLifecycleEvent =
 			new ExportImportLifecycleEventImpl();
