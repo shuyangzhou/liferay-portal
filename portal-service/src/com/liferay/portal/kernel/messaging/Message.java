@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.io.Serializer;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.TransientValue;
 
 import java.io.Serializable;
 
@@ -27,6 +26,7 @@ import java.nio.ByteBuffer;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * @author Brian Wing Shun Chan
@@ -56,16 +56,20 @@ public class Message implements Cloneable, Serializable {
 			message._values = new HashMap<>(_values);
 		}
 
+		if (_transientValues != null) {
+			message._transientValues = new HashMap<>(_transientValues);
+		}
+
 		return message;
 	}
 
 	public boolean contains(String key) {
-		if (_values == null) {
-			return false;
+		if ((_values != null) && _values.containsKey(key)) {
+			return true;
 		}
-		else {
-			return _values.containsKey(key);
-		}
+
+		return ((_transientValues != null) &&
+			_transientValues.containsKey(key));
 	}
 
 	public void copyFrom(Message message) {
@@ -77,6 +81,10 @@ public class Message implements Cloneable, Serializable {
 
 		if (message._values != null) {
 			_values = new HashMap<>(message._values);
+		}
+
+		if (message._transientValues != null) {
+			_transientValues = new HashMap<>(message._transientValues);
 		}
 	}
 
@@ -90,6 +98,10 @@ public class Message implements Cloneable, Serializable {
 		if (_values != null) {
 			message._values = new HashMap<>(_values);
 		}
+
+		if (_transientValues != null) {
+			message._transientValues = new HashMap<>(_transientValues);
+		}
 	}
 
 	public Object get(String key) {
@@ -99,11 +111,8 @@ public class Message implements Cloneable, Serializable {
 
 		Object value = _values.get(key);
 
-		if (value instanceof TransientValue) {
-			TransientValue<Object> transientValue =
-				(TransientValue<Object>)value;
-
-			value = transientValue.getValue();
+		if ((value == null) && (_transientValues != null)) {
+			value = _transientValues.get(key);
 		}
 
 		return value;
@@ -194,7 +203,17 @@ public class Message implements Cloneable, Serializable {
 	}
 
 	public Map<String, Object> getValues() {
-		return _values;
+		if (_values == null) {
+			return _transientValues;
+		}
+
+		Map<String, Object> combinedValues = new HashMap<>(_values);
+
+		if (_transientValues != null) {
+			combinedValues.putAll(_transientValues);
+		}
+
+		return combinedValues;
 	}
 
 	public void put(String key, Object value) {
@@ -211,7 +230,13 @@ public class Message implements Cloneable, Serializable {
 		}
 
 		if (!(value instanceof Serializable)) {
-			value = new TransientValue<>(value);
+			if (_transientValues == null) {
+				_transientValues = new HashMap<>();
+			}
+
+			_transientValues.put(key, value);
+
+			return;
 		}
 
 		_values.put(key, value);
@@ -220,6 +245,10 @@ public class Message implements Cloneable, Serializable {
 	public void remove(String key) {
 		if (_values != null) {
 			_values.remove(key);
+		}
+
+		if (_transientValues != null) {
+			_transientValues.remove(key);
 		}
 	}
 
@@ -244,7 +273,29 @@ public class Message implements Cloneable, Serializable {
 	}
 
 	public void setValues(Map<String, Object> values) {
-		_values = values;
+		if (values == null) {
+			return;
+		}
+
+		for (Entry entry : values.entrySet()) {
+			Object value = entry.getValue();
+
+			if (!(value instanceof Serializable)) {
+				if (_transientValues == null) {
+					_transientValues = new HashMap<>();
+				}
+
+				_transientValues.put((String)entry.getKey(), value);
+
+				continue;
+			}
+
+			if (_values == null) {
+				_values = new HashMap<>();
+			}
+
+			_values.put((String)entry.getKey(), value);
+		}
 	}
 
 	public byte[] toByteArray() {
@@ -272,7 +323,7 @@ public class Message implements Cloneable, Serializable {
 		sb.append(", payload=");
 		sb.append(_payload);
 		sb.append(", values=");
-		sb.append(MapUtil.toString(_values, null, ".*[pP]assword.*"));
+		sb.append(MapUtil.toString(getValues(), null, ".*[pP]assword.*"));
 		sb.append("}");
 
 		return sb.toString();
@@ -283,6 +334,7 @@ public class Message implements Cloneable, Serializable {
 	private Object _response;
 	private String _responseDestinationName;
 	private String _responseId;
+	private transient Map<String, Object> _transientValues;
 	private Map<String, Object> _values;
 
 }
