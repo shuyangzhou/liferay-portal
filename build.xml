@@ -211,6 +211,10 @@
 			<arg value="--parallel" />
 		</gradle-execute>
 
+		<gradle-execute dir="modules/portal/portal-model-deprecated" task="classes">
+			<arg value="--parallel" />
+		</gradle-execute>
+
 		<ant dir="portal-service" target="compile" inheritAll="false" />
 
 		<parallel failonany="true" threadcount="${parallel.thread.count}">
