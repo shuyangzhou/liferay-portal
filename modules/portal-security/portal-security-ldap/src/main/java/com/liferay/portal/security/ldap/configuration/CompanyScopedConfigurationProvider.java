@@ -81,24 +81,6 @@ public abstract class CompanyScopedConfigurationProvider
 
 	@Override
 	public T getConfiguration(long companyId) {
-		Dictionary<String, Object> properties = getConfigurationProperties(
-			companyId);
-
-		T configurable = Configurable.createConfigurable(
-			getMetatype(), properties);
-
-		return configurable;
-	}
-
-	@Override
-	public T getConfiguration(long companyId, long index) {
-		return getConfiguration(companyId);
-	}
-
-	@Override
-	public Dictionary<String, Object> getConfigurationProperties(
-		long companyId) {
-
 		ObjectValuePair<Configuration, T> objectValuePair = _configurations.get(
 			companyId);
 
@@ -107,20 +89,15 @@ public abstract class CompanyScopedConfigurationProvider
 		}
 
 		if (objectValuePair == null) {
-			return new HashMapDictionary<>();
+			return _defaultConfiguration;
 		}
-		else {
-			Configuration configuration = objectValuePair.getKey();
 
-			return configuration.getProperties();
-		}
+		return objectValuePair.getValue();
 	}
 
 	@Override
-	public Dictionary<String, Object> getConfigurationProperties(
-		long companyId, long index) {
-
-		return getConfigurationProperties(companyId);
+	public T getConfiguration(long companyId, long index) {
+		return getConfiguration(companyId);
 	}
 
 	@Override
@@ -130,29 +107,6 @@ public abstract class CompanyScopedConfigurationProvider
 
 	@Override
 	public List<T> getConfigurations(long companyId, boolean useDefault) {
-		List<Dictionary<String, Object>> configurationsProperties =
-			getConfigurationsProperties(companyId, useDefault);
-
-		if (configurationsProperties.isEmpty()) {
-			return Collections.emptyList();
-		}
-
-		return Collections.singletonList(
-			Configurable.createConfigurable(
-				getMetatype(), configurationsProperties.get(0)));
-	}
-
-	@Override
-	public List<Dictionary<String, Object>> getConfigurationsProperties(
-		long companyId) {
-
-		return getConfigurationsProperties(companyId, true);
-	}
-
-	@Override
-	public List<Dictionary<String, Object>> getConfigurationsProperties(
-		long companyId, boolean useDefault) {
-
 		ObjectValuePair<Configuration, T> objectValuePair = _configurations.get(
 			companyId);
 
@@ -161,13 +115,10 @@ public abstract class CompanyScopedConfigurationProvider
 		}
 
 		if ((objectValuePair == null) && useDefault) {
-			return Collections.<Dictionary<String, Object>>singletonList(
-				new HashMapDictionary<String, Object>());
+			return Collections.singletonList(_defaultConfiguration);
 		}
 		else if (objectValuePair != null) {
-			Configuration configuration = objectValuePair.getKey();
-
-			return Collections.singletonList(configuration.getProperties());
+			return Collections.singletonList(objectValuePair.getValue());
 		}
 
 		return Collections.emptyList();
@@ -257,5 +208,7 @@ public abstract class CompanyScopedConfigurationProvider
 
 	private final Map<Long, ObjectValuePair<Configuration, T>> _configurations =
 		new HashMap<>();
+	private final T _defaultConfiguration = Configurable.createConfigurable(
+		getMetatype(), Collections.emptyMap());
 
 }
