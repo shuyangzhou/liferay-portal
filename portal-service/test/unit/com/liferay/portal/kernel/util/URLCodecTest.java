@@ -34,16 +34,6 @@ import org.junit.Test;
 public class URLCodecTest {
 
 	@Test
-	public void testDecodeURLWithRawURLs() throws Exception {
-		for (int i = 0; i < _RAW_URLS.length; i++) {
-			String result = URLCodec.decodeURL(
-				_ENCODED_URLS[i], StringPool.UTF8);
-
-			Assert.assertEquals(_RAW_URLS[i], result);
-		}
-	}
-
-	@Test
 	public void testDecodeURLWithInvalidURLEncoding() throws Exception {
 		testDecodeURLWithInvalidURLEncoding("%");
 		testDecodeURLWithInvalidURLEncoding("%0");
@@ -64,6 +54,16 @@ public class URLCodecTest {
 	@Test
 	public void testDecodeURLWithPercentageInURLParameters() throws Exception {
 		testDecodeURLWithInvalidURLEncoding("http://localhost:8080/?id=%'");
+	}
+
+	@Test
+	public void testDecodeURLWithRawURLs() throws Exception {
+		for (int i = 0; i < _RAW_URLS.length; i++) {
+			String result = URLCodec.decodeURL(
+				_ENCODED_URLS[i], StringPool.UTF8);
+
+			Assert.assertEquals(_RAW_URLS[i], result);
+		}
 	}
 
 	@Test
