@@ -14,8 +14,7 @@
 
 package com.liferay.portal.security.ldap.configuration;
 
-import aQute.bnd.annotation.metatype.Configurable;
-
+import com.liferay.portal.configuration.ConfigurableUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -134,7 +133,7 @@ public abstract class CompanyScopedConfigurationProvider
 			properties = new HashMapDictionary<>();
 		}
 
-		T configurable = Configurable.createConfigurable(
+		T configurable = ConfigurableUtil.createConfigurable(
 			getMetatype(), properties);
 
 		_configurations.put(
@@ -152,7 +151,7 @@ public abstract class CompanyScopedConfigurationProvider
 			properties = new HashMapDictionary<>();
 		}
 
-		T configurable = Configurable.createConfigurable(
+		T configurable = ConfigurableUtil.createConfigurable(
 			getMetatype(), properties);
 
 		_configurations.remove(configurable.companyId());
@@ -208,7 +207,7 @@ public abstract class CompanyScopedConfigurationProvider
 
 	private final Map<Long, ObjectValuePair<Configuration, T>> _configurations =
 		new HashMap<>();
-	private final T _defaultConfiguration = Configurable.createConfigurable(
+	private final T _defaultConfiguration = ConfigurableUtil.createConfigurable(
 		getMetatype(), Collections.emptyMap());
 
 }
