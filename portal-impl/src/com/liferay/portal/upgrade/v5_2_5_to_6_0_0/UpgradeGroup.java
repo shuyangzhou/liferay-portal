@@ -69,7 +69,7 @@ public class UpgradeGroup extends UpgradeProcess {
 			con = DataAccess.getUpgradeOptimizedConnection();
 
 			long classNameId = PortalUtil.getClassNameId(
-				Layout.class.getName());
+				"com.liferay.portal.model.Layout");
 
 			ps = con.prepareStatement(
 				"select groupId, classPK from Group_ where classNameId = " +
