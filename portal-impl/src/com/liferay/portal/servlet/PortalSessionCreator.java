@@ -33,8 +33,6 @@ public class PortalSessionCreator extends BasePortalLifecycle {
 
 	public PortalSessionCreator(HttpSessionEvent httpSessionEvent) {
 		_httpSessionEvent = httpSessionEvent;
-
-		registerPortalLifecycle(METHOD_INIT);
 	}
 
 	@Override

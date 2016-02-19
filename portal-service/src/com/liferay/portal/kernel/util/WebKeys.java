@@ -110,7 +110,7 @@ public interface WebKeys {
 	@Distributed(direction = Direction.REQUEST)
 	public static final String CURRENT_URL = "CURRENT_URL";
 
-	public static final String DEVICE = "DEVICE";
+	public static final String DEVICE_KEY = "DEVICE_KEY";
 
 	public static final String DIFF_HTML_RESULTS = "DIFF_HTML_RESULTS";
 

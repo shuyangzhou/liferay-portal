@@ -14,14 +14,12 @@
 
 package com.liferay.exportimport.kernel.lifecycle;
 
-import java.io.Serializable;
-
 /**
  * @author Daniel Kocsis
  */
 public interface ExportImportLifecycleManager {
 
 	public void fireExportImportLifecycleEvent(
-		int code, int processFlag, Serializable... arguments);
+		int code, int processFlag, Object... arguments);
 
 }

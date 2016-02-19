@@ -49,7 +49,6 @@ import static com.liferay.exportimport.kernel.lifecycle.ExportImportLifecycleCon
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.portal.kernel.model.StagedModel;
-import com.liferay.portal.kernel.util.TransientValue;
 
 import java.io.Serializable;
 
@@ -75,6 +74,8 @@ public abstract class BaseExportImportLifecycleListener
 
 		int code = exportImportLifecycleEvent.getCode();
 		int processFlag = exportImportLifecycleEvent.getProcessFlag();
+
+		StagedModel stagedModel = exportImportLifecycleEvent.getStagedModel();
 
 		if (code == EVENT_LAYOUT_EXPORT_FAILED) {
 			onLayoutExportFailed(
@@ -180,35 +181,29 @@ public abstract class BaseExportImportLifecycleListener
 		}
 		else if (code == EVENT_STAGED_MODEL_EXPORT_FAILED) {
 			onStagedModelExportFailed(
-				getPortletDataContextAttribute(attributes),
-				getStagedModelAttribute(attributes),
+				getPortletDataContextAttribute(attributes), stagedModel,
 				getThrowableAttribute(attributes));
 		}
 		else if (code == EVENT_STAGED_MODEL_EXPORT_STARTED) {
 			onStagedModelExportStarted(
-				getPortletDataContextAttribute(attributes),
-				getStagedModelAttribute(attributes));
+				getPortletDataContextAttribute(attributes), stagedModel);
 		}
 		else if (code == EVENT_STAGED_MODEL_EXPORT_SUCCEEDED) {
 			onStagedModelExportSucceeded(
-				getPortletDataContextAttribute(attributes),
-				getStagedModelAttribute(attributes));
+				getPortletDataContextAttribute(attributes), stagedModel);
 		}
 		else if (code == EVENT_STAGED_MODEL_IMPORT_FAILED) {
 			onStagedModelImportFailed(
-				getPortletDataContextAttribute(attributes),
-				getStagedModelAttribute(attributes),
+				getPortletDataContextAttribute(attributes), stagedModel,
 				getThrowableAttribute(attributes));
 		}
 		else if (code == EVENT_STAGED_MODEL_IMPORT_STARTED) {
 			onStagedModelImportStarted(
-				getPortletDataContextAttribute(attributes),
-				getStagedModelAttribute(attributes));
+				getPortletDataContextAttribute(attributes), stagedModel);
 		}
 		else if (code == EVENT_STAGED_MODEL_IMPORT_SUCCEEDED) {
 			onStagedModelImportSucceeded(
-				getPortletDataContextAttribute(attributes),
-				getStagedModelAttribute(attributes));
+				getPortletDataContextAttribute(attributes), stagedModel);
 		}
 	}
 
@@ -234,21 +229,6 @@ public abstract class BaseExportImportLifecycleListener
 		List<Serializable> attributes) {
 
 		return getAttributeByType(attributes, PortletDataContext.class);
-	}
-
-	protected StagedModel getStagedModelAttribute(
-		List<Serializable> attributes) {
-
-		TransientValue<Object> transientValue = getAttributeByType(
-			attributes, TransientValue.class);
-
-		Object value = transientValue.getValue();
-
-		if (value instanceof StagedModel) {
-			return (StagedModel)value;
-		}
-
-		return null;
 	}
 
 	protected Throwable getThrowableAttribute(List<Serializable> attributes) {

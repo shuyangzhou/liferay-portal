@@ -14,6 +14,8 @@
 
 package com.liferay.exportimport.kernel.lifecycle;
 
+import com.liferay.portal.kernel.model.StagedModel;
+
 import java.io.Serializable;
 
 import java.util.List;
@@ -29,7 +31,9 @@ public interface ExportImportLifecycleEvent extends Serializable {
 
 	public int getProcessFlag();
 
-	public void setAttributes(Serializable... attributes);
+	public StagedModel getStagedModel();
+
+	public void setAttributes(Object... attributes);
 
 	public void setCode(int eventCode);
 

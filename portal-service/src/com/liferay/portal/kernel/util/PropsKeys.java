@@ -697,8 +697,6 @@ public interface PropsKeys {
 
 	public static final String DL_FOLDER_ICON_CHECK_COUNT = "dl.folder.icon.check.count";
 
-	public static final String DL_FOLDER_MENU_VISIBLE = "dl.folder.menu.visible";
-
 	public static final String DL_FOLDERS_SEARCH_VISIBLE = "dl.folders.search.visible";
 
 	public static final String DL_NAME_BLACKLIST = "dl.name.blacklist";
@@ -1060,6 +1058,10 @@ public interface PropsKeys {
 	public static final String LAYOUT_PROTOTYPE_MERGE_LOCK_MAX_TIME = "layout.prototype.merge.lock.max.time";
 
 	public static final String LAYOUT_REMEMBER_MAXIMIZED_WINDOW_STATE = "layout.remember.maximized.window.state";
+
+	public static final String LAYOUT_SCOPE_GROUP_FINDER_ENABLED = "layout.scope.group.finder.enabled";
+
+	public static final String LAYOUT_SCOPE_GROUP_FINDER_THRESHOLD = "layout.scope.group.finder.threshold";
 
 	public static final String LAYOUT_SET_FORM_UPDATE = "layout.set.form.update";
 

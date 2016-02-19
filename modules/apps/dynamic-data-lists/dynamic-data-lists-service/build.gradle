@@ -6,7 +6,7 @@ buildService {
 
 dependencies {
 	provided group: "biz.aQute.bnd", name: "biz.aQute.bndlib", version: "3.1.0"
-	provided group: "com.liferay", name: "com.liferay.osgi.util", version: "2.0.7"
+	provided group: "com.liferay", name: "com.liferay.osgi.util", version: "2.0.8"
 	provided group: "com.liferay", name: "com.liferay.portal.spring.extender", version: "1.0.4"
 	provided group: "com.liferay.portal", name: "portal-impl", version: liferay.portalVersion
 	provided group: "com.liferay.portal", name: "portal-service", version: liferay.portalVersion
@@ -19,8 +19,8 @@ dependencies {
 	provided project(":apps:dynamic-data-mapping:dynamic-data-mapping-io")
 	provided project(":apps:dynamic-data-mapping:dynamic-data-mapping-service")
 	provided project(":apps:dynamic-data-mapping:dynamic-data-mapping-validator")
-	provided project(":apps:export-import:export-import-api")
-	provided project(":apps:export-import:export-import-service")
+	provided project(":apps:wem:export-import:export-import-api")
+	provided project(":apps:wem:export-import:export-import-service")
 	provided project(":portal-configuration:portal-configuration-metatype")
 	provided project(":portal:portal-instance-lifecycle")
 	provided project(":portal:portal-upgrade")
