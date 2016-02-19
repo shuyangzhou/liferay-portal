@@ -26,7 +26,8 @@ public class UpgradeUser extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		long classNameId = PortalUtil.getClassNameId(User.class);
+		long classNameId = PortalUtil.getClassNameId(
+			"com.liferay.portal.model.User");
 
 		runSQL("update Contact_ set classNameId = " + classNameId);
 

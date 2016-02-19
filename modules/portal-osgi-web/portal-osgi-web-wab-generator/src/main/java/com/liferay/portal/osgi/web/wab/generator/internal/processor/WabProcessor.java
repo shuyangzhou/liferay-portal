@@ -69,6 +69,7 @@ import java.net.URI;
 
 import java.text.Format;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -230,14 +231,13 @@ public class WabProcessor {
 			List<AutoDeployListener> autoDeployListeners =
 				GlobalStartupAction.getAutoDeployListeners(false);
 
-			for (AutoDeployListener autoDeployListener : autoDeployListeners) {
-				try {
-					autoDeployListener.deploy(autoDeploymentContext);
-				}
-				catch (AutoDeployException ade) {
-					_log.error(ade, ade);
-				}
-			}
+			AutoDeployListener autoDeployListener = getAutoDeployListener(
+				autoDeploymentContext, autoDeployListeners);
+
+			autoDeployListener.deploy(autoDeploymentContext);
+		}
+		catch (AutoDeployException ade) {
+			throw new RuntimeException(ade);
 		}
 		finally {
 			DependencyManagementThreadLocal.setEnabled(enabled);
@@ -288,6 +288,54 @@ public class WabProcessor {
 		catch (Exception e) {
 			throw new IOException(e);
 		}
+	}
+
+	/**
+	 * @see com.liferay.portal.kernel.deploy.auto.AutoDeployDir#deploy
+	 */
+	protected AutoDeployListener getAutoDeployListener(
+		AutoDeploymentContext autoDeploymentContext,
+		List<AutoDeployListener> autoDeployListeners) {
+
+		List<AutoDeployListener> deployableAutoDeployListeners =
+			new ArrayList<>();
+
+		for (AutoDeployListener autoDeployListener : autoDeployListeners) {
+			try {
+				if (autoDeployListener.isDeployable(autoDeploymentContext)) {
+					deployableAutoDeployListeners.add(autoDeployListener);
+				}
+			}
+			catch (AutoDeployException ade) {
+				throw new RuntimeException(ade);
+			}
+		}
+
+		if (deployableAutoDeployListeners.size() > 1) {
+			StringBundler sb = new StringBundler(
+				3 + (deployableAutoDeployListeners.size() * 2) - 1);
+
+			sb.append("More than one auto deploy listener is available for ");
+			sb.append(autoDeploymentContext.getFile());
+			sb.append(": ");
+
+			for (int i = 0; i < deployableAutoDeployListeners.size(); i++) {
+				AutoDeployListener deployableAutoDeployListener =
+					deployableAutoDeployListeners.get(i);
+
+				Class<?> clazz = deployableAutoDeployListener.getClass();
+
+				if (i != 0) {
+					sb.append(StringPool.COMMA_AND_SPACE);
+				}
+
+				sb.append(clazz.getName());
+			}
+
+			throw new RuntimeException(new AutoDeployException(sb.toString()));
+		}
+
+		return deployableAutoDeployListeners.get(0);
 	}
 
 	protected String getFileName(String className) {
@@ -387,9 +435,13 @@ public class WabProcessor {
 		classPath.put(
 			"WEB-INF/classes", new File(_pluginDir, "WEB-INF/classes"));
 
-		String[] portalDependencyJars = StringUtil.split(
-			pluginPackageProperties.getProperty(
-				"portal-dependency-jars", StringPool.BLANK));
+		String[] portalDependencyJars = new String[0];
+
+		if (pluginPackageProperties != null) {
+			portalDependencyJars = StringUtil.split(
+				pluginPackageProperties.getProperty(
+					"portal-dependency-jars", StringPool.BLANK));
+		}
 
 		processFiles(
 			_pluginDir, _pluginDir.toURI(), classPath, portalDependencyJars);
@@ -430,7 +482,12 @@ public class WabProcessor {
 			_parameters, Constants.BUNDLE_VERSION);
 
 		if (Validator.isNull(_bundleVersion)) {
-			_bundleVersion = _pluginPackage.getVersion();
+			if (_pluginPackage != null) {
+				_bundleVersion = _pluginPackage.getVersion();
+			}
+			else {
+				_bundleVersion = "1.0.0";
+			}
 		}
 
 		analyzer.setProperty(Constants.BUNDLE_VERSION, _bundleVersion);
@@ -653,9 +710,6 @@ public class WabProcessor {
 
 				classPath.put(path, file);
 			}
-			else if (path.endsWith(".jsp") || path.endsWith(".jspf")) {
-				_importPackageNames.addAll(processJSPDependencies(file));
-			}
 		}
 	}
 
@@ -684,55 +738,6 @@ public class WabProcessor {
 
 			analyzer.setProperty(Constants.IMPORT_PACKAGE, sb.toString());
 		}
-	}
-
-	protected Set<String> processJSPDependencies(File file) throws IOException {
-		Source source = new ClassLoaderSource(_classLoader);
-
-		DependencyVisitor dependencyVisitor = new DependencyVisitor();
-
-		String content = FileUtil.read(file);
-
-		int contentX = -1;
-		int contentY = content.length();
-
-		Set<String> packageNames = new HashSet<>();
-
-		while (true) {
-			contentX = content.lastIndexOf("<%@", contentY);
-
-			if (contentX == -1) {
-				break;
-			}
-
-			contentY = contentX;
-
-			int importX = content.indexOf("import=\"", contentY);
-			int importY = -1;
-
-			if (importX != -1) {
-				importX = importX + "import=\"".length();
-				importY = content.indexOf("\"", importX);
-			}
-
-			if ((importX != -1) && (importY != -1)) {
-				String s = content.substring(importX, importY);
-
-				packageNames.addAll(
-					processClass(source, dependencyVisitor, getFileName(s)));
-			}
-
-			contentY -= 3;
-		}
-
-		Set<String> globals = dependencyVisitor.getGlobals();
-
-		for (String global : globals) {
-			packageNames.add(
-				global.replaceAll(StringPool.SLASH, StringPool.PERIOD));
-		}
-
-		return packageNames;
 	}
 
 	protected void processLiferayPortletXML() throws IOException {
@@ -785,6 +790,10 @@ public class WabProcessor {
 
 	protected void processPluginPackagePropertiesExportImportPackages(
 		Properties pluginPackageProperties) {
+
+		if (pluginPackageProperties == null) {
+			return;
+		}
 
 		String exportPackage = pluginPackageProperties.getProperty(
 			Constants.EXPORT_PACKAGE);
@@ -981,6 +990,10 @@ public class WabProcessor {
 	protected void processWebXML(
 		Element element, List<Element> initParamElements, Class<?> clazz) {
 
+		if (element == null) {
+			return;
+		}
+
 		String elementText = element.getTextTrim();
 
 		if (!elementText.equals(clazz.getName())) {
@@ -1094,6 +1107,9 @@ public class WabProcessor {
 
 		analyzer.setBase(_pluginDir);
 		analyzer.setJar(_pluginDir);
+		analyzer.setProperty("-jsp", "*.jsp,*.jspf");
+		analyzer.setProperty(
+			"-plugin", "com.liferay.ant.bnd.jsp.JspAnalyzerPlugin");
 
 		processBundleVersion(analyzer);
 
