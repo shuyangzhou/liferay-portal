@@ -1,0 +1,312 @@
+diff --git a/freemarker/core/TextBlock.java b/freemarker/core/TextBlock.java
+index 9353610..5b5435a 100644
+--- a/freemarker/core/TextBlock.java
++++ b/freemarker/core/TextBlock.java
+@@ -24,14 +24,14 @@ import freemarker.template.utility.StringUtil;
+  * A TemplateElement representing a block of plain text.
+  */
+ public final class TextBlock extends TemplateElement {
+-    private static final char[] EMPTY_CHAR_ARRAY = new char[0];
+-    static final TextBlock EMPTY_BLOCK = new TextBlock(EMPTY_CHAR_ARRAY, false);
++    private static final String EMPTY_STRING = "";
++    static final TextBlock EMPTY_BLOCK = new TextBlock(EMPTY_STRING, false);
+     // We're using char[] instead of String for storing the text block because
+     // Writer.write(String) involves copying the String contents to a char[] 
+     // using String.getChars(), and then calling Writer.write(char[]). By
+     // using Writer.write(char[]) directly, we avoid array copying on each 
+     // write. 
+-    private char[] text;
++    private String text;
+     private final boolean unparsed;
+ 
+     public TextBlock(String text) {
+@@ -39,11 +39,12 @@ public final class TextBlock extends TemplateElement {
+     }
+ 
+     public TextBlock(String text, boolean unparsed) {
+-        this(text.toCharArray(), unparsed);
++        this.text = text;
++        this.unparsed = unparsed;
+     }
+ 
+     private TextBlock(char[] text, boolean unparsed) {
+-        this.text = text;
++        this.text = new String(text);
+         this.unparsed = unparsed;
+     }
+ 
+@@ -58,13 +59,12 @@ public final class TextBlock extends TemplateElement {
+ 
+     protected String dump(boolean canonical) {
+         if (canonical) {
+-            String text = new String(this.text);
+             if (unparsed) {
+                 return "<#noparse>" + text + "</#noparse>";
+             }
+             return text;
+         } else {
+-            return "text " + StringUtil.jQuote(new String(text));
++            return "text " + StringUtil.jQuote(text);
+         }
+     }
+     
+@@ -78,7 +78,7 @@ public final class TextBlock extends TemplateElement {
+ 
+     Object getParameterValue(int idx) {
+         if (idx != 0) throw new IndexOutOfBoundsException();
+-        return new String(text);
++        return text;
+     }
+ 
+     ParameterRole getParameterRole(int idx) {
+@@ -87,11 +87,11 @@ public final class TextBlock extends TemplateElement {
+     }
+ 
+     TemplateElement postParseCleanup(boolean stripWhitespace) {
+-        if (text.length == 0) return this;
++        if (text.isEmpty()) return this;
+         int openingCharsToStrip = 0, trailingCharsToStrip=0;
+         boolean deliberateLeftTrim = deliberateLeftTrim();
+         boolean deliberateRightTrim = deliberateRightTrim();
+-        if (!stripWhitespace || text.length == 0 ) {
++        if (!stripWhitespace || text.isEmpty()) {
+             return this;
+         }
+         if (getParentElement().getParentElement() == null && previousSibling() == null) return this;
+@@ -104,7 +104,7 @@ public final class TextBlock extends TemplateElement {
+         if (openingCharsToStrip == 0 && trailingCharsToStrip == 0) {
+             return this;
+         }
+-        this.text = substring(text, openingCharsToStrip, text.length - trailingCharsToStrip);
++        this.text = text.substring(openingCharsToStrip, text.length() - trailingCharsToStrip);
+         if (openingCharsToStrip > 0) {
+             this.beginLine++;
+             this.beginColumn = 1;
+@@ -134,19 +134,10 @@ public final class TextBlock extends TemplateElement {
+                     result = true;
+                     int lastNewLineIndex = lastNewLineIndex();
+                     if (lastNewLineIndex >=0  || beginColumn == 1) {
+-                        char[] firstPart = substring(text, 0, lastNewLineIndex + 1);
+-                        char[] lastLine = substring(text, 1+lastNewLineIndex); 
+-                        if (StringUtil.isTrimmableToEmpty(lastLine)) {
+-                            this.text = firstPart;
+-                            this.endColumn = 0;
+-                        } else {
+-                            int i =0;
+-                            while (Character.isWhitespace(lastLine[i])) {
+-                                i++;
+-                            }
+-                            char[] printablePart = substring(lastLine, i);
+-                            this.text = concat(firstPart, printablePart);
+-                        }
++                        String firstPart = text.substring(0, lastNewLineIndex + 1);
++                        String lastLine = text.substring(1 + lastNewLineIndex);
++
++                        this.text = firstPart.concat(lastLine.trim());
+                     }
+                 }
+             }
+@@ -175,24 +166,24 @@ public final class TextBlock extends TemplateElement {
+                     if (firstLineIndex == 0) {
+                         return false;
+                     }
+-                    if (text.length > firstLineIndex 
+-                        && text[firstLineIndex-1] == '\r' 
+-                        && text[firstLineIndex] == '\n') 
++                    if (text.length() > firstLineIndex
++                        && text.charAt(firstLineIndex-1) == '\r'
++                        && text.charAt(firstLineIndex) == '\n')
+                     {
+                         firstLineIndex++;
+                     }
+-                    char[] trailingPart = substring(text, firstLineIndex);
+-                    char[] openingPart = substring(text, 0, firstLineIndex);
++                    String trailingPart = text.substring(firstLineIndex);
++                    String openingPart = text.substring(0, firstLineIndex);
+                     if (StringUtil.isTrimmableToEmpty(openingPart)) {
+                         this.text = trailingPart;
+                         this.beginLine++;
+                         this.beginColumn=1;
+                     } else {
+-                        int lastNonWS = openingPart.length -1;
+-                        while (Character.isWhitespace(text[lastNonWS])) {
++                        int lastNonWS = openingPart.length() -1;
++                        while (Character.isWhitespace(text.charAt(lastNonWS))) {
+                             lastNonWS--;
+                         }
+-                        char[] printablePart = substring(text, 0, lastNonWS+1);
++                        String printablePart = text.substring(0, lastNonWS+1);
+                         if (StringUtil.isTrimmableToEmpty(trailingPart)) {
+                         // THIS BLOCK IS HEINOUS! THERE MUST BE A BETTER WAY! REVISIT (JR)
+                             boolean trimTrailingPart = true;
+@@ -209,9 +200,9 @@ public final class TextBlock extends TemplateElement {
+                                     break;
+                                 }
+                             }
+-                            if (trimTrailingPart) trailingPart = EMPTY_CHAR_ARRAY;
++                            if (trimTrailingPart) trailingPart = EMPTY_STRING;
+                         }
+-                        this.text = concat(printablePart, trailingPart);
++                        this.text = printablePart.concat(trailingPart);
+                     }
+                 }
+             }
+@@ -220,25 +211,29 @@ public final class TextBlock extends TemplateElement {
+     }
+     
+     private int firstNewLineIndex() {
+-        char[] text = this.text;
+-        for (int i = 0; i < text.length; i++) {
+-            char c = text[i];
+-            if (c == '\r' || c == '\n' ) {
+-                return i;
+-            }
++        int r = text.indexOf('\r');
++        int n = text.indexOf('\n');
++
++        if (r < 0) {
++            return n;
++        }
++
++        if ((n < 0) || (r < n)) {
++            return r;
+         }
+-        return -1;
++
++        return n;
+     }
+ 
+     private int lastNewLineIndex() {
+-        char[] text = this.text;
+-        for (int i = text.length - 1; i >= 0; i--) {
+-            char c = text[i];
+-            if (c == '\r' || c == '\n' ) {
+-                return i;
+-            }
++        int r = text.lastIndexOf('\r');
++        int n = text.lastIndexOf('\n');
++
++        if (r < n) {
++            return n;
+         }
+-        return -1;
++
++        return r;
+     }
+ 
+     /**
+@@ -251,8 +246,8 @@ public final class TextBlock extends TemplateElement {
+             return 0;
+         }
+         ++newlineIndex;
+-        if (text.length > newlineIndex) {
+-            if (newlineIndex >0 && text[newlineIndex-1] == '\r' && text[newlineIndex] == '\n') {
++        if (text.length() > newlineIndex) {
++            if (newlineIndex >0 && text.charAt(newlineIndex-1) == '\r' && text.charAt(newlineIndex) == '\n') {
+                 ++newlineIndex;
+             }
+         }
+@@ -296,15 +291,15 @@ public final class TextBlock extends TemplateElement {
+                 return 0;
+             }
+         }
+-        return text.length - (lastNewlineIndex + 1);
++        return text.length() - (lastNewlineIndex + 1);
+     }
+ 
+     boolean heedsTrailingWhitespace() {
+         if (isIgnorable()) {
+             return false;
+         }
+-        for (int i=0; i<text.length; i++) {
+-            char c = text[i];
++        for (int i=0; i<text.length(); i++) {
++            char c = text.charAt(i);
+             if (c=='\n' || c=='\r') {
+                 return false;
+             }
+@@ -319,8 +314,8 @@ public final class TextBlock extends TemplateElement {
+         if (isIgnorable()) {
+             return false;
+         }
+-        for (int i = text.length -1; i>=0; i--) {
+-            char c = text[i];
++        for (int i = text.length() -1; i>=0; i--) {
++            char c = text.charAt(i);
+             if (c == '\n' || c == '\r') {
+                 return false;
+             }
+@@ -332,7 +327,7 @@ public final class TextBlock extends TemplateElement {
+     }
+ 
+     boolean isIgnorable() {
+-        if (text == null || text.length == 0) {
++        if (text == null || text.isEmpty()) {
+             return true;
+         }
+         if (!StringUtil.isTrimmableToEmpty(text)) {
+@@ -381,3 +376,4 @@ public final class TextBlock extends TemplateElement {
+     }
+     
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/freemarker/ext/jsp/JspWriterAdapter.java b/freemarker/ext/jsp/JspWriterAdapter.java
+index ce1b61d..e972756 100644
+--- a/freemarker/ext/jsp/JspWriterAdapter.java
++++ b/freemarker/ext/jsp/JspWriterAdapter.java
+@@ -23,8 +23,9 @@ import javax.servlet.jsp.JspWriter;
+ 
+ import freemarker.template.utility.SecurityUtilities;
+ 
+-class JspWriterAdapter extends JspWriter {
+-    static final char[] NEWLINE = SecurityUtilities.getSystemProperty("line.separator", "\n").toCharArray();
++public class JspWriterAdapter extends JspWriter {
++   static final String NEWLINE = SecurityUtilities.getSystemProperty(
++       "line.separator", "\n");
+     
+     private final Writer out;
+     
+@@ -174,4 +175,10 @@ class JspWriterAdapter extends JspWriter {
+     {
+         out.write(arg0, arg1, arg2);
+     }
++
++   public void write(String str, int off, int len) throws IOException {
++       out.write(str, off, len);
++   }
++
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/freemarker/template/utility/StringUtil.java b/freemarker/template/utility/StringUtil.java
+index 6cf5673..96d52bb 100644
+--- a/freemarker/template/utility/StringUtil.java
++++ b/freemarker/template/utility/StringUtil.java
+@@ -1990,5 +1990,24 @@ public class StringUtil {
+         }
+         return true;
+     }
+-    
++
++    public static boolean isTrimmableToEmpty(String text) {
++        return isTrimmableToEmpty(text, 0, text.length());
++    }
++
++    public static boolean isTrimmableToEmpty(String text, int start) {
++        return isTrimmableToEmpty(text, start, text.length());
++    }
++
++    public static boolean isTrimmableToEmpty(String text, int start, int end) {
++        for (int i = start; i < end; i++) {
++            if (text.charAt(i) > ' ') {
++                return false;
++            }
++        }
++
++        return true;
++    }
++
+ }
++/* @generated */
+\ No newline at end of file
