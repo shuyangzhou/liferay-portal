@@ -34,19 +34,25 @@ import org.junit.Test;
 public class URLCodecTest {
 
 	@Test
-	public void testDecodeURL() throws Exception {
+	public void testDecodeURLWithRawURLs() throws Exception {
 		for (int i = 0; i < _RAW_URLS.length; i++) {
 			String result = URLCodec.decodeURL(
 				_ENCODED_URLS[i], StringPool.UTF8);
 
 			Assert.assertEquals(_RAW_URLS[i], result);
 		}
+	}
 
+	@Test
+	public void testDecodeURLWithInvalidURLEncoding() throws Exception {
 		testDecodeURLWithInvalidURLEncoding("%");
 		testDecodeURLWithInvalidURLEncoding("%0");
 		testDecodeURLWithInvalidURLEncoding("%00%");
 		testDecodeURLWithInvalidURLEncoding("%00%0");
+	}
 
+	@Test
+	public void testDecodeURLWithNotHexChars() throws Exception {
 		testDecodeURLWithNotHexChars("%0" + (char) (CharPool.NUMBER_0 - 1));
 		testDecodeURLWithNotHexChars("%0" + (char) (CharPool.NUMBER_9 + 1));
 		testDecodeURLWithNotHexChars("%0" + (char) (CharPool.UPPER_CASE_A - 1));
