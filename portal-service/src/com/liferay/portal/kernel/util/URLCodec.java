@@ -57,8 +57,22 @@ public class URLCodec {
 
 			switch (c) {
 				case CharPool.PERCENT:
-					ByteBuffer byteBuffer = _getEncodedByteBuffer(
-						encodedURLString, i);
+					ByteBuffer byteBuffer = null;
+
+					try {
+						byteBuffer = _getEncodedByteBuffer(encodedURLString, i);
+					}
+					catch (CharacterCodingException cce) {
+						_log.error(
+							"Invalid URL encoding " + encodedURLString, cce);
+
+						return StringPool.BLANK;
+					}
+					catch (IllegalArgumentException iae) {
+						_log.error(iae.getMessage(), iae);
+
+						return StringPool.BLANK;
+					}
 
 					if (charsetDecoder == null) {
 						charsetDecoder = CharsetDecoderUtil.getCharsetDecoder(
@@ -263,7 +277,8 @@ public class URLCodec {
 	}
 
 	private static ByteBuffer _getEncodedByteBuffer(
-		String encodedString, int start) {
+			String encodedString, int start)
+		throws CharacterCodingException {
 
 		int count = 1;
 
@@ -277,8 +292,7 @@ public class URLCodec {
 		}
 
 		if (encodedString.length() < (start + count * 3)) {
-			throw new IllegalArgumentException(
-				"Invalid URL encoding " + encodedString);
+			throw new CharacterCodingException();
 		}
 
 		ByteBuffer byteBuffer = ByteBuffer.allocate(count);
