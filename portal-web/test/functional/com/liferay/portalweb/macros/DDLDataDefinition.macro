@@ -4,6 +4,8 @@
 	<var name="ddlListName" value="List Name" />
 
 	<command name="_add">
+		<execute function="AssertTextEquals" locator1="ControlMenu#HEADER_TITLE" value1="Structures" />
+
 		<execute function="Click" locator1="Button#PLUS" />
 		<execute function="Type#clickAtSendKeys" locator1="DDMEditStructure#NAME_FIELD" value1="${ddlDataDefinitionName}" />
 
@@ -63,7 +65,7 @@
 
 		<var name="key_ddlDataDefinitionName" value="${ddlDataDefinitionName}" />
 
-		<execute function="Click" locator1="DDMSelectStructure#DDM_STRUCTURE_ELLIPSIS" />
+		<execute function="Click#waitForMenuToggleJSClick" locator1="DDMSelectStructure#DDM_STRUCTURE_ELLIPSIS" />
 		<execute function="AssertClick" locator1="MenuItem#COPY" value1="Copy" />
 
 		<execute function="SelectFrame" locator1="IFrame#COPY_STRUCTURE" />

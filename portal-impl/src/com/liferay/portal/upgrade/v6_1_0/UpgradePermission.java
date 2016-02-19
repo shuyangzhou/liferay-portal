@@ -140,10 +140,10 @@ public class UpgradePermission extends UpgradeProcess {
 		// LPS-46141
 
 		List<String> modelActions = ResourceActionsUtil.getModelResourceActions(
-			Role.class.getName());
+			"com.liferay.portal.model.Role");
 
 		ResourceActionLocalServiceUtil.checkResourceActions(
-			Role.class.getName(), modelActions);
+			"com.liferay.portal.model.Role", modelActions);
 
 		// LPS-14202 and LPS-17841
 
