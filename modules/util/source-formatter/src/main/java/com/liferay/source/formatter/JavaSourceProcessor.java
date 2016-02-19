@@ -961,6 +961,15 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 					"DatabaseMetaData.supportsBatchUpdates: " + fileName);
 		}
 
+		if (newContent.contains("Configurable.createConfigurable(") &&
+			!fileName.endsWith("ConfigurableUtil.java")) {
+
+			processErrorMessage(
+				fileName,
+				"Use ConfigurableUtil.createConfigurable instead of " +
+					"Configurable.createConfigurable: " + fileName);
+		}
+
 		// LPS-62786
 
 		checkPropertyUtils(fileName, newContent);
