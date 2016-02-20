@@ -75,7 +75,7 @@ public class UpgradeGroup extends UpgradeProcess {
 
 	protected void updateName() throws Exception {
 		long organizationClassNameId = getClassNameId(
-			Organization.class.getName());
+			"com.liferay.portal.model.Organization");
 
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -141,14 +141,15 @@ public class UpgradeGroup extends UpgradeProcess {
 	}
 
 	protected void updateSite() throws Exception {
-		long groupClassNameId = getClassNameId(Group.class.getName());
+		long groupClassNameId = getClassNameId(
+			"com.liferay.portal.model.Group");
 
 		runSQL(
 			"update Group_ set site = TRUE where classNameId = " +
 				groupClassNameId);
 
 		long organizationClassNameId = getClassNameId(
-			Organization.class.getName());
+			"com.liferay.portal.model.Organization");
 
 		Connection con = null;
 		PreparedStatement ps = null;

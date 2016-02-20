@@ -536,7 +536,8 @@ public class UpgradeSocial extends UpgradeProcess {
 			}
 		}
 
-		long classNameId = PortalUtil.getClassNameId(User.class);
+		long classNameId = PortalUtil.getClassNameId(
+			"com.liferay.portal.model.User");
 		long classPK = rs.getLong("userId");
 		String name = SocialActivityCounterConstants.NAME_PARTICIPATION;
 		int ownerType = SocialActivityCounterConstants.TYPE_ACTOR;
