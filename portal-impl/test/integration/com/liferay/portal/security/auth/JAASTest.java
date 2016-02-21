@@ -130,8 +130,7 @@ public class JAASTest {
 					}
 				}
 
-			}
-		);
+			});
 
 		MainServlet mainServlet = MainServletTestCallback.getMainServlet();
 

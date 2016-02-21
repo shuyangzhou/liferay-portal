@@ -177,7 +177,9 @@ public class UpgradeSocial extends UpgradeProcess {
 
 		long classNameId = (Long)group[0];
 
-		if (classNameId != PortalUtil.getClassNameId(Layout.class.getName())) {
+		if (classNameId != PortalUtil.getClassNameId(
+				"com.liferay.portal.model.Layout")) {
+
 			return;
 		}
 

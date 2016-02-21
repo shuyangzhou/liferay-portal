@@ -104,9 +104,11 @@ gradle.beforeProject {
 		}
 
 		if (System.getenv("JENKINS_HOME")) {
-			pluginManager.withPlugin("com.liferay.cache") {
-				cache {
-					forcedCache = true
+			pluginManager.withPlugin("com.liferay.node") {
+				downloadNode {
+					doFirst {
+						throw new GradleException("Unable to use Node.js on CI, please configure com.liferay.cache or update the cache")
+					}
 				}
 			}
 		}
