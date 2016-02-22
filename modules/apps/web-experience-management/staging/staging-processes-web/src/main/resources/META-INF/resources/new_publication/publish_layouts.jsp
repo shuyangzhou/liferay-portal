@@ -253,7 +253,14 @@ renderResponse.setTitle(!configuredPublish ? LanguageUtil.get(request, "new-publ
 
 			<aui:fieldset-group markupView="lexicon">
 				<aui:fieldset>
-					<aui:input name="name" placeholder="process-name-placeholder" />
+					<c:choose>
+						<c:when test="<%= exportImportConfiguration == null %>">
+							<aui:input name="name" placeholder="process-name-placeholder" />
+						</c:when>
+						<c:otherwise>
+							<aui:input name="name" value="<%= exportImportConfiguration.getName() %>" />
+						</c:otherwise>
+					</c:choose>
 				</aui:fieldset>
 
 				<aui:fieldset collapsible="<%= true %>" cssClass="options-group" label="date">
@@ -263,7 +270,7 @@ renderResponse.setTitle(!configuredPublish ? LanguageUtil.get(request, "new-publ
 				<c:if test="<%= !group.isCompany() %>">
 					<aui:fieldset collapsible="<%= true %>" cssClass="options-group" label="pages">
 						<liferay-util:include page="/new_publication/select_pages.jsp" servletContext="<%= application %>">
-							<liferay-util:param name="<%= Constants.CMD %>" value="<%= Constants.PUBLISH %>" />
+							<liferay-util:param name="<%= Constants.CMD %>" value="<%= cmd %>" />
 							<liferay-util:param name="groupId" value="<%= String.valueOf(groupId) %>" />
 							<liferay-util:param name="layoutSetBranchId" value="<%= String.valueOf(layoutSetBranchId) %>" />
 							<liferay-util:param name="privateLayout" value="<%= String.valueOf(privateLayout) %>" />

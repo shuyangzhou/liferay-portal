@@ -14,8 +14,12 @@
  */
 --%>
 
-<%@ include file="/admin/init.jsp" %>
+<%@ include file="/asset/init.jsp" %>
+
+<%
+DDLFormViewRecordDisplayContext ddlFormViewRecordDisplayContext = (DDLFormViewRecordDisplayContext)request.getAttribute(WebKeys.PORTLET_DISPLAY_CONTEXT);
+%>
 
 <div class="container-fluid-1280">
-	<%= ddlFormAdminDisplayContext.getDDMFormHTML() %>
+	<%= ddlFormViewRecordDisplayContext.getDDMFormHTML() %>
 </div>

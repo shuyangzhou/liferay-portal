@@ -17,13 +17,17 @@ package com.liferay.portal.kernel.deploy.auto;
 import com.liferay.portal.kernel.deploy.auto.context.AutoDeploymentContext;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.registry.Registry;
+import com.liferay.registry.RegistryUtil;
+import com.liferay.registry.ServiceTracker;
 
 import java.io.File;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -39,52 +43,42 @@ public class AutoDeployDir {
 
 	public static final String DEFAULT_NAME = "defaultAutoDeployDir";
 
-	/**
-	 * @see com.liferay.portal.osgi.web.wab.generator.internal.processor#getAutoDeployListener
-	 */
 	public static void deploy(
 			AutoDeploymentContext autoDeploymentContext,
 			List<AutoDeployListener> autoDeployListeners)
 		throws AutoDeployException {
 
-		List<AutoDeployListener> deployableAutoDeployListeners =
-			new ArrayList<>();
+		AutoDeployListener autoDeployListener = _serviceTracker.getService();
 
-		for (AutoDeployListener autoDeployListener : autoDeployListeners) {
+		if (autoDeployListener != null) {
 			if (autoDeployListener.isDeployable(autoDeploymentContext)) {
-				deployableAutoDeployListeners.add(autoDeployListener);
+				autoDeployListener.deploy(autoDeploymentContext);
+
+				File file = autoDeploymentContext.getFile();
+
+				file.delete();
+
+				return;
 			}
 		}
 
-		if (deployableAutoDeployListeners.size() > 1) {
-			StringBundler sb = new StringBundler(
-				3 + (deployableAutoDeployListeners.size() * 2) - 1);
+		String[] dirNames = PropsUtil.getArray(
+			PropsKeys.MODULE_FRAMEWORK_AUTO_DEPLOY_DIRS);
 
-			sb.append("More than one auto deploy listener is available for ");
-			sb.append(autoDeploymentContext.getFile());
-			sb.append(": ");
-
-			for (int i = 0; i < deployableAutoDeployListeners.size(); i++) {
-				AutoDeployListener deployableAutoDeployListener =
-					deployableAutoDeployListeners.get(i);
-
-				Class<?> clazz = deployableAutoDeployListener.getClass();
-
-				if (i != 0) {
-					sb.append(StringPool.COMMA_AND_SPACE);
-				}
-
-				sb.append(clazz.getName());
-			}
-
-			throw new AutoDeployException(sb.toString());
+		if (ArrayUtil.isEmpty(dirNames)) {
+			throw new AutoDeployException(
+				"The portal property \"" +
+					PropsKeys.MODULE_FRAMEWORK_AUTO_DEPLOY_DIRS +
+						"\" is not set");
 		}
 
-		for (AutoDeployListener deployableAutoDeployListener :
-				deployableAutoDeployListeners) {
+		String dirName = dirNames[0];
 
-			deployableAutoDeployListener.deploy(autoDeploymentContext);
-		}
+		FileUtil.mkdirs(dirName);
+
+		File file = autoDeploymentContext.getFile();
+
+		FileUtil.move(file, new File(dirName, file.getName()));
 	}
 
 	public AutoDeployDir(
@@ -171,6 +165,8 @@ public class AutoDeployDir {
 		if (_autoDeployScanner != null) {
 			_autoDeployScanner.pause();
 		}
+
+		_serviceTracker.close();
 	}
 
 	public void unregisterListener(AutoDeployListener autoDeployListener) {
@@ -223,11 +219,7 @@ public class AutoDeployDir {
 
 			deploy(autoDeploymentContext, _autoDeployListeners);
 
-			if (file.delete()) {
-				return;
-			}
-
-			_log.error("Auto deploy failed to remove " + fileName);
+			return;
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -293,6 +285,16 @@ public class AutoDeployDir {
 	private static final Log _log = LogFactoryUtil.getLog(AutoDeployDir.class);
 
 	private static AutoDeployScanner _autoDeployScanner;
+	private static final ServiceTracker<AutoDeployListener, AutoDeployListener>
+		_serviceTracker;
+
+	static {
+		Registry registry = RegistryUtil.getRegistry();
+
+		_serviceTracker = registry.trackServices(AutoDeployListener.class);
+
+		_serviceTracker.open();
+	}
 
 	private final List<AutoDeployListener> _autoDeployListeners;
 	private final Map<String, Long> _blacklistFileTimestamps;
