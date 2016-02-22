@@ -102,6 +102,8 @@ public class ClassNameLocalServiceImpl
 
 		if (className == null) {
 			try {
+				System.out.println("#################### Adding " + value + " current cache is : " + _classNames);
+
 				className = classNameLocalService.addClassName(value);
 
 				_classNames.put(value, className);
@@ -140,6 +142,8 @@ public class ClassNameLocalServiceImpl
 	@Override
 	public void invalidate() {
 		_classNames.clear();
+
+		new Exception("**********Class name cache is cleared by : ").printStackTrace(System.out);
 	}
 
 	private static final Map<String, ClassName> _classNames =
