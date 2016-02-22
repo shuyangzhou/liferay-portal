@@ -39,6 +39,9 @@ public class AutoDeployDir {
 
 	public static final String DEFAULT_NAME = "defaultAutoDeployDir";
 
+	/**
+	 * @see com.liferay.portal.osgi.web.wab.generator.internal.processor#getAutoDeployListener
+	 */
 	public static void deploy(
 			AutoDeploymentContext autoDeploymentContext,
 			List<AutoDeployListener> autoDeployListeners)
