@@ -14,9 +14,6 @@
 
 package com.liferay.portal.verify;
 
-import com.liferay.portal.kernel.dao.db.DB;
-import com.liferay.portal.kernel.dao.db.DBManagerUtil;
-import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -44,11 +41,14 @@ import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.security.permission.PermissionCacheUtil;
 import com.liferay.portal.service.impl.ResourcePermissionLocalServiceImpl;
+import com.liferay.portal.upgrade.AutoBatchPreparedStatementUtil;
 import com.liferay.portal.util.PortalInstances;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -196,63 +196,54 @@ public class VerifyPermission extends VerifyProcess {
 		long userClassNameId = PortalUtil.getClassNameId(User.class);
 		long userGroupClassNameId = PortalUtil.getClassNameId(UserGroup.class);
 
-		DB db = DBManagerUtil.getDB();
+		StringBundler selectSQLSB = new StringBundler(9);
 
-		long[] companyIds = PortalInstances.getCompanyIdsBySQL();
+		selectSQLSB.append("select plid from Layout inner join Group_ ");
+		selectSQLSB.append("on Layout.groupId = Group_.groupId where ");
+		selectSQLSB.append("(Group_.classNameId = ");
+		selectSQLSB.append(userClassNameId);
+		selectSQLSB.append(" or Group_.classNameId = ");
+		selectSQLSB.append(userGroupClassNameId);
+		selectSQLSB.append(") and Layout.type_ = '");
+		selectSQLSB.append(LayoutConstants.TYPE_PORTLET);
+		selectSQLSB.append("'");
 
-		for (long companyId : companyIds) {
+		String selectSQL = selectSQLSB.toString();
+
+		String updateSQL =
+			"update ResourcePermission set roleId = ? where " +
+				"ResourcePermission.scope = " +
+					ResourceConstants.SCOPE_INDIVIDUAL +
+						" and ResourcePermission.primKey like ? and " +
+							"ResourcePermission.roleId = ?";
+
+		for (long companyId : PortalInstances.getCompanyIdsBySQL()) {
 			Role powerUserRole = RoleLocalServiceUtil.getRole(
 				companyId, RoleConstants.POWER_USER);
 			Role userRole = RoleLocalServiceUtil.getRole(
 				companyId, RoleConstants.USER);
 
-			StringBundler joinSB = new StringBundler(6);
+			try (PreparedStatement ps1 = connection.prepareStatement(selectSQL);
+				ResultSet rs = ps1.executeQuery();
+				PreparedStatement ps2 =
+					AutoBatchPreparedStatementUtil.autoBatch(
+						connection.prepareStatement(updateSQL))) {
 
-			joinSB.append("ResourcePermission inner join Layout on ");
-			joinSB.append("ResourcePermission.companyId = Layout.companyId ");
-			joinSB.append("and ResourcePermission.primKey like ");
-			joinSB.append("replace('[$PLID$]_LAYOUT_%', '[$PLID$]', ");
-			joinSB.append("cast_text(Layout.plid)) inner join Group_ on ");
-			joinSB.append("Layout.groupId = Group_.groupId");
+				while (rs.next()) {
+					String plid = rs.getString("plid");
 
-			StringBundler whereSB = new StringBundler(13);
+					ps2.setLong(1, userRole.getRoleId());
+					ps2.setString(
+						2,
+						plid.concat(
+							PortletConstants.LAYOUT_SEPARATOR).concat("%"));
+					ps2.setLong(3, powerUserRole.getRoleId());
 
-			whereSB.append("where ResourcePermission.scope = ");
-			whereSB.append(ResourceConstants.SCOPE_INDIVIDUAL);
-			whereSB.append(" and ResourcePermission.primKey like '%");
-			whereSB.append(PortletConstants.LAYOUT_SEPARATOR);
-			whereSB.append("%' and ResourcePermission.roleId = ");
-			whereSB.append(powerUserRole.getRoleId());
-			whereSB.append(" and (Group_.classNameId = ");
-			whereSB.append(userClassNameId);
-			whereSB.append(" or Group_.classNameId = ");
-			whereSB.append(userGroupClassNameId);
-			whereSB.append(") and Layout.type_ = '");
-			whereSB.append(LayoutConstants.TYPE_PORTLET);
-			whereSB.append(StringPool.APOSTROPHE);
+					ps2.addBatch();
+				}
 
-			StringBundler sb = new StringBundler(8);
-
-			if (db.getDBType() == DBType.MYSQL) {
-				sb.append("update ");
-				sb.append(joinSB.toString());
-				sb.append(" set ResourcePermission.roleId = ");
-				sb.append(userRole.getRoleId());
-				sb.append(StringPool.SPACE);
-				sb.append(whereSB.toString());
+				ps2.executeBatch();
 			}
-			else {
-				sb.append("update ResourcePermission set roleId = ");
-				sb.append(userRole.getRoleId());
-				sb.append(" where resourcePermissionId in (select ");
-				sb.append("resourcePermissionId from ");
-				sb.append(joinSB.toString());
-				sb.append(StringPool.SPACE);
-				sb.append(whereSB.toString());
-				sb.append(StringPool.CLOSE_PARENTHESIS);
-			}
-
-			runSQL(sb.toString());
 		}
 
 		EntityCacheUtil.clearCache();

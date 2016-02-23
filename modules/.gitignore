@@ -69,8 +69,8 @@
 /*/*/test-coverage
 /*/*/test-results
 /*/*/tmp
-/frontend/frontend-theme/*/build_gradle
-/frontend/frontend-theme/*/dist
-/frontend/frontend-theme/*/liferay-theme.json
+/apps/platform/frontend/frontend-theme/*/build_gradle
+/apps/platform/frontend/frontend-theme/*/dist
+/apps/platform/frontend/frontend-theme/*/liferay-theme.json
 npm-debug.log
 uptodate.properties
