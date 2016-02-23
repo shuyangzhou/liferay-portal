@@ -12,32 +12,13 @@
  * details.
  */
 
-package com.liferay.portal.kernel.portlet;
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.model.Group;
-
-import javax.portlet.PortletURL;
-
-import javax.servlet.http.HttpServletRequest;
+package com.liferay.portal.kernel.json;
 
 /**
- * @author Eudaldo Alonso
+ * @author Preston Crary
  */
-public interface PortletProvider {
+public interface JSONDeserializerTransformer<K, V> {
 
-	public String getPortletName();
-
-	public PortletURL getPortletURL(HttpServletRequest request)
-		throws PortalException;
-
-	public PortletURL getPortletURL(HttpServletRequest request, Group group)
-		throws PortalException;
-
-	public enum Action {
-
-		ADD, BROWSE, EDIT, MANAGE, VIEW
-
-	}
+	public V transform(K key);
 
 }

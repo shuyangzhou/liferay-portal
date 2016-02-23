@@ -21,6 +21,12 @@ public interface JSONDeserializer<T> {
 
 	public T deserialize(String input);
 
+	public T deserialize(String input, Class<T> targetType);
+
+	public <K, V> JSONDeserializer<T> transform(
+		JSONDeserializerTransformer<K, V> jsonDeserializerTransformer,
+		String field);
+
 	public JSONDeserializer<T> use(String path, Class<?> clazz);
 
 }

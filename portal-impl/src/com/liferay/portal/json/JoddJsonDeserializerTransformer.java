@@ -12,28 +12,30 @@
  * details.
  */
 
-package com.liferay.trash.web.portlet;
+package com.liferay.portal.json;
 
-import com.liferay.portal.kernel.portlet.BasePortletProvider;
-import com.liferay.portal.kernel.portlet.ViewPortletProvider;
-import com.liferay.trash.web.constants.TrashPortletKeys;
+import com.liferay.portal.kernel.json.JSONDeserializerTransformer;
 
-import org.osgi.service.component.annotations.Component;
+import jodd.json.ValueConverter;
 
 /**
- * @author Eudaldo Alonso
+ * @author Preston Crary
  */
-@Component(
-	immediate = true,
-	property = {"model.class.name=com.liferay.trash.kernel.model.TrashEntry"},
-	service = ViewPortletProvider.class
-)
-public class TrashViewPortletProvider
-	extends BasePortletProvider implements ViewPortletProvider {
+public class JoddJsonDeserializerTransformer<K, V>
+	implements ValueConverter<K, V> {
+
+	public JoddJsonDeserializerTransformer(
+		JSONDeserializerTransformer<K, V> jsonDeserializerTransformer) {
+
+		_jsonDeserializerTransformer = jsonDeserializerTransformer;
+	}
 
 	@Override
-	public String getPortletName() {
-		return TrashPortletKeys.TRASH;
+	public V convert(K key) {
+		return _jsonDeserializerTransformer.transform(key);
 	}
+
+	private final JSONDeserializerTransformer<K, V>
+		_jsonDeserializerTransformer;
 
 }
