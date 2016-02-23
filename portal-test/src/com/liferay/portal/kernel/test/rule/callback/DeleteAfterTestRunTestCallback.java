@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistryUtil;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
+import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 
@@ -44,6 +45,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
+import java.util.concurrent.Callable;
 
 import org.junit.runner.Description;
 
@@ -160,7 +162,8 @@ public class DeleteAfterTestRunTestCallback
 
 			iterator.remove();
 
-			removeField(entry.getValue(), target);
+			TransactionCommitCallbackUtil.registerCallback(
+				new RemoveFieldCallable(entry.getValue(), target));
 		}
 
 		for (Class<?> clazz : _orderedClasses) {
@@ -170,7 +173,8 @@ public class DeleteAfterTestRunTestCallback
 				continue;
 			}
 
-			removeField(fieldBag, target);
+			TransactionCommitCallbackUtil.registerCallback(
+				new RemoveFieldCallable(fieldBag, target));
 		}
 	}
 
@@ -225,62 +229,7 @@ public class DeleteAfterTestRunTestCallback
 		return collectionType;
 	}
 
-	protected void removeField(FieldBag fieldBag, Object instance) {
-		try {
-			Class<?> fieldClass = fieldBag.getFieldClass();
-
-			PersistedModelLocalService persistedModelLocalService =
-				PersistedModelLocalServiceRegistryUtil.
-					getPersistedModelLocalService(fieldClass.getName());
-
-			for (Field field : fieldBag.getFields()) {
-				Object object = field.get(instance);
-
-				if (object == null) {
-					continue;
-				}
-
-				Class<?> objectClass = object.getClass();
-
-				if (objectClass.isArray()) {
-					for (PersistedModel persistedModel :
-							(PersistedModel[])object) {
-
-						if (persistedModel == null) {
-							continue;
-						}
-
-						persistedModelLocalService.deletePersistedModel(
-							persistedModel);
-					}
-				}
-				else if (Collection.class.isAssignableFrom(objectClass)) {
-					Collection<? extends PersistedModel> collection =
-						(Collection<? extends PersistedModel>)object;
-
-					for (PersistedModel persistedModel : collection) {
-						persistedModelLocalService.deletePersistedModel(
-							persistedModel);
-					}
-				}
-				else {
-					persistedModelLocalService.deletePersistedModel(
-						(PersistedModel)object);
-				}
-
-				field.set(instance, null);
-			}
-		}
-		catch (Exception e) {
-			_log.error("Unable to delete", e);
-		}
-	}
-
 	protected static class FieldBag {
-
-		public FieldBag(Class<?> fieldClass) {
-			_fieldClass = fieldClass;
-		}
 
 		public void addField(Field field) {
 			_fields.add(field);
@@ -294,8 +243,78 @@ public class DeleteAfterTestRunTestCallback
 			return _fields;
 		}
 
+		protected FieldBag(Class<?> fieldClass) {
+			_fieldClass = fieldClass;
+		}
+
 		private final Class<?> _fieldClass;
 		private final List<Field> _fields = new ArrayList<>();
+
+	}
+
+	protected static class RemoveFieldCallable implements Callable<Void> {
+
+		@Override
+		public Void call() throws Exception {
+			try {
+				Class<?> fieldClass = _fieldBag.getFieldClass();
+
+				PersistedModelLocalService persistedModelLocalService =
+					PersistedModelLocalServiceRegistryUtil.
+						getPersistedModelLocalService(fieldClass.getName());
+
+				for (Field field : _fieldBag.getFields()) {
+					Object object = field.get(_instance);
+
+					if (object == null) {
+						continue;
+					}
+
+					Class<?> objectClass = object.getClass();
+
+					if (objectClass.isArray()) {
+						for (PersistedModel persistedModel :
+								(PersistedModel[])object) {
+
+							if (persistedModel == null) {
+								continue;
+							}
+
+							persistedModelLocalService.deletePersistedModel(
+								persistedModel);
+						}
+					}
+					else if (Collection.class.isAssignableFrom(objectClass)) {
+						Collection<? extends PersistedModel> collection =
+							(Collection<? extends PersistedModel>)object;
+
+						for (PersistedModel persistedModel : collection) {
+							persistedModelLocalService.deletePersistedModel(
+								persistedModel);
+						}
+					}
+					else {
+						persistedModelLocalService.deletePersistedModel(
+							(PersistedModel)object);
+					}
+
+					field.set(_instance, null);
+				}
+			}
+			catch (Exception e) {
+				_log.error("Unable to delete", e);
+			}
+
+			return null;
+		}
+
+		protected RemoveFieldCallable(FieldBag fieldBag, Object instance) {
+			_fieldBag = fieldBag;
+			_instance = instance;
+		}
+
+		private final FieldBag _fieldBag;
+		private final Object _instance;
 
 	}
 
