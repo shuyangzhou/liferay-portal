@@ -15,8 +15,14 @@
 package com.liferay.portal.kernel.util;
 
 import com.liferay.portal.kernel.exception.LoggedExceptionInInitializerError;
+import com.liferay.portal.kernel.test.CaptureHandler;
+import com.liferay.portal.kernel.test.JDKLoggerTestUtil;
 
 import java.net.URLEncoder;
+
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -28,24 +34,36 @@ import org.junit.Test;
 public class URLCodecTest {
 
 	@Test
-	public void testDecodeURL() throws Exception {
+	public void testDecodeURLWithInvalidURLEncoding() throws Exception {
+		testDecodeURLWithInvalidURLEncoding("%");
+		testDecodeURLWithInvalidURLEncoding("%0");
+		testDecodeURLWithInvalidURLEncoding("%00%");
+		testDecodeURLWithInvalidURLEncoding("%00%0");
+	}
+
+	@Test
+	public void testDecodeURLWithNotHexChars() throws Exception {
+		testDecodeURLWithNotHexChars("%0" + (char) (CharPool.NUMBER_0 - 1));
+		testDecodeURLWithNotHexChars("%0" + (char) (CharPool.NUMBER_9 + 1));
+		testDecodeURLWithNotHexChars("%0" + (char) (CharPool.UPPER_CASE_A - 1));
+		testDecodeURLWithNotHexChars("%0" + (char) (CharPool.UPPER_CASE_F + 1));
+		testDecodeURLWithNotHexChars("%0" + (char) (CharPool.LOWER_CASE_A - 1));
+		testDecodeURLWithNotHexChars("%0" + (char) (CharPool.LOWER_CASE_F + 1));
+	}
+
+	@Test
+	public void testDecodeURLWithPercentageInURLParameters() throws Exception {
+		testDecodeURLWithInvalidURLEncoding("http://localhost:8080/?id=%'");
+	}
+
+	@Test
+	public void testDecodeURLWithRawURLs() throws Exception {
 		for (int i = 0; i < _RAW_URLS.length; i++) {
 			String result = URLCodec.decodeURL(
 				_ENCODED_URLS[i], StringPool.UTF8);
 
 			Assert.assertEquals(_RAW_URLS[i], result);
 		}
-
-		testDecodeURL("%");
-		testDecodeURL("%0");
-		testDecodeURL("%00%");
-		testDecodeURL("%00%0");
-		testDecodeURL("%0" + (char)(CharPool.NUMBER_0 - 1));
-		testDecodeURL("%0" + (char)(CharPool.NUMBER_9 + 1));
-		testDecodeURL("%0" + (char)(CharPool.UPPER_CASE_A - 1));
-		testDecodeURL("%0" + (char)(CharPool.UPPER_CASE_F + 1));
-		testDecodeURL("%0" + (char)(CharPool.LOWER_CASE_A - 1));
-		testDecodeURL("%0" + (char)(CharPool.LOWER_CASE_F + 1));
 	}
 
 	@Test
@@ -96,13 +114,39 @@ public class URLCodecTest {
 				URLCodec.encodeURL(animalsString, StringPool.UTF8, false)));
 	}
 
-	protected void testDecodeURL(String encodedURLString) {
-		try {
-			URLCodec.decodeURL(encodedURLString, StringPool.UTF8);
+	protected void testDecodeURLWithInvalidURLEncoding(
+		String encodedURLString) {
 
-			Assert.fail(encodedURLString);
-		}
-		catch (IllegalArgumentException iae) {
+		String expectedMessage = "Invalid URL encoding " + encodedURLString;
+
+		_testDecodeURL(encodedURLString, expectedMessage);
+	}
+
+	protected void testDecodeURLWithNotHexChars(String encodedURLString) {
+		_testDecodeURL(encodedURLString, "is not a hex char");
+	}
+
+	private void _testDecodeURL(
+		String encodedURLString, String expectedMessage) {
+
+		try (CaptureHandler captureHandler =
+				JDKLoggerTestUtil.configureJDKLogger(
+					URLCodec.class.getName(), Level.SEVERE)) {
+
+			String decodeURL = URLCodec.decodeURL(
+				encodedURLString, StringPool.UTF8);
+
+			Assert.assertEquals(StringPool.BLANK, decodeURL);
+
+			List<LogRecord> logRecords = captureHandler.getLogRecords();
+
+			Assert.assertEquals(1, logRecords.size());
+
+			LogRecord logRecord = logRecords.get(0);
+
+			String message = logRecord.getMessage();
+
+			Assert.assertTrue(message.contains(expectedMessage));
 		}
 	}
 
