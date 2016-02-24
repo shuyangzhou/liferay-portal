@@ -14,7 +14,12 @@
 
 package com.liferay.portal.upgrade.v6_2_0;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Raymond Augé
@@ -23,9 +28,23 @@ public class UpgradeSchema extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeSchema.runSQLTemplate");
+
 		runSQLTemplate("update-6.1.1-6.2.0.sql", false);
 
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeSchema.runSQLTemplate");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeSchema.upgrade(UpgradeMVCCVersion.class)");
+
 		upgrade(UpgradeMVCCVersion.class);
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeSchema.upgrade(UpgradeMVCCVersion.class)");
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(UpgradeSchema.class);
 
 }

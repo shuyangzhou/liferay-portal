@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 import com.liferay.portal.upgrade.v6_2_0.util.DDMTemplateTable;
 import com.liferay.util.xml.XMLUtil;
 
@@ -37,6 +38,8 @@ import java.sql.SQLException;
 
 import java.util.List;
 
+import org.apache.commons.lang.time.StopWatch;
+
 /**
  * @author Juan Fernández
  * @author Marcellus Tavares
@@ -45,12 +48,38 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeDynamicDataMapping.updateSchema");
+
 		updateSchema();
 
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeDynamicDataMapping.updateSchema");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeDynamicDataMapping.updateStructures");
+
 		updateStructures();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeDynamicDataMapping.updateStructures");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeDynamicDataMapping.updateStructuresClassNameId");
+
 		updateStructuresClassNameId();
 
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"UpgradeDynamicDataMapping.updateStructuresClassNameId");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeDynamicDataMapping.updateTemplates");
+
 		updateTemplates();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeDynamicDataMapping.updateTemplates");
 	}
 
 	protected void updateMetadataElement(

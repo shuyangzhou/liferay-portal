@@ -14,6 +14,8 @@
 
 package com.liferay.portal.upgrade.v6_2_0;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.upgrade.BaseUpgradePortletPreferences;
 import com.liferay.portal.kernel.upgrade.util.UpgradeTable;
@@ -21,9 +23,12 @@ import com.liferay.portal.kernel.upgrade.util.UpgradeTableFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.RSSUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 import com.liferay.portal.upgrade.v6_2_0.util.BlogsEntryTable;
 
 import javax.portlet.PortletPreferences;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Sergio González
@@ -33,9 +38,21 @@ public class UpgradeBlogs extends BaseUpgradePortletPreferences {
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeBlogs.super.doUpgrade");
+
 		super.doUpgrade();
 
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeBlogs.super.doUpgrade");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeBlogs.updateEntries");
+
 		updateEntries();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeBlogs.updateEntries");
 	}
 
 	@Override
@@ -105,5 +122,7 @@ public class UpgradeBlogs extends BaseUpgradePortletPreferences {
 
 		portletPreferences.reset("rssFormat");
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(UpgradeBlogs.class);
 
 }
