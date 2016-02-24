@@ -5,4 +5,7 @@
 	<category name="com.liferay.wiki.web.wiki.portlet.action.ExportPageMVCActionCommand">
 		<priority value="ERROR" />
 	</category>
+	<category name="com.liferay.wiki.web.upgrade">
+		<priority value="INFO" />
+	</category>
 </log4j:configuration>

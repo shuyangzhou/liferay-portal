@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 import com.liferay.portal.verify.VerifyProcess;
 import com.liferay.portal.verify.VerifyResourcePermissions;
 import com.liferay.portal.verify.VerifyUUID;
@@ -32,6 +33,8 @@ import com.liferay.wiki.verify.model.WikiPageVerifiableModel;
 
 import java.util.Date;
 import java.util.List;
+
+import org.apache.commons.lang.time.StopWatch;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -49,10 +52,37 @@ public class WikiServiceVerifyProcess extends VerifyProcess {
 
 	@Override
 	protected void doVerify() throws Exception {
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "WikiServiceVerifyProcess.verifyCreateDate");
+
 		verifyCreateDate();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "PollsServiceVerifyProcess.verifyCreateDate");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "WikiServiceVerifyProcess.verifyNoAssetPages");
+
 		verifyNoAssetPages();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "PollsServiceVerifyProcess.verifyNoAssetPages");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "WikiServiceVerifyProcess.verifyResourcedModels");
+
 		verifyResourcedModels();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "PollsServiceVerifyProcess.verifyResourcedModels");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "WikiServiceVerifyProcess.verifyUUIDModels");
+
 		verifyUUIDModels();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "PollsServiceVerifyProcess.verifyUUIDModels");
 	}
 
 	@Reference(unbind = "-")
