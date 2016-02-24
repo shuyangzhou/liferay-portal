@@ -20,10 +20,13 @@ import com.liferay.bookmarks.service.BookmarksEntryLocalService;
 import com.liferay.bookmarks.service.BookmarksFolderLocalService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 import com.liferay.portal.util.PortalInstances;
 import com.liferay.portal.verify.VerifyProcess;
 
 import java.util.List;
+
+import org.apache.commons.lang.time.StopWatch;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -41,9 +44,31 @@ public class BookmarksServiceVerifyProcess extends VerifyProcess {
 
 	@Override
 	protected void doVerify() throws Exception {
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "BookmarksServiceVerifyProcess.updateEntryAssets");
+
 		updateEntryAssets();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "BookmarksServiceVerifyProcess.updateEntryAssets");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "BookmarksServiceVerifyProcess.updateFolderAssets");
+
 		updateFolderAssets();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"BookmarksServiceVerifyProcess.updateFolderAssets");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "BookmarksServiceVerifyProcess.updateFolderAssets");
+
 		verifyTree();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"BookmarksServiceVerifyProcess.updateFolderAssets");
 	}
 
 	@Reference(unbind = "-")

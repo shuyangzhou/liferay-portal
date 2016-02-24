@@ -5,4 +5,10 @@
 	<category name="com.liferay.journal.content.web.JournalContentPortletLayoutListener">
 		<priority value="ERROR" />
 	</category>
+	<category name="com.liferay.bookmarks.upgrade">
+		<priority value="INFO" />
+	</category>
+	<category name="com.liferay.bookmarks.verify">
+		<priority value="INFO" />
+	</category>
 </log4j:configuration>

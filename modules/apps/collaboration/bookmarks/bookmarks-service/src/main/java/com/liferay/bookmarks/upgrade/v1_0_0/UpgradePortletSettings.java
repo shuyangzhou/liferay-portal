@@ -16,8 +16,13 @@ package com.liferay.bookmarks.upgrade.v1_0_0;
 
 import com.liferay.bookmarks.constants.BookmarksConstants;
 import com.liferay.bookmarks.constants.BookmarksPortletKeys;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.kernel.util.PortletKeys;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Miguel Pastor
@@ -31,9 +36,18 @@ public class UpgradePortletSettings
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradePortletSettings.upgradeMainPortlet");
+
 		upgradeMainPortlet(
 			BookmarksPortletKeys.BOOKMARKS, BookmarksConstants.SERVICE_NAME,
 			PortletKeys.PREFS_OWNER_TYPE_LAYOUT, false);
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradePortletSettings.upgradeMainPortlet");
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		UpgradePortletSettings.class);
 
 }
