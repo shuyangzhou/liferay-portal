@@ -18,8 +18,12 @@ import com.liferay.microblogs.model.MicroblogsEntry;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
+import org.apache.commons.lang.time.StopWatch;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,7 +35,13 @@ public class UpgradeSocial extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeSocial.upgradeMicroblogActivities");
+
 		upgradeMicroblogActivities();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeSocial.upgradeMicroblogActivities");
 	}
 
 	protected void updateSocialActivity(long activityId, JSONObject jsonObject)
@@ -88,5 +98,7 @@ public class UpgradeSocial extends UpgradeProcess {
 			DataAccess.cleanUp(ps, rs);
 		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(UpgradeSocial.class);
 
 }

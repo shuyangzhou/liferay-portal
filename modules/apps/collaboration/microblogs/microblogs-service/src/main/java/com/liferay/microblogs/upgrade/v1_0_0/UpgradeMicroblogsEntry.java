@@ -14,9 +14,14 @@
 
 package com.liferay.microblogs.upgrade.v1_0_0;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.PortalUtil;
+
+import com.liferay.portal.tools.StopWatchLoggingHelper;
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Calvin Keum
@@ -25,7 +30,15 @@ public class UpgradeMicroblogsEntry extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log,
+			"UpgradeMicroblogsEntry.updateMicroBlogsEntry");
+
 		updateMicroBlogsEntry();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"UpgradeMicroblogsEntry.updateMicroBlogsEntry");
 	}
 
 	protected void updateMicroBlogsEntry() throws Exception {
@@ -49,5 +62,8 @@ public class UpgradeMicroblogsEntry extends UpgradeProcess {
 				PortalUtil.getClassNameId(User.class) +
 					", creatorClassPK = MicroblogsEntry.userId");
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		UpgradeMicroblogsEntry.class);
 
 }

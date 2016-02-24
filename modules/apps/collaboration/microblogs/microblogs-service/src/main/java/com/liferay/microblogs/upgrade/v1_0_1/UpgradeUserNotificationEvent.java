@@ -19,10 +19,15 @@ import com.liferay.microblogs.model.MicroblogsEntryConstants;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Evan Thibodeau
@@ -31,7 +36,14 @@ public class UpgradeUserNotificationEvent extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeUserNotificationEvent.upgradeNotifications");
+
 		upgradeNotifications();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"UpgradeUserNotificationEvent.upgradeNotifications");
 	}
 
 	protected void updateNotification(
@@ -94,5 +106,8 @@ public class UpgradeUserNotificationEvent extends UpgradeProcess {
 			DataAccess.cleanUp(ps, rs);
 		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		UpgradeUserNotificationEvent.class);
 
 }
