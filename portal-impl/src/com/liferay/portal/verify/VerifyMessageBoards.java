@@ -25,8 +25,11 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 
 import java.util.List;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Brian Wing Shun Chan
@@ -36,10 +39,38 @@ public class VerifyMessageBoards extends VerifyProcess {
 
 	@Override
 	protected void doVerify() throws Exception {
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "VerifyMessageBoards.verifyStatisticsForCategories");
+
 		verifyStatisticsForCategories();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"VerifyMessageBoards.verifyStatisticsForCategories");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "VerifyMessageBoards.verifyStatisticsForThreads");
+
 		verifyStatisticsForThreads();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "VerifyMessageBoards.verifyStatisticsForThreads");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "VerifyMessageBoards.verifyAssetsForMessages");
+
 		verifyAssetsForMessages();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "VerifyMessageBoards.verifyAssetsForMessages");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "VerifyMessageBoards.verifyAssetsForThreads");
+
 		verifyAssetsForThreads();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "VerifyMessageBoards.verifyAssetsForThreads");
 	}
 
 	protected void verifyAssetsForMessages() throws Exception {

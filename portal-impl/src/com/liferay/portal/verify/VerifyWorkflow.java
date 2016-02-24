@@ -15,13 +15,18 @@
 package com.liferay.portal.verify;
 
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.ClassName;
 import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Shinn Lok
@@ -100,7 +105,13 @@ public class VerifyWorkflow extends VerifyProcess {
 
 	@Override
 	protected void doVerify() throws Exception {
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "VerifyWorkflow.deleteOrphaned");
+
 		deleteOrphaned();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "VerifyWorkflow.deleteOrphaned");
 	}
 
 	protected String[][] getOrphanedAttachedModels() {
@@ -129,5 +140,7 @@ public class VerifyWorkflow extends VerifyProcess {
 			"KaleoProcess", "kaleoProcessId"
 		}
 	};
+
+	private static final Log _log = LogFactoryUtil.getLog(VerifyWorkflow.class);
 
 }

@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 import com.liferay.portal.util.PropsValues;
 
 import java.sql.DatabaseMetaData;
@@ -29,6 +30,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Brian Wing Shun Chan
@@ -46,9 +49,21 @@ public class VerifyMySQL extends VerifyProcess {
 
 		Statement statement = connection.createStatement();
 
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "VerifyMySQL.verifyTableEngine");
+
 		verifyTableEngine(statement);
 
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "VerifyMySQL.verifyTableEngine");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "VerifyMySQL.verifyDatetimePrecision");
+
 		verifyDatetimePrecision(connection.getMetaData(), statement);
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "VerifyMySQL.verifyDatetimePrecision");
 	}
 
 	protected String getActualColumnType(

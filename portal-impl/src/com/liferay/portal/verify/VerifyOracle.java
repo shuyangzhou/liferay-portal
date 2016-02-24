@@ -23,10 +23,13 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Ivica Cardic
@@ -113,7 +116,13 @@ public class VerifyOracle extends VerifyProcess {
 			return;
 		}
 
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "VerifyOracle.alterVarchar2Columns");
+
 		alterVarchar2Columns();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "VerifyOracle.alterVarchar2Columns");
 	}
 
 	protected boolean isBetweenBuildNumbers(
