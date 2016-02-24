@@ -14,11 +14,16 @@
 
 package com.liferay.calendar.upgrade.v1_0_3;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeException;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 import com.liferay.portal.upgrade.v7_0_0.UpgradeKernelPackage;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Cristina González
@@ -27,11 +32,33 @@ public class UpgradeClassNames extends UpgradeKernelPackage {
 
 	@Override
 	public void doUpgrade() throws UpgradeException {
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "calendar-service:UpgradeClassNames.deleteCalEventClassName");
+
 		deleteCalEventClassName();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"calendar-service:UpgradeClassNames.deleteCalEventClassName");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log,
+			"calendar-service:UpgradeClassNames.deleteDuplicateResources");
 
 		deleteDuplicateResources();
 
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"calendar-service:UpgradeClassNames.deleteDuplicateResources");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "calendar-service:UpgradeClassNames.super.doUpgrade");
+
 		super.doUpgrade();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"calendar-service:UpgradeClassNames.super.doUpgrade");
 	}
 
 	protected void deleteCalEventClassName() throws UpgradeException {
@@ -101,5 +128,8 @@ public class UpgradeClassNames extends UpgradeKernelPackage {
 			"com.liferay.portlet.calendar", "com.liferay.calendar"
 		}
 	};
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		UpgradeClassNames.class);
 
 }

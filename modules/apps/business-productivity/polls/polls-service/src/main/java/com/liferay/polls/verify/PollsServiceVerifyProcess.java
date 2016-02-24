@@ -18,9 +18,14 @@ import com.liferay.polls.service.PollsChoiceLocalService;
 import com.liferay.polls.verify.model.PollsChoiceVerifiableModel;
 import com.liferay.polls.verify.model.PollsQuestionVerifiableModel;
 import com.liferay.polls.verify.model.PollsVoteVerifiableModel;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 import com.liferay.portal.verify.VerifyAuditedModel;
 import com.liferay.portal.verify.VerifyProcess;
 import com.liferay.portal.verify.VerifyResourcePermissions;
+
+import org.apache.commons.lang.time.StopWatch;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -37,8 +42,21 @@ public class PollsServiceVerifyProcess extends VerifyProcess {
 
 	@Override
 	protected void doVerify() throws Exception {
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "PollsServiceVerifyProcess.verifyAuditedModels");
+
 		verifyAuditedModels();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "PollsServiceVerifyProcess.verifyAuditedModels");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "PollsServiceVerifyProcess.verifyResourcedModels");
+
 		verifyResourcedModels();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "PollsServiceVerifyProcess.verifyResourcedModels");
 	}
 
 	@Reference(unbind = "-")
@@ -54,6 +72,9 @@ public class PollsServiceVerifyProcess extends VerifyProcess {
 	protected void verifyResourcedModels() throws Exception {
 		_verifyResourcePermissions.verify(new PollsQuestionVerifiableModel());
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		PollsServiceVerifyProcess.class);
 
 	private final VerifyAuditedModel _verifyAuditedModel =
 		new VerifyAuditedModel();
