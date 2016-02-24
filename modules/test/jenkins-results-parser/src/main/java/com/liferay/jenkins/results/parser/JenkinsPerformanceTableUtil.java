@@ -34,18 +34,41 @@ public class JenkinsPerformanceTableUtil {
 			return "<p>Performance data is not available.</p>";
 		}
 
-		Element element = new DefaultElement("table");
+		Element divElement = new DefaultElement("div");
 
-		element.addAttribute("border", "1");
-		element.addAttribute("cellspacing", "0");
+		Element pElement = new DefaultElement("p");
 
-		element.add(
+		divElement.add(pElement);
+
+		pElement.addText(
+			(JenkinsPerformanceDataUtil.getSlaveCount() + 1) + " Slaves");
+
+		pElement.add(new DefaultElement("br"));
+
+		pElement.addText(JenkinsPerformanceDataUtil.getTestCount() + " Tests");
+
+		pElement.add(new DefaultElement("br"));
+
+		pElement.addText(
+			JenkinsPerformanceDataUtil.getTotalDuration() + " Seconds of CPU " +
+				"Time");
+
+		pElement.add(new DefaultElement("br"));
+
+		Element tableElement = new DefaultElement("table");
+
+		divElement.add(tableElement);
+
+		tableElement.addAttribute("border", "1");
+		tableElement.addAttribute("cellspacing", "0");
+
+		tableElement.add(
 			_createRowElement(
 				"th", "Axis", "Class Name", "Duration (Seconds)", "Job Name",
 				"Name", "Status", null));
 
 		for (JenkinsPerformanceDataUtil.Result result : results) {
-			element.add(
+			tableElement.add(
 				_createRowElement(
 					"td", result.getAxis(), result.getClassName(),
 					Float.toString(result.getDuration()), result.getJobName(),
@@ -54,11 +77,9 @@ public class JenkinsPerformanceTableUtil {
 
 		JenkinsPerformanceDataUtil.reset();
 
-		StringBuilder sb = new StringBuilder();
+		System.out.println(JenkinsResultsParserUtil.format(pElement));
 
-		sb.append(JenkinsResultsParserUtil.format(element));
-
-		return sb.toString();
+		return JenkinsResultsParserUtil.format(divElement);
 	}
 
 	private static Element _createAxisElement(

@@ -132,16 +132,16 @@
 				<execute function="SelectFrame" locator1="SitesSelectSite#SELECT_SITE_IFRAME" />
 				<execute function="Type" locator1="NavBar#BASIC_SEARCH_FIELD" value1="${parentSiteName}" />
 				<execute function="KeyPress" locator1="NavBar#BASIC_SEARCH_FIELD" value1="\RETURN" />
-				<execute function="AssertTextEquals" locator1="SitesSelectSite#SITES_TABLE_NAME" value1="${parentSiteName}" />
 
-				<var name="key_siteName" value="${parentSiteName}" />
+				<var name="key_site" value="${parentSiteName}" />
 
-				<execute function="Click" locator1="SitesSelectSite#SITES_TABLE_CHOOSE_SITE_LINK" />
+				<execute function="AssertTextEquals" locator1="ContentRow#ENTRY_CONTENT_ROW_TD_1_SITE_LINK" value1="${parentSiteName}" />
+
+				<execute function="Click" locator1="ContentRow#ENTRY_CONTENT_ROW_TD_1_SITE_LINK" />
 
 				<var name="key_parentSiteName" value="${parentSiteName}" />
 
-				<execute function="SelectFrame" value1="relative=top" />
-				<execute function="AssertTextEquals" locator1="SitesEditSite#PARENT_SITE_TABLE_NAME" value1="${parentSiteName}" />
+				<execute function="SelectFrameTop" />
 			</then>
 		</if>
 
@@ -467,7 +467,10 @@
 
 		<execute function="AssertTextEquals" locator1="UsersAndOrganizations#USER_TABLE_SCREEN_NAME" value1="${userScreenName}" />
 		<execute function="AssertClick" locator1="UsersAndOrganizations#USER_TABLE_SCREEN_NAME" value1="${userScreenName}" />
-		<execute function="AssertClick" locator1="UsersAndOrganizationsEditUser#SITES_TAB" value1="Sites" />
+		<execute macro="Panel#expandPanel">
+			<var name="panelHeading" value="Sites" />
+		</execute>
+
 		<execute function="AssertClick" locator1="UsersAndOrganizationsEditUser#SITES_SELECT_LINK" value1="Select" />
 		<execute function="SelectFrame" locator1="CPUsersandorganizationsUser#SITES_SELECT_IFRAME" />
 
@@ -1218,8 +1221,6 @@
 	</command>
 
 	<command name="viewSiteFriendlyURLPG">
-		<execute function="Pause" locator1="1073" />
-		<execute function="Pause" locator1="1073" />
 		<execute function="AssertTextEquals" locator1="Home#SITE_NAME" value1="${siteName}" />
 		<execute function="AssertLocation" value1="${sitePageURL}" />
 	</command>
@@ -1254,9 +1255,6 @@
 			<var name="soPage" value="${soPage}" />
 		</execute>
 
-		<execute function="Pause" locator1="1073" />
-		<execute function="Pause" locator1="1073" />
-		<execute function="Pause" locator1="1073" />
 		<execute function="AssertTextEquals" locator1="Home#SITE_NAME" value1="${childSiteName}" />
 		<execute function="AssertLocation" value1="${sitePageURL}" />
 	</command>
@@ -1266,8 +1264,6 @@
 
 		<execute function="AssertTextEquals" locator1="Home#SITE_NAME" value1="${siteName}" />
 		<execute function="AssertTextEquals" locator1="Home#PAGE" value1="${sitePageName}" />
-		<execute function="Pause" locator1="1073" />
-		<execute function="Pause" locator1="1073" />
 
 		<execute function="AssertLocation" value1="${sitePageURL}" />
 	</command>
