@@ -53,6 +53,6 @@ public class UpgradeLastPublishDate
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		UpgradePortletSettings.class);
+		UpgradeLastPublishDate.class);
 
 }

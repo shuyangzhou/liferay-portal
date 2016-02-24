@@ -548,12 +548,12 @@ public class DLServiceVerifyProcess extends VerifyProcess {
 			stopWatch, _log, "DLServiceVerifyProcess.updateClassNameId");
 
 		stopWatch = StopWatchLoggingHelper.startLogging(
-			_log, "DLServiceVerifyProcess.updateClassNameId");
+			_log, "DLServiceVerifyProcess.updateFileEntryAssets");
 
 		updateFileEntryAssets();
 
 		StopWatchLoggingHelper.endLogging(
-			stopWatch, _log, "DLServiceVerifyProcess.updateClassNameId");
+			stopWatch, _log, "DLServiceVerifyProcess.updateFileEntryAssets");
 
 		stopWatch = StopWatchLoggingHelper.startLogging(
 			_log, "DLServiceVerifyProcess.updateFolderAssets");

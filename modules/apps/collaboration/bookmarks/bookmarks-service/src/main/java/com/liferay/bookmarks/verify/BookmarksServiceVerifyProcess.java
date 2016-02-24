@@ -62,13 +62,12 @@ public class BookmarksServiceVerifyProcess extends VerifyProcess {
 			"BookmarksServiceVerifyProcess.updateFolderAssets");
 
 		stopWatch = StopWatchLoggingHelper.startLogging(
-			_log, "BookmarksServiceVerifyProcess.updateFolderAssets");
+			_log, "BookmarksServiceVerifyProcess.verifyTree");
 
 		verifyTree();
 
 		StopWatchLoggingHelper.endLogging(
-			stopWatch, _log,
-			"BookmarksServiceVerifyProcess.updateFolderAssets");
+			stopWatch, _log, "BookmarksServiceVerifyProcess.verifyTree");
 	}
 
 	@Reference(unbind = "-")

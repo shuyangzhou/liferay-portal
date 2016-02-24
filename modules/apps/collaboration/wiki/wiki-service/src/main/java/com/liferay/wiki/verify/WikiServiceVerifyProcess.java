@@ -58,7 +58,7 @@ public class WikiServiceVerifyProcess extends VerifyProcess {
 		verifyCreateDate();
 
 		StopWatchLoggingHelper.endLogging(
-			stopWatch, _log, "PollsServiceVerifyProcess.verifyCreateDate");
+			stopWatch, _log, "WikiServiceVerifyProcess.verifyCreateDate");
 
 		stopWatch = StopWatchLoggingHelper.startLogging(
 			_log, "WikiServiceVerifyProcess.verifyNoAssetPages");
@@ -66,7 +66,7 @@ public class WikiServiceVerifyProcess extends VerifyProcess {
 		verifyNoAssetPages();
 
 		StopWatchLoggingHelper.endLogging(
-			stopWatch, _log, "PollsServiceVerifyProcess.verifyNoAssetPages");
+			stopWatch, _log, "WikiServiceVerifyProcess.verifyNoAssetPages");
 
 		stopWatch = StopWatchLoggingHelper.startLogging(
 			_log, "WikiServiceVerifyProcess.verifyResourcedModels");
@@ -74,7 +74,7 @@ public class WikiServiceVerifyProcess extends VerifyProcess {
 		verifyResourcedModels();
 
 		StopWatchLoggingHelper.endLogging(
-			stopWatch, _log, "PollsServiceVerifyProcess.verifyResourcedModels");
+			stopWatch, _log, "WikiServiceVerifyProcess.verifyResourcedModels");
 
 		stopWatch = StopWatchLoggingHelper.startLogging(
 			_log, "WikiServiceVerifyProcess.verifyUUIDModels");
@@ -82,7 +82,7 @@ public class WikiServiceVerifyProcess extends VerifyProcess {
 		verifyUUIDModels();
 
 		StopWatchLoggingHelper.endLogging(
-			stopWatch, _log, "PollsServiceVerifyProcess.verifyUUIDModels");
+			stopWatch, _log, "WikiServiceVerifyProcess.verifyUUIDModels");
 	}
 
 	@Reference(unbind = "-")
