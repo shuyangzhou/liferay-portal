@@ -28,10 +28,13 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Brian Wing Shun Chan
@@ -44,6 +47,9 @@ public class UpgradePortletId extends UpgradeProcess {
 		// Rename instanceable portlet IDs. We expect the root form of the
 		// portlet ID because we will rename all instances of the portlet ID.
 
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradePortletId step 1: Rename instanceable portlet IDs");
+
 		String[][] renamePortletIdsArray = getRenamePortletIdsArray();
 
 		for (String[] renamePortletIds : renamePortletIdsArray) {
@@ -54,7 +60,14 @@ public class UpgradePortletId extends UpgradeProcess {
 			updateLayouts(oldRootPortletId, newRootPortletId, false);
 		}
 
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"UpgradePortletId step 1: Rename instanceable portlet IDs");
+
 		// Rename uninstanceable portlet IDs to instanceable portlet IDs
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradePortletId step 2: Rename uninstanceable portlet IDs");
 
 		String[] uninstanceablePortletIds = getUninstanceablePortletIds();
 
@@ -81,6 +94,10 @@ public class UpgradePortletId extends UpgradeProcess {
 				portletId, newPortletInstanceKey);
 			updateLayouts(portletId, newPortletInstanceKey, true);
 		}
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"UpgradePortletId step 2: Rename uninstanceable portlet IDs");
 	}
 
 	protected String getNewTypeSettings(
