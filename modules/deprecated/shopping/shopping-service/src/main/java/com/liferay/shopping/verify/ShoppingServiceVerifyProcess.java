@@ -16,11 +16,14 @@ package com.liferay.shopping.verify;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 import com.liferay.portal.verify.VerifyProcess;
 import com.liferay.portal.verify.VerifyResourcePermissions;
 import com.liferay.shopping.service.ShoppingCartLocalService;
 import com.liferay.shopping.verify.model.ShoppingCategoryVerifiableModel;
 import com.liferay.shopping.verify.model.ShoppingItemVerifiableResourcedModel;
+
+import org.apache.commons.lang.time.StopWatch;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -46,10 +49,31 @@ public class ShoppingServiceVerifyProcess extends VerifyProcess {
 	}
 
 	protected void verifyResourcedModels() throws Exception {
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log,
+			"ShoppingServiceVerifyProcess.verifyResourcedModels(" +
+				"ShoppingCateogryVerifiableModel)");
+
 		_verifyResourcePermissions.verify(
 			new ShoppingCategoryVerifiableModel());
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"ShoppingServiceVerifyProcess.verifyResourcedModels(" +
+				"ShoppingCateogryVerifiableModel)");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log,
+			"ShoppingServiceVerifyProcess.verifyResourcedModels(" +
+				"ShoppingItemVerifiableResourcedModel)");
+
 		_verifyResourcePermissions.verify(
 			new ShoppingItemVerifiableResourcedModel());
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"ShoppingServiceVerifyProcess.verifyResourcedModels(" +
+				"ShoppingItemVerifiableResourcedModel)");
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

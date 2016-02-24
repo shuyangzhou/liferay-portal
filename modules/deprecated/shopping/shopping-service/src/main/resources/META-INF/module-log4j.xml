@@ -5,4 +5,7 @@
 	<category name="com.liferay.shopping.web.shopping.action.PayPalNotificationAction">
 		<priority value="DEBUG" />
 	</category>
+	<category name="com.liferay.shopping.verify">
+		<priority value="INFO" />
+	</category>
 </log4j:configuration>
