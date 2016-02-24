@@ -14,7 +14,6 @@
 
 package com.liferay.portal.upgrade.v7_0_0;
 
-import com.liferay.exportimport.kernel.staging.Staging;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.xml.Document;
@@ -54,7 +53,9 @@ public class UpgradePortalPreferences extends UpgradeProcess {
 
 			String preferenceName = preferenceElement.elementText("name");
 
-			if (!preferenceName.contains(Staging.class.getName())) {
+			if (!preferenceName.contains(
+					"com.liferay.portlet.kernel.staging.Staging")) {
+
 				newRootElement.add(preferenceElement.createCopy());
 			}
 		}
@@ -64,10 +65,10 @@ public class UpgradePortalPreferences extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		upgradePortalPreferences();
+		upgradeStagingPortalPreferences();
 	}
 
-	protected void upgradePortalPreferences() throws Exception {
+	protected void upgradeStagingPortalPreferences() throws Exception {
 		PreparedStatement ps1 = null;
 		ResultSet rs = null;
 

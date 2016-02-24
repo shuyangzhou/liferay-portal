@@ -33,7 +33,7 @@
 	<command name="DeleteExportTemplate" priority="4">
 		<execute macro="Navigator#openURL" />
 
-		<execute macro="ProductMenu#gotoSitesPublishingTools">
+		<execute macro="ProductMenu#gotoSitesPublishing">
 			<var name="portlet" value="Export" />
 		</execute>
 
@@ -74,7 +74,7 @@
 
 		<execute macro="Navigator#openURL" />
 
-		<execute macro="ProductMenu#gotoSitesPublishingTools">
+		<execute macro="ProductMenu#gotoSitesPublishing">
 			<var name="portlet" value="Export" />
 		</execute>
 
@@ -119,7 +119,7 @@
 
 		<execute macro="Navigator#openURL" />
 
-		<execute macro="ProductMenu#gotoSitesPublishingTools">
+		<execute macro="ProductMenu#gotoSitesPublishing">
 			<var name="portlet" value="Export" />
 		</execute>
 
@@ -142,7 +142,7 @@
 			<var name="exportTemplateName" value="Export Template Name" />
 		</execute>
 
-		<var method="selenium#getText('//div[contains(@id,\'backgroundTasksSearchContainer\')]//table//tr/td[5]/span/a/span[2]')" name="valueName" />
+		<var method="selenium#getText('//div[contains(@id,\'exportLayoutProcessesSearchContainer\')]//table//tr/td[7]/span/a/span')" name="valueName" />
 
 		<echo message="value name ${valueName}" />
 
@@ -185,7 +185,7 @@
 
 		<execute macro="Navigator#openURL" />
 
-		<execute macro="ProductMenu#gotoSitesPublishingTools">
+		<execute macro="ProductMenu#gotoSitesPublishing">
 			<var name="portlet" value="Export" />
 		</execute>
 
@@ -213,7 +213,7 @@
 
 		<execute function="AssertTextEquals#assertPartialText" locator1="SitePagesExport#CURRENT_AND_PREVIOUS_STATUS" value1="Successful" />
 
-		<var method="selenium#getText('//div[contains(@id,\'backgroundTasksSearchContainer\')]//table//tr/td[5]/span/a/span[2]')" name="valueName" />
+		<var method="selenium#getText('//div[contains(@id,\'exportLayoutProcessesSearchContainer\')]//table//tr/td[7]/span/a/span')" name="valueName" />
 
 		<echo message="value name ${valueName}" />
 
@@ -796,7 +796,7 @@
 	<command name="ExportImportWithExportTemplate" priority="4">
 		<execute macro="Navigator#openURL" />
 
-		<execute macro="ProductMenu#gotoSitesPublishingTools">
+		<execute macro="ProductMenu#gotoSitesPublishing">
 			<var name="portlet" value="Export" />
 		</execute>
 
@@ -820,7 +820,7 @@
 			<var name="exportTemplateName" value="Export Template Name" />
 		</execute>
 
-		<var method="selenium#getText('//div[contains(@id,\'backgroundTasksSearchContainer\')]//table//tr/td[5]/span/a/span[2]')" name="valueName" />
+		<var method="selenium#getText('//div[contains(@id,\'exportLayoutProcessesSearchContainer\')]//table//tr/td[7]/span/a/span')" name="valueName" />
 
 		<echo message="value name ${valueName}" />
 
@@ -969,7 +969,7 @@
 	<command name="SearchExportTemplate" priority="4">
 		<execute macro="Navigator#openURL" />
 
-		<execute macro="ProductMenu#gotoSitesPublishingTools">
+		<execute macro="ProductMenu#gotoSitesPublishing">
 			<var name="portlet" value="Export" />
 		</execute>
 
@@ -989,7 +989,7 @@
 
 		<execute macro="Navigator#openURL" />
 
-		<execute macro="ProductMenu#gotoSitesPublishingTools">
+		<execute macro="ProductMenu#gotoSitesPublishing">
 			<var name="portlet" value="Export" />
 		</execute>
 
