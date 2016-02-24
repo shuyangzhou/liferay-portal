@@ -65,6 +65,7 @@ import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.Node;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 import com.liferay.portal.util.PortalInstances;
 import com.liferay.portal.verify.VerifyLayout;
 import com.liferay.portal.verify.VerifyProcess;
@@ -79,6 +80,8 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.portlet.PortletPreferences;
+
+import org.apache.commons.lang.time.StopWatch;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -100,19 +103,105 @@ public class JournalServiceVerifyProcess extends VerifyLayout {
 
 	@Override
 	protected void doVerify() throws Exception {
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "JournalServiceVerifyProcess.verifyArticleAssets");
+
 		verifyArticleAssets();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "JournalServiceVerifyProcess.verifyArticleAssets");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "JournalServiceVerifyProcess.verifyArticleContents");
+
 		verifyArticleContents();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"JournalServiceVerifyProcess.verifyArticleContents");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "JournalServiceVerifyProcess.verifyArticleExpirationDate");
+
 		verifyArticleExpirationDate();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"JournalServiceVerifyProcess.verifyArticleExpirationDate");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "JournalServiceVerifyProcess.verifyArticleLayouts");
+
 		verifyArticleLayouts();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"JournalServiceVerifyProcess.verifyArticleLayouts");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "JournalServiceVerifyProcess.verifyArticleStructures");
+
 		verifyArticleStructures();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"JournalServiceVerifyProcess.verifyArticleStructures");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "JournalServiceVerifyProcess.verifyContentSearch");
+
 		verifyContentSearch();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "JournalServiceVerifyProcess.verifyContentSearch");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "JournalServiceVerifyProcess.verifyFolderAssets");
+
 		verifyFolderAssets();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "JournalServiceVerifyProcess.verifyFolderAssets");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "JournalServiceVerifyProcess.verifyOracleNewLine");
+
 		verifyOracleNewLine();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "JournalServiceVerifyProcess.verifyOracleNewLine");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "JournalServiceVerifyProcess.verifyPermissions");
+
 		verifyPermissions();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "JournalServiceVerifyProcess.verifyPermissions");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "JournalServiceVerifyProcess.verifyTree");
+
 		verifyTree();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "JournalServiceVerifyProcess.verifyTree");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "JournalServiceVerifyProcess.verifyURLTitle");
+
 		verifyURLTitle();
 
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "JournalServiceVerifyProcess.verifyURLTitle");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "JournalServiceVerifyProcess.verifyArticleImages");
+
 		verifyArticleImages();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "JournalServiceVerifyProcess.verifyArticleImages");
 	}
 
 	@Reference(unbind = "-")

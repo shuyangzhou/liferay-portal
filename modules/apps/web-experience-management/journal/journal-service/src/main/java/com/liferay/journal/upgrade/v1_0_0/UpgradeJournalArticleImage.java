@@ -15,11 +15,16 @@
 package com.liferay.journal.upgrade.v1_0_0;
 
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Inácio Nery
@@ -28,7 +33,14 @@ public class UpgradeJournalArticleImage extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeJournalArticleImage.updateJournalArticleImages");
+
 		updateJournalArticleImages();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"UpgradeJournalArticleImage.updateJournalArticleImages");
 	}
 
 	protected void updateJournalArticle(long articleImageId, String elName)
@@ -78,5 +90,8 @@ public class UpgradeJournalArticleImage extends UpgradeProcess {
 			DataAccess.cleanUp(ps, rs);
 		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		UpgradeJournalArticleImage.class);
 
 }

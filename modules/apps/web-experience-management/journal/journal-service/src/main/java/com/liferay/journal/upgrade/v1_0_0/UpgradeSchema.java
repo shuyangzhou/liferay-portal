@@ -16,11 +16,16 @@ package com.liferay.journal.upgrade.v1_0_0;
 
 import com.liferay.journal.upgrade.v1_0_0.util.JournalArticleTable;
 import com.liferay.journal.upgrade.v1_0_0.util.JournalFeedTable;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 import com.liferay.portal.upgrade.util.UpgradeMVCCVersion;
 
 import java.sql.SQLException;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Eduardo Garcia
@@ -32,9 +37,21 @@ public class UpgradeSchema extends UpgradeProcess {
 		String template = StringUtil.read(
 			UpgradeSchema.class.getResourceAsStream("dependencies/update.sql"));
 
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeSchema.runSQLTemplateString");
+
 		runSQLTemplateString(template, false, false);
 
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeSchema.runSQLTemplateString");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeSchema.upgrade(UpgradeMVCCVersion.class)");
+
 		upgrade(UpgradeMVCCVersion.class);
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeSchema.upgrade(UpgradeMVCCVersion.class)");
 
 		try {
 			runSQL(
@@ -76,5 +93,7 @@ public class UpgradeSchema extends UpgradeProcess {
 				JournalFeedTable.TABLE_SQL_ADD_INDEXES);
 		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(UpgradeSchema.class);
 
 }

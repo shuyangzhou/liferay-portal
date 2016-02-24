@@ -22,11 +22,19 @@
 		<priority value="INFO" />
 	</category>
 
+	<category name="com.liferay.journal.upgrade">
+		<priority value="INFO" />
+	</category>
+
 	<category name="com.liferay.journal.util.JournalContent">
 		<priority value="ERROR" />
 	</category>
 
 	<category name="com.liferay.journal.util.impl.JournalUtil">
 		<priority value="ERROR" />
+	</category>
+
+	<category name="com.liferay.journal.verify">
+		<priority value="INFO" />
 	</category>
 </log4j:configuration>
