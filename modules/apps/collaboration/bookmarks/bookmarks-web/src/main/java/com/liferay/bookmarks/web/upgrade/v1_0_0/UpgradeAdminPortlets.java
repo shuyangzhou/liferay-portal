@@ -30,8 +30,7 @@ public class UpgradeAdminPortlets extends BaseUpgradeAdminPortlets {
 	@Override
 	protected void doUpgrade() throws Exception {
 		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
-			_log,
-			"UpgradeAdminPortlets.updateAccessInControlPanelPermission");
+			_log, "UpgradeAdminPortlets.updateAccessInControlPanelPermission");
 
 		updateAccessInControlPanelPermission(
 			BookmarksPortletKeys.BOOKMARKS,

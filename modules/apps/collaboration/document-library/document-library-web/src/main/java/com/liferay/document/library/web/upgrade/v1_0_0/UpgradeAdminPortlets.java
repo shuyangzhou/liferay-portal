@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upgrade.BaseUpgradeAdminPortlets;
 import com.liferay.portal.tools.StopWatchLoggingHelper;
+
 import org.apache.commons.lang.time.StopWatch;
 
 /**
@@ -29,8 +30,7 @@ public class UpgradeAdminPortlets extends BaseUpgradeAdminPortlets {
 	@Override
 	protected void doUpgrade() throws Exception {
 		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
-			_log,
-			"UpgradeAdminPortlets.updateAccessInControlPanelPermission");
+			_log, "UpgradeAdminPortlets.updateAccessInControlPanelPermission");
 
 		updateAccessInControlPanelPermission(
 			DLPortletKeys.DOCUMENT_LIBRARY,

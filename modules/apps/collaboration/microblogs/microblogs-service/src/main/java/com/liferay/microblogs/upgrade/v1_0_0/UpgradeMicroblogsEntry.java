@@ -19,8 +19,8 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.PortalUtil;
-
 import com.liferay.portal.tools.StopWatchLoggingHelper;
+
 import org.apache.commons.lang.time.StopWatch;
 
 /**
@@ -31,14 +31,12 @@ public class UpgradeMicroblogsEntry extends UpgradeProcess {
 	@Override
 	protected void doUpgrade() throws Exception {
 		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
-			_log,
-			"UpgradeMicroblogsEntry.updateMicroBlogsEntry");
+			_log, "UpgradeMicroblogsEntry.updateMicroBlogsEntry");
 
 		updateMicroBlogsEntry();
 
 		StopWatchLoggingHelper.endLogging(
-			stopWatch, _log,
-			"UpgradeMicroblogsEntry.updateMicroBlogsEntry");
+			stopWatch, _log, "UpgradeMicroblogsEntry.updateMicroBlogsEntry");
 	}
 
 	protected void updateMicroBlogsEntry() throws Exception {

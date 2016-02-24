@@ -72,8 +72,7 @@ public class UpgradeNamespace extends UpgradeProcess {
 			WallEntryTable.TABLE_SQL_CREATE, WallEntryTable.TABLE_SQL_DROP);
 
 		StopWatchLoggingHelper.endLogging(
-			stopWatch, _log,
-			"UpgradeNamespace.renameTable(WallEntryTable)");
+			stopWatch, _log, "UpgradeNamespace.renameTable(WallEntryTable)");
 	}
 
 	protected void renameTable(

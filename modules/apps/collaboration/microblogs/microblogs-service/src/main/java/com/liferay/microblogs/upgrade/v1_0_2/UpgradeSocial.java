@@ -23,10 +23,11 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.tools.StopWatchLoggingHelper;
-import org.apache.commons.lang.time.StopWatch;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Matthew Kong

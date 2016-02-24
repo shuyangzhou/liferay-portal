@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.tools.StopWatchLoggingHelper;
+
 import org.apache.commons.lang.time.StopWatch;
 
 /**
