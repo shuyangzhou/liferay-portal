@@ -20,9 +20,12 @@ import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.upgrade.util.UpgradeTable;
 import com.liferay.portal.kernel.upgrade.util.UpgradeTableFactoryUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 import com.liferay.social.networking.upgrade.v1_0_0.util.MeetupsEntryTable;
 import com.liferay.social.networking.upgrade.v1_0_0.util.MeetupsRegistrationTable;
 import com.liferay.social.networking.upgrade.v1_0_0.util.WallEntryTable;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Julio Camarero
@@ -32,12 +35,21 @@ public class UpgradeNamespace extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeNamespace.renameTable(MeetupsEntryTable)");
+
 		renameTable(
 			StringUtil.replaceFirst(
 				MeetupsEntryTable.TABLE_NAME, "SN_", "WOL_"),
 			MeetupsEntryTable.TABLE_NAME, MeetupsEntryTable.TABLE_COLUMNS,
 			MeetupsEntryTable.TABLE_SQL_CREATE,
 			MeetupsEntryTable.TABLE_SQL_DROP);
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeNamespace.renameTable(MeetupsEntryTable)");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeNamespace.renameTable(MeetupsRegistrationTable)");
 
 		renameTable(
 			StringUtil.replaceFirst(
@@ -47,10 +59,21 @@ public class UpgradeNamespace extends UpgradeProcess {
 			MeetupsRegistrationTable.TABLE_SQL_CREATE,
 			MeetupsRegistrationTable.TABLE_SQL_DROP);
 
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"UpgradeNamespace.renameTable(MeetupsRegistrationTable)");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeNamespace.renameTable(WallEntryTable)");
+
 		renameTable(
 			StringUtil.replaceFirst(WallEntryTable.TABLE_NAME, "SN_", "WOL_"),
 			WallEntryTable.TABLE_NAME, WallEntryTable.TABLE_COLUMNS,
 			WallEntryTable.TABLE_SQL_CREATE, WallEntryTable.TABLE_SQL_DROP);
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"UpgradeNamespace.renameTable(WallEntryTable)");
 	}
 
 	protected void renameTable(
