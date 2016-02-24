@@ -14,7 +14,12 @@
 
 package com.liferay.portal.upgrade.v7_0_0;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upgrade.BaseUpgradeLastPublishDate;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Levente Hudák
@@ -23,14 +28,70 @@ public class UpgradeLastPublishDate extends BaseUpgradeLastPublishDate {
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeLastPublishDate.upgradeAssetCategoriesAdmin");
+
 		upgradeAssetCategoriesAdmin();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"UpgradeLastPublishDate.upgradeAssetCategoriesAdmin");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeLastPublishDate.upgradeBlogs");
+
 		upgradeBlogs();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeLastPublishDate.upgradeBlogs");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeLastPublishDate.upgradeDocumentLibrary");
+
 		upgradeDocumentLibrary();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeLastPublishDate.upgradeDocumentLibrary");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeLastPublishDate.upgradeLayoutsAdmin");
+
 		upgradeLayoutsAdmin();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeLastPublishDate.upgradeLayoutsAdmin");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeLastPublishDate.upgradeMessageBoards");
+
 		upgradeMessageBoards();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeLastPublishDate.upgradeMessageBoards");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeLastPublishDate.upgradeMobileDeviceRules");
+
 		upgradeMobileDeviceRules();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeLastPublishDate.upgradeMobileDeviceRules");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeLastPublishDate.upgradeSiteAdmin");
+
 		upgradeSiteAdmin();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeLastPublishDate.upgradeSiteAdmin");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeLastPublishDate.upgradeWebSite");
+
 		upgradeWebSite();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeLastPublishDate.upgradeWebSite");
 	}
 
 	protected void upgradeAssetCategoriesAdmin() throws Exception {
@@ -147,5 +208,8 @@ public class UpgradeLastPublishDate extends BaseUpgradeLastPublishDate {
 	protected void upgradeWebSite() throws Exception {
 		runSQL("alter table Website add lastPublishDate DATE null");
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		UpgradeLastPublishDate.class);
 
 }

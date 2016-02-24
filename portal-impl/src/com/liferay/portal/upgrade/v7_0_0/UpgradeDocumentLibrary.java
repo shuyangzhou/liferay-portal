@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.repository.liferayrepository.LiferayRepository;
 import com.liferay.portal.repository.portletrepository.PortletRepository;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 import com.liferay.portal.upgrade.v7_0_0.util.DLFolderTable;
 
 import java.sql.PreparedStatement;
@@ -42,6 +43,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Michael Young
@@ -86,17 +89,46 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 
 		// DLFileEntry
 
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeDocumentLibrary.updateFileEntryFileNames");
+
 		updateFileEntryFileNames();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeDocumentLibrary.updateFileEntryFileNames");
 
 		// DLFileEntryType
 
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log,
+			"UpgradeDocumentLibrary.updateFileEntryTypeNamesAndDescriptions");
+
 		updateFileEntryTypeNamesAndDescriptions();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"UpgradeDocumentLibrary.updateFileEntryTypeNamesAndDescriptions");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log,
+			"UpgradeDocumentLibrary.updateFileEntryTypeDDMStructureLinks");
 
 		updateFileEntryTypeDDMStructureLinks();
 
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"UpgradeDocumentLibrary.updateFileEntryTypeDDMStructureLinks");
+
 		// DLFileVersion
 
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeDocumentLibrary.updateFileVersionFileNames");
+
 		updateFileVersionFileNames();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"UpgradeDocumentLibrary.updateFileVersionFileNames");
 
 		// DLFolder
 
@@ -110,7 +142,14 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 				DLFolderTable.TABLE_SQL_ADD_INDEXES);
 		}
 
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeDocumentLibrary.updateRepositoryClassNameIds");
+
 		updateRepositoryClassNameIds();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"UpgradeDocumentLibrary.updateRepositoryClassNameIds");
 	}
 
 	protected boolean hasFileEntry(long groupId, long folderId, String fileName)

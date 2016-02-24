@@ -15,9 +15,12 @@
 package com.liferay.portal.upgrade.v7_0_0;
 
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.ReleaseConstants;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 
 import java.io.IOException;
 
@@ -25,6 +28,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Miguel Pastor
@@ -77,9 +82,21 @@ public class UpgradeModules extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeModules.updateExtractedModules");
+
 		updateExtractedModules();
 
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeModules.updateExtractedModules");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeModules.updateConvertedLegacyModules");
+
 		updateConvertedLegacyModules();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeModules.updateConvertedLegacyModules");
 	}
 
 	protected boolean hasServiceComponent(String buildNamespace)
@@ -157,6 +174,8 @@ public class UpgradeModules extends UpgradeProcess {
 				newServletContextName + "' where servletContextName = '" +
 					oldServletContextName + "'");
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(UpgradeModules.class);
 
 	private static final String[] _bundleSymbolicNames = new String[] {
 		"com.liferay.amazon.rankings.web", "com.liferay.asset.browser.web",
