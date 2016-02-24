@@ -15,6 +15,11 @@
 package com.liferay.calendar.upgrade.v1_0_3;
 
 import com.liferay.calendar.constants.CalendarPortletKeys;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Mate Thurzo
@@ -24,13 +29,38 @@ public class UpgradeLastPublishDate
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log,
+			"calendar-service:UpgradeLastPublishDate.updateLastPublishDates(" +
+				"Calendar)");
+
 		runSQL("alter table Calendar add lastPublishDate DATE null");
 
 		updateLastPublishDates(CalendarPortletKeys.CALENDAR, "Calendar");
 
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"calendar-service:UpgradeLastPublishDate.updateLastPublishDates(" +
+				"Calendar)");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log,
+			"calendar-service:UpgradeLastPublishDate.updateLastPublishDates(" +
+				"CalendarBooking)");
+
 		runSQL("alter table CalendarBooking add lastPublishDate DATE null");
 
 		updateLastPublishDates(CalendarPortletKeys.CALENDAR, "CalendarBooking");
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"calendar-service:UpgradeLastPublishDate.updateLastPublishDates(" +
+				"CalendarBooking)");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log,
+			"calendar-service:UpgradeLastPublishDate.updateLastPublishDates(" +
+				"CalendarNotificationTemplate)");
 
 		runSQL(
 			"alter table CalendarNotificationTemplate add lastPublishDate " +
@@ -39,10 +69,28 @@ public class UpgradeLastPublishDate
 		updateLastPublishDates(
 			CalendarPortletKeys.CALENDAR, "CalendarNotificationTemplate");
 
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"calendar-service:UpgradeLastPublishDate.updateLastPublishDates(" +
+				"CalendarNotificationTemplate)");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log,
+			"calendar-service:UpgradeLastPublishDate.updateLastPublishDates(" +
+				"CalendarResource)");
+
 		runSQL("alter table CalendarResource add lastPublishDate DATE null");
 
 		updateLastPublishDates(
 			CalendarPortletKeys.CALENDAR, "CalendarResource");
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"calendar-service:UpgradeLastPublishDate.updateLastPublishDates(" +
+				"CalendarResource)");
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		UpgradeLastPublishDate.class);
 
 }

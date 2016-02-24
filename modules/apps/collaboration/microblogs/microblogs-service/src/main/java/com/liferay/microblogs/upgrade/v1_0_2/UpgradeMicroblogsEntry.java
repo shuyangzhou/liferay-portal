@@ -14,7 +14,12 @@
 
 package com.liferay.microblogs.upgrade.v1_0_2;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Matthew Kong
@@ -23,8 +28,22 @@ public class UpgradeMicroblogsEntry extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeMicroblogsEntry.removeReceiverUserId");
+
 		removeReceiverUserId();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeMicroblogsEntry.removeReceiverUserId");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeMicroblogsEntry.renameReceiverMicroblogsEntryId");
+
 		renameReceiverMicroblogsEntryId();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"UpgradeMicroblogsEntry.renameReceiverMicroblogsEntryId");
 	}
 
 	protected void removeReceiverUserId() throws Exception {
@@ -58,5 +77,8 @@ public class UpgradeMicroblogsEntry extends UpgradeProcess {
 
 		runSQL("drop index IX_36CA3D37 on MicroblogsEntry");
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		UpgradeMicroblogsEntry.class);
 
 }

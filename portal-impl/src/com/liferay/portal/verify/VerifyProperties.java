@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 import com.liferay.portal.util.PropsUtil;
 import com.liferay.portlet.documentlibrary.store.StoreFactory;
 
@@ -30,6 +31,8 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.commons.lang.time.StopWatch;
+
 /**
  * @author Brian Wing Shun Chan
  */
@@ -39,6 +42,9 @@ public class VerifyProperties extends VerifyProcess {
 	protected void doVerify() throws Exception {
 
 		// system.properties
+
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "VerifyProperties step 1: system.properties");
 
 		for (String[] keys : _MIGRATED_SYSTEM_KEYS) {
 			String oldKey = keys[0];
@@ -69,7 +75,13 @@ public class VerifyProperties extends VerifyProcess {
 				systemProperties, oldKey, newKey, moduleName);
 		}
 
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "VerifyProperties step 1: system.properties");
+
 		// portal.properties
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "VerifyProperties step 2: portal.properties");
 
 		Properties portalProperties = loadPortalProperties();
 
@@ -100,11 +112,20 @@ public class VerifyProperties extends VerifyProcess {
 				portalProperties, oldKey, newKey, moduleName);
 		}
 
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "VerifyProperties step 2: portal.properties");
+
 		// Document library
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "VerifyProperties step 3: Document library");
 
 		StoreFactory storeFactory = StoreFactory.getInstance();
 
 		storeFactory.checkProperties();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "VerifyProperties step 3: Document library");
 	}
 
 	protected InputStream getPropertiesResourceAsStream(String resourceName)

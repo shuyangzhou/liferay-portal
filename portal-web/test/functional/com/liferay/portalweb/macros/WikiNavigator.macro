@@ -112,6 +112,8 @@
 		<var name="key_wikiPageTitle" value="FrontPage" />
 
 		<execute function="AssertClick" locator1="Wiki#DESCRIPTIVE_VIEW_ENTRY_TITLE" value1="FrontPage" />
+
+		<execute function="AssertVisible" locator1="Portlet#HEADER" value1="FrontPage" />
 	</command>
 
 	<command name="gotoFrontPagePG">

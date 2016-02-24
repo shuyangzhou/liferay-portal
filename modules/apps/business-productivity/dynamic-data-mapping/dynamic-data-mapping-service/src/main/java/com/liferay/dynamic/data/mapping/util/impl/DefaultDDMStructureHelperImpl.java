@@ -94,6 +94,14 @@ public class DefaultDDMStructureHelperImpl
 				continue;
 			}
 
+			if (name.equals(DLFileEntryTypeConstants.NAME_IG_IMAGE) &&
+				!UpgradeProcessUtil.isCreateIGImageDocumentType()) {
+
+				continue;
+			}
+
+			String ddmTemplateKey = name;
+
 			Map<Locale, String> nameMap = new HashMap<>();
 			Map<Locale, String> descriptionMap = new HashMap<>();
 
@@ -101,12 +109,6 @@ public class DefaultDDMStructureHelperImpl
 				nameMap.put(curLocale, LanguageUtil.get(curLocale, name));
 				descriptionMap.put(
 					curLocale, LanguageUtil.get(curLocale, description));
-			}
-
-			if (name.equals(DLFileEntryTypeConstants.NAME_IG_IMAGE) &&
-				!UpgradeProcessUtil.isCreateIGImageDocumentType()) {
-
-				continue;
 			}
 
 			DDMForm ddmForm = getDDMForm(structureElement, locale);
@@ -143,7 +145,8 @@ public class DefaultDDMStructureHelperImpl
 			_ddmTemplateLocalService.addTemplate(
 				userId, groupId, PortalUtil.getClassNameId(DDMStructure.class),
 				ddmStructure.getStructureId(), ddmStructure.getClassNameId(),
-				null, nameMap, null, DDMTemplateConstants.TEMPLATE_TYPE_DISPLAY,
+				ddmTemplateKey, nameMap, null,
+				DDMTemplateConstants.TEMPLATE_TYPE_DISPLAY,
 				DDMTemplateConstants.TEMPLATE_MODE_CREATE,
 				TemplateConstants.LANG_TYPE_FTL, script, cacheable, false,
 				StringPool.BLANK, null, serviceContext);

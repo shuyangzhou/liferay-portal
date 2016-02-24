@@ -17,6 +17,8 @@ package com.liferay.portal.upgrade.v6_2_0;
 import com.liferay.document.library.kernel.model.DLFileEntryTypeConstants;
 import com.liferay.document.library.kernel.store.DLStoreUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.FullNameGenerator;
 import com.liferay.portal.kernel.security.auth.FullNameGeneratorFactory;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
@@ -26,6 +28,7 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 import com.liferay.portal.upgrade.v6_2_0.util.DLFileEntryTypeTable;
 
 import java.sql.Connection;
@@ -36,6 +39,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Dennis Ju
@@ -91,15 +96,33 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 				DLFileEntryTypeTable.TABLE_SQL_ADD_INDEXES);
 		}
 
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeDocumentLibrary.updateFileEntryTypes");
+
 		updateFileEntryTypes();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeDocumentLibrary.updateFileEntryTypes");
 
 		// Checksum directory
 
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeDocumentLibrary.deleteChecksumDirectory");
+
 		deleteChecksumDirectory();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeDocumentLibrary.deleteChecksumDirectory");
 
 		// Temp directory
 
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeDocumentLibrary.deleteTempDirectory");
+
 		deleteTempDirectory();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeDocumentLibrary.deleteTempDirectory");
 	}
 
 	protected String getUserName(long userId) throws Exception {
@@ -215,5 +238,8 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		UpgradeDocumentLibrary.class);
 
 }

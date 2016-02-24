@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 import com.liferay.portlet.documentlibrary.social.DLActivityKeys;
 
 import java.sql.Connection;
@@ -33,6 +34,8 @@ import java.sql.Timestamp;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Sergio Sanchez
@@ -89,10 +92,37 @@ public class UpgradeSocial extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeSocial.updateDLFileVersionActivities");
+
 		updateDLFileVersionActivities();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeSocial.updateDLFileVersionActivities");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeSocial.updateJournalActivities");
+
 		updateJournalActivities();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeSocial.updateJournalActivities");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeSocial.updateSOSocialActivities");
+
 		updateSOSocialActivities();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeSocial.updateSOSocialActivities");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeSocial.updateWikiPageActivities");
+
 		updateWikiPageActivities();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeSocial.updateWikiPageActivities");
 	}
 
 	protected Timestamp getUniqueModifiedDate(

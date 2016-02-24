@@ -15,9 +15,14 @@
 package com.liferay.portal.verify;
 
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 
 import java.sql.PreparedStatement;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Alberto Chaparro
@@ -26,7 +31,13 @@ public class VerifyRatings extends VerifyProcess {
 
 	@Override
 	protected void doVerify() throws Exception {
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "VerifyRatings.normalizeRatingStats");
+
 		normalizeRatingStats();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "VerifyRatings.normalizeRatingStats");
 	}
 
 	protected void normalizeRatingStats() throws Exception {
@@ -67,5 +78,7 @@ public class VerifyRatings extends VerifyProcess {
 	private static final String _SQL_UPDATE_TOTAL_SCORE =
 		"totalScore = coalesce((select sum(RatingsEntry.score) " +
 			_SQL_FROM_WHERE_CLAUSE + "), 0)";
+
+	private static final Log _log = LogFactoryUtil.getLog(VerifyRatings.class);
 
 }

@@ -16,18 +16,23 @@ package com.liferay.portal.upgrade.v7_0_0;
 
 import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 import com.liferay.portal.upgrade.AutoBatchPreparedStatementUtil;
 import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.PropsValues;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Sergio González
@@ -36,8 +41,21 @@ public class UpgradeRatings extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeRatings.upgradeRatingsEntry");
+
 		upgradeRatingsEntry();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeRatings.upgradeRatingsEntry");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeRatings.upgradeRatingsStats");
+
 		upgradeRatingsStats();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeRatings.upgradeRatingsStats");
 	}
 
 	protected void upgradeRatingsEntry() throws Exception {
@@ -159,5 +177,7 @@ public class UpgradeRatings extends UpgradeProcess {
 			ps2.executeBatch();
 		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(UpgradeRatings.class);
 
 }

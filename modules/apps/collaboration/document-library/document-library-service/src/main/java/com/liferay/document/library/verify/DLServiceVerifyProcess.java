@@ -57,6 +57,7 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.repository.liferayrepository.model.LiferayFileEntry;
 import com.liferay.portal.repository.liferayrepository.model.LiferayFileVersion;
 import com.liferay.portal.repository.liferayrepository.model.LiferayFolder;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 import com.liferay.portal.util.PortalInstances;
 import com.liferay.portal.verify.VerifyProcess;
 import com.liferay.portlet.documentlibrary.webdav.DLWebDAVUtil;
@@ -66,6 +67,8 @@ import java.io.InputStream;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import org.apache.commons.lang.time.StopWatch;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -486,17 +489,87 @@ public class DLServiceVerifyProcess extends VerifyProcess {
 
 	@Override
 	protected void doVerify() throws Exception {
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "DLServiceVerifyProcess.checkMisversionedDLFileEntries");
+
 		checkMisversionedDLFileEntries();
 
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"DLServiceVerifyProcess.checkMisversionedDLFileEntries");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "DLServiceVerifyProcess.checkDLFileEntryType");
+
 		checkDLFileEntryType();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "DLServiceVerifyProcess.checkDLFileEntryType");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "DLServiceVerifyProcess.checkDLFileEntryMetadata");
+
 		checkDLFileEntryMetadata();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "DLServiceVerifyProcess.checkDLFileEntryMetadata");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "DLServiceVerifyProcess.checkMimeTypes");
+
 		checkMimeTypes();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "DLServiceVerifyProcess.checkMimeTypes");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "DLServiceVerifyProcess.checkTitles");
+
 		checkTitles();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "DLServiceVerifyProcess.checkTitles");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "DLServiceVerifyProcess.deleteOrphanedDLFileEntries");
+
 		deleteOrphanedDLFileEntries();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"DLServiceVerifyProcess.deleteOrphanedDLFileEntries");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "DLServiceVerifyProcess.updateClassNameId");
+
 		updateClassNameId();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "DLServiceVerifyProcess.updateClassNameId");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "DLServiceVerifyProcess.updateFileEntryAssets");
+
 		updateFileEntryAssets();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "DLServiceVerifyProcess.updateFileEntryAssets");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "DLServiceVerifyProcess.updateFolderAssets");
+
 		updateFolderAssets();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "DLServiceVerifyProcess.updateFolderAssets");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "DLServiceVerifyProcess.verifyTree");
+
 		verifyTree();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "DLServiceVerifyProcess.verifyTree");
 	}
 
 	protected String getMimeType(InputStream inputStream, String title) {

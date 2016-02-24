@@ -32,12 +32,15 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Eduardo Garcia
@@ -79,15 +82,42 @@ public class UpgradeSubscription extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeSubscription.deleteOrphanedSubscriptions");
+
 		deleteOrphanedSubscriptions();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeSubscription.deleteOrphanedSubscriptions");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeSubscription.updateSubscriptionClassNames#1");
 
 		updateSubscriptionClassNames(
 			Folder.class.getName(), DLFolder.class.getName());
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"UpgradeSubscription.updateSubscriptionClassNames#1");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeSubscription.updateSubscriptionClassNames#2");
+
 		updateSubscriptionClassNames(
 			"com.liferay.portlet.journal.model.JournalArticle",
 			"com.liferay.portlet.journal.model.JournalFolder");
 
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"UpgradeSubscription.updateSubscriptionClassNames#2");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeSubscription.updateSubscriptionGroupIds");
+
 		updateSubscriptionGroupIds();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeSubscription.updateSubscriptionGroupIds");
 	}
 
 	protected long getClassNameId(String className) throws Exception {

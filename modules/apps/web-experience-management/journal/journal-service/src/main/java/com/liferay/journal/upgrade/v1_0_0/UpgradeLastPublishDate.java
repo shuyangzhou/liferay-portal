@@ -15,6 +15,11 @@
 package com.liferay.journal.upgrade.v1_0_0;
 
 import com.liferay.journal.constants.JournalPortletKeys;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Mate Thurzo
@@ -24,11 +29,37 @@ public class UpgradeLastPublishDate
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log,
+			"UpgradeLastPublishDate.updateLastPublishDates#JournalArticle");
+
 		updateLastPublishDates(JournalPortletKeys.JOURNAL, "JournalArticle");
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"UpgradeLastPublishDate.updateLastPublishDates#JournalArticle");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeLastPublishDate.updateLastPublishDates#JournalFeed");
 
 		updateLastPublishDates(JournalPortletKeys.JOURNAL, "JournalFeed");
 
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"UpgradeLastPublishDate.updateLastPublishDates#JournalFeed");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log,
+			"UpgradeLastPublishDate.updateLastPublishDates#JournalFolder");
+
 		updateLastPublishDates(JournalPortletKeys.JOURNAL, "JournalFolder");
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"UpgradeLastPublishDate.updateLastPublishDates#JournalFolder");
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		UpgradeLastPublishDate.class);
 
 }

@@ -23,6 +23,8 @@ import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -34,6 +36,7 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 import com.liferay.portlet.asset.util.AssetVocabularySettingsHelper;
 
 import java.sql.PreparedStatement;
@@ -45,6 +48,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Eudaldo Alonso
@@ -109,7 +114,13 @@ public class UpgradeJournalArticleType extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeJournalArticleType.updateArticleType");
+
 		updateArticleType();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeJournalArticleType.updateArticleType");
 
 		runSQL("alter table JournalArticle drop column type_");
 	}
@@ -270,6 +281,9 @@ public class UpgradeJournalArticleType extends UpgradeProcess {
 			LocaleThreadLocal.setDefaultLocale(localeThreadLocalDefaultLocale);
 		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		UpgradeJournalArticleType.class);
 
 	private final AssetCategoryLocalService _assetCategoryLocalService;
 	private final AssetEntryLocalService _assetEntryLocalService;

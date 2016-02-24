@@ -18,10 +18,13 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 
 import java.io.IOException;
 
 import java.sql.SQLException;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Brian Wing Shun Chan
@@ -83,9 +86,19 @@ public abstract class UpgradeCompanyId extends UpgradeProcess {
 		}
 
 		public void update() throws IOException, SQLException {
+			StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+				_log,
+				"TableUpdater(tableName:" + _tableName + " columnName:"+
+					_columnName + ")");
+
 			for (String[] foreignNames : _foreignNamesArray) {
 				runSQL(getUpdateSQL(foreignNames[0], foreignNames[1]));
 			}
+
+			StopWatchLoggingHelper.endLogging(
+				stopWatch, _log,
+				"TableUpdater(tableName:" + _tableName + " columnName:"+
+					_columnName + ")");
 		}
 
 		protected String getSelectSQL(

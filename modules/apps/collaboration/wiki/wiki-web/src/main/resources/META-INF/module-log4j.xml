@@ -2,6 +2,9 @@
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+	<category name="com.liferay.wiki.web.upgrade">
+		<priority value="INFO" />
+	</category>
 	<category name="com.liferay.wiki.web.wiki.portlet.action.ExportPageMVCActionCommand">
 		<priority value="ERROR" />
 	</category>

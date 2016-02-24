@@ -14,7 +14,12 @@
 
 package com.liferay.wiki.upgrade.v1_0_0;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 import com.liferay.wiki.constants.WikiPortletKeys;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Levente Hudak
@@ -24,13 +29,30 @@ public class UpgradeLastPublishDate
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeLastPublishDate.updateLastPublishDates(WikiNode)");
+
 		runSQL("alter table WikiNode add lastPublishDate DATE null");
 
 		updateLastPublishDates(WikiPortletKeys.WIKI, "WikiNode");
 
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"UpgradeLastPublishDate.updateLastPublishDates(WikiNode)");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeLastPublishDate.updateLastPublishDates(WikiPage)");
+
 		runSQL("alter table WikiPage add lastPublishDate DATE null");
 
 		updateLastPublishDates(WikiPortletKeys.WIKI, "WikiPage");
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"UpgradeLastPublishDate.updateLastPublishDates(WikiPage)");
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		UpgradeLastPublishDate.class);
 
 }

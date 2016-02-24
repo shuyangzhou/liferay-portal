@@ -5,4 +5,7 @@
 	<category name="com.liferay.journal.content.web.JournalContentPortletLayoutListener">
 		<priority value="ERROR" />
 	</category>
+	<category name="com.liferay.polls.verify">
+		<priority value="INFO" />
+	</category>
 </log4j:configuration>

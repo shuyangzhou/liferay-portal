@@ -19,6 +19,8 @@ import com.liferay.dynamic.data.mapping.service.DDMTemplateLinkLocalService;
 import com.liferay.dynamic.data.mapping.util.DefaultDDMStructureHelper;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
@@ -40,6 +42,7 @@ import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.DocumentException;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 import com.liferay.util.ContentUtil;
 import com.liferay.util.xml.XMLUtil;
 
@@ -55,6 +58,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Gergely Mathe
@@ -210,9 +215,21 @@ public class UpgradeJournal extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeJournal.updateJournalArticles");
+
 		updateJournalArticles();
 
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeJournal.updateJournalArticles");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeJournal.addDDMTemplateLinks");
+
 		addDDMTemplateLinks();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeJournal.addDDMTemplateLinks");
 	}
 
 	protected String getContent(String fileName) {
@@ -426,6 +443,8 @@ public class UpgradeJournal extends UpgradeProcess {
 		"([\\p{Punct}&&[^_]]|\\p{Space})+";
 
 	private static final String _TYPE_ATTRIBUTE_DDM_DATE = "type=\"ddm-date\"";
+
+	private static final Log _log = LogFactoryUtil.getLog(UpgradeJournal.class);
 
 	private static final DateFormat _dateFormat =
 		DateFormatFactoryUtil.getSimpleDateFormat("yyyy-MM-dd");

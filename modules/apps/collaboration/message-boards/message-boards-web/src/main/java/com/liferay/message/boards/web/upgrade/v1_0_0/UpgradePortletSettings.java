@@ -16,9 +16,14 @@ package com.liferay.message.boards.web.upgrade.v1_0_0;
 
 import com.liferay.message.boards.kernel.constants.MBConstants;
 import com.liferay.message.boards.web.constants.MBPortletKeys;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.kernel.util.PortletKeys;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 import com.liferay.portlet.messageboards.MBGroupServiceSettings;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Sergio González
@@ -34,9 +39,18 @@ public class UpgradePortletSettings
 	protected void doUpgrade() throws Exception {
 		MBGroupServiceSettings.registerSettingsMetadata();
 
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradePortletSettings.upgradeMainPortlet");
+
 		upgradeMainPortlet(
 			MBPortletKeys.MESSAGE_BOARDS, MBConstants.SERVICE_NAME,
 			PortletKeys.PREFS_OWNER_TYPE_GROUP, false);
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradePortletSettings.upgradeMainPortlet");
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		UpgradePortletSettings.class);
 
 }

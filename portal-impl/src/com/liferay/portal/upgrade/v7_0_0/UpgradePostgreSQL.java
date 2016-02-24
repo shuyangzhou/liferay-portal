@@ -19,14 +19,19 @@ import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Michael Bowerman
@@ -43,9 +48,21 @@ public class UpgradePostgreSQL extends UpgradeProcess {
 
 		Map<String, String> oidColumnNames = getOidColumnNames();
 
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradePostgreSQL.updatePostgreSQLRules");
+
 		updatePostgreSQLRules(oidColumnNames);
 
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradePostgreSQL.updatePostgreSQLRules");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradePostgreSQL.updateOrphanedLargeObjects");
+
 		updateOrphanedLargeObjects(oidColumnNames);
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradePostgreSQL.updateOrphanedLargeObjects");
 	}
 
 	protected HashMap<String, String> getOidColumnNames() throws Exception {
@@ -140,5 +157,8 @@ public class UpgradePostgreSQL extends UpgradeProcess {
 			}
 		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		UpgradePostgreSQL.class);
 
 }

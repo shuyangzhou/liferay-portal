@@ -14,12 +14,14 @@
 
 package com.liferay.portal.upgrade.v7_0_0;
 
-import com.liferay.exportimport.kernel.staging.Staging;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 import com.liferay.portal.upgrade.AutoBatchPreparedStatementUtil;
 import com.liferay.util.xml.XMLUtil;
 
@@ -27,6 +29,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import java.util.Iterator;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Joshua Gok
@@ -54,7 +58,9 @@ public class UpgradePortalPreferences extends UpgradeProcess {
 
 			String preferenceName = preferenceElement.elementText("name");
 
-			if (!preferenceName.contains(Staging.class.getName())) {
+			if (!preferenceName.contains(
+					"com.liferay.portlet.kernel.staging.Staging")) {
+
 				newRootElement.add(preferenceElement.createCopy());
 			}
 		}
@@ -64,10 +70,17 @@ public class UpgradePortalPreferences extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		upgradePortalPreferences();
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradePortalPreferences.upgradeStagingPortalPreferences");
+
+		upgradeStagingPortalPreferences();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log,
+			"UpgradePortalPreferences.upgradeStagingPortalPreferences");
 	}
 
-	protected void upgradePortalPreferences() throws Exception {
+	protected void upgradeStagingPortalPreferences() throws Exception {
 		PreparedStatement ps1 = null;
 		ResultSet rs = null;
 
@@ -104,5 +117,8 @@ public class UpgradePortalPreferences extends UpgradeProcess {
 			DataAccess.cleanUp(ps1, rs);
 		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		UpgradePortalPreferences.class);
 
 }

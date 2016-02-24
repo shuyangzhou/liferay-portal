@@ -15,10 +15,15 @@
 package com.liferay.blogs.web.upgrade.v1_0_0;
 
 import com.liferay.blogs.web.constants.BlogsPortletKeys;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.kernel.util.PortletKeys;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 import com.liferay.portlet.blogs.BlogsGroupServiceSettings;
 import com.liferay.portlet.blogs.constants.BlogsConstants;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Sergio González
@@ -34,9 +39,18 @@ public class UpgradePortletSettings
 	protected void doUpgrade() throws Exception {
 		BlogsGroupServiceSettings.registerSettingsMetadata();
 
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradePortletSettings.upgradeMainPortlet");
+
 		upgradeMainPortlet(
 			BlogsPortletKeys.BLOGS, BlogsConstants.SERVICE_NAME,
 			PortletKeys.PREFS_OWNER_TYPE_GROUP, true);
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradePortletSettings.upgradeMainPortlet");
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		UpgradePortletSettings.class);
 
 }

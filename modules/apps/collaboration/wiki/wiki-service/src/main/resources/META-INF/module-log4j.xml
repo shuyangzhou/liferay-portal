@@ -5,4 +5,10 @@
 	<category name="com.liferay.wiki.importer.impl">
 		<priority value="WARN" />
 	</category>
+	<category name="com.liferay.wiki.upgrade">
+		<priority value="INFO" />
+	</category>
+	<category name="com.liferay.wiki.verify">
+		<priority value="INFO" />
+	</category>
 </log4j:configuration>

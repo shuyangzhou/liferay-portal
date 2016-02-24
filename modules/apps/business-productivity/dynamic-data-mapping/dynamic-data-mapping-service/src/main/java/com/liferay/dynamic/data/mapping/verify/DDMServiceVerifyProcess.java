@@ -38,7 +38,10 @@ import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 import com.liferay.portal.verify.VerifyProcess;
+
+import org.apache.commons.lang.time.StopWatch;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -56,11 +59,37 @@ public class DDMServiceVerifyProcess extends VerifyProcess {
 
 	@Override
 	protected void doVerify() throws Exception {
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "DDMServiceVerifyProcess.verifyStructures");
+
 		verifyStructures();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "DDMServiceVerifyProcess.verifyStructures");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "DDMServiceVerifyProcess.verifyStructureLinks");
+
 		verifyStructureLinks();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "DDMServiceVerifyProcess.verifyStructureLinks");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "DDMServiceVerifyProcess.verifyTemplateLinks");
+
 		verifyTemplateLinks();
 
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "DDMServiceVerifyProcess.verifyTemplateLinks");
+
+		stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "DDMServiceVerifyProcess.verifyContents");
+
 		verifyContents();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "DDMServiceVerifyProcess.verifyContents");
 	}
 
 	protected DDMFormValues getDDMFormValues(

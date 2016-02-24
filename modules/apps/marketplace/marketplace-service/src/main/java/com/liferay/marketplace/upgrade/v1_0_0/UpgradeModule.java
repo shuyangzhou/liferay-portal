@@ -19,12 +19,15 @@ import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.tools.StopWatchLoggingHelper;
 
 import java.io.IOException;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Joan Kim
@@ -33,7 +36,13 @@ public class UpgradeModule extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		StopWatch stopWatch = StopWatchLoggingHelper.startLogging(
+			_log, "UpgradeModule.updateModules");
+
 		updateModules();
+
+		StopWatchLoggingHelper.endLogging(
+			stopWatch, _log, "UpgradeModule.updateModules");
 	}
 
 	protected void updateModules() {
