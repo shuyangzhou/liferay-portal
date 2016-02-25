@@ -12,25 +12,17 @@
  * details.
  */
 
-package com.liferay.portal.configuration.cluster;
+package com.liferay.wiki.util;
 
-import com.liferay.portal.kernel.util.InitialThreadLocal;
+import com.liferay.wiki.exception.PageTitleException;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Roberto Díaz
  */
-public class ConfigurationThreadLocal {
+public interface WikiPageTitleValidator {
 
-	public static boolean isLocalUpdate() {
-		return _localUpdate.get();
-	}
+	public String normalize(String title);
 
-	public static void setLocalUpdate(boolean localUpdate) {
-		_localUpdate.set(localUpdate);
-	}
-
-	private static final ThreadLocal<Boolean> _localUpdate =
-		new InitialThreadLocal<>(
-			InitialThreadLocal.class + "._localUpdate", false);
+	public void validate(String title) throws PageTitleException;
 
 }
