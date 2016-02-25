@@ -29,8 +29,8 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 	@Override
 	protected void doUpgrade() throws Exception {
 		String selectSQL =
-			"select resourcePermissionId, primKey, primKeyId, actionIds, " +
-				"viewActionId from ResourcePermission";
+			"select resourcePermissionId, primKey, actionIds from " +
+				"ResourcePermission";
 		String updateSQL =
 			"update ResourcePermission set primKeyId = ?, viewActionId = ? " +
 				"where resourcePermissionId = ?";
@@ -42,28 +42,17 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 
 			while (rs.next()) {
 				long resourcePermissionId = rs.getLong("resourcePermissionId");
-				long primKeyId = rs.getLong("primKeyId");
 				long actionIds = rs.getLong("actionIds");
-				boolean viewActionId = rs.getBoolean("viewActionId");
 
 				long newPrimKeyId = GetterUtil.getLong(rs.getString("primKey"));
 				boolean newViewActionId = (actionIds % 2 == 1);
 
-				if ((primKeyId == newPrimKeyId) &&
-					(newViewActionId == viewActionId)) {
-
+				if ((newPrimKeyId == 0) && !newViewActionId) {
 					continue;
 				}
 
 				ps2.setLong(1, newPrimKeyId);
-
-				if (newViewActionId) {
-					ps2.setBoolean(2, true);
-				}
-				else {
-					ps2.setBoolean(2, false);
-				}
-
+				ps2.setBoolean(2, newViewActionId);
 				ps2.setLong(3, resourcePermissionId);
 
 				ps2.addBatch();
