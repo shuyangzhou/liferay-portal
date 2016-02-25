@@ -24,6 +24,7 @@ if (selUser == null) {
 }
 
 Contact selContact = (Contact)request.getAttribute("user.selContact");
+PasswordPolicy passwordPolicy = (PasswordPolicy)request.getAttribute("user.passwordPolicy");
 
 Calendar birthday = CalendarFactoryUtil.getCalendar();
 
@@ -39,8 +40,6 @@ if (selContact != null) {
 <liferay-ui:error-marker key="<%= WebKeys.ERROR_SECTION %>" value="details" />
 
 <aui:model-context bean="<%= selUser %>" model="<%= User.class %>" />
-
-<h3><liferay-ui:message key="details" /></h3>
 
 <div class="row">
 	<aui:fieldset cssClass="col-md-6">
@@ -202,5 +201,30 @@ if (selContact != null) {
 		</c:if>
 
 		<aui:input disabled='<%= !UsersAdminUtil.hasUpdateFieldPermission(permissionChecker, user, selUser, "jobTitle") %>' name="jobTitle" />
+
+		<%
+		boolean lockedOut = false;
+
+		if ((selUser != null) && (passwordPolicy != null)) {
+			try {
+				UserLocalServiceUtil.checkLockout(selUser);
+			}
+			catch (UserLockoutException.PasswordPolicyLockout ule) {
+				lockedOut = true;
+			}
+		}
+		%>
+
+		<c:if test="<%= lockedOut %>">
+			<aui:button-row>
+				<div class="alert alert-warning"><liferay-ui:message key="this-user-account-has-been-locked-due-to-excessive-failed-login-attempts" /></div>
+
+				<%
+				String taglibOnClick = renderResponse.getNamespace() + "saveUser('unlock');";
+				%>
+
+				<aui:button cssClass="btn-lg" onClick="<%= taglibOnClick %>" value="unlock" />
+			</aui:button-row>
+		</c:if>
 	</aui:fieldset>
 </div>

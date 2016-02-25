@@ -14,11 +14,10 @@
 
 package com.liferay.wiki.upgrade;
 
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
-import com.liferay.wiki.upgrade.v1_0_0.UpgradeClassNames;
 import com.liferay.wiki.upgrade.v1_0_0.UpgradeCompanyId;
+import com.liferay.wiki.upgrade.v1_0_0.UpgradeKernelPackage;
 import com.liferay.wiki.upgrade.v1_0_0.UpgradeLastPublishDate;
 import com.liferay.wiki.upgrade.v1_0_0.UpgradePortletId;
 import com.liferay.wiki.upgrade.v1_0_0.UpgradePortletPreferences;
@@ -39,17 +38,18 @@ public class WikiServiceUpgrade implements UpgradeStepRegistrator {
 	@Override
 	public void register(Registry registry) {
 		registry.register(
-			"com.liferay.wiki.service", "0.0.1", "1.0.0", new UpgradeSchema(),
-			new UpgradePortletId(), new UpgradePortletPreferences(),
-			new UpgradeClassNames(), new UpgradeCompanyId(),
-			new UpgradeLastPublishDate(),
+			"com.liferay.wiki.service", "0.0.1", "0.0.2", new UpgradeSchema());
+
+		registry.register(
+			"com.liferay.wiki.service", "0.0.2", "0.0.3",
+			new UpgradeKernelPackage(), new UpgradePortletId(),
+			new UpgradePortletPreferences());
+
+		registry.register(
+			"com.liferay.wiki.service", "0.0.3", "1.0.0",
+			new UpgradeCompanyId(), new UpgradeLastPublishDate(),
 			new UpgradePortletSettings(_settingsFactory),
 			new UpgradeWikiPageResource());
-	}
-
-	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
 	@Reference(unbind = "-")

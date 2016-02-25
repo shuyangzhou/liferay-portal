@@ -28,17 +28,6 @@ import javax.servlet.jsp.tagext.TagSupport;
  */
 public class ToggleValueTag extends TagSupport {
 
-	/**
-	 * @deprecated As of 6.1.0
-	 */
-	@Deprecated
-	public static void doTag(
-			String id, PageContext pageContext, HttpServletRequest request)
-		throws Exception {
-
-		doTag(id, "block", pageContext);
-	}
-
 	public static void doTag(
 			String id, String defaultValue, PageContext pageContext)
 		throws Exception {

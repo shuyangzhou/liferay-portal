@@ -136,24 +136,11 @@ for (Group group : allGroups) {
 		roleGroups.add(group);
 	}
 }
-
-if (organizations.size() == 1) {
-	UsersAdminUtil.addPortletBreadcrumbEntries(organizations.get(0), request, renderResponse);
-}
-
-if (selUser != null) {
-	if (!portletName.equals(myAccountPortletId)) {
-		PortalUtil.addPortletBreadcrumbEntry(request, selUser.getFullName(), null);
-	}
-}
 %>
 
 <liferay-ui:error exception="<%= CompanyMaxUsersException.class %>" message="unable-to-create-user-account-because-the-maximum-number-of-users-has-been-reached" />
 
 <c:if test="<%= !portletName.equals(myAccountPortletId) %>">
-	<div id="breadcrumb">
-		<liferay-ui:breadcrumb showCurrentGroup="<%= false %>" showGuestGroup="<%= false %>" showLayout="<%= false %>" showPortletBreadcrumb="<%= true %>" />
-	</div>
 
 	<%
 	portletDisplay.setShowBackIcon(true);
@@ -211,53 +198,11 @@ if (selUser != null) {
 	}
 	%>
 
-	<liferay-util:buffer var="htmlTop">
-		<c:if test="<%= selUser != null %>">
-			<div class="user-info">
-				<div class="float-container">
-					<liferay-ui:user-display
-						showUserName="<%= true %>"
-						userId="<%= selUser.getUserId() %>"
-					/>
-				</div>
-			</div>
-		</c:if>
-	</liferay-util:buffer>
-
-	<liferay-util:buffer var="htmlBottom">
-
-		<%
-		boolean lockedOut = false;
-
-		if ((selUser != null) && (passwordPolicy != null)) {
-			try {
-				UserLocalServiceUtil.checkLockout(selUser);
-			}
-			catch (UserLockoutException.PasswordPolicyLockout ule) {
-				lockedOut = true;
-			}
-		}
-		%>
-
-		<c:if test="<%= lockedOut %>">
-			<aui:button-row>
-				<div class="alert alert-warning"><liferay-ui:message key="this-user-account-has-been-locked-due-to-excessive-failed-login-attempts" /></div>
-
-				<%
-				String taglibOnClick = renderResponse.getNamespace() + "saveUser('unlock');";
-				%>
-
-				<aui:button cssClass="btn-lg" onClick="<%= taglibOnClick %>" value="unlock" />
-			</aui:button-row>
-		</c:if>
-	</liferay-util:buffer>
-
 	<liferay-ui:form-navigator
 		backURL="<%= backURL %>"
 		formModelBean="<%= selUser %>"
-		htmlBottom="<%= htmlBottom %>"
-		htmlTop="<%= htmlTop %>"
 		id="<%= FormNavigatorConstants.FORM_NAVIGATOR_ID_USERS %>"
+		markupView="lexicon"
 	/>
 </aui:form>
 

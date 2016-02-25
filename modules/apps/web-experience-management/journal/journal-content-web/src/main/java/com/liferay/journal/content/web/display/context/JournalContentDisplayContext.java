@@ -524,97 +524,112 @@ public class JournalContentDisplayContext {
 	}
 
 	public String getURLEdit() {
-		AssetRendererFactory<JournalArticle> assetRendererFactory =
-			AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClass(
-				JournalArticle.class);
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)_portletRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		PortletURL redirectURL = PortletURLFactoryUtil.create(
-			_portletRequest, JournalContentPortletKeys.JOURNAL_CONTENT,
-			themeDisplay.getPlid(), PortletRequest.RENDER_PHASE);
-
-		redirectURL.setParameter(
-			"mvcPath", "/update_journal_article_redirect.jsp");
-
-		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
-
-		redirectURL.setParameter(
-			"referringPortletResource", portletDisplay.getId());
-
-		JournalArticle article = getArticle();
-
 		try {
+			AssetRendererFactory<JournalArticle> assetRendererFactory =
+				AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClass(
+					JournalArticle.class);
+
+			JournalArticle article = getArticle();
+
 			AssetRenderer<JournalArticle> latestArticleAssetRenderer =
 				assetRendererFactory.getAssetRenderer(
 					article.getResourcePrimKey());
+
+			ThemeDisplay themeDisplay =
+				(ThemeDisplay)_portletRequest.getAttribute(
+					WebKeys.THEME_DISPLAY);
+
+			PortletURL redirectURL = PortletURLFactoryUtil.create(
+				_portletRequest, JournalContentPortletKeys.JOURNAL_CONTENT,
+				themeDisplay.getPlid(), PortletRequest.RENDER_PHASE);
+
+			redirectURL.setParameter(
+				"mvcPath", "/update_journal_article_redirect.jsp");
+
+			PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
+
+			redirectURL.setParameter(
+				"referringPortletResource", portletDisplay.getId());
+
+			redirectURL.setWindowState(LiferayWindowState.POP_UP);
 
 			PortletURL portletURL = latestArticleAssetRenderer.getURLEdit(
 				(LiferayPortletRequest)_portletRequest, null,
 				LiferayWindowState.POP_UP, redirectURL);
 
+			portletURL.setParameter(
+				"hideDefaultSuccessMessage", Boolean.TRUE.toString());
+			portletURL.setParameter("showHeader", Boolean.FALSE.toString());
+
 			return portletURL.toString();
 		}
 		catch (Exception e) {
-			_log.error("Unable to create portlet URL", e);
-		}
+			_log.error("Unable to get edit URL", e);
 
-		return StringPool.BLANK;
+			return StringPool.BLANK;
+		}
 	}
 
 	public String getURLEditTemplate() {
-		ThemeDisplay themeDisplay = (ThemeDisplay)_portletRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		PortletURL portletURL = PortletURLFactoryUtil.create(
-			_portletRequest,
-			PortletProviderUtil.getPortletId(
-				DDMTemplate.class.getName(), PortletProvider.Action.EDIT),
-			themeDisplay.getPlid(), PortletRequest.RENDER_PHASE);
-
-		DDMTemplate ddmTemplate = getDDMTemplate();
-
-		if (ddmTemplate == null) {
-			return StringPool.BLANK;
-		}
-
-		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
-
-		PortletURL redirectURL = PortletURLFactoryUtil.create(
-			_portletRequest, portletDisplay.getId(), themeDisplay.getPlid(),
-			PortletRequest.RENDER_PHASE);
-
 		try {
-			portletURL.setWindowState(LiferayWindowState.POP_UP);
-			portletURL.setPortletMode(PortletMode.VIEW);
+			ThemeDisplay themeDisplay =
+				(ThemeDisplay)_portletRequest.getAttribute(
+					WebKeys.THEME_DISPLAY);
 
+			PortletURL portletURL = PortletURLFactoryUtil.create(
+				_portletRequest,
+				PortletProviderUtil.getPortletId(
+					DDMTemplate.class.getName(), PortletProvider.Action.EDIT),
+				themeDisplay.getPlid(), PortletRequest.RENDER_PHASE);
+
+			DDMTemplate ddmTemplate = getDDMTemplate();
+
+			if (ddmTemplate == null) {
+				return StringPool.BLANK;
+			}
+
+			portletURL.setParameter(
+				"hideDefaultSuccessMessage", Boolean.TRUE.toString());
+			portletURL.setParameter("mvcPath", "/edit_template.jsp");
+			portletURL.setParameter("navigationStartsOn", "SELECT_TEMPLATE");
+
+			PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
+
+			PortletURL redirectURL = PortletURLFactoryUtil.create(
+				_portletRequest, portletDisplay.getId(), themeDisplay.getPlid(),
+				PortletRequest.RENDER_PHASE);
+
+			redirectURL.setParameter(
+				"mvcPath", "/update_journal_article_redirect.jsp");
+			redirectURL.setParameter(
+				"referringPortletResource", portletDisplay.getId());
 			redirectURL.setWindowState(LiferayWindowState.POP_UP);
+
+			portletURL.setParameter("redirect", redirectURL.toString());
+
+			portletURL.setParameter("showBackURL", Boolean.FALSE.toString());
+			portletURL.setParameter(
+				"showCacheableInput", Boolean.TRUE.toString());
+			portletURL.setParameter(
+				"groupId", String.valueOf(ddmTemplate.getGroupId()));
+			portletURL.setParameter(
+				"refererPortletName",
+				PortletProviderUtil.getPortletId(
+					JournalArticle.class.getName(),
+					PortletProvider.Action.EDIT));
+			portletURL.setParameter(
+				"templateId", String.valueOf(ddmTemplate.getTemplateId()));
+			portletURL.setParameter("showHeader", Boolean.FALSE.toString());
+			portletURL.setPortletMode(PortletMode.VIEW);
+			portletURL.setWindowState(LiferayWindowState.POP_UP);
+
+			return portletURL.toString();
 		}
 		catch (Exception e) {
-			_log.error("Unable to set URL window state and portlet mode", e);
+			_log.error("Unable to get edit template URL", e);
+
+			return StringPool.BLANK;
 		}
-
-		redirectURL.setParameter(
-			"mvcPath", "/update_journal_article_redirect.jsp");
-		redirectURL.setParameter(
-			"referringPortletResource", portletDisplay.getId());
-
-		portletURL.setParameter("mvcPath", "/edit_template.jsp");
-		portletURL.setParameter("backURL", redirectURL.toString());
-		portletURL.setParameter("showBackURL", Boolean.FALSE.toString());
-		portletURL.setParameter("showCacheableInput", Boolean.TRUE.toString());
-		portletURL.setParameter(
-			"groupId", String.valueOf(ddmTemplate.getGroupId()));
-		portletURL.setParameter(
-			"refererPortletName",
-			PortletProviderUtil.getPortletId(
-				JournalArticle.class.getName(), PortletProvider.Action.EDIT));
-		portletURL.setParameter(
-			"templateId", String.valueOf(ddmTemplate.getTemplateId()));
-		portletURL.setParameter("showHeader", Boolean.FALSE.toString());
-
-		return portletURL.toString();
 	}
 
 	public boolean hasViewPermission() throws PortalException {
