@@ -16,6 +16,7 @@ package com.liferay.portal.util;
 
 import com.liferay.portal.kernel.test.CaptureHandler;
 import com.liferay.portal.kernel.test.JDKLoggerTestUtil;
+import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -92,7 +93,21 @@ public class HttpImplTest extends PowerMockito {
 
 	@Test
 	public void testDecodeURLWithInvalidURLEncoding() {
+		testDecodeURLWithInvalidURLEncoding("%");
+		testDecodeURLWithInvalidURLEncoding("%0");
+		testDecodeURLWithInvalidURLEncoding("%00%");
+		testDecodeURLWithInvalidURLEncoding("%00%0");
 		testDecodeURLWithInvalidURLEncoding("http://localhost:8080/?id=%");
+	}
+
+	@Test
+	public void testDecodeURLWithNotHexChars() throws Exception {
+		testDecodeURLWithNotHexChars("%0" + (char) (CharPool.NUMBER_0 - 1));
+		testDecodeURLWithNotHexChars("%0" + (char) (CharPool.NUMBER_9 + 1));
+		testDecodeURLWithNotHexChars("%0" + (char) (CharPool.UPPER_CASE_A - 1));
+		testDecodeURLWithNotHexChars("%0" + (char) (CharPool.UPPER_CASE_F + 1));
+		testDecodeURLWithNotHexChars("%0" + (char) (CharPool.LOWER_CASE_A - 1));
+		testDecodeURLWithNotHexChars("%0" + (char) (CharPool.LOWER_CASE_F + 1));
 	}
 
 	@Test
@@ -231,6 +246,10 @@ public class HttpImplTest extends PowerMockito {
 		String expectedMessage = "Invalid URL encoding " + url;
 
 		_testDecodeURL(url, expectedMessage);
+	}
+
+	protected void testDecodeURLWithNotHexChars(String url) {
+		_testDecodeURL(url, "is not a hex char");
 	}
 
 	private void _addParameter(
