@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.StringBundler;
 
 import java.sql.PreparedStatement;
@@ -74,48 +75,53 @@ public class UpgradePostgreSQL extends UpgradeProcess {
 			Map<String, String> oidColumnNames)
 		throws Exception {
 
-		StringBundler sb = new StringBundler();
+		try (LoggingTimer loggingTimer = new LoggingTimer()) {
+			StringBundler sb = new StringBundler();
 
-		sb.append("select lo_unlink(l.oid) from pg_largeobject_metadata l ");
-		sb.append("where ");
+			sb.append("select lo_unlink(l.oid) from pg_largeobject_metadata ");
+			sb.append("l where ");
 
-		int i = 1;
+			int i = 1;
 
-		for (Map.Entry<String, String> column : oidColumnNames.entrySet()) {
-			String tableName = column.getKey();
-			String columnName = column.getValue();
+			for (Map.Entry<String, String> column : oidColumnNames.entrySet()) {
+				String tableName = column.getKey();
+				String columnName = column.getValue();
 
-			sb.append("(not exists (select 1 from ");
-			sb.append(tableName);
-			sb.append(" t where t.");
-			sb.append(columnName);
-			sb.append(" = l.oid))");
+				sb.append("(not exists (select 1 from ");
+				sb.append(tableName);
+				sb.append(" t where t.");
+				sb.append(columnName);
+				sb.append(" = l.oid))");
 
-			if (i < oidColumnNames.size()) {
-				sb.append(" and ");
+				if (i < oidColumnNames.size()) {
+					sb.append(" and ");
+				}
+
+				i++;
 			}
 
-			i++;
-		}
+			try (PreparedStatement ps = connection.prepareStatement(
+					sb.toString())) {
 
-		try (PreparedStatement ps = connection.prepareStatement(
-				sb.toString())) {
-
-			ps.execute();
+				ps.execute();
+			}
 		}
 	}
 
 	protected void updatePostgreSQLRules(Map<String, String> oidColumnNames)
 		throws Exception {
 
-		for (Map.Entry<String, String> entry : oidColumnNames.entrySet()) {
-			String tableName = entry.getKey();
-			String columnName = entry.getValue();
+		try (LoggingTimer loggingTimer = new LoggingTimer()) {
+			for (Map.Entry<String, String> entry : oidColumnNames.entrySet()) {
+				String tableName = entry.getKey();
+				String columnName = entry.getValue();
 
-			try (PreparedStatement ps = connection.prepareStatement(
-					PostgreSQLDB.getCreateRulesSQL(tableName, columnName))) {
+				try (PreparedStatement ps = connection.prepareStatement(
+						PostgreSQLDB.getCreateRulesSQL(
+							tableName, columnName))) {
 
-				ps.executeUpdate();
+					ps.executeUpdate();
+				}
 			}
 		}
 	}
