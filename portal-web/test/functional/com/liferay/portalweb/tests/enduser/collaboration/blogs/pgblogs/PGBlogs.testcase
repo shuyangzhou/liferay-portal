@@ -194,15 +194,15 @@
 
 		<execute macro="BlogsEntry#scheduleBlogEntry" />
 
-		<execute macro="BlogsEntry#publish" />
+		<execute macro="PortletEntry#publish" />
 
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="${pageName}" />
 		</execute>
 
-		<execute function="AssertClick" locator1="Blogs#MY_PENDING_ENTRIES_PANEL_COLLAPSED" value1="My Pending Entries" />
+		<execute function="AssertClick" locator1="MenuItem#NOT_PUBLISHED" value1="Not Published (1)" />
 
-		<execute macro="BlogsEntry#viewScheduledPost">
+		<execute macro="BlogsEntry#viewPG">
 			<var name="entryContent" value="Blogs Entry Content" />
 			<var name="entryTitle" value="Blogs Entry Title" />
 		</execute>
@@ -1646,7 +1646,7 @@
 			<var name="entryAbstractDescription" value="${entryAbstractDescription}" />
 		</execute>
 
-		<execute macro="BlogsEntry#publish" />
+		<execute macro="PortletEntry#publish" />
 
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="${pageName}" />
@@ -1927,7 +1927,7 @@
 			<var name="uploadFileName" value="Document_1.jpg" />
 		</execute>
 
-		<execute macro="BlogsEntry#publish" />
+		<execute macro="PortletEntry#publish" />
 
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="Blogs Page" />

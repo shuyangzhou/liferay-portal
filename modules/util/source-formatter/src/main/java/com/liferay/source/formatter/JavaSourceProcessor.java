@@ -815,12 +815,12 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 		newContent = fixIncorrectParameterTypeForLanguageUtil(
 			newContent, false, fileName);
 
-		if (portalSource && fileName.contains("/portal-service/") &&
+		if (portalSource && fileName.contains("/portal-kernel/") &&
 			content.contains("import javax.servlet.jsp.")) {
 
 			processErrorMessage(
 				fileName,
-				"Never import javax.servlet.jsp.* from portal-service " +
+				"Never import javax.servlet.jsp.* from portal-kernel " +
 					fileName);
 		}
 
@@ -1959,6 +1959,24 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 					strippedQuotesLine = stripQuotes(
 						strippedQuotesLine, CharPool.APOSTROPHE);
 
+					int strippedQuotesLineCloseParenthesisCount =
+						StringUtil.count(
+							strippedQuotesLine, StringPool.CLOSE_PARENTHESIS);
+					int strippedQuotesLineOpenParenthesisCount =
+						StringUtil.count(
+							strippedQuotesLine, StringPool.OPEN_PARENTHESIS);
+
+					if (!trimmedLine.startsWith(StringPool.OPEN_PARENTHESIS) &&
+						trimmedLine.endsWith(") {") &&
+						(strippedQuotesLineOpenParenthesisCount > 0) &&
+						(strippedQuotesLineOpenParenthesisCount >
+							strippedQuotesLineCloseParenthesisCount)) {
+
+						processErrorMessage(
+							fileName,
+							"line break: " + fileName + " " + lineCount);
+					}
+
 					if (line.endsWith(StringPool.OPEN_PARENTHESIS)) {
 						if (line.contains(" && ") || line.contains(" || ")) {
 							processErrorMessage(
@@ -2135,12 +2153,9 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 					else if (trimmedLine.endsWith(StringPool.COMMA) &&
 							 !trimmedLine.startsWith("for (")) {
 
-						int closeParenthesisCount = StringUtil.count(
-							strippedQuotesLine, StringPool.CLOSE_PARENTHESIS);
-						int openParenthesisCount = StringUtil.count(
-							strippedQuotesLine, StringPool.OPEN_PARENTHESIS);
+						if (strippedQuotesLineCloseParenthesisCount <
+								strippedQuotesLineOpenParenthesisCount) {
 
-						if (closeParenthesisCount < openParenthesisCount) {
 							processErrorMessage(
 								fileName,
 								"line break: " + fileName + " " + lineCount);

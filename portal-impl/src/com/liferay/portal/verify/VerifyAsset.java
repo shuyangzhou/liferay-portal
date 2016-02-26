@@ -19,8 +19,6 @@ import com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil;
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.document.library.kernel.model.DLFileEntryConstants;
 import com.liferay.document.library.kernel.service.DLFileEntryLocalServiceUtil;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -85,7 +83,5 @@ public class VerifyAsset extends VerifyProcess {
 			}
 		}
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(VerifyAsset.class);
 
 }

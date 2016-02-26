@@ -50,7 +50,7 @@ public class InitUtilTest {
 
 		try {
 			InitUtil.initWithSpring(
-				Arrays.asList("META-INF/util-spring.xml"), true);
+				Arrays.asList("META-INF/util-spring.xml"), true, true);
 		}
 		finally {
 			if (resourceActionsReadPortletResources == null) {
