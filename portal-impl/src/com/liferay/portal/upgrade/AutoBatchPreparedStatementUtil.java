@@ -14,6 +14,8 @@
 
 package com.liferay.portal.upgrade;
 
+import com.liferay.portal.kernel.concurrent.ThreadPoolExecutor;
+import com.liferay.portal.kernel.executor.PortalExecutorManagerUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.util.PropsValues;
 
@@ -25,8 +27,15 @@ import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
 /**
  * @author Shuyang Zhou
+ * @author Preston Crary
  */
 public class AutoBatchPreparedStatementUtil {
 
@@ -49,10 +58,28 @@ public class AutoBatchPreparedStatementUtil {
 			new NoBatchInvocationHandler(preparedStatement));
 	}
 
+	public static PreparedStatement concurrentAutoBatch(
+			Connection connection, String sql)
+		throws SQLException {
+
+		DatabaseMetaData databaseMetaData = connection.getMetaData();
+
+		if (databaseMetaData.supportsBatchUpdates()) {
+			return (PreparedStatement)ProxyUtil.newProxyInstance(
+				ClassLoader.getSystemClassLoader(), _interfaces,
+				new ConcurrentBatchInvocationHandler(connection, sql));
+		}
+
+		return (PreparedStatement)ProxyUtil.newProxyInstance(
+			ClassLoader.getSystemClassLoader(), _interfaces,
+			new ConcurrentNoBatchInvocationHandler(connection, sql));
+	}
+
 	private AutoBatchPreparedStatementUtil() {
 	}
 
 	private static final Method _addBatchMethod;
+	private static final Method _closeMethod;
 	private static final Method _executeBatch;
 	private static final Class<?>[] _interfaces =
 		new Class<?>[] {PreparedStatement.class};
@@ -60,6 +87,7 @@ public class AutoBatchPreparedStatementUtil {
 	static {
 		try {
 			_addBatchMethod = PreparedStatement.class.getMethod("addBatch");
+			_closeMethod = PreparedStatement.class.getMethod("close");
 			_executeBatch = PreparedStatement.class.getMethod("executeBatch");
 		}
 		catch (NoSuchMethodException nsme) {
@@ -104,6 +132,189 @@ public class AutoBatchPreparedStatementUtil {
 
 		private int _count;
 		private final PreparedStatement _preparedStatement;
+
+	}
+
+	private static class ConcurrentBatchInvocationHandler
+		implements InvocationHandler {
+
+		@Override
+		public Object invoke(Object proxy, Method method, Object[] args)
+			throws Throwable {
+
+			if (method.equals(_addBatchMethod)) {
+				_preparedStatement.addBatch();
+
+				if (++_count >= PropsValues.HIBERNATE_JDBC_BATCH_SIZE) {
+					_executeBatch();
+				}
+
+				return null;
+			}
+
+			if (method.equals(_executeBatch)) {
+				if (_count > 0) {
+					_executeBatch();
+				}
+
+				return new int[0];
+			}
+
+			if (method.equals(_closeMethod)) {
+				Throwable throwable = null;
+
+				for (Future<Void> future : _futures) {
+					try {
+						future.get();
+					}
+					catch (ExecutionException ee) {
+						if (throwable == null) {
+							throwable = ee.getCause();
+						}
+						else {
+							throwable.addSuppressed(ee.getCause());
+						}
+					}
+				}
+
+				if (throwable != null) {
+					throw throwable;
+				}
+			}
+
+			return method.invoke(_preparedStatement, args);
+		}
+
+		private ConcurrentBatchInvocationHandler(
+				Connection connection, String sql)
+			throws SQLException {
+
+			_connection = connection;
+			_sql = sql;
+
+			_preparedStatement = _connection.prepareStatement(_sql);
+		}
+
+		private void _executeBatch() throws Throwable {
+			_count = 0;
+
+			final PreparedStatement preparedStatement = _preparedStatement;
+
+			_futures.add(
+				_threadPoolExecutor.submit(
+					new Callable<Void>() {
+
+						@Override
+						public Void call() throws Exception {
+							try {
+								preparedStatement.executeBatch();
+							}
+							finally {
+								preparedStatement.close();
+							}
+
+							return null;
+						}
+
+					}));
+
+			_preparedStatement = _connection.prepareStatement(_sql);
+		}
+
+		private final Connection _connection;
+		private int _count;
+		private final List<Future<Void>> _futures = new ArrayList<>();
+		private PreparedStatement _preparedStatement;
+		private final String _sql;
+		private final ThreadPoolExecutor _threadPoolExecutor =
+			PortalExecutorManagerUtil.getPortalExecutor(
+				ConcurrentBatchInvocationHandler.class.getName());
+
+	}
+
+	private static class ConcurrentNoBatchInvocationHandler
+		implements InvocationHandler {
+
+		@Override
+		public Object invoke(Object proxy, Method method, Object[] args)
+			throws Throwable {
+
+			if (method.equals(_addBatchMethod)) {
+				_executeUpdate();
+
+				return null;
+			}
+
+			if (method.equals(_executeBatch)) {
+				return new int[0];
+			}
+
+			if (method.equals(_closeMethod)) {
+				Throwable throwable = null;
+
+				for (Future<Void> future : _futures) {
+					try {
+						future.get();
+					}
+					catch (ExecutionException ee) {
+						if (throwable == null) {
+							throwable = ee.getCause();
+						}
+						else {
+							throwable.addSuppressed(ee.getCause());
+						}
+					}
+				}
+
+				if (throwable != null) {
+					throw throwable;
+				}
+			}
+
+			return method.invoke(_preparedStatement, args);
+		}
+
+		private ConcurrentNoBatchInvocationHandler(
+				Connection connection, String sql)
+			throws SQLException {
+
+			_connection = connection;
+			_sql = sql;
+
+			_preparedStatement = _connection.prepareStatement(_sql);
+		}
+
+		private void _executeUpdate() throws Throwable {
+			final PreparedStatement preparedStatement = _preparedStatement;
+
+			_futures.add(
+				_threadPoolExecutor.submit(
+					new Callable<Void>() {
+
+						@Override
+						public Void call() throws Exception {
+							try {
+								preparedStatement.executeUpdate();
+							}
+							finally {
+								preparedStatement.close();
+							}
+
+							return null;
+						}
+
+					}));
+
+			_preparedStatement = _connection.prepareStatement(_sql);
+		}
+
+		private final Connection _connection;
+		private final List<Future<Void>> _futures = new ArrayList<>();
+		private PreparedStatement _preparedStatement;
+		private final String _sql;
+		private final ThreadPoolExecutor _threadPoolExecutor =
+			PortalExecutorManagerUtil.getPortalExecutor(
+				ConcurrentNoBatchInvocationHandler.class.getName());
 
 	}
 
