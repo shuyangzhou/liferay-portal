@@ -5,9 +5,9 @@
 	<classpathentry excluding="**/.svn/**|.svn/" kind="src" path="portal-impl/src"/>
 	<classpathentry excluding="**/.svn/**|.svn/" kind="src" path="portal-impl/test/integration"/>
 	<classpathentry excluding="**/.svn/**|.svn/" kind="src" path="portal-impl/test/unit"/>
-	<classpathentry excluding="**/.svn/**|.svn/" kind="src" path="portal-service/src"/>
-	<!--<classpathentry excluding="**/.svn/**|.svn/" kind="src" path="portal-service/test/integration"/>-->
-	<classpathentry excluding="**/.svn/**|.svn/" kind="src" path="portal-service/test/unit"/>
+	<classpathentry excluding="**/.svn/**|.svn/" kind="src" path="portal-kernel/src"/>
+	<!--<classpathentry excluding="**/.svn/**|.svn/" kind="src" path="portal-kernel/test/integration"/>-->
+	<classpathentry excluding="**/.svn/**|.svn/" kind="src" path="portal-kernel/test/unit"/>
 	<classpathentry excluding="**/.svn/**|.svn/" kind="src" path="portal-test/src"/>
 	<classpathentry excluding="**/.svn/**|.svn/" kind="src" path="portal-test-internal/src"/>
 	<classpathentry excluding="**/.svn/**|.svn/" kind="src" path="portal-web/test/functional"/>
@@ -65,6 +65,7 @@
 	<classpathentry kind="lib" path="lib/development/jymsg.jar"/>
 	<classpathentry kind="lib" path="lib/development/liferay-doclet.jar"/>
 	<classpathentry kind="lib" path="lib/development/mail.jar"/>
+	<classpathentry kind="lib" path="lib/development/mariadb.jar"/>
 	<classpathentry kind="lib" path="lib/development/maven-ant-tasks.jar"/>
 	<classpathentry kind="lib" path="lib/development/mockito.jar"/>
 	<classpathentry kind="lib" path="lib/development/mysql.jar"/>

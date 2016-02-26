@@ -111,7 +111,8 @@ public class LiferayIntegrationTestRule extends AggregateTestRule {
 								configureLog4j = true;
 							}
 
-							InitUtil.initWithSpring(configLocations, true);
+							InitUtil.initWithSpring(
+								configLocations, true, true);
 
 							if (configureLog4j) {
 								Log4JUtil.configureLog4J(

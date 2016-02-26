@@ -237,7 +237,7 @@ public class PACLTestRule implements TestRule {
 		List<String> configLocations = ListUtil.fromArray(
 			PropsUtil.getArray(PropsKeys.SPRING_CONFIGS));
 
-		InitUtil.initWithSpring(configLocations, true);
+		InitUtil.initWithSpring(configLocations, true, true);
 
 		ServiceTestUtil.initMainServletServices();
 		ServiceTestUtil.initStaticServices();
