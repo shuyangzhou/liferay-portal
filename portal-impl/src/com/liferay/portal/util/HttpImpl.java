@@ -270,7 +270,11 @@ public class HttpImpl implements Http {
 
 	@Override
 	public String decodeURL(String url) {
-		return decodeURL(url, false);
+		if (Validator.isNull(url)) {
+			return url;
+		}
+
+		return URLCodec.decodeURL(url, StringPool.UTF8);
 	}
 
 	/**
@@ -279,11 +283,7 @@ public class HttpImpl implements Http {
 	@Deprecated
 	@Override
 	public String decodeURL(String url, boolean unescapeSpaces) {
-		if (Validator.isNull(url)) {
-			return url;
-		}
-
-		return URLCodec.decodeURL(url, StringPool.UTF8);
+		return decodeURL(url);
 	}
 
 	public void destroy() {
