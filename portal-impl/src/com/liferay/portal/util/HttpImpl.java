@@ -274,7 +274,14 @@ public class HttpImpl implements Http {
 			return url;
 		}
 
-		return URLCodec.decodeURL(url, StringPool.UTF8);
+		try {
+			return URLCodec.decodeURL(url, StringPool.UTF8);
+		}
+		catch (IllegalArgumentException iae) {
+			_log.error(iae.getMessage(), iae);
+		}
+
+		return StringPool.BLANK;
 	}
 
 	/**
