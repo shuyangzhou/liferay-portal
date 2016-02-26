@@ -281,8 +281,8 @@ public class HttpImplTest extends PowerMockito {
 
 	private void _testDecodeURL(String url, String expectedMessage) {
 		try (CaptureHandler captureHandler =
-				 JDKLoggerTestUtil.configureJDKLogger(
-					 HttpImpl.class.getName(), Level.SEVERE)) {
+				JDKLoggerTestUtil.configureJDKLogger(
+					HttpImpl.class.getName(), Level.SEVERE)) {
 
 			String decodeURL = _httpImpl.decodeURL(url);
 
