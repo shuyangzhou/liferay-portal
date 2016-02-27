@@ -16,7 +16,9 @@ package com.liferay.dynamic.data.mapping.upgrade.v1_0_0;
 
 import com.liferay.dynamic.data.mapping.upgrade.v1_0_0.util.DDMContentTable;
 import com.liferay.dynamic.data.mapping.upgrade.v1_0_0.util.DDMStructureTable;
+import com.liferay.dynamic.data.mapping.upgrade.v1_0_0.util.DDMTemplateTable;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.sql.SQLException;
@@ -28,12 +30,17 @@ public class UpgradeSchema extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		String template = StringUtil.read(
-			UpgradeSchema.class.getResourceAsStream("dependencies/update.sql"));
+		try (LoggingTimer loggingTimer = new LoggingTimer(
+				"runSQLTemplateString")) {
 
-		runSQLTemplateString(template, false, false);
+			String template = StringUtil.read(
+				UpgradeSchema.class.getResourceAsStream(
+					"dependencies/update.sql"));
 
-		try {
+			runSQLTemplateString(template, false, false);
+		}
+
+		try (LoggingTimer loggingTimer = new LoggingTimer("alterColumnName")) {
 			runSQL("alter_column_name DDMContent xml data_ TEXT null");
 
 			runSQL("alter_column_name DDMStructure xsd definition TEXT null");
@@ -54,6 +61,10 @@ public class UpgradeSchema extends UpgradeProcess {
 				DDMStructureTable.TABLE_SQL_CREATE,
 				DDMStructureTable.TABLE_SQL_ADD_INDEXES);
 		}
+
+		alterColumnType(DDMStructureTable.class, "description", "TEXT null");
+
+		alterColumnType(DDMTemplateTable.class, "description", "TEXT null");
 	}
 
 }

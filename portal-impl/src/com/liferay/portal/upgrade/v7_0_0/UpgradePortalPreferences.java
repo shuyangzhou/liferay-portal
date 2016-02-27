@@ -14,8 +14,8 @@
 
 package com.liferay.portal.upgrade.v7_0_0;
 
-import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
@@ -69,15 +69,11 @@ public class UpgradePortalPreferences extends UpgradeProcess {
 	}
 
 	protected void upgradeStagingPortalPreferences() throws Exception {
-		PreparedStatement ps1 = null;
-		ResultSet rs = null;
-
-		try {
-			ps1 = connection.prepareStatement(
+		try (LoggingTimer loggingTimer = new LoggingTimer();
+			PreparedStatement ps1 = connection.prepareStatement(
 				"select portalPreferencesId, preferences from " +
 					"PortalPreferences");
-
-			rs = ps1.executeQuery();
+			ResultSet rs = ps1.executeQuery()) {
 
 			try (PreparedStatement ps2 =
 					AutoBatchPreparedStatementUtil.autoBatch(
@@ -100,9 +96,6 @@ public class UpgradePortalPreferences extends UpgradeProcess {
 
 				ps2.executeBatch();
 			}
-		}
-		finally {
-			DataAccess.cleanUp(ps1, rs);
 		}
 	}
 

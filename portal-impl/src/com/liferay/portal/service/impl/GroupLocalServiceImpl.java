@@ -1572,6 +1572,11 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 		return group.getAncestors();
 	}
 
+	@Override
+	public List<Group> getStagedSites() {
+		return groupFinder.findByL_TS_S_RSGC(0, "staged=true", true, 0);
+	}
+
 	/**
 	 * Returns the staging group.
 	 *
@@ -1943,6 +1948,9 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 	 */
 	@Override
 	public void rebuildTree(long companyId) throws PortalException {
+		final long classNameId = classNameLocalService.getClassNameId(
+			Group.class);
+
 		TreePathUtil.rebuildTree(
 			companyId, GroupConstants.DEFAULT_PARENT_GROUP_ID, StringPool.SLASH,
 			new TreeModelTasksAdapter<Group>() {
@@ -1952,8 +1960,8 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 					long previousId, long companyId, long parentPrimaryKey,
 					int size) {
 
-					return groupPersistence.findByG_C_P(
-						previousId, companyId, parentPrimaryKey,
+					return groupPersistence.findByG_C_C_P(
+						previousId, companyId, classNameId, parentPrimaryKey,
 						QueryUtil.ALL_POS, size, new GroupIdComparator(true));
 				}
 

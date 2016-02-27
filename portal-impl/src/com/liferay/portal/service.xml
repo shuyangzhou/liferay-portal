@@ -464,6 +464,12 @@
 			<finder-column name="liveGroupId" />
 			<finder-column name="groupKey" />
 		</finder>
+		<finder name="G_C_C_P" return-type="Collection" db-index="false">
+			<finder-column name="groupId" comparator="&gt;" />
+			<finder-column name="companyId" />
+			<finder-column name="classNameId" />
+			<finder-column name="parentGroupId" />
+		</finder>
 		<finder name="C_C_L_GK" return-type="Group" unique="true">
 			<finder-column name="companyId" />
 			<finder-column name="classNameId" />
