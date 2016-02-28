@@ -229,7 +229,7 @@ public class CounterLocalServiceTest {
 			InitUtil.initWithSpring(
 				Arrays.asList(
 					"META-INF/base-spring.xml", "META-INF/counter-spring.xml"),
-				false);
+				false, true);
 
 			List<Long> ids = new ArrayList<>();
 

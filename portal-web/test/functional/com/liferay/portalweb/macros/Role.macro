@@ -1,22 +1,37 @@
 <definition>
 	<command name="addCP">
-		<execute function="Click" locator1="Button#PLUS" />
-
 		<if>
 			<equals arg1="${roleType}" arg2="Organization" />
 			<then>
-				<execute function="AssertClick" locator1="MenuItem#ORGANIZATION_ROLE" value1="Organization Role" />
+				<execute function="AssertClick" locator1="NavBar#ORGANIZATION_ROLES" value1="Organization Roles" />
 			</then>
 			<elseif>
 				<equals arg1="${roleType}" arg2="Site" />
 				<then>
-					<execute function="AssertClick" locator1="MenuItem#SITE_ROLE" value1="Site Role" />
+					<execute function="AssertClick" locator1="NavBar#SITE_ROLES" value1="Site Roles" />
 				</then>
 			</elseif>
 			<else>
-				<execute function="AssertClick" locator1="MenuItem#REGULAR_ROLE" value1="Regular Role" />
+				<execute function="AssertClick" locator1="NavBar#REGULAR_ROLES" value1="Regular Roles" />
 			</else>
 		</if>
+
+		<if>
+			<or>
+				<equals arg1="${roleType}" arg2="Organization" />
+				<equals arg1="${roleType}" arg2="Site" />
+			</or>
+			<then>
+				<var name="key_roleType" value="${roleType}" />
+			</then>
+			<else>
+				<var name="key_roleType" value="Regular" />
+			</else>
+		</if>
+
+		<execute function="AssertVisible" locator1="Roles#BREADCRUMB" />
+
+		<execute function="Click" locator1="Button#PLUS" />
 
 		<execute function="Type" locator1="TextInput#NAME" value1="${roleName}" />
 
@@ -34,9 +49,7 @@
 			</then>
 		</if>
 
-		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
-
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="Your request completed successfully." />
+		<execute macro="PortletEntry#save" />
 	</command>
 
 	<command name="addStagingAdminRole">
@@ -77,7 +90,7 @@
 		<execute function="AssertTextEquals" locator1="RolesAssignMembers#ORGANIZATION_TABLE_NAME" value1="${orgName}" />
 		<execute function="Check" locator1="RolesAssignMembers#ORGANIZATION_TABLE_CHECKBOX" />
 		<execute function="AssertClick" locator1="Button#UPDATE_ASSOCIATIONS" value1="Update Associations" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="Your request completed successfully." />
+		<execute macro="Alert#viewSuccessMessage" />
 		<execute function="AssertChecked" locator1="RolesAssignMembers#ORGANIZATION_TABLE_CHECKBOX" />
 	</command>
 
@@ -98,7 +111,7 @@
 		<execute function="AssertTextEquals" locator1="RolesAssignMembers#SITE_TABLE_NAME" value1="${siteName}" />
 		<execute function="Check" locator1="RolesAssignMembers#SITE_TABLE_CHECKBOX" />
 		<execute function="AssertClick" locator1="Button#UPDATE_ASSOCIATIONS" value1="Update Associations" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="Your request completed successfully." />
+		<execute macro="Alert#viewSuccessMessage" />
 		<execute function="AssertChecked" locator1="RolesAssignMembers#SITE_TABLE_CHECKBOX" />
 	</command>
 
@@ -119,7 +132,7 @@
 		<execute function="AssertTextEquals" locator1="RolesAssignMembers#USER_GROUP_TABLE_NAME" value1="${userGroupName}" />
 		<execute function="Check" locator1="RolesAssignMembers#USER_GROUP_TABLE_CHECKBOX" />
 		<execute function="AssertClick" locator1="Button#UPDATE_ASSOCIATIONS" value1="Update Associations" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="Your request completed successfully." />
+		<execute macro="Alert#viewSuccessMessage" />
 		<execute function="AssertChecked" locator1="RolesAssignMembers#USER_GROUP_TABLE_CHECKBOX" />
 	</command>
 
@@ -154,7 +167,7 @@
 
 		<execute function="AssertClick" locator1="Button#ADD" value1="Add" />
 
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="Your request completed successfully." />
+		<execute macro="Alert#viewSuccessMessage" />
 
 		<execute function="Refresh" />
 
@@ -207,7 +220,7 @@
 
 		<execute function="Check" locator1="Permissions#${permissionDefinitionKey}" />
 
-		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
+		<execute macro="Button#clickSave" />
 
 		<execute function="AssertTextEquals#assertPartialText" locator1="Permissions#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute function="AssertChecked" locator1="Permissions#${permissionDefinitionKey}" />
@@ -270,9 +283,7 @@
 			</then>
 		</if>
 
-		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
-
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="Your request completed successfully." />
+		<execute macro="PortletEntry#save" />
 	</command>
 
 	<command name="editPermissionCmdCP">
@@ -561,9 +572,9 @@
 			</if>
 		</for>
 
-		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
+		<execute macro="Button#clickSave" />
 
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="The role permissions were updated." />
+		<execute function="AssertElementPresent" locator1="Message#SUCCESS" />
 	</command>
 
 	<command name="localizeRoleDescriptionCmd">
@@ -753,7 +764,7 @@
 		</if>
 
 		<execute function="Uncheck" locator1="Permissions#${permissionDefinitionKey}" />
-		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
+		<execute macro="Button#clickSave" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="Permissions#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute function="AssertNotChecked" locator1="Permissions#${permissionDefinitionKey}" />
 	</command>
@@ -807,7 +818,7 @@
 		<execute function="AssertTextEquals" locator1="RolesAssignMembers#ORGANIZATION_TABLE_NAME" value1="${orgName}" />
 		<execute function="Uncheck" locator1="RolesAssignMembers#ORGANIZATION_TABLE_CHECKBOX" />
 		<execute function="AssertClick" locator1="Button#UPDATE_ASSOCIATIONS" value1="Update Associations" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="Your request completed successfully." />
+		<execute macro="Alert#viewSuccessMessage" />
 	</command>
 
 	<command name="unassignMembersSitesCP">
@@ -827,7 +838,7 @@
 		<execute function="AssertTextEquals" locator1="RolesAssignMembers#SITE_TABLE_NAME" value1="${siteName}" />
 		<execute function="Uncheck" locator1="RolesAssignMembers#SITE_TABLE_CHECKBOX" />
 		<execute function="AssertClick" locator1="Button#UPDATE_ASSOCIATIONS" value1="Update Associations" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="Your request completed successfully." />
+		<execute macro="Alert#viewSuccessMessage" />
 		<execute function="AssertNotChecked" locator1="RolesAssignMembers#SITE_TABLE_CHECKBOX" />
 	</command>
 
@@ -848,7 +859,7 @@
 		<execute function="AssertTextEquals" locator1="RolesAssignMembers#USER_GROUP_TABLE_NAME" value1="${userGroupName}" />
 		<execute function="Uncheck" locator1="RolesAssignMembers#USER_GROUP_TABLE_CHECKBOX" />
 		<execute function="AssertClick" locator1="Button#UPDATE_ASSOCIATIONS" value1="Update Associations" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="Your request completed successfully." />
+		<execute macro="Alert#viewSuccessMessage" />
 	</command>
 
 	<command name="unassignRegRoleCP">
@@ -866,7 +877,7 @@
 		<execute function="AssertTextEquals" locator1="RolesAssignMembers#USER_TABLE_SCREEN_NAME" value1="${userScreenName}" />
 		<execute function="Uncheck" locator1="RolesAssignMembers#USER_TABLE_CHECKBOX" />
 		<execute function="AssertClick" locator1="Button#UPDATE_ASSOCIATIONS" value1="Update Associations" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="Your request completed successfully." />
+		<execute macro="Alert#viewSuccessMessage" />
 	</command>
 
 	<command name="viewCP">

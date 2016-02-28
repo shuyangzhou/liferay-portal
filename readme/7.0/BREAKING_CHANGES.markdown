@@ -20,7 +20,7 @@ feature or API will be dropped in an upcoming version.
 replaces an old API, in spite of the old API being kept in Liferay Portal for
 backwards compatibility.
 
-*This document has been reviewed through commit `b6b7772`.*
+*This document has been reviewed through commit `09adf28`.*
 
 ## Breaking Changes Contribution Guidelines
 
@@ -412,13 +412,13 @@ properly even when JavaScript is disabled.
 
 ---------------------------------------
 
-### Using util-taglib No Longer Binds You to Using portal-service's javax.servlet.jsp Implementation
+### Using util-taglib No Longer Binds You to Using portal-kernel's javax.servlet.jsp Implementation
 - **Date:** 2014-Jun-19
 - **JIRA Ticket:** LPS-47682
 
 #### What changed?
 
-Several APIs in `portal-service.jar` contained references to the
+Several APIs in `portal-kernel.jar` contained references to the
 `javax.servlet.jsp` package. This forced `util-taglib`, which depended on many
 of the package's features, to be bound to the same JSP implementation.
 
@@ -447,7 +447,7 @@ parameter.
 
 #### Why was this change made?
 
-As stated previously, the use of the `javax.servlet.jsp` API in `portal-service`
+As stated previously, the use of the `javax.servlet.jsp` API in `portal-kernel`
 prevented the use of any other JSP impl within plugins (OSGi or otherwise). This
 limited what Liferay could change with respect to providing its own JSP
 implementation within OSGi.
@@ -592,15 +592,15 @@ minor benefit.
 
 ---------------------------------------
 
-### Moved MVCPortlet, ActionCommand and ActionCommandCache from util-bridges.jar to portal-service.jar
+### Moved MVCPortlet, ActionCommand and ActionCommandCache from util-bridges.jar to portal-kernel.jar
 - **Date:** 2014-Sep-26
 - **JIRA Ticket:** LPS-50156
 
 #### What changed?
 
 The classes from package `com.liferay.util.bridges.mvc` in `util-bridges.jar`
-were moved to a new package `com.liferay.portal.kernel.portlet.bridges.mvc`
-in `portal-service.jar`.
+were moved to a new package `com.liferay.portal.kernel.portlet.bridges.mvc` in
+`portal-kernel.jar`.
 
 Old classes:
 
@@ -985,8 +985,8 @@ IDs.
 
 #### What changed?
 
-The class `AssetPublisherUtil` from the `portal-service` module has been moved
-to the module `AssetPublisher` and it is no longer a part of the public API.
+The class `AssetPublisherUtil` from the `portal-kernel` module has been moved to
+the module `AssetPublisher` and it is no longer a part of the public API.
 
 #### Who is affected?
 
@@ -3453,7 +3453,7 @@ importer only sees a subset of the package.
 
 #### Who is affected?
 
-The `portal-service` and `portal-impl` folders have many packages with the same
+The `portal-kernel` and `portal-impl` folders have many packages with the same
 name. Therefore, all of these packages are affected by the split package
 problem.
 
@@ -3867,7 +3867,7 @@ in the OSGi container.
 
 ---------------------------------------
 
-### User Operation and Importer/Exporter Classes and Utilities Have Been Moved or Removed From portal-kernel  
+### User Operation and Importer/Exporter Classes and Utilities Have Been Moved or Removed From portal-kernel
 - **Date:** 2016-Feb-17
 - **JIRA Ticket:** LPS-63205
 
@@ -3925,28 +3925,54 @@ the product.
 
 ---------------------------------------
 
-### Deprecate category entry for Users
+### Deprecated Category Entry for Users
 - **Date:** 2016-Feb-22
-- **JIRA Ticket:** LPS-63498
+- **JIRA Ticket:** LPS-63466
 
 #### What changed?
 
-The category entry for Site Administration > Users was deprecated in favour of
-Site Administration > Members
+The category entry for Site Administration &rarr; Users has been deprecated in
+favor of Site Administration &rarr; Members.
 
 #### Who is affected?
 
-All developers who specified a control-panel-entry-category to be visible in
-site administration > users
+All developers who specified a `control-panel-entry-category` to be visible in
+Site Administration &rarr; Users are affected.
 
 #### How should I update my code?
 
-You should change the entry from site_administration.users to
-site_administration.members to make it visible in the category
+You should change the entry from `site_administration.users` to
+`site_administration.members` to make it visible in the category.
 
 #### Why was this change made?
 
-To standardize naming conventions and separate concepts between Users in Control
-Panel and Site Members
+This change standardizes naming conventions and separates concepts between Users
+in the Control Panel and Site Members.
+
+---------------------------------------
+
+### Deprecated Category Entry for Pages
+- **Date:** 2016-Feb-25
+- **JIRA Ticket:** LPS-63667
+
+#### What changed?
+
+The category entry for Site Administration &rarr; Pages has been deprecated in
+favor of Site Administration &rarr; Navigation.
+
+#### Who is affected?
+
+All developers who specified a `control-panel-entry-category` to be visible in
+Site Administration &rarr; Pages are affected.
+
+#### How should I update my code?
+
+You should change the entry from `site_administration.pages` to
+`site_administration.navigation` to make it visible in the category.
+
+#### Why was this change made?
+
+This change standardizes naming conventions and separates concepts in Product
+Menu
 
 ---------------------------------------

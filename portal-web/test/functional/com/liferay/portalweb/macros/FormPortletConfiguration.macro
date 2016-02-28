@@ -1,12 +1,6 @@
 <definition>
 	<var name="formName" value="Created Form Name" />
 
-	<command name="save">
-		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
-
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="You have successfully updated the setup." />
-	</command>
-
 	<command name="selectForm">
 		<var name="key_formName" value="${formName}" />
 

@@ -14,12 +14,11 @@
 
 package com.liferay.portal.upgrade.v6_1_0;
 
-import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.upgrade.CamelCaseUpgradePortletPreferences;
+import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.StringBundler;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -34,15 +33,9 @@ public class UpgradePortletPreferences
 			long ownerId, int ownerType, String preferences)
 		throws Exception {
 
-		Connection con = null;
-		PreparedStatement ps = null;
-
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+		try (PreparedStatement ps = connection.prepareStatement(
 				"insert into PortalPreferences (portalPreferencesId, " +
-					"ownerId, ownerType, preferences) values (?, ?, ?, ?)");
+					"ownerId, ownerType, preferences) values (?, ?, ?, ?)")) {
 
 			ps.setLong(1, increment());
 			ps.setLong(2, ownerId);
@@ -51,9 +44,6 @@ public class UpgradePortletPreferences
 
 			ps.executeUpdate();
 		}
-		finally {
-			DataAccess.cleanUp(con, ps);
-		}
 	}
 
 	protected void addPortletPreferences(
@@ -61,16 +51,10 @@ public class UpgradePortletPreferences
 			String preferences)
 		throws Exception {
 
-		Connection con = null;
-		PreparedStatement ps = null;
-
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+		try (PreparedStatement ps = connection.prepareStatement(
 				"insert into PortletPreferences (portletPreferencesId, " +
 					"ownerId, ownerType, plid, portletId, preferences) " +
-						"values (?, ?, ?, ?, ?, ?)");
+						"values (?, ?, ?, ?, ?, ?)")) {
 
 			ps.setLong(1, increment());
 			ps.setLong(2, ownerId);
@@ -80,9 +64,6 @@ public class UpgradePortletPreferences
 			ps.setString(6, preferences);
 
 			ps.executeUpdate();
-		}
-		finally {
-			DataAccess.cleanUp(con, ps);
 		}
 	}
 
@@ -101,24 +82,13 @@ public class UpgradePortletPreferences
 	}
 
 	protected long getOwnerId(long plid) throws Exception {
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+		try (PreparedStatement ps = connection.prepareStatement(
 				"select groupId from Layout where plid = " + plid);
-
-			rs = ps.executeQuery();
+			ResultSet rs = ps.executeQuery()) {
 
 			if (rs.next()) {
 				return rs.getLong("groupId");
 			}
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
 		}
 
 		return 0;
@@ -133,77 +103,52 @@ public class UpgradePortletPreferences
 			long ownerId, int ownerType, long plid, String portletId)
 		throws Exception {
 
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+		try (PreparedStatement ps = connection.prepareStatement(
 				"select portletPreferencesId from PortletPreferences where " +
 					"ownerId = ? and ownerType = ? and plid = ? and " +
-						"portletId = ?");
+						"portletId = ?")) {
 
 			ps.setLong(1, ownerId);
 			ps.setInt(2, ownerType);
 			ps.setLong(3, plid);
 			ps.setString(4, portletId);
 
-			rs = ps.executeQuery();
-
-			if (rs.next()) {
-				return rs.getLong("portletPreferencesId");
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					return rs.getLong("portletPreferencesId");
+				}
 			}
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
 		}
 
 		return 0;
 	}
 
 	protected void updatePortalPreferences() throws Exception {
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+		try (LoggingTimer loggingTimer = new LoggingTimer();
+			PreparedStatement ps = connection.prepareStatement(
 				"select ownerId, ownerType, preferences from " +
-					"PortletPreferences where portletId = ?");
+					"PortletPreferences where portletId = ?")) {
 
 			ps.setString(1, PortletKeys.LIFERAY_PORTAL);
 
-			rs = ps.executeQuery();
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					long ownerId = rs.getLong("ownerId");
+					int ownerType = rs.getInt("ownerType");
+					String preferences = rs.getString("preferences");
 
-			while (rs.next()) {
-				long ownerId = rs.getLong("ownerId");
-				int ownerType = rs.getInt("ownerType");
-				String preferences = rs.getString("preferences");
+					addPortalPreferences(ownerId, ownerType, preferences);
+				}
 
-				addPortalPreferences(ownerId, ownerType, preferences);
+				runSQL(
+					"delete from PortletPreferences where portletId = '" +
+						PortletKeys.LIFERAY_PORTAL + "'");
 			}
-
-			runSQL(
-				"delete from PortletPreferences where portletId = '" +
-					PortletKeys.LIFERAY_PORTAL + "'");
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
 
 	protected void updatePortletPreferencesOwner() throws Exception {
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
+		try (LoggingTimer loggingTimer = new LoggingTimer()) {
 			StringBundler sb = new StringBundler(6);
 
 			sb.append("select portletPreferencesId, plid, portletId, ");
@@ -213,38 +158,34 @@ public class UpgradePortletPreferences
 			sb.append(PortletKeys.PREFS_OWNER_TYPE_LAYOUT);
 			sb.append(" and portletId in ('8', '19', '33')");
 
-			String sql = sb.toString();
+			try (PreparedStatement ps = connection.prepareStatement(
+					sb.toString());
+				ResultSet rs = ps.executeQuery()) {
 
-			ps = con.prepareStatement(sql);
+				while (rs.next()) {
+					long plid = rs.getLong("plid");
+					String portletId = rs.getString("portletId");
+					String preferences = rs.getString("preferences");
 
-			rs = ps.executeQuery();
+					long ownerId = getOwnerId(plid);
 
-			while (rs.next()) {
-				long plid = rs.getLong("plid");
-				String portletId = rs.getString("portletId");
-				String preferences = rs.getString("preferences");
+					if (ownerId == 0) {
+						continue;
+					}
 
-				long ownerId = getOwnerId(plid);
+					long portletPreferencesId = getPortletPreferencesId(
+						ownerId, PortletKeys.PREFS_OWNER_TYPE_GROUP,
+						PortletKeys.PREFS_PLID_SHARED, portletId);
 
-				if (ownerId == 0) {
-					continue;
+					if (portletPreferencesId != 0) {
+						continue;
+					}
+
+					addPortletPreferences(
+						ownerId, PortletKeys.PREFS_OWNER_TYPE_GROUP,
+						PortletKeys.PREFS_PLID_SHARED, portletId, preferences);
 				}
-
-				long portletPreferencesId = getPortletPreferencesId(
-					ownerId, PortletKeys.PREFS_OWNER_TYPE_GROUP,
-					PortletKeys.PREFS_PLID_SHARED, portletId);
-
-				if (portletPreferencesId != 0) {
-					continue;
-				}
-
-				addPortletPreferences(
-					ownerId, PortletKeys.PREFS_OWNER_TYPE_GROUP,
-					PortletKeys.PREFS_PLID_SHARED, portletId, preferences);
 			}
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
 

@@ -21,10 +21,10 @@ import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldTypeServices
 import com.liferay.dynamic.data.mapping.form.renderer.DDMFormRenderer;
 import com.liferay.dynamic.data.mapping.form.renderer.DDMFormRenderingContext;
 import com.liferay.dynamic.data.mapping.form.renderer.DDMFormRenderingException;
-import com.liferay.dynamic.data.mapping.io.DDMFormFieldTypesJSONSerializerUtil;
-import com.liferay.dynamic.data.mapping.io.DDMFormJSONSerializerUtil;
-import com.liferay.dynamic.data.mapping.io.DDMFormLayoutJSONSerializerUtil;
-import com.liferay.dynamic.data.mapping.io.DDMFormValuesJSONSerializerUtil;
+import com.liferay.dynamic.data.mapping.io.DDMFormFieldTypesJSONSerializer;
+import com.liferay.dynamic.data.mapping.io.DDMFormJSONSerializer;
+import com.liferay.dynamic.data.mapping.io.DDMFormLayoutJSONSerializer;
+import com.liferay.dynamic.data.mapping.io.DDMFormValuesJSONSerializer;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.model.DDMFormLayout;
@@ -33,6 +33,7 @@ import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.util.DDM;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
+import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONSerializer;
@@ -180,6 +181,20 @@ public class DDMFormRendererImpl implements DDMFormRenderer {
 		return ddmFormLayoutTransformer.getPages();
 	}
 
+	protected JSONArray getReadOnlyFieldsJSONArray(DDMForm ddmForm) {
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+		List<DDMFormField> ddmFormFields = ddmForm.getDDMFormFields();
+
+		for (DDMFormField ddmFormField : ddmFormFields) {
+			if (ddmFormField.isReadOnly()) {
+				jsonArray.put(ddmFormField.getName());
+			}
+		}
+
+		return jsonArray;
+	}
+
 	protected Map<String, String> getRenderedDDMFormFieldsMap(
 			DDMForm ddmForm, DDMFormRenderingContext ddmFormRenderingContext)
 		throws DDMFormRenderingException {
@@ -261,8 +276,7 @@ public class DDMFormRendererImpl implements DDMFormRenderer {
 
 		template.put("containerId", containerId);
 
-		template.put(
-			"definition", DDMFormJSONSerializerUtil.serialize(ddmForm));
+		template.put("definition", _ddmFormJSONSerializer.serialize(ddmForm));
 
 		DDMFormValues ddmFormValues =
 			ddmFormRenderingContext.getDDMFormValues();
@@ -290,9 +304,9 @@ public class DDMFormRendererImpl implements DDMFormRenderer {
 
 		template.put(
 			"fieldTypes",
-			DDMFormFieldTypesJSONSerializerUtil.serialize(ddmFormFieldTypes));
+			_ddmFormFieldTypesJSONSerializer.serialize(ddmFormFieldTypes));
 		template.put(
-			"layout", DDMFormLayoutJSONSerializerUtil.serialize(ddmFormLayout));
+			"layout", _ddmFormLayoutJSONSerializer.serialize(ddmFormLayout));
 
 		List<Object> pages = getPages(
 			ddmForm, ddmFormLayout, ddmFormRenderingContext);
@@ -303,6 +317,10 @@ public class DDMFormRendererImpl implements DDMFormRenderer {
 			"portletNamespace", ddmFormRenderingContext.getPortletNamespace());
 		template.put("readOnly", ddmFormRenderingContext.isReadOnly());
 
+		JSONArray readOnlyFieldsJSONArray = getReadOnlyFieldsJSONArray(ddmForm);
+
+		template.put("readOnlyFields", readOnlyFieldsJSONArray.toString());
+
 		ResourceBundle resourceBundle = getResourceBundle(locale);
 
 		template.put(
@@ -311,6 +329,15 @@ public class DDMFormRendererImpl implements DDMFormRenderer {
 		template.put(
 			"showRequiredFieldsWarning",
 			ddmFormRenderingContext.isShowRequiredFieldsWarning());
+
+		boolean showSubmitButton = ddmFormRenderingContext.isShowSubmitButton();
+
+		if (ddmFormRenderingContext.isReadOnly()) {
+			showSubmitButton = false;
+		}
+
+		template.put("showSubmitButton", showSubmitButton);
+
 		template.put("strings", getLanguageStringsMap(resourceBundle));
 
 		String submitLabel = GetterUtil.getString(
@@ -324,7 +351,7 @@ public class DDMFormRendererImpl implements DDMFormRenderer {
 		if (ddmFormValues != null) {
 			template.put(
 				"values",
-				DDMFormValuesJSONSerializerUtil.serialize(ddmFormValues));
+				_ddmFormValuesJSONSerializer.serialize(ddmFormValues));
 		}
 		else {
 			template.put("values", JSONFactoryUtil.getNullJSON());
@@ -380,6 +407,34 @@ public class DDMFormRendererImpl implements DDMFormRenderer {
 	}
 
 	@Reference(unbind = "-")
+	protected void setDDMFormFieldTypesJSONSerializer(
+		DDMFormFieldTypesJSONSerializer ddmFormFieldTypesJSONSerializer) {
+
+		_ddmFormFieldTypesJSONSerializer = ddmFormFieldTypesJSONSerializer;
+	}
+
+	@Reference(unbind = "-")
+	protected void setDDMFormJSONSerializer(
+		DDMFormJSONSerializer ddmFormJSONSerializer) {
+
+		_ddmFormJSONSerializer = ddmFormJSONSerializer;
+	}
+
+	@Reference(unbind = "-")
+	protected void setDDMFormLayoutJSONSerializer(
+		DDMFormLayoutJSONSerializer ddmFormLayoutJSONSerializer) {
+
+		_ddmFormLayoutJSONSerializer = ddmFormLayoutJSONSerializer;
+	}
+
+	@Reference(unbind = "-")
+	protected void setDDMFormValuesJSONSerializer(
+		DDMFormValuesJSONSerializer ddmFormValuesJSONSerializer) {
+
+		_ddmFormValuesJSONSerializer = ddmFormValuesJSONSerializer;
+	}
+
+	@Reference(unbind = "-")
 	protected void setJSONFactory(JSONFactory jsonFactory) {
 		_jsonFactory = jsonFactory;
 	}
@@ -387,6 +442,10 @@ public class DDMFormRendererImpl implements DDMFormRenderer {
 	private DDM _ddm;
 	private DDMFormEvaluator _ddmFormEvaluator;
 	private DDMFormFieldTypeServicesTracker _ddmFormFieldTypeServicesTracker;
+	private DDMFormFieldTypesJSONSerializer _ddmFormFieldTypesJSONSerializer;
+	private DDMFormJSONSerializer _ddmFormJSONSerializer;
+	private DDMFormLayoutJSONSerializer _ddmFormLayoutJSONSerializer;
+	private DDMFormValuesJSONSerializer _ddmFormValuesJSONSerializer;
 	private JSONFactory _jsonFactory;
 	private TemplateResource _templateResource;
 

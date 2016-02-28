@@ -14,15 +14,14 @@
 
 package com.liferay.portal.upgrade.v6_0_3;
 
-import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.util.PortalInstances;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -36,15 +35,9 @@ public class UpgradePermission extends UpgradeProcess {
 			String name, int type)
 		throws Exception {
 
-		Connection con = null;
-		PreparedStatement ps = null;
-
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+		try (PreparedStatement ps = connection.prepareStatement(
 				"insert into Role_ (roleId, companyId, classNameId, classPK, " +
-					"name, type_) values (?, ?, ?, ?, ?, ?)");
+					"name, type_) values (?, ?, ?, ?, ?, ?)")) {
 
 			ps.setLong(1, roleId);
 			ps.setLong(2, companyId);
@@ -55,16 +48,15 @@ public class UpgradePermission extends UpgradeProcess {
 
 			ps.executeUpdate();
 		}
-		finally {
-			DataAccess.cleanUp(con, ps);
-		}
 	}
 
 	protected void addSingleApproverWorkflowRoles() throws Exception {
-		long[] companyIds = PortalInstances.getCompanyIdsBySQL();
+		try (LoggingTimer loggingTimer = new LoggingTimer()) {
+			long[] companyIds = PortalInstances.getCompanyIdsBySQL();
 
-		for (long companyId : companyIds) {
-			addSingleApproverWorkflowRoles(companyId);
+			for (long companyId : companyIds) {
+				addSingleApproverWorkflowRoles(companyId);
+			}
 		}
 	}
 
@@ -104,24 +96,15 @@ public class UpgradePermission extends UpgradeProcess {
 			return;
 		}
 
-		Connection con = null;
-		PreparedStatement ps = null;
-
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+		try (PreparedStatement ps = connection.prepareStatement(
 				"insert into UserGroupRole (userId, groupId, roleId) values " +
-					"(?, ?, ?)");
+					"(?, ?, ?)")) {
 
 			ps.setLong(1, userId);
 			ps.setLong(2, groupId);
 			ps.setLong(3, roleId);
 
 			ps.executeUpdate();
-		}
-		finally {
-			DataAccess.cleanUp(con, ps);
 		}
 	}
 
@@ -130,22 +113,13 @@ public class UpgradePermission extends UpgradeProcess {
 			return;
 		}
 
-		Connection con = null;
-		PreparedStatement ps = null;
-
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
-				"insert into Users_Roles (userId, roleId) values (?, ?)");
+		try (PreparedStatement ps = connection.prepareStatement(
+				"insert into Users_Roles (userId, roleId) values (?, ?)")) {
 
 			ps.setLong(1, userId);
 			ps.setLong(2, roleId);
 
 			ps.executeUpdate();
-		}
-		finally {
-			DataAccess.cleanUp(con, ps);
 		}
 	}
 
@@ -153,70 +127,76 @@ public class UpgradePermission extends UpgradeProcess {
 			long companyId, long roleId, long groupId)
 		throws Exception {
 
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		try (PreparedStatement selectClassNameIdStatement =
+				connection.prepareStatement(
+					"select classNameId from Group_ where groupId = ?")) {
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
+			selectClassNameIdStatement.setLong(1, groupId);
 
-			ps = con.prepareStatement(
-				"select classNameId from Group_ where groupId = ?");
+			try (ResultSet selectClassNameIdResultSet =
+					selectClassNameIdStatement.executeQuery()) {
 
-			ps.setLong(1, groupId);
+				long classNameId = 0;
 
-			rs = ps.executeQuery();
+				if (selectClassNameIdResultSet.next()) {
+					classNameId = selectClassNameIdResultSet.getLong(
+						"classNameId");
+				}
 
-			long classNameId = 0;
+				String className = PortalUtil.getClassName(classNameId);
 
-			if (rs.next()) {
-				classNameId = rs.getLong("classNameId");
+				long communityContentReviewerRoleId = getRoleId(
+					companyId, _ROLE_COMMUNITY_CONTENT_REVIEWER);
+				long organizationContentReviewerRoleId = getRoleId(
+					companyId, _ROLE_ORGANIZATION_CONTENT_REVIEWER);
+				long portalContentReviewerRoleId = getRoleId(
+					companyId, _ROLE_PORTAL_CONTENT_REVIEWER);
+
+				StringBundler sb = new StringBundler(5);
+
+				sb.append("(select User_.* from User_, Users_Roles where ");
+				sb.append("User_.userId = Users_Roles.userId and ");
+				sb.append("Users_Roles.roleId = ?) union all (select User_.* ");
+				sb.append("from User_, UserGroupRole where User_.userId = ");
+				sb.append("UserGroupRole.userId and UserGroupRole.roleId = ?)");
+
+				try (PreparedStatement selectUserStatement =
+						connection.prepareStatement(sb.toString())) {
+
+					selectUserStatement.setLong(1, roleId);
+					selectUserStatement.setLong(2, roleId);
+
+					try (ResultSet selectUserResultSet =
+							selectUserStatement.executeQuery()) {
+
+						while (selectUserResultSet.next()) {
+							long userId = selectUserResultSet.getLong("userId");
+
+							if (className.equals(
+									"com.liferay.portal.model.Company")) {
+
+								addUserRole(
+									userId, portalContentReviewerRoleId);
+							}
+							else if (className.equals(
+										"com.liferay.portal.model.Group")) {
+
+								addUserGroupRole(
+									userId, groupId,
+									communityContentReviewerRoleId);
+							}
+							else if (className.equals(
+										"com.liferay.portal.model." +
+											"Organization")) {
+
+								addUserGroupRole(
+									userId, groupId,
+									organizationContentReviewerRoleId);
+							}
+						}
+					}
+				}
 			}
-
-			String className = PortalUtil.getClassName(classNameId);
-
-			long communityContentReviewerRoleId = getRoleId(
-				companyId, _ROLE_COMMUNITY_CONTENT_REVIEWER);
-			long organizationContentReviewerRoleId = getRoleId(
-				companyId, _ROLE_ORGANIZATION_CONTENT_REVIEWER);
-			long portalContentReviewerRoleId = getRoleId(
-				companyId, _ROLE_PORTAL_CONTENT_REVIEWER);
-
-			StringBundler sb = new StringBundler(5);
-
-			sb.append("(select User_.* from User_, Users_Roles where ");
-			sb.append("User_.userId = Users_Roles.userId and ");
-			sb.append("Users_Roles.roleId = ?) union all (select User_.* ");
-			sb.append("from User_, UserGroupRole where User_.userId = ");
-			sb.append("UserGroupRole.userId and UserGroupRole.roleId = ?)");
-
-			ps = con.prepareStatement(sb.toString());
-
-			ps.setLong(1, roleId);
-			ps.setLong(2, roleId);
-
-			rs = ps.executeQuery();
-
-			while (rs.next()) {
-				long userId = rs.getLong("userId");
-
-				if (className.equals("com.liferay.portal.model.Company")) {
-					addUserRole(userId, portalContentReviewerRoleId);
-				}
-				else if (className.equals("com.liferay.portal.model.Group")) {
-					addUserGroupRole(
-						userId, groupId, communityContentReviewerRoleId);
-				}
-				else if (className.equals(
-							"com.liferay.portal.model.Organization")) {
-
-					addUserGroupRole(
-						userId, groupId, organizationContentReviewerRoleId);
-				}
-			}
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
 
@@ -228,107 +208,71 @@ public class UpgradePermission extends UpgradeProcess {
 	}
 
 	protected long getRoleId(long companyId, String name) throws Exception {
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
-				"select roleId from Role_ where companyId = ? and name = ?");
+		try (PreparedStatement ps = connection.prepareStatement(
+				"select roleId from Role_ where companyId = ? and name = ?")) {
 
 			ps.setLong(1, companyId);
 			ps.setString(2, name);
 
-			rs = ps.executeQuery();
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					return rs.getLong("roleId");
+				}
 
-			if (rs.next()) {
-				return rs.getLong("roleId");
+				return 0;
 			}
-
-			return 0;
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
 
 	protected boolean hasUserGroupRole(long userId, long groupId, long roleId)
 		throws Exception {
 
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+		try (PreparedStatement ps = connection.prepareStatement(
 				"select count(*) from UserGroupRole where userId = ? and " +
-					"groupId = ? and roleId = ?");
+					"groupId = ? and roleId = ?")) {
 
 			ps.setLong(1, userId);
 			ps.setLong(2, groupId);
 			ps.setLong(3, roleId);
 
-			rs = ps.executeQuery();
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					int count = rs.getInt(1);
 
-			if (rs.next()) {
-				int count = rs.getInt(1);
-
-				if (count > 0) {
-					return true;
+					if (count > 0) {
+						return true;
+					}
 				}
-			}
 
-			return false;
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
+				return false;
+			}
 		}
 	}
 
 	protected boolean hasUserRole(long userId, long roleId) throws Exception {
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+		try (PreparedStatement ps = connection.prepareStatement(
 				"select count(*) from Users_Roles where userId = ? and " +
-					"roleId = ?");
+					"roleId = ?")) {
 
 			ps.setLong(1, userId);
 			ps.setLong(2, roleId);
 
-			rs = ps.executeQuery();
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					int count = rs.getInt(1);
 
-			if (rs.next()) {
-				int count = rs.getInt(1);
-
-				if (count > 0) {
-					return true;
+					if (count > 0) {
+						return true;
+					}
 				}
-			}
 
-			return false;
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
+				return false;
+			}
 		}
 	}
 
 	protected void updatePermissions() throws Exception {
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
+		try (LoggingTimer loggingTimer = new LoggingTimer()) {
 			StringBundler sb = new StringBundler(11);
 
 			sb.append("select ResourcePermission.companyId, ");
@@ -343,20 +287,19 @@ public class UpgradePermission extends UpgradeProcess {
 			sb.append("mod((ResourcePermission.actionIds / ");
 			sb.append("ResourceAction.bitwiseValue), 2) = 1");
 
-			ps = con.prepareStatement(sb.toString());
+			try (PreparedStatement ps = connection.prepareStatement(
+					sb.toString());
+				ResultSet rs = ps.executeQuery()) {
 
-			rs = ps.executeQuery();
+				while (rs.next()) {
+					long companyId = rs.getLong("companyId");
+					long roleId = rs.getLong("roleId");
+					long groupId = GetterUtil.getLong(rs.getString("primKey"));
 
-			while (rs.next()) {
-				long companyId = rs.getLong("companyId");
-				long roleId = rs.getLong("roleId");
-				long groupId = GetterUtil.getLong(rs.getString("primKey"));
-
-				assignSingleApproverWorkflowRoles(companyId, roleId, groupId);
+					assignSingleApproverWorkflowRoles(
+						companyId, roleId, groupId);
+				}
 			}
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
 

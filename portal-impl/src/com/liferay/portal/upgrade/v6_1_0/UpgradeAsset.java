@@ -15,18 +15,16 @@
 package com.liferay.portal.upgrade.v6_1_0;
 
 import com.liferay.document.library.kernel.model.DLFileEntryTypeConstants;
-import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.upgrade.util.UpgradeProcessUtil;
+import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.upgrade.v6_1_0.util.AssetEntryTable;
 import com.liferay.portal.util.PropsValues;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 /**
  * @author Juan Fernández
@@ -37,62 +35,37 @@ public class UpgradeAsset extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		try {
-			runSQL("alter_column_type AssetEntry title STRING null");
-		}
-		catch (SQLException sqle) {
-			upgradeTable(
-				AssetEntryTable.TABLE_NAME, AssetEntryTable.TABLE_COLUMNS,
-				AssetEntryTable.TABLE_SQL_CREATE,
-				AssetEntryTable.TABLE_SQL_ADD_INDEXES);
-		}
+		alterColumnType(AssetEntryTable.class, "title", "STRING null");
 
 		updateAssetClassTypeId();
 		updateIGImageClassName();
 	}
 
 	protected long getJournalStructureId(String structureId) throws Exception {
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
-				"select id_ from JournalStructure where structureId = ?");
+		try (PreparedStatement ps = connection.prepareStatement(
+				"select id_ from JournalStructure where structureId = ?")) {
 
 			ps.setString(1, structureId);
 
-			rs = ps.executeQuery();
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					return rs.getLong("id_");
+				}
 
-			if (rs.next()) {
-				return rs.getLong("id_");
+				return 0;
 			}
-
-			return 0;
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
 
 	protected void updateAssetClassTypeId() throws Exception {
-		long classNameId = PortalUtil.getClassNameId(
-			"com.liferay.portlet.journal.model.JournalArticle");
-
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+		try (LoggingTimer loggingTimer = new LoggingTimer();
+			PreparedStatement ps = connection.prepareStatement(
 				"select resourcePrimKey, structureId from JournalArticle " +
 					"where structureId != ''");
+			ResultSet rs = ps.executeQuery()) {
 
-			rs = ps.executeQuery();
+			long classNameId = PortalUtil.getClassNameId(
+				"com.liferay.portlet.journal.model.JournalArticle");
 
 			while (rs.next()) {
 				long resourcePrimKey = rs.getLong("resourcePrimKey");
@@ -106,26 +79,27 @@ public class UpgradeAsset extends UpgradeProcess {
 							classNameId + " and classPK = " + resourcePrimKey);
 			}
 		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
-		}
 	}
 
 	protected void updateIGImageClassName() throws Exception {
-		long dlFileEntryClassNameId = PortalUtil.getClassNameId(
-			"com.liferay.portlet.documentlibrary.model.DLFileEntry");
-		long igImageClassNameId = PortalUtil.getClassNameId(
-			"com.liferay.portlet.imagegallery.model.IGImage");
+		try (LoggingTimer loggingTimer = new LoggingTimer()) {
+			long dlFileEntryClassNameId = PortalUtil.getClassNameId(
+				"com.liferay.portlet.documentlibrary.model.DLFileEntry");
+			long igImageClassNameId = PortalUtil.getClassNameId(
+				"com.liferay.portlet.imagegallery.model.IGImage");
 
-		if (PropsValues.DL_FILE_ENTRY_TYPE_IG_IMAGE_AUTO_CREATE_ON_UPGRADE) {
-			UpgradeProcessUtil.setCreateIGImageDocumentType(true);
+			if (PropsValues.
+					DL_FILE_ENTRY_TYPE_IG_IMAGE_AUTO_CREATE_ON_UPGRADE) {
 
-			updateIGImageClassNameWithClassTypeId(
-				dlFileEntryClassNameId, igImageClassNameId);
-		}
-		else {
-			updateIGImageClassNameWithoutClassTypeId(
-				dlFileEntryClassNameId, igImageClassNameId);
+				UpgradeProcessUtil.setCreateIGImageDocumentType(true);
+
+				updateIGImageClassNameWithClassTypeId(
+					dlFileEntryClassNameId, igImageClassNameId);
+			}
+			else {
+				updateIGImageClassNameWithoutClassTypeId(
+					dlFileEntryClassNameId, igImageClassNameId);
+			}
 		}
 	}
 
@@ -133,41 +107,31 @@ public class UpgradeAsset extends UpgradeProcess {
 			long dlFileEntryClassNameId, long igImageClassNameId)
 		throws Exception {
 
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(
+		try (PreparedStatement ps = connection.prepareStatement(
 				"select fileEntryTypeId, companyId from DLFileEntryType " +
-					"where name = ?");
+					"where name = ?")) {
 
 			ps.setString(1, DLFileEntryTypeConstants.NAME_IG_IMAGE);
 
-			rs = ps.executeQuery();
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					long fileEntryTypeId = rs.getLong("fileEntryTypeId");
+					long companyId = rs.getLong("companyId");
 
-			while (rs.next()) {
-				long fileEntryTypeId = rs.getLong("fileEntryTypeId");
-				long companyId = rs.getLong("companyId");
+					StringBundler sb = new StringBundler(8);
 
-				StringBundler sb = new StringBundler(8);
+					sb.append("update AssetEntry set classNameId = ");
+					sb.append(dlFileEntryClassNameId);
+					sb.append(", classTypeId = ");
+					sb.append(fileEntryTypeId);
+					sb.append(" where classNameId = ");
+					sb.append(igImageClassNameId);
+					sb.append(" AND companyId = ");
+					sb.append(companyId);
 
-				sb.append("update AssetEntry set classNameId = ");
-				sb.append(dlFileEntryClassNameId);
-				sb.append(", classTypeId = ");
-				sb.append(fileEntryTypeId);
-				sb.append(" where classNameId = ");
-				sb.append(igImageClassNameId);
-				sb.append(" AND companyId = ");
-				sb.append(companyId);
-
-				runSQL(sb.toString());
+					runSQL(sb.toString());
+				}
 			}
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
 

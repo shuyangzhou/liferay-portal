@@ -14,11 +14,10 @@
 
 package com.liferay.portal.upgrade.v6_0_0;
 
-import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -33,66 +32,46 @@ public class UpgradeGroup extends UpgradeProcess {
 	}
 
 	protected Object[] getLayout(long plid) throws Exception {
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(_GET_LAYOUT);
-
+		try (PreparedStatement ps = connection.prepareStatement(_GET_LAYOUT)) {
 			ps.setLong(1, plid);
 
-			rs = ps.executeQuery();
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					long groupId = rs.getLong("groupId");
 
-			if (rs.next()) {
-				long groupId = rs.getLong("groupId");
+					return new Object[] {groupId};
+				}
 
-				return new Object[] {groupId};
+				return null;
 			}
-
-			return null;
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
 
 	protected void updateParentGroupId() throws Exception {
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
+		try (LoggingTimer loggingTimer = new LoggingTimer()) {
 			long classNameId = PortalUtil.getClassNameId(
 				"com.liferay.portal.model.Layout");
 
-			ps = con.prepareStatement(
-				"select groupId, classPK from Group_ where classNameId = " +
-					classNameId);
+			try (PreparedStatement ps = connection.prepareStatement(
+					"select groupId, classPK from Group_ where classNameId = " +
+						classNameId);
+				ResultSet rs = ps.executeQuery()) {
 
-			rs = ps.executeQuery();
+				while (rs.next()) {
+					long groupId = rs.getLong("groupId");
+					long classPK = rs.getLong("classPK");
 
-			while (rs.next()) {
-				long groupId = rs.getLong("groupId");
-				long classPK = rs.getLong("classPK");
+					Object[] layout = getLayout(classPK);
 
-				Object[] layout = getLayout(classPK);
+					if (layout != null) {
+						long layoutGroupId = (Long)layout[0];
 
-				if (layout != null) {
-					long layoutGroupId = (Long)layout[0];
-
-					runSQL(
-						"update Group_ set parentGroupId = " + layoutGroupId +
-							" where groupId = " + groupId);
+						runSQL(
+							"update Group_ set parentGroupId = " +
+								layoutGroupId + " where groupId = " + groupId);
+					}
 				}
 			}
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
 

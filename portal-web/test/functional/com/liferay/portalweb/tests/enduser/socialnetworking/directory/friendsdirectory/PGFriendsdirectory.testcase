@@ -81,7 +81,7 @@
 		<execute macro="ProductMenuHelper#expandPanelSites" />
 
 		<execute macro="ProductMenuHelper#expandCategory">
-			<var name="category" value="Pages" />
+			<var name="category" value="Navigation" />
 		</execute>
 
 		<var name="key_page" value="My Profile" />
@@ -92,7 +92,7 @@
 
 		<execute function="AssertClick" locator1="Button#ADD_PAGE_BTN" value1="Add Page" />
 
-		<execute macro="Alert#viewPageAddedSuccessMessage" />
+		<execute macro="Alert#viewSuccessMessage" />
 
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="${pageName}" />

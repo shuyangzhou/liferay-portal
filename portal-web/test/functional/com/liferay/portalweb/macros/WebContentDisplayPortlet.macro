@@ -49,9 +49,7 @@
 
 		<execute function="Select" locator1="Select#SCOPE" value1="regexp:.*${scopeSelection}.*" />
 
-		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
-
-		<execute macro="Alert#viewSetupUpdatedSuccessMessage" />
+		<execute macro="PortletEntry#save" />
 	</command>
 
 	<command name="configureSetupPG">
@@ -164,7 +162,7 @@
 			</then>
 		</if>
 
-		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
+		<execute macro="Button#clickSave" />
 
 		<if>
 			<equals arg1="${editTemplateButton}" arg2="true" />
@@ -203,9 +201,7 @@
 	<command name="saveConfiguration">
 		<execute function="SelectFrame" locator1="IFrame#DIALOG" />
 
-		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
-
-		<execute macro="Alert#viewSetupUpdatedSuccessMessage" />
+		<execute macro="PortletEntry#save" />
 
 		<execute function="SelectFrame" value1="relative=top" />
 	</command>
@@ -248,8 +244,8 @@
 				<execute function="SelectFrame" locator1="IFrame#DIALOG" />
 
 				<execute function="AssertTextEquals" locator1="Message#INFO_ARTICLE" value1="${webContentTitle} (Modified)" />
-				<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
-				<execute macro="Alert#viewSetupUpdatedSuccessMessage" />
+				<execute macro="Button#clickSave" />
+				<execute macro="Alert#viewSuccessMessage" />
 			</then>
 		</if>
 
@@ -294,8 +290,8 @@
 		<execute function="AssertClick" locator1="Link#WEB_CONTENT_ARTICLE" value1="${webContentTitle}" />
 		<execute function="SelectFrame" value1="relative=top" />
 		<execute function="SelectFrame" locator1="IFrame#DIALOG" />
-		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
-		<execute macro="Alert#viewSetupUpdatedSuccessMessage" />
+		<execute macro="Button#clickSave" />
+		<execute macro="Alert#viewSuccessMessage" />
 		<execute function="SelectFrame" value1="relative=top" />
 	</command>
 

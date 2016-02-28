@@ -307,7 +307,7 @@
 
 					<execute function="AssertClick" locator1="Button#REPLY" value1="Reply" />
 
-					<execute macro="Alert#viewRequestCompletedSuccessMessage" />
+					<execute macro="Alert#viewSuccessMessage" />
 				</for>
 			</then>
 			<else>
@@ -315,7 +315,7 @@
 
 				<execute function="AssertClick" locator1="Button#REPLY" value1="Reply" />
 
-				<execute macro="Alert#viewRequestCompletedSuccessMessage" />
+				<execute macro="Alert#viewSuccessMessage" />
 			</else>
 		</if>
 
@@ -726,14 +726,14 @@
 							<then>
 								<execute function="Pause" value1="1000" />
 								<execute function="ClickNoError" locator1="PGCalendarAgendaView#SCHEDULER_EVENT_DIALOG_BOX_DELETE_BUTTON" value1="Delete" />
-								<execute function="Pause" value1="1000" />
+
 								<execute function="Confirm#waitForConfirmation" value1="Deleting this event will cancel the meeting with your guests. Would you like to delete?" />
 								<execute function="Pause" value1="2000" />
 							</then>
 							<else>
 								<execute function="Pause" value1="1000" />
 								<execute function="ClickNoError" locator1="PGCalendarAgendaView#SCHEDULER_EVENT_DIALOG_BOX_DELETE_BUTTON" value1="Delete" />
-								<execute function="Pause" value1="1000" />
+
 								<execute function="AssertClick" locator1="CalendarEditEvent#ALL_EVENTS_IN_THE_SERIES_BUTTON" value1="All Events in the Series"  />
 								<execute function="Pause" value1="10000" />
 							</else>
@@ -815,7 +815,6 @@
 		<execute function="AssertElementPresent" locator1="PGCalendarAgendaView#SCHEDULER_EVENT_DIALOG_BOX_DELETE_BUTTON" />
 		<execute function="Pause" value1="1000" />
 		<execute function="ClickNoError" locator1="PGCalendarAgendaView#SCHEDULER_EVENT_DIALOG_BOX_DELETE_BUTTON" value1="Delete" />
-		<execute function="Pause" value1="1000" />
 
 		<if>
 			<equals arg1="${deleteOptionSet}" arg2="All Events in the Series" />
@@ -1029,7 +1028,7 @@
 			</then>
 		</if>
 
-		<execute macro="Alert#viewRequestCompletedSuccessMessage" />
+		<execute macro="Alert#viewSuccessMessage" />
 
 		<execute function="SelectFrame" value1="relative=top" />
 
@@ -1193,7 +1192,7 @@
 	<command name="publish">
 		<execute macro="CalendarEvent#clickPublish" />
 
-		<execute macro="Alert#viewRequestCompletedSuccessMessage" />
+		<execute macro="Alert#viewSuccessMessage" />
 	</command>
 
 	<command name="publishRepeating">
@@ -1207,7 +1206,7 @@
 
 		<execute function="AssertClick" locator1="CalendarEditEvent#${saveOptionPath}_BUTTON" value1="${saveOption}" />
 
-		<execute macro="Alert#viewRequestCompletedSuccessMessage" />
+		<execute macro="Alert#viewSuccessMessage" />
 	</command>
 
 	<command name="publishWithUserNotification">
@@ -1218,7 +1217,7 @@
 
 		<execute function="AssertClick" locator1="CalendarEditEvent#SAVE_CHANGES_BUTTON" value1="Save changes." />
 
-		<execute macro="Alert#viewRequestCompletedSuccessMessage" />
+		<execute macro="Alert#viewSuccessMessage" />
 	</command>
 
 	<command name="rate4Stars">

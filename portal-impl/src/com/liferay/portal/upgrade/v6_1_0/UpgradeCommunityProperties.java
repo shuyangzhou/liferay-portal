@@ -14,13 +14,11 @@
 
 package com.liferay.portal.upgrade.v6_1_0;
 
-import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -49,10 +47,6 @@ public class UpgradeCommunityProperties extends UpgradeProcess {
 			String newValue)
 		throws Exception {
 
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
 		StringBundler sb = new StringBundler(9);
 
 		sb.append("update ");
@@ -69,8 +63,6 @@ public class UpgradeCommunityProperties extends UpgradeProcess {
 			runSQL(sb.toString());
 		}
 		catch (Exception e) {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
 			sb = new StringBundler(7);
 
 			sb.append("select ");
@@ -81,21 +73,19 @@ public class UpgradeCommunityProperties extends UpgradeProcess {
 			sb.append(oldValue);
 			sb.append("%'");
 
-			ps = con.prepareStatement(sb.toString());
+			try (PreparedStatement ps = connection.prepareStatement(
+					sb.toString());
+				ResultSet rs = ps.executeQuery()) {
 
-			rs = ps.executeQuery();
+				while (rs.next()) {
+					long primaryKey = rs.getLong(primaryKeyColumnName);
+					String preferences = rs.getString("preferences");
 
-			while (rs.next()) {
-				long primaryKey = rs.getLong(primaryKeyColumnName);
-				String preferences = rs.getString("preferences");
-
-				updatePreferences(
-					tableName, primaryKeyColumnName, oldValue, newValue,
-					primaryKey, preferences);
+					updatePreferences(
+						tableName, primaryKeyColumnName, oldValue, newValue,
+						primaryKey, preferences);
+				}
 			}
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
 
@@ -106,10 +96,6 @@ public class UpgradeCommunityProperties extends UpgradeProcess {
 
 		preferences = StringUtil.replace(preferences, oldValue, newValue);
 
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
 		StringBundler sb = new StringBundler(5);
 
 		sb.append("update ");
@@ -118,18 +104,13 @@ public class UpgradeCommunityProperties extends UpgradeProcess {
 		sb.append(primaryKeyColumnName);
 		sb.append(" = ?");
 
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement(sb.toString());
+		try (PreparedStatement ps = connection.prepareStatement(
+				sb.toString())) {
 
 			ps.setString(1, preferences);
 			ps.setLong(2, primaryKey);
 
 			ps.executeUpdate();
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
 		}
 	}
 

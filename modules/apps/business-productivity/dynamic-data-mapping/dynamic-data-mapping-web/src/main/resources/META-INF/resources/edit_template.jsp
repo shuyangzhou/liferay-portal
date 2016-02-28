@@ -207,7 +207,7 @@ DDMNavigationHelper ddmNavigationHelper = ddmDisplay.getDDMNavigationHelper();
 							<div class="form-group">
 								<aui:input helpMessage="structure-help" name="structure" type="resource" value="<%= (structure != null) ? structure.getName(locale) : StringPool.BLANK %>" />
 
-								<c:if test="<%= !ddmNavigationHelper.isNavigationStartsOnSelectTemplate(liferayPortletRequest) && ((template == null) || (template.getClassPK() == 0)) %>">
+								<c:if test="<%= ddmNavigationHelper.isNavigationStartsOnViewTemplates(liferayPortletRequest) && ((template == null) || (template.getClassPK() == 0)) %>">
 									<liferay-ui:icon
 										iconCssClass="icon-search"
 										label="<%= true %>"
@@ -243,7 +243,7 @@ DDMNavigationHelper ddmNavigationHelper = ddmDisplay.getDDMNavigationHelper();
 							</aui:select>
 						</c:if>
 
-					<c:if test="<%= !ddmWebConfiguration.autogenerateTemplateKey() %>">
+					<c:if test="<%= !ddmDisplayContext.autogenerateTemplateKey() %>">
 						<aui:input disabled="<%= (template != null) ? true : false %>" name="templateKey" />
 					</c:if>
 
@@ -394,6 +394,7 @@ DDMNavigationHelper ddmNavigationHelper = ddmDisplay.getDDMNavigationHelper();
 						eventName: '<portlet:namespace />selectStructure',
 						groupId: <%= groupId %>,
 						mvcPath: '/select_structure.jsp',
+						navigationStartsOn: '<%= DDMNavigationHelper.SELECT_STRUCTURE %>',
 						showAncestorScopes: true,
 						title: '<%= UnicodeLanguageUtil.get(request, "structures") %>'
 					},

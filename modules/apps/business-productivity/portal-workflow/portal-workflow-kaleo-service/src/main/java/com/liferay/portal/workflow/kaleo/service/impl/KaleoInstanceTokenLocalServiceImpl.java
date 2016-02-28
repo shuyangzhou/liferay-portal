@@ -22,8 +22,8 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.workflow.kaleo.model.KaleoInstance;
 import com.liferay.portal.workflow.kaleo.model.KaleoInstanceToken;
+import com.liferay.portal.workflow.kaleo.model.KaleoInstanceTokenConstants;
 import com.liferay.portal.workflow.kaleo.model.KaleoNode;
-import com.liferay.portal.workflow.kaleo.model.impl.KaleoInstanceTokenImpl;
 import com.liferay.portal.workflow.kaleo.service.base.KaleoInstanceTokenLocalServiceBaseImpl;
 
 import java.io.Serializable;
@@ -212,7 +212,7 @@ public class KaleoInstanceTokenLocalServiceImpl
 		kaleoInstanceToken.setKaleoInstanceId(
 			kaleoInstance.getKaleoInstanceId());
 		kaleoInstanceToken.setParentKaleoInstanceTokenId(
-			KaleoInstanceTokenImpl.DEFAULT_PARENT_KALEO_INSTANCE_TOKEN_ID);
+			KaleoInstanceTokenConstants.PARENT_KALEO_INSTANCE_TOKEN_ID_DEFAULT);
 		kaleoInstanceToken.setClassName(
 			(String)workflowContext.get(
 				WorkflowConstants.CONTEXT_ENTRY_CLASS_NAME));

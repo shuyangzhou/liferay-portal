@@ -7,11 +7,11 @@
 
 		<execute function="AssertClick" locator1="MenuItem#THREAD" value1="Thread" />
 
+		<execute function="AssertElementPresent" locator1="TextInput#SUBJECT" />
+
 		<execute function="Type" locator1="TextInput#SUBJECT" value1="${threadSubject}" />
 		<execute function="Type#typeCKEditor" locator1="CKEditor#BODY_FIELD" value1="${threadBody}" />
-		<execute function="AssertClick" locator1="Button#PUBLISH" value1="Publish" />
-
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="Your request completed successfully." />
+		<execute macro="PortletEntry#publish" />
 	</command>
 
 	<command name="addCPWithAttachment">
@@ -27,9 +27,7 @@
 		</execute>
 
 		<execute function="UploadCommonFile" locator1="MessageBoardsEditMessage#ATTACHMENTS_BROWSE_FIELD" value1="${mbAttachmentFile}" />
-		<execute function="AssertClick" locator1="Button#PUBLISH" value1="Publish" />
-
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="Your request completed successfully." />
+		<execute macro="PortletEntry#publish" />
 	</command>
 
 	<command name="addInvalidAttachmentPG">
@@ -83,9 +81,7 @@
 			</else>
 		</if>
 
-		<execute function="AssertClick" locator1="Button#PUBLISH" value1="Publish" />
-
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="Your request completed successfully." />
+		<execute macro="PortletEntry#publish" />
 	</command>
 
 	<command name="addPGAsAnonymous">
@@ -101,7 +97,7 @@
 
 		<execute function="Check" locator1="Checkbox#ANONYMOUS" />
 
-		<execute macro="MessageboardsThread#publish" />
+		<execute macro="PortletEntry#publish" />
 
 		<execute function="AssertTextEquals#assertPartialText" locator1="MessageBoardsThread#THREAD_USERNAME" value1="Anonymous" />
 	</command>
@@ -119,7 +115,7 @@
 
 		<execute function="Check" locator1="Checkbox#MARK_AS_A_QUESTION" />
 
-		<execute macro="MessageboardsThread#publish" />
+		<execute macro="PortletEntry#publish" />
 
 		<execute function="Click" locator1="Icon#BACK" />
 
@@ -141,7 +137,7 @@
 
 		<execute function="UploadCommonFile" locator1="MessageBoardsEditMessage#ATTACHMENTS_FILE_FIELD_1" value1="${mbThreadAttachment}" />
 
-		<execute macro="MessageboardsThread#publish" />
+		<execute macro="PortletEntry#publish" />
 	</command>
 
 	<command name="addPGWithPermissions">
@@ -157,7 +153,7 @@
 
 		<execute function="Select" locator1="AssetPermissions#VIEWABLE_AS_SELECT" value1="${viewableBySelection}" />
 
-		<execute macro="MessageboardsThread#publish" />
+		<execute macro="PortletEntry#publish" />
 	</command>
 
 	<command name="addPGWithPriority">
@@ -173,7 +169,7 @@
 
 		<execute function="Select" locator1="MessageBoardsEditMessage#PRIORITY_SELECT" value1="${threadPriority}" />
 
-		<execute macro="MessageboardsThread#publish" />
+		<execute macro="PortletEntry#publish" />
 	</command>
 
 	<command name="addTagPGCmd">
@@ -207,9 +203,7 @@
 			</else>
 		</if>
 
-		<execute function="AssertClick" locator1="Button#PUBLISH" value1="Publish" />
-
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="Your request completed successfully." />
+		<execute macro="PortletEntry#publish" />
 	</command>
 
 	<command name="addWithWorkflowCP">
@@ -221,7 +215,7 @@
 		<execute function="Type#typeCKEditor" locator1="CKEditor#BODY_FIELD" value1="${threadBody}" />
 		<execute function="Click" locator1="Button#SUBMIT_FOR_PUBLICATION" />
 
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="Your request completed successfully." />
+		<execute macro="Alert#viewSuccessMessage" />
 	</command>
 
 	<command name="addWithWorkflowPG">
@@ -233,7 +227,7 @@
 
 		<execute function="Click" locator1="Button#SUBMIT_FOR_PUBLICATION" />
 
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="Your request completed successfully." />
+		<execute macro="Alert#viewSuccessMessage" />
 	</command>
 
 	<command name="assertAlertNotPresent">
@@ -251,7 +245,7 @@
 		</if>
 
 		<execute function="AssertClick" locator1="MessageBoardsThread#MESSAGE_BAN_THIS_USER" value1="Ban This User" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="Your request completed successfully." />
+		<execute macro="Alert#viewSuccessMessage" />
 	</command>
 
 	<command name="cancelAdd">
@@ -264,9 +258,7 @@
 	</command>
 
 	<command name="cancelEdit">
-		<execute function="Click#waitForMenuToggleJSClick" locator1="Icon#BODY_VERTICAL_ELLIPSIS" />
-
-		<execute function="AssertClick" locator1="MenuItem#EDIT" value1="Edit" />
+		<execute macro="PortletEntry#clickEditFromEllipsis" />
 
 		<execute function="Type" locator1="TextInput#SUBJECT" value1="${threadSubjectEdit}" />
 		<execute function="Type#typeCKEditorWaitForCKEditor" locator1="CKEditor#BODY_FIELD" value1="${threadBodyEdit}" />
@@ -280,14 +272,12 @@
 		<execute function="AssertTextEquals" locator1="MessageBoards#THREAD_LIST_THREAD" value1="${threadSubject}" />
 		<execute function="Click" locator1="MessageBoards#THREAD_LIST_ACTIONS" />
 		<execute function="Click" locator1="MenuItem#MOVE_TO_THE_RECYCLE_BIN" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="The ${assetType} ${threadSubject} was moved to the Recycle Bin. Undo" />
+		<execute function="AssertElementPresent" locator1="Message#SUCCESS" />
 		<execute function="AssertElementNotPresent" locator1="MessageBoards#THREAD_LIST_THREAD" />
 	</command>
 
 	<command name="editCP">
-		<execute function="Click#waitForMenuToggleJSClick" locator1="Icon#BODY_VERTICAL_ELLIPSIS" />
-
-		<execute function="AssertClick" locator1="MenuItem#EDIT" value1="Edit" />
+		<execute macro="PortletEntry#clickEditFromEllipsis" />
 
 		<if>
 			<equals arg1="${threadAttachmentRemove}" arg2="true" />
@@ -315,18 +305,14 @@
 			</then>
 		</if>
 
-		<execute function="AssertClick" locator1="Button#PUBLISH" value1="Publish" />
-
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="Your request completed successfully." />
+		<execute macro="PortletEntry#publish" />
 	</command>
 
 	<command name="editPG">
 		<var name="key_threadSubject" value="${threadSubject}" />
 		<var name="key_userName" value="${userName}" />
 
-		<execute function="Click#waitForMenuToggleJSClick" locator1="Icon#BODY_VERTICAL_ELLIPSIS" />
-
-		<execute function="AssertClick" locator1="MenuItem#EDIT" value1="Edit" />
+		<execute macro="PortletEntry#clickEditFromEllipsis" />
 
 		<if>
 			<isset var="threadSubjectEdit" />
@@ -367,7 +353,7 @@
 			</else>
 		</if>
 
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="Your request completed successfully." />
+		<execute macro="Alert#viewSuccessMessage" />
 	</command>
 
 	<command name="editViaMyPosts">
@@ -388,9 +374,7 @@
 
 		<execute function="AssertClick" locator1="MenuItem#EDIT" value1="Edit" />
 
-		<execute function="AssertClick" locator1="Button#PUBLISH" value1="Publish" />
-
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="Your request completed successfully." />
+		<execute macro="PortletEntry#publish" />
 	</command>
 
 	<command name="flagPG">
@@ -400,7 +384,7 @@
 		<execute function="AssertTextEquals" locator1="MessageBoardsThread#REPORT_INAPPROPRIATE_CONTENT_WARNING" value1="You are about to report a violation of our Terms of Use. All reports are strictly confidential." />
 		<execute function="AssertTextEquals" locator1="MessageBoardsThread#REPORT_INAPPROPRIATE_CONTENT_WARNING_TERMS_OF_USE_LINK" value1="Terms of Use" />
 		<execute function="Select" locator1="MessageBoardsThread#REPORT_INAPPROPRIATE_CONTENT_REASON_SELECT" value1="${flagReason}" />
-		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
+		<execute macro="Button#clickSave" />
 		<execute function="AssertTextEquals" locator1="MessageBoardsThread#REPORT_INAPPROPRIATE_CONTENT_SUCCESS_MESSAGE" value1="Although we cannot disclose our final decision, we do review every report and appreciate your effort to make sure Liferay is a safe environment for everyone." />
 		<execute function="Click" locator1="Icon#CLOSE" />
 	</command>
@@ -441,7 +425,7 @@
 		<execute function="Click" locator1="MessageBoards#THREAD_LIST_THREAD" value1="${threadSubject}" />
 
 		<execute function="AssertClick" locator1="MessageBoardsThread#THREAD_ACTIONS_LOCK_THREAD" value1="Lock Thread" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="Your request completed successfully." />
+		<execute macro="Alert#viewSuccessMessage" />
 	</command>
 
 	<command name="markAsAnswerCP">
@@ -556,9 +540,9 @@
 
 		<execute function="Click#waitForMenuToggleJSClick" locator1="Icon#BODY_VERTICAL_ELLIPSIS" />
 
-		<execute function="AssertClick" locator1="MenuItem#MOVE_TO_THE_RECYCLE_BIN" value1="Move to the Recycle Bin" />
+		<execute macro="PortletEntry#clickMoveToRecycleBin" />
 
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="The ${assetType} ${threadSubject} was moved to the Recycle Bin. Undo" />
+		<execute function="AssertElementPresent" locator1="Message#SUCCESS" />
 		<execute function="AssertTextEquals#assertText" locator1="Message#EMPTY_INFO" value1="There are no threads nor categories." />
 	</command>
 
@@ -580,12 +564,6 @@
 		<execute function="AssertTextEquals" locator1="MessageBoardsThread#THREAD_BODY" value1="${threadBody}" />
 	</command>
 
-	<command name="publish">
-		<execute function="AssertClick" locator1="Button#PUBLISH" value1="Publish" />
-
-		<execute macro="Alert#viewRequestCompletedSuccessMessage" />
-	</command>
-
 	<command name="quickReplyPG">
 		<var name="key_threadSubject" value="${threadSubject}" />
 
@@ -597,7 +575,7 @@
 
 		<execute function="Type#typeCKEditorWaitForCKEditor" locator1="CKEditor#BODY_FIELD" value1="${threadReplyBody}" />
 
-		<execute macro="MessageboardsThread#publish" />
+		<execute macro="PortletEntry#publish" />
 	</command>
 
 	<command name="ratePG">
@@ -620,17 +598,14 @@
 		<var name="key_threadSubject" value="${threadSubject}" />
 
 		<execute function="Click" locator1="MessageBoards#THREAD_LIST_ACTIONS" />
+
 		<execute function="AssertClick" locator1="MenuItem#PERMISSIONS" value1="Permissions" />
 
-		<execute function="SelectFrame" locator1="Permissions#PERMISSIONS_IFRAME" />
-
-		<var name="key_assetTitle" value="${threadSubject}" />
-
-		<execute function="AssertTextEquals" locator1="Permissions#ASSET_TITLE" value1="${threadSubject}" />
+		<execute macro="IFrame#selectPermissionsFrame" />
 
 		<execute function="Uncheck" locator1="Permissions#CONFIGURATION_PERMISSIONS_VIEW_CHECKBOX" />
 
-		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
+		<execute macro="Button#clickSave" />
 
 		<execute function="AssertTextEquals#assertPartialText" locator1="Permissions#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 
@@ -651,9 +626,7 @@
 		<execute function="Click" locator1="MessageBoardsThread#THREAD_REPLY_BUTTON" />
 
 		<execute function="Type#typeCKEditor" locator1="CKEditor#BODY_FIELD" value1="${threadReplyBody}" />
-		<execute function="AssertClick" locator1="Button#PUBLISH" value1="Publish" />
-
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="Your request completed successfully." />
+		<execute macro="PortletEntry#publish" />
 
 		<if>
 			<equals arg1="${markAsAnswer}" arg2="true" />
@@ -718,7 +691,7 @@
 
 		<execute function="Click" locator1="Button#PUBLISH" />
 
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="Your request completed successfully." />
+		<execute macro="Alert#viewSuccessMessage" />
 
 		<if>
 			<equals arg1="${markAsAnswer}" arg2="true" />
@@ -742,7 +715,7 @@
 		<execute function="Type#sendKeys" locator1="CKEditor#BODY_FIELD_SOURCE_ON_SEND_KEYS" value1="${threadReplyBody}" />
 		<execute function="Click" locator1="Button#PUBLISH" />
 
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="Your request completed successfully." />
+		<execute macro="Alert#viewSuccessMessage" />
 	</command>
 
 	<command name="restoreMBAttachmentCP">
@@ -756,7 +729,7 @@
 
 		<execute function="AssertClick" locator1="MenuItem#RESTORE" value1="Restore" />
 
-		<execute macro="Alert#viewRequestCompletedSuccessMessage" />
+		<execute macro="Alert#viewSuccessMessage" />
 		<execute function="AssertTextEquals" locator1="Message#INFO" value1="This message does not have file attachments in the Recycle Bin." />
 	</command>
 
@@ -768,7 +741,7 @@
 
 		<execute function="AssertClick" locator1="Button#SAVE_AS_DRAFT" value1="Save as Draft" />
 
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="Your request completed successfully." />
+		<execute macro="Alert#viewSuccessMessage" />
 	</command>
 
 	<command name="searchPG">
@@ -824,7 +797,7 @@
 				<execute function="Check" locator1="MessageBoards#THREAD_TABLE_ALL_CHECKBOX" />
 				<execute function="AssertClick" locator1="MessageBoardsAdmin#THREADS_RECYCLE_BIN_BUTTON" value1="Move to the Recycle Bin" />
 
-				<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="moved to the Recycle Bin. Undo" />
+				<execute function="AssertElementPresent" locator1="Message#SUCCESS" />
 			</then>
 		</if>
 
@@ -850,7 +823,7 @@
 			<condition function="IsElementPresent" locator1="MessageBoards#VERTICAL_ELLIPSIS_GENERIC" />
 			<then>
 				<execute function="Click" locator1="MessageBoards#VERTICAL_ELLIPSIS_GENERIC" />
-				<execute function="AssertClick" locator1="MenuItem#MOVE_TO_THE_RECYCLE_BIN" value1="Move to the Recycle Bin" />
+				<execute macro="PortletEntry#clickMoveToRecycleBin" />
 			</then>
 		</while>
 
@@ -860,7 +833,7 @@
 			<condition function="IsElementPresent" locator1="MessageBoardsMyPosts#THREAD_TABLE_ACTIONS_GENERIC" />
 			<then>
 				<execute function="Click" locator1="MessageBoardsMyPosts#THREAD_TABLE_ACTIONS_GENERIC" />
-				<execute function="AssertClick" locator1="MenuItem#MOVE_TO_THE_RECYCLE_BIN" value1="Move to the Recycle Bin" />
+				<execute macro="PortletEntry#clickMoveToRecycleBin" />
 			</then>
 		</while>
 

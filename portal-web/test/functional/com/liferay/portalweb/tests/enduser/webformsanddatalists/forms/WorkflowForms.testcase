@@ -88,7 +88,7 @@
 
 		<execute macro="Button#clickSubmitForPublication" />
 
-		<execute macro="Alert#viewRequestCompletedSuccessMessage" />
+		<execute macro="Alert#viewSuccessMessage" />
 
 		<execute macro="Navigator#openURL" />
 
@@ -213,7 +213,7 @@
 
 		<execute macro="FormPortletConfiguration#selectForm" />
 
-		<execute macro="FormPortletConfiguration#save" />
+		<execute macro="PortletEntry#save" />
 
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="Form Page" />
@@ -232,7 +232,7 @@
 
 		<execute macro="Button#clickSubmitForPublication" />
 
-		<execute macro="Alert#viewRequestCompletedSuccessMessage" />
+		<execute macro="Alert#viewSuccessMessage" />
 
 		<execute macro="Page#gotoMyAccount">
 			<var name="portletName" value="My Workflow Tasks" />

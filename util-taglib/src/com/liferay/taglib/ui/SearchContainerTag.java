@@ -93,6 +93,10 @@ public class SearchContainerTag<R> extends ParamAndPropertyAncestorTagImpl {
 					getDelta(), _iteratorURL, null, _emptyResultsMessage);
 			}
 
+			if (Validator.isNotNull(_cssClass)) {
+				_searchContainer.setCssClass(_cssClass);
+			}
+
 			_searchContainer.setDeltaConfigurable(_deltaConfigurable);
 
 			if (Validator.isNotNull(_emptyResultsMessage)) {
@@ -248,16 +252,18 @@ public class SearchContainerTag<R> extends ParamAndPropertyAncestorTagImpl {
 		return _var;
 	}
 
+	public boolean isCompactEmptyResultsMessage() {
+		return _compactEmptyResultsMessage;
+	}
+
 	public boolean isDeltaConfigurable() {
 		return _deltaConfigurable;
 	}
 
-	/**
-	 * @deprecated As of 6.2.0, with no direct replacement. See LPS-41307.
-	 */
-	@Deprecated
-	public boolean isHasResults() {
-		return true;
+	public void setCompactEmptyResultsMessage(
+		boolean compactEmptyResultsMessage) {
+
+		_compactEmptyResultsMessage = compactEmptyResultsMessage;
 	}
 
 	public void setCssClass(String cssClass) {
@@ -286,13 +292,6 @@ public class SearchContainerTag<R> extends ParamAndPropertyAncestorTagImpl {
 
 	public void setEmptyResultsMessage(String emptyResultsMessage) {
 		_emptyResultsMessage = emptyResultsMessage;
-	}
-
-	/**
-	 * @deprecated As of 6.2.0, see LPS-41307
-	 */
-	@Deprecated
-	public void setHasResults(boolean hasResults) {
 	}
 
 	public void setHeaderNames(String headerNames) {
@@ -351,6 +350,7 @@ public class SearchContainerTag<R> extends ParamAndPropertyAncestorTagImpl {
 		_var = var;
 	}
 
+	private boolean _compactEmptyResultsMessage = false;
 	private String _cssClass = StringPool.BLANK;
 	private String _curParam = SearchContainer.DEFAULT_CUR_PARAM;
 	private int _delta = SearchContainer.DEFAULT_DELTA;
