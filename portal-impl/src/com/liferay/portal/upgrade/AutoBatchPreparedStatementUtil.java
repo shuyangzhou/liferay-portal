@@ -195,7 +195,7 @@ public class AutoBatchPreparedStatementUtil {
 			_preparedStatement = _connection.prepareStatement(_sql);
 		}
 
-		private void _executeBatch() throws Throwable {
+		private void _executeBatch() throws SQLException {
 			_count = 0;
 
 			final PreparedStatement preparedStatement = _preparedStatement;
@@ -205,7 +205,7 @@ public class AutoBatchPreparedStatementUtil {
 					new Callable<Void>() {
 
 						@Override
-						public Void call() throws Exception {
+						public Void call() throws SQLException {
 							try {
 								preparedStatement.executeBatch();
 							}
@@ -284,7 +284,7 @@ public class AutoBatchPreparedStatementUtil {
 			_preparedStatement = _connection.prepareStatement(_sql);
 		}
 
-		private void _executeUpdate() throws Throwable {
+		private void _executeUpdate() throws SQLException {
 			final PreparedStatement preparedStatement = _preparedStatement;
 
 			_futures.add(
@@ -292,7 +292,7 @@ public class AutoBatchPreparedStatementUtil {
 					new Callable<Void>() {
 
 						@Override
-						public Void call() throws Exception {
+						public Void call() throws SQLException {
 							try {
 								preparedStatement.executeUpdate();
 							}
