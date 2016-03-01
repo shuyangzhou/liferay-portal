@@ -14,6 +14,9 @@
 
 package com.liferay.portal.upgrade;
 
+import com.liferay.portal.kernel.concurrent.ConcurrentHashSet;
+import com.liferay.portal.kernel.concurrent.FutureListener;
+import com.liferay.portal.kernel.concurrent.NoticeableFuture;
 import com.liferay.portal.kernel.concurrent.ThreadPoolExecutor;
 import com.liferay.portal.kernel.executor.PortalExecutorManagerUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
@@ -27,8 +30,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -200,7 +202,7 @@ public class AutoBatchPreparedStatementUtil {
 
 			final PreparedStatement preparedStatement = _preparedStatement;
 
-			_futures.add(
+			NoticeableFuture<Void> noticeableFuture =
 				_threadPoolExecutor.submit(
 					new Callable<Void>() {
 
@@ -216,14 +218,32 @@ public class AutoBatchPreparedStatementUtil {
 							return null;
 						}
 
-					}));
+					});
+
+			_futures.add(noticeableFuture);
+
+			noticeableFuture.addFutureListener(
+				new FutureListener<Void>() {
+
+					@Override
+					public void complete(Future<Void> future) {
+						try {
+							future.get();
+
+							_futures.remove(future);
+						}
+						catch (Throwable t) {
+						}
+					}
+
+				});
 
 			_preparedStatement = _connection.prepareStatement(_sql);
 		}
 
 		private final Connection _connection;
 		private int _count;
-		private final List<Future<Void>> _futures = new ArrayList<>();
+		private final Set<Future<Void>> _futures = new ConcurrentHashSet<>();
 		private PreparedStatement _preparedStatement;
 		private final String _sql;
 		private final ThreadPoolExecutor _threadPoolExecutor =
@@ -287,7 +307,7 @@ public class AutoBatchPreparedStatementUtil {
 		private void _executeUpdate() throws SQLException {
 			final PreparedStatement preparedStatement = _preparedStatement;
 
-			_futures.add(
+			NoticeableFuture<Void> noticeableFuture =
 				_threadPoolExecutor.submit(
 					new Callable<Void>() {
 
@@ -303,13 +323,31 @@ public class AutoBatchPreparedStatementUtil {
 							return null;
 						}
 
-					}));
+					});
+
+			_futures.add(noticeableFuture);
+
+			noticeableFuture.addFutureListener(
+				new FutureListener<Void>() {
+
+					@Override
+					public void complete(Future<Void> future) {
+						try {
+							future.get();
+
+							_futures.remove(future);
+						}
+						catch (Throwable t) {
+						}
+					}
+
+				});
 
 			_preparedStatement = _connection.prepareStatement(_sql);
 		}
 
 		private final Connection _connection;
-		private final List<Future<Void>> _futures = new ArrayList<>();
+		private final Set<Future<Void>> _futures = new ConcurrentHashSet<>();
 		private PreparedStatement _preparedStatement;
 		private final String _sql;
 		private final ThreadPoolExecutor _threadPoolExecutor =
