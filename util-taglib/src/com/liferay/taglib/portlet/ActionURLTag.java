@@ -59,20 +59,23 @@ public class ActionURLTag extends ParamAndPropertyAncestorTagImpl {
 			Set<String> removedParameterNames, HttpServletRequest request)
 		throws Exception {
 
-		if (portletName == null) {
-			portletName = _getPortletName(request);
-		}
+		PortletRequest portletRequest = (PortletRequest)request.getAttribute(
+			JavaConstants.JAVAX_PORTLET_REQUEST);
 
-		LiferayPortletURL liferayPortletURL = _getLiferayPortletURL(
-			request, plid, portletName, lifecycle);
-
-		if (liferayPortletURL == null) {
+		if (portletRequest == null) {
 			_log.error(
 				"Render response is null because this tag is not being " +
 					"called within the context of a portlet");
 
 			return DummyPortletURL.getInstance();
 		}
+
+		if (portletName == null) {
+			portletName = _getPortletName(portletRequest);
+		}
+
+		LiferayPortletURL liferayPortletURL = _getLiferayPortletURL(
+			portletRequest, plid, portletName, lifecycle);
 
 		if (Validator.isNotNull(windowState)) {
 			liferayPortletURL.setWindowState(
@@ -307,23 +310,17 @@ public class ActionURLTag extends ParamAndPropertyAncestorTagImpl {
 	}
 
 	private static LiferayPortletURL _getLiferayPortletURL(
-		HttpServletRequest request, long plid, String portletName,
+		PortletRequest portletRequest, long plid, String portletName,
 		String lifecycle) {
 
-		PortletRequest portletRequest = (PortletRequest)request.getAttribute(
-			JavaConstants.JAVAX_PORTLET_REQUEST);
-
-		if (portletRequest == null) {
-			return null;
-		}
-
-		PortletResponse portletResponse = (PortletResponse)request.getAttribute(
-			JavaConstants.JAVAX_PORTLET_RESPONSE);
+		PortletResponse portletResponse =
+			(PortletResponse)portletRequest.getAttribute(
+				JavaConstants.JAVAX_PORTLET_RESPONSE);
 
 		LiferayPortletResponse liferayPortletResponse =
 			PortalUtil.getLiferayPortletResponse(portletResponse);
 
-		String requestPortletName = _getPortletName(request);
+		String requestPortletName = _getPortletName(portletRequest);
 
 		if (Validator.isNull(requestPortletName) ||
 			requestPortletName.equals(portletName)) {
@@ -354,14 +351,7 @@ public class ActionURLTag extends ParamAndPropertyAncestorTagImpl {
 		return liferayPortletURL;
 	}
 
-	private static String _getPortletName(HttpServletRequest request) {
-		PortletRequest portletRequest = (PortletRequest)request.getAttribute(
-			JavaConstants.JAVAX_PORTLET_REQUEST);
-
-		if (portletRequest == null) {
-			return null;
-		}
-
+	private static String _getPortletName(PortletRequest portletRequest) {
 		LiferayPortletConfig liferayPortletConfig =
 			(LiferayPortletConfig)request.getAttribute(
 				JavaConstants.JAVAX_PORTLET_CONFIG);
