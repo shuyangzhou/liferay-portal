@@ -70,10 +70,6 @@ public class ActionURLTag extends ParamAndPropertyAncestorTagImpl {
 			return DummyPortletURL.getInstance();
 		}
 
-		if (portletName == null) {
-			portletName = _getPortletName(portletRequest);
-		}
-
 		LiferayPortletURL liferayPortletURL = _getLiferayPortletURL(
 			portletRequest, plid, portletName, lifecycle);
 
@@ -322,11 +318,11 @@ public class ActionURLTag extends ParamAndPropertyAncestorTagImpl {
 
 		String requestPortletName = _getPortletName(portletRequest);
 
-		if (Validator.isNull(requestPortletName) ||
+		if (Validator.isNull(portletName) ||
 			requestPortletName.equals(portletName)) {
 
 			return liferayPortletResponse.createLiferayPortletURL(
-				plid, portletName, lifecycle);
+				plid, requestPortletName, lifecycle);
 		}
 
 		LiferayPortletURL liferayPortletURL = null;
