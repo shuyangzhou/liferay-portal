@@ -169,12 +169,16 @@ public class AutoBatchPreparedStatementUtil {
 					try {
 						future.get();
 					}
-					catch (ExecutionException ee) {
+					catch (Throwable t) {
+						if (t instanceof ExecutionException) {
+							t = t.getCause();
+						}
+
 						if (throwable == null) {
-							throwable = ee.getCause();
+							throwable = t;
 						}
 						else {
-							throwable.addSuppressed(ee.getCause());
+							throwable.addSuppressed(t);
 						}
 					}
 				}
@@ -276,12 +280,16 @@ public class AutoBatchPreparedStatementUtil {
 					try {
 						future.get();
 					}
-					catch (ExecutionException ee) {
+					catch (Throwable t) {
+						if (t instanceof ExecutionException) {
+							t = t.getCause();
+						}
+
 						if (throwable == null) {
-							throwable = ee.getCause();
+							throwable = t;
 						}
 						else {
-							throwable.addSuppressed(ee.getCause());
+							throwable.addSuppressed(t);
 						}
 					}
 				}
