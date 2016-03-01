@@ -316,7 +316,11 @@ public class ActionURLTag extends ParamAndPropertyAncestorTagImpl {
 		LiferayPortletResponse liferayPortletResponse =
 			PortalUtil.getLiferayPortletResponse(portletResponse);
 
-		String requestPortletName = _getPortletName(portletRequest);
+		LiferayPortletConfig liferayPortletConfig =
+			(LiferayPortletConfig)portletRequest.getAttribute(
+				JavaConstants.JAVAX_PORTLET_CONFIG);
+
+		String requestPortletName = liferayPortletConfig.getPortletId();
 
 		if (Validator.isNull(portletName) ||
 			requestPortletName.equals(portletName)) {
@@ -345,14 +349,6 @@ public class ActionURLTag extends ParamAndPropertyAncestorTagImpl {
 		liferayPortletURL.setLifecycle(lifecycle);
 
 		return liferayPortletURL;
-	}
-
-	private static String _getPortletName(PortletRequest portletRequest) {
-		LiferayPortletConfig liferayPortletConfig =
-			(LiferayPortletConfig)request.getAttribute(
-				JavaConstants.JAVAX_PORTLET_CONFIG);
-
-		return liferayPortletConfig.getPortletId();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(ActionURLTag.class);
