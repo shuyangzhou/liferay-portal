@@ -739,6 +739,83 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		}
 	}
 
+	protected String getPrimKey(
+		long companyId, long groupId, String name, String primKey) {
+
+		if (ResourceBlockLocalServiceUtil.isSupported(name)) {
+			return primKey;
+		}
+
+		int count =
+			ResourcePermissionLocalServiceUtil.getResourcePermissionsCount(
+				companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, primKey);
+
+		if (count > 0) {
+			return primKey;
+		}
+
+		if (primKey.contains(PortletConstants.LAYOUT_SEPARATOR)) {
+
+			// Using defaults because custom permissions defined for portlet
+			// resource are not defined
+
+			if (_log.isDebugEnabled()) {
+				String message =
+					"Using defaults because custom permissions for " +
+						"portlet resource " + name + " are not defined";
+
+				_log.debug(message, new IllegalArgumentException(message));
+			}
+
+			return name;
+		}
+
+		if ((groupId > 0) && ResourceActionsUtil.isRootModelResource(name)) {
+
+			// Using defaults because custom permissions defined for root model
+			// resource are not defined
+
+			if (_log.isDebugEnabled()) {
+				String message =
+					"Using defaults because custom permissions for " +
+						"root model resource " + name + " are not defined";
+
+				_log.debug(message, new IllegalArgumentException(message));
+			}
+
+			return name;
+		}
+
+		if (primKey.equals("0") ||
+			primKey.equals(String.valueOf(ResourceConstants.PRIMKEY_DNE)) ||
+			(primKey.equals(String.valueOf(companyId)) &&
+			 !name.equals(Company.class.getName()))) {
+
+			if (_log.isWarnEnabled()) {
+				StringBundler sb1 = new StringBundler(9);
+
+				sb1.append("Using ");
+				sb1.append(name);
+				sb1.append(
+					" as the primary key instead of the legacy primary ");
+				sb1.append("key ");
+				sb1.append(primKey);
+				sb1.append(" that was used for permission checking of ");
+				sb1.append(name);
+				sb1.append(" in company ");
+				sb1.append(companyId);
+
+				_log.warn(
+					sb1.toString(),
+					new IllegalArgumentException(sb1.toString()));
+			}
+
+			return name;
+		}
+
+		return primKey;
+	}
+
 	protected boolean hasGuestPermission(
 			long groupId, String name, String primKey, String actionId)
 		throws Exception {
@@ -829,77 +906,6 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		}
 	}
 
-	protected boolean hasUserPermissionImpl(
-			long groupId, String name, String primKey, long[] roleIds,
-			String actionId)
-		throws Exception {
-
-		StopWatch stopWatch = new StopWatch();
-
-		stopWatch.start();
-
-		long companyId = user.getCompanyId();
-
-		if (groupId > 0) {
-			Group group = GroupLocalServiceUtil.getGroup(groupId);
-
-			companyId = group.getCompanyId();
-		}
-
-		if (doCheckPermission(
-			companyId, groupId, name, primKey, roleIds, actionId,
-			stopWatch)) {
-
-			return true;
-		}
-
-		return false;
-	}
-
-	protected boolean isAdmin(
-		long companyId, long groupId, String name, String primKey,
-		String actionId) {
-
-		if (!signedIn) {
-			return false;
-		}
-
-		if (isOmniadmin()) {
-			return true;
-		}
-
-		try {
-			if (name.equals(Organization.class.getName())) {
-				if (isOrganizationAdminImpl(GetterUtil.getLong(primKey))) {
-					return true;
-				}
-			}
-
-			if (isCompanyAdminImpl(companyId)) {
-				return true;
-			}
-
-			if (isGroupAdminImpl(groupId)) {
-
-				// Check if the layout manager has permission to do this action
-				// for the current portlet
-
-				if (Validator.isNotNull(name) && Validator.isNotNull(primKey) &&
-					primKey.contains(PortletConstants.LAYOUT_SEPARATOR) &&
-					PortletPermissionUtil.hasLayoutManagerPermission(
-						name, actionId)) {
-
-					return true;
-				}
-			}
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
-
-		return false;
-	}
-
 	/**
 	 * Returns <code>true</code> if the roles have permission at the scope to
 	 * perform the action on the resources.
@@ -934,8 +940,8 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		// Company
 
 		if (ResourcePermissionLocalServiceUtil.hasResourcePermission(
-			companyId, name, ResourceConstants.SCOPE_COMPANY,
-			String.valueOf(companyId), roleIds, actionId)) {
+				companyId, name, ResourceConstants.SCOPE_COMPANY,
+				String.valueOf(companyId), roleIds, actionId)) {
 
 			return true;
 		}
@@ -964,8 +970,8 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		// Individual
 
 		if (ResourcePermissionLocalServiceUtil.hasResourcePermission(
-			companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, primKey,
-			roleIds, actionId)) {
+				companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, primKey,
+				roleIds, actionId)) {
 
 			return true;
 		}
@@ -973,82 +979,75 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		return false;
 	}
 
-	private String getPrimKey(
-		long companyId, long groupId, String name, String primKey) {
+	protected boolean hasUserPermissionImpl(
+			long groupId, String name, String primKey, long[] roleIds,
+			String actionId)
+		throws Exception {
 
-		if (ResourceBlockLocalServiceUtil.isSupported(name)) {
-			return primKey;
+		StopWatch stopWatch = new StopWatch();
+
+		stopWatch.start();
+
+		long companyId = user.getCompanyId();
+
+		if (groupId > 0) {
+			Group group = GroupLocalServiceUtil.getGroup(groupId);
+
+			companyId = group.getCompanyId();
 		}
 
-		int count =
-			ResourcePermissionLocalServiceUtil.getResourcePermissionsCount(
-				companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, primKey);
+		if (doCheckPermission(
+				companyId, groupId, name, primKey, roleIds, actionId,
+				stopWatch)) {
 
-		if (count > 0) {
-			return primKey;
+			return true;
 		}
 
-		if (primKey.contains(PortletConstants.LAYOUT_SEPARATOR)) {
+		return false;
+	}
 
-			// Using defaults because custom permissions defined for portlet
-			// resource are not defined
+	protected boolean isAdmin(
+		long companyId, long groupId, String name, String primKey,
+		String actionId) {
 
-			if (_log.isDebugEnabled()) {
-				String message =
-					"Using defaults because custom permissions for " +
-					"portlet resource " + name + " are not defined";
+		if (!signedIn) {
+			return false;
+		}
 
-				_log.debug(message, new IllegalArgumentException(message));
+		if (isOmniadmin()) {
+			return true;
+		}
+
+		try {
+			if (isCompanyAdminImpl(companyId)) {
+				return true;
 			}
 
-			return name;
-		}
-
-		if ((groupId > 0) &&
-				 ResourceActionsUtil.isRootModelResource(name)) {
-
-			// Using defaults because custom permissions defined for root model
-			// resource are not defined
-
-			if (_log.isDebugEnabled()) {
-				String message =
-					"Using defaults because custom permissions for " +
-					"root model resource " + name + " are not defined";
-
-				_log.debug(message, new IllegalArgumentException(message));
+			if (name.equals(Organization.class.getName())) {
+				if (isOrganizationAdminImpl(GetterUtil.getLong(primKey))) {
+					return true;
+				}
 			}
 
-			return name;
-		}
+			if (isGroupAdminImpl(groupId)) {
 
-		if (primKey.equals("0") ||
-			 primKey.equals(String.valueOf(ResourceConstants.PRIMKEY_DNE)) ||
-			 (primKey.equals(String.valueOf(companyId)) &&
-				  !name.equals(Company.class.getName()))) {
+				// Check if the layout manager has permission to do this action
+				// for the current portlet
 
-			if (_log.isWarnEnabled()) {
-				StringBundler sb1 = new StringBundler(9);
+				if (Validator.isNotNull(name) && Validator.isNotNull(primKey) &&
+					primKey.contains(PortletConstants.LAYOUT_SEPARATOR) &&
+					PortletPermissionUtil.hasLayoutManagerPermission(
+						name, actionId)) {
 
-				sb1.append("Using ");
-				sb1.append(name);
-				sb1.append(
-					" as the primary key instead of the legacy primary ");
-				sb1.append("key ");
-				sb1.append(primKey);
-				sb1.append(" that was used for permission checking of ");
-				sb1.append(name);
-				sb1.append(" in company ");
-				sb1.append(companyId);
-
-				_log.warn(
-					sb1.toString(),
-					new IllegalArgumentException(sb1.toString()));
+					return true;
+				}
 			}
-
-			return name;
+		}
+		catch (Exception e) {
+			_log.error(e, e);
 		}
 
-		return primKey;
+		return false;
 	}
 
 	protected boolean isCompanyAdminImpl(long companyId) throws Exception {
