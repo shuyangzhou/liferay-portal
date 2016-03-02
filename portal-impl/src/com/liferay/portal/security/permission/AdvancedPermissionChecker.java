@@ -937,14 +937,14 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		}
 
 		try {
+			if (isCompanyAdminImpl(companyId)) {
+				return true;
+			}
+
 			if (name.equals(Organization.class.getName())) {
 				if (isOrganizationAdminImpl(GetterUtil.getLong(primKey))) {
 					return true;
 				}
-			}
-
-			if (isCompanyAdminImpl(companyId)) {
-				return true;
 			}
 
 			if (isGroupAdminImpl(groupId)) {
