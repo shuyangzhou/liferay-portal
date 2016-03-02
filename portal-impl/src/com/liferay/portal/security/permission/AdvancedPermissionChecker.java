@@ -418,6 +418,10 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 
 		validateResource(companyId, name, primKey);
 
+		if (isAdmin(companyId, groupId, name, primKey, actionId)) {
+			return true;
+		}
+
 		long[] roleIds = getRoleIds(getUserId(), groupId);
 
 		Boolean value = PermissionCacheUtil.getPermission(
@@ -846,10 +850,6 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 			companyId, groupId, name, primKey, roleIds, actionId,
 			stopWatch)) {
 
-			return true;
-		}
-
-		if (isAdmin(companyId, groupId, name, primKey, actionId)) {
 			return true;
 		}
 
