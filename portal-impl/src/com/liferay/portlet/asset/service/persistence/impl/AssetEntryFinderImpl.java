@@ -224,27 +224,28 @@ public class AssetEntryFinderImpl
 	}
 
 	protected void buildAllTagsSQL(long[][] tagIds, StringBundler sb) {
-		sb.append(" AND AssetEntry.entryId IN (");
+		String findByTagIdsSql = CustomSQLUtil.get(FIND_BY_AND_TAG_IDS);
 
-		for (int i = 0; i < tagIds.length; i++) {
-			String sql = CustomSQLUtil.get(FIND_BY_AND_TAG_IDS);
+		sb.append(" AND (");
 
-			sql = StringUtil.replace(sql, "[$TAG_ID$]", getTagIds(tagIds[i]));
-
-			sb.append(sql);
-
-			if ((i + 1) < tagIds.length) {
-				sb.append(" AND AssetEntry.entryId IN (");
+		for (long[] tagIdArray : tagIds) {
+			if (tagIdArray.length > 1) {
+				sb.append(
+					StringUtil.replace(
+						findByTagIdsSql, "[$TAG_ID$]",
+						StringUtil.merge(tagIdArray)));
 			}
+			else {
+				sb.append(
+					StringUtil.replace(
+						findByTagIdsSql, " IN ([$TAG_ID$])",
+						" = " + tagIdArray[0]));
+			}
+
+			sb.append(" AND ");
 		}
 
-		for (int i = 0; i < tagIds.length; i++) {
-			if ((i + 1) < tagIds.length) {
-				sb.append(StringPool.CLOSE_PARENTHESIS);
-			}
-		}
-
-		sb.append(StringPool.CLOSE_PARENTHESIS);
+		sb.setStringAt(StringPool.CLOSE_PARENTHESIS, sb.index() - 1);
 	}
 
 	protected void buildAnyCategoriesSQL(long[] categoryIds, StringBundler sb) {
@@ -276,15 +277,18 @@ public class AssetEntryFinderImpl
 	}
 
 	protected String buildAnyTagsSQL(long[] tagIds, StringBundler sb) {
+		String sql = CustomSQLUtil.get(FIND_BY_AND_TAG_IDS);
+
 		sb.append(" AND (");
 
-		for (int i = 0; i < tagIds.length; i++) {
-			sb.append("AssetTag.tagId = ");
-			sb.append(tagIds[i]);
-
-			if ((i + 1) != tagIds.length) {
-				sb.append(" OR ");
-			}
+		if (tagIds.length > 1) {
+			sb.append(
+				StringUtil.replace(
+					sql, "[$TAG_ID$]", StringUtil.merge(tagIds)));
+		}
+		else {
+			sb.append(
+				StringUtil.replace(sql, "IN ([$TAG_ID$])", " = " + tagIds[0]));
 		}
 
 		sb.append(StringPool.CLOSE_PARENTHESIS);
@@ -325,16 +329,6 @@ public class AssetEntryFinderImpl
 		}
 
 		sb.append("FROM AssetEntry ");
-
-		if (entryQuery.getAnyTagIds().length > 0) {
-			sb.append("INNER JOIN ");
-			sb.append("AssetEntries_AssetTags ON ");
-			sb.append("(AssetEntries_AssetTags.entryId = ");
-			sb.append("AssetEntry.entryId) ");
-			sb.append("INNER JOIN ");
-			sb.append("AssetTag ON ");
-			sb.append("(AssetTag.tagId = AssetEntries_AssetTags.tagId) ");
-		}
 
 		if (entryQuery.getLinkedAssetEntryId() > 0) {
 			sb.append("INNER JOIN ");
@@ -643,24 +637,30 @@ public class AssetEntryFinderImpl
 	}
 
 	protected void buildNotAllTagsSQL(long[][] tagIds, StringBundler sb) {
+		String findByTagIdsSql = CustomSQLUtil.get(FIND_BY_AND_TAG_IDS);
+
 		sb.append(" AND (");
 
-		for (int i = 0; i < tagIds.length; i++) {
-			sb.append("AssetEntry.entryId NOT IN (");
+		for (long[] tagIdArray : tagIds) {
+			sb.append("NOT ");
 
-			String sql = CustomSQLUtil.get(FIND_BY_AND_TAG_IDS);
-
-			sql = StringUtil.replace(sql, "[$TAG_ID$]", getTagIds(tagIds[i]));
-
-			sb.append(sql);
-			sb.append(StringPool.CLOSE_PARENTHESIS);
-
-			if (((i + 1) < tagIds.length) && (tagIds[i + 1].length > 0)) {
-				sb.append(" OR ");
+			if (tagIdArray.length > 1) {
+				sb.append(
+					StringUtil.replace(
+						findByTagIdsSql, "[$TAG_ID$]",
+						StringUtil.merge(tagIdArray)));
 			}
+			else {
+				sb.append(
+					StringUtil.replace(
+						findByTagIdsSql, " IN ([$TAG_ID$])",
+						" = " + tagIdArray[0]));
+			}
+
+			sb.append(" OR ");
 		}
 
-		sb.append(StringPool.CLOSE_PARENTHESIS);
+		sb.setStringAt(StringPool.CLOSE_PARENTHESIS, sb.index() - 1);
 	}
 
 	protected void buildNotAnyCategoriesSQL(
@@ -691,21 +691,19 @@ public class AssetEntryFinderImpl
 	}
 
 	protected String buildNotAnyTagsSQL(long[] notTagIds, StringBundler sb) {
-		sb.append(" AND (");
+		String sql = CustomSQLUtil.get(FIND_BY_AND_TAG_IDS);
 
-		for (int i = 0; i < notTagIds.length; i++) {
-			sb.append("AssetEntry.entryId NOT IN (");
+		sb.append(" AND (NOT ");
 
-			String sql = CustomSQLUtil.get(FIND_BY_AND_TAG_IDS);
-
-			sql = StringUtil.replace(sql, "[$TAG_ID$]", getTagIds(notTagIds));
-
-			sb.append(sql);
-			sb.append(StringPool.CLOSE_PARENTHESIS);
-
-			if ((i + 1) < notTagIds.length) {
-				sb.append(" AND ");
-			}
+		if (notTagIds.length > 1) {
+			sb.append(
+				StringUtil.replace(
+					sql, "[$TAG_ID$]", StringUtil.merge(notTagIds)));
+		}
+		else {
+			sb.append(
+				StringUtil.replace(
+					sql, "IN ([$TAG_ID$])", " = " + notTagIds[0]));
 		}
 
 		sb.append(StringPool.CLOSE_PARENTHESIS);
@@ -776,21 +774,6 @@ public class AssetEntryFinderImpl
 		return ListUtil.toList(
 			AssetCategoryUtil.getDescendants(parentAssetCategory),
 			AssetCategory.CATEGORY_ID_ACCESSOR);
-	}
-
-	protected String getTagIds(long[] tagIds) {
-		StringBundler sb = new StringBundler((tagIds.length * 3) - 1);
-
-		for (int i = 0; i < tagIds.length; i++) {
-			sb.append("tagId = ");
-			sb.append(tagIds[i]);
-
-			if ((i + 1) != tagIds.length) {
-				sb.append(" OR ");
-			}
-		}
-
-		return sb.toString();
 	}
 
 	protected void setDates(
