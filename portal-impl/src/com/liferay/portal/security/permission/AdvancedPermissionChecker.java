@@ -408,6 +408,14 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 			_log.error(e, e);
 		}
 
+		long companyId = getCompanyId();
+
+		if (group != null) {
+			companyId = group.getCompanyId();
+		}
+
+		primKey = fixLegacyPrimaryKey(companyId, name, primKey);
+
 		long[] roleIds = getRoleIds(getUserId(), groupId);
 
 		Boolean value = PermissionCacheUtil.getPermission(
@@ -809,8 +817,6 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 					resourceBlockIdsBag);
 			}
 
-			primKey = fixLegacyPrimaryKey(companyId, name, primKey);
-
 			validateResource(companyId, name, primKey);
 
 			return hasResourcePermission(
@@ -905,8 +911,6 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 
 			companyId = group.getCompanyId();
 		}
-
-		primKey = fixLegacyPrimaryKey(companyId, name, primKey);
 
 		if (doCheckPermission(
 				companyId, groupId, name, primKey, roleIds, actionId,
