@@ -76,6 +76,50 @@ public class DefineObjectsTag extends TagSupport {
 			liferayPortletRequest, liferayPortletResponse);
 	}
 
+	protected LiferayPortletRequest getLiferayPortletRequest() {
+		LiferayPortletRequest liferayPortletRequest =
+			(LiferayPortletRequest)pageContext.getAttribute(
+				"liferayPortletRequest");
+
+		if (liferayPortletRequest != null) {
+			return liferayPortletRequest;
+		}
+
+		HttpServletRequest request =
+			(HttpServletRequest)pageContext.getRequest();
+
+		PortletRequest portletRequest = (PortletRequest)request.getAttribute(
+			JavaConstants.JAVAX_PORTLET_REQUEST);
+
+		if (portletRequest == null) {
+			return null;
+		}
+
+		return PortalUtil.getLiferayPortletRequest(portletRequest);
+	}
+
+	protected LiferayPortletResponse getLiferayPortletResponse() {
+		LiferayPortletResponse liferayPortletResponse =
+			(LiferayPortletResponse)pageContext.getAttribute(
+				"liferayPortletResponse");
+
+		if (liferayPortletResponse != null) {
+			return liferayPortletResponse;
+		}
+
+		HttpServletRequest request =
+			(HttpServletRequest)pageContext.getRequest();
+
+		PortletResponse portletResponse = (PortletResponse)request.getAttribute(
+			JavaConstants.JAVAX_PORTLET_RESPONSE);
+
+		if (portletResponse == null) {
+			return null;
+		}
+
+		return PortalUtil.getLiferayPortletResponse(portletResponse);
+	}
+
 	protected ResourceBundle getResourceBundle() {
 		if (_overrideResourceBundle != null) {
 			return _overrideResourceBundle;
@@ -98,50 +142,6 @@ public class DefineObjectsTag extends TagSupport {
 		}
 
 		return liferayPortletRequest.getWindowState();
-	}
-
-	private LiferayPortletRequest getLiferayPortletRequest() {
-		LiferayPortletRequest liferayPortletRequest =
-			(LiferayPortletRequest)pageContext.getAttribute(
-				"liferayPortletRequest");
-
-		if (liferayPortletRequest != null) {
-			return liferayPortletRequest;
-		}
-
-		HttpServletRequest request =
-			(HttpServletRequest)pageContext.getRequest();
-
-		PortletRequest portletRequest = (PortletRequest)request.getAttribute(
-			JavaConstants.JAVAX_PORTLET_REQUEST);
-
-		if (portletRequest == null) {
-			return null;
-		}
-
-		return PortalUtil.getLiferayPortletRequest(portletRequest);
-	}
-
-	private LiferayPortletResponse getLiferayPortletResponse() {
-		LiferayPortletResponse liferayPortletResponse =
-			(LiferayPortletResponse)pageContext.getAttribute(
-				"liferayPortletResponse");
-
-		if (liferayPortletResponse != null) {
-			return liferayPortletResponse;
-		}
-
-		HttpServletRequest request =
-			(HttpServletRequest)pageContext.getRequest();
-
-		PortletResponse portletResponse = (PortletResponse)request.getAttribute(
-			JavaConstants.JAVAX_PORTLET_RESPONSE);
-
-		if (portletResponse == null) {
-			return null;
-		}
-
-		return PortalUtil.getLiferayPortletResponse(portletResponse);
 	}
 
 	private ResourceBundle _overrideResourceBundle;

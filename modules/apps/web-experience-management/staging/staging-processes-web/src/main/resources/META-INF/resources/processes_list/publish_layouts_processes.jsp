@@ -23,7 +23,7 @@ if (liveGroup.isStaged() && liveGroup.isStagedRemotely()) {
 	localPublishing = false;
 }
 
-String displayStyle = ParamUtil.getString(request, "displayStyle", "list");
+String displayStyle = ParamUtil.getString(request, "displayStyle", "descriptive");
 String navigation = ParamUtil.getString(request, "navigation", "all");
 String orderByCol = ParamUtil.getString(request, "orderByCol");
 String orderByType = ParamUtil.getString(request, "orderByType");
@@ -100,7 +100,7 @@ OrderByComparator<BackgroundTask> orderByComparator = BackgroundTaskComparatorFa
 			<%
 			String backgroundTaskName = backgroundTask.getName();
 
-			if (backgroundTask.getGroupId() == liveGroupId) {
+			if (localPublishing && (backgroundTask.getGroupId() == liveGroupId)) {
 				backgroundTaskName = LanguageUtil.get(request, "initial-publication");
 			}
 
@@ -263,7 +263,9 @@ OrderByComparator<BackgroundTask> orderByComparator = BackgroundTaskComparatorFa
 				</c:when>
 			</c:choose>
 
-			<liferay-ui:search-container-column-text>
+			<liferay-ui:search-container-column-text
+				align="right"
+			>
 				<liferay-ui:icon-menu direction="left-side" icon="<%= StringPool.BLANK %>" markupView="lexicon" message="<%= StringPool.BLANK %>" showWhenSingleIcon="<%= true %>">
 					<c:if test="<%= backgroundTask.getGroupId() != liveGroupId %>">
 						<portlet:actionURL name="editPublishConfiguration" var="relaunchURL">

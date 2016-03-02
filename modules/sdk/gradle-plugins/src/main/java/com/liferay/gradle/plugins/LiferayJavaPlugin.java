@@ -291,12 +291,14 @@ public class LiferayJavaPlugin implements Plugin<Project> {
 
 							String version = moduleVersionSelector.getVersion();
 
-							if (GradleUtil.isPortal(moduleVersionSelector) &&
-								version.equals("default")) {
-
-								dependencyResolveDetails.useVersion(
-									liferayExtension.getPortalVersion());
+							if (!version.equals("default")) {
+								return;
 							}
+
+							version = liferayExtension.getDefaultVersion(
+								moduleVersionSelector);
+
+							dependencyResolveDetails.useVersion(version);
 						}
 
 					});

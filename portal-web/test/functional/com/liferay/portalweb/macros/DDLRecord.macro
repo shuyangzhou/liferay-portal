@@ -227,7 +227,7 @@
 	<command name="populateFieldHTML">
 		<var name="key_fieldName" value="${fieldName}" />
 
-		<execute function="Type#typeAlloyEditor" locator1="DDLEditRecord#HTML_FIELD" value1="${ddlRecordFieldData}" />
+		<execute function="Type#typeEditor" locator1="DDLEditRecord#HTML_FIELD" value1="${ddlRecordFieldData}" />
 	</command>
 
 	<command name="populateFieldInteger">
@@ -792,7 +792,7 @@
 			</then>
 			<else>
 				<execute function="Click" locator1="DDL#RECORD_TABLE_ELLIPSIS" />
-				<execute function="AssertClick" locator1="DDL#MENULIST_VIEW_SPECIFIC_RECORD" value1="View" />
+				<execute function="AssertClick" locator1="MenuItem#VIEW" value1="View" />
 			</else>
 		</if>
 
