@@ -38,20 +38,20 @@ public class MBMailMessage {
 	public String getBody() {
 		String body = null;
 
-		if (MBMessageConstants.DEFAULT_FORMAT.equals("html")) {
-			if (Validator.isNotNull(_htmlBody)) {
-				body = GetterUtil.getString(_htmlBody);
-			}
-			else if (Validator.isNotNull(_plainBody)) {
-				body = GetterUtil.getString(_plainBody);
-			}
-		}
-		else if (MBMessageConstants.DEFAULT_FORMAT.equals("text")) {
+		if (MBMessageConstants.DEFAULT_FORMAT.equals("bbcode")) {
 			if (Validator.isNotNull(_plainBody)) {
 				body = GetterUtil.getString(_plainBody);
 			}
 			else if (Validator.isNotNull(_htmlBody)) {
 				body = HtmlUtil.extractText(_htmlBody);
+			}
+		}
+		else if (MBMessageConstants.DEFAULT_FORMAT.equals("html")) {
+			if (Validator.isNotNull(_htmlBody)) {
+				body = GetterUtil.getString(_htmlBody);
+			}
+			else if (Validator.isNotNull(_plainBody)) {
+				body = GetterUtil.getString(_plainBody);
 			}
 		}
 

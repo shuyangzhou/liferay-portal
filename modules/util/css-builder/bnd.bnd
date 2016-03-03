@@ -1,6 +1,6 @@
 Bundle-Name: Liferay CSS Builder
 Bundle-SymbolicName: com.liferay.css.builder
-Bundle-Version: 1.0.15
+Bundle-Version: 1.0.16
 Export-Package: com.liferay.css.builder
 Include-Resource:\
 	@../../../portal-impl/portal-impl.jar!/com/liferay/portal/tools/ArgumentsMap.class,\

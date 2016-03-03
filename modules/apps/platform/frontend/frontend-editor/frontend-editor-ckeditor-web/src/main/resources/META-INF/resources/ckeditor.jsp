@@ -227,6 +227,10 @@ if (inlineEdit && Validator.isNotNull(inlineEditSaveURL)) {
 			return window['<%= name %>'].getCkData();
 		},
 
+		getNativeEditor: function() {
+			return CKEDITOR.instances['<%= name %>'];
+		},
+
 		getText: function() {
 			var data;
 

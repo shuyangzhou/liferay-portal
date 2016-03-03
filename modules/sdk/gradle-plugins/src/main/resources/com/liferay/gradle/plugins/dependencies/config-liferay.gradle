@@ -73,7 +73,7 @@ liferay {
 			startExecutable = project.properties["app.server.tomcat.start.executable"] ?: "catalina${->fileSuffixBat}"
 			startExecutableArgs = ["run"]
 			stopExecutable = project.properties["app.server.tomcat.stop.executable"] ?: "shutdown${->fileSuffixBat}"
-			version = project.properties["app.server.tomcat.version"] ?: "8.0.30"
+			version = project.properties["app.server.tomcat.version"] ?: "8.0.32"
 			zipUrl = project.properties["app.server.tomcat.zip.url"] ?: "http://archive.apache.org/dist/tomcat/tomcat-8/v${->liferay.appServers.tomcat.version}/bin/apache-tomcat-${->liferay.appServers.tomcat.version}.zip"
 		}
 
@@ -107,5 +107,4 @@ liferay {
 	deployDir = project.properties["auto.deploy.dir"] ?: "${->liferay.appServerParentDir}/osgi/modules"
 	jmxRemotePort = project.properties["jmx.remote.port"] ?: 8099
 	liferayHome = project.properties["liferay.home"] ?: "${->liferay.appServerParentDir}"
-	portalVersion = project.properties["liferay.portal.version"] ?: "7.0.0-SNAPSHOT"
 }

@@ -101,9 +101,8 @@
 			<var name="viewType" value="Week" />
 		</execute>
 
-		<execute macro="CalendarScheduler#selectEvent">
+		<execute macro="CalendarScheduler#selectSpecificEvent">
 			<var name="eventTitle" value="${eventTitle}" />
-			<var name="eventType" value="${eventType}" />
 		</execute>
 
 		<execute function="AssertTextEquals" locator1="Calendar#SCHEDULER_EVENT_DIALOG_BOX_EVENT_TITLE" value1="${eventTitle}" />
@@ -120,9 +119,8 @@
 			</then>
 		</if>
 
-		<execute macro="CalendarScheduler#selectEvent">
+		<execute macro="CalendarScheduler#selectSpecificEvent">
 			<var name="eventTitle" value="${eventTitle}" />
-			<var name="eventType" value="${eventType}" />
 		</execute>
 
 		<execute function="AssertElementPresent" locator1="Calendar#SCHEDULER_EVENT_DIALOG_BOX_CALENDAR" value1="${calendarName}" />
@@ -133,9 +131,8 @@
 			<var name="viewType" value="Day" />
 		</execute>
 
-		<execute macro="CalendarScheduler#selectEvent">
+		<execute macro="CalendarScheduler#selectSpecificEvent">
 			<var name="eventTitle" value="${eventTitle}" />
-			<var name="eventType" value="${eventType}" />
 		</execute>
 
 		<execute function="Type" locator1="Calendar#SCHEDULER_EVENT_DIALOG_BOX_EVENT_TITLE" value1="${eventTitleEdit}" />
@@ -169,9 +166,8 @@
 			<var name="viewType" value="Week" />
 		</execute>
 
-		<execute macro="CalendarScheduler#selectEvent">
+		<execute macro="CalendarScheduler#selectSpecificEvent">
 			<var name="eventTitle" value="${eventTitle}" />
-			<var name="eventType" value="${eventType}" />
 		</execute>
 
 		<execute function="AssertClick" locator1="Calendar#SCHEDULER_EVENT_DIALOG_BOX_EDIT_BUTTON" value1="Edit" />
@@ -207,24 +203,6 @@
 		<execute function="Select" locator1="Calendar#SCHEDULER_EVENT_DIALOG_BOX_CALENDAR" value1="${calendarName}" />
 	</command>
 
-	<command name="selectEvent">
-		<var name="key_eventTitle" value="${eventTitle}" />
-
-		<if>
-			<equals arg1="${eventType}" arg2="All Day" />
-			<then>
-				<execute macro="CalendarScheduler#selectSpecificEvent">
-					<var name="eventTitle" value="${eventTitle}" />
-				</execute>
-			</then>
-			<else>
-				<execute macro="CalendarScheduler#_selectSpecificEventCurrentDay">
-					<var name="eventTitle" value="${eventTitle}" />
-				</execute>
-			</else>
-		</if>
-	</command>
-
 	<command name="selectSpecificEvent">
 		<var name="key_eventTitle" value="${eventTitle}" />
 
@@ -238,17 +216,16 @@
 			<var name="viewType" value="Agenda" />
 		</execute>
 
-		<var name="i" value="1" />
 		<var name="key_eventTitle" value="${eventTitle}" />
 
-		<while>
-			<condition function="IsElementPresent" locator1="xpath=(//div[contains(@class,'scheduler-view-agenda-event') and contains(@data-clientid,'scheduler-event')]//div[contains(.,'${key_eventTitle}')])[${i}]" />
+		<execute function="AssertElementPresent" locator1="Calendar#SCHEDULER_VIEW_EVENT_FIRST_EVENT_AGENDA_VIEW" value1="${eventTitle}" />
+
+		<if>
+			<equals arg1="${numberOfOccurrences}" arg2="2" />
 			<then>
-				<execute function="AssertElementPresent" locator1="xpath=(//div[contains(@class,'scheduler-view-agenda-event') and contains(@data-clientid,'scheduler-event')]//div[contains(.,'${key_eventTitle}')])[${i}]" />
-				<execute function="AssertTextEquals" locator1="xpath=(//div[contains(@class,'scheduler-view-agenda-event') and contains(@data-clientid,'scheduler-event')]//div[contains(.,'${key_eventTitle}')])[${i}]" value1="${eventTitle}" />
-				<var method="MathUtil#sum('${i}', '1')" name="i" />
+				<execute function="AssertElementPresent" locator1="Calendar#SCHEDULER_VIEW_EVENT_LAST_EVENT_AGENDA_VIEW" value1="${eventTitle}" />
 			</then>
-		</while>
+		</if>
 
 		<execute function="AssertTextNotPresent" locator1="CalendarAgendaView#EMPTY_MESSAGE" value1="No events." />
 	</command>
@@ -260,22 +237,9 @@
 
 		<execute function="Pause" value1="1000" />
 
-		<var name="i" value="1" />
 		<var name="key_eventTitle" value="${eventTitle}" />
 
-		<while>
-			<condition function="IsElementPresent" locator1="xpath=(//td[contains(@class,'scheduler-view-day-table-col scheduler-view-day-table-colday scheduler-today')]//div[@class='scheduler-event-content' and contains(.,'${key_eventTitle}')])[${i}]" />
-			<then>
-				<if>
-					<condition function="IsElementPresent#isVisible" locator1="xpath=(//td[contains(@class,'scheduler-view-day-table-col scheduler-view-day-table-colday scheduler-today')]//div[@class='scheduler-event-content' and contains(.,'${key_eventTitle}')])[${i}]" />
-					<then>
-						<execute function="AssertTextEquals" locator1="xpath=(//td[contains(@class,'scheduler-view-day-table-col scheduler-view-day-table-colday scheduler-today')]//div[@class='scheduler-event-content' and contains(.,'${key_eventTitle}')])[${i}]" value1="${eventTitle}" />
-
-						<var method="MathUtil#sum('${i}', '1')" name="i" />
-					</then>
-				</if>
-			</then>
-		</while>
+		<execute function="AssertElementPresent" locator1="Calendar#SCHEDULER_VIEW_EVENT_DAY_AND_WEEK_VIEW" value1="${eventTitle}" />
 	</command>
 
 	<command name="viewDefault">
@@ -478,30 +442,29 @@
 			<var name="viewType" value="Month" />
 		</execute>
 
-		<var name="i" value="1" />
 		<var name="key_eventTitle" value="${eventTitle}" />
 
-		<while>
-			<condition function="IsElementPresent" locator1="xpath=(//div[contains(@class,'scheduler-view-table scheduler-view-month')]//div[contains(@class,'calendar-portlet-event')]/div[contains(.,'${key_eventTitle}')])[${i}]" />
+		<execute function="AssertElementPresent" locator1="Calendar#SCHEDULER_VIEW_EVENT_MONTH_VIEW" value1="${eventTitle}" />
+
+		<if>
+			<and>
+				<equals arg1="${numberOfOccurrences}" arg2="2" />
+				<equals arg1="${frequency}" arg2="Daily" />
+			</and>
 			<then>
-				<if>
-					<condition function="IsElementPresent#isVisible" locator1="xpath=(//div[contains(@class,'scheduler-view-table scheduler-view-month')]//div[contains(@class,'calendar-portlet-event')]/div[contains(.,'${key_eventTitle}')])[${i}]" />
-					<then>
-						<execute function="AssertTextEquals" locator1="xpath=(//div[contains(@class,'scheduler-view-table scheduler-view-month')]//div[contains(@class,'calendar-portlet-event')]/div[contains(.,'${key_eventTitle}')])[${i}]" value1="${eventTitle}" />
-
-						<var method="MathUtil#sum('${i}', '1')" name="i" />
-					</then>
-					<elseif>
-						<condition function="IsElementNotPresent#isNotVisible" locator1="xpath=(//div[contains(@class,'scheduler-view-table scheduler-view-month')]//div[contains(@class,'calendar-portlet-event')]/div[contains(.,'${key_eventTitle}')])[2]" />
-						<then>
-							<execute function="Click" locator1="Calendar#VIEW_NEXT_BUTTON"  />
-
-							<execute function="AssertTextEquals" locator1="xpath=(//div[contains(@class,'scheduler-view-table scheduler-view-month')]//div[contains(@class,'calendar-portlet-event')]/div[contains(.,'${key_eventTitle}')])[1]" value1="${eventTitle}" />
-						</then>
-					</elseif>
-				</if>
+				<execute function="AssertElementPresent" locator1="Calendar#SCHEDULER_VIEW_EVENT_REPEATING_DAILY_REPEATED_EVENT_WEEK_AND_MONTH_VIEW" value1="${eventTitle}" />
 			</then>
-		</while>
+		</if>
+
+		<if>
+			<and>
+				<equals arg1="${numberOfOccurrences}" arg2="2" />
+				<equals arg1="${frequency}" arg2="Weekly" />
+			</and>
+			<then>
+				<execute function="AssertElementPresent" locator1="Calendar#SCHEDULER_VIEW_EVENT_REPEATING_WEEKLY_REPEATED_EVENT_WEEK_AND_MONTH_VIEW" value1="${eventTitle}" />
+			</then>
+		</if>
 
 		<if>
 			<isset var="eventNumber" />
@@ -610,17 +573,19 @@
 			<var name="viewType" value="Week" />
 		</execute>
 
-		<var name="i" value="1" />
 		<var name="key_eventTitle" value="${eventTitle}" />
 
-		<while>
-			<condition function="IsElementPresent" locator1="//div[contains(@class,'calendar-portlet-event')]/div[${i}][contains(.,'${key_eventTitle}')]" />
+		<execute function="AssertElementPresent" locator1="Calendar#SCHEDULER_VIEW_EVENT_DAY_AND_WEEK_VIEW" value1="${eventTitle}" />
+
+		<if>
+			<and>
+				<equals arg1="${numberOfOccurrences}" arg2="2" />
+				<equals arg1="${frequency}" arg2="Daily" />
+			</and>
 			<then>
-				<execute function="AssertElementPresent" locator1="//div[contains(@class,'calendar-portlet-event')]/div[${i}][contains(.,'${key_eventTitle}')]" />
-				<execute function="AssertTextEquals" locator1="//div[contains(@class,'calendar-portlet-event')]/div[${i}][contains(.,'${key_eventTitle}')]" value1="${eventTitle}" />
-				<var method="MathUtil#sum('${i}', '1')" name="i" />
+				<execute function="AssertElementPresent" locator1="Calendar#SCHEDULER_VIEW_EVENT_REPEATING_DAILY_REPEATED_EVENT_WEEK_AND_MONTH_VIEW" value1="${eventTitle}" />
 			</then>
-		</while>
+		</if>
 	</command>
 
 	<command name="viewWeekStartDayViaWeekView">

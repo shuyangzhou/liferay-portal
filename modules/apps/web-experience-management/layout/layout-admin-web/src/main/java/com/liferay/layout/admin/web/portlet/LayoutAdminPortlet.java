@@ -75,6 +75,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadException;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -293,7 +294,13 @@ public class LayoutAdminPortlet extends MVCPortlet {
 		String redirect = ParamUtil.getString(actionRequest, "redirect");
 
 		if (Validator.isNull(redirect)) {
-			redirect = PortalUtil.getLayoutFullURL(layout, themeDisplay);
+			if (!layout.isTypeURL()) {
+				redirect = PortalUtil.getLayoutFullURL(layout, themeDisplay);
+			}
+			else {
+				redirect = PortalUtil.getGroupFriendlyURL(
+					layout.getLayoutSet(), themeDisplay);
+			}
 
 			MultiSessionMessages.add(actionRequest, "layoutAdded", layout);
 		}
@@ -476,7 +483,16 @@ public class LayoutAdminPortlet extends MVCPortlet {
 
 			layoutTypeSettingsProperties.putAll(formTypeSettingsProperties);
 
-			layoutService.updateLayout(
+			boolean layoutCustomizable = GetterUtil.getBoolean(
+				layoutTypeSettingsProperties.get(
+					LayoutConstants.CUSTOMIZABLE_LAYOUT));
+
+			if (!layoutCustomizable) {
+				layoutTypePortlet.removeCustomization(
+					layoutTypeSettingsProperties);
+			}
+
+			layout = layoutService.updateLayout(
 				groupId, privateLayout, layoutId,
 				layoutTypeSettingsProperties.toString());
 		}
@@ -486,7 +502,7 @@ public class LayoutAdminPortlet extends MVCPortlet {
 			layoutTypeSettingsProperties.putAll(
 				layout.getTypeSettingsProperties());
 
-			layoutService.updateLayout(
+			layout = layoutService.updateLayout(
 				groupId, privateLayout, layoutId, layout.getTypeSettings());
 		}
 
@@ -501,7 +517,7 @@ public class LayoutAdminPortlet extends MVCPortlet {
 		updateLookAndFeel(
 			actionRequest, themeDisplay.getCompanyId(), liveGroupId,
 			stagingGroupId, privateLayout, layout.getLayoutId(),
-			layoutTypeSettingsProperties);
+			layout.getTypeSettingsProperties());
 	}
 
 	public void editLayoutSet(

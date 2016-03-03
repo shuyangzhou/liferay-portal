@@ -29,7 +29,7 @@
 	_entry
 	_currentIndex = -1
 >
-	<#if (_currentIndex = -1)>
+	<#if _currentIndex = -1>
 		<#local ddmContentModel = dataFactory.newDDMContentModel(_entry)>
 	<#else>
 		<#local ddmContentModel = dataFactory.newDDMContentModel(_entry, _currentIndex)>
@@ -40,6 +40,22 @@
 	<#local ddmStorageLinkModel = dataFactory.newDDMStorageLinkModel(_ddmStorageLinkId, ddmContentModel, _ddmStructureId)>
 
 	insert into DDMStorageLink values ('${ddmStorageLinkModel.uuid}', ${ddmStorageLinkModel.storageLinkId}, '${ddmStorageLinkModel.companyId}', ${ddmStorageLinkModel.classNameId}, ${ddmStorageLinkModel.classPK}, ${ddmStorageLinkModel.structureId});
+</#macro>
+
+<#macro insertDDMStructure
+	_ddmStructureModel
+	_ddmStructureVersionModel
+	_ddmStructureLayoutModel
+>
+	insert into DDMStructure values ('${_ddmStructureModel.uuid}', ${_ddmStructureModel.structureId}, ${_ddmStructureModel.groupId}, ${_ddmStructureModel.companyId}, ${_ddmStructureModel.userId}, '${_ddmStructureModel.userName}', ${_ddmStructureModel.versionUserId}, '${_ddmStructureModel.versionUserName}', '${dataFactory.getDateString(_ddmStructureModel.createDate)}', '${dataFactory.getDateString(_ddmStructureModel.modifiedDate)}', ${_ddmStructureModel.parentStructureId}, ${_ddmStructureModel.classNameId}, '${_ddmStructureModel.structureKey}', '${_ddmStructureModel.version}', '${_ddmStructureModel.name}', '${_ddmStructureModel.description}', '${_ddmStructureModel.definition}', '${_ddmStructureModel.storageType}', ${_ddmStructureModel.type}, '${dataFactory.getDateString(_ddmStructureModel.lastPublishDate)}');
+
+	insert into DDMStructureVersion values (${_ddmStructureVersionModel.structureVersionId}, ${_ddmStructureVersionModel.groupId}, ${_ddmStructureVersionModel.companyId}, ${_ddmStructureVersionModel.userId}, '${_ddmStructureVersionModel.userName}', '${dataFactory.getDateString(_ddmStructureVersionModel.createDate)}',  ${_ddmStructureVersionModel.structureId}, '${_ddmStructureVersionModel.version}', ${_ddmStructureVersionModel.parentStructureId}, '${_ddmStructureVersionModel.name}', '${_ddmStructureVersionModel.description}', '${_ddmStructureVersionModel.definition}', '${_ddmStructureVersionModel.storageType}', ${_ddmStructureVersionModel.type}, ${_ddmStructureVersionModel.status}, ${_ddmStructureVersionModel.statusByUserId}, '${_ddmStructureVersionModel.statusByUserName}', '${dataFactory.getDateString(_ddmStructureVersionModel.statusDate)}');
+
+	insert into DDMStructureLayout values ('${_ddmStructureLayoutModel.uuid}', ${_ddmStructureLayoutModel.structureLayoutId}, ${_ddmStructureLayoutModel.groupId}, ${_ddmStructureLayoutModel.companyId}, ${_ddmStructureLayoutModel.userId}, '${_ddmStructureLayoutModel.userName}', '${dataFactory.getDateString(_ddmStructureLayoutModel.createDate)}', '${dataFactory.getDateString(_ddmStructureLayoutModel.modifiedDate)}', ${_ddmStructureLayoutModel.structureVersionId},'${_ddmStructureLayoutModel.definition}');
+
+	<@insertResourcePermissions
+		_entry = _ddmStructureModel
+	/>
 </#macro>
 
 <#macro insertDDMStructureLink
@@ -56,7 +72,7 @@
 	_groupId
 	_parentDLFolderId
 >
-	<#if (_dlFolderDepth <= dataFactory.maxDLFolderDepth)>
+	<#if _dlFolderDepth <= dataFactory.maxDLFolderDepth>
 		<#local dlFolderModels = dataFactory.newDLFolderModels(_groupId, _parentDLFolderId)>
 
 		<#list dlFolderModels as dlFolderModel>
@@ -135,6 +151,10 @@
 >
 	insert into Group_ values (${_groupModel.mvccVersion}, '${_groupModel.uuid}', ${_groupModel.groupId}, ${_groupModel.companyId}, ${_groupModel.creatorUserId}, ${_groupModel.classNameId}, ${_groupModel.classPK}, ${_groupModel.parentGroupId}, ${_groupModel.liveGroupId}, '${_groupModel.treePath}', '${_groupModel.groupKey}', '${_groupModel.name}', '${_groupModel.description}', ${_groupModel.type}, '${_groupModel.typeSettings}', ${_groupModel.manualMembership?string}, ${_groupModel.membershipRestriction}, '${_groupModel.friendlyURL}', ${_groupModel.site?string}, ${_groupModel.remoteStagingGroupCount}, ${_groupModel.inheritContent?string}, ${_groupModel.active?string});
 
+	<@insertResourcePermissions
+		_entry = _groupModel
+	/>
+
 	<#local layoutSetModels = dataFactory.newLayoutSetModels(_groupModel.groupId, _publicPageCount)>
 
 	<#list layoutSetModels as layoutSetModel>
@@ -195,6 +215,10 @@
 	_mbMessageModel
 >
 	insert into MBMessage values ('${_mbMessageModel.uuid}', ${_mbMessageModel.messageId}, ${_mbMessageModel.groupId}, ${_mbMessageModel.companyId}, ${_mbMessageModel.userId}, '${_mbMessageModel.userName}', '${dataFactory.getDateString(_mbMessageModel.createDate)}', '${dataFactory.getDateString(_mbMessageModel.modifiedDate)}', ${_mbMessageModel.classNameId}, ${_mbMessageModel.classPK}, ${_mbMessageModel.categoryId}, ${_mbMessageModel.threadId}, ${_mbMessageModel.rootMessageId}, ${_mbMessageModel.parentMessageId}, '${_mbMessageModel.subject}', '${_mbMessageModel.body}', '${_mbMessageModel.format}', ${_mbMessageModel.anonymous?string}, ${_mbMessageModel.priority}, ${_mbMessageModel.allowPingbacks?string}, ${_mbMessageModel.answer?string}, '${dataFactory.getDateString(_mbMessageModel.lastPublishDate)}', ${_mbMessageModel.status}, ${_mbMessageModel.statusByUserId}, '${_mbMessageModel.statusByUserName}', '${dataFactory.getDateString(_mbMessageModel.statusDate)}');
+
+	<@insertResourcePermissions
+		_entry = _mbMessageModel
+	/>
 
 	<@insertAssetEntry
 		_entry = _mbMessageModel

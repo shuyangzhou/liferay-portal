@@ -886,42 +886,26 @@ Please set the environment variable ANT_OPTS to the recommended value of
 		</sequential>
 	</macrodef>
 
-	<macrodef name="install-portal-snapshot">
-		<attribute name="artifact.dir" default="${basedir}" />
-		<attribute name="artifact.name" />
+	<macrodef name="install-portal-artifact">
+		<attribute name="packaging" default="jar" />
+		<attribute name="snapshot" default="false" />
 
 		<sequential>
-			<propertyregex
-				global="true"
-				input="@{artifact.name}"
-				override="true"
-				property="processed.artifact.name"
-				regexp="-"
-				replace="."
-			/>
+			<condition property="snapshot.version.suffix" value="-SNAPSHOT" else="">
+				<istrue value="@{snapshot}" />
+			</condition>
 
-			<artifact:pom
-				artifactId="com.liferay.${processed.artifact.name}"
-				groupId="com.liferay"
-				id="prepare-@{artifact.name}"
-				version="${lp.version}-SNAPSHOT"
-			/>
+			<prepare-portal-artifact-pom snapshot.version.suffix="${snapshot.version.suffix}" />
 
-			<artifact:writepom pomRefId="prepare-@{artifact.name}" file="@{artifact.dir}/pom.xml" />
+			<artifact:install file="${artifact.name}.@{packaging}">
+				<pom file="pom.xml" />
+			</artifact:install>
 
-			<artifact:pom file="@{artifact.dir}/pom.xml" id="@{artifact.name}" />
+			<delete file="pom.xml" />
 
-			<if>
-				<equals arg1="@{artifact.name}" arg2="portal-web" />
-				<then>
-					<artifact:install pomRefId="@{artifact.name}" file="@{artifact.dir}/@{artifact.name}.war" />
-				</then>
-				<else>
-					<artifact:install pomRefId="@{artifact.name}" file="@{artifact.dir}/@{artifact.name}.jar" />
-				</else>
-			</if>
-
-			<delete file="@{artifact.dir}/pom.xml" />
+			<propertyfile file="../.gradle/gradle.properties">
+				<entry key="com.liferay.${processed.artifact.name}.version" value="${artifact.version}${snapshot.version.suffix}" />
+			</propertyfile>
 		</sequential>
 	</macrodef>
 
@@ -1045,6 +1029,36 @@ Please set the environment variable ANT_OPTS to the recommended value of
 		</sequential>
 	</macrodef>
 
+	<macrodef name="prepare-portal-artifact-pom">
+		<attribute name="snapshot.version.suffix" default="false" />
+
+		<sequential>
+			<property name="artifact.name" value="${ant.project.name}" />
+
+			<propertyregex
+				global="true"
+				input="${artifact.name}"
+				override="true"
+				property="processed.artifact.name"
+				regexp="-"
+				replace="."
+			/>
+
+			<property file="bnd.bnd" />
+
+			<property name="artifact.version" value="${Bundle-Version}" />
+
+			<copy file="../tools/maven/${artifact.name}.xml" tofile="pom.xml">
+				<filterchain>
+					<expandproperties />
+				</filterchain>
+				<filterset>
+					<filter token="version" value="${artifact.version}@{snapshot.version.suffix}" />
+				</filterset>
+			</copy>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="print-current-time">
 		<sequential>
 			<local name="current.time" />
@@ -1054,6 +1068,35 @@ Please set the environment variable ANT_OPTS to the recommended value of
 			</tstamp>
 
 			<echo message="${current.time}" />
+		</sequential>
+	</macrodef>
+
+	<macrodef name="publish-portal-artifact">
+		<attribute name="packaging" default="jar" />
+		<attribute name="snapshot" default="false" />
+
+		<element name="attach-files" implicit="true" optional="true" />
+
+		<sequential>
+			<condition property="snapshot.version.suffix" value="-SNAPSHOT" else="">
+				<istrue value="@{snapshot}" />
+			</condition>
+
+			<prepare-portal-artifact-pom snapshot.version.suffix="${snapshot.version.suffix}" />
+
+			<artifact:deploy file="${artifact.name}.@{packaging}">
+				<attach-files />
+				<pom file="pom.xml" />
+				<remoteRepository url="${sonatype.snapshot.url}">
+					<authentication password="${sonatype.snapshot.password}" username="${sonatype.snapshot.username}" />
+				</remoteRepository>
+			</artifact:deploy>
+
+			<delete file="pom.xml" />
+
+			<propertyfile file="../.gradle/gradle.properties">
+				<entry key="com.liferay.${processed.artifact.name}.version" value="${artifact.version}${snapshot.version.suffix}" />
+			</propertyfile>
 		</sequential>
 	</macrodef>
 
@@ -1399,6 +1442,37 @@ rerun your task.
 				</sequential>
 			</for>
 
+			<for list="portal-impl,portal-kernel,portal-test,portal-test-internal,util-bridges,util-java,util-taglib" param="artifact.name">
+				<sequential>
+					<propertyregex
+						global="true"
+						input="@{artifact.name}"
+						override="true"
+						property="processed.artifact.name"
+						regexp="-"
+						replace="."
+					/>
+
+					<loadproperties srcFile="${basedir}/@{artifact.name}/bnd.bnd">
+						<filterchain>
+							<linecontains>
+								<contains value="Bundle-Version" />
+							</linecontains>
+						</filterchain>
+					</loadproperties>
+
+					<echo
+						append="true"
+						file="${basedir}/.gradle/gradle.properties"
+					>
+						com.liferay.${processed.artifact.name}.version=${Bundle-Version}-SNAPSHOT
+					</echo>
+
+					<var name="Bundle-Version" unset="true" />
+					<var name="processed.artifact.name" unset="true" />
+				</sequential>
+			</for>
+
 			<propertyselector
 				casesensitive="false"
 				delimiter="," match="ivy.pom.(.+)"
@@ -1520,7 +1594,6 @@ rerun your task.
 				junit.java.integration.gc=${junit.java.integration.gc}
 				junit.java.unit.gc=${junit.java.unit.gc}
 				liferay.home=${liferay.home}
-				liferay.portal.version=${lp.version}-SNAPSHOT
 				liferay.releng.app.title.suffix=${liferay.releng.app.title.suffix}
 				liferay.releng.public=${liferay.releng.public}
 				liferay.releng.supported=${liferay.releng.supported}
@@ -1742,10 +1815,6 @@ rerun your task.
 			<arg value="javadoc.output.file.prefix=${output.file.prefix}" />
 			<arg value="javadoc.update=${update}" />
 		</java>
-	</target>
-
-	<target name="install-portal-snapshot">
-		<install-portal-snapshot artifact.name="${ant.project.name}" />
 	</target>
 
 	<target name="print-properties">

@@ -225,6 +225,13 @@ if (showSource) {
 
 		var editorConfig = <%= Validator.isNotNull(editorConfigJSONObject) %> ? <%= editorConfigJSONObject %> : {};
 
+		editorConfig = A.merge(
+			{
+				title: '<%= LanguageUtil.get(resourceBundle, "rich-text-editor") %>'
+			},
+			editorConfig
+		);
+
 		var plugins = [];
 
 		<c:if test="<%= Validator.isNotNull(data) && Validator.isNotNull(uploadURL) %>">
@@ -324,6 +331,16 @@ if (showSource) {
 			return data;
 		},
 
+		getNativeEditor: function() {
+			var nativeEditor;
+
+			if (alloyEditor) {
+				nativeEditor = alloyEditor.getEditor();
+			}
+
+			return nativeEditor;
+		},
+
 		getText: function() {
 			var data = '';
 
@@ -341,11 +358,14 @@ if (showSource) {
 			createInstance();
 		},
 
+		instanceReady: false,
+
 		setHTML: function(value) {
 			if (alloyEditor) {
 				alloyEditor.setHTML(value);
 			}
 		}
+
 	};
 
 	Liferay.fire(

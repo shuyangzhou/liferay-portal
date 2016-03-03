@@ -143,6 +143,12 @@ public class ComboServlet extends HttpServlet {
 				name = name.replaceFirst(contextPath, StringPool.BLANK);
 			}
 
+			String pathProxy = PortalUtil.getPathProxy();
+
+			if (name.startsWith(pathProxy)) {
+				name = name.replaceFirst(pathProxy, StringPool.BLANK);
+			}
+
 			modulePathsSet.add(name);
 		}
 
@@ -343,6 +349,9 @@ public class ComboServlet extends HttpServlet {
 				else if (minifierType.equals("js")) {
 					stringFileContent = MinifierUtil.minifyJavaScript(
 						resourcePath, stringFileContent);
+
+					stringFileContent = stringFileContent.concat(
+						StringPool.NEW_LINE);
 				}
 			}
 

@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.util;
 
+import com.liferay.registry.ServiceReference;
+import com.liferay.registry.collections.ServiceReferenceMapper;
 import com.liferay.registry.collections.ServiceTrackerCollections;
 import com.liferay.registry.collections.ServiceTrackerMap;
 
@@ -29,15 +31,23 @@ public class ResourceBundleLoaderUtil {
 	public static ResourceBundleLoader
 		getResourceBundleLoaderByBundleSymbolicName(String bundleSymbolicName) {
 
-		return _instance._resourceBundleLoaderByBundleSymbolicName.getService(
+		return _instance._bundleSymbolicNameServiceTrackerMap.getService(
 			bundleSymbolicName);
 	}
 
 	public static ResourceBundleLoader
 		getResourceBundleLoaderByServletContextName(String servletContextName) {
 
-		return _instance._resourceBundleLoaderByServletName.getService(
+		return _instance._servletContextNameServiceTrackerMap.getService(
 			servletContextName);
+	}
+
+	public static ResourceBundleLoader
+		getResourceBundleLoaderByServletContextNameAndBaseName(
+			String servletContextName, String baseName) {
+
+		return _instance._servletContextNameAndBaseNameServiceTrackerMap.
+			getService(baseName + "#" + servletContextName);
 	}
 
 	public static void setPortalResourceBundleLoader(
@@ -47,10 +57,31 @@ public class ResourceBundleLoaderUtil {
 	}
 
 	private ResourceBundleLoaderUtil() {
-		_resourceBundleLoaderByBundleSymbolicName =
+		_bundleSymbolicNameServiceTrackerMap =
 			ServiceTrackerCollections.openSingleValueMap(
 				ResourceBundleLoader.class, "bundle.symbolic.name");
-		_resourceBundleLoaderByServletName =
+		_servletContextNameAndBaseNameServiceTrackerMap =
+			ServiceTrackerCollections.openSingleValueMap(
+				ResourceBundleLoader.class,
+				"(&(resource.bundle.base.name=*)(servlet.context.name=*))",
+				new ServiceReferenceMapper<String, ResourceBundleLoader>() {
+
+					@Override
+					public void map(
+						ServiceReference<ResourceBundleLoader> serviceReference,
+						Emitter<String> emitter) {
+
+						Object baseName = serviceReference.getProperty(
+							"resource.bundle.base.name");
+						Object servletContextName =
+							serviceReference.getProperty(
+								"servlet.context.name");
+
+						emitter.emit(baseName + "#" + servletContextName);
+					}
+
+				});
+		_servletContextNameServiceTrackerMap =
 			ServiceTrackerCollections.openSingleValueMap(
 				ResourceBundleLoader.class, "servlet.context.name");
 	}
@@ -61,8 +92,10 @@ public class ResourceBundleLoaderUtil {
 	private static ResourceBundleLoader _portalResourceBundleLoader;
 
 	private final ServiceTrackerMap<String, ResourceBundleLoader>
-		_resourceBundleLoaderByBundleSymbolicName;
+		_bundleSymbolicNameServiceTrackerMap;
 	private final ServiceTrackerMap<String, ResourceBundleLoader>
-		_resourceBundleLoaderByServletName;
+		_servletContextNameAndBaseNameServiceTrackerMap;
+	private final ServiceTrackerMap<String, ResourceBundleLoader>
+		_servletContextNameServiceTrackerMap;
 
 }

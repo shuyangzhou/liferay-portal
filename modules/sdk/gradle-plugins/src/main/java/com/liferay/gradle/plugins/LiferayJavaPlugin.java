@@ -173,8 +173,8 @@ public class LiferayJavaPlugin implements Plugin<Project> {
 			project, PORTAL_CONFIGURATION_NAME, "javax.servlet",
 			"javax.servlet-api", "3.0.1");
 		GradleUtil.addDependency(
-			project, PORTAL_CONFIGURATION_NAME, "javax.servlet.jsp", "jsp-api",
-			"2.1");
+			project, PORTAL_CONFIGURATION_NAME, "javax.servlet.jsp",
+			"javax.servlet.jsp-api", "2.3.1");
 
 		AppServer appServer = liferayExtension.getAppServer();
 
@@ -291,12 +291,14 @@ public class LiferayJavaPlugin implements Plugin<Project> {
 
 							String version = moduleVersionSelector.getVersion();
 
-							if (GradleUtil.isPortal(moduleVersionSelector) &&
-								version.equals("default")) {
-
-								dependencyResolveDetails.useVersion(
-									liferayExtension.getPortalVersion());
+							if (!version.equals("default")) {
+								return;
 							}
+
+							version = liferayExtension.getDefaultVersion(
+								moduleVersionSelector);
+
+							dependencyResolveDetails.useVersion(version);
 						}
 
 					});
