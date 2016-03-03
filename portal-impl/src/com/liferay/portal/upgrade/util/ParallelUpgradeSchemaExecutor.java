@@ -40,10 +40,10 @@ public class ParallelUpgradeSchemaExecutor {
 		List<Future<Void>> futures = new ArrayList<>();
 
 		try {
-			for (int i = 0; i < _sqlFileNames.length; i++) {
+			for (String _sqlFileName : _sqlFileNames) {
 				futures.add(
 					executorService.submit(
-						new CallableSQLExecutor(_sqlFileNames[i])));
+						new CallableSQLExecutor(_sqlFileName)));
 			}
 
 			for (Future<Void> future : futures) {
@@ -57,7 +57,7 @@ public class ParallelUpgradeSchemaExecutor {
 
 	private final String[] _sqlFileNames;
 
-	private class CallableSQLExecutor implements Callable<Void> {
+	private static class CallableSQLExecutor implements Callable<Void> {
 
 		public CallableSQLExecutor(String sqlFile) {
 			_sqlFileName = sqlFile;
