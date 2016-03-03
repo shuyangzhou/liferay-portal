@@ -45,13 +45,13 @@ public class ParallelUpgradeSchemaExecutor {
 					executorService.submit(
 						new CallableSQLExecutor(_sqlFileNames[i])));
 			}
+
+			for (Future<Void> future : futures) {
+				future.get();
+			}
 		}
 		finally {
 			executorService.shutdown();
-		}
-
-		for (Future<Void> future : futures) {
-			future.get();
 		}
 	}
 
