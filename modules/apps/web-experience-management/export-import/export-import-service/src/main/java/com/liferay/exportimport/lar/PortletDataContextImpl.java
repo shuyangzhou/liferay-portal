@@ -35,6 +35,7 @@ import com.liferay.exportimport.kernel.lar.UserIdStrategy;
 import com.liferay.exportimport.kernel.xstream.XStreamAlias;
 import com.liferay.exportimport.kernel.xstream.XStreamConverter;
 import com.liferay.exportimport.kernel.xstream.XStreamType;
+import com.liferay.exportimport.util.ExportImportPermissionUtil;
 import com.liferay.exportimport.xstream.ConverterAdapter;
 import com.liferay.exportimport.xstream.XStreamStagedModelTypeHierarchyPermission;
 import com.liferay.message.boards.kernel.model.MBMessage;
@@ -63,7 +64,6 @@ import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.PortletConstants;
 import com.liferay.portal.kernel.model.PortletModel;
-import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.ResourcedModel;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.RoleConstants;
@@ -71,12 +71,8 @@ import com.liferay.portal.kernel.model.StagedGroupedModel;
 import com.liferay.portal.kernel.model.StagedModel;
 import com.liferay.portal.kernel.model.Team;
 import com.liferay.portal.kernel.model.WorkflowedModel;
-import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
-import com.liferay.portal.kernel.service.ResourceBlockLocalServiceUtil;
-import com.liferay.portal.kernel.service.ResourceBlockPermissionLocalServiceUtil;
-import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.TeamLocalServiceUtil;
@@ -329,18 +325,9 @@ public class PortletDataContextImpl implements PortletDataContext {
 			return;
 		}
 
-		List<String> actionIds = ResourceActionsUtil.getModelResourceActions(
-			resourceName);
-
-		Map<Long, Set<String>> roleIdsToActionIds = null;
-
-		try {
-			roleIdsToActionIds = getActionIds(
-				resourceName, resourcePK, actionIds);
-		}
-		catch (PortalException pe) {
-			return;
-		}
+		Map<Long, Set<String>> roleIdsToActionIds =
+			ExportImportPermissionUtil.getRoleIdsToActionIds(
+				_companyId, resourceName, resourcePK);
 
 		List<KeyValuePair> permissions = new ArrayList<>();
 
@@ -360,9 +347,8 @@ public class PortletDataContextImpl implements PortletDataContext {
 
 			if (role.isTeam()) {
 				try {
-					roleName =
-						PermissionExporter.ROLE_TEAM_PREFIX +
-							role.getDescriptiveName();
+					roleName = ExportImportPermissionUtil.getTeamRoleName(
+						role.getDescriptiveName());
 				}
 				catch (PortalException pe) {
 					_log.error(pe, pe);
@@ -373,6 +359,10 @@ public class PortletDataContextImpl implements PortletDataContext {
 				roleName, StringUtil.merge(availableActionIds));
 
 			permissions.add(permission);
+		}
+
+		if (permissions.isEmpty()) {
+			return;
 		}
 
 		_permissionsMap.put(
@@ -1462,7 +1452,11 @@ public class PortletDataContextImpl implements PortletDataContext {
 			return;
 		}
 
-		Map<Long, String[]> roleIdsToActionIds = new HashMap<>();
+		Map<Long, Set<String>> existingRoleIdsToActionIds =
+			ExportImportPermissionUtil.getRoleIdsToActionIds(
+				_companyId, resourceName, resourcePK);
+
+		Map<Long, String[]> importedRoleIdsToActionIds = new HashMap<>();
 
 		for (KeyValuePair permission : permissions) {
 			String roleName = permission.getKey();
@@ -1471,9 +1465,9 @@ public class PortletDataContextImpl implements PortletDataContext {
 
 			Team team = null;
 
-			if (roleName.startsWith(PermissionExporter.ROLE_TEAM_PREFIX)) {
+			if (ExportImportPermissionUtil.isTeamRoleName(roleName)) {
 				roleName = roleName.substring(
-					PermissionExporter.ROLE_TEAM_PREFIX.length());
+					ExportImportPermissionUtil.ROLE_TEAM_PREFIX.length());
 
 				try {
 					team = TeamLocalServiceUtil.getTeam(_groupId, roleName);
@@ -1513,23 +1507,17 @@ public class PortletDataContextImpl implements PortletDataContext {
 
 			String[] actionIds = StringUtil.split(permission.getValue());
 
-			roleIdsToActionIds.put(role.getRoleId(), actionIds);
+			importedRoleIdsToActionIds.put(role.getRoleId(), actionIds);
 		}
 
-		if (roleIdsToActionIds.isEmpty()) {
-			return;
-		}
+		Map<Long, String[]> roleIdsToActionIds =
+			ExportImportPermissionUtil.
+				mergeImportedPermissionsWithExistingPermissions(
+					existingRoleIdsToActionIds, importedRoleIdsToActionIds);
 
-		if (ResourceBlockLocalServiceUtil.isSupported(resourceName)) {
-			ResourceBlockLocalServiceUtil.setIndividualScopePermissions(
-				_companyId, _groupId, resourceName, newResourcePK,
-				roleIdsToActionIds);
-		}
-		else {
-			ResourcePermissionLocalServiceUtil.setResourcePermissions(
-				_companyId, resourceName, ResourceConstants.SCOPE_INDIVIDUAL,
-				String.valueOf(newResourcePK), roleIdsToActionIds);
-		}
+		ExportImportPermissionUtil.updateResourcePermissions(
+			_companyId, _groupId, resourceName, newResourcePK,
+			roleIdsToActionIds);
 	}
 
 	@Override
@@ -2189,23 +2177,6 @@ public class PortletDataContextImpl implements PortletDataContext {
 		}
 
 		return referenceElement;
-	}
-
-	protected Map<Long, Set<String>> getActionIds(
-			String className, long primKey, List<String> actionIds)
-		throws PortalException {
-
-		if (ResourceBlockLocalServiceUtil.isSupported(className)) {
-			return ResourceBlockPermissionLocalServiceUtil.
-				getAvailableResourceBlockPermissionActionIds(
-					className, primKey, actionIds);
-		}
-		else {
-			return ResourcePermissionLocalServiceUtil.
-				getAvailableResourcePermissionActionIds(
-					_companyId, className, ResourceConstants.SCOPE_INDIVIDUAL,
-					String.valueOf(primKey), actionIds);
-		}
 	}
 
 	protected Element getDataElement(

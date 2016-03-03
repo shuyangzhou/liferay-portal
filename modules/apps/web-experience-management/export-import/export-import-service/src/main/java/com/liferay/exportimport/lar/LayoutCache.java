@@ -14,6 +14,7 @@
 
 package com.liferay.exportimport.lar;
 
+import com.liferay.exportimport.util.ExportImportPermissionUtil;
 import com.liferay.portal.kernel.exception.NoSuchRoleException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
@@ -95,7 +96,7 @@ public class LayoutCache {
 			Role teamRole = entry.getValue();
 
 			teamRole.setName(
-				PermissionExporter.ROLE_TEAM_PREFIX + team.getName());
+				ExportImportPermissionUtil.getTeamRoleName(team.getName()));
 			teamRole.setDescription(team.getDescription());
 
 			roles.add(teamRole);

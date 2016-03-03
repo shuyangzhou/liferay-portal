@@ -1078,6 +1078,18 @@ Please set the environment variable ANT_OPTS to the recommended value of
 		<element name="attach-files" implicit="true" optional="true" />
 
 		<sequential>
+			<condition property="remote.repository.password" value="${sonatype.snapshot.password}" else="${sonatype.release.password}">
+				<istrue value="@{snapshot}" />
+			</condition>
+
+			<condition property="remote.repository.url" value="${sonatype.snapshot.url}" else="${sonatype.release.url}">
+				<istrue value="@{snapshot}" />
+			</condition>
+
+			<condition property="remote.repository.username" value="${sonatype.snapshot.username}" else="${sonatype.release.username}">
+				<istrue value="@{snapshot}" />
+			</condition>
+
 			<condition property="snapshot.version.suffix" value="-SNAPSHOT" else="">
 				<istrue value="@{snapshot}" />
 			</condition>
@@ -1087,8 +1099,8 @@ Please set the environment variable ANT_OPTS to the recommended value of
 			<artifact:deploy file="${artifact.name}.@{packaging}">
 				<attach-files />
 				<pom file="pom.xml" />
-				<remoteRepository url="${sonatype.snapshot.url}">
-					<authentication password="${sonatype.snapshot.password}" username="${sonatype.snapshot.username}" />
+				<remoteRepository url="${remote.repository.url}">
+					<authentication password="${remote.repository.password}" username="${remote.repository.username}" />
 				</remoteRepository>
 			</artifact:deploy>
 

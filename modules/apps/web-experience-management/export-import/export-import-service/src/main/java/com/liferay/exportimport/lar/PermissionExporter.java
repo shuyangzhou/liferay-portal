@@ -16,13 +16,12 @@ package com.liferay.exportimport.lar;
 
 import com.liferay.exportimport.kernel.lar.ExportImportPathUtil;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
+import com.liferay.exportimport.util.ExportImportPermissionUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.PortletConstants;
-import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
-import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
 import com.liferay.portal.kernel.util.CharPool;
@@ -48,8 +47,6 @@ import java.util.Set;
  * @author Douglas Wong
  */
 public class PermissionExporter {
-
-	public static final String ROLE_TEAM_PREFIX = "ROLE_TEAM_,*";
 
 	public static PermissionExporter getInstance() {
 		return _instance;
@@ -126,11 +123,9 @@ public class PermissionExporter {
 			resourceName);
 
 		Map<Long, Set<String>> roleToActionIds =
-			ResourcePermissionLocalServiceUtil.
-				getAvailableResourcePermissionActionIds(
-					portletDataContext.getCompanyId(), resourceName,
-					ResourceConstants.SCOPE_INDIVIDUAL, resourcePrimKey,
-					actionIds);
+			ExportImportPermissionUtil.getRoleIdsToActionIds(
+				portletDataContext.getCompanyId(), resourceName,
+				resourcePrimKey, actionIds);
 
 		for (Map.Entry<Long, Set<String>> entry : roleToActionIds.entrySet()) {
 			long roleId = entry.getKey();
@@ -141,7 +136,8 @@ public class PermissionExporter {
 
 			if (role.isTeam()) {
 				try {
-					roleName = ROLE_TEAM_PREFIX + role.getDescriptiveName();
+					roleName = ExportImportPermissionUtil.getTeamRoleName(
+						role.getDescriptiveName());
 				}
 				catch (PortalException pe) {
 				}

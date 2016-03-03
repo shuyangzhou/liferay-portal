@@ -18,9 +18,15 @@ import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.IOException;
+
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import java.util.Map;
 
@@ -99,7 +105,8 @@ public class DBBuilder {
 		_buildSQLFile(sqlDir, "update-6.0.6-6.1.0");
 		_buildSQLFile(sqlDir, "update-6.0.12-6.1.0");
 		_buildSQLFile(sqlDir, "update-6.1.0-6.1.1");
-		_buildSQLFile(sqlDir, "update-6.1.1-6.2.0");
+		_buildSQLFiles(sqlDir, "update-6.1.1-6.2.0*");
+		_buildSQLFiles(sqlDir, "update-6.2.0-7.0.0*");
 
 		_buildCreateFile(sqlDir);
 	}
@@ -129,6 +136,29 @@ public class DBBuilder {
 		if (!FileUtil.exists(sqlDir + "/" + fileName + ".sql")) {
 			return;
 		}
+
+		_generateSQLFile(sqlDir, fileName);
+	}
+
+	private void _buildSQLFiles(String sqlDir, String regex)
+		throws IOException {
+
+		try (DirectoryStream<Path> paths = Files.newDirectoryStream(
+				Paths.get(sqlDir), regex)) {
+
+			for (Path path : paths) {
+				Path fileNamePath = path.getFileName();
+
+				String fileName = fileNamePath.toString();
+
+				_generateSQLFile(
+					sqlDir, fileName.replace(".sql", StringPool.BLANK));
+			}
+		}
+	}
+
+	private void _generateSQLFile(String sqlDir, String fileName)
+		throws IOException {
 
 		for (DBType dbType : _dbTypes) {
 			DB db = DBManagerUtil.getDB(dbType, null);
