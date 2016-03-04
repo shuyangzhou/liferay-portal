@@ -107,7 +107,15 @@ public class DDMFormFactoryHelper {
 
 		for (Method method : getDDMFormFieldMethods()) {
 			DDMFormFieldFactoryHelper ddmFormFieldFactoryHelper =
-				new DDMFormFieldFactoryHelper(method);
+				_ddmFormFieldFactoryHelpers.get(method);
+
+			if (ddmFormFieldFactoryHelper == null) {
+				ddmFormFieldFactoryHelper = new DDMFormFieldFactoryHelper(
+					method);
+
+				_ddmFormFieldFactoryHelpers.put(
+					method, ddmFormFieldFactoryHelper);
+			}
 
 			ddmFormFieldFactoryHelper.setAvailableLocales(_availableLocales);
 			ddmFormFieldFactoryHelper.setDefaultLocale(_defaultLocale);
@@ -135,6 +143,9 @@ public class DDMFormFactoryHelper {
 	private static final Class<? extends Annotation>
 		_DDM_FORM_FIELD_ANNOTATION =
 			com.liferay.dynamic.data.mapping.annotations.DDMFormField.class;
+
+	private static final Map<Method, DDMFormFieldFactoryHelper>
+		_ddmFormFieldFactoryHelpers = new HashMap<>();
 
 	private final Set<Locale> _availableLocales;
 	private final Class<?> _clazz;

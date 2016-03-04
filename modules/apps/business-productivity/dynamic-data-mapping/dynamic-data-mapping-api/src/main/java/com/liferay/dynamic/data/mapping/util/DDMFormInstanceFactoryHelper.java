@@ -81,7 +81,15 @@ public class DDMFormInstanceFactoryHelper {
 
 		for (Method method : ddmFormFactoryHelper.getDDMFormFieldMethods()) {
 			DDMFormFieldFactoryHelper ddmFormFieldFactoryHelper =
-				new DDMFormFieldFactoryHelper(method);
+				_ddmFormFieldFactoryHelpers.get(method);
+
+			if (ddmFormFieldFactoryHelper == null) {
+				ddmFormFieldFactoryHelper = new DDMFormFieldFactoryHelper(
+					method);
+
+				_ddmFormFieldFactoryHelpers.put(
+					method, ddmFormFieldFactoryHelper);
+			}
 
 			_ddmFormFieldMethodNameMap.put(
 				ddmFormFieldFactoryHelper.getDDMFormFieldName(),
@@ -112,6 +120,9 @@ public class DDMFormInstanceFactoryHelper {
 		return FieldConstants.getSerializable(
 			ddmFormField.getDataType(), value.getString(_locale));
 	}
+
+	private static final Map<Method, DDMFormFieldFactoryHelper>
+		_ddmFormFieldFactoryHelpers = new HashMap<>();
 
 	private final DDMForm _ddmForm;
 	private final Map<String, String> _ddmFormFieldMethodNameMap =
