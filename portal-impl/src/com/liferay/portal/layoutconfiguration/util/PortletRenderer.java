@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.portlet.PortletContainerException;
 import com.liferay.portal.kernel.portlet.PortletContainerUtil;
 import com.liferay.portal.kernel.portlet.RestrictPortletServletRequest;
 import com.liferay.portal.kernel.servlet.BufferCacheServletResponse;
+import com.liferay.portal.kernel.servlet.taglib.aui.ScriptData;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -168,6 +169,13 @@ public class PortletRenderer {
 			HttpServletRequest request =
 				PortletContainerUtil.setupOptionalRenderParameters(
 					_request, null, _columnId, _columnPos, _columnCount);
+
+			ScriptData scriptData = (ScriptData)_request.getAttribute(
+				WebKeys.AUI_SCRIPT_DATA);
+
+			if (scriptData != null) {
+				request.setAttribute(WebKeys.AUI_SCRIPT_DATA, new ScriptData());
+			}
 
 			_restrictPortletServletRequest =
 				(RestrictPortletServletRequest)request;
