@@ -12,26 +12,28 @@
  * details.
  */
 
-package com.liferay.portal.dao.jdbc.spring;
+package com.liferay.portal.kernel.dao.jdbc;
 
-import com.liferay.portal.kernel.dao.jdbc.ParamSetter;
-import com.liferay.portal.kernel.dao.jdbc.SqlUpdate;
-import com.liferay.portal.kernel.dao.jdbc.SqlUpdateFactory;
-import com.liferay.portal.kernel.security.pacl.DoPrivileged;
-
-import javax.sql.DataSource;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Shuyang Zhou
  */
-@DoPrivileged
-public class SqlUpdateFactoryImpl implements SqlUpdateFactory {
+public interface ParamSetter {
 
-	@Override
-	public SqlUpdate getSqlUpdate(
-		DataSource dataSource, String sql, ParamSetter... paramSetters) {
+	public static final ParamSetter BIGINT = new ParamSetter() {
 
-		return new SqlUpdateImpl(dataSource, sql, paramSetters);
-	}
+		@Override
+		public void set(PreparedStatement ps, int index, Object param)
+			throws SQLException {
+
+			ps.setLong(index, (long)param);
+		}
+
+	};
+
+	public void set(PreparedStatement ps, int index, Object param)
+		throws SQLException;
 
 }
