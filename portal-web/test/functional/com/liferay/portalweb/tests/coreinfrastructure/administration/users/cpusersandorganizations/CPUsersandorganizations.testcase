@@ -129,6 +129,8 @@
 	</command>
 
 	<command name="AddMember" priority="5">
+		<property name="portal.acceptance" value="true" />
+
 		<execute macro="ProductMenu#gotoControlPanelUsers">
 			<var name="portlet" value="Users and Organizations" />
 		</execute>
@@ -454,7 +456,6 @@
 		</execute>
 
 		<execute macro="Page#add">
-			<var name="page" value="Public Pages" />
 			<var name="pageName" value="Public Page" />
 			<var name="siteName" value="Organization Name" />
 		</execute>
@@ -518,7 +519,6 @@
 		</execute>
 
 		<execute macro="Page#add">
-			<var name="page" value="Public Pages" />
 			<var name="pageName" value="Organization Public Page" />
 			<var name="siteName" value="Organization Name" />
 		</execute>
@@ -1444,7 +1444,6 @@
 		</execute>
 
 		<execute macro="Page#add">
-			<var name="page" value="Public Pages" />
 			<var name="pageName" value="Public Page" />
 			<var name="siteName" value="Organization Name" />
 		</execute>
@@ -1847,11 +1846,7 @@
 			<var name="orgType" value="Organization" />
 		</execute>
 
-		<execute macro="ProductMenu#gotoControlPanelUsers">
-			<var name="portlet" value="Users and Organizations" />
-		</execute>
-
-		<execute function="AssertElementPresent" locator1="UsersAndOrganizationsEditOrganization#BACK" />
+		<execute function="AssertElementPresent" locator1="Icon#BACK" />
 
 		<take-screenshot />
 	</command>
@@ -1893,7 +1888,6 @@
 		</execute>
 
 		<execute macro="Page#add">
-			<var name="page" value="Public Pages" />
 			<var name="pageName" value="Test Page" />
 			<var name="siteName" value="Organization Name" />
 		</execute>

@@ -1,11 +1,9 @@
 ;(function() {
-	var PATH_CONTROL_MENU_WEB = Liferay.ThemeDisplay.getPathContext() + '/o/product-navigation-taglib/';
-
 	AUI().applyConfig(
 		{
 			groups: {
 				controlmenu: {
-					base: PATH_CONTROL_MENU_WEB,
+					base: MODULE_PATH,
 					combine: Liferay.AUI.getCombine(),
 					modules: {
 						'liferay-product-navigation-control-menu': {
@@ -35,6 +33,7 @@
 								'aui-base',
 								'liferay-layout',
 								'liferay-layout-column',
+								'liferay-notification',
 								'liferay-product-navigation-control-menu',
 								'transition'
 							]
@@ -88,7 +87,7 @@
 							]
 						}
 					},
-					root: PATH_CONTROL_MENU_WEB
+					root: MODULE_PATH
 				}
 			}
 		}
