@@ -38,8 +38,15 @@ public class DDMFormField implements Serializable {
 	public DDMFormField(DDMFormField ddmFormField) {
 		_properties = new LinkedHashMap<>(ddmFormField._properties);
 
-		setDDMFormFieldOptions(
-			new DDMFormFieldOptions(ddmFormField.getDDMFormFieldOptions()));
+		DDMFormFieldOptions ddmFormFieldOptions =
+			ddmFormField.getDDMFormFieldOptions();
+
+		Map<String, LocalizedValue> options = ddmFormFieldOptions.getOptions();
+
+		if (!options.isEmpty()) {
+			setDDMFormFieldOptions(
+				new DDMFormFieldOptions(ddmFormField.getDDMFormFieldOptions()));
+		}
 
 		DDMFormFieldValidation ddmFormFieldValidation =
 			ddmFormField.getDDMFormFieldValidation();
@@ -67,7 +74,6 @@ public class DDMFormField implements Serializable {
 		setName(name);
 		setType(type);
 
-		setDDMFormFieldOptions(new DDMFormFieldOptions());
 		setLabel(new LocalizedValue());
 		setPredefinedValue(new LocalizedValue());
 		setStyle(new LocalizedValue());
@@ -111,7 +117,16 @@ public class DDMFormField implements Serializable {
 	}
 
 	public DDMFormFieldOptions getDDMFormFieldOptions() {
-		return (DDMFormFieldOptions)_properties.get("options");
+		DDMFormFieldOptions ddmFormFieldOptions =
+			(DDMFormFieldOptions)_properties.get("options");
+
+		if (ddmFormFieldOptions == null) {
+			ddmFormFieldOptions = new DDMFormFieldOptions();
+
+			_properties.put("options", ddmFormFieldOptions);
+		}
+
+		return ddmFormFieldOptions;
 	}
 
 	public DDMFormFieldValidation getDDMFormFieldValidation() {
