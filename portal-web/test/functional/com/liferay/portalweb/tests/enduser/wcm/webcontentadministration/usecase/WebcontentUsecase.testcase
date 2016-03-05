@@ -425,11 +425,7 @@
 			<var name="structureName" value="WC Structure Name" />
 		</execute>
 
-		<var name="templateScript">
-				<![CDATA[
-<@liferay_portlet_ext["runtime"] portletName="com_liferay_currency_converter_web_portlet_CurrencyConverterPortlet" />
-				]]>
-			</var>
+		<var name="templateScript"><![CDATA[<@liferay_portlet["runtime"] portletName="com_liferay_currency_converter_web_portlet_CurrencyConverterPortlet" />]]></var>
 
 		<execute function="Type#typeAceEditor" locator1="DDMEditTemplate#SCRIPT_CONTENT_FIELD_TEXT_AREA" value1="${templateScript}" />
 
