@@ -20,13 +20,13 @@ import com.liferay.portal.kernel.portlet.PortletContainerException;
 import com.liferay.portal.kernel.portlet.PortletContainerUtil;
 import com.liferay.portal.kernel.portlet.RestrictPortletServletRequest;
 import com.liferay.portal.kernel.servlet.BufferCacheServletResponse;
-import com.liferay.portal.kernel.servlet.taglib.aui.ScriptData;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.Mergeable;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.io.IOException;
 
+import java.util.Enumeration;
 import java.util.concurrent.Callable;
 
 import javax.servlet.http.HttpServletRequest;
@@ -163,27 +163,15 @@ public class PortletRenderer {
 
 		@Override
 		public StringBundler doCall() throws Exception {
-			ThemeDisplay themeDisplay = (ThemeDisplay)_request.getAttribute(
-				WebKeys.THEME_DISPLAY);
-
 			HttpServletRequest request =
 				PortletContainerUtil.setupOptionalRenderParameters(
 					_request, null, _columnId, _columnPos, _columnCount);
-
-			ScriptData scriptData = (ScriptData)_request.getAttribute(
-				WebKeys.AUI_SCRIPT_DATA);
-
-			if (scriptData != null) {
-				request.setAttribute(WebKeys.AUI_SCRIPT_DATA, new ScriptData());
-			}
 
 			_restrictPortletServletRequest =
 				(RestrictPortletServletRequest)request;
 
 			try {
-				themeDisplay = (ThemeDisplay)themeDisplay.clone();
-
-				request.setAttribute(WebKeys.THEME_DISPLAY, themeDisplay);
+				_split(_request, _restrictPortletServletRequest);
 
 				return _render(request, _response);
 			}
@@ -200,6 +188,32 @@ public class PortletRenderer {
 				}
 
 				return null;
+			}
+		}
+
+		private void _split(
+			HttpServletRequest request,
+			RestrictPortletServletRequest restrictPortletServletRequest) {
+
+			Enumeration<String> attributeNames = request.getAttributeNames();
+
+			while (attributeNames.hasMoreElements()) {
+				String attributeName = attributeNames.nextElement();
+
+				if (!RestrictPortletServletRequest.isSharedRequestAttribute(
+						attributeName)) {
+
+					continue;
+				}
+
+				Object attribute = request.getAttribute(attributeName);
+
+				if (attribute instanceof Mergeable<?>) {
+					Mergeable<?> mergeable = (Mergeable<?>)attribute;
+
+					restrictPortletServletRequest.setAttribute(
+						attributeName, mergeable.split());
+				}
 			}
 		}
 
