@@ -201,6 +201,8 @@ body {
 	/* Layouts Tree */
 
 	li.tree-node .tree-node-content {
+		z-index: 1;
+
 		&.lfr-root-node {
 			display: none;
 		}
@@ -216,6 +218,7 @@ body {
 				position: absolute;
 				right: -40px;
 				top: 0;
+				z-index: -1;
 			}
 		}
 	}

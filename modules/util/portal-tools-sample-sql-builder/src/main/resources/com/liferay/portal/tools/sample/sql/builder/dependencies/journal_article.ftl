@@ -1,18 +1,18 @@
 <#assign ddmStructureModel = dataFactory.defaultJournalDDMStructureModel>
 
-insert into DDMStructure values ('${ddmStructureModel.uuid}', ${ddmStructureModel.structureId}, ${ddmStructureModel.groupId}, ${ddmStructureModel.companyId}, ${ddmStructureModel.userId}, '${ddmStructureModel.userName}', ${ddmStructureModel.versionUserId}, '${ddmStructureModel.versionUserName}', '${dataFactory.getDateString(ddmStructureModel.createDate)}', '${dataFactory.getDateString(ddmStructureModel.modifiedDate)}', ${ddmStructureModel.parentStructureId}, ${ddmStructureModel.classNameId}, '${ddmStructureModel.structureKey}', '${ddmStructureModel.version}', '${ddmStructureModel.name}', '${ddmStructureModel.description}', '${ddmStructureModel.definition}', '${ddmStructureModel.storageType}', ${ddmStructureModel.type}, '${dataFactory.getDateString(ddmStructureModel.lastPublishDate)}');
-
-<#assign ddmStructureLayoutModel = dataFactory.defaultJournalDDMStructureLayoutModel>
-
-insert into DDMStructureLayout values ('${ddmStructureLayoutModel.uuid}', ${ddmStructureLayoutModel.structureLayoutId}, ${ddmStructureLayoutModel.groupId}, ${ddmStructureLayoutModel.companyId}, ${ddmStructureLayoutModel.userId}, '${ddmStructureLayoutModel.userName}', '${dataFactory.getDateString(ddmStructureLayoutModel.createDate)}', '${dataFactory.getDateString(ddmStructureLayoutModel.modifiedDate)}', ${ddmStructureLayoutModel.structureVersionId},'${ddmStructureLayoutModel.definition}');
-
-<#assign ddmStructureVersionModel = dataFactory.defaultJournalDDMStructureVersionModel>
-
-insert into DDMStructureVersion values (${ddmStructureVersionModel.structureVersionId}, ${ddmStructureVersionModel.groupId}, ${ddmStructureVersionModel.companyId}, ${ddmStructureVersionModel.userId}, '${ddmStructureVersionModel.userName}', '${dataFactory.getDateString(ddmStructureVersionModel.createDate)}',  ${ddmStructureVersionModel.structureId}, '${ddmStructureVersionModel.version}', ${ddmStructureVersionModel.parentStructureId}, '${ddmStructureVersionModel.name}', '${ddmStructureVersionModel.description}', '${ddmStructureVersionModel.definition}', '${ddmStructureVersionModel.storageType}', ${ddmStructureVersionModel.type}, ${ddmStructureVersionModel.status}, ${ddmStructureVersionModel.statusByUserId}, '${ddmStructureVersionModel.statusByUserName}', '${dataFactory.getDateString(ddmStructureVersionModel.statusDate)}');
+<@insertDDMStructure
+	_ddmStructureModel = ddmStructureModel
+	_ddmStructureLayoutModel = dataFactory.defaultJournalDDMStructureLayoutModel
+	_ddmStructureVersionModel = dataFactory.defaultJournalDDMStructureVersionModel
+/>
 
 <#assign ddmTemplateModel = dataFactory.defaultJournalDDMTemplateModel>
 
-insert into DDMTemplate values ('${ddmTemplateModel.uuid}', ${ddmTemplateModel.templateId}, ${ddmTemplateModel.groupId}, ${ddmTemplateModel.companyId}, ${ddmTemplateModel.userId}, '${ddmTemplateModel.userName}', ${ddmStructureModel.versionUserId}, '${ddmStructureModel.versionUserName}', '${dataFactory.getDateString(ddmTemplateModel.createDate)}', '${dataFactory.getDateString(ddmTemplateModel.modifiedDate)}', ${ddmTemplateModel.classNameId}, ${ddmTemplateModel.classPK}, ${ddmTemplateModel.resourceClassNameId}, '${ddmTemplateModel.templateKey}', '${ddmTemplateModel.version}', '${ddmTemplateModel.name}', '${ddmTemplateModel.description}', '${ddmTemplateModel.type}', '${ddmTemplateModel.mode}', '${ddmTemplateModel.language}', '${ddmTemplateModel.script}', ${ddmTemplateModel.cacheable?string}, ${ddmTemplateModel.smallImage?string}, ${ddmTemplateModel.smallImageId}, '${ddmTemplateModel.smallImageURL}', '${dataFactory.getDateString(ddmTemplateModel.lastPublishDate)}');
+insert into DDMTemplate values ('${ddmTemplateModel.uuid}', ${ddmTemplateModel.templateId}, ${ddmTemplateModel.groupId}, ${ddmTemplateModel.companyId}, ${ddmTemplateModel.userId}, '${ddmTemplateModel.userName}', ${ddmTemplateModel.versionUserId}, '${ddmTemplateModel.versionUserName}', '${dataFactory.getDateString(ddmTemplateModel.createDate)}', '${dataFactory.getDateString(ddmTemplateModel.modifiedDate)}', ${ddmTemplateModel.classNameId}, ${ddmTemplateModel.classPK}, ${ddmTemplateModel.resourceClassNameId}, '${ddmTemplateModel.templateKey}', '${ddmTemplateModel.version}', '${ddmTemplateModel.name}', '${ddmTemplateModel.description}', '${ddmTemplateModel.type}', '${ddmTemplateModel.mode}', '${ddmTemplateModel.language}', '${ddmTemplateModel.script}', ${ddmTemplateModel.cacheable?string}, ${ddmTemplateModel.smallImage?string}, ${ddmTemplateModel.smallImageId}, '${ddmTemplateModel.smallImageURL}', '${dataFactory.getDateString(ddmTemplateModel.lastPublishDate)}');
+
+<@insertResourcePermissions
+	_entry = ddmTemplateModel
+/>
 
 <#assign journalArticlePageCounts = dataFactory.getSequence(dataFactory.maxJournalArticlePageCount)>
 
@@ -56,6 +56,14 @@ insert into DDMTemplate values ('${ddmTemplateModel.uuid}', ${ddmTemplateModel.t
 			<#assign journalArticleModel = dataFactory.newJournalArticleModel(journalArticleResourceModel, journalArticleCount, versionCount)>
 
 			insert into JournalArticle values ('${journalArticleModel.uuid}', ${journalArticleModel.id}, ${journalArticleModel.resourcePrimKey}, ${journalArticleModel.groupId}, ${journalArticleModel.companyId}, ${journalArticleModel.userId}, '${journalArticleModel.userName}', '${dataFactory.getDateString(journalArticleModel.createDate)}', '${dataFactory.getDateString(journalArticleModel.modifiedDate)}', ${journalArticleModel.folderId}, ${journalArticleModel.classNameId}, ${journalArticleModel.classPK}, '', '${journalArticleModel.articleId}', ${journalArticleModel.version}, '${journalArticleModel.title}', '${journalArticleModel.urlTitle}', '${journalArticleModel.description}', '${journalArticleModel.content}', '${journalArticleModel.DDMStructureKey}', '${journalArticleModel.DDMTemplateKey}', '${journalArticleModel.layoutUuid}', '${dataFactory.getDateString(journalArticleModel.displayDate)}', '${dataFactory.getDateString(journalArticleModel.expirationDate)}', '${dataFactory.getDateString(journalArticleModel.reviewDate)}', ${journalArticleModel.indexable?string}, ${journalArticleModel.smallImage?string}, ${journalArticleModel.smallImageId}, '${journalArticleModel.smallImageURL}', '${dataFactory.getDateString(journalArticleModel.lastPublishDate)}', ${journalArticleModel.status}, ${journalArticleModel.statusByUserId}, '${journalArticleModel.statusByUserName}', '${dataFactory.getDateString(journalArticleModel.statusDate)}');
+
+			<#assign ddmTemplateLinkModel = dataFactory.newDDMTemplateLinkModel(journalArticleModel, ddmTemplateModel.templateId)>
+
+			insert into DDMTemplateLink values (${ddmTemplateLinkModel.templateLinkId}, ${ddmTemplateLinkModel.companyId}, ${ddmTemplateLinkModel.classNameId}, ${ddmTemplateLinkModel.classPK}, ${ddmTemplateLinkModel.templateId});
+
+			<@insertDDMStorageLink
+				_ddmStorageLinkModel = dataFactory.newDDMStorageLinkModel(journalArticleModel, ddmStructureModel.structureId)
+			/>
 
 			<@insertSocialActivity
 				_entry = journalArticleModel
