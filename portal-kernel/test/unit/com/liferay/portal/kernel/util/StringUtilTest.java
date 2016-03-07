@@ -237,6 +237,15 @@ public class StringUtilTest {
 	}
 
 	@Test
+	public void testReplaceCharStringArrays() {
+		Assert.assertEquals(
+			"HelloWorldHELLOWORLDHelloWorld",
+			StringUtil.replace(
+				"Hello World HELLO WORLD Hello World", new char[] {' '},
+				new String[] {StringPool.BLANK}));
+	}
+
+	@Test
 	public void testReplaceEmptyString() throws Exception {
 		Assert.assertEquals(
 			"Hello World HELLO WORLD Hello World",
