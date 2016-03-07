@@ -462,12 +462,10 @@ public class StringUtil {
 			return false;
 		}
 
-		s1 = replace(
-			s1, new String[] {StringPool.RETURN_NEW_LINE, StringPool.NEW_LINE},
-			new String[] {StringPool.BLANK, StringPool.BLANK});
-		s2 = replace(
-			s2, new String[] {StringPool.RETURN_NEW_LINE, StringPool.NEW_LINE},
-			new String[] {StringPool.BLANK, StringPool.BLANK});
+		s1 = removeSubstrings(
+			s1, new String[] {StringPool.RETURN_NEW_LINE, StringPool.NEW_LINE});
+		s2 = removeSubstrings(
+			s2, new String[] {StringPool.RETURN_NEW_LINE, StringPool.NEW_LINE});
 
 		if (s1.length() != s2.length()) {
 			return false;
