@@ -2415,6 +2415,50 @@ public class StringUtil {
 		return sb.toString();
 	}
 
+	public static String replace(String s, char[] oldSubs, String[] newSubs) {
+		if ((s == null) || (oldSubs == null) || (newSubs == null)) {
+			return null;
+		}
+
+		if (oldSubs.length != newSubs.length) {
+			return s;
+		}
+
+		StringBundler sb = null;
+
+		int lastReplacementIndex = 0;
+
+		for (int i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
+
+			for (int j = 0; j < oldSubs.length; j++) {
+				if (c == oldSubs[j]) {
+					if (sb == null) {
+						sb = new StringBundler();
+					}
+
+					if (i > lastReplacementIndex) {
+						sb.append(s.substring(lastReplacementIndex, i));
+					}
+
+					sb.append(newSubs[j]);
+
+					lastReplacementIndex = i + 1;
+				}
+			}
+		}
+
+		if (sb == null) {
+			return s;
+		}
+
+		if (lastReplacementIndex < s.length()) {
+			sb.append(s.substring(lastReplacementIndex));
+		}
+
+		return sb.toString();
+	}
+
 	/**
 	 * Replaces all occurrences of the string with the new string.
 	 *
