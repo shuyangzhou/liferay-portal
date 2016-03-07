@@ -14,12 +14,16 @@
 
 package com.liferay.portal.template;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.template.TemplateException;
 import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.template.URLTemplateResource;
 import com.liferay.portal.kernel.util.CharPool;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.IOException;
 
@@ -54,6 +58,50 @@ public abstract class URLResourceParser implements TemplateResourceParser {
 	}
 
 	public abstract URL getURL(String templateId) throws IOException;
+
+	@Override
+	public boolean isTemplateResourceValid(String templateId, String langType) {
+		if (Validator.isBlank(templateId)) {
+			return true;
+		}
+
+		char[] chars = templateId.toCharArray();
+
+		for (int i = 0; i < chars.length; i++) {
+			char c = chars[i];
+
+			if ((c == CharPool.PERCENT) || (c == CharPool.POUND) ||
+				(c == CharPool.QUESTION) || (c == CharPool.SEMICOLON)) {
+
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"Unable to load template " + templateId +
+							" because the template name contains one or more " +
+								"special characters: %, #, ?, or ;");
+				}
+
+				return false;
+			}
+
+			if (c == CharPool.BACK_SLASH) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"Unable to load template " + templateId +
+							" because the template name contains a backslash");
+				}
+
+				return false;
+			}
+		}
+
+		String extension = FileUtil.getExtension(templateId);
+
+		if (!extension.equals(langType)) {
+			return false;
+		}
+
+		return true;
+	}
 
 	protected static String normalizePath(String path) {
 		List<String> elements = new ArrayList<>();
@@ -123,5 +171,8 @@ public abstract class URLResourceParser implements TemplateResourceParser {
 
 		return normalizedPath;
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		URLResourceParser.class);
 
 }

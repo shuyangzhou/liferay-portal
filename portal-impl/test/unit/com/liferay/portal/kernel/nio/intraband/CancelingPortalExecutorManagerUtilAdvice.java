@@ -36,7 +36,7 @@ public class CancelingPortalExecutorManagerUtilAdvice {
 
 			@Override
 			public void execute(Runnable runnable) {
-				Future<?> future = (Future)runnable;
+				Future<?> future = (Future<?>)runnable;
 
 				future.cancel(true);
 			}

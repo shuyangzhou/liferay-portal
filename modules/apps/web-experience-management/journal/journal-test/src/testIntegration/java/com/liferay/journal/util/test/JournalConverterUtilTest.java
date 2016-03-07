@@ -31,6 +31,7 @@ import com.liferay.dynamic.data.mapping.storage.StorageType;
 import com.liferay.dynamic.data.mapping.test.util.DDMStructureTestHelper;
 import com.liferay.dynamic.data.mapping.util.DDMXML;
 import com.liferay.dynamic.data.mapping.util.impl.DDMImpl;
+import com.liferay.dynamic.data.mapping.util.impl.DDMXMLImpl;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.test.util.JournalTestUtil;
 import com.liferay.journal.util.JournalConverter;
@@ -52,6 +53,7 @@ import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -63,6 +65,7 @@ import com.liferay.portal.kernel.xml.XPath;
 import com.liferay.portal.test.randomizerbumpers.TikaSafeRandomizerBumper;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.test.LayoutTestUtil;
+import com.liferay.portal.xml.XMLSchemaImpl;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
 
@@ -109,6 +112,7 @@ public class JournalConverterUtilTest {
 	@Before
 	public void setUp() throws Exception {
 		setUpDDMFormXSDDeserializer();
+		setUpDDMXML();
 
 		_group = GroupTestUtil.addGroup();
 
@@ -493,6 +497,32 @@ public class JournalConverterUtilTest {
 		Fields expectedFields = getNestedFields(_ddmStructure.getStructureId());
 
 		String content = read("test-journal-content-nested-fields.xml");
+
+		Fields actualFields = _journalConverter.getDDMFields(
+			_ddmStructure, content);
+
+		Assert.assertEquals(expectedFields, actualFields);
+	}
+
+	@Test
+	public void testGetFieldsFromContentWithUnlocalizedElement()
+		throws Exception {
+
+		Fields expectedFields = new Fields();
+
+		Field textField = getTextField(_ddmStructure.getStructureId());
+
+		textField.setValue(_ptLocale, textField.getValue(_enLocale));
+
+		expectedFields.put(textField);
+
+		Field fieldsDisplayField = getFieldsDisplayField(
+			_ddmStructure.getStructureId(), "text_INSTANCE_Okhyj7Ni");
+
+		expectedFields.put(fieldsDisplayField);
+
+		String content = read(
+			"test-journal-content-text-unlocalized-field.xml");
 
 		Fields actualFields = _journalConverter.getDDMFields(
 			_ddmStructure, content);
@@ -938,6 +968,23 @@ public class JournalConverterUtilTest {
 
 		_ddmFormXSDDeserializer = registry.getService(
 			DDMFormXSDDeserializer.class);
+	}
+
+	protected void setUpDDMXML() throws Exception {
+		Registry registry = RegistryUtil.getRegistry();
+
+		_ddmXML = registry.getService(DDMXML.class);
+
+		XMLSchemaImpl xmlSchema = new XMLSchemaImpl();
+
+		xmlSchema.setSchemaLanguage("http://www.w3.org/2001/XMLSchema");
+		xmlSchema.setSystemId(
+			"http://www.liferay.com/dtd/liferay-ddm-structure_6_2_0.xsd");
+
+		java.lang.reflect.Field field = ReflectionUtil.getDeclaredField(
+			DDMXMLImpl.class, "_xmlSchema");
+
+		field.set(_ddmXML, xmlSchema);
 	}
 
 	protected void udpateFieldsMap(

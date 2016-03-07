@@ -143,9 +143,9 @@ renderResponse.setTitle((exportImportConfiguration == null) ? LanguageUtil.get(r
 					</aui:fieldset>
 				</c:if>
 
-				<liferay-staging:content cmd="<%= cmd %>" parameterMap="<%= parameterMap %>" type="<%= Constants.EXPORT %>" />
+					<liferay-staging:content cmd="<%= cmd %>" exportImportConfigurationId="<%= exportImportConfigurationId %>" type="<%= Constants.EXPORT %>" />
 
-					<liferay-staging:permissions action="export" descriptionCSSClass="permissions-description" global="<%= group.isCompany() %>" labelCSSClass="permissions-label" parameterMap="<%= parameterMap %>" />
+					<liferay-staging:permissions action="export" descriptionCSSClass="permissions-description" exportImportConfigurationId="<%= exportImportConfigurationId %>" global="<%= group.isCompany() %>" labelCSSClass="permissions-label" />
 				</aui:fieldset-group>
 			</div>
 
@@ -189,9 +189,9 @@ renderResponse.setTitle((exportImportConfiguration == null) ? LanguageUtil.get(r
 
 			var A = AUI();
 
-			var allContentRadioChecked = A.one('#<portlet:namespace />allContent').attr('checked');
+			var allContentSelected = A.one('#<portlet:namespace /><%= PortletDataHandlerKeys.PORTLET_DATA_ALL %>').val();
 
-			if (allContentRadioChecked) {
+			if (allContentSelected === 'true') {
 				var portletDataControlDefault = A.one('#<portlet:namespace /><%= PortletDataHandlerKeys.PORTLET_DATA_CONTROL_DEFAULT %>');
 
 				portletDataControlDefault.val(true);

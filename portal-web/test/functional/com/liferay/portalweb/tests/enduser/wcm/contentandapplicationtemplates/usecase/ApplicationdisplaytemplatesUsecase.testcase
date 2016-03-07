@@ -20,7 +20,6 @@
 		</execute>
 
 		<execute macro="Page#add">
-			<var name="page" value="Public Pages" />
 			<var name="pageName" value="ADT Test Page" />
 			<var name="siteName" value="Test Site Name" />
 		</execute>
@@ -46,7 +45,7 @@
 	</tear-down>
 
 	<command name="AddRSSADTViaPortletConfiguration" priority="5">
-		<property name="portal.acceptance" value="true" />
+		<property name="portal.acceptance" value="false" />
 
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="ADT Test Page" />
@@ -270,7 +269,7 @@
 	</command>
 
 	<command name="ADTCategoriesNavigation" priority="5">
-		<property name="portal.acceptance" value="true" />
+		<property name="portal.acceptance" value="false" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Test Site Name" />
@@ -640,6 +639,8 @@
 	</command>
 
 	<command name="ADTTagsNavigationPortlet" priority="5">
+		<property name="portal.acceptance" value="false" />
+
 		<execute macro="Navigator#openSiteURL">
 			<var name="siteName" value="Test Site Name" />
 		</execute>

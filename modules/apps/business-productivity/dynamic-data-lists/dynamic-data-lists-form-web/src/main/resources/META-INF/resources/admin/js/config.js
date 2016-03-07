@@ -1,13 +1,11 @@
 ;(function() {
 	var LiferayAUI = Liferay.AUI;
 
-	var PATH_DDL_FORM_WEB = Liferay.ThemeDisplay.getPathContext() + '/o/dynamic-data-lists-form-web';
-
 	AUI().applyConfig(
 		{
 			groups: {
 				ddl: {
-					base: PATH_DDL_FORM_WEB + '/admin/js/',
+					base: MODULE_PATH + '/admin/js/',
 					combine: Liferay.AUI.getCombine(),
 					filter: LiferayAUI.getFilterConfig(),
 					modules: {
@@ -16,8 +14,10 @@
 							requires: [
 								'aui-form-builder',
 								'aui-form-builder-pages',
+								'liferay-ddl-form-builder-field-list',
 								'liferay-ddl-form-builder-field-settings-modal',
 								'liferay-ddl-form-builder-field-support',
+								'liferay-ddl-form-builder-field-toolbar',
 								'liferay-ddl-form-builder-field-types-modal',
 								'liferay-ddl-form-builder-layout-deserializer',
 								'liferay-ddl-form-builder-layout-visitor',
@@ -34,11 +34,23 @@
 								'liferay-ddl-form-builder-layout-visitor'
 							]
 						},
+						'liferay-ddl-form-builder-field-list': {
+							path: 'form_builder_field_list.js',
+							requires: [
+								'aui-form-builder-field-list'
+							]
+						},
 						'liferay-ddl-form-builder-field-settings-modal': {
 							path: 'form_builder_field_settings_modal.js',
 							requires: [
 								'form-builder-settings-modal',
 								'liferay-ddl-form-builder-modal'
+							]
+						},
+						'liferay-ddl-form-builder-field-toolbar': {
+							path: 'form_builder_field_toolbar.js',
+							requires: [
+								'aui-form-builder-field-toolbar'
 							]
 						},
 						'liferay-ddl-form-builder-field-types-modal': {
@@ -121,7 +133,7 @@
 							]
 						}
 					},
-					root: PATH_DDL_FORM_WEB + '/admin/js/'
+					root: MODULE_PATH + '/admin/js/'
 				}
 			}
 		}

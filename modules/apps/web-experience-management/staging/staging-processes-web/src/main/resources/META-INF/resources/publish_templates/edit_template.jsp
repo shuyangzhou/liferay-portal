@@ -160,11 +160,11 @@ renderResponse.setTitle((exportImportConfiguration == null) ? LanguageUtil.get(r
 							</aui:fieldset>
 						</c:if>
 
-						<liferay-staging:content cmd="<%= cmd %>" parameterMap="<%= parameterMap %>" type="<%= stagingGroup.isStagedRemotely() ? Constants.PUBLISH_TO_REMOTE : Constants.PUBLISH_TO_LIVE %>" />
+						<liferay-staging:content cmd="<%= cmd %>" exportImportConfigurationId="<%= exportImportConfigurationId %>" type="<%= stagingGroup.isStagedRemotely() ? Constants.PUBLISH_TO_REMOTE : Constants.PUBLISH_TO_LIVE %>" />
 
 						<liferay-staging:deletions cmd="<%= cmd %>" />
 
-						<liferay-staging:permissions action="publish" descriptionCSSClass="permissions-description" global="<%= group.isCompany() %>" labelCSSClass="permissions-label" parameterMap="<%= parameterMap %>" />
+						<liferay-staging:permissions action="publish" descriptionCSSClass="permissions-description" exportImportConfigurationId="<%= exportImportConfigurationId %>" global="<%= group.isCompany() %>" labelCSSClass="permissions-label" />
 
 						<c:if test="<%= stagingGroup.isStagedRemotely() %>">
 							<aui:fieldset collapsed="<%= true %>" collapsible="<%= true %>" cssClass="options-group" label="remote-live-connection-settings">
@@ -193,7 +193,9 @@ renderResponse.setTitle((exportImportConfiguration == null) ? LanguageUtil.get(r
 	function <portlet:namespace />publishPages() {
 		var form = AUI.$(document.<portlet:namespace />exportPagesFm);
 
-		if (form.fm('allContent').prop('checked')) {
+		var allContentSelected = AUI.$('#<portlet:namespace /><%= PortletDataHandlerKeys.PORTLET_DATA_ALL %>').val();
+
+		if (allContentSelected === 'true') {
 			form.fm('<%= PortletDataHandlerKeys.PORTLET_DATA_CONTROL_DEFAULT %>').val(true);
 		}
 

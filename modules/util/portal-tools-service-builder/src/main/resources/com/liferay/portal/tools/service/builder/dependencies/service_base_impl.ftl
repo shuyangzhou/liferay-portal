@@ -5,10 +5,10 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
 import com.liferay.exportimport.kernel.lar.ManifestSummary;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
-import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandler;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerRegistryUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
+import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import ${beanLocatorUtil};
@@ -53,7 +53,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.sql.DataSource;
-
 import ${apiPackagePath}.service.${entity.name}${sessionTypeName}Service;
 
 <#if entity.hasColumns()>
@@ -1129,7 +1128,7 @@ import ${apiPackagePath}.service.${entity.name}${sessionTypeName}Service;
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource, sql, new int[0]);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource, sql);
 
 			sqlUpdate.update();
 		}

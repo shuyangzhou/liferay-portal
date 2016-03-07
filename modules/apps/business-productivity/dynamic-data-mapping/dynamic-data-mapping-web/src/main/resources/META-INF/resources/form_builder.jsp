@@ -18,8 +18,13 @@
 
 <%
 String portletResourceNamespace = ParamUtil.getString(request, "portletResourceNamespace");
+String className = ParamUtil.getString(request, "className");
 String script = ParamUtil.getString(request, "script");
 String fieldsJSONArrayString = ParamUtil.getString(request, "fieldsJSONArrayString");
+
+scopeAvailableFields = ParamUtil.getString(request, "scopeAvailableFields");
+scopeClassNameId = PortalUtil.getClassNameId(className);
+scopeStorageType = ParamUtil.getString(request, "storageType");
 %>
 
 <%@ include file="/form_builder.jspf" %>

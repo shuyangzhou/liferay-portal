@@ -170,9 +170,9 @@ renderResponse.setTitle(!configuredExport ? LanguageUtil.get(request, "new-custo
 					</aui:fieldset>
 				</c:if>
 
-				<liferay-staging:content cmd="<%= Constants.EXPORT %>" disableInputs="<%= configuredExport %>" parameterMap="<%= parameterMap %>" type="<%= Constants.EXPORT %>" />
+				<liferay-staging:content cmd="<%= Constants.EXPORT %>" disableInputs="<%= configuredExport %>" exportImportConfigurationId="<%= exportImportConfigurationId %>" type="<%= Constants.EXPORT %>" />
 
-				<liferay-staging:permissions action="export" descriptionCSSClass="permissions-description" disableInputs="<%= configuredExport %>" global="<%= group.isCompany() %>" labelCSSClass="permissions-label" parameterMap="<%= parameterMap %>" />
+				<liferay-staging:permissions action="export" descriptionCSSClass="permissions-description" disableInputs="<%= configuredExport %>" exportImportConfigurationId="<%= exportImportConfigurationId %>" global="<%= group.isCompany() %>" labelCSSClass="permissions-label" />
 			</aui:fieldset-group>
 		</div>
 
@@ -215,9 +215,9 @@ renderResponse.setTitle(!configuredExport ? LanguageUtil.get(request, "new-custo
 
 			var A = AUI();
 
-			var allContentRadioChecked = A.one('#<portlet:namespace />allContent').attr('checked');
+			var allContentSelected = A.one('#<portlet:namespace /><%= PortletDataHandlerKeys.PORTLET_DATA_ALL %>').val();
 
-			if (allContentRadioChecked) {
+			if (allContentSelected === 'true') {
 				var portletDataControlDefault = A.one('#<portlet:namespace /><%= PortletDataHandlerKeys.PORTLET_DATA_CONTROL_DEFAULT %>');
 
 				portletDataControlDefault.val(true);

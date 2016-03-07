@@ -287,11 +287,11 @@ renderResponse.setTitle(!configuredPublish ? LanguageUtil.get(request, "new-publ
 					</aui:fieldset>
 				</c:if>
 
-				<liferay-staging:content cmd="<%= cmd %>" disableInputs="<%= configuredPublish %>" parameterMap="<%= parameterMap %>" type="<%= localPublishing ? Constants.PUBLISH_TO_LIVE : Constants.PUBLISH_TO_REMOTE %>" />
+				<liferay-staging:content cmd="<%= cmd %>" disableInputs="<%= configuredPublish %>" exportImportConfigurationId="<%= exportImportConfigurationId %>" type="<%= localPublishing ? Constants.PUBLISH_TO_LIVE : Constants.PUBLISH_TO_REMOTE %>" />
 
 				<liferay-staging:deletions cmd="<%= Constants.PUBLISH %>" disableInputs="<%= configuredPublish %>" />
 
-				<liferay-staging:permissions action="publish" descriptionCSSClass="permissions-description" disableInputs="<%= configuredPublish %>" global="<%= group.isCompany() %>" labelCSSClass="permissions-label" parameterMap="<%= parameterMap %>" />
+				<liferay-staging:permissions action="publish" descriptionCSSClass="permissions-description" disableInputs="<%= configuredPublish %>" exportImportConfigurationId="<%= exportImportConfigurationId %>" global="<%= group.isCompany() %>" labelCSSClass="permissions-label" />
 
 				<c:if test="<%= !localPublishing %>">
 					<aui:fieldset collapsible="<%= true %>" cssClass="options-group" label="remote-live-connection-settings">
@@ -315,7 +315,9 @@ renderResponse.setTitle(!configuredPublish ? LanguageUtil.get(request, "new-publ
 	function <portlet:namespace />publishPages() {
 		var form = AUI.$(document.<portlet:namespace />exportPagesFm);
 
-		if (form.fm('allContent').prop('checked')) {
+		var allContentSelected = AUI.$('#<portlet:namespace /><%= PortletDataHandlerKeys.PORTLET_DATA_ALL %>').val();
+
+		if (allContentSelected === 'true') {
 			form.fm('<%= PortletDataHandlerKeys.PORTLET_DATA_CONTROL_DEFAULT %>').val(true);
 		}
 

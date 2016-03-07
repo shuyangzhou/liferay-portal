@@ -20,15 +20,15 @@ import com.liferay.layouts.admin.kernel.util.SitemapURLProviderRegistryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Layout;
-import com.liferay.portal.kernel.model.LayoutConstants;
+import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.security.pacl.DoPrivileged;
-import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
+import com.liferay.portal.kernel.service.LayoutSetLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.xml.Document;
@@ -151,10 +151,55 @@ public class SitemapImpl implements Sitemap {
 
 	@Override
 	public String encodeXML(String input) {
-		return StringUtil.replace(
-			input,
-			new String[] {"&", "<", ">", "'", "\""},
-			new String[] {"&amp;", "&lt;", "&gt;", "&apos;", "&quot;"});
+		StringBundler sb = null;
+
+		int lastReplacementIndex = 0;
+
+		for (int i = 0; i < input.length(); i++) {
+			char c = input.charAt(i);
+
+			String html = null;
+
+			if (c == '&') {
+				html = "&amp;";
+			}
+			else if (c == '<') {
+				html = "&lt;";
+			}
+			else if (c == '>') {
+				html = "&gt;";
+			}
+			else if (c == '\'') {
+				html = "&apos;";
+			}
+			else if (c == '"') {
+				html = "&quot;";
+			}
+
+			if (html != null) {
+				if (sb == null) {
+					sb = new StringBundler();
+				}
+
+				if (i > lastReplacementIndex) {
+					sb.append(input.substring(lastReplacementIndex, i));
+				}
+
+				sb.append(html);
+
+				lastReplacementIndex = i + 1;
+			}
+		}
+
+		if (sb == null) {
+			return input;
+		}
+
+		if (lastReplacementIndex < input.length()) {
+			sb.append(input.substring(lastReplacementIndex));
+		}
+
+		return sb.toString();
 	}
 
 	@Override
@@ -190,32 +235,18 @@ public class SitemapImpl implements Sitemap {
 
 		rootElement.addAttribute("xmlns:xhtml", "http://www.w3.org/1999/xhtml");
 
-		List<Layout> layouts = LayoutLocalServiceUtil.getLayouts(
-			groupId, privateLayout, LayoutConstants.DEFAULT_PARENT_LAYOUT_ID);
+		LayoutSet layoutSet = LayoutSetLocalServiceUtil.getLayoutSet(
+			groupId, privateLayout);
 
 		List<SitemapURLProvider> sitemapURLProviders =
 			SitemapURLProviderRegistryUtil.getSitemapURLProviders();
 
-		visitLayouts(rootElement, layouts, sitemapURLProviders, themeDisplay);
+		for (SitemapURLProvider sitemapURLProvider : sitemapURLProviders) {
+			sitemapURLProvider.visitLayoutSet(
+				rootElement, layoutSet, themeDisplay);
+		}
 
 		return document.asXML();
-	}
-
-	protected void visitLayouts(
-			Element element, List<Layout> layouts,
-			List<SitemapURLProvider> sitemapURLProviders,
-			ThemeDisplay themeDisplay)
-		throws PortalException {
-
-		for (Layout layout : layouts) {
-			for (SitemapURLProvider sitemapURLProvider : sitemapURLProviders) {
-				sitemapURLProvider.visitLayout(element, layout, themeDisplay);
-			}
-
-			visitLayouts(
-				element, layout.getChildren(), sitemapURLProviders,
-				themeDisplay);
-		}
 	}
 
 }

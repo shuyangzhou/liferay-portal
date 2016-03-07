@@ -37,7 +37,6 @@
 		</execute>
 
 		<execute macro="Page#add">
-			<var name="page" value="Public Pages" />
 			<var name="pageName" value="Page Name" />
 			<var name="siteName" value="Site Name" />
 		</execute>
@@ -104,7 +103,6 @@
 		</execute>
 
 		<execute macro="Page#add">
-			<var name="page" value="Public Pages" />
 			<var name="pageName" value="Page Name" />
 			<var name="siteName" value="Site Name" />
 		</execute>
@@ -140,7 +138,6 @@
 		</execute>
 
 		<execute macro="Page#add">
-			<var name="page" value="Public Pages" />
 			<var name="pageName" value="Page Name" />
 			<var name="siteName" value="Site Name" />
 		</execute>
@@ -197,7 +194,6 @@
 		</execute>
 
 		<execute macro="Page#add">
-			<var name="page" value="Public Pages" />
 			<var name="pageName" value="Page Name" />
 			<var name="siteName" value="Site Name" />
 		</execute>
@@ -239,7 +235,9 @@
 			<var name="entryTitle" value="Entry Title" />
 		</execute>
 
-		<execute macro="BlogsNavigator#gotoSettings" />
+		<execute macro="Panel#expandPanel">
+			<var name="panelHeading" value="Categorization" />
+		</execute>
 
 		<execute macro="BlogsEntry#addTagList">
 			<var name="tagNameList" value="tag1,tag3" />
@@ -281,7 +279,6 @@
 		</execute>
 
 		<execute macro="Page#add">
-			<var name="page" value="Public Pages" />
 			<var name="pageName" value="Page Name" />
 			<var name="siteName" value="Site Name" />
 		</execute>
@@ -335,7 +332,6 @@
 		</execute>
 
 		<execute macro="Page#add">
-			<var name="page" value="Public Pages" />
 			<var name="pageName" value="Page Name" />
 			<var name="siteName" value="Site Name" />
 		</execute>
@@ -599,7 +595,6 @@
 		</execute>
 
 		<execute macro="Page#add">
-			<var name="page" value="Public Pages" />
 			<var name="pageName" value="Page Name" />
 			<var name="siteName" value="Site Name" />
 		</execute>
@@ -655,7 +650,9 @@
 			<var name="entryTitle" value="Entry Title" />
 		</execute>
 
-		<execute macro="BlogsNavigator#gotoSettings" />
+		<execute macro="Panel#expandPanel">
+			<var name="panelHeading" value="Categorization" />
+		</execute>
 
 		<for list="tag name 1,tag name 3" param="tagName">
 			<execute macro="AssetCategorization#removeTag">
@@ -696,7 +693,6 @@
 		</execute>
 
 		<execute macro="Page#add">
-			<var name="page" value="Public Pages" />
 			<var name="pageName" value="Page Name" />
 			<var name="siteName" value="Site Name" />
 		</execute>
@@ -746,7 +742,9 @@
 			<var name="entryTitle" value="Entry Title" />
 		</execute>
 
-		<execute macro="BlogsNavigator#gotoSettings" />
+		<execute macro="Panel#expandPanel">
+			<var name="panelHeading" value="Categorization" />
+		</execute>
 
 		<execute macro="AssetCategorization#removeTag">
 			<var name="tagName" value="tag name 1" />
@@ -782,7 +780,6 @@
 		</execute>
 
 		<execute macro="Page#add">
-			<var name="page" value="Public Pages" />
 			<var name="pageName" value="Page Name" />
 			<var name="siteName" value="Site Name" />
 		</execute>

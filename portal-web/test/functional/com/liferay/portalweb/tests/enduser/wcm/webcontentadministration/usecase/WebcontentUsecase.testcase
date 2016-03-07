@@ -49,7 +49,6 @@
 		</execute>
 
 		<execute macro="Page#add">
-			<var name="page" value="Public Pages" />
 			<var name="pageName" value="Home" />
 		</execute>
 
@@ -384,7 +383,6 @@
 		</execute>
 
 		<execute macro="Page#add">
-			<var name="page" value="Public Pages" />
 			<var name="pageName" value="Web Content Display Page" />
 		</execute>
 
@@ -425,11 +423,7 @@
 			<var name="structureName" value="WC Structure Name" />
 		</execute>
 
-		<var name="templateScript">
-				<![CDATA[
-<@liferay_portlet_ext["runtime"] portletName="com_liferay_currency_converter_web_portlet_CurrencyConverterPortlet" />
-				]]>
-			</var>
+		<var name="templateScript"><![CDATA[<@liferay_portlet["runtime"] portletName="com_liferay_currency_converter_web_portlet_CurrencyConverterPortlet" />]]></var>
 
 		<execute function="Type#typeAceEditor" locator1="DDMEditTemplate#SCRIPT_CONTENT_FIELD_TEXT_AREA" value1="${templateScript}" />
 
@@ -475,7 +469,6 @@
 		</execute>
 
 		<execute macro="Page#add">
-			<var name="page" value="Public Pages" />
 			<var name="pageName" value="Web Content Display Page" />
 		</execute>
 
@@ -557,7 +550,6 @@
 		</execute>
 
 		<execute macro="Page#add">
-			<var name="page" value="Public Pages" />
 			<var name="pageName" value="Site Page Name" />
 			<var name="siteName" value="Blank Site Name" />
 		</execute>
@@ -1431,7 +1423,6 @@
 		</execute>
 
 		<execute macro="Page#add">
-			<var name="page" value="Public Pages" />
 			<var name="pageName" value="Staging Test Page" />
 			<var name="siteName" value="Site Name" />
 		</execute>
