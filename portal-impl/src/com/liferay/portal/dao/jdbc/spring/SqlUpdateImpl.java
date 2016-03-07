@@ -27,7 +27,11 @@ public class SqlUpdateImpl
 	extends org.springframework.jdbc.object.SqlUpdate implements SqlUpdate {
 
 	public SqlUpdateImpl(DataSource dataSource, String sql, int[] types) {
-		super(dataSource, sql);
+		setJdbcTemplate(new JdbcTemplate());
+
+		setDataSource(dataSource);
+
+		setSql(sql);
 
 		for (int type : types) {
 			declareParameter(new SqlParameter(type));

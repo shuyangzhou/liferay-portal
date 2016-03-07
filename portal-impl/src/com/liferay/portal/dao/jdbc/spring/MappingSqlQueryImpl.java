@@ -35,7 +35,11 @@ public class MappingSqlQueryImpl<T>
 		DataSource dataSource, String sql, int[] types,
 		RowMapper<T> rowMapper) {
 
-		super(dataSource, sql);
+		setJdbcTemplate(new JdbcTemplate());
+
+		setDataSource(dataSource);
+
+		setSql(sql);
 
 		for (int type : types) {
 			declareParameter(new SqlParameter(type));
