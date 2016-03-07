@@ -2357,6 +2357,99 @@ public class StringUtil {
 		return s;
 	}
 
+	public static String removeSubstring(String s, char oldSub) {
+		if (s == null) {
+			return null;
+		}
+
+		int y = s.indexOf(oldSub);
+
+		if (y >= 0) {
+			StringBundler sb = new StringBundler();
+
+			int x = 0;
+
+			while (x <= y) {
+				sb.append(s.substring(x, y));
+
+				x = y + 1;
+				y = s.indexOf(oldSub, x);
+			}
+
+			sb.append(s.substring(x));
+
+			return sb.toString();
+		}
+		else {
+			return s;
+		}
+	}
+
+	public static String removeSubstring(String s, String oldSub) {
+		if (s == null) {
+			return null;
+		}
+
+		if (oldSub == null) {
+			return s;
+		}
+
+		int y = s.indexOf(oldSub);
+
+		if (y >= 0) {
+			StringBundler sb = new StringBundler();
+
+			int length = oldSub.length();
+			int x = 0;
+
+			while (x <= y) {
+				sb.append(s.substring(x, y));
+
+				x = y + length;
+				y = s.indexOf(oldSub, x);
+			}
+
+			sb.append(s.substring(x));
+
+			return sb.toString();
+		}
+		else {
+			return s;
+		}
+	}
+
+	public static String removeSubstrings(String s, char[] oldSubs) {
+		if (s == null) {
+			return null;
+		}
+
+		if (oldSubs == null) {
+			return s;
+		}
+
+		for (char oldSub : oldSubs) {
+			s = removeSubstring(s, oldSub);
+		}
+
+		return s;
+	}
+
+	public static String removeSubstrings(String s, String oldSubs[]) {
+		if (s == null) {
+			return null;
+		}
+
+		if (ArrayUtil.isEmpty(oldSubs)) {
+			return s;
+		}
+
+		for (String oldSub : oldSubs) {
+			s = removeSubstring(s, oldSub);
+		}
+
+		return s;
+	}
+
 	/**
 	 * Replaces all occurrences of the character with the new character.
 	 *
@@ -2413,6 +2506,22 @@ public class StringUtil {
 		}
 
 		return sb.toString();
+	}
+
+	public static String replace(String s, char[] oldSubs, char[] newSubs) {
+		if ((s == null) || (oldSubs == null) || (newSubs == null)) {
+			return null;
+		}
+
+		if (oldSubs.length != newSubs.length) {
+			return s;
+		}
+
+		for (int i = 0; i < oldSubs.length; i++) {
+			s = s.replace(oldSubs[i], newSubs[i]);
+		}
+
+		return s;
 	}
 
 	public static String replace(String s, char[] oldSubs, String[] newSubs) {
