@@ -517,9 +517,8 @@ public class Validator {
 	 */
 	public static boolean isContent(String s) {
 		if (isNotNull(
-				StringUtil.replace(
-					s, new String[] {StringPool.NEW_LINE, StringPool.TAB},
-					new String[] {StringPool.BLANK, StringPool.BLANK}))) {
+				StringUtil.removeSubstrings(
+					s, new char[] {CharPool.NEW_LINE, CharPool.TAB}))) {
 
 			return true;
 		}

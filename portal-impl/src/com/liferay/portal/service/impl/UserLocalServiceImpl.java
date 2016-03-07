@@ -3594,8 +3594,8 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 			passwordResetURL =
 				serviceContext.getPortalURL() + serviceContext.getPathMain() +
 					"/portal/update_password?p_l_id="+
-						serviceContext.getPlid() +
-							"&ticketKey=" + ticket.getKey();
+						serviceContext.getPlid() + "&ticketKey=" +
+							ticket.getKey();
 		}
 		else {
 			if (!Validator.equals(
@@ -5904,12 +5904,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 			}
 		}
 
-		Boolean forceDatabase = (Boolean)params.get("forceDatabase");
 		Boolean inherit = (Boolean)params.get("inherit");
 
-		if (((forceDatabase != null) && forceDatabase) ||
-			((inherit != null) && inherit)) {
-
+		if ((inherit != null) && inherit) {
 			return true;
 		}
 

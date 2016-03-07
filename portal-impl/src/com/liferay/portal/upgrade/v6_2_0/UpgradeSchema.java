@@ -27,7 +27,8 @@ public class UpgradeSchema extends UpgradeProcess {
 		ParallelUpgradeSchemaUtil.execute(
 			"update-6.1.1-6.2.0.sql", "update-6.1.1-6.2.0-dl.sql",
 			"update-6.1.1-6.2.0-expando.sql", "update-6.1.1-6.2.0-group.sql",
-			"update-6.1.1-6.2.0-user.sql", "update-6.1.1-6.2.0-wiki.sql");
+			"update-6.1.1-6.2.0-journal.sql", "update-6.1.1-6.2.0-user.sql",
+			"update-6.1.1-6.2.0-wiki.sql");
 
 		upgrade(UpgradeMVCCVersion.class);
 	}

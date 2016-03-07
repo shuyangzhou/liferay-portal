@@ -46,6 +46,9 @@ if (ddlDisplayContext.isAdminPortlet()) {
 
 	renderResponse.setTitle(LanguageUtil.format(request, "view-x", ddmStructure.getName(locale), false));
 }
+else {
+	portletDisplay.setShowBackIcon(false);
+}
 %>
 
 <div class="container-fluid-1280">
@@ -63,7 +66,7 @@ if (ddlDisplayContext.isAdminPortlet()) {
 		DDMFormValues ddmFormValues = null;
 
 		if (recordVersion != null) {
-			ddmFormValues = StorageEngineUtil.getDDMFormValues(recordVersion.getDDMStorageId());
+			ddmFormValues = ddlDisplayContext.getDDMFormValues(recordVersion.getDDMStorageId());
 		}
 
 		long classNameId = PortalUtil.getClassNameId(DDMStructure.class);
