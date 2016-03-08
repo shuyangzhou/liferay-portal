@@ -40,27 +40,27 @@ public class BaseSourceProcessorTest {
 	@Test
 	public void testGetModuleLangPath() throws Exception {
 		testGetModuleLangPath(
-			"./modules/apps/business-productivity/dynamic-data-mapping" +
-				"/dynamic-data-mapping-web",
-			"./modules/apps/business-productivity/dynamic-data-mapping" +
-				"/dynamic-data-mapping-lang/src/main/resources/content");
-		testGetModuleLangPath(
-			"./modules/apps/web-experience-management/staging/staging-bar-web",
-			"./modules/apps/web-experience-management/staging/staging-lang/" +
-				"src/main/resources/content");
-		testGetModuleLangPath(
-			"./modules/apps/business-productivity/portal-workflow" +
-				"/portal-workflow-definition-web",
-			"./modules/apps/business-productivity/portal-workflow" +
-				"/portal-workflow-lang/src/main/resources/content");
-		testGetModuleLangPath(
-			"./modules/apps/business-productivity/dynamic-data-lists" +
+			"./modules/apps/forms-and-workflow/dynamic-data-lists" +
 				"/dynamic-data-lists-form-web",
-			"./modules/apps/business-productivity/dynamic-data-lists" +
+			"./modules/apps/forms-and-workflow/dynamic-data-lists" +
 				"/dynamic-data-lists-form-web/../../dynamic-data-mapping" +
 					"/dynamic-data-mapping-lang/src/main/resources/content",
-			"./modules/apps/business-productivity/dynamic-data-lists" +
+			"./modules/apps/forms-and-workflow/dynamic-data-lists" +
 				"/dynamic-data-lists-form-web/src/main/resources/content");
+		testGetModuleLangPath(
+			"./modules/apps/forms-and-workflow/dynamic-data-mapping" +
+				"/dynamic-data-mapping-web",
+			"./modules/apps/forms-and-workflow/dynamic-data-mapping" +
+				"/dynamic-data-mapping-lang/src/main/resources/content");
+		testGetModuleLangPath(
+			"./modules/apps/forms-and-workflow/portal-workflow" +
+				"/portal-workflow-definition-web",
+			"./modules/apps/forms-and-workflow/portal-workflow" +
+				"/portal-workflow-lang/src/main/resources/content");
+		testGetModuleLangPath(
+			"./modules/apps/web-experience/staging/staging-bar-web",
+			"./modules/apps/web-experience/staging/staging-lang/src/main" +
+				"/resources/content");
 	}
 
 	protected void setUpBaseSourceProcessor() {
