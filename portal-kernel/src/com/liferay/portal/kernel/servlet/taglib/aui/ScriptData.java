@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.servlet.taglib.aui;
 
+import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.Mergeable;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -26,16 +27,12 @@ import java.io.Serializable;
 import java.io.Writer;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -127,9 +124,6 @@ public class ScriptData implements Mergeable<ScriptData>, Serializable {
 		if (!es6ModulesSet.isEmpty()) {
 			writer.write("require(");
 
-			Map<String, String> generatedVariables = _generateVariables(
-				es6ModulesSet);
-
 			Iterator<String> iterator = es6ModulesSet.iterator();
 
 			while (iterator.hasNext()) {
@@ -147,8 +141,11 @@ public class ScriptData implements Mergeable<ScriptData>, Serializable {
 
 			iterator = es6ModulesSet.iterator();
 
+			int i = 1;
+
 			while (iterator.hasNext()) {
-				writer.write(generatedVariables.get(iterator.next()));
+				writer.write(_generateVariable(iterator.next()));
+				writer.write(i++);
 
 				if (iterator.hasNext()) {
 					writer.write(StringPool.COMMA_AND_SPACE);
@@ -204,75 +201,31 @@ public class ScriptData implements Mergeable<ScriptData>, Serializable {
 		}
 	}
 
-	private Map<String, String> _generateVariables(
-		Set<String> requiredFileNames) {
+	private String _generateVariable(String name) {
+		StringBundler sb = new StringBundler();
 
-		Map<String, Integer> indexes = new HashMap<>();
-		Set<String> generatedVariables = new HashSet<>();
-		Map<String, String> generatedVariablesMap = new HashMap<>();
+		char c = name.charAt(0);
 
-		for (String requiredFileName : requiredFileNames) {
-			StringBundler sb = new StringBundler();
+		if (Character.isLetter(c) || (c == CharPool.NEW_LINE) ||
+			(c == CharPool.RETURN)) {
 
-			CharSequence firstCharSequence = requiredFileName.subSequence(0, 1);
-
-			Matcher matcher = _validFirstCharacterPattern.matcher(
-				firstCharSequence);
-
-			if (!matcher.matches()) {
-				sb.append(StringPool.UNDERLINE);
-			}
-			else {
-				sb.append(firstCharSequence);
-			}
-
-			for (int i = 1; i < requiredFileName.length(); i++) {
-				CharSequence currentCharSequence = requiredFileName.subSequence(
-					i, i + 1);
-
-				matcher = _validCharactersPattern.matcher(currentCharSequence);
-
-				if (!matcher.matches()) {
-					while (++i < requiredFileName.length()) {
-						CharSequence nextCharSequence =
-							requiredFileName.subSequence(i, i + 1);
-
-						matcher = _validCharactersPattern.matcher(
-							nextCharSequence);
-
-						if (matcher.matches()) {
-							sb.append(
-								StringUtil.toUpperCase(
-									nextCharSequence.toString()));
-
-							break;
-						}
-					}
-				}
-				else {
-					sb.append(currentCharSequence);
-				}
-			}
-
-			String generatedVariable = sb.toString();
-
-			if (generatedVariables.contains(generatedVariable)) {
-				int index = 1;
-
-				if (indexes.containsKey(generatedVariable)) {
-					index = indexes.get(generatedVariable) + 1;
-				}
-
-				indexes.put(generatedVariable, index);
-
-				generatedVariable += index;
-			}
-
-			generatedVariables.add(generatedVariable);
-			generatedVariablesMap.put(requiredFileName, generatedVariable);
+			sb.append(c);
+		}
+		else {
+			sb.append(StringPool.UNDERLINE);
 		}
 
-		return generatedVariablesMap;
+		for (int i = 1; i < name.length(); i++) {
+			c = name.charAt(i);
+
+			if (Character.isLetterOrDigit(c) || (c == CharPool.NEW_LINE) ||
+				(c == CharPool.RETURN) || (c == CharPool.UNDERLINE)) {
+
+				sb.append(c);
+			}
+		}
+
+		return sb.toString();
 	}
 
 	private PortletData _getPortletData(String portletId) {
@@ -296,10 +249,6 @@ public class ScriptData implements Mergeable<ScriptData>, Serializable {
 		return portletData;
 	}
 
-	private static final Pattern _validCharactersPattern = Pattern.compile(
-		"[0-9a-z_$]", Pattern.CASE_INSENSITIVE);
-	private static final Pattern _validFirstCharacterPattern = Pattern.compile(
-		"[a-z_$]", Pattern.CASE_INSENSITIVE);
 	private static final long serialVersionUID = 1L;
 
 	private final ConcurrentMap<String, PortletData> _portletDataMap =
