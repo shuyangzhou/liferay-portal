@@ -8,6 +8,7 @@ dependencies {
 	compile group: "com.liferay", name: "com.btr.proxy.vole", version: "20131209"
 	compile group: "com.liferay", name: "com.liferay.io.delta", version: "1.0.0-SNAPSHOT"
 	compile group: "com.liferay", name: "net.sf.jpathwatch", version: "0.95.LIFERAY-PATCHED-2"
+	provided group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "1.0.2"
 	compile group: "commons-configuration", name: "commons-configuration", version: "1.10"
 	compile group: "commons-io", name: "commons-io", version: "2.4"
 	compile group: "net.java.dev.jna", name: "jna", version: "4.1.0"
