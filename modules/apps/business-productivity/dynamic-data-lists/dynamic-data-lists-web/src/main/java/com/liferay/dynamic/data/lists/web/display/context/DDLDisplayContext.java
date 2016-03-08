@@ -29,9 +29,12 @@ import com.liferay.dynamic.data.lists.util.comparator.DDLRecordSetNameComparator
 import com.liferay.dynamic.data.lists.web.configuration.DDLWebConfiguration;
 import com.liferay.dynamic.data.lists.web.display.context.util.DDLRequestHelper;
 import com.liferay.dynamic.data.lists.web.search.RecordSetSearch;
+import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.DDMTemplate;
 import com.liferay.dynamic.data.mapping.service.DDMTemplateLocalService;
 import com.liferay.dynamic.data.mapping.service.permission.DDMTemplatePermission;
+import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
+import com.liferay.dynamic.data.mapping.storage.StorageEngine;
 import com.liferay.dynamic.data.mapping.util.DDMDisplay;
 import com.liferay.dynamic.data.mapping.util.DDMDisplayRegistry;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -45,6 +48,7 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -71,13 +75,15 @@ public class DDLDisplayContext {
 		DDLRecordSetLocalService ddlRecordSetLocalService,
 		DDLWebConfiguration ddlWebConfiguration,
 		DDMDisplayRegistry ddmDisplayRegistry,
-		DDMTemplateLocalService ddmTemplateLocalService) {
+		DDMTemplateLocalService ddmTemplateLocalService,
+		StorageEngine storageEngine) {
 
 		_ddl = ddl;
 		_ddlRecordSetLocalService = ddlRecordSetLocalService;
 		_ddlWebConfiguration = ddlWebConfiguration;
 		_ddmDisplayRegistry = ddmDisplayRegistry;
 		_ddmTemplateLocalService = ddmTemplateLocalService;
+		_storageEngine = storageEngine;
 
 		_ddlRequestHelper = new DDLRequestHelper(request);
 
@@ -104,6 +110,22 @@ public class DDLDisplayContext {
 
 		return ddmDisplay.getEditTemplateTitle(
 			_recordSet.getDDMStructure(), null, getLocale());
+	}
+
+	public String getAddRecordLabel() throws PortalException {
+		DDLRecordSet recordSet = getRecordSet();
+
+		String structureName = StringPool.BLANK;
+
+		if (recordSet != null) {
+			DDMStructure ddmStructure = recordSet.getDDMStructure();
+
+			structureName = ddmStructure.getName(_ddlRequestHelper.getLocale());
+		}
+
+		return LanguageUtil.format(
+			_ddlRequestHelper.getRequest(), "add-x",
+			HtmlUtil.escape(structureName), false);
 	}
 
 	public String getDDLRecordSetDisplayStyle() {
@@ -167,6 +189,10 @@ public class DDLDisplayContext {
 		}
 
 		return orderByComparator;
+	}
+
+	public DDMFormValues getDDMFormValues(long classPK) throws PortalException {
+		return _storageEngine.getDDMFormValues(classPK);
 	}
 
 	public long getDisplayDDMTemplateId() {
@@ -318,6 +344,18 @@ public class DDLDisplayContext {
 		return isShowAddDDMTemplateIcon();
 	}
 
+	public boolean isShowAddRecordButton() {
+		if (isFormView() || isSpreadsheet()) {
+			return false;
+		}
+
+		if (isEditable() && hasAddRecordPermission()) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public boolean isShowAddRecordSetIcon() {
 		if (_hasAddRecordSetPermission != null) {
 			return _hasAddRecordSetPermission;
@@ -389,11 +427,22 @@ public class DDLDisplayContext {
 		return _hasEditFormDDMTemplatePermission;
 	}
 
-	public boolean isShowEditRecordIcon() {
-		return true;
+	public boolean isShowEditRecordSetIcon() {
+		DDLRecordSet recordSet = getRecordSet();
+
+		if (recordSet == null) {
+			return false;
+		}
+
+		return DDLRecordSetPermission.contains(
+			getPermissionChecker(), recordSet, ActionKeys.UPDATE);
 	}
 
 	public boolean isShowIconsActions() throws PortalException {
+		if (isSpreadsheet()) {
+			return false;
+		}
+
 		if (_hasShowIconsActionPermission != null) {
 			return _hasShowIconsActionPermission;
 		}
@@ -585,5 +634,6 @@ public class DDLDisplayContext {
 	private Boolean _hasViewPermission;
 	private DDLRecordSet _recordSet;
 	private Boolean _showConfigurationIcon;
+	private final StorageEngine _storageEngine;
 
 }
