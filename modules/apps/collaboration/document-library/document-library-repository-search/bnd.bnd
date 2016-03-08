@@ -17,4 +17,4 @@ Include-Resource:\
 	lib/lucene-sandbox.jar=lib/lucene-sandbox.jar
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Document Library
--include: ../../bnd.bnd
+-include: ../../app.bnd

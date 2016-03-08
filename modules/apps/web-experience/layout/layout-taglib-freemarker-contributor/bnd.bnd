@@ -6,4 +6,4 @@ Import-Package: com.liferay.layout.taglib.servlet.taglib
 Include-Resource: @lib/com.liferay.layout.taglib.jar!/META-INF/resources/liferay-layout.tld
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title:
--include: ../../bnd.bnd
+-include: ../../app.bnd

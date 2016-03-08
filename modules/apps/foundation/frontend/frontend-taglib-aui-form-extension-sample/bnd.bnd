@@ -3,4 +3,4 @@ Bundle-SymbolicName: com.liferay.frontend.taglib.aui.form.extension.sample
 Bundle-Version: 1.0.0
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Samples
--include: ../../bnd.bnd
+-include: ../../app.bnd

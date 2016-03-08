@@ -71,4 +71,4 @@ Provide-Capability:\
 		uri="http://liferay.com/tld/util";\
 		version:Version="${Bundle-Version}"
 -baseline: *;version="6.2.0"
--include: ../modules/apps/foundation/bnd.bnd
+-include: ../modules/apps/foundation/app.bnd

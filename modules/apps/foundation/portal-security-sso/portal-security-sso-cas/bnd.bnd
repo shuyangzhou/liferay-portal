@@ -14,4 +14,4 @@ Include-Resource:\
 	@lib/opensaml.jar
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Security Frameworks
--include: ../../bnd.bnd
+-include: ../../app.bnd

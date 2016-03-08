@@ -22,4 +22,4 @@ Include-Resource:\
 	@lib/woodstox-core-asl.jar
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Document Library
--include: ../../bnd.bnd
+-include: ../../app.bnd

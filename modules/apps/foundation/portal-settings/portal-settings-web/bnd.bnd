@@ -7,4 +7,4 @@ Include-Resource:\
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title:
 Web-ContextPath: /portlet-settings-web
--include: ../../bnd.bnd
+-include: ../../app.bnd

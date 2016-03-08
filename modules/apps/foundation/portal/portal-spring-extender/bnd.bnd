@@ -76,4 +76,4 @@ Provide-Capability:\
 	liferay.extender;\
 	liferay.extender="spring.extender";\
 	version:Version="${plugin.full.version}"
--include: ../../bnd.bnd
+-include: ../../app.bnd

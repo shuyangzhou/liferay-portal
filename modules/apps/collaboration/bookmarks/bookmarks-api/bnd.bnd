@@ -7,4 +7,4 @@ Export-Package:\
 	com.liferay.bookmarks.*
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Bookmarks
--include: ../../bnd.bnd
+-include: ../../app.bnd

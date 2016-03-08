@@ -4,4 +4,4 @@ Bundle-Version: 1.0.0
 Include-Resource: test-classes/integration
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Background Tasks
--include: ../../bnd.bnd
+-include: ../../app.bnd

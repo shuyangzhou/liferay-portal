@@ -11,4 +11,4 @@ Include-Resource:\
 	@lib/owasp-java-html-sanitizer.jar
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Comments
--include: ../../bnd.bnd
+-include: ../../app.bnd

@@ -7,4 +7,4 @@ Export-Package:\
 	com.liferay.portal.scripting.executor.groovy
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Scripting Executor
--include: ../../bnd.bnd
+-include: ../../app.bnd

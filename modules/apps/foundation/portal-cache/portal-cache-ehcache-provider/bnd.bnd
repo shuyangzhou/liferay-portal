@@ -53,4 +53,4 @@ Include-Resource:\
 	@lib/ehcache.jar!/META-INF/*
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Cache Engines
--include: ../../bnd.bnd
+-include: ../../app.bnd

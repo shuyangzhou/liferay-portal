@@ -8,4 +8,4 @@ Export-Package:\
 	com.liferay.portal.cache.io
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Cache Engines
--include: ../../bnd.bnd
+-include: ../../app.bnd

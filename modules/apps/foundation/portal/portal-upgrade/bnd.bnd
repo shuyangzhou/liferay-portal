@@ -8,4 +8,4 @@ Include-Resource:\
 	@lib/org.apache.felix.utils.jar!/org/apache/felix/utils/log/*
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Upgrade and Verify
--include: ../../bnd.bnd
+-include: ../../app.bnd

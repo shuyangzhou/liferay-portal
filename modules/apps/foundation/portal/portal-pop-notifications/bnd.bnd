@@ -7,4 +7,4 @@ Include-Resource:\
 	@${app.server.lib.portal.dir}/util-java.jar!/com/liferay/util/mail/MailEngineException.class
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Runtime
--include: ../../bnd.bnd
+-include: ../../app.bnd

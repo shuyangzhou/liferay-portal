@@ -4,4 +4,4 @@ Bundle-Version: 1.0.0
 Export-Package: com.liferay.journal.item.selector.criterion
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Web Content
--include: ../../bnd.bnd
+-include: ../../app.bnd

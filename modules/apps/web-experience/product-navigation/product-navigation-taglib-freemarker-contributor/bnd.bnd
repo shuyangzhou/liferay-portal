@@ -6,4 +6,4 @@ Import-Package: com.liferay.product.navigation.taglib.servlet.taglib
 Include-Resource: @lib/com.liferay.product.navigation.taglib.jar!/META-INF/resources/liferay-product-navigation.tld
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title:
--include: ../../bnd.bnd
+-include: ../../app.bnd

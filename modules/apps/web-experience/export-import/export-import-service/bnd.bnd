@@ -16,4 +16,4 @@ Export-Package:\
 Include-Resource: @../../../../../util-java/util-java.jar!/com/liferay/util/xml/DocUtil.class
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Data Management
--include: ../../bnd.bnd
+-include: ../../app.bnd

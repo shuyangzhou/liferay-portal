@@ -11,4 +11,4 @@ Include-Resource:\
 	@${app.server.lib.portal.dir}/util-java.jar!/com/liferay/util/xml/XMLUtil.class
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Web Content
--include: ../../bnd.bnd
+-include: ../../app.bnd

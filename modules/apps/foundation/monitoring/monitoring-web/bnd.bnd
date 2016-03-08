@@ -8,4 +8,4 @@ Include-Resource:\
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title:
 Web-ContextPath: /monitoring-web
--include: ../../bnd.bnd
+-include: ../../app.bnd

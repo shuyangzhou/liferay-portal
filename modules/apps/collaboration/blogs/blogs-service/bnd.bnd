@@ -4,4 +4,4 @@ Bundle-Version: 1.0.0
 Include-Resource: @lib/jericho-html.jar
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Blogs
--include: ../../bnd.bnd
+-include: ../../app.bnd
