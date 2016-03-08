@@ -14,6 +14,7 @@
 
 package com.liferay.sync.engine.upgrade.v3_1_0;
 
+import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.sync.engine.upgrade.BaseUpgradeProcess;
 
 /**
@@ -29,22 +30,37 @@ public class UpgradeProcess_3_1_0 extends BaseUpgradeProcess {
 
 	@Override
 	public void upgradeSchema() throws Exception {
-		runSQL(
-			"ALTER TABLE `SyncAccount` ADD COLUMN " +
-				"authenticationRetryInterval INTEGER BEFORE batchFileMaxSize;");
-		runSQL(
-			"ALTER TABLE `SyncAccount` ALTER COLUMN batchFileMaxSize INTEGER;");
-		runSQL("ALTER TABLE `SyncAccount` ALTER COLUMN oAuthEnabled BOOLEAN;");
-		runSQL(
-			"ALTER TABLE `SyncAccount` ALTER COLUMN pluginVersion " +
-				"VARCHAR(255);");
-		runSQL("ALTER TABLE `SyncAccount` ADD COLUMN uuid VARCHAR(255);");
+		updateTables();
+		updateIndexes();
+	}
 
-		runSQL("ALTER TABLE `SyncFile` ALTER COLUMN userName VARCHAR(255);");
+	protected void updateIndexes() throws Exception {
+		try (LoggingTimer loggingTimer = new LoggingTimer()) {
+			runSQL("CREATE INDEX syncaccount_state_idx ON SyncAccount(state);");
+			runSQL("CREATE INDEX syncfile_state_idx ON SyncFile(state);");
+			runSQL("CREATE INDEX syncsite_state_idx ON SyncSite(state);");
+		}
+	}
 
-		runSQL("CREATE INDEX syncaccount_state_idx ON SyncAccount(state);");
-		runSQL("CREATE INDEX syncfile_state_idx ON SyncFile(state);");
-		runSQL("CREATE INDEX syncsite_state_idx ON SyncSite(state);");
+	protected void updateTables() throws Exception {
+		try (LoggingTimer loggingTimer = new LoggingTimer()) {
+			runSQL(
+				"ALTER TABLE `SyncAccount` ADD COLUMN " +
+					"authenticationRetryInterval INTEGER BEFORE " +
+						"batchFileMaxSize;");
+			runSQL(
+				"ALTER TABLE `SyncAccount` ALTER COLUMN batchFileMaxSize " +
+					"INTEGER;");
+			runSQL(
+				"ALTER TABLE `SyncAccount` ALTER COLUMN oAuthEnabled BOOLEAN;");
+			runSQL(
+				"ALTER TABLE `SyncAccount` ALTER COLUMN pluginVersion " +
+					"VARCHAR(255);");
+			runSQL("ALTER TABLE `SyncAccount` ADD COLUMN uuid VARCHAR(255);");
+
+			runSQL(
+				"ALTER TABLE `SyncFile` ALTER COLUMN userName VARCHAR(255);");
+		}
 	}
 
 }

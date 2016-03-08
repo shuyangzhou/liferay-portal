@@ -72,6 +72,8 @@ public class JenkinsResultsParserUtil {
 		if ((jsonObject.getInt("duration") == 0) && result.equals("FAILURE")) {
 			String actualResult = getActualResult(url);
 
+			System.out.println("Actual Result: " + actualResult);
+
 			jsonObject.putOpt("result", actualResult);
 		}
 
@@ -219,7 +221,7 @@ public class JenkinsResultsParserUtil {
 			}
 
 			if (progressiveText.contains("Finished: UNSTABLE")) {
-				return "UNSTABLE";
+				return "FAILURE";
 			}
 
 			if (progressiveText.contains("Finished: FAILURE")) {

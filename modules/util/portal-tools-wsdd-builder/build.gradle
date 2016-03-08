@@ -26,7 +26,7 @@ dependencies {
 	compile group: "org.apache.axis", name: "axis-saaj", version: "1.4"
 
 	provided group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "1.0.0"
-	provided group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "1.0.1"
+	provided group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "1.0.2"
 	provided group: "com.liferay.portal", name: "com.liferay.util.java", version: "1.0.0"
 	provided group: "org.apache.maven", name: "maven-plugin-api", transitive: false, version: "3.0.4"
 }
@@ -40,6 +40,6 @@ liferay {
 }
 
 updateFileVersions {
-	match(/\t\t\t\t<version>(.+)<\/version>/, "samples/pom.xml")
-	match(/com\.liferay\.portal\.tools\.wsdd\.builder=(.+)/, "../../sdk/gradle-plugins/src/main/resources/com/liferay/gradle/plugins/dependencies/portal-tools.properties")
+	match(/\t\t\t\t<version>(\d.+)<\/version>/, "samples/pom.xml")
+	match(/com\.liferay\.portal\.tools\.wsdd\.builder=(\d.+)/, "../../sdk/gradle-plugins/src/main/resources/com/liferay/gradle/plugins/dependencies/portal-tools.properties")
 }

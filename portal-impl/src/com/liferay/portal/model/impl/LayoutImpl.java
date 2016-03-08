@@ -74,10 +74,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import javax.portlet.PortletException;
 import javax.portlet.PortletMode;
@@ -410,7 +412,9 @@ public class LayoutImpl extends LayoutBaseImpl {
 			return Collections.emptyList();
 		}
 
-		List<Portlet> portlets = new ArrayList<>(portletPreferences.size());
+		List<Portlet> portlets = new ArrayList<>();
+
+		Set<String> layoutPortletIds = _getLayoutPortletIds();
 
 		for (PortletPreferences portletPreference : portletPreferences) {
 			String portletId = portletPreference.getPortletId();
@@ -419,7 +423,8 @@ public class LayoutImpl extends LayoutBaseImpl {
 				getCompanyId(), portletId);
 
 			if ((portlet == null) || !portlet.isReady() ||
-				portlet.isUndeployedPortlet() || !portlet.isActive()) {
+				portlet.isUndeployedPortlet() || !portlet.isActive() ||
+				!layoutPortletIds.contains(portletId)) {
 
 				continue;
 			}
@@ -1265,6 +1270,21 @@ public class LayoutImpl extends LayoutBaseImpl {
 
 			_friendlyURLKeywords[i] = StringUtil.toLowerCase(keyword);
 		}
+	}
+
+	private Set<String> _getLayoutPortletIds() {
+		Set<String> layoutPortletIds = new HashSet<>();
+
+		List<PortletPreferences> portletPreferences =
+			PortletPreferencesLocalServiceUtil.getPortletPreferences(
+				PortletKeys.PREFS_OWNER_ID_DEFAULT,
+				PortletKeys.PREFS_OWNER_TYPE_LAYOUT, getPlid());
+
+		for (PortletPreferences portletPreference : portletPreferences) {
+			layoutPortletIds.add(portletPreference.getPortletId());
+		}
+
+		return layoutPortletIds;
 	}
 
 	private String _getLayoutTypeControllerType() {

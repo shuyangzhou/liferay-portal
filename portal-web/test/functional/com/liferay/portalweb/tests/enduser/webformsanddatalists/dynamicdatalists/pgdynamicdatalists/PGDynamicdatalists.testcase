@@ -1324,6 +1324,9 @@
 		</execute>
 
 		<execute function="SelectFrame" locator1="DDLConfiguration#CONFIGURATION_IFRAME" />
+
+		<execute function="AssertClick" locator1="DDLConfiguration#NAVIGATION_OPTIONAL_CONFIGURATION" value1="Optional Configuration" />
+
 		<execute function="AssertChecked" locator1="DDLConfiguration#TEMPLATES_EDITABLE_CHECKBOX" />
 	</command>
 
@@ -1736,6 +1739,7 @@
 		<execute macro="DDLRecord#viewViaDDLDisplayPG">
 			<var name="ddlListName" value="${ddlListName}" />
 			<var name="ddlRecordFieldData" value="${ddlRecordFieldData}" />
+			<var name="ddlRecordFieldDataTableDisplay" value="${ddlRecordFieldData}" />
 			<var name="field" value="${field}" />
 			<var name="fieldFieldLabel" value="${fieldFieldLabel}" />
 			<var name="userRole" value="${userRole}" />
