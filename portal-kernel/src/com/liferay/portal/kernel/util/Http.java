@@ -155,6 +155,9 @@ public interface Http {
 
 	public String removeProtocol(String url);
 
+	public String replaceParameters(
+		String url, Map<String, String[]> parameterMap);
+
 	public String sanitizeHeader(String header);
 
 	public String setParameter(String url, String name, boolean value);

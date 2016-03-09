@@ -1094,6 +1094,39 @@ public class HttpImpl implements Http {
 	}
 
 	@Override
+	public String replaceParameters(
+		String url, Map<String, String[]> parameterMap) {
+
+		if (Validator.isNull(url)) {
+			return url;
+		}
+
+		int pos = url.indexOf(CharPool.QUESTION);
+
+		if (pos == -1) {
+			return url;
+		}
+
+		StringBundler sb = new StringBundler(3);
+
+		sb.append(url.substring(0, pos + 1));
+
+		String queryString = parameterMapToString(parameterMap);
+
+		if (!StringPool.QUESTION.equals(queryString)) {
+			sb.append(queryString);
+		}
+
+		pos = url.indexOf(StringPool.POUND);
+
+		if (pos != -1) {
+			sb.append(url.substring(pos));
+		}
+
+		return sb.toString();
+	}
+
+	@Override
 	public String sanitizeHeader(String header) {
 		if (header == null) {
 			return null;
