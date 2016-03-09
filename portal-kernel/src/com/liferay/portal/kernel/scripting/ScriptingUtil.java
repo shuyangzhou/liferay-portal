@@ -15,7 +15,6 @@
 package com.liferay.portal.kernel.scripting;
 
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
-import com.liferay.portal.kernel.util.ClassLoaderPool;
 import com.liferay.portal.kernel.util.ProxyFactory;
 
 import java.util.Map;
@@ -49,22 +48,6 @@ public class ScriptingUtil {
 	}
 
 	/**
-	 * @deprecated As of 6.2.0, replaced by {@link #eval(Set, Map, Set, String,
-	 *             String, String...)}
-	 */
-	@Deprecated
-	public static Map<String, Object> eval(
-			Set<String> allowedClasses, Map<String, Object> inputObjects,
-			Set<String> outputNames, String language, String script,
-			ClassLoader... classLoaders)
-		throws ScriptingException {
-
-		return getScripting().eval(
-			allowedClasses, inputObjects, outputNames, language, script,
-			_getServletContextNames(classLoaders));
-	}
-
-	/**
 	 * @deprecated As of 7.0.0, replaced by {@link #eval(Set, Map, Set, String,
 	 *             String)}
 	 */
@@ -86,21 +69,6 @@ public class ScriptingUtil {
 		throws ScriptingException {
 
 		getScripting().exec(allowedClasses, inputObjects, language, script);
-	}
-
-	/**
-	 * @deprecated As of 6.2.0, replaced by {@link #exec(Set, Map, String,
-	 *             String, String...)}
-	 */
-	@Deprecated
-	public static void exec(
-			Set<String> allowedClasses, Map<String, Object> inputObjects,
-			String language, String script, ClassLoader... classLoaders)
-		throws ScriptingException {
-
-		getScripting().exec(
-			allowedClasses, inputObjects, language, script,
-			_getServletContextNames(classLoaders));
 	}
 
 	/**
@@ -126,19 +94,6 @@ public class ScriptingUtil {
 
 	public static Set<String> getSupportedLanguages() {
 		return getScripting().getSupportedLanguages();
-	}
-
-	private static String[] _getServletContextNames(
-		ClassLoader[] classLoaders) {
-
-		String[] servletContextNames = new String[classLoaders.length];
-
-		for (int i = 0; i < classLoaders.length; i++) {
-			servletContextNames[i] = ClassLoaderPool.getContextName(
-				classLoaders[i]);
-		}
-
-		return servletContextNames;
 	}
 
 	private static final Scripting _scripting =

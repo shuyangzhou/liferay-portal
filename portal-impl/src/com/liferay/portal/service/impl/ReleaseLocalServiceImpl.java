@@ -252,12 +252,14 @@ public class ReleaseLocalServiceImpl extends ReleaseLocalServiceBaseImpl {
 
 	@Override
 	public Release updateRelease(
-			long releaseId, int buildNumber, Date buildDate, boolean verified)
+			long releaseId, String schemaVersion, int buildNumber,
+			Date buildDate, boolean verified)
 		throws PortalException {
 
 		Release release = releasePersistence.findByPrimaryKey(releaseId);
 
 		release.setModifiedDate(new Date());
+		release.setSchemaVersion(schemaVersion);
 		release.setBuildNumber(buildNumber);
 		release.setBuildDate(buildDate);
 		release.setVerified(verified);
@@ -306,7 +308,8 @@ public class ReleaseLocalServiceImpl extends ReleaseLocalServiceBaseImpl {
 		}
 
 		releaseLocalService.updateRelease(
-			release.getReleaseId(), buildNumber, null, true);
+			release.getReleaseId(), release.getSchemaVersion(), buildNumber,
+			null, true);
 	}
 
 	@Override

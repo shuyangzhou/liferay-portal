@@ -455,21 +455,6 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 		}
 	}
 
-	protected void checkUpgradeClass(String fileName, String content) {
-		Matcher matcher = _upgradeExtendsPattern.matcher(content);
-
-		if (!matcher.find()) {
-			return;
-		}
-
-		if (content.contains("\tupgradeTable(") &&
-			!content.contains("void upgradeTable(")) {
-
-			processErrorMessage(
-				fileName, "Use UpgradeProcess.alter: " + fileName);
-		}
-	}
-
 	protected void checkXMLSecurity(
 		String fileName, String content, boolean isRunOutsidePortalExclusion) {
 
@@ -965,9 +950,13 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 
 		checkPropertyUtils(fileName, newContent);
 
-		// LPS-63652
+		// LPS-63953
 
-		checkUpgradeClass(fileName, newContent);
+		if (!absolutePath.contains("poshi") &&
+			!fileName.endsWith("StringUtilTest.java")) {
+
+			checkStringUtilReplace(fileName, newContent);
+		}
 
 		newContent = getCombinedLinesContent(
 			newContent, _combinedLinesPattern1);
@@ -3263,7 +3252,7 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 
 		String classSingleLine = StringUtil.replace(
 			classLine.substring(1),
-			new String[] {StringPool.TAB, StringPool.NEW_LINE},
+			new char[] {CharPool.TAB, CharPool.NEW_LINE},
 			new String[] {StringPool.BLANK, StringPool.SPACE});
 
 		classSingleLine = indent + classSingleLine;
@@ -4178,8 +4167,6 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 	private List<String> _testAnnotationsExcludes;
 	private Pattern _throwsSystemExceptionPattern = Pattern.compile(
 		"(\n\t+.*)throws(.*) SystemException(.*)( \\{|;\n)");
-	private Pattern _upgradeExtendsPattern = Pattern.compile(
-		"extends (BaseUpgrade|UpgradeProcess )");
 	private List<String> _upgradeServiceUtilExcludes;
 
 }

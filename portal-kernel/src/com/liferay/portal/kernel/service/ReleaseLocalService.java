@@ -239,8 +239,9 @@ public interface ReleaseLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public Release updateRelease(Release release);
 
-	public Release updateRelease(long releaseId, int buildNumber,
-		Date buildDate, boolean verified) throws PortalException;
+	public Release updateRelease(long releaseId,
+		java.lang.String schemaVersion, int buildNumber, Date buildDate,
+		boolean verified) throws PortalException;
 
 	public void updateRelease(java.lang.String servletContextName,
 		java.lang.String schemaVersion, java.lang.String previousSchemaVersion);
