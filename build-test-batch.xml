@@ -989,7 +989,9 @@ ${output.content}</echo>
 
 		<record action="start" name="${project.dir}/sass-compiler-log" />
 
-		<gradle-execute dir="modules" task="buildCSS" />
+		<gradle-execute dir="modules" task="buildCSS">
+			<arg value="--info" />
+		</gradle-execute>
 
 		<record action="stop" name="${project.dir}/sass-compiler-log" />
 

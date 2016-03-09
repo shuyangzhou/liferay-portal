@@ -3,6 +3,10 @@ import org.gradle.execution.ProjectConfigurer
 apply plugin: "com.liferay.defaults.plugin"
 apply plugin: "com.liferay.plugin"
 
+buildCSS {
+	jvmArgs "-Xss4m"
+}
+
 configurations {
 	compile {
 		if (!project.path.startsWith(":sdk:") &&
