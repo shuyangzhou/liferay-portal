@@ -5,4 +5,4 @@ Bundle-Version: 1.0.0
 Include-Resource: com/liferay/portal/store/cmis/test/activator/configuration=classes/com/liferay/portal/store/cmis/test/activator/configuration
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Data Stores
--include: ../../bnd.bnd
+-include: ../../app.bnd

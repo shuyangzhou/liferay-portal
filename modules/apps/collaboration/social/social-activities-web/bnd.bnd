@@ -7,4 +7,4 @@ Include-Resource:\
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Social
 Web-ContextPath: /social-activities-web
--include: ../../bnd.bnd
+-include: ../../app.bnd

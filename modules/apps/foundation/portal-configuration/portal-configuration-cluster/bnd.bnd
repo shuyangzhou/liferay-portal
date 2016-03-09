@@ -4,4 +4,4 @@ Bundle-Version: 1.0.0
 Export-Package: com.liferay.portal.configuration.cluster.messaging
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Configuration Framework
--include: ../../bnd.bnd
+-include: ../../app.bnd

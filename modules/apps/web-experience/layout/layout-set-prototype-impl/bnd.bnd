@@ -5,4 +5,4 @@ Export-package: com.liferay.layout.set.prototype.lar
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Site Management
 -dsannotations-options: inherit
--include: ../../bnd.bnd
+-include: ../../app.bnd

@@ -10,4 +10,4 @@ Liferay-JS-Config: /META-INF/resources/js/config.js
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Calendar
 Web-ContextPath: /calendar-web
--include: ../../bnd.bnd
+-include: ../../app.bnd

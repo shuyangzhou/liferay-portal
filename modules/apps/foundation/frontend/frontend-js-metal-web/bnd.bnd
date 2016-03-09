@@ -6,4 +6,4 @@ Liferay-Export-JS-Submodules: *
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Frontend Infrastructure
 Provide-Capability: soy;type="metal";version:Version="1.0.0"
--include: ../../bnd.bnd
+-include: ../../app.bnd

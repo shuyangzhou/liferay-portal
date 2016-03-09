@@ -5,4 +5,4 @@ Export-Package: com.liferay.staging.processes.web.constants
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Data Management
 Web-ContextPath: /staging-processes
--include: ../../bnd.bnd
+-include: ../../app.bnd

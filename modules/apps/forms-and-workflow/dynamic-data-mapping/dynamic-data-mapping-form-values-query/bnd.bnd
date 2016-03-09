@@ -14,4 +14,4 @@ Include-Resource:\
 	@lib/org.abego.treelayout.core.jar
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Dynamic Data Mapping
--include: ../../bnd.bnd
+-include: ../../app.bnd

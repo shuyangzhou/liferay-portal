@@ -4,4 +4,4 @@ Bundle-Version: 1.0.0
 Export-Package: com.liferay.portal.rules.engine
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Rules Engine
--include: ../../bnd.bnd
+-include: ../../app.bnd

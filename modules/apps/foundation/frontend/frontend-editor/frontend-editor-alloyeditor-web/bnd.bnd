@@ -12,4 +12,4 @@ Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Rich Text Editors
 Web-ContextPath: /frontend-editor-alloyeditor-web
 -donotcopy: (\.touch|.*_diffs.*|.*.properties)
--include: ../../../bnd.bnd
+-include: ../../../app.bnd

@@ -49,4 +49,4 @@ Include-Resource:\
 	lib/zookeeper.jar=lib/zookeeper.jar
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Solr
--include: ../../bnd.bnd
+-include: ../../app.bnd

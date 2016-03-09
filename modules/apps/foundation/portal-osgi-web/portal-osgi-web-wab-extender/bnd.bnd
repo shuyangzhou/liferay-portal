@@ -10,4 +10,4 @@ Include-Resource:\
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: WAB
 Private-Package: com.liferay.portal.osgi.web.wab.extender.internal.*
--include: ../../bnd.bnd
+-include: ../../app.bnd

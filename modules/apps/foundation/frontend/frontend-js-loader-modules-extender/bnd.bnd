@@ -8,4 +8,4 @@ Include-Resource:\
 	@lib/biz.aQute.bndlib.jar!/aQute/lib/converter/*
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Frontend Infrastructure
--include: ../../bnd.bnd
+-include: ../../app.bnd

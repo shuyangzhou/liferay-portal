@@ -27,4 +27,4 @@ Include-Resource:\
 	@lib/org.apache.axis.jar
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Remote Service Engines
--include: ../../bnd.bnd
+-include: ../../app.bnd

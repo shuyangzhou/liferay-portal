@@ -11,4 +11,4 @@ Include-Resource:\
 	@lib/com.liferay.ant.bnd.jar!/com/liferay/ant/bnd/jsp/JspAnalyzerPlugin*.class
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: WAB
--include: ../../bnd.bnd
+-include: ../../app.bnd

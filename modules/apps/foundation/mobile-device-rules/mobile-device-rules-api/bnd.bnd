@@ -13,4 +13,4 @@ Export-Package:\
 	com.liferay.mobile.device.rules.util.*
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title:
--include: ../../bnd.bnd
+-include: ../../app.bnd

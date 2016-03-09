@@ -9,4 +9,4 @@ Include-Resource:\
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Wiki
 Web-ContextPath: /wiki-web
--include: ../../bnd.bnd
+-include: ../../app.bnd

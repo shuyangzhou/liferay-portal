@@ -7,4 +7,4 @@ Include-Resource:\
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title:
 -dsannotations-options: inherit
--include: ../../bnd.bnd
+-include: ../../app.bnd

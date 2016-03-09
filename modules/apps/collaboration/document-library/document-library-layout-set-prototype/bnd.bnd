@@ -3,4 +3,4 @@ Bundle-SymbolicName: com.liferay.document.library.layout.set.prototype
 Bundle-Version: 1.0.0
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Document Library
--include: ../../bnd.bnd
+-include: ../../app.bnd

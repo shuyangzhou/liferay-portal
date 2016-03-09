@@ -65,4 +65,4 @@ Include-Resource:\
 	@lib/freemarker.jar
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Template Engines
--include: ../../bnd.bnd
+-include: ../../app.bnd

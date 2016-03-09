@@ -29,4 +29,4 @@ Import-Package:\
 Include-Resource: @lib/com.liferay.util.taglib.jar!/META-INF/*.tld
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title:
--include: ../../bnd.bnd
+-include: ../../app.bnd

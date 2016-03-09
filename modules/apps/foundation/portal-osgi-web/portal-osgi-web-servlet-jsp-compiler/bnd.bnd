@@ -67,7 +67,7 @@ Liferay-Releng-Module-Group-Title: OSGI JSP support
 Provide-Capability:\
 	liferay.extender;\
 	liferay.extender="jsp.extender";version:Version="${Bundle-Version}"
--include: ../../bnd.bnd
+-include: ../../app.bnd
 -includeresource:\
 	@lib/javax.servlet.jsp.jar,\
 	@lib/javax.servlet.jsp.jstl.jar!/META-INF/*.tld,\

@@ -29,4 +29,4 @@ Include-Resource:\
 	lib/jackson-core.jar=lib/jackson-core.jar
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title:
--include: ../../bnd.bnd
+-include: ../../app.bnd

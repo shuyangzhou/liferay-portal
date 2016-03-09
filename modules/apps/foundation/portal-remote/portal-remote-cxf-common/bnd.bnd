@@ -58,4 +58,4 @@ Include-Resource:\
 	lib/=lib/xmlschema-core.jar
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Remote Service Engines
--include: ../../bnd.bnd
+-include: ../../app.bnd

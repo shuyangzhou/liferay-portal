@@ -15,4 +15,4 @@ Import-Package:\
 Include-Resource: @lib/groovy.jar
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Scripting Engines
--include: ../../bnd.bnd
+-include: ../../app.bnd

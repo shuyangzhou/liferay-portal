@@ -7,4 +7,4 @@ Export-Package:\
 	com.liferay.portal.lock.service.*
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title:
--include: ../../bnd.bnd
+-include: ../../app.bnd

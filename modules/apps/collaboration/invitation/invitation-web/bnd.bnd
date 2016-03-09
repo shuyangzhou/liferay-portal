@@ -5,4 +5,4 @@ Include-Resource: @../../../../../util-java/util-java.jar!/com/liferay/util/Cont
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title:
 Web-ContextPath: /invitation-web
--include: ../../bnd.bnd
+-include: ../../app.bnd

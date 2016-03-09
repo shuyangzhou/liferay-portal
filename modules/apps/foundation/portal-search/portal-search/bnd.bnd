@@ -8,4 +8,4 @@ Export-Package:\
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Search
 -dsannotations-options: inherit
--include: ../../bnd.bnd
+-include: ../../app.bnd

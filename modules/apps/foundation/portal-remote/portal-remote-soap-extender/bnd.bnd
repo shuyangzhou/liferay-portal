@@ -46,4 +46,4 @@ Include-Resource:\
 	lib/=lib/cxf-rt-ws-policy.jar
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Remote Service Engines
--include: ../../bnd.bnd
+-include: ../../app.bnd

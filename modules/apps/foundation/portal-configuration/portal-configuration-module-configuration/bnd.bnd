@@ -5,4 +5,4 @@ Export-Package: aQute.bnd.annotation.metatype
 Include-Resource: @../../../../../lib/portal/bnd.jar!/aQute/bnd/annotation/metatype/*
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Configuration Framework
--include: ../../bnd.bnd
+-include: ../../app.bnd
