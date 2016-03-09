@@ -160,11 +160,14 @@ public class PortletRequestModel implements Serializable {
 
 			ResourceURL resourceURL = mimeResponse.createResourceURL();
 
-			String resourceURLString = HttpUtil.removeParameter(
-				resourceURL.toString(), portletNamespace + "struts_action");
+			Map<String, String[]> parameterMap =
+				HttpUtil.parameterMapFromString(resourceURL.toString());
 
-			_resourceURL = HttpUtil.removeParameter(
-				resourceURLString, portletNamespace + "redirect");
+			parameterMap.remove(portletNamespace + "struts_action");
+			parameterMap.remove(portletNamespace + "redirect");
+
+			_resourceURL = HttpUtil.replaceParameters(
+				resourceURL.toString(), parameterMap);
 		}
 		else {
 			_resourceURL = null;
