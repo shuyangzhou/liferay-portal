@@ -78,9 +78,7 @@ public class VirtualLayoutFriendlyURLResolver implements FriendlyURLResolver {
 			group.getGroupId(), privateLayout, mainPath, layoutFriendlyURL,
 			params, requestContext);
 
-		return HttpUtil.addParameter(
-			HttpUtil.removeParameter(actualURL, "p_v_l_s_g_id"), "p_v_l_s_g_id",
-			groupId);
+		return HttpUtil.setParameter(actualURL, "p_v_l_s_g_id", groupId);
 	}
 
 	@Override
