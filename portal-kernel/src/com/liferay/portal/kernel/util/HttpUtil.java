@@ -251,6 +251,12 @@ public class HttpUtil {
 		return getHttp().removeProtocol(url);
 	}
 
+	public static String replaceParameters(
+		String url, Map<String, String[]> parameterMap) {
+
+		return getHttp().replaceParameters(url, parameterMap);
+	}
+
 	public static String sanitizeHeader(String header) {
 		return getHttp().sanitizeHeader(header);
 	}

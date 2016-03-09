@@ -38,8 +38,13 @@ PortletURL iteratorURL = searchContainer.getIteratorURL();
 
 if (iteratorURL != null) {
 	url = iteratorURL.toString();
-	url = HttpUtil.removeParameter(url, namespace + searchContainer.getOrderByColParam());
-	url = HttpUtil.removeParameter(url, namespace + searchContainer.getOrderByTypeParam());
+
+	Map<String, String[]> parameterMap = HttpUtil.getParameterMap(url);
+
+	parameterMap.remove(namespace + searchContainer.getOrderByColParam());
+	parameterMap.remove(namespace + searchContainer.getOrderByTypeParam());
+
+	url = HttpUtil.replaceParameters(url, parameterMap);
 }
 %>
 
