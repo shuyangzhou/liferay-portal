@@ -14,8 +14,8 @@
 
 package com.liferay.portal.search.internal;
 
-import aQute.bnd.annotation.metatype.Configurable;
-
+import com.liferay.bnd.util.ConfigurableUtil;
+import com.liferay.portal.background.task.constants.BackgroundTaskContextMapConstants;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskManager;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -466,6 +466,8 @@ public class IndexWriterHelperImpl implements IndexWriterHelper {
 		}
 
 		taskContextMap.put("companyIds", companyIds);
+		taskContextMap.put(
+			BackgroundTaskContextMapConstants.DELETE_ON_SUCCESS, true);
 
 		try {
 			return _backgroundTaskManager.addBackgroundTask(
@@ -494,6 +496,8 @@ public class IndexWriterHelperImpl implements IndexWriterHelper {
 
 		taskContextMap.put("className", className);
 		taskContextMap.put("companyIds", companyIds);
+		taskContextMap.put(
+			BackgroundTaskContextMapConstants.DELETE_ON_SUCCESS, true);
 
 		try {
 			return _backgroundTaskManager.addBackgroundTask(
@@ -594,20 +598,13 @@ public class IndexWriterHelperImpl implements IndexWriterHelper {
 	@Modified
 	protected void activate(Map<String, Object> properties) {
 		IndexWriterHelperConfiguration indexWriterHelperConfiguration =
-			Configurable.createConfigurable(
+			ConfigurableUtil.createConfigurable(
 				IndexWriterHelperConfiguration.class, properties);
 
 		_commitImmediately =
 			indexWriterHelperConfiguration.indexCommitImmediately();
 
 		_indexReadOnly = indexWriterHelperConfiguration.indexReadOnly();
-	}
-
-	@Reference(unbind = "-")
-	protected void setBackgroundTaskManager(
-		BackgroundTaskManager backgroundTaskManager) {
-
-		_backgroundTaskManager = backgroundTaskManager;
 	}
 
 	protected void setCommitImmediately(
@@ -621,27 +618,19 @@ public class IndexWriterHelperImpl implements IndexWriterHelper {
 		}
 	}
 
-	@Reference(unbind = "-")
-	protected void setSearchEngineHelper(
-		SearchEngineHelper searchEngineHelper) {
-
-		_searchEngineHelper = searchEngineHelper;
-	}
-
-	@Reference(unbind = "-")
-	protected void setSearchPermissionChecker(
-		SearchPermissionChecker searchPermissionChecker) {
-
-		_searchPermissionChecker = searchPermissionChecker;
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		IndexWriterHelperImpl.class);
 
+	@Reference
 	private BackgroundTaskManager _backgroundTaskManager;
+
 	private volatile boolean _commitImmediately;
 	private volatile boolean _indexReadOnly;
+
+	@Reference
 	private SearchEngineHelper _searchEngineHelper;
+
+	@Reference
 	private SearchPermissionChecker _searchPermissionChecker;
 
 }

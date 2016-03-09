@@ -14,8 +14,7 @@
 
 package com.liferay.portal.search.internal;
 
-import aQute.bnd.annotation.metatype.Configurable;
-
+import com.liferay.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.exception.NoSuchResourceException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -157,8 +156,9 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 	@Activate
 	@Modified
 	protected void activate(Map<String, Object> properties) {
-		_searchPermissionCheckerConfiguration = Configurable.createConfigurable(
-			SearchPermissionCheckerConfiguration.class, properties);
+		_searchPermissionCheckerConfiguration =
+			ConfigurableUtil.createConfigurable(
+				SearchPermissionCheckerConfiguration.class, properties);
 	}
 
 	protected void addRequiredMemberRole(
@@ -499,64 +499,34 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 		}
 	}
 
-	@Reference(unbind = "-")
-	protected void setGroupLocalService(GroupLocalService groupLocalService) {
-		_groupLocalService = groupLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setIndexerRegistry(IndexerRegistry indexerRegistry) {
-		_indexerRegistry = indexerRegistry;
-	}
-
-	@Reference(unbind = "-")
-	protected void setPortal(Portal portal) {
-		_portal = portal;
-	}
-
-	@Reference(unbind = "-")
-	protected void setResourceBlockLocalService(
-		ResourceBlockLocalService resourceBlockLocalService) {
-
-		_resourceBlockLocalService = resourceBlockLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setResourcePermissionLocalService(
-		ResourcePermissionLocalService resourcePermissionLocalService) {
-
-		_resourcePermissionLocalService = resourcePermissionLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setRoleLocalService(RoleLocalService roleLocalService) {
-		_roleLocalService = roleLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setUserGroupRoleLocalService(
-		UserGroupRoleLocalService userGroupRoleLocalService) {
-
-		_userGroupRoleLocalService = userGroupRoleLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setUserLocalService(UserLocalService userLocalService) {
-		_userLocalService = userLocalService;
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		SearchPermissionCheckerImpl.class);
 
+	@Reference
 	private GroupLocalService _groupLocalService;
+
+	@Reference
 	private IndexerRegistry _indexerRegistry;
+
+	@Reference
 	private Portal _portal;
+
+	@Reference
 	private ResourceBlockLocalService _resourceBlockLocalService;
+
+	@Reference
 	private ResourcePermissionLocalService _resourcePermissionLocalService;
+
+	@Reference
 	private RoleLocalService _roleLocalService;
-	private SearchPermissionCheckerConfiguration
+
+	private volatile SearchPermissionCheckerConfiguration
 		_searchPermissionCheckerConfiguration;
+
+	@Reference
 	private UserGroupRoleLocalService _userGroupRoleLocalService;
+
+	@Reference
 	private UserLocalService _userLocalService;
 
 }

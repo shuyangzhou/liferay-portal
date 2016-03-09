@@ -32,6 +32,7 @@ import org.junit.Test;
 
 /**
  * @author Shuyang Zhou
+ * @author Andrea Di Giorgi
  */
 public class ModulesStructureTest {
 
@@ -44,6 +45,14 @@ public class ModulesStructureTest {
 				@Override
 				public FileVisitResult preVisitDirectory(
 					Path dirPath, BasicFileAttributes basicFileAttributes) {
+
+					Path dirNamePath = dirPath.getFileName();
+
+					String dirName = dirNamePath.toString();
+
+					if (dirName.charAt(0) == '.') {
+						return FileVisitResult.SKIP_SUBTREE;
+					}
 
 					Path buildXmlPath = dirPath.resolve("build.xml");
 
