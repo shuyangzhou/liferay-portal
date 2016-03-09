@@ -1108,15 +1108,6 @@ public class ThemeDisplay
 		return _showLayoutTemplatesIcon;
 	}
 
-	/**
-	 * @deprecated As of 6.2.0, replaced by {@link
-	 *             #isShowSiteAdministrationIcon()}
-	 */
-	@Deprecated
-	public boolean isShowManageSiteMembershipsIcon() {
-		return _showManageSiteMembershipsIcon;
-	}
-
 	public boolean isShowMyAccountIcon() {
 		return _showMyAccountIcon;
 	}
@@ -1143,33 +1134,6 @@ public class ThemeDisplay
 
 	public boolean isShowSiteAdministrationIcon() {
 		return _showSiteAdministrationIcon;
-	}
-
-	/**
-	 * @deprecated As of 6.2.0, replaced by {@link
-	 *             #isShowSiteAdministrationIcon()}
-	 */
-	@Deprecated
-	public boolean isShowSiteContentIcon() {
-		return isShowSiteAdministrationIcon();
-	}
-
-	/**
-	 * @deprecated As of 6.2.0, replaced by {@link
-	 *             #isShowSiteAdministrationIcon()}
-	 */
-	@Deprecated
-	public boolean isShowSiteMapSettingsIcon() {
-		return _showSiteMapSettingsIcon;
-	}
-
-	/**
-	 * @deprecated As of 6.2.0, replaced by {@link
-	 *             #isShowSiteAdministrationIcon()}
-	 */
-	@Deprecated
-	public boolean isShowSiteSettingsIcon() {
-		return _showSiteSettingsIcon;
 	}
 
 	public boolean isShowStagingIcon() {
@@ -1632,12 +1596,6 @@ public class ThemeDisplay
 		_showLayoutTemplatesIcon = showLayoutTemplatesIcon;
 	}
 
-	public void setShowManageSiteMembershipsIcon(
-		boolean showManageSiteMembershipsIcon) {
-
-		_showManageSiteMembershipsIcon = showManageSiteMembershipsIcon;
-	}
-
 	public void setShowMyAccountIcon(boolean showMyAccountIcon) {
 		_showMyAccountIcon = showMyAccountIcon;
 	}
@@ -1668,14 +1626,6 @@ public class ThemeDisplay
 		boolean showSiteAdministrationIcon) {
 
 		_showSiteAdministrationIcon = showSiteAdministrationIcon;
-	}
-
-	public void setShowSiteMapSettingsIcon(boolean showSiteMapSettingsIcon) {
-		_showSiteMapSettingsIcon = showSiteMapSettingsIcon;
-	}
-
-	public void setShowSiteSettingsIcon(boolean showSiteSettingsIcon) {
-		_showSiteSettingsIcon = showSiteSettingsIcon;
 	}
 
 	public void setShowStagingIcon(boolean showStagingIcon) {
@@ -1927,7 +1877,6 @@ public class ThemeDisplay
 	private boolean _showControlPanelIcon;
 	private boolean _showHomeIcon;
 	private boolean _showLayoutTemplatesIcon;
-	private boolean _showManageSiteMembershipsIcon;
 	private boolean _showMyAccountIcon;
 	private boolean _showPageCustomizationIcon;
 	private boolean _showPageSettingsIcon;
@@ -1935,8 +1884,6 @@ public class ThemeDisplay
 	private boolean _showSignInIcon;
 	private boolean _showSignOutIcon;
 	private boolean _showSiteAdministrationIcon;
-	private boolean _showSiteMapSettingsIcon;
-	private boolean _showSiteSettingsIcon;
 	private boolean _showStagingIcon;
 	private boolean _signedIn;
 	private Locale _siteDefaultLocale;

@@ -489,7 +489,6 @@ public class ServicePreAction extends Action {
 
 		LayoutSet layoutSet = null;
 
-		boolean hasAddLayoutLayoutPermission = false;
 		boolean hasCustomizeLayoutPermission = false;
 		boolean hasDeleteLayoutPermission = false;
 		boolean hasUpdateLayoutPermission = false;
@@ -503,9 +502,6 @@ public class ServicePreAction extends Action {
 			LayoutTypeAccessPolicy layoutTypeAccessPolicy =
 				layoutType.getLayoutTypeAccessPolicy();
 
-			hasAddLayoutLayoutPermission =
-				layoutTypeAccessPolicy.isAddLayoutAllowed(
-					permissionChecker, layout);
 			hasCustomizeLayoutPermission =
 				layoutTypeAccessPolicy.isCustomizeLayoutAllowed(
 					permissionChecker, layout);
@@ -935,55 +931,16 @@ public class ServicePreAction extends Action {
 
 			if (hasUpdateLayoutPermission) {
 				themeDisplay.setShowPageSettingsIcon(true);
-
-				boolean site = group.isSite();
-
-				if (!site && group.isStagingGroup()) {
-					Group liveGroup = group.getLiveGroup();
-
-					site = liveGroup.isSite();
-				}
-
-				if (site &&
-					GroupPermissionUtil.contains(
-						permissionChecker, scopeGroupId,
-						ActionKeys.ASSIGN_MEMBERS)) {
-
-					themeDisplay.setShowManageSiteMembershipsIcon(true);
-				}
-				else {
-					themeDisplay.setShowManageSiteMembershipsIcon(false);
-				}
 			}
 
 			Group scopeGroup = GroupLocalServiceUtil.getGroup(scopeGroupId);
 
-			boolean hasAddLayoutGroupPermission = GroupPermissionUtil.contains(
-				permissionChecker, scopeGroup, ActionKeys.ADD_LAYOUT);
-			boolean hasManageLayoutsGroupPermission =
-				GroupPermissionUtil.contains(
-					permissionChecker, scopeGroup, ActionKeys.MANAGE_LAYOUTS);
 			boolean hasManageStagingPermission = GroupPermissionUtil.contains(
 				permissionChecker, scopeGroup, ActionKeys.MANAGE_STAGING);
 			boolean hasPublishStagingPermission = GroupPermissionUtil.contains(
 				permissionChecker, scopeGroup, ActionKeys.PUBLISH_STAGING);
-			boolean hasUpdateGroupPermission = GroupPermissionUtil.contains(
-				permissionChecker, scopeGroup, ActionKeys.UPDATE);
 			boolean hasViewStagingPermission = GroupPermissionUtil.contains(
 				permissionChecker, scopeGroup, ActionKeys.VIEW_STAGING);
-
-			if (!group.isControlPanel() && !group.isUser() &&
-				!group.isUserGroup() && hasUpdateGroupPermission) {
-
-				themeDisplay.setShowSiteSettingsIcon(true);
-			}
-
-			if (!group.isLayoutPrototype() &&
-				(hasAddLayoutGroupPermission || hasAddLayoutLayoutPermission ||
-				 hasManageLayoutsGroupPermission || hasUpdateGroupPermission)) {
-
-				themeDisplay.setShowSiteMapSettingsIcon(true);
-			}
 
 			if (group.hasStagingGroup() && !group.isStagingGroup()) {
 				themeDisplay.setShowLayoutTemplatesIcon(false);
@@ -1047,7 +1004,6 @@ public class ServicePreAction extends Action {
 
 		if (group.isLayoutPrototype()) {
 			themeDisplay.setShowHomeIcon(false);
-			themeDisplay.setShowManageSiteMembershipsIcon(false);
 			themeDisplay.setShowMyAccountIcon(false);
 			themeDisplay.setShowPageCustomizationIcon(false);
 			themeDisplay.setShowPageSettingsIcon(true);
@@ -1055,20 +1011,16 @@ public class ServicePreAction extends Action {
 			themeDisplay.setShowSignInIcon(false);
 			themeDisplay.setShowSignOutIcon(false);
 			themeDisplay.setShowSiteAdministrationIcon(false);
-			themeDisplay.setShowSiteSettingsIcon(false);
 			themeDisplay.setShowStagingIcon(false);
 		}
 
 		if (group.isLayoutSetPrototype()) {
 			themeDisplay.setShowPageCustomizationIcon(false);
-			themeDisplay.setShowSiteSettingsIcon(false);
 		}
 
 		if (group.hasStagingGroup() && !group.isStagingGroup()) {
 			themeDisplay.setShowLayoutTemplatesIcon(false);
 			themeDisplay.setShowPageCustomizationIcon(false);
-			themeDisplay.setShowSiteMapSettingsIcon(false);
-			themeDisplay.setShowSiteSettingsIcon(false);
 		}
 
 		themeDisplay.setURLPortal(portalURL.concat(contextPath));
@@ -1732,33 +1684,6 @@ public class ServicePreAction extends Action {
 		else {
 			return false;
 		}
-	}
-
-	/**
-	 * @deprecated As of 6.1.0
-	 */
-	@Deprecated
-	protected boolean isViewableCommunity(
-			User user, long groupId, boolean privateLayout,
-			PermissionChecker permissionChecker)
-		throws PortalException {
-
-		return LayoutPermissionUtil.contains(
-			permissionChecker, groupId, privateLayout, 0, ActionKeys.VIEW);
-	}
-
-	/**
-	 * @deprecated As of 6.1.0
-	 */
-	@Deprecated
-	protected boolean isViewableGroup(
-			User user, long groupId, boolean privateLayout, long layoutId,
-			String controlPanelCategory, PermissionChecker permissionChecker)
-		throws PortalException {
-
-		return LayoutPermissionUtil.contains(
-			permissionChecker, groupId, privateLayout, layoutId,
-			ActionKeys.VIEW);
 	}
 
 	protected List<Layout> mergeAdditionalLayouts(

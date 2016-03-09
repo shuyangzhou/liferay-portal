@@ -6448,13 +6448,19 @@ public class PortalImpl implements Portal {
 
 		Map<String, String[]> parameterMap = HttpUtil.getParameterMap(url);
 
-		for (String name : parameterMap.keySet()) {
-			if (name.startsWith(portletNamespace)) {
-				url = HttpUtil.removeParameter(url, name);
+		Set<String> keySet = parameterMap.keySet();
+
+		Iterator<String> iterator = keySet.iterator();
+
+		while (iterator.hasNext()) {
+			String parameter = iterator.next();
+
+			if (parameter.startsWith(portletNamespace)) {
+				iterator.remove();
 			}
 		}
 
-		return url;
+		return HttpUtil.parameterMapToString(parameterMap);
 	}
 
 	@Override
@@ -8005,13 +8011,19 @@ public class PortalImpl implements Portal {
 		Map<String, String[]> parameterMap = HttpUtil.getParameterMap(
 			queryString);
 
-		for (String parameter : parameterMap.keySet()) {
+		Set<String> keySet = parameterMap.keySet();
+
+		Iterator<String> iterator = keySet.iterator();
+
+		while (iterator.hasNext()) {
+			String parameter = iterator.next();
+
 			if (parameter.endsWith("redirect")) {
-				url = HttpUtil.removeParameter(url, parameter);
+				iterator.remove();
 			}
 		}
 
-		return url;
+		return HttpUtil.parameterMapToString(parameterMap);
 	}
 
 	protected void resetThemeDisplayI18n(

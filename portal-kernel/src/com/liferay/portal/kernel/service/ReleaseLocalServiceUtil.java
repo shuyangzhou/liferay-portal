@@ -276,11 +276,12 @@ public class ReleaseLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.Release updateRelease(
-		long releaseId, int buildNumber, java.util.Date buildDate,
-		boolean verified)
+		long releaseId, java.lang.String schemaVersion, int buildNumber,
+		java.util.Date buildDate, boolean verified)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
-				   .updateRelease(releaseId, buildNumber, buildDate, verified);
+				   .updateRelease(releaseId, schemaVersion, buildNumber,
+			buildDate, verified);
 	}
 
 	public static void updateRelease(java.lang.String servletContextName,

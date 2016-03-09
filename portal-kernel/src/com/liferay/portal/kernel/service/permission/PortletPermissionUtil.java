@@ -15,8 +15,6 @@
 package com.liferay.portal.kernel.service.permission;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
@@ -206,27 +204,6 @@ public class PortletPermissionUtil {
 			checkStagingPermission);
 	}
 
-	/**
-	 * @deprecated As of 6.2.0, replaced by {@link
-	 *             #hasControlPanelAccessPermission(PermissionChecker, long,
-	 *             Collection)}
-	 */
-	@Deprecated
-	public static boolean contains(
-		PermissionChecker permissionChecker, long groupId, long plid,
-		Collection<Portlet> portlets, String actionId) {
-
-		try {
-			return hasControlPanelAccessPermission(
-				permissionChecker, groupId, portlets);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
-
-		return false;
-	}
-
 	public static boolean contains(
 			PermissionChecker permissionChecker, long groupId, long plid,
 			String portletId, String actionId, boolean strict)
@@ -349,9 +326,6 @@ public class PortletPermissionUtil {
 
 		_portletPermission = portletPermission;
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		PortletPermissionUtil.class);
 
 	private static PortletPermission _portletPermission;
 

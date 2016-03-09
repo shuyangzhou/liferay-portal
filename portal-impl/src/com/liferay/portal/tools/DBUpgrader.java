@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.cache.MultiVMPoolUtil;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Release;
@@ -55,6 +56,34 @@ import org.apache.commons.lang.time.StopWatch;
  * @author Brian Wing Shun Chan
  */
 public class DBUpgrader {
+
+	public static void checkRequiredBuildNumber(int requiredBuildNumber)
+		throws PortalException {
+
+		int buildNumber = ReleaseLocalServiceUtil.getBuildNumberOrCreate();
+
+		if (buildNumber > ReleaseInfo.getParentBuildNumber()) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append("Attempting to deploy an older Liferay Portal version. ");
+			sb.append("Current build number is ");
+			sb.append(buildNumber);
+			sb.append(" and attempting to deploy number ");
+			sb.append(ReleaseInfo.getParentBuildNumber());
+			sb.append(".");
+
+			throw new IllegalStateException(sb.toString());
+		}
+		else if (buildNumber < requiredBuildNumber) {
+			String msg =
+				"You must first upgrade to Liferay Portal " +
+					requiredBuildNumber;
+
+			System.out.println(msg);
+
+			throw new RuntimeException(msg);
+		}
+	}
 
 	public static void main(String[] args) {
 		try {
@@ -106,31 +135,13 @@ public class DBUpgrader {
 
 		CacheRegistryUtil.setActive(false);
 
-		// Check release
+		// Check required build number
 
-		int buildNumber = ReleaseLocalServiceUtil.getBuildNumberOrCreate();
-
-		if (buildNumber > ReleaseInfo.getParentBuildNumber()) {
-			StringBundler sb = new StringBundler(6);
-
-			sb.append("Attempting to deploy an older Liferay Portal version. ");
-			sb.append("Current build version is ");
-			sb.append(buildNumber);
-			sb.append(" and attempting to deploy version ");
-			sb.append(ReleaseInfo.getParentBuildNumber());
-			sb.append(".");
-
-			throw new IllegalStateException(sb.toString());
-		}
-		else if (buildNumber < ReleaseInfo.RELEASE_5_2_3_BUILD_NUMBER) {
-			String msg = "You must first upgrade to Liferay Portal 5.2.3";
-
-			System.out.println(msg);
-
-			throw new RuntimeException(msg);
-		}
+		checkRequiredBuildNumber(ReleaseInfo.RELEASE_5_2_3_BUILD_NUMBER);
 
 		// Upgrade
+
+		int buildNumber = ReleaseLocalServiceUtil.getBuildNumberOrCreate();
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Update build " + buildNumber);
@@ -272,8 +283,9 @@ public class DBUpgrader {
 		}
 
 		release = ReleaseLocalServiceUtil.updateRelease(
-			release.getReleaseId(), ReleaseInfo.getParentBuildNumber(),
-			ReleaseInfo.getBuildDate(), verified);
+			release.getReleaseId(), ReleaseInfo.getVersion(),
+			ReleaseInfo.getParentBuildNumber(), ReleaseInfo.getBuildDate(),
+			verified);
 
 		// Enable database caching after verify
 

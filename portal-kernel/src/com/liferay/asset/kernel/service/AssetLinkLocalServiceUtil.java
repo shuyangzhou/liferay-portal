@@ -293,6 +293,11 @@ public class AssetLinkLocalServiceUtil {
 		return getService().getDirectLinks(entryId);
 	}
 
+	public static java.util.List<com.liferay.asset.kernel.model.AssetLink> getDirectLinks(
+		long entryId, boolean excludeInvisibleLinks) {
+		return getService().getDirectLinks(entryId, excludeInvisibleLinks);
+	}
+
 	/**
 	* Returns all the asset links of the given link type whose first entry ID
 	* is the given entry ID.
@@ -309,6 +314,12 @@ public class AssetLinkLocalServiceUtil {
 	public static java.util.List<com.liferay.asset.kernel.model.AssetLink> getDirectLinks(
 		long entryId, int typeId) {
 		return getService().getDirectLinks(entryId, typeId);
+	}
+
+	public static java.util.List<com.liferay.asset.kernel.model.AssetLink> getDirectLinks(
+		long entryId, int typeId, boolean excludeInvisibleLinks) {
+		return getService()
+				   .getDirectLinks(entryId, typeId, excludeInvisibleLinks);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery getExportActionbleDynamicQuery(
