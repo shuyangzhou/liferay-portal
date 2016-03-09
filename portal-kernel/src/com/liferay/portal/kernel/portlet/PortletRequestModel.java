@@ -163,10 +163,8 @@ public class PortletRequestModel implements Serializable {
 			String resourceURLString = HttpUtil.removeParameter(
 				resourceURL.toString(), portletNamespace + "struts_action");
 
-			resourceURLString = HttpUtil.removeParameter(
+			_resourceURL = HttpUtil.removeParameter(
 				resourceURLString, portletNamespace + "redirect");
-
-			_resourceURL = resourceURL.toString();
 		}
 		else {
 			_resourceURL = null;
