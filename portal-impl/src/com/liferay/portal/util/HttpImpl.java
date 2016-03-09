@@ -871,7 +871,7 @@ public class HttpImpl implements Http {
 			return StringPool.BLANK;
 		}
 
-		StringBundler sb = new StringBundler();
+		StringBundler sb = new StringBundler(parameterMap.size() + 1);
 
 		if (addQuestion) {
 			sb.append(StringPool.QUESTION);
@@ -994,12 +994,12 @@ public class HttpImpl implements Http {
 
 		String anchor = array[1];
 
-		StringBundler sb = new StringBundler();
-
-		sb.append(url.substring(0, pos + 1));
-
 		String[] parameters = StringUtil.split(
 			url.substring(pos + 1, url.length()), CharPool.AMPERSAND);
+
+		StringBundler sb = new StringBundler(parameters.length + 1);
+
+		sb.append(url.substring(0, pos + 1));
 
 		for (String parameter : parameters) {
 			if (parameter.length() > 0) {
@@ -1195,7 +1195,7 @@ public class HttpImpl implements Http {
 			return null;
 		}
 
-		StringBundler sb = new StringBundler();
+		StringBundler sb = new StringBundler(4);
 
 		String[] params = StringUtil.split(url, CharPool.AMPERSAND);
 
