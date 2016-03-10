@@ -59,20 +59,19 @@ public class ActionURLTag extends ParamAndPropertyAncestorTagImpl {
 			Set<String> removedParameterNames, HttpServletRequest request)
 		throws Exception {
 
-		if (portletName == null) {
-			portletName = _getPortletName(request);
-		}
+		PortletRequest portletRequest = (PortletRequest)request.getAttribute(
+			JavaConstants.JAVAX_PORTLET_REQUEST);
 
-		LiferayPortletURL liferayPortletURL = _getLiferayPortletURL(
-			request, plid, portletName, lifecycle);
-
-		if (liferayPortletURL == null) {
+		if (portletRequest == null) {
 			_log.error(
 				"Render response is null because this tag is not being " +
 					"called within the context of a portlet");
 
 			return DummyPortletURL.getInstance();
 		}
+
+		LiferayPortletURL liferayPortletURL = _getLiferayPortletURL(
+			portletRequest, plid, portletName, lifecycle);
 
 		if (Validator.isNotNull(windowState)) {
 			liferayPortletURL.setWindowState(
@@ -307,39 +306,49 @@ public class ActionURLTag extends ParamAndPropertyAncestorTagImpl {
 	}
 
 	private static LiferayPortletURL _getLiferayPortletURL(
-		HttpServletRequest request, long plid, String portletName,
+		PortletRequest portletRequest, long plid, String portletName,
 		String lifecycle) {
 
-		PortletRequest portletRequest = (PortletRequest)request.getAttribute(
-			JavaConstants.JAVAX_PORTLET_REQUEST);
-
-		if (portletRequest == null) {
-			return null;
-		}
-
-		PortletResponse portletResponse = (PortletResponse)request.getAttribute(
-			JavaConstants.JAVAX_PORTLET_RESPONSE);
+		PortletResponse portletResponse =
+			(PortletResponse)portletRequest.getAttribute(
+				JavaConstants.JAVAX_PORTLET_RESPONSE);
 
 		LiferayPortletResponse liferayPortletResponse =
 			PortalUtil.getLiferayPortletResponse(portletResponse);
 
-		return liferayPortletResponse.createLiferayPortletURL(
-			plid, portletName, lifecycle);
-	}
-
-	private static String _getPortletName(HttpServletRequest request) {
-		PortletRequest portletRequest = (PortletRequest)request.getAttribute(
-			JavaConstants.JAVAX_PORTLET_REQUEST);
-
-		if (portletRequest == null) {
-			return null;
-		}
-
 		LiferayPortletConfig liferayPortletConfig =
-			(LiferayPortletConfig)request.getAttribute(
+			(LiferayPortletConfig)portletRequest.getAttribute(
 				JavaConstants.JAVAX_PORTLET_CONFIG);
 
-		return liferayPortletConfig.getPortletId();
+		String requestPortletName = liferayPortletConfig.getPortletId();
+
+		if (Validator.isNull(portletName) ||
+			requestPortletName.equals(portletName)) {
+
+			return liferayPortletResponse.createLiferayPortletURL(
+				plid, requestPortletName, lifecycle);
+		}
+
+		LiferayPortletURL liferayPortletURL = null;
+
+		if (lifecycle.equals(PortletRequest.ACTION_PHASE)) {
+			liferayPortletURL =
+				(LiferayPortletURL)liferayPortletResponse.createActionURL();
+		}
+		else if (lifecycle.equals(PortletRequest.RENDER_PHASE)) {
+			liferayPortletURL =
+				(LiferayPortletURL)liferayPortletResponse.createRenderURL();
+		}
+		else {
+			liferayPortletURL =
+				(LiferayPortletURL)liferayPortletResponse.createResourceURL();
+		}
+
+		liferayPortletURL.setPlid(plid);
+		liferayPortletURL.setPortletId(portletName);
+		liferayPortletURL.setLifecycle(lifecycle);
+
+		return liferayPortletURL;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(ActionURLTag.class);
