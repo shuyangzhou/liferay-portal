@@ -596,12 +596,16 @@ public class CMISFileEntry extends CMISModel implements FileEntry {
 		List<CmisExtensionElement> cmisExtensionElements =
 			allowableActions.getExtensions();
 
+		if (cmisExtensionElements == null) {
+			return false;
+		}
+
 		for (CmisExtensionElement cmisExtensionElement :
 				cmisExtensionElements) {
 
 			String name = cmisExtensionElement.getName();
 
-			if (name.equals("canCheckInSpecified")) {
+			if ((name != null) && name.equals("canCheckInSpecified")) {
 				return GetterUtil.getBoolean(cmisExtensionElement.getValue());
 			}
 		}
