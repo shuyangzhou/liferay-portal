@@ -15,13 +15,20 @@
 package com.liferay.portal.service.impl;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.VirtualHost;
+import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.transaction.TransactionConfig;
+import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
+import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.service.base.VirtualHostLocalServiceBaseImpl;
 import com.liferay.portal.util.PropsValues;
+
+import java.util.concurrent.Callable;
 
 /**
  * @author Alexander Chow
@@ -93,10 +100,40 @@ public class VirtualHostLocalServiceImpl
 		}
 
 		if (layoutSet != null) {
-			layoutSetPersistence.clearCache(layoutSet);
+			final LayoutSet cachedLayoutSet = layoutSet;
+
+			try {
+				TransactionInvokerUtil.invoke(
+					_NEW_TRANSACTION_CONFIG,
+					new Callable<Void>() {
+
+						@Override
+						public Void call() throws Exception {
+							layoutSetPersistence.clearCache(cachedLayoutSet);
+
+							return null;
+						}
+
+					});
+			}
+			catch (Throwable t) {
+				ReflectionUtil.throwException(t);
+			}
 		}
 
 		return virtualHost;
+	}
+
+	private static final TransactionConfig _NEW_TRANSACTION_CONFIG;
+
+	static {
+		TransactionConfig.Builder builder = new TransactionConfig.Builder();
+		builder.setRollbackForClasses(
+			PortalException.class, SystemException.class);
+
+		builder.setPropagation(Propagation.REQUIRES_NEW);
+
+		_NEW_TRANSACTION_CONFIG = builder.build();
 	}
 
 }
