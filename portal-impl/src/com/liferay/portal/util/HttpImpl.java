@@ -1017,7 +1017,8 @@ public class HttpImpl implements Http {
 
 		StringBundler sb = new StringBundler();
 
-		sb.append(url.substring(0, pos + 1));
+		sb.append(url.substring(0, pos));
+		sb.append(StringPool.QUESTION);
 
 		String[] parameters = StringUtil.split(
 			url.substring(pos + 1, url.length()), CharPool.AMPERSAND);
@@ -1043,15 +1044,14 @@ public class HttpImpl implements Http {
 			}
 		}
 
-		if (url.endsWith(StringPool.AMPERSAND)) {
-			url = url.substring(0, url.length() - 1);
+		if (Validator.isNull(anchor)) {
+			sb.setIndex(sb.index() - 1);
+		}
+		else {
+			sb.setStringAt(anchor, sb.index() - 1);
 		}
 
-		if (url.endsWith(StringPool.QUESTION)) {
-			url = url.substring(0, url.length() - 1);
-		}
-
-		return url + anchor;
+		return sb.toString();
 	}
 
 	@Override
