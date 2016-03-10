@@ -1,5 +1,5 @@
 dependencies {
-	provided group: "com.liferay", name: "com.liferay.osgi.util", version: "2.0.8"
+	provided group: "com.liferay", name: "com.liferay.osgi.util", version: "2.0.9"
 	provided group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "1.0.1"
 	provided group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "1.0.3"
 	provided group: "com.liferay.portal", name: "com.liferay.util.taglib", version: "1.0.0"

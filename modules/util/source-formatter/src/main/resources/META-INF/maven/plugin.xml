@@ -7,7 +7,7 @@
 	<description/>
 	<groupId>com.liferay</groupId>
 	<artifactId>com.liferay.source.formatter</artifactId>
-	<version>1.0.158</version>
+	<version>1.0.159</version>
 	<goalPrefix>liferay</goalPrefix>
 	<isolatedRealm>false</isolatedRealm>
 	<inheritedByDefault>true</inheritedByDefault>
@@ -136,12 +136,6 @@
 			<artifactId>jdom</artifactId>
 			<type>jar</type>
 			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>xerces</groupId>
-			<artifactId>xercesImpl</artifactId>
-			<type>jar</type>
-			<version>2.6.2</version>
 		</dependency>
 		<dependency>
 			<groupId>xom</groupId>

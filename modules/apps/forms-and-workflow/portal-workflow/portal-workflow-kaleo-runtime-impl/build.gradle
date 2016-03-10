@@ -1,4 +1,5 @@
 dependencies {
+	provided group: "com.liferay", name: "com.liferay.portal.instance.lifecycle", version: "1.0.0"
 	provided group: "com.liferay", name: "com.liferay.portal.spring.extender", version: "1.0.4"
 	provided group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "1.0.3"
 	provided group: "javax.mail", name: "mail", version: "1.4"
@@ -9,7 +10,6 @@ dependencies {
 	provided project(":apps:forms-and-workflow:portal-workflow:portal-workflow-kaleo-api")
 	provided project(":apps:forms-and-workflow:portal-workflow:portal-workflow-kaleo-definition-api")
 	provided project(":apps:forms-and-workflow:portal-workflow:portal-workflow-kaleo-runtime-api")
-	provided project(":apps:foundation:portal:portal-instance-lifecycle")
 }
 
 liferay {
