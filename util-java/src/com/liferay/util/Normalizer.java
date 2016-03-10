@@ -15,7 +15,6 @@
 package com.liferay.util;
 
 import com.liferay.ibm.icu.text.Transliterator;
-import com.liferay.portal.kernel.util.StringUtil;
 
 /**
  * @author Brian Wing Shun Chan
@@ -30,8 +29,12 @@ public class Normalizer {
 
 		String normalizedText = _transliterator.transform(s);
 
-		return StringUtil.replace(
-			normalizedText, _UNICODE_TEXT, _NORMALIZED_TEXT);
+		for (int i = 0; i < _NORMALIZED_TEXT.length; i++) {
+			normalizedText = normalizedText.replace(
+				_UNICODE_TEXT[i], _NORMALIZED_TEXT[i]);
+		}
+
+		return normalizedText;
 	}
 
 	private static boolean _hasNonASCIICode(String s) {
@@ -44,12 +47,10 @@ public class Normalizer {
 		return false;
 	}
 
-	private static final String[] _NORMALIZED_TEXT = new String[] {
-		"l", "'", "\""
-	};
+	private static final char[] _NORMALIZED_TEXT = new char[] {'l', '\'', '\"'};
 
-	private static final String[] _UNICODE_TEXT = new String[] {
-		"\u0142", "\u02B9", "\u02BA"
+	private static final char[] _UNICODE_TEXT = new char[] {
+		'\u0142', '\u02B9', '\u02BA'
 	};
 
 	private static final Transliterator _transliterator =
