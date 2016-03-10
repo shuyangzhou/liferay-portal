@@ -1,4 +1,5 @@
 dependencies {
+	provided group: "com.liferay", name: "com.liferay.application.list.api", version: "1.0.0"
 	provided group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "1.0.1"
 	provided group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "1.0.3"
 	provided group: "com.liferay.portal", name: "com.liferay.util.taglib", version: "1.0.0"
@@ -10,7 +11,6 @@ dependencies {
 	provided project(":apps:foundation:mobile-device-rules:mobile-device-rules-api")
 	provided project(":apps:foundation:mobile-device-rules:mobile-device-rules-service")
 	provided project(":apps:foundation:portal:portal-upgrade")
-	provided project(":apps:web-experience:application-list:application-list-api")
 }
 
 liferay {

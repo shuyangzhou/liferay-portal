@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Portal POP Notifications
 Bundle-SymbolicName: com.liferay.portal.pop.notifications
-Bundle-Version: 1.0.0
+Bundle-Version: 1.0.1
 Include-Resource:\
 	@${app.server.lib.portal.dir}/util-java.jar!/com/liferay/util/mail/LiferayMimeMessage.class,\
 	@${app.server.lib.portal.dir}/util-java.jar!/com/liferay/util/mail/MailEngine.class,\

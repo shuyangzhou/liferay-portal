@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.LayoutSetPrototype;
 import com.liferay.portal.kernel.service.LayoutSetLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutSetPrototypeLocalServiceUtil;
-import com.liferay.portal.kernel.service.persistence.LayoutSetPrototypeUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.sites.kernel.util.Sites;
 
@@ -76,7 +75,8 @@ public class LayoutSetPrototypeLayoutModelListener
 
 			layoutSetPrototype.setModifiedDate(modifiedDate);
 
-			LayoutSetPrototypeUtil.update(layoutSetPrototype);
+			LayoutSetPrototypeLocalServiceUtil.updateLayoutSetPrototype(
+				layoutSetPrototype);
 
 			LayoutSet layoutSet = layoutSetPrototype.getLayoutSet();
 

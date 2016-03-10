@@ -1,4 +1,5 @@
 dependencies {
+	provided group: "com.liferay", name: "com.liferay.application.list.api", version: "1.0.0"
 	provided group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "1.0.1"
 	provided group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "1.0.3"
 	provided group: "com.liferay.portal", name: "com.liferay.util.taglib", version: "1.0.0"
@@ -9,7 +10,6 @@ dependencies {
 	provided group: "org.scribe", name: "scribe", version: "1.3.6"
 	provided project(":apps:marketplace:marketplace-api")
 	provided project(":apps:marketplace:marketplace-service")
-	provided project(":apps:web-experience:application-list:application-list-api")
 }
 
 liferay {

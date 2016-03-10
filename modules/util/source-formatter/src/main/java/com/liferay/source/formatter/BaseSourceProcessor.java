@@ -124,134 +124,33 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		_init();
 	}
 
-	protected static int getLeadingTabCount(String line) {
-		int leadingTabCount = 0;
+	protected int adjustLevel(int level, String text, String s, int diff) {
+		String[] lines = StringUtil.splitLines(text);
 
-		while (line.startsWith(StringPool.TAB)) {
-			line = line.substring(1);
+		forLoop:
+		for (String line : lines) {
+			line = StringUtil.trim(line);
 
-			leadingTabCount++;
-		}
-
-		return leadingTabCount;
-	}
-
-	protected static boolean isExcludedPath(
-		List<String> excludes, String path) {
-
-		return isExcludedPath(excludes, path, -1);
-	}
-
-	protected static boolean isExcludedPath(
-		List<String> excludes, String path, int lineCount) {
-
-		return isExcludedPath(excludes, path, lineCount, null);
-	}
-
-	protected static boolean isExcludedPath(
-		List<String> excludes, String path, int lineCount,
-		String javaTermName) {
-
-		if (ListUtil.isEmpty(excludes)) {
-			return false;
-		}
-
-		String pathWithJavaTermName = null;
-
-		if (Validator.isNotNull(javaTermName)) {
-			pathWithJavaTermName = path + StringPool.AT + javaTermName;
-		}
-
-		String pathWithLineCount = null;
-
-		if (lineCount > 0) {
-			pathWithLineCount = path + StringPool.AT + lineCount;
-		}
-
-		for (String exclude : excludes) {
-			if (exclude.startsWith("**")) {
-				exclude = exclude.substring(2);
-			}
-
-			if (exclude.endsWith("**")) {
-				exclude = exclude.substring(0, exclude.length() - 2);
-
-				if (path.contains(exclude)) {
-					return true;
-				}
-
+			if (line.startsWith("//")) {
 				continue;
 			}
 
-			if (path.endsWith(exclude) ||
-				((pathWithJavaTermName != null) &&
-				 pathWithJavaTermName.endsWith(exclude)) ||
-				((pathWithLineCount != null) &&
-				 pathWithLineCount.endsWith(exclude))) {
+			int x = -1;
 
-				return true;
-			}
-		}
+			while (true) {
+				x = line.indexOf(s, x + 1);
 
-		return false;
-	}
+				if (x == -1) {
+					continue forLoop;
+				}
 
-	protected static String stripQuotes(String s) {
-		return stripQuotes(s, CharPool.APOSTROPHE, CharPool.QUOTE);
-	}
-
-	protected static String stripQuotes(String s, char... delimeters) {
-		List<Character> delimetersList = ListUtil.toList(delimeters);
-
-		char delimeter = CharPool.SPACE;
-		boolean insideQuotes = false;
-
-		StringBundler sb = new StringBundler();
-
-		for (int i = 0; i < s.length(); i++) {
-			char c = s.charAt(i);
-
-			if (insideQuotes) {
-				if (c == delimeter) {
-					int precedingBackSlashCount = 0;
-
-					for (int j = (i - 1); j >= 0; j--) {
-						if (s.charAt(j) == CharPool.BACK_SLASH) {
-							precedingBackSlashCount += 1;
-						}
-						else {
-							break;
-						}
-					}
-
-					if ((precedingBackSlashCount == 0) ||
-						((precedingBackSlashCount % 2) == 0)) {
-
-						insideQuotes = false;
-					}
+				if (!ToolsUtil.isInsideQuotes(line, x)) {
+					level += diff;
 				}
 			}
-			else if (delimetersList.contains(c)) {
-				delimeter = c;
-				insideQuotes = true;
-			}
-			else {
-				sb.append(c);
-			}
 		}
 
-		return sb.toString();
-	}
-
-	protected void checkChaining(String line, String fileName, int lineCount) {
-		if (line.startsWith("this(")) {
-			return;
-		}
-
-		if (line.contains(".getClass().")) {
-			processErrorMessage(
-				fileName, "chaining: " + fileName + " " + lineCount);
-		}
+		return level;
 	}
 
 	protected void checkEmptyCollection(
@@ -556,16 +455,7 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		String[] lineParts = StringUtil.split(line, " + ");
 
 		for (String linePart : lineParts) {
-			int closeParenthesesCount = StringUtil.count(
-				linePart, StringPool.CLOSE_PARENTHESIS);
-			int openParenthesesCount = StringUtil.count(
-				linePart, StringPool.OPEN_PARENTHESIS);
-
-			if (closeParenthesesCount != openParenthesesCount) {
-				return;
-			}
-
-			if (Validator.isNumber(linePart)) {
+			if ((getLevel(linePart) != 0) || Validator.isNumber(linePart)) {
 				return;
 			}
 		}
@@ -589,14 +479,7 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 
 				replaceCall = replaceCall.substring(0, x + 1);
 
-				String strippedQuotesCall = stripQuotes(replaceCall);
-
-				int closeParenthesesCount = StringUtil.count(
-					strippedQuotesCall, StringPool.CLOSE_PARENTHESIS);
-				int openParenthesesCount = StringUtil.count(
-					strippedQuotesCall, StringPool.OPEN_PARENTHESIS);
-
-				if (closeParenthesesCount == openParenthesesCount) {
+				if (getLevel(replaceCall) == 0) {
 					break;
 				}
 			}
@@ -625,14 +508,7 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 
 				String linePart = parameters.substring(0, x);
 
-				String strippedQuotesLinePart = stripQuotes(linePart);
-
-				int closeParenthesesCount = StringUtil.count(
-					strippedQuotesLinePart, StringPool.CLOSE_PARENTHESIS);
-				int openParenthesesCount = StringUtil.count(
-					strippedQuotesLinePart, StringPool.OPEN_PARENTHESIS);
-
-				if (closeParenthesesCount == openParenthesesCount) {
+				if (getLevel(linePart) == 0) {
 					parametersList.add(StringUtil.trim(linePart));
 
 					parameters = parameters.substring(x + 1);
@@ -1612,6 +1488,56 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		return new String[0];
 	}
 
+	protected int getLeadingTabCount(String line) {
+		int leadingTabCount = 0;
+
+		while (line.startsWith(StringPool.TAB)) {
+			line = line.substring(1);
+
+			leadingTabCount++;
+		}
+
+		return leadingTabCount;
+	}
+
+	protected int getLevel(String s) {
+		return getLevel(
+			s, new String[] {StringPool.OPEN_PARENTHESIS},
+			new String[] {StringPool.CLOSE_PARENTHESIS}, 0);
+	}
+
+	protected int getLevel(
+		String s, String increaseLevelString, String decreaseLevelString) {
+
+		return getLevel(
+			s, new String[] {increaseLevelString},
+			new String[] {decreaseLevelString}, 0);	
+	}
+
+	protected int getLevel(
+		String s, String[] increaseLevelStrings,
+		String[] decreaseLevelStrings) {
+
+		return getLevel(s, increaseLevelStrings, decreaseLevelStrings, 0);
+	}
+
+	protected int getLevel(
+		String s, String[] increaseLevelStrings, String[] decreaseLevelStrings,
+		int startLevel) {
+
+		int level = startLevel;
+
+		for (String increaseLevelString : increaseLevelStrings) {
+			level = adjustLevel(level, s, increaseLevelString, 1);
+		}
+
+		for (String decreaseLevelString : decreaseLevelStrings) {
+			level = adjustLevel(level, s, decreaseLevelString, -1);
+		}
+
+		return level;
+	}
+
 	protected int getLineCount(String content, int pos) {
 		String beforePos = content.substring(0, pos);
 
@@ -1922,12 +1848,7 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 
 				String linePart = s.substring(x, y + 1);
 
-				int closeParenthesesCount = StringUtil.count(
-					linePart, StringPool.CLOSE_PARENTHESIS);
-				int openParenthesesCount = StringUtil.count(
-					linePart, StringPool.OPEN_PARENTHESIS);
-
-				if (closeParenthesesCount == openParenthesesCount) {
+				if (getLevel(linePart) == 0) {
 					break;
 				}
 			}
@@ -1949,12 +1870,7 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 				continue;
 			}
 
-			int closeParenthesesCount = StringUtil.count(
-				part, StringPool.CLOSE_PARENTHESIS);
-			int openParenthesesCount = StringUtil.count(
-				part, StringPool.OPEN_PARENTHESIS);
-
-			if (Math.abs(closeParenthesesCount - openParenthesesCount) == 1) {
+			if (Math.abs(getLevel(part)) == 1) {
 				return true;
 			}
 		}
@@ -1970,6 +1886,64 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		Matcher matcher = attributeNamePattern.matcher(attributeName);
 
 		return matcher.matches();
+	}
+
+	protected boolean isExcludedPath(List<String> excludes, String path) {
+		return isExcludedPath(excludes, path, -1);
+	}
+
+	protected boolean isExcludedPath(
+		List<String> excludes, String path, int lineCount) {
+
+		return isExcludedPath(excludes, path, lineCount, null);
+	}
+
+	protected boolean isExcludedPath(
+		List<String> excludes, String path, int lineCount,
+		String javaTermName) {
+
+		if (ListUtil.isEmpty(excludes)) {
+			return false;
+		}
+
+		String pathWithJavaTermName = null;
+
+		if (Validator.isNotNull(javaTermName)) {
+			pathWithJavaTermName = path + StringPool.AT + javaTermName;
+		}
+
+		String pathWithLineCount = null;
+
+		if (lineCount > 0) {
+			pathWithLineCount = path + StringPool.AT + lineCount;
+		}
+
+		for (String exclude : excludes) {
+			if (exclude.startsWith("**")) {
+				exclude = exclude.substring(2);
+			}
+
+			if (exclude.endsWith("**")) {
+				exclude = exclude.substring(0, exclude.length() - 2);
+
+				if (path.contains(exclude)) {
+					return true;
+				}
+
+				continue;
+			}
+
+			if (path.endsWith(exclude) ||
+				((pathWithJavaTermName != null) &&
+				 pathWithJavaTermName.endsWith(exclude)) ||
+				((pathWithLineCount != null) &&
+				 pathWithLineCount.endsWith(exclude))) {
+
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	protected boolean isModulesFile(String absolutePath) {
@@ -2113,22 +2087,16 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 				value = s.substring(0, y);
 
 				if (value.startsWith("<%")) {
-					int endJavaCodeSignCount = StringUtil.count(value, "%>");
-					int startJavaCodeSignCount = StringUtil.count(value, "<%");
-
-					if (endJavaCodeSignCount == startJavaCodeSignCount) {
+					if (getLevel(value, "<%", "%>") == 0) {
 						break;
 					}
 				}
-				else {
-					int greaterThanCount = StringUtil.count(
-						value, StringPool.GREATER_THAN);
-					int lessThanCount = StringUtil.count(
-						value, StringPool.LESS_THAN);
+				else if (getLevel(
+							value, StringPool.LESS_THAN,
+							StringPool.GREATER_THAN) ==
+								0) {
 
-					if (greaterThanCount == lessThanCount) {
-						break;
-					}
+					break;
 				}
 			}
 
@@ -2228,6 +2196,53 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		String line, String value, String attributeAndValue) {
 
 		return line;
+	}
+
+	protected String stripQuotes(String s) {
+		return stripQuotes(s, CharPool.APOSTROPHE, CharPool.QUOTE);
+	}
+
+	protected String stripQuotes(String s, char... delimeters) {
+		List<Character> delimetersList = ListUtil.toList(delimeters);
+
+		char delimeter = CharPool.SPACE;
+		boolean insideQuotes = false;
+
+		StringBundler sb = new StringBundler();
+
+		for (int i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
+
+			if (insideQuotes) {
+				if (c == delimeter) {
+					int precedingBackSlashCount = 0;
+
+					for (int j = (i - 1); j >= 0; j--) {
+						if (s.charAt(j) == CharPool.BACK_SLASH) {
+							precedingBackSlashCount += 1;
+						}
+						else {
+							break;
+						}
+					}
+
+					if ((precedingBackSlashCount == 0) ||
+						((precedingBackSlashCount % 2) == 0)) {
+
+						insideQuotes = false;
+					}
+				}
+			}
+			else if (delimetersList.contains(c)) {
+				delimeter = c;
+				insideQuotes = true;
+			}
+			else {
+				sb.append(c);
+			}
+		}
+
+		return sb.toString();
 	}
 
 	protected String stripRedundantParentheses(String s) {

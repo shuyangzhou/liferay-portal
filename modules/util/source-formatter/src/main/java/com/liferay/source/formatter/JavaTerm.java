@@ -302,12 +302,7 @@ public class JavaTerm {
 
 			parameters = _content.substring(x + 1, y);
 
-			int closeParenthesesCount = StringUtil.count(
-				parameters, StringPool.CLOSE_PARENTHESIS);
-			int openParenthesesCount = StringUtil.count(
-				parameters, StringPool.OPEN_PARENTHESIS);
-
-			if (closeParenthesesCount == openParenthesesCount) {
+			if (_javaSourceProcessor.getLevel(parameters) == 0) {
 				break;
 			}
 		}
@@ -335,12 +330,7 @@ public class JavaTerm {
 
 			String parameterType = parameters.substring(0, x);
 
-			int greaterThanCount = StringUtil.count(
-				parameterType, StringPool.GREATER_THAN);
-			int lessThanCount = StringUtil.count(
-				parameterType, StringPool.LESS_THAN);
-
-			if (greaterThanCount != lessThanCount) {
+			if (_javaSourceProcessor.getLevel(parameterType, "<", ">") != 0) {
 				continue;
 			}
 
@@ -374,17 +364,8 @@ public class JavaTerm {
 
 			String annotation = parameters.substring(0, pos);
 
-			int closeParenthesesCount = StringUtil.count(
-				annotation, StringPool.CLOSE_PARENTHESIS);
-			int greaterThanCount = StringUtil.count(
-				annotation, StringPool.GREATER_THAN);
-			int lessThanCount = StringUtil.count(
-				annotation, StringPool.LESS_THAN);
-			int openParenthesesCount = StringUtil.count(
-				annotation, StringPool.OPEN_PARENTHESIS);
-
-			if ((closeParenthesesCount == openParenthesesCount) &&
-				(greaterThanCount == lessThanCount)) {
+			if ((_javaSourceProcessor.getLevel(annotation) == 0) &&
+				(_javaSourceProcessor.getLevel(annotation, "<", ">") == 0)) {
 
 				return parameters.substring(pos + 1);
 			}
@@ -393,6 +374,8 @@ public class JavaTerm {
 
 	private String _content;
 	private String _indent;
+	private JavaSourceProcessor _javaSourceProcessor =
+		new JavaSourceProcessor();
 	private int _lineCount;
 	private String _name;
 	private List<String> _parameterNames;
