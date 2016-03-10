@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Product Navigation Product Menu Theme Contributor
 Bundle-SymbolicName: com.liferay.product.navigation.product.menu.theme.contributor
-Bundle-Version: 1.0.0
+Bundle-Version: 1.0.1
 Include-Resource:\
 	classes,\
 	META-INF/resources=src/main/resources/META-INF/resources

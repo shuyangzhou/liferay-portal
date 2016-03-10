@@ -1,4 +1,5 @@
 dependencies {
+	provided group: "com.liferay", name: "com.liferay.portal.upgrade", version: "1.0.0"
 	provided group: "com.liferay", name: "org.portletbridge.core", version: "1.1.2"
 	provided group: "com.liferay", name: "org.portletbridge.portlet", version: "1.1.2"
 	provided group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "1.0.1"
@@ -16,7 +17,6 @@ dependencies {
 	provided group: "xalan", name: "serializer", version: "2.7.2"
 	provided group: "xalan", name: "xalan", version: "2.7.2"
 	provided project(":apps:foundation:frontend:frontend-taglib")
-	provided project(":apps:foundation:portal:portal-upgrade")
 }
 
 liferay {

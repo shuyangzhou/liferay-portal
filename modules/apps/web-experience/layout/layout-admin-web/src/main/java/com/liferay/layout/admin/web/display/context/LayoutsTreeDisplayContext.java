@@ -83,6 +83,13 @@ public class LayoutsTreeDisplayContext extends BaseLayoutDisplayContext {
 			PortletRequest.ACTION_PHASE);
 
 		deleteLayoutURL.setParameter(ActionRequest.ACTION_NAME, "deleteLayout");
+		deleteLayoutURL.setParameter("mvcPath", "/panel/app/layouts_tree.jsp");
+
+		try {
+			deleteLayoutURL.setWindowState(LiferayWindowState.EXCLUSIVE);
+		}
+		catch (WindowStateException wse) {
+		}
 
 		PortletURL redirectURL = PortalUtil.getControlPanelPortletURL(
 			liferayPortletRequest, LayoutAdminPortletKeys.GROUP_PAGES,
@@ -227,7 +234,11 @@ public class LayoutsTreeDisplayContext extends BaseLayoutDisplayContext {
 		return super.getRootNodeName(privateLayout);
 	}
 
-	public boolean isShowAddBothRootLayoutButtons() {
+	public boolean isShowAddBothRootLayoutButtons() throws PortalException {
+		if (!super.isShowAddRootLayoutButton()) {
+			return false;
+		}
+
 		Group selGroup = getSelGroup();
 
 		if (selGroup.hasPublicLayouts() && selGroup.hasPrivateLayouts()) {

@@ -2593,9 +2593,7 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 		layout.setModifiedDate(now);
 		layout.setParentLayoutId(parentLayoutId);
 
-		layoutPersistence.update(layout);
-
-		return layout;
+		return layoutPersistence.update(layout);
 	}
 
 	/**
@@ -2613,7 +2611,7 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 
 		Layout layout = updateParentLayoutId(plid, parentPlid);
 
-		return updatePriority(layout, priority);
+		return layoutLocalService.updatePriority(layout, priority);
 	}
 
 	/**

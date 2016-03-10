@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.osgi.web.servlet.jsp.compiler.internal.JspBundleClassloader;
 import com.liferay.portal.osgi.web.servlet.jsp.compiler.internal.JspTagHandlerPool;
 import com.liferay.taglib.servlet.JspFactorySwapper;
@@ -34,6 +35,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Dictionary;
 import java.util.Enumeration;
@@ -282,8 +284,9 @@ public class JspServlet extends HttpServlet {
 		try {
 			currentThread.setContextClassLoader(_jspBundleClassloader);
 
-			if (_DEBUG.equals(
-					_jspServlet.getInitParameter("logVerbosityLevel"))) {
+			if (Validator.equals(
+					_jspServlet.getInitParameter("logVerbosityLevel"),
+					"DEBUG")) {
 
 				String path = (String)request.getAttribute(
 					RequestDispatcher.INCLUDE_SERVLET_PATH);
@@ -417,14 +420,30 @@ public class JspServlet extends HttpServlet {
 	}
 
 	protected void scanTLDs(ServletContext servletContext) {
-		Enumeration<URL> urls = _bundle.findEntries("META-INF/", "*.tld", true);
+		Boolean analyzedTlds = (Boolean)servletContext.getAttribute(
+			_ANALYZED_TLDS);
 
-		if (urls == null) {
+		if ((analyzedTlds != null) && analyzedTlds.booleanValue()) {
 			return;
 		}
 
-		while (urls.hasMoreElements()) {
-			URL url = urls.nextElement();
+		servletContext.setAttribute(_ANALYZED_TLDS, Boolean.TRUE);
+
+		BundleWiring bundleWiring =_bundle.adapt(BundleWiring.class);
+
+		Collection<String> resources = bundleWiring.listResources(
+			"META-INF/", "*.tld", BundleWiring.LISTRESOURCES_RECURSE);
+
+		if (resources == null) {
+			return;
+		}
+
+		for (String resource : resources) {
+			URL url = _bundle.getResource(resource);
+
+			if (url == null) {
+				continue;
+			}
 
 			try (InputStream inputStream = url.openStream()) {
 				ParserUtils parserUtils = new ParserUtils(true);
@@ -461,7 +480,8 @@ public class JspServlet extends HttpServlet {
 		}
 	}
 
-	private static final String _DEBUG = "DEBUG";
+	private static final String _ANALYZED_TLDS =
+		JspServlet.class.getName().concat("#ANALYZED_TLDS");
 
 	private static final Class<?>[] _INTERFACES = {ServletContext.class};
 

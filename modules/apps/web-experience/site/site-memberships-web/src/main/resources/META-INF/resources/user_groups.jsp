@@ -138,8 +138,6 @@ userGroupSearch.setResults(userGroups);
 </c:if>
 
 <aui:script use="liferay-item-selector-dialog">
-	var Util = Liferay.Util;
-
 	var form = $(document.<portlet:namespace />fm);
 
 	$('#<portlet:namespace />deleteSelectedUserGroups').on(
@@ -148,41 +146,6 @@ userGroupSearch.setResults(userGroups);
 			if (confirm('<liferay-ui:message key="are-you-sure-you-want-to-delete-this" />')) {
 				submitForm(form);
 			}
-		}
-	);
-
-	form.on(
-		'click',
-		'.assign-site-roles a',
-		function(event) {
-			event.preventDefault();
-
-			var currentTarget = $(event.currentTarget);
-
-			var editUserGroupGroupRoleFm = $(document.<portlet:namespace />editUserGroupGroupRoleFm);
-
-			editUserGroupGroupRoleFm.fm('userGroupId').val(currentTarget.data('usergroupid'));
-
-			var itemSelectorDialog = new A.LiferayItemSelectorDialog(
-				{
-					eventName: '<portlet:namespace />selectUserGroupsRoles',
-					on: {
-						selectedItemChange: function(event) {
-							var selectedItem = event.newVal;
-
-							if (selectedItem) {
-								editUserGroupGroupRoleFm.append(selectedItem);
-
-								submitForm(editUserGroupGroupRoleFm);
-							}
-						}
-					},
-					title: '<liferay-ui:message key="assign-site-roles" />',
-					url: currentTarget.data('href')
-				}
-			);
-
-			itemSelectorDialog.open();
 		}
 	);
 

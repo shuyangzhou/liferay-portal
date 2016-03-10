@@ -395,6 +395,19 @@ renderResponse.setTitle((entry != null) ? entry.getTitle() : LanguageUtil.get(re
 		}
 	};
 
+	AUI.$('#configurationContent').on(
+		'show.bs.collapse',
+		function() {
+			var descriptionEditor = window['<portlet:namespace />descriptionEditor'];
+
+			if (!descriptionEditor.instanceReady) {
+				descriptionEditor.create();
+
+				blogs.setDescription(window['<portlet:namespace />contentEditor'].getText());
+			}
+		}
+	);
+
 	Liferay.on('destroyPortlet', clearSaveDraftHandle);
 </aui:script>
 
