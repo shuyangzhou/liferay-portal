@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.PredicateFilter;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -977,8 +978,28 @@ public class HttpImpl implements Http {
 	}
 
 	@Override
-	public String removeParameter(String url, String name) {
-		if (Validator.isNull(url) || Validator.isNull(name)) {
+	public String removeParameter(String url, final String name) {
+		if (Validator.isNull(name)) {
+			return url;
+		}
+
+		return removeParameters(
+			url,
+			new PredicateFilter<String>() {
+
+				@Override
+				public boolean filter(String key) {
+					return !name.equals(key);
+				}
+
+			});
+	}
+
+	@Override
+	public String removeParameters(
+		String url, PredicateFilter<String> predicateFilter) {
+
+		if (Validator.isNull(url) || (predicateFilter == null)) {
 			return url;
 		}
 
@@ -1013,7 +1034,7 @@ public class HttpImpl implements Http {
 					value = kvp[1];
 				}
 
-				if (!key.equals(name)) {
+				if (predicateFilter.filter(key)) {
 					sb.append(key);
 					sb.append(StringPool.EQUAL);
 					sb.append(value);
