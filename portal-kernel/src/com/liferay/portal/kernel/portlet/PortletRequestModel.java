@@ -160,13 +160,28 @@ public class PortletRequestModel implements Serializable {
 
 			ResourceURL resourceURL = mimeResponse.createResourceURL();
 
-			String resourceURLString = HttpUtil.removeParameter(
-				resourceURL.toString(), portletNamespace + "struts_action");
+			final String portletStrutsAction =
+				portletNamespace + "struts_action";
+			final String portletRedirect = portletNamespace + "redirect";
 
-			resourceURLString = HttpUtil.removeParameter(
-				resourceURLString, portletNamespace + "redirect");
+			_resourceURL = HttpUtil.removeParameters(
+				resourceURL.toString(),
+				new PredicateFilter<String>() {
 
-			_resourceURL = resourceURLString;
+					@Override
+					public boolean filter(String parameter) {
+						if (parameter.equals(portletStrutsAction)) {
+							return false;
+						}
+
+						if (parameter.equals(portletRedirect)) {
+							return false;
+						}
+
+						return true;
+					}
+
+				});
 		}
 		else {
 			_resourceURL = null;
