@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Portal Scripting Executor
 Bundle-SymbolicName: com.liferay.portal.scripting.executor
-Bundle-Version: 1.0.0
+Bundle-Version: 1.0.1
 DynamicImport-Package: *
 Export-Package:\
 	com.liferay.portal.scripting.executor.constants,\
