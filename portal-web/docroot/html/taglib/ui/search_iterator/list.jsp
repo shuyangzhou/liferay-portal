@@ -37,9 +37,27 @@ String url = StringPool.BLANK;
 PortletURL iteratorURL = searchContainer.getIteratorURL();
 
 if (iteratorURL != null) {
-	url = iteratorURL.toString();
-	url = HttpUtil.removeParameter(url, namespace + searchContainer.getOrderByColParam());
-	url = HttpUtil.removeParameter(url, namespace + searchContainer.getOrderByTypeParam());
+	final String portletOrderByCol = namespace + searchContainer.getOrderByColParam();
+	final String portletOrderByType = namespace + searchContainer.getOrderByTypeParam();
+
+	url = HttpUtil.removeParameters(
+			iteratorURL.toString(),
+			new PredicateFilter<String>() {
+
+				@Override
+				public boolean filter(String parameter) {
+					if (parameter.equals(portletOrderByCol)) {
+						return false;
+					}
+
+					if (parameter.equals(portletOrderByType)) {
+						return false;
+					}
+
+					return true;
+				}
+
+			});
 }
 %>
 
