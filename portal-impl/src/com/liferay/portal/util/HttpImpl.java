@@ -1024,7 +1024,7 @@ public class HttpImpl implements Http {
 		sb.append(StringPool.QUESTION);
 
 		for (String parameter : parameters) {
-			if (parameter.length() > 0) {
+			if (!parameter.isEmpty()) {
 				String[] kvp = StringUtil.split(parameter, CharPool.EQUAL);
 
 				String key = kvp[0];
