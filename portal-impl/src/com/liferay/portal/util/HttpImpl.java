@@ -1043,10 +1043,6 @@ public class HttpImpl implements Http {
 			}
 		}
 
-		url = StringUtil.replace(
-			sb.toString(), StringPool.AMPERSAND + StringPool.AMPERSAND,
-			StringPool.AMPERSAND);
-
 		if (url.endsWith(StringPool.AMPERSAND)) {
 			url = url.substring(0, url.length() - 1);
 		}
