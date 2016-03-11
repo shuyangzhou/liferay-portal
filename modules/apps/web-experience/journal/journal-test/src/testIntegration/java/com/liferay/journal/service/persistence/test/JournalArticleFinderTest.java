@@ -35,12 +35,14 @@ import com.liferay.journal.util.comparator.ArticleVersionComparator;
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.AnnotationalTransactionalTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
-import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -80,7 +82,7 @@ public class JournalArticleFinderTest {
 		new AggregateTestRule(
 			new LiferayIntegrationTestRule(),
 			SynchronousDestinationTestRule.INSTANCE,
-			TransactionalTestRule.INSTANCE);
+			AnnotationalTransactionalTestRule.INSTANCE);
 
 	@Before
 	public void setUp() throws Exception {
@@ -216,6 +218,7 @@ public class JournalArticleFinderTest {
 	}
 
 	@Test
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void testFindByExpirationDate() throws Exception {
 
 		// Status any
@@ -272,6 +275,7 @@ public class JournalArticleFinderTest {
 	}
 
 	@Test
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void testFindByReviewDate() throws Exception {
 		Calendar calendar = new GregorianCalendar();
 
