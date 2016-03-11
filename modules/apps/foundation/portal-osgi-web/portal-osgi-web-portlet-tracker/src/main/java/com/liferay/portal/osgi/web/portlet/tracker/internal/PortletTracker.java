@@ -118,12 +118,12 @@ public class PortletTracker
 			Class<?> clazz = portlet.getClass();
 
 			portletName = StringUtil.replace(
-				clazz.getName(), new String[] {".", "$"},
-				new String[] {"_", "_"});
+				clazz.getName(), new char[] {'.', '$'},
+				new char[] {'_', '_'});
 		}
 
 		String portletId = StringUtil.replace(
-			portletName, new String[] {".", "$"}, new String[] {"_", "_"});
+			portletName, new char[] {'.', '$'}, new char[] {'_', '_'});
 
 		if (portletId.length() >
 				PortletInstance.PORTLET_INSTANCE_KEY_MAX_LENGTH) {
@@ -923,6 +923,8 @@ public class PortletTracker
 
 		ServletContextHelperRegistration servletContextHelperRegistration =
 			getServletContextHelperRegistration(bundle, serviceRegistrations);
+
+		servletContextHelperRegistration.initDefaults();
 
 		ServletContext servletContext =
 			servletContextHelperRegistration.getServletContext();

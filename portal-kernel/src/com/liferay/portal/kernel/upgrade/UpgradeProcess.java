@@ -449,6 +449,12 @@ public abstract class UpgradeProcess
 		return db.increment(name);
 	}
 
+	protected long increment(String name, int size) {
+		DB db = DBManagerUtil.getDB();
+
+		return db.increment(name, size);
+	}
+
 	protected boolean isSupportsAlterColumnName() {
 		DB db = DBManagerUtil.getDB();
 

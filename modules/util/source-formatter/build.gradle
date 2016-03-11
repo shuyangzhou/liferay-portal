@@ -12,10 +12,6 @@ buildPluginDescriptor {
 	goalPrefix = "liferay"
 }
 
-copyLibs {
-	enabled = false
-}
-
 dependencies {
 	compile group: "com.thoughtworks.qdox", name: "qdox", version: "1.12.1"
 	compile group: "commons-io", name: "commons-io", version: "2.1"
@@ -24,7 +20,7 @@ dependencies {
 	compile group: "org.apache.ant", name: "ant", version: "1.9.4"
 
 	provided group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "1.0.1"
-	provided group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "1.0.3"
+	provided group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
 	provided group: "com.liferay.portal", name: "com.liferay.util.java", version: "1.0.0"
 	provided group: "org.apache.maven", name: "maven-plugin-api", transitive: false, version: "3.0.4"
 	provided group: "xerces", name: "xercesImpl", transitive: false, version: "2.11.0"

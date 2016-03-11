@@ -1155,6 +1155,8 @@ public class WabProcessor {
 
 		processRequiredDeploymentContexts(analyzer);
 
+		processExcludedJSPs(analyzer);
+
 		Manifest manifest = null;
 
 		try {
@@ -1268,6 +1270,30 @@ public class WabProcessor {
 		try (OutputStream outputStream = new FileOutputStream(file)) {
 			manifest.write(outputStream);
 		}
+	}
+
+	private void processExcludedJSPs(Analyzer analyzer) throws IOException {
+		File file = new File(_pluginDir, "/WEB-INF/liferay-hook.xml");
+
+		if (!file.exists()) {
+			return;
+		}
+
+		Document document = readDocument(file);
+
+		Element rootElement = document.getRootElement();
+
+		List<Node> nodes = rootElement.selectNodes("//custom-jsp-dir");
+
+		String value = analyzer.getProperty("-jsp");
+
+		for (Node node : nodes) {
+			String text = node.getText();
+
+			value = "!" + text +"," + value;
+		}
+
+		analyzer.setProperty("-jsp", value);
 	}
 
 	private static final String _SERVICE_BEAN_POST_PROCESSOR_SPRING_XML =

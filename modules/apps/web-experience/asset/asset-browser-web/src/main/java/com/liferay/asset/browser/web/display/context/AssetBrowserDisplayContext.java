@@ -20,7 +20,7 @@ import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil;
-import com.liferay.frontend.taglib.servlet.taglib.ManagementBarFilterItem;
+import com.liferay.frontend.taglib.web.servlet.taglib.ManagementBarFilterItem;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -392,10 +392,9 @@ public class AssetBrowserDisplayContext {
 		}
 		else {
 			total = (int)AssetEntryLocalServiceUtil.searchCount(
-				themeDisplay.getCompanyId(), getFilterGroupIds(),
-				themeDisplay.getUserId(), assetRendererFactory.getClassName(),
-				getSubtypeSelectionId(), getKeywords(), isShowNonindexable(),
-				getStatuses());
+				themeDisplay.getCompanyId(), groupIds, themeDisplay.getUserId(),
+				assetRendererFactory.getClassName(), getSubtypeSelectionId(),
+				getKeywords(), isShowNonindexable(), getStatuses());
 		}
 
 		return total;
