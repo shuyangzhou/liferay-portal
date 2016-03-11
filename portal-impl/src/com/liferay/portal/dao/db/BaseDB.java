@@ -215,6 +215,11 @@ public abstract class BaseDB implements DB {
 	}
 
 	@Override
+	public long increment(String name, int size) {
+		return CounterLocalServiceUtil.increment(name, size);
+	}
+
+	@Override
 	public boolean isSupportsAlterColumnName() {
 		return _SUPPORTS_ALTER_COLUMN_NAME;
 	}

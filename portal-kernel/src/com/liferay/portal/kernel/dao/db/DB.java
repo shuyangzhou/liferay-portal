@@ -71,6 +71,8 @@ public interface DB {
 
 	public long increment(String name);
 
+	public long increment(String name, int size);
+
 	public boolean isSupportsAlterColumnName();
 
 	public boolean isSupportsAlterColumnType();

@@ -31,10 +31,10 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.social.activities.web.constants.SocialActivitiesPortletKeys;
-import com.liferay.social.kernel.model.SocialActivity;
+import com.liferay.social.activities.web.util.SocialActivitiesQueryHelper;
 import com.liferay.social.kernel.model.SocialActivityFeedEntry;
+import com.liferay.social.kernel.model.SocialActivitySet;
 import com.liferay.social.kernel.service.SocialActivityInterpreterLocalService;
-import com.liferay.social.kernel.service.SocialActivityLocalService;
 import com.liferay.util.RSSUtil;
 
 import com.sun.syndication.feed.synd.SyndContent;
@@ -47,7 +47,6 @@ import com.sun.syndication.feed.synd.SyndLink;
 import com.sun.syndication.feed.synd.SyndLinkImpl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -78,7 +77,7 @@ public class RSSMVCResourceCommand extends BaseRSSMVCResourceCommand {
 	protected String exportToRSS(
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse,
 			String title, String description, String format, double version,
-			String displayStyle, List<SocialActivity> socialActivities,
+			String displayStyle, List<SocialActivitySet> socialActivitySets,
 			ServiceContext serviceContext)
 		throws Exception {
 
@@ -93,10 +92,10 @@ public class RSSMVCResourceCommand extends BaseRSSMVCResourceCommand {
 
 		syndFeed.setEntries(syndEntries);
 
-		for (SocialActivity socialActivity : socialActivities) {
+		for (SocialActivitySet socialActivitySet : socialActivitySets) {
 			SocialActivityFeedEntry socialActivityFeedEntry =
 				_socialActivityInterpreterLocalService.interpret(
-					StringPool.BLANK, socialActivity, serviceContext);
+					StringPool.BLANK, socialActivitySet, serviceContext);
 
 			if (socialActivityFeedEntry == null) {
 				continue;
@@ -126,7 +125,7 @@ public class RSSMVCResourceCommand extends BaseRSSMVCResourceCommand {
 			}
 
 			syndEntry.setPublishedDate(
-				new Date(socialActivity.getCreateDate()));
+				new Date(socialActivitySet.getCreateDate()));
 			syndEntry.setTitle(
 				HtmlUtil.extractText(socialActivityFeedEntry.getTitle()));
 			syndEntry.setUri(syndEntry.getLink());
@@ -175,6 +174,11 @@ public class RSSMVCResourceCommand extends BaseRSSMVCResourceCommand {
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 		throws Exception {
 
+		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		String tabs1 = ParamUtil.getString(resourceRequest, "tabs1", "all");
+
 		String feedTitle = ParamUtil.getString(resourceRequest, "feedTitle");
 		String format = ParamUtil.getString(
 			resourceRequest, "type", RSSUtil.FORMAT_DEFAULT);
@@ -185,45 +189,24 @@ public class RSSMVCResourceCommand extends BaseRSSMVCResourceCommand {
 		int max = ParamUtil.getInteger(
 			resourceRequest, "max", SearchContainer.DEFAULT_DELTA);
 
-		List<SocialActivity> socialActivities = getSocialActivities(
-			resourceRequest, max);
+		Group group = _groupLocalService.getGroup(
+			themeDisplay.getScopeGroupId());
+
+		SocialActivitiesQueryHelper.Scope scope =
+			SocialActivitiesQueryHelper.Scope.fromValue(tabs1);
+
+		List<SocialActivitySet> socialActivitySets =
+			_socialActivitiesQueryHelper.getSocialActivitySets(
+				group, themeDisplay.getLayout(), scope, 0, max);
 
 		ServiceContext serviceContext = ServiceContextFactory.getInstance(
 			resourceRequest);
 
 		String rss = exportToRSS(
 			resourceRequest, resourceResponse, feedTitle, null, format, version,
-			displayStyle, socialActivities, serviceContext);
+			displayStyle, socialActivitySets, serviceContext);
 
 		return rss.getBytes(StringPool.UTF8);
-	}
-
-	protected List<SocialActivity> getSocialActivities(
-			ResourceRequest resourceRequest, int max)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		Group group = _groupLocalService.getGroup(
-			themeDisplay.getScopeGroupId());
-
-		int start = 0;
-
-		if (group.isOrganization()) {
-			return _socialActivityLocalService.getOrganizationActivities(
-				group.getOrganizationId(), start, max);
-		}
-		else if (group.isRegularSite()) {
-			return _socialActivityLocalService.getGroupActivities(
-				group.getGroupId(), start, max);
-		}
-		else if (group.isUser()) {
-			return _socialActivityLocalService.getUserActivities(
-				group.getClassPK(), start, max);
-		}
-
-		return Collections.emptyList();
 	}
 
 	@Override
@@ -245,6 +228,13 @@ public class RSSMVCResourceCommand extends BaseRSSMVCResourceCommand {
 	}
 
 	@Reference(unbind = "-")
+	protected void setSocialActivitiesQueryHelper(
+		SocialActivitiesQueryHelper socialActivitiesQueryHelper) {
+
+		_socialActivitiesQueryHelper = socialActivitiesQueryHelper;
+	}
+
+	@Reference(unbind = "-")
 	protected void setSocialActivityInterpreterLocalService(
 		SocialActivityInterpreterLocalService
 			socialActivityInterpreterLocalService) {
@@ -253,16 +243,9 @@ public class RSSMVCResourceCommand extends BaseRSSMVCResourceCommand {
 			socialActivityInterpreterLocalService;
 	}
 
-	@Reference(unbind = "-")
-	protected void setSocialActivityLocalService(
-		SocialActivityLocalService socialActivityLocalService) {
-
-		_socialActivityLocalService = socialActivityLocalService;
-	}
-
 	private GroupLocalService _groupLocalService;
+	private SocialActivitiesQueryHelper _socialActivitiesQueryHelper;
 	private SocialActivityInterpreterLocalService
 		_socialActivityInterpreterLocalService;
-	private SocialActivityLocalService _socialActivityLocalService;
 
 }
