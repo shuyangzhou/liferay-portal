@@ -1122,9 +1122,8 @@ public class GroupFinderImpl
 		String sql, LinkedHashMap<String, Object> params) {
 
 		if (params.isEmpty()) {
-			return StringUtil.replace(
-				sql, new String[] {"[$JOIN$]", "[$WHERE$]"},
-				new String[] {StringPool.BLANK, StringPool.BLANK});
+			return StringUtil.removeSubstrings(
+				sql, new String[] {"[$JOIN$]", "[$WHERE$]"});
 		}
 
 		String cacheKey = _getCacheKey(sql, params);

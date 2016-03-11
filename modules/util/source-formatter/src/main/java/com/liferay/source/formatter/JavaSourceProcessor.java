@@ -3154,7 +3154,7 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 
 		String classSingleLine = StringUtil.replace(
 			classLine.substring(1),
-			new String[] {StringPool.TAB, StringPool.NEW_LINE},
+			new char[] {CharPool.TAB, CharPool.NEW_LINE},
 			new String[] {StringPool.BLANK, StringPool.SPACE});
 
 		classSingleLine = indent + classSingleLine;
