@@ -19,9 +19,12 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.VirtualHost;
+import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.service.base.VirtualHostLocalServiceBaseImpl;
 import com.liferay.portal.util.PropsValues;
+
+import java.util.concurrent.Callable;
 
 /**
  * @author Alexander Chow
@@ -71,10 +74,20 @@ public class VirtualHostLocalServiceImpl
 
 		virtualHostPersistence.update(virtualHost);
 
-		Company company = companyPersistence.fetchByPrimaryKey(companyId);
+		final Company company = companyPersistence.fetchByPrimaryKey(companyId);
 
 		if (company != null) {
-			companyPersistence.clearCache(company);
+			TransactionCommitCallbackUtil.registerCallback(
+				new Callable<Void>() {
+
+					@Override
+					public Void call() throws Exception {
+						companyPersistence.clearCache(company);
+
+						return null;
+					}
+
+				});
 		}
 
 		LayoutSet layoutSet = layoutSetPersistence.fetchByPrimaryKey(
@@ -93,7 +106,18 @@ public class VirtualHostLocalServiceImpl
 		}
 
 		if (layoutSet != null) {
-			layoutSetPersistence.clearCache(layoutSet);
+			final LayoutSet cachedLayoutSet = layoutSet;
+			TransactionCommitCallbackUtil.registerCallback(
+				new Callable<Void>() {
+
+					@Override
+					public Void call() throws Exception {
+						layoutSetPersistence.clearCache(cachedLayoutSet);
+
+						return null;
+					}
+
+				});
 		}
 
 		return virtualHost;
