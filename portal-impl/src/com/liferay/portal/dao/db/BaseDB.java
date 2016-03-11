@@ -215,6 +215,11 @@ public abstract class BaseDB implements DB {
 	}
 
 	@Override
+	public long increment(String name, int size) {
+		return CounterLocalServiceUtil.increment(name, size);
+	}
+
+	@Override
 	public boolean isSupportsAlterColumnName() {
 		return _SUPPORTS_ALTER_COLUMN_NAME;
 	}
@@ -927,8 +932,7 @@ public abstract class BaseDB implements DB {
 
 			while ((line = unsyncBufferedReader.readLine()) != null) {
 				if (!line.startsWith(comments)) {
-					line = StringUtil.replace(
-						line, new String[] {"\n", "\t"}, new String[] {"", ""});
+					line = StringUtil.removeChars(line, '\n', '\t');
 
 					if (line.endsWith(";")) {
 						sb.append(line.substring(0, line.length() - 1));
