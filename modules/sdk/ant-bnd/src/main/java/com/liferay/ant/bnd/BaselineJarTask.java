@@ -253,7 +253,7 @@ public class BaselineJarTask extends BaseBndTask {
 				generatePackageInfo(info, delta, warnings);
 
 				if (((_reportLevelIsStandard || _reportOnlyDirtyPackages) &&
-					warnings.equals("-")) ||
+					 warnings.equals("-")) ||
 					(_reportOnlyDirtyPackages && (delta == Delta.REMOVED))) {
 
 					continue;
@@ -342,7 +342,7 @@ public class BaselineJarTask extends BaseBndTask {
 			"==========", "==========");
 	}
 
-	protected void generatePackageInfo(Info info,Delta delta, String warnings)
+	protected void generatePackageInfo(Info info, Delta delta, String warnings)
 		throws Exception {
 
 		String sourceDirName = project.getProperty("plugin.source.dir");

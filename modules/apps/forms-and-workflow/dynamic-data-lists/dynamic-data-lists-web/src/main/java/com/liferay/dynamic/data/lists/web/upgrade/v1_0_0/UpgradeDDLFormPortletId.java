@@ -17,11 +17,8 @@ package com.liferay.dynamic.data.lists.web.upgrade.v1_0_0;
 import com.liferay.dynamic.data.lists.constants.DDLPortletKeys;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.PortletPreferences;
-import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
-import com.liferay.portal.kernel.util.StringUtil;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
