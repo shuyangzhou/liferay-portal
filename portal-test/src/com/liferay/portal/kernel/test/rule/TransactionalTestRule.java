@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.test.rule.BaseTestRule.StatementWrapper;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
+import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.ReflectionUtil;
 
 import java.util.concurrent.Callable;
@@ -47,7 +48,7 @@ public class TransactionalTestRule implements TestRule {
 		builder.setRollbackForClasses(
 			PortalException.class, SystemException.class);
 
-		_transactionConfig = builder.build();
+		_defaultTransactionConfig = builder.build();
 	}
 
 	@Override
@@ -58,12 +59,15 @@ public class TransactionalTestRule implements TestRule {
 			return statement;
 		}
 
+		final Transactional transactional = description.getAnnotation(
+			Transactional.class);
+
 		return new StatementWrapper(statement) {
 
 			@Override
 			public void evaluate() throws Throwable {
 				TransactionInvokerUtil.invoke(
-					getTransactionConfig(),
+					getTransactionConfig(transactional),
 					new Callable<Void>() {
 
 						@Override
@@ -84,10 +88,25 @@ public class TransactionalTestRule implements TestRule {
 		};
 	}
 
-	public TransactionConfig getTransactionConfig() {
-		return _transactionConfig;
+	private TransactionConfig getTransactionConfig(
+		Transactional transactional) {
+
+		if (transactional == null) {
+			return _defaultTransactionConfig;
+		}
+
+		TransactionConfig.Builder builder = new TransactionConfig.Builder();
+
+		builder.setIsolation(transactional.isolation());
+		builder.setReadOnly(transactional.readOnly());
+		builder.setTimeout(transactional.timeout());
+		builder.setPropagation(transactional.propagation());
+		builder.setRollbackForClasses(
+			PortalException.class, SystemException.class);
+
+		return builder.build();
 	}
 
-	private final TransactionConfig _transactionConfig;
+	private final TransactionConfig _defaultTransactionConfig;
 
 }

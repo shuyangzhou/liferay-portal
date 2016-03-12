@@ -41,6 +41,8 @@ import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -216,6 +218,7 @@ public class JournalArticleFinderTest {
 	}
 
 	@Test
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void testFindByExpirationDate() throws Exception {
 
 		// Status any
@@ -272,6 +275,7 @@ public class JournalArticleFinderTest {
 	}
 
 	@Test
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void testFindByReviewDate() throws Exception {
 		Calendar calendar = new GregorianCalendar();
 
