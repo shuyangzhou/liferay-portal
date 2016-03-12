@@ -17,7 +17,6 @@ package com.liferay.portal.model.impl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.CacheField;
 import com.liferay.portal.kernel.model.ColorScheme;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -340,12 +339,8 @@ public class LayoutSetImpl extends LayoutSetBaseImpl {
 
 	private static final Log _log = LogFactoryUtil.getLog(LayoutSetImpl.class);
 
-	@CacheField
 	private String _companyFallbackVirtualHostname;
-
 	private UnicodeProperties _settingsProperties;
-
-	@CacheField
 	private String _virtualHostname;
 
 }
