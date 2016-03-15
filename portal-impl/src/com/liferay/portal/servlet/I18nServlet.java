@@ -18,7 +18,9 @@ import com.liferay.portal.kernel.exception.NoSuchLayoutException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CharPool;
+import com.liferay.portal.kernel.util.CookieKeys;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -35,13 +37,16 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -79,7 +84,7 @@ public class I18nServlet extends HttpServlet {
 
 	@Override
 	public void service(
-			HttpServletRequest request, HttpServletResponse response)
+			final HttpServletRequest request, HttpServletResponse response)
 		throws IOException, ServletException {
 
 		try {
@@ -106,14 +111,55 @@ public class I18nServlet extends HttpServlet {
 
 				session.setAttribute(Globals.LOCALE_KEY, locale);
 
-				LanguageUtil.updateCookie(request, response, locale);
+				final Cookie cookie = LanguageUtil.updateCookie(
+					request, response, locale);
+
+				Cookie[] cookies = request.getCookies();
+
+				if (cookies == null) {
+					cookies = new Cookie[] {cookie};
+				}
+				else {
+					cookies = ArrayUtil.append(new Cookie[] {cookie}, cookies);
+				}
+
+				final Cookie[] newCookies = cookies;
 
 				ServletContext servletContext = getServletContext();
 
 				RequestDispatcher requestDispatcher =
 					servletContext.getRequestDispatcher(i18nData.getPath());
 
-				requestDispatcher.forward(request, response);
+				requestDispatcher.forward(
+					new HttpServletRequestWrapper(request) {
+
+						@Override
+						public Cookie[] getCookies() {
+							return newCookies;
+						}
+
+						@Override
+						public Object getAttribute(String name) {
+							if (name.equals(CookieKeys.class.getName())) {
+								Map<String, Cookie> cookieMap =
+									(Map<String, Cookie>)request.getAttribute(
+										name);
+
+								try {
+									cookieMap.put(
+										CookieKeys.GUEST_LANGUAGE_ID, cookie);
+								}
+								catch (Exception e) {
+								}
+
+								return cookieMap;
+							}
+
+							return super.getAttribute(name);
+						}
+
+					},
+					response);
 			}
 		}
 		catch (Exception e) {
