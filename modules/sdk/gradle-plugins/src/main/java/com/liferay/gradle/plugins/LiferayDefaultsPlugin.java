@@ -597,7 +597,7 @@ public class LiferayDefaultsPlugin extends BaseDefaultsPlugin<LiferayPlugin> {
 							public String call() throws Exception {
 								return getArtifactRemoteURL(
 									archivePublishArtifact.getArchiveTask(),
-									true);
+									false);
 							}
 
 						});
