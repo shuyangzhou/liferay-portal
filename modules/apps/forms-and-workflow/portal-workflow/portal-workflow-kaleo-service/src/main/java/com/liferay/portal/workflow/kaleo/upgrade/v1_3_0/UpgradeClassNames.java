@@ -43,9 +43,10 @@ public class UpgradeClassNames extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		updateClassName("KaleoInstance");
-		updateClassName("KaleoInstanceToken");
-		updateClassName("KaleoTaskInstanceToken");
+		updateClassName("KaleoInstance", "className");
+		updateClassName("KaleoInstanceToken", "className");
+		updateClassName("KaleoLog", "currentAssigneeClassName");
+		updateClassName("KaleoTaskInstanceToken", "className");
 
 		updateWorkflowContextEntryClassName("KaleoInstance", "kaleoInstanceId");
 		updateWorkflowContextEntryClassName("KaleoLog", "kaleoLogId");
@@ -92,13 +93,13 @@ public class UpgradeClassNames extends UpgradeProcess {
 			ArrayUtil.toStringArray(newSubs));
 	}
 
-	protected void updateClassName(String tableName) {
+	protected void updateClassName(String tableName, String columnName) {
 		try (LoggingTimer loggingTimer = new LoggingTimer(tableName)) {
 			Table table = new Table(tableName);
 
 			for (Map.Entry<String, String> entry : _classNamesMap.entrySet()) {
 				table.updateColumnValue(
-					"className", entry.getKey(), entry.getValue());
+					columnName, entry.getKey(), entry.getValue());
 			}
 		}
 	}
@@ -193,11 +194,20 @@ public class UpgradeClassNames extends UpgradeProcess {
 			"com.liferay.portal.model.UserGroup",
 			"com.liferay.portal.kernel.model.UserGroup");
 		_classNamesMap.put(
-			"com.liferay.portlet.journal.model.JournalArticle",
-			"com.liferay.journal.model.JournalArticle");
+			"com.liferay.portlet.blogs.model.BlogsEntry",
+			"com.liferay.blogs.kernel.model.BlogsEntry");
+		_classNamesMap.put(
+			"com.liferay.portlet.documentlibrary.model.DLFileEntry",
+			"com.liferay.document.library.kernel.model.DLFileEntry");
 		_classNamesMap.put(
 			"com.liferay.portlet.dynamicdatalists.model.DDLRecord",
 			"com.liferay.dynamic.data.lists.model.DDLRecord");
+		_classNamesMap.put(
+			"com.liferay.portlet.journal.model.JournalArticle",
+			"com.liferay.journal.model.JournalArticle");
+		_classNamesMap.put(
+			"com.liferay.portlet.messageboards.model.MBMessage",
+			"com.liferay.message.boards.kernel.model.MBMessage");
 		_classNamesMap.put(
 			"com.liferay.portlet.wiki.model.WikiPage",
 			"com.liferay.wiki.model.WikiPage");

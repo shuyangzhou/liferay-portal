@@ -18,7 +18,6 @@ import com.liferay.portal.kernel.exception.CookieNotSupportedException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -94,6 +93,10 @@ public class CookieKeys {
 		cookie.setVersion(0);
 
 		response.addCookie(cookie);
+
+		Map<String, Cookie> cookieMap = _getCookieMap(request);
+
+		cookieMap.put(StringUtil.toUpperCase(name), cookie);
 	}
 
 	public static void addSupportCookie(
@@ -272,7 +275,7 @@ public class CookieKeys {
 		Cookie[] cookies = request.getCookies();
 
 		if (cookies == null) {
-			cookieMap = Collections.emptyMap();
+			cookieMap = new HashMap<>();
 		}
 		else {
 			cookieMap = new HashMap<>(cookies.length * 4 / 3);

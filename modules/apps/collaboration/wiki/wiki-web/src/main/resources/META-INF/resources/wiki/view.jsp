@@ -137,7 +137,7 @@ if (portletTitleBasedNavigation) {
 
 <c:if test="<%= portletTitleBasedNavigation %>">
 	<liferay-frontend:info-bar>
-		<aui:workflow-status markupView="lexicon" showIcon="<%= false %>" showLabel="<%= false %>" status="<%= wikiPage.getStatus() %>" version="<%= String.valueOf(wikiPage.getVersion()) %>" />
+		<aui:workflow-status markupView="lexicon" showHelpMessage="<%= false %>" showIcon="<%= false %>" showLabel="<%= false %>" status="<%= wikiPage.getStatus() %>" version="<%= String.valueOf(wikiPage.getVersion()) %>" />
 
 		<liferay-frontend:info-bar-buttons>
 			<liferay-frontend:info-bar-sidenav-toggler-button
@@ -233,8 +233,18 @@ if (portletTitleBasedNavigation) {
 
 						<c:if test="<%= !print && !portletTitleBasedNavigation %>">
 							<div class="page-actions top-actions">
-								<c:if test="<%= WikiPagePermissionChecker.contains(permissionChecker, wikiPage, ActionKeys.UPDATE) %>">
-									<c:if test="<%= followRedirect || (redirectPage == null) %>">
+								<c:if test="<%= followRedirect || (redirectPage == null) %>">
+									<c:if test="<%= (wikiPage != null) && Validator.isNotNull(formattedContent) && WikiNodePermissionChecker.contains(permissionChecker, node, ActionKeys.ADD_PAGE) %>">
+										<liferay-ui:icon
+											iconCssClass="icon-plus"
+											label="<%= true %>"
+											message="add-child-page"
+											method="get"
+											url="<%= addPageURL.toString() %>"
+										/>
+									</c:if>
+
+									<c:if test="<%= WikiPagePermissionChecker.contains(permissionChecker, wikiPage, ActionKeys.UPDATE) %>">
 										<liferay-ui:icon
 											iconCssClass="icon-edit"
 											label="<%= true %>"
@@ -303,18 +313,6 @@ if (portletTitleBasedNavigation) {
 
 						<c:if test="<%= (wikiPage != null) && Validator.isNotNull(formattedContent) && (followRedirect || (redirectPage == null)) %>">
 							<div class="page-actions">
-								<div class="article-actions">
-									<c:if test="<%= WikiNodePermissionChecker.contains(permissionChecker, node, ActionKeys.ADD_PAGE) && !portletTitleBasedNavigation %>">
-										<liferay-ui:icon
-											iconCssClass="icon-plus"
-											label="<%= true %>"
-											message="add-child-page"
-											method="get"
-											url="<%= addPageURL.toString() %>"
-										/>
-									</c:if>
-								</div>
-
 								<div class="stats">
 
 									<%
