@@ -27,6 +27,8 @@ long classPK = ParamUtil.getLong(request, "classPK");
 long resourceClassNameId = ParamUtil.getLong(request, "resourceClassNameId");
 String eventName = ParamUtil.getString(request, "eventName", "selectTemplate");
 
+String mode = ParamUtil.getString(request, "mode", DDMTemplateConstants.TEMPLATE_MODE_CREATE);
+
 DDMStructure structure = null;
 
 long structureClassNameId = PortalUtil.getClassNameId(DDMStructure.class);
@@ -159,6 +161,7 @@ templateSearch.setOrderByType(ddmDisplayContext.getOrderByType());
 	<liferay-util:param name="classNameId" value="<%= String.valueOf(classNameId) %>" />
 	<liferay-util:param name="classPK" value="<%= String.valueOf(classPK) %>" />
 	<liferay-util:param name="resourceClassNameId" value="<%= String.valueOf(resourceClassNameId) %>" />
+	<liferay-util:param name="mode" value="<%= mode %>" />
 </liferay-util:include>
 
 <aui:script>
