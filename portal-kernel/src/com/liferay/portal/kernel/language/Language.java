@@ -26,6 +26,7 @@ import java.util.Set;
 
 import javax.portlet.PortletRequest;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -178,7 +179,7 @@ public interface Language {
 
 	public void resetAvailableLocales(long companyId);
 
-	public void updateCookie(
+	public Cookie updateCookie(
 		HttpServletRequest request, HttpServletResponse response,
 		Locale locale);
 
