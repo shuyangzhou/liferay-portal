@@ -555,7 +555,7 @@ public class LiferayPortlet extends GenericPortlet {
 		return false;
 	}
 
-	protected boolean isValidPath(String path) throws PortletException {
+	protected boolean isValidPath(String path) {
 		if (validPaths.contains(path) ||
 			validPaths.contains(_PATH_META_INF_RESOURCES + path)) {
 

@@ -514,15 +514,6 @@ public class JspAnalyzerPlugin implements AnalyzerPlugin {
 		}
 
 		@Override
-		public void endElement(String uri, String localName, String qName)
-			throws SAXException {
-
-			if (qName.equals("uri")) {
-				_inURI = false;
-			}
-		}
-
-		@Override
 		public void startElement(
 				String uri, String localName, String qName,
 				Attributes attributes)
@@ -543,7 +534,8 @@ public class JspAnalyzerPlugin implements AnalyzerPlugin {
 
 			String value = new String(chars, start, length);
 
-			_hasURI = _uri.equals(value.trim());
+			_hasURI = _uri.equals(value.replaceAll("^\\s*(.*)\\s*$", "$1"));
+			_inURI = false;
 		}
 
 		public boolean hasURI() {

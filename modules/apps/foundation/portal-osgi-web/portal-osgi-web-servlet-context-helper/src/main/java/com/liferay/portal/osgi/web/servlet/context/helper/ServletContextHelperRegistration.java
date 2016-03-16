@@ -17,10 +17,6 @@ package com.liferay.portal.osgi.web.servlet.context.helper;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
-import javax.servlet.ServletContextListener;
-
-import org.osgi.framework.ServiceReference;
-import org.osgi.service.http.context.ServletContextHelper;
 
 /**
  * @author Raymond Augé
@@ -31,13 +27,7 @@ public interface ServletContextHelperRegistration {
 
 	public ServletContext getServletContext();
 
-	public ServiceReference<ServletContextHelper>
-		getServletContextHelperSeviceReference();
-
-	public ServiceReference<ServletContextListener>
-		getServletContextListenerSeviceReference();
-
-	public void initDefaults();
+	public boolean isWabShapedBundle();
 
 	public void setProperties(Map<String, String> contextParameters);
 
