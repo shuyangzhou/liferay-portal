@@ -37,6 +37,7 @@ public class PortletQNameImpl implements PortletQName {
 
 	public PortletQNameImpl() {
 		_qNames = new ConcurrentHashMap<>();
+		_qNameStrings = new ConcurrentHashMap<>();
 		_identifiers = new ConcurrentHashMap<>();
 	}
 
@@ -67,10 +68,15 @@ public class PortletQNameImpl implements PortletQName {
 
 	@Override
 	public String getPublicRenderParameterName(QName qName) {
-		String publicRenderParameterName = toString(
-			PUBLIC_RENDER_PARAMETER_NAMESPACE, qName);
+		String publicRenderParameterName = _qNameStrings.get(qName);
 
-		_qNames.put(publicRenderParameterName, qName);
+		if (publicRenderParameterName == null) {
+			publicRenderParameterName = toString(
+				PUBLIC_RENDER_PARAMETER_NAMESPACE, qName);
+
+			_qNames.put(publicRenderParameterName, qName);
+			_qNameStrings.put(qName, publicRenderParameterName);
+		}
 
 		return publicRenderParameterName;
 	}
@@ -136,10 +142,15 @@ public class PortletQNameImpl implements PortletQName {
 
 	@Override
 	public String getRemovePublicRenderParameterName(QName qName) {
-		String removePublicRenderParameterName = toString(
-			REMOVE_PUBLIC_RENDER_PARAMETER_NAMESPACE, qName);
+		String removePublicRenderParameterName = _qNameStrings.get(qName);
 
-		_qNames.put(removePublicRenderParameterName, qName);
+		if (removePublicRenderParameterName == null) {
+			removePublicRenderParameterName = toString(
+				REMOVE_PUBLIC_RENDER_PARAMETER_NAMESPACE, qName);
+
+			_qNames.put(removePublicRenderParameterName, qName);
+			_qNameStrings.put(qName, removePublicRenderParameterName);
+		}
 
 		return removePublicRenderParameterName;
 	}
@@ -171,5 +182,6 @@ public class PortletQNameImpl implements PortletQName {
 
 	private final Map<String, String> _identifiers;
 	private final Map<String, QName> _qNames;
+	private final Map<QName, String> _qNameStrings;
 
 }
