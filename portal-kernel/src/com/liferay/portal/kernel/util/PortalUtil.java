@@ -2230,6 +2230,10 @@ public class PortalUtil {
 		getPortal().storePreferences(portletPreferences);
 	}
 
+	public static String[] stripURLAnchor(String url, char separator) {
+		return getPortal().stripURLAnchor(url, separator);
+	}
+
 	public static String[] stripURLAnchor(String url, String separator) {
 		return getPortal().stripURLAnchor(url, separator);
 	}

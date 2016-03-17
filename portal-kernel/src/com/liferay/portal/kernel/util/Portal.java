@@ -1346,6 +1346,8 @@ public interface Portal {
 	public void storePreferences(PortletPreferences portletPreferences)
 		throws IOException, ValidatorException;
 
+	public String[] stripURLAnchor(String url, char separator);
+
 	public String[] stripURLAnchor(String url, String separator);
 
 	public String transformCustomSQL(String sql);

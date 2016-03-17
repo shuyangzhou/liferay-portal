@@ -6788,6 +6788,20 @@ public class PortalImpl implements Portal {
 	}
 
 	@Override
+	public String[] stripURLAnchor(String url, char separator) {
+		String anchor = StringPool.BLANK;
+
+		int pos = url.indexOf(separator);
+
+		if (pos != -1) {
+			anchor = url.substring(pos);
+			url = url.substring(0, pos);
+		}
+
+		return new String[] {url, anchor};
+	}
+
+	@Override
 	public String[] stripURLAnchor(String url, String separator) {
 		String anchor = StringPool.BLANK;
 
