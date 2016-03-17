@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.search.IndexWriterHelperUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.NotificationThreadLocal;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.VerifyThreadLocal;
 import com.liferay.portal.kernel.workflow.WorkflowThreadLocal;
 import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.PropsValues;
@@ -66,6 +67,7 @@ public class VerifyProcessUtil {
 
 		NotificationThreadLocal.setEnabled(false);
 		StagingAdvicesThreadLocal.setEnabled(false);
+		VerifyThreadLocal.setVerifyInProgress(true);
 		WorkflowThreadLocal.setEnabled(false);
 
 		try {
@@ -83,9 +85,9 @@ public class VerifyProcessUtil {
 		}
 		finally {
 			IndexWriterHelperUtil.setIndexReadOnly(tempIndexReadOnly);
-
 			NotificationThreadLocal.setEnabled(true);
 			StagingAdvicesThreadLocal.setEnabled(true);
+			VerifyThreadLocal.setVerifyInProgress(false);
 			WorkflowThreadLocal.setEnabled(true);
 		}
 
