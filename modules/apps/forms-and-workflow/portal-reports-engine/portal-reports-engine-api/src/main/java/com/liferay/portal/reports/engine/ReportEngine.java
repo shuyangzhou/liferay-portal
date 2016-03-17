@@ -39,7 +39,4 @@ public interface ReportEngine {
 
 	public void setEngineParameters(Map<String, String> engineParameters);
 
-	public void setReportFormatExporterRegistry(
-		ReportFormatExporterRegistry reportFormatExporterRegistry);
-
 }
