@@ -67,14 +67,8 @@ public class PortletQNameImpl implements PortletQName {
 
 	@Override
 	public String getPublicRenderParameterName(QName qName) {
-		StringBundler sb = new StringBundler(4);
-
-		sb.append(PUBLIC_RENDER_PARAMETER_NAMESPACE);
-		sb.append(qName.getNamespaceURI().hashCode());
-		sb.append(StringPool.UNDERLINE);
-		sb.append(qName.getLocalPart());
-
-		String publicRenderParameterName = sb.toString();
+		String publicRenderParameterName = toString(
+			PUBLIC_RENDER_PARAMETER_NAMESPACE, qName);
 
 		if (!_qNames.containsKey(publicRenderParameterName)) {
 			_qNames.put(publicRenderParameterName, qName);
@@ -144,14 +138,8 @@ public class PortletQNameImpl implements PortletQName {
 
 	@Override
 	public String getRemovePublicRenderParameterName(QName qName) {
-		StringBundler sb = new StringBundler(4);
-
-		sb.append(REMOVE_PUBLIC_RENDER_PARAMETER_NAMESPACE);
-		sb.append(qName.getNamespaceURI().hashCode());
-		sb.append(StringPool.UNDERLINE);
-		sb.append(qName.getLocalPart());
-
-		String removePublicRenderParameterName = sb.toString();
+		String removePublicRenderParameterName = toString(
+			REMOVE_PUBLIC_RENDER_PARAMETER_NAMESPACE, qName);
 
 		if (!_qNames.containsKey(removePublicRenderParameterName)) {
 			_qNames.put(removePublicRenderParameterName, qName);
@@ -165,6 +153,19 @@ public class PortletQNameImpl implements PortletQName {
 		String publicRenderParameterName, String identifier) {
 
 		_identifiers.put(publicRenderParameterName, identifier);
+	}
+
+	private static String toString(String prefix, QName qName) {
+		StringBundler sb = new StringBundler(6);
+
+		sb.append(prefix);
+		sb.append(qName.getNamespacePrefix());
+		sb.append(StringPool.UNDERLINE);
+		sb.append(qName.getNamespaceURI());
+		sb.append(StringPool.UNDERLINE);
+		sb.append(qName.getLocalPart());
+
+		return sb.toString();
 	}
 
 	private static final String _KEY_SEPARATOR = "_KEY_";
