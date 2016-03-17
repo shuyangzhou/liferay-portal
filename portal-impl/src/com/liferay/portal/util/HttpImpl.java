@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.PredicateFilter;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -871,7 +872,7 @@ public class HttpImpl implements Http {
 			return StringPool.BLANK;
 		}
 
-		StringBundler sb = new StringBundler();
+		StringBundler sb = new StringBundler((parameterMap.size() * 4) + 1);
 
 		if (addQuestion) {
 			sb.append(StringPool.QUESTION);
@@ -977,8 +978,28 @@ public class HttpImpl implements Http {
 	}
 
 	@Override
-	public String removeParameter(String url, String name) {
-		if (Validator.isNull(url) || Validator.isNull(name)) {
+	public String removeParameter(String url, final String name) {
+		if (Validator.isNull(name)) {
+			return url;
+		}
+
+		return removeParameters(
+			url,
+			new PredicateFilter<String>() {
+
+				@Override
+				public boolean filter(String key) {
+					return !name.equals(key);
+				}
+
+			});
+	}
+
+	@Override
+	public String removeParameters(
+		String url, PredicateFilter<String> predicateFilter) {
+
+		if (Validator.isNull(url) || (predicateFilter == null)) {
 			return url;
 		}
 
@@ -994,15 +1015,16 @@ public class HttpImpl implements Http {
 
 		String anchor = array[1];
 
-		StringBundler sb = new StringBundler();
-
-		sb.append(url.substring(0, pos + 1));
-
 		String[] parameters = StringUtil.split(
 			url.substring(pos + 1, url.length()), CharPool.AMPERSAND);
 
+		StringBundler sb = new StringBundler((parameters.length * 4) + 2);
+
+		sb.append(url.substring(0, pos));
+		sb.append(StringPool.QUESTION);
+
 		for (String parameter : parameters) {
-			if (parameter.length() > 0) {
+			if (!parameter.isEmpty()) {
 				String[] kvp = StringUtil.split(parameter, CharPool.EQUAL);
 
 				String key = kvp[0];
@@ -1013,7 +1035,7 @@ public class HttpImpl implements Http {
 					value = kvp[1];
 				}
 
-				if (!key.equals(name)) {
+				if (predicateFilter.filter(key)) {
 					sb.append(key);
 					sb.append(StringPool.EQUAL);
 					sb.append(value);
@@ -1022,19 +1044,14 @@ public class HttpImpl implements Http {
 			}
 		}
 
-		url = StringUtil.replace(
-			sb.toString(), StringPool.AMPERSAND + StringPool.AMPERSAND,
-			StringPool.AMPERSAND);
-
-		if (url.endsWith(StringPool.AMPERSAND)) {
-			url = url.substring(0, url.length() - 1);
+		if (Validator.isNull(anchor)) {
+			sb.setIndex(sb.index() - 1);
+		}
+		else {
+			sb.setStringAt(anchor, sb.index() - 1);
 		}
 
-		if (url.endsWith(StringPool.QUESTION)) {
-			url = url.substring(0, url.length() - 1);
-		}
-
-		return url + anchor;
+		return sb.toString();
 	}
 
 	@Override
@@ -1162,9 +1179,9 @@ public class HttpImpl implements Http {
 			return null;
 		}
 
-		StringBundler sb = new StringBundler();
-
 		String[] params = StringUtil.split(url, CharPool.AMPERSAND);
+
+		StringBundler sb = new StringBundler(params.length * 4);
 
 		for (int i = 0; i < params.length; i++) {
 			String param = params[i];
