@@ -70,9 +70,7 @@ public class PortletQNameImpl implements PortletQName {
 		String publicRenderParameterName = toString(
 			PUBLIC_RENDER_PARAMETER_NAMESPACE, qName);
 
-		if (!_qNames.containsKey(publicRenderParameterName)) {
-			_qNames.put(publicRenderParameterName, qName);
-		}
+		_qNames.put(publicRenderParameterName, qName);
 
 		return publicRenderParameterName;
 	}
@@ -141,9 +139,7 @@ public class PortletQNameImpl implements PortletQName {
 		String removePublicRenderParameterName = toString(
 			REMOVE_PUBLIC_RENDER_PARAMETER_NAMESPACE, qName);
 
-		if (!_qNames.containsKey(removePublicRenderParameterName)) {
-			_qNames.put(removePublicRenderParameterName, qName);
-		}
+		_qNames.put(removePublicRenderParameterName, qName);
 
 		return removePublicRenderParameterName;
 	}
