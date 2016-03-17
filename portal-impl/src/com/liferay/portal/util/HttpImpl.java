@@ -223,7 +223,7 @@ public class HttpImpl implements Http {
 			return null;
 		}
 
-		String[] urlArray = PortalUtil.stripURLAnchor(url, StringPool.POUND);
+		String[] urlArray = PortalUtil.stripURLAnchor(url, CharPool.POUND);
 
 		url = urlArray[0];
 
@@ -1009,7 +1009,7 @@ public class HttpImpl implements Http {
 			return url;
 		}
 
-		String[] array = PortalUtil.stripURLAnchor(url, StringPool.POUND);
+		String[] array = PortalUtil.stripURLAnchor(url, CharPool.POUND);
 
 		url = array[0];
 

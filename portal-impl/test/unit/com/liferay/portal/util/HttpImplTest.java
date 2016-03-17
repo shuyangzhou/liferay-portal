@@ -256,7 +256,7 @@ public class HttpImplTest extends PowerMockito {
 		mockStatic(PortalUtil.class);
 
 		when(
-			PortalUtil.stripURLAnchor(url, StringPool.POUND)
+			PortalUtil.stripURLAnchor(url, CharPool.POUND)
 		).thenReturn(
 			new String[] {url, StringPool.BLANK}
 		);
