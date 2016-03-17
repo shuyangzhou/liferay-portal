@@ -233,7 +233,7 @@ public class MemberRequestPersistenceTest {
 	}
 
 	protected OrderByComparator<MemberRequest> getOrderByComparator() {
-		return OrderByComparatorFactoryUtil.create("MemberRequest",
+		return OrderByComparatorFactoryUtil.create("SO_MemberRequest",
 			"memberRequestId", true, "groupId", true, "companyId", true,
 			"userId", true, "userName", true, "createDate", true,
 			"modifiedDate", true, "key", true, "receiverUserId", true,

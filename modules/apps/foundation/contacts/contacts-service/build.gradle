@@ -1,6 +1,5 @@
 buildService {
 	apiDir = "../contacts-api/src/main/java"
-	autoNamespaceTables = true
 }
 
 dependencies {

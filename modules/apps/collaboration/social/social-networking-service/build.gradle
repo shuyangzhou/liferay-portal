@@ -1,6 +1,5 @@
 buildService {
 	apiDir = "../social-networking-api/src/main/java"
-	autoNamespaceTables = false
 	testDir = "../social-networking-test/src/testIntegration/java"
 }
 

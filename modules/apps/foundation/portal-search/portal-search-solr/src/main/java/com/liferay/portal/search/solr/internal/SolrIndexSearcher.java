@@ -540,6 +540,10 @@ public class SolrIndexSearcher extends BaseIndexSearcher {
 		Collection<String> fieldNames = solrDocument.getFieldNames();
 
 		for (String fieldName : fieldNames) {
+			if (fieldName.equals(_VERSION_FIELD)) {
+				continue;
+			}
+
 			Collection<Object> fieldValues = solrDocument.getFieldValues(
 				fieldName);
 
@@ -704,6 +708,8 @@ public class SolrIndexSearcher extends BaseIndexSearcher {
 			hits.addStatsResults(statsResults);
 		}
 	}
+
+	private static final String _VERSION_FIELD = "_version_";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		SolrIndexSearcher.class);

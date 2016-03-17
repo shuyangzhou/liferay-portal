@@ -204,9 +204,9 @@ public class WallEntryPersistenceTest {
 	}
 
 	protected OrderByComparator<WallEntry> getOrderByComparator() {
-		return OrderByComparatorFactoryUtil.create("WallEntry", "wallEntryId",
-			true, "groupId", true, "companyId", true, "userId", true,
-			"userName", true, "createDate", true, "modifiedDate", true,
+		return OrderByComparatorFactoryUtil.create("SN_WallEntry",
+			"wallEntryId", true, "groupId", true, "companyId", true, "userId",
+			true, "userName", true, "createDate", true, "modifiedDate", true,
 			"comments", true);
 	}
 

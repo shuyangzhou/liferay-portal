@@ -1,6 +1,5 @@
 buildService {
 	apiDir = "../polls-api/src/main/java"
-	autoNamespaceTables = false
 	testDir = "../polls-test/src/testIntegration/java"
 }
 

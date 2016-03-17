@@ -210,7 +210,7 @@ public class MeetupsRegistrationPersistenceTest {
 	}
 
 	protected OrderByComparator<MeetupsRegistration> getOrderByComparator() {
-		return OrderByComparatorFactoryUtil.create("MeetupsRegistration",
+		return OrderByComparatorFactoryUtil.create("SN_MeetupsRegistration",
 			"meetupsRegistrationId", true, "companyId", true, "userId", true,
 			"userName", true, "createDate", true, "modifiedDate", true,
 			"meetupsEntryId", true, "status", true, "comments", true);

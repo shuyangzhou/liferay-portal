@@ -1,6 +1,5 @@
 buildService {
 	apiDir = "../portal-workflow-kaleo-api/src/main/java"
-	autoNamespaceTables = false
 	testDir = "../portal-workflow-kaleo-test/src/testIntegration/java"
 }
 

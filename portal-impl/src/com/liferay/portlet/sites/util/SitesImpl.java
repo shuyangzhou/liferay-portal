@@ -360,6 +360,7 @@ public class SitesImpl implements Sites {
 
 		List<Role> roles = RoleLocalServiceUtil.getGroupRelatedRoles(
 			targetLayout.getGroupId());
+		Group targetGroup = targetLayout.getGroup();
 
 		LayoutTypePortlet sourceLayoutTypePortlet =
 			(LayoutTypePortlet)sourceLayout.getLayoutType();
@@ -383,7 +384,8 @@ public class SitesImpl implements Sites {
 				String roleName = role.getName();
 
 				if (roleName.equals(RoleConstants.ADMINISTRATOR) ||
-					(targetLayout.isPrivateLayout() &&
+					(!targetGroup.isLayoutSetPrototype() &&
+					 targetLayout.isPrivateLayout() &&
 					 roleName.equals(RoleConstants.GUEST))) {
 
 					continue;

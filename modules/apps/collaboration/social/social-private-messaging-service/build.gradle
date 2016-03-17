@@ -1,6 +1,5 @@
 buildService {
 	apiDir = "../social-private-messaging-api/src/main/java"
-	autoNamespaceTables = false
 	testDir = "../social-private-messaging-test/src/testIntegration/java"
 }
 

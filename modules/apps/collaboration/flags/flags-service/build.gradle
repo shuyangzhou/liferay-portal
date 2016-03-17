@@ -1,6 +1,5 @@
 buildService {
 	apiDir = "../flags-api/src/main/java"
-	autoNamespaceTables = false
 	testDir = "../flags-test/src/testIntegration/java"
 }
 

@@ -16,12 +16,9 @@ package com.liferay.portal.tools.data.partitioning.sql.builder;
 
 import com.beust.jcommander.JCommander;
 
-import com.liferay.portal.tools.data.partitioning.sql.builder.exporter.ShardExporter;
-import com.liferay.portal.tools.data.partitioning.sql.builder.exporter.ShardExporterFactory;
+import com.liferay.portal.tools.data.partitioning.sql.builder.exporter.DataPartitioningExporter;
+import com.liferay.portal.tools.data.partitioning.sql.builder.exporter.DataPartitioningExporterFactory;
 import com.liferay.portal.tools.data.partitioning.sql.builder.exporter.context.ExportContext;
-import com.liferay.portal.tools.data.partitioning.sql.builder.internal.util.PropsReader;
-
-import java.util.Properties;
 
 /**
  * @author Manuel de la Peña
@@ -31,15 +28,12 @@ public class Main {
 	public static void main(String[] arguments) throws Exception {
 		MainParameters mainParameters = _validate(arguments);
 
-		Properties properties = PropsReader.read(
-			mainParameters.getPropertiesFileName());
-
-		ShardExporter shardExporter = ShardExporterFactory.getShardExporter(
-			properties);
+		DataPartitioningExporter dataPartitioningExporter =
+			DataPartitioningExporterFactory.getDataPartitioningExporter();
 
 		ExportContext exportContext = mainParameters.toExportContext();
 
-		shardExporter.export(exportContext);
+		dataPartitioningExporter.export(exportContext);
 	}
 
 	private static MainParameters _validate(String[] arguments)

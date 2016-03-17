@@ -158,7 +158,7 @@ public class LicenseUtil {
 			return new HashSet<>(_ipAddresses);
 		}
 
-		_ipAddresses = new HashSet<>();
+		Set<String> ipAddresses = new HashSet<>();
 
 		try {
 			List<NetworkInterface> networkInterfaces = Collections.list(
@@ -176,7 +176,7 @@ public class LicenseUtil {
 						continue;
 					}
 
-					_ipAddresses.add(inetAddress.getHostAddress());
+					ipAddresses.add(inetAddress.getHostAddress());
 				}
 			}
 		}
@@ -186,7 +186,9 @@ public class LicenseUtil {
 			_log.error(e, e);
 		}
 
-		return new HashSet<>(_ipAddresses);
+		_ipAddresses = new HashSet<>(ipAddresses);
+
+		return ipAddresses;
 	}
 
 	public static Set<String> getMacAddresses() {
@@ -194,7 +196,7 @@ public class LicenseUtil {
 			return new HashSet<>(_macAddresses);
 		}
 
-		_macAddresses = new HashSet<>();
+		Set<String> macAddresses = new HashSet<>();
 
 		try {
 			List<NetworkInterface> networkInterfaces = Collections.list(
@@ -221,7 +223,7 @@ public class LicenseUtil {
 					sb.append(Character.toLowerCase(hexString.charAt(i + 1)));
 				}
 
-				_macAddresses.add(sb.toString());
+				macAddresses.add(sb.toString());
 			}
 		}
 		catch (Exception e) {
@@ -230,7 +232,9 @@ public class LicenseUtil {
 			_log.error(e, e);
 		}
 
-		return new HashSet<>(_macAddresses);
+		_macAddresses = new HashSet<>(macAddresses);
+
+		return macAddresses;
 	}
 
 	public static byte[] getServerIdBytes() throws Exception {

@@ -3,7 +3,7 @@
 
 <hibernate-mapping default-lazy="false" auto-import="false">
 	<import class="com.liferay.invitation.invite.members.model.MemberRequest" />
-	<class name="com.liferay.invitation.invite.members.model.impl.MemberRequestImpl" table="MemberRequest">
+	<class name="com.liferay.invitation.invite.members.model.impl.MemberRequestImpl" table="SO_MemberRequest">
 		<id name="memberRequestId" type="long">
 			<generator class="assigned" />
 		</id>

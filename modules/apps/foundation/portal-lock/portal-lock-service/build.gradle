@@ -1,6 +1,5 @@
 buildService {
 	apiDir = "../portal-lock-api/src/main/java"
-	autoNamespaceTables = false
 	testDir = "../portal-lock-test/src/testIntegration/java"
 }
 

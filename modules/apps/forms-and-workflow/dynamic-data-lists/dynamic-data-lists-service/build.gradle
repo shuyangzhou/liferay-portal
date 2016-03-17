@@ -1,6 +1,5 @@
 buildService {
 	apiDir = "../dynamic-data-lists-api/src/main/java"
-	autoNamespaceTables = false
 	testDir = "../dynamic-data-lists-test/src/testIntegration/java"
 }
 

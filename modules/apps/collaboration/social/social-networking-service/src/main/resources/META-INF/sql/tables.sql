@@ -1,4 +1,4 @@
-create table MeetupsEntry (
+create table SN_MeetupsEntry (
 	meetupsEntryId LONG not null primary key,
 	companyId LONG,
 	userId LONG,
@@ -15,7 +15,7 @@ create table MeetupsEntry (
 	thumbnailId LONG
 );
 
-create table MeetupsRegistration (
+create table SN_MeetupsRegistration (
 	meetupsRegistrationId LONG not null primary key,
 	companyId LONG,
 	userId LONG,
@@ -27,7 +27,7 @@ create table MeetupsRegistration (
 	comments VARCHAR(75) null
 );
 
-create table WallEntry (
+create table SN_WallEntry (
 	wallEntryId LONG not null primary key,
 	groupId LONG,
 	companyId LONG,

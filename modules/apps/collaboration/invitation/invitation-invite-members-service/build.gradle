@@ -2,7 +2,6 @@ apply plugin: "com.liferay.portal.tools.upgrade.table.builder"
 
 buildService {
 	apiDir = "../invitation-invite-members-api/src/main/java"
-	autoNamespaceTables = false
 	testDir = "../invitation-invite-members-test/src/testIntegration/java"
 }
 
