@@ -1,11 +1,11 @@
 Manifest-Version: 1.0
-Bnd-LastModified: 1458281781656
+Bnd-LastModified: 1458315239312
 Bundle-ManifestVersion: 2
 Bundle-Name: portal-bootstrap
 Bundle-SymbolicName: portal-bootstrap
 Bundle-Vendor: Liferay, Inc.
 Bundle-Version: 1.0.0
-Created-By: 1.7.0_71 (Oracle Corporation)
+Created-By: 1.7.0_60 (Oracle Corporation)
 Export-Package: com.liferay.ibm.icu;version="4.0.1",com.liferay.ibm.ic
  u.impl;version="4.0.1";uses:="com.liferay.ibm.icu.math,com.liferay.ib
  m.icu.text,com.liferay.ibm.icu.util",com.liferay.ibm.icu.impl.coll;ve
@@ -2723,7 +2723,7 @@ Export-Package: com.liferay.ibm.icu;version="4.0.1",com.liferay.ibm.ic
  com.liferay.portal.kernel.jsonwebservice;version="7.0.0";uses:="com.l
  iferay.portal.kernel.exception,com.liferay.portal.kernel.util,javax.s
  ervlet,javax.servlet.http",com.liferay.portal.kernel.language;version
- ="7.0.0";uses:="com.liferay.portal.kernel.exception,com.liferay.porta
+ ="7.1.0";uses:="com.liferay.portal.kernel.exception,com.liferay.porta
  l.kernel.util,javax.portlet,javax.servlet.http",com.liferay.portal.ke
  rnel.layoutconfiguration.util;version="1.0.0";uses:="com.liferay.port
  al.kernel.layoutconfiguration.util.xml,com.liferay.portal.kernel.temp
@@ -4651,7 +4651,7 @@ Import-Package: aQute.bnd.annotation;version="[1.44,2)",aQute.bnd.anno
  [1.0,2)",com.liferay.portal.kernel.jmx.model;version="[7.0,8)",com.li
  feray.portal.kernel.jndi;version="[7.0,8)",com.liferay.portal.kernel.
  json;version="[7.0,7.1)",com.liferay.portal.kernel.jsonwebservice;ver
- sion="[7.0,8)",com.liferay.portal.kernel.language;version="[7.0,7.1)"
+ sion="[7.0,8)",com.liferay.portal.kernel.language;version="[7.1,7.2)"
  ,com.liferay.portal.kernel.layoutconfiguration.util;version="[1.0,2)"
  ,com.liferay.portal.kernel.layoutconfiguration.util.xml;version="[1.0
  ,2)",com.liferay.portal.kernel.license;version="[1.0,2)",com.liferay.
