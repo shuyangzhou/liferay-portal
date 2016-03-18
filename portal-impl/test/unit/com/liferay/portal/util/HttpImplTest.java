@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.test.CaptureHandler;
 import com.liferay.portal.kernel.test.JDKLoggerTestUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.PredicateFilter;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 
@@ -221,6 +222,109 @@ public class HttpImplTest extends PowerMockito {
 		Assert.assertEquals(
 			"http://foo.com:8443/web/guest",
 			_httpImpl.protocolize("https://foo.com:8443/web/guest", -1, false));
+	}
+
+	@Test
+	public void testRemoveParameterOneWithThreeParameters() {
+		Assert.assertEquals(
+			"http://foo?p2=2&p3=3",
+			_httpImpl.removeParameter("http://foo?p1=1&p2=2&p3=3", "p1"));
+	}
+
+	@Test
+	public void testRemoveParameterOneWithThreeParametersAnchor() {
+		Assert.assertEquals(
+			"http://foo?p2=2&p3=3#anchor",
+			_httpImpl.removeParameter(
+				"http://foo?p1=1&p2=2&p3=3#anchor", "p1"));
+	}
+
+	@Test
+	public void testRemoveParametersWithThreeParameters() {
+		Assert.assertEquals(
+			"http://foo",
+			_httpImpl.removeParameters(
+				"http://foo?p1=1&p2=2&p3=3",
+				new PredicateFilter<String>() {
+
+					@Override
+					public boolean filter(String s) {
+						return false;
+					}
+
+				}));
+	}
+
+	@Test
+	public void testRemoveParametersWithThreeParametersAnchor() {
+		Assert.assertEquals(
+			"http://foo#anchor",
+			_httpImpl.removeParameters(
+				"http://foo?p1=1&p2=2&p3=3#anchor",
+				new PredicateFilter<String>() {
+
+					@Override
+					public boolean filter(String s) {
+						return false;
+					}
+
+				}));
+	}
+
+	@Test
+	public void testRemoveParameterThreeWithThreeParameters() {
+		Assert.assertEquals(
+			"http://foo?p1=1&p2=2",
+			_httpImpl.removeParameter("http://foo?p1=1&p2=2&p3=3", "p3"));
+	}
+
+	@Test
+	public void testRemoveParameterThreeWithThreeParametersAnchor() {
+		Assert.assertEquals(
+			"http://foo?p1=1&p2=2#anchor",
+			_httpImpl.removeParameter(
+				"http://foo?p1=1&p2=2&p3=3#anchor", "p3"));
+	}
+
+	@Test
+	public void testRemoveParameterTwoWithThreeParameters() {
+		Assert.assertEquals(
+			"http://foo?p1=1&p3=3",
+			_httpImpl.removeParameter("http://foo?p1=1&p2=2&p3=3", "p2"));
+	}
+
+	@Test
+	public void testRemoveParameterTwoWithThreeParametersAnchor() {
+		Assert.assertEquals(
+			"http://foo?p1=1&p3=3#anchor",
+			_httpImpl.removeParameter(
+				"http://foo?p1=1&p2=2&p3=3#anchor", "p2"));
+	}
+
+	@Test
+	public void testRemoveParameterWithNoParameters() {
+		Assert.assertEquals(
+			"http://foo", _httpImpl.removeParameter("http://foo", "p1"));
+	}
+
+	@Test
+	public void testRemoveParameterWithNoParametersAnchor() {
+		Assert.assertEquals(
+			"http://foo#anchor",
+			_httpImpl.removeParameter("http://foo#anchor", "p1"));
+	}
+
+	@Test
+	public void testRemoveParameterWithOneParameter() {
+		Assert.assertEquals(
+			"http://foo", _httpImpl.removeParameter("http://foo?p1=1", "p1"));
+	}
+
+	@Test
+	public void testRemoveParameterWithOneParameterAnchor() {
+		Assert.assertEquals(
+			"http://foo#anchor",
+			_httpImpl.removeParameter("http://foo?p1=1#anchor", "p1"));
 	}
 
 	@Test
