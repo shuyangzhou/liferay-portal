@@ -14,6 +14,8 @@
 
 package com.liferay.portal.image;
 
+import static javax.imageio.ImageIO.getImageWriters;
+
 import com.liferay.portal.kernel.image.ImageBag;
 import com.liferay.portal.kernel.image.ImageToolUtil;
 import com.liferay.portal.kernel.image.SpriteProcessor;
@@ -40,18 +42,26 @@ import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import java.net.URL;
 import java.net.URLConnection;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageTypeSpecifier;
+import javax.imageio.ImageWriter;
+import javax.imageio.spi.IIORegistry;
+import javax.imageio.spi.ImageOutputStreamSpi;
+import javax.imageio.stream.ImageOutputStream;
 
 import javax.media.jai.LookupTableJAI;
 import javax.media.jai.PlanarImage;
@@ -217,9 +227,143 @@ public class SpriteProcessorImpl implements SpriteProcessor {
 
 			File spriteDir = spriteFile.getParentFile();
 
-			FileUtil.mkdirs(spriteDir);
+			System.out.println(
+				"######About to create " + spriteDir + ", usable size : " +
+					spriteDir.getUsableSpace());
 
-			ImageIO.write(renderedImage, "png", spriteFile);
+			try {
+				FileUtil.mkdirs(spriteDir);
+
+				System.out.println("^^^^Done creating " + spriteDir +
+					" exist : " + spriteDir.exists() + " usable space : " +
+					spriteDir.getUsableSpace());
+			}
+			catch (IOException ioe) {
+				System.out.println("!!!!Failed on creating " + spriteDir);
+
+				ioe.printStackTrace();
+
+				System.out.println(
+					"~~~Retrying spriteDir.mkdirs() = " + spriteDir.mkdirs() +
+						", spriteDir.exists() = " + spriteDir.exists());
+			}
+
+			if (!spriteDir.exists()) {
+				File dir = new File(
+					"/opt/dev/projects/github/liferay-portal/bundles/tomcat-8.0.32/work/Catalina/localhost/ROOT/proxytemp/");
+
+				System.out.println(
+					"######Listing " + Arrays.toString(dir.list()));
+		
+				System.out.println("!!!!Failed on creating2 " + spriteDir);
+
+				System.out.println(
+					"~~~Retrying spriteDir.mkdirs() = " + spriteDir.mkdirs() +
+						", spriteDir.exists() = " + spriteDir.exists());
+			}
+
+			Iterator<ImageWriter> imageWriterIterator = ImageIO.getImageWriters(
+				ImageTypeSpecifier.createFromRenderedImage(renderedImage),
+				"png");
+
+			if (!imageWriterIterator.hasNext()) {
+				throw new IllegalStateException(
+					"Can not find a ImageWriter for " + renderedImage +
+						" with PNG format");
+			}
+
+			ImageWriter imageWriter = imageWriterIterator.next();
+
+			IIORegistry iioRegistry = IIORegistry.getDefaultInstance();
+
+			Iterator<ImageOutputStreamSpi> imageOutputStreamSpiIterator =
+				iioRegistry.getServiceProviders(
+					ImageOutputStreamSpi.class, true);
+
+			boolean matched = false;
+
+			Outter:
+			while (imageOutputStreamSpiIterator.hasNext()) {
+				ImageOutputStreamSpi imageOutputStreamSpi =
+					imageOutputStreamSpiIterator.next();
+
+				Class<?> clazz = imageOutputStreamSpi.getOutputClass();
+
+				if (clazz.isInstance(spriteFile)) {
+					System.out.println(
+						"##########Listing " + imageOutputStreamSpi +
+							", outputClass = " + clazz + ", matches");
+
+					File cacheDirectory = ImageIO.getCacheDirectory();
+
+					if (cacheDirectory == null) {
+						File tempDir = new File(
+							System.getProperty("java.io.tmpdir"));
+
+						System.out.println(
+							"#####Use system temp dir " + tempDir +
+								", usable size : " + tempDir.getUsableSpace() +
+									" bytes");
+					}
+					else {
+						System.out.println(
+							"######Use cache dir " + cacheDirectory +
+								", usable size : " +
+									cacheDirectory.getUsableSpace() + " bytes");
+					}
+
+					for (int i = 0; i < 100; i++) {
+						if (i > 0) {
+							boolean exist = spriteDir.exists();
+
+							System.out.println("#####This is a retry i=" + i + ", spriteDir=" + spriteDir + ", exist() = " + exist + ", usable space : " + spriteDir.getUsableSpace());
+
+							if (!exist) {
+								System.out.println("###########Recreating spriteDir.mkdirs() = " + spriteDir.mkdirs());
+							}
+						}
+
+						try (ImageOutputStream imageOutputStream =
+								imageOutputStreamSpi.createOutputStreamInstance(
+									spriteFile, true, cacheDirectory)) {
+
+							if (imageOutputStream != null) {
+								imageWriter.setOutput(imageOutputStream);
+
+								imageWriter.write(renderedImage);
+
+								imageOutputStream.flush();
+
+								matched = true;
+
+								break Outter;
+							}
+
+							throw new IllegalStateException(
+								imageOutputStreamSpi +
+									" failed to create an ImageOutputStream with " +
+										spriteFile + " and " + cacheDirectory);
+						}
+						catch (FileNotFoundException fnfe) {
+							boolean exist = spriteDir.exists();
+
+							System.out.println("########Failed on " + fnfe + " i=" + i + ", spriteDir=" + spriteDir + ", exist() = " + exist + ", usable space : " + spriteDir.getUsableSpace());
+
+							if (!exist) {
+								System.out.println("###########Recreating spriteDir.mkdirs() = " + spriteDir.mkdirs());
+							}
+						}
+						finally {
+							imageWriter.dispose();
+						}
+					}
+				}
+			}
+
+			if (!matched) {
+				throw new IllegalStateException(
+					"Can not find a match for " + spriteFile);
+			}
 
 			if (lastModified > 0) {
 				spriteFile.setLastModified(lastModified);

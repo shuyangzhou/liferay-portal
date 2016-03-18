@@ -36,7 +36,7 @@ public class ReportFormatExporterRegistry {
 		return reportFormatExporter;
 	}
 
-	public void setReportFormatExporters(
+	protected void setReportFormatExporters(
 		Map<String, ReportFormatExporter> reportFormatExporters) {
 
 		for (Map.Entry<String, ReportFormatExporter> entry :
