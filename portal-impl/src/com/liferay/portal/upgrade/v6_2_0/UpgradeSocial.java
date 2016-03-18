@@ -57,15 +57,15 @@ public class UpgradeSocial extends UpgradeProcess {
 				classPK, type, extraData);
 
 			try (ResultSet resultSet = preparedStatement.executeQuery()) {
-				JSONObject extraDataJSONObject = null;
-
-				while (resultSet.next()) {
-					extraDataJSONObject =
+				if (resultSet.next()) {
+					JSONObject extraDataJSONObject =
 						extraDataFactory.createExtraDataJSONObject(
 							resultSet, extraData);
+
+					return extraDataJSONObject.toString();
 				}
 
-				return extraDataJSONObject.toString();
+				return null;
 			}
 		}
 	}
