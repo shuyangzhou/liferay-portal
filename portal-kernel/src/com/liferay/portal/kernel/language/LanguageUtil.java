@@ -29,6 +29,7 @@ import java.util.Set;
 
 import javax.portlet.PortletRequest;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -344,11 +345,11 @@ public class LanguageUtil {
 		getLanguage().resetAvailableLocales(companyId);
 	}
 
-	public static void updateCookie(
+	public static Cookie updateCookie(
 		HttpServletRequest request, HttpServletResponse response,
 		Locale locale) {
 
-		getLanguage().updateCookie(request, response, locale);
+		return getLanguage().updateCookie(request, response, locale);
 	}
 
 	public void setLanguage(Language language) {

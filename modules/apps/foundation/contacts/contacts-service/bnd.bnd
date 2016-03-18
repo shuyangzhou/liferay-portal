@@ -5,6 +5,3 @@ Export-Package: com.liferay.contacts.util
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title:
 Liferay-Service: true
--liferay-includeresource:\
-	@com.liferay.util.java-*.jar!/com/liferay/util/dao/orm/CustomSQL.class,\
-	@com.liferay.util.java-*.jar!/com/liferay/util/dao/orm/CustomSQLUtil.class

@@ -3829,6 +3829,22 @@ go]]></replacevalue>
 				</then>
 			</elseif>
 			<elseif>
+				<equals arg1="${database.type}" arg2="sqlserver" />
+				<then>
+					<delete includeemptydirs="true" failonerror="false">
+						<fileset
+							dir="${app.server.lib.global.dir}"
+							includes="${jdbc.sqlserver.driver}"
+						/>
+					</delete>
+
+					<mirrors-get
+						dest="${todir}"
+						src="${test.jdbc.drivers.url}/sqlserver/${database.version}/${jdbc.sqlserver.driver}"
+					/>
+				</then>
+			</elseif>
+			<elseif>
 				<and>
 					<equals arg1="${database.type}" arg2="sybase" />
 					<equals arg1="${database.version}" arg2="16.0" />
@@ -3885,6 +3901,8 @@ go]]></replacevalue>
 				<delete file="${test.app.server.liferay.home}/portal-setup-wizard.properties" />
 			</then>
 		</if>
+
+		<delete dir="/tmp/sprite" />
 	</target>
 
 	<target name="deploy-extra-apps">
@@ -4809,6 +4827,8 @@ index.on.startup=true
 setup.wizard.enabled=false
 
 mail.session.jndi.name=
+
+sprite.root.dir=/tmp/sprite
 
 axis.servlet.hosts.allowed=
 
