@@ -42,6 +42,7 @@ import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import java.net.URL;
@@ -261,10 +262,6 @@ public class SpriteProcessorImpl implements SpriteProcessor {
 						", spriteDir.exists() = " + spriteDir.exists());
 			}
 
-			System.out.println(
-				"^^^Protected remove spriteFile.delete() = " +
-					spriteFile.delete());
-
 			Iterator<ImageWriter> imageWriterIterator = ImageIO.getImageWriters(
 				ImageTypeSpecifier.createFromRenderedImage(renderedImage),
 				"png");
@@ -277,8 +274,6 @@ public class SpriteProcessorImpl implements SpriteProcessor {
 
 			ImageWriter imageWriter = imageWriterIterator.next();
 
-			System.out.println("#####Use " + imageWriter);
-
 			IIORegistry iioRegistry = IIORegistry.getDefaultInstance();
 
 			Iterator<ImageOutputStreamSpi> imageOutputStreamSpiIterator =
@@ -287,6 +282,7 @@ public class SpriteProcessorImpl implements SpriteProcessor {
 
 			boolean matched = false;
 
+			Outter:
 			while (imageOutputStreamSpiIterator.hasNext()) {
 				ImageOutputStreamSpi imageOutputStreamSpi =
 					imageOutputStreamSpiIterator.next();
@@ -305,7 +301,7 @@ public class SpriteProcessorImpl implements SpriteProcessor {
 							System.getProperty("java.io.tmpdir"));
 
 						System.out.println(
-							"#####Fallback to system temp dir " + tempDir +
+							"#####Use system temp dir " + tempDir +
 								", usable size : " + tempDir.getUsableSpace() +
 									" bytes");
 					}
@@ -316,35 +312,51 @@ public class SpriteProcessorImpl implements SpriteProcessor {
 									cacheDirectory.getUsableSpace() + " bytes");
 					}
 
-					try (ImageOutputStream imageOutputStream =
-							imageOutputStreamSpi.createOutputStreamInstance(
-								spriteFile, true, cacheDirectory)) {
+					for (int i = 0; i < 100; i++) {
+						if (i > 0) {
+							boolean exist = spriteDir.exists();
 
-						if (imageOutputStream != null) {
-							imageWriter.setOutput(imageOutputStream);
+							System.out.println("#####This is a retry i=" + i + ", spriteDir=" + spriteDir + ", exist() = " + exist + ", usable space : " + spriteDir.getUsableSpace());
 
-							imageWriter.write(renderedImage);
-
-							imageOutputStream.flush();
-
-							matched = true;
-
-							break;
+							if (!exist) {
+								System.out.println("###########Recreating spriteDir.mkdirs() = " + spriteDir.mkdirs());
+							}
 						}
 
-						throw new IllegalStateException(
-							imageOutputStreamSpi +
-								" failed to create an ImageOutputStream with " +
-									spriteFile + " and " + cacheDirectory);
+						try (ImageOutputStream imageOutputStream =
+								imageOutputStreamSpi.createOutputStreamInstance(
+									spriteFile, true, cacheDirectory)) {
+
+							if (imageOutputStream != null) {
+								imageWriter.setOutput(imageOutputStream);
+
+								imageWriter.write(renderedImage);
+
+								imageOutputStream.flush();
+
+								matched = true;
+
+								break Outter;
+							}
+
+							throw new IllegalStateException(
+								imageOutputStreamSpi +
+									" failed to create an ImageOutputStream with " +
+										spriteFile + " and " + cacheDirectory);
+						}
+						catch (FileNotFoundException fnfe) {
+							boolean exist = spriteDir.exists();
+
+							System.out.println("########Failed on " + fnfe + " i=" + i + ", spriteDir=" + spriteDir + ", exist() = " + exist + ", usable space : " + spriteDir.getUsableSpace());
+
+							if (!exist) {
+								System.out.println("###########Recreating spriteDir.mkdirs() = " + spriteDir.mkdirs());
+							}
+						}
+						finally {
+							imageWriter.dispose();
+						}
 					}
-					finally {
-						imageWriter.dispose();
-					}
-				}
-				else {
-					System.out.println(
-						"##########Listing " + imageOutputStreamSpi +
-							", outputClass = " + clazz + ", not match");
 				}
 			}
 
