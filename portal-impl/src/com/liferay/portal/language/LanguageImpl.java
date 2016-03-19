@@ -1616,7 +1616,7 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	@Override
-	public void updateCookie(
+	public Cookie updateCookie(
 		HttpServletRequest request, HttpServletResponse response,
 		Locale locale) {
 
@@ -1629,6 +1629,8 @@ public class LanguageImpl implements Language, Serializable {
 		languageIdCookie.setMaxAge(CookieKeys.MAX_AGE);
 
 		CookieKeys.addCookie(request, response, languageIdCookie);
+
+		return languageIdCookie;
 	}
 
 	protected MessageFormat decorateMessageFormat(
