@@ -201,31 +201,36 @@ public class ScriptData implements Mergeable<ScriptData>, Serializable {
 
 		char c = name.charAt(0);
 
-		boolean modified = false;
+		boolean modified = true;
 
-		if ((CharPool.LOWER_CASE_A <= c) && (c <= CharPool.LOWER_CASE_Z)) {
-			sb.append((char)(c - 32));
-
-			modified = true;
-		}
-		else if ((CharPool.UPPER_CASE_A <= c) && (c <= CharPool.UPPER_CASE_Z) ||
-				 (c == CharPool.UNDERLINE)) {
+		if ((CharPool.LOWER_CASE_A <= c) && (c <= CharPool.LOWER_CASE_Z) ||
+			(c == CharPool.UNDERLINE)) {
 
 			sb.append(c);
+
+			modified = false;
+		}
+		else if ((CharPool.UPPER_CASE_A <= c) && (c <= CharPool.UPPER_CASE_Z)) {
+			sb.append((char)(c + 32));
 		}
 		else {
 			sb.append(CharPool.UNDERLINE);
-
-			modified = true;
 		}
+
+		boolean startNewWord = false;
 
 		for (int i = 1; i < name.length(); i++) {
 			c = name.charAt(i);
 
 			if ((CharPool.LOWER_CASE_A <= c) && (c <= CharPool.LOWER_CASE_Z)) {
-				sb.append((char)(c - 32));
+				if (startNewWord) {
+					sb.append((char)(c - 32));
 
-				modified = true;
+					startNewWord = false;
+				}
+				else {
+					sb.append(c);
+				}
 			}
 			else if ((CharPool.UPPER_CASE_A <= c) &&
 					 (c <= CharPool.UPPER_CASE_Z) ||
@@ -233,6 +238,13 @@ public class ScriptData implements Mergeable<ScriptData>, Serializable {
 					 (c == CharPool.UNDERLINE)) {
 
 				sb.append(c);
+
+				startNewWord = false;
+			}
+			else {
+				modified = true;
+
+				startNewWord = true;
 			}
 		}
 
