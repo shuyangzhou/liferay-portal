@@ -14,6 +14,7 @@
 
 package com.liferay.frontend.css.rtl.servlet;
 
+import com.liferay.frontend.css.rtl.converter.CSSRTLConverter;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.RequestDispatcherUtil;
@@ -22,7 +23,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.rtl.css.RTLCSSConverter;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -132,9 +132,9 @@ public class RTLServlet extends HttpServlet {
 			return uri.toURL();
 		}
 
-		RTLCSSConverter rtlcssConverter = new RTLCSSConverter(false);
+		CSSRTLConverter cssRTLConverter = new CSSRTLConverter(false);
 
-		String rtl = rtlcssConverter.process(StringUtil.read(url.openStream()));
+		String rtl = cssRTLConverter.process(StringUtil.read(url.openStream()));
 
 		InputStream inputStream = new ByteArrayInputStream(
 			rtl.getBytes(StringPool.UTF8));

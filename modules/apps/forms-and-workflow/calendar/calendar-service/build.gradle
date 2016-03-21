@@ -7,6 +7,7 @@ dependencies {
 	provided group: "backport-util-concurrent", name: "backport-util-concurrent", version: "3.1"
 	provided group: "biz.aQute.bnd", name: "biz.aQute.bndlib", version: "3.1.0"
 	provided group: "com.liferay", name: "com.google.ical", version: "20110304"
+	provided group: "com.liferay", name: "com.liferay.registry.api", version: "1.0.0"
 	provided group: "com.liferay", name: "net.fortuna.ical4j", version: "1.0"
 	provided group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "2.0.0"
 	provided group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.0.0"
@@ -24,5 +25,4 @@ dependencies {
 	provided project(":apps:foundation:xstream:xstream-configurator-api")
 	provided project(":apps:web-experience:export-import:export-import-api")
 	provided project(":apps:web-experience:export-import:export-import-service")
-	provided project(":core:registry-api")
 }

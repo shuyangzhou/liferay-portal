@@ -7,6 +7,6 @@ dependencies {
 	provided project(":apps:foundation:osgi:osgi-util")
 
 	testIntegrationCompile group: "com.liferay", name: "com.liferay.arquillian.extension.junit.bridge", version: "1.0.5"
+	testIntegrationCompile group: "com.liferay", name: "com.liferay.registry.api", version: "1.0.0"
 	testIntegrationCompile project(":apps:foundation:portal-template:portal-template-freemarker")
-	testIntegrationCompile project(":core:registry-api")
 }

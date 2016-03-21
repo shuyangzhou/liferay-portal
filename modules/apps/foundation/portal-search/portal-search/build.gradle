@@ -1,5 +1,6 @@
 dependencies {
 	provided group: "biz.aQute.bnd", name: "biz.aQute.bndlib", version: "3.1.0"
+	provided group: "com.liferay", name: "com.liferay.registry.api", version: "1.0.0"
 	provided group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "2.0.0"
 	provided group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.0.0"
 	provided group: "commons-lang", name: "commons-lang", version: "2.6"
@@ -10,5 +11,4 @@ dependencies {
 	provided project(":apps:foundation:portal-background-task:portal-background-task-api")
 	provided project(":apps:foundation:portal-configuration:portal-configuration-metatype")
 	provided project(":apps:foundation:portal:portal-instance-lifecycle")
-	provided project(":core:registry-api")
 }
