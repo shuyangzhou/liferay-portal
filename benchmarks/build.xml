@@ -4,6 +4,22 @@
 	<import file="../build-common.xml" />
 
 	<target name="build-sample-sql">
+		<if>
+			<os family="unix" />
+			<then>
+				<property name="gradlew.suffix" value="" />
+
+				<chmod file="../gradlew${gradlew.suffix}" perm="a+x" />
+			</then>
+			<else>
+				<property name="gradlew.suffix" value=".bat" />
+			</else>
+		</if>
+
+		<exec dir="../modules/util/portal-tools-sample-sql-builder" executable="../../../gradlew${gradlew.suffix}" failonerror="true">
+			<arg value="deploy" />
+		</exec>
+
 		<path id="sample.sql.builder.classpath">
 			<fileset dir="${sdk.dir}/dist" includes="com.liferay.dynamic.data.*.jar" />
 			<fileset dir="${sdk.dir}/dist" includes="com.liferay.journal.*.jar" />
