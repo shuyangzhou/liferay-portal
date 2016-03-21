@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.PredicateFilter;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -222,29 +223,38 @@ public class HttpImpl implements Http {
 			return null;
 		}
 
-		String[] urlArray = PortalUtil.stripURLAnchor(url, StringPool.POUND);
+		String encodedValue = encodeURL(value);
 
-		url = urlArray[0];
+		StringBuilder sb = new StringBuilder(
+			url.length() + name.length() + encodedValue.length() + 2);
 
-		String anchor = urlArray[1];
+		int pos = url.indexOf(CharPool.POUND);
 
-		StringBundler sb = new StringBundler(6);
+		String anchor = StringPool.BLANK;
+
+		if (0 < pos) {
+			anchor = url.substring(pos);
+			url = url.substring(0, pos);
+		}
 
 		sb.append(url);
 
 		if (url.indexOf(CharPool.QUESTION) == -1) {
-			sb.append(StringPool.QUESTION);
+			sb.append(CharPool.QUESTION);
 		}
-		else if (!url.endsWith(StringPool.QUESTION) &&
-				 !url.endsWith(StringPool.AMPERSAND)) {
+		else if ((url.charAt(url.length() - 1) != CharPool.QUESTION) &&
+				 (url.charAt(url.length() - 1) != CharPool.AMPERSAND)) {
 
-			sb.append(StringPool.AMPERSAND);
+			sb.append(CharPool.AMPERSAND);
 		}
 
 		sb.append(name);
-		sb.append(StringPool.EQUAL);
-		sb.append(encodeURL(value));
-		sb.append(anchor);
+		sb.append(CharPool.EQUAL);
+		sb.append(encodedValue);
+
+		if (0 < pos) {
+			sb.append(anchor);
+		}
 
 		String result = sb.toString();
 
@@ -549,25 +559,47 @@ public class HttpImpl implements Http {
 			return StringPool.BLANK;
 		}
 
-		String[] parts = StringUtil.split(url, CharPool.QUESTION);
+		int pos = url.indexOf(CharPool.QUESTION);
 
-		if (parts.length == 2) {
-			String[] params = null;
+		if (pos == -1) {
+			return StringPool.BLANK;
+		}
 
-			if (escaped) {
-				params = StringUtil.split(parts[1], "&amp;");
+		int equalPos = url.indexOf(CharPool.EQUAL, pos + 1);
+
+		while (pos != -1) {
+			if (name.equals(url.substring(pos + 1, equalPos))) {
+				if (escaped) {
+					pos = url.indexOf("&amp;", equalPos + 1);
+				}
+				else {
+					pos = url.indexOf(CharPool.AMPERSAND, equalPos + 1);
+				}
+
+				if (pos == -1) {
+					pos = url.indexOf(CharPool.POUND, equalPos + 1);
+
+					if (pos == -1) {
+						return url.substring(equalPos + 1);
+					}
+				}
+
+				return url.substring(equalPos + 1, pos);
 			}
 			else {
-				params = StringUtil.split(parts[1], CharPool.AMPERSAND);
-			}
+				if (escaped) {
+					pos = url.indexOf("&amp;", equalPos + 1);
 
-			for (String param : params) {
-				String[] kvp = StringUtil.split(param, CharPool.EQUAL);
-
-				if ((kvp.length == 2) && kvp[0].equals(name)) {
-					return kvp[1];
+					if (pos != -1) {
+						pos += 4;
+					}
+				}
+				else {
+					pos = url.indexOf(CharPool.AMPERSAND, equalPos + 1);
 				}
 			}
+
+			equalPos = url.indexOf(CharPool.EQUAL, pos + 1);
 		}
 
 		return StringPool.BLANK;
@@ -871,7 +903,7 @@ public class HttpImpl implements Http {
 			return StringPool.BLANK;
 		}
 
-		StringBundler sb = new StringBundler();
+		StringBundler sb = new StringBundler((parameterMap.size() * 4) + 1);
 
 		if (addQuestion) {
 			sb.append(StringPool.QUESTION);
@@ -977,64 +1009,125 @@ public class HttpImpl implements Http {
 	}
 
 	@Override
-	public String removeParameter(String url, String name) {
-		if (Validator.isNull(url) || Validator.isNull(name)) {
+	public String removeParameter(String url, final String name) {
+		if (Validator.isNull(name)) {
 			return url;
 		}
 
-		int pos = url.indexOf(CharPool.QUESTION);
+		return removeParameters(
+			url,
+			new PredicateFilter<String>() {
 
-		if (pos == -1) {
+				@Override
+				public boolean filter(String key) {
+					return !name.equals(key);
+				}
+
+			});
+	}
+
+	@Override
+	public String removeParameters(
+		String url, PredicateFilter<String> predicateFilter) {
+
+		if (Validator.isNull(url) || (predicateFilter == null)) {
 			return url;
 		}
 
-		String[] array = PortalUtil.stripURLAnchor(url, StringPool.POUND);
+		int questionPos = url.indexOf(CharPool.QUESTION);
 
-		url = array[0];
+		if (questionPos == -1) {
+			return url;
+		}
 
-		String anchor = array[1];
+		int end = questionPos;
+		int start = 0;
 
-		StringBundler sb = new StringBundler();
+		int pos = questionPos;
 
-		sb.append(url.substring(0, pos + 1));
+		int equalPos = url.indexOf(CharPool.EQUAL, pos + 1);
 
-		String[] parameters = StringUtil.split(
-			url.substring(pos + 1, url.length()), CharPool.AMPERSAND);
+		boolean firstParam = true;
 
-		for (String parameter : parameters) {
-			if (parameter.length() > 0) {
-				String[] kvp = StringUtil.split(parameter, CharPool.EQUAL);
+		StringBuilder sb = null;
 
-				String key = kvp[0];
+		while (pos != -1) {
+			if (predicateFilter.filter(url.substring(pos + 1, equalPos))) {
+				pos = url.indexOf(CharPool.AMPERSAND, equalPos + 1);
 
-				String value = StringPool.BLANK;
+				if (pos == -1) {
+					if (sb == null) {
+						return url;
+					}
 
-				if (kvp.length > 1) {
-					value = kvp[1];
+					if (firstParam) {
+						sb.append(CharPool.QUESTION);
+
+						sb.append(url.substring(start + 1));
+					}
+					else {
+						sb.append(url.substring(start));
+					}
+
+					return sb.toString();
 				}
 
-				if (!key.equals(name)) {
-					sb.append(key);
-					sb.append(StringPool.EQUAL);
-					sb.append(value);
-					sb.append(StringPool.AMPERSAND);
-				}
+				end = pos;
 			}
+			else {
+				pos = url.indexOf(CharPool.AMPERSAND, equalPos + 1);
+
+				if (sb == null) {
+					if (pos == -1) {
+						int poundPos = url.indexOf(
+							CharPool.POUND, equalPos + 1);
+
+						if (poundPos == -1) {
+							return url.substring(start, end);
+						}
+
+						String anchor = url.substring(poundPos);
+
+						url = url.substring(start, end);
+
+						return url.concat(anchor);
+					}
+					else {
+						sb = new StringBuilder(url.length() - (pos - end));
+					}
+
+					sb.append(url.substring(start, end));
+
+					if (questionPos < end) {
+						firstParam = false;
+					}
+				}
+				else if (start < end) {
+					if (firstParam) {
+						sb.append(CharPool.QUESTION);
+
+						sb.append(url.substring(start + 1, end));
+
+						firstParam = false;
+					}
+					else {
+						sb.append(url.substring(start, end));
+					}
+				}
+
+				start = pos;
+			}
+
+			equalPos = url.indexOf(CharPool.EQUAL, pos + 1);
 		}
 
-		url = StringUtil.replace(
-			sb.toString(), StringPool.AMPERSAND + StringPool.AMPERSAND,
-			StringPool.AMPERSAND);
+		int poundPos = url.indexOf(CharPool.POUND, equalPos + 1);
 
-		if (url.endsWith(StringPool.AMPERSAND)) {
-			url = url.substring(0, url.length() - 1);
+		if (poundPos != -1) {
+			sb.append(url.substring(poundPos));
 		}
 
-		if (url.endsWith(StringPool.QUESTION)) {
-			url = url.substring(0, url.length() - 1);
-		}
-
-		return url + anchor;
+		return sb.toString();
 	}
 
 	@Override
@@ -1162,9 +1255,9 @@ public class HttpImpl implements Http {
 			return null;
 		}
 
-		StringBundler sb = new StringBundler();
-
 		String[] params = StringUtil.split(url, CharPool.AMPERSAND);
+
+		StringBundler sb = new StringBundler(params.length * 4);
 
 		for (int i = 0; i < params.length; i++) {
 			String param = params[i];

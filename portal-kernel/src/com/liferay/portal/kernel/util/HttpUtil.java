@@ -243,6 +243,12 @@ public class HttpUtil {
 		return getHttp().removeParameter(url, name);
 	}
 
+	public static String removeParameters(
+		String url, PredicateFilter<String> predicateFilter) {
+
+		return getHttp().removeParameters(url, predicateFilter);
+	}
+
 	public static String removePathParameters(String uri) {
 		return getHttp().removePathParameters(uri);
 	}

@@ -173,6 +173,7 @@ import com.liferay.portal.kernel.util.PortalInetSocketAddressEventListener;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PortletCategoryKeys;
 import com.liferay.portal.kernel.util.PortletKeys;
+import com.liferay.portal.kernel.util.PredicateFilter;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
@@ -6444,17 +6445,18 @@ public class PortalImpl implements Portal {
 			return url;
 		}
 
-		String portletNamespace = getPortletNamespace(portletId);
+		final String portletNamespace = getPortletNamespace(portletId);
 
-		Map<String, String[]> parameterMap = HttpUtil.getParameterMap(url);
+		return HttpUtil.removeParameters(
+			url,
+			new PredicateFilter<String>() {
 
-		for (String name : parameterMap.keySet()) {
-			if (name.startsWith(portletNamespace)) {
-				url = HttpUtil.removeParameter(url, name);
-			}
-		}
+				@Override
+				public boolean filter(String parameter) {
+					return !parameter.startsWith(portletNamespace);
+				}
 
-		return url;
+			});
 	}
 
 	@Override
@@ -6783,6 +6785,20 @@ public class PortalImpl implements Portal {
 			portletPreferencesWrapper.getPortletPreferencesImpl();
 
 		portletPreferencesImpl.store();
+	}
+
+	@Override
+	public String[] stripURLAnchor(String url, char separator) {
+		String anchor = StringPool.BLANK;
+
+		int pos = url.indexOf(separator);
+
+		if (pos != -1) {
+			anchor = url.substring(pos);
+			url = url.substring(0, pos);
+		}
+
+		return new String[] {url, anchor};
 	}
 
 	@Override
@@ -8000,18 +8016,16 @@ public class PortalImpl implements Portal {
 	}
 
 	protected String removeRedirectParameter(String url) {
-		String queryString = HttpUtil.getQueryString(url);
+		return HttpUtil.removeParameters(
+			url,
+			new PredicateFilter<String>() {
 
-		Map<String, String[]> parameterMap = HttpUtil.getParameterMap(
-			queryString);
+				@Override
+				public boolean filter(String parameter) {
+					return !parameter.endsWith("redirect");
+				}
 
-		for (String parameter : parameterMap.keySet()) {
-			if (parameter.endsWith("redirect")) {
-				url = HttpUtil.removeParameter(url, parameter);
-			}
-		}
-
-		return url;
+			});
 	}
 
 	protected void resetThemeDisplayI18n(
