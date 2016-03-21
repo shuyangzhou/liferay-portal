@@ -559,31 +559,47 @@ public class HttpImpl implements Http {
 			return StringPool.BLANK;
 		}
 
-		String[] parts = StringUtil.split(url, CharPool.QUESTION);
+		int pos = url.indexOf(CharPool.QUESTION);
 
-		if (parts.length == 2) {
-			String[] params = null;
+		if (pos == -1) {
+			return StringPool.BLANK;
+		}
 
-			if (escaped) {
-				params = StringUtil.split(parts[1], "&amp;");
+		int equalPos = url.indexOf(CharPool.EQUAL, pos + 1);
+
+		while (pos != -1) {
+			if (name.equals(url.substring(pos + 1, equalPos))) {
+				if (escaped) {
+					pos = url.indexOf("&amp;", equalPos + 1);
+				}
+				else {
+					pos = url.indexOf(CharPool.AMPERSAND, equalPos + 1);
+				}
+
+				if (pos == -1) {
+					pos = url.indexOf(CharPool.POUND, equalPos + 1);
+
+					if (pos == -1) {
+						return url.substring(equalPos + 1);
+					}
+				}
+
+				return url.substring(equalPos + 1, pos);
 			}
 			else {
-				params = StringUtil.split(parts[1], CharPool.AMPERSAND);
-			}
+				if (escaped) {
+					pos = url.indexOf("&amp;", equalPos + 1);
 
-			for (String param : params) {
-				String[] kvp = StringUtil.split(param, CharPool.EQUAL);
-
-				if ((kvp.length == 2) && kvp[0].equals(name)) {
-					int anchor = kvp[1].indexOf(CharPool.POUND);
-
-					if (anchor < 0) {
-						return kvp[1];
+					if (pos != -1) {
+						pos += 4;
 					}
-
-					return kvp[1].substring(0, anchor);
+				}
+				else {
+					pos = url.indexOf(CharPool.AMPERSAND, equalPos + 1);
 				}
 			}
+
+			equalPos = url.indexOf(CharPool.EQUAL, pos + 1);
 		}
 
 		return StringPool.BLANK;
