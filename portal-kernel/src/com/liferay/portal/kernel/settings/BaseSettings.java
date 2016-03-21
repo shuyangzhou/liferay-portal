@@ -14,7 +14,6 @@
 
 package com.liferay.portal.kernel.settings;
 
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 /**
@@ -56,8 +55,12 @@ public abstract class BaseSettings implements Settings {
 
 		String value = doGetValue(key);
 
-		if ((value == null) && (parentSettings != null)) {
-			return parentSettings.getValue(key, defaultValue);
+		if (value == null) {
+			if (parentSettings != null) {
+				return parentSettings.getValue(key, defaultValue);
+			}
+
+			return defaultValue;
 		}
 
 		if (Validator.isNull(value)) {
@@ -75,11 +78,15 @@ public abstract class BaseSettings implements Settings {
 
 		String[] values = doGetValues(key);
 
-		if ((values == null) && (parentSettings != null)) {
-			return parentSettings.getValues(key, defaultValue);
+		if (values == null) {
+			if (parentSettings != null) {
+				return parentSettings.getValues(key, defaultValue);
+			}
+
+			return defaultValue;
 		}
 
-		if (ArrayUtil.isEmpty(values)) {
+		if (values.length == 0) {
 			values = defaultValue;
 		}
 
