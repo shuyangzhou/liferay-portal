@@ -75,7 +75,7 @@ public abstract class BaseSettings implements Settings {
 
 		String[] values = doGetValues(key);
 
-		if (ArrayUtil.isEmpty(values) && (parentSettings != null)) {
+		if ((values == null) && (parentSettings != null)) {
 			values = parentSettings.getValues(key, defaultValue);
 		}
 
