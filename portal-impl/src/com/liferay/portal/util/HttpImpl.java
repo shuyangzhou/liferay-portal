@@ -575,7 +575,13 @@ public class HttpImpl implements Http {
 				String[] kvp = StringUtil.split(param, CharPool.EQUAL);
 
 				if ((kvp.length == 2) && kvp[0].equals(name)) {
-					return kvp[1];
+					int anchor = kvp[1].indexOf(CharPool.POUND);
+
+					if (anchor < 0) {
+						return kvp[1];
+					}
+
+					return kvp[1].substring(0, anchor);
 				}
 			}
 		}
