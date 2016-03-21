@@ -1003,52 +1003,97 @@ public class HttpImpl implements Http {
 			return url;
 		}
 
-		int pos = url.indexOf(CharPool.QUESTION);
+		int questionPos = url.indexOf(CharPool.QUESTION);
 
-		if (pos == -1) {
+		if (questionPos == -1) {
 			return url;
 		}
 
-		String[] array = PortalUtil.stripURLAnchor(url, CharPool.POUND);
+		int end = questionPos;
+		int start = 0;
 
-		url = array[0];
+		int pos = questionPos;
 
-		String anchor = array[1];
+		int equalPos = url.indexOf(CharPool.EQUAL, pos + 1);
 
-		String[] parameters = StringUtil.split(
-			url.substring(pos + 1, url.length()), CharPool.AMPERSAND);
+		boolean firstParam = true;
 
-		StringBundler sb = new StringBundler((parameters.length * 4) + 2);
+		StringBuilder sb = null;
 
-		sb.append(url.substring(0, pos));
-		sb.append(StringPool.QUESTION);
+		while (pos != -1) {
+			if (predicateFilter.filter(url.substring(pos + 1, equalPos))) {
+				pos = url.indexOf(CharPool.AMPERSAND, equalPos + 1);
 
-		for (String parameter : parameters) {
-			if (!parameter.isEmpty()) {
-				String[] kvp = StringUtil.split(parameter, CharPool.EQUAL);
+				if (pos == -1) {
+					if (sb == null) {
+						return url;
+					}
 
-				String key = kvp[0];
+					if (firstParam) {
+						sb.append(CharPool.QUESTION);
 
-				String value = StringPool.BLANK;
+						sb.append(url.substring(start + 1));
+					}
+					else {
+						sb.append(url.substring(start));
+					}
 
-				if (kvp.length > 1) {
-					value = kvp[1];
+					return sb.toString();
 				}
 
-				if (predicateFilter.filter(key)) {
-					sb.append(key);
-					sb.append(StringPool.EQUAL);
-					sb.append(value);
-					sb.append(StringPool.AMPERSAND);
-				}
+				end = pos;
 			}
+			else {
+				pos = url.indexOf(CharPool.AMPERSAND, equalPos + 1);
+
+				if (sb == null) {
+					if (pos == -1) {
+						int poundPos = url.indexOf(
+							CharPool.POUND, equalPos + 1);
+
+						if (poundPos == -1) {
+							return url.substring(start, end);
+						}
+
+						String anchor = url.substring(poundPos);
+
+						url = url.substring(start, end);
+
+						return url.concat(anchor);
+					}
+					else {
+						sb = new StringBuilder(url.length() - (pos - end));
+					}
+
+					sb.append(url.substring(start, end));
+
+					if (questionPos < end) {
+						firstParam = false;
+					}
+				}
+				else if (start < end) {
+					if (firstParam) {
+						sb.append(CharPool.QUESTION);
+
+						sb.append(url.substring(start + 1, end));
+
+						firstParam = false;
+					}
+					else {
+						sb.append(url.substring(start, end));
+					}
+				}
+
+				start = pos;
+			}
+
+			equalPos = url.indexOf(CharPool.EQUAL, pos + 1);
 		}
 
-		if (Validator.isNull(anchor)) {
-			sb.setIndex(sb.index() - 1);
-		}
-		else {
-			sb.setStringAt(anchor, sb.index() - 1);
+		int poundPos = url.indexOf(CharPool.POUND, equalPos + 1);
+
+		if (poundPos != -1) {
+			sb.append(url.substring(poundPos));
 		}
 
 		return sb.toString();
