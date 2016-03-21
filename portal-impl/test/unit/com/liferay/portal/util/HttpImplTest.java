@@ -161,6 +161,92 @@ public class HttpImplTest extends PowerMockito {
 	}
 
 	@Test
+	public void testGetParameterOneWithThreeParametersAnchorEscaped() {
+		Assert.assertEquals(
+			"1",
+			_httpImpl.getParameter(
+				"http://foo?p1=1&amp;p2=2&amp;p3=3#anchor", "p1"));
+	}
+
+	@Test
+	public void testGetParameterThreeWithThreeParameters() {
+		Assert.assertEquals(
+			"3",
+			_httpImpl.getParameter("http://foo?p1=1&p2=2&p3=3", "p3", false));
+	}
+
+	@Test
+	public void testGetParameterThreeWithThreeParametersAnchor() {
+		Assert.assertEquals(
+			"3",
+			_httpImpl.getParameter(
+				"http://foo?p1=1&p2=2&p3=3#anchor", "p3", false));
+	}
+
+	@Test
+	public void testGetParameterThreeWithThreeParametersAnchorEscaped() {
+		Assert.assertEquals(
+			"3",
+			_httpImpl.getParameter(
+				"http://foo?p1=1&amp;p2=2&amp;p3=3#anchor", "p3"));
+	}
+
+	@Test
+	public void testGetParameterTwoWithThreeParameters() {
+		Assert.assertEquals(
+			"2",
+			_httpImpl.getParameter("http://foo?p1=1&p2=2&p3=3", "p2", false));
+	}
+
+	@Test
+	public void testGetParameterTwoWithThreeParametersAnchor() {
+		Assert.assertEquals(
+			"2",
+			_httpImpl.getParameter(
+				"http://foo?p1=1&p2=2&p3=3#anchor", "p2", false));
+	}
+
+	@Test
+	public void testGetParameterTwoWithThreeParametersAnchorEscaped() {
+		Assert.assertEquals(
+			"2",
+			_httpImpl.getParameter(
+				"http://foo?p1=1&amp;p2=2&amp;p3=3#anchor", "p2"));
+	}
+
+	@Test
+	public void testGetParameterWithNoParameters() {
+		Assert.assertEquals(
+			StringPool.BLANK,
+			_httpImpl.getParameter("http://foo", "p1", false));
+	}
+
+	@Test
+	public void testGetParameterWithNoParametersAnchor() {
+		Assert.assertEquals(
+			StringPool.BLANK,
+			_httpImpl.getParameter("http://foo#anchor", "p1", false));
+	}
+
+	@Test
+	public void testGetParameterWithOneParameter() {
+		Assert.assertEquals(
+			"1", _httpImpl.getParameter("http://foo?p1=1", "p1", false));
+	}
+
+	@Test
+	public void testGetParameterWithOneParameterAnchor() {
+		Assert.assertEquals(
+			"1", _httpImpl.getParameter("http://foo?p1=1#anchor", "p1", false));
+	}
+
+	@Test
+	public void testGetParameterWithOneParameterAnchorEscaped() {
+		Assert.assertEquals(
+			"1", _httpImpl.getParameter("http://foo?p1=1#anchor", "p1"));
+	}
+
+	@Test
 	public void testNormalizePath() {
 		Assert.assertEquals("/", _httpImpl.normalizePath("/.."));
 		Assert.assertEquals(
