@@ -203,7 +203,7 @@ public class BuildChangeLogTask extends DefaultTask {
 		else {
 			Calendar calendar = Calendar.getInstance();
 
-			calendar.add(Calendar.YEAR, -1);
+			calendar.add(Calendar.YEAR, -2);
 
 			rangeStart = GitUtil.getHashBefore(calendar.getTime(), repository);
 		}

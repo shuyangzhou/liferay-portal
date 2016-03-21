@@ -21,6 +21,7 @@ patch {
 
 	fileNames "**/org/apache/jasper/compiler/Jsr199JavaCompiler.java"
 	fileNames "**/org/apache/jasper/compiler/Node.java"
+	fileNames "**/org/apache/jasper/runtime/JspWriterImpl.java"
 	fileNames "**/org/apache/jasper/runtime/PageContextImpl.java"
 
 	originalLibModuleName = "javax.servlet.jsp"
