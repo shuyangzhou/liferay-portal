@@ -223,29 +223,38 @@ public class HttpImpl implements Http {
 			return null;
 		}
 
-		String[] urlArray = PortalUtil.stripURLAnchor(url, CharPool.POUND);
+		String encodedValue = encodeURL(value);
 
-		url = urlArray[0];
+		StringBuilder sb = new StringBuilder(
+			url.length() + name.length() + encodedValue.length() + 2);
 
-		String anchor = urlArray[1];
+		int pos = url.indexOf(CharPool.POUND);
 
-		StringBundler sb = new StringBundler(6);
+		String anchor = StringPool.BLANK;
+
+		if (0 < pos) {
+			anchor = url.substring(pos);
+			url = url.substring(0, pos);
+		}
 
 		sb.append(url);
 
 		if (url.indexOf(CharPool.QUESTION) == -1) {
-			sb.append(StringPool.QUESTION);
+			sb.append(CharPool.QUESTION);
 		}
-		else if (!url.endsWith(StringPool.QUESTION) &&
-				 !url.endsWith(StringPool.AMPERSAND)) {
+		else if ((url.charAt(url.length() - 1) != CharPool.QUESTION) &&
+				 (url.charAt(url.length() - 1) != CharPool.AMPERSAND)) {
 
-			sb.append(StringPool.AMPERSAND);
+			sb.append(CharPool.AMPERSAND);
 		}
 
 		sb.append(name);
-		sb.append(StringPool.EQUAL);
-		sb.append(encodeURL(value));
-		sb.append(anchor);
+		sb.append(CharPool.EQUAL);
+		sb.append(encodedValue);
+
+		if (0 < pos) {
+			sb.append(anchor);
+		}
 
 		String result = sb.toString();
 
