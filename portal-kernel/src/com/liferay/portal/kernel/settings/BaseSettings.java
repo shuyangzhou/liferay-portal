@@ -57,7 +57,7 @@ public abstract class BaseSettings implements Settings {
 		String value = doGetValue(key);
 
 		if ((value == null) && (parentSettings != null)) {
-			value = parentSettings.getValue(key, defaultValue);
+			return parentSettings.getValue(key, defaultValue);
 		}
 
 		if (Validator.isNull(value)) {
@@ -76,7 +76,7 @@ public abstract class BaseSettings implements Settings {
 		String[] values = doGetValues(key);
 
 		if ((values == null) && (parentSettings != null)) {
-			values = parentSettings.getValues(key, defaultValue);
+			return parentSettings.getValues(key, defaultValue);
 		}
 
 		if (ArrayUtil.isEmpty(values)) {
