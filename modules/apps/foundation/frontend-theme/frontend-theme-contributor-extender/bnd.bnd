@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Frontend Theme Contributor Extender
 Bundle-SymbolicName: com.liferay.frontend.theme.contributor.extender
-Bundle-Version: 1.0.0
+Bundle-Version: 1.0.2
 Export-Package: com.liferay.frontend.theme.contributor.extender
 -liferay-includeresource:\
 	@org.apache.felix.utils-*.jar!/org/apache/felix/utils/extender/*,\

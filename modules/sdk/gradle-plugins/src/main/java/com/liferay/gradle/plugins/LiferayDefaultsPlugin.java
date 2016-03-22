@@ -59,6 +59,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -81,6 +82,7 @@ import org.gradle.api.artifacts.DependencySet;
 import org.gradle.api.artifacts.ModuleDependency;
 import org.gradle.api.artifacts.ProjectDependency;
 import org.gradle.api.artifacts.PublishArtifactSet;
+import org.gradle.api.artifacts.ResolutionStrategy;
 import org.gradle.api.artifacts.ResolvedConfiguration;
 import org.gradle.api.artifacts.ResolvedDependency;
 import org.gradle.api.artifacts.dsl.ArtifactHandler;
@@ -141,7 +143,6 @@ import org.gradle.plugins.ide.idea.IdeaPlugin;
 import org.gradle.plugins.ide.idea.model.IdeaModel;
 import org.gradle.plugins.ide.idea.model.IdeaModule;
 import org.gradle.process.ExecSpec;
-import org.gradle.util.CollectionUtils;
 import org.gradle.util.VersionNumber;
 
 /**
@@ -199,6 +200,12 @@ public class LiferayDefaultsPlugin extends BaseDefaultsPlugin<LiferayPlugin> {
 				"baselining.");
 		configuration.setVisible(false);
 
+		ResolutionStrategy resolutionStrategy =
+			configuration.getResolutionStrategy();
+
+		resolutionStrategy.cacheChangingModulesFor(0, TimeUnit.SECONDS);
+		resolutionStrategy.cacheDynamicVersionsFor(0, TimeUnit.SECONDS);
+
 		return configuration;
 	}
 
@@ -255,58 +262,81 @@ public class LiferayDefaultsPlugin extends BaseDefaultsPlugin<LiferayPlugin> {
 			"org.springframework", "spring-test", "3.2.15.RELEASE");
 	}
 
-	protected BaselineTask addTaskBaseline(
+	protected Task addTaskBaseline(
 		final Project project, final Configuration baselineConfiguration) {
 
-		GradleUtil.applyPlugin(project, ReportingBasePlugin.class);
+		Task task = null;
 
-		BaselineTask baselineTask = GradleUtil.addTask(
-			project, BASELINE_TASK_NAME, BaselineTask.class);
+		if (baselineConfiguration != null) {
+			GradleUtil.applyPlugin(project, ReportingBasePlugin.class);
 
-		final Jar jar = (Jar)GradleUtil.getTask(
-			project, JavaPlugin.JAR_TASK_NAME);
+			BaselineTask baselineTask = GradleUtil.addTask(
+				project, BASELINE_TASK_NAME, BaselineTask.class);
 
-		baselineTask.dependsOn(jar);
+			final Jar jar = (Jar)GradleUtil.getTask(
+				project, JavaPlugin.JAR_TASK_NAME);
 
-		baselineTask.setDescription(
+			baselineTask.dependsOn(jar);
+
+			baselineTask.setNewJarFile(
+				new Callable<File>() {
+
+					@Override
+					public File call() throws Exception {
+						return jar.getArchivePath();
+					}
+
+				});
+
+			baselineTask.setOldJarFile(
+				new Callable<File>() {
+
+					@Override
+					public File call() throws Exception {
+						return baselineConfiguration.getSingleFile();
+					}
+
+				});
+
+			baselineTask.setSourceDir(
+				new Callable<File>() {
+
+					@Override
+					public File call() throws Exception {
+						SourceSet sourceSet = GradleUtil.getSourceSet(
+							project, SourceSet.MAIN_SOURCE_SET_NAME);
+
+						return GradleUtil.getSrcDir(sourceSet.getResources());
+					}
+
+				});
+
+			task = baselineTask;
+		}
+		else {
+			task = project.task(BASELINE_TASK_NAME);
+
+			task.doLast(
+				new Action<Task>() {
+
+					@Override
+					public void execute(Task task) {
+						if (_logger.isLifecycleEnabled()) {
+							_logger.lifecycle(
+								"Unable to baseline, " + project +
+									" has never been released.");
+						}
+					}
+
+				});
+		}
+
+		task.setDescription(
 			"Compares the public API of this project with the public API of " +
 				"the previous released version, if found.");
-		baselineTask.setGroup(JavaBasePlugin.VERIFICATION_GROUP);
+		task.setGroup(JavaBasePlugin.VERIFICATION_GROUP);
 
-		baselineTask.setNewJarFile(
-			new Callable<File>() {
-
-				@Override
-				public File call() throws Exception {
-					return jar.getArchivePath();
-				}
-
-			});
-
-		baselineTask.setOldJarFile(
-			new Callable<File>() {
-
-				@Override
-				public File call() throws Exception {
-					return baselineConfiguration.getSingleFile();
-				}
-
-			});
-
-		baselineTask.setSourceDir(
-			new Callable<File>() {
-
-				@Override
-				public File call() throws Exception {
-					SourceSet sourceSet = GradleUtil.getSourceSet(
-						project, SourceSet.MAIN_SOURCE_SET_NAME);
-
-					return GradleUtil.getSrcDir(sourceSet.getResources());
-				}
-
-			});
-
-		return baselineTask;
+		return task;
 	}
 
 	protected Copy addTaskCopyLibs(Project project) {
@@ -621,9 +651,10 @@ public class LiferayDefaultsPlugin extends BaseDefaultsPlugin<LiferayPlugin> {
 							ChangeLogBuilderPlugin.BUILD_CHANGE_LOG_TASK_NAME,
 							gradleDaemon));
 
-					commands.add("git add --all");
+					commands.add("git add --all .");
 
-					commands.add(_getGitCommitCommand("change log", false));
+					commands.add(
+						_getGitCommitCommand("change log", true, true));
 
 					// Baseline
 
@@ -632,19 +663,17 @@ public class LiferayDefaultsPlugin extends BaseDefaultsPlugin<LiferayPlugin> {
 							gradleRelativePath, BASELINE_TASK_NAME,
 							gradleDaemon));
 
-					// Publish if there are packageinfo changes
-
-					List<String> publishCommands = _getPublishCommands(
-						gradleRelativePath, gradleDaemon, false);
-
-					publishCommands.add(0, "git add --all");
-					publishCommands.add(
-						1, _getGitCommitCommand("packageinfo", false));
+					commands.add("git add --all .");
 
 					commands.add(
-						"(git diff-index --quiet HEAD || (" +
-							CollectionUtils.join(" && ", publishCommands) +
-								"))");
+						_getGitCommitCommand("packageinfo", true, false));
+
+					// Publish the artifact since there will either be change
+					// log or baseline changes
+
+					commands.addAll(
+						_getPublishCommands(
+							gradleRelativePath, gradleDaemon, false));
 
 					System.out.println();
 
@@ -854,45 +883,42 @@ public class LiferayDefaultsPlugin extends BaseDefaultsPlugin<LiferayPlugin> {
 						return;
 					}
 
-					String replacement = replaceRegexTask.getReplacement();
-
 					for (Object file : replaceRegexTask.getMatchedFiles()) {
 						_logger.lifecycle(
-							"Project version in " + project.relativePath(file) +
-								" updated to " + replacement);
+							"Updated project version in " +
+								project.relativePath(file));
 					}
 				}
 
 			});
 
-		if (gitRepoDir != null) {
-			replaceRegexTask.pre(
-				new Closure<String>(null) {
+		replaceRegexTask.pre(
+			new Closure<String>(null) {
 
-					@SuppressWarnings("unused")
-					public String doCall(String content, File file) {
-						String fileName = file.getName();
+				@SuppressWarnings("unused")
+				public String doCall(String content, File file) {
+					String fileName = file.getName();
 
-						if (!fileName.equals("build.gradle")) {
-							return content;
-						}
-
-						if (FileUtil.isChild(file, gitRepoDir)) {
-							return content.replaceAll(
-								getModuleDependencyRegex(project),
-								Matcher.quoteReplacement(
-									getProjectDependency(project)));
-						}
-						else {
-							return content.replaceAll(
-								Pattern.quote(getProjectDependency(project)),
-								Matcher.quoteReplacement(
-									getModuleDependency(project)));
-						}
+					if (!fileName.equals("build.gradle")) {
+						return content;
 					}
 
-				});
-		}
+					/*if ((gitRepoDir != null) &&
+						FileUtil.isChild(file, gitRepoDir)) {
+
+						return content.replaceAll(
+							getModuleDependencyRegex(project),
+							Matcher.quoteReplacement(
+								getProjectDependency(project)));
+					}*/
+
+					return content.replaceAll(
+						Pattern.quote(getProjectDependency(project)),
+						Matcher.quoteReplacement(
+							getModuleDependency(project, true)));
+				}
+
+			});
 
 		replaceRegexTask.replaceOnlyIf(
 			new Closure<Boolean>(null) {
@@ -901,16 +927,21 @@ public class LiferayDefaultsPlugin extends BaseDefaultsPlugin<LiferayPlugin> {
 				public Boolean doCall(
 					String group, String replacement, String content) {
 
-					if (gitRepoDir == null) {
+					String projectPath = project.getPath();
+
+					if ((gitRepoDir == null) &&
+						!projectPath.startsWith(":core:")) {
+
 						return true;
 					}
 
-					Version groupVersion = Version.parseVersion(group);
-					Version replacementVersion = Version.parseVersion(
-						replacement);
+					Version groupVersion = getVersion(group);
+					Version replacementVersion = getVersion(replacement);
 
-					if (groupVersion.getMajor() !=
-							replacementVersion.getMajor()) {
+					if ((groupVersion == null) ||
+						(replacementVersion == null) ||
+						(groupVersion.getMajor() !=
+							replacementVersion.getMajor())) {
 
 						return true;
 					}
@@ -1264,18 +1295,20 @@ public class LiferayDefaultsPlugin extends BaseDefaultsPlugin<LiferayPlugin> {
 
 				@Override
 				public void execute(BundlePlugin bundlePlugin) {
+					Configuration baselineConfiguration = null;
+
+					if (hasBaseline(project)) {
+						baselineConfiguration = addConfigurationBaseline(
+							project);
+					}
+
+					addTaskBaseline(project, baselineConfiguration);
+
 					addTaskCopyLibs(project);
 					addTaskUpdateBundleVersion(project);
 					configureBundleDefaultInstructions(project, publishing);
 					configureDeployDir(project);
 					configureTaskJavadoc(project);
-
-					if (hasBaseline(project)) {
-						Configuration baselineConfiguration =
-							addConfigurationBaseline(project);
-
-						addTaskBaseline(project, baselineConfiguration);
-					}
 				}
 
 			});
@@ -2009,7 +2042,9 @@ public class LiferayDefaultsPlugin extends BaseDefaultsPlugin<LiferayPlugin> {
 		return project.file("lib");
 	}
 
-	protected String getModuleDependency(Project project) {
+	protected String getModuleDependency(
+		Project project, boolean roundToMajorVersion) {
+
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("group: \"");
@@ -2017,7 +2052,21 @@ public class LiferayDefaultsPlugin extends BaseDefaultsPlugin<LiferayPlugin> {
 		sb.append("\", name: \"");
 		sb.append(getArchivesBaseName(project));
 		sb.append("\", version: \"");
-		sb.append(project.getVersion());
+
+		String versionString = String.valueOf(project.getVersion());
+
+		if (roundToMajorVersion) {
+			Version version = getVersion(versionString);
+
+			if (version != null) {
+				version = new Version(version.getMajor(), 0, 0);
+
+				versionString = version.toString();
+			}
+		}
+
+		sb.append(versionString);
+
 		sb.append('"');
 
 		return sb.toString();
@@ -2064,19 +2113,26 @@ public class LiferayDefaultsPlugin extends BaseDefaultsPlugin<LiferayPlugin> {
 		}
 	}
 
-	protected boolean hasBaseline(Project project) {
+	protected Version getVersion(Object version) {
 		try {
-			Version version = Version.parseVersion(
-				String.valueOf(project.getVersion()));
-
-			if (version.compareTo(_LOWEST_BASELINE_VERSION) > 0) {
-				return true;
-			}
+			return Version.parseVersion(String.valueOf(version));
 		}
 		catch (IllegalArgumentException iae) {
 			if (_logger.isDebugEnabled()) {
-				_logger.debug("Unable to parse project version", iae);
+				_logger.debug("Unable to parse " + version, iae);
 			}
+
+			return null;
+		}
+	}
+
+	protected boolean hasBaseline(Project project) {
+		Version version = getVersion(project.getVersion());
+
+		if ((version != null) &&
+			(version.compareTo(_LOWEST_BASELINE_VERSION) > 0)) {
+
+			return true;
 		}
 
 		return false;
@@ -2163,7 +2219,11 @@ public class LiferayDefaultsPlugin extends BaseDefaultsPlugin<LiferayPlugin> {
 			Project project = task.getProject();
 
 			for (Configuration configuration : project.getConfigurations()) {
-				if (_hasExternalProjectDependencies(project, configuration)) {
+				/*if (_hasExternalProjectDependencies(project, configuration)) {
+					return false;
+				}*/
+
+				if (_hasProjectDependencies(project, configuration)) {
 					return false;
 				}
 			}
@@ -2171,7 +2231,7 @@ public class LiferayDefaultsPlugin extends BaseDefaultsPlugin<LiferayPlugin> {
 			return true;
 		}
 
-		private boolean _hasExternalProjectDependencies(
+		/*private boolean _hasExternalProjectDependencies(
 			Project project, Configuration configuration) {
 
 			for (Dependency dependency : configuration.getDependencies()) {
@@ -2193,6 +2253,18 @@ public class LiferayDefaultsPlugin extends BaseDefaultsPlugin<LiferayPlugin> {
 			}
 
 			return false;
+		}*/
+
+		private boolean _hasProjectDependencies(
+			Project project, Configuration configuration) {
+
+			for (Dependency dependency : configuration.getDependencies()) {
+				if (dependency instanceof ProjectDependency) {
+					return true;
+				}
+			}
+
+			return false;
 		}
 
 		private final File _gitRepoDir;
@@ -2209,7 +2281,7 @@ public class LiferayDefaultsPlugin extends BaseDefaultsPlugin<LiferayPlugin> {
 		public boolean isSatisfiedBy(Task task) {
 			final Project project = task.getProject();
 
-			Properties artifactProperties;
+			Properties artifactProperties = null;
 
 			try {
 				artifactProperties = FileUtil.readProperties(

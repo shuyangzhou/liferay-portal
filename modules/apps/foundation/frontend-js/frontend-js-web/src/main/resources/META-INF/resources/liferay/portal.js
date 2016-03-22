@@ -111,6 +111,7 @@
 			var instance = this;
 
 			var cached = instance._cached;
+			var hideTooltipTask = instance._hideTooltipTask;
 
 			if (!cached) {
 				cached = new A.Tooltip(
@@ -118,7 +119,7 @@
 						cssClass: 'tooltip-help',
 						html: true,
 						opacity: 1,
-						stickDuration: 300,
+						stickDuration: 100,
 						visible: false,
 						zIndex: Liferay.zIndex.TOOLTIP
 					}
@@ -129,8 +130,14 @@
 					A.bind('_syncUIPosAlign', cached)
 				);
 
+				hideTooltipTask = A.debounce('_onBoundingBoxMouseleave', cached.get('stickDuration'), cached);
+
+				instance._hideTooltipTask = hideTooltipTask;
+
 				instance._cached = cached;
 			}
+
+			hideTooltipTask.cancel();
 
 			if (obj.jquery) {
 				obj = obj[0];
@@ -145,12 +152,25 @@
 			cached.set(BODY_CONTENT, text);
 			cached.set(TRIGGER, obj);
 
+			var boundingBox = cached.get('boundingBox');
+
+			boundingBox.detach('hover');
 			obj.detach('hover');
 
 			obj.on(
 				'hover',
 				A.bind('_onBoundingBoxMouseenter', cached),
-				A.bind('_onBoundingBoxMouseleave', cached)
+				hideTooltipTask
+			);
+
+			boundingBox.on(
+				'hover',
+				function(event) {
+					hideTooltipTask.cancel();
+
+					obj.once('mouseenter', hideTooltipTask.cancel);
+				},
+				hideTooltipTask
 			);
 
 			cached.show();

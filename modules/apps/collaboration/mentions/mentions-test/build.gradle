@@ -1,4 +1,4 @@
 dependencies {
-	testCompile project(":apps:collaboration:mentions:mentions-api")
-	testCompile project(":apps:collaboration:mentions:mentions-service")
+	testCompile group: "com.liferay", name: "com.liferay.mentions.api", version: "2.0.0"
+	testCompile group: "com.liferay", name: "com.liferay.mentions.service", version: "2.0.0"
 }

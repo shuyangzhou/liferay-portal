@@ -359,8 +359,8 @@ public class JournalArticleLocalServiceImpl
 		validate(
 			user.getCompanyId(), groupId, classNameId, articleId, autoArticleId,
 			version, titleMap, content, ddmStructureKey, ddmTemplateKey,
-			expirationDate, smallImage, smallImageURL, smallImageFile,
-			smallImageBytes, serviceContext);
+			displayDate, expirationDate, smallImage, smallImageURL,
+			smallImageFile, smallImageBytes, serviceContext);
 
 		validateReferences(
 			groupId, ddmStructureKey, ddmTemplateKey, layoutUuid, smallImage,
@@ -5160,9 +5160,9 @@ public class JournalArticleLocalServiceImpl
 
 		validate(
 			user.getCompanyId(), groupId, latestArticle.getClassNameId(),
-			titleMap, content, ddmStructureKey, ddmTemplateKey, expirationDate,
-			smallImage, smallImageURL, smallImageFile, smallImageBytes,
-			serviceContext);
+			titleMap, content, ddmStructureKey, ddmTemplateKey, displayDate,
+			expirationDate, smallImage, smallImageURL, smallImageFile,
+			smallImageBytes, serviceContext);
 
 		validateReferences(
 			groupId, ddmStructureKey, ddmTemplateKey, layoutUuid, smallImage,
@@ -7613,9 +7613,10 @@ public class JournalArticleLocalServiceImpl
 	protected void validate(
 			long companyId, long groupId, long classNameId,
 			Map<Locale, String> titleMap, String content,
-			String ddmStructureKey, String ddmTemplateKey, Date expirationDate,
-			boolean smallImage, String smallImageURL, File smallImageFile,
-			byte[] smallImageBytes, ServiceContext serviceContext)
+			String ddmStructureKey, String ddmTemplateKey, Date displayDate,
+			Date expirationDate, boolean smallImage, String smallImageURL,
+			File smallImageFile, byte[] smallImageBytes,
+			ServiceContext serviceContext)
 		throws PortalException {
 
 		Locale articleDefaultLocale = LocaleUtil.fromLanguageId(
@@ -7638,7 +7639,11 @@ public class JournalArticleLocalServiceImpl
 				throw le;
 			}
 
-			if ((expirationDate != null) && expirationDate.before(new Date())) {
+			if ((expirationDate != null) &&
+				(expirationDate.before(new Date()) ||
+				 ((displayDate != null) &&
+				  expirationDate.before(displayDate)))) {
+
 				throw new ArticleExpirationDateException(
 					"Expiration date " + expirationDate + " is in the past");
 			}
@@ -7718,8 +7723,8 @@ public class JournalArticleLocalServiceImpl
 			long companyId, long groupId, long classNameId, String articleId,
 			boolean autoArticleId, double version, Map<Locale, String> titleMap,
 			String content, String ddmStructureKey, String ddmTemplateKey,
-			Date expirationDate, boolean smallImage, String smallImageURL,
-			File smallImageFile, byte[] smallImageBytes,
+			Date displayDate, Date expirationDate, boolean smallImage,
+			String smallImageURL, File smallImageFile, byte[] smallImageBytes,
 			ServiceContext serviceContext)
 		throws PortalException {
 
@@ -7746,8 +7751,8 @@ public class JournalArticleLocalServiceImpl
 
 		validate(
 			companyId, groupId, classNameId, titleMap, content, ddmStructureKey,
-			ddmTemplateKey, expirationDate, smallImage, smallImageURL,
-			smallImageFile, smallImageBytes, serviceContext);
+			ddmTemplateKey, displayDate, expirationDate, smallImage,
+			smallImageURL, smallImageFile, smallImageBytes, serviceContext);
 	}
 
 	protected void validate(String articleId) throws PortalException {

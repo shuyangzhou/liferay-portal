@@ -41,7 +41,7 @@
 	</portlet:renderURL>
 
 	function <portlet:namespace />schedulePublishEvent() {
-		var form = AUI.$(document.<portlet:namespace />exportPagesFm);
+		var form = AUI.$(document.<portlet:namespace />publishPagesFm);
 
 		form.fm('<%= Constants.CMD %>').val('<%= scheduleCMD %>');
 		form.fm('redirect').val('<%= scheduledEventsURL %>');

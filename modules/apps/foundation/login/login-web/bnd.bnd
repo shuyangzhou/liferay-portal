@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Login Web
 Bundle-SymbolicName: com.liferay.login.web
-Bundle-Version: 1.0.0
+Bundle-Version: 1.0.2
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title:
 -liferay-includeresource: @com.liferay.util.java-*.jar!/com/liferay/util/ContentUtil.class

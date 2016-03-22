@@ -30,8 +30,9 @@ import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -434,11 +435,17 @@ public class JenkinsResultsParserUtil {
 
 				bufferedReader.close();
 
-				if (!url.startsWith("file:")) {
-					_toStringCache.put(key, sb.toString());
+				String string = sb.toString();
+
+				byte[] bytes = string.getBytes();
+
+				if (!url.startsWith("file:") &&
+					(bytes.length < (3 * 1024 * 1024))) {
+
+					_toStringCache.put(key, string);
 				}
 
-				return sb.toString();
+				return string;
 			}
 			catch (FileNotFoundException fnfe) {
 				retryCount++;
@@ -494,6 +501,19 @@ public class JenkinsResultsParserUtil {
 		"https://test.liferay.com/([0-9]+)/");
 	private static final Pattern _localURLPattern2 = Pattern.compile(
 		"https://(test-[0-9]+-[0-9]+).liferay.com/");
-	private static final Map<String, String> _toStringCache = new HashMap<>();
+
+	private static final Map<String, String> _toStringCache =
+		new LinkedHashMap<String, String>(50) {
+
+			@Override
+			protected boolean removeEldestEntry(Entry<String, String> entry) {
+				if (size() > 50) {
+					return true;
+				}
+
+				return false;
+			}
+
+		};
 
 }

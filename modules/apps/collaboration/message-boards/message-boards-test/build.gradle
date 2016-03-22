@@ -1,8 +1,8 @@
 dependencies {
-	testCompile project(":apps:collaboration:message-boards:message-boards-comment")
-	testCompile project(":apps:collaboration:message-boards:message-boards-web")
-	testCompile project(":apps:foundation:portal-search:portal-search")
-	testCompile project(":core:registry-api")
+	testCompile group: "com.liferay", name: "com.liferay.message.boards.comment", version: "2.0.0"
+	testCompile group: "com.liferay", name: "com.liferay.message.boards.web", version: "1.0.0"
+	testCompile group: "com.liferay", name: "com.liferay.portal.search", version: "2.0.0"
+	testCompile group: "com.liferay", name: "com.liferay.registry.api", version: "1.0.0"
 
 	testIntegrationCompile group: "com.liferay", name: "com.liferay.arquillian.extension.junit.bridge", version: "1.0.5"
 	testIntegrationCompile group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "2.0.0"

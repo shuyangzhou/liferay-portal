@@ -205,6 +205,12 @@ AUI.add(
 						return host.get(STR_CONTENT_BOX).all(selector + checked);
 					},
 
+					_isActionUrl: function(url) {
+						var uri = new A.Url(url);
+
+						return uri.getParameter('p_p_lifecycle') === 1;
+					},
+
 					_notifyRowToggle: function() {
 						var instance = this;
 
@@ -232,7 +238,7 @@ AUI.add(
 					_onStartNavigate: function(event) {
 						var instance = this;
 
-						if (instance.get('keepSelection').test(unescape(event.path))) {
+						if (!instance._isActionUrl(event.path) && instance.get('keepSelection').test(unescape(event.path))) {
 							instance._addRestoreTask();
 							instance._addRestoreTaskState();
 						}
@@ -272,6 +278,6 @@ AUI.add(
 	},
 	'',
 	{
-		requires: ['aui-component', 'plugin']
+		requires: ['aui-component', 'aui-url', 'plugin']
 	}
 );

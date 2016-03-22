@@ -186,10 +186,12 @@ public class JSPSourceProcessor extends BaseSourceProcessor {
 	protected void checkDefineObjectsVariables(
 		String line, String fileName, int lineCount) {
 
-		for (String[] defineObject : _LIFERAY_FRONTEND_DEFINE_OBJECTS) {
-			checkDefineObjectsVariable(
-				line, fileName, lineCount, defineObject[0], defineObject[1],
-				defineObject[2], "liferay-frontend");
+		if (portalSource) {
+			for (String[] defineObject : _LIFERAY_FRONTEND_DEFINE_OBJECTS) {
+				checkDefineObjectsVariable(
+					line, fileName, lineCount, defineObject[0], defineObject[1],
+					defineObject[2], "liferay-frontend");
+			}
 		}
 
 		for (String[] defineObject : _LIFERAY_THEME_DEFINE_OBJECTS) {
@@ -410,6 +412,8 @@ public class JSPSourceProcessor extends BaseSourceProcessor {
 			fileName, absolutePath, newContent, _taglibLanguageKeyPattern2);
 		checkLanguageKeys(
 			fileName, absolutePath, newContent, _taglibLanguageKeyPattern3);
+
+		newContent = formatJSONObject(newContent);
 
 		newContent = formatStringBundler(fileName, newContent, -1);
 
