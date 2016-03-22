@@ -12,9 +12,10 @@
  * details.
  */
 
-package com.liferay.portal.cache.internal.mvcc;
+package com.liferay.portal.cache.test.util;
 
 import com.liferay.portal.cache.LowLevelCache;
+import com.liferay.portal.cache.internal.mvcc.MVCCPortalCache;
 import com.liferay.portal.cache.test.util.TestPortalCache;
 import com.liferay.portal.cache.test.util.TestPortalCacheListener;
 import com.liferay.portal.cache.test.util.TestPortalCacheReplicator;

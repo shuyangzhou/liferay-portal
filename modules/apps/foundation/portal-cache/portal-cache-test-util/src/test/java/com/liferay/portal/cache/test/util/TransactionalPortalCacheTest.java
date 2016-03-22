@@ -12,8 +12,9 @@
  * details.
  */
 
-package com.liferay.portal.cache;
+package com.liferay.portal.cache.test.util;
 
+import com.liferay.portal.cache.TransactionalPortalCache;
 import com.liferay.portal.cache.test.util.TestPortalCache;
 import com.liferay.portal.cache.test.util.TestPortalCacheListener;
 import com.liferay.portal.cache.test.util.TestPortalCacheReplicator;
