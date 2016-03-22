@@ -36,7 +36,7 @@ TermsOfUseContentProvider termsOfUseContentProvider = TermsOfUseContentProviderR
 		<c:when test="<%= termsOfUseContentProvider != null %>">
 
 			<%
-			termsOfUseContentProvider.includeView(request, response);
+			termsOfUseContentProvider.includeView(request, new PipingServletResponse(pageContext));
 			%>
 
 		</c:when>

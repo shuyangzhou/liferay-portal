@@ -276,6 +276,11 @@ public class ModuleApplicationContextExtender extends AbstractExtender {
 						}
 					}
 
+					@Override
+					public String toString() {
+						return "Initial Database Creation";
+					}
+
 				});
 		}
 
