@@ -61,6 +61,12 @@ public class FallbackSettingsTest extends PowerMockito {
 	public void testGetValuesWhenUnconfigured() {
 		String[] defaultValues = {"default"};
 
+		when(
+			_settings.getValues("key1", defaultValues)
+		).thenReturn(
+			defaultValues
+		);
+
 		String[] values = _fallbackSettings.getValues("key1", defaultValues);
 
 		Assert.assertArrayEquals(defaultValues, values);
@@ -85,6 +91,12 @@ public class FallbackSettingsTest extends PowerMockito {
 
 	@Test
 	public void testGetValueWhenUnconfigured() {
+		when(
+			_settings.getValue("key1", "default")
+		).thenReturn(
+			"default"
+		);
+
 		String value = _fallbackSettings.getValue("key1", "default");
 
 		Assert.assertEquals("default", value);
