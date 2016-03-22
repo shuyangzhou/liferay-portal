@@ -42,15 +42,27 @@ public class CodeCoverageAssertor implements TestRule {
 		new CodeCoverageAssertor();
 
 	public CodeCoverageAssertor() {
-		this(null, null, true);
+		this(null, null, null, true);
+	}
+
+	public CodeCoverageAssertor(String mainClassName) {
+		this(mainClassName, null, null, true);
+	}
+
+	public CodeCoverageAssertor(
+		String mainClassName, String[] includes, String[] excludes,
+		boolean includeInnerClasses) {
+
+		_mainClassName = mainClassName;
+		_includes = includes;
+		_excludes = excludes;
+		_includeInnerClasses = includeInnerClasses;
 	}
 
 	public CodeCoverageAssertor(
 		String[] includes, String[] excludes, boolean includeInnerClasses) {
 
-		_includes = includes;
-		_excludes = excludes;
-		_includeInnerClasses = includeInnerClasses;
+		this(null, includes, excludes, includeInnerClasses);
 	}
 
 	public void appendAssertClasses(List<Class<?>> assertClasses) {
@@ -118,10 +130,14 @@ public class CodeCoverageAssertor implements TestRule {
 	}
 
 	protected String beforeClass(Description description) throws Throwable {
-		String className = description.getClassName();
+		String className = _mainClassName;
 
-		if (className.endsWith("Test")) {
-			className = className.substring(0, className.length() - 4);
+		if (className == null) {
+			className = description.getClassName();
+
+			if (className.endsWith("Test")) {
+				className = className.substring(0, className.length() - 4);
+			}
 		}
 
 		String[] includes = _includes;
@@ -220,5 +236,6 @@ public class CodeCoverageAssertor implements TestRule {
 	private final String[] _excludes;
 	private final boolean _includeInnerClasses;
 	private final String[] _includes;
+	private final String _mainClassName;
 
 }
