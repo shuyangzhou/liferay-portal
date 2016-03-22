@@ -15,9 +15,6 @@
 package com.liferay.portal.cache.test.util;
 
 import com.liferay.portal.cache.TransactionalPortalCache;
-import com.liferay.portal.cache.test.util.TestPortalCache;
-import com.liferay.portal.cache.test.util.TestPortalCacheListener;
-import com.liferay.portal.cache.test.util.TestPortalCacheReplicator;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.PortalCacheHelperUtil;
 import com.liferay.portal.kernel.cache.transactional.TransactionalPortalCacheHelper;
@@ -61,24 +58,8 @@ public class TransactionalPortalCacheTest {
 
 	@ClassRule
 	public static final CodeCoverageAssertor codeCoverageAssertor =
-		new CodeCoverageAssertor() {
-
-			@Override
-			public void appendAssertClasses(List<Class<?>> assertClasses) {
-				Class<TransactionalPortalCacheHelper> clazz =
-					TransactionalPortalCacheHelper.class;
-
-				assertClasses.add(clazz);
-				assertClasses.addAll(Arrays.asList(clazz.getDeclaredClasses()));
-
-				TransactionLifecycleListener transactionLifecycleListener =
-					TransactionalPortalCacheHelper.
-						TRANSACTION_LIFECYCLE_LISTENER;
-
-				assertClasses.add(transactionLifecycleListener.getClass());
-			}
-
-		};
+		new TransactionalPortalCacheTestCodeCoverageAssertor(
+			TransactionalPortalCache.class.getName());
 
 	@BeforeClass
 	public static void setUpClass() {
@@ -1186,6 +1167,35 @@ public class TransactionalPortalCacheTest {
 		private final boolean _completed;
 		private final boolean _newTransaction;
 		private final boolean _rollbackOnly;
+
+	}
+
+	private static class TransactionalPortalCacheTestCodeCoverageAssertor
+		extends CodeCoverageAssertor {
+
+		public TransactionalPortalCacheTestCodeCoverageAssertor() {
+			super(null, null, null, true);
+		}
+
+		public TransactionalPortalCacheTestCodeCoverageAssertor(
+			String mainClassName) {
+
+			super(mainClassName, null, null, true);
+		}
+
+		@Override
+		public void appendAssertClasses(List<Class<?>> assertClasses) {
+			Class<TransactionalPortalCacheHelper> clazz =
+				TransactionalPortalCacheHelper.class;
+
+			assertClasses.add(clazz);
+			assertClasses.addAll(Arrays.asList(clazz.getDeclaredClasses()));
+
+			TransactionLifecycleListener transactionLifecycleListener =
+				TransactionalPortalCacheHelper.TRANSACTION_LIFECYCLE_LISTENER;
+
+			assertClasses.add(transactionLifecycleListener.getClass());
+		}
 
 	}
 
