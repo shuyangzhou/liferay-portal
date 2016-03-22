@@ -22,14 +22,15 @@ public class FallbackSettings extends BaseSettings {
 	public FallbackSettings(
 		Settings parentSettings, FallbackKeys fallbackKeys) {
 
-		super(parentSettings);
+		super(null);
 
+		_parentSettings = parentSettings;
 		_fallbackKeys = fallbackKeys;
 	}
 
 	@Override
 	protected String doGetValue(String key) {
-		String value = parentSettings.getValue(key, null);
+		String value = _parentSettings.getValue(key, null);
 
 		if (value != null) {
 			return value;
@@ -38,7 +39,7 @@ public class FallbackSettings extends BaseSettings {
 		String[] fallbackKeysArray = _fallbackKeys.get(key);
 
 		for (String fallbackKey : fallbackKeysArray) {
-			value = parentSettings.getValue(fallbackKey, null);
+			value = _parentSettings.getValue(fallbackKey, null);
 
 			if (value != null) {
 				return value;
@@ -50,7 +51,7 @@ public class FallbackSettings extends BaseSettings {
 
 	@Override
 	protected String[] doGetValues(String key) {
-		String[] values = parentSettings.getValues(key, null);
+		String[] values = _parentSettings.getValues(key, null);
 
 		if (values != null) {
 			return values;
@@ -59,7 +60,7 @@ public class FallbackSettings extends BaseSettings {
 		String[] fallbackKeysArray = _fallbackKeys.get(key);
 
 		for (String fallbackKey : fallbackKeysArray) {
-			values = parentSettings.getValues(fallbackKey, null);
+			values = _parentSettings.getValues(fallbackKey, null);
 
 			if (values != null) {
 				return values;
@@ -70,5 +71,6 @@ public class FallbackSettings extends BaseSettings {
 	}
 
 	private final FallbackKeys _fallbackKeys;
+	private final Settings _parentSettings;
 
 }
