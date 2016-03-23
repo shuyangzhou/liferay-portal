@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.portlet.PortletURLFactory;
 import com.liferay.portal.kernel.security.pacl.DoPrivileged;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 
 import javax.portlet.PortletRequest;
 
@@ -47,6 +48,21 @@ public class PortletURLFactoryImpl implements PortletURLFactory {
 
 	@Override
 	public LiferayPortletURL create(
+		HttpServletRequest request, String portletId, ThemeDisplay themeDisplay,
+		String lifecycle) {
+
+		Layout layout = themeDisplay.getLayout();
+
+		if (layout != null) {
+			return new PortletURLImpl(request, portletId, layout, lifecycle);
+		}
+
+		return new PortletURLImpl(
+			request, portletId, themeDisplay.getPlid(), lifecycle);
+	}
+
+	@Override
+	public LiferayPortletURL create(
 		PortletRequest portletRequest, String portletId, Layout layout,
 		String lifecycle) {
 
@@ -59,6 +75,22 @@ public class PortletURLFactoryImpl implements PortletURLFactory {
 		String lifecycle) {
 
 		return new PortletURLImpl(portletRequest, portletId, plid, lifecycle);
+	}
+
+	@Override
+	public LiferayPortletURL create(
+		PortletRequest portletRequest, String portletId,
+		ThemeDisplay themeDisplay, String lifecycle) {
+
+		Layout layout = themeDisplay.getLayout();
+
+		if (layout != null) {
+			return new PortletURLImpl(
+				portletRequest, portletId, layout, lifecycle);
+		}
+
+		return new PortletURLImpl(
+			portletRequest, portletId, themeDisplay.getPlid(), lifecycle);
 	}
 
 }

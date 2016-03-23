@@ -15,6 +15,7 @@
 package com.liferay.portal.kernel.portlet;
 
 import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 
 import javax.portlet.PortletRequest;
 
@@ -34,11 +35,19 @@ public interface PortletURLFactory {
 		String lifecycle);
 
 	public LiferayPortletURL create(
+		HttpServletRequest request, String portletId, ThemeDisplay themeDisplay,
+		String lifecycle);
+
+	public LiferayPortletURL create(
 		PortletRequest portletRequest, String portletId, Layout layout,
 		String lifecycle);
 
 	public LiferayPortletURL create(
 		PortletRequest portletRequest, String portletId, long plid,
 		String lifecycle);
+
+	public LiferayPortletURL create(
+		PortletRequest portletRequest, String portletId,
+		ThemeDisplay themeDisplay, String lifecycle);
 
 }
