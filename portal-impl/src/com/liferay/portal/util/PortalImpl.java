@@ -5753,7 +5753,7 @@ public class PortalImpl implements Portal {
 				Layout layout = (Layout)request.getAttribute(WebKeys.LAYOUT);
 
 				PortletURL portletURL = PortletURLFactoryUtil.create(
-					request, PortletKeys.DIRECTORY, layout.getPlid(),
+					request, PortletKeys.DIRECTORY, layout,
 					PortletRequest.RENDER_PHASE);
 
 				portletURL.setParameter(
