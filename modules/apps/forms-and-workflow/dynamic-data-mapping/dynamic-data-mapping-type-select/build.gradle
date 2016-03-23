@@ -14,10 +14,6 @@ classes {
 	dependsOn wrapSoyTemplates
 }
 
-liferay {
-	deployDir = file("${liferayHome}/osgi/modules")
-}
-
 transpileJS {
 	soySrcIncludes = ""
 	srcIncludes = "**/*.es.js"

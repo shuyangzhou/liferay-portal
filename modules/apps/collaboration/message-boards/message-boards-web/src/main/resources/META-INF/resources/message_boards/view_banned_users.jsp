@@ -102,5 +102,6 @@ portletURL.setParameter("mvcRenderCommandName", "/message_boards/view_banned_use
 
 <%
 PortalUtil.setPageSubtitle(LanguageUtil.get(request, "banned-users"), request);
+
 PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, TextFormatter.format("banned-users", TextFormatter.O)), portletURL.toString());
 %>

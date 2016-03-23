@@ -4367,6 +4367,7 @@ public class StringUtil {
 	 * @param  locale apply this locale's rules
 	 * @return the string, converted to lower case, or <code>null</code> if the
 	 *         string is <code>null</code>
+	 * @see    com.liferay.portal.kernel.util.GetterUtil#_toLowerCase
 	 */
 	public static String toLowerCase(String s, Locale locale) {
 		if (s == null) {

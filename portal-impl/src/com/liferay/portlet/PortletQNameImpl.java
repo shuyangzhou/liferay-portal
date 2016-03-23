@@ -35,11 +35,6 @@ import java.util.concurrent.ConcurrentHashMap;
 @DoPrivileged
 public class PortletQNameImpl implements PortletQName {
 
-	public PortletQNameImpl() {
-		_qNames = new ConcurrentHashMap<>();
-		_identifiers = new ConcurrentHashMap<>();
-	}
-
 	@Override
 	public String getKey(QName qName) {
 		return getKey(qName.getNamespaceURI(), qName.getLocalPart());
@@ -67,17 +62,14 @@ public class PortletQNameImpl implements PortletQName {
 
 	@Override
 	public String getPublicRenderParameterName(QName qName) {
-		StringBundler sb = new StringBundler(4);
+		String publicRenderParameterName = _qNameStrings.get(qName);
 
-		sb.append(PUBLIC_RENDER_PARAMETER_NAMESPACE);
-		sb.append(qName.getNamespaceURI().hashCode());
-		sb.append(StringPool.UNDERLINE);
-		sb.append(qName.getLocalPart());
+		if (publicRenderParameterName == null) {
+			publicRenderParameterName = _toString(
+				PUBLIC_RENDER_PARAMETER_NAMESPACE, qName);
 
-		String publicRenderParameterName = sb.toString();
-
-		if (!_qNames.containsKey(publicRenderParameterName)) {
 			_qNames.put(publicRenderParameterName, qName);
+			_qNameStrings.put(qName, publicRenderParameterName);
 		}
 
 		return publicRenderParameterName;
@@ -144,17 +136,14 @@ public class PortletQNameImpl implements PortletQName {
 
 	@Override
 	public String getRemovePublicRenderParameterName(QName qName) {
-		StringBundler sb = new StringBundler(4);
+		String removePublicRenderParameterName = _qNameStrings.get(qName);
 
-		sb.append(REMOVE_PUBLIC_RENDER_PARAMETER_NAMESPACE);
-		sb.append(qName.getNamespaceURI().hashCode());
-		sb.append(StringPool.UNDERLINE);
-		sb.append(qName.getLocalPart());
+		if (removePublicRenderParameterName == null) {
+			removePublicRenderParameterName = _toString(
+				REMOVE_PUBLIC_RENDER_PARAMETER_NAMESPACE, qName);
 
-		String removePublicRenderParameterName = sb.toString();
-
-		if (!_qNames.containsKey(removePublicRenderParameterName)) {
 			_qNames.put(removePublicRenderParameterName, qName);
+			_qNameStrings.put(qName, removePublicRenderParameterName);
 		}
 
 		return removePublicRenderParameterName;
@@ -167,12 +156,26 @@ public class PortletQNameImpl implements PortletQName {
 		_identifiers.put(publicRenderParameterName, identifier);
 	}
 
+	private String _toString(String prefix, QName qName) {
+		StringBundler sb = new StringBundler(6);
+
+		sb.append(prefix);
+		sb.append(qName.getNamespacePrefix());
+		sb.append(StringPool.UNDERLINE);
+		sb.append(qName.getNamespaceURI());
+		sb.append(StringPool.UNDERLINE);
+		sb.append(qName.getLocalPart());
+
+		return sb.toString();
+	}
+
 	private static final String _KEY_SEPARATOR = "_KEY_";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortletQNameImpl.class);
 
-	private final Map<String, String> _identifiers;
-	private final Map<String, QName> _qNames;
+	private final Map<String, String> _identifiers = new ConcurrentHashMap<>();
+	private final Map<String, QName> _qNames = new ConcurrentHashMap<>();
+	private final Map<QName, String> _qNameStrings = new ConcurrentHashMap<>();
 
 }
