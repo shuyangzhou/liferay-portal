@@ -172,6 +172,10 @@ public class BackgroundTaskLocalServiceImpl
 		BackgroundTask backgroundTask =
 			backgroundTaskPersistence.fetchByPrimaryKey(backgroundTaskId);
 
+		if (status == BackgroundTaskConstants.STATUS_SUCCESSFUL) {
+			System.out.println("##########Check fetch before final update " + backgroundTask);
+		}
+
 		if (backgroundTask == null) {
 			return null;
 		}

@@ -75,6 +75,8 @@ public class BackgroundTaskMessageListener extends BaseMessageListener {
 				backgroundTaskId, null,
 				BackgroundTaskConstants.STATUS_IN_PROGRESS, serviceContext);
 
+		System.out.println("##########First amend " + backgroundTask);
+
 		if (backgroundTask == null) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
@@ -119,6 +121,8 @@ public class BackgroundTaskMessageListener extends BaseMessageListener {
 
 			backgroundTask = _backgroundTaskManager.fetchBackgroundTask(
 				backgroundTask.getBackgroundTaskId());
+
+			System.out.println("##########Check fetch before execute " + backgroundTask);
 
 			BackgroundTaskResult backgroundTaskResult =
 				backgroundTaskExecutor.execute(backgroundTask);
