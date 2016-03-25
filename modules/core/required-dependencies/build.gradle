@@ -3,9 +3,9 @@ import com.liferay.gradle.util.copy.RenameDependencyClosure
 task deploy(type: Copy, overwrite: true)
 
 dependencies {
-	provided group: "com.liferay", name: "javax.servlet.jsp.jstl", transitive: false, version: "1.2.3.LIFERAY-PATCHED-1"
+	provided group: "com.liferay", name: "javax.servlet.jsp.jstl", transitive: false, version: "1.2.3.LIFERAY-PATCHED-2"
 	provided group: "com.liferay", name: "org.apache.felix.configadmin", transitive: false, version: "1.8.8.LIFERAY-PATCHED-1"
-	provided group: "com.liferay", name: "org.osgi.service.http", transitive: false, version: "3.5.0-20150611.165350-3.LIFERAY-PATCHED-1"
+	provided group: "com.liferay", name: "org.osgi.service.http", transitive: false, version: "3.5.0-20150611.165350-3.LIFERAY-PATCHED-2"
 	provided group: "javax.servlet.jsp", name: "javax.servlet.jsp-api", transitive: false, version: "2.3.2-b01"
 	provided group: "javax.servlet.jsp.jstl", name: "javax.servlet.jsp.jstl-api", transitive: false, version: "1.2.1"
 	provided group: "org.apache.aries", name: "org.apache.aries.util", transitive: false, version: "1.0.0"

@@ -1,4 +1,4 @@
-define("frontend-js-spa-web@1.0.3/metal-promise/src/promise/Promise", ['exports', 'metal/src/metal'], function (exports, _metal) {
+define("frontend-js-spa-web@1.0.4/metal-promise/src/promise/Promise", ['exports', 'metal/src/metal'], function (exports, _metal) {
   /*!
    * Promises polyfill from Google's Closure Library.
    *

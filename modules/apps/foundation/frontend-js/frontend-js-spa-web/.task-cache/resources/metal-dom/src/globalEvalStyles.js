@@ -1,4 +1,4 @@
-define("frontend-js-spa-web@1.0.3/metal-dom/src/globalEvalStyles", ['exports', 'metal/src/metal', './dom'], function (exports, _metal, _dom) {
+define("frontend-js-spa-web@1.0.4/metal-dom/src/globalEvalStyles", ['exports', 'metal/src/metal', './dom'], function (exports, _metal, _dom) {
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {

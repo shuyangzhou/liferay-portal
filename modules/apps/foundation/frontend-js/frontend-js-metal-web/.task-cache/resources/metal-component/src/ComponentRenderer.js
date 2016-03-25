@@ -1,4 +1,4 @@
-define("frontend-js-metal-web@1.0.3/metal-component/src/ComponentRenderer", ['exports', 'metal-events/src/events'], function (exports, _events) {
+define("frontend-js-metal-web@1.0.4/metal-component/src/ComponentRenderer", ['exports', 'metal-events/src/events'], function (exports, _events) {
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {

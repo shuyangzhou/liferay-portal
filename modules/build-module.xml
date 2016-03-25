@@ -4,6 +4,8 @@
 <project name="build-module">
 	<import file="build-common.xml" />
 
+	<import file="build-app.xml" />
+
 	<target name="all">
 		<print-gradle-alternative args="clean deploy" />
 	</target>
