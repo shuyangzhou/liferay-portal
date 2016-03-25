@@ -1,4 +1,4 @@
-define("frontend-js-metal-web@1.0.3/metal-popover/src/Popover", ['exports', 'metal/src/metal', 'metal-tooltip/src/Tooltip', 'metal-jquery-adapter/src/JQueryAdapter', './Popover.soy'], function (exports, _metal, _Tooltip, _JQueryAdapter) {
+define("frontend-js-metal-web@1.0.4/metal-popover/src/Popover", ['exports', 'metal/src/metal', 'metal-tooltip/src/Tooltip', 'metal-jquery-adapter/src/JQueryAdapter', './Popover.soy'], function (exports, _metal, _Tooltip, _JQueryAdapter) {
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {

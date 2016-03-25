@@ -1,4 +1,4 @@
-define("frontend-js-metal-web@1.0.3/metal-jquery-adapter/src/JQueryAdapter", ['exports'], function (exports) {
+define("frontend-js-metal-web@1.0.4/metal-jquery-adapter/src/JQueryAdapter", ['exports'], function (exports) {
 	'use strict';
 
 	/**

@@ -3,8 +3,8 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.liferay</groupId>
-  <artifactId>javax.servlet.jsp.jstl</artifactId>
-  <version>1.2.3.LIFERAY-PATCHED-1</version>
+  <artifactId>org.osgi.service.http</artifactId>
+  <version>3.5.0-20150611.165350-3.LIFERAY-PATCHED-2</version>
   <licenses>
     <license>
       <name>LGPL 2.1</name>
@@ -25,9 +25,27 @@
   </scm>
   <dependencies>
     <dependency>
-      <groupId>org.glassfish.web</groupId>
-      <artifactId>javax.servlet.jsp.jstl</artifactId>
-      <version>1.2.3</version>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>3.0.1</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.service.http</artifactId>
+      <version>1.2.1</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.core</artifactId>
+      <version>6.0.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.service.http.whiteboard</artifactId>
+      <version>1.0.0</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>

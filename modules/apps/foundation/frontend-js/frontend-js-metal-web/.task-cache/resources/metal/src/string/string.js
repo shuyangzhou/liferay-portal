@@ -1,4 +1,4 @@
-define("frontend-js-metal-web@1.0.3/metal/src/string/string", ['exports'], function (exports) {
+define("frontend-js-metal-web@1.0.4/metal/src/string/string", ['exports'], function (exports) {
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
