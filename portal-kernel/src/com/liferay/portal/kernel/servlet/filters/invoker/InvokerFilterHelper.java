@@ -17,9 +17,11 @@ package com.liferay.portal.kernel.servlet.filters.invoker;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.ServletContextPool;
+import com.liferay.portal.kernel.util.AggregateClassLoader;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.ObjectValuePair;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -273,19 +275,20 @@ public class InvokerFilterHelper {
 		ServletContext servletContext, String filterClassName,
 		String filterName, FilterConfig filterConfig) {
 
-		ClassLoader pluginClassLoader = servletContext.getClassLoader();
-
 		Thread currentThread = Thread.currentThread();
 
 		ClassLoader contextClassLoader = currentThread.getContextClassLoader();
 
-		if (contextClassLoader != pluginClassLoader) {
-			currentThread.setContextClassLoader(pluginClassLoader);
-		}
+		ClassLoader aggregateClassLoader =
+			AggregateClassLoader.getAggregateClassLoader(
+				PortalClassLoaderUtil.getClassLoader(),
+				servletContext.getClassLoader());
+
+		currentThread.setContextClassLoader(aggregateClassLoader);
 
 		try {
 			Filter filter = (Filter)InstanceFactory.newInstance(
-				pluginClassLoader, filterClassName);
+				aggregateClassLoader, filterClassName);
 
 			filter.init(filterConfig);
 
@@ -297,9 +300,7 @@ public class InvokerFilterHelper {
 			return null;
 		}
 		finally {
-			if (contextClassLoader != pluginClassLoader) {
-				currentThread.setContextClassLoader(contextClassLoader);
-			}
+			currentThread.setContextClassLoader(contextClassLoader);
 		}
 	}
 
