@@ -75,7 +75,7 @@ public class BackgroundTaskMessageListener extends BaseMessageListener {
 				backgroundTaskId, null,
 				BackgroundTaskConstants.STATUS_IN_PROGRESS, serviceContext);
 
-		System.out.println("########## Thread id : " + Thread.currentThread().getId() + ", First amend " + backgroundTask);
+//		System.out.println("########## Thread id : " + Thread.currentThread().getId() + ", First amend " + backgroundTask);
 
 		if (backgroundTask == null) {
 			if (_log.isDebugEnabled()) {
@@ -122,7 +122,7 @@ public class BackgroundTaskMessageListener extends BaseMessageListener {
 			backgroundTask = _backgroundTaskManager.fetchBackgroundTask(
 				backgroundTask.getBackgroundTaskId());
 
-			System.out.println("########## Thread id : " + Thread.currentThread().getId() + ", Check fetch before execute " + backgroundTask);
+//			System.out.println("########## Thread id : " + Thread.currentThread().getId() + ", Check fetch before execute " + backgroundTask);
 
 			BackgroundTaskResult backgroundTaskResult =
 				backgroundTaskExecutor.execute(backgroundTask);
