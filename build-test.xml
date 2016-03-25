@@ -2177,23 +2177,6 @@ ${tomcat-gc-log}
 						sb.append("TEST_CLASS_GROUP_");
 						sb.append(i);
 						sb.append("=");
-
-						for (String testClass : testClassGroup) {
-							sb.append(testClass);
-							sb.append(",");
-						}
-
-						for (String testClass : autoBalanceTestClassNames) {
-							if (!testClassGroup.contains(testClass)) {
-								sb.append(testClass);
-								sb.append(",");
-							}
-						}
-
-						if (!testClassGroup.isEmpty() || autoBalanceTestClassNames.length > 0) {
-							sb.setLength(sb.length() - 1);
-						}
-
 						sb.append("\n\n");
 					}
 
