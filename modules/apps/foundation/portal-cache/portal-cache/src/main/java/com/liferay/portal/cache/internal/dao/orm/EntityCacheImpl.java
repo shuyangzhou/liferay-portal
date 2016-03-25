@@ -83,6 +83,7 @@ public class EntityCacheImpl
 	@Override
 	public void clearLocalCache() {
 		if (_localCacheAvailable) {
+			System.out.println("&&&&ThreadLocal cache clear");
 			_localCache.remove();
 		}
 	}
@@ -158,6 +159,10 @@ public class EntityCacheImpl
 			localCacheKey = _encodeLocalCacheKey(clazz, primaryKey);
 
 			result = localCache.get(localCacheKey);
+
+			if (clazz.getName().equals("com.liferay.portal.background.task.model.impl.BackgroundTaskImpl")) {
+				System.out.println("&&&&ThreadLocal cache get get " + result);
+			}
 		}
 
 		if (result == null) {
@@ -174,6 +179,10 @@ public class EntityCacheImpl
 
 			if (_localCacheAvailable) {
 				localCache.put(localCacheKey, result);
+
+				if (clazz.getName().equals("com.liferay.portal.background.task.model.impl.BackgroundTaskImpl")) {
+					System.out.println("&&&&ThreadLocal cache get populate " + result);
+				}
 			}
 		}
 
@@ -221,6 +230,10 @@ public class EntityCacheImpl
 			localCacheKey = _encodeLocalCacheKey(clazz, primaryKey);
 
 			result = localCache.get(localCacheKey);
+
+			if (clazz.getName().equals("com.liferay.portal.background.task.model.impl.BackgroundTaskImpl")) {
+				System.out.println("&&&&ThreadLocal cache load get " + result);
+			}
 		}
 
 		Serializable loadResult = null;
@@ -263,6 +276,10 @@ public class EntityCacheImpl
 
 			if (_localCacheAvailable) {
 				localCache.put(localCacheKey, result);
+
+				if (clazz.getName().equals("com.liferay.portal.background.task.model.impl.BackgroundTaskImpl")) {
+					System.out.println("&&&&ThreadLocal cache load populate " + result);
+				}
 			}
 		}
 
@@ -309,6 +326,10 @@ public class EntityCacheImpl
 			Serializable localCacheKey = _encodeLocalCacheKey(
 				clazz, primaryKey);
 
+			if (clazz.getName().equals("com.liferay.portal.background.task.model.impl.BackgroundTaskImpl")) {
+				System.out.println("&&&&ThreadLocal cache put " + result);
+			}
+
 			localCache.put(localCacheKey, result);
 		}
 
@@ -351,7 +372,11 @@ public class EntityCacheImpl
 			Serializable localCacheKey = _encodeLocalCacheKey(
 				clazz, primaryKey);
 
-			localCache.remove(localCacheKey);
+			Serializable result = localCache.remove(localCacheKey);
+
+			if (clazz.getName().equals("com.liferay.portal.background.task.model.impl.BackgroundTaskImpl")) {
+				System.out.println("&&&&ThreadLocal cache remove " + result);
+			}
 		}
 
 		PortalCache<Serializable, Serializable> portalCache = getPortalCache(
