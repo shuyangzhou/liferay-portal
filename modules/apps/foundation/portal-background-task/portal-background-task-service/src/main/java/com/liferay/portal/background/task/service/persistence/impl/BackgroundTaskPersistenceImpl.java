@@ -8489,6 +8489,8 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 			}
 		}
 
+		long mvccVersion = backgroundTask.getMvccVersion();
+
 		Session session = null;
 
 		try {
@@ -8724,6 +8726,14 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_N_T_C,
 					args);
 			}
+		}
+
+		if (mvccVersion == backgroundTask.getMvccVersion()) {
+			System.out.println("~~~~~~~Did not get a mvcc version bump for " + backgroundTask);
+		}
+
+		if (mvccVersion == 0) {
+			System.out.println("^^^^^^^ Post update entity cache putting " + backgroundTask);
 		}
 
 		entityCache.putResult(BackgroundTaskModelImpl.ENTITY_CACHE_ENABLED,
