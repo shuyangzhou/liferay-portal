@@ -61,6 +61,12 @@ import javax.servlet.jsp.tagext.BodyContent;
  */
 public class IncludeTag extends AttributesTagSupport {
 
+	public IncludeTag() {
+		_bodyContentKey = encodeKey("bodyContent");
+		_dynamicAttributesKey = encodeKey("dynamicAttributes");
+		_scopedAttributesKey = encodeKey("scopedAttributes");
+	}
+
 	@Override
 	public int doEndTag() throws JspException {
 		try {
@@ -154,17 +160,15 @@ public class IncludeTag extends AttributesTagSupport {
 	protected void callSetAttributes() {
 		HttpServletRequest request = getOriginalServletRequest();
 
+		request.setAttribute(_bodyContentKey, getBodyContentWrapper());
+		request.setAttribute(_dynamicAttributesKey, getDynamicAttributes());
+		request.setAttribute(_scopedAttributesKey, getScopedAttributes());
+
 		if (isCleanUpSetAttributes()) {
 			_trackedRequest = new TrackedServletRequest(request);
 
 			request = _trackedRequest;
 		}
-
-		setNamespacedAttribute(request, "bodyContent", getBodyContentWrapper());
-		setNamespacedAttribute(
-			request, "dynamicAttributes", getDynamicAttributes());
-		setNamespacedAttribute(
-			request, "scopedAttributes", getScopedAttributes());
 
 		setAttributes(request);
 	}
@@ -180,6 +184,10 @@ public class IncludeTag extends AttributesTagSupport {
 
 			_trackedRequest = null;
 		}
+
+		request.removeAttribute(_bodyContentKey);
+		request.removeAttribute(_dynamicAttributesKey);
+		request.removeAttribute(_scopedAttributesKey);
 	}
 
 	protected void doClearTag() {
@@ -494,7 +502,10 @@ public class IncludeTag extends AttributesTagSupport {
 
 	private static final Log _log = LogFactoryUtil.getLog(IncludeTag.class);
 
+	private final String _bodyContentKey;
+	private final String _dynamicAttributesKey;
 	private String _page;
+	private final String _scopedAttributesKey;
 	private boolean _strict;
 	private TrackedServletRequest _trackedRequest;
 	private boolean _useCustomPage = true;

@@ -21,7 +21,6 @@ import com.liferay.taglib.util.IncludeTag;
 import javax.portlet.PortletURL;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTag;
 
@@ -32,10 +31,8 @@ public class ManagementBarDisplayButtonsTag
 	extends IncludeTag implements BodyTag {
 
 	@Override
-	public int doStartTag() throws JspException {
-		setAttributeNamespace(_ATTRIBUTE_NAMESPACE);
-
-		return super.doStartTag();
+	public String getAttributeNamespace() {
+		return _ATTRIBUTE_NAMESPACE;
 	}
 
 	public void setDisabled(boolean disabled) {

@@ -37,9 +37,12 @@ public class ManagementBarButtonTag extends IncludeTag {
 
 	@Override
 	public int doStartTag() {
-		setAttributeNamespace(_ATTRIBUTE_NAMESPACE);
-
 		return EVAL_BODY_INCLUDE;
+	}
+
+	@Override
+	public String getAttributeNamespace() {
+		return _ATTRIBUTE_NAMESPACE;
 	}
 
 	public String getId() {

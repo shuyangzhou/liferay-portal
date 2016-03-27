@@ -27,10 +27,8 @@ import javax.servlet.jsp.JspException;
 public abstract class BaseNavItemTag extends com.liferay.taglib.util.IncludeTag {
 
 	@Override
-	public int doStartTag() throws JspException {
-		setAttributeNamespace(_ATTRIBUTE_NAMESPACE);
-
-		return super.doStartTag();
+	public String getAttributeNamespace() {
+		return _ATTRIBUTE_NAMESPACE;
 	}
 
 	public java.lang.String getAnchorCssClass() {

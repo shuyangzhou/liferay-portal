@@ -25,10 +25,6 @@ import javax.servlet.jsp.JspException;
  */
 public abstract class BaseScriptTag extends com.liferay.taglib.util.PositionTagSupport {
 
-	@Override
-	public int doStartTag() throws JspException {
-		return super.doStartTag();
-	}
 
 	public boolean getSandbox() {
 		return _sandbox;

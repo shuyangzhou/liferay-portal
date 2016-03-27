@@ -17,7 +17,6 @@ package com.liferay.frontend.taglib.web.servlet.taglib;
 import com.liferay.frontend.taglib.web.servlet.ServletContextUtil;
 import com.liferay.taglib.util.IncludeTag;
 
-import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyContent;
 import javax.servlet.jsp.tagext.BodyTag;
@@ -44,10 +43,8 @@ public class ManagementBarActionButtonsTag
 	}
 
 	@Override
-	public int doStartTag() throws JspException {
-		setAttributeNamespace(_ATTRIBUTE_NAMESPACE);
-
-		return super.doStartTag();
+	public String getAttributeNamespace() {
+		return _ATTRIBUTE_NAMESPACE;
 	}
 
 	@Override

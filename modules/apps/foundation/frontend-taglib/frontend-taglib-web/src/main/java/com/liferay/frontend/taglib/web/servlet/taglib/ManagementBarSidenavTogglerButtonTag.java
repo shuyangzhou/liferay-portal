@@ -25,6 +25,11 @@ import javax.servlet.http.HttpServletRequest;
 public class ManagementBarSidenavTogglerButtonTag
 	extends ManagementBarButtonTag {
 
+	@Override
+	public String getAttributeNamespace() {
+		return _ATTRIBUTE_NAMESPACE;
+	}
+
 	public void setSidenavId(String sidenavId) {
 		_sidenavId = sidenavId;
 	}
@@ -43,8 +48,6 @@ public class ManagementBarSidenavTogglerButtonTag
 
 	@Override
 	protected void setAttributes(HttpServletRequest request) {
-		setAttributeNamespace(_ATTRIBUTE_NAMESPACE);
-
 		if (Validator.isNull(getId())) {
 			setId(StringUtil.randomId());
 		}

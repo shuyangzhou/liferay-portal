@@ -25,10 +25,6 @@ import javax.servlet.jsp.JspException;
  */
 public abstract class BaseSpacerTag extends com.liferay.taglib.TagSupport {
 
-	@Override
-	public int doStartTag() throws JspException {
-		return super.doStartTag();
-	}
 
 	protected void cleanUp() {
 	}

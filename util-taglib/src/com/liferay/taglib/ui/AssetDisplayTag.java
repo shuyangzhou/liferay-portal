@@ -21,7 +21,6 @@ import com.liferay.asset.kernel.model.Renderer;
 import com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.taglib.util.IncludeTag;
@@ -51,18 +50,7 @@ public class AssetDisplayTag extends IncludeTag {
 			throw new JspException(e);
 		}
 		finally {
-			clearDynamicAttributes();
-			clearParams();
-			clearProperties();
-
-			cleanUpSetAttributes();
-
-			if (!ServerDetector.isResin()) {
-				setPage(null);
-				setUseCustomPage(true);
-
-				cleanUp();
-			}
+			doClearTag();
 		}
 	}
 

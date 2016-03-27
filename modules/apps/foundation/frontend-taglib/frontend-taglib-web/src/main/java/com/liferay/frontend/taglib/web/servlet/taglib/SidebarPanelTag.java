@@ -27,8 +27,6 @@ public class SidebarPanelTag extends IncludeTag {
 
 	@Override
 	public int doEndTag() throws JspException {
-		setAttributeNamespace(_ATTRIBUTE_NAMESPACE);
-
 		setNamespacedAttribute(
 			request, "searchContainerId", _searchContainerId);
 		setNamespacedAttribute(request, "resourceURL", _resourceURL);
@@ -38,11 +36,14 @@ public class SidebarPanelTag extends IncludeTag {
 
 	@Override
 	public int doStartTag() throws JspException {
-		setAttributeNamespace(_ATTRIBUTE_NAMESPACE);
-
 		super.doStartTag();
 
 		return EVAL_BODY_INCLUDE;
+	}
+
+	@Override
+	public String getAttributeNamespace() {
+		return _ATTRIBUTE_NAMESPACE;
 	}
 
 	@Override

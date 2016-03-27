@@ -34,8 +34,6 @@ public class ErrorTag extends IncludeTag implements BodyTag {
 
 	@Override
 	public int doStartTag() throws JspException {
-		setAttributeNamespace(_ATTRIBUTE_NAMESPACE);
-
 		PortletRequest portletRequest = (PortletRequest)request.getAttribute(
 			JavaConstants.JAVAX_PORTLET_REQUEST);
 
@@ -52,6 +50,11 @@ public class ErrorTag extends IncludeTag implements BodyTag {
 		pageContext.setAttribute("errorException", value);
 
 		return super.doStartTag();
+	}
+
+	@Override
+	public String getAttributeNamespace() {
+		return _ATTRIBUTE_NAMESPACE;
 	}
 
 	public void setException(Class<?> exception) {

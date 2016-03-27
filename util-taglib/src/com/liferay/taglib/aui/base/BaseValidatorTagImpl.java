@@ -25,10 +25,6 @@ import javax.servlet.jsp.JspException;
  */
 public abstract class BaseValidatorTagImpl extends com.liferay.taglib.BaseBodyTagSupport {
 
-	@Override
-	public int doStartTag() throws JspException {
-		return super.doStartTag();
-	}
 
 	public java.lang.String getErrorMessage() {
 		return _errorMessage;
