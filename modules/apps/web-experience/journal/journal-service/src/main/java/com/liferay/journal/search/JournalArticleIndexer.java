@@ -553,20 +553,40 @@ public class JournalArticleIndexer
 		document.addKeyword(
 			"ddmTemplateKey", journalArticle.getDDMTemplateKey());
 		document.addDate("displayDate", journalArticle.getDisplayDate());
-		document.addKeyword("head", JournalUtil.isHead(journalArticle));
 
-		boolean headListable = JournalUtil.isHeadListable(journalArticle);
+		JournalArticle latestArticle =
+			_journalArticleLocalService.fetchLatestArticle(
+				journalArticle.getResourcePrimKey(),
+				new int[] {
+					WorkflowConstants.STATUS_APPROVED,
+					WorkflowConstants.STATUS_IN_TRASH,
+					WorkflowConstants.STATUS_SCHEDULED
+				});
 
-		document.addKeyword("headListable", headListable);
+		if (latestArticle == null) {
+			document.addKeyword("head", false);
 
-		// Scheduled listable articles should be visible in asset browser
+			document.addKeyword("headListable", false);
+		}
+		else if (journalArticle.getId() == latestArticle.getId()) {
 
-		if (journalArticle.isScheduled() && headListable) {
-			boolean visible = GetterUtil.getBoolean(document.get("visible"));
+			// Scheduled listable articles should be visible in asset browser
 
-			if (!visible) {
+			if (journalArticle.isScheduled()) {
+				document.addKeyword("head", false);
+
 				document.addKeyword("visible", true);
 			}
+			else {
+				document.addKeyword("head", journalArticle.isIndexable());
+			}
+
+			document.addKeyword("headListable", true);
+		}
+		else {
+			document.addKeyword("head", JournalUtil.isHead(journalArticle));
+
+			document.addKeyword("headListable", false);
 		}
 
 		if (ddmStructure != null) {
