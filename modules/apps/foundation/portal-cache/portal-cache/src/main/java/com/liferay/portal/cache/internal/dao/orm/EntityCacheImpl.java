@@ -178,12 +178,8 @@ public class EntityCacheImpl
 				if (clazz.getName().equals("com.liferay.portal.background.task.model.impl.BackgroundTaskImpl")) {
 					MVCCModel mvccModel = (MVCCModel)_toEntityModel(result);
 
-					if ((mvccModel != null) && mvccModel.getMvccVersion() == 0) {
-						System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", ThreadLocal cache populated from entity cache (getResult) " + mvccModel);
-//						synchronized (System.out) {
-//							System.out.println("&&&&ThreadLocal cache get populate " + result);
-//							new Exception().printStackTrace(System.out);
-//						}
+					if (mvccModel != null) {
+						System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", ThreadLocal cache populated from entity cache (getResult) " + mvccModel + ", id : " + System.identityHashCode(mvccModel));
 					}
 				}
 			}
@@ -278,14 +274,7 @@ public class EntityCacheImpl
 
 				if (clazz.getName().equals("com.liferay.portal.background.task.model.impl.BackgroundTaskImpl")) {
 					MVCCModel mvccModel = (MVCCModel)result;
-
-					if (mvccModel.getMvccVersion() == 0) {
-						System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", ThreadLocal cache populated from entity cache (loadResult) " + mvccModel);
-//						synchronized (System.out) {
-//							System.out.println("&&&&ThreadLocal cache load populate " + result);
-//							new Exception().printStackTrace(System.out);
-//						}
-					}
+					System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", ThreadLocal cache populated from entity cache (loadResult) " + mvccModel + ", id : " + System.identityHashCode(mvccModel));
 				}
 			}
 		}
@@ -335,14 +324,7 @@ public class EntityCacheImpl
 
 			if (clazz.getName().equals("com.liferay.portal.background.task.model.impl.BackgroundTaskImpl")) {
 				MVCCModel mvccModel = (MVCCModel)result;
-
-				if (mvccModel.getMvccVersion() == 0) {
-					System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", ThreadLocal cache putResult " + mvccModel);
-//					synchronized (System.out) {
-//						System.out.println("&&&&ThreadLocal cache put " + result);
-//						new Exception().printStackTrace(System.out);
-//					}
-				}
+				System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", ThreadLocal cache putResult " + mvccModel + ", id : " + System.identityHashCode(mvccModel));
 			}
 
 			localCache.put(localCacheKey, result);
@@ -390,7 +372,7 @@ public class EntityCacheImpl
 			Serializable result = localCache.remove(localCacheKey);
 
 			if (clazz.getName().equals("com.liferay.portal.background.task.model.impl.BackgroundTaskImpl")) {
-				System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", ThreadLocal removeResult " + result);
+				System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", ThreadLocal removeResult " + result + ", id : " + System.identityHashCode(result));
 			}
 		}
 
