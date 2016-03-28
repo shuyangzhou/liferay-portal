@@ -18,6 +18,8 @@ import com.liferay.portal.osgi.web.wab.extender.internal.definition.ListenerDefi
 
 import java.util.List;
 
+import javax.servlet.ServletContext;
+
 import org.osgi.framework.Bundle;
 
 /**
@@ -28,6 +30,8 @@ public interface ModifiableServletContext {
 	public Bundle getBundle();
 
 	public List<ListenerDefinition> getListenerDefinitions();
+
+	public ServletContext getWrappedServletContext();
 
 	public void registerFilters();
 

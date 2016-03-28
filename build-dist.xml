@@ -2928,6 +2928,21 @@ plugins.includes=</echo>
 				</zip>
 
 				<if>
+					<available file="${zip.executable.dir}/../deploy" />
+					<then>
+						<zip
+							destfile="dist/${zip.executable.file}-${lp.version}.zip"
+							update="true"
+						>
+							<zipfileset
+								dir="${zip.executable.dir}/../deploy"
+								prefix="liferay-portal-${lp.version}/deploy"
+							/>
+						</zip>
+					</then>
+				</if>
+
+				<if>
 					<available file="${zip.executable.dir}/../osgi" />
 					<then>
 						<zip

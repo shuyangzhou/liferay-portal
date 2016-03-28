@@ -160,6 +160,8 @@ import com.liferay.portal.kernel.xml.XPath;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.util.PrefsPropsUtil;
 import com.liferay.social.kernel.model.SocialActivityConstants;
+import com.liferay.trash.kernel.exception.RestoreEntryException;
+import com.liferay.trash.kernel.exception.TrashEntryException;
 import com.liferay.trash.kernel.model.TrashEntry;
 import com.liferay.trash.kernel.model.TrashVersion;
 import com.liferay.trash.kernel.util.TrashUtil;
@@ -3432,6 +3434,11 @@ public class JournalArticleLocalServiceImpl
 			ServiceContext serviceContext)
 		throws PortalException {
 
+		if (!article.isInTrash()) {
+			throw new RestoreEntryException(
+				RestoreEntryException.INVALID_STATUS);
+		}
+
 		if (article.isInTrashExplicitly()) {
 			restoreArticleFromTrash(userId, article);
 		}
@@ -3480,6 +3487,10 @@ public class JournalArticleLocalServiceImpl
 		throws PortalException {
 
 		// Article
+
+		if (article.isInTrash()) {
+			throw new TrashEntryException();
+		}
 
 		int oldStatus = article.getStatus();
 
@@ -3689,6 +3700,11 @@ public class JournalArticleLocalServiceImpl
 		throws PortalException {
 
 		// Article
+
+		if (!article.isInTrash()) {
+			throw new RestoreEntryException(
+				RestoreEntryException.INVALID_STATUS);
+		}
 
 		String trashArticleId = TrashUtil.getOriginalTitle(
 			article.getArticleId());
