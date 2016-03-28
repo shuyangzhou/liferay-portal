@@ -323,6 +323,10 @@ public class JournalArticleIndexer
 		}
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	protected void addDDMStructureAttributes(
 			Document document, JournalArticle article)
 		throws Exception {
@@ -468,6 +472,28 @@ public class JournalArticleIndexer
 
 		document.addUID(CLASS_NAME, classPK);
 
+		DDMStructure ddmStructure = _ddmStructureLocalService.fetchStructure(
+			journalArticle.getGroupId(),
+			PortalUtil.getClassNameId(JournalArticle.class),
+			journalArticle.getDDMStructureKey(), true);
+
+		DDMFormValues ddmFormValues = null;
+
+		if (ddmStructure != null) {
+			try {
+				Fields fields = _journalConverter.getDDMFields(
+					ddmStructure, journalArticle.getDocument());
+
+				ddmFormValues = _fieldsToDDMFormValuesConverter.convert(
+					ddmStructure, fields);
+			}
+			catch (Exception e) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(e, e);
+				}
+			}
+		}
+
 		String articleDefaultLanguageId = LocalizationUtil.getDefaultLanguageId(
 			journalArticle.getDocument());
 
@@ -475,7 +501,13 @@ public class JournalArticleIndexer
 			journalArticle.getDocument());
 
 		for (String languageId : languageIds) {
-			String content = extractDDMContent(journalArticle, languageId);
+			String content = StringPool.BLANK;
+
+			if (ddmFormValues != null) {
+				content = _ddmIndexer.extractIndexableAttributes(
+					ddmStructure, ddmFormValues,
+					LocaleUtil.fromLanguageId(languageId));
+			}
 
 			String description = journalArticle.getDescription(languageId);
 
@@ -537,7 +569,15 @@ public class JournalArticleIndexer
 			}
 		}
 
-		addDDMStructureAttributes(document, journalArticle);
+		if (ddmStructure != null) {
+			document.addKeyword(
+				Field.CLASS_TYPE_ID, ddmStructure.getStructureId());
+
+			if (ddmFormValues != null) {
+				_ddmIndexer.addAttributes(
+					document, ddmStructure, ddmFormValues);
+			}
+		}
 
 		return document;
 	}
@@ -647,6 +687,10 @@ public class JournalArticleIndexer
 		reindexArticles(companyId);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	protected String extractDDMContent(
 			JournalArticle article, String languageId)
 		throws Exception {
