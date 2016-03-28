@@ -74,6 +74,8 @@ import javax.sql.DataSource;
 public class BasePersistenceImpl<T extends BaseModel<T>>
 	implements BasePersistence<T>, SessionFactory {
 
+	public static volatile boolean GLOBAL_TRACKING = false;
+
 	public static final String COUNT_COLUMN_NAME = "COUNT_VALUE";
 
 	@Override

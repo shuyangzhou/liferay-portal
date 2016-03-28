@@ -175,23 +175,25 @@ public class BackgroundTaskLocalServiceImpl
 			backgroundTaskPersistence.fetchByPrimaryKey(backgroundTaskId);
 
 		if ((status == BackgroundTaskConstants.STATUS_SUCCESSFUL) && (backgroundTask.getMvccVersion() == 0)) {
+			System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", found a wrong" + backgroundTask + ", id : " + System.identityHashCode(backgroundTask));
+
 			BackgroundTask backgroundTask2 = (BackgroundTask)EntityCacheUtil.getResult(BackgroundTaskModelImpl.ENTITY_CACHE_ENABLED,
 				com.liferay.portal.background.task.model.impl.BackgroundTaskImpl.class, backgroundTask.getBackgroundTaskId());
 
-			System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", load from entity cache " + backgroundTask2);
+			System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", load from entity cache " + backgroundTask2 + ", id : " + System.identityHashCode(backgroundTask2));
 
 			EntityCacheUtil.clearLocalCache();
 
 			backgroundTask2 = (BackgroundTask)EntityCacheUtil.getResult(BackgroundTaskModelImpl.ENTITY_CACHE_ENABLED,
 				com.liferay.portal.background.task.model.impl.BackgroundTaskImpl.class, backgroundTask.getBackgroundTaskId());
 
-			System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", load from entity cache after clearing thread local cache " + backgroundTask2);
+			System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", load from entity cache after clearing thread local cache " + backgroundTask2  + ", id : " + System.identityHashCode(backgroundTask2));
 
 			EntityCacheUtil.clearCache();
 
 			backgroundTask2 = backgroundTaskPersistence.fetchByPrimaryKey(backgroundTaskId);
 
-			System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", load from persistence after clearing entity cache " + backgroundTask2);
+			System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", load from persistence after clearing entity cache " + backgroundTask2  + ", id : " + System.identityHashCode(backgroundTask2));
 		}
 
 		if (backgroundTask == null) {
