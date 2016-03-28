@@ -8489,6 +8489,8 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 			}
 		}
 
+		long mvccVersion = backgroundTask.getMvccVersion();
+
 		Session session = null;
 
 		try {
@@ -8498,9 +8500,21 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 				session.save(backgroundTask);
 
 				backgroundTask.setNew(false);
+
+				if (mvccVersion == 0) {
+					System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + " session.save() " + backgroundTask);
+				}
 			}
 			else {
+				if (mvccVersion == 0) {
+					System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + " session.merge() before " + backgroundTask + ", id : " + System.identityHashCode(backgroundTask));
+				}
+
 				backgroundTask = (BackgroundTask)session.merge(backgroundTask);
+
+				if (mvccVersion == 0) {
+					System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + " session.merge() after " + backgroundTask + ", id : " + System.identityHashCode(backgroundTask));
+				}
 			}
 		}
 		catch (Exception e) {
@@ -8508,6 +8522,12 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 		}
 		finally {
 			closeSession(session);
+		}
+
+		if (mvccVersion == backgroundTask.getMvccVersion()) {
+			BackgroundTask backgroundTask2 = (BackgroundTask)session.get(BackgroundTaskImpl.class, backgroundTask.getBackgroundTaskId());
+
+			System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", did not get a mvcc version bump for " + backgroundTask + ", id : " + System.identityHashCode(backgroundTask) + ", persistence fetch " + backgroundTask2 + ", id : " + System.identityHashCode(backgroundTask2));
 		}
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
@@ -8724,6 +8744,10 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_N_T_C,
 					args);
 			}
+		}
+
+		if (mvccVersion == 0) {
+			System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", Post update entity cache putting " + backgroundTask);
 		}
 
 		entityCache.putResult(BackgroundTaskModelImpl.ENTITY_CACHE_ENABLED,
