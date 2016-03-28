@@ -110,8 +110,10 @@ public class LDAPConfigurationListener implements ConfigurationListener {
 				_configurationAdmin.listConfigurations(
 					"(service.factoryPid=" + factoryPid + ")");
 
-			for (Configuration configuration : configurations) {
-				configurationProvider.registerConfiguration(configuration);
+			if (configurations != null) {
+				for (Configuration configuration : configurations) {
+					configurationProvider.registerConfiguration(configuration);
+				}
 			}
 		}
 		catch (Exception e) {
