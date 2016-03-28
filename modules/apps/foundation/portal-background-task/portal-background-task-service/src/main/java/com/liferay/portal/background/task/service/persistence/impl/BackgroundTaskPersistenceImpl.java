@@ -8495,7 +8495,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 			session = openSession();
 
 			if (backgroundTask.isNew()) {
-				session.save(backgroundTask);
+				backgroundTask = (BackgroundTask)session.save(backgroundTask);
 
 				backgroundTask.setNew(false);
 			}
