@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;
+import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.AutoResetThreadLocal;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Props;
@@ -174,6 +175,14 @@ public class EntityCacheImpl
 
 			if (_localCacheAvailable) {
 				localCache.put(localCacheKey, result);
+
+				if (clazz.getName().equals("com.liferay.portal.background.task.model.impl.BackgroundTaskImpl")) {
+					MVCCModel mvccModel = (MVCCModel)_toEntityModel(result);
+
+					if (mvccModel != null) {
+						System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", ThreadLocal cache populated from entity cache (getResult) " + mvccModel + ", id : " + System.identityHashCode(mvccModel));
+					}
+				}
 			}
 		}
 
@@ -263,6 +272,11 @@ public class EntityCacheImpl
 
 			if (_localCacheAvailable) {
 				localCache.put(localCacheKey, result);
+
+				if (clazz.getName().equals("com.liferay.portal.background.task.model.impl.BackgroundTaskImpl")) {
+					MVCCModel mvccModel = (MVCCModel)result;
+					System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", ThreadLocal cache populated from entity cache (loadResult) " + mvccModel + ", id : " + System.identityHashCode(mvccModel));
+				}
 			}
 		}
 
@@ -324,6 +338,20 @@ public class EntityCacheImpl
 		else {
 			portalCache.put(cacheKey, result);
 		}
+
+		if (BasePersistenceImpl.GLOBAL_TRACKING && clazz.getName().equals("com.liferay.portal.background.task.model.impl.BackgroundTaskImpl")) {
+			MVCCModel mvccModel = (MVCCModel)result;
+			System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", Entity cache putResult " + mvccModel + ", id : " + System.identityHashCode(mvccModel));
+
+			Map<Serializable, Serializable> localCache = _localCache.get();
+
+			Serializable localCacheKey = _encodeLocalCacheKey(
+				clazz, primaryKey);
+
+			System.out.println("ThreadLocal cache recheck " + localCache.get(localCacheKey));
+
+			System.out.println("Portal cache recheck " + portalCache.get(cacheKey));
+		}
 	}
 
 	@Override
@@ -351,7 +379,11 @@ public class EntityCacheImpl
 			Serializable localCacheKey = _encodeLocalCacheKey(
 				clazz, primaryKey);
 
-			localCache.remove(localCacheKey);
+			Serializable result = localCache.remove(localCacheKey);
+
+			if (clazz.getName().equals("com.liferay.portal.background.task.model.impl.BackgroundTaskImpl")) {
+				System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", ThreadLocal removeResult " + result + ", id : " + System.identityHashCode(result));
+			}
 		}
 
 		PortalCache<Serializable, Serializable> portalCache = getPortalCache(
