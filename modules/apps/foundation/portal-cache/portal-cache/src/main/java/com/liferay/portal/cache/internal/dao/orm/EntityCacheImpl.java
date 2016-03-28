@@ -174,6 +174,14 @@ public class EntityCacheImpl
 
 			if (_localCacheAvailable) {
 				localCache.put(localCacheKey, result);
+
+				if (clazz.getName().equals("com.liferay.portal.background.task.model.impl.BackgroundTaskImpl")) {
+					MVCCModel mvccModel = (MVCCModel)_toEntityModel(result);
+
+					if (mvccModel != null) {
+						System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", ThreadLocal cache populated from entity cache (getResult) " + mvccModel + ", id : " + System.identityHashCode(mvccModel));
+					}
+				}
 			}
 		}
 
@@ -263,6 +271,11 @@ public class EntityCacheImpl
 
 			if (_localCacheAvailable) {
 				localCache.put(localCacheKey, result);
+
+				if (clazz.getName().equals("com.liferay.portal.background.task.model.impl.BackgroundTaskImpl")) {
+					MVCCModel mvccModel = (MVCCModel)result;
+					System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", ThreadLocal cache populated from entity cache (loadResult) " + mvccModel + ", id : " + System.identityHashCode(mvccModel));
+				}
 			}
 		}
 
@@ -309,6 +322,11 @@ public class EntityCacheImpl
 			Serializable localCacheKey = _encodeLocalCacheKey(
 				clazz, primaryKey);
 
+			if (clazz.getName().equals("com.liferay.portal.background.task.model.impl.BackgroundTaskImpl")) {
+				MVCCModel mvccModel = (MVCCModel)result;
+				System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", ThreadLocal cache putResult " + mvccModel + ", id : " + System.identityHashCode(mvccModel));
+			}
+
 			localCache.put(localCacheKey, result);
 		}
 
@@ -351,7 +369,11 @@ public class EntityCacheImpl
 			Serializable localCacheKey = _encodeLocalCacheKey(
 				clazz, primaryKey);
 
-			localCache.remove(localCacheKey);
+			Serializable result = localCache.remove(localCacheKey);
+
+			if (clazz.getName().equals("com.liferay.portal.background.task.model.impl.BackgroundTaskImpl")) {
+				System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", ThreadLocal removeResult " + result + ", id : " + System.identityHashCode(result));
+			}
 		}
 
 		PortalCache<Serializable, Serializable> portalCache = getPortalCache(
