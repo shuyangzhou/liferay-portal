@@ -17,6 +17,7 @@ package com.liferay.portal.background.task.service.impl;
 import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.portal.background.task.internal.BackgroundTaskImpl;
 import com.liferay.portal.background.task.model.BackgroundTask;
+import com.liferay.portal.background.task.model.impl.BackgroundTaskModelImpl;
 import com.liferay.portal.background.task.service.base.BackgroundTaskLocalServiceBaseImpl;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskConstants;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskLockHelperUtil;
@@ -24,6 +25,7 @@ import com.liferay.portal.kernel.backgroundtask.BackgroundTaskStatus;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskStatusRegistry;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskThreadLocalManager;
 import com.liferay.portal.kernel.cluster.Clusterable;
+import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -171,6 +173,26 @@ public class BackgroundTaskLocalServiceImpl
 
 		BackgroundTask backgroundTask =
 			backgroundTaskPersistence.fetchByPrimaryKey(backgroundTaskId);
+
+		if ((status == BackgroundTaskConstants.STATUS_SUCCESSFUL) && (backgroundTask.getMvccVersion() == 0)) {
+			BackgroundTask backgroundTask2 = (BackgroundTask)EntityCacheUtil.getResult(BackgroundTaskModelImpl.ENTITY_CACHE_ENABLED,
+				com.liferay.portal.background.task.model.impl.BackgroundTaskImpl.class, backgroundTask.getBackgroundTaskId());
+
+			System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", load from entity cache " + backgroundTask2);
+
+			EntityCacheUtil.clearLocalCache();
+
+			backgroundTask2 = (BackgroundTask)EntityCacheUtil.getResult(BackgroundTaskModelImpl.ENTITY_CACHE_ENABLED,
+				com.liferay.portal.background.task.model.impl.BackgroundTaskImpl.class, backgroundTask.getBackgroundTaskId());
+
+			System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", load from entity cache after clearing thread local cache " + backgroundTask2);
+
+			EntityCacheUtil.clearCache();
+
+			backgroundTask2 = backgroundTaskPersistence.fetchByPrimaryKey(backgroundTaskId);
+
+			System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", load from persistence after clearing entity cache " + backgroundTask2);
+		}
 
 		if (backgroundTask == null) {
 			return null;

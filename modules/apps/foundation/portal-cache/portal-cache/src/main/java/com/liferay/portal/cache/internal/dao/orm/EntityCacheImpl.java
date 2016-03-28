@@ -174,6 +174,18 @@ public class EntityCacheImpl
 
 			if (_localCacheAvailable) {
 				localCache.put(localCacheKey, result);
+
+				if (clazz.getName().equals("com.liferay.portal.background.task.model.impl.BackgroundTaskImpl")) {
+					MVCCModel mvccModel = (MVCCModel)_toEntityModel(result);
+
+					if ((mvccModel != null) && mvccModel.getMvccVersion() == 0) {
+						System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", ThreadLocal cache populated from entity cache (getResult) " + mvccModel);
+//						synchronized (System.out) {
+//							System.out.println("&&&&ThreadLocal cache get populate " + result);
+//							new Exception().printStackTrace(System.out);
+//						}
+					}
+				}
 			}
 		}
 
@@ -263,6 +275,18 @@ public class EntityCacheImpl
 
 			if (_localCacheAvailable) {
 				localCache.put(localCacheKey, result);
+
+				if (clazz.getName().equals("com.liferay.portal.background.task.model.impl.BackgroundTaskImpl")) {
+					MVCCModel mvccModel = (MVCCModel)result;
+
+					if (mvccModel.getMvccVersion() == 0) {
+						System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", ThreadLocal cache populated from entity cache (loadResult) " + mvccModel);
+//						synchronized (System.out) {
+//							System.out.println("&&&&ThreadLocal cache load populate " + result);
+//							new Exception().printStackTrace(System.out);
+//						}
+					}
+				}
 			}
 		}
 
@@ -309,6 +333,18 @@ public class EntityCacheImpl
 			Serializable localCacheKey = _encodeLocalCacheKey(
 				clazz, primaryKey);
 
+			if (clazz.getName().equals("com.liferay.portal.background.task.model.impl.BackgroundTaskImpl")) {
+				MVCCModel mvccModel = (MVCCModel)result;
+
+				if (mvccModel.getMvccVersion() == 0) {
+					System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", ThreadLocal cache putResult " + mvccModel);
+//					synchronized (System.out) {
+//						System.out.println("&&&&ThreadLocal cache put " + result);
+//						new Exception().printStackTrace(System.out);
+//					}
+				}
+			}
+
 			localCache.put(localCacheKey, result);
 		}
 
@@ -351,7 +387,11 @@ public class EntityCacheImpl
 			Serializable localCacheKey = _encodeLocalCacheKey(
 				clazz, primaryKey);
 
-			localCache.remove(localCacheKey);
+			Serializable result = localCache.remove(localCacheKey);
+
+			if (clazz.getName().equals("com.liferay.portal.background.task.model.impl.BackgroundTaskImpl")) {
+				System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", ThreadLocal removeResult " + result);
+			}
 		}
 
 		PortalCache<Serializable, Serializable> portalCache = getPortalCache(
