@@ -70,12 +70,19 @@ public class DDMIndexerImpl implements DDMIndexer {
 		Document document, DDMStructure ddmStructure,
 		DDMFormValues ddmFormValues) {
 
+		Fields fields = toFields(ddmStructure, ddmFormValues);
+
+		addAttributes(document, ddmStructure, fields);
+	}
+
+	@Override
+	public void addAttributes(
+		Document document, DDMStructure ddmStructure, Fields fields) {
+
 		long groupId = GetterUtil.getLong(
 			document.get(com.liferay.portal.kernel.search.Field.GROUP_ID));
 
 		Set<Locale> locales = LanguageUtil.getAvailableLocales(groupId);
-
-		Fields fields = toFields(ddmStructure, ddmFormValues);
 
 		for (Field field : fields) {
 			try {
@@ -273,12 +280,19 @@ public class DDMIndexerImpl implements DDMIndexer {
 	public String extractIndexableAttributes(
 		DDMStructure ddmStructure, DDMFormValues ddmFormValues, Locale locale) {
 
+		Fields fields = toFields(ddmStructure, ddmFormValues);
+
+		return extractIndexableAttributes(ddmStructure, fields, locale);
+	}
+
+	@Override
+	public String extractIndexableAttributes(
+		DDMStructure ddmStructure, Fields fields, Locale locale) {
+
 		Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
 			PropsUtil.get(PropsKeys.INDEX_DATE_FORMAT_PATTERN));
 
 		StringBundler sb = new StringBundler();
-
-		Fields fields = toFields(ddmStructure, ddmFormValues);
 
 		for (Field field : fields) {
 			try {
