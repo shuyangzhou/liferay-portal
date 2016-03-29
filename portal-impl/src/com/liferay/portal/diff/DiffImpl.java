@@ -557,7 +557,7 @@ public class DiffImpl implements com.liferay.portal.kernel.diff.Diff {
 
 		List<String> result = new ArrayList<>();
 
-		for (int i = 1; i < lineParts.length; i++) {
+		for (int i = 0; i < lineParts.length; i++) {
 			result.add(lineParts[i]);
 		}
 
