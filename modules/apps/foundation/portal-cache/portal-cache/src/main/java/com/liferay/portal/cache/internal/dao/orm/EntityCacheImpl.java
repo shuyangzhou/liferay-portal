@@ -176,12 +176,8 @@ public class EntityCacheImpl
 				if (clazz.getName().equals("com.liferay.portal.background.task.model.impl.BackgroundTaskImpl")) {
 					MVCCModel mvccModel = (MVCCModel)_toEntityModel(result);
 
-					if ((mvccModel != null) && mvccModel.getMvccVersion() == 0) {
-						System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", ThreadLocal cache populated from entity cache (getResult) " + mvccModel);
-//						synchronized (System.out) {
-//							System.out.println("&&&&ThreadLocal cache get populate " + result);
-//							new Exception().printStackTrace(System.out);
-//						}
+					if (mvccModel != null) {
+						System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + " name : " + Thread.currentThread().getName() + ", ThreadLocal cache populated from entity cache (getResult) " + mvccModel + ", id : " + System.identityHashCode(mvccModel));
 					}
 				}
 			}
@@ -274,14 +270,7 @@ public class EntityCacheImpl
 
 				if (clazz.getName().equals("com.liferay.portal.background.task.model.impl.BackgroundTaskImpl")) {
 					MVCCModel mvccModel = (MVCCModel)result;
-
-					if (mvccModel.getMvccVersion() == 0) {
-						System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", ThreadLocal cache populated from entity cache (loadResult) " + mvccModel);
-//						synchronized (System.out) {
-//							System.out.println("&&&&ThreadLocal cache load populate " + result);
-//							new Exception().printStackTrace(System.out);
-//						}
-					}
+					System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + " name : " + Thread.currentThread().getName() + ", ThreadLocal cache populated from entity cache (loadResult) " + mvccModel + ", id : " + System.identityHashCode(mvccModel));
 				}
 			}
 		}
@@ -318,6 +307,8 @@ public class EntityCacheImpl
 		if (!_valueObjectEntityCacheEnabled || !entityCacheEnabled ||
 			!CacheRegistryUtil.isActive() || (result == null)) {
 
+			System.out.println("I don't think this is possible, but anyway. @@@@@@ Thread id : " + Thread.currentThread().getId() + " name : " + Thread.currentThread().getName() + ", Entity cache putResult key : " + primaryKey + ", value : " + result + ", _valueObjectEntityCacheEnabled=" + _valueObjectEntityCacheEnabled + ", entityCacheEnabled=" + entityCacheEnabled + ", CacheRegistryUtil.isActive() " + CacheRegistryUtil.isActive());
+
 			return;
 		}
 
@@ -328,18 +319,6 @@ public class EntityCacheImpl
 
 			Serializable localCacheKey = new LocalCacheKey(
 				clazz.getName(), primaryKey);
-
-			if (clazz.getName().equals("com.liferay.portal.background.task.model.impl.BackgroundTaskImpl")) {
-				MVCCModel mvccModel = (MVCCModel)result;
-
-				if (mvccModel.getMvccVersion() == 0) {
-					System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", ThreadLocal cache putResult " + mvccModel);
-//					synchronized (System.out) {
-//						System.out.println("&&&&ThreadLocal cache put " + result);
-//						new Exception().printStackTrace(System.out);
-//					}
-				}
-			}
 
 			localCache.put(localCacheKey, result);
 		}
@@ -353,6 +332,19 @@ public class EntityCacheImpl
 		}
 		else {
 			portalCache.put(primaryKey, result);
+		}
+
+		if (clazz.getName().equals("com.liferay.portal.background.task.model.impl.BackgroundTaskImpl")) {
+
+			Map<Serializable, Serializable> localCache = _localCache.get();
+
+			Serializable localCacheKey = new LocalCacheKey(
+				clazz.getName(), primaryKey);
+
+			MVCCModel mvccModel = (MVCCModel)result;
+			System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + " name : " + Thread.currentThread().getName() + ", Entity cache putResult " + mvccModel + ", id : " + System.identityHashCode(mvccModel) +
+				"\n\t" + "ThreadLocal cache recheck " + localCache.get(localCacheKey) +
+				"\n\t" + "Portal cache recheck " + portalCache.get(primaryKey));
 		}
 	}
 
@@ -384,7 +376,7 @@ public class EntityCacheImpl
 			Serializable result = localCache.remove(localCacheKey);
 
 			if (clazz.getName().equals("com.liferay.portal.background.task.model.impl.BackgroundTaskImpl")) {
-				System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + ", ThreadLocal removeResult " + result);
+				System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + " name : " + Thread.currentThread().getName() + ", ThreadLocal removeResult " + result + ", id : " + System.identityHashCode(result));
 			}
 		}
 
