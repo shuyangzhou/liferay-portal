@@ -45,7 +45,6 @@ import com.liferay.portal.kernel.search.DocumentImpl;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.IndexWriterHelperUtil;
 import com.liferay.portal.kernel.search.Indexer;
-import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.Query;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.SearchException;
@@ -263,13 +262,12 @@ public class JournalArticleIndexer
 				ddmStructureKeys[i] = ddmStructure.getStructureKey();
 			}
 
-			final Indexer<JournalArticle> indexer =
-				IndexerRegistryUtil.nullSafeGetIndexer(JournalArticle.class);
+			final IndexableActionableDynamicQuery
+				indexableActionableDynamicQuery =
+					_journalArticleLocalService.
+						getIndexableActionableDynamicQuery();
 
-			final ActionableDynamicQuery actionableDynamicQuery =
-				_journalArticleLocalService.getActionableDynamicQuery();
-
-			actionableDynamicQuery.setAddCriteriaMethod(
+			indexableActionableDynamicQuery.setAddCriteriaMethod(
 				new ActionableDynamicQuery.AddCriteriaMethod() {
 
 					@Override
@@ -295,7 +293,7 @@ public class JournalArticleIndexer
 					}
 
 				});
-			actionableDynamicQuery.setPerformActionMethod(
+			indexableActionableDynamicQuery.setPerformActionMethod(
 				new ActionableDynamicQuery.
 					PerformActionMethod<JournalArticle>() {
 
@@ -303,19 +301,14 @@ public class JournalArticleIndexer
 					public void performAction(JournalArticle article)
 						throws PortalException {
 
-						try {
-							indexer.reindex(
-								indexer.getClassName(),
-								article.getResourcePrimKey());
-						}
-						catch (Exception e) {
-							throw new PortalException(e);
-						}
+						Document document = getDocument(article);
+
+						indexableActionableDynamicQuery.addDocuments(document);
 					}
 
 				});
 
-			actionableDynamicQuery.performActions();
+			indexableActionableDynamicQuery.performActions();
 		}
 		catch (Exception e) {
 			throw new SearchException(e);
