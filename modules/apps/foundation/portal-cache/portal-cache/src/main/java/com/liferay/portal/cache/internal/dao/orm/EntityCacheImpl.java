@@ -155,7 +155,7 @@ public class EntityCacheImpl
 		if (_localCacheAvailable) {
 			localCache = _localCache.get();
 
-			localCacheKey = _encodeLocalCacheKey(clazz, primaryKey);
+			localCacheKey = new LocalCacheKey(clazz.getName(), primaryKey);
 
 			result = localCache.get(localCacheKey);
 		}
@@ -164,9 +164,7 @@ public class EntityCacheImpl
 			PortalCache<Serializable, Serializable> portalCache =
 				getPortalCache(clazz);
 
-			Serializable cacheKey = _encodeCacheKey(primaryKey);
-
-			result = portalCache.get(cacheKey);
+			result = portalCache.get(primaryKey);
 
 			if (result == null) {
 				result = StringPool.BLANK;
@@ -174,6 +172,14 @@ public class EntityCacheImpl
 
 			if (_localCacheAvailable) {
 				localCache.put(localCacheKey, result);
+
+				if (clazz.getName().equals("com.liferay.portal.background.task.model.impl.BackgroundTaskImpl")) {
+					MVCCModel mvccModel = (MVCCModel)_toEntityModel(result);
+
+					if (mvccModel != null) {
+						System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + " name : " + Thread.currentThread().getName() + ", ThreadLocal cache populated from entity cache (getResult) " + mvccModel + ", id : " + System.identityHashCode(mvccModel));
+					}
+				}
 			}
 		}
 
@@ -218,7 +224,7 @@ public class EntityCacheImpl
 		if (_localCacheAvailable) {
 			localCache = _localCache.get();
 
-			localCacheKey = _encodeLocalCacheKey(clazz, primaryKey);
+			localCacheKey = new LocalCacheKey(clazz.getName(), primaryKey);
 
 			result = localCache.get(localCacheKey);
 		}
@@ -229,9 +235,7 @@ public class EntityCacheImpl
 			PortalCache<Serializable, Serializable> portalCache =
 				getPortalCache(clazz);
 
-			Serializable cacheKey = _encodeCacheKey(primaryKey);
-
-			result = portalCache.get(cacheKey);
+			result = portalCache.get(primaryKey);
 
 			if (result == null) {
 				if (_log.isDebugEnabled()) {
@@ -255,7 +259,7 @@ public class EntityCacheImpl
 					}
 
 					PortalCacheHelperUtil.putWithoutReplicator(
-						portalCache, cacheKey, result);
+						portalCache, primaryKey, result);
 
 					sessionFactory.closeSession(session);
 				}
@@ -263,6 +267,11 @@ public class EntityCacheImpl
 
 			if (_localCacheAvailable) {
 				localCache.put(localCacheKey, result);
+
+				if (clazz.getName().equals("com.liferay.portal.background.task.model.impl.BackgroundTaskImpl")) {
+					MVCCModel mvccModel = (MVCCModel)result;
+					System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + " name : " + Thread.currentThread().getName() + ", ThreadLocal cache populated from entity cache (loadResult) " + mvccModel + ", id : " + System.identityHashCode(mvccModel));
+				}
 			}
 		}
 
@@ -298,6 +307,8 @@ public class EntityCacheImpl
 		if (!_valueObjectEntityCacheEnabled || !entityCacheEnabled ||
 			!CacheRegistryUtil.isActive() || (result == null)) {
 
+			System.out.println("I don't think this is possible, but anyway. @@@@@@ Thread id : " + Thread.currentThread().getId() + " name : " + Thread.currentThread().getName() + ", Entity cache putResult key : " + primaryKey + ", value : " + result + ", _valueObjectEntityCacheEnabled=" + _valueObjectEntityCacheEnabled + ", entityCacheEnabled=" + entityCacheEnabled + ", CacheRegistryUtil.isActive() " + CacheRegistryUtil.isActive());
+
 			return;
 		}
 
@@ -306,8 +317,8 @@ public class EntityCacheImpl
 		if (_localCacheAvailable) {
 			Map<Serializable, Serializable> localCache = _localCache.get();
 
-			Serializable localCacheKey = _encodeLocalCacheKey(
-				clazz, primaryKey);
+			Serializable localCacheKey = new LocalCacheKey(
+				clazz.getName(), primaryKey);
 
 			localCache.put(localCacheKey, result);
 		}
@@ -315,14 +326,25 @@ public class EntityCacheImpl
 		PortalCache<Serializable, Serializable> portalCache = getPortalCache(
 			clazz);
 
-		Serializable cacheKey = _encodeCacheKey(primaryKey);
-
 		if (quiet) {
 			PortalCacheHelperUtil.putWithoutReplicator(
-				portalCache, cacheKey, result);
+				portalCache, primaryKey, result);
 		}
 		else {
-			portalCache.put(cacheKey, result);
+			portalCache.put(primaryKey, result);
+		}
+
+		if (clazz.getName().equals("com.liferay.portal.background.task.model.impl.BackgroundTaskImpl")) {
+
+			Map<Serializable, Serializable> localCache = _localCache.get();
+
+			Serializable localCacheKey = new LocalCacheKey(
+				clazz.getName(), primaryKey);
+
+			MVCCModel mvccModel = (MVCCModel)result;
+			System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + " name : " + Thread.currentThread().getName() + ", Entity cache putResult " + mvccModel + ", id : " + System.identityHashCode(mvccModel) +
+				"\n\t" + "ThreadLocal cache recheck " + localCache.get(localCacheKey) +
+				"\n\t" + "Portal cache recheck " + portalCache.get(primaryKey));
 		}
 	}
 
@@ -348,18 +370,20 @@ public class EntityCacheImpl
 		if (_localCacheAvailable) {
 			Map<Serializable, Serializable> localCache = _localCache.get();
 
-			Serializable localCacheKey = _encodeLocalCacheKey(
-				clazz, primaryKey);
+			Serializable localCacheKey = new LocalCacheKey(
+				clazz.getName(), primaryKey);
 
-			localCache.remove(localCacheKey);
+			Serializable result = localCache.remove(localCacheKey);
+
+			if (clazz.getName().equals("com.liferay.portal.background.task.model.impl.BackgroundTaskImpl")) {
+				System.out.println("@@@@@@ Thread id : " + Thread.currentThread().getId() + " name : " + Thread.currentThread().getName() + ", ThreadLocal removeResult " + result + ", id : " + System.identityHashCode(result));
+			}
 		}
 
 		PortalCache<Serializable, Serializable> portalCache = getPortalCache(
 			clazz);
 
-		Serializable cacheKey = _encodeCacheKey(primaryKey);
-
-		portalCache.remove(cacheKey);
+		portalCache.remove(primaryKey);
 	}
 
 	@Activate
@@ -405,16 +429,6 @@ public class EntityCacheImpl
 	@Reference(unbind = "-")
 	protected void setProps(Props props) {
 		_props = props;
-	}
-
-	private Serializable _encodeCacheKey(Serializable primaryKey) {
-		return primaryKey;
-	}
-
-	private Serializable _encodeLocalCacheKey(
-		Class<?> clazz, Serializable primaryKey) {
-
-		return new LocalCacheKey(clazz.getName(), primaryKey);
 	}
 
 	private Serializable _toEntityModel(Serializable result) {

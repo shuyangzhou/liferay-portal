@@ -331,6 +331,10 @@ public class ReleaseManager {
 			try {
 				CacheRegistryUtil.setActive(false);
 
+				System.out.println("###############\n" +
+					"###" + _bundleSymbolicName + " start ###\n" +
+					"###############\n");
+
 				for (UpgradeInfo upgradeInfo : _upgradeInfos) {
 					UpgradeStep upgradeStep = upgradeInfo.getUpgradeStep();
 
@@ -359,6 +363,10 @@ public class ReleaseManager {
 						throw new RuntimeException(e);
 					}
 				}
+
+				System.out.println("###############\n" +
+					"###" + _bundleSymbolicName + " end ###\n" +
+					"###############\n");
 			}
 			finally {
 				CacheRegistryUtil.setActive(active);
