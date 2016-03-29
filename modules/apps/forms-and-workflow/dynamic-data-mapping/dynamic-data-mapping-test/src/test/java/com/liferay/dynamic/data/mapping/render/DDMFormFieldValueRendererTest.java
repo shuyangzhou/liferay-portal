@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.JavaDetector;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.util.CalendarFactoryImpl;
@@ -215,12 +216,26 @@ public class DDMFormFieldValueRendererTest extends BaseDDMTestCase {
 		String renderedValue = ddmFormFieldValueRenderer.render(
 			ddmFormFieldValue, LocaleUtil.SPAIN);
 
-		Assert.assertEquals("Latitud: 9,876, Longitud: 1,234", renderedValue);
+		if (JavaDetector.isJDK8()) {
+			Assert.assertEquals(
+				"Latitud: 9,877, Longitud: 1,234", renderedValue);
+		}
+		else {
+			Assert.assertEquals(
+				"Latitud: 9,876, Longitud: 1,234", renderedValue);
+		}
 
 		renderedValue = ddmFormFieldValueRenderer.render(
 			ddmFormFieldValue, LocaleUtil.US);
 
-		Assert.assertEquals("Latitude: 9.876, Longitude: 1.234", renderedValue);
+		if (JavaDetector.isJDK8()) {
+			Assert.assertEquals(
+				"Latitude: 9.877, Longitude: 1.234", renderedValue);
+		}
+		else {
+			Assert.assertEquals(
+				"Latitude: 9.876, Longitude: 1.234", renderedValue);
+		}
 	}
 
 	@Test
