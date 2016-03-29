@@ -16,7 +16,6 @@ package com.liferay.journal.search;
 
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
-import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.storage.Fields;
 import com.liferay.dynamic.data.mapping.util.DDMIndexer;
 import com.liferay.dynamic.data.mapping.util.FieldsToDDMFormValuesConverter;
@@ -342,21 +341,18 @@ public class JournalArticleIndexer
 
 		document.addKeyword(Field.CLASS_TYPE_ID, ddmStructure.getStructureId());
 
-		DDMFormValues ddmFormValues = null;
+		Fields fields = null;
 
 		try {
-			Fields fields = _journalConverter.getDDMFields(
+			fields = _journalConverter.getDDMFields(
 				ddmStructure, article.getDocument());
-
-			ddmFormValues = _fieldsToDDMFormValuesConverter.convert(
-				ddmStructure, fields);
 		}
 		catch (Exception e) {
 			return;
 		}
 
-		if (ddmFormValues != null) {
-			_ddmIndexer.addAttributes(document, ddmStructure, ddmFormValues);
+		if (fields != null) {
+			_ddmIndexer.addAttributes(document, ddmStructure, fields);
 		}
 	}
 
@@ -477,15 +473,12 @@ public class JournalArticleIndexer
 			PortalUtil.getClassNameId(JournalArticle.class),
 			journalArticle.getDDMStructureKey(), true);
 
-		DDMFormValues ddmFormValues = null;
+		Fields fields = null;
 
 		if (ddmStructure != null) {
 			try {
-				Fields fields = _journalConverter.getDDMFields(
+				fields = _journalConverter.getDDMFields(
 					ddmStructure, journalArticle.getDocument());
-
-				ddmFormValues = _fieldsToDDMFormValuesConverter.convert(
-					ddmStructure, fields);
 			}
 			catch (Exception e) {
 				if (_log.isWarnEnabled()) {
@@ -503,9 +496,9 @@ public class JournalArticleIndexer
 		for (String languageId : languageIds) {
 			String content = StringPool.BLANK;
 
-			if (ddmFormValues != null) {
+			if (fields != null) {
 				content = _ddmIndexer.extractIndexableAttributes(
-					ddmStructure, ddmFormValues,
+					ddmStructure, fields,
 					LocaleUtil.fromLanguageId(languageId));
 			}
 
@@ -593,9 +586,8 @@ public class JournalArticleIndexer
 			document.addKeyword(
 				Field.CLASS_TYPE_ID, ddmStructure.getStructureId());
 
-			if (ddmFormValues != null) {
-				_ddmIndexer.addAttributes(
-					document, ddmStructure, ddmFormValues);
+			if (fields != null) {
+				_ddmIndexer.addAttributes(document, ddmStructure, fields);
 			}
 		}
 
@@ -724,25 +716,22 @@ public class JournalArticleIndexer
 			return StringPool.BLANK;
 		}
 
-		DDMFormValues ddmFormValues = null;
+		Fields fields = null;
 
 		try {
-			Fields fields = _journalConverter.getDDMFields(
+			fields = _journalConverter.getDDMFields(
 				ddmStructure, article.getDocument());
-
-			ddmFormValues = _fieldsToDDMFormValuesConverter.convert(
-				ddmStructure, fields);
 		}
 		catch (Exception e) {
 			return StringPool.BLANK;
 		}
 
-		if (ddmFormValues == null) {
+		if (fields == null) {
 			return StringPool.BLANK;
 		}
 
 		return _ddmIndexer.extractIndexableAttributes(
-			ddmStructure, ddmFormValues, LocaleUtil.fromLanguageId(languageId));
+			ddmStructure, fields, LocaleUtil.fromLanguageId(languageId));
 	}
 
 	protected JournalArticle fetchLatestIndexableArticleVersion(
@@ -904,11 +893,13 @@ public class JournalArticleIndexer
 		_ddmStructureLocalService = ddmStructureLocalService;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	@Reference(unbind = "-")
 	protected void setFieldsToDDMFormValuesConverter(
 		FieldsToDDMFormValuesConverter fieldsToDDMFormValuesConverter) {
-
-		_fieldsToDDMFormValuesConverter = fieldsToDDMFormValuesConverter;
 	}
 
 	@Reference(unbind = "-")
@@ -933,7 +924,6 @@ public class JournalArticleIndexer
 
 	private DDMIndexer _ddmIndexer;
 	private DDMStructureLocalService _ddmStructureLocalService;
-	private FieldsToDDMFormValuesConverter _fieldsToDDMFormValuesConverter;
 	private JournalArticleLocalService _journalArticleLocalService;
 	private JournalContent _journalContent;
 	private JournalConverter _journalConverter;
