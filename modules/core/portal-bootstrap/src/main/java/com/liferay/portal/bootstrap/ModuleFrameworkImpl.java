@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.Props;
@@ -234,6 +235,8 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		if (_log.isDebugEnabled()) {
 			_log.debug("Initializing the OSGi framework");
 		}
+
+		_initFelixFileInstallDirs();
 
 		List<ServiceLoaderCondition> serviceLoaderConditions =
 			ServiceLoader.load(ServiceLoaderCondition.class);
@@ -801,6 +804,18 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		}
 
 		return false;
+	}
+
+	private void _initFelixFileInstallDirs() {
+		if (_log.isDebugEnabled()) {
+			_log.debug("Initializing Felix file install directories");
+		}
+
+		String[] dirNames = StringUtil.split(_getFelixFileInstallDir());
+
+		for (String dirName : dirNames) {
+			FileUtil.mkdirs(dirName);
+		}
 	}
 
 	private void _installInitialBundle(String location) {

@@ -140,8 +140,12 @@ public class EntityCacheImpl
 	public Serializable getResult(
 		boolean entityCacheEnabled, Class<?> clazz, Serializable primaryKey) {
 
-		if (!_valueObjectEntityCacheEnabled || !entityCacheEnabled ||
-			!CacheRegistryUtil.isActive()) {
+		if (!_valueObjectEntityCacheEnabled) {
+			return null;
+		}
+
+		if (!entityCacheEnabled || !CacheRegistryUtil.isActive()) {
+			removeResult(entityCacheEnabled, clazz, primaryKey);
 
 			return null;
 		}
@@ -155,7 +159,7 @@ public class EntityCacheImpl
 		if (_localCacheAvailable) {
 			localCache = _localCache.get();
 
-			localCacheKey = _encodeLocalCacheKey(clazz, primaryKey);
+			localCacheKey = new LocalCacheKey(clazz.getName(), primaryKey);
 
 			result = localCache.get(localCacheKey);
 		}
@@ -164,9 +168,7 @@ public class EntityCacheImpl
 			PortalCache<Serializable, Serializable> portalCache =
 				getPortalCache(clazz);
 
-			Serializable cacheKey = _encodeCacheKey(primaryKey);
-
-			result = portalCache.get(cacheKey);
+			result = portalCache.get(primaryKey);
 
 			if (result == null) {
 				result = StringPool.BLANK;
@@ -218,7 +220,7 @@ public class EntityCacheImpl
 		if (_localCacheAvailable) {
 			localCache = _localCache.get();
 
-			localCacheKey = _encodeLocalCacheKey(clazz, primaryKey);
+			localCacheKey = new LocalCacheKey(clazz.getName(), primaryKey);
 
 			result = localCache.get(localCacheKey);
 		}
@@ -229,9 +231,7 @@ public class EntityCacheImpl
 			PortalCache<Serializable, Serializable> portalCache =
 				getPortalCache(clazz);
 
-			Serializable cacheKey = _encodeCacheKey(primaryKey);
-
-			result = portalCache.get(cacheKey);
+			result = portalCache.get(primaryKey);
 
 			if (result == null) {
 				if (_log.isDebugEnabled()) {
@@ -255,7 +255,7 @@ public class EntityCacheImpl
 					}
 
 					PortalCacheHelperUtil.putWithoutReplicator(
-						portalCache, cacheKey, result);
+						portalCache, primaryKey, result);
 
 					sessionFactory.closeSession(session);
 				}
@@ -295,8 +295,12 @@ public class EntityCacheImpl
 		boolean entityCacheEnabled, Class<?> clazz, Serializable primaryKey,
 		Serializable result, boolean quiet) {
 
-		if (!_valueObjectEntityCacheEnabled || !entityCacheEnabled ||
-			!CacheRegistryUtil.isActive() || (result == null)) {
+		if (!_valueObjectEntityCacheEnabled || (result == null)) {
+			return;
+		}
+
+		if (!entityCacheEnabled || !CacheRegistryUtil.isActive()) {
+			removeResult(entityCacheEnabled, clazz, primaryKey);
 
 			return;
 		}
@@ -306,8 +310,8 @@ public class EntityCacheImpl
 		if (_localCacheAvailable) {
 			Map<Serializable, Serializable> localCache = _localCache.get();
 
-			Serializable localCacheKey = _encodeLocalCacheKey(
-				clazz, primaryKey);
+			Serializable localCacheKey = new LocalCacheKey(
+				clazz.getName(), primaryKey);
 
 			localCache.put(localCacheKey, result);
 		}
@@ -315,14 +319,12 @@ public class EntityCacheImpl
 		PortalCache<Serializable, Serializable> portalCache = getPortalCache(
 			clazz);
 
-		Serializable cacheKey = _encodeCacheKey(primaryKey);
-
 		if (quiet) {
 			PortalCacheHelperUtil.putWithoutReplicator(
-				portalCache, cacheKey, result);
+				portalCache, primaryKey, result);
 		}
 		else {
-			portalCache.put(cacheKey, result);
+			portalCache.put(primaryKey, result);
 		}
 	}
 
@@ -339,17 +341,15 @@ public class EntityCacheImpl
 	public void removeResult(
 		boolean entityCacheEnabled, Class<?> clazz, Serializable primaryKey) {
 
-		if (!_valueObjectEntityCacheEnabled || !entityCacheEnabled ||
-			!CacheRegistryUtil.isActive()) {
-
+		if (!_valueObjectEntityCacheEnabled) {
 			return;
 		}
 
 		if (_localCacheAvailable) {
 			Map<Serializable, Serializable> localCache = _localCache.get();
 
-			Serializable localCacheKey = _encodeLocalCacheKey(
-				clazz, primaryKey);
+			Serializable localCacheKey = new LocalCacheKey(
+				clazz.getName(), primaryKey);
 
 			localCache.remove(localCacheKey);
 		}
@@ -357,9 +357,7 @@ public class EntityCacheImpl
 		PortalCache<Serializable, Serializable> portalCache = getPortalCache(
 			clazz);
 
-		Serializable cacheKey = _encodeCacheKey(primaryKey);
-
-		portalCache.remove(cacheKey);
+		portalCache.remove(primaryKey);
 	}
 
 	@Activate
@@ -405,16 +403,6 @@ public class EntityCacheImpl
 	@Reference(unbind = "-")
 	protected void setProps(Props props) {
 		_props = props;
-	}
-
-	private Serializable _encodeCacheKey(Serializable primaryKey) {
-		return primaryKey;
-	}
-
-	private Serializable _encodeLocalCacheKey(
-		Class<?> clazz, Serializable primaryKey) {
-
-		return new LocalCacheKey(clazz.getName(), primaryKey);
 	}
 
 	private Serializable _toEntityModel(Serializable result) {

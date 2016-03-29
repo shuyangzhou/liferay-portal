@@ -74,11 +74,48 @@ public class AutoDeployDir {
 
 		String dirName = dirNames[0];
 
-		FileUtil.mkdirs(dirName);
-
 		File file = autoDeploymentContext.getFile();
 
-		FileUtil.move(file, new File(dirName, file.getName()));
+		String fileName = file.getName();
+
+		if (StringUtil.endsWith(fileName, ".cfg")) {
+			for (String curDirName : dirNames) {
+				if (curDirName.endsWith("/configs")) {
+					dirName = curDirName;
+
+					break;
+				}
+			}
+		}
+		else if (StringUtil.endsWith(fileName, ".lpkg")) {
+			for (String curDirName : dirNames) {
+				if (curDirName.endsWith("/marketplace")) {
+					dirName = curDirName;
+
+					break;
+				}
+			}
+		}
+		else if (StringUtil.endsWith(fileName, ".war")) {
+			for (String curDirName : dirNames) {
+				if (curDirName.endsWith("/war")) {
+					dirName = curDirName;
+
+					break;
+				}
+			}
+		}
+		else {
+			for (String curDirName : dirNames) {
+				if (curDirName.endsWith("/modules")) {
+					dirName = curDirName;
+
+					break;
+				}
+			}
+		}
+
+		FileUtil.move(file, new File(dirName, fileName));
 	}
 
 	public AutoDeployDir(

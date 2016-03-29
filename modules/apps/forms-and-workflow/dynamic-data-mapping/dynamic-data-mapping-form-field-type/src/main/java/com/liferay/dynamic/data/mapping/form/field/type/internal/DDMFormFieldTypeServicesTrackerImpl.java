@@ -20,15 +20,18 @@ import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldTypeServices
 import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldValueAccessor;
 import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldValueRenderer;
 import com.liferay.dynamic.data.mapping.form.field.type.DefaultDDMFormFieldValueRenderer;
+import com.liferay.dynamic.data.mapping.form.field.type.internal.util.comparator.DDMFormFieldTypeServiceWrapperDisplayOrderComparator;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerCustomizerFactory;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerCustomizerFactory.ServiceWrapper;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -93,8 +96,16 @@ public class DDMFormFieldTypeServicesTrackerImpl
 	public List<DDMFormFieldType> getDDMFormFieldTypes() {
 		List<DDMFormFieldType> ddmFormFieldTypes = new ArrayList<>();
 
+		List<ServiceWrapper<DDMFormFieldType>> ddmFormFieldTypeServiceWrappers =
+			ListUtil.fromCollection(
+				_ddmFormFieldTypeServiceTrackerMap.values());
+
+		Collections.sort(
+			ddmFormFieldTypeServiceWrappers,
+			_ddmFormFieldTypeServiceWrapperDisplayOrderComparator);
+
 		for (ServiceWrapper<DDMFormFieldType> ddmFormFieldTypeServiceWrapper :
-				_ddmFormFieldTypeServiceTrackerMap.values()) {
+				ddmFormFieldTypeServiceWrappers) {
 
 			ddmFormFieldTypes.add(ddmFormFieldTypeServiceWrapper.getService());
 		}
@@ -164,6 +175,9 @@ public class DDMFormFieldTypeServicesTrackerImpl
 		_ddmFormFieldRendererServiceTrackerMap;
 	private ServiceTrackerMap<String, ServiceWrapper<DDMFormFieldType>>
 		_ddmFormFieldTypeServiceTrackerMap;
+	private final Comparator<ServiceWrapper<DDMFormFieldType>>
+		_ddmFormFieldTypeServiceWrapperDisplayOrderComparator =
+			new DDMFormFieldTypeServiceWrapperDisplayOrderComparator();
 	private ServiceTrackerMap<String, DDMFormFieldValueAccessor>
 		_ddmFormFieldValueAccessorServiceTrackerMap;
 	private ServiceTrackerMap<String, DDMFormFieldValueRenderer>
