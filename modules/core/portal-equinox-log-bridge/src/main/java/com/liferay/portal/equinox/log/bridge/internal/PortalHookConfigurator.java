@@ -31,6 +31,7 @@ public class PortalHookConfigurator
 	implements ActivatorHookFactory, BundleActivator, HookConfigurator {
 
 	public PortalHookConfigurator() {
+		_bundleStartStopLogger = new BundleStartStopLogger();
 		_portalSynchronousLogListener = new PortalSynchronousLogListener();
 	}
 
@@ -56,6 +57,8 @@ public class PortalHookConfigurator
 			extendedLogReaderService.addLogListener(
 				_portalSynchronousLogListener);
 		}
+
+		bundleContext.addBundleListener(_bundleStartStopLogger);
 	}
 
 	@Override
@@ -68,8 +71,11 @@ public class PortalHookConfigurator
 
 		extendedLogReaderService.removeLogListener(
 			_portalSynchronousLogListener);
+
+		bundleContext.removeBundleListener(_bundleStartStopLogger);
 	}
 
+	private final BundleStartStopLogger _bundleStartStopLogger;
 	private final PortalSynchronousLogListener _portalSynchronousLogListener;
 
 }
