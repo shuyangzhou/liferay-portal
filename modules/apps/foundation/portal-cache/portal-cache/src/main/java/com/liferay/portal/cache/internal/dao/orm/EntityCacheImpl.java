@@ -140,8 +140,12 @@ public class EntityCacheImpl
 	public Serializable getResult(
 		boolean entityCacheEnabled, Class<?> clazz, Serializable primaryKey) {
 
-		if (!_valueObjectEntityCacheEnabled || !entityCacheEnabled ||
-			!CacheRegistryUtil.isActive()) {
+		if (!_valueObjectEntityCacheEnabled) {
+			return null;
+		}
+
+		if (!entityCacheEnabled || !CacheRegistryUtil.isActive()) {
+			removeResult(entityCacheEnabled, clazz, primaryKey);
 
 			return null;
 		}
@@ -291,8 +295,12 @@ public class EntityCacheImpl
 		boolean entityCacheEnabled, Class<?> clazz, Serializable primaryKey,
 		Serializable result, boolean quiet) {
 
-		if (!_valueObjectEntityCacheEnabled || !entityCacheEnabled ||
-			!CacheRegistryUtil.isActive() || (result == null)) {
+		if (!_valueObjectEntityCacheEnabled || (result == null)) {
+			return;
+		}
+
+		if (!entityCacheEnabled || !CacheRegistryUtil.isActive()) {
+			removeResult(entityCacheEnabled, clazz, primaryKey);
 
 			return;
 		}
@@ -333,9 +341,7 @@ public class EntityCacheImpl
 	public void removeResult(
 		boolean entityCacheEnabled, Class<?> clazz, Serializable primaryKey) {
 
-		if (!_valueObjectEntityCacheEnabled || !entityCacheEnabled ||
-			!CacheRegistryUtil.isActive()) {
-
+		if (!_valueObjectEntityCacheEnabled) {
 			return;
 		}
 
