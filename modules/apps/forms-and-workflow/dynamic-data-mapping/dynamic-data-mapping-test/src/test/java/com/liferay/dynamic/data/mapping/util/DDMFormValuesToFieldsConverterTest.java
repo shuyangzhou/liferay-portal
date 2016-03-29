@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import java.io.Serializable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
@@ -191,16 +192,22 @@ public class DDMFormValuesToFieldsConverterTest extends BaseDDMTestCase {
 
 			Assert.assertEquals(5, logRecords.size());
 
-			String[] expectedValues =
-				{"pt_BR", "en_US", "en_US", "pt_BR", "en_US"};
+			List<String> expectedValues = new ArrayList<>(
+				Arrays.asList("pt_BR", "en_US", "en_US", "pt_BR", "en_US"));
 
 			for (int i = 0; i < logRecords.size(); i++) {
 				LogRecord logRecord = logRecords.get(i);
 
-				Assert.assertEquals(
-					expectedValues[i]+" is not a valid language id",
-					logRecord.getMessage());
+				String logRecordMessage = logRecord.getMessage();
+
+				String logRecordLocaleKey = logRecordMessage.substring(0, 5);
+
+				Assert.assertTrue(expectedValues.contains(logRecordLocaleKey));
+
+				expectedValues.remove(logRecordLocaleKey);
 			}
+
+			Assert.assertTrue(expectedValues.isEmpty());
 		}
 	}
 
