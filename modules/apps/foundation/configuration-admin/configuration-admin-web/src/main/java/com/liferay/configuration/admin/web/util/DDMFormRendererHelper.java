@@ -112,12 +112,8 @@ public class DDMFormRendererHelper {
 		ResourceBundle resourceBundle = resourceBundleLoader.loadResourceBundle(
 			LocaleUtil.toLanguageId(getLocale()));
 
-		ConfigurationModelToDDMFormValuesConverter
-			configurationModelToDDMFormValuesConverter =
-				new ConfigurationModelToDDMFormValuesConverter(
-					_configurationModel, ddmForm, getLocale(), resourceBundle);
-
-		return configurationModelToDDMFormValuesConverter.getDDMFormValues();
+		return ConfigurationModelToDDMFormValuesConverter.getDDMFormValues(
+			_configurationModel, ddmForm, getLocale(), resourceBundle);
 	}
 
 	protected Locale getLocale() {
