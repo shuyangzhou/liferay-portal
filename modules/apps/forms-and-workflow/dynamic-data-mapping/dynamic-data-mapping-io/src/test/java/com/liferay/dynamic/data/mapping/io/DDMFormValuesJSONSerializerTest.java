@@ -22,9 +22,9 @@ import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.test.util.DDMFormValuesTestUtil;
 import com.liferay.portal.json.JSONFactoryImpl;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -158,12 +158,19 @@ public class DDMFormValuesJSONSerializerTest extends BaseDDMTestCase {
 	}
 
 	protected Value createImageValue(int index) {
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+		StringBundler sb = new StringBundler(9);
 
-		jsonObject.put("alt", "This is a image description. " + index);
-		jsonObject.put("data", "base64Value" + index);
+		sb.append(StringPool.OPEN_CURLY_BRACE);
+		sb.append("\"alt\":\"This is a image description. ");
+		sb.append(index);
+		sb.append(StringPool.QUOTE);
+		sb.append(StringPool.COMMA);
+		sb.append("\"data\":\"base64Value");
+		sb.append(index);
+		sb.append(StringPool.QUOTE);
+		sb.append(StringPool.CLOSE_CURLY_BRACE);
 
-		return new UnlocalizedValue(jsonObject.toString());
+		return new UnlocalizedValue(sb.toString());
 	}
 
 	protected DDMFormFieldValue createSeparatorDDMFormFieldValue(
