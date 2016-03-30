@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.util.Validator;
 import java.io.Serializable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -96,7 +96,7 @@ public class DDMFormFieldValue implements Serializable {
 		getNestedDDMFormFieldValuesMap() {
 
 		Map<String, List<DDMFormFieldValue>> nestedDDMFormFieldValuesMap =
-			new HashMap<>();
+			new LinkedHashMap<>();
 
 		for (DDMFormFieldValue nestedDDMFormFieldValue :
 				_nestedDDMFormFieldValues) {
