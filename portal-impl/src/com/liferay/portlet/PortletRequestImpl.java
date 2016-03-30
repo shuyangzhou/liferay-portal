@@ -635,7 +635,7 @@ public abstract class PortletRequestImpl implements LiferayPortletRequest {
 		}
 
 		if (obj == null) {
-			removeAttribute(name);
+			_request.removeAttribute(name);
 		}
 		else {
 			_request.setAttribute(name, obj);

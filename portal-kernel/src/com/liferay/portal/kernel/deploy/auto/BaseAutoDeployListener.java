@@ -47,9 +47,7 @@ public abstract class BaseAutoDeployListener implements AutoDeployListener {
 		int code = autoDeployer.autoDeploy(autoDeploymentContext);
 
 		if ((code == AutoDeployer.CODE_DEFAULT) && _log.isInfoEnabled()) {
-			_log.info(
-				getSuccessMessage(file) +
-					". Deployment will start in a few seconds.");
+			_log.info(getSuccessMessage(file));
 		}
 
 		return code;

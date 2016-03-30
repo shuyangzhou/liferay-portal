@@ -85,7 +85,7 @@ public class StartupAction extends SimpleAction {
 
 		// Print release information
 
-		System.out.println("Starting " + ReleaseInfo.getReleaseInfo());
+		System.out.println("\nStarting " + ReleaseInfo.getReleaseInfo() + "\n");
 
 		// Installed patches
 

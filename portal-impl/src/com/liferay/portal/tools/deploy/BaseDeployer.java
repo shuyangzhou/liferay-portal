@@ -2192,8 +2192,8 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 
 		FileUtil.write(webXml, newContent, true);
 
-		if (_log.isInfoEnabled()) {
-			_log.info("Modifying Servlet " + webXmlVersion + " " + webXml);
+		if (_log.isDebugEnabled()) {
+			_log.debug("Modifying Servlet " + webXmlVersion + " " + webXml);
 		}
 	}
 

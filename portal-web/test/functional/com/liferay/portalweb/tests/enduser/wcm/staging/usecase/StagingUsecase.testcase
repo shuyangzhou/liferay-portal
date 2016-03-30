@@ -149,8 +149,6 @@
 			<var name="portletName" value="Blogs" />
 		</execute>
 
-		<execute function="Refresh" />
-
 		<execute macro="Blogs#addEntry">
 			<var name="entryContent" value="Blogs Entry Content" />
 			<var name="entryTitle" value="Blogs Entry Title" />
@@ -363,8 +361,6 @@
 			<var name="sitePagesVariationMenulistName" value="Main Variation" />
 			<var name="sitePagesVariationName" value="Test Site Pages Variation" />
 		</execute>
-
-		<execute function="Refresh" />
 
 		<execute macro="Staging#enablePageInSitePagesVariation">
 			<var name="pageName" value="Test Page Name" />
@@ -1459,8 +1455,6 @@
 			<var name="sitePagesVariationName" value="Christmas Variation" />
 		</execute>
 
-		<execute function="Refresh" />
-
 		<execute macro="Staging#enablePageInSitePagesVariation">
 			<var name="pageName" value="Test Page Name" />
 			<var name="sitePagesVariationName" value="Main Variation Edit" />
@@ -2505,6 +2499,13 @@
 		<execute macro="DMDocument#addMultiplePG">
 			<var name="dmDocumentFileList" value="Document_1.jpeg,Document_2.docx,Document_3.mp3,Document_4.txt" />
 		</execute>
+
+		<execute macro="Navigator#gotoSitePage">
+			<var name="pageName" value="Staging Test Page" />
+			<var name="siteName" value="Site Name" />
+		</execute>
+
+		<execute macro="DMPortlet#setDescriptiveView" />
 
 		<for list="Document_1.jpeg,Document_2.docx,Document_3.mp3,Document_4.txt" param="dmDocumentTitle">
 			<execute macro="Navigator#gotoSitePage">
