@@ -39,105 +39,92 @@ import org.osgi.service.metatype.ObjectClassDefinition;
  */
 public class ConfigurationModelToDDMFormConverter {
 
-	public ConfigurationModelToDDMFormConverter(
+	public static DDMForm getDDMForm(
 		ConfigurationModel configurationModel, Locale locale,
 		ResourceBundle resourceBundle) {
 
-		_configurationModel = configurationModel;
-		_locale = locale;
-		_resourceBundle = resourceBundle;
-	}
-
-	public DDMForm getDDMForm() {
 		DDMForm ddmForm = new DDMForm();
 
-		ddmForm.addAvailableLocale(_locale);
-		ddmForm.setDefaultLocale(_locale);
+		ddmForm.addAvailableLocale(locale);
+		ddmForm.setDefaultLocale(locale);
 
-		addRequiredDDMFormFields(ddmForm);
-		addOptionalDDMFormFields(ddmForm);
+		AttributeDefinition[] attributeDefinitions =
+			configurationModel.getAttributeDefinitions(
+				ObjectClassDefinition.REQUIRED);
+
+		if (attributeDefinitions != null) {
+			addDDMFormFields(
+				attributeDefinitions, ddmForm, true, locale, resourceBundle);
+		}
+
+		attributeDefinitions = configurationModel.getAttributeDefinitions(
+			ObjectClassDefinition.OPTIONAL);
+
+		if (attributeDefinitions != null) {
+			addDDMFormFields(
+				attributeDefinitions, ddmForm, false, locale, resourceBundle);
+		}
 
 		return ddmForm;
 	}
 
-	protected void addDDMFormFields(
+	protected static void addDDMFormFields(
 		AttributeDefinition[] attributeDefinitions, DDMForm ddmForm,
-		boolean required) {
-
-		if (attributeDefinitions == null) {
-			return;
-		}
+		boolean required, Locale locale, ResourceBundle resourceBundle) {
 
 		for (AttributeDefinition attributeDefinition : attributeDefinitions) {
-			DDMFormField ddmFormField = getDDMFormField(
-				attributeDefinition, required);
+			String type = getDDMFormFieldType(attributeDefinition);
+
+			DDMFormField ddmFormField = new DDMFormField(
+				attributeDefinition.getID(), type);
+
+			String dataType = getDDMFormFieldDataType(attributeDefinition);
+
+			ddmFormField.setDataType(dataType);
+
+			LocalizedValue label = new LocalizedValue(locale);
+
+			label.addString(
+				locale,
+				translate(attributeDefinition.getName(), resourceBundle));
+
+			ddmFormField.setLabel(label);
+
+			setDDMFormFieldOptions(
+				attributeDefinition, ddmFormField, locale, resourceBundle);
+			setDDMFormFieldPredefinedValue(
+				ddmFormField, locale, resourceBundle);
+
+			LocalizedValue tip = new LocalizedValue(locale);
+
+			tip.addString(
+				locale,
+				translate(
+					attributeDefinition.getDescription(), resourceBundle));
+
+			ddmFormField.setTip(tip);
+
+			ddmFormField.setLocalizable(true);
+
+			if (!DDMFormFieldType.CHECKBOX.equals(ddmFormField.getType())) {
+				ddmFormField.setRequired(required);
+			}
+
+			ddmFormField.setShowLabel(true);
+
+			if (attributeDefinition.getCardinality() != 0) {
+				ddmFormField.setRepeatable(true);
+			}
+
+			if (Validator.equals(dataType, FieldConstants.STRING)) {
+				ddmFormField.setProperty("displayStyle", "multiline");
+			}
 
 			ddmForm.addDDMFormField(ddmFormField);
 		}
 	}
 
-	protected void addOptionalDDMFormFields(DDMForm ddmForm) {
-		AttributeDefinition[] optionalAttributeDefinitions =
-			_configurationModel.getAttributeDefinitions(
-				ObjectClassDefinition.OPTIONAL);
-
-		addDDMFormFields(optionalAttributeDefinitions, ddmForm, false);
-	}
-
-	protected void addRequiredDDMFormFields(DDMForm ddmForm) {
-		AttributeDefinition[] requiredAttributeDefinitions =
-			_configurationModel.getAttributeDefinitions(
-				ObjectClassDefinition.REQUIRED);
-
-		addDDMFormFields(requiredAttributeDefinitions, ddmForm, true);
-	}
-
-	protected DDMFormFieldOptions getDDMFieldOptions(
-		AttributeDefinition attributeDefinition) {
-
-		DDMFormFieldOptions ddmFormFieldOptions = new DDMFormFieldOptions();
-
-		String[] optionLabels = attributeDefinition.getOptionLabels();
-		String[] optionValues = attributeDefinition.getOptionValues();
-
-		if ((optionLabels == null) || (optionValues == null)) {
-			return ddmFormFieldOptions;
-		}
-
-		for (int i = 0; i < optionLabels.length; i++) {
-			ddmFormFieldOptions.addOptionLabel(
-				optionValues[i], _locale, translate(optionLabels[i]));
-		}
-
-		return ddmFormFieldOptions;
-	}
-
-	protected DDMFormField getDDMFormField(
-		AttributeDefinition attributeDefinition, boolean required) {
-
-		String type = getDDMFormFieldType(attributeDefinition);
-
-		DDMFormField ddmFormField = new DDMFormField(
-			attributeDefinition.getID(), type);
-
-		setDDMFormFieldDataType(attributeDefinition, ddmFormField);
-		setDDMFormFieldLabel(attributeDefinition, ddmFormField);
-		setDDMFormFieldOptions(attributeDefinition, ddmFormField);
-		setDDMFormFieldPredefinedValue(attributeDefinition, ddmFormField);
-		setDDMFormFieldRequired(attributeDefinition, ddmFormField, required);
-		setDDMFormFieldTip(attributeDefinition, ddmFormField);
-
-		ddmFormField.setLocalizable(true);
-		ddmFormField.setShowLabel(true);
-
-		setDDMFormFieldRepeatable(attributeDefinition, ddmFormField);
-
-		setDDMFormFieldDisplayStyle(ddmFormField);
-
-		return ddmFormField;
-	}
-
-	protected String getDDMFormFieldDataType(
+	protected static String getDDMFormFieldDataType(
 		AttributeDefinition attributeDefinition) {
 
 		int type = attributeDefinition.getType();
@@ -164,11 +151,7 @@ public class ConfigurationModelToDDMFormConverter {
 		return FieldConstants.STRING;
 	}
 
-	protected String getDDMFormFieldPredefinedValue(
-		AttributeDefinition attributeDefinition) {
-
-		String dataType = getDDMFormFieldDataType(attributeDefinition);
-
+	protected static String getDDMFormFieldPredefinedValue(String dataType) {
 		if (dataType.equals(FieldConstants.BOOLEAN)) {
 			return "false";
 		}
@@ -187,7 +170,7 @@ public class ConfigurationModelToDDMFormConverter {
 		return StringPool.BLANK;
 	}
 
-	protected String getDDMFormFieldType(
+	protected static String getDDMFormFieldType(
 		AttributeDefinition attributeDefinition) {
 
 		int type = attributeDefinition.getType();
@@ -211,97 +194,56 @@ public class ConfigurationModelToDDMFormConverter {
 		return DDMFormFieldType.TEXT;
 	}
 
-	protected void setDDMFormFieldDataType(
-		AttributeDefinition attributeDefinition, DDMFormField ddmFormField) {
+	protected static void setDDMFormFieldOptions(
+		AttributeDefinition attributeDefinition, DDMFormField ddmFormField,
+		Locale locale, ResourceBundle resourceBundle) {
 
-		String dataType = getDDMFormFieldDataType(attributeDefinition);
+		DDMFormFieldOptions ddmFormFieldOptions = new DDMFormFieldOptions();
 
-		ddmFormField.setDataType(dataType);
-	}
+		String[] optionLabels = attributeDefinition.getOptionLabels();
+		String[] optionValues = attributeDefinition.getOptionValues();
 
-	protected void setDDMFormFieldDisplayStyle(DDMFormField ddmFormField) {
-		String dataType = ddmFormField.getDataType();
-
-		if (Validator.equals(dataType, FieldConstants.STRING)) {
-			ddmFormField.setProperty("displayStyle", "multiline");
+		if ((optionLabels != null) && (optionValues != null)) {
+			for (int i = 0; i < optionLabels.length; i++) {
+				ddmFormFieldOptions.addOptionLabel(
+					optionValues[i], locale,
+					translate(optionLabels[i], resourceBundle));
+			}
 		}
-	}
-
-	protected void setDDMFormFieldLabel(
-		AttributeDefinition attributeDefinition, DDMFormField ddmFormField) {
-
-		LocalizedValue label = new LocalizedValue(_locale);
-
-		label.addString(_locale, translate(attributeDefinition.getName()));
-
-		ddmFormField.setLabel(label);
-	}
-
-	protected void setDDMFormFieldOptions(
-		AttributeDefinition attributeDefinition, DDMFormField ddmFormField) {
-
-		DDMFormFieldOptions ddmFormFieldOptions = getDDMFieldOptions(
-			attributeDefinition);
 
 		ddmFormField.setDDMFormFieldOptions(ddmFormFieldOptions);
 	}
 
-	protected void setDDMFormFieldPredefinedValue(
-		AttributeDefinition attributeDefinition, DDMFormField ddmFormField) {
+	protected static void setDDMFormFieldPredefinedValue(
+		DDMFormField ddmFormField, Locale locale,
+		ResourceBundle resourceBundle) {
+
+		String dataType = ddmFormField.getDataType();
+
+		String predefinedValueString = getDDMFormFieldPredefinedValue(dataType);
 
 		String type = ddmFormField.getType();
-
-		String predefinedValueString = getDDMFormFieldPredefinedValue(
-			attributeDefinition);
 
 		if (type.equals(DDMFormFieldType.SELECT)) {
 			predefinedValueString = "[\"" + predefinedValueString + "\"]";
 		}
 
-		LocalizedValue predefinedValue = new LocalizedValue(_locale);
+		LocalizedValue predefinedValue = new LocalizedValue(locale);
 
-		predefinedValue.addString(_locale, translate(predefinedValueString));
+		predefinedValue.addString(
+			locale, translate(predefinedValueString, resourceBundle));
 
 		ddmFormField.setPredefinedValue(predefinedValue);
 	}
 
-	protected void setDDMFormFieldRepeatable(
-		AttributeDefinition attributeDefinition, DDMFormField ddmFormField) {
+	protected static String translate(
+		String key, ResourceBundle resourceBundle) {
 
-		if (attributeDefinition.getCardinality() == 0) {
-			return;
-		}
-
-		ddmFormField.setRepeatable(true);
-	}
-
-	protected void setDDMFormFieldRequired(
-		AttributeDefinition attributeDefinition, DDMFormField ddmFormField,
-		boolean required) {
-
-		if (DDMFormFieldType.CHECKBOX.equals(ddmFormField.getType())) {
-			return;
-		}
-
-		ddmFormField.setRequired(required);
-	}
-
-	protected void setDDMFormFieldTip(
-		AttributeDefinition attributeDefinition, DDMFormField ddmFormField) {
-
-		LocalizedValue tip = new LocalizedValue(_locale);
-
-		tip.addString(_locale, translate(attributeDefinition.getDescription()));
-
-		ddmFormField.setTip(tip);
-	}
-
-	protected String translate(String key) {
-		if ((_resourceBundle == null) || (key == null)) {
+		if ((resourceBundle == null) || (key == null)) {
 			return key;
 		}
 
-		String value = ResourceBundleUtil.getString(_resourceBundle, key);
+		String value = ResourceBundleUtil.getString(resourceBundle, key);
 
 		if (value == null) {
 			return key;
@@ -309,9 +251,5 @@ public class ConfigurationModelToDDMFormConverter {
 
 		return value;
 	}
-
-	private final ConfigurationModel _configurationModel;
-	private final Locale _locale;
-	private final ResourceBundle _resourceBundle;
 
 }

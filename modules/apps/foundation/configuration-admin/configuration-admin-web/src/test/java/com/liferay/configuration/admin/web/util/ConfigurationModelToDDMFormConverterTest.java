@@ -69,12 +69,8 @@ public class ConfigurationModelToDDMFormConverterTest extends Mockito {
 		ConfigurationModel configurationModel = new ConfigurationModel(
 			extendedObjectClassDefinition, null, null, null, false);
 
-		ConfigurationModelToDDMFormConverter
-			configurationModelToDDMFormConverter =
-				new ConfigurationModelToDDMFormConverter(
-					configurationModel, _enLocale, new EmptyResourceBundle());
-
-		DDMForm ddmForm = configurationModelToDDMFormConverter.getDDMForm();
+		DDMForm ddmForm = ConfigurationModelToDDMFormConverter.getDDMForm(
+			configurationModel, _enLocale, new EmptyResourceBundle());
 
 		Map<String, DDMFormField> ddmFormFieldsMap =
 			ddmForm.getDDMFormFieldsMap(false);
@@ -113,12 +109,8 @@ public class ConfigurationModelToDDMFormConverterTest extends Mockito {
 		ConfigurationModel configurationModel = new ConfigurationModel(
 			extendedObjectClassDefinition, null, null, null, false);
 
-		ConfigurationModelToDDMFormConverter
-			configurationModelToDDMFormConverter =
-				new ConfigurationModelToDDMFormConverter(
-					configurationModel, _enLocale, new EmptyResourceBundle());
-
-		DDMForm ddmForm = configurationModelToDDMFormConverter.getDDMForm();
+		DDMForm ddmForm = ConfigurationModelToDDMFormConverter.getDDMForm(
+			configurationModel, _enLocale, new EmptyResourceBundle());
 
 		Map<String, DDMFormField> ddmFormFieldsMap =
 			ddmForm.getDDMFormFieldsMap(false);
@@ -162,12 +154,8 @@ public class ConfigurationModelToDDMFormConverterTest extends Mockito {
 		ConfigurationModel configurationModel = new ConfigurationModel(
 			extendedObjectClassDefinition, null, null, null, false);
 
-		ConfigurationModelToDDMFormConverter
-			configurationModelToDDMFormConverter =
-				new ConfigurationModelToDDMFormConverter(
-					configurationModel, _enLocale, new EmptyResourceBundle());
-
-		DDMForm ddmForm = configurationModelToDDMFormConverter.getDDMForm();
+		DDMForm ddmForm = ConfigurationModelToDDMFormConverter.getDDMForm(
+			configurationModel, _enLocale, new EmptyResourceBundle());
 
 		Map<String, DDMFormField> ddmFormFieldsMap =
 			ddmForm.getDDMFormFieldsMap(false);
@@ -224,12 +212,8 @@ public class ConfigurationModelToDDMFormConverterTest extends Mockito {
 		ConfigurationModel configurationModel = new ConfigurationModel(
 			extendedObjectClassDefinition, null, null, null, false);
 
-		ConfigurationModelToDDMFormConverter
-			configurationModelToDDMFormConverter =
-				new ConfigurationModelToDDMFormConverter(
-					configurationModel, _enLocale, new EmptyResourceBundle());
-
-		DDMForm ddmForm = configurationModelToDDMFormConverter.getDDMForm();
+		DDMForm ddmForm = ConfigurationModelToDDMFormConverter.getDDMForm(
+			configurationModel, _enLocale, new EmptyResourceBundle());
 
 		Map<String, DDMFormField> ddmFormFieldsMap =
 			ddmForm.getDDMFormFieldsMap(false);
