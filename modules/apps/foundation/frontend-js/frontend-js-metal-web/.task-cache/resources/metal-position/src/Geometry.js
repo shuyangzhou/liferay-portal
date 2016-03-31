@@ -1,4 +1,4 @@
-define("frontend-js-metal-web@1.0.5/metal-position/src/Geometry", ['exports'], function (exports) {
+define("frontend-js-metal-web@1.0.6/metal-position/src/Geometry", ['exports'], function (exports) {
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {

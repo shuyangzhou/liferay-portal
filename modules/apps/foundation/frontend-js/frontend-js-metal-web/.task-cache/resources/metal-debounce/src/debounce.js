@@ -1,4 +1,4 @@
-define("frontend-js-metal-web@1.0.5/metal-debounce/src/debounce", ['exports'], function (exports) {
+define("frontend-js-metal-web@1.0.6/metal-debounce/src/debounce", ['exports'], function (exports) {
 	'use strict';
 
 	/**

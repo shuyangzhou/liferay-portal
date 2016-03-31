@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Social Private Messaging Service
 Bundle-SymbolicName: com.liferay.social.privatemessaging.service
-Bundle-Version: 1.0.4
+Bundle-Version: 1.0.5
 Export-Package:\
 	com.liferay.social.privatemessaging.hook,\
 	com.liferay.social.privatemessaging.hook.listeners,\

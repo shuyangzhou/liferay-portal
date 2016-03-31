@@ -250,7 +250,6 @@ Import-Package: !*
 	@../../../lib/portal/spring-jms.jar,\
 	@../../../lib/portal/spring-orm.jar,\
 	@../../../lib/portal/spring-oxm.jar,\
-	@../../../lib/portal/spring-struts.jar,\
 	@../../../lib/portal/spring-tx.jar,\
 	@../../../lib/portal/spring-web.jar,\
 	@../../../lib/portal/spring-webmvc.jar,\

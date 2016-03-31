@@ -258,7 +258,6 @@ public class JSONWebServiceInvokerInnerTest extends BaseJSONWebServiceTestCase {
 
 		expectedMap.put("list", resultList);
 
-		//return toJSON(expectedMap, "list", "data.array");
 		return expectedMap;
 	}
 

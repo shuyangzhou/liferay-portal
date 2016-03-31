@@ -1,0 +1,10 @@
+Liferay-Releng-App-Description: The Asset Tags Validator app ensures page validation when viewing a single asset from the Asset Publisher.
+Liferay-Releng-App-Title: Liferay Asset Tags Validator${liferay.releng.app.title.suffix}
+Liferay-Releng-Bundle: false
+Liferay-Releng-Category: Utility
+Liferay-Releng-Demo-Url:
+Liferay-Releng-Labs: true
+Liferay-Releng-Marketplace: true
+Liferay-Releng-Public: ${liferay.releng.public}
+Liferay-Releng-Support-Url: http://www.liferay.com
+Liferay-Releng-Supported: ${liferay.releng.supported}

@@ -56,9 +56,12 @@ import com.liferay.registry.dependency.ServiceDependencyListener;
 import com.liferay.registry.dependency.ServiceDependencyManager;
 import com.liferay.taglib.servlet.JspFactorySwapper;
 
+import java.io.InputStream;
+
 import javax.portlet.MimeResponse;
 import javax.portlet.PortletRequest;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.struts.tiles.taglib.ComponentConstants;
 
 /**
@@ -85,7 +88,17 @@ public class StartupAction extends SimpleAction {
 
 		// Print release information
 
-		System.out.println("Starting " + ReleaseInfo.getReleaseInfo());
+		Class<?> clazz = getClass();
+
+		ClassLoader classLoader = clazz.getClassLoader();
+
+		try (InputStream inputStream = classLoader.getResourceAsStream(
+				"com/liferay/portal/events/dependencies/startup.txt")) {
+
+			System.out.println(IOUtils.toString(inputStream));
+		}
+
+		System.out.println("Starting " + ReleaseInfo.getReleaseInfo() + "\n");
 
 		// Installed patches
 

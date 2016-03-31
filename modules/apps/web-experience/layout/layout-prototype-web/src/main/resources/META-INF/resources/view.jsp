@@ -124,7 +124,7 @@
 				<c:when test="<%= layoutPrototypeDisplayContext.isIconView() %>">
 
 					<%
-					row.setCssClass("col-md-2 col-sm-4 col-xs-6");
+					row.setCssClass("entry-card lfr-asset-item");
 					%>
 
 					<liferay-ui:search-container-column-text>
@@ -214,7 +214,7 @@
 	</liferay-ui:search-container>
 </aui:form>
 
-<c:if test="<%= layoutPrototypeDisplayContext.showAddButton() %>">
+<c:if test="<%= layoutPrototypeDisplayContext.isShowAddButton() %>">
 	<portlet:renderURL var="addLayoutPrototypeURL">
 		<portlet:param name="mvcPath" value="/edit_layout_prototype.jsp" />
 	</portlet:renderURL>

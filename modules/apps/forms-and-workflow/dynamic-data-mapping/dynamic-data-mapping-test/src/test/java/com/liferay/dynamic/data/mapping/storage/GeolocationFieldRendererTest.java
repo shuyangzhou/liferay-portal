@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.util.JavaDetector;
 import com.liferay.portal.kernel.util.LocaleUtil;
 
 import java.util.Locale;
@@ -53,18 +54,32 @@ public class GeolocationFieldRendererTest extends PowerMockito {
 	public void testRenderedValuesFollowLocaleConventions() {
 		FieldRenderer fieldRenderer = new GeolocationFieldRenderer();
 
-		Assert.assertEquals(
-			"Latitud: 9,876, Longitud: 1,234",
-			fieldRenderer.render(createField(), LocaleUtil.SPAIN));
+		if (JavaDetector.isJDK8()) {
+			Assert.assertEquals(
+				"Latitud: 9,877, Longitud: 1,234",
+				fieldRenderer.render(createField(), LocaleUtil.SPAIN));
+		}
+		else {
+			Assert.assertEquals(
+				"Latitud: 9,876, Longitud: 1,234",
+				fieldRenderer.render(createField(), LocaleUtil.SPAIN));
+		}
 	}
 
 	@Test
 	public void testRenderedValuesShouldHave3DecimalPlaces() {
 		FieldRenderer fieldRenderer = new GeolocationFieldRenderer();
 
-		Assert.assertEquals(
-			"Latitude: 9.876, Longitude: 1.234",
-			fieldRenderer.render(createField(), LocaleUtil.US));
+		if (JavaDetector.isJDK8()) {
+			Assert.assertEquals(
+				"Latitude: 9.877, Longitude: 1.234",
+				fieldRenderer.render(createField(), LocaleUtil.US));
+		}
+		else {
+			Assert.assertEquals(
+				"Latitude: 9.876, Longitude: 1.234",
+				fieldRenderer.render(createField(), LocaleUtil.US));
+		}
 	}
 
 	protected Field createField() {

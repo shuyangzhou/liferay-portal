@@ -123,7 +123,7 @@ SiteTeamsDisplayContext siteTeamsDisplayContext = new SiteTeamsDisplayContext(re
 				<c:when test="<%= siteTeamsDisplayContext.isIconView() %>">
 
 					<%
-					row.setCssClass("article-entry col-md-2 col-sm-4 col-xs-6");
+					row.setCssClass("entry-card lfr-asset-item");
 					%>
 
 					<liferay-ui:search-container-column-text>
@@ -169,7 +169,7 @@ SiteTeamsDisplayContext siteTeamsDisplayContext = new SiteTeamsDisplayContext(re
 	</liferay-ui:search-container>
 </aui:form>
 
-<c:if test="<%= siteTeamsDisplayContext.showAddButton() %>">
+<c:if test="<%= siteTeamsDisplayContext.isShowAddButton() %>">
 
 	<%
 	PortletURL addTeamURL = renderResponse.createRenderURL();

@@ -628,7 +628,9 @@ public class JSONWebServiceInvokerAction implements JSONWebServiceAction {
 					continue;
 				}
 
-				if (value.startsWith(name)) {
+				if (value.startsWith(name) &&
+					(value.indexOf(CharPool.PERIOD, name.length()) == -1)) {
+
 					Map<String, Object> parameterMap =
 						statement.getParameterMap();
 

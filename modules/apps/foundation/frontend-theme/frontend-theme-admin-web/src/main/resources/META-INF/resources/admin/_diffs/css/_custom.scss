@@ -27,9 +27,15 @@ body {
 		min-height: 200px;
 	}
 
+	.card-footer {
+		min-height: 5.6em;
+	}
+
 	.sidenav-container {
 		.sidenav-content {
-			margin-right: -15px;
+			@include sm {
+				margin-right: -15px;
+			}
 		}
 
 		&.closed .sidenav-content {

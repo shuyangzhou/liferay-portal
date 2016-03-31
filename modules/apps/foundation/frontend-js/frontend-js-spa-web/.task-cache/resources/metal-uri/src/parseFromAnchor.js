@@ -1,4 +1,4 @@
-define("frontend-js-spa-web@1.0.5/metal-uri/src/parseFromAnchor", ['exports'], function (exports) {
+define("frontend-js-spa-web@1.0.6/metal-uri/src/parseFromAnchor", ['exports'], function (exports) {
 	'use strict';
 
 	/**

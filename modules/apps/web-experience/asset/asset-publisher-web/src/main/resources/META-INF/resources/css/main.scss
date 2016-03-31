@@ -1,4 +1,14 @@
 .portlet-asset-publisher {
+	.asset-abstract {
+		overflow: auto;
+	}
+
+	.asset-actions {
+		position: absolute;
+		right: 10px;
+		top: 12px;
+	}
+
 	.asset-full-content {
 	    img {
 	        max-width: 100%;

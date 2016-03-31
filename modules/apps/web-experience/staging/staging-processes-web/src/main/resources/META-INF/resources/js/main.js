@@ -1,6 +1,8 @@
 AUI.add(
 	'liferay-export-import',
 	function(A) {
+		var $ = AUI.$;
+
 		var Lang = A.Lang;
 
 		var ADate = A.Date;
@@ -127,7 +129,7 @@ AUI.add(
 								checkBox.on(
 									STR_CLICK,
 									function() {
-										if (checkBox.is(":checked")) {
+										if (checkBox.is(':checked')) {
 											var id = checkBox.prop('id');
 
 											var controlCheckboxes = $('[data-root-control-id=' + id + ']');
@@ -700,6 +702,7 @@ AUI.add(
 							A.io.request(
 								instance._processesResourceURL,
 								{
+									method: 'GET',
 									on: {
 										failure: function() {
 											new Liferay.Notice(

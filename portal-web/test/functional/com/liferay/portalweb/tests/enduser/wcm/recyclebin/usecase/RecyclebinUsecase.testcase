@@ -816,6 +816,10 @@
 			<var name="structureName" value="WC Structure Name" />
 		</execute>
 
+		<execute macro="LexiconEntry#gotoEntry">
+			<var name="rowEntry" value="WC Structure Name" />
+		</execute>
+
 		<execute macro="DynamicDataMapping#viewField">
 			<var name="fieldFieldLabel" value="Text" />
 			<var name="fieldName" value="Text" />
@@ -977,7 +981,7 @@
 	</command>
 
 	<command name="RestoreDMDocumentFromFolderCP" priority="5">
-		<property name="portal.acceptance" value="false" />
+		<property name="portal.acceptance" value="true" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />

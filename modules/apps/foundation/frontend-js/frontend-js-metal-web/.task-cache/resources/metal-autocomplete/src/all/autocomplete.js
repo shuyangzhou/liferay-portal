@@ -1,4 +1,4 @@
-define("frontend-js-metal-web@1.0.5/metal-autocomplete/src/all/autocomplete", ['exports', '../Autocomplete', '../AutocompleteBase', 'metal-jquery-adapter/src/JQueryAdapter'], function (exports, _Autocomplete, _AutocompleteBase, _JQueryAdapter) {
+define("frontend-js-metal-web@1.0.6/metal-autocomplete/src/all/autocomplete", ['exports', '../Autocomplete', '../AutocompleteBase', 'metal-jquery-adapter/src/JQueryAdapter'], function (exports, _Autocomplete, _AutocompleteBase, _JQueryAdapter) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {

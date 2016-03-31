@@ -107,13 +107,15 @@ public class S3FileCacheImpl implements S3FileCache {
 
 		File cacheFile = new File(cacheFileName);
 
+		InputStream inputStream = s3Object.getObjectContent();
+
 		if (cacheFile.exists() &&
 			(cacheFile.lastModified() >= lastModifiedDate.getTime())) {
 
+			StreamUtil.cleanUp(inputStream);
+
 			return cacheFile;
 		}
-
-		InputStream inputStream = s3Object.getObjectContent();
 
 		if (inputStream == null) {
 			throw new IOException("S3 object input stream is null");

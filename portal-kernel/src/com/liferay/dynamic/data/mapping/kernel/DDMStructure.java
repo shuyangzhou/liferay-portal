@@ -78,6 +78,7 @@ public interface DDMStructure extends StagedGroupedModel {
 
 	public Map<Locale, String> getDescriptionMap();
 
+	@Override
 	public ExpandoBridge getExpandoBridge();
 
 	public String getFieldDataType(String fieldName) throws PortalException;
@@ -133,6 +134,7 @@ public interface DDMStructure extends StagedGroupedModel {
 
 	public long getPrimaryKey();
 
+	@Override
 	public Serializable getPrimaryKeyObj();
 
 	public List<String> getRootFieldNames();
