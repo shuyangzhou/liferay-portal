@@ -384,11 +384,11 @@ public interface AssetEntryLocalService extends BaseLocalService,
 	public AssetEntry getPreviousEntry(long entryId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AssetEntry> getTopViewedEntries(java.lang.String className,
+	public List<AssetEntry> getTopViewedEntries(java.lang.String[] className,
 		boolean asc, int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AssetEntry> getTopViewedEntries(java.lang.String[] className,
+	public List<AssetEntry> getTopViewedEntries(java.lang.String className,
 		boolean asc, int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
