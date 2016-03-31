@@ -286,7 +286,7 @@
 		<execute function="Check#checkToggleSwitch" locator1="Checkbox#ENABLE_RATINGS" />
 		<execute function="Check#checkToggleSwitch" locator1="Checkbox#ENABLE_COMMENTS" />
 		<execute function="Check#checkToggleSwitch" locator1="Checkbox#ENABLE_COMMENT_RATINGS" />
-		<execute function="Check" locator1="Checkbox#ENABLE_SOCIAL_BOOKMARKS" />
+		<execute function="Check#checkToggleSwitch" locator1="Checkbox#ENABLE_SOCIAL_BOOKMARKS" />
 
 		<execute macro="PortletEntry#save" />
 
@@ -427,20 +427,30 @@
 
 		<execute function="AssertClick" locator1="Configuration#SOURCE_SCOPE_SELECT" value1="Select" />
 
-		<execute function="AssertClick" locator1="MenuItem#OTHER_SITE" value1="Other Site..." />
+		<if>
+			<equals arg1="${siteName}" arg2="Global" />
+			<then>
+				<execute function="AssertClick" locator1="MenuItem#ANY_MENU_ITEM" value1="${siteName}">
+					<var name="key_menuItem" value="${siteName}" />
+				</execute>
+			</then>
+			<else>
+				<execute function="AssertClick" locator1="MenuItem#OTHER_SITE" value1="Other Site..." />
 
-		<execute function="SelectFrame" value1="relative=top" />
+				<execute function="SelectFrame" value1="relative=top" />
 
-		<execute function="SelectFrame" locator1="IFrame#SELECT_SITES" />
+				<execute function="SelectFrame" locator1="IFrame#SELECT_SITES" />
 
-		<execute function="AssertTextEquals" locator1="APConfigurationSites#SITES_TABLE_NAME" value1="${siteName}" />
-		<execute function="AssertTextEquals" locator1="APConfigurationSites#SITES_TABLE_TYPE" value1="${siteScopeType}" />
+				<execute function="AssertTextEquals" locator1="APConfigurationSites#SITES_TABLE_NAME" value1="${siteName}" />
+				<execute function="AssertTextEquals" locator1="APConfigurationSites#SITES_TABLE_TYPE" value1="${siteScopeType}" />
 
-		<execute function="ClickNoError" locator1="SitesSelectSite#SITES_TABLE_CHOOSE_SITE_LINK" />
+				<execute function="ClickNoError" locator1="SitesSelectSite#SITES_TABLE_CHOOSE_SITE_LINK" />
 
-		<execute function="SelectFrame" value1="relative=top" />
+				<execute function="SelectFrame" value1="relative=top" />
 
-		<execute function="SelectFrame" locator1="IFrame#DIALOG" />
+				<execute function="SelectFrame" locator1="IFrame#DIALOG" />
+			</else>
+		</if>
 
 		<execute macro="Panel#expandPanel">
 			<var name="panelHeading" value="Source" />
@@ -522,7 +532,7 @@
 
 		<execute function="AssertTextEquals" locator1="APConfiguration#SUBSCRIPTIONS_ENABLE_RSS_SUBSCRIPTION_LABEL" value1="Enable RSS Subscription" />
 
-		<execute function="Check" locator1="APConfiguration#SUBSCRIPTIONS_ENABLE_RSS_SUBSCRIPTION" />
+		<execute function="Check#checkToggleSwitch" locator1="APConfiguration#SUBSCRIPTIONS_ENABLE_RSS_SUBSCRIPTION" />
 	</command>
 
 	<command name="gotoConfigurationPG">

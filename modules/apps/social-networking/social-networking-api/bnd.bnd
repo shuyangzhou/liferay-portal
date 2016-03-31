@@ -1,0 +1,4 @@
+Bundle-Name: Liferay Social Networking API
+Bundle-SymbolicName: com.liferay.social.networking.api
+Bundle-Version: 2.0.2
+Export-Package: com.liferay.social.networking.*

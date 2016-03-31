@@ -80,6 +80,8 @@
 			<var name="siteName" value="Remote Site" />
 		</execute>
 
+		<execute macro="DMPortlet#setDescriptiveView" />
+
 		<execute macro="DMDocument#viewPG">
 			<var name="dmDocumentDescription" value="DM Document Description" />
 			<var name="dmDocumentTitle" value="DM Document Title" />
@@ -337,6 +339,8 @@
 	</command>
 
 	<command name="AddPageVariation" priority="5">
+		<property name="portal.acceptance" value="true" />
+
 		<execute macro="Navigator#openSiteURL">
 			<var name="siteName" value="Site Name" />
 		</execute>
@@ -370,6 +374,8 @@
 	</command>
 
 	<command name="AddPageWithPageVersioningEnabled" priority="5">
+		<property name="portal.acceptance" value="true" />
+
 		<execute macro="Navigator#openSiteURL">
 			<var name="siteName" value="Site Name" />
 		</execute>
@@ -393,11 +399,9 @@
 			<var name="siteName" value="Site Name" />
 		</execute>
 
-		<execute macro="Page#gotoPG">
+		<execute macro="Navigator#gotoStagedSitePage">
 			<var name="pageName" value="Staging Page Versioning" />
-			<var name="pageStaging" value="true" />
 			<var name="siteName" value="Site Name" />
-			<var name="siteURL" value="true" />
 		</execute>
 
 		<execute macro="Portlet#addPG">
@@ -416,10 +420,9 @@
 
 		<execute macro="Staging#publishToLive" />
 
-		<execute macro="Page#gotoPG">
+		<execute macro="Navigator#gotoStagedSitePage">
 			<var name="pageName" value="Staging Page Versioning" />
 			<var name="siteName" value="Site Name" />
-			<var name="siteURL" value="true" />
 		</execute>
 
 		<execute macro="Portlet#viewSpecificPG">
@@ -428,6 +431,8 @@
 	</command>
 
 	<command name="AddSitePagesVariation" priority="5">
+		<property name="portal.acceptance" value="true" />
+
 		<execute macro="Navigator#openSiteURL">
 			<var name="siteName" value="Site Name" />
 		</execute>

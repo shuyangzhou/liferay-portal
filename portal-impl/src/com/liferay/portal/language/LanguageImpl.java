@@ -1805,8 +1805,7 @@ public class LanguageImpl implements Language, Serializable {
 	}
 
 	private void _resetAvailableGroupLocales(long groupId) {
-		_groupLanguageCodeLocalesMapMap.remove(groupId);
-		_groupLanguageIdLocalesMap.remove(groupId);
+		_groupLocalesPortalCache.remove(groupId);
 	}
 
 	private void _resetAvailableLocales(long companyId) {

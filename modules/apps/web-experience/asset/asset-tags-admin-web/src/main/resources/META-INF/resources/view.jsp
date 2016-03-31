@@ -88,6 +88,10 @@
 			modelVar="tag"
 		>
 
+			<%
+			long fullTagsCount = assetTagsDisplayContext.getFullTagsCount(tag);
+			%>
+
 			<c:choose>
 				<c:when test='<%= Validator.equals(assetTagsDisplayContext.getDisplayStyle(), "descriptive") %>'>
 					<liferay-ui:search-container-column-icon
@@ -103,7 +107,7 @@
 						</h5>
 
 						<h6 class="text-default">
-							<strong><liferay-ui:message key="usages" /></strong>: <span><%= String.valueOf(tag.getAssetCount()) %></span>
+							<strong><liferay-ui:message key="usages" /></strong>: <span><%= String.valueOf(fullTagsCount) %></span>
 						</h6>
 					</liferay-ui:search-container-column-text>
 
@@ -114,7 +118,7 @@
 				<c:when test='<%= Validator.equals(assetTagsDisplayContext.getDisplayStyle(), "icon") %>'>
 
 					<%
-					row.setCssClass("col-md-2 col-sm-4 col-xs-6");
+					row.setCssClass("entry-card lfr-asset-item");
 					%>
 
 					<liferay-ui:search-container-column-text>
@@ -127,7 +131,7 @@
 							title="<%= tag.getName() %>"
 						>
 							<liferay-frontend:vertical-card-footer>
-								<strong><liferay-ui:message key="usages" /></strong>: <span><%= String.valueOf(tag.getAssetCount()) %></span>
+								<strong><liferay-ui:message key="usages" /></strong>: <span><%= String.valueOf(fullTagsCount) %></span>
 							</liferay-frontend:vertical-card-footer>
 						</liferay-frontend:icon-vertical-card>
 					</liferay-ui:search-container-column-text>
@@ -143,7 +147,7 @@
 					<liferay-ui:search-container-column-text
 						cssClass="usages-column"
 						name="usages"
-						value="<%= String.valueOf(tag.getAssetCount()) %>"
+						value="<%= String.valueOf(fullTagsCount) %>"
 					/>
 
 					<liferay-ui:search-container-column-jsp
@@ -158,7 +162,7 @@
 	</liferay-ui:search-container>
 </aui:form>
 
-<c:if test="<%= AssetPermission.contains(permissionChecker, themeDisplay.getSiteGroupId(), ActionKeys.ADD_TAG) %>">
+<c:if test="<%= assetTagsDisplayContext.isShowAddButton() %>">
 	<portlet:renderURL var="editTagURL">
 		<portlet:param name="mvcPath" value="/edit_tag.jsp" />
 	</portlet:renderURL>

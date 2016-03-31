@@ -68,6 +68,7 @@ import com.liferay.portal.kernel.service.LayoutSetLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutSetPrototypeLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutSetServiceUtil;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
+import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
@@ -250,6 +251,11 @@ public class SitesImpl implements Sites {
 		serviceContext.setAttribute(
 			"layoutPrototypeUuid", layoutPrototype.getUuid());
 
+		LayoutTypePortlet targetLayoutType =
+			(LayoutTypePortlet)targetLayout.getLayoutType();
+
+		List<String> targetLayoutPortletIds = targetLayoutType.getPortletIds();
+
 		targetLayout = LayoutLocalServiceUtil.updateLayout(
 			targetLayout.getGroupId(), targetLayout.isPrivateLayout(),
 			targetLayout.getLayoutId(), targetLayout.getParentLayoutId(),
@@ -269,6 +275,9 @@ public class SitesImpl implements Sites {
 		copyPortletSetups(layoutPrototypeLayout, targetLayout);
 
 		copyLookAndFeel(targetLayout, layoutPrototypeLayout);
+
+		deleteUnreferencedPortlets(
+			targetLayoutPortletIds, targetLayout, layoutPrototypeLayout);
 
 		targetLayout = LayoutLocalServiceUtil.getLayout(targetLayout.getPlid());
 
@@ -1560,6 +1569,26 @@ public class SitesImpl implements Sites {
 
 			throw new PrincipalException();
 		}
+	}
+
+	protected void deleteUnreferencedPortlets(
+			List<String> targetLayoutPortletIds, Layout targetLayout,
+			Layout sourceLayout)
+		throws Exception {
+
+		LayoutTypePortlet sourceLayoutType =
+			(LayoutTypePortlet)sourceLayout.getLayoutType();
+
+		List<String> unreferencedPortletIds = new ArrayList<>(
+			targetLayoutPortletIds);
+
+		unreferencedPortletIds.removeAll(sourceLayoutType.getPortletIds());
+
+		PortletLocalServiceUtil.deletePortlets(
+			targetLayout.getCompanyId(),
+			unreferencedPortletIds.toArray(
+				new String[unreferencedPortletIds.size()]),
+			targetLayout.getPlid());
 	}
 
 	protected void doMergeLayoutPrototypeLayout(Group group, Layout layout)

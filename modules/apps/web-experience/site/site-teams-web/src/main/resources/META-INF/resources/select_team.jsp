@@ -136,14 +136,14 @@ teamSearch.setTotal(teamsCount);
 						</h5>
 
 						<h6 class="text-default">
-							<span><%= curTeam.getDescription() %></span>
+							<span><%= HtmlUtil.escape(curTeam.getDescription()) %></span>
 						</h6>
 					</liferay-ui:search-container-column-text>
 				</c:when>
 				<c:when test='<%= displayStyle.equals("icon") %>'>
 
 					<%
-					row.setCssClass("col-md-2 col-sm-4 col-xs-6");
+					row.setCssClass("entry-card lfr-asset-item");
 					%>
 
 					<liferay-ui:search-container-column-text>

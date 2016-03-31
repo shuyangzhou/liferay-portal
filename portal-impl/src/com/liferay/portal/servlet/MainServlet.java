@@ -708,8 +708,6 @@ public class MainServlet extends ActionServlet {
 
 			if (jRemoteUser != null) {
 				remoteUser = jRemoteUser;
-
-				session.removeAttribute("j_remoteuser");
 			}
 		}
 
@@ -1050,6 +1048,8 @@ public class MainServlet extends ActionServlet {
 		session.setAttribute(WebKeys.USER, user);
 		session.setAttribute(WebKeys.USER_ID, Long.valueOf(userId));
 		session.setAttribute(Globals.LOCALE_KEY, user.getLocale());
+
+		session.removeAttribute("j_remoteuser");
 
 		if (!user.isDefaultUser()) {
 			EventsProcessorUtil.process(

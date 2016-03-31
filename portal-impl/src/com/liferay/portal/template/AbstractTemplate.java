@@ -150,7 +150,25 @@ public abstract class AbstractTemplate implements Template {
 		return context.values();
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #write(Writer)}
+	 */
+	@Deprecated
 	protected void _write(Writer writer) throws TemplateException {
+		write(writer);
+	}
+
+	protected String getTemplateResourceUUID(
+		TemplateResource templateResource) {
+
+		return TemplateConstants.TEMPLATE_RESOURCE_UUID_PREFIX.concat(
+			StringPool.POUND).concat(templateResource.getTemplateId());
+	}
+
+	protected abstract void handleException(Exception exception, Writer writer)
+		throws TemplateException;
+
+	protected void write(Writer writer) throws TemplateException {
 		Writer oldWriter = (Writer)get(TemplateConstants.WRITER);
 
 		try {
@@ -165,16 +183,6 @@ public abstract class AbstractTemplate implements Template {
 			put(TemplateConstants.WRITER, oldWriter);
 		}
 	}
-
-	protected String getTemplateResourceUUID(
-		TemplateResource templateResource) {
-
-		return TemplateConstants.TEMPLATE_RESOURCE_UUID_PREFIX.concat(
-			StringPool.POUND).concat(templateResource.getTemplateId());
-	}
-
-	protected abstract void handleException(Exception exception, Writer writer)
-		throws TemplateException;
 
 	protected Map<String, Object> context;
 	protected TemplateResource errorTemplateResource;

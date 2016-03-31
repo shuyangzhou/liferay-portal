@@ -1,4 +1,4 @@
-define("frontend-js-metal-web@1.0.5/metal-dom/src/dom", ['exports', 'metal/src/metal', './DomEventHandle'], function (exports, _metal, _DomEventHandle) {
+define("frontend-js-metal-web@1.0.6/metal-dom/src/dom", ['exports', 'metal/src/metal', './DomEventHandle'], function (exports, _metal, _DomEventHandle) {
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {

@@ -1,6 +1,8 @@
 AUI.add(
 	'liferay-export-import',
 	function(A) {
+		var $ = AUI.$;
+
 		var Lang = A.Lang;
 
 		var ADate = A.Date;
@@ -37,11 +39,6 @@ AUI.add(
 					rangeLastNode: defaultConfig,
 					rangeLastPublishNode: defaultConfig,
 					ratingsNode: defaultConfig,
-					remoteAddressNode: defaultConfig,
-					remoteGroupIdNode: defaultConfig,
-					remotePathContextNode: defaultConfig,
-					remotePortNode: defaultConfig,
-					secureConnectionNode: defaultConfig,
 					setupNode: defaultConfig,
 					timeZone: STR_EMPTY,
 					userPreferencesNode: defaultConfig
@@ -86,10 +83,6 @@ AUI.add(
 							instance._globalConfigurationDialog.destroy();
 						}
 
-						if (instance._remoteDialog) {
-							instance._remoteDialog.destroy();
-						}
-
 						if (instance._scheduledPublishingEventsDialog) {
 							instance._scheduledPublishingEventsDialog.destroy();
 						}
@@ -127,7 +120,7 @@ AUI.add(
 								checkBox.on(
 									STR_CLICK,
 									function() {
-										if (checkBox.is(":checked")) {
+										if (checkBox.is(':checked')) {
 											var id = checkBox.prop('id');
 
 											var controlCheckboxes = $('[data-root-control-id=' + id + ']');
@@ -219,19 +212,6 @@ AUI.add(
 								STR_CLICK,
 								function(event) {
 									instance._updateDateRange();
-								}
-							);
-						}
-
-						var remoteLink = instance.byId('remoteLink');
-
-						if (remoteLink) {
-							remoteLink.on(
-								STR_CLICK,
-								function(event) {
-									var remoteDialog = instance._getRemoteDialog();
-
-									remoteDialog.show();
 								}
 							);
 						}
@@ -430,63 +410,6 @@ AUI.add(
 						return globalConfigurationDialog;
 					},
 
-					_getRemoteDialog: function() {
-						var instance = this;
-
-						var remoteDialog = instance._remoteDialog;
-
-						if (!remoteDialog) {
-							var remoteNode = instance.byId('remote');
-
-							remoteNode.show();
-
-							remoteDialog = Liferay.Util.Window.getWindow(
-								{
-									dialog: {
-										bodyContent: remoteNode,
-										centered: true,
-										height: 300,
-										modal: true,
-										render: instance.get('form'),
-										toolbars: {
-											footer: [
-												{
-													label: Liferay.Language.get('ok'),
-													on: {
-														click: function(event) {
-															event.domEvent.preventDefault();
-
-															instance._setRemoteLabels();
-
-															remoteDialog.hide();
-														}
-													},
-													primary: true
-												},
-												{
-													label: Liferay.Language.get('cancel'),
-													on: {
-														click: function(event) {
-															event.domEvent.preventDefault();
-
-															remoteDialog.hide();
-														}
-													}
-												}
-											]
-										},
-										width: 400
-									},
-									title: Liferay.Language.get('remote-live-connection-settings')
-								}
-							);
-
-							instance._remoteDialog = remoteDialog;
-						}
-
-						return remoteDialog;
-					},
-
 					_getScheduledPublishingEventsDialog: function() {
 						var instance = this;
 
@@ -557,7 +480,6 @@ AUI.add(
 						instance._refreshDeletions();
 						instance._setContentOptionsLabels();
 						instance._setGlobalConfigurationLabels();
-						instance._setRemoteLabels();
 					},
 
 					_isBackgroundTaskInProgress: function() {
@@ -700,6 +622,7 @@ AUI.add(
 							A.io.request(
 								instance._processesResourceURL,
 								{
+									method: 'GET',
 									on: {
 										failure: function() {
 											new Liferay.Notice(
@@ -842,42 +765,6 @@ AUI.add(
 						}
 
 						return val;
-					},
-
-					_setRemoteLabels: function() {
-						var instance = this;
-
-						var selectedRemote = [];
-
-						var remoteAddressValue = instance._getValue('remoteAddressNode');
-
-						if (remoteAddressValue !== STR_EMPTY) {
-							selectedRemote.push(remoteAddressValue);
-						}
-
-						var remotePortValue = instance._getValue('remotePortNode');
-
-						if (remotePortValue !== STR_EMPTY) {
-							selectedRemote.push(remotePortValue);
-						}
-
-						var remotePathContextValue = instance._getValue('remotePathContextNode');
-
-						if (remotePathContextValue !== STR_EMPTY) {
-							selectedRemote.push(remotePathContextValue);
-						}
-
-						var remoteGroupIdValue = instance._getValue('remoteGroupIdNode');
-
-						if (remoteGroupIdValue !== STR_EMPTY) {
-							selectedRemote.push(remoteGroupIdValue);
-						}
-
-						if (instance._isChecked('secureConnectionNode')) {
-							selectedRemote.push(Liferay.Language.get('use-a-secure-network-connection'));
-						}
-
-						instance._setLabels('remoteLink', 'selectedRemote', selectedRemote.join(', '));
 					},
 
 					_updateDateRange: function(event) {

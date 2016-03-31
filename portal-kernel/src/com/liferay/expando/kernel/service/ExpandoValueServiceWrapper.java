@@ -35,7 +35,7 @@ public class ExpandoValueServiceWrapper implements ExpandoValueService,
 	@Override
 	public com.liferay.expando.kernel.model.ExpandoValue addValue(
 		long companyId, java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, java.lang.String data)
+		java.lang.String columnName, long classPK, java.lang.Object data)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _expandoValueService.addValue(companyId, className, tableName,
 			columnName, classPK, data);
@@ -44,7 +44,7 @@ public class ExpandoValueServiceWrapper implements ExpandoValueService,
 	@Override
 	public com.liferay.expando.kernel.model.ExpandoValue addValue(
 		long companyId, java.lang.String className, java.lang.String tableName,
-		java.lang.String columnName, long classPK, java.lang.Object data)
+		java.lang.String columnName, long classPK, java.lang.String data)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _expandoValueService.addValue(companyId, className, tableName,
 			columnName, classPK, data);

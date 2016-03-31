@@ -10,12 +10,12 @@
 <tbody>
 <tr>
 	<td>ADVANCED_SEARCH</td>
-	<td>//button[contains(@class,'toggle-advanced') and span[@class='caret']]</td>
+	<td>//button[contains(@class,'toggle-advanced') and span[@class='caret']] | //a[contains(@id,'searchtoggleAdvanced')]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>ANGLE_LEFT_BACK</td>
-	<td>//div[contains(@class,'toolbar-group-content')]//span[contains(@class,'icon-angle-left')]</td>
+	<td>//div[contains(@class,'taglib-header')]//span[contains(.,'Back')] | //div[contains(@class,'toolbar-group-content')]//span[contains(@class,'icon-angle-left')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -110,7 +110,7 @@
 </tr>
 <tr>
 	<td>EDIT</td>
-	<td>//span/*[name()='svg'][contains(@class,'icon-pencil')]</td>
+	<td>//span[contains(.,'${key_assetTitle}')]//*[name()='svg'][contains(@class,'icon-pencil')]</td>
 	<td></td>
 </tr>
 <tr>

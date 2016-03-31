@@ -143,7 +143,7 @@ AssetCategoryUtil.addPortletBreadcrumbEntry(assetCategoriesDisplayContext.getVoc
 				<c:when test='<%= Validator.equals(assetCategoriesDisplayContext.getDisplayStyle(), "icon") %>'>
 
 					<%
-					row.setCssClass("col-md-2 col-sm-4 col-xs-6");
+					row.setCssClass("entry-card lfr-asset-item");
 					%>
 
 					<liferay-ui:search-container-column-text>
@@ -197,7 +197,7 @@ AssetCategoryUtil.addPortletBreadcrumbEntry(assetCategoriesDisplayContext.getVoc
 	</liferay-ui:search-container>
 </aui:form>
 
-<c:if test="<%= AssetPermission.contains(permissionChecker, themeDisplay.getSiteGroupId(), ActionKeys.ADD_CATEGORY) %>">
+<c:if test="<%= assetCategoriesDisplayContext.isShowCategoriesAddButton() %>">
 	<portlet:renderURL var="addCategoryURL">
 		<portlet:param name="mvcPath" value="/edit_category.jsp" />
 

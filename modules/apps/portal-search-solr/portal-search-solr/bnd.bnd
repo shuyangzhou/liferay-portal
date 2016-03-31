@@ -1,0 +1,49 @@
+Bundle-ClassPath:\
+	.,\
+	lib/commons-io.jar,\
+	lib/httpclient.jar,\
+	lib/httpcore.jar,\
+	lib/httpmime.jar,\
+	lib/lucene-analyzers-common.jar,\
+	lib/lucene-core.jar,\
+	lib/lucene-queries.jar,\
+	lib/lucene-queryparser.jar,\
+	lib/lucene-suggest.jar,\
+	lib/noggit.jar,\
+	lib/solr-solrj.jar,\
+	lib/stax2-api.jar,\
+	lib/woodstox-core-asl.jar,\
+	lib/zookeeper.jar
+Bundle-Name: Liferay Portal Search Solr
+Bundle-SymbolicName: com.liferay.portal.search.solr
+Bundle-Version: 2.0.2
+Import-Package:\
+	!com.sun.management.*,\
+	!com.sun.msv.*,\
+	\
+	!jline.*,\
+	\
+	!org.apache.log4j.*,\
+	!org.apache.lucene.sandbox.*,\
+	\
+	!org.ietf.jgss.*,\
+	\
+	!org.jboss.netty.*,\
+	\
+	!org.relaxng.datatype.*,\
+	*
+-liferay-includeresource:\
+	lib/commons-io.jar=commons-io-*.jar,\
+	lib/httpclient.jar=httpclient-*.jar,\
+	lib/httpcore.jar=httpcore-*.jar,\
+	lib/httpmime.jar=httpmime-*.jar,\
+	lib/lucene-analyzers-common.jar=lucene-analyzers-common-*.jar,\
+	lib/lucene-core.jar=lucene-core-*.jar,\
+	lib/lucene-queries.jar=lucene-queries-*.jar,\
+	lib/lucene-queryparser.jar=lucene-queryparser-*.jar,\
+	lib/lucene-suggest.jar=lucene-suggest-*.jar,\
+	lib/noggit.jar=noggit-*.jar,\
+	lib/solr-solrj.jar=solr-solrj-*.jar,\
+	lib/stax2-api.jar=stax2-api-*.jar,\
+	lib/woodstox-core-asl.jar=woodstox-core-asl-*.jar,\
+	lib/zookeeper.jar=zookeeper-*.jar

@@ -516,12 +516,12 @@ public class AssetEntryLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.asset.kernel.model.AssetEntry> getTopViewedEntries(
-		java.lang.String className, boolean asc, int start, int end) {
+		java.lang.String[] className, boolean asc, int start, int end) {
 		return getService().getTopViewedEntries(className, asc, start, end);
 	}
 
 	public static java.util.List<com.liferay.asset.kernel.model.AssetEntry> getTopViewedEntries(
-		java.lang.String[] className, boolean asc, int start, int end) {
+		java.lang.String className, boolean asc, int start, int end) {
 		return getService().getTopViewedEntries(className, asc, start, end);
 	}
 
@@ -648,6 +648,18 @@ public class AssetEntryLocalServiceUtil {
 		return getService()
 				   .searchCount(companyId, groupIds, userId, className,
 			classTypeId, keywords, showNonindexable, statuses);
+	}
+
+	public static long searchCount(long companyId, long[] groupIds,
+		long userId, java.lang.String className, long classTypeId,
+		java.lang.String userName, java.lang.String title,
+		java.lang.String description, java.lang.String assetCategoryIds,
+		java.lang.String assetTagNames, boolean showInvisible,
+		boolean showNonindexable, int[] statuses, boolean andSearch) {
+		return getService()
+				   .searchCount(companyId, groupIds, userId, className,
+			classTypeId, userName, title, description, assetCategoryIds,
+			assetTagNames, showInvisible, showNonindexable, statuses, andSearch);
 	}
 
 	public static long searchCount(long companyId, long[] groupIds,

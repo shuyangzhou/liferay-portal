@@ -75,47 +75,13 @@
 		<execute function="AssertTextEquals" locator1="Home#PAGE" value1="${sitePage3Name}" />
 	</command>
 
-	<command name="CannotDeleteLastPrivatePage" priority="3">
-		<execute macro="ProductMenu#gotoControlPanelSites">
-			<var name="portlet" value="Sites" />
-		</execute>
-
-		<execute macro="Page#add">
-			<var name="pageName" value="Site Page Name" />
-			<var name="sitePagePrivacy" value="Private" />
-		</execute>
-
-		<execute macro="ProductMenu#gotoControlPanelSites">
-			<var name="portlet" value="Sites" />
-		</execute>
-
-		<execute macro="Page#assertCannotDeleteOnlyPage">
-			<var name="pageName" value="Site Page Name" />
-			<var name="sitePagePrivacy" value="Private Pages" />
-		</execute>
-	</command>
-
-	<command name="CannotDeleteLastPublicPage" priority="3">
+	<command name="CannotDeleteLastPublicPageOnLiferay" priority="3">
 		<execute macro="SitePageNavigator#gotoPages">
 			<var name="page" value="Public Pages" />
 		</execute>
 
 		<execute macro="Page#assertCannotDeleteOnlyPage">
 			<var name="pageName" value="Welcome" />
-		</execute>
-
-		<execute macro="ProductMenu#gotoControlPanelSites">
-			<var name="portlet" value="Sites" />
-		</execute>
-
-		<execute macro="Page#add">
-			<var name="pageName" value="Site Page Name" />
-		</execute>
-
-		<execute macro="ProductMenu#gotoPublicPages" />
-
-		<execute macro="Page#deletePG">
-			<var name="pageName" value="Site Page Name" />
 		</execute>
 	</command>
 
@@ -1232,6 +1198,11 @@
 			<var name="pageName" value="Blank Page" />
 		</execute>
 
+		<execute macro="Navigator#gotoSitePage">
+			<var name="pageName" value="Blank Page" />
+			<var name="siteName" value="Page Type Test Site Name" />
+		</execute>
+
 		<execute macro="ProductMenu#gotoControlPanelSites">
 			<var name="portlet" value="Sites" />
 		</execute>
@@ -1257,7 +1228,7 @@
 		<execute macro="Page#viewPanelPortletListCP">
 			<var name="componentName" value="Community" />
 			<var name="pageName" value="Panel Page" />
-			<var name="portletNameList" value="Bookmarks,Friends Directory,Invitation,My Sites,My Sites Directory,Page Comments,Page Flags,Page Ratings,Portal Directory,Site Members Directory" />
+			<var name="portletNameList" value="Bookmarks,Friends Directory,My Sites,My Sites Directory,Page Comments,Page Flags,Page Ratings,Portal Directory,Site Members Directory" />
 		</execute>
 
 		<execute macro="Navigator#openSiteURL">
@@ -1290,7 +1261,7 @@
 		<execute macro="Page#viewPanelPortletListPG">
 			<var name="componentName" value="Community" />
 			<var name="pageName" value="Panel Page" />
-			<var name="portletNameList" value="Bookmarks,Friends Directory,Invitation,My Sites,My Sites Directory,Page Comments,Page Flags,Page Ratings,Portal Directory,Site Members Directory" />
+			<var name="portletNameList" value="Bookmarks,Friends Directory,My Sites,My Sites Directory,Page Comments,Page Flags,Page Ratings,Portal Directory,Site Members Directory" />
 		</execute>
 	</command>
 </definition>

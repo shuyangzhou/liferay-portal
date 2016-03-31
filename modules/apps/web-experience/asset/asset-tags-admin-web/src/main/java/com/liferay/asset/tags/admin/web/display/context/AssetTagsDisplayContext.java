@@ -15,6 +15,7 @@
 package com.liferay.asset.tags.admin.web.display.context;
 
 import com.liferay.asset.kernel.model.AssetTag;
+import com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil;
 import com.liferay.asset.kernel.service.AssetTagLocalServiceUtil;
 import com.liferay.asset.kernel.service.AssetTagServiceUtil;
 import com.liferay.asset.tags.admin.web.constants.AssetTagsAdminPortletKeys;
@@ -24,6 +25,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -31,6 +33,8 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portlet.asset.service.permission.AssetPermission;
 import com.liferay.portlet.asset.util.comparator.AssetTagAssetCountComparator;
 import com.liferay.portlet.asset.util.comparator.AssetTagNameComparator;
 
@@ -79,6 +83,20 @@ public class AssetTagsDisplayContext {
 			"list");
 
 		return _displayStyle;
+	}
+
+	public long getFullTagsCount(AssetTag tag) {
+		int[] statuses = new int[] {
+			WorkflowConstants.STATUS_APPROVED, WorkflowConstants.STATUS_PENDING,
+			WorkflowConstants.STATUS_SCHEDULED
+		};
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)_request.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		return AssetEntryLocalServiceUtil.searchCount(
+			tag.getCompanyId(), null, themeDisplay.getUserId(), null, 0, null,
+			null, null, null, tag.getName(), true, true, statuses, false);
 	}
 
 	public String getKeywords() {
@@ -175,14 +193,18 @@ public class AssetTagsDisplayContext {
 
 		SearchContainer tagsSearchContainer = new SearchContainer(
 			_renderRequest, _renderResponse.createRenderURL(), null,
-			"there-are-no-tags.-you-can-add-a-tag-by-clicking-the-plus-button" +
-				"-on-the-bottom-right-corner");
+			"there-are-no-tags");
 
 		String keywords = getKeywords();
 
 		if (Validator.isNull(keywords)) {
-			tagsSearchContainer.setEmptyResultsMessageCssClass(
-				"taglib-empty-result-message-header-has-plus-btn");
+			if (isShowAddButton()) {
+				tagsSearchContainer.setEmptyResultsMessage(
+					"there-are-no-tags.-you-can-add-a-tag-by-clicking-the-" +
+						"plus-button-on-the-bottom-right-corner");
+				tagsSearchContainer.setEmptyResultsMessageCssClass(
+					"taglib-empty-result-message-header-has-plus-btn");
+			}
 		}
 		else {
 			tagsSearchContainer.setSearch(true);
@@ -242,6 +264,20 @@ public class AssetTagsDisplayContext {
 		SearchContainer tagsSearchContainer = getTagsSearchContainer();
 
 		if (tagsSearchContainer.getTotal() <= 0) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean isShowAddButton() {
+		ThemeDisplay themeDisplay = (ThemeDisplay)_request.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		if (AssetPermission.contains(
+				themeDisplay.getPermissionChecker(),
+				themeDisplay.getSiteGroupId(), ActionKeys.ADD_TAG)) {
+
 			return true;
 		}
 

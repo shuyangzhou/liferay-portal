@@ -1,4 +1,4 @@
-define("frontend-js-metal-web@1.0.5/metal-treeview/src/Treeview.soy", ['exports', 'metal-component/src/all/component', 'metal-soy/src/soy'], function (exports, _component, _soy) {
+define("frontend-js-metal-web@1.0.6/metal-treeview/src/Treeview.soy", ['exports', 'metal-component/src/all/component', 'metal-soy/src/soy'], function (exports, _component, _soy) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {

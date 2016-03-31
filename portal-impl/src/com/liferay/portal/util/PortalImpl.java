@@ -2334,6 +2334,28 @@ public class PortalImpl implements Portal {
 	}
 
 	@Override
+	public String getForwardedHost(HttpServletRequest request) {
+		if (!PropsValues.WEB_SERVER_FORWARDED_HOST_ENABLED) {
+			return request.getServerName();
+		}
+
+		return GetterUtil.get(
+			request.getHeader(PropsValues.WEB_SERVER_FORWARDED_HOST_HEADER),
+			request.getServerName());
+	}
+
+	@Override
+	public int getForwardedPort(HttpServletRequest request) {
+		if (!PropsValues.WEB_SERVER_FORWARDED_PORT_ENABLED) {
+			return request.getServerPort();
+		}
+
+		return GetterUtil.getInteger(
+			request.getHeader(PropsValues.WEB_SERVER_FORWARDED_PORT_HEADER),
+			request.getServerPort());
+	}
+
+	@Override
 	public String getFullName(
 		String firstName, String middleName, String lastName) {
 
@@ -3939,8 +3961,10 @@ public class PortalImpl implements Portal {
 
 	@Override
 	public String getPortalURL(HttpServletRequest request, boolean secure) {
-		return getPortalURL(
-			request.getServerName(), request.getServerPort(), secure);
+		String serverName = getForwardedHost(request);
+		int serverPort = getForwardedPort(request);
+
+		return getPortalURL(serverName, serverPort, secure);
 	}
 
 	@Override
@@ -6109,6 +6133,22 @@ public class PortalImpl implements Portal {
 	}
 
 	@Override
+	public boolean isForwardedSecure(HttpServletRequest request) {
+		if (PropsValues.WEB_SERVER_FORWARDED_PROTOCOL_ENABLED) {
+			String forwardedProtocol = request.getHeader(
+				PropsValues.WEB_SERVER_FORWARDED_PROTOCOL_HEADER);
+
+			if (Validator.isNotNull(forwardedProtocol) &&
+				Validator.equals(Http.HTTPS, forwardedProtocol)) {
+
+				return true;
+			}
+		}
+
+		return request.isSecure();
+	}
+
+	@Override
 	public boolean isGroupAdmin(User user, long groupId) throws Exception {
 		PermissionChecker permissionChecker =
 			PermissionCheckerFactoryUtil.create(user);
@@ -6257,6 +6297,12 @@ public class PortalImpl implements Portal {
 
 	@Override
 	public boolean isSecure(HttpServletRequest request) {
+		boolean secure = false;
+
+		if (PropsValues.WEB_SERVER_FORWARDED_PROTOCOL_ENABLED) {
+			return isForwardedSecure(request);
+		}
+
 		HttpSession session = request.getSession();
 
 		if (session == null) {
@@ -6265,8 +6311,6 @@ public class PortalImpl implements Portal {
 
 		Boolean httpsInitial = (Boolean)session.getAttribute(
 			WebKeys.HTTPS_INITIAL);
-
-		boolean secure = false;
 
 		if (PropsValues.COMPANY_SECURITY_AUTH_REQUIRES_HTTPS &&
 			!PropsValues.SESSION_ENABLE_PHISHING_PROTECTION &&

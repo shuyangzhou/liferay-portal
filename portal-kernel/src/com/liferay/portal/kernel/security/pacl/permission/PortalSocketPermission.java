@@ -47,7 +47,7 @@ public class PortalSocketPermission {
 
 		String protocol = HttpUtil.getProtocol(location);
 
-		checkConnect(domain, port, protocol);
+		_checkConnect(domain, port, protocol);
 	}
 
 	public static void checkConnect(URL url) {
@@ -59,7 +59,7 @@ public class PortalSocketPermission {
 		int port = url.getPort();
 		String protocol = url.getProtocol();
 
-		checkConnect(domain, port, protocol);
+		_checkConnect(domain, port, protocol);
 	}
 
 	public interface PACL {
@@ -68,7 +68,9 @@ public class PortalSocketPermission {
 
 	}
 
-	private static void checkConnect(String domain, int port, String protocol) {
+	private static void _checkConnect(
+		String domain, int port, String protocol) {
+
 		if (Validator.isNull(domain) ||
 			(!protocol.startsWith(Http.HTTPS) &&
 			 !protocol.startsWith(Http.HTTP))) {

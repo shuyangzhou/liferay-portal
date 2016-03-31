@@ -84,7 +84,7 @@
 
 			<ant dir="portal-impl" target="clean" inheritAll="false" />
 			<ant dir="portal-test" target="clean" inheritAll="false" />
-			<ant dir="portal-test-internal" target="clean" inheritAll="false" />
+			<ant dir="portal-test-integration" target="clean" inheritAll="false" />
 
 			<ant dir="sql" target="clean" inheritAll="false" />
 
@@ -229,7 +229,7 @@
 		<ant dir="portal-impl" target="compile" inheritAll="false" />
 
 		<parallel failonany="true" threadcount="${parallel.thread.count}">
-			<ant dir="portal-test-internal" target="compile" inheritAll="false" />
+			<ant dir="portal-test-integration" target="compile" inheritAll="false" />
 
 			<sequential>
 				<ant dir="sql" target="build-db" inheritAll="false" />
@@ -288,7 +288,7 @@
 
 		<ant dir="portal-impl" target="deploy" inheritAll="false" />
 		<ant dir="portal-test" target="deploy" inheritAll="false" />
-		<ant dir="portal-test-internal" target="deploy" inheritAll="false" />
+		<ant dir="portal-test-integration" target="deploy" inheritAll="false" />
 
 		<ant dir="portal-web" target="deploy" inheritAll="false" />
 
@@ -329,24 +329,38 @@
 
 		<antcall target="install-portal-snapshots" />
 
-		<stopwatch name="modules.stopwatch" />
-
-		<gradle-execute dir="${project.dir}/modules/core/registry-api" task="deploy">
-			<arg value="--parallel" />
-		</gradle-execute>
-
 		<if>
-			<equals arg1="${jsp.precompile}" arg2="on" />
+			<equals arg1="${build.modules.deploy.enabled}" arg2="true" />
 			<then>
+				<stopwatch name="modules.stopwatch" />
+
+				<gradle-execute dir="${project.dir}/modules/core/registry-api" task="deploy">
+					<arg value="--parallel" />
+				</gradle-execute>
+
 				<if>
-					<equals arg1="${jsp.precompile.parallel}" arg2="on" />
+					<equals arg1="${jsp.precompile}" arg2="on" />
 					<then>
-						<gradle-execute dir="${project.dir}/modules" task="compileJSP">
-							<arg value="deploy" />
-							<arg value="--parallel" />
-							<arg value="-Dportal.build=true" />
-							<env key="WAS_HOME" value="${app.server.websphere.dir}" />
-						</gradle-execute>
+						<if>
+							<equals arg1="${jsp.precompile.parallel}" arg2="on" />
+							<then>
+								<gradle-execute dir="${project.dir}/modules" task="compileJSP">
+									<arg value="deploy" />
+									<arg value="--parallel" />
+									<arg value="-Dportal.build=true" />
+									<env key="WAS_HOME" value="${app.server.websphere.dir}" />
+								</gradle-execute>
+							</then>
+							<else>
+								<gradle-execute dir="${project.dir}/modules" task="deploy">
+									<arg value="--parallel" />
+									<arg value="-Dportal.build=true" />
+									<env key="WAS_HOME" value="${app.server.websphere.dir}" />
+								</gradle-execute>
+
+								<gradle-execute dir="${project.dir}/modules" task="compileJSP" />
+							</else>
+						</if>
 					</then>
 					<else>
 						<gradle-execute dir="${project.dir}/modules" task="deploy">
@@ -354,21 +368,12 @@
 							<arg value="-Dportal.build=true" />
 							<env key="WAS_HOME" value="${app.server.websphere.dir}" />
 						</gradle-execute>
-
-						<gradle-execute dir="${project.dir}/modules" task="compileJSP" />
 					</else>
 				</if>
-			</then>
-			<else>
-				<gradle-execute dir="${project.dir}/modules" task="deploy">
-					<arg value="--parallel" />
-					<arg value="-Dportal.build=true" />
-					<env key="WAS_HOME" value="${app.server.websphere.dir}" />
-				</gradle-execute>
-			</else>
-		</if>
 
-		<stopwatch action="elapsed" name="modules.stopwatch" />
+				<stopwatch action="elapsed" name="modules.stopwatch" />
+			</then>
+		</if>
 
 		<if>
 			<and>
@@ -565,7 +570,7 @@
 		<ant dir="portal-impl" target="install-portal-snapshot" inheritAll="false" />
 		<ant dir="portal-kernel" target="install-portal-snapshot" inheritAll="false" />
 		<ant dir="portal-test" target="install-portal-snapshot" inheritAll="false" />
-		<ant dir="portal-test-internal" target="install-portal-snapshot" inheritAll="false" />
+		<ant dir="portal-test-integration" target="install-portal-snapshot" inheritAll="false" />
 		<ant dir="portal-web" target="install-portal-snapshot" inheritAll="false" />
 		<ant dir="util-bridges" target="install-portal-snapshot" inheritAll="false" />
 		<ant dir="util-java" target="install-portal-snapshot" inheritAll="false" />
@@ -583,7 +588,7 @@
 
 		<ant dir="portal-impl" target="jar" inheritAll="false" />
 		<ant dir="portal-test" target="jar" inheritAll="false" />
-		<ant dir="portal-test-internal" target="jar" inheritAll="false" />
+		<ant dir="portal-test-integration" target="jar" inheritAll="false" />
 
 		<ant dir="portal-web" target="war" inheritAll="false" />
 
@@ -610,7 +615,7 @@
 
 		<antcall target="javadoc-portal-cmd">
 			<param name="generated.description" value="" />
-			<param name="module.dir" value="portal-test-internal" />
+			<param name="module.dir" value="portal-test-integration" />
 		</antcall>
 
 		<antcall target="javadoc-cmd">

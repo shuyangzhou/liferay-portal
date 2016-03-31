@@ -589,26 +589,15 @@
 		<if>
 			<equals arg1="${stagingSetup}" arg2="true" />
 			<then>
-				<execute macro="Page#gotoPG">
-					<var name="defaultURL" value="${defaultURL}" />
-					<var name="nodePort" value="${nodePort}" />
+				<execute macro="Navigator#gotoStagedSitePage">
 					<var name="pageName" value="Test Page Name" />
-					<var name="pageStaging" value="true" />
 					<var name="siteName" value="Site Name" />
-					<var name="siteURL" value="true" />
-					<var name="soDashboard" value="${soDashboard}" />
-					<var name="soPage" value="${soPage}" />
 				</execute>
 			</then>
 			<else>
-				<execute macro="Page#gotoPG">
-					<var name="defaultURL" value="${defaultURL}" />
-					<var name="nodePort" value="${nodePort}" />
+				<execute macro="Navigator#gotoSitePage">
 					<var name="pageName" value="Test Page Name" />
 					<var name="siteName" value="Site Name" />
-					<var name="siteURL" value="true" />
-					<var name="soDashboard" value="${soDashboard}" />
-					<var name="soPage" value="${soPage}" />
 				</execute>
 			</else>
 		</if>
@@ -617,8 +606,6 @@
 			<var name="i" value="${i}" />
 			<var name="portletName" value="User Segment Content Display" />
 		</execute>
-
-		<execute function="Refresh" />
 
 		<execute macro="Portlet#gotoPortletOptions">
 			<var name="portletName" value="${portletName}" />
@@ -643,26 +630,15 @@
 		<if>
 			<equals arg1="${stagingSetup}" arg2="true" />
 			<then>
-				<execute macro="Page#gotoPG">
-					<var name="defaultURL" value="${defaultURL}" />
-					<var name="nodePort" value="${nodePort}" />
+				<execute macro="Navigator#gotoStagedSitePage">
 					<var name="pageName" value="Test Page Name" />
-					<var name="pageStaging" value="true" />
 					<var name="siteName" value="Site Name" />
-					<var name="siteURL" value="true" />
-					<var name="soDashboard" value="${soDashboard}" />
-					<var name="soPage" value="${soPage}" />
 				</execute>
 			</then>
 			<else>
-				<execute macro="Page#gotoPG">
-					<var name="defaultURL" value="${defaultURL}" />
-					<var name="nodePort" value="${nodePort}" />
+				<execute macro="Navigator#gotoSitePage">
 					<var name="pageName" value="Test Page Name" />
 					<var name="siteName" value="Site Name" />
-					<var name="siteURL" value="true" />
-					<var name="soDashboard" value="${soDashboard}" />
-					<var name="soPage" value="${soPage}" />
 				</execute>
 			</else>
 		</if>
@@ -671,8 +647,6 @@
 			<var name="i" value="${i}" />
 			<var name="portletName" value="Campaign Content Display" />
 		</execute>
-
-		<execute function="Refresh" />
 
 		<execute macro="Portlet#gotoPortletOptions">
 			<var name="portletName" value="${portletName}" />
@@ -691,26 +665,15 @@
 		<if>
 			<equals arg1="${stagingSetup}" arg2="true" />
 			<then>
-				<execute macro="Page#gotoPG">
-					<var name="defaultURL" value="${defaultURL}" />
-					<var name="nodePort" value="${nodePort}" />
+				<execute macro="Navigator#gotoStagedSitePage">
 					<var name="pageName" value="Test Page Name" />
-					<var name="pageStaging" value="true" />
 					<var name="siteName" value="Site Name" />
-					<var name="siteURL" value="true" />
-					<var name="soDashboard" value="${soDashboard}" />
-					<var name="soPage" value="${soPage}" />
 				</execute>
 			</then>
 			<else>
-				<execute macro="Page#gotoPG">
-					<var name="defaultURL" value="${defaultURL}" />
-					<var name="nodePort" value="${nodePort}" />
+				<execute macro="Navigator#gotoSitePage">
 					<var name="pageName" value="Test Page Name" />
 					<var name="siteName" value="Site Name" />
-					<var name="siteURL" value="true" />
-					<var name="soDashboard" value="${soDashboard}" />
-					<var name="soPage" value="${soPage}" />
 				</execute>
 			</else>
 		</if>
@@ -719,8 +682,6 @@
 			<var name="i" value="${i}" />
 			<var name="portletName" value="User Segment Content List" />
 		</execute>
-
-		<execute function="Refresh" />
 	</command>
 
 	<command name="viewExportTemplateCP">

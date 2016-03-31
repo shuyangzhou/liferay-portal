@@ -116,7 +116,7 @@ public class WabProcessor {
 		_parameters = parameters;
 	}
 
-	public InputStream getInputStream() throws IOException {
+	public File getProcessedFile() throws IOException {
 		_pluginDir = autoDeploy();
 
 		if ((_pluginDir == null) || !_pluginDir.exists() ||
@@ -127,6 +127,10 @@ public class WabProcessor {
 
 		if (!isValidOSGiBundle()) {
 			transformToOSGiBundle();
+		}
+
+		if (_file.isDirectory()) {
+			return _file;
 		}
 
 		File file = _file.getParentFile();
@@ -149,7 +153,7 @@ public class WabProcessor {
 			writeGeneratedWab(outputFile);
 		}
 
-		return new FileInputStream(outputFile);
+		return outputFile;
 	}
 
 	protected void addElement(Element element, String name, String text) {
@@ -255,6 +259,10 @@ public class WabProcessor {
 			_context = autoDeploymentContext.getContext();
 		}
 
+		if (_file.isDirectory()) {
+			return _file;
+		}
+
 		File deployDir = autoDeploymentContext.getDeployDir();
 
 		if (!deployDir.exists()) {
@@ -297,13 +305,17 @@ public class WabProcessor {
 
 		autoDeploymentContext.setContext(context);
 
+		autoDeploymentContext.setFile(_file);
+
+		if (_file.isDirectory()) {
+			return autoDeploymentContext;
+		}
+
 		File file = new File(_file.getParentFile(), "deploy");
 
 		file.mkdirs();
 
 		autoDeploymentContext.setDestDir(file.getAbsolutePath());
-
-		autoDeploymentContext.setFile(_file);
 
 		return autoDeploymentContext;
 	}
@@ -1234,7 +1246,7 @@ public class WabProcessor {
 
 		processRequiredDeploymentContexts(analyzer);
 
-		processExcludedJSPs(analyzer);
+		_processExcludedJSPs(analyzer);
 
 		analyzer.setProperties(pluginPackageProperties);
 
@@ -1348,7 +1360,7 @@ public class WabProcessor {
 		}
 	}
 
-	private void processExcludedJSPs(Analyzer analyzer) throws IOException {
+	private void _processExcludedJSPs(Analyzer analyzer) throws IOException {
 		File file = new File(_pluginDir, "/WEB-INF/liferay-hook.xml");
 
 		if (!file.exists()) {

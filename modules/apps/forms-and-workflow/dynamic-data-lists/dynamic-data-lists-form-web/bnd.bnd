@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Dynamic Data Lists Form Web
 Bundle-SymbolicName: com.liferay.dynamic.data.lists.form.web
-Bundle-Version: 1.0.4
+Bundle-Version: 1.0.5
 Liferay-JS-Config: /META-INF/resources/admin/js/config.js
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Dynamic Data Lists

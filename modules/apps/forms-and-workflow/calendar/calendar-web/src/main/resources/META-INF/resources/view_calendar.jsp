@@ -117,7 +117,11 @@ boolean columnOptionsVisible = GetterUtil.getBoolean(SessionClicks.get(request, 
 
 				<liferay-util:param name="editCalendarBookingURL" value="<%= editCalendarBookingURL %>" />
 
-				<liferay-util:param name="readOnly" value="<%= String.valueOf(false) %>" />
+				<liferay-util:param name="hideAgendaView" value="<%= String.valueOf(!showAgendaView) %>" />
+				<liferay-util:param name="hideDayView" value="<%= String.valueOf(!showDayView) %>" />
+				<liferay-util:param name="hideWeekView" value="<%= String.valueOf(!showWeekView) %>" />
+				<liferay-util:param name="hideMonthView" value="<%= String.valueOf(!showMonthView) %>" />
+				<liferay-util:param name="readOnly" value="<%= Boolean.FALSE.toString() %>" />
 
 				<liferay-security:permissionsURL
 					modelResource="<%= CalendarBooking.class.getName() %>"
@@ -150,7 +154,7 @@ boolean columnOptionsVisible = GetterUtil.getBoolean(SessionClicks.get(request, 
 	<%@ include file="/view_calendar_menus.jspf" %>
 </c:if>
 
-<aui:script use="aui-toggler,liferay-calendar-list,liferay-scheduler,liferay-store,json">
+<aui:script use="liferay-calendar-list,liferay-scheduler,liferay-store">
 	Liferay.CalendarUtil.USER_CLASS_NAME_ID = <%= PortalUtil.getClassNameId(User.class) %>;
 
 	Liferay.CalendarUtil.DEFAULT_USER_CALENDAR_ID = <%= (defaultCalendar != null) ? defaultCalendar.getCalendarId() : 0 %>;
@@ -289,7 +293,7 @@ boolean columnOptionsVisible = GetterUtil.getBoolean(SessionClicks.get(request, 
 	);
 </aui:script>
 
-<aui:script use="aui-base,aui-datatype,calendar,liferay-calendar-session-listener">
+<aui:script use="aui-base,aui-datatype,liferay-calendar-session-listener">
 	window.<portlet:namespace />refreshSchedulerEventTooltipTitle = function(schedulerEvent) {
 		schedulerEvent.get('node').attr('title', A.Lang.String.unescapeHTML(schedulerEvent.get('content')));
 	};

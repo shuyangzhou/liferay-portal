@@ -1,0 +1,4 @@
+Bundle-Name: Liferay Social Networking Web
+Bundle-SymbolicName: com.liferay.social.networking.web
+Bundle-Version: 1.0.4
+Web-ContextPath: /social-networking-web

@@ -9,6 +9,11 @@
 </thead>
 <tbody>
 <tr>
+	<td>BODY</td>
+	<td>//div[contains(@id,'asset_publisher')]//div[contains(@class,'portlet-content-editable')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>ADD_ASSET_PLUS_ICON</td>
 	<td>//*[@data-qa-id='addButton']//a[contains(@id,'AssetPublisherPortlet')]</td>
 	<td></td>
@@ -16,11 +21,6 @@
 <tr>
 	<td>ADD_ASSET_TOPPER_TYPE</td>
 	<td>//a[contains(@id,'AssetPublisher')]/span[contains(.,'${key_selectedAsset}')]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>ADD_BASIC_WEB_CONTENT_LINK</td>
-	<td>//ul[@aria-label='Asset Publisher']/li/a[@title='Add Basic Web Content']</td>
 	<td></td>
 </tr>
 <tr>

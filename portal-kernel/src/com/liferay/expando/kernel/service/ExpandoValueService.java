@@ -56,14 +56,14 @@ public interface ExpandoValueService extends BaseService {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ExpandoValueServiceUtil} to access the expando value remote service. Add custom service methods to {@link com.liferay.portlet.expando.service.impl.ExpandoValueServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public ExpandoValue addValue(long companyId, java.lang.String className,
-		java.lang.String tableName, java.lang.String columnName, long classPK,
-		java.lang.String data) throws PortalException;
-
 	@JSONWebService(mode = JSONWebServiceMode.IGNORE)
 	public ExpandoValue addValue(long companyId, java.lang.String className,
 		java.lang.String tableName, java.lang.String columnName, long classPK,
 		java.lang.Object data) throws PortalException;
+
+	public ExpandoValue addValue(long companyId, java.lang.String className,
+		java.lang.String tableName, java.lang.String columnName, long classPK,
+		java.lang.String data) throws PortalException;
 
 	public void addValues(long companyId, java.lang.String className,
 		java.lang.String tableName, long classPK,

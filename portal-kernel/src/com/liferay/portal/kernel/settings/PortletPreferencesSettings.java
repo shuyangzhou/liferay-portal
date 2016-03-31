@@ -115,14 +115,18 @@ public class PortletPreferencesSettings extends BaseModifiableSettings {
 
 	@Override
 	protected String doGetValue(String key) {
-		return normalizeValue(_portletPreferences.getValue(key, null));
+		return _portletPreferences.getValue(key, null);
 	}
 
 	@Override
 	protected String[] doGetValues(String key) {
-		return normalizeValues(_portletPreferences.getValues(key, null));
+		return _portletPreferences.getValues(key, null);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	protected boolean isNull(String value) {
 		if ((value == null) || value.equals(_NULL_VALUE)) {
 			return true;
@@ -131,6 +135,10 @@ public class PortletPreferencesSettings extends BaseModifiableSettings {
 		return false;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	protected String normalizeValue(String value) {
 		if (isNull(value)) {
 			return null;
@@ -139,6 +147,10 @@ public class PortletPreferencesSettings extends BaseModifiableSettings {
 		return StringUtil.replace(value, "[$NEW_LINE$]", StringPool.NEW_LINE);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	protected String[] normalizeValues(String[] values) {
 		if (values == null) {
 			return null;

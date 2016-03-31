@@ -443,6 +443,10 @@ public class ConfigurationImpl
 
 			_printedSources.add(source);
 
+			if (source.startsWith("bundleresource://")) {
+				continue;
+			}
+
 			String info = "Loading " + source;
 
 			if (companyId > CompanyConstants.SYSTEM) {

@@ -139,7 +139,7 @@ PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, "vocabul
 				<c:when test='<%= Validator.equals(assetCategoriesDisplayContext.getDisplayStyle(), "icon") %>'>
 
 					<%
-					row.setCssClass("col-md-2 col-sm-4 col-xs-6");
+					row.setCssClass("entry-card lfr-asset-item");
 					%>
 
 					<liferay-ui:search-container-column-text>
@@ -209,7 +209,7 @@ PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, "vocabul
 	</liferay-ui:search-container>
 </aui:form>
 
-<c:if test="<%= AssetPermission.contains(permissionChecker, themeDisplay.getSiteGroupId(), ActionKeys.ADD_VOCABULARY) %>">
+<c:if test="<%= assetCategoriesDisplayContext.isShowVocabulariesAddButton() %>">
 	<portlet:renderURL var="addVocabularyURL">
 		<portlet:param name="mvcPath" value="/edit_vocabulary.jsp" />
 	</portlet:renderURL>

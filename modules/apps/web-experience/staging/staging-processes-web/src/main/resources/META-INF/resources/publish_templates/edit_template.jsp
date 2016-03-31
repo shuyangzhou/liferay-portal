@@ -126,6 +126,12 @@ renderResponse.setTitle((exportImportConfiguration == null) ? LanguageUtil.get(r
 			<aui:input name="<%= PortletDataHandlerKeys.PORTLET_SETUP_ALL %>" type="hidden" value="<%= true %>" />
 			<aui:input name="<%= PortletDataHandlerKeys.PORTLET_USER_PREFERENCES_ALL %>" type="hidden" value="<%= true %>" />
 
+			<%@ include file="/error/error_auth_exception.jspf" %>
+
+			<%@ include file="/error/error_remote_export_exception.jspf" %>
+
+			<%@ include file="/error/error_remote_options_exception.jspf" %>
+
 			<div id="<portlet:namespace />publishOptions">
 				<div class="export-dialog-tree">
 					<aui:fieldset-group markupView="lexicon">
@@ -215,11 +221,6 @@ renderResponse.setTitle((exportImportConfiguration == null) ? LanguageUtil.get(r
 			rangeLastNode: '#rangeLast',
 			rangeLastPublishNode: '#rangeLastPublish',
 			ratingsNode: '#<%= PortletDataHandlerKeys.RATINGS %>',
-			remoteAddressNode: '#<portlet:namespace />remoteAddress',
-			remoteGroupIdNode: '#<portlet:namespace />remoteGroupId',
-			remotePathContextNode: '#<portlet:namespace />remotePathContext',
-			remotePortNode: '#<portlet:namespace />remotePort',
-			secureConnectionNode: '#secureConnection',
 			setupNode: '#<%= PortletDataHandlerKeys.PORTLET_SETUP_ALL %>',
 			timeZone: '<%= timeZone.getID() %>',
 			userPreferencesNode: '#<%= PortletDataHandlerKeys.PORTLET_USER_PREFERENCES_ALL %>'
