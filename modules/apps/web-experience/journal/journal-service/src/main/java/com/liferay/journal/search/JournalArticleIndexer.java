@@ -253,11 +253,15 @@ public class JournalArticleIndexer
 			final String[] ddmStructureKeys =
 				new String[ddmStructureIds.size()];
 
+			long companyId = 0;
+
 			for (int i = 0; i < ddmStructureIds.size(); i++) {
 				long ddmStructureId = ddmStructureIds.get(i);
 
 				DDMStructure ddmStructure =
 					_ddmStructureLocalService.getDDMStructure(ddmStructureId);
+
+				companyId = ddmStructure.getCompanyId();
 
 				ddmStructureKeys[i] = ddmStructure.getStructureKey();
 			}
@@ -267,6 +271,7 @@ public class JournalArticleIndexer
 					_journalArticleLocalService.
 						getIndexableActionableDynamicQuery();
 
+			indexableActionableDynamicQuery.setCompanyId(companyId);
 			indexableActionableDynamicQuery.setAddCriteriaMethod(
 				new ActionableDynamicQuery.AddCriteriaMethod() {
 
