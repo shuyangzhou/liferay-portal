@@ -16,7 +16,6 @@ package com.liferay.journal.search;
 
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
-import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.storage.Fields;
 import com.liferay.dynamic.data.mapping.util.DDMIndexer;
 import com.liferay.dynamic.data.mapping.util.FieldsToDDMFormValuesConverter;
@@ -46,7 +45,6 @@ import com.liferay.portal.kernel.search.DocumentImpl;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.IndexWriterHelperUtil;
 import com.liferay.portal.kernel.search.Indexer;
-import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.Query;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.SearchException;
@@ -255,22 +253,26 @@ public class JournalArticleIndexer
 			final String[] ddmStructureKeys =
 				new String[ddmStructureIds.size()];
 
+			long companyId = 0;
+
 			for (int i = 0; i < ddmStructureIds.size(); i++) {
 				long ddmStructureId = ddmStructureIds.get(i);
 
 				DDMStructure ddmStructure =
 					_ddmStructureLocalService.getDDMStructure(ddmStructureId);
 
+				companyId = ddmStructure.getCompanyId();
+
 				ddmStructureKeys[i] = ddmStructure.getStructureKey();
 			}
 
-			final Indexer<JournalArticle> indexer =
-				IndexerRegistryUtil.nullSafeGetIndexer(JournalArticle.class);
+			final IndexableActionableDynamicQuery
+				indexableActionableDynamicQuery =
+					_journalArticleLocalService.
+						getIndexableActionableDynamicQuery();
 
-			final ActionableDynamicQuery actionableDynamicQuery =
-				_journalArticleLocalService.getActionableDynamicQuery();
-
-			actionableDynamicQuery.setAddCriteriaMethod(
+			indexableActionableDynamicQuery.setCompanyId(companyId);
+			indexableActionableDynamicQuery.setAddCriteriaMethod(
 				new ActionableDynamicQuery.AddCriteriaMethod() {
 
 					@Override
@@ -296,7 +298,7 @@ public class JournalArticleIndexer
 					}
 
 				});
-			actionableDynamicQuery.setPerformActionMethod(
+			indexableActionableDynamicQuery.setPerformActionMethod(
 				new ActionableDynamicQuery.
 					PerformActionMethod<JournalArticle>() {
 
@@ -304,25 +306,24 @@ public class JournalArticleIndexer
 					public void performAction(JournalArticle article)
 						throws PortalException {
 
-						try {
-							indexer.reindex(
-								indexer.getClassName(),
-								article.getResourcePrimKey());
-						}
-						catch (Exception e) {
-							throw new PortalException(e);
-						}
+						Document document = getDocument(article);
+
+						indexableActionableDynamicQuery.addDocuments(document);
 					}
 
 				});
 
-			actionableDynamicQuery.performActions();
+			indexableActionableDynamicQuery.performActions();
 		}
 		catch (Exception e) {
 			throw new SearchException(e);
 		}
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	protected void addDDMStructureAttributes(
 			Document document, JournalArticle article)
 		throws Exception {
@@ -338,21 +339,18 @@ public class JournalArticleIndexer
 
 		document.addKeyword(Field.CLASS_TYPE_ID, ddmStructure.getStructureId());
 
-		DDMFormValues ddmFormValues = null;
+		Fields fields = null;
 
 		try {
-			Fields fields = _journalConverter.getDDMFields(
+			fields = _journalConverter.getDDMFields(
 				ddmStructure, article.getDocument());
-
-			ddmFormValues = _fieldsToDDMFormValuesConverter.convert(
-				ddmStructure, fields);
 		}
 		catch (Exception e) {
 			return;
 		}
 
-		if (ddmFormValues != null) {
-			_ddmIndexer.addAttributes(document, ddmStructure, ddmFormValues);
+		if (fields != null) {
+			_ddmIndexer.addAttributes(document, ddmStructure, fields);
 		}
 	}
 
@@ -468,6 +466,25 @@ public class JournalArticleIndexer
 
 		document.addUID(CLASS_NAME, classPK);
 
+		DDMStructure ddmStructure = _ddmStructureLocalService.fetchStructure(
+			journalArticle.getGroupId(),
+			PortalUtil.getClassNameId(JournalArticle.class),
+			journalArticle.getDDMStructureKey(), true);
+
+		Fields fields = null;
+
+		if (ddmStructure != null) {
+			try {
+				fields = _journalConverter.getDDMFields(
+					ddmStructure, journalArticle.getDocument());
+			}
+			catch (Exception e) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(e, e);
+				}
+			}
+		}
+
 		String articleDefaultLanguageId = LocalizationUtil.getDefaultLanguageId(
 			journalArticle.getDocument());
 
@@ -475,7 +492,13 @@ public class JournalArticleIndexer
 			journalArticle.getDocument());
 
 		for (String languageId : languageIds) {
-			String content = extractDDMContent(journalArticle, languageId);
+			String content = StringPool.BLANK;
+
+			if (fields != null) {
+				content = _ddmIndexer.extractIndexableAttributes(
+					ddmStructure, fields,
+					LocaleUtil.fromLanguageId(languageId));
+			}
 
 			String description = journalArticle.getDescription(languageId);
 
@@ -521,23 +544,50 @@ public class JournalArticleIndexer
 		document.addKeyword(
 			"ddmTemplateKey", journalArticle.getDDMTemplateKey());
 		document.addDate("displayDate", journalArticle.getDisplayDate());
-		document.addKeyword("head", JournalUtil.isHead(journalArticle));
 
-		boolean headListable = JournalUtil.isHeadListable(journalArticle);
+		JournalArticle latestArticle =
+			_journalArticleLocalService.fetchLatestArticle(
+				journalArticle.getResourcePrimKey(),
+				new int[] {
+					WorkflowConstants.STATUS_APPROVED,
+					WorkflowConstants.STATUS_IN_TRASH,
+					WorkflowConstants.STATUS_SCHEDULED
+				});
 
-		document.addKeyword("headListable", headListable);
+		if (latestArticle == null) {
+			document.addKeyword("head", false);
 
-		// Scheduled listable articles should be visible in asset browser
+			document.addKeyword("headListable", false);
+		}
+		else if (journalArticle.getId() == latestArticle.getId()) {
 
-		if (journalArticle.isScheduled() && headListable) {
-			boolean visible = GetterUtil.getBoolean(document.get("visible"));
+			// Scheduled listable articles should be visible in asset browser
 
-			if (!visible) {
+			if (journalArticle.isScheduled()) {
+				document.addKeyword("head", false);
+
 				document.addKeyword("visible", true);
 			}
+			else {
+				document.addKeyword("head", journalArticle.isIndexable());
+			}
+
+			document.addKeyword("headListable", true);
+		}
+		else {
+			document.addKeyword("head", JournalUtil.isHead(journalArticle));
+
+			document.addKeyword("headListable", false);
 		}
 
-		addDDMStructureAttributes(document, journalArticle);
+		if (ddmStructure != null) {
+			document.addKeyword(
+				Field.CLASS_TYPE_ID, ddmStructure.getStructureId());
+
+			if (fields != null) {
+				_ddmIndexer.addAttributes(document, ddmStructure, fields);
+			}
+		}
 
 		return document;
 	}
@@ -647,6 +697,10 @@ public class JournalArticleIndexer
 		reindexArticles(companyId);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	protected String extractDDMContent(
 			JournalArticle article, String languageId)
 		throws Exception {
@@ -660,25 +714,22 @@ public class JournalArticleIndexer
 			return StringPool.BLANK;
 		}
 
-		DDMFormValues ddmFormValues = null;
+		Fields fields = null;
 
 		try {
-			Fields fields = _journalConverter.getDDMFields(
+			fields = _journalConverter.getDDMFields(
 				ddmStructure, article.getDocument());
-
-			ddmFormValues = _fieldsToDDMFormValuesConverter.convert(
-				ddmStructure, fields);
 		}
 		catch (Exception e) {
 			return StringPool.BLANK;
 		}
 
-		if (ddmFormValues == null) {
+		if (fields == null) {
 			return StringPool.BLANK;
 		}
 
 		return _ddmIndexer.extractIndexableAttributes(
-			ddmStructure, ddmFormValues, LocaleUtil.fromLanguageId(languageId));
+			ddmStructure, fields, LocaleUtil.fromLanguageId(languageId));
 	}
 
 	protected JournalArticle fetchLatestIndexableArticleVersion(
@@ -840,11 +891,13 @@ public class JournalArticleIndexer
 		_ddmStructureLocalService = ddmStructureLocalService;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	@Reference(unbind = "-")
 	protected void setFieldsToDDMFormValuesConverter(
 		FieldsToDDMFormValuesConverter fieldsToDDMFormValuesConverter) {
-
-		_fieldsToDDMFormValuesConverter = fieldsToDDMFormValuesConverter;
 	}
 
 	@Reference(unbind = "-")
@@ -869,7 +922,6 @@ public class JournalArticleIndexer
 
 	private DDMIndexer _ddmIndexer;
 	private DDMStructureLocalService _ddmStructureLocalService;
-	private FieldsToDDMFormValuesConverter _fieldsToDDMFormValuesConverter;
 	private JournalArticleLocalService _journalArticleLocalService;
 	private JournalContent _journalContent;
 	private JournalConverter _journalConverter;
