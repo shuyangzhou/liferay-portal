@@ -30,4 +30,6 @@ public @interface CacheField {
 
 	public String methodName() default "";
 
+	public boolean propagateToInterface() default false;
+
 }
