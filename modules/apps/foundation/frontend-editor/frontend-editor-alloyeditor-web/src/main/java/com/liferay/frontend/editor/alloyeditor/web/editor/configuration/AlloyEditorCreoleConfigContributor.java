@@ -94,7 +94,27 @@ public class AlloyEditorCreoleConfigContributor
 	protected JSONObject getToolbarsAddJSONObject() {
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-		jsonObject.put("buttons", toJSONArray("['image', 'table', 'hline']"));
+		JSONArray buttonsJSONArray = JSONFactoryUtil.createJSONArray();
+
+		buttonsJSONArray.put("image");
+
+		JSONObject buttonJSONObject = JSONFactoryUtil.createJSONObject();
+
+		JSONObject cfgJSONObject = JSONFactoryUtil.createJSONObject();
+
+		cfgJSONObject.put(
+			"tableAttributes", JSONFactoryUtil.createJSONObject());
+
+		buttonJSONObject.put("cfg", cfgJSONObject);
+
+		buttonJSONObject.put("name", "table");
+
+		buttonsJSONArray.put(buttonJSONObject);
+
+		buttonsJSONArray.put("hline");
+
+		jsonObject.put("buttons", buttonsJSONArray);
+
 		jsonObject.put("tabIndex", 2);
 
 		return jsonObject;

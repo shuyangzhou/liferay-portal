@@ -14,7 +14,7 @@
 
 package com.liferay.hello.velocity.web.portlet;
 
-import com.liferay.content.util.ContentUtil;
+import com.liferay.petra.content.util.ContentUtil;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.Template;

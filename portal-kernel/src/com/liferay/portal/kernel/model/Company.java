@@ -60,6 +60,8 @@ public interface Company extends CompanyModel, PersistedModel {
 
 	public java.lang.String getAuthType();
 
+	public java.io.Serializable getCompanySecurityBag();
+
 	public com.liferay.portal.kernel.model.User getDefaultUser()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
@@ -108,6 +110,8 @@ public interface Company extends CompanyModel, PersistedModel {
 	public boolean isStrangersVerify();
 
 	public boolean isStrangersWithMx();
+
+	public void setCompanySecurityBag(java.lang.Object companySecurityBag);
 
 	public void setKeyObj(java.security.Key keyObj);
 

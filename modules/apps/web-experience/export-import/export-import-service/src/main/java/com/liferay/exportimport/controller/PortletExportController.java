@@ -47,6 +47,7 @@ import com.liferay.exportimport.lar.PermissionExporter;
 import com.liferay.exportimport.portlet.preferences.processor.Capability;
 import com.liferay.exportimport.portlet.preferences.processor.ExportImportPortletPreferencesProcessor;
 import com.liferay.exportimport.portlet.preferences.processor.ExportImportPortletPreferencesProcessorRegistryUtil;
+import com.liferay.petra.xml.util.DocUtil;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskThreadLocal;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.NoSuchPortletPreferencesException;
@@ -94,7 +95,6 @@ import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.Node;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.kernel.zip.ZipWriter;
-import com.liferay.util.xml.DocUtil;
 
 import java.io.File;
 import java.io.IOException;

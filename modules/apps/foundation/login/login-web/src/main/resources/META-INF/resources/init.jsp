@@ -25,8 +25,8 @@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %><%@
 taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
-<%@ page import="com.liferay.content.util.ContentUtil" %><%@
-page import="com.liferay.login.web.portlet.util.LoginUtil" %><%@
+<%@ page import="com.liferay.login.web.portlet.util.LoginUtil" %><%@
+page import="com.liferay.petra.content.util.ContentUtil" %><%@
 page import="com.liferay.portal.kernel.bean.BeanParamUtil" %><%@
 page import="com.liferay.portal.kernel.captcha.CaptchaConfigurationException" %><%@
 page import="com.liferay.portal.kernel.captcha.CaptchaMaxChallengesException" %><%@

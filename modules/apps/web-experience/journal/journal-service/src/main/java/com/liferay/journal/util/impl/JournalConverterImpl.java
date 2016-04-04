@@ -24,6 +24,7 @@ import com.liferay.dynamic.data.mapping.util.FieldsToDDMFormValuesConverter;
 import com.liferay.dynamic.data.mapping.util.impl.DDMFieldsCounter;
 import com.liferay.dynamic.data.mapping.util.impl.DDMImpl;
 import com.liferay.journal.util.JournalConverter;
+import com.liferay.petra.xml.util.XMLUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONException;
@@ -51,7 +52,6 @@ import com.liferay.portal.kernel.xml.DocumentException;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.kernel.xml.XPath;
-import com.liferay.util.xml.XMLUtil;
 
 import java.io.Serializable;
 

@@ -65,9 +65,7 @@ catch (WikiFormatException wfe) {
 	</div>
 
 	<div class="wiki-body">
-		<pre>
-<%= wikiPage.getContent() %>
-		</pre>
+		<pre><%= wikiPage.getContent() %></pre>
 	</div>
 
 <%

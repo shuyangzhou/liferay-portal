@@ -66,6 +66,7 @@ import com.liferay.journal.social.JournalActivityKeys;
 import com.liferay.journal.util.comparator.ArticleIDComparator;
 import com.liferay.journal.util.comparator.ArticleVersionComparator;
 import com.liferay.journal.util.impl.JournalUtil;
+import com.liferay.petra.xml.util.XMLUtil;
 import com.liferay.portal.kernel.comment.CommentManagerUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -165,7 +166,6 @@ import com.liferay.trash.kernel.exception.TrashEntryException;
 import com.liferay.trash.kernel.model.TrashEntry;
 import com.liferay.trash.kernel.model.TrashVersion;
 import com.liferay.trash.kernel.util.TrashUtil;
-import com.liferay.util.xml.XMLUtil;
 
 import java.io.File;
 import java.io.IOException;

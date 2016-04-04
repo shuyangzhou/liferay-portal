@@ -14,8 +14,8 @@
 
 package com.liferay.login.web.portlet.action;
 
-import com.liferay.content.util.ContentUtil;
 import com.liferay.login.web.constants.LoginPortletKeys;
+import com.liferay.petra.content.util.ContentUtil;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.util.LocaleUtil;
