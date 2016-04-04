@@ -340,12 +340,12 @@ public class LayoutSetImpl extends LayoutSetBaseImpl {
 
 	private static final Log _log = LogFactoryUtil.getLog(LayoutSetImpl.class);
 
-	@CacheField
+	@CacheField(propagateToInterface = true)
 	private String _companyFallbackVirtualHostname;
 
 	private UnicodeProperties _settingsProperties;
 
-	@CacheField
+	@CacheField(propagateToInterface = true)
 	private String _virtualHostname;
 
 }

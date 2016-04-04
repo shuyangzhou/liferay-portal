@@ -49,7 +49,7 @@ public class DDMStructureLayoutImpl extends DDMStructureLayoutBaseImpl {
 	private static final Log _log = LogFactoryUtil.getLog(
 		DDMStructureLayoutImpl.class);
 
-	@CacheField(methodName = "DDMFormLayout")
+	@CacheField(methodName = "DDMFormLayout", propagateToInterface = true)
 	private DDMFormLayout _ddmFormLayout;
 
 }

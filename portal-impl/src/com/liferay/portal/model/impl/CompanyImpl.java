@@ -305,10 +305,10 @@ public class CompanyImpl extends CompanyBaseImpl {
 		_virtualHostname = virtualHostname;
 	}
 
-	@CacheField
+	@CacheField(propagateToInterface = true)
 	private Key _keyObj;
 
-	@CacheField
+	@CacheField(propagateToInterface = true)
 	private String _virtualHostname;
 
 }

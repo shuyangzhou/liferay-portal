@@ -94,7 +94,7 @@ public class DDLRecordSetImpl extends DDLRecordSetBaseImpl {
 		_recordSetSettings = null;
 	}
 
-	@CacheField(methodName = "DDMFormValues")
+	@CacheField(methodName = "DDMFormValues", propagateToInterface = true)
 	private DDMFormValues _ddmFormValues;
 
 	private DDLRecordSetSettings _recordSetSettings;

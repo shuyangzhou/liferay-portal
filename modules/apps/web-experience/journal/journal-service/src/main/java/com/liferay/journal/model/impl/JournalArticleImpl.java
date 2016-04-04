@@ -408,10 +408,10 @@ public class JournalArticleImpl extends JournalArticleBaseImpl {
 	private static final Log _log = LogFactoryUtil.getLog(
 		JournalArticleImpl.class);
 
-	@CacheField
+	@CacheField(propagateToInterface = true)
 	private String _defaultLanguageId;
 
-	@CacheField
+	@CacheField(propagateToInterface = true)
 	private Document _document;
 
 	private String _smallImageType;

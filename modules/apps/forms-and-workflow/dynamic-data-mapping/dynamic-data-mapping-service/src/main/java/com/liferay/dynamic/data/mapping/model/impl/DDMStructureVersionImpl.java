@@ -75,7 +75,7 @@ public class DDMStructureVersionImpl extends DDMStructureVersionBaseImpl {
 	private static final Log _log = LogFactoryUtil.getLog(
 		DDMStructureVersionImpl.class);
 
-	@CacheField(methodName = "DDMForm")
+	@CacheField(methodName = "DDMForm", propagateToInterface = true)
 	private DDMForm _ddmForm;
 
 }
