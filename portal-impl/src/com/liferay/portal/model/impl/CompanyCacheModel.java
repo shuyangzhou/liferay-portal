@@ -27,6 +27,7 @@ import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.io.Serializable;
 
 /**
  * The cache model class for representing Company in entity cache.
@@ -149,6 +150,8 @@ public class CompanyCacheModel implements CacheModel<Company>, Externalizable,
 
 		companyImpl.resetOriginalValues();
 
+		companyImpl.setCompanySecurityBag(_companySecurityBag);
+
 		companyImpl.setKeyObj(_keyObj);
 
 		companyImpl.setVirtualHostname(_virtualHostname);
@@ -177,6 +180,7 @@ public class CompanyCacheModel implements CacheModel<Company>, Externalizable,
 
 		active = objectInput.readBoolean();
 
+		_companySecurityBag = (Serializable)objectInput.readObject();
 		_keyObj = (java.security.Key)objectInput.readObject();
 		_virtualHostname = (java.lang.String)objectInput.readObject();
 	}
@@ -226,6 +230,7 @@ public class CompanyCacheModel implements CacheModel<Company>, Externalizable,
 
 		objectOutput.writeBoolean(active);
 
+		objectOutput.writeObject(_companySecurityBag);
 		objectOutput.writeObject(_keyObj);
 		objectOutput.writeObject(_virtualHostname);
 	}
@@ -241,6 +246,7 @@ public class CompanyCacheModel implements CacheModel<Company>, Externalizable,
 	public boolean system;
 	public int maxUsers;
 	public boolean active;
+	public Serializable _companySecurityBag;
 	public java.security.Key _keyObj;
 	public java.lang.String _virtualHostname;
 }

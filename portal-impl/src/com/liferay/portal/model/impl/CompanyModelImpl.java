@@ -485,6 +485,13 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 		_active = active;
 	}
 
+	public Serializable getCompanySecurityBag() {
+		return null;
+	}
+
+	public void setCompanySecurityBag(Serializable companySecurityBag) {
+	}
+
 	public java.security.Key getKeyObj() {
 		return null;
 	}
@@ -615,6 +622,8 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 
 		companyModelImpl._setOriginalSystem = false;
 
+		setCompanySecurityBag(null);
+
 		setKeyObj(null);
 
 		setVirtualHostname(null);
@@ -671,6 +680,8 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 		companyCacheModel.maxUsers = getMaxUsers();
 
 		companyCacheModel.active = getActive();
+
+		companyCacheModel._companySecurityBag = getCompanySecurityBag();
 
 		companyCacheModel._keyObj = getKeyObj();
 
