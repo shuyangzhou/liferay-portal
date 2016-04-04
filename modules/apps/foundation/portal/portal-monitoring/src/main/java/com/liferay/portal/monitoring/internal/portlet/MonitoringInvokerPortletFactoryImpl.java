@@ -14,11 +14,15 @@
 
 package com.liferay.portal.monitoring.internal.portlet;
 
+import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.monitoring.DataSampleFactory;
 import com.liferay.portal.kernel.monitoring.PortletMonitoringControl;
 import com.liferay.portal.kernel.portlet.InvokerFilterContainer;
 import com.liferay.portal.kernel.portlet.InvokerPortlet;
 import com.liferay.portal.kernel.portlet.InvokerPortletFactory;
+import com.liferay.portal.monitoring.configuration.MonitoringConfiguration;
+
+import java.util.Map;
 
 import javax.portlet.Portlet;
 import javax.portlet.PortletConfig;
@@ -26,7 +30,9 @@ import javax.portlet.PortletContext;
 import javax.portlet.PortletException;
 
 import org.osgi.framework.Constants;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -34,6 +40,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Philip Jones
  */
 @Component(
+	configurationPid = "com.liferay.portal.monitoring.configuration.MonitoringConfiguration",
 	immediate = true, property = {Constants.SERVICE_RANKING + "=100"},
 	service = InvokerPortletFactory.class
 )
@@ -55,8 +62,12 @@ public class MonitoringInvokerPortletFactoryImpl
 			invokerFilterContainer, checkAuthToken, facesPortlet, strutsPortlet,
 			strutsBridgePortlet);
 
-		return new MonitoringInvokerPortlet(
-			invokerPortlet, _dataSampleFactory, _portletMonitoringControl);
+		if (_monitorEnabled) {
+			invokerPortlet = new MonitoringInvokerPortlet(
+				invokerPortlet, _dataSampleFactory, _portletMonitoringControl);
+		}
+
+		return invokerPortlet;
 	}
 
 	@Override
@@ -69,8 +80,22 @@ public class MonitoringInvokerPortletFactoryImpl
 		InvokerPortlet invokerPortlet = _invokerPortletFactory.create(
 			portletModel, portlet, portletContext, invokerFilterContainer);
 
-		return new MonitoringInvokerPortlet(
-			invokerPortlet, _dataSampleFactory, _portletMonitoringControl);
+		if (_monitorEnabled) {
+			invokerPortlet = new MonitoringInvokerPortlet(
+				invokerPortlet, _dataSampleFactory, _portletMonitoringControl);
+		}
+
+		return invokerPortlet;
+	}
+
+	@Activate
+	@Modified
+	protected void activate(Map<String, Object> properties) {
+		MonitoringConfiguration monitoringConfiguration =
+			ConfigurableUtil.createConfigurable(
+				MonitoringConfiguration.class, properties);
+
+		_monitorEnabled = monitoringConfiguration.monitorEnabled();
 	}
 
 	@Reference
@@ -78,6 +103,8 @@ public class MonitoringInvokerPortletFactoryImpl
 
 	@Reference(target = "(" + Constants.SERVICE_RANKING + "=1)")
 	private InvokerPortletFactory _invokerPortletFactory;
+
+	private boolean _monitorEnabled;
 
 	@Reference
 	private PortletMonitoringControl _portletMonitoringControl;
