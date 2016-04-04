@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.xml.SAXReaderUtil;
 /**
  * @author Brian Wing Shun Chan
  * @author Alexander Chow
+ * @see com.liferay.petra.xml.util.DocUtil
  */
 public class DocUtil {
 

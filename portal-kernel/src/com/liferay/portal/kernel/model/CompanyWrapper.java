@@ -196,6 +196,11 @@ public class CompanyWrapper implements Company, ModelWrapper<Company> {
 	}
 
 	@Override
+	public com.liferay.portal.kernel.model.CompanySecurityBag getCompanySecurityBag() {
+		return _company.getCompanySecurityBag();
+	}
+
+	@Override
 	public com.liferay.portal.kernel.model.User getDefaultUser()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _company.getDefaultUser();
@@ -481,6 +486,12 @@ public class CompanyWrapper implements Company, ModelWrapper<Company> {
 	@Override
 	public void setCompanyId(long companyId) {
 		_company.setCompanyId(companyId);
+	}
+
+	@Override
+	public void setCompanySecurityBag(
+		com.liferay.portal.kernel.model.CompanySecurityBag companySecurityBag) {
+		_company.setCompanySecurityBag(companySecurityBag);
 	}
 
 	@Override

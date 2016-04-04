@@ -14,7 +14,7 @@
 
 package com.liferay.invitation.web.util;
 
-import com.liferay.content.util.ContentUtil;
+import com.liferay.petra.content.util.ContentUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Company;

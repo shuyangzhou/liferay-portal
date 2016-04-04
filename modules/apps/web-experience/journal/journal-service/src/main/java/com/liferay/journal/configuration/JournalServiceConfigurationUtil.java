@@ -14,7 +14,7 @@
 
 package com.liferay.journal.configuration;
 
-import com.liferay.content.util.ContentUtil;
+import com.liferay.petra.content.util.ContentUtil;
 import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
 import com.liferay.portal.kernel.configuration.Filter;

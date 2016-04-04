@@ -1,6 +1,0 @@
-Bundle-Name: Liferay Content Utilities
-Bundle-SymbolicName: com.liferay.content.util
-Bundle-Version: 1.0.2
-Export-Package: com.liferay.content.util
-Liferay-Releng-Module-Group-Description:
-Liferay-Releng-Module-Group-Title:

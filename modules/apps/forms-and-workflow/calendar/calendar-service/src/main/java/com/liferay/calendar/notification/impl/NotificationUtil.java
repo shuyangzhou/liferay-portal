@@ -24,7 +24,7 @@ import com.liferay.calendar.notification.NotificationType;
 import com.liferay.calendar.service.configuration.CalendarServiceConfigurationKeys;
 import com.liferay.calendar.service.configuration.CalendarServiceConfigurationUtil;
 import com.liferay.calendar.service.configuration.CalendarServiceConfigurationValues;
-import com.liferay.content.util.ContentUtil;
+import com.liferay.petra.content.util.ContentUtil;
 import com.liferay.portal.kernel.bean.BeanPropertiesUtil;
 import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.model.Group;
