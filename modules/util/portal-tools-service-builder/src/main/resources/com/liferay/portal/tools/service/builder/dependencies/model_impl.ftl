@@ -692,7 +692,7 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 	<#list cacheFields as cacheField>
 		<#assign variableName = serviceBuilder.getVariableName(cacheField)>
 		<#assign methodName = serviceBuilder.getCacheFieldMethodName(cacheField)>
-		<#assign typeName = cacheField.getType().getGenericValue()>
+		<#assign typeName = serviceBuilder.getCacheFieldTypeName(cacheField)>
 
 		<#if methodName != "DefaultLanguageId">
 			public ${typeName} get${methodName}() {

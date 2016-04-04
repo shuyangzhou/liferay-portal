@@ -201,7 +201,8 @@ public class ${entity.name}CacheModel implements CacheModel<${entity.name}>, Ext
 		</#list>
 
 		<#list cacheFields as cacheField>
-			${cacheField.name} = (${cacheField.type.genericValue})objectInput.readObject();
+			<#assign typeName = serviceBuilder.getCacheFieldTypeName(cacheField)>
+			${cacheField.name} = (${typeName})objectInput.readObject();
 		</#list>
 
 		<#if entity.hasCompoundPK()>
@@ -258,7 +259,8 @@ public class ${entity.name}CacheModel implements CacheModel<${entity.name}>, Ext
 	</#list>
 
 	<#list cacheFields as cacheField>
-		public ${cacheField.type.genericValue} ${cacheField.name};
+		<#assign typeName = serviceBuilder.getCacheFieldTypeName(cacheField)>
+		public ${typeName} ${cacheField.name};
 	</#list>
 
 	<#if entity.hasCompoundPK()>
