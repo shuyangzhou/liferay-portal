@@ -32,6 +32,7 @@
 		<aui:option label="day" value="day" />
 		<aui:option label="month" value="month" />
 		<aui:option label="week" value="week" />
+		<aui:option label="agenda" value="agenda" />
 	</aui:select>
 
 	<aui:select label="week-starts-on" name="weekStartsOn" value="<%= weekStartsOn %>">

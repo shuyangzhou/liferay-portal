@@ -36,6 +36,6 @@ if ((termsOfUseGroupId > 0) && Validator.isNotNull(termsOfUseArticleId)) {
 		/>
 	</c:when>
 	<c:otherwise>
-		 <liferay-util:include page="/html/portal/terms_of_use_default.jsp" />
+		<liferay-util:include page="/html/portal/terms_of_use_default.jsp" />
 	</c:otherwise>
 </c:choose>

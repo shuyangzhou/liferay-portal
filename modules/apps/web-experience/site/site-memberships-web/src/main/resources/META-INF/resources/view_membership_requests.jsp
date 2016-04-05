@@ -150,7 +150,7 @@ renderResponse.setTitle(LanguageUtil.get(request, "membership-requests"));
 		>
 			<c:choose>
 				<c:when test='<%= tabs1.equals("pending") %>'>
-					 <%@ include file="/view_membership_requests_pending_columns.jspf" %>
+					<%@ include file="/view_membership_requests_pending_columns.jspf" %>
 				</c:when>
 				<c:otherwise>
 					<%@ include file="/view_membership_requests_columns.jspf" %>
