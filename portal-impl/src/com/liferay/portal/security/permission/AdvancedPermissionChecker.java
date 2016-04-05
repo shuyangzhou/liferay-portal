@@ -15,7 +15,6 @@
 package com.liferay.portal.security.permission;
 
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.exception.NoSuchResourcePermissionException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -28,7 +27,6 @@ import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.OrganizationConstants;
 import com.liferay.portal.kernel.model.PermissionedModel;
 import com.liferay.portal.kernel.model.PortletConstants;
-import com.liferay.portal.kernel.model.Resource;
 import com.liferay.portal.kernel.model.ResourceBlockConstants;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
@@ -44,7 +42,6 @@ import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourceBlockLocalServiceUtil;
-import com.liferay.portal.kernel.service.ResourceLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.TeamLocalServiceUtil;
@@ -60,7 +57,6 @@ import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -412,6 +408,20 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 			_log.error(e, e);
 		}
 
+		long companyId = getCompanyId();
+
+		if (group != null) {
+			companyId = group.getCompanyId();
+		}
+
+		primKey = fixLegacyPrimaryKey(companyId, name, primKey);
+
+		validateResource(companyId, name, primKey);
+
+		if (isAdmin(companyId, groupId, name, primKey, actionId)) {
+			return true;
+		}
+
 		long[] roleIds = getRoleIds(getUserId(), groupId);
 
 		Boolean value = PermissionCacheUtil.getPermission(
@@ -598,9 +608,6 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 			return value;
 		}
 
-		List<Resource> resources = getResources(
-			companyId, groupId, name, primKey, actionId);
-
 		logHasUserPermission(groupId, name, primKey, actionId, stopWatch, 3);
 
 		// Check if user has access to perform the action on the given resource
@@ -608,8 +615,8 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		// class, then for the group that the class may belong to, and then for
 		// the company that the class belongs to.
 
-		boolean value = ResourceLocalServiceUtil.hasUserPermissions(
-			user.getUserId(), groupId, resources, actionId, roleIds);
+		boolean value = hasResourcePermission(
+			companyId, groupId, name, primKey, actionId, roleIds);
 
 		logHasUserPermission(groupId, name, primKey, actionId, stopWatch, 4);
 
@@ -760,74 +767,6 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		return primKey;
 	}
 
-	/**
-	 * Returns representations of the resource at each scope level.
-	 *
-	 * <p>
-	 * For example, if the class name and primary key of a blog entry were
-	 * passed to this method, it would return a resource for the blog entry
-	 * itself (individual scope), a resource representing all blog entries
-	 * within its group (group scope), a resource standing for all blog entries
-	 * within a group the user has a suitable role in (group-template scope),
-	 * and a resource signifying all blog entries within the company (company
-	 * scope).
-	 * </p>
-	 *
-	 * @param  companyId the primary key of the company
-	 * @param  groupId the primary key of the group containing the resource
-	 * @param  name the resource's name, which can be either a class name or a
-	 *         portlet ID
-	 * @param  primKey the primary key of the resource
-	 * @param  actionId unused
-	 * @return representations of the resource at each scope level
-	 * @throws Exception if an exception occurred
-	 */
-	protected List<Resource> getResources(
-			long companyId, long groupId, String name, String primKey,
-			String actionId)
-		throws Exception {
-
-		// Individual
-
-		List<Resource> resources = new ArrayList<>(4);
-
-		Resource individualResource = ResourceLocalServiceUtil.getResource(
-			companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, primKey);
-
-		resources.add(individualResource);
-
-		// Group
-
-		if (groupId > 0) {
-			Resource groupResource = ResourceLocalServiceUtil.getResource(
-				companyId, name, ResourceConstants.SCOPE_GROUP,
-				String.valueOf(groupId));
-
-			resources.add(groupResource);
-		}
-
-		// Group template
-
-		if (signedIn && (groupId > 0)) {
-			Resource groupTemplateResource =
-				ResourceLocalServiceUtil.getResource(
-					companyId, name, ResourceConstants.SCOPE_GROUP_TEMPLATE,
-					String.valueOf(GroupConstants.DEFAULT_PARENT_GROUP_ID));
-
-			resources.add(groupTemplateResource);
-		}
-
-		// Company
-
-		Resource companyResource = ResourceLocalServiceUtil.getResource(
-			companyId, name, ResourceConstants.SCOPE_COMPANY,
-			String.valueOf(companyId));
-
-		resources.add(companyResource);
-
-		return resources;
-	}
-
 	protected boolean hasGuestPermission(
 			long groupId, String name, String primKey, String actionId)
 		throws Exception {
@@ -882,20 +821,12 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 					resourceBlockIdsBag);
 			}
 
-			primKey = fixLegacyPrimaryKey(companyId, name, primKey);
-
-			List<Resource> resources = getResources(
-				companyId, groupId, name, primKey, actionId);
-
-			return ResourceLocalServiceUtil.hasUserPermissions(
-				defaultUserId, groupId, resources, actionId,
+			return hasResourcePermission(
+				companyId, groupId, name, primKey, actionId,
 				getGuestUserRoleIds());
 		}
-		catch (NoSuchResourcePermissionException nsrpe) {
-			throw new IllegalArgumentException(
-				"Someone may be trying to circumvent the permission checker: " +
-					nsrpe.getMessage(),
-				nsrpe);
+		catch (IllegalArgumentException iae) {
+			throw iae;
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -931,6 +862,41 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		}
 	}
 
+	protected boolean hasResourcePermission(
+			long companyId, long groupId, String name, String primKey,
+			String actionId, long[] roleIds)
+		throws PortalException {
+
+		if (ResourcePermissionLocalServiceUtil.hasResourcePermission(
+				companyId, name, ResourceConstants.SCOPE_COMPANY,
+				String.valueOf(companyId), roleIds, actionId)) {
+
+			return true;
+		}
+
+		if (groupId > 0) {
+			if (signedIn &&
+				ResourcePermissionLocalServiceUtil.hasResourcePermission(
+					companyId, name, ResourceConstants.SCOPE_GROUP_TEMPLATE,
+					String.valueOf(GroupConstants.DEFAULT_PARENT_GROUP_ID),
+					roleIds, actionId)) {
+
+				return true;
+			}
+
+			if (ResourcePermissionLocalServiceUtil.hasResourcePermission(
+					companyId, name, ResourceConstants.SCOPE_GROUP,
+					String.valueOf(groupId), roleIds, actionId)) {
+
+				return true;
+			}
+		}
+
+		return ResourcePermissionLocalServiceUtil.hasResourcePermission(
+			companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, primKey,
+			roleIds, actionId);
+	}
+
 	protected boolean hasUserPermissionImpl(
 			long groupId, String name, String primKey, long[] roleIds,
 			String actionId)
@@ -948,55 +914,55 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 			companyId = group.getCompanyId();
 		}
 
-		primKey = fixLegacyPrimaryKey(companyId, name, primKey);
-
-		try {
-			boolean hasPermission = doCheckPermission(
+		if (doCheckPermission(
 				companyId, groupId, name, primKey, roleIds, actionId,
-				stopWatch);
+				stopWatch)) {
 
-			if (hasPermission) {
-				return true;
-			}
+			return true;
 		}
-		catch (NoSuchResourcePermissionException nsrpe) {
-			throw new IllegalArgumentException(
-				"Someone may be trying to circumvent the permission checker: " +
-					nsrpe.getMessage(),
-				nsrpe);
+
+		return false;
+	}
+
+	protected boolean isAdmin(
+		long companyId, long groupId, String name, String primKey,
+		String actionId) {
+
+		if (!signedIn) {
+			return false;
 		}
 
 		if (isOmniadmin()) {
 			return true;
 		}
 
-		if (name.equals(Organization.class.getName())) {
-			if (isOrganizationAdminImpl(GetterUtil.getLong(primKey))) {
+		try {
+			if (isCompanyAdminImpl(companyId)) {
 				return true;
 			}
-		}
 
-		if (isCompanyAdminImpl(companyId)) {
-			return true;
-		}
+			if (name.equals(Organization.class.getName())) {
+				if (isOrganizationAdminImpl(GetterUtil.getLong(primKey))) {
+					return true;
+				}
+			}
 
-		if (isGroupAdminImpl(groupId)) {
-			boolean hasLayoutManagerPermission = true;
+			if (isGroupAdminImpl(groupId)) {
 
-			// Check if the layout manager has permission to do this action for
-			// the current portlet
+				// Check if the layout manager has permission to do this action
+				// for the current portlet
 
-			if (Validator.isNotNull(name) && Validator.isNotNull(primKey) &&
-				primKey.contains(PortletConstants.LAYOUT_SEPARATOR)) {
-
-				hasLayoutManagerPermission =
+				if (Validator.isNotNull(name) && Validator.isNotNull(primKey) &&
+					primKey.contains(PortletConstants.LAYOUT_SEPARATOR) &&
 					PortletPermissionUtil.hasLayoutManagerPermission(
-						name, actionId);
-			}
+						name, actionId)) {
 
-			if (hasLayoutManagerPermission) {
-				return true;
+					return true;
+				}
 			}
+		}
+		catch (Exception e) {
+			_log.error(e, e);
 		}
 
 		return false;
@@ -1567,6 +1533,35 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 			"Checking user permission block " + block + " for " + groupId +
 				" " + name + " " + primKey + " " + actionId + " takes " +
 					stopWatch.getTime() + " ms");
+	}
+
+	protected void validateResource(
+		long companyId, String name, String primKey) {
+
+		if (ResourceBlockLocalServiceUtil.isSupported(name)) {
+			return;
+		}
+
+		int count =
+			ResourcePermissionLocalServiceUtil.getResourcePermissionsCount(
+				companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, primKey);
+
+		if (count < 1) {
+			StringBundler sb = new StringBundler(10);
+
+			sb.append("Someone may be trying to circumvent the ");
+			sb.append("permission checker: {companyId=");
+			sb.append(companyId);
+			sb.append(", name=");
+			sb.append(name);
+			sb.append(", primKey=");
+			sb.append(primKey);
+			sb.append(", userId=");
+			sb.append(getUserId());
+			sb.append("}");
+
+			throw new IllegalArgumentException(sb.toString());
+		}
 	}
 
 	/**
