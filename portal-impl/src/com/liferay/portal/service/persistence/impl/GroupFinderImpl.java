@@ -25,12 +25,14 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.ResourceAction;
+import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.security.permission.RolePermissions;
 import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourceActionLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourceBlockLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.GroupFinder;
 import com.liferay.portal.kernel.service.persistence.GroupUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -247,6 +249,17 @@ public class GroupFinderImpl
 			params = _emptyLinkedHashMap;
 		}
 
+		long groupClassNameId = _getGroupOrganizationClassNameIds()[0];
+		long organizationClassNameId = _getGroupOrganizationClassNameIds()[1];
+		long userGroupClassNameId = ClassNameLocalServiceUtil.getClassNameId(
+			UserGroup.class);
+
+		if (classNameIds == null) {
+			classNameIds = new long[] {
+				groupClassNameId, organizationClassNameId, userGroupClassNameId
+			};
+		}
+
 		LinkedHashMap<String, Object> params1 = params;
 
 		LinkedHashMap<String, Object> params2 = null;
@@ -285,28 +298,34 @@ public class GroupFinderImpl
 
 			groupIds.addAll(
 				countByC_C_PG_N_D(
-					session, companyId, classNameIds, parentGroupId,
+					session, companyId, groupClassNameId, parentGroupId,
 					parentGroupIdComparator, names, descriptions, params1,
 					andOperator));
 
 			if (doUnion) {
-				groupIds.addAll(
-					countByC_C_PG_N_D(
-						session, companyId, classNameIds, parentGroupId,
-						parentGroupIdComparator, names, descriptions, params2,
-						andOperator));
+				if (ArrayUtil.contains(classNameIds, organizationClassNameId)) {
+					groupIds.addAll(
+						countByC_C_PG_N_D(
+							session, companyId, organizationClassNameId,
+							parentGroupId, parentGroupIdComparator, names,
+							descriptions, params2, andOperator));
+				}
 
-				groupIds.addAll(
-					countByC_C_PG_N_D(
-						session, companyId, classNameIds, parentGroupId,
-						parentGroupIdComparator, names, descriptions, params3,
-						andOperator));
+				if (ArrayUtil.contains(classNameIds, groupClassNameId)) {
+					groupIds.addAll(
+						countByC_C_PG_N_D(
+							session, companyId, groupClassNameId, parentGroupId,
+							parentGroupIdComparator, names, descriptions,
+							params3, andOperator));
+				}
 
-				groupIds.addAll(
-					countByC_C_PG_N_D(
-						session, companyId, classNameIds, parentGroupId,
-						parentGroupIdComparator, names, descriptions, params4,
-						andOperator));
+				if (ArrayUtil.contains(classNameIds, userGroupClassNameId)) {
+					groupIds.addAll(
+						countByC_C_PG_N_D(
+							session, companyId, userGroupClassNameId,
+							parentGroupId, parentGroupIdComparator, names,
+							descriptions, params4, andOperator));
+				}
 			}
 
 			return groupIds.size();
@@ -743,6 +762,17 @@ public class GroupFinderImpl
 			params = _emptyLinkedHashMap;
 		}
 
+		long groupClassNameId = _getGroupOrganizationClassNameIds()[0];
+		long organizationClassNameId = _getGroupOrganizationClassNameIds()[1];
+		long userGroupClassNameId = ClassNameLocalServiceUtil.getClassNameId(
+			UserGroup.class);
+
+		if (classNameIds == null) {
+			classNameIds = new long[] {
+				groupClassNameId, organizationClassNameId, userGroupClassNameId
+			};
+		}
+
 		LinkedHashMap<String, Object> params1 = params;
 
 		LinkedHashMap<String, Object> params2 = null;
@@ -789,41 +819,32 @@ public class GroupFinderImpl
 		if (sql == null) {
 			String findByC_PG_N_D_SQL = CustomSQLUtil.get(FIND_BY_C_C_PG_N_D);
 
-			if (classNameIds == null) {
-				findByC_PG_N_D_SQL = StringUtil.replace(
-					findByC_PG_N_D_SQL, "AND (Group_.classNameId = ?)",
-					StringPool.BLANK);
-			}
-			else {
-				findByC_PG_N_D_SQL = StringUtil.replace(
-					findByC_PG_N_D_SQL, "Group_.classNameId = ?",
-					"Group_.classNameId = ".concat(
-						StringUtil.merge(
-							classNameIds, " OR Group_.classNameId = ")));
-			}
-
 			findByC_PG_N_D_SQL = replaceOrderBy(findByC_PG_N_D_SQL, obc);
 
-			StringBundler sb = new StringBundler(12);
+			StringBundler sb = new StringBundler(10);
 
 			sb.append(StringPool.OPEN_PARENTHESIS);
 			sb.append(replaceJoinAndWhere(findByC_PG_N_D_SQL, params1));
-			sb.append(StringPool.CLOSE_PARENTHESIS);
 
 			if (doUnion) {
-				sb.append(" UNION (");
-				sb.append(replaceJoinAndWhere(findByC_PG_N_D_SQL, params2));
-				sb.append(") UNION (");
-				sb.append(replaceJoinAndWhere(findByC_PG_N_D_SQL, params3));
-				sb.append(") UNION (");
-				sb.append(replaceJoinAndWhere(findByC_PG_N_D_SQL, params4));
-				sb.append(StringPool.CLOSE_PARENTHESIS);
+				if (ArrayUtil.contains(classNameIds, organizationClassNameId)) {
+					sb.append(") UNION (");
+					sb.append(replaceJoinAndWhere(findByC_PG_N_D_SQL, params2));
+				}
+
+				if (ArrayUtil.contains(classNameIds, groupClassNameId)) {
+					sb.append(") UNION (");
+					sb.append(replaceJoinAndWhere(findByC_PG_N_D_SQL, params3));
+				}
+
+				if (ArrayUtil.contains(classNameIds, userGroupClassNameId)) {
+					sb.append(") UNION (");
+					sb.append(replaceJoinAndWhere(findByC_PG_N_D_SQL, params4));
+				}
 			}
 
-			if (obc != null) {
-				sb.append(" ORDER BY ");
-				sb.append(obc.toString());
-			}
+			sb.append(") ORDER BY ");
+			sb.append(obc.toString());
 
 			sql = sb.toString();
 
@@ -860,31 +881,41 @@ public class GroupFinderImpl
 			setJoin(qPos, params1);
 
 			qPos.add(companyId);
+			qPos.add(groupClassNameId);
 			qPos.add(parentGroupId);
 			qPos.add(names, 2);
 			qPos.add(descriptions, 2);
 
 			if (doUnion) {
-				setJoin(qPos, params2);
+				if (ArrayUtil.contains(classNameIds, organizationClassNameId)) {
+					setJoin(qPos, params2);
 
-				qPos.add(companyId);
-				qPos.add(parentGroupId);
-				qPos.add(names, 2);
-				qPos.add(descriptions, 2);
+					qPos.add(companyId);
+					qPos.add(organizationClassNameId);
+					qPos.add(parentGroupId);
+					qPos.add(names, 2);
+					qPos.add(descriptions, 2);
+				}
 
-				setJoin(qPos, params3);
+				if (ArrayUtil.contains(classNameIds, groupClassNameId)) {
+					setJoin(qPos, params3);
 
-				qPos.add(companyId);
-				qPos.add(parentGroupId);
-				qPos.add(names, 2);
-				qPos.add(descriptions, 2);
+					qPos.add(companyId);
+					qPos.add(groupClassNameId);
+					qPos.add(parentGroupId);
+					qPos.add(names, 2);
+					qPos.add(descriptions, 2);
+				}
 
-				setJoin(qPos, params4);
+				if (ArrayUtil.contains(classNameIds, userGroupClassNameId)) {
+					setJoin(qPos, params4);
 
-				qPos.add(companyId);
-				qPos.add(parentGroupId);
-				qPos.add(names, 2);
-				qPos.add(descriptions, 2);
+					qPos.add(companyId);
+					qPos.add(userGroupClassNameId);
+					qPos.add(parentGroupId);
+					qPos.add(names, 2);
+					qPos.add(descriptions, 2);
+				}
 			}
 
 			List<Long> groupIds = (List<Long>)QueryUtil.list(
@@ -940,25 +971,13 @@ public class GroupFinderImpl
 	}
 
 	protected List<Long> countByC_C_PG_N_D(
-			Session session, long companyId, long[] classNameIds,
+			Session session, long companyId, long classNameId,
 			long parentGroupId, String parentGroupIdComparator, String[] names,
 			String[] descriptions, LinkedHashMap<String, Object> params,
 			boolean andOperator)
 		throws Exception {
 
 		String sql = CustomSQLUtil.get(COUNT_BY_C_C_PG_N_D);
-
-		if (classNameIds == null) {
-			sql = StringUtil.replace(
-				sql, "AND (Group_.classNameId = ?)", StringPool.BLANK);
-		}
-		else {
-			sql = StringUtil.replace(
-				sql, "Group_.classNameId = ?",
-				"Group_.classNameId = ".concat(
-					StringUtil.merge(
-						classNameIds, " OR Group_.classNameId = ")));
-		}
 
 		sql = StringUtil.replace(
 			sql, "[$PARENT_GROUP_ID_COMPARATOR$]",
@@ -982,6 +1001,7 @@ public class GroupFinderImpl
 		setJoin(qPos, params);
 
 		qPos.add(companyId);
+		qPos.add(classNameId);
 		qPos.add(parentGroupId);
 		qPos.add(names, 2);
 		qPos.add(descriptions, 2);
