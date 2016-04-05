@@ -3538,6 +3538,45 @@ public class StringUtil {
 		return nodeValues.toArray(new String[nodeValues.size()]);
 	}
 
+	public static CharSequence[] splitWithStringWrapper(
+		String s, char delimiter) {
+		if (Validator.isNull(s)) {
+			return _emptyStringArray;
+		}
+
+		s = s.trim();
+
+		if (s.length() == 0) {
+			return _emptyStringArray;
+		}
+
+		if ((delimiter == CharPool.RETURN) ||
+			(delimiter == CharPool.NEW_LINE)) {
+
+			return splitLinesWithStringWrapper(s);
+		}
+
+		List<CharSequence> nodeValues = new ArrayList<>();
+
+		JDK6StringWrapper stringWrapper = new JDK6StringWrapper(s);
+
+		int offset = 0;
+		int pos = stringWrapper.indexOf(delimiter, offset);
+
+		while (pos != -1) {
+			nodeValues.add(stringWrapper.subSequence(offset, pos));
+
+			offset = pos + 1;
+			pos = stringWrapper.indexOf(delimiter, offset);
+		}
+
+		if (offset < stringWrapper.length()) {
+			nodeValues.add(stringWrapper.subSequence(offset));
+		}
+
+		return nodeValues.toArray(new CharSequence[nodeValues.size()]);
+	}
+
 	/**
 	 * Splits the string <code>s</code> around comma characters returning the
 	 * double-precision decimal values of the substrings.
@@ -3931,6 +3970,61 @@ public class StringUtil {
 		return lines.toArray(new String[lines.size()]);
 	}
 
+	public static CharSequence[] splitLinesWithStringWrapper(String s) {
+		if (Validator.isNull(s)) {
+			return _emptyStringArray;
+		}
+
+		JDK6StringWrapper stringWrapper = new JDK6StringWrapper(s);
+
+		stringWrapper = stringWrapper.trim();
+
+		List<CharSequence> lines = new ArrayList<>();
+
+		int lastIndex = 0;
+
+		while (true) {
+			int returnIndex = stringWrapper.indexOf(CharPool.RETURN, lastIndex);
+			int newLineIndex = stringWrapper.indexOf(
+				CharPool.NEW_LINE, lastIndex);
+
+			if ((returnIndex == -1) && (newLineIndex == -1)) {
+				break;
+			}
+
+			if (returnIndex == -1) {
+				lines.add(stringWrapper.subSequence(lastIndex, newLineIndex));
+
+				lastIndex = newLineIndex + 1;
+			}
+			else if (newLineIndex == -1) {
+				lines.add(stringWrapper.subSequence(lastIndex, returnIndex));
+
+				lastIndex = returnIndex + 1;
+			}
+			else if (newLineIndex < returnIndex) {
+				lines.add(stringWrapper.subSequence(lastIndex, newLineIndex));
+
+				lastIndex = newLineIndex + 1;
+			}
+			else {
+				lines.add(stringWrapper.subSequence(lastIndex, returnIndex));
+
+				lastIndex = returnIndex + 1;
+
+				if (lastIndex == newLineIndex) {
+					lastIndex++;
+				}
+			}
+		}
+
+		if (lastIndex < stringWrapper.length()) {
+			lines.add(stringWrapper.subSequence(lastIndex));
+		}
+
+		return lines.toArray(new CharSequence[lines.size()]);
+	}
+
 	/**
 	 * Returns <code>true</code> if, ignoring case, the string starts with the
 	 * specified character.
@@ -4039,15 +4133,17 @@ public class StringUtil {
 
 		StringBundler sb = new StringBundler(s.length());
 
+		JDK6StringWrapper stringWrapper = new JDK6StringWrapper(s);
+
 		while (x >= 0) {
-			sb.append(s.subSequence(y, x));
+			sb.append(stringWrapper.subSequence(y, x));
 
 			y = x + 1;
 
-			x = s.indexOf(remove, y);
+			x = stringWrapper.indexOf(remove, y);
 		}
 
-		sb.append(s.substring(y));
+		sb.append(stringWrapper.subSequence(y));
 
 		return sb.toString();
 	}
@@ -4122,17 +4218,19 @@ public class StringUtil {
 
 		int pos = 0;
 
+		JDK6StringWrapper stringWrapper = new JDK6StringWrapper(s);
+
 		while (true) {
-			int x = s.indexOf(begin, pos);
-			int y = s.indexOf(end, x + begin.length());
+			int x = stringWrapper.indexOf(begin, pos);
+			int y = stringWrapper.indexOf(end, x + begin.length());
 
 			if ((x == -1) || (y == -1)) {
-				sb.append(s.substring(pos));
+				sb.append(stringWrapper.subSequence(pos));
 
 				break;
 			}
 			else {
-				sb.append(s.substring(pos, x));
+				sb.append(stringWrapper.subSequence(pos, x));
 
 				pos = y + end.length();
 			}
