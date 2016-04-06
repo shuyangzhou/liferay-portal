@@ -43,10 +43,12 @@ import com.liferay.taglib.util.TagResourceBundleUtil;
 
 import java.io.IOException;
 
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
@@ -417,7 +419,7 @@ public class InputEditorTag extends IncludeTag {
 			"liferay-ui:input-editor:toolbarSet", getToolbarSet());
 		request.setAttribute("liferay-ui:input-editor:width", _width);
 
-		request.setAttribute("liferay-ui:input-editor:data", getData());
+		request.setAttribute("liferay-ui:input-editor:data", new DataWrapper());
 	}
 
 	private static final String _EDITOR_WYSIWYG_DEFAULT = PropsUtil.get(
@@ -473,5 +475,81 @@ public class InputEditorTag extends IncludeTag {
 	private boolean _skipEditorLoading;
 	private String _toolbarSet = _TOOLBAR_SET_DEFAULT;
 	private String _width;
+
+	private class DataWrapper implements Map<String, Object> {
+
+		@Override
+		public void clear() {
+			_getInnerData().clear();
+		}
+
+		@Override
+		public boolean containsKey(Object key) {
+			return _getInnerData().containsKey(key);
+		}
+
+		@Override
+		public boolean containsValue(Object value) {
+			return _getInnerData().containsValue(value);
+		}
+
+		@Override
+		public Set<Entry<String, Object>> entrySet() {
+			return _getInnerData().entrySet();
+		}
+
+		@Override
+		public Object get(Object key) {
+			return _getInnerData().get(key);
+		}
+
+		@Override
+		public boolean isEmpty() {
+			return _getInnerData().isEmpty();
+		}
+
+		@Override
+		public Set<String> keySet() {
+			return _getInnerData().keySet();
+		}
+
+		@Override
+		public Object put(String key, Object value) {
+			return _getInnerData().put(key, value);
+		}
+
+		@Override
+		public void putAll(Map<? extends String, ? extends Object> map) {
+			_getInnerData().putAll(map);
+		}
+
+		@Override
+		public Object remove(Object key) {
+			return _getInnerData().remove(key);
+		}
+
+		@Override
+		public int size() {
+			return _getInnerData().size();
+		}
+
+		@Override
+		public Collection<Object> values() {
+			return _getInnerData().values();
+		}
+
+		private Map<String, Object> _getInnerData() {
+			if (_innerData != null) {
+				return _innerData;
+			}
+
+			_innerData = getData();
+
+			return _innerData;
+		}
+
+		private Map<String, Object> _innerData;
+
+	}
 
 }
