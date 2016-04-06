@@ -726,8 +726,8 @@ public class OrgLaborPersistenceImpl extends BasePersistenceImpl<OrgLabor>
 					primaryKey);
 
 			if (orgLabor == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchOrgLaborException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -889,8 +889,8 @@ public class OrgLaborPersistenceImpl extends BasePersistenceImpl<OrgLabor>
 		OrgLabor orgLabor = fetchByPrimaryKey(primaryKey);
 
 		if (orgLabor == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchOrgLaborException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

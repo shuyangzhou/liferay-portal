@@ -124,8 +124,8 @@ public class PortalPreferencesPersistenceImpl extends BasePersistenceImpl<Portal
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchPreferencesException(msg.toString());
@@ -507,8 +507,8 @@ public class PortalPreferencesPersistenceImpl extends BasePersistenceImpl<Portal
 					primaryKey);
 
 			if (portalPreferences == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchPreferencesException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -640,8 +640,8 @@ public class PortalPreferencesPersistenceImpl extends BasePersistenceImpl<Portal
 		PortalPreferences portalPreferences = fetchByPrimaryKey(primaryKey);
 
 		if (portalPreferences == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchPreferencesException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

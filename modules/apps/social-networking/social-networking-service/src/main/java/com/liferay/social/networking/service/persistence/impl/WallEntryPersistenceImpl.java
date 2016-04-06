@@ -1757,8 +1757,8 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 					primaryKey);
 
 			if (wallEntry == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchWallEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -1967,8 +1967,8 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 		WallEntry wallEntry = fetchByPrimaryKey(primaryKey);
 
 		if (wallEntry == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchWallEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

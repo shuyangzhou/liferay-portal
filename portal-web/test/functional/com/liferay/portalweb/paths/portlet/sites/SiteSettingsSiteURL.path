@@ -21,12 +21,12 @@
 <!--SITE_URL-->
 <tr>
 	<td>SITE_URL_LABEL</td>
-	<td>//div[contains(@id,'site-urlHeader')]//a[contains(.,'Site URL')]</td>
+	<td>//div[contains(@id,'siteUrlHeader')]//a[contains(.,'Site URL')]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>SITE_URL_FRIENDLY_URL_LABEL</td>
-	<td>//div[contains(@id,'site-urlContent')]//label[contains(.,'Friendly URL')]</td>
+	<td>//div[contains(@id,'siteUrlContent')]//label[contains(.,'Friendly URL')]</td>
 	<td></td>
 </tr>
 <tr>

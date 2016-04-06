@@ -666,8 +666,8 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchListTypeException(msg.toString());
@@ -1101,8 +1101,8 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 					primaryKey);
 
 			if (listType == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchListTypeException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -1248,8 +1248,8 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 		ListType listType = fetchByPrimaryKey(primaryKey);
 
 		if (listType == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchListTypeException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

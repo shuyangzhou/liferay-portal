@@ -1089,7 +1089,7 @@ public class JournalPortlet extends MVCPortlet {
 			actionRequest, "referringPortletResource");
 
 		PortletURL portletURL = PortletURLFactoryUtil.create(
-			actionRequest, JournalPortletKeys.JOURNAL, themeDisplay.getPlid(),
+			actionRequest, JournalPortletKeys.JOURNAL, themeDisplay,
 			PortletRequest.RENDER_PHASE);
 
 		portletURL.setParameter("mvcPath", "/edit_article.jsp");
@@ -1198,7 +1198,7 @@ public class JournalPortlet extends MVCPortlet {
 				(ThemeDisplay)actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
 
 			PortletURL portletURL = PortletURLFactoryUtil.create(
-				actionRequest, themeDisplay.getPpid(), themeDisplay.getPlid(),
+				actionRequest, themeDisplay.getPpid(), themeDisplay,
 				PortletRequest.RENDER_PHASE);
 
 			redirect = portletURL.toString();

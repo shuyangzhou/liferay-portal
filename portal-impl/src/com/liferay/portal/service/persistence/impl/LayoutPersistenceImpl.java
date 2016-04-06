@@ -686,8 +686,8 @@ public class LayoutPersistenceImpl extends BasePersistenceImpl<Layout>
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchLayoutException(msg.toString());
@@ -2897,8 +2897,8 @@ public class LayoutPersistenceImpl extends BasePersistenceImpl<Layout>
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchLayoutException(msg.toString());
@@ -5182,8 +5182,8 @@ public class LayoutPersistenceImpl extends BasePersistenceImpl<Layout>
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchLayoutException(msg.toString());
@@ -7491,8 +7491,8 @@ public class LayoutPersistenceImpl extends BasePersistenceImpl<Layout>
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchLayoutException(msg.toString());
@@ -7774,8 +7774,8 @@ public class LayoutPersistenceImpl extends BasePersistenceImpl<Layout>
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchLayoutException(msg.toString());
@@ -8403,8 +8403,8 @@ public class LayoutPersistenceImpl extends BasePersistenceImpl<Layout>
 			Layout layout = (Layout)session.get(LayoutImpl.class, primaryKey);
 
 			if (layout == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchLayoutException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -8766,8 +8766,8 @@ public class LayoutPersistenceImpl extends BasePersistenceImpl<Layout>
 		Layout layout = fetchByPrimaryKey(primaryKey);
 
 		if (layout == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchLayoutException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

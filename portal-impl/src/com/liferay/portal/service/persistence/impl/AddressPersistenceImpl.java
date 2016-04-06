@@ -4729,8 +4729,8 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 			Address address = (Address)session.get(AddressImpl.class, primaryKey);
 
 			if (address == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchAddressException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -5066,8 +5066,8 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 		Address address = fetchByPrimaryKey(primaryKey);
 
 		if (address == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchAddressException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

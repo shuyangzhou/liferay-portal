@@ -76,7 +76,7 @@ AUI.add(
 						if (displayStyle) {
 							instance._displayStyle = displayStyle;
 
-							Liferay.Store('com.liferay.product.navigation.control.menu.web_addPanelNumItems', displayStyle);
+							Liferay.Store('com.liferay.product.navigation.control.menu.web_addPanelDisplayStyle', displayStyle);
 						}
 
 						A.io.request(

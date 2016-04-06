@@ -2840,8 +2840,8 @@ public class UserGroupGroupRolePersistenceImpl extends BasePersistenceImpl<UserG
 					primaryKey);
 
 			if (userGroupGroupRole == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchUserGroupGroupRoleException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -3066,8 +3066,8 @@ public class UserGroupGroupRolePersistenceImpl extends BasePersistenceImpl<UserG
 		UserGroupGroupRole userGroupGroupRole = fetchByPrimaryKey(primaryKey);
 
 		if (userGroupGroupRole == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchUserGroupGroupRoleException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

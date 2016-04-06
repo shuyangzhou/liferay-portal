@@ -216,8 +216,8 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 			Account account = (Account)session.get(AccountImpl.class, primaryKey);
 
 			if (account == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchAccountException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -378,8 +378,8 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 		Account account = fetchByPrimaryKey(primaryKey);
 
 		if (account == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchAccountException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

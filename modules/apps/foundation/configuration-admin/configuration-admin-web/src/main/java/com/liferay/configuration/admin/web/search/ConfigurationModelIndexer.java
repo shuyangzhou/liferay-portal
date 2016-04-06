@@ -18,6 +18,7 @@ import com.liferay.configuration.admin.web.constants.ConfigurationAdminPortletKe
 import com.liferay.configuration.admin.web.model.ConfigurationModel;
 import com.liferay.configuration.admin.web.util.ConfigurationModelRetriever;
 import com.liferay.configuration.admin.web.util.ResourceBundleLoaderProvider;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.search.BaseIndexer;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
@@ -32,11 +33,18 @@ import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.search.Summary;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.ResourceBundleLoader;
+import com.liferay.portal.kernel.util.ResourceBundleUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
@@ -128,8 +136,9 @@ public class ConfigurationModelIndexer extends BaseIndexer<ConfigurationModel> {
 
 		BooleanQuery searchQuery = new BooleanQueryImpl();
 
-		addSearchTerm(searchQuery, searchContext, Field.DESCRIPTION, false);
-		addSearchTerm(searchQuery, searchContext, Field.TITLE, false);
+		addSearchLocalizedTerm(
+			searchQuery, searchContext, Field.DESCRIPTION, false);
+		addSearchLocalizedTerm(searchQuery, searchContext, Field.TITLE, false);
 		addSearchTerm(
 			searchQuery, searchContext,
 			FieldNames.CONFIGURATION_MODEL_ATTRIBUTE_DESCRIPTION, false);
@@ -190,10 +199,18 @@ public class ConfigurationModelIndexer extends BaseIndexer<ConfigurationModel> {
 		document.addKeyword(
 			FieldNames.CONFIGURATION_MODEL_ID, configurationModel.getID());
 		document.addKeyword(Field.COMPANY_ID, CompanyConstants.SYSTEM);
+
+		ResourceBundleLoader resourceBundleLoader =
+			_resourceBundleLoaderProvider.getResourceBundleLoader(
+				configurationModel.getBundleSymbolicName());
+
+		document.addLocalizedText(
+			Field.DESCRIPTION,
+			_translate(
+				resourceBundleLoader,
+				GetterUtil.getString(configurationModel.getDescription())));
+
 		document.addKeyword(Field.ENTRY_CLASS_NAME, getClassName());
-		document.addText(
-			Field.DESCRIPTION, configurationModel.getDescription());
-		document.addText(Field.TITLE, configurationModel.getName());
 
 		AttributeDefinition[] requiredAttributeDefinitions =
 			configurationModel.getAttributeDefinitions(
@@ -219,6 +236,12 @@ public class ConfigurationModelIndexer extends BaseIndexer<ConfigurationModel> {
 			FieldNames.CONFIGURATION_MODEL_ATTRIBUTE_DESCRIPTION,
 			attributeDescriptions.toArray(
 				new String[attributeDescriptions.size()]));
+
+		document.addLocalizedText(
+			Field.TITLE,
+			_translate(
+				resourceBundleLoader,
+				GetterUtil.getString(configurationModel.getName())));
 
 		return document;
 	}
@@ -262,6 +285,41 @@ public class ConfigurationModelIndexer extends BaseIndexer<ConfigurationModel> {
 
 			doReindex(configurationModel);
 		}
+	}
+
+	private Map<Locale, String> _translate(
+		ResourceBundleLoader resourceBundleLoader, String key) {
+
+		Map<Locale, String> values = new HashMap<>();
+
+		ResourceBundle defaultResourceBundle =
+			resourceBundleLoader.loadResourceBundle(
+				LocaleUtil.toLanguageId(LocaleUtil.getDefault()));
+
+		for (Locale locale : LanguageUtil.getAvailableLocales()) {
+			ResourceBundle resourceBundle =
+				resourceBundleLoader.loadResourceBundle(
+					LocaleUtil.toLanguageId(locale));
+
+			if (resourceBundle != null) {
+				String value = ResourceBundleUtil.getString(
+					resourceBundle, key);
+
+				if (Validator.isNotNull(value)) {
+					values.put(locale, value);
+				}
+			}
+			else if (defaultResourceBundle != null) {
+				String value = ResourceBundleUtil.getString(
+					defaultResourceBundle, key);
+
+				if (Validator.isNotNull(value)) {
+					values.put(locale, value);
+				}
+			}
+		}
+
+		return values;
 	}
 
 	@Reference

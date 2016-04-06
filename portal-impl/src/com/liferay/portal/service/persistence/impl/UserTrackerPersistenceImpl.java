@@ -1772,8 +1772,8 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 					primaryKey);
 
 			if (userTracker == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchUserTrackerException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -1958,8 +1958,8 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 		UserTracker userTracker = fetchByPrimaryKey(primaryKey);
 
 		if (userTracker == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchUserTrackerException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

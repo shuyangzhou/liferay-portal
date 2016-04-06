@@ -1740,8 +1740,8 @@ that may or may not be enforced with a unique index at the database level. Case
 				</#if>
 			</#list>
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new ${noSuchEntity}Exception(msg.toString());

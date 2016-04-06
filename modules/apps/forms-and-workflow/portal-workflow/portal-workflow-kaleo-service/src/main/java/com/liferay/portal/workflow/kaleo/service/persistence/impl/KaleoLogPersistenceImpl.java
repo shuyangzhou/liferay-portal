@@ -3581,8 +3581,8 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 					primaryKey);
 
 			if (kaleoLog == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchLogException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -3882,8 +3882,8 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 		KaleoLog kaleoLog = fetchByPrimaryKey(primaryKey);
 
 		if (kaleoLog == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchLogException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

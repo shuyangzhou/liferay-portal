@@ -308,4 +308,7 @@ public interface LiferayPortletURL
 
 	public void setRemovedParameterNames(Set<String> removedParamNames);
 
+	public void setWindowStateRestoreCurrentView(
+		boolean windowStateRestoreCurrentView);
+
 }

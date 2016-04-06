@@ -120,8 +120,8 @@ public class TicketPersistenceImpl extends BasePersistenceImpl<Ticket>
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchTicketException(msg.toString());
@@ -1078,8 +1078,8 @@ public class TicketPersistenceImpl extends BasePersistenceImpl<Ticket>
 			Ticket ticket = (Ticket)session.get(TicketImpl.class, primaryKey);
 
 			if (ticket == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchTicketException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -1238,8 +1238,8 @@ public class TicketPersistenceImpl extends BasePersistenceImpl<Ticket>
 		Ticket ticket = fetchByPrimaryKey(primaryKey);
 
 		if (ticket == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchTicketException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

@@ -1849,8 +1849,8 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchActivityCounterException(msg.toString());
@@ -2206,8 +2206,8 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchActivityCounterException(msg.toString());
@@ -2779,8 +2779,8 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 					primaryKey);
 
 			if (socialActivityCounter == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchActivityCounterException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -2987,8 +2987,8 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 		SocialActivityCounter socialActivityCounter = fetchByPrimaryKey(primaryKey);
 
 		if (socialActivityCounter == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchActivityCounterException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

@@ -690,8 +690,8 @@ public class CalendarNotificationTemplatePersistenceImpl
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchNotificationTemplateException(msg.toString());
@@ -2081,8 +2081,8 @@ public class CalendarNotificationTemplatePersistenceImpl
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchNotificationTemplateException(msg.toString());
@@ -2629,8 +2629,8 @@ public class CalendarNotificationTemplatePersistenceImpl
 					primaryKey);
 
 			if (calendarNotificationTemplate == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchNotificationTemplateException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -2868,8 +2868,8 @@ public class CalendarNotificationTemplatePersistenceImpl
 		CalendarNotificationTemplate calendarNotificationTemplate = fetchByPrimaryKey(primaryKey);
 
 		if (calendarNotificationTemplate == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchNotificationTemplateException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

@@ -694,8 +694,8 @@ public class ImagePersistenceImpl extends BasePersistenceImpl<Image>
 			Image image = (Image)session.get(ImageImpl.class, primaryKey);
 
 			if (image == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchImageException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -823,8 +823,8 @@ public class ImagePersistenceImpl extends BasePersistenceImpl<Image>
 		Image image = fetchByPrimaryKey(primaryKey);
 
 		if (image == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchImageException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

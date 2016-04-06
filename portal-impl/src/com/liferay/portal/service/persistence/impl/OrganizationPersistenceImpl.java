@@ -5748,8 +5748,8 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchOrganizationException(msg.toString());
@@ -6776,8 +6776,8 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 					primaryKey);
 
 			if (organization == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchOrganizationException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -7048,8 +7048,8 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 		Organization organization = fetchByPrimaryKey(primaryKey);
 
 		if (organization == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchOrganizationException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

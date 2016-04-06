@@ -2521,8 +2521,8 @@ public class KaleoActionPersistenceImpl extends BasePersistenceImpl<KaleoAction>
 					primaryKey);
 
 			if (kaleoAction == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchActionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -2767,8 +2767,8 @@ public class KaleoActionPersistenceImpl extends BasePersistenceImpl<KaleoAction>
 		KaleoAction kaleoAction = fetchByPrimaryKey(primaryKey);
 
 		if (kaleoAction == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchActionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

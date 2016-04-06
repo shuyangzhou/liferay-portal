@@ -725,8 +725,8 @@ public class ShoppingItemFieldPersistenceImpl extends BasePersistenceImpl<Shoppi
 					primaryKey);
 
 			if (shoppingItemField == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchItemFieldException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -875,8 +875,8 @@ public class ShoppingItemFieldPersistenceImpl extends BasePersistenceImpl<Shoppi
 		ShoppingItemField shoppingItemField = fetchByPrimaryKey(primaryKey);
 
 		if (shoppingItemField == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchItemFieldException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

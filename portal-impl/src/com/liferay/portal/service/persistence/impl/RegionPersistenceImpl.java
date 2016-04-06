@@ -1124,8 +1124,8 @@ public class RegionPersistenceImpl extends BasePersistenceImpl<Region>
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchRegionException(msg.toString());
@@ -2060,8 +2060,8 @@ public class RegionPersistenceImpl extends BasePersistenceImpl<Region>
 			Region region = (Region)session.get(RegionImpl.class, primaryKey);
 
 			if (region == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchRegionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -2247,8 +2247,8 @@ public class RegionPersistenceImpl extends BasePersistenceImpl<Region>
 		Region region = fetchByPrimaryKey(primaryKey);
 
 		if (region == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchRegionException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

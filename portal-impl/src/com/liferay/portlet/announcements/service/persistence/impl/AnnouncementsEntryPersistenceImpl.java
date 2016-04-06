@@ -4998,8 +4998,8 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 					primaryKey);
 
 			if (announcementsEntry == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -5297,8 +5297,8 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 		AnnouncementsEntry announcementsEntry = fetchByPrimaryKey(primaryKey);
 
 		if (announcementsEntry == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

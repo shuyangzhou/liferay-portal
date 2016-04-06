@@ -1721,8 +1721,8 @@ public class SocialActivityLimitPersistenceImpl extends BasePersistenceImpl<Soci
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchActivityLimitException(msg.toString());
@@ -2231,8 +2231,8 @@ public class SocialActivityLimitPersistenceImpl extends BasePersistenceImpl<Soci
 					primaryKey);
 
 			if (socialActivityLimit == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchActivityLimitException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -2427,8 +2427,8 @@ public class SocialActivityLimitPersistenceImpl extends BasePersistenceImpl<Soci
 		SocialActivityLimit socialActivityLimit = fetchByPrimaryKey(primaryKey);
 
 		if (socialActivityLimit == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchActivityLimitException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

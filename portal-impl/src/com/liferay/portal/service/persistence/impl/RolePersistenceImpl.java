@@ -5631,8 +5631,8 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchRoleException(msg.toString());
@@ -8286,8 +8286,8 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchRoleException(msg.toString());
@@ -8719,8 +8719,8 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 			Role role = (Role)session.get(RoleImpl.class, primaryKey);
 
 			if (role == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchRoleException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -9030,8 +9030,8 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 		Role role = fetchByPrimaryKey(primaryKey);
 
 		if (role == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchRoleException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

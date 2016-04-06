@@ -8432,8 +8432,8 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 					primaryKey);
 
 			if (userNotificationEvent == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchUserNotificationEventException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -8882,8 +8882,8 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 		UserNotificationEvent userNotificationEvent = fetchByPrimaryKey(primaryKey);
 
 		if (userNotificationEvent == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchUserNotificationEventException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

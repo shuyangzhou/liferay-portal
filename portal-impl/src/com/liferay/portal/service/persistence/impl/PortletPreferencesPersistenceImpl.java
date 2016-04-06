@@ -4252,8 +4252,8 @@ public class PortletPreferencesPersistenceImpl extends BasePersistenceImpl<Portl
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchPortletPreferencesException(msg.toString());
@@ -4706,8 +4706,8 @@ public class PortletPreferencesPersistenceImpl extends BasePersistenceImpl<Portl
 					primaryKey);
 
 			if (portletPreferences == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchPortletPreferencesException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -4990,8 +4990,8 @@ public class PortletPreferencesPersistenceImpl extends BasePersistenceImpl<Portl
 		PortletPreferences portletPreferences = fetchByPrimaryKey(primaryKey);
 
 		if (portletPreferences == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchPortletPreferencesException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

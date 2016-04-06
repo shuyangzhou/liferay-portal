@@ -4079,8 +4079,8 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 			Phone phone = (Phone)session.get(PhoneImpl.class, primaryKey);
 
 			if (phone == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchPhoneException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -4381,8 +4381,8 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 		Phone phone = fetchByPrimaryKey(primaryKey);
 
 		if (phone == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchPhoneException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

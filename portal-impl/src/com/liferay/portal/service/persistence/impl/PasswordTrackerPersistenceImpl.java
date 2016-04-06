@@ -727,8 +727,8 @@ public class PasswordTrackerPersistenceImpl extends BasePersistenceImpl<Password
 					primaryKey);
 
 			if (passwordTracker == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchPasswordTrackerException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -876,8 +876,8 @@ public class PasswordTrackerPersistenceImpl extends BasePersistenceImpl<Password
 		PasswordTracker passwordTracker = fetchByPrimaryKey(primaryKey);
 
 		if (passwordTracker == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchPasswordTrackerException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

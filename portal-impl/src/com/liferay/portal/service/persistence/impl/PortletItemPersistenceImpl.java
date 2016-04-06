@@ -1317,8 +1317,8 @@ public class PortletItemPersistenceImpl extends BasePersistenceImpl<PortletItem>
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchPortletItemException(msg.toString());
@@ -1805,8 +1805,8 @@ public class PortletItemPersistenceImpl extends BasePersistenceImpl<PortletItem>
 					primaryKey);
 
 			if (portletItem == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchPortletItemException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -2011,8 +2011,8 @@ public class PortletItemPersistenceImpl extends BasePersistenceImpl<PortletItem>
 		PortletItem portletItem = fetchByPrimaryKey(primaryKey);
 
 		if (portletItem == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchPortletItemException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

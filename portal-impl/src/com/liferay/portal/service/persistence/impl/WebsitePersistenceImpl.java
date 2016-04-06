@@ -4102,8 +4102,8 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 			Website website = (Website)session.get(WebsiteImpl.class, primaryKey);
 
 			if (website == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchWebsiteException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -4408,8 +4408,8 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 		Website website = fetchByPrimaryKey(primaryKey);
 
 		if (website == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchWebsiteException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

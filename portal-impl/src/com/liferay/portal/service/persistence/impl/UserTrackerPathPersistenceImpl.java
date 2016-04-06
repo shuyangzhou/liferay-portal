@@ -736,8 +736,8 @@ public class UserTrackerPathPersistenceImpl extends BasePersistenceImpl<UserTrac
 					primaryKey);
 
 			if (userTrackerPath == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchUserTrackerPathException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -887,8 +887,8 @@ public class UserTrackerPathPersistenceImpl extends BasePersistenceImpl<UserTrac
 		UserTrackerPath userTrackerPath = fetchByPrimaryKey(primaryKey);
 
 		if (userTrackerPath == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchUserTrackerPathException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

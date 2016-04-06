@@ -672,8 +672,8 @@ public class RepositoryPersistenceImpl extends BasePersistenceImpl<Repository>
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchRepositoryException(msg.toString());
@@ -2023,8 +2023,8 @@ public class RepositoryPersistenceImpl extends BasePersistenceImpl<Repository>
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchRepositoryException(msg.toString());
@@ -2529,8 +2529,8 @@ public class RepositoryPersistenceImpl extends BasePersistenceImpl<Repository>
 					primaryKey);
 
 			if (repository == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchRepositoryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -2756,8 +2756,8 @@ public class RepositoryPersistenceImpl extends BasePersistenceImpl<Repository>
 		Repository repository = fetchByPrimaryKey(primaryKey);
 
 		if (repository == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchRepositoryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

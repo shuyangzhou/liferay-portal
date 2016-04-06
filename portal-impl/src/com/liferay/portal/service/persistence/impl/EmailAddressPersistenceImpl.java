@@ -4121,8 +4121,8 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 					primaryKey);
 
 			if (emailAddress == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchEmailAddressException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -4429,8 +4429,8 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 		EmailAddress emailAddress = fetchByPrimaryKey(primaryKey);
 
 		if (emailAddress == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchEmailAddressException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

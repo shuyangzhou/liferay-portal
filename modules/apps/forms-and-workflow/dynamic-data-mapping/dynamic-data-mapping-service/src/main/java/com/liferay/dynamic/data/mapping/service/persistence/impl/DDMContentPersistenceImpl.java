@@ -670,8 +670,8 @@ public class DDMContentPersistenceImpl extends BasePersistenceImpl<DDMContent>
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchContentException(msg.toString());
@@ -2668,8 +2668,8 @@ public class DDMContentPersistenceImpl extends BasePersistenceImpl<DDMContent>
 					primaryKey);
 
 			if (ddmContent == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchContentException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -2907,8 +2907,8 @@ public class DDMContentPersistenceImpl extends BasePersistenceImpl<DDMContent>
 		DDMContent ddmContent = fetchByPrimaryKey(primaryKey);
 
 		if (ddmContent == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchContentException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

@@ -2549,8 +2549,8 @@ public class KaleoNotificationPersistenceImpl extends BasePersistenceImpl<KaleoN
 					primaryKey);
 
 			if (kaleoNotification == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchNotificationException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -2799,8 +2799,8 @@ public class KaleoNotificationPersistenceImpl extends BasePersistenceImpl<KaleoN
 		KaleoNotification kaleoNotification = fetchByPrimaryKey(primaryKey);
 
 		if (kaleoNotification == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchNotificationException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

@@ -1797,8 +1797,8 @@ public class KaleoNotificationRecipientPersistenceImpl
 					primaryKey);
 
 			if (kaleoNotificationRecipient == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchNotificationRecipientException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -2030,8 +2030,8 @@ public class KaleoNotificationRecipientPersistenceImpl
 		KaleoNotificationRecipient kaleoNotificationRecipient = fetchByPrimaryKey(primaryKey);
 
 		if (kaleoNotificationRecipient == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchNotificationRecipientException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

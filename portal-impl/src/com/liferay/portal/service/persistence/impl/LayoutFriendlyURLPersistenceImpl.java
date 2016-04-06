@@ -680,8 +680,8 @@ public class LayoutFriendlyURLPersistenceImpl extends BasePersistenceImpl<Layout
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchLayoutFriendlyURLException(msg.toString());
@@ -3635,8 +3635,8 @@ public class LayoutFriendlyURLPersistenceImpl extends BasePersistenceImpl<Layout
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchLayoutFriendlyURLException(msg.toString());
@@ -4550,8 +4550,8 @@ public class LayoutFriendlyURLPersistenceImpl extends BasePersistenceImpl<Layout
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchLayoutFriendlyURLException(msg.toString());
@@ -5143,8 +5143,8 @@ public class LayoutFriendlyURLPersistenceImpl extends BasePersistenceImpl<Layout
 					primaryKey);
 
 			if (layoutFriendlyURL == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchLayoutFriendlyURLException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -5450,8 +5450,8 @@ public class LayoutFriendlyURLPersistenceImpl extends BasePersistenceImpl<Layout
 		LayoutFriendlyURL layoutFriendlyURL = fetchByPrimaryKey(primaryKey);
 
 		if (layoutFriendlyURL == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchLayoutFriendlyURLException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

@@ -124,8 +124,8 @@ public class RatingsStatsPersistenceImpl extends BasePersistenceImpl<RatingsStat
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchStatsException(msg.toString());
@@ -499,8 +499,8 @@ public class RatingsStatsPersistenceImpl extends BasePersistenceImpl<RatingsStat
 					primaryKey);
 
 			if (ratingsStats == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchStatsException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -633,8 +633,8 @@ public class RatingsStatsPersistenceImpl extends BasePersistenceImpl<RatingsStat
 		RatingsStats ratingsStats = fetchByPrimaryKey(primaryKey);
 
 		if (ratingsStats == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchStatsException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

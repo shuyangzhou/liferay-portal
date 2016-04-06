@@ -668,8 +668,8 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchBanException(msg.toString());
@@ -2992,8 +2992,8 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchBanException(msg.toString());
@@ -3404,8 +3404,8 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 			MBBan mbBan = (MBBan)session.get(MBBanImpl.class, primaryKey);
 
 			if (mbBan == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchBanException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -3652,8 +3652,8 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 		MBBan mbBan = fetchByPrimaryKey(primaryKey);
 
 		if (mbBan == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchBanException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

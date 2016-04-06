@@ -682,8 +682,8 @@ public class WikiPagePersistenceImpl extends BasePersistenceImpl<WikiPage>
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchPageException(msg.toString());
@@ -7019,8 +7019,8 @@ public class WikiPagePersistenceImpl extends BasePersistenceImpl<WikiPage>
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchPageException(msg.toString());
@@ -10975,8 +10975,8 @@ public class WikiPagePersistenceImpl extends BasePersistenceImpl<WikiPage>
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchPageException(msg.toString());
@@ -22172,8 +22172,8 @@ public class WikiPagePersistenceImpl extends BasePersistenceImpl<WikiPage>
 					primaryKey);
 
 			if (wikiPage == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchPageException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -22995,8 +22995,8 @@ public class WikiPagePersistenceImpl extends BasePersistenceImpl<WikiPage>
 		WikiPage wikiPage = fetchByPrimaryKey(primaryKey);
 
 		if (wikiPage == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchPageException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

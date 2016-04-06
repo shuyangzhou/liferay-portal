@@ -1362,8 +1362,8 @@ public class ResourceBlockPersistenceImpl extends BasePersistenceImpl<ResourceBl
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchResourceBlockException(msg.toString());
@@ -1851,8 +1851,8 @@ public class ResourceBlockPersistenceImpl extends BasePersistenceImpl<ResourceBl
 					primaryKey);
 
 			if (resourceBlock == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchResourceBlockException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -2031,8 +2031,8 @@ public class ResourceBlockPersistenceImpl extends BasePersistenceImpl<ResourceBl
 		ResourceBlock resourceBlock = fetchByPrimaryKey(primaryKey);
 
 		if (resourceBlock == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchResourceBlockException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

@@ -1759,8 +1759,8 @@ public class ContactPersistenceImpl extends BasePersistenceImpl<Contact>
 			Contact contact = (Contact)session.get(ContactImpl.class, primaryKey);
 
 			if (contact == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchContactException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -1990,8 +1990,8 @@ public class ContactPersistenceImpl extends BasePersistenceImpl<Contact>
 		Contact contact = fetchByPrimaryKey(primaryKey);
 
 		if (contact == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchContactException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

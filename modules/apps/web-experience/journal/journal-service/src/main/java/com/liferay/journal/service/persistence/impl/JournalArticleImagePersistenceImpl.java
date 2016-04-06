@@ -1811,8 +1811,8 @@ public class JournalArticleImagePersistenceImpl extends BasePersistenceImpl<Jour
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchArticleImageException(msg.toString());
@@ -2412,8 +2412,8 @@ public class JournalArticleImagePersistenceImpl extends BasePersistenceImpl<Jour
 					primaryKey);
 
 			if (journalArticleImage == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchArticleImageException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -2610,8 +2610,8 @@ public class JournalArticleImagePersistenceImpl extends BasePersistenceImpl<Jour
 		JournalArticleImage journalArticleImage = fetchByPrimaryKey(primaryKey);
 
 		if (journalArticleImage == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchArticleImageException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

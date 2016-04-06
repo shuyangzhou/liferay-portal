@@ -672,8 +672,8 @@ public class WikiNodePersistenceImpl extends BasePersistenceImpl<WikiNode>
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchNodeException(msg.toString());
@@ -2870,8 +2870,8 @@ public class WikiNodePersistenceImpl extends BasePersistenceImpl<WikiNode>
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchNodeException(msg.toString());
@@ -4768,8 +4768,8 @@ public class WikiNodePersistenceImpl extends BasePersistenceImpl<WikiNode>
 					primaryKey);
 
 			if (wikiNode == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchNodeException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -5052,8 +5052,8 @@ public class WikiNodePersistenceImpl extends BasePersistenceImpl<WikiNode>
 		WikiNode wikiNode = fetchByPrimaryKey(primaryKey);
 
 		if (wikiNode == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchNodeException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

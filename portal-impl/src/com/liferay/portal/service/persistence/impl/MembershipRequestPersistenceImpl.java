@@ -2366,8 +2366,8 @@ public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<Member
 					primaryKey);
 
 			if (membershipRequest == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchMembershipRequestException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -2582,8 +2582,8 @@ public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<Member
 		MembershipRequest membershipRequest = fetchByPrimaryKey(primaryKey);
 
 		if (membershipRequest == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchMembershipRequestException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

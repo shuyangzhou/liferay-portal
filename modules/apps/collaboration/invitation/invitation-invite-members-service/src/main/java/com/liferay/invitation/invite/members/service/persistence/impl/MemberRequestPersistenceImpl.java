@@ -124,8 +124,8 @@ public class MemberRequestPersistenceImpl extends BasePersistenceImpl<MemberRequ
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchMemberRequestException(msg.toString());
@@ -1440,8 +1440,8 @@ public class MemberRequestPersistenceImpl extends BasePersistenceImpl<MemberRequ
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchMemberRequestException(msg.toString());
@@ -1879,8 +1879,8 @@ public class MemberRequestPersistenceImpl extends BasePersistenceImpl<MemberRequ
 					primaryKey);
 
 			if (memberRequest == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchMemberRequestException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -2083,8 +2083,8 @@ public class MemberRequestPersistenceImpl extends BasePersistenceImpl<MemberRequ
 		MemberRequest memberRequest = fetchByPrimaryKey(primaryKey);
 
 		if (memberRequest == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchMemberRequestException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

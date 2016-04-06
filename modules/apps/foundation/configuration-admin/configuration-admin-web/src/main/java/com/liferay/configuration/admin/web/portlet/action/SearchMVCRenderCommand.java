@@ -67,6 +67,7 @@ public class SearchMVCRenderCommand implements MVCRenderCommand {
 
 		searchContext.setAndSearch(false);
 		searchContext.setCompanyId(CompanyConstants.SYSTEM);
+		searchContext.setLocale(renderRequest.getLocale());
 
 		String keywords = renderRequest.getParameter("keywords");
 
@@ -77,6 +78,7 @@ public class SearchMVCRenderCommand implements MVCRenderCommand {
 		QueryConfig queryConfig = searchContext.getQueryConfig();
 
 		queryConfig.setHighlightEnabled(true);
+		queryConfig.setLocale(renderRequest.getLocale());
 		queryConfig.setScoreEnabled(true);
 
 		try {

@@ -1731,8 +1731,8 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchAppException(msg.toString());
@@ -2622,8 +2622,8 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 			App app = (App)session.get(AppImpl.class, primaryKey);
 
 			if (app == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchAppException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -2855,8 +2855,8 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 		App app = fetchByPrimaryKey(primaryKey);
 
 		if (app == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchAppException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

@@ -2757,8 +2757,8 @@ public class AssetLinkPersistenceImpl extends BasePersistenceImpl<AssetLink>
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchLinkException(msg.toString());
@@ -3149,8 +3149,8 @@ public class AssetLinkPersistenceImpl extends BasePersistenceImpl<AssetLink>
 					primaryKey);
 
 			if (assetLink == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchLinkException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -3383,8 +3383,8 @@ public class AssetLinkPersistenceImpl extends BasePersistenceImpl<AssetLink>
 		AssetLink assetLink = fetchByPrimaryKey(primaryKey);
 
 		if (assetLink == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchLinkException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

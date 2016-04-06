@@ -689,8 +689,8 @@ public class ServiceComponentPersistenceImpl extends BasePersistenceImpl<Service
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchServiceComponentException(msg.toString());
@@ -1102,8 +1102,8 @@ public class ServiceComponentPersistenceImpl extends BasePersistenceImpl<Service
 					primaryKey);
 
 			if (serviceComponent == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchServiceComponentException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -1259,8 +1259,8 @@ public class ServiceComponentPersistenceImpl extends BasePersistenceImpl<Service
 		ServiceComponent serviceComponent = fetchByPrimaryKey(primaryKey);
 
 		if (serviceComponent == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchServiceComponentException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

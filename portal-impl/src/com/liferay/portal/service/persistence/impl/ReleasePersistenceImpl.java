@@ -121,8 +121,8 @@ public class ReleasePersistenceImpl extends BasePersistenceImpl<Release>
 
 			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
 			}
 
 			throw new NoSuchReleaseException(msg.toString());
@@ -505,8 +505,8 @@ public class ReleasePersistenceImpl extends BasePersistenceImpl<Release>
 			Release release = (Release)session.get(ReleaseImpl.class, primaryKey);
 
 			if (release == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchReleaseException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -664,8 +664,8 @@ public class ReleasePersistenceImpl extends BasePersistenceImpl<Release>
 		Release release = fetchByPrimaryKey(primaryKey);
 
 		if (release == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchReleaseException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

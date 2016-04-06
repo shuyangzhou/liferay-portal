@@ -2466,8 +2466,8 @@ public class SystemEventPersistenceImpl extends BasePersistenceImpl<SystemEvent>
 					primaryKey);
 
 			if (systemEvent == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+				if (_log.isDebugEnabled()) {
+					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
 				throw new NoSuchSystemEventException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
@@ -2693,8 +2693,8 @@ public class SystemEventPersistenceImpl extends BasePersistenceImpl<SystemEvent>
 		SystemEvent systemEvent = fetchByPrimaryKey(primaryKey);
 
 		if (systemEvent == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			if (_log.isDebugEnabled()) {
+				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			throw new NoSuchSystemEventException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +

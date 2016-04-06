@@ -19,6 +19,7 @@ import com.liferay.dynamic.data.lists.model.DDLRecordSet;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.DDMTemplateConstants;
 import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.PathUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -54,15 +55,9 @@ public class ResourceImporter extends FileSystemImporter {
 			String parentDirName, String dirName, long classNameId)
 		throws Exception {
 
-		StringBundler sb = new StringBundler(4);
-
-		sb.append(resourcesDir);
-		sb.append(parentDirName);
-		sb.append("/");
-		sb.append(dirName);
-
 		Set<String> resourcePaths = servletContext.getResourcePaths(
-			sb.toString());
+			buildResourcePath(
+				resourcesDir, parentDirName, StringPool.SLASH, dirName));
 
 		if (resourcePaths == null) {
 			return;
@@ -94,15 +89,9 @@ public class ResourceImporter extends FileSystemImporter {
 			groupId, PortalUtil.getClassNameId(DDLRecordSet.class),
 			ddmStructureKey);
 
-		StringBundler sb = new StringBundler(4);
-
-		sb.append(resourcesDir);
-		sb.append(dirName);
-		sb.append(StringPool.SLASH);
-		sb.append(fileName);
-
 		Set<String> resourcePaths = servletContext.getResourcePaths(
-			sb.toString());
+			buildResourcePath(
+				resourcesDir, dirName, StringPool.SLASH, fileName));
 
 		if (resourcePaths == null) {
 			return;
@@ -135,15 +124,9 @@ public class ResourceImporter extends FileSystemImporter {
 			groupId, PortalUtil.getClassNameId(DDLRecordSet.class),
 			ddmStructureKey);
 
-		StringBundler sb = new StringBundler(4);
-
-		sb.append(resourcesDir);
-		sb.append(dirName);
-		sb.append(StringPool.SLASH);
-		sb.append(fileName);
-
 		Set<String> resourcePaths = servletContext.getResourcePaths(
-			sb.toString());
+			buildResourcePath(
+				resourcesDir, dirName, StringPool.SLASH, fileName));
 
 		if (resourcePaths == null) {
 			return;
@@ -170,7 +153,7 @@ public class ResourceImporter extends FileSystemImporter {
 	@Override
 	protected void addDDLStructures(String dirName) throws Exception {
 		Set<String> resourcePaths = servletContext.getResourcePaths(
-			resourcesDir.concat(dirName));
+			buildResourcePath(resourcesDir, dirName));
 
 		if (resourcePaths == null) {
 			return;
@@ -194,7 +177,7 @@ public class ResourceImporter extends FileSystemImporter {
 		throws Exception {
 
 		Set<String> resourcePaths = servletContext.getResourcePaths(
-			resourcesDir.concat(dirName));
+			buildResourcePath(resourcesDir, dirName));
 
 		if (resourcePaths == null) {
 			return;
@@ -221,7 +204,7 @@ public class ResourceImporter extends FileSystemImporter {
 		throws Exception {
 
 		Set<String> resourcePaths = servletContext.getResourcePaths(
-			resourcesDir.concat(dirName));
+			buildResourcePath(resourcesDir, dirName));
 
 		if (resourcePaths == null) {
 			return;
@@ -246,7 +229,7 @@ public class ResourceImporter extends FileSystemImporter {
 	@Override
 	protected void addDLFileEntries(String dirName) throws Exception {
 		Set<String> resourcePaths = servletContext.getResourcePaths(
-			resourcesDir.concat(dirName));
+			buildResourcePath(resourcesDir, dirName));
 
 		if (resourcePaths == null) {
 			return;
@@ -315,7 +298,7 @@ public class ResourceImporter extends FileSystemImporter {
 		throws Exception {
 
 		Set<String> resourcePaths = servletContext.getResourcePaths(
-			resourcesDir.concat(dirName));
+			buildResourcePath(resourcesDir, dirName));
 
 		if (resourcePaths == null) {
 			return;
@@ -341,7 +324,7 @@ public class ResourceImporter extends FileSystemImporter {
 	@Override
 	protected void addLayoutPrototype(String dirName) throws Exception {
 		Set<String> resourcePaths = servletContext.getResourcePaths(
-			resourcesDir.concat(dirName));
+			buildResourcePath(resourcesDir, dirName));
 
 		if (resourcePaths == null) {
 			return;
@@ -360,6 +343,22 @@ public class ResourceImporter extends FileSystemImporter {
 
 			addLayoutPrototype(urlConnection.getInputStream());
 		}
+	}
+
+	protected String buildResourcePath(String... resourcePathParts) {
+		StringBundler sb = new StringBundler(resourcePathParts.length);
+
+		for (String resourcePathPart : resourcePathParts) {
+			sb = sb.append(resourcePathPart);
+		}
+
+		String resourcePath = PathUtil.toUnixPath(sb.toString());
+
+		if (!resourcePath.startsWith(StringPool.SLASH)) {
+			resourcePath = StringPool.SLASH + resourcePath;
+		}
+
+		return resourcePath;
 	}
 
 	@Override
