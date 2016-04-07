@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
+import com.liferay.portal.security.pacl.test.SQLTest;
 import com.liferay.portal.test.log.CaptureAppender;
 import com.liferay.portal.test.rule.ExpectedLogs;
 import com.liferay.portal.test.rule.HypersonicServerTestRule;
@@ -199,6 +200,10 @@ public class PACLAggregateTest extends AutoBalanceTestCase {
 					packageName.concat(
 						fileName.substring(0, fileName.lastIndexOf('.')))));
 		}
+
+		classes.clear();
+
+		classes.add(SQLTest.class);
 
 		return classes;
 	}

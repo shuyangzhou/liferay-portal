@@ -96,6 +96,8 @@ public class GeneratingPACLPolicy extends ActivePACLPolicy {
 		}
 
 		try {
+			System.out.println("###########GeneratingPACLPolicy checker : " + checker + ", permission : " + permission);
+
 			AuthorizationProperty authorizationProperty =
 				checker.generateAuthorizationProperty(permission);
 
