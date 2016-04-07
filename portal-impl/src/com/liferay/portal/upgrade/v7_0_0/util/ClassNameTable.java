@@ -43,7 +43,7 @@ TABLE_COLUMNS_MAP.put("classNameId", Types.BIGINT);
 TABLE_COLUMNS_MAP.put("value", Types.VARCHAR);
 
 }
-	public static final String TABLE_SQL_CREATE = "create table ClassName_ (mvccVersion LONG default 0,classNameId LONG not null primary key,value VARCHAR(200) null)";
+	public static final String TABLE_SQL_CREATE = "create table ClassName_ (mvccVersion LONG default 0 not null,classNameId LONG not null primary key,value VARCHAR(200) null)";
 
 	public static final String TABLE_SQL_DROP = "drop table ClassName_";
 

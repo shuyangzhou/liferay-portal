@@ -61,7 +61,7 @@ TABLE_COLUMNS_MAP.put("zipRequired", Types.BOOLEAN);
 TABLE_COLUMNS_MAP.put("active_", Types.BOOLEAN);
 
 }
-	public static final String TABLE_SQL_CREATE = "create table Country (mvccVersion LONG default 0,countryId LONG not null primary key,name VARCHAR(75) null,a2 VARCHAR(75) null,a3 VARCHAR(75) null,number_ VARCHAR(75) null,idd_ VARCHAR(75) null,zipRequired BOOLEAN,active_ BOOLEAN)";
+	public static final String TABLE_SQL_CREATE = "create table Country (mvccVersion LONG default 0 not null,countryId LONG not null primary key,name VARCHAR(75) null,a2 VARCHAR(75) null,a3 VARCHAR(75) null,number_ VARCHAR(75) null,idd_ VARCHAR(75) null,zipRequired BOOLEAN,active_ BOOLEAN)";
 
 	public static final String TABLE_SQL_DROP = "drop table Country";
 
