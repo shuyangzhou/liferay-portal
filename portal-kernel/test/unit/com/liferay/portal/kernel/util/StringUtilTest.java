@@ -326,6 +326,26 @@ public class StringUtilTest {
 	}
 
 	@Test
+	public void testReplaceCharString() {
+		Assert.assertNull(StringUtil.replace(null, ',', "COMMA"));
+		Assert.assertNull(StringUtil.replace("Hello World", ',', null));
+		Assert.assertEquals(
+			"Hello World", StringUtil.replace("Hello World", ',', "COMMA"));
+		Assert.assertEquals(
+			"COMMAHello World",
+			StringUtil.replace(",Hello World", ',', "COMMA"));
+		Assert.assertEquals(
+			"HelloCOMMA World",
+			StringUtil.replace("Hello, World", ',', "COMMA"));
+		Assert.assertEquals(
+			"Hello WorldCOMMA",
+			StringUtil.replace("Hello World,", ',', "COMMA"));
+		Assert.assertEquals(
+			"COMMAHelloCOMMA WorldCOMMA",
+			StringUtil.replace(",Hello, World,", ',', "COMMA"));
+	}
+
+	@Test
 	public void testReplaceCharStringArrays() {
 		Assert.assertEquals(
 			"Hello World,HELLO WORLD,Hello World",
