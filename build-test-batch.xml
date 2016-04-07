@@ -756,11 +756,33 @@ app.server.type=@{app.server.type}]]></echo>
 		</run-batch-test>
 	</target>
 
-	<target name="dist-jdk7">
+	<target name="compile-jsp-jdk8">
+		<run-batch-test>
+			<test-action>
+				<ant dir="portal-web" target="compile-tomcat" />
+
+				<gradle-execute dir="modules" task="compileJSP" />
+			</test-action>
+
+			<test-set-up>
+				<if>
+					<isset property="env.DIST_PATH" />
+					<then>
+						<prepare-test-environment />
+					</then>
+					<else>
+						<prepare-test-build />
+					</else>
+				</if>
+			</test-set-up>
+		</run-batch-test>
+	</target>
+
+	<target name="dist-jdk8">
 		<prepare-test-build-dist app.server.type="${axis.variable}" />
 	</target>
 
-	<target name="functional-bundle-tomcat-mysql56-jdk7">
+	<target name="functional-bundle-tomcat-mysql56-jdk8">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
 		<run-functional-test
@@ -779,7 +801,15 @@ app.server.type=@{app.server.type}]]></echo>
 		<run-functional-test app.server.type="tomcat" database.type="hypersonic" />
 	</target>
 
+	<target name="functional-tomcat8-hypersonic20-jdk8">
+		<run-functional-test app.server.type="tomcat" database.type="hypersonic" />
+	</target>
+
 	<target name="functional-tomcat8-mysql55-jdk7">
+		<run-functional-test app.server.type="tomcat" database.type="mysql" database.version="5.5" />
+	</target>
+
+	<target name="functional-tomcat8-mysql55-jdk8">
 		<run-functional-test app.server.type="tomcat" database.type="mysql" database.version="5.5" />
 	</target>
 
@@ -787,8 +817,16 @@ app.server.type=@{app.server.type}]]></echo>
 		<run-functional-test app.server.type="tomcat" database.type="mysql" />
 	</target>
 
+	<target name="functional-tomcat8-mysql56-jdk8">
+		<run-functional-test app.server.type="tomcat" database.type="mysql" />
+	</target>
+
 	<target name="functional-tomcat8-mysql56-jdk7-quarantine">
 		<antcall target="functional-tomcat8-mysql56-jdk7" />
+	</target>
+
+	<target name="functional-tomcat8-mysql56-jdk8-quarantine">
+		<antcall target="functional-tomcat8-mysql56-jdk8" />
 	</target>
 
 	<target name="functional-tomcat8-postgresql94-jdk8">
@@ -803,7 +841,15 @@ app.server.type=@{app.server.type}]]></echo>
 		<run-integration-test database.type="db2" />
 	</target>
 
+	<target name="integration-db2105-jdk8">
+		<run-integration-test database.type="db2" />
+	</target>
+
 	<target name="integration-hypersonic20-jdk7">
+		<run-integration-test database.type="hypersonic" />
+	</target>
+
+	<target name="integration-hypersonic20-jdk8">
 		<run-integration-test database.type="hypersonic" />
 	</target>
 
@@ -811,7 +857,15 @@ app.server.type=@{app.server.type}]]></echo>
 		<run-integration-test database.type="mysql" />
 	</target>
 
+	<target name="integration-mysql56-jdk8">
+		<run-integration-test database.type="mysql" />
+	</target>
+
 	<target name="integration-oracle12-jdk7">
+		<run-integration-test database.type="oracle" />
+	</target>
+
+	<target name="integration-oracle12-jdk8">
 		<run-integration-test database.type="oracle" />
 	</target>
 
@@ -819,7 +873,15 @@ app.server.type=@{app.server.type}]]></echo>
 		<run-integration-test database.type="postgresql" />
 	</target>
 
+	<target name="integration-postgresql94-jdk8">
+		<run-integration-test database.type="postgresql" />
+	</target>
+
 	<target name="integration-sybase160-jdk7">
+		<run-integration-test database.type="sybase" />
+	</target>
+
+	<target name="integration-sybase160-jdk8">
 		<run-integration-test database.type="sybase" />
 	</target>
 
@@ -833,7 +895,21 @@ app.server.type=@{app.server.type}]]></echo>
 		</run-batch-test>
 	</target>
 
+	<target name="modules-functional-jdk8">
+		<run-batch-test>
+			<test-action>
+				<antcall target="run-selenium-test">
+					<param name="test.class" value="${axis.variable}" />
+				</antcall>
+			</test-action>
+		</run-batch-test>
+	</target>
+
 	<target name="modules-functional-tomcat8-mysql56-jdk7">
+		<run-functional-test app.server.type="tomcat" database.type="mysql" />
+	</target>
+
+	<target name="modules-functional-tomcat8-mysql56-jdk8">
 		<run-functional-test app.server.type="tomcat" database.type="mysql" />
 	</target>
 
@@ -841,7 +917,15 @@ app.server.type=@{app.server.type}]]></echo>
 		<run-modules-integration-test database.type="db2" />
 	</target>
 
+	<target name="modules-integration-db2105-jdk8">
+		<run-modules-integration-test database.type="db2" />
+	</target>
+
 	<target name="modules-integration-hypersonic20-jdk7">
+		<run-modules-integration-test database.type="hypersonic" />
+	</target>
+
+	<target name="modules-integration-hypersonic20-jdk8">
 		<run-modules-integration-test database.type="hypersonic" />
 	</target>
 
@@ -849,7 +933,15 @@ app.server.type=@{app.server.type}]]></echo>
 		<run-modules-integration-test database.type="mysql" />
 	</target>
 
+	<target name="modules-integration-mysql56-jdk8">
+		<run-modules-integration-test database.type="mysql" />
+	</target>
+
 	<target name="modules-integration-oracle12-jdk7">
+		<run-modules-integration-test database.type="oracle" />
+	</target>
+
+	<target name="modules-integration-oracle12-jdk8">
 		<run-modules-integration-test database.type="oracle" />
 	</target>
 
@@ -857,11 +949,45 @@ app.server.type=@{app.server.type}]]></echo>
 		<run-modules-integration-test database.type="postgresql" />
 	</target>
 
+	<target name="modules-integration-postgresql94-jdk8">
+		<run-modules-integration-test database.type="postgresql" />
+	</target>
+
 	<target name="modules-integration-sybase160-jdk7">
 		<run-modules-integration-test database.type="sybase" />
 	</target>
 
+	<target name="modules-integration-sybase160-jdk8">
+		<run-modules-integration-test database.type="sybase" />
+	</target>
+
 	<target name="modules-unit-jdk7">
+		<run-batch-test>
+			<test-action>
+				<gradle-execute dir="modules" task="test">
+					<arg value="-Dtest.class.group.index=${axis.variable}" />
+				</gradle-execute>
+			</test-action>
+
+			<test-set-up>
+				<if>
+					<isset property="env.DIST_PATH" />
+					<then>
+						<prepare-test-environment />
+
+						<antcall target="record-test-class-file-names" inheritAll="false">
+							<param name="test.class.groups.size" value="${test.batch.size}" />
+						</antcall>
+					</then>
+					<else>
+						<prepare-test-build />
+					</else>
+				</if>
+			</test-set-up>
+		</run-batch-test>
+	</target>
+
+	<target name="modules-unit-jdk8">
 		<run-batch-test>
 			<test-action>
 				<gradle-execute dir="modules" task="test">
@@ -950,6 +1076,32 @@ ${output.content}</echo>
 		</run-batch-test>
 	</target>
 
+	<target name="plugins-compile-jdk8">
+		<run-batch-test>
+			<test-action>
+				<ant antfile="build-test-plugins.xml" target="test-plugin-group">
+					<property name="test.plugin.group.index" value="${axis.variable}" />
+				</ant>
+			</test-action>
+
+			<test-set-up>
+				<if>
+					<isset property="env.DIST_PATH" />
+					<then>
+						<prepare-test-environment />
+
+						<antcall target="record-test-plugin-names" inheritAll="false">
+							<param name="test.plugin.groups.size" value="${test.batch.size}" />
+						</antcall>
+					</then>
+					<else>
+						<prepare-test-build />
+					</else>
+				</if>
+			</test-set-up>
+		</run-batch-test>
+	</target>
+
 	<target name="plugins-functional-bundle-tomcat-mysql56-jdk7">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
@@ -964,7 +1116,25 @@ ${output.content}</echo>
 		/>
 	</target>
 
+	<target name="plugins-functional-bundle-tomcat-mysql56-jdk8">
+		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
+
+		<run-functional-test
+			app.server.type="tomcat"
+			database.type="mysql"
+			test.build.fix.pack.zip.url="${test.build.fix.pack.zip.url}"
+			test.fix.pack.base.url="${test.fix.pack.base.url}"
+			test.license.xml.url="${test.license.xml.url}"
+			test.portal.bundle.zip.url="${test.portal.bundle.zip.url}"
+			test.sql.zip.url="${test.sql.zip.url}"
+		/>
+	</target>
+
 	<target name="plugins-functional-tomcat8-mysql56-jdk7">
+		<run-functional-test app.server.type="tomcat" database.type="mysql" />
+	</target>
+
+	<target name="plugins-functional-tomcat8-mysql56-jdk8">
 		<run-functional-test app.server.type="tomcat" database.type="mysql" />
 	</target>
 
@@ -1001,7 +1171,78 @@ ${output.content}</echo>
 		</run-batch-test>
 	</target>
 
+	<target name="portal-web-jdk8">
+		<run-batch-test>
+			<test-action>
+				<database-test-run-test database.type="mysql">
+					<test-action>
+						<ant dir="portal-web" target="compile-tomcat" />
+
+						<run-poshi-validation />
+
+						<if>
+							<equals arg1="${env.TEST_PORTAL_WEB}" arg2="true" />
+							<then>
+								<run-source-formatter />
+							</then>
+						</if>
+					</test-action>
+				</database-test-run-test>
+			</test-action>
+
+			<test-set-up>
+				<if>
+					<isset property="env.DIST_PATH" />
+					<then>
+						<prepare-test-environment />
+					</then>
+					<else>
+						<prepare-test-build />
+					</else>
+				</if>
+			</test-set-up>
+		</run-batch-test>
+	</target>
+
 	<target name="ruby-sass-compiler-jdk7">
+		<antcall if:set="env.JENKINS_HOME" inheritAll="false" target="clean-up-java-processes" />
+
+		<if>
+			<isset property="env.DIST_PATH" />
+			<then>
+				<prepare-test-environment />
+			</then>
+			<else>
+				<prepare-test-build />
+			</else>
+		</if>
+
+		<echo file="build.${user.name}.properties">sass.compiler.class.name=ruby</echo>
+
+		<antcall target="setup-sdk" inheritAll="false" />
+
+		<record action="start" name="${project.dir}/sass-compiler-log" />
+
+		<gradle-execute dir="modules" task="buildCSS" />
+
+		<record action="stop" name="${project.dir}/sass-compiler-log" />
+
+		<fail message="The Sass compiler is not using Ruby.">
+			<condition>
+				<and>
+					<not>
+						<resourcecontains resource="${project.dir}/sass-compiler-log" substring="Using Ruby Sass compiler" />
+					</not>
+					<or>
+						<resourcecontains resource="${project.dir}/sass-compiler-log" substring="Unable to load Ruby compiler, falling back to native" />
+						<resourcecontains resource="${project.dir}/sass-compiler-log" substring="Using native Sass compiler" />
+					</or>
+				</and>
+			</condition>
+		</fail>
+	</target>
+
+	<target name="ruby-sass-compiler-jdk8">
 		<antcall if:set="env.JENKINS_HOME" inheritAll="false" target="clean-up-java-processes" />
 
 		<if>
@@ -1111,7 +1352,130 @@ ${output.content}</echo>
 		</run-batch-test>
 	</target>
 
+	<target name="semantic-versioning-jdk8">
+		<run-batch-test>
+			<test-action>
+				<echo>Checking for baseline log files.</echo>
+
+				<var name="log.files" unset="true" />
+
+				<fileset dir="${project.dir}" id="log.files">
+					<include name="baseline-reports/*.log" />
+					<include name="modules/**/baseline.log" />
+				</fileset>
+
+				<pathconvert pathsep="," property="log.files" refid="log.files" />
+
+				<for list="${log.files}" param="log.file">
+					<sequential>
+						<print-file file.name="@{log.file}" />
+					</sequential>
+				</for>
+
+				<if>
+					<not>
+						<equals arg1="${log.files}" arg2="" />
+					</not>
+					<then>
+						<fail message="Semantic versioning is incorrect." />
+					</then>
+				</if>
+
+				<echo>Check for baseline log files completed.</echo>
+			</test-action>
+
+			<test-set-up>
+				<echo>Deleting stale baseline log files.</echo>
+
+				<for param="log.file">
+					<fileset dir="${project.dir}">
+						<include name="baseline-reports/*.log" />
+						<include name="modules/**/baseline.log" />
+					</fileset>
+					<sequential>
+						<delete file="@{log.file}" />
+					</sequential>
+				</for>
+
+				<echo file="build.${user.name}.properties">baseline.jar.report.level=persist</echo>
+
+				<prepare-test-build />
+
+				<if>
+					<available file="${env.TOP_LEVEL_SHARED_DIR}/modules.base.dir.names.properties" />
+					<then>
+						<property file="${env.TOP_LEVEL_SHARED_DIR}/modules.base.dir.names.properties" />
+
+						<if>
+							<isset property="modules.base.dir.names.with.changes" />
+							<then>
+								<for list="${modules.base.dir.names.with.changes}" param="modules.base.dir.name">
+									<sequential>
+										<echo>Executing baseline on @{modules.base.dir.name}.</echo>
+
+										<gradle-execute dir="@{modules.base.dir.name}" task="baseline" />
+									</sequential>
+								</for>
+							</then>
+						</if>
+					</then>
+				</if>
+			</test-set-up>
+		</run-batch-test>
+	</target>
+
 	<target name="service-builder-jdk7">
+		<run-batch-test>
+			<test-action>
+				<gradle-execute dir="modules/util/portal-tools-service-builder" task="deploy">
+					<arg value="clean" />
+				</gradle-execute>
+
+				<record action="start" name="${project.dir}/build.services.output.txt" />
+
+				<ant dir="portal-impl" target="build-services" />
+
+				<record action="stop" name="${project.dir}/build.services.output.txt" />
+
+				<replace file="${project.dir}/build.services.output.txt" token="Writing src/main/resources/service.properties" value="" />
+				<replace file="${project.dir}/build.services.output.txt" token="Writing src/service.properties" value="" />
+
+				<loadfile property="build.services.output.txt.content" srcfile="${project.dir}/build.services.output.txt" />
+
+				<delete file="${project.dir}/build.services.output.txt" />
+
+				<if>
+					<contains string="${build.services.output.txt.content}" substring="Writing " />
+					<then>
+						<exec executable="git">
+							<arg value="diff" />
+						</exec>
+
+						<fail>
+.
+
+Detected build services changes. See above build services log for more
+information. Make sure to commit in all build services results.
+						</fail>
+					</then>
+				</if>
+			</test-action>
+
+			<test-set-up>
+				<if>
+					<isset property="env.DIST_PATH" />
+					<then>
+						<prepare-test-environment />
+					</then>
+					<else>
+						<prepare-test-build />
+					</else>
+				</if>
+			</test-set-up>
+		</run-batch-test>
+	</target>
+
+	<target name="service-builder-jdk8">
 		<run-batch-test>
 			<test-action>
 				<gradle-execute dir="modules/util/portal-tools-service-builder" task="deploy">
@@ -1299,7 +1663,78 @@ ${output.content}</echo>
 		</run-batch-test>
 	</target>
 
+	<target name="tck-jdk8">
+		<run-batch-test tomcat.gc.log="true" tsant.gc.log="true">
+			<test-action>
+				<database-test-run-test database.type="mysql" stop.app.server="true">
+					<test-action>
+						<ant antfile="build-test-tck.xml" target="record-test-tck-package-names">
+							<property name="test.class.groups.size" value="${test.batch.size}" />
+						</ant>
+
+						<ant antfile="build-test-tck.xml" target="test-class-group">
+							<property name="test.class.group.index" value="${axis.variable}" />
+						</ant>
+					</test-action>
+				</database-test-run-test>
+			</test-action>
+
+			<test-set-up>
+				<if>
+					<isset property="env.DIST_PATH" />
+					<then>
+						<prepare-test-environment />
+					</then>
+					<else>
+						<prepare-test-build />
+					</else>
+				</if>
+
+				<antcall target="prepare-portal-ext-properties">
+					<param name="hot.deploy.dependency.management.enabled" value="false" />
+				</antcall>
+
+				<antcall target="prepare-system-ext-properties" />
+			</test-set-up>
+		</run-batch-test>
+	</target>
+
 	<target name="unit-jdk7">
+		<run-batch-test>
+			<test-action>
+				<ant dir="portal-kernel" target="test-class-group" inheritAll="false">
+					<property name="test.class.group.index" value="${axis.variable}" />
+				</ant>
+
+				<ant dir="portal-impl" target="test-class-group" inheritAll="false">
+					<property name="test.class.group.index" value="${axis.variable}" />
+					<property name="test.type" value="unit" />
+				</ant>
+
+				<ant dir="util-java" target="test-class-group" inheritAll="false">
+					<property name="test.class.group.index" value="${axis.variable}" />
+				</ant>
+			</test-action>
+
+			<test-set-up>
+				<if>
+					<isset property="env.DIST_PATH" />
+					<then>
+						<prepare-test-environment />
+
+						<antcall target="record-test-class-file-names" inheritAll="false">
+							<param name="test.class.groups.size" value="${test.batch.size}" />
+						</antcall>
+					</then>
+					<else>
+						<prepare-test-build-unit />
+					</else>
+				</if>
+			</test-set-up>
+		</run-batch-test>
+	</target>
+
+	<target name="unit-jdk8">
 		<run-batch-test>
 			<test-action>
 				<ant dir="portal-kernel" target="test-class-group" inheritAll="false">
