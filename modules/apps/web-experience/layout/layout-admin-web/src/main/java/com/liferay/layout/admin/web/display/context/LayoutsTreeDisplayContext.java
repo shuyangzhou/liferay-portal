@@ -111,6 +111,23 @@ public class LayoutsTreeDisplayContext extends BaseLayoutDisplayContext {
 			deleteLayoutURL.setParameter("selPlid", String.valueOf(selPlid));
 		}
 
+		try {
+			LayoutSetBranch layoutSetBranch = getLayoutSetBranch();
+
+			Map<String, String[]> parameterMap =
+				deleteLayoutURL.getParameterMap();
+
+			if ((layoutSetBranch != null) &&
+				!parameterMap.containsKey("layoutSetBranchId")) {
+
+				deleteLayoutURL.setParameter(
+					"layoutSetBranchId",
+					String.valueOf(layoutSetBranch.getLayoutSetBranchId()));
+			}
+		}
+		catch (PortalException pe) {
+		}
+
 		return deleteLayoutURL;
 	}
 
