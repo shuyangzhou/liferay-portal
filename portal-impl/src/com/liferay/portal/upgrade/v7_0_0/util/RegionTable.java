@@ -52,7 +52,7 @@ TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 TABLE_COLUMNS_MAP.put("active_", Types.BOOLEAN);
 
 }
-	public static final String TABLE_SQL_CREATE = "create table Region (mvccVersion LONG default 0,regionId LONG not null primary key,countryId LONG,regionCode VARCHAR(75) null,name VARCHAR(75) null,active_ BOOLEAN)";
+	public static final String TABLE_SQL_CREATE = "create table Region (mvccVersion LONG default 0 not null,regionId LONG not null primary key,countryId LONG,regionCode VARCHAR(75) null,name VARCHAR(75) null,active_ BOOLEAN)";
 
 	public static final String TABLE_SQL_DROP = "drop table Region";
 

@@ -49,7 +49,7 @@ TABLE_COLUMNS_MAP.put("ownerType", Types.INTEGER);
 TABLE_COLUMNS_MAP.put("preferences", Types.CLOB);
 
 }
-	public static final String TABLE_SQL_CREATE = "create table PortalPreferences (mvccVersion LONG default 0,portalPreferencesId LONG not null primary key,ownerId LONG,ownerType INTEGER,preferences TEXT null)";
+	public static final String TABLE_SQL_CREATE = "create table PortalPreferences (mvccVersion LONG default 0 not null,portalPreferencesId LONG not null primary key,ownerId LONG,ownerType INTEGER,preferences TEXT null)";
 
 	public static final String TABLE_SQL_DROP = "drop table PortalPreferences";
 

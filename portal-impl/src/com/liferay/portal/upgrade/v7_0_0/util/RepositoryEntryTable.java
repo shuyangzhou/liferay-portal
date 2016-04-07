@@ -73,7 +73,7 @@ TABLE_COLUMNS_MAP.put("manualCheckInRequired", Types.BOOLEAN);
 TABLE_COLUMNS_MAP.put("lastPublishDate", Types.TIMESTAMP);
 
 }
-	public static final String TABLE_SQL_CREATE = "create table RepositoryEntry (mvccVersion LONG default 0,uuid_ VARCHAR(75) null,repositoryEntryId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,repositoryId LONG,mappedId VARCHAR(255) null,manualCheckInRequired BOOLEAN,lastPublishDate DATE null)";
+	public static final String TABLE_SQL_CREATE = "create table RepositoryEntry (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,repositoryEntryId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,repositoryId LONG,mappedId VARCHAR(255) null,manualCheckInRequired BOOLEAN,lastPublishDate DATE null)";
 
 	public static final String TABLE_SQL_DROP = "drop table RepositoryEntry";
 
