@@ -105,6 +105,20 @@
 				(Group_.type_ != 4)
 		]]>
 	</sql>
+	<sql id="com.liferay.portal.kernel.service.persistence.GroupFinder.findByCompanyId">
+		<![CDATA[
+			SELECT
+				DISTINCT Group_.groupId AS groupId, Group_.name AS groupName
+			FROM
+				Group_
+			[$JOIN$]
+			WHERE
+				[$WHERE$]
+				(Group_.companyId = ?) AND
+				(Group_.liveGroupId = 0) AND
+				(Group_.type_ != 4)
+		]]>
+	</sql>
 	<sql id="com.liferay.portal.kernel.service.persistence.GroupFinder.findByLayouts">
 		<![CDATA[
 			SELECT
@@ -187,20 +201,6 @@
 						(Group_.type_ = 4)
 					)
 			)
-		]]>
-	</sql>
-	<sql id="com.liferay.portal.kernel.service.persistence.GroupFinder.findByCompanyId">
-		<![CDATA[
-			SELECT
-				DISTINCT Group_.groupId AS groupId, Group_.name AS groupName
-			FROM
-				Group_
-			[$JOIN$]
-			WHERE
-				[$WHERE$]
-				(Group_.companyId = ?) AND
-				(Group_.liveGroupId = 0) AND
-				(Group_.type_ != 4)
 		]]>
 	</sql>
 	<sql id="com.liferay.portal.kernel.service.persistence.GroupFinder.findByC_P">
