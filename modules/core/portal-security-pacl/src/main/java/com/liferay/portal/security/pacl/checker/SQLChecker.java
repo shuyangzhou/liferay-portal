@@ -63,6 +63,8 @@ public class SQLChecker extends BaseChecker {
 
 		String sql = (String)arguments[0];
 
+		System.out.println("#########SQLChecker1 " + sql);
+
 		Statement statement = null;
 
 		try {
@@ -70,6 +72,8 @@ public class SQLChecker extends BaseChecker {
 		}
 		catch (Exception e) {
 		}
+
+		System.out.println("#########SQLChecker2 " + statement);
 
 		String key = null;
 		String value = null;
@@ -181,6 +185,8 @@ public class SQLChecker extends BaseChecker {
 
 		authorizationProperty.setKey(key);
 		authorizationProperty.setValue(value);
+
+		System.out.println("#########SQLChecker3 " + authorizationProperty);
 
 		return authorizationProperty;
 	}
