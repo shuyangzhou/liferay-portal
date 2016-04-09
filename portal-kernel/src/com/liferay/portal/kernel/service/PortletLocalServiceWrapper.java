@@ -268,6 +268,12 @@ public class PortletLocalServiceWrapper implements PortletLocalService,
 	}
 
 	@Override
+	public com.liferay.portal.kernel.model.Portlet fetchPortletById(
+		long companyId, java.lang.String portletId) {
+		return _portletLocalService.fetchPortletById(companyId, portletId);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		return _portletLocalService.getActionableDynamicQuery();
 	}
