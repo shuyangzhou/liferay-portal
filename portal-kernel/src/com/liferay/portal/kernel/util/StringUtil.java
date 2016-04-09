@@ -2530,20 +2530,33 @@ public class StringUtil {
 			return null;
 		}
 
-		// The number 5 is arbitrary and is used as extra padding to reduce
-		// buffer expansion
+		int index = s.indexOf(oldSub);
 
-		StringBundler sb = new StringBundler(s.length() + 5 * newSub.length());
+		if (index == -1) {
+			return s;
+		}
 
-		for (int i = 0; i < s.length(); i++) {
-			char c = s.charAt(i);
+		int previousIndex = index;
 
-			if (c == oldSub) {
-				sb.append(newSub);
-			}
-			else {
-				sb.append(c);
-			}
+		StringBundler sb = new StringBundler();
+
+		if (previousIndex != 0) {
+			sb.append(s.substring(0, previousIndex));
+		}
+
+		sb.append(newSub);
+
+		while ((index = s.indexOf(oldSub, previousIndex + 1)) != -1) {
+			sb.append(s.substring(previousIndex + 1, index));
+			sb.append(newSub);
+
+			previousIndex = index;
+		}
+
+		index = previousIndex + 1;
+
+		if (index < s.length()) {
+			sb.append(s.substring(index));
 		}
 
 		return sb.toString();
