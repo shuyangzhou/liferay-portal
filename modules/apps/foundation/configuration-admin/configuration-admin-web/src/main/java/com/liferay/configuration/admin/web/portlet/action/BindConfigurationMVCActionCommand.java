@@ -23,7 +23,6 @@ import com.liferay.configuration.admin.web.util.ResourceBundleLoaderProvider;
 import com.liferay.dynamic.data.mapping.form.values.factory.DDMFormValuesFactory;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
-import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
@@ -36,7 +35,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import java.io.IOException;
 
 import java.util.Dictionary;
-import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -114,13 +112,9 @@ public class BindConfigurationMVCActionCommand implements MVCActionCommand {
 
 		DDMFormValues ddmFormValues = getDDMFormValues(actionRequest, ddmForm);
 
-		DDMFormValuesToPropertiesConverter ddmFormValuesToPropertiesConverter =
-			new DDMFormValuesToPropertiesConverter(
-				configurationModel, ddmFormValues, _jsonFactory,
-				themeDisplay.getLocale());
-
-		Dictionary<String, Object> properties =
-			ddmFormValuesToPropertiesConverter.getProperties();
+		Map<String, Object> properties =
+			DDMFormValuesToPropertiesConverter.getProperties(
+				configurationModel, ddmFormValues, themeDisplay.getLocale());
 
 		properties.put(Constants.SERVICE_PID, pid);
 
@@ -135,7 +129,7 @@ public class BindConfigurationMVCActionCommand implements MVCActionCommand {
 
 	protected void configureTargetService(
 			ConfigurationModel configurationModel, Configuration configuration,
-			Dictionary<String, Object> properties)
+			Map<String, Object> properties)
 		throws PortletException {
 
 		if (_log.isDebugEnabled()) {
@@ -169,22 +163,18 @@ public class BindConfigurationMVCActionCommand implements MVCActionCommand {
 				configuration.getProperties();
 
 			if (configuredProperties == null) {
-				configuredProperties = new Hashtable<>();
+				configuredProperties = new Hashtable<>(properties);
+			}
+			else {
+				for (Map.Entry<String, Object> entry : properties.entrySet()) {
+					configuredProperties.put(entry.getKey(), entry.getValue());
+				}
 			}
 
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					"Configuration properties: " +
 						configuration.getProperties());
-			}
-
-			Enumeration<String> keys = properties.keys();
-
-			while (keys.hasMoreElements()) {
-				String key = keys.nextElement();
-				Object value = properties.get(key);
-
-				configuredProperties.put(key, value);
 			}
 
 			if (configurationModel.isCompanyFactory()) {
@@ -217,9 +207,6 @@ public class BindConfigurationMVCActionCommand implements MVCActionCommand {
 
 	@Reference
 	private DDMFormValuesFactory _ddmFormValuesFactory;
-
-	@Reference
-	private JSONFactory _jsonFactory;
 
 	@Reference
 	private ResourceBundleLoaderProvider _resourceBundleLoaderProvider;

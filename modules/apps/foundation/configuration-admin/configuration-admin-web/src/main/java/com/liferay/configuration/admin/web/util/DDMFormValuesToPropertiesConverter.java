@@ -24,13 +24,12 @@ import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.storage.FieldConstants;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONException;
-import com.liferay.portal.kernel.json.JSONFactory;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.util.ReflectionUtil;
 
 import java.io.Serializable;
 
-import java.util.Dictionary;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -45,39 +44,40 @@ import org.osgi.service.metatype.AttributeDefinition;
  */
 public class DDMFormValuesToPropertiesConverter {
 
-	public DDMFormValuesToPropertiesConverter(
+	public static Map<String, Object> getProperties(
 		ConfigurationModel configurationModel, DDMFormValues ddmFormValues,
-		JSONFactory jsonFactory, Locale locale) {
+		Locale locale) {
 
 		DDMForm ddmForm = ddmFormValues.getDDMForm();
 
-		_configurationModel = configurationModel;
-		_ddmFormFieldsMap = ddmForm.getDDMFormFieldsMap(false);
-		_ddmFormFieldValuesMap = ddmFormValues.getDDMFormFieldValuesMap();
-		_jsonFactory = jsonFactory;
-		_locale = locale;
-	}
+		Map<String, DDMFormField> ddmFormFieldsMap =
+			ddmForm.getDDMFormFieldsMap(false);
 
-	public Dictionary<String, Object> getProperties() {
-		Dictionary<String, Object> properties = new Hashtable<>();
+		Map<String, List<DDMFormFieldValue>> ddmFormFieldValuesMap =
+			ddmFormValues.getDDMFormFieldValuesMap();
+
+		Map<String, Object> properties = new HashMap<>();
 
 		AttributeDefinition[] attributeDefinitions =
-			_configurationModel.getAttributeDefinitions(ConfigurationModel.ALL);
+			configurationModel.getAttributeDefinitions(ConfigurationModel.ALL);
 
 		for (AttributeDefinition attributeDefinition : attributeDefinitions) {
 			Object value = null;
 
 			List<DDMFormFieldValue> ddmFormFieldValues =
-				_ddmFormFieldValuesMap.get(attributeDefinition.getID());
+				ddmFormFieldValuesMap.get(attributeDefinition.getID());
 
 			if (attributeDefinition.getCardinality() == 0) {
-				value = toSimpleValue(ddmFormFieldValues.get(0));
+				value = toSimpleValue(
+					ddmFormFieldValues.get(0), ddmFormFieldsMap, locale);
 			}
 			else if (attributeDefinition.getCardinality() > 0) {
-				value = toArrayValue(ddmFormFieldValues);
+				value = toArrayValue(
+					ddmFormFieldValues, ddmFormFieldsMap, locale);
 			}
 			else if (attributeDefinition.getCardinality() < 0) {
-				value = toVectorValue(ddmFormFieldValues);
+				value = toVectorValue(
+					ddmFormFieldValues, ddmFormFieldsMap, locale);
 			}
 
 			properties.put(attributeDefinition.getID(), value);
@@ -86,30 +86,37 @@ public class DDMFormValuesToPropertiesConverter {
 		return properties;
 	}
 
-	protected String getDDMFormFieldDataType(String fieldName) {
-		DDMFormField ddmFormField = _ddmFormFieldsMap.get(fieldName);
+	protected static String getDDMFormFieldDataType(
+		String fieldName, Map<String, DDMFormField> ddmFormFieldsMap) {
+
+		DDMFormField ddmFormField = ddmFormFieldsMap.get(fieldName);
 
 		return ddmFormField.getDataType();
 	}
 
-	protected String getDDMFormFieldType(String fieldName) {
-		DDMFormField ddmFormField = _ddmFormFieldsMap.get(fieldName);
+	protected static String getDDMFormFieldType(
+		String fieldName, Map<String, DDMFormField> ddmFormFieldsMap) {
+
+		DDMFormField ddmFormField = ddmFormFieldsMap.get(fieldName);
 
 		return ddmFormField.getType();
 	}
 
-	protected String getDDMFormFieldValueString(
-		DDMFormFieldValue ddmFormFieldValue) {
+	protected static String getDDMFormFieldValueString(
+		DDMFormFieldValue ddmFormFieldValue,
+		Map<String, DDMFormField> ddmFormFieldsMap, Locale locale) {
 
 		Value value = ddmFormFieldValue.getValue();
 
-		String valueString = value.getString(_locale);
+		String valueString = value.getString(locale);
 
-		String type = getDDMFormFieldType(ddmFormFieldValue.getName());
+		String type = getDDMFormFieldType(
+			ddmFormFieldValue.getName(), ddmFormFieldsMap);
 
 		if (type.equals(DDMFormFieldType.SELECT)) {
 			try {
-				JSONArray jsonArray = _jsonFactory.createJSONArray(valueString);
+				JSONArray jsonArray = JSONFactoryUtil.createJSONArray(
+					valueString);
 
 				if (jsonArray.length() == 1) {
 					valueString = jsonArray.getString(0);
@@ -123,42 +130,46 @@ public class DDMFormValuesToPropertiesConverter {
 		return valueString;
 	}
 
-	protected Serializable toArrayValue(
-		List<DDMFormFieldValue> ddmFormFieldValues) {
+	protected static Serializable toArrayValue(
+		List<DDMFormFieldValue> ddmFormFieldValues,
+		Map<String, DDMFormField> ddmFormFieldsMap, Locale locale) {
 
 		DDMFormFieldValue ddmFormFieldValue = ddmFormFieldValues.get(0);
 
-		String dataType = getDDMFormFieldDataType(ddmFormFieldValue.getName());
+		String dataType = getDDMFormFieldDataType(
+			ddmFormFieldValue.getName(), ddmFormFieldsMap);
 
-		Vector<Serializable> values = toVectorValue(ddmFormFieldValues);
+		Vector<Serializable> values = toVectorValue(
+			ddmFormFieldValues, ddmFormFieldsMap, locale);
 
 		return FieldConstants.getSerializable(dataType, values);
 	}
 
-	protected Serializable toSimpleValue(DDMFormFieldValue ddmFormFieldValue) {
-		String dataType = getDDMFormFieldDataType(ddmFormFieldValue.getName());
+	protected static Serializable toSimpleValue(
+		DDMFormFieldValue ddmFormFieldValue,
+		Map<String, DDMFormField> ddmFormFieldsMap, Locale locale) {
 
-		String valueString = getDDMFormFieldValueString(ddmFormFieldValue);
+		String dataType = getDDMFormFieldDataType(
+			ddmFormFieldValue.getName(), ddmFormFieldsMap);
+
+		String valueString = getDDMFormFieldValueString(
+			ddmFormFieldValue, ddmFormFieldsMap, locale);
 
 		return FieldConstants.getSerializable(dataType, valueString);
 	}
 
-	protected Vector<Serializable> toVectorValue(
-		List<DDMFormFieldValue> ddmFormFieldValues) {
+	protected static Vector<Serializable> toVectorValue(
+		List<DDMFormFieldValue> ddmFormFieldValues,
+		Map<String, DDMFormField> ddmFormFieldsMap, Locale locale) {
 
-		Vector<Serializable> values = new Vector<>();
+		Vector<Serializable> values = new Vector<>(ddmFormFieldValues.size());
 
 		for (DDMFormFieldValue ddmFormFieldValue : ddmFormFieldValues) {
-			values.add(toSimpleValue(ddmFormFieldValue));
+			values.add(
+				toSimpleValue(ddmFormFieldValue, ddmFormFieldsMap, locale));
 		}
 
 		return values;
 	}
-
-	private final ConfigurationModel _configurationModel;
-	private final Map<String, DDMFormField> _ddmFormFieldsMap;
-	private final Map<String, List<DDMFormFieldValue>> _ddmFormFieldValuesMap;
-	private final JSONFactory _jsonFactory;
-	private final Locale _locale;
 
 }
