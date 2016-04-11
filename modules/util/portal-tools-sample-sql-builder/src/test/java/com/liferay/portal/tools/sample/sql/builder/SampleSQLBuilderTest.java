@@ -139,6 +139,7 @@ public class SampleSQLBuilderTest {
 			"sample.sql.script",
 			"com/liferay/portal/tools/sample/sql/builder/dependencies" +
 				"/sample.ftl");
+		properties.put("sample.sql.user.admin.role", "true");
 		properties.put("sample.sql.virtual.hostname", "localhost");
 	}
 
