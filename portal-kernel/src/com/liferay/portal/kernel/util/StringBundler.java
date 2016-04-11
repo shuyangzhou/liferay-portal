@@ -31,7 +31,7 @@ import java.io.Writer;
 public class StringBundler implements Serializable {
 
 	public StringBundler() {
-		_array = new String[_DEFAULT_ARRAY_CAPACITY];
+		_array = new CharSequence[_DEFAULT_ARRAY_CAPACITY];
 	}
 
 	public StringBundler(int initialCapacity) {
@@ -39,11 +39,11 @@ public class StringBundler implements Serializable {
 			initialCapacity = _DEFAULT_ARRAY_CAPACITY;
 		}
 
-		_array = new String[initialCapacity];
+		_array = new CharSequence[initialCapacity];
 	}
 
 	public StringBundler(String s) {
-		_array = new String[_DEFAULT_ARRAY_CAPACITY];
+		_array = new CharSequence[_DEFAULT_ARRAY_CAPACITY];
 
 		_array[0] = s;
 
@@ -55,7 +55,7 @@ public class StringBundler implements Serializable {
 	}
 
 	public StringBundler(String[] stringArray, int extraSpace) {
-		_array = new String[stringArray.length + extraSpace];
+		_array = new CharSequence[stringArray.length + extraSpace];
 
 		for (String s : stringArray) {
 			if ((s != null) && (s.length() > 0)) {
@@ -107,11 +107,17 @@ public class StringBundler implements Serializable {
 	}
 
 	public StringBundler append(String s) {
-		if (s == null) {
-			s = StringPool.NULL;
+		append((CharSequence)s);
+
+		return this;
+	}
+
+	public StringBundler append(CharSequence cs) {
+		if (cs == null) {
+			cs = StringPool.NULL;
 		}
 
-		if (s.length() == 0) {
+		if (cs.length() == 0) {
 			return this;
 		}
 
@@ -119,7 +125,7 @@ public class StringBundler implements Serializable {
 			expandCapacity(_array.length * 2);
 		}
 
-		_array[_arrayIndex++] = s;
+		_array[_arrayIndex++] = cs;
 
 		return this;
 	}
@@ -163,7 +169,13 @@ public class StringBundler implements Serializable {
 	}
 
 	public String[] getStrings() {
-		return _array;
+		String[] strings = new String[_arrayIndex];
+
+		for (int i = 0; i < _arrayIndex; i++) {
+			strings[i] = _array[i].toString();
+		}
+
+		return strings;
 	}
 
 	public int index() {
@@ -221,7 +233,7 @@ public class StringBundler implements Serializable {
 			throw new ArrayIndexOutOfBoundsException(index);
 		}
 
-		return _array[index];
+		return _array[index].toString();
 	}
 
 	@Override
@@ -231,15 +243,16 @@ public class StringBundler implements Serializable {
 		}
 
 		if (_arrayIndex == 1) {
-			return _array[0];
+			return _array[0].toString();
 		}
 
 		if (_arrayIndex == 2) {
-			return _array[0].concat(_array[1]);
+			return _array[0].toString().concat(_array[1].toString());
 		}
 
 		if (_arrayIndex == 3) {
-			return _array[0].concat(_array[1]).concat(_array[2]);
+			return _array[0].toString().concat(
+				_array[1].toString()).concat(_array[2].toString());
 		}
 
 		int length = 0;
@@ -277,12 +290,12 @@ public class StringBundler implements Serializable {
 
 	public void writeTo(Writer writer) throws IOException {
 		for (int i = 0; i < _arrayIndex; i++) {
-			writer.write(_array[i]);
+			writer.write(_array[i].toString());
 		}
 	}
 
 	protected void expandCapacity(int newCapacity) {
-		String[] newArray = new String[newCapacity];
+		CharSequence[] newArray = new CharSequence[newCapacity];
 
 		System.arraycopy(_array, 0, newArray, 0, _arrayIndex);
 
@@ -316,7 +329,7 @@ public class StringBundler implements Serializable {
 		}
 	}
 
-	private String[] _array;
+	private CharSequence[] _array;
 	private int _arrayIndex;
 
 }

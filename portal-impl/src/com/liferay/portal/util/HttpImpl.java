@@ -1003,11 +1003,12 @@ public class HttpImpl implements Http {
 
 		for (String parameter : parameters) {
 			if (parameter.length() > 0) {
-				String[] kvp = StringUtil.split(parameter, CharPool.EQUAL);
+				CharSequence[] kvp = StringUtil.splitWithStringWrapper(
+					parameter, CharPool.EQUAL);
 
-				String key = kvp[0];
+				CharSequence key = kvp[0];
 
-				String value = StringPool.BLANK;
+				CharSequence value = StringPool.BLANK;
 
 				if (kvp.length > 1) {
 					value = kvp[1];
