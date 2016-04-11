@@ -643,6 +643,16 @@ public class DataFactory {
 		return sequence;
 	}
 
+	public List<Long> getUserRoleIds() {
+		List<Long> roleIds = new ArrayList<>(3);
+
+		roleIds.add(_administratorRoleModel.getRoleId());
+		roleIds.add(_powerUserRoleModel.getRoleId());
+		roleIds.add(_userRoleModel.getRoleId());
+
+		return roleIds;
+	}
+
 	public RoleModel getUserRoleModel() {
 		return _userRoleModel;
 	}
