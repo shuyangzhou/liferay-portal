@@ -1253,6 +1253,10 @@ public class ResourcePermissionLocalServiceImpl
 			resourcePermission.setPrimKeyId(GetterUtil.getLong(primKey));
 			resourcePermission.setRoleId(roleId);
 			resourcePermission.setOwnerId(ownerId);
+
+			if (resourcePermissionsMap != null) {
+				resourcePermissionsMap.put(roleId, resourcePermission);
+			}
 		}
 
 		List<String> unsupportedActionIds = Collections.emptyList();
