@@ -1300,10 +1300,14 @@ public class ResourcePermissionLocalServiceImpl
 			}
 		}
 
-		resourcePermission.setActionIds(actionIdsLong);
-		resourcePermission.setViewActionId(actionIdsLong % 2 == 1);
+		if ((actionIdsLong != resourcePermission.getActionIds()) ||
+			resourcePermission.isNew()) {
 
-		resourcePermissionPersistence.update(resourcePermission);
+			resourcePermission.setActionIds(actionIdsLong);
+			resourcePermission.setViewActionId(actionIdsLong % 2 == 1);
+
+			resourcePermissionPersistence.update(resourcePermission);
+		}
 
 		IndexWriterHelperUtil.updatePermissionFields(name, primKey);
 	}
