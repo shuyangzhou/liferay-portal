@@ -17,6 +17,7 @@ package com.liferay.portal.kernel.transaction;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.AutoResetThreadLocal;
+import com.liferay.portal.kernel.util.ClassUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,7 +47,21 @@ public class TransactionCommitCallbackUtil {
 
 				List<Callable<?>> callables = popCallbackList();
 
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						"Number of callbacks to be executed: " +
+							callables.size());
+				}
+
+				int i = 0;
+
 				for (Callable<?> callable : callables) {
+					if (_log.isDebugEnabled()) {
+						_log.debug(
+							"Executing callback " + (i++) + ": " +
+								ClassUtil.getClassName(callable));
+					}
+
 					try {
 						callable.call();
 					}
