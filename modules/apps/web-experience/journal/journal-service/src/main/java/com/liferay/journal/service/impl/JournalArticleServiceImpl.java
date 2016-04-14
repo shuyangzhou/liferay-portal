@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.PortletRequestModel;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -1334,20 +1335,16 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 			ServiceContext serviceContext)
 		throws PortalException {
 
+		PermissionChecker permissionChecker = getPermissionChecker();
+
+		JournalArticlePermission.check(
+			permissionChecker, groupId, articleId, ActionKeys.UPDATE);
+
 		JournalFolderPermission.check(
-			getPermissionChecker(), groupId, newFolderId,
-			ActionKeys.ADD_ARTICLE);
+			permissionChecker, groupId, newFolderId, ActionKeys.ADD_ARTICLE);
 
-		List<JournalArticle> articles = journalArticlePersistence.findByG_A(
-			groupId, articleId);
-
-		for (JournalArticle article : articles) {
-			JournalArticlePermission.check(
-				getPermissionChecker(), article, ActionKeys.UPDATE);
-
-			journalArticleLocalService.moveArticle(
-				groupId, articleId, newFolderId, serviceContext);
-		}
+		journalArticleLocalService.moveArticle(
+			groupId, articleId, newFolderId, serviceContext);
 	}
 
 	/**
