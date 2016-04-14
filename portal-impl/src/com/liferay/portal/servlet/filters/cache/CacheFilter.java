@@ -336,8 +336,10 @@ public class CacheFilter extends BasePortalFilter {
 	protected boolean isCacheableResponse(
 		BufferCacheServletResponse bufferCacheServletResponse) {
 
-		if ((bufferCacheServletResponse.getStatus() ==
-				HttpServletResponse.SC_OK) &&
+		if (((bufferCacheServletResponse.getStatus() ==
+				HttpServletResponse.SC_OK) ||
+			 (bufferCacheServletResponse.getStatus() ==
+				 HttpServletResponse.SC_NOT_MODIFIED)) &&
 			(bufferCacheServletResponse.getBufferSize() <
 				PropsValues.CACHE_CONTENT_THRESHOLD_SIZE)) {
 
@@ -453,11 +455,9 @@ public class CacheFilter extends BasePortalFilter {
 				bufferCacheServletResponse.getHeader(
 					HttpHeaders.CACHE_CONTROL));
 
-			if ((bufferCacheServletResponse.getStatus() ==
-					HttpServletResponse.SC_OK) &&
+			if (isCacheableResponse(bufferCacheServletResponse) &&
 				!cacheControl.contains(HttpHeaders.PRAGMA_NO_CACHE_VALUE) &&
-				isCacheableRequest(request) &&
-				isCacheableResponse(bufferCacheServletResponse)) {
+				isCacheableRequest(request)) {
 
 				CacheUtil.putCacheResponseData(
 					companyId, key, cacheResponseData);
