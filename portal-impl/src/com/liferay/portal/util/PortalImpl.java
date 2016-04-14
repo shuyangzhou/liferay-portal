@@ -3178,12 +3178,12 @@ public class PortalImpl implements Portal {
 
 	@Override
 	public Locale getLocale(HttpServletRequest request) {
-		Locale locale = (Locale)request.getAttribute("Request.Locale");
+		Locale locale = (Locale)request.getAttribute(WebKeys.LOCALE);
 
 		if (locale == null) {
 			locale = getLocale(request, null, false);
 
-			request.setAttribute("Request.Locale", locale);
+			request.setAttribute(WebKeys.LOCALE, locale);
 		}
 
 		return locale;
