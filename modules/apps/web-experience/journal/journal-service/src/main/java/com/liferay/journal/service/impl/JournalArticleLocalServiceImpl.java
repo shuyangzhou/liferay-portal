@@ -3388,8 +3388,13 @@ public class JournalArticleLocalServiceImpl
 
 		String treePath = null;
 
+		JournalArticle latestApprovedArticle = getLatestArticle(
+			groupId, articleId, WorkflowConstants.STATUS_APPROVED);
+
 		for (JournalArticle article : articles) {
-			if (serviceContext != null) {
+			if ((serviceContext != null) &&
+				article.equals(latestApprovedArticle)) {
+
 				notifySubscribers(
 					serviceContext.getUserId(), article, article.getUrlTitle(),
 					"move_from", serviceContext);
@@ -3405,7 +3410,9 @@ public class JournalArticleLocalServiceImpl
 
 			journalArticlePersistence.update(article);
 
-			if (serviceContext != null) {
+			if ((serviceContext != null) &&
+				article.equals(latestApprovedArticle)) {
+
 				notifySubscribers(
 					serviceContext.getUserId(), article, article.getUrlTitle(),
 					"move_to", serviceContext);
