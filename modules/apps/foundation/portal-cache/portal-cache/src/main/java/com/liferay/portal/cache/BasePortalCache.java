@@ -14,11 +14,14 @@
 
 package com.liferay.portal.cache;
 
+import com.liferay.portal.kernel.cache.PersistentPortalCacheListener;
 import com.liferay.portal.kernel.cache.PortalCacheListener;
 import com.liferay.portal.kernel.cache.PortalCacheListenerScope;
 import com.liferay.portal.kernel.cache.PortalCacheManager;
 
 import java.io.Serializable;
+
+import java.util.Map;
 
 /**
  * @author Tina Tian
@@ -194,7 +197,31 @@ public abstract class BasePortalCache<K extends Serializable, V>
 
 	@Override
 	public void unregisterPortalCacheListeners() {
-		aggregatedPortalCacheListener.clearAll();
+		unregisterPortalCacheListeners(false);
+	}
+
+	@Override
+	public void unregisterPortalCacheListeners(boolean includePersistent) {
+		if (includePersistent) {
+			aggregatedPortalCacheListener.clearAll();
+
+			return;
+		}
+
+		Map<PortalCacheListener<K, V>, PortalCacheListenerScope>
+			portalCacheListeners =
+				aggregatedPortalCacheListener.getPortalCacheListeners();
+
+		for (PortalCacheListener<K, V> portalCacheListener :
+				portalCacheListeners.keySet()) {
+
+			if (!(portalCacheListener instanceof
+					PersistentPortalCacheListener)) {
+
+				aggregatedPortalCacheListener.removePortalCacheListener(
+					portalCacheListener);
+			}
+		}
 	}
 
 	protected abstract V doGet(K key);
