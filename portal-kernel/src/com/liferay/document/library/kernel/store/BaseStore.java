@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
@@ -29,8 +30,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-
-import java.nio.file.Files;
 
 /**
  * The abstract base class for all file store implementations. Most, if not all
@@ -270,9 +269,9 @@ public abstract class BaseStore implements Store {
 		throws PortalException {
 
 		try {
-			File file = getFile(companyId, repositoryId, fileName);
+			InputStream is = getFileAsStream(companyId, repositoryId, fileName);
 
-			return Files.readAllBytes(file.toPath());
+			return FileUtil.getBytes(is);
 		}
 		catch (IOException ioe) {
 			throw new SystemException(ioe);
@@ -296,10 +295,10 @@ public abstract class BaseStore implements Store {
 		throws PortalException {
 
 		try {
-			File file = getFile(
+			InputStream is = getFileAsStream(
 				companyId, repositoryId, fileName, versionLabel);
 
-			return Files.readAllBytes(file.toPath());
+			return FileUtil.getBytes(is);
 		}
 		catch (IOException ioe) {
 			throw new SystemException(ioe);
