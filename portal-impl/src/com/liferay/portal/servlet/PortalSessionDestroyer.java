@@ -76,10 +76,6 @@ public class PortalSessionDestroyer extends BasePortalLifecycle {
 				return;
 			}
 
-			// Language
-
-			session.removeAttribute(Globals.LOCALE_KEY);
-
 			// Live users
 
 			if (PropsValues.LIVE_USERS_ENABLED) {
