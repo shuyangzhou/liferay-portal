@@ -17,6 +17,7 @@ package com.liferay.portal.tools;
 import com.liferay.portal.cache.key.SimpleCacheKeyGenerator;
 import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.cache.MultiVMPool;
+import com.liferay.portal.kernel.cache.PersistentPortalCacheListener;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.PortalCacheListener;
 import com.liferay.portal.kernel.cache.PortalCacheListenerScope;
@@ -61,6 +62,7 @@ import com.liferay.registry.RegistryUtil;
 import java.io.Serializable;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -397,13 +399,36 @@ public class ToolDependencies {
 
 		@Override
 		public void unregisterPortalCacheListeners() {
-			for (PortalCacheListener<K, V> portalCacheListener :
-					_portalCacheListeners) {
+			unregisterPortalCacheListeners(false);
+		}
 
-				portalCacheListener.dispose();
+		public void unregisterPortalCacheListeners(boolean includePersistent) {
+			if (includePersistent) {
+				for (PortalCacheListener<K, V> portalCacheListener :
+						_portalCacheListeners) {
+
+					portalCacheListener.dispose();
+				}
+
+				_portalCacheListeners.clear();
+
+				return;
 			}
 
-			_portalCacheListeners.clear();
+			Iterator<PortalCacheListener<K, V>> iterator =
+				_portalCacheListeners.iterator();
+
+			while (iterator.hasNext()) {
+				PortalCacheListener<K, V> portalCacheListener = iterator.next();
+
+				if (!(portalCacheListener instanceof
+						PersistentPortalCacheListener)) {
+
+					portalCacheListener.dispose();
+
+					iterator.remove();
+				}
+			}
 		}
 
 		private final Map<K, V> _map = new ConcurrentHashMap<>();

@@ -72,4 +72,6 @@ public interface PortalCache<K extends Serializable, V> {
 
 	public void unregisterPortalCacheListeners();
 
+	public void unregisterPortalCacheListeners(boolean includePersistent);
+
 }

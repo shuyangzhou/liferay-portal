@@ -158,6 +158,10 @@ public class CachelessTableMapperImpl
 		public void unregisterPortalCacheListeners() {
 		}
 
+		@Override
+		public void unregisterPortalCacheListeners(boolean includePersistent) {
+		}
+
 		protected DummyPortalCache(
 			String portalCacheName,
 			PortalCacheManager<Long, long[]> portalCacheManager) {

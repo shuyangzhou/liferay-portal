@@ -118,6 +118,11 @@ public class PortalCacheWrapper<K extends Serializable, V>
 		portalCache.unregisterPortalCacheListeners();
 	}
 
+	@Override
+	public void unregisterPortalCacheListeners(boolean includePersistent) {
+		portalCache.unregisterPortalCacheListeners(includePersistent);
+	}
+
 	protected PortalCache<K, V> portalCache;
 
 }

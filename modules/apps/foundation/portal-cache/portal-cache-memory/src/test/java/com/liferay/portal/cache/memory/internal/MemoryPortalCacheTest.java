@@ -15,6 +15,7 @@
 package com.liferay.portal.cache.memory.internal;
 
 import com.liferay.portal.cache.BasePortalCache;
+import com.liferay.portal.cache.test.util.TestPersistentPortalCacheListener;
 import com.liferay.portal.cache.test.util.TestPortalCacheListener;
 import com.liferay.portal.cache.test.util.TestPortalCacheManager;
 import com.liferay.portal.cache.test.util.TestPortalCacheReplicator;
@@ -126,6 +127,29 @@ public class MemoryPortalCacheTest {
 		_defaultPortalCacheListener.assertActionsCount(0);
 
 		_defaultPortalCacheReplicator.assertActionsCount(0);
+
+		// Persistent listener
+
+		TestPersistentPortalCacheListener<String, String>
+			testPersistentPortalCacheListener =
+				new TestPersistentPortalCacheListener<>();
+
+		_memoryPortalCache.registerPortalCacheListener(
+			testPersistentPortalCacheListener);
+
+		_memoryPortalCache.unregisterPortalCacheListeners();
+
+		_memoryPortalCache.put(_KEY_1, _VALUE_2);
+
+		testPersistentPortalCacheListener.assertActionsCount(1);
+
+		testPersistentPortalCacheListener.reset();
+
+		_memoryPortalCache.unregisterPortalCacheListeners(true);
+
+		_memoryPortalCache.put(_KEY_1, _VALUE_1);
+
+		testPersistentPortalCacheListener.assertActionsCount(0);
 	}
 
 	@Test
