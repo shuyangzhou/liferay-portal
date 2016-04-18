@@ -995,6 +995,8 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 
 		newContent = formatAssertEquals(fileName, newContent);
 
+		newContent = formatValidatorEquals(newContent);
+
 		newContent = fixMissingEmptyLineAfterSettingVariable(newContent);
 
 		newContent = getCombinedLinesContent(
@@ -1019,9 +1021,42 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 			newContent = formatJavaTerms(
 				className, packagePath, file, fileName, absolutePath,
 				newContent, javaClassContent, javaClassLineCount,
-				_checkJavaFieldTypesExcludes,
+				StringPool.BLANK, _checkJavaFieldTypesExcludes,
 				_javaTermAccessLevelModifierExcludes, _javaTermSortExcludes,
 				_testAnnotationsExcludes);
+		}
+
+		matcher = _anonymousClassPattern.matcher(newContent);
+
+		while (matcher.find()) {
+			if (getLevel(matcher.group()) != 0) {
+				continue;
+			}
+
+			int x = matcher.start() + 1;
+			int y = matcher.end();
+
+			while (true) {
+				String javaClassContent = newContent.substring(x, y);
+
+				if (getLevel(javaClassContent, "{", "}") != 0) {
+					y++;
+
+					continue;
+				}
+
+				int javaClassLineCount = getLineCount(
+					newContent, matcher.start() + 1);
+
+				newContent = formatJavaTerms(
+					className, packagePath, file, fileName, absolutePath,
+					newContent, javaClassContent, javaClassLineCount,
+					matcher.group(1), _checkJavaFieldTypesExcludes,
+					_javaTermAccessLevelModifierExcludes, _javaTermSortExcludes,
+					_testAnnotationsExcludes);
+
+				break;
+			}
 		}
 
 		newContent = formatJava(fileName, absolutePath, newContent);
@@ -2790,6 +2825,28 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 			fileName, content, className, packagePath);
 	}
 
+	protected String formatValidatorEquals(String content) {
+		Matcher matcher = _validatorEqualsPattern.matcher(content);
+
+		if (!matcher.find()) {
+			return content;
+		}
+
+		content = StringUtil.replaceFirst(
+			content, "Validator.equals(", "Objects.equals(");
+
+		if (content.contains("import java.util.Objects;")) {
+			return content;
+		}
+
+		int pos = content.indexOf("\npackage ");
+
+		pos = content.indexOf("\n", pos + 1);
+
+		return StringUtil.insert(
+			content, "import java.util.Objects;\n", pos + 1);
+	}
+
 	protected String getCombinedLinesContent(String content, Pattern pattern) {
 		Matcher matcher = pattern.matcher(content);
 
@@ -4200,6 +4257,8 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 	private boolean _allowUseServiceUtilInServiceImpl;
 	private final Pattern _annotationMetaTypePattern = Pattern.compile(
 		"\\s(name|description) = \"%");
+	private final Pattern _anonymousClassPattern = Pattern.compile(
+		"\n(\t+)new .*\\) \\{\n\n");
 	private final Pattern _arrayPattern = Pattern.compile(
 		"(\n\t*.* =) (new \\w*\\[\\] \\{)\n(\t*)(.+)\n\t*(\\};)\n");
 	private final Pattern _assertEqualsPattern = Pattern.compile(
@@ -4294,5 +4353,7 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 	private final Pattern _throwsSystemExceptionPattern = Pattern.compile(
 		"(\n\t+.*)throws(.*) SystemException(.*)( \\{|;\n)");
 	private List<String> _upgradeServiceUtilExcludes;
+	private final Pattern _validatorEqualsPattern = Pattern.compile(
+		"\\WValidator\\.equals\\(");
 
 }
