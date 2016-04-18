@@ -86,6 +86,13 @@ public abstract class TestOrderHelper {
 			FieldConstants.BOOLEAN, DDMFormFieldType.CHECKBOX);
 	}
 
+	public void testOrderByDDMDateField() throws Exception {
+		testOrderByDDMField(
+			new String[] {"20160417192501", "20160417192510", "20160417192503"},
+			new String[] {"20160417192501", "20160417192503", "20160417192510"},
+			FieldConstants.DATE, DDMFormFieldType.DATE);
+	}
+
 	public void testOrderByDDMIntegerField() throws Exception {
 		testOrderByDDMField(
 			new String[] {"1", "10", "3", "2"},
@@ -137,7 +144,7 @@ public abstract class TestOrderHelper {
 			DDMFormFieldType.TEXT);
 	}
 
-	protected static String[] toJsonArrays(String ... strings) {
+	protected static String[] toJsonArrays(String... strings) {
 		String[] jsonArrays = new String[strings.length];
 
 		for (int i = 0; i < strings.length; i++) {

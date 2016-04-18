@@ -37,10 +37,56 @@ public class SybaseDumpTransactionLogTestCallback
 
 	@Override
 	public Void beforeClass(Description description) throws SQLException {
+		SybaseDumpTransactionLog sybaseDumpTransactionLog =
+			description.getAnnotation(SybaseDumpTransactionLog.class);
+
+		if (sybaseDumpTransactionLog != null) {
+			SybaseDump sybaseDump = sybaseDumpTransactionLog.dumpBefore();
+
+			if (!sybaseDump.equals(SybaseDump.CLASS) &&
+					!sybaseDump.equals(SybaseDump.CLASS_AND_METHOD)) {
+
+				return null;
+			}
+		}
+
+		dumpTransactionLog();
+
+		return null;
+	}
+
+	@Override
+	public Void beforeMethod(Description description, Object target)
+		throws SQLException {
+
+		SybaseDumpTransactionLog sybaseDumpTransactionLog =
+			description.getAnnotation(SybaseDumpTransactionLog.class);
+
+		if (sybaseDumpTransactionLog == null) {
+			Class<?> testClass = description.getTestClass();
+
+			sybaseDumpTransactionLog = testClass.getAnnotation(
+				SybaseDumpTransactionLog.class);
+		}
+
+		if (sybaseDumpTransactionLog != null) {
+			SybaseDump sybaseDump = sybaseDumpTransactionLog.dumpBefore();
+
+			if (sybaseDump.equals(SybaseDump.CLASS_AND_METHOD) ||
+					sybaseDump.equals(SybaseDump.METHOD)) {
+
+				dumpTransactionLog();
+			}
+		}
+
+		return null;
+	}
+
+	private void dumpTransactionLog() throws SQLException {
 		DB db = DBManagerUtil.getDB();
 
 		if (db.getDBType() != DBType.SYBASE) {
-			return null;
+			return;
 		}
 
 		try (Connection connection = DataAccess.getConnection();
@@ -49,8 +95,6 @@ public class SybaseDumpTransactionLogTestCallback
 			statement.execute(
 				"dump transaction " + connection.getCatalog() + " with no_log");
 		}
-
-		return null;
 	}
 
 	private SybaseDumpTransactionLogTestCallback() {
