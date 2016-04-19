@@ -48,31 +48,35 @@ import javax.servlet.Servlet;
 public class PropsUtil {
 
 	public static void addProperties(Properties properties) {
-		_instance._addProperties(properties);
+		_getConfiguration().addProperties(properties);
 	}
 
 	public static void addProperties(UnicodeProperties unicodeProperties) {
-		_instance._addProperties(unicodeProperties);
+		Properties properties = new Properties();
+
+		properties.putAll(unicodeProperties);
+
+		_getConfiguration().addProperties(properties);
 	}
 
 	public static boolean contains(String key) {
-		return _instance._contains(key);
+		return _getConfiguration().contains(key);
 	}
 
 	public static String get(String key) {
-		return _instance._get(key);
+		return _getConfiguration().get(key);
 	}
 
 	public static String get(String key, Filter filter) {
-		return _instance._get(key, filter);
+		return _getConfiguration().get(key, filter);
 	}
 
 	public static String[] getArray(String key) {
-		return _instance._getArray(key);
+		return _getConfiguration().getArray(key);
 	}
 
 	public static String[] getArray(String key, Filter filter) {
-		return _instance._getArray(key, filter);
+		return _getConfiguration().getArray(key, filter);
 	}
 
 	public static Properties getProperties() {
@@ -80,15 +84,13 @@ public class PropsUtil {
 	}
 
 	public static Properties getProperties(boolean includeSystem) {
-		Properties properties = _instance._getProperties();
+		Properties properties = _getConfiguration().getProperties();
 
 		if (!includeSystem) {
 			return properties;
 		}
 
-		Configuration configuration = _instance._configuration;
-
-		Properties systemCompanyProperties = configuration.getProperties();
+		Properties systemCompanyProperties = _configuration.getProperties();
 
 		Properties mergedProperties =
 			(Properties)systemCompanyProperties.clone();
@@ -101,157 +103,25 @@ public class PropsUtil {
 	public static Properties getProperties(
 		String prefix, boolean removePrefix) {
 
-		return _instance._getProperties(prefix, removePrefix);
+		return _getConfiguration().getProperties(prefix, removePrefix);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static void reload() {
 	}
 
 	public static void removeProperties(Properties properties) {
-		_instance._removeProperties(properties);
+		_getConfiguration().removeProperties(properties);
 	}
 
 	public static void set(String key, String value) {
-		_instance._set(key, value);
+		_getConfiguration().set(key, value);
 	}
 
-	private PropsUtil() {
-		Configuration configuration = null;
-
-		try {
-
-			// Default liferay home directory
-
-			SystemProperties.set(
-				PropsKeys.DEFAULT_LIFERAY_HOME, _getDefaultLiferayHome());
-
-			// Global shared lib directory
-
-			String globalSharedLibDir = _getLibDir(Servlet.class);
-
-			if (_log.isInfoEnabled()) {
-				_log.info("Global shared lib directory " + globalSharedLibDir);
-			}
-
-			SystemProperties.set(
-				PropsKeys.LIFERAY_LIB_GLOBAL_SHARED_DIR, globalSharedLibDir);
-
-			// Global lib directory
-
-			String globalLibDir = _getLibDir(ReleaseInfo.class);
-
-			if (_log.isInfoEnabled()) {
-				_log.info("Global lib directory " + globalLibDir);
-			}
-
-			SystemProperties.set(
-				PropsKeys.LIFERAY_LIB_GLOBAL_DIR, globalLibDir);
-
-			// Portal lib directory
-
-			Class<?> clazz = getClass();
-
-			ClassLoader classLoader = clazz.getClassLoader();
-
-			String portalLibDir = WebDirDetector.getLibDir(classLoader);
-
-			String portalLibDirProperty = System.getProperty(
-				PropsKeys.LIFERAY_LIB_PORTAL_DIR);
-
-			if (portalLibDirProperty != null) {
-				if (!portalLibDirProperty.endsWith(StringPool.SLASH)) {
-					portalLibDirProperty += StringPool.SLASH;
-				}
-
-				portalLibDir = portalLibDirProperty;
-			}
-
-			if (_log.isInfoEnabled()) {
-				_log.info("Portal lib directory " + portalLibDir);
-			}
-
-			SystemProperties.set(
-				PropsKeys.LIFERAY_LIB_PORTAL_DIR, portalLibDir);
-
-			// Portal web directory
-
-			String portalWebDir = WebDirDetector.getRootDir(portalLibDir);
-
-			if (_log.isDebugEnabled()) {
-				_log.debug("Portal web directory " + portalWebDir);
-			}
-
-			SystemProperties.set(
-				PropsKeys.LIFERAY_WEB_PORTAL_DIR, portalWebDir);
-
-			// Liferay home directory
-
-			configuration = new ConfigurationImpl(
-				PropsUtil.class.getClassLoader(), PropsFiles.PORTAL,
-				CompanyConstants.SYSTEM, null);
-		}
-		catch (Exception e) {
-			_log.error("Unable to initialize PropsUtil", e);
-		}
-
-		_configuration = configuration;
-
-		String liferayHome = _get(PropsKeys.LIFERAY_HOME);
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Configured Liferay home " + liferayHome);
-		}
-
-		SystemProperties.set(PropsKeys.LIFERAY_HOME, liferayHome);
-
-		// Ehcache disk directory
-
-		SystemProperties.set(
-			"ehcache.disk.store.dir", liferayHome + "/data/ehcache");
-
-		if (GetterUtil.getBoolean(
-				SystemProperties.get("company-id-properties"))) {
-
-			_configurations = new HashMap<>();
-		}
-		else {
-			_configurations = null;
-		}
-	}
-
-	private void _addProperties(Properties properties) {
-		_getConfiguration().addProperties(properties);
-	}
-
-	private void _addProperties(UnicodeProperties unicodeProperties) {
-		Properties properties = new Properties();
-
-		properties.putAll(unicodeProperties);
-
-		_addProperties(properties);
-	}
-
-	private boolean _contains(String key) {
-		return _getConfiguration().contains(key);
-	}
-
-	private String _get(String key) {
-		return _getConfiguration().get(key);
-	}
-
-	private String _get(String key, Filter filter) {
-		return _getConfiguration().get(key, filter);
-	}
-
-	private String[] _getArray(String key) {
-		return _getConfiguration().getArray(key);
-	}
-
-	private String[] _getArray(String key, Filter filter) {
-		return _getConfiguration().getArray(key, filter);
-	}
-
-	private Configuration _getConfiguration() {
+	private static Configuration _getConfiguration() {
 		if (_configurations == null) {
 			return _configuration;
 		}
@@ -288,7 +158,7 @@ public class PropsUtil {
 		}
 	}
 
-	private String _getDefaultLiferayHome() {
+	private static String _getDefaultLiferayHome() {
 		String defaultLiferayHome = null;
 
 		if (ServerDetector.isGlassfish()) {
@@ -340,7 +210,7 @@ public class PropsUtil {
 		return defaultLiferayHome;
 	}
 
-	private String _getLibDir(Class<?> clazz) {
+	private static String _getLibDir(Class<?> clazz) {
 		String path = ClassUtil.getParentPath(
 			clazz.getClassLoader(), clazz.getName());
 
@@ -357,27 +227,99 @@ public class PropsUtil {
 		return path;
 	}
 
-	private Properties _getProperties() {
-		return _getConfiguration().getProperties();
-	}
-
-	private Properties _getProperties(String prefix, boolean removePrefix) {
-		return _getConfiguration().getProperties(prefix, removePrefix);
-	}
-
-	private void _removeProperties(Properties properties) {
-		_getConfiguration().removeProperties(properties);
-	}
-
-	private void _set(String key, String value) {
-		_getConfiguration().set(key, value);
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(PropsUtil.class);
 
-	private static PropsUtil _instance = new PropsUtil();
+	private static final Configuration _configuration;
+	private static final Map<Long, Configuration> _configurations;
 
-	private final Configuration _configuration;
-	private final Map<Long, Configuration> _configurations;
+	static {
+
+		// Default liferay home directory
+
+		SystemProperties.set(
+			PropsKeys.DEFAULT_LIFERAY_HOME, _getDefaultLiferayHome());
+
+		// Global shared lib directory
+
+		String globalSharedLibDir = _getLibDir(Servlet.class);
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Global shared lib directory " + globalSharedLibDir);
+		}
+
+		SystemProperties.set(
+			PropsKeys.LIFERAY_LIB_GLOBAL_SHARED_DIR, globalSharedLibDir);
+
+		// Global lib directory
+
+		String globalLibDir = _getLibDir(ReleaseInfo.class);
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Global lib directory " + globalLibDir);
+		}
+
+		SystemProperties.set(PropsKeys.LIFERAY_LIB_GLOBAL_DIR, globalLibDir);
+
+		// Portal lib directory
+
+		ClassLoader classLoader = PropsUtil.class.getClassLoader();
+
+		String portalLibDir = WebDirDetector.getLibDir(classLoader);
+
+		String portalLibDirProperty = System.getProperty(
+			PropsKeys.LIFERAY_LIB_PORTAL_DIR);
+
+		if (portalLibDirProperty != null) {
+			if (!portalLibDirProperty.endsWith(StringPool.SLASH)) {
+				portalLibDirProperty += StringPool.SLASH;
+			}
+
+			portalLibDir = portalLibDirProperty;
+		}
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Portal lib directory " + portalLibDir);
+		}
+
+		SystemProperties.set(PropsKeys.LIFERAY_LIB_PORTAL_DIR, portalLibDir);
+
+		// Portal web directory
+
+		String portalWebDir = WebDirDetector.getRootDir(portalLibDir);
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("Portal web directory " + portalWebDir);
+		}
+
+		SystemProperties.set(PropsKeys.LIFERAY_WEB_PORTAL_DIR, portalWebDir);
+
+		// Liferay home directory
+
+		_configuration = new ConfigurationImpl(
+			PropsUtil.class.getClassLoader(), PropsFiles.PORTAL,
+			CompanyConstants.SYSTEM, null);
+
+		String liferayHome = _configuration.get(PropsKeys.LIFERAY_HOME);
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("Configured Liferay home " + liferayHome);
+		}
+
+		SystemProperties.set(PropsKeys.LIFERAY_HOME, liferayHome);
+
+		// Ehcache disk directory
+
+		SystemProperties.set(
+			"ehcache.disk.store.dir", liferayHome + "/data/ehcache");
+
+		if (GetterUtil.getBoolean(
+				SystemProperties.get("company-id-properties"))) {
+
+			_configurations = new HashMap<>();
+		}
+		else {
+			_configurations = null;
+		}
+	}
 
 }
