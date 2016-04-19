@@ -105,7 +105,6 @@ public class PropsUtil {
 	}
 
 	public static void reload() {
-		_instance = new PropsUtil();
 	}
 
 	public static void removeProperties(Properties properties) {
