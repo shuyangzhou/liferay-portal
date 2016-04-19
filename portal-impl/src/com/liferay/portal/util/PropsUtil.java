@@ -17,10 +17,13 @@ package com.liferay.portal.util;
 import com.liferay.portal.configuration.ConfigurationImpl;
 import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.configuration.Filter;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.servlet.WebDirDetector;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.ClassUtil;
@@ -184,7 +187,8 @@ public class PropsUtil {
 			// Liferay home directory
 
 			configuration = new ConfigurationImpl(
-				PropsUtil.class.getClassLoader(), PropsFiles.PORTAL);
+				PropsUtil.class.getClassLoader(), PropsFiles.PORTAL,
+				CompanyConstants.SYSTEM, null);
 		}
 		catch (Exception e) {
 			_log.error("Unable to initialize PropsUtil", e);
@@ -260,9 +264,21 @@ public class PropsUtil {
 			Configuration configuration = _configurations.get(companyId);
 
 			if (configuration == null) {
+				String webId = null;
+
+				try {
+					Company company = CompanyLocalServiceUtil.getCompany(
+						companyId);
+
+					webId = company.getWebId();
+				}
+				catch (PortalException pe) {
+					_log.error(pe, pe);
+				}
+
 				configuration = new ConfigurationImpl(
 					PropsUtil.class.getClassLoader(), PropsFiles.PORTAL,
-					companyId);
+					companyId, webId);
 
 				_configurations.put(companyId, configuration);
 			}
