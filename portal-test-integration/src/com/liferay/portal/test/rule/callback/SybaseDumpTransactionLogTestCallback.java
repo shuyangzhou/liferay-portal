@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.test.rule.callback.BaseTestCallback;
+import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -37,10 +38,50 @@ public class SybaseDumpTransactionLogTestCallback
 
 	@Override
 	public Void beforeClass(Description description) throws SQLException {
+		SybaseDumpTransactionLog sybaseDumpTransactionLog =
+			description.getAnnotation(SybaseDumpTransactionLog.class);
+
+		if (sybaseDumpTransactionLog != null) {
+			SybaseDump[] sybaseDumps = sybaseDumpTransactionLog.dumpBefore();
+
+			if (!ArrayUtil.contains(sybaseDumps, SybaseDump.CLASS)) {
+				return null;
+			}
+		}
+
+		_dumpTransactionLog();
+
+		return null;
+	}
+
+	@Override
+	public Void beforeMethod(Description description, Object target)
+		throws SQLException {
+
+		Class<?> testClass = description.getTestClass();
+
+		SybaseDumpTransactionLog sybaseDumpTransactionLog =
+			testClass.getAnnotation(SybaseDumpTransactionLog.class);
+
+		if (sybaseDumpTransactionLog != null) {
+			SybaseDump[] sybaseDumps = sybaseDumpTransactionLog.dumpBefore();
+
+			if (ArrayUtil.contains(sybaseDumps, SybaseDump.METHOD)) {
+				_dumpTransactionLog();
+			}
+		}
+
+		return null;
+	}
+
+	private SybaseDumpTransactionLogTestCallback() {
+	}
+
+	private void _dumpTransactionLog() throws SQLException {
 		DB db = DBManagerUtil.getDB();
 
 		if (db.getDBType() != DBType.SYBASE) {
-			return null;
+			return;
 		}
 
 		try (Connection connection = DataAccess.getConnection();
@@ -49,11 +90,6 @@ public class SybaseDumpTransactionLogTestCallback
 			statement.execute(
 				"dump transaction " + connection.getCatalog() + " with no_log");
 		}
-
-		return null;
-	}
-
-	private SybaseDumpTransactionLogTestCallback() {
 	}
 
 }
