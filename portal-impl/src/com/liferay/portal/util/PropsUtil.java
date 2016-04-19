@@ -86,8 +86,9 @@ public class PropsUtil {
 			return properties;
 		}
 
-		Properties systemCompanyProperties = _instance._getProperties(
-			CompanyConstants.SYSTEM);
+		Configuration configuration = _instance._configuration;
+
+		Properties systemCompanyProperties = configuration.getProperties();
 
 		Properties mergedProperties =
 			(Properties)systemCompanyProperties.clone();
@@ -361,10 +362,6 @@ public class PropsUtil {
 
 	private Properties _getProperties() {
 		return _getConfiguration().getProperties();
-	}
-
-	private Properties _getProperties(long companyId) {
-		return _getConfiguration(companyId).getProperties();
 	}
 
 	private Properties _getProperties(String prefix, boolean removePrefix) {
