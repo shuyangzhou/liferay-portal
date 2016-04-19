@@ -47,6 +47,20 @@ import javax.servlet.Servlet;
  */
 public class PropsUtil {
 
+	public static void addProperties(Company company, Properties properties) {
+		_getConfiguration(company).addProperties(properties);
+	}
+
+	public static void addProperties(
+		Company company, UnicodeProperties unicodeProperties) {
+
+		Properties properties = new Properties();
+
+		properties.putAll(unicodeProperties);
+
+		_getConfiguration(company).addProperties(properties);
+	}
+
 	public static void addProperties(Properties properties) {
 		_getConfiguration().addProperties(properties);
 	}
@@ -59,8 +73,20 @@ public class PropsUtil {
 		_getConfiguration().addProperties(properties);
 	}
 
+	public static boolean contains(Company company, String key) {
+		return _getConfiguration(company).contains(key);
+	}
+
 	public static boolean contains(String key) {
 		return _getConfiguration().contains(key);
+	}
+
+	public static String get(Company company, String key) {
+		return _getConfiguration(company).get(key);
+	}
+
+	public static String get(Company company, String key, Filter filter) {
+		return _getConfiguration(company).get(key, filter);
 	}
 
 	public static String get(String key) {
@@ -69,6 +95,16 @@ public class PropsUtil {
 
 	public static String get(String key, Filter filter) {
 		return _getConfiguration().get(key, filter);
+	}
+
+	public static String[] getArray(Company company, String key) {
+		return _getConfiguration(company).getArray(key);
+	}
+
+	public static String[] getArray(
+		Company company, String key, Filter filter) {
+
+		return _getConfiguration(company).getArray(key, filter);
 	}
 
 	public static String[] getArray(String key) {
@@ -100,6 +136,35 @@ public class PropsUtil {
 		return mergedProperties;
 	}
 
+	public static Properties getProperties(Company company) {
+		return getProperties(company, false);
+	}
+
+	public static Properties getProperties(
+		Company company, boolean includeSystem) {
+
+		Properties properties = _getConfiguration(company).getProperties();
+
+		if (!includeSystem) {
+			return properties;
+		}
+
+		Properties systemCompanyProperties = _configuration.getProperties();
+
+		Properties mergedProperties =
+			(Properties)systemCompanyProperties.clone();
+
+		mergedProperties.putAll(properties);
+
+		return mergedProperties;
+	}
+
+	public static Properties getProperties(
+		Company company, String prefix, boolean removePrefix) {
+
+		return _getConfiguration(company).getProperties(prefix, removePrefix);
+	}
+
 	public static Properties getProperties(
 		String prefix, boolean removePrefix) {
 
@@ -113,8 +178,18 @@ public class PropsUtil {
 	public static void reload() {
 	}
 
+	public static void removeProperties(
+		Company company, Properties properties) {
+
+		_getConfiguration(company).removeProperties(properties);
+	}
+
 	public static void removeProperties(Properties properties) {
 		_getConfiguration().removeProperties(properties);
+	}
+
+	public static void set(Company company, String key, String value) {
+		_getConfiguration(company).set(key, value);
 	}
 
 	public static void set(String key, String value) {
@@ -156,6 +231,26 @@ public class PropsUtil {
 		else {
 			return _configuration;
 		}
+	}
+
+	private static Configuration _getConfiguration(Company company) {
+		if (_configurations == null) {
+			return _configuration;
+		}
+
+		long companyId = company.getCompanyId();
+
+		Configuration configuration = _configurations.get(companyId);
+
+		if (configuration == null) {
+			configuration = new ConfigurationImpl(
+				PropsUtil.class.getClassLoader(), PropsFiles.PORTAL, companyId,
+				company.getWebId());
+
+			_configurations.put(companyId, configuration);
+		}
+
+		return configuration;
 	}
 
 	private static String _getDefaultLiferayHome() {
