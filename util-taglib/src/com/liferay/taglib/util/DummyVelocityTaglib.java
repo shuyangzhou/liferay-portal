@@ -103,6 +103,17 @@ public class DummyVelocityTaglib implements VelocityTaglib {
 		boolean showPortletBreadcrumb) {
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #breadcrumb(long, String,
+	 * 				boolean, boolean, boolean, boolean)}}
+	 */
+	@Deprecated
+	@Override
+	public void breadcrumb(
+		String ddmTemplateKey, boolean showGuestGroup, boolean showParentGroups,
+		boolean showLayout, boolean showPortletBreadcrumb) {
+	}
+
 	@Override
 	public void discussion(
 		String className, long classPK, String formAction, String formName,

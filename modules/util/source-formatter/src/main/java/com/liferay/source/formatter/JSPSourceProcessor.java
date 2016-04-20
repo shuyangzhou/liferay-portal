@@ -294,6 +294,18 @@ public class JSPSourceProcessor extends BaseSourceProcessor {
 		}
 	}
 
+	protected void checkValidatorEquals(String fileName, String content) {
+		Matcher matcher = validatorEqualsPattern.matcher(content);
+
+		while (matcher.find()) {
+			processErrorMessage(
+				fileName,
+				"Use Objects.equals(Object, Object) instead of " +
+					"Validator.equals(Object, Object): " + fileName + " " +
+						getLineCount(content, matcher.start()));
+		}
+	}
+
 	protected String compressImportsOrTaglibs(
 		String fileName, String content, String attributePrefix) {
 
@@ -471,6 +483,8 @@ public class JSPSourceProcessor extends BaseSourceProcessor {
 
 		checkGetterUtilGet(fileName, newContent);
 
+		checkValidatorEquals(fileName, newContent);
+
 		Matcher matcher = _javaClassPattern.matcher(newContent);
 
 		if (matcher.find()) {
@@ -485,7 +499,8 @@ public class JSPSourceProcessor extends BaseSourceProcessor {
 
 			newContent = formatJavaTerms(
 				javaClassName, null, file, fileName, absolutePath, newContent,
-				javaClassContent, javaClassLineCount, null, null, null, null);
+				javaClassContent, javaClassLineCount, StringPool.BLANK, null,
+				null, null, null);
 		}
 
 		JSPSourceTabCalculator jspSourceTabCalculator =
@@ -804,14 +819,14 @@ public class JSPSourceProcessor extends BaseSourceProcessor {
 					line = StringUtil.replace(line, "<%=", "<%= ");
 				}
 
-				if (trimmedPreviousLine.equals("%>") &&
+				if (trimmedPreviousLine.matches("(--)?%>") &&
 					Validator.isNotNull(line) && !trimmedLine.equals("-->")) {
 
 					sb.append("\n");
 				}
 				else if (Validator.isNotNull(previousLine) &&
 						 !trimmedPreviousLine.equals("<!--") &&
-						 trimmedLine.equals("<%")) {
+						 trimmedLine.matches("<%(--)?")) {
 
 					sb.append("\n");
 				}

@@ -49,7 +49,7 @@
 		</if>
 	</tear-down>
 
-	<command name="AddBlankCP" priority="4">
+	<command name="AddBlankCP" priority="5">
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
 		</execute>
@@ -63,7 +63,7 @@
 			<var name="userSegmentName" value="User Segment Name" />
 		</execute>
 
-		<execute macro="ContentTargetingUserSegment#saveCP" />
+		<execute macro="PortletEntry#save" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -102,7 +102,7 @@
 		</execute>
 	</command>
 
-	<command name="AddCampaignContentCP" priority="4">
+	<command name="AddCampaignContentCP" priority="5">
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
 		</execute>
@@ -116,7 +116,7 @@
 			<var name="userSegmentName" value="User Segment Name" />
 		</execute>
 
-		<execute macro="ContentTargetingUserSegment#saveCP" />
+		<execute macro="PortletEntry#save" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -179,7 +179,7 @@
 		</execute>
 	</command>
 
-	<command name="AddCampaignFormCP" priority="4">
+	<command name="AddCampaignFormCP" priority="5">
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
 		</execute>
@@ -193,7 +193,7 @@
 			<var name="userSegmentName" value="User Segment Name" />
 		</execute>
 
-		<execute macro="ContentTargetingUserSegment#saveCP" />
+		<execute macro="PortletEntry#save" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -239,7 +239,7 @@
 		</execute>
 	</command>
 
-	<command name="AddCampaignLinkCP" priority="4">
+	<command name="AddCampaignLinkCP" priority="5">
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
 		</execute>
@@ -253,7 +253,7 @@
 			<var name="userSegmentName" value="User Segment Name" />
 		</execute>
 
-		<execute macro="ContentTargetingUserSegment#saveCP" />
+		<execute macro="PortletEntry#save" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -299,7 +299,7 @@
 		</execute>
 	</command>
 
-	<command name="AddCampaignPageCP" priority="4">
+	<command name="AddCampaignPageCP" priority="5">
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
 		</execute>
@@ -313,7 +313,7 @@
 			<var name="userSegmentName" value="User Segment Name" />
 		</execute>
 
-		<execute macro="ContentTargetingUserSegment#saveCP" />
+		<execute macro="PortletEntry#save" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -358,7 +358,7 @@
 		</execute>
 	</command>
 
-	<command name="AddCampaignYoutubeCP" priority="4">
+	<command name="AddCampaignYoutubeCP" priority="5">
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
 		</execute>
@@ -372,7 +372,7 @@
 			<var name="userSegmentName" value="User Segment Name" />
 		</execute>
 
-		<execute macro="ContentTargetingUserSegment#saveCP" />
+		<execute macro="PortletEntry#save" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -418,7 +418,7 @@
 		</execute>
 	</command>
 
-	<command name="DeleteCampaignCP" priority="4">
+	<command name="DeleteCampaignCP" priority="5">
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
 		</execute>
@@ -432,7 +432,7 @@
 			<var name="userSegmentName" value="User Segment Name" />
 		</execute>
 
-		<execute macro="ContentTargetingUserSegment#saveCP" />
+		<execute macro="PortletEntry#save" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -468,7 +468,7 @@
 		</execute>
 	</command>
 
-	<command name="EditCampaignCP" priority="4">
+	<command name="EditCampaignCP" priority="5">
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
 		</execute>
@@ -482,7 +482,7 @@
 			<var name="userSegmentName" value="User Segment Name" />
 		</execute>
 
-		<execute macro="ContentTargetingUserSegment#saveCP" />
+		<execute macro="PortletEntry#save" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -497,7 +497,7 @@
 			<var name="userSegmentName" value="New US Name" />
 		</execute>
 
-		<execute macro="ContentTargetingUserSegment#saveCP" />
+		<execute macro="PortletEntry#save" />
 
 		<execute macro="ContentTargetingCampaign#addCP">
 			<var name="campaignDescription" value="Campaign Description" />
@@ -562,7 +562,7 @@
 			<var name="youtubeVideoId" value="Youtube id" />
 		</execute>
 
-		<execute macro="ContentTargetingUserSegment#saveCP" />
+		<execute macro="PortletEntry#save" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -598,7 +598,7 @@
 			<var name="userSegmentName" value="User Segment Name" />
 		</execute>
 
-		<execute macro="ContentTargetingUserSegment#saveCP" />
+		<execute macro="PortletEntry#save" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />

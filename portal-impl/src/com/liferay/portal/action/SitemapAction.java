@@ -82,9 +82,11 @@ public class SitemapAction extends Action {
 				host = host.trim();
 
 				VirtualHost virtualHost =
-					VirtualHostLocalServiceUtil.getVirtualHost(host);
+					VirtualHostLocalServiceUtil.fetchVirtualHost(host);
 
-				if (virtualHost.getLayoutSetId() != 0) {
+				if ((virtualHost != null) &&
+					(virtualHost.getLayoutSetId() != 0)) {
+
 					layoutSet = LayoutSetLocalServiceUtil.getLayoutSet(
 						virtualHost.getLayoutSetId());
 				}

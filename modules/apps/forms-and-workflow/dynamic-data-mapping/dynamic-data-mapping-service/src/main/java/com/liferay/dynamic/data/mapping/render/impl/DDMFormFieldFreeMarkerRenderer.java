@@ -52,6 +52,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -335,8 +336,8 @@ public class DDMFormFieldFreeMarkerRenderer implements DDMFormFieldRenderer {
 					fields, ddmFormField, portletNamespace, namespace, mode,
 					readOnly, showEmptyFieldLabel, locale));
 
-			if (Validator.equals(ddmFormField.getType(), "select") ||
-				Validator.equals(ddmFormField.getType(), "radio")) {
+			if (Objects.equals(ddmFormField.getType(), "select") ||
+				Objects.equals(ddmFormField.getType(), "radio")) {
 
 				Map<String, Object> optionFreeMarkerContext = new HashMap<>(
 					freeMarkerContext);
@@ -624,9 +625,10 @@ public class DDMFormFieldFreeMarkerRenderer implements DDMFormFieldRenderer {
 
 	private static final String[] _SUPPORTED_DDM_FORM_FIELD_TYPES = {
 		"checkbox", "ddm-date", "ddm-decimal", "ddm-documentlibrary",
-		"ddm-geolocation", "ddm-image", "ddm-integer", "ddm-link-to-page",
-		"ddm-number", "ddm-paragraph", "ddm-separator", "ddm-text-html",
-		"fieldset", "option", "radio", "select", "text", "textarea"
+		"ddm-geolocation", "ddm-image", "ddm-integer", "ddm-journal-article",
+		"ddm-link-to-page", "ddm-number", "ddm-paragraph", "ddm-separator",
+		"ddm-text-html", "fieldset", "option", "radio", "select", "text",
+		"textarea"
 	};
 
 	private static final String _TPL_EXT = ".ftl";

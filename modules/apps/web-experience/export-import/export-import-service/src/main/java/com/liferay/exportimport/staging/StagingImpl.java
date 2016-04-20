@@ -141,6 +141,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.portlet.PortletPreferences;
@@ -854,7 +855,7 @@ public class StagingImpl implements Staging {
 				errorMessage = LanguageUtil.format(
 					locale,
 					"the-x-x-has-missing-references-that-could-not-be-found-" +
-						"during-the-export",
+						"during-the-process",
 					new String[] {
 						ResourceActionsUtil.getModelResource(
 							locale, referrerClassName),
@@ -1883,7 +1884,8 @@ public class StagingImpl implements Staging {
 					"parameterMap");
 				privateLayout = MapUtil.getBoolean(
 					settingsMap, "privateLayout");
-				layoutIds = (long[])settingsMap.get("layoutIds");
+				layoutIds = GetterUtil.getLongValues(
+					settingsMap.get("layoutIds"));
 			}
 		}
 
@@ -2587,9 +2589,7 @@ public class StagingImpl implements Staging {
 		ClassName className = ClassNameServiceHttp.fetchByClassNameId(
 			httpPrincipal, group.getClassNameId());
 
-		if (Validator.equals(
-				className.getClassName(), Company.class.getName())) {
-
+		if (Objects.equals(className.getClassName(), Company.class.getName())) {
 			return true;
 		}
 
@@ -2939,7 +2939,7 @@ public class StagingImpl implements Staging {
 				httpPrincipal, remoteGroupId);
 
 			if (group.equals(remoteGroup) &&
-				Validator.equals(group.getUuid(), remoteGroup.getUuid())) {
+				Objects.equals(group.getUuid(), remoteGroup.getUuid())) {
 
 				RemoteExportException ree = new RemoteExportException(
 					RemoteExportException.SAME_GROUP);

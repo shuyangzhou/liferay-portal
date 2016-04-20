@@ -118,12 +118,12 @@
 			<var name="userEmailAddress" value="test@liferay.com" />
 		</execute>
 
-		<execute macro="Notifications#gotoNotifications" />
-
 		<execute macro="Notifications#viewBadgeCount">
 			<var name="activePanel" value="Notifications" />
 			<var name="notificationCount" value="3" />
 		</execute>
+
+		<execute macro="Notifications#gotoNotifications" />
 
 		<execute macro="Notifications#markAllAsRead" />
 
