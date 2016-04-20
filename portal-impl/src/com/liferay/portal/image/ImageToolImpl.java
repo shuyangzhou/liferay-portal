@@ -36,8 +36,8 @@ import com.liferay.portal.util.PropsValues;
 import java.awt.AlphaComposite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GraphicsConfiguration;
 import java.awt.Rectangle;
+import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
@@ -663,28 +663,21 @@ public class ImageToolImpl implements ImageTool {
 
 		ColorModel originalColorModel = originalBufferedImage.getColorModel();
 
-		Graphics2D originalGraphics2D = originalBufferedImage.createGraphics();
+		ColorSpace colorSpace = originalColorModel.getColorSpace();
+
+		BufferedImage scaledBufferedImage = new BufferedImage(
+			scaledWidth, scaledHeight, colorSpace.getType());
+
+		Graphics2D scaledGraphics2D = scaledBufferedImage.createGraphics();
 
 		if (originalColorModel.hasAlpha()) {
-			originalGraphics2D.setComposite(AlphaComposite.Src);
+			scaledGraphics2D.setComposite(AlphaComposite.Src);
 		}
 
-		GraphicsConfiguration originalGraphicsConfiguration =
-			originalGraphics2D.getDeviceConfiguration();
+		scaledGraphics2D.drawImage(
+			originalBufferedImage, 0, 0, scaledWidth, scaledHeight, null);
 
-		BufferedImage scaledBufferedImage =
-			originalGraphicsConfiguration.createCompatibleImage(
-				scaledWidth, scaledHeight,
-				originalBufferedImage.getTransparency());
-
-		Graphics scaledGraphics = scaledBufferedImage.getGraphics();
-
-		scaledGraphics.drawImage(
-			originalBufferedImage.getScaledInstance(
-				scaledWidth, scaledHeight, java.awt.Image.SCALE_SMOOTH),
-			0, 0, null);
-
-		originalGraphics2D.dispose();
+		scaledGraphics2D.dispose();
 
 		return scaledBufferedImage;
 	}
