@@ -10,7 +10,7 @@
 <tbody>
 <tr>
 	<td>USER_BAR_BADGE_COUNT</td>
-	<td>//*[@data-qa-id='openUserMenu']//span[contains(@class,'notifications-count') and contains(@class,'sticker')]</td>
+	<td>//*[@data-qa-id='productMenuUserPanelCategory']//span[contains(@class,'notifications-count') and contains(@class,'sticker')]</td>
 	<td></td>
 </tr>
 <tr>

@@ -19,6 +19,8 @@ import com.liferay.portal.kernel.io.Serializer;
 
 import java.nio.ByteBuffer;
 
+import java.util.Objects;
+
 import javax.servlet.http.Cookie;
 
 /**
@@ -68,39 +70,39 @@ public class CookieUtil {
 	}
 
 	public static boolean equals(Cookie cookie1, Cookie cookie2) {
-		if (!Validator.equals(cookie1.getComment(), cookie2.getComment())) {
+		if (!Objects.equals(cookie1.getComment(), cookie2.getComment())) {
 			return false;
 		}
 
-		if (!Validator.equals(cookie1.getDomain(), cookie2.getDomain())) {
+		if (!Objects.equals(cookie1.getDomain(), cookie2.getDomain())) {
 			return false;
 		}
 
-		if (!Validator.equals(cookie1.getMaxAge(), cookie2.getMaxAge())) {
+		if (cookie1.getMaxAge() != cookie2.getMaxAge()) {
 			return false;
 		}
 
-		if (!Validator.equals(cookie1.getName(), cookie2.getName())) {
+		if (!Objects.equals(cookie1.getName(), cookie2.getName())) {
 			return false;
 		}
 
-		if (!Validator.equals(cookie1.getPath(), cookie2.getPath())) {
+		if (!Objects.equals(cookie1.getPath(), cookie2.getPath())) {
 			return false;
 		}
 
-		if (!Validator.equals(cookie1.getSecure(), cookie2.getSecure())) {
+		if (cookie1.getSecure() != cookie2.getSecure()) {
 			return false;
 		}
 
-		if (!Validator.equals(cookie1.getValue(), cookie2.getValue())) {
+		if (!Objects.equals(cookie1.getValue(), cookie2.getValue())) {
 			return false;
 		}
 
-		if (!Validator.equals(cookie1.getVersion(), cookie2.getVersion())) {
+		if (cookie1.getVersion() != cookie2.getVersion()) {
 			return false;
 		}
 
-		if (!Validator.equals(cookie1.isHttpOnly(), cookie2.isHttpOnly())) {
+		if (cookie1.isHttpOnly() != cookie2.isHttpOnly()) {
 			return false;
 		}
 

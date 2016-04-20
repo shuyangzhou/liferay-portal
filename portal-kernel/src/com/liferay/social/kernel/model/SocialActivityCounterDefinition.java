@@ -17,9 +17,10 @@ package com.liferay.social.kernel.model;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
+
+import java.util.Objects;
 
 /**
  * @author Zsolt Berentey
@@ -72,22 +73,15 @@ public class SocialActivityCounterDefinition implements Serializable {
 			(SocialActivityCounterDefinition)obj;
 
 		if ((activityCounterDefinition != null) &&
-			Validator.equals(_enabled, activityCounterDefinition._enabled) &&
-			Validator.equals(
-				_increment, activityCounterDefinition._increment) &&
-			Validator.equals(
-				_limitEnabled, activityCounterDefinition._limitEnabled) &&
-			Validator.equals(
-				_limitPeriod, activityCounterDefinition._limitPeriod) &&
-			Validator.equals(
-				_limitValue, activityCounterDefinition._limitValue) &&
-			Validator.equals(_name, activityCounterDefinition._name) &&
-			Validator.equals(
-				_ownerType, activityCounterDefinition._ownerType) &&
-			Validator.equals(
-				_periodLength, activityCounterDefinition._periodLength) &&
-			Validator.equals(
-				_transient, activityCounterDefinition._transient)) {
+			(_enabled == activityCounterDefinition._enabled) &&
+			(_increment == activityCounterDefinition._increment) &&
+			(_limitEnabled == activityCounterDefinition._limitEnabled) &&
+			(_limitPeriod == activityCounterDefinition._limitPeriod) &&
+			(_limitValue == activityCounterDefinition._limitValue) &&
+			Objects.equals(_name, activityCounterDefinition._name) &&
+			(_ownerType == activityCounterDefinition._ownerType) &&
+			(_periodLength == activityCounterDefinition._periodLength) &&
+			(_transient == activityCounterDefinition._transient)) {
 
 			return true;
 		}

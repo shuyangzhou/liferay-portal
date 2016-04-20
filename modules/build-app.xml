@@ -2,17 +2,21 @@
 <!DOCTYPE project>
 
 <project name="build-app">
-	<import file="build-app-module.xml" />
+	<fail message="Please specify a value for &quot;app.name&quot; when running this command.">
+		<condition>
+			<not>
+				<isset property="app.name" />
+			</not>
+		</condition>
+	</fail>
 
-	<pathconvert property="releng.app.dir">
-		<filtermapper>
-			<replacestring from="modules${file.separator}apps" to="modules${file.separator}.releng${file.separator}apps" />
-		</filtermapper>
+	<property name="app.dir" value="${basedir}/apps/${app.name}" />
 
-		<path>
-			<pathelement location="${basedir}" />
-		</path>
-	</pathconvert>
+	<property name="releng.app.dir" value="${basedir}/.releng/apps/${app.name}" />
+
+	<property name="dist.dir" value="${releng.app.dir}/dist" />
+
+	<mkdir dir="${dist.dir}" />
 
 	<pathconvert pathsep="," property="app.module.dirs">
 		<globmapper from="${modules.dir}${file.separator}*" to="*" />
@@ -25,21 +29,13 @@
 		</path>
 	</pathconvert>
 
-	<mkdir dir="${releng.app.dir}/dist" />
-
-	<pathconvert property="dist.dir">
-		<dirset dir="${releng.app.dir}" includes="dist" />
-	</pathconvert>
-
 	<condition property="app.first.version">
 		<not>
 			<available file="${releng.app.dir}/app.changelog" />
 		</not>
 	</condition>
 
-	<basename file="${basedir}" property="app.name" />
-
-	<property file="${modules.dir}/../build.properties" />
+	<property file="${basedir}/../build.properties" />
 
 	<macrodef name="set-artifact-versions-previous-release">
 		<attribute name="app.version.previous.release" />
@@ -69,10 +65,19 @@
 			<arg value="-q" />
 		</exec>
 
-		<fail message="Stale artifacts detected:${line.separator}${stale.artifacts.output}">
+		<loadfile property="module.stale.artifacts">
+			<filterchain>
+				<linecontains>
+					<contains value="${app.name}" />
+				</linecontains>
+			</filterchain>
+			<propertyresource name="stale.artifacts.output" />
+		</loadfile>
+
+		<fail message="Stale artifacts detected:${line.separator}${module.stale.artifacts}">
 			<condition>
 				<not>
-					<equals arg1="${stale.artifacts.output}" arg2="" />
+					<equals arg1="${module.stale.artifacts}" arg2="" />
 				</not>
 			</condition>
 		</fail>
@@ -93,7 +98,7 @@
 	</target>
 
 	<target name="dist-module-artifacts" depends="check-stale-artifacts,get-artifact-versions-previous-release">
-		<subant target="dist-module-artifact">
+		<subant genericantfile="${basedir}/build-app-module.xml" target="dist-module-artifact">
 			<dirset dir="${modules.dir}" excludes="${build.modules.excludes}" includes="${app.module.dirs}" />
 			<property name="app.dir" value="${basedir}" />
 			<property name="app.first.version" value="${app.first.version}" />
