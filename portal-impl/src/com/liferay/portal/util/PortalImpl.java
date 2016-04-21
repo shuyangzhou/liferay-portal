@@ -3179,7 +3179,15 @@ public class PortalImpl implements Portal {
 
 	@Override
 	public Locale getLocale(HttpServletRequest request) {
-		return getLocale(request, null, false);
+		Locale locale = (Locale)request.getAttribute("Request.Locale");
+
+		if (locale == null) {
+			locale = getLocale(request, null, false);
+
+			request.setAttribute("Request.Locale", locale);
+		}
+
+		return locale;
 	}
 
 	@Override
@@ -3274,9 +3282,7 @@ public class PortalImpl implements Portal {
 
 		HttpSession session = request.getSession(false);
 
-		if ((session != null) &&
-			session.getAttribute(Globals.LOCALE_KEY) != null) {
-
+		if (session != null) {
 			locale = (Locale)session.getAttribute(Globals.LOCALE_KEY);
 
 			if (LanguageUtil.isAvailableLocale(groupId, locale)) {
