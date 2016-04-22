@@ -3,5 +3,4 @@ Bundle-SymbolicName: com.liferay.exportimport.resources.importer
 Bundle-Version: 1.0.5
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Data Management
--dsannotations-options: inherit
 -includeresource: content=../../staging/staging-lang/src/main/resources/content

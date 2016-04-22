@@ -19,7 +19,7 @@ buildSystemPackagesExtraManifest {
 
 		jarBuilder.withBase projectDir
 
-		Map<String, String> properties = liferay.bundleDefaultInstructions
+		Map<String, String> properties = liferayOSGi.bundleDefaultInstructions
 
 		properties["-include"] = relativePath(systemPackagesExtraBndFile)
 

@@ -48,6 +48,8 @@ request.setAttribute("view_layout_branches.jsp-currenttLayoutBranchId", String.v
 	<liferay-ui:success key="pageVariationDeleted" message="page-variation-was-deleted" />
 	<liferay-ui:success key="pageVariationUpdated" message="page-variation-was-updated" />
 
+	<div class="lfr-alert-container"></div>
+
 	<c:if test="<%= GroupPermissionUtil.contains(permissionChecker, stagingGroup, ActionKeys.ADD_LAYOUT_BRANCH) %>">
 		<liferay-portlet:renderURL var="addLayoutBranchURL">
 			<portlet:param name="mvcRenderCommandName" value="editLayoutBranch" />
