@@ -58,9 +58,9 @@ public interface DDLRecordVersion extends DDLRecordVersionModel, PersistedModel 
 	public com.liferay.dynamic.data.mapping.storage.DDMFormValues getDDMFormValues()
 		throws com.liferay.dynamic.data.mapping.exception.StorageException;
 
-	public DDLRecord getRecord()
+	public com.liferay.dynamic.data.lists.model.DDLRecord getRecord()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public DDLRecordSet getRecordSet()
+	public com.liferay.dynamic.data.lists.model.DDLRecordSet getRecordSet()
 		throws com.liferay.portal.kernel.exception.PortalException;
 }

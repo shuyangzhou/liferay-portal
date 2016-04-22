@@ -209,33 +209,6 @@ public class KaleoTimerInstanceTokenWrapper implements KaleoTimerInstanceToken,
 		}
 	}
 
-	@Override
-	public KaleoInstanceToken getKaleoInstanceToken()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _kaleoTimerInstanceToken.getKaleoInstanceToken();
-	}
-
-	@Override
-	public KaleoTaskInstanceToken getKaleoTaskInstanceToken() {
-		return _kaleoTimerInstanceToken.getKaleoTaskInstanceToken();
-	}
-
-	@Override
-	public KaleoTimer getKaleoTimer()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _kaleoTimerInstanceToken.getKaleoTimer();
-	}
-
-	@Override
-	public KaleoTimerInstanceToken toEscapedModel() {
-		return new KaleoTimerInstanceTokenWrapper(_kaleoTimerInstanceToken.toEscapedModel());
-	}
-
-	@Override
-	public KaleoTimerInstanceToken toUnescapedModel() {
-		return new KaleoTimerInstanceTokenWrapper(_kaleoTimerInstanceToken.toUnescapedModel());
-	}
-
 	/**
 	* Returns the blocking of this kaleo timer instance token.
 	*
@@ -297,12 +270,40 @@ public class KaleoTimerInstanceTokenWrapper implements KaleoTimerInstanceToken,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<KaleoTimerInstanceToken> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<com.liferay.portal.workflow.kaleo.model.KaleoTimerInstanceToken> toCacheModel() {
 		return _kaleoTimerInstanceToken.toCacheModel();
 	}
 
 	@Override
-	public int compareTo(KaleoTimerInstanceToken kaleoTimerInstanceToken) {
+	public com.liferay.portal.workflow.kaleo.model.KaleoInstanceToken getKaleoInstanceToken()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _kaleoTimerInstanceToken.getKaleoInstanceToken();
+	}
+
+	@Override
+	public com.liferay.portal.workflow.kaleo.model.KaleoTaskInstanceToken getKaleoTaskInstanceToken() {
+		return _kaleoTimerInstanceToken.getKaleoTaskInstanceToken();
+	}
+
+	@Override
+	public com.liferay.portal.workflow.kaleo.model.KaleoTimer getKaleoTimer()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _kaleoTimerInstanceToken.getKaleoTimer();
+	}
+
+	@Override
+	public com.liferay.portal.workflow.kaleo.model.KaleoTimerInstanceToken toEscapedModel() {
+		return new KaleoTimerInstanceTokenWrapper(_kaleoTimerInstanceToken.toEscapedModel());
+	}
+
+	@Override
+	public com.liferay.portal.workflow.kaleo.model.KaleoTimerInstanceToken toUnescapedModel() {
+		return new KaleoTimerInstanceTokenWrapper(_kaleoTimerInstanceToken.toUnescapedModel());
+	}
+
+	@Override
+	public int compareTo(
+		com.liferay.portal.workflow.kaleo.model.KaleoTimerInstanceToken kaleoTimerInstanceToken) {
 		return _kaleoTimerInstanceToken.compareTo(kaleoTimerInstanceToken);
 	}
 

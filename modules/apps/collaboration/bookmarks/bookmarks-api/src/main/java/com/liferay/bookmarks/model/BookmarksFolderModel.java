@@ -574,19 +574,20 @@ public interface BookmarksFolderModel extends BaseModel<BookmarksFolder>,
 	public Object clone();
 
 	@Override
-	public int compareTo(BookmarksFolder bookmarksFolder);
+	public int compareTo(
+		com.liferay.bookmarks.model.BookmarksFolder bookmarksFolder);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<BookmarksFolder> toCacheModel();
+	public CacheModel<com.liferay.bookmarks.model.BookmarksFolder> toCacheModel();
 
 	@Override
-	public BookmarksFolder toEscapedModel();
+	public com.liferay.bookmarks.model.BookmarksFolder toEscapedModel();
 
 	@Override
-	public BookmarksFolder toUnescapedModel();
+	public com.liferay.bookmarks.model.BookmarksFolder toUnescapedModel();
 
 	@Override
 	public String toString();

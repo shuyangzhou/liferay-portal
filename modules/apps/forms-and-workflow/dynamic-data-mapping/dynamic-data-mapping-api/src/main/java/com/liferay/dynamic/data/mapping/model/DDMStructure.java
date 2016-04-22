@@ -54,22 +54,23 @@ public interface DDMStructure extends DDMStructureModel, PersistedModel {
 			}
 		};
 
-	public DDMForm createFullHierarchyDDMForm()
+	public com.liferay.dynamic.data.mapping.model.DDMForm createFullHierarchyDDMForm()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public java.util.List<java.lang.String> getChildrenFieldNames(
 		java.lang.String fieldName)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public DDMForm getDDMForm();
+	public com.liferay.dynamic.data.mapping.model.DDMForm getDDMForm();
 
-	public DDMFormField getDDMFormField(java.lang.String fieldName)
+	public com.liferay.dynamic.data.mapping.model.DDMFormField getDDMFormField(
+		java.lang.String fieldName)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public java.util.List<DDMFormField> getDDMFormFields(
+	public java.util.List<com.liferay.dynamic.data.mapping.model.DDMFormField> getDDMFormFields(
 		boolean includeTransientFields);
 
-	public DDMFormLayout getDDMFormLayout()
+	public com.liferay.dynamic.data.mapping.model.DDMFormLayout getDDMFormLayout()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public java.lang.String getFieldDataType(java.lang.String fieldName)
@@ -106,24 +107,24 @@ public interface DDMStructure extends DDMStructureModel, PersistedModel {
 	public java.lang.String getFieldType(java.lang.String fieldName)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public DDMForm getFullHierarchyDDMForm();
+	public com.liferay.dynamic.data.mapping.model.DDMForm getFullHierarchyDDMForm();
 
-	public java.util.Map<java.lang.String, DDMFormField> getFullHierarchyDDMFormFieldsMap(
+	public java.util.Map<java.lang.String, com.liferay.dynamic.data.mapping.model.DDMFormField> getFullHierarchyDDMFormFieldsMap(
 		boolean includeNestedDDMFormFields);
 
-	public DDMStructureVersion getLatestStructureVersion()
+	public com.liferay.dynamic.data.mapping.model.DDMStructureVersion getLatestStructureVersion()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public java.util.List<java.lang.String> getRootFieldNames();
 
-	public DDMStructureVersion getStructureVersion()
+	public com.liferay.dynamic.data.mapping.model.DDMStructureVersion getStructureVersion()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public java.util.List<DDMTemplate> getTemplates();
+	public java.util.List<com.liferay.dynamic.data.mapping.model.DDMTemplate> getTemplates();
 
 	public java.lang.String getUnambiguousName(
-		java.util.List<DDMStructure> structures, long groupId,
-		java.util.Locale locale)
+		java.util.List<com.liferay.dynamic.data.mapping.model.DDMStructure> structures,
+		long groupId, java.util.Locale locale)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	/**
@@ -147,5 +148,6 @@ public interface DDMStructure extends DDMStructureModel, PersistedModel {
 	public boolean isFieldTransient(java.lang.String fieldName)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public void setDDMForm(DDMForm ddmForm);
+	public void setDDMForm(
+		com.liferay.dynamic.data.mapping.model.DDMForm ddmForm);
 }

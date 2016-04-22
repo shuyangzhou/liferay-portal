@@ -652,19 +652,20 @@ public interface DDMStructureVersionModel extends BaseModel<DDMStructureVersion>
 	public Object clone();
 
 	@Override
-	public int compareTo(DDMStructureVersion ddmStructureVersion);
+	public int compareTo(
+		com.liferay.dynamic.data.mapping.model.DDMStructureVersion ddmStructureVersion);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<DDMStructureVersion> toCacheModel();
+	public CacheModel<com.liferay.dynamic.data.mapping.model.DDMStructureVersion> toCacheModel();
 
 	@Override
-	public DDMStructureVersion toEscapedModel();
+	public com.liferay.dynamic.data.mapping.model.DDMStructureVersion toEscapedModel();
 
 	@Override
-	public DDMStructureVersion toUnescapedModel();
+	public com.liferay.dynamic.data.mapping.model.DDMStructureVersion toUnescapedModel();
 
 	@Override
 	public String toString();

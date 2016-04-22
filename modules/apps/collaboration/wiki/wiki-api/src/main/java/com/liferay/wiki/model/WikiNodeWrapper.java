@@ -178,16 +178,6 @@ public class WikiNodeWrapper implements WikiNode, ModelWrapper<WikiNode> {
 		}
 	}
 
-	@Override
-	public WikiNode toEscapedModel() {
-		return new WikiNodeWrapper(_wikiNode.toEscapedModel());
-	}
-
-	@Override
-	public WikiNode toUnescapedModel() {
-		return new WikiNodeWrapper(_wikiNode.toUnescapedModel());
-	}
-
 	/**
 	* Returns <code>true</code> if this wiki node is approved.
 	*
@@ -319,7 +309,7 @@ public class WikiNodeWrapper implements WikiNode, ModelWrapper<WikiNode> {
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<WikiNode> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<com.liferay.wiki.model.WikiNode> toCacheModel() {
 		return _wikiNode.toCacheModel();
 	}
 
@@ -351,7 +341,17 @@ public class WikiNodeWrapper implements WikiNode, ModelWrapper<WikiNode> {
 	}
 
 	@Override
-	public int compareTo(WikiNode wikiNode) {
+	public com.liferay.wiki.model.WikiNode toEscapedModel() {
+		return new WikiNodeWrapper(_wikiNode.toEscapedModel());
+	}
+
+	@Override
+	public com.liferay.wiki.model.WikiNode toUnescapedModel() {
+		return new WikiNodeWrapper(_wikiNode.toUnescapedModel());
+	}
+
+	@Override
+	public int compareTo(com.liferay.wiki.model.WikiNode wikiNode) {
 		return _wikiNode.compareTo(wikiNode);
 	}
 

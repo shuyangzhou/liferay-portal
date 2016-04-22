@@ -408,7 +408,7 @@ public class DDLRecordLocalServiceUtil {
 
 	/**
 	* @deprecated As of 7.0.0, replaced by {@link
-	DDLRecordVersionLocalService#getRecordVersion(
+	com.liferay.dynamic.data.lists.service.DDLRecordVersionLocalService#getRecordVersion(
 	long, String)}
 	*/
 	@Deprecated
@@ -420,7 +420,7 @@ public class DDLRecordLocalServiceUtil {
 
 	/**
 	* @deprecated As of 7.0.0, replaced by {@link
-	DDLRecordVersionLocalService#getRecordVersion(
+	com.liferay.dynamic.data.lists.service.DDLRecordVersionLocalService#getRecordVersion(
 	long)}
 	*/
 	@Deprecated
@@ -534,7 +534,7 @@ public class DDLRecordLocalServiceUtil {
 
 	/**
 	* @deprecated As of 7.0.0, replaced by {@link
-	DDLRecordVersionLocalService#getRecordVersionsCount(
+	com.liferay.dynamic.data.lists.service.DDLRecordVersionLocalService#getRecordVersionsCount(
 	long)}
 	*/
 	@Deprecated
@@ -711,7 +711,7 @@ public class DDLRecordLocalServiceUtil {
 
 	/**
 	* @deprecated As of 7.0.0, replaced by {@link
-	DDLRecordVersionLocalService#getRecordVersions(
+	com.liferay.dynamic.data.lists.service.DDLRecordVersionLocalService#getRecordVersions(
 	long, int, int, OrderByComparator)}
 	*/
 	@Deprecated

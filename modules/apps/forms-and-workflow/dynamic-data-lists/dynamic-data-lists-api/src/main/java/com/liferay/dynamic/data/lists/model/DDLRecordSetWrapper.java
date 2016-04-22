@@ -180,22 +180,6 @@ public class DDLRecordSetWrapper implements DDLRecordSet,
 	}
 
 	@Override
-	public DDLRecordSet toEscapedModel() {
-		return new DDLRecordSetWrapper(_ddlRecordSet.toEscapedModel());
-	}
-
-	@Override
-	public DDLRecordSet toUnescapedModel() {
-		return new DDLRecordSetWrapper(_ddlRecordSet.toUnescapedModel());
-	}
-
-	@Override
-	public DDLRecordSetSettings getSettingsModel()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ddlRecordSet.getSettingsModel();
-	}
-
-	@Override
 	public boolean isCachedModel() {
 		return _ddlRecordSet.isCachedModel();
 	}
@@ -208,6 +192,22 @@ public class DDLRecordSetWrapper implements DDLRecordSet,
 	@Override
 	public boolean isNew() {
 		return _ddlRecordSet.isNew();
+	}
+
+	@Override
+	public com.liferay.dynamic.data.lists.model.DDLRecordSet toEscapedModel() {
+		return new DDLRecordSetWrapper(_ddlRecordSet.toEscapedModel());
+	}
+
+	@Override
+	public com.liferay.dynamic.data.lists.model.DDLRecordSet toUnescapedModel() {
+		return new DDLRecordSetWrapper(_ddlRecordSet.toUnescapedModel());
+	}
+
+	@Override
+	public com.liferay.dynamic.data.lists.model.DDLRecordSetSettings getSettingsModel()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ddlRecordSet.getSettingsModel();
 	}
 
 	@Override
@@ -235,12 +235,13 @@ public class DDLRecordSetWrapper implements DDLRecordSet,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<DDLRecordSet> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<com.liferay.dynamic.data.lists.model.DDLRecordSet> toCacheModel() {
 		return _ddlRecordSet.toCacheModel();
 	}
 
 	@Override
-	public int compareTo(DDLRecordSet ddlRecordSet) {
+	public int compareTo(
+		com.liferay.dynamic.data.lists.model.DDLRecordSet ddlRecordSet) {
 		return _ddlRecordSet.compareTo(ddlRecordSet);
 	}
 
@@ -515,7 +516,7 @@ public class DDLRecordSetWrapper implements DDLRecordSet,
 	}
 
 	@Override
-	public java.util.List<DDLRecord> getRecords() {
+	public java.util.List<com.liferay.dynamic.data.lists.model.DDLRecord> getRecords() {
 		return _ddlRecordSet.getRecords();
 	}
 

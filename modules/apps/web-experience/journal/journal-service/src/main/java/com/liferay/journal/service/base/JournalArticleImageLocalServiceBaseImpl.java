@@ -462,7 +462,7 @@ public abstract class JournalArticleImageLocalServiceBaseImpl
 		}
 	}
 
-	@BeanReference(type = JournalArticleImageLocalService.class)
+	@BeanReference(type = com.liferay.journal.service.JournalArticleImageLocalService.class)
 	protected JournalArticleImageLocalService journalArticleImageLocalService;
 	@BeanReference(type = JournalArticleImagePersistence.class)
 	protected JournalArticleImagePersistence journalArticleImagePersistence;

@@ -193,16 +193,6 @@ public class JournalFolderWrapper implements JournalFolder,
 		}
 	}
 
-	@Override
-	public JournalFolder toEscapedModel() {
-		return new JournalFolderWrapper(_journalFolder.toEscapedModel());
-	}
-
-	@Override
-	public JournalFolder toUnescapedModel() {
-		return new JournalFolderWrapper(_journalFolder.toUnescapedModel());
-	}
-
 	/**
 	* Returns <code>true</code> if this journal folder is approved.
 	*
@@ -339,13 +329,23 @@ public class JournalFolderWrapper implements JournalFolder,
 	}
 
 	@Override
-	public JournalFolder getParentFolder()
+	public com.liferay.journal.model.JournalFolder getParentFolder()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _journalFolder.getParentFolder();
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<JournalFolder> toCacheModel() {
+	public com.liferay.journal.model.JournalFolder toEscapedModel() {
+		return new JournalFolderWrapper(_journalFolder.toEscapedModel());
+	}
+
+	@Override
+	public com.liferay.journal.model.JournalFolder toUnescapedModel() {
+		return new JournalFolderWrapper(_journalFolder.toUnescapedModel());
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<com.liferay.journal.model.JournalFolder> toCacheModel() {
 		return _journalFolder.toCacheModel();
 	}
 
@@ -371,7 +371,7 @@ public class JournalFolderWrapper implements JournalFolder,
 	}
 
 	@Override
-	public int compareTo(JournalFolder journalFolder) {
+	public int compareTo(com.liferay.journal.model.JournalFolder journalFolder) {
 		return _journalFolder.compareTo(journalFolder);
 	}
 
@@ -563,7 +563,7 @@ public class JournalFolderWrapper implements JournalFolder,
 	}
 
 	@Override
-	public java.util.List<JournalFolder> getAncestors()
+	public java.util.List<com.liferay.journal.model.JournalFolder> getAncestors()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _journalFolder.getAncestors();
 	}

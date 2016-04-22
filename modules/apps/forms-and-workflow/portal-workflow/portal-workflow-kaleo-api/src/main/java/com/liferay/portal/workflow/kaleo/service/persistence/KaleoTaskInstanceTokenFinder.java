@@ -23,8 +23,8 @@ import aQute.bnd.annotation.ProviderType;
 @ProviderType
 public interface KaleoTaskInstanceTokenFinder {
 	public int countKaleoTaskInstanceTokens(
-		KaleoTaskInstanceTokenQuery kaleoTaskInstanceTokenQuery);
+		com.liferay.portal.workflow.kaleo.service.persistence.KaleoTaskInstanceTokenQuery kaleoTaskInstanceTokenQuery);
 
 	public java.util.List<com.liferay.portal.workflow.kaleo.model.KaleoTaskInstanceToken> findKaleoTaskInstanceTokens(
-		KaleoTaskInstanceTokenQuery kaleoTaskInstanceTokenQuery);
+		com.liferay.portal.workflow.kaleo.service.persistence.KaleoTaskInstanceTokenQuery kaleoTaskInstanceTokenQuery);
 }

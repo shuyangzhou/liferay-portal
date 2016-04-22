@@ -193,16 +193,6 @@ public class BookmarksFolderWrapper implements BookmarksFolder,
 		}
 	}
 
-	@Override
-	public BookmarksFolder toEscapedModel() {
-		return new BookmarksFolderWrapper(_bookmarksFolder.toEscapedModel());
-	}
-
-	@Override
-	public BookmarksFolder toUnescapedModel() {
-		return new BookmarksFolderWrapper(_bookmarksFolder.toUnescapedModel());
-	}
-
 	/**
 	* Returns <code>true</code> if this bookmarks folder is approved.
 	*
@@ -334,9 +324,19 @@ public class BookmarksFolderWrapper implements BookmarksFolder,
 	}
 
 	@Override
-	public BookmarksFolder getParentFolder()
+	public com.liferay.bookmarks.model.BookmarksFolder getParentFolder()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _bookmarksFolder.getParentFolder();
+	}
+
+	@Override
+	public com.liferay.bookmarks.model.BookmarksFolder toEscapedModel() {
+		return new BookmarksFolderWrapper(_bookmarksFolder.toEscapedModel());
+	}
+
+	@Override
+	public com.liferay.bookmarks.model.BookmarksFolder toUnescapedModel() {
+		return new BookmarksFolderWrapper(_bookmarksFolder.toUnescapedModel());
 	}
 
 	@Override
@@ -345,7 +345,7 @@ public class BookmarksFolderWrapper implements BookmarksFolder,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<BookmarksFolder> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<com.liferay.bookmarks.model.BookmarksFolder> toCacheModel() {
 		return _bookmarksFolder.toCacheModel();
 	}
 
@@ -371,7 +371,8 @@ public class BookmarksFolderWrapper implements BookmarksFolder,
 	}
 
 	@Override
-	public int compareTo(BookmarksFolder bookmarksFolder) {
+	public int compareTo(
+		com.liferay.bookmarks.model.BookmarksFolder bookmarksFolder) {
 		return _bookmarksFolder.compareTo(bookmarksFolder);
 	}
 
@@ -553,7 +554,7 @@ public class BookmarksFolderWrapper implements BookmarksFolder,
 	}
 
 	@Override
-	public java.util.List<BookmarksFolder> getAncestors()
+	public java.util.List<com.liferay.bookmarks.model.BookmarksFolder> getAncestors()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _bookmarksFolder.getAncestors();
 	}

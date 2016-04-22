@@ -60,6 +60,6 @@ public interface BookmarksEntry extends BookmarksEntryModel, PermissionedModel,
 	public java.lang.String buildTreePath()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public BookmarksFolder getFolder()
+	public com.liferay.bookmarks.model.BookmarksFolder getFolder()
 		throws com.liferay.portal.kernel.exception.PortalException;
 }

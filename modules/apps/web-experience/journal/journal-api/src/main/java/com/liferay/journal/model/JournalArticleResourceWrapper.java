@@ -101,16 +101,6 @@ public class JournalArticleResourceWrapper implements JournalArticleResource,
 	}
 
 	@Override
-	public JournalArticleResource toEscapedModel() {
-		return new JournalArticleResourceWrapper(_journalArticleResource.toEscapedModel());
-	}
-
-	@Override
-	public JournalArticleResource toUnescapedModel() {
-		return new JournalArticleResourceWrapper(_journalArticleResource.toUnescapedModel());
-	}
-
-	@Override
 	public boolean isCachedModel() {
 		return _journalArticleResource.isCachedModel();
 	}
@@ -131,12 +121,23 @@ public class JournalArticleResourceWrapper implements JournalArticleResource,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<JournalArticleResource> toCacheModel() {
+	public com.liferay.journal.model.JournalArticleResource toEscapedModel() {
+		return new JournalArticleResourceWrapper(_journalArticleResource.toEscapedModel());
+	}
+
+	@Override
+	public com.liferay.journal.model.JournalArticleResource toUnescapedModel() {
+		return new JournalArticleResourceWrapper(_journalArticleResource.toUnescapedModel());
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<com.liferay.journal.model.JournalArticleResource> toCacheModel() {
 		return _journalArticleResource.toCacheModel();
 	}
 
 	@Override
-	public int compareTo(JournalArticleResource journalArticleResource) {
+	public int compareTo(
+		com.liferay.journal.model.JournalArticleResource journalArticleResource) {
 		return _journalArticleResource.compareTo(journalArticleResource);
 	}
 

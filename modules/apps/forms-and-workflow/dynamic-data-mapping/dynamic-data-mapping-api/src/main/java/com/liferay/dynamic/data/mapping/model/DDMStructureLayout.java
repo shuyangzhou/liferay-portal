@@ -56,5 +56,5 @@ public interface DDMStructureLayout extends DDMStructureLayoutModel,
 			}
 		};
 
-	public DDMFormLayout getDDMFormLayout();
+	public com.liferay.dynamic.data.mapping.model.DDMFormLayout getDDMFormLayout();
 }

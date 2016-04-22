@@ -187,19 +187,20 @@ public interface WikiPageResourceModel extends BaseModel<WikiPageResource>,
 	public Object clone();
 
 	@Override
-	public int compareTo(WikiPageResource wikiPageResource);
+	public int compareTo(
+		com.liferay.wiki.model.WikiPageResource wikiPageResource);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<WikiPageResource> toCacheModel();
+	public CacheModel<com.liferay.wiki.model.WikiPageResource> toCacheModel();
 
 	@Override
-	public WikiPageResource toEscapedModel();
+	public com.liferay.wiki.model.WikiPageResource toEscapedModel();
 
 	@Override
-	public WikiPageResource toUnescapedModel();
+	public com.liferay.wiki.model.WikiPageResource toUnescapedModel();
 
 	@Override
 	public String toString();
