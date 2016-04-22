@@ -108,45 +108,63 @@ public class TableMapperImpl<L extends BaseModel<L>, R extends BaseModel<R>>
 		leftToRightPortalCache.remove(leftPrimaryKey);
 		rightToLeftPortalCache.remove(rightPrimaryKey);
 
-		Class<R> rightModelClass = rightBasePersistence.getModelClass();
-
-		ModelListener<L>[] leftModelListeners =
-			leftBasePersistence.getListeners();
-
-		for (ModelListener<L> leftModelListener : leftModelListeners) {
-			leftModelListener.onBeforeAddAssociation(
-				leftPrimaryKey, rightModelClass.getName(), rightPrimaryKey);
-		}
-
-		Class<L> leftModelClass = leftBasePersistence.getModelClass();
-
-		ModelListener<R>[] rightModelListeners =
-			rightBasePersistence.getListeners();
-
-		for (ModelListener<R> rightModelListener : rightModelListeners) {
-			rightModelListener.onBeforeAddAssociation(
-				rightPrimaryKey, leftModelClass.getName(), leftPrimaryKey);
-		}
-
-		try {
-			addTableMappingSqlUpdate.update(
-				companyId, leftPrimaryKey, rightPrimaryKey);
-		}
-		catch (Exception e) {
-			throw new SystemException(e);
-		}
-
-		for (ModelListener<L> leftModelListener : leftModelListeners) {
-			leftModelListener.onAfterAddAssociation(
-				leftPrimaryKey, rightModelClass.getName(), rightPrimaryKey);
-		}
-
-		for (ModelListener<R> rightModelListener : rightModelListeners) {
-			rightModelListener.onAfterAddAssociation(
-				rightPrimaryKey, leftModelClass.getName(), leftPrimaryKey);
-		}
+		doAddTableMapping(companyId, leftPrimaryKey, rightPrimaryKey);
 
 		return true;
+	}
+
+	@Override
+	public boolean addTableMappings(
+		long companyId, long leftPrimaryKey, long[] newRightPrimaryKeys) {
+
+		long[] rightPrimaryKeys = getPrimaryKeys(
+			leftToRightPortalCache, getRightPrimaryKeysSqlQuery, leftPrimaryKey,
+			false);
+
+		boolean updated = false;
+
+		for (long rightPrimaryKey : newRightPrimaryKeys) {
+			if (Arrays.binarySearch(rightPrimaryKeys, rightPrimaryKey) < 0) {
+				updated = true;
+
+				rightToLeftPortalCache.remove(rightPrimaryKey);
+
+				doAddTableMapping(companyId, leftPrimaryKey, rightPrimaryKey);
+			}
+		}
+
+		if (updated) {
+			leftToRightPortalCache.remove(leftPrimaryKey);
+		}
+
+		return updated;
+	}
+
+	@Override
+	public boolean addTableMappings(
+		long companyId, long[] newLeftPrimaryKeys, long rightPrimaryKey) {
+
+		long[] leftPrimaryKeys = getPrimaryKeys(
+			rightToLeftPortalCache, getLeftPrimaryKeysSqlQuery, rightPrimaryKey,
+			false);
+
+		boolean updated = false;
+
+		for (long leftPrimaryKey : newLeftPrimaryKeys) {
+			if (Arrays.binarySearch(leftPrimaryKeys, leftPrimaryKey) < 0) {
+				updated = true;
+
+				leftToRightPortalCache.remove(leftPrimaryKey);
+
+				doAddTableMapping(companyId, leftPrimaryKey, rightPrimaryKey);
+			}
+		}
+
+		if (updated) {
+			rightToLeftPortalCache.remove(rightPrimaryKey);
+		}
+
+		return updated;
 	}
 
 	@Override
@@ -183,51 +201,57 @@ public class TableMapperImpl<L extends BaseModel<L>, R extends BaseModel<R>>
 		leftToRightPortalCache.remove(leftPrimaryKey);
 		rightToLeftPortalCache.remove(rightPrimaryKey);
 
-		Class<R> rightModelClass = rightBasePersistence.getModelClass();
+		return doDeleteTableMapping(leftPrimaryKey, rightPrimaryKey);
+	}
 
-		ModelListener<L>[] leftModelListeners =
-			leftBasePersistence.getListeners();
+	@Override
+	public boolean deleteTableMappings(
+		long leftPrimaryKey, long[] oldRightPrimaryKeys) {
 
-		for (ModelListener<L> leftModelListener : leftModelListeners) {
-			leftModelListener.onBeforeRemoveAssociation(
-				leftPrimaryKey, rightModelClass.getName(), rightPrimaryKey);
-		}
+		long[] rightPrimaryKeys = getPrimaryKeys(
+			leftToRightPortalCache, getRightPrimaryKeysSqlQuery, leftPrimaryKey,
+			false);
 
-		Class<L> leftModelClass = leftBasePersistence.getModelClass();
+		boolean updated = false;
 
-		ModelListener<R>[] rightModelListeners =
-			rightBasePersistence.getListeners();
+		for (long rightPrimaryKey : oldRightPrimaryKeys) {
+			if (0 <= Arrays.binarySearch(rightPrimaryKeys, rightPrimaryKey)) {
+				rightToLeftPortalCache.remove(rightPrimaryKey);
 
-		for (ModelListener<R> rightModelListener : rightModelListeners) {
-			rightModelListener.onBeforeRemoveAssociation(
-				rightPrimaryKey, leftModelClass.getName(), leftPrimaryKey);
-		}
-
-		int rowCount = 0;
-
-		try {
-			rowCount = deleteTableMappingSqlUpdate.update(
-				leftPrimaryKey, rightPrimaryKey);
-		}
-		catch (Exception e) {
-			throw new SystemException(e);
-		}
-
-		if (rowCount > 0) {
-			for (ModelListener<L> leftModelListener : leftModelListeners) {
-				leftModelListener.onAfterRemoveAssociation(
-					leftPrimaryKey, rightModelClass.getName(), rightPrimaryKey);
+				if (doDeleteTableMapping(leftPrimaryKey, rightPrimaryKey)) {
+					updated = true;
+				}
 			}
-
-			for (ModelListener<R> rightModelListener : rightModelListeners) {
-				rightModelListener.onAfterRemoveAssociation(
-					rightPrimaryKey, leftModelClass.getName(), leftPrimaryKey);
-			}
-
-			return true;
 		}
 
-		return false;
+		leftToRightPortalCache.remove(leftPrimaryKey);
+
+		return updated;
+	}
+
+	@Override
+	public boolean deleteTableMappings(
+		long[] oldLeftPrimaryKeys, long rightPrimaryKey) {
+
+		long[] leftPrimaryKeys = getPrimaryKeys(
+			rightToLeftPortalCache, getLeftPrimaryKeysSqlQuery, rightPrimaryKey,
+			false);
+
+		boolean updated = false;
+
+		for (long leftPrimaryKey : oldLeftPrimaryKeys) {
+			if (0 <= Arrays.binarySearch(leftPrimaryKeys, leftPrimaryKey)) {
+				leftToRightPortalCache.remove(leftPrimaryKey);
+
+				if (doDeleteTableMapping(leftPrimaryKey, rightPrimaryKey)) {
+					updated = true;
+				}
+			}
+		}
+
+		rightToLeftPortalCache.remove(rightPrimaryKey);
+
+		return updated;
 	}
 
 	@Override
@@ -454,6 +478,98 @@ public class TableMapperImpl<L extends BaseModel<L>, R extends BaseModel<R>>
 		else {
 			return true;
 		}
+	}
+
+	protected void doAddTableMapping(
+		long companyId, long leftPrimaryKey, long rightPrimaryKey) {
+
+		Class<R> rightModelClass = rightBasePersistence.getModelClass();
+
+		ModelListener<L>[] leftModelListeners =
+			leftBasePersistence.getListeners();
+
+		for (ModelListener<L> leftModelListener : leftModelListeners) {
+			leftModelListener.onBeforeAddAssociation(
+				leftPrimaryKey, rightModelClass.getName(), rightPrimaryKey);
+		}
+
+		Class<L> leftModelClass = leftBasePersistence.getModelClass();
+
+		ModelListener<R>[] rightModelListeners =
+			rightBasePersistence.getListeners();
+
+		for (ModelListener<R> rightModelListener : rightModelListeners) {
+			rightModelListener.onBeforeAddAssociation(
+				rightPrimaryKey, leftModelClass.getName(), leftPrimaryKey);
+		}
+
+		try {
+			addTableMappingSqlUpdate.update(
+				companyId, leftPrimaryKey, rightPrimaryKey);
+		}
+		catch (Exception e) {
+			throw new SystemException(e);
+		}
+
+		for (ModelListener<L> leftModelListener : leftModelListeners) {
+			leftModelListener.onAfterAddAssociation(
+				leftPrimaryKey, rightModelClass.getName(), rightPrimaryKey);
+		}
+
+		for (ModelListener<R> rightModelListener : rightModelListeners) {
+			rightModelListener.onAfterAddAssociation(
+				rightPrimaryKey, leftModelClass.getName(), leftPrimaryKey);
+		}
+	}
+
+	protected boolean doDeleteTableMapping(
+		long leftPrimaryKey, long rightPrimaryKey) {
+
+		Class<R> rightModelClass = rightBasePersistence.getModelClass();
+
+		ModelListener<L>[] leftModelListeners =
+			leftBasePersistence.getListeners();
+
+		for (ModelListener<L> leftModelListener : leftModelListeners) {
+			leftModelListener.onBeforeRemoveAssociation(
+				leftPrimaryKey, rightModelClass.getName(), rightPrimaryKey);
+		}
+
+		Class<L> leftModelClass = leftBasePersistence.getModelClass();
+
+		ModelListener<R>[] rightModelListeners =
+			rightBasePersistence.getListeners();
+
+		for (ModelListener<R> rightModelListener : rightModelListeners) {
+			rightModelListener.onBeforeRemoveAssociation(
+				rightPrimaryKey, leftModelClass.getName(), leftPrimaryKey);
+		}
+
+		int rowCount = 0;
+
+		try {
+			rowCount = deleteTableMappingSqlUpdate.update(
+				leftPrimaryKey, rightPrimaryKey);
+		}
+		catch (Exception e) {
+			throw new SystemException(e);
+		}
+
+		if (rowCount > 0) {
+			for (ModelListener<L> leftModelListener : leftModelListeners) {
+				leftModelListener.onAfterRemoveAssociation(
+					leftPrimaryKey, rightModelClass.getName(), rightPrimaryKey);
+			}
+
+			for (ModelListener<R> rightModelListener : rightModelListeners) {
+				rightModelListener.onAfterRemoveAssociation(
+					rightPrimaryKey, leftModelClass.getName(), leftPrimaryKey);
+			}
+
+			return true;
+		}
+
+		return false;
 	}
 
 	protected SqlUpdate addTableMappingSqlUpdate;
