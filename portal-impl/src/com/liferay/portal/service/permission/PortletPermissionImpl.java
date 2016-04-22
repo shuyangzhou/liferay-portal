@@ -293,25 +293,35 @@ public class PortletPermissionImpl implements PortletPermission {
 				groupId, name, resourcePermissionPrimKey, actionId);
 		}
 
-		if ((layout instanceof VirtualLayout) && layout.isTypeControlPanel()) {
+		Group group = GroupLocalServiceUtil.fetchGroup(groupId);
+
+		if (group == null) {
+			group = layout.getGroup();
+
+			groupId = layout.getGroupId();
+		}
+
+		if ((group.isControlPanel() || layout.isTypeControlPanel()) &&
+			actionId.equals(ActionKeys.VIEW)) {
+
+			return true;
+		}
+
+		if (layout instanceof VirtualLayout) {
+			if (layout.isCustomizable() && !actionId.equals(ActionKeys.VIEW)) {
+				if (actionId.equals(ActionKeys.ADD_TO_PAGE)) {
+					return hasAddToPagePermission(
+						permissionChecker, layout, portletId, actionId);
+				}
+
+				return hasCustomizePermission(
+					permissionChecker, layout, portletId, actionId);
+			}
+
 			VirtualLayout virtualLayout = (VirtualLayout)layout;
 
 			layout = virtualLayout.getSourceLayout();
 		}
-
-		if (!actionId.equals(ActionKeys.VIEW) &&
-			(layout instanceof VirtualLayout)) {
-
-			if (actionId.equals(ActionKeys.ADD_TO_PAGE)) {
-				return hasAddToPagePermission(
-					permissionChecker, layout, portletId, actionId);
-			}
-
-			return hasCustomizePermission(
-				permissionChecker, layout, portletId, actionId);
-		}
-
-		Group group = layout.getGroup();
 
 		if (!group.isLayoutSetPrototype() &&
 			actionId.equals(ActionKeys.CONFIGURATION) &&
@@ -319,8 +329,6 @@ public class PortletPermissionImpl implements PortletPermission {
 
 			return false;
 		}
-
-		groupId = layout.getGroupId();
 
 		String rootPortletId = PortletConstants.getRootPortletId(portletId);
 
@@ -332,10 +340,6 @@ public class PortletPermissionImpl implements PortletPermission {
 			if (hasPermission != null) {
 				return hasPermission.booleanValue();
 			}
-		}
-
-		if (group.isControlPanel() && actionId.equals(ActionKeys.VIEW)) {
-			return true;
 		}
 
 		resourcePermissionPrimKey = getPrimaryKey(layout.getPlid(), portletId);

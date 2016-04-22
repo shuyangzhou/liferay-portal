@@ -266,7 +266,13 @@ boolean showRestoreButton = (searchTerms.getStatus() != WorkflowConstants.STATUS
 		}
 		else {
 			if (filterManageableOrganizations && !UserPermissionUtil.contains(permissionChecker, ResourceConstants.PRIMKEY_DNE, ActionKeys.VIEW)) {
-				userParams.put("usersOrgs", ArrayUtil.toLongArray(user.getOrganizationIds()));
+				long[] organizationIds = user.getOrganizationIds();
+
+				if (ArrayUtil.isEmpty(organizationIds)) {
+					organizationIds = new long[] {0};
+				}
+
+				userParams.put("usersOrgs", ArrayUtil.toLongArray(organizationIds));
 			}
 		}
 
