@@ -205,6 +205,12 @@ jdbc.counter.minIdle=0
 
 counter.jdbc.prefix=jdbc.counter.]]></echo>
 
+			<if>
+				<equals arg1="${database.type}" arg2="sybase" />
+				<then>
+					<echo file="@{properties.file}"><![CDATA[hibernate.jdbc.batch_size=0]]></echo>
+				</then>
+			</if>
 			<post-action />
 		</sequential>
 	</macrodef>
@@ -4925,6 +4931,15 @@ axis.servlet.hosts.allowed=
 
 tunnel.servlet.hosts.allowed=</echo>
 
+		<if>
+			<equals arg1="${database.type}" arg2="sybase" />
+			<then>
+				<echo file="portal-impl/src/portal-ext.properties" append="true">
+
+hibernate.jdbc.batch_size=0</echo>
+			</then>
+		</if>
+
 		<get-testcase-property property.name="captcha.max.challenges" />
 
 		<if>
@@ -6689,7 +6704,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 								<arg value="${database.username}" />
 								<arg value="-P" />
 								<arg value="${database.password}" />
-								<arg value="i" />
+								<arg value="-i" />
 								<arg value="create.sql" />
 							</exec>
 						</then>
