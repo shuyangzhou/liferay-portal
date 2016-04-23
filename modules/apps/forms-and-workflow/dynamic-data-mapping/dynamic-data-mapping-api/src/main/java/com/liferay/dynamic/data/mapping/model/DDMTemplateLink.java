@@ -55,6 +55,6 @@ public interface DDMTemplateLink extends DDMTemplateLinkModel, PersistedModel {
 			}
 		};
 
-	public DDMTemplate getTemplate()
+	public com.liferay.dynamic.data.mapping.model.DDMTemplate getTemplate()
 		throws com.liferay.portal.kernel.exception.PortalException;
 }

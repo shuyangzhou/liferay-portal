@@ -189,16 +189,6 @@ public class KaleoTaskAssignmentWrapper implements KaleoTaskAssignment,
 	}
 
 	@Override
-	public KaleoTaskAssignment toEscapedModel() {
-		return new KaleoTaskAssignmentWrapper(_kaleoTaskAssignment.toEscapedModel());
-	}
-
-	@Override
-	public KaleoTaskAssignment toUnescapedModel() {
-		return new KaleoTaskAssignmentWrapper(_kaleoTaskAssignment.toUnescapedModel());
-	}
-
-	@Override
 	public boolean isCachedModel() {
 		return _kaleoTaskAssignment.isCachedModel();
 	}
@@ -219,12 +209,23 @@ public class KaleoTaskAssignmentWrapper implements KaleoTaskAssignment,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<KaleoTaskAssignment> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<com.liferay.portal.workflow.kaleo.model.KaleoTaskAssignment> toCacheModel() {
 		return _kaleoTaskAssignment.toCacheModel();
 	}
 
 	@Override
-	public int compareTo(KaleoTaskAssignment kaleoTaskAssignment) {
+	public com.liferay.portal.workflow.kaleo.model.KaleoTaskAssignment toEscapedModel() {
+		return new KaleoTaskAssignmentWrapper(_kaleoTaskAssignment.toEscapedModel());
+	}
+
+	@Override
+	public com.liferay.portal.workflow.kaleo.model.KaleoTaskAssignment toUnescapedModel() {
+		return new KaleoTaskAssignmentWrapper(_kaleoTaskAssignment.toUnescapedModel());
+	}
+
+	@Override
+	public int compareTo(
+		com.liferay.portal.workflow.kaleo.model.KaleoTaskAssignment kaleoTaskAssignment) {
 		return _kaleoTaskAssignment.compareTo(kaleoTaskAssignment);
 	}
 

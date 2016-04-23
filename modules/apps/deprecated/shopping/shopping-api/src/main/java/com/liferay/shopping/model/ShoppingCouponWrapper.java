@@ -191,16 +191,6 @@ public class ShoppingCouponWrapper implements ShoppingCoupon,
 		}
 	}
 
-	@Override
-	public ShoppingCoupon toEscapedModel() {
-		return new ShoppingCouponWrapper(_shoppingCoupon.toEscapedModel());
-	}
-
-	@Override
-	public ShoppingCoupon toUnescapedModel() {
-		return new ShoppingCouponWrapper(_shoppingCoupon.toUnescapedModel());
-	}
-
 	/**
 	* Returns the active of this shopping coupon.
 	*
@@ -257,8 +247,18 @@ public class ShoppingCouponWrapper implements ShoppingCoupon,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<ShoppingCoupon> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<com.liferay.shopping.model.ShoppingCoupon> toCacheModel() {
 		return _shoppingCoupon.toCacheModel();
+	}
+
+	@Override
+	public com.liferay.shopping.model.ShoppingCoupon toEscapedModel() {
+		return new ShoppingCouponWrapper(_shoppingCoupon.toEscapedModel());
+	}
+
+	@Override
+	public com.liferay.shopping.model.ShoppingCoupon toUnescapedModel() {
+		return new ShoppingCouponWrapper(_shoppingCoupon.toUnescapedModel());
 	}
 
 	/**
@@ -282,7 +282,8 @@ public class ShoppingCouponWrapper implements ShoppingCoupon,
 	}
 
 	@Override
-	public int compareTo(ShoppingCoupon shoppingCoupon) {
+	public int compareTo(
+		com.liferay.shopping.model.ShoppingCoupon shoppingCoupon) {
 		return _shoppingCoupon.compareTo(shoppingCoupon);
 	}
 

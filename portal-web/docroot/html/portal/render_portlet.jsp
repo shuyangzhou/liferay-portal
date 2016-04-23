@@ -461,13 +461,13 @@ portletDisplay.setURLClose(urlClose);
 
 PortletURL urlConfiguration = PortletProviderUtil.getPortletURL(request, PortletConfigurationApplicationType.PortletConfiguration.CLASS_NAME, PortletProvider.Action.VIEW);
 
-if(urlConfiguration != null) {
+if (urlConfiguration != null) {
 	urlConfiguration.setWindowState(LiferayWindowState.POP_UP);
 
 	if (portlet.getConfigurationActionInstance() != null) {
 		urlConfiguration.setParameter("mvcPath", "/edit_configuration.jsp");
 
-		String settingsScope = (String) request.getAttribute(WebKeys.SETTINGS_SCOPE);
+		String settingsScope = (String)request.getAttribute(WebKeys.SETTINGS_SCOPE);
 
 		settingsScope = ParamUtil.get(request, "settingsScope", settingsScope);
 

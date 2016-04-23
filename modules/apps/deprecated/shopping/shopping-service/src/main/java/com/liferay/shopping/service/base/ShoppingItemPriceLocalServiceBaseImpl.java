@@ -481,7 +481,7 @@ public abstract class ShoppingItemPriceLocalServiceBaseImpl
 		}
 	}
 
-	@BeanReference(type = ShoppingItemPriceLocalService.class)
+	@BeanReference(type = com.liferay.shopping.service.ShoppingItemPriceLocalService.class)
 	protected ShoppingItemPriceLocalService shoppingItemPriceLocalService;
 	@BeanReference(type = ShoppingItemPricePersistence.class)
 	protected ShoppingItemPricePersistence shoppingItemPricePersistence;

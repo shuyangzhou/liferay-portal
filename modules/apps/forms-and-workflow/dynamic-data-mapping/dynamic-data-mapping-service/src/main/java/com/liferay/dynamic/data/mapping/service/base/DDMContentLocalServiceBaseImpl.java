@@ -572,7 +572,7 @@ public abstract class DDMContentLocalServiceBaseImpl
 		}
 	}
 
-	@BeanReference(type = DDMContentLocalService.class)
+	@BeanReference(type = com.liferay.dynamic.data.mapping.service.DDMContentLocalService.class)
 	protected DDMContentLocalService ddmContentLocalService;
 	@BeanReference(type = DDMContentPersistence.class)
 	protected DDMContentPersistence ddmContentPersistence;

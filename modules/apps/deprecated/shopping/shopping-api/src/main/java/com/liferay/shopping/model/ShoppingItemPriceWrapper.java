@@ -142,16 +142,6 @@ public class ShoppingItemPriceWrapper implements ShoppingItemPrice,
 		}
 	}
 
-	@Override
-	public ShoppingItemPrice toEscapedModel() {
-		return new ShoppingItemPriceWrapper(_shoppingItemPrice.toEscapedModel());
-	}
-
-	@Override
-	public ShoppingItemPrice toUnescapedModel() {
-		return new ShoppingItemPriceWrapper(_shoppingItemPrice.toUnescapedModel());
-	}
-
 	/**
 	* Returns the taxable of this shopping item price.
 	*
@@ -213,8 +203,18 @@ public class ShoppingItemPriceWrapper implements ShoppingItemPrice,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<ShoppingItemPrice> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<com.liferay.shopping.model.ShoppingItemPrice> toCacheModel() {
 		return _shoppingItemPrice.toCacheModel();
+	}
+
+	@Override
+	public com.liferay.shopping.model.ShoppingItemPrice toEscapedModel() {
+		return new ShoppingItemPriceWrapper(_shoppingItemPrice.toEscapedModel());
+	}
+
+	@Override
+	public com.liferay.shopping.model.ShoppingItemPrice toUnescapedModel() {
+		return new ShoppingItemPriceWrapper(_shoppingItemPrice.toUnescapedModel());
 	}
 
 	/**
@@ -248,7 +248,8 @@ public class ShoppingItemPriceWrapper implements ShoppingItemPrice,
 	}
 
 	@Override
-	public int compareTo(ShoppingItemPrice shoppingItemPrice) {
+	public int compareTo(
+		com.liferay.shopping.model.ShoppingItemPrice shoppingItemPrice) {
 		return _shoppingItemPrice.compareTo(shoppingItemPrice);
 	}
 

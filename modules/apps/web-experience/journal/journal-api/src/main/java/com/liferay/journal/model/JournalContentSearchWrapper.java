@@ -114,16 +114,6 @@ public class JournalContentSearchWrapper implements JournalContentSearch,
 		}
 	}
 
-	@Override
-	public JournalContentSearch toEscapedModel() {
-		return new JournalContentSearchWrapper(_journalContentSearch.toEscapedModel());
-	}
-
-	@Override
-	public JournalContentSearch toUnescapedModel() {
-		return new JournalContentSearchWrapper(_journalContentSearch.toUnescapedModel());
-	}
-
 	/**
 	* Returns the private layout of this journal content search.
 	*
@@ -165,12 +155,23 @@ public class JournalContentSearchWrapper implements JournalContentSearch,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<JournalContentSearch> toCacheModel() {
+	public com.liferay.journal.model.JournalContentSearch toEscapedModel() {
+		return new JournalContentSearchWrapper(_journalContentSearch.toEscapedModel());
+	}
+
+	@Override
+	public com.liferay.journal.model.JournalContentSearch toUnescapedModel() {
+		return new JournalContentSearchWrapper(_journalContentSearch.toUnescapedModel());
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<com.liferay.journal.model.JournalContentSearch> toCacheModel() {
 		return _journalContentSearch.toCacheModel();
 	}
 
 	@Override
-	public int compareTo(JournalContentSearch journalContentSearch) {
+	public int compareTo(
+		com.liferay.journal.model.JournalContentSearch journalContentSearch) {
 		return _journalContentSearch.compareTo(journalContentSearch);
 	}
 

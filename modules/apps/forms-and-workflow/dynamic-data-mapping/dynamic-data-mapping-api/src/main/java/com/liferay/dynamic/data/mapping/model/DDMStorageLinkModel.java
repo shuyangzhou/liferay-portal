@@ -201,19 +201,20 @@ public interface DDMStorageLinkModel extends AttachedModel,
 	public Object clone();
 
 	@Override
-	public int compareTo(DDMStorageLink ddmStorageLink);
+	public int compareTo(
+		com.liferay.dynamic.data.mapping.model.DDMStorageLink ddmStorageLink);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<DDMStorageLink> toCacheModel();
+	public CacheModel<com.liferay.dynamic.data.mapping.model.DDMStorageLink> toCacheModel();
 
 	@Override
-	public DDMStorageLink toEscapedModel();
+	public com.liferay.dynamic.data.mapping.model.DDMStorageLink toEscapedModel();
 
 	@Override
-	public DDMStorageLink toUnescapedModel();
+	public com.liferay.dynamic.data.mapping.model.DDMStorageLink toUnescapedModel();
 
 	@Override
 	public String toString();
