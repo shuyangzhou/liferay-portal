@@ -115,8 +115,8 @@ public class DBUpgrader {
 					(stopWatch.getTime() / Time.SECOND) + " seconds");
 
 			System.out.println(
-				"Running modules upgrades. Connect to your Gogo Shell to " +
-					"check the status.");
+				"Running modules upgrades. Connect to Gogo shell to check " +
+					"the status.");
 		}
 		catch (Exception e) {
 			e.printStackTrace();

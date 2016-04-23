@@ -14,12 +14,14 @@
 
 package com.liferay.portal.cluster.single.internal;
 
+import com.liferay.portal.cluster.single.SingleClusterFilter;
 import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
 import com.liferay.portal.kernel.cluster.ClusterMasterTokenTransitionListener;
 import com.liferay.portal.kernel.concurrent.NoticeableFuture;
 import com.liferay.portal.kernel.util.MethodHandler;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Michael C. Han
@@ -54,6 +56,11 @@ public class SingleClusterMasterExecutor implements ClusterMasterExecutor {
 	public void removeClusterMasterTokenTransitionListener(
 		ClusterMasterTokenTransitionListener
 			clusterMasterTokenTransitionListener) {
+	}
+
+	@Reference(unbind = "-")
+	protected void setSingleClusterFilter(
+		SingleClusterFilter singleClusterFilter) {
 	}
 
 }

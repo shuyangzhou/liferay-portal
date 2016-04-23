@@ -494,19 +494,20 @@ public interface DDMDataProviderInstanceModel extends BaseModel<DDMDataProviderI
 	public Object clone();
 
 	@Override
-	public int compareTo(DDMDataProviderInstance ddmDataProviderInstance);
+	public int compareTo(
+		com.liferay.dynamic.data.mapping.model.DDMDataProviderInstance ddmDataProviderInstance);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<DDMDataProviderInstance> toCacheModel();
+	public CacheModel<com.liferay.dynamic.data.mapping.model.DDMDataProviderInstance> toCacheModel();
 
 	@Override
-	public DDMDataProviderInstance toEscapedModel();
+	public com.liferay.dynamic.data.mapping.model.DDMDataProviderInstance toEscapedModel();
 
 	@Override
-	public DDMDataProviderInstance toUnescapedModel();
+	public com.liferay.dynamic.data.mapping.model.DDMDataProviderInstance toUnescapedModel();
 
 	@Override
 	public String toString();

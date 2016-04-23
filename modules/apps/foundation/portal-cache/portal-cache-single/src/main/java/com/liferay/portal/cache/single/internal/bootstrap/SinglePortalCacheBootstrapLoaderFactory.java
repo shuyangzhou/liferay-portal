@@ -16,10 +16,12 @@ package com.liferay.portal.cache.single.internal.bootstrap;
 
 import com.liferay.portal.cache.PortalCacheBootstrapLoader;
 import com.liferay.portal.cache.PortalCacheBootstrapLoaderFactory;
+import com.liferay.portal.cluster.single.SingleClusterFilter;
 
 import java.util.Properties;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Tina Tian
@@ -31,6 +33,11 @@ public class SinglePortalCacheBootstrapLoaderFactory
 	@Override
 	public PortalCacheBootstrapLoader create(Properties properties) {
 		return null;
+	}
+
+	@Reference(unbind = "-")
+	protected void setSingleClusterFilter(
+		SingleClusterFilter singleClusterFilter) {
 	}
 
 }

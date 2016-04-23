@@ -299,19 +299,19 @@ public interface LockModel extends BaseModel<Lock>, MVCCModel, ShardedModel {
 	public Object clone();
 
 	@Override
-	public int compareTo(Lock lock);
+	public int compareTo(com.liferay.portal.lock.model.Lock lock);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<Lock> toCacheModel();
+	public CacheModel<com.liferay.portal.lock.model.Lock> toCacheModel();
 
 	@Override
-	public Lock toEscapedModel();
+	public com.liferay.portal.lock.model.Lock toEscapedModel();
 
 	@Override
-	public Lock toUnescapedModel();
+	public com.liferay.portal.lock.model.Lock toUnescapedModel();
 
 	@Override
 	public String toString();

@@ -134,16 +134,6 @@ public class UserThreadWrapper implements UserThread, ModelWrapper<UserThread> {
 		}
 	}
 
-	@Override
-	public UserThread toEscapedModel() {
-		return new UserThreadWrapper(_userThread.toEscapedModel());
-	}
-
-	@Override
-	public UserThread toUnescapedModel() {
-		return new UserThreadWrapper(_userThread.toUnescapedModel());
-	}
-
 	/**
 	* Returns the deleted of this user thread.
 	*
@@ -205,12 +195,23 @@ public class UserThreadWrapper implements UserThread, ModelWrapper<UserThread> {
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<UserThread> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<com.liferay.social.privatemessaging.model.UserThread> toCacheModel() {
 		return _userThread.toCacheModel();
 	}
 
 	@Override
-	public int compareTo(UserThread userThread) {
+	public com.liferay.social.privatemessaging.model.UserThread toEscapedModel() {
+		return new UserThreadWrapper(_userThread.toEscapedModel());
+	}
+
+	@Override
+	public com.liferay.social.privatemessaging.model.UserThread toUnescapedModel() {
+		return new UserThreadWrapper(_userThread.toUnescapedModel());
+	}
+
+	@Override
+	public int compareTo(
+		com.liferay.social.privatemessaging.model.UserThread userThread) {
 		return _userThread.compareTo(userThread);
 	}
 

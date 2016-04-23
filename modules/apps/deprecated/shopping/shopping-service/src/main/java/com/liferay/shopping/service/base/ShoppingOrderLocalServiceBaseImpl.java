@@ -709,7 +709,7 @@ public abstract class ShoppingOrderLocalServiceBaseImpl
 		}
 	}
 
-	@BeanReference(type = ShoppingOrderLocalService.class)
+	@BeanReference(type = com.liferay.shopping.service.ShoppingOrderLocalService.class)
 	protected ShoppingOrderLocalService shoppingOrderLocalService;
 	@BeanReference(type = ShoppingOrderPersistence.class)
 	protected ShoppingOrderPersistence shoppingOrderPersistence;

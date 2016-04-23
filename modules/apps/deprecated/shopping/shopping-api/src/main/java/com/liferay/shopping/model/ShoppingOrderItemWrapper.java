@@ -143,16 +143,6 @@ public class ShoppingOrderItemWrapper implements ShoppingOrderItem,
 	}
 
 	@Override
-	public ShoppingOrderItem toEscapedModel() {
-		return new ShoppingOrderItemWrapper(_shoppingOrderItem.toEscapedModel());
-	}
-
-	@Override
-	public ShoppingOrderItem toUnescapedModel() {
-		return new ShoppingOrderItemWrapper(_shoppingOrderItem.toUnescapedModel());
-	}
-
-	@Override
 	public boolean isCachedModel() {
 		return _shoppingOrderItem.isCachedModel();
 	}
@@ -173,8 +163,18 @@ public class ShoppingOrderItemWrapper implements ShoppingOrderItem,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<ShoppingOrderItem> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<com.liferay.shopping.model.ShoppingOrderItem> toCacheModel() {
 		return _shoppingOrderItem.toCacheModel();
+	}
+
+	@Override
+	public com.liferay.shopping.model.ShoppingOrderItem toEscapedModel() {
+		return new ShoppingOrderItemWrapper(_shoppingOrderItem.toEscapedModel());
+	}
+
+	@Override
+	public com.liferay.shopping.model.ShoppingOrderItem toUnescapedModel() {
+		return new ShoppingOrderItemWrapper(_shoppingOrderItem.toUnescapedModel());
 	}
 
 	/**
@@ -188,7 +188,8 @@ public class ShoppingOrderItemWrapper implements ShoppingOrderItem,
 	}
 
 	@Override
-	public int compareTo(ShoppingOrderItem shoppingOrderItem) {
+	public int compareTo(
+		com.liferay.shopping.model.ShoppingOrderItem shoppingOrderItem) {
 		return _shoppingOrderItem.compareTo(shoppingOrderItem);
 	}
 

@@ -55,15 +55,15 @@ public interface KaleoInstance extends KaleoInstanceModel, PersistedModel {
 			}
 		};
 
-	public KaleoDefinition getKaleoDefinition()
+	public com.liferay.portal.workflow.kaleo.model.KaleoDefinition getKaleoDefinition()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public KaleoInstanceToken getRootKaleoInstanceToken(
+	public com.liferay.portal.workflow.kaleo.model.KaleoInstanceToken getRootKaleoInstanceToken(
 		java.util.Map<java.lang.String, java.io.Serializable> workflowContext,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public KaleoInstanceToken getRootKaleoInstanceToken(
+	public com.liferay.portal.workflow.kaleo.model.KaleoInstanceToken getRootKaleoInstanceToken(
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException;
 }

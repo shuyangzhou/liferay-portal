@@ -54,13 +54,14 @@ public interface KaleoNode extends KaleoNodeModel, PersistedModel {
 			}
 		};
 
-	public KaleoTransition getDefaultKaleoTransition()
+	public com.liferay.portal.workflow.kaleo.model.KaleoTransition getDefaultKaleoTransition()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public KaleoTransition getKaleoTransition(java.lang.String name)
+	public com.liferay.portal.workflow.kaleo.model.KaleoTransition getKaleoTransition(
+		java.lang.String name)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public java.util.List<KaleoTransition> getKaleoTransitions();
+	public java.util.List<com.liferay.portal.workflow.kaleo.model.KaleoTransition> getKaleoTransitions();
 
 	public boolean hasKaleoTransition();
 }

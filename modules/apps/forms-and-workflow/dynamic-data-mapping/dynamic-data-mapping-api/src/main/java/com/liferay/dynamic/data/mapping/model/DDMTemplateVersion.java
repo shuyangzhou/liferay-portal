@@ -56,6 +56,6 @@ public interface DDMTemplateVersion extends DDMTemplateVersionModel,
 			}
 		};
 
-	public DDMTemplate getTemplate()
+	public com.liferay.dynamic.data.mapping.model.DDMTemplate getTemplate()
 		throws com.liferay.portal.kernel.exception.PortalException;
 }

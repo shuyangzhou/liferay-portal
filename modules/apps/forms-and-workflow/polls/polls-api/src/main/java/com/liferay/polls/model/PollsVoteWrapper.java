@@ -151,22 +151,6 @@ public class PollsVoteWrapper implements PollsVote, ModelWrapper<PollsVote> {
 	}
 
 	@Override
-	public PollsChoice getChoice()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _pollsVote.getChoice();
-	}
-
-	@Override
-	public PollsVote toEscapedModel() {
-		return new PollsVoteWrapper(_pollsVote.toEscapedModel());
-	}
-
-	@Override
-	public PollsVote toUnescapedModel() {
-		return new PollsVoteWrapper(_pollsVote.toUnescapedModel());
-	}
-
-	@Override
 	public boolean isCachedModel() {
 		return _pollsVote.isCachedModel();
 	}
@@ -187,12 +171,28 @@ public class PollsVoteWrapper implements PollsVote, ModelWrapper<PollsVote> {
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<PollsVote> toCacheModel() {
+	public com.liferay.polls.model.PollsChoice getChoice()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _pollsVote.getChoice();
+	}
+
+	@Override
+	public com.liferay.polls.model.PollsVote toEscapedModel() {
+		return new PollsVoteWrapper(_pollsVote.toEscapedModel());
+	}
+
+	@Override
+	public com.liferay.polls.model.PollsVote toUnescapedModel() {
+		return new PollsVoteWrapper(_pollsVote.toUnescapedModel());
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<com.liferay.polls.model.PollsVote> toCacheModel() {
 		return _pollsVote.toCacheModel();
 	}
 
 	@Override
-	public int compareTo(PollsVote pollsVote) {
+	public int compareTo(com.liferay.polls.model.PollsVote pollsVote) {
 		return _pollsVote.compareTo(pollsVote);
 	}
 

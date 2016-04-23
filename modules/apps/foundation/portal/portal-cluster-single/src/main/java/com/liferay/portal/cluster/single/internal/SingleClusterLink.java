@@ -14,12 +14,14 @@
 
 package com.liferay.portal.cluster.single.internal;
 
+import com.liferay.portal.cluster.single.SingleClusterFilter;
 import com.liferay.portal.kernel.cluster.Address;
 import com.liferay.portal.kernel.cluster.ClusterLink;
 import com.liferay.portal.kernel.cluster.Priority;
 import com.liferay.portal.kernel.messaging.Message;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Shuyang Zhou
@@ -39,6 +41,11 @@ public class SingleClusterLink implements ClusterLink {
 	@Override
 	public void sendUnicastMessage(
 		Address address, Message message, Priority priority) {
+	}
+
+	@Reference(unbind = "-")
+	protected void setSingleClusterFilter(
+		SingleClusterFilter singleClusterFilter) {
 	}
 
 }

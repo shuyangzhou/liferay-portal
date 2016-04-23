@@ -419,19 +419,20 @@ public interface DDLRecordVersionModel extends BaseModel<DDLRecordVersion>,
 	public Object clone();
 
 	@Override
-	public int compareTo(DDLRecordVersion ddlRecordVersion);
+	public int compareTo(
+		com.liferay.dynamic.data.lists.model.DDLRecordVersion ddlRecordVersion);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<DDLRecordVersion> toCacheModel();
+	public CacheModel<com.liferay.dynamic.data.lists.model.DDLRecordVersion> toCacheModel();
 
 	@Override
-	public DDLRecordVersion toEscapedModel();
+	public com.liferay.dynamic.data.lists.model.DDLRecordVersion toEscapedModel();
 
 	@Override
-	public DDLRecordVersion toUnescapedModel();
+	public com.liferay.dynamic.data.lists.model.DDLRecordVersion toUnescapedModel();
 
 	@Override
 	public String toString();

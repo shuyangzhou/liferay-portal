@@ -14,6 +14,7 @@
 
 package com.liferay.portal.cluster.single.internal;
 
+import com.liferay.portal.cluster.single.SingleClusterFilter;
 import com.liferay.portal.kernel.cluster.ClusterEventListener;
 import com.liferay.portal.kernel.cluster.ClusterExecutor;
 import com.liferay.portal.kernel.cluster.ClusterNode;
@@ -27,6 +28,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Tina Tian
@@ -82,6 +84,11 @@ public class SingleClusterExecutor implements ClusterExecutor {
 	@Override
 	public void removeClusterEventListener(
 		ClusterEventListener clusterEventListener) {
+	}
+
+	@Reference(unbind = "-")
+	protected void setSingleClusterFilter(
+		SingleClusterFilter singleClusterFilter) {
 	}
 
 }

@@ -179,16 +179,6 @@ public class MDRActionWrapper implements MDRAction, ModelWrapper<MDRAction> {
 	}
 
 	@Override
-	public MDRAction toEscapedModel() {
-		return new MDRActionWrapper(_mdrAction.toEscapedModel());
-	}
-
-	@Override
-	public MDRAction toUnescapedModel() {
-		return new MDRActionWrapper(_mdrAction.toUnescapedModel());
-	}
-
-	@Override
 	public boolean isCachedModel() {
 		return _mdrAction.isCachedModel();
 	}
@@ -209,7 +199,17 @@ public class MDRActionWrapper implements MDRAction, ModelWrapper<MDRAction> {
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<MDRAction> toCacheModel() {
+	public com.liferay.mobile.device.rules.model.MDRAction toEscapedModel() {
+		return new MDRActionWrapper(_mdrAction.toEscapedModel());
+	}
+
+	@Override
+	public com.liferay.mobile.device.rules.model.MDRAction toUnescapedModel() {
+		return new MDRActionWrapper(_mdrAction.toUnescapedModel());
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<com.liferay.mobile.device.rules.model.MDRAction> toCacheModel() {
 		return _mdrAction.toCacheModel();
 	}
 
@@ -219,7 +219,8 @@ public class MDRActionWrapper implements MDRAction, ModelWrapper<MDRAction> {
 	}
 
 	@Override
-	public int compareTo(MDRAction mdrAction) {
+	public int compareTo(
+		com.liferay.mobile.device.rules.model.MDRAction mdrAction) {
 		return _mdrAction.compareTo(mdrAction);
 	}
 

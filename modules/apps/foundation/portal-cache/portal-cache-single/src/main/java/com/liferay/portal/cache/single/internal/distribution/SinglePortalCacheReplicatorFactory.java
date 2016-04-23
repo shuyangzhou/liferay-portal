@@ -16,12 +16,14 @@ package com.liferay.portal.cache.single.internal.distribution;
 
 import com.liferay.portal.cache.PortalCacheReplicator;
 import com.liferay.portal.cache.PortalCacheReplicatorFactory;
+import com.liferay.portal.cluster.single.SingleClusterFilter;
 
 import java.io.Serializable;
 
 import java.util.Properties;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Tina Tian
@@ -35,6 +37,11 @@ public class SinglePortalCacheReplicatorFactory
 		PortalCacheReplicator<K, V> create(Properties properties) {
 
 		return null;
+	}
+
+	@Reference(unbind = "-")
+	protected void setSingleClusterFilter(
+		SingleClusterFilter singleClusterFilter) {
 	}
 
 }

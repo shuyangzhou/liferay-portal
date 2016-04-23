@@ -154,16 +154,6 @@ public class DDMDataProviderInstanceWrapper implements DDMDataProviderInstance,
 	}
 
 	@Override
-	public DDMDataProviderInstance toEscapedModel() {
-		return new DDMDataProviderInstanceWrapper(_ddmDataProviderInstance.toEscapedModel());
-	}
-
-	@Override
-	public DDMDataProviderInstance toUnescapedModel() {
-		return new DDMDataProviderInstanceWrapper(_ddmDataProviderInstance.toUnescapedModel());
-	}
-
-	@Override
 	public boolean isCachedModel() {
 		return _ddmDataProviderInstance.isCachedModel();
 	}
@@ -179,17 +169,28 @@ public class DDMDataProviderInstanceWrapper implements DDMDataProviderInstance,
 	}
 
 	@Override
+	public com.liferay.dynamic.data.mapping.model.DDMDataProviderInstance toEscapedModel() {
+		return new DDMDataProviderInstanceWrapper(_ddmDataProviderInstance.toEscapedModel());
+	}
+
+	@Override
+	public com.liferay.dynamic.data.mapping.model.DDMDataProviderInstance toUnescapedModel() {
+		return new DDMDataProviderInstanceWrapper(_ddmDataProviderInstance.toUnescapedModel());
+	}
+
+	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _ddmDataProviderInstance.getExpandoBridge();
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<DDMDataProviderInstance> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<com.liferay.dynamic.data.mapping.model.DDMDataProviderInstance> toCacheModel() {
 		return _ddmDataProviderInstance.toCacheModel();
 	}
 
 	@Override
-	public int compareTo(DDMDataProviderInstance ddmDataProviderInstance) {
+	public int compareTo(
+		com.liferay.dynamic.data.mapping.model.DDMDataProviderInstance ddmDataProviderInstance) {
 		return _ddmDataProviderInstance.compareTo(ddmDataProviderInstance);
 	}
 

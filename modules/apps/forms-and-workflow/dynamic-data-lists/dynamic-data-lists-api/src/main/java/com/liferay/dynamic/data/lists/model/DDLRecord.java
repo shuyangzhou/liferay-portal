@@ -67,16 +67,17 @@ public interface DDLRecord extends DDLRecordModel, PersistedModel {
 	public java.io.Serializable getFieldType(java.lang.String fieldName)
 		throws java.lang.Exception;
 
-	public DDLRecordVersion getLatestRecordVersion()
+	public com.liferay.dynamic.data.lists.model.DDLRecordVersion getLatestRecordVersion()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public DDLRecordSet getRecordSet()
+	public com.liferay.dynamic.data.lists.model.DDLRecordSet getRecordSet()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public DDLRecordVersion getRecordVersion()
+	public com.liferay.dynamic.data.lists.model.DDLRecordVersion getRecordVersion()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public DDLRecordVersion getRecordVersion(java.lang.String version)
+	public com.liferay.dynamic.data.lists.model.DDLRecordVersion getRecordVersion(
+		java.lang.String version)
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public int getStatus()

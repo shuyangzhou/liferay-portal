@@ -107,16 +107,6 @@ public class ShoppingItemFieldWrapper implements ShoppingItemField,
 	}
 
 	@Override
-	public ShoppingItemField toEscapedModel() {
-		return new ShoppingItemFieldWrapper(_shoppingItemField.toEscapedModel());
-	}
-
-	@Override
-	public ShoppingItemField toUnescapedModel() {
-		return new ShoppingItemFieldWrapper(_shoppingItemField.toUnescapedModel());
-	}
-
-	@Override
 	public boolean isCachedModel() {
 		return _shoppingItemField.isCachedModel();
 	}
@@ -137,12 +127,23 @@ public class ShoppingItemFieldWrapper implements ShoppingItemField,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<ShoppingItemField> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<com.liferay.shopping.model.ShoppingItemField> toCacheModel() {
 		return _shoppingItemField.toCacheModel();
 	}
 
 	@Override
-	public int compareTo(ShoppingItemField shoppingItemField) {
+	public com.liferay.shopping.model.ShoppingItemField toEscapedModel() {
+		return new ShoppingItemFieldWrapper(_shoppingItemField.toEscapedModel());
+	}
+
+	@Override
+	public com.liferay.shopping.model.ShoppingItemField toUnescapedModel() {
+		return new ShoppingItemFieldWrapper(_shoppingItemField.toUnescapedModel());
+	}
+
+	@Override
+	public int compareTo(
+		com.liferay.shopping.model.ShoppingItemField shoppingItemField) {
 		return _shoppingItemField.compareTo(shoppingItemField);
 	}
 

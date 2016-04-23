@@ -305,28 +305,6 @@ public class JournalArticleWrapper implements JournalArticle,
 		}
 	}
 
-	@Override
-	public JournalArticle toEscapedModel() {
-		return new JournalArticleWrapper(_journalArticle.toEscapedModel());
-	}
-
-	@Override
-	public JournalArticle toUnescapedModel() {
-		return new JournalArticleWrapper(_journalArticle.toUnescapedModel());
-	}
-
-	@Override
-	public JournalArticleResource getArticleResource()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _journalArticle.getArticleResource();
-	}
-
-	@Override
-	public JournalFolder getFolder()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _journalArticle.getFolder();
-	}
-
 	/**
 	* Returns the indexable of this journal article.
 	*
@@ -529,7 +507,29 @@ public class JournalArticleWrapper implements JournalArticle,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<JournalArticle> toCacheModel() {
+	public com.liferay.journal.model.JournalArticle toEscapedModel() {
+		return new JournalArticleWrapper(_journalArticle.toEscapedModel());
+	}
+
+	@Override
+	public com.liferay.journal.model.JournalArticle toUnescapedModel() {
+		return new JournalArticleWrapper(_journalArticle.toUnescapedModel());
+	}
+
+	@Override
+	public com.liferay.journal.model.JournalArticleResource getArticleResource()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _journalArticle.getArticleResource();
+	}
+
+	@Override
+	public com.liferay.journal.model.JournalFolder getFolder()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _journalArticle.getFolder();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<com.liferay.journal.model.JournalArticle> toCacheModel() {
 		return _journalArticle.toCacheModel();
 	}
 
@@ -575,7 +575,8 @@ public class JournalArticleWrapper implements JournalArticle,
 	}
 
 	@Override
-	public int compareTo(JournalArticle journalArticle) {
+	public int compareTo(
+		com.liferay.journal.model.JournalArticle journalArticle) {
 		return _journalArticle.compareTo(journalArticle);
 	}
 
