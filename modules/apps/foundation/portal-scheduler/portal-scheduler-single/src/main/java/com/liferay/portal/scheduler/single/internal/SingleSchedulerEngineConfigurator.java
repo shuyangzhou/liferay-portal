@@ -14,6 +14,7 @@
 
 package com.liferay.portal.scheduler.single.internal;
 
+import com.liferay.portal.cluster.single.SingleClusterFilter;
 import com.liferay.portal.kernel.messaging.sender.SingleDestinationMessageSenderFactory;
 import com.liferay.portal.kernel.scheduler.SchedulerEngine;
 import com.liferay.portal.scheduler.BaseSchedulerEngineConfigurator;
@@ -45,6 +46,11 @@ public class SingleSchedulerEngineConfigurator
 		if (_schedulerEngineServiceRegistration != null) {
 			_schedulerEngineServiceRegistration.unregister();
 		}
+	}
+
+	@Reference(unbind = "-")
+	protected void setSingleClusterFilter(
+		SingleClusterFilter singleClusterFilter) {
 	}
 
 	@Reference(unbind = "-")
