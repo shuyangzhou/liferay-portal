@@ -1,5 +1,7 @@
+Bundle-Activator: com.liferay.portal.cluster.single.activator.SingleClusterActivator
 Bundle-Name: Liferay Portal Cluster Single
 Bundle-SymbolicName: com.liferay.portal.cluster.single
 Bundle-Version: 2.0.1
+Export-Package: com.liferay.portal.cluster.single
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title:
