@@ -12,32 +12,30 @@
  * details.
  */
 
-package com.liferay.portal.cache.single.internal.distribution;
+package com.liferay.portal.scheduler.single.internal;
 
-import com.liferay.portal.cache.PortalCacheReplicator;
-import com.liferay.portal.cache.PortalCacheReplicatorFactory;
+import com.liferay.portal.kernel.util.ReleaseInfo;
 
-import java.io.Serializable;
-
-import java.util.Properties;
-
+import org.osgi.service.component.ComponentContext;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 
 /**
- * @author Tina Tian
+ * @author Shuyang Zhou
  */
-@Component(
-	enabled = false, immediate = true,
-	service = PortalCacheReplicatorFactory.class
-)
-public class SinglePortalCacheReplicatorFactory
-	implements PortalCacheReplicatorFactory {
+@Component(immediate = true)
+public class GateKeeper {
 
-	@Override
-	public <K extends Serializable, V extends Serializable>
-		PortalCacheReplicator<K, V> create(Properties properties) {
+	@Activate
+	public void activate(ComponentContext componentContext) {
+		String name = ReleaseInfo.getName();
 
-		return null;
+		if (!name.contains("Community")) {
+			return;
+		}
+
+		componentContext.enableComponent(
+			SingleSchedulerEngineConfigurator.class.getName());
 	}
 
 }

@@ -24,7 +24,9 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Michael C. Han
  */
-@Component(immediate = true, service = ClusterMasterExecutor.class)
+@Component(
+	enabled = false, immediate = true, service = ClusterMasterExecutor.class
+)
 public class SingleClusterMasterExecutor implements ClusterMasterExecutor {
 
 	@Override
