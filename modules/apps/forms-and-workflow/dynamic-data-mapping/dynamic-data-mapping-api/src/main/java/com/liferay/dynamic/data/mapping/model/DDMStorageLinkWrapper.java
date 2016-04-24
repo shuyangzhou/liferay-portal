@@ -107,22 +107,6 @@ public class DDMStorageLinkWrapper implements DDMStorageLink,
 	}
 
 	@Override
-	public DDMStorageLink toEscapedModel() {
-		return new DDMStorageLinkWrapper(_ddmStorageLink.toEscapedModel());
-	}
-
-	@Override
-	public DDMStorageLink toUnescapedModel() {
-		return new DDMStorageLinkWrapper(_ddmStorageLink.toUnescapedModel());
-	}
-
-	@Override
-	public DDMStructure getStructure()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ddmStorageLink.getStructure();
-	}
-
-	@Override
 	public boolean isCachedModel() {
 		return _ddmStorageLink.isCachedModel();
 	}
@@ -138,17 +122,34 @@ public class DDMStorageLinkWrapper implements DDMStorageLink,
 	}
 
 	@Override
+	public com.liferay.dynamic.data.mapping.model.DDMStorageLink toEscapedModel() {
+		return new DDMStorageLinkWrapper(_ddmStorageLink.toEscapedModel());
+	}
+
+	@Override
+	public com.liferay.dynamic.data.mapping.model.DDMStorageLink toUnescapedModel() {
+		return new DDMStorageLinkWrapper(_ddmStorageLink.toUnescapedModel());
+	}
+
+	@Override
+	public com.liferay.dynamic.data.mapping.model.DDMStructure getStructure()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ddmStorageLink.getStructure();
+	}
+
+	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _ddmStorageLink.getExpandoBridge();
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<DDMStorageLink> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<com.liferay.dynamic.data.mapping.model.DDMStorageLink> toCacheModel() {
 		return _ddmStorageLink.toCacheModel();
 	}
 
 	@Override
-	public int compareTo(DDMStorageLink ddmStorageLink) {
+	public int compareTo(
+		com.liferay.dynamic.data.mapping.model.DDMStorageLink ddmStorageLink) {
 		return _ddmStorageLink.compareTo(ddmStorageLink);
 	}
 

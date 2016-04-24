@@ -272,6 +272,10 @@ public class KaleoTaskInstanceTokenFinderImpl
 				"DISTINCT KaleoTaskInstanceToken.kaleoTaskInstanceTokenId");
 
 			for (String orderByField : orderByFields) {
+				if (orderByField.equals("kaleoTaskInstanceTokenId")) {
+					continue;
+				}
+
 				sb.append(", ");
 				sb.append(_ORDER_BY_ENTITY_ALIAS);
 				sb.append(orderByField);

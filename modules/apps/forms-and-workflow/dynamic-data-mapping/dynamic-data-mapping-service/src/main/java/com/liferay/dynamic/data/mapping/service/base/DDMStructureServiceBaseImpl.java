@@ -677,7 +677,7 @@ public abstract class DDMStructureServiceBaseImpl extends BaseServiceImpl
 
 	@BeanReference(type = com.liferay.dynamic.data.mapping.service.DDMStructureLocalService.class)
 	protected com.liferay.dynamic.data.mapping.service.DDMStructureLocalService ddmStructureLocalService;
-	@BeanReference(type = DDMStructureService.class)
+	@BeanReference(type = com.liferay.dynamic.data.mapping.service.DDMStructureService.class)
 	protected DDMStructureService ddmStructureService;
 	@BeanReference(type = DDMStructurePersistence.class)
 	protected DDMStructurePersistence ddmStructurePersistence;

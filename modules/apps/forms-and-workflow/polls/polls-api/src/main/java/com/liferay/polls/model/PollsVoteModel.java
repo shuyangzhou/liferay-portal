@@ -304,19 +304,19 @@ public interface PollsVoteModel extends BaseModel<PollsVote>, ShardedModel,
 	public Object clone();
 
 	@Override
-	public int compareTo(PollsVote pollsVote);
+	public int compareTo(com.liferay.polls.model.PollsVote pollsVote);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<PollsVote> toCacheModel();
+	public CacheModel<com.liferay.polls.model.PollsVote> toCacheModel();
 
 	@Override
-	public PollsVote toEscapedModel();
+	public com.liferay.polls.model.PollsVote toEscapedModel();
 
 	@Override
-	public PollsVote toUnescapedModel();
+	public com.liferay.polls.model.PollsVote toUnescapedModel();
 
 	@Override
 	public String toString();

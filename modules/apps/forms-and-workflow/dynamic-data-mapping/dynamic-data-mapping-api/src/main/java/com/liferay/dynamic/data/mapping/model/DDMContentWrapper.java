@@ -144,16 +144,6 @@ public class DDMContentWrapper implements DDMContent, ModelWrapper<DDMContent> {
 	}
 
 	@Override
-	public DDMContent toEscapedModel() {
-		return new DDMContentWrapper(_ddmContent.toEscapedModel());
-	}
-
-	@Override
-	public DDMContent toUnescapedModel() {
-		return new DDMContentWrapper(_ddmContent.toUnescapedModel());
-	}
-
-	@Override
 	public boolean isCachedModel() {
 		return _ddmContent.isCachedModel();
 	}
@@ -169,17 +159,28 @@ public class DDMContentWrapper implements DDMContent, ModelWrapper<DDMContent> {
 	}
 
 	@Override
+	public com.liferay.dynamic.data.mapping.model.DDMContent toEscapedModel() {
+		return new DDMContentWrapper(_ddmContent.toEscapedModel());
+	}
+
+	@Override
+	public com.liferay.dynamic.data.mapping.model.DDMContent toUnescapedModel() {
+		return new DDMContentWrapper(_ddmContent.toUnescapedModel());
+	}
+
+	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _ddmContent.getExpandoBridge();
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<DDMContent> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<com.liferay.dynamic.data.mapping.model.DDMContent> toCacheModel() {
 		return _ddmContent.toCacheModel();
 	}
 
 	@Override
-	public int compareTo(DDMContent ddmContent) {
+	public int compareTo(
+		com.liferay.dynamic.data.mapping.model.DDMContent ddmContent) {
 		return _ddmContent.compareTo(ddmContent);
 	}
 

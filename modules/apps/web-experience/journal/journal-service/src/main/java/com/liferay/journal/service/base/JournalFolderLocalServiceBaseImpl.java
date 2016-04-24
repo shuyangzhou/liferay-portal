@@ -1139,7 +1139,7 @@ public abstract class JournalFolderLocalServiceBaseImpl
 		}
 	}
 
-	@BeanReference(type = JournalFolderLocalService.class)
+	@BeanReference(type = com.liferay.journal.service.JournalFolderLocalService.class)
 	protected JournalFolderLocalService journalFolderLocalService;
 	@BeanReference(type = JournalFolderPersistence.class)
 	protected JournalFolderPersistence journalFolderPersistence;

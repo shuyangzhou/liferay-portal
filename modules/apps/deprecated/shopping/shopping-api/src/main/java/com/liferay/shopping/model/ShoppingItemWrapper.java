@@ -304,21 +304,6 @@ public class ShoppingItemWrapper implements ShoppingItem,
 		}
 	}
 
-	@Override
-	public ShoppingCategory getCategory() {
-		return _shoppingItem.getCategory();
-	}
-
-	@Override
-	public ShoppingItem toEscapedModel() {
-		return new ShoppingItemWrapper(_shoppingItem.toEscapedModel());
-	}
-
-	@Override
-	public ShoppingItem toUnescapedModel() {
-		return new ShoppingItemWrapper(_shoppingItem.toUnescapedModel());
-	}
-
 	/**
 	* Returns the featured of this shopping item.
 	*
@@ -525,8 +510,23 @@ public class ShoppingItemWrapper implements ShoppingItem,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<ShoppingItem> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<com.liferay.shopping.model.ShoppingItem> toCacheModel() {
 		return _shoppingItem.toCacheModel();
+	}
+
+	@Override
+	public com.liferay.shopping.model.ShoppingCategory getCategory() {
+		return _shoppingItem.getCategory();
+	}
+
+	@Override
+	public com.liferay.shopping.model.ShoppingItem toEscapedModel() {
+		return new ShoppingItemWrapper(_shoppingItem.toEscapedModel());
+	}
+
+	@Override
+	public com.liferay.shopping.model.ShoppingItem toUnescapedModel() {
+		return new ShoppingItemWrapper(_shoppingItem.toUnescapedModel());
 	}
 
 	/**
@@ -560,7 +560,7 @@ public class ShoppingItemWrapper implements ShoppingItem,
 	}
 
 	@Override
-	public int compareTo(ShoppingItem shoppingItem) {
+	public int compareTo(com.liferay.shopping.model.ShoppingItem shoppingItem) {
 		return _shoppingItem.compareTo(shoppingItem);
 	}
 
@@ -751,7 +751,7 @@ public class ShoppingItemWrapper implements ShoppingItem,
 	}
 
 	@Override
-	public java.util.List<ShoppingItemPrice> getItemPrices()
+	public java.util.List<com.liferay.shopping.model.ShoppingItemPrice> getItemPrices()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _shoppingItem.getItemPrices();
 	}

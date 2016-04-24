@@ -148,16 +148,6 @@ public class LockWrapper implements Lock, ModelWrapper<Lock> {
 		}
 	}
 
-	@Override
-	public Lock toEscapedModel() {
-		return new LockWrapper(_lock.toEscapedModel());
-	}
-
-	@Override
-	public Lock toUnescapedModel() {
-		return new LockWrapper(_lock.toUnescapedModel());
-	}
-
 	/**
 	* Returns the inheritable of this lock.
 	*
@@ -209,12 +199,22 @@ public class LockWrapper implements Lock, ModelWrapper<Lock> {
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<Lock> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<com.liferay.portal.lock.model.Lock> toCacheModel() {
 		return _lock.toCacheModel();
 	}
 
 	@Override
-	public int compareTo(Lock lock) {
+	public com.liferay.portal.lock.model.Lock toEscapedModel() {
+		return new LockWrapper(_lock.toEscapedModel());
+	}
+
+	@Override
+	public com.liferay.portal.lock.model.Lock toUnescapedModel() {
+		return new LockWrapper(_lock.toUnescapedModel());
+	}
+
+	@Override
+	public int compareTo(com.liferay.portal.lock.model.Lock lock) {
 		return _lock.compareTo(lock);
 	}
 

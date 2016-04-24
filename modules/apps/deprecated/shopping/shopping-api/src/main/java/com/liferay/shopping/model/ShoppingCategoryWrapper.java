@@ -136,16 +136,6 @@ public class ShoppingCategoryWrapper implements ShoppingCategory,
 	}
 
 	@Override
-	public ShoppingCategory toEscapedModel() {
-		return new ShoppingCategoryWrapper(_shoppingCategory.toEscapedModel());
-	}
-
-	@Override
-	public ShoppingCategory toUnescapedModel() {
-		return new ShoppingCategoryWrapper(_shoppingCategory.toUnescapedModel());
-	}
-
-	@Override
 	public boolean isCachedModel() {
 		return _shoppingCategory.isCachedModel();
 	}
@@ -171,12 +161,23 @@ public class ShoppingCategoryWrapper implements ShoppingCategory,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<ShoppingCategory> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<com.liferay.shopping.model.ShoppingCategory> toCacheModel() {
 		return _shoppingCategory.toCacheModel();
 	}
 
 	@Override
-	public int compareTo(ShoppingCategory shoppingCategory) {
+	public com.liferay.shopping.model.ShoppingCategory toEscapedModel() {
+		return new ShoppingCategoryWrapper(_shoppingCategory.toEscapedModel());
+	}
+
+	@Override
+	public com.liferay.shopping.model.ShoppingCategory toUnescapedModel() {
+		return new ShoppingCategoryWrapper(_shoppingCategory.toUnescapedModel());
+	}
+
+	@Override
+	public int compareTo(
+		com.liferay.shopping.model.ShoppingCategory shoppingCategory) {
 		return _shoppingCategory.compareTo(shoppingCategory);
 	}
 

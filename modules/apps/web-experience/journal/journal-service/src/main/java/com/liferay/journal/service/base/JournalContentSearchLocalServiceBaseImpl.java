@@ -540,7 +540,7 @@ public abstract class JournalContentSearchLocalServiceBaseImpl
 		}
 	}
 
-	@BeanReference(type = JournalContentSearchLocalService.class)
+	@BeanReference(type = com.liferay.journal.service.JournalContentSearchLocalService.class)
 	protected JournalContentSearchLocalService journalContentSearchLocalService;
 	@BeanReference(type = JournalContentSearchPersistence.class)
 	protected JournalContentSearchPersistence journalContentSearchPersistence;

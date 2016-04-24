@@ -127,16 +127,6 @@ public class JournalArticleImageWrapper implements JournalArticleImage,
 		}
 	}
 
-	@Override
-	public JournalArticleImage toEscapedModel() {
-		return new JournalArticleImageWrapper(_journalArticleImage.toEscapedModel());
-	}
-
-	@Override
-	public JournalArticleImage toUnescapedModel() {
-		return new JournalArticleImageWrapper(_journalArticleImage.toUnescapedModel());
-	}
-
 	/**
 	* Returns the temp image of this journal article image.
 	*
@@ -178,7 +168,17 @@ public class JournalArticleImageWrapper implements JournalArticleImage,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<JournalArticleImage> toCacheModel() {
+	public com.liferay.journal.model.JournalArticleImage toEscapedModel() {
+		return new JournalArticleImageWrapper(_journalArticleImage.toEscapedModel());
+	}
+
+	@Override
+	public com.liferay.journal.model.JournalArticleImage toUnescapedModel() {
+		return new JournalArticleImageWrapper(_journalArticleImage.toUnescapedModel());
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<com.liferay.journal.model.JournalArticleImage> toCacheModel() {
 		return _journalArticleImage.toCacheModel();
 	}
 
@@ -193,7 +193,8 @@ public class JournalArticleImageWrapper implements JournalArticleImage,
 	}
 
 	@Override
-	public int compareTo(JournalArticleImage journalArticleImage) {
+	public int compareTo(
+		com.liferay.journal.model.JournalArticleImage journalArticleImage) {
 		return _journalArticleImage.compareTo(journalArticleImage);
 	}
 

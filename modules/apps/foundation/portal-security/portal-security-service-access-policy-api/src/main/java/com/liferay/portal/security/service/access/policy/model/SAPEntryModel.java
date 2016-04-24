@@ -418,19 +418,20 @@ public interface SAPEntryModel extends BaseModel<SAPEntry>, LocalizedModel,
 	public Object clone();
 
 	@Override
-	public int compareTo(SAPEntry sapEntry);
+	public int compareTo(
+		com.liferay.portal.security.service.access.policy.model.SAPEntry sapEntry);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<SAPEntry> toCacheModel();
+	public CacheModel<com.liferay.portal.security.service.access.policy.model.SAPEntry> toCacheModel();
 
 	@Override
-	public SAPEntry toEscapedModel();
+	public com.liferay.portal.security.service.access.policy.model.SAPEntry toEscapedModel();
 
 	@Override
-	public SAPEntry toUnescapedModel();
+	public com.liferay.portal.security.service.access.policy.model.SAPEntry toUnescapedModel();
 
 	@Override
 	public String toString();

@@ -164,16 +164,6 @@ public class AppWrapper implements App, ModelWrapper<App> {
 		}
 	}
 
-	@Override
-	public App toEscapedModel() {
-		return new AppWrapper(_app.toEscapedModel());
-	}
-
-	@Override
-	public App toUnescapedModel() {
-		return new AppWrapper(_app.toUnescapedModel());
-	}
-
 	/**
 	* Returns the required of this app.
 	*
@@ -226,12 +216,22 @@ public class AppWrapper implements App, ModelWrapper<App> {
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<App> toCacheModel() {
+	public com.liferay.marketplace.model.App toEscapedModel() {
+		return new AppWrapper(_app.toEscapedModel());
+	}
+
+	@Override
+	public com.liferay.marketplace.model.App toUnescapedModel() {
+		return new AppWrapper(_app.toUnescapedModel());
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<com.liferay.marketplace.model.App> toCacheModel() {
 		return _app.toCacheModel();
 	}
 
 	@Override
-	public int compareTo(App app) {
+	public int compareTo(com.liferay.marketplace.model.App app) {
 		return _app.compareTo(app);
 	}
 

@@ -54,6 +54,6 @@ public interface PollsVote extends PollsVoteModel, PersistedModel {
 			}
 		};
 
-	public PollsChoice getChoice()
+	public com.liferay.polls.model.PollsChoice getChoice()
 		throws com.liferay.portal.kernel.exception.PortalException;
 }
