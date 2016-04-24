@@ -14,31 +14,30 @@
 
 package com.liferay.portal.cluster.single.internal;
 
-import com.liferay.portal.kernel.cluster.Address;
-import com.liferay.portal.kernel.cluster.ClusterLink;
-import com.liferay.portal.kernel.cluster.Priority;
-import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.portal.kernel.util.ReleaseInfo;
 
+import org.osgi.service.component.ComponentContext;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 
 /**
  * @author Shuyang Zhou
  */
-@Component(enabled = false, immediate = true, service = ClusterLink.class)
-public class SingleClusterLink implements ClusterLink {
+@Component(immediate = true)
+public class GateKeeper {
 
-	@Override
-	public boolean isEnabled() {
-		return false;
-	}
+	@Activate
+	public void activate(ComponentContext componentContext) {
+		String name = ReleaseInfo.getName();
 
-	@Override
-	public void sendMulticastMessage(Message message, Priority priority) {
-	}
+		if (!name.contains("Community")) {
+			return;
+		}
 
-	@Override
-	public void sendUnicastMessage(
-		Address address, Message message, Priority priority) {
+		componentContext.enableComponent(SingleClusterExecutor.class.getName());
+		componentContext.enableComponent(SingleClusterLink.class.getName());
+		componentContext.enableComponent(
+			SingleClusterMasterExecutor.class.getName());
 	}
 
 }
