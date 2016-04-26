@@ -15,12 +15,16 @@
 package com.liferay.portal.cache.ehcache.internal;
 
 import com.liferay.portal.cache.BasePortalCacheManager;
+import com.liferay.portal.cache.PortalCacheReplicator;
 import com.liferay.portal.cache.configuration.PortalCacheConfiguration;
 import com.liferay.portal.cache.configuration.PortalCacheManagerConfiguration;
 import com.liferay.portal.cache.ehcache.EhcacheUnwrapUtil;
+import com.liferay.portal.cache.ehcache.event.EhcachePortalCacheListenerAdapter;
 import com.liferay.portal.cache.ehcache.internal.configurator.BaseEhcachePortalCacheManagerConfigurator;
 import com.liferay.portal.cache.ehcache.internal.event.PortalCacheManagerEventListener;
 import com.liferay.portal.kernel.cache.PortalCache;
+import com.liferay.portal.kernel.cache.PortalCacheListener;
+import com.liferay.portal.kernel.cache.PortalCacheListenerScope;
 import com.liferay.portal.kernel.cache.configurator.PortalCacheConfiguratorSettings;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -39,7 +43,9 @@ import java.lang.reflect.Field;
 
 import java.net.URL;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.management.MBeanServer;
 
@@ -332,6 +338,38 @@ public class EhcachePortalCacheManager<K extends Serializable, V>
 		}
 
 		return true;
+	}
+
+	protected void
+		removePortalCacheListenersRegisteredByPortalCacheConfiguration(
+			PortalCache<K, V> portalCache) {
+
+		Set<PortalCacheListener<K, V>> removedPortalCacheListeners =
+			new HashSet<>();
+
+		EhcachePortalCache<K, V> ehcachePortalCache =
+			(EhcachePortalCache<K, V>)
+				EhcacheUnwrapUtil.getWrappedPortalCache(portalCache);
+
+		Map<PortalCacheListener<K, V>, PortalCacheListenerScope>
+			portalCacheListeners = ehcachePortalCache.getPortalCacheListeners();
+
+		for (PortalCacheListener<K, V> portalCacheListener :
+				portalCacheListeners.keySet()) {
+
+			if ((portalCacheListener instanceof PortalCacheReplicator) ||
+				(portalCacheListener instanceof
+					EhcachePortalCacheListenerAdapter)) {
+
+				removedPortalCacheListeners.add(portalCacheListener);
+			}
+		}
+
+		for (PortalCacheListener<K, V> portalCacheListener :
+				removedPortalCacheListeners) {
+
+			portalCache.unregisterPortalCacheListener(portalCacheListener);
+		}
 	}
 
 	protected BaseEhcachePortalCacheManagerConfigurator
