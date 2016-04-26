@@ -165,6 +165,16 @@ public class KBCommentWrapper implements KBComment, ModelWrapper<KBComment> {
 	}
 
 	@Override
+	public KBComment toEscapedModel() {
+		return new KBCommentWrapper(_kbComment.toEscapedModel());
+	}
+
+	@Override
+	public KBComment toUnescapedModel() {
+		return new KBCommentWrapper(_kbComment.toUnescapedModel());
+	}
+
+	@Override
 	public boolean isCachedModel() {
 		return _kbComment.isCachedModel();
 	}
@@ -185,22 +195,12 @@ public class KBCommentWrapper implements KBComment, ModelWrapper<KBComment> {
 	}
 
 	@Override
-	public com.liferay.knowledge.base.model.KBComment toEscapedModel() {
-		return new KBCommentWrapper(_kbComment.toEscapedModel());
-	}
-
-	@Override
-	public com.liferay.knowledge.base.model.KBComment toUnescapedModel() {
-		return new KBCommentWrapper(_kbComment.toUnescapedModel());
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<com.liferay.knowledge.base.model.KBComment> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<KBComment> toCacheModel() {
 		return _kbComment.toCacheModel();
 	}
 
 	@Override
-	public int compareTo(com.liferay.knowledge.base.model.KBComment kbComment) {
+	public int compareTo(KBComment kbComment) {
 		return _kbComment.compareTo(kbComment);
 	}
 

@@ -292,19 +292,19 @@ public interface KBTemplateModel extends BaseModel<KBTemplate>, ShardedModel,
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.knowledge.base.model.KBTemplate kbTemplate);
+	public int compareTo(KBTemplate kbTemplate);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.knowledge.base.model.KBTemplate> toCacheModel();
+	public CacheModel<KBTemplate> toCacheModel();
 
 	@Override
-	public com.liferay.knowledge.base.model.KBTemplate toEscapedModel();
+	public KBTemplate toEscapedModel();
 
 	@Override
-	public com.liferay.knowledge.base.model.KBTemplate toUnescapedModel();
+	public KBTemplate toUnescapedModel();
 
 	@Override
 	public String toString();

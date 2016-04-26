@@ -24,7 +24,7 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Shuyang Zhou
  */
-@Component(immediate = true, service = ClusterLink.class)
+@Component(enabled = false, immediate = true, service = ClusterLink.class)
 public class SingleClusterLink implements ClusterLink {
 
 	@Override

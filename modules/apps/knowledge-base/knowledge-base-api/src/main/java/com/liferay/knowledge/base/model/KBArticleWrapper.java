@@ -272,6 +272,16 @@ public class KBArticleWrapper implements KBArticle, ModelWrapper<KBArticle> {
 		}
 	}
 
+	@Override
+	public KBArticle toEscapedModel() {
+		return new KBArticleWrapper(_kbArticle.toEscapedModel());
+	}
+
+	@Override
+	public KBArticle toUnescapedModel() {
+		return new KBArticleWrapper(_kbArticle.toUnescapedModel());
+	}
+
 	/**
 	* Returns the latest of this k b article.
 	*
@@ -428,23 +438,13 @@ public class KBArticleWrapper implements KBArticle, ModelWrapper<KBArticle> {
 	}
 
 	@Override
-	public com.liferay.knowledge.base.model.KBArticle getParentKBArticle()
+	public KBArticle getParentKBArticle()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _kbArticle.getParentKBArticle();
 	}
 
 	@Override
-	public com.liferay.knowledge.base.model.KBArticle toEscapedModel() {
-		return new KBArticleWrapper(_kbArticle.toEscapedModel());
-	}
-
-	@Override
-	public com.liferay.knowledge.base.model.KBArticle toUnescapedModel() {
-		return new KBArticleWrapper(_kbArticle.toUnescapedModel());
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<com.liferay.knowledge.base.model.KBArticle> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<KBArticle> toCacheModel() {
 		return _kbArticle.toCacheModel();
 	}
 
@@ -459,7 +459,7 @@ public class KBArticleWrapper implements KBArticle, ModelWrapper<KBArticle> {
 	}
 
 	@Override
-	public int compareTo(com.liferay.knowledge.base.model.KBArticle kbArticle) {
+	public int compareTo(KBArticle kbArticle) {
 		return _kbArticle.compareTo(kbArticle);
 	}
 

@@ -14,11 +14,10 @@
 
 package com.liferay.gradle.plugins;
 
-import aQute.bnd.osgi.Constants;
-
 import com.liferay.gradle.plugins.extensions.LiferayExtension;
-import com.liferay.gradle.plugins.tasks.UpdateVersionTask;
+import com.liferay.gradle.plugins.tasks.ReplaceRegexTask;
 import com.liferay.gradle.plugins.util.GradleUtil;
+import com.liferay.gradle.plugins.util.IncrementVersionClosure;
 
 import java.io.File;
 
@@ -39,9 +38,6 @@ import org.gradle.api.tasks.Upload;
  */
 public class LiferayThemeDefaultsPlugin implements Plugin<Project> {
 
-	public static final String UPDATE_THEME_VERSION_TASK_NAME =
-		"updateThemeVersion";
-
 	@Override
 	public void apply(Project project) {
 		GradleUtil.applyPlugin(project, LiferayThemePlugin.class);
@@ -54,8 +50,8 @@ public class LiferayThemeDefaultsPlugin implements Plugin<Project> {
 
 		applyConfigScripts(project);
 
-		final UpdateVersionTask updateThemeVersionTask =
-			addTaskUpdateThemeVersion(project);
+		final ReplaceRegexTask updateVersionTask = addTaskUpdateVersion(
+			project);
 
 		configureDeployDir(project);
 		configureProject(project);
@@ -71,8 +67,7 @@ public class LiferayThemeDefaultsPlugin implements Plugin<Project> {
 					// configureTaskUploadArchives, because the latter one needs
 					// to know if we are publishing a snapshot or not.
 
-					configureTaskUploadArchives(
-						project, updateThemeVersionTask);
+					configureTaskUploadArchives(project, updateVersionTask);
 				}
 
 			});
@@ -93,31 +88,20 @@ public class LiferayThemeDefaultsPlugin implements Plugin<Project> {
 		return upload;
 	}
 
-	protected UpdateVersionTask addTaskUpdateThemeVersion(
-		final Project project) {
+	protected ReplaceRegexTask addTaskUpdateVersion(final Project project) {
+		ReplaceRegexTask replaceRegexTask = GradleUtil.addTask(
+			project, LiferayRelengPlugin.UPDATE_VERSION_TASK_NAME,
+			ReplaceRegexTask.class);
 
-		UpdateVersionTask updateVersionTask = GradleUtil.addTask(
-			project, UPDATE_THEME_VERSION_TASK_NAME, UpdateVersionTask.class);
+		replaceRegexTask.match("\\n\\t\"version\": \"(.+)\"", "package.json");
 
-		updateVersionTask.pattern(
-			"package.json",
-			"\"version\": \"" + UpdateVersionTask.VERSION_PLACEHOLDER + "\"");
+		replaceRegexTask.setDescription(
+			"Updates the project version in the package.json file.");
 
-		updateVersionTask.setDescription(
-			"Updates the project version in the " + Constants.BUNDLE_VERSION +
-				" header.");
+		replaceRegexTask.setReplacement(
+			IncrementVersionClosure.MICRO_INCREMENT);
 
-		updateVersionTask.setVersion(
-			new Callable<Object>() {
-
-				@Override
-				public Object call() throws Exception {
-					return project.getVersion();
-				}
-
-			});
-
-		return updateVersionTask;
+		return replaceRegexTask;
 	}
 
 	protected void applyConfigScripts(Project project) {
@@ -152,7 +136,7 @@ public class LiferayThemeDefaultsPlugin implements Plugin<Project> {
 	}
 
 	protected void configureTaskUploadArchives(
-		Project project, UpdateVersionTask updateThemeVersionTask) {
+		Project project, Task updateThemeVersionTask) {
 
 		if (GradleUtil.isSnapshot(project)) {
 			return;

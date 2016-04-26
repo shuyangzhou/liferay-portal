@@ -321,19 +321,19 @@ public interface KBFolderModel extends BaseModel<KBFolder>, ShardedModel,
 	public Object clone();
 
 	@Override
-	public int compareTo(com.liferay.knowledge.base.model.KBFolder kbFolder);
+	public int compareTo(KBFolder kbFolder);
 
 	@Override
 	public int hashCode();
 
 	@Override
-	public CacheModel<com.liferay.knowledge.base.model.KBFolder> toCacheModel();
+	public CacheModel<KBFolder> toCacheModel();
 
 	@Override
-	public com.liferay.knowledge.base.model.KBFolder toEscapedModel();
+	public KBFolder toEscapedModel();
 
 	@Override
-	public com.liferay.knowledge.base.model.KBFolder toUnescapedModel();
+	public KBFolder toUnescapedModel();
 
 	@Override
 	public String toString();

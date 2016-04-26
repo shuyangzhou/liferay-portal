@@ -158,6 +158,16 @@ public class KBFolderWrapper implements KBFolder, ModelWrapper<KBFolder> {
 	}
 
 	@Override
+	public KBFolder toEscapedModel() {
+		return new KBFolderWrapper(_kbFolder.toEscapedModel());
+	}
+
+	@Override
+	public KBFolder toUnescapedModel() {
+		return new KBFolderWrapper(_kbFolder.toUnescapedModel());
+	}
+
+	@Override
 	public boolean isCachedModel() {
 		return _kbFolder.isCachedModel();
 	}
@@ -184,22 +194,12 @@ public class KBFolderWrapper implements KBFolder, ModelWrapper<KBFolder> {
 	}
 
 	@Override
-	public com.liferay.knowledge.base.model.KBFolder toEscapedModel() {
-		return new KBFolderWrapper(_kbFolder.toEscapedModel());
-	}
-
-	@Override
-	public com.liferay.knowledge.base.model.KBFolder toUnescapedModel() {
-		return new KBFolderWrapper(_kbFolder.toUnescapedModel());
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<com.liferay.knowledge.base.model.KBFolder> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<KBFolder> toCacheModel() {
 		return _kbFolder.toCacheModel();
 	}
 
 	@Override
-	public int compareTo(com.liferay.knowledge.base.model.KBFolder kbFolder) {
+	public int compareTo(KBFolder kbFolder) {
 		return _kbFolder.compareTo(kbFolder);
 	}
 

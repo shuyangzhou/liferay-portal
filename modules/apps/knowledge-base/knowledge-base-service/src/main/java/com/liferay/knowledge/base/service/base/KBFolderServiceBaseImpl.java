@@ -516,7 +516,7 @@ public abstract class KBFolderServiceBaseImpl extends BaseServiceImpl
 	protected KBCommentPersistence kbCommentPersistence;
 	@BeanReference(type = com.liferay.knowledge.base.service.KBFolderLocalService.class)
 	protected com.liferay.knowledge.base.service.KBFolderLocalService kbFolderLocalService;
-	@BeanReference(type = com.liferay.knowledge.base.service.KBFolderService.class)
+	@BeanReference(type = KBFolderService.class)
 	protected KBFolderService kbFolderService;
 	@BeanReference(type = KBFolderPersistence.class)
 	protected KBFolderPersistence kbFolderPersistence;

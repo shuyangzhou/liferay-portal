@@ -144,6 +144,16 @@ public class KBTemplateWrapper implements KBTemplate, ModelWrapper<KBTemplate> {
 	}
 
 	@Override
+	public KBTemplate toEscapedModel() {
+		return new KBTemplateWrapper(_kbTemplate.toEscapedModel());
+	}
+
+	@Override
+	public KBTemplate toUnescapedModel() {
+		return new KBTemplateWrapper(_kbTemplate.toUnescapedModel());
+	}
+
+	@Override
 	public boolean isCachedModel() {
 		return _kbTemplate.isCachedModel();
 	}
@@ -164,22 +174,12 @@ public class KBTemplateWrapper implements KBTemplate, ModelWrapper<KBTemplate> {
 	}
 
 	@Override
-	public com.liferay.knowledge.base.model.KBTemplate toEscapedModel() {
-		return new KBTemplateWrapper(_kbTemplate.toEscapedModel());
-	}
-
-	@Override
-	public com.liferay.knowledge.base.model.KBTemplate toUnescapedModel() {
-		return new KBTemplateWrapper(_kbTemplate.toUnescapedModel());
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<com.liferay.knowledge.base.model.KBTemplate> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<KBTemplate> toCacheModel() {
 		return _kbTemplate.toCacheModel();
 	}
 
 	@Override
-	public int compareTo(com.liferay.knowledge.base.model.KBTemplate kbTemplate) {
+	public int compareTo(KBTemplate kbTemplate) {
 		return _kbTemplate.compareTo(kbTemplate);
 	}
 
