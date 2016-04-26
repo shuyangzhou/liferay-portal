@@ -166,6 +166,25 @@
 		</sequential>
 	</macrodef>
 
+	<macrodef name="generate-gulp-user-config-json">
+		<attribute name="portlet.name" />
+
+		<attribute default="${app.server.type}" name="app.server.type" />
+		<attribute default="${app.server.@{app.server.type}.dir}" name="app.server.dir" />
+		<attribute default="user-config.json" name="file.name" />
+		<attribute default="portlets/@{portlet.name}/docroot/js/tests/util" name="file.path" />
+		<attribute default="${lp.plugins.dir}" name="plugins.dir" />
+		<attribute default="${project.dir}" name="portal.dir" />
+
+		<sequential>
+			<echo file="@{plugins.dir}/@{file.path}/@{file.name}"><![CDATA[{
+	"bundle": "@{app.server.dir}",
+	"deployDir": "@{app.server.dir}/webapps/ROOT",
+	"source": "@{portal.dir}"
+}]]></echo>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="generate-jdbc-properties">
 		<attribute name="properties.file" />
 		<element name="post-action" optional="true" />
@@ -5014,7 +5033,7 @@ custom.sql.function.isnotnull=CONVERT(VARCHAR,?) IS NOT NULL</echo>
 			<then>
 				<replaceregexp
 					file="portal-impl/src/portal-ext.properties"
-					match="(jdbc:oracle:.*)orcl"
+					match="(jdbc:oracle:.*)oracl"
 					replace="\1xe"
 				/>
 			</then>
@@ -7475,17 +7494,32 @@ jdbc.default.password=${database.mysql.password}</echo>
 			<then>
 				<propertycopy from="app.server.${app.server.type}.lib.global.dir" name="app.server.lib.global.dir" override="true" />
 
-				<replace file="${app.server.lib.global.dir}/module.xml">
-					<replacetoken><![CDATA[<resource-root path="hsql.jar" />]]></replacetoken>
-					<replacevalue>
-						<![CDATA[
-							<resource-root path="hsql.jar" />
-							<resource-root path="mariadb.jar" />
-							<resource-root path="mysql.jar" />
-							<resource-root path="ojdbc6.jar" />
-						]]>
-					</replacevalue>
-				</replace>
+				<if>
+					<equals arg1="${database.type}" arg2="oracle" />
+					<then>
+						<replace file="${app.server.lib.global.dir}/module.xml">
+							<replacetoken><![CDATA[<resource-root path="hsql.jar" />]]></replacetoken>
+							<replacevalue>
+								<![CDATA[
+									<resource-root path="hsql.jar" />
+									<resource-root path="ojdbc6.jar" />
+								]]>
+							</replacevalue>
+						</replace>
+					</then>
+					<else>
+						<replace file="${app.server.lib.global.dir}/module.xml">
+							<replacetoken><![CDATA[<resource-root path="hsql.jar" />]]></replacetoken>
+							<replacevalue>
+								<![CDATA[
+									<resource-root path="hsql.jar" />
+									<resource-root path="mariadb.jar" />
+									<resource-root path="mysql.jar" />
+								]]>
+							</replacevalue>
+						</replace>
+					</else>
+				</if>
 			</then>
 		</if>
 
