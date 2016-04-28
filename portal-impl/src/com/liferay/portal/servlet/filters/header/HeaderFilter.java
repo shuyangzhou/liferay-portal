@@ -120,10 +120,11 @@ public class HeaderFilter extends BasePortalFilter {
 		}
 
 		long lastModified = getLastModified(request);
-		long ifModifiedSince = request.getDateHeader(
-			HttpHeaders.IF_MODIFIED_SINCE);
 
 		if (lastModified > 0) {
+			long ifModifiedSince = request.getDateHeader(
+				HttpHeaders.IF_MODIFIED_SINCE);
+
 			response.setDateHeader(HttpHeaders.LAST_MODIFIED, lastModified);
 
 			if (lastModified <= ifModifiedSince) {
