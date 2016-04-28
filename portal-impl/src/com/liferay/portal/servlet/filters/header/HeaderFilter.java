@@ -15,7 +15,6 @@
 package com.liferay.portal.servlet.filters.header;
 
 import com.liferay.portal.kernel.servlet.HttpHeaders;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
@@ -33,7 +32,6 @@ import java.text.Format;
 import java.util.Calendar;
 import java.util.Enumeration;
 import java.util.GregorianCalendar;
-import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.FilterChain;
@@ -50,18 +48,13 @@ import javax.servlet.http.HttpSession;
 public class HeaderFilter extends BasePortalFilter {
 
 	protected long getLastModified(HttpServletRequest request) {
-		long lasModified = -1;
+		String value = HttpUtil.getParameter(request.getQueryString(), "t");
 
-		Map<String, String[]> parameterMap = HttpUtil.getParameterMap(
-			request.getQueryString());
-
-		String[] value = parameterMap.get("t");
-
-		if (ArrayUtil.isNotEmpty(value)) {
-			lasModified = GetterUtil.getLong(value[0]);
+		if (Validator.isNull(value)) {
+			return -1;
 		}
 
-		return lasModified;
+		return GetterUtil.getLong(value);
 	}
 
 	@Override
