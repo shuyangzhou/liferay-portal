@@ -63,30 +63,28 @@ public class HeaderFilter extends BasePortalFilter {
 
 		// LEP-5895 and LPS-15802
 
-		boolean addHeader = true;
+		if (StringUtil.equalsIgnoreCase(name, HttpHeaders.CACHE_CONTROL)) {
+			if (PropsValues.WEB_SERVER_PROXY_LEGACY_MODE) {
+				HttpSession session = request.getSession(false);
 
-		if (StringUtil.equalsIgnoreCase(name, HttpHeaders.CACHE_CONTROL) ||
-			StringUtil.equalsIgnoreCase(name, HttpHeaders.EXPIRES)) {
+				if ((session == null) || session.isNew()) {
+					String contextPath = request.getContextPath();
 
-			HttpSession session = request.getSession(false);
-
-			if ((session == null) || session.isNew()) {
-				String contextPath = request.getContextPath();
-
-				if (StringUtil.equalsIgnoreCase(name, HttpHeaders.EXPIRES)) {
-					addHeader = false;
-				}
-				else if (PropsValues.WEB_SERVER_PROXY_LEGACY_MODE &&
-						 contextPath.equals(PortalUtil.getPathContext())) {
-
-					addHeader = false;
+					if (contextPath.equals(PortalUtil.getPathContext())) {
+						return;
+					}
 				}
 			}
 		}
+		else if (StringUtil.equalsIgnoreCase(name, HttpHeaders.EXPIRES)) {
+			HttpSession session = request.getSession(false);
 
-		if (addHeader) {
-			response.addHeader(name, value);
+			if ((session == null) || session.isNew()) {
+				return;
+			}
 		}
+
+		response.addHeader(name, value);
 	}
 
 	protected long getLastModified(HttpServletRequest request) {
