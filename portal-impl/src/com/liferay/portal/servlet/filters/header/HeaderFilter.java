@@ -47,6 +47,48 @@ import javax.servlet.http.HttpSession;
  */
 public class HeaderFilter extends BasePortalFilter {
 
+	protected void addHeader(
+		HttpServletRequest request, HttpServletResponse response, String name,
+		String value) {
+
+		if (name.equals(HttpHeaders.EXPIRES) && Validator.isNumber(value)) {
+			int seconds = GetterUtil.getInteger(value);
+
+			Calendar cal = new GregorianCalendar();
+
+			cal.add(Calendar.SECOND, seconds);
+
+			value = _dateFormat.format(cal.getTime());
+		}
+
+		// LEP-5895 and LPS-15802
+
+		boolean addHeader = true;
+
+		if (StringUtil.equalsIgnoreCase(name, HttpHeaders.CACHE_CONTROL) ||
+			StringUtil.equalsIgnoreCase(name, HttpHeaders.EXPIRES)) {
+
+			HttpSession session = request.getSession(false);
+
+			if ((session == null) || session.isNew()) {
+				String contextPath = request.getContextPath();
+
+				if (StringUtil.equalsIgnoreCase(name, HttpHeaders.EXPIRES)) {
+					addHeader = false;
+				}
+				else if (PropsValues.WEB_SERVER_PROXY_LEGACY_MODE &&
+						 contextPath.equals(PortalUtil.getPathContext())) {
+
+					addHeader = false;
+				}
+			}
+		}
+
+		if (addHeader) {
+			response.addHeader(name, value);
+		}
+	}
+
 	protected long getLastModified(HttpServletRequest request) {
 		String value = HttpUtil.getParameter(request.getQueryString(), "t");
 
@@ -70,49 +112,10 @@ public class HeaderFilter extends BasePortalFilter {
 		while (enu.hasMoreElements()) {
 			String name = enu.nextElement();
 
-			if (_requestHeaderIgnoreInitParams.contains(name)) {
-				continue;
-			}
-
-			String value = filterConfig.getInitParameter(name);
-
-			if (name.equals(HttpHeaders.EXPIRES) && Validator.isNumber(value)) {
-				int seconds = GetterUtil.getInteger(value);
-
-				Calendar cal = new GregorianCalendar();
-
-				cal.add(Calendar.SECOND, seconds);
-
-				value = _dateFormat.format(cal.getTime());
-			}
-
-			// LEP-5895 and LPS-15802
-
-			boolean addHeader = true;
-
-			if (StringUtil.equalsIgnoreCase(name, HttpHeaders.CACHE_CONTROL) ||
-				StringUtil.equalsIgnoreCase(name, HttpHeaders.EXPIRES)) {
-
-				HttpSession session = request.getSession(false);
-
-				if ((session == null) || session.isNew()) {
-					String contextPath = request.getContextPath();
-
-					if (StringUtil.equalsIgnoreCase(
-							name, HttpHeaders.EXPIRES)) {
-
-						addHeader = false;
-					}
-					else if (PropsValues.WEB_SERVER_PROXY_LEGACY_MODE &&
-							 contextPath.equals(PortalUtil.getPathContext())) {
-
-						addHeader = false;
-					}
-				}
-			}
-
-			if (addHeader) {
-				response.addHeader(name, value);
+			if (!_requestHeaderIgnoreInitParams.contains(name)) {
+				addHeader(
+					request, response, name,
+					filterConfig.getInitParameter(name));
 			}
 		}
 
