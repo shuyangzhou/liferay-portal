@@ -54,9 +54,7 @@ public class HeaderFilter extends BasePortalFilter {
 
 		if (StringUtil.equalsIgnoreCase(name, HttpHeaders.CACHE_CONTROL)) {
 			if (PropsValues.WEB_SERVER_PROXY_LEGACY_MODE) {
-				HttpSession session = request.getSession(false);
-
-				if ((session == null) || session.isNew()) {
+				if (isNewSession(request)) {
 					String contextPath = request.getContextPath();
 
 					if (contextPath.equals(PortalUtil.getPathContext())) {
@@ -66,9 +64,7 @@ public class HeaderFilter extends BasePortalFilter {
 			}
 		}
 		else if (StringUtil.equalsIgnoreCase(name, HttpHeaders.EXPIRES)) {
-			HttpSession session = request.getSession(false);
-
-			if ((session == null) || session.isNew()) {
+			if (isNewSession(request)) {
 				return;
 			}
 
@@ -91,6 +87,16 @@ public class HeaderFilter extends BasePortalFilter {
 		}
 
 		return GetterUtil.getLong(value);
+	}
+
+	protected boolean isNewSession(HttpServletRequest request) {
+		HttpSession session = request.getSession(false);
+
+		if ((session == null) || session.isNew()) {
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override
