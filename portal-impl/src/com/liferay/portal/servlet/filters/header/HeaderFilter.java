@@ -153,11 +153,9 @@ public class HeaderFilter extends BasePortalFilter {
 			HeaderFilter.class.getName(), request, response, filterChain);
 	}
 
-	private static final String _DATE_FORMAT = "EEE, dd MMM yyyy HH:mm:ss z";
-
 	private static final Format _dateFormat =
 		FastDateFormatFactoryUtil.getSimpleDateFormat(
-			_DATE_FORMAT, LocaleUtil.US, TimeZoneUtil.GMT);
+			Time.RFC822_FORMAT, LocaleUtil.US, TimeZoneUtil.GMT);
 	private static final Set<String> _requestHeaderIgnoreInitParams =
 		SetUtil.fromArray(PropsValues.REQUEST_HEADER_IGNORE_INIT_PARAMS);
 
