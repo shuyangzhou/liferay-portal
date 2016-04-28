@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.TimeZoneUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.servlet.filters.BasePortalFilter;
@@ -29,9 +30,7 @@ import com.liferay.portal.util.PropsValues;
 
 import java.text.Format;
 
-import java.util.Calendar;
 import java.util.Enumeration;
-import java.util.GregorianCalendar;
 import java.util.Set;
 
 import javax.servlet.FilterChain;
@@ -76,11 +75,8 @@ public class HeaderFilter extends BasePortalFilter {
 			if (Validator.isNumber(value)) {
 				int seconds = GetterUtil.getInteger(value);
 
-				Calendar cal = new GregorianCalendar();
-
-				cal.add(Calendar.SECOND, seconds);
-
-				value = _dateFormat.format(cal.getTime());
+				value = _dateFormat.format(
+					System.currentTimeMillis() + (seconds * Time.SECOND));
 			}
 		}
 
