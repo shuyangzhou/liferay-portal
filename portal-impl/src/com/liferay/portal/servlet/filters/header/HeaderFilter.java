@@ -93,26 +93,21 @@ public class HeaderFilter extends BasePortalFilter {
 			if (StringUtil.equalsIgnoreCase(name, HttpHeaders.CACHE_CONTROL) ||
 				StringUtil.equalsIgnoreCase(name, HttpHeaders.EXPIRES)) {
 
-				boolean newSession = false;
-
 				HttpSession session = request.getSession(false);
 
 				if ((session == null) || session.isNew()) {
-					newSession = true;
-				}
+					String contextPath = request.getContextPath();
 
-				String contextPath = request.getContextPath();
+					if (StringUtil.equalsIgnoreCase(
+							name, HttpHeaders.EXPIRES)) {
 
-				if (StringUtil.equalsIgnoreCase(name, HttpHeaders.EXPIRES) &&
-					newSession) {
+						addHeader = false;
+					}
+					else if (PropsValues.WEB_SERVER_PROXY_LEGACY_MODE &&
+							 contextPath.equals(PortalUtil.getPathContext())) {
 
-					addHeader = false;
-				}
-				else if (PropsValues.WEB_SERVER_PROXY_LEGACY_MODE &&
-						 newSession &&
-						 contextPath.equals(PortalUtil.getPathContext())) {
-
-					addHeader = false;
+						addHeader = false;
+					}
 				}
 			}
 
