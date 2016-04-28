@@ -49,13 +49,6 @@ import javax.servlet.http.HttpSession;
  */
 public class HeaderFilter extends BasePortalFilter {
 
-	@Override
-	public void init(FilterConfig filterConfig) {
-		super.init(filterConfig);
-
-		_filterConfig = filterConfig;
-	}
-
 	protected long getLastModified(HttpServletRequest request) {
 		long lasModified = -1;
 
@@ -77,7 +70,9 @@ public class HeaderFilter extends BasePortalFilter {
 			FilterChain filterChain)
 		throws Exception {
 
-		Enumeration<String> enu = _filterConfig.getInitParameterNames();
+		FilterConfig filterConfig = getFilterConfig();
+
+		Enumeration<String> enu = filterConfig.getInitParameterNames();
 
 		while (enu.hasMoreElements()) {
 			String name = enu.nextElement();
@@ -86,7 +81,7 @@ public class HeaderFilter extends BasePortalFilter {
 				continue;
 			}
 
-			String value = _filterConfig.getInitParameter(name);
+			String value = filterConfig.getInitParameter(name);
 
 			if (name.equals(HttpHeaders.EXPIRES) && Validator.isNumber(value)) {
 				int seconds = GetterUtil.getInteger(value);
@@ -158,7 +153,5 @@ public class HeaderFilter extends BasePortalFilter {
 			Time.RFC822_FORMAT, LocaleUtil.US, TimeZoneUtil.GMT);
 	private static final Set<String> _requestHeaderIgnoreInitParams =
 		SetUtil.fromArray(PropsValues.REQUEST_HEADER_IGNORE_INIT_PARAMS);
-
-	private FilterConfig _filterConfig;
 
 }
