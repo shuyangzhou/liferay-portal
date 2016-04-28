@@ -51,16 +51,6 @@ public class HeaderFilter extends BasePortalFilter {
 		HttpServletRequest request, HttpServletResponse response, String name,
 		String value) {
 
-		if (name.equals(HttpHeaders.EXPIRES) && Validator.isNumber(value)) {
-			int seconds = GetterUtil.getInteger(value);
-
-			Calendar cal = new GregorianCalendar();
-
-			cal.add(Calendar.SECOND, seconds);
-
-			value = _dateFormat.format(cal.getTime());
-		}
-
 		// LEP-5895 and LPS-15802
 
 		if (StringUtil.equalsIgnoreCase(name, HttpHeaders.CACHE_CONTROL)) {
@@ -81,6 +71,16 @@ public class HeaderFilter extends BasePortalFilter {
 
 			if ((session == null) || session.isNew()) {
 				return;
+			}
+
+			if (Validator.isNumber(value)) {
+				int seconds = GetterUtil.getInteger(value);
+
+				Calendar cal = new GregorianCalendar();
+
+				cal.add(Calendar.SECOND, seconds);
+
+				value = _dateFormat.format(cal.getTime());
 			}
 		}
 
