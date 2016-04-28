@@ -90,7 +90,7 @@ public class HeaderFilter extends BasePortalFilter {
 
 			String value = _filterConfig.getInitParameter(name);
 
-			if (name.equals(_EXPIRES) && Validator.isNumber(value)) {
+			if (name.equals(HttpHeaders.EXPIRES) && Validator.isNumber(value)) {
 				int seconds = GetterUtil.getInteger(value);
 
 				Calendar cal = new GregorianCalendar();
@@ -156,8 +156,6 @@ public class HeaderFilter extends BasePortalFilter {
 	}
 
 	private static final String _DATE_FORMAT = "EEE, dd MMM yyyy HH:mm:ss z";
-
-	private static final String _EXPIRES = "Expires";
 
 	private static final Set<String> _requestHeaderIgnoreInitParams =
 		SetUtil.fromArray(PropsValues.REQUEST_HEADER_IGNORE_INIT_PARAMS);
