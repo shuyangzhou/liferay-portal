@@ -731,7 +731,13 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 
 	<macrodef name="get-test-url">
 		<sequential>
-			<get-test-class />
+			<if>
+				<matches pattern="[0-9]+_[0-9]+" string="${test.class}" />
+				<then>
+					<get-test-class />
+				</then>
+			</if>
+
 			<get-testcase-property property.name="testcase.url" />
 
 			<if>
@@ -3019,6 +3025,21 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 									<execute>
 										jstack ${bootstrap.pid}
 									</execute>
+
+									<if>
+										<and>
+											<equals arg1="${app.server.type}" arg2="weblogic" />
+											<isset property="env.HOSTNAME" />
+										</and>
+										<then>
+											<replaceregexp
+												file="${app.server.weblogic.bin.dir}/stopWebLogic.sh"
+												flags="g"
+												match="(t3:\/\/)[^:]*(:\d+)"
+												replace="\1${env.HOSTNAME}\2"
+											/>
+										</then>
+									</if>
 
 									<stop-app-server app.server.bundle.index="@{app.server.bundle.index}" />
 								</then>
@@ -6417,7 +6438,7 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 					src="${tstamp.value}.zip"
 				>
 					<patternset
-						includes="liferay*portal-*/${app.server.type}-*/**"
+						includes="liferay-*/${app.server.type}-*/**"
 					/>
 					<mapper
 						from="[^/]+/(.*)"
@@ -6431,7 +6452,7 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 					src="${tstamp.value}.zip"
 				>
 					<patternset
-						includes="liferay*portal-*/deploy/**"
+						includes="liferay-*/deploy/**"
 					/>
 					<mapper
 						from="[^/]+/(.*)"
@@ -6445,7 +6466,7 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 					src="${tstamp.value}.zip"
 				>
 					<patternset
-						includes="liferay*portal-*/osgi/**"
+						includes="liferay-*/osgi/**"
 					/>
 					<mapper
 						from="[^/]+/(.*)"
@@ -6459,7 +6480,7 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 					src="${tstamp.value}.zip"
 				>
 					<patternset
-						includes="liferay*portal-*/patching-tool/patches/**"
+						includes="liferay-*/patching-tool/patches/**"
 					/>
 					<mapper
 						from="[^/]+/(.*)"
@@ -8002,7 +8023,7 @@ jdbc.default.password=${database.mysql.password}</echo>
 		<delete file="${liferay.home}/build-db-upgrade.xml" />
 		<delete file="${liferay.home}/db_upgrade_log" />
 		<delete file="${liferay.home}/portal-ext.properties" />
-		<delete file="${liferay.home}/osgi/configs/com.liferay.portal.search.configuration.IndexWriterHelperConfiguration.cfg" />
+		<delete file="${liferay.home}/osgi/configs/com.liferay.portal.search.configuration.IndexStatusManagerConfiguration.cfg" />
 
 		<copy
 			file="tools/db-upgrade/build.xml"
@@ -8029,7 +8050,7 @@ jdbc.default.password=${database.mysql.password}</echo>
 			tofile="${liferay.home}/portal-ext.properties"
 		/>
 
-		<echo file="${liferay.home}/osgi/configs/com.liferay.portal.search.configuration.IndexWriterHelperConfiguration.cfg">index.read.only=true</echo>
+		<echo file="${liferay.home}/osgi/configs/com.liferay.portal.search.configuration.IndexStatusManagerConfiguration.cfg">indexReadOnly=true</echo>
 
 		<record action="start" name="${liferay.home}/db_upgrade_log" />
 
@@ -8100,7 +8121,8 @@ jdbc.default.password=${database.mysql.password}</echo>
 		<delete file="${liferay.home}/build-db-upgrade.xml" />
 		<delete file="${liferay.home}/db_upgrade_log" />
 		<delete file="${liferay.home}/portal-ext.properties" />
-		<delete file="${liferay.home}/osgi/configs/com.liferay.portal.search.configuration.IndexWriterHelperConfiguration.cfg" />
+
+		<echo file="${liferay.home}/osgi/configs/com.liferay.portal.search.configuration.IndexStatusManagerConfiguration.cfg">indexReadOnly=false</echo>
 	</target>
 
 	<target name="wait-for-plugins-deployment">

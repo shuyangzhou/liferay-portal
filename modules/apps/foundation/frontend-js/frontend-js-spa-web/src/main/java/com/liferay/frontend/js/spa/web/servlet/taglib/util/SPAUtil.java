@@ -20,13 +20,15 @@ import com.liferay.frontend.js.spa.web.configuration.SPAConfigurationUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.servlet.ServletResponseConstants;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
@@ -79,6 +81,13 @@ public class SPAUtil {
 		}
 
 		return jsonArray.toString();
+	}
+
+	public String getLoginRedirect(HttpServletRequest request) {
+		String portletNamespace = PortalUtil.getPortletNamespace(
+			PropsUtil.get(PropsKeys.AUTH_LOGIN_PORTLET_NAME));
+
+		return ParamUtil.getString(request, portletNamespace + "redirect");
 	}
 
 	public String getPortletsBlacklist(ThemeDisplay themeDisplay) {
@@ -157,8 +166,6 @@ public class SPAUtil {
 
 		_spaConfigurationActivator = spaConfigurationActivator;
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(SPAUtil.class);
 
 	private PortletLocalService _portletLocalService;
 	private SPAConfigurationActivator _spaConfigurationActivator;

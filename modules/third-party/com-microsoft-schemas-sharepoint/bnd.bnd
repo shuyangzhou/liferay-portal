@@ -1,5 +1,5 @@
 Bundle-SymbolicName: com.microsoft.schemas.sharepoint
-Bundle-Version: 1.0.1
+Bundle-Version: 1.0.2
 Export-Package:\
 	Search.Microsoft,\
 	\
