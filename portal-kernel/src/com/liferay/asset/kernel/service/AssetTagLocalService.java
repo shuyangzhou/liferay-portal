@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.increment.BufferedIncrement;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.SystemEventConstants;
@@ -117,13 +118,10 @@ public interface AssetTagLocalService extends BaseLocalService,
 	public AssetTag createAssetTag(long tagId);
 
 	/**
-	* Decrements the number of assets to which the asset tag has been applied.
-	*
-	* @param tagId the primary key of the asset tag
-	* @param classNameId the class name ID of the entity to which the asset
-	tag had been applied
-	* @return the asset tag
+	* @deprecated As of 7.0.0, replaced by {@link
+	#incrementAssetCount(long, long, int)}
 	*/
+	@java.lang.Deprecated
 	public AssetTag decrementAssetCount(long tagId, long classNameId)
 		throws PortalException;
 
@@ -214,13 +212,10 @@ public interface AssetTagLocalService extends BaseLocalService,
 	public AssetTag getTag(long tagId) throws PortalException;
 
 	/**
-	* Increments the number of assets to which the asset tag has been applied.
-	*
-	* @param tagId the primary key of the asset tag
-	* @param classNameId the class name ID of the entity to which the asset
-	tag is being applied
-	* @return the asset tag
+	* @deprecated As of 7.0.0, replaced by {@link #incrementAssetCount(long,
+	long, int)}
 	*/
+	@java.lang.Deprecated
 	public AssetTag incrementAssetCount(long tagId, long classNameId)
 		throws PortalException;
 
@@ -649,6 +644,18 @@ public interface AssetTagLocalService extends BaseLocalService,
 	* @param tagId the primary key of the asset tag
 	*/
 	public void deleteTag(long tagId) throws PortalException;
+
+	/**
+	* Increments the number of assets to which the asset tag has been applied.
+	*
+	* @param tagId the primary key of the asset tag
+	* @param classNameId the class name ID of the entity to which the asset
+	tag had been applied
+	* @param increment the amount to increment the number of assets by
+	*/
+	@BufferedIncrement(configuration = "AssetTag", incrementClass = com.liferay.portal.kernel.increment.NumberIncrement.class)
+	public void incrementAssetCount(long tagId, long classNameId, int increment)
+		throws PortalException;
 
 	/**
 	* Replaces all occurrences of the first asset tag with the second asset tag

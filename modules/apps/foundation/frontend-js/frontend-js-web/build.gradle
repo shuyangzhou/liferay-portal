@@ -132,7 +132,7 @@ buildLodash {
 	filter {
 		String line ->
 
-		line.replace("typeof define == 'function'", "false && typeof define == 'function'")
+		line.replace "typeof define == 'function'", "false && typeof define == 'function'"
 	}
 
 	from {

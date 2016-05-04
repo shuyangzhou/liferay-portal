@@ -100,13 +100,10 @@ public class AssetTagLocalServiceWrapper implements AssetTagLocalService,
 	}
 
 	/**
-	* Decrements the number of assets to which the asset tag has been applied.
-	*
-	* @param tagId the primary key of the asset tag
-	* @param classNameId the class name ID of the entity to which the asset
-	tag had been applied
-	* @return the asset tag
+	* @deprecated As of 7.0.0, replaced by {@link
+	#incrementAssetCount(long, long, int)}
 	*/
+	@Deprecated
 	@Override
 	public com.liferay.asset.kernel.model.AssetTag decrementAssetCount(
 		long tagId, long classNameId)
@@ -226,13 +223,10 @@ public class AssetTagLocalServiceWrapper implements AssetTagLocalService,
 	}
 
 	/**
-	* Increments the number of assets to which the asset tag has been applied.
-	*
-	* @param tagId the primary key of the asset tag
-	* @param classNameId the class name ID of the entity to which the asset
-	tag is being applied
-	* @return the asset tag
+	* @deprecated As of 7.0.0, replaced by {@link #incrementAssetCount(long,
+	long, int)}
 	*/
+	@Deprecated
 	@Override
 	public com.liferay.asset.kernel.model.AssetTag incrementAssetCount(
 		long tagId, long classNameId)
@@ -838,6 +832,20 @@ public class AssetTagLocalServiceWrapper implements AssetTagLocalService,
 	public void deleteTag(long tagId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_assetTagLocalService.deleteTag(tagId);
+	}
+
+	/**
+	* Increments the number of assets to which the asset tag has been applied.
+	*
+	* @param tagId the primary key of the asset tag
+	* @param classNameId the class name ID of the entity to which the asset
+	tag had been applied
+	* @param increment the amount to increment the number of assets by
+	*/
+	@Override
+	public void incrementAssetCount(long tagId, long classNameId, int increment)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_assetTagLocalService.incrementAssetCount(tagId, classNameId, increment);
 	}
 
 	/**

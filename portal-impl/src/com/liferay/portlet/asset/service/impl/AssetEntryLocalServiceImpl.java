@@ -91,8 +91,8 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 
 		for (AssetTag tag : tags) {
 			if (entry.isVisible()) {
-				assetTagLocalService.decrementAssetCount(
-					tag.getTagId(), entry.getClassNameId());
+				assetTagLocalService.incrementAssetCount(
+					tag.getTagId(), entry.getClassNameId(), -1);
 			}
 		}
 
@@ -746,29 +746,29 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 				if (isNew) {
 					for (AssetTag tag : tags) {
 						assetTagLocalService.incrementAssetCount(
-							tag.getTagId(), classNameId);
+							tag.getTagId(), classNameId, 1);
 					}
 				}
 				else {
 					for (AssetTag oldTag : oldTags) {
 						if (!tags.contains(oldTag)) {
-							assetTagLocalService.decrementAssetCount(
-								oldTag.getTagId(), classNameId);
+							assetTagLocalService.incrementAssetCount(
+								oldTag.getTagId(), classNameId, -1);
 						}
 					}
 
 					for (AssetTag tag : tags) {
 						if (!oldTags.contains(tag)) {
 							assetTagLocalService.incrementAssetCount(
-								tag.getTagId(), classNameId);
+								tag.getTagId(), classNameId, 1);
 						}
 					}
 				}
 			}
 			else if (oldVisible) {
 				for (AssetTag oldTag : oldTags) {
-					assetTagLocalService.decrementAssetCount(
-						oldTag.getTagId(), classNameId);
+					assetTagLocalService.incrementAssetCount(
+						oldTag.getTagId(), classNameId, -1);
 				}
 			}
 		}
@@ -937,7 +937,7 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 		if (visible) {
 			for (AssetTag tag : tags) {
 				assetTagLocalService.incrementAssetCount(
-					tag.getTagId(), entry.getClassNameId());
+					tag.getTagId(), entry.getClassNameId(), 1);
 			}
 
 			socialActivityCounterLocalService.enableActivityCounters(
@@ -945,8 +945,8 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 		}
 		else {
 			for (AssetTag tag : tags) {
-				assetTagLocalService.decrementAssetCount(
-					tag.getTagId(), entry.getClassNameId());
+				assetTagLocalService.incrementAssetCount(
+					tag.getTagId(), entry.getClassNameId(), -1);
 			}
 
 			socialActivityCounterLocalService.disableActivityCounters(

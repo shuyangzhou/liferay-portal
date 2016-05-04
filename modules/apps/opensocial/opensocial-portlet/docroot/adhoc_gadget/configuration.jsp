@@ -32,7 +32,7 @@ Map<String, OAuthService> oAuthServices = (Map<String, OAuthService>)renderReque
 	<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= Constants.UPDATE %>" />
 	<aui:input name="tabs2" type="hidden" value="<%= tabs2 %>" />
 
-	<liferay-portlet:renderURL portletConfiguration="true" var="configurationRenderURL">
+	<liferay-portlet:renderURL portletConfiguration="<%= true %>" var="configurationRenderURL">
 		<portlet:param name="tabs2" value="<%= tabs2 %>" />
 	</liferay-portlet:renderURL>
 
