@@ -21,6 +21,8 @@ import com.liferay.asset.kernel.model.AssetTag;
 import com.liferay.portal.kernel.cache.thread.local.ThreadLocalCachable;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.increment.BufferedIncrement;
+import com.liferay.portal.kernel.increment.NumberIncrement;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
@@ -164,13 +166,10 @@ public class AssetTagLocalServiceImpl extends AssetTagLocalServiceBaseImpl {
 	}
 
 	/**
-	 * Decrements the number of assets to which the asset tag has been applied.
-	 *
-	 * @param  tagId the primary key of the asset tag
-	 * @param  classNameId the class name ID of the entity to which the asset
-	 *         tag had been applied
-	 * @return the asset tag
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #incrementAssetCount(long, long, int)}
 	 */
+	@Deprecated
 	@Override
 	public AssetTag decrementAssetCount(long tagId, long classNameId)
 		throws PortalException {
@@ -552,13 +551,10 @@ public class AssetTagLocalServiceImpl extends AssetTagLocalServiceBaseImpl {
 	}
 
 	/**
-	 * Increments the number of assets to which the asset tag has been applied.
-	 *
-	 * @param  tagId the primary key of the asset tag
-	 * @param  classNameId the class name ID of the entity to which the asset
-	 *         tag is being applied
-	 * @return the asset tag
+	 * @deprecated As of 7.0.0, replaced by {@link #incrementAssetCount(long,
+	 *             long, int)}
 	 */
+	@Deprecated
 	@Override
 	public AssetTag incrementAssetCount(long tagId, long classNameId)
 		throws PortalException {
@@ -572,6 +568,30 @@ public class AssetTagLocalServiceImpl extends AssetTagLocalServiceBaseImpl {
 		assetTagStatsLocalService.updateTagStats(tagId, classNameId);
 
 		return tag;
+	}
+
+	/**
+	 * Increments the number of assets to which the asset tag has been applied.
+	 *
+	 * @param  tagId the primary key of the asset tag
+	 * @param  classNameId the class name ID of the entity to which the asset
+	 *         tag had been applied
+	 * @param increment the amount to increment the number of assets by
+	 */
+	@BufferedIncrement(
+		configuration = "AssetTag", incrementClass = NumberIncrement.class
+	)
+	@Override
+	public void incrementAssetCount(long tagId, long classNameId, int increment)
+		throws PortalException {
+
+		AssetTag tag = assetTagPersistence.findByPrimaryKey(tagId);
+
+		tag.setAssetCount(Math.max(0, tag.getAssetCount() + increment));
+
+		assetTagPersistence.update(tag);
+
+		assetTagStatsLocalService.updateTagStats(tagId, classNameId);
 	}
 
 	/**
@@ -592,7 +612,8 @@ public class AssetTagLocalServiceImpl extends AssetTagLocalServiceBaseImpl {
 		deleteTag(fromTagId);
 
 		for (AssetEntry entry : entries) {
-			incrementAssetCount(toTagId, entry.getClassNameId());
+			assetTagLocalService.incrementAssetCount(
+				toTagId, entry.getClassNameId(), 1);
 		}
 	}
 
