@@ -112,8 +112,6 @@ public class LPKGDeployerTest {
 		Map<Bundle, List<Bundle>> bundleMap =
 			lpkgDeployer.getDeployedLPKGBundles();
 
-		List<Bundle> lpkgBundles = new ArrayList<>(bundleMap.keySet());
-
 		List<Bundle> bundles = new ArrayList<>();
 
 		for (List<Bundle> bundleList : bundleMap.values()) {
@@ -125,7 +123,7 @@ public class LPKGDeployerTest {
 				file.getCanonicalPath());
 
 			Assert.assertNotNull(lpkgBundle);
-			Assert.assertTrue(lpkgBundles.contains(lpkgBundle));
+			Assert.assertTrue(bundleMap.containsKey(lpkgBundle));
 
 			ZipFile zipFile = new ZipFile(file);
 
