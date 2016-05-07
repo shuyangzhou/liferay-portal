@@ -122,8 +122,13 @@ public class LPKGDeployerTest {
 			Bundle lpkgBundle = bundleContext.getBundle(
 				file.getCanonicalPath());
 
-			Assert.assertNotNull(lpkgBundle);
-			Assert.assertTrue(bundleMap.containsKey(lpkgBundle));
+			Assert.assertNotNull(
+				"No matching lpkg bundle for " + file.getCanonicalPath(),
+				lpkgBundle);
+			Assert.assertTrue(
+				"Registered lpkg bundles " + bundleMap.keySet() +
+					" do not contain " + lpkgBundle,
+				bundleMap.containsKey(lpkgBundle));
 
 			ZipFile zipFile = new ZipFile(file);
 
