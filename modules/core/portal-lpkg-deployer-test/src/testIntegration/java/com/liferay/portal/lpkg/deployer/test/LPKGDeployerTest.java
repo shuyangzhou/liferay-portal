@@ -15,6 +15,7 @@
 package com.liferay.portal.lpkg.deployer.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.lpkg.deployer.LPKGDeployer;
@@ -142,7 +143,7 @@ public class LPKGDeployerTest {
 
 				String name = zipEntry.getName();
 
-				if (name.endsWith(".jar") || name.endsWith(".war")) {
+				if (name.endsWith(".jar")) {
 					Bundle bundle = bundleContext.getBundle(
 						StringPool.SLASH + name);
 
@@ -150,6 +151,43 @@ public class LPKGDeployerTest {
 						"No matching app bundle for /" + name, bundle);
 
 					actualAppBundles.add(bundle);
+				}
+
+				if (name.endsWith(".war")) {
+					Bundle bundle = bundleContext.getBundle(
+						StringPool.SLASH + name);
+
+					Assert.assertNotNull(
+						"No matching app bundle for /" + name, bundle);
+
+					actualAppBundles.add(bundle);
+
+					String contextName = name.substring(
+						0, name.lastIndexOf(".war"));
+
+					int index = contextName.lastIndexOf('-');
+
+					if (index >= 0) {
+						contextName = contextName.substring(0, index);
+					}
+
+					StringBundler sb = new StringBundler(8);
+
+					sb.append("webbundle:lpkg://");
+					sb.append(lpkgBundle.getSymbolicName());
+					sb.append(StringPool.DASH);
+					sb.append(lpkgBundle.getVersion());
+					sb.append(StringPool.SLASH);
+					sb.append(contextName);
+					sb.append(".war?Web-ContextPath=/");
+					sb.append(contextName);
+
+					String location = sb.toString();
+
+					Assert.assertNotNull(
+						"Missing war bundle for wrapper bundle " + bundle +
+							" with expected location " + location,
+						bundleContext.getBundle(location));
 				}
 			}
 
