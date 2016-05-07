@@ -64,9 +64,10 @@ public class LPKGDeployerTest {
 
 		Path deploymentDirPath = Paths.get(deploymentDir);
 
-		final List<File> lpkgFiles = new ArrayList<>();
+		Assert.assertTrue(
+			deploymentDir + " does not exist", Files.exists(deploymentDirPath));
 
-		Files.createDirectories(deploymentDirPath);
+		final List<File> lpkgFiles = new ArrayList<>();
 
 		Files.walkFileTree(
 			deploymentDirPath,
