@@ -140,8 +140,12 @@ public class LPKGDeployerTest {
 					Bundle bundle = bundleContext.getBundle(
 						StringPool.SLASH + name);
 
-					Assert.assertNotNull(bundle);
-					Assert.assertTrue(bundles.contains(bundle));
+					Assert.assertNotNull(
+						"No matching app bundle for /" + name, bundle);
+					Assert.assertTrue(
+						"Registered app bundles " + bundles +
+							" do not contain " + bundle,
+						bundles.contains(bundle));
 				}
 			}
 		}
