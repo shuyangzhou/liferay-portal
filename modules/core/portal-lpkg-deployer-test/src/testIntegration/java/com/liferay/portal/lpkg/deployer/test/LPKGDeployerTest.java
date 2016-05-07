@@ -30,6 +30,7 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
@@ -120,12 +121,17 @@ public class LPKGDeployerTest {
 				"No matching lpkg bundle for " + file.getCanonicalPath(),
 				lpkgBundle);
 
-			List<Bundle> bundles = bundleMap.get(lpkgBundle);
+			List<Bundle> expectedAppBundles = new ArrayList<>(
+				bundleMap.get(lpkgBundle));
 
 			Assert.assertNotNull(
 				"Registered lpkg bundles " + bundleMap.keySet() +
 					" do not contain " + lpkgBundle,
-				bundles);
+				expectedAppBundles);
+
+			Collections.sort(expectedAppBundles);
+
+			List<Bundle> actualAppBundles = new ArrayList<>();
 
 			ZipFile zipFile = new ZipFile(file);
 
@@ -142,12 +148,18 @@ public class LPKGDeployerTest {
 
 					Assert.assertNotNull(
 						"No matching app bundle for /" + name, bundle);
-					Assert.assertTrue(
-						"Registered app bundles " + bundles +
-							" do not contain " + bundle,
-						bundles.contains(bundle));
+
+					actualAppBundles.add(bundle);
 				}
 			}
+
+			Collections.sort(actualAppBundles);
+
+			Assert.assertEquals(
+				"For lpkg bundle " + lpkgBundle + ", expected app bundles " +
+					expectedAppBundles + ", actual app bundles " +
+						actualAppBundles,
+				expectedAppBundles, actualAppBundles);
 		}
 	}
 
