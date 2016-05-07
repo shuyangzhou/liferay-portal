@@ -57,7 +57,8 @@ public class LPKGDeployerTest {
 
 		BundleContext bundleContext = testBundle.getBundleContext();
 
-		String deploymentDir = bundleContext.getProperty("lpkg.deployer.dir");
+		final String deploymentDir = bundleContext.getProperty(
+			"lpkg.deployer.dir");
 
 		Assert.assertNotNull(
 			"Missing configuration for \"lpkg.deployer.dir\"", deploymentDir);
@@ -84,7 +85,9 @@ public class LPKGDeployerTest {
 						fileNamePath.toString());
 
 					if (!fileName.endsWith(".lpkg")) {
-						return FileVisitResult.CONTINUE;
+						Assert.fail(
+							"Unexpected file " + filePath + " in " +
+								deploymentDir);
 					}
 
 					lpkgFiles.add(filePath.toFile());
