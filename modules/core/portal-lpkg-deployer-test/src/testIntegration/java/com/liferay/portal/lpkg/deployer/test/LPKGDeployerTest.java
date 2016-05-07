@@ -142,7 +142,7 @@ public class LPKGDeployerTest {
 
 				String name = zipEntry.getName();
 
-				if (name.endsWith(".jar") || name.endsWith("*.war")) {
+				if (name.endsWith(".jar") || name.endsWith(".war")) {
 					Bundle bundle = bundleContext.getBundle(
 						StringPool.SLASH + name);
 
