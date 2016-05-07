@@ -97,8 +97,8 @@ public class LPKGDeployerTest {
 
 			});
 
-		Assert.assertTrue(
-			"No lpkg file in " + deploymentDir, !lpkgFiles.isEmpty());
+		Assert.assertFalse(
+			"No lpkg file in " + deploymentDir, lpkgFiles.isEmpty());
 
 		ServiceTracker<LPKGDeployer, LPKGDeployer> serviceTracker =
 			new ServiceTracker<>(bundleContext, LPKGDeployer.class, null);
