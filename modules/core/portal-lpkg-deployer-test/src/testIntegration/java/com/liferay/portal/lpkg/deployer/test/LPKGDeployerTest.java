@@ -112,12 +112,6 @@ public class LPKGDeployerTest {
 		Map<Bundle, List<Bundle>> bundleMap =
 			lpkgDeployer.getDeployedLPKGBundles();
 
-		List<Bundle> bundles = new ArrayList<>();
-
-		for (List<Bundle> bundleList : bundleMap.values()) {
-			bundles.addAll(bundleList);
-		}
-
 		for (File file : lpkgFiles) {
 			Bundle lpkgBundle = bundleContext.getBundle(
 				file.getCanonicalPath());
@@ -125,10 +119,13 @@ public class LPKGDeployerTest {
 			Assert.assertNotNull(
 				"No matching lpkg bundle for " + file.getCanonicalPath(),
 				lpkgBundle);
-			Assert.assertTrue(
+
+			List<Bundle> bundles = bundleMap.get(lpkgBundle);
+
+			Assert.assertNotNull(
 				"Registered lpkg bundles " + bundleMap.keySet() +
 					" do not contain " + lpkgBundle,
-				bundleMap.containsKey(lpkgBundle));
+				bundles);
 
 			ZipFile zipFile = new ZipFile(file);
 
