@@ -15,11 +15,9 @@
 package com.liferay.portal.lpkg.deployer.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.lpkg.deployer.LPKGDeployer;
-import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
 import java.io.IOException;
@@ -59,9 +57,10 @@ public class LPKGDeployerTest {
 
 		BundleContext bundleContext = testBundle.getBundleContext();
 
-		String deploymentDir = GetterUtil.getString(
-			bundleContext.getProperty("lpkg.deployer.dir"),
-			PropsValues.MODULE_FRAMEWORK_BASE_DIR + "/marketplace");
+		String deploymentDir = bundleContext.getProperty("lpkg.deployer.dir");
+
+		Assert.assertNotNull(
+			"Missing configuration for \"lpkg.deployer.dir\"", deploymentDir);
 
 		Path deploymentDirPath = Paths.get(deploymentDir);
 
