@@ -15,18 +15,10 @@
 package com.liferay.portal.store.file.system.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-import com.liferay.document.library.kernel.store.StoreWrapper;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
-import com.liferay.portal.kernel.test.util.TestPropsValues;
-import com.liferay.portal.module.framework.test.ModuleFrameworkTestUtil;
-import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portlet.documentlibrary.store.test.BaseStoreTestCase;
 
-import java.util.Collection;
-
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
@@ -42,21 +34,6 @@ public class FileSystemStoreTest extends BaseStoreTestCase {
 	public static final AggregateTestRule aggregateTestRule =
 		new LiferayIntegrationTestRule();
 
-	@BeforeClass
-	public static void setUpClass() throws Exception {
-		ServiceTestUtil.setUser(TestPropsValues.getUser());
-
-		_bundleIds = ModuleFrameworkTestUtil.getBundleIds(
-			StoreWrapper.class, "(store.type=" + _STORE_TYPE + ")");
-
-		ModuleFrameworkTestUtil.stopBundles(_bundleIds);
-	}
-
-	@AfterClass
-	public static void tearDownClass() {
-		ModuleFrameworkTestUtil.startBundles(_bundleIds);
-	}
-
 	@Override
 	protected String getStoreType() {
 		return _STORE_TYPE;
@@ -64,7 +41,5 @@ public class FileSystemStoreTest extends BaseStoreTestCase {
 
 	private static final String _STORE_TYPE =
 		"com.liferay.portal.store.file.system.FileSystemStore";
-
-	private static Collection<Long> _bundleIds;
 
 }
