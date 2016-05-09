@@ -542,9 +542,7 @@ svn://svn.liferay.com/repos/public/alloy/trunk/sandbox/taglibs.
 		<antcall target="build-service-portal" />
 		<antcall target="build-service-portlets" />
 
-		<gradle-execute dir="../modules" task="buildService">
-			<arg value="-Dportal.build=true" />
-		</gradle-execute>
+		<gradle-execute dir="../modules" task="buildService" />
 	</target>
 
 	<target name="build-upgrade-table">
@@ -693,9 +691,7 @@ svn://svn.liferay.com/repos/public/alloy/trunk/sandbox/taglibs.
 		<antcall target="build-wsdd-portal" />
 		<antcall target="build-wsdd-portlets" />
 
-		<gradle-execute dir="../modules" task="buildWSDD">
-			<arg value="-Dportal.build=true" />
-		</gradle-execute>
+		<gradle-execute dir="../modules" task="buildWSDD" />
 	</target>
 
 	<target name="build-yui-compressor-jar">

@@ -35,10 +35,11 @@ import com.liferay.portal.upgrade.v7_0_0.util.ServiceComponentTable;
 import com.liferay.portal.upgrade.v7_0_0.util.VirtualHostTable;
 import com.liferay.portal.util.PropsUtil;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +54,25 @@ public class UpgradeSharding extends UpgradeProcess {
 			Connection sourceConnection, Connection targetConnection,
 			String tableName, Object[][] columns, String createSQL)
 		throws Exception {
+
+		try {
+			if (!hasRows(targetConnection, tableName)) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"Control table " + tableName + " should not contain " +
+							"data in a nondefault shard");
+				}
+			}
+
+			dropTable(targetConnection, tableName);
+		}
+		catch (SQLException sqle) {
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					"Unable to drop control table " + tableName +
+						" because it  does not exist in the target shard");
+			}
+		}
 
 		UpgradeTable upgradeTable = UpgradeTableFactoryUtil.getUpgradeTable(
 			tableName, columns);
@@ -148,6 +168,16 @@ public class UpgradeSharding extends UpgradeProcess {
 		copyControlTables(shardNames);
 	}
 
+	protected void dropTable(Connection connection, String tableName)
+		throws IOException, SQLException {
+
+		runSQL(connection, "drop table " + tableName);
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("Deleted table " + tableName);
+		}
+	}
+
 	protected List<String> getShardNames() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer();
 			PreparedStatement ps = connection.prepareStatement(
@@ -162,6 +192,29 @@ public class UpgradeSharding extends UpgradeProcess {
 
 			return shardNames;
 		}
+	}
+
+	/**
+	 * @see com.liferay.portal.kernel.dao.db.BaseDBProcess#hasRows(String)
+	 */
+	protected boolean hasRows(Connection connection, String tableName) {
+		try (PreparedStatement ps = connection.prepareStatement(
+				"select count(*) from " + tableName);
+			ResultSet rs = ps.executeQuery()) {
+
+			while (rs.next()) {
+				int count = rs.getInt(1);
+
+				if (count > 0) {
+					return true;
+				}
+			}
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+		}
+
+		return false;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

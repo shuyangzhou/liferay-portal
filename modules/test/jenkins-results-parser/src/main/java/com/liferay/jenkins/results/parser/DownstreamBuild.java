@@ -18,9 +18,11 @@ import java.io.UnsupportedEncodingException;
 
 import java.net.URLDecoder;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -58,11 +60,11 @@ public class DownstreamBuild extends BaseBuild {
 
 		for (String parameterName : parameterNames) {
 			if (invokedParameters.containsKey(parameterName)) {
-				parameters.put(
-					parameterName, invokedParameters.get(parameterName));
-			}
-			else {
-				parameters.put(parameterName, "");
+				String parameterValue = invokedParameters.get(parameterName);
+
+				if (!parameterValue.isEmpty()) {
+					parameters.put(parameterName, parameterValue);
+				}
 			}
 		}
 
@@ -79,6 +81,19 @@ public class DownstreamBuild extends BaseBuild {
 
 	public TopLevelBuild getTopLevelBuild() {
 		return topLevelBuild;
+	}
+
+	public void reinvoke() throws Exception {
+		badBuildNumbers.add(buildNumber);
+
+		buildNumber = -1;
+		result = null;
+		setStatus("starting");
+
+		JenkinsResultsParserUtil.toString(
+			JenkinsResultsParserUtil.getLocalURL(invocationURL));
+
+		System.out.println("Reinvoked: " + invocationURL);
 	}
 
 	@Override
@@ -104,7 +119,9 @@ public class DownstreamBuild extends BaseBuild {
 			else {
 				JSONObject queueItemJSONObject = getQueueItemJSONObject();
 
-				if (status.equals("started") && (queueItemJSONObject != null)) {
+				if (status.equals("starting") &&
+					(queueItemJSONObject != null)) {
+
 					setStatus("queued");
 				}
 				else if (status.equals("queued") &&
@@ -199,7 +216,9 @@ public class DownstreamBuild extends BaseBuild {
 				String name = jsonObject.getString("name");
 				String value = jsonObject.getString("value");
 
-				parameters.put(name, value);
+				if (!value.isEmpty()) {
+					parameters.put(name, value);
+				}
 			}
 		}
 
@@ -243,7 +262,9 @@ public class DownstreamBuild extends BaseBuild {
 				String name = URLDecoder.decode(parameterParts[0], "UTF-8");
 				String value = URLDecoder.decode(parameterParts[1], "UTF-8");
 
-				parameters.put(name, value);
+				if (!value.isEmpty()) {
+					parameters.put(name, value);
+				}
 			}
 		}
 
@@ -290,7 +311,9 @@ public class DownstreamBuild extends BaseBuild {
 		for (int i = 0; i < buildsJSONArray.length(); i++) {
 			JSONObject buildJSONObject = buildsJSONArray.getJSONObject(i);
 
-			if (parameters.equals(getParameters(buildJSONObject))) {
+			if (parameters.equals(getParameters(buildJSONObject)) &&
+				!badBuildNumbers.contains(buildJSONObject.getInt("number"))) {
+
 				return buildJSONObject;
 			}
 		}
@@ -298,6 +321,7 @@ public class DownstreamBuild extends BaseBuild {
 		return null;
 	}
 
+	protected List<Integer> badBuildNumbers = new ArrayList<>();
 	protected String invocationURL;
 	protected Map<String, String> parameters;
 	protected TopLevelBuild topLevelBuild;

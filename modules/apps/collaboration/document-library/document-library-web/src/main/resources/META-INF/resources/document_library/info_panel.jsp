@@ -129,7 +129,7 @@ if (ListUtil.isEmpty(folders) && ListUtil.isEmpty(fileEntries) && ListUtil.isEmp
 				</li>
 			</ul>
 
-			<h4><%= fileEntry.getTitle() %></h4>
+			<h4><%= HtmlUtil.escape(fileEntry.getTitle()) %></h4>
 
 			<h5 class="text-default">
 				<span>
@@ -196,7 +196,7 @@ if (ListUtil.isEmpty(folders) && ListUtil.isEmpty(fileEntries) && ListUtil.isEmp
 							</dt>
 
 							<dd>
-								<%= fileEntry.getDescription() %>
+								<%= HtmlUtil.escape(fileEntry.getDescription()) %>
 							</dd>
 						</c:if>
 

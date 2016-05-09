@@ -58,7 +58,8 @@ DDMStructure structure = (DDMStructure)row.getObject();
 		</portlet:renderURL>
 
 		<liferay-ui:icon
-			message="manage-templates"
+			localizeMessage="<%= false %>"
+			message='<%= LanguageUtil.format(request, "manage-x", ddmDisplay.getViewTemplatesTitle(null, locale)) %>'
 			url="<%= manageViewURL %>"
 		/>
 	</c:if>
