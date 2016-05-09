@@ -46,21 +46,21 @@ request.setAttribute("view.jsp-showIconLabel", false);
 %>
 
 <c:if test="<%= assetEntryIndex == 0 %>">
-	<table class="table table-bordered table-hover table-striped">
-	<thead class="table-columns">
+	<table class="table table-list">
+	<thead>
 	<tr>
-		<th class="table-header table-sortable-column">
-			<liferay-ui:message key="title" />
+		<th class="clamp-horizontal content-column table-cell-content title-column">
+			<div class="clamp-container">
+				<span class="truncate-text"><liferay-ui:message key="title" /></span>
+			</div>
 		</th>
 
 		<%
-		String[] metadataFields = assetPublisherDisplayContext.getMetadataFields();
-
-		for (int m = 0; m < metadataFields.length; m++) {
+		for (String metadataField : assetPublisherDisplayContext.getMetadataFields()) {
 		%>
 
-			<th class="table-header">
-				<liferay-ui:message key="<%= metadataFields[m] %>" />
+			<th class="metadata-column table-cell-field text-column">
+				<liferay-ui:message key="<%= metadataField %>" />
 			</th>
 
 		<%
@@ -68,106 +68,101 @@ request.setAttribute("view.jsp-showIconLabel", false);
 		%>
 
 		<c:if test="<%= !stageableGroup.hasStagingGroup() %>">
-			<th class="table-header"></th>
+			<th class="entry-action-column table-cell-field"></th>
 		</c:if>
 	</tr>
 	</thead>
 
-	<tbody class="table-data">
+	<tbody>
 </c:if>
 
 <tr>
-	<td class="table-cell">
-		<c:choose>
-			<c:when test="<%= Validator.isNotNull(viewURL) %>">
-				<a href="<%= viewURL %>"><%= HtmlUtil.escape(title) %></a>
-			</c:when>
-			<c:otherwise>
-				<%= HtmlUtil.escape(title) %>
-			</c:otherwise>
-		</c:choose>
+	<td class="clamp-horizontal content-column table-cell-content title-column" colspan="1">
+		<div class="clamp-container">
+			<span class="truncate-text">
+				<c:choose>
+					<c:when test="<%= Validator.isNotNull(viewURL) %>">
+						<a href="<%= viewURL %>"><%= HtmlUtil.escape(title) %></a>
+					</c:when>
+					<c:otherwise>
+						<%= HtmlUtil.escape(title) %>
+					</c:otherwise>
+				</c:choose>
+			</span>
+		</div>
 	</td>
 
 	<%
-	String[] metadataFields = assetPublisherDisplayContext.getMetadataFields();
-
-	for (int m = 0; m < metadataFields.length; m++) {
-		String value = null;
-
-		if (metadataFields[m].equals("create-date")) {
-			value = dateFormatDate.format(assetEntry.getCreateDate());
-		}
-		else if (metadataFields[m].equals("modified-date")) {
-			value = dateFormatDate.format(assetEntry.getModifiedDate());
-		}
-		else if (metadataFields[m].equals("publish-date")) {
-			if (assetEntry.getPublishDate() == null) {
-				value = StringPool.BLANK;
-			}
-			else {
-				value = dateFormatDate.format(assetEntry.getPublishDate());
-			}
-		}
-		else if (metadataFields[m].equals("expiration-date")) {
-			if (assetEntry.getExpirationDate() == null) {
-				value = StringPool.BLANK;
-			}
-			else {
-				value = dateFormatDate.format(assetEntry.getExpirationDate());
-			}
-		}
-		else if (metadataFields[m].equals("priority")) {
-			value = String.valueOf(assetEntry.getPriority());
-		}
-		else if (metadataFields[m].equals("author")) {
-			String userName = PortalUtil.getUserName(assetRenderer.getUserId(), assetRenderer.getUserName());
-
-			value = HtmlUtil.escape(userName);
-		}
-		else if (metadataFields[m].equals("view-count")) {
-			value = String.valueOf(assetEntry.getViewCount());
-		}
-		else if (metadataFields[m].equals("categories")) {
-		%>
-
-			<td class="table-cell">
-				<liferay-ui:asset-categories-summary
-					className="<%= assetEntry.getClassName() %>"
-					classPK="<%= assetEntry.getClassPK() %>"
-					portletURL="<%= renderResponse.createRenderURL() %>"
-				/>
-			</td>
-
-		<%
-		}
-		else if (metadataFields[m].equals("tags")) {
-		%>
-
-			<td class="table-cell">
-				<liferay-ui:asset-tags-summary
-					className="<%= assetEntry.getClassName() %>"
-					classPK="<%= assetEntry.getClassPK() %>"
-					portletURL="<%= renderResponse.createRenderURL() %>"
-				/>
-			</td>
-
-		<%
-		}
-
-		if (value != null) {
+	for (String metadataField : assetPublisherDisplayContext.getMetadataFields()) {
 	%>
 
-			<td class="table-cell">
-				<liferay-ui:message key="<%= value %>" />
-			</td>
+		<td class="metadata-column scope-column table-cell-field" colspan="1">
+			<c:choose>
+				<c:when test='<%= Objects.equals(metadataField, "categories") %>'>
+					<liferay-ui:asset-categories-summary
+						className="<%= assetEntry.getClassName() %>"
+						classPK="<%= assetEntry.getClassPK() %>"
+						portletURL="<%= renderResponse.createRenderURL() %>"
+					/>
+				</c:when>
+				<c:when test='<%= Objects.equals(metadataField, "tags") %>'>
+					<liferay-ui:asset-tags-summary
+						className="<%= assetEntry.getClassName() %>"
+						classPK="<%= assetEntry.getClassPK() %>"
+						portletURL="<%= renderResponse.createRenderURL() %>"
+					/>
+				</c:when>
+				<c:otherwise>
+
+					<%
+					String value = null;
+
+					if (Objects.equals(metadataField, "create-date")) {
+						value = dateFormatDate.format(assetEntry.getCreateDate());
+					}
+					else if (Objects.equals(metadataField, "modified-date")) {
+						value = dateFormatDate.format(assetEntry.getModifiedDate());
+					}
+					else if (Objects.equals(metadataField, "publish-date")) {
+						if (assetEntry.getPublishDate() == null) {
+							value = StringPool.BLANK;
+						}
+						else {
+							value = dateFormatDate.format(assetEntry.getPublishDate());
+						}
+					}
+					else if (Objects.equals(metadataField, "expiration-date")) {
+						if (assetEntry.getExpirationDate() == null) {
+							value = StringPool.BLANK;
+						}
+						else {
+							value = dateFormatDate.format(assetEntry.getExpirationDate());
+						}
+					}
+					else if (Objects.equals(metadataField, "priority")) {
+						value = String.valueOf(assetEntry.getPriority());
+					}
+					else if (Objects.equals(metadataField, "author")) {
+						String userName = PortalUtil.getUserName(assetRenderer.getUserId(), assetRenderer.getUserName());
+
+						value = HtmlUtil.escape(userName);
+					}
+					else if (Objects.equals(metadataField, "view-count")) {
+						value = String.valueOf(assetEntry.getViewCount());
+					}
+					%>
+
+					<liferay-ui:message key="<%= value %>" />
+				</c:otherwise>
+			</c:choose>
+		</td>
 
 	<%
-		}
 	}
 	%>
 
 	<c:if test="<%= !stageableGroup.hasStagingGroup() %>">
-		<td class="table-cell">
+		<td class="entry-action-column table-cell-field" colspan="1">
 			<c:if test="<%= assetRenderer.hasEditPermission(permissionChecker) && (editPortletURL != null) %>">
 				<liferay-util:include page="/asset_actions.jsp" servletContext="<%= application %>" />
 			</c:if>
