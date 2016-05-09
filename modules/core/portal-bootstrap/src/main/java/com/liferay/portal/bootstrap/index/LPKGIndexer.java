@@ -149,6 +149,16 @@ public class LPKGIndexer implements Indexer {
 
 	@Override
 	public File index(File output) throws Exception {
+		FastDateFormatFactoryUtil fastDateFormatFactoryUtil =
+			new FastDateFormatFactoryUtil();
+
+		fastDateFormatFactoryUtil.setFastDateFormatFactory(
+			new FastDateFormatFactoryImpl());
+
+		FileUtil fileUtil = new FileUtil();
+
+		fileUtil.setFile(new FileImpl());
+
 		File tempFolder = FileUtil.createTempFolder();
 
 		_indexerConfig.put("root.url", tempFolder.getCanonicalPath());

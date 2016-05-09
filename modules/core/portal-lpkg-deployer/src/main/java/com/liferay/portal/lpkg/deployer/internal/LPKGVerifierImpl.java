@@ -17,11 +17,14 @@ package com.liferay.portal.lpkg.deployer.internal;
 import com.liferay.portal.bootstrap.index.IndexValidator;
 import com.liferay.portal.bootstrap.index.Indexer;
 import com.liferay.portal.bootstrap.index.LPKGIndexer;
+import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.lpkg.deployer.LPKGVerifier;
 import com.liferay.portal.lpkg.deployer.LPKGVerifyException;
+import com.liferay.portal.util.FastDateFormatFactoryImpl;
+import com.liferay.portal.util.FileImpl;
 import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
@@ -54,6 +57,16 @@ public class LPKGVerifierImpl implements LPKGVerifier {
 
 	@Override
 	public List<Bundle> verify(File lpkgFile) {
+		FastDateFormatFactoryUtil fastDateFormatFactoryUtil =
+			new FastDateFormatFactoryUtil();
+
+		fastDateFormatFactoryUtil.setFastDateFormatFactory(
+			new FastDateFormatFactoryImpl());
+
+		FileUtil fileUtil = new FileUtil();
+
+		fileUtil.setFile(new FileImpl());
+
 		File tmpDir = null;
 
 		try {
