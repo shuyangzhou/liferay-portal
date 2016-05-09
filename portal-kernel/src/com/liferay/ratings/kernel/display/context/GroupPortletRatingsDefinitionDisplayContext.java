@@ -54,9 +54,12 @@ public class GroupPortletRatingsDefinitionDisplayContext {
 				PortletRatingsDefinitionUtil.
 					getPortletRatingsDefinitionValuesMap();
 
-		for (String className : portletRatingsDefinitionValuesMap.keySet()) {
+		for (Map.Entry<String, PortletRatingsDefinitionValues> entry :
+				portletRatingsDefinitionValuesMap.entrySet()) {
+
+			String className = entry.getKey();
 			PortletRatingsDefinitionValues portletRatingsDefinitionValues =
-				portletRatingsDefinitionValuesMap.get(className);
+				entry.getValue();
 
 			if (portletRatingsDefinitionValues == null) {
 				continue;

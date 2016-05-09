@@ -184,9 +184,8 @@ public class GroupTestUtil {
 			PortletDataHandlerKeys.PORTLET_DATA_ALL,
 			new String[] {Boolean.FALSE.toString()});
 
-		for (String parameterName : parameters.keySet()) {
-			serviceContext.setAttribute(
-				parameterName, parameters.get(parameterName)[0]);
+		for (Map.Entry<String, String[]> entry : parameters.entrySet()) {
+			serviceContext.setAttribute(entry.getKey(), entry.getValue()[0]);
 		}
 
 		StagingLocalServiceUtil.enableLocalStaging(

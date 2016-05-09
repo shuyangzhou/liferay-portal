@@ -289,8 +289,10 @@ public class JournalTransformer {
 				templateId, tokens, languageId, document, script, langType);
 
 			if (contextObjects != null) {
-				for (String key : contextObjects.keySet()) {
-					template.put(key, contextObjects.get(key));
+				for (Map.Entry<String, Object> entry :
+						contextObjects.entrySet()) {
+
+					template.put(entry.getKey(), entry.getValue());
 				}
 			}
 

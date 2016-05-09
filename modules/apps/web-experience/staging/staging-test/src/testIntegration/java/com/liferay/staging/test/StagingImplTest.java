@@ -281,10 +281,8 @@ public class StagingImplTest {
 		Map<String, String[]> stagingParameters =
 			ExportImportConfigurationParameterMapFactory.buildParameterMap();
 
-		for (String stagingParameterName : stagingParameters.keySet()) {
-			serviceContext.setAttribute(
-				stagingParameterName,
-				stagingParameters.get(stagingParameterName)[0]);
+		for (Map.Entry<String, String[]> entry : stagingParameters.entrySet()) {
+			serviceContext.setAttribute(entry.getKey(), entry.getValue()[0]);
 		}
 
 		if (branching) {
@@ -390,9 +388,8 @@ public class StagingImplTest {
 			StagingUtil.getStagedPortletId(JournalPortletKeys.JOURNAL),
 			stageJournal);
 
-		for (String parameterName : parameters.keySet()) {
-			serviceContext.setAttribute(
-				parameterName, parameters.get(parameterName)[0]);
+		for (Map.Entry<String, String[]> entry : parameters.entrySet()) {
+			serviceContext.setAttribute(entry.getKey(), entry.getValue()[0]);
 		}
 
 		enableLocalStaging(branching, serviceContext);

@@ -44,8 +44,10 @@ public class ExpandoBridgeUtil {
 		Map<String, Serializable> serviceContextAttributes =
 			serviceContext.getExpandoBridgeAttributes();
 
-		for (String key : serviceContextAttributes.keySet()) {
-			expandoBridgeAttributes.put(key, serviceContextAttributes.get(key));
+		for (Map.Entry<String, Serializable> entry :
+				serviceContextAttributes.entrySet()) {
+
+			expandoBridgeAttributes.put(entry.getKey(), entry.getValue());
 		}
 
 		newExpandoBridge.setAttributes(expandoBridgeAttributes, false);
