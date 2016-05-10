@@ -64,9 +64,9 @@ import com.liferay.shopping.model.ShoppingOrderConstants;
 import com.liferay.shopping.model.ShoppingOrderItem;
 import com.liferay.shopping.model.impl.ShoppingCartItemImpl;
 import com.liferay.shopping.service.base.ShoppingOrderLocalServiceBaseImpl;
+import com.liferay.shopping.util.CreditCard;
 import com.liferay.shopping.util.ShoppingUtil;
 import com.liferay.shopping.util.comparator.OrderDateComparator;
-import com.liferay.util.CreditCard;
 
 import java.util.Currency;
 import java.util.List;

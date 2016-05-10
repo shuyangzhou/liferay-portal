@@ -26,8 +26,11 @@ import com.liferay.portal.kernel.util.Validator;
 import java.util.Calendar;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author     Brian Wing Shun Chan
+ * @deprecated As of 7.0.0, replaced by {@link
+ *             com.liferay.shopping.util.CreditCard)}
  */
+@Deprecated
 public class CreditCard {
 
 	public static String hide(String number) {
