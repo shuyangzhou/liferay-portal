@@ -12,12 +12,12 @@
  * details.
  */
 
-package com.liferay.portal.configuration.cluster.messaging;
+package com.liferay.portal.configuration.cluster.constants;
 
 /**
  * @author Michael C. Han
  */
-public class DestinationNames {
+public class ConfigurationClusterDestinationNames {
 
 	public static final String CONFIGURATION = "liferay/configuration";
 
