@@ -557,6 +557,22 @@
 			<var name="site" value="Site Name" />
 		</execute>
 
+		<if>
+			<equals arg1="${stagingSetup}" arg2="true" />
+			<then>
+				<execute macro="ProductMenu#gotoSite">
+					<var name="site" value="Site Name" />
+				</execute>
+
+				<execute macro="Navigator#gotoStagedView" />
+			</then>
+			<else>
+				<execute macro="ProductMenu#gotoSite">
+					<var name="site" value="Site Name" />
+				</execute>
+			</else>
+		</if>
+
 		<execute macro="ProductMenu#gotoSitesConfiguration">
 			<var name="portlet" value="Audience Targeting" />
 		</execute>
@@ -571,6 +587,22 @@
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
 		</execute>
+
+		<if>
+			<equals arg1="${stagingSetup}" arg2="true" />
+			<then>
+				<execute macro="ProductMenu#gotoSite">
+					<var name="site" value="Site Name" />
+				</execute>
+
+				<execute macro="Navigator#gotoStagedView" />
+			</then>
+			<else>
+				<execute macro="ProductMenu#gotoSite">
+					<var name="site" value="Site Name" />
+				</execute>
+			</else>
+		</if>
 
 		<execute macro="ProductMenu#gotoSitesConfiguration">
 			<var name="portlet" value="Audience Targeting" />
@@ -590,9 +622,21 @@
 
 		<execute macro="ContentTargetingCampaign#saveCP" />
 
-		<execute macro="ProductMenu#gotoSite">
-			<var name="site" value="Site Name" />
-		</execute>
+		<if>
+			<equals arg1="${stagingSetup}" arg2="true" />
+			<then>
+				<execute macro="ProductMenu#gotoSite">
+					<var name="site" value="Site Name" />
+				</execute>
+
+				<execute macro="Navigator#gotoStagedView" />
+			</then>
+			<else>
+				<execute macro="ProductMenu#gotoSite">
+					<var name="site" value="Site Name" />
+				</execute>
+			</else>
+		</if>
 
 		<execute macro="ProductMenu#gotoSitesContent">
 			<var name="portlet" value="Web Content" />
@@ -630,8 +674,8 @@
 		</execute>
 
 		<execute macro="Portlet#gotoPortletOptions">
-			<var name="portletName" value="${portletName}" />
-			<var name="portletOption" value="Export/Import" />
+			<var name="portletName" value="User Segment Content Display" />
+			<var name="portletOption" value="Configuration" />
 		</execute>
 
 		<execute macro="UserSegmentContentDisplayPortlet#configureDisplayContent">
@@ -671,8 +715,8 @@
 		</execute>
 
 		<execute macro="Portlet#gotoPortletOptions">
-			<var name="portletName" value="${portletName}" />
-			<var name="portletOption" value="Export/Import" />
+			<var name="portletName" value="Campaign Content Display" />
+			<var name="portletOption" value="Configuration" />
 		</execute>
 
 		<execute macro="CampaignDisplayPortlet#configureCampaignRule">

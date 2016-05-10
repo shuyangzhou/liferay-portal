@@ -125,7 +125,7 @@
 			<var name="navItem" value="Campaigns" />
 		</execute>
 
-		<execute function="Check#checkAll" locator1="Checkbox#LEXICON_SELECT_ALL" />
+		<execute function="Check#checkAll" locator1="Checkbox#SELECT_ALL" />
 
 		<execute function="ClickNoError" locator1="Icon#DELETE" />
 		<execute function="Confirm" value1="Are you sure you want to delete this? It will be deleted immediately." />
@@ -391,7 +391,7 @@
 			<then>
 				<execute function="Click#waitForMenuToggleJSClick" locator1="Icon#BODY_VERTICAL_ELLIPSIS" />
 				<execute function="Click" locator1="MenuItem#EDIT" />
-				<execute function="AssertSelectedLabel" locator1="EditCampaign#CAMPAIGN_USER_SEGMENT_SELECT" value1="${userSegmentSelect}" />
+				<execute function="AssertTextEquals" locator1="EditCampaign#CAMPAIGN_USER_SEGMENT_APPLIED" value1="${userSegmentSelect}" />
 			</then>
 		</if>
 	</command>

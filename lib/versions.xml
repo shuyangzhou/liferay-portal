@@ -116,6 +116,18 @@
 				</licenses>
 			</library>
 			<library>
+				<file-name>lib/development/bnd.jar</file-name>
+				<version>3.1.0</version>
+				<project-name>Bnd</project-name>
+				<project-url>http://bnd.bndtools.org</project-url>
+				<licenses>
+					<license>
+						<license-name>Apache License 2.0</license-name>
+						<license-url>http://www.apache.org/licenses/LICENSE-2.0</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
 				<file-name>lib/development/bsh.jar</file-name>
 				<version>2.0 B4</version>
 				<project-name>BeanShell</project-name>
@@ -1083,23 +1095,6 @@
 				</licenses>
 			</library>
 			<library>
-				<file-name>lib/portal/backport-concurrent.jar</file-name>
-				<version>3.1</version>
-				<project-name>Concurrent (Backport)</project-name>
-				<project-url>http://backport-jsr166.sourceforge.net</project-url>
-				<project-description>Backport of JSR 166 concurrent API to Java 1.4</project-description>
-				<licenses>
-					<license>
-						<license-name>Creative Commons Public Domain</license-name>
-						<license-url>http://creativecommons.org/publicdomain/zero/1.0/legalcode</license-url>
-					</license>
-					<license>
-						<license-name>Technology License From Sun Microsystems Inc. To Doug Lea</license-name>
-						<license-url>http://gee.cs.oswego.edu/dl/classes/EDU/oswego/cs/dl/util/sun-u.c.license.pdf</license-url>
-					</license>
-				</licenses>
-			</library>
-			<library>
 				<file-name>lib/portal/bcmail.jar</file-name>
 				<version>1.45</version>
 				<project-name>Bouncy Castle</project-name>
@@ -1120,18 +1115,6 @@
 					<license>
 						<license-name>MIT License</license-name>
 						<license-url>http://opensource.org/licenses/MIT</license-url>
-					</license>
-				</licenses>
-			</library>
-			<library>
-				<file-name>lib/portal/bnd.jar</file-name>
-				<version>3.1.0</version>
-				<project-name>Bnd</project-name>
-				<project-url>http://bnd.bndtools.org</project-url>
-				<licenses>
-					<license>
-						<license-name>Apache License 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0</license-url>
 					</license>
 				</licenses>
 			</library>

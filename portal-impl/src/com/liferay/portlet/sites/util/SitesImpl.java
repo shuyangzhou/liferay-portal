@@ -88,6 +88,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
@@ -242,6 +243,13 @@ public class SitesImpl implements Sites {
 			boolean linkEnabled)
 		throws Exception {
 
+		Locale siteDefaultLocale = LocaleThreadLocal.getSiteDefaultLocale();
+
+		LayoutTypePortlet targetLayoutType =
+			(LayoutTypePortlet)targetLayout.getLayoutType();
+
+		List<String> targetLayoutPortletIds = targetLayoutType.getPortletIds();
+
 		Layout layoutPrototypeLayout = layoutPrototype.getLayout();
 
 		ServiceContext serviceContext =
@@ -251,19 +259,24 @@ public class SitesImpl implements Sites {
 		serviceContext.setAttribute(
 			"layoutPrototypeUuid", layoutPrototype.getUuid());
 
-		LayoutTypePortlet targetLayoutType =
-			(LayoutTypePortlet)targetLayout.getLayoutType();
+		try {
+			Locale targetSiteDefaultLocale = PortalUtil.getSiteDefaultLocale(
+				targetLayout.getGroupId());
 
-		List<String> targetLayoutPortletIds = targetLayoutType.getPortletIds();
+			LocaleThreadLocal.setSiteDefaultLocale(targetSiteDefaultLocale);
 
-		targetLayout = LayoutLocalServiceUtil.updateLayout(
-			targetLayout.getGroupId(), targetLayout.isPrivateLayout(),
-			targetLayout.getLayoutId(), targetLayout.getParentLayoutId(),
-			targetLayout.getNameMap(), targetLayout.getTitleMap(),
-			targetLayout.getDescriptionMap(), targetLayout.getKeywordsMap(),
-			targetLayout.getRobotsMap(), layoutPrototypeLayout.getType(),
-			targetLayout.getHidden(), targetLayout.getFriendlyURLMap(),
-			targetLayout.getIconImage(), null, serviceContext);
+			targetLayout = LayoutLocalServiceUtil.updateLayout(
+				targetLayout.getGroupId(), targetLayout.isPrivateLayout(),
+				targetLayout.getLayoutId(), targetLayout.getParentLayoutId(),
+				targetLayout.getNameMap(), targetLayout.getTitleMap(),
+				targetLayout.getDescriptionMap(), targetLayout.getKeywordsMap(),
+				targetLayout.getRobotsMap(), layoutPrototypeLayout.getType(),
+				targetLayout.getHidden(), targetLayout.getFriendlyURLMap(),
+				targetLayout.getIconImage(), null, serviceContext);
+		}
+		finally {
+			LocaleThreadLocal.setSiteDefaultLocale(siteDefaultLocale);
+		}
 
 		targetLayout = LayoutLocalServiceUtil.updateLayout(
 			targetLayout.getGroupId(), targetLayout.isPrivateLayout(),

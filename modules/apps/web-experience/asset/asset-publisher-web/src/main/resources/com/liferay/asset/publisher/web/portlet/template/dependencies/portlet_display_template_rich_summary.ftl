@@ -24,7 +24,7 @@
 	</#if>
 
 	<div class="asset-abstract">
-		<div class="lfr-meta-actions asset-actions">
+		<div class="pull-right">
 			<@getPrintIcon />
 
 			<@getFlagsIcon />
@@ -98,7 +98,9 @@
 			<#assign title = languageUtil.format(locale, "edit-x", entryTitle, false) />
 
 			<@liferay_ui["icon"]
-				iconCssClass="icon-edit-sign"
+				cssClass="icon-monospaced visible-interaction"
+				icon="pencil"
+				markupView="lexicon"
 				message=title
 				url="javascript:Liferay.Util.openWindow({id:'" + renderResponse.getNamespace() + "editAsset', title: '" + title + "', uri:'" + htmlUtil.escapeURL(editPortletURL.toString()) + "'});"
 			/>

@@ -542,9 +542,7 @@ svn://svn.liferay.com/repos/public/alloy/trunk/sandbox/taglibs.
 		<antcall target="build-service-portal" />
 		<antcall target="build-service-portlets" />
 
-		<gradle-execute dir="../modules" task="buildService">
-			<arg value="-Dportal.build=true" />
-		</gradle-execute>
+		<gradle-execute dir="../modules" task="buildService" />
 	</target>
 
 	<target name="build-upgrade-table">
@@ -693,9 +691,7 @@ svn://svn.liferay.com/repos/public/alloy/trunk/sandbox/taglibs.
 		<antcall target="build-wsdd-portal" />
 		<antcall target="build-wsdd-portlets" />
 
-		<gradle-execute dir="../modules" task="buildWSDD">
-			<arg value="-Dportal.build=true" />
-		</gradle-execute>
+		<gradle-execute dir="../modules" task="buildWSDD" />
 	</target>
 
 	<target name="build-yui-compressor-jar">
@@ -755,6 +751,7 @@ svn://svn.liferay.com/repos/public/alloy/trunk/sandbox/taglibs.
 			<jvmarg value="-Dsource.formatter.check.registry.in.test.classes=${source.formatter.check.registry.in.test.classes}" />
 			<jvmarg value="-Dsource.formatter.check.unprocessed.exceptions=${source.formatter.check.unprocessed.exceptions}" />
 			<jvmarg value="-Dsource.formatter.excludes=${source.formatter.excludes}" />
+			<jvmarg value="-Dsource.formatter.max.line.length=${source.formatter.max.line.length}" />
 			<arg value="format.current.branch=${format.current.branch}" />
 			<arg value="format.latest.author=${format.latest.author}" />
 			<arg value="format.local.changes=${format.local.changes}" />

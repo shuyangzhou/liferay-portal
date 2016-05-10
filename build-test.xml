@@ -1783,6 +1783,15 @@ tell application "Safari" to quit
 			</if>
 
 			<if>
+				<equals arg1="${test.build.bundle.jbosseap6.4}" arg2="true" />
+				<then>
+					<ant antfile="build-dist.xml" inheritAll="false" target="build-dist-jboss">
+						<property name="app.server.jboss.version" value="6.4.0" />
+					</ant>
+				</then>
+			</if>
+
+			<if>
 				<matches pattern="http" string="${test.build.bundle.jetty.zip.url}" />
 				<then>
 					<antcall inheritAll="false" target="prepare-test-bundle">
@@ -1976,6 +1985,22 @@ tell application "Safari" to quit
 					/>
 
 					<delete file="plugins.war.zip" />
+				</then>
+			</if>
+
+			<if>
+				<matches pattern="http" string="${test.extra.apps.zip.urls}" />
+				<then>
+					<mkdir dir="extraapps" />
+
+					<for list="${test.extra.apps.zip.urls}" param="test.extra.apps.zip.url">
+						<sequential>
+							<mirrors-get
+								dest="extraapps"
+								src="@{test.extra.apps.zip.url}"
+							/>
+						</sequential>
+					</for>
 				</then>
 			</if>
 		</sequential>
@@ -2212,6 +2237,7 @@ ${tomcat-gc-log}
 						directoryScanner.setBasedir(project.getBaseDir());
 						directoryScanner.setExcludes(
 							new String[] {
+								"modules/core/portal-lpkg-deployer-test/src/testIntegration/java/com/liferay/portal/lpkg/deployer/test/LPKGDeployerTest.java",
 								"portal-kernel/test/unit/com/liferay/portal/log/assertor/PortalLogAssertorTest.java",
 								"*/pacl/test/[\\w]+Test.class",
 								"**/*ServiceHttpTest.java",
@@ -4076,11 +4102,13 @@ go]]></replacevalue>
 	</target>
 
 	<target name="deploy-extra-apps">
+		<get-testcase-property property.name="extraapps.plugins.includes" />
+
 		<if>
-			<available file="${extra.apps.zip.file.path}" />
+			<isset property="extraapps.plugins.includes" />
 			<then>
 				<ant antfile="build-test-plugins.xml" target="deploy-extra-apps">
-					<property name="extra.apps.zip.file.name" value="${extra.apps.zip.file.path}" />
+					<property name="plugins.includes" value="${extraapps.plugins.includes}" />
 				</ant>
 			</then>
 		</if>
@@ -6362,19 +6390,14 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 		<prepare-test-bundles unit="false" />
 
 		<if>
-			<not>
-				<equals arg1="${test.build.unit}" arg2="true" />
-			</not>
+			<and>
+				<not>
+					<equals arg1="${test.build.unit}" arg2="true" />
+				</not>
+				<equals arg1="${test.poshi.runner.enabled}" arg2="true" />
+			</and>
 			<then>
-				<if>
-					<equals arg1="${test.poshi.runner.enabled}" arg2="true" />
-					<then>
-						<antcall target="record-test-case-method-names" />
-					</then>
-					<else>
-						<ant dir="portal-impl" inheritAll="false" target="build-selenium-block" />
-					</else>
-				</if>
+				<antcall target="record-test-case-method-names" />
 			</then>
 		</if>
 
@@ -7816,13 +7839,6 @@ jdbc.default.password=${database.mysql.password}</echo>
 			</then>
 		</if>
 
-		<if>
-			<equals arg1="${test.ant.script.actions}" arg2="db-failover" />
-			<then>
-				<ant antfile="build-test-db-failover.xml" target="run-db-failover" />
-			</then>
-		</if>
-
 		<antcall target="run-selenium-test" />
 
 		<get-testcase-property property.name="cmis.repository.type" />
@@ -7928,13 +7944,6 @@ jdbc.default.password=${database.mysql.password}</echo>
 		<start-lcs-app-server />
 	</target>
 
-	<target name="start-ldap">
-		<exec dir="${app.server.parent.dir}/apacheds_1.5.7" executable="cmd">
-			<arg value="/c" />
-			<arg value="apacheds.bat" />
-		</exec>
-	</target>
-
 	<target name="start-test-smtp-server">
 		<start-test-smtp-server />
 	</target>
@@ -7968,49 +7977,6 @@ jdbc.default.password=${database.mysql.password}</echo>
 		/>
 
 		<stop-lcs-app-server />
-	</target>
-
-	<target name="stop-ldap">
-		<exec executable="/bin/sh" os="${os.unix}">
-			<arg line="-c jps -l" />
-		</exec>
-
-		<exec executable="cmd.exe" os="${os.windows}">
-			<arg line="/c jps -l > java-processes" />
-		</exec>
-
-		<loadfile property="java-processes.content" srcfile="java-processes" />
-
-		<delete file="java-processes" />
-
-		<beanshell>
-			String javaProcessesNewContent = project.getProperty("java-processes.content");
-
-			if (javaProcessesNewContent.contains("File Not Found")) {
-				javaProcessesNewContent = "";
-			}
-
-			String javaProcessList = javaProcessesNewContent.replaceAll("\r\n", ",");
-
-			if (javaProcessList.endsWith(",")) {
-				javaProcessList = javaProcessList.substring(0, javaProcessList.length() - 1);
-			}
-
-			project.setProperty("java.process.list", javaProcessList);
-		</beanshell>
-
-		<for list="${java.process.list}" param="java.process">
-			<sequential>
-				<if>
-					<contains string="@{java.process}" substring="org.apache.directory.server.UberjarMain" />
-					<then>
-						<antcall target="kill-java-process">
-							<param name="java.process.to.kill" value="@{java.process}" />
-						</antcall>
-					</then>
-				</if>
-			</sequential>
-		</for>
 	</target>
 
 	<target name="test-integration">

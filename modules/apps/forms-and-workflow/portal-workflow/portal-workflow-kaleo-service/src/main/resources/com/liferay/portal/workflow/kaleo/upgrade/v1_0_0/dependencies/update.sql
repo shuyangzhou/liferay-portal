@@ -1,3 +1,21 @@
+alter table KaleoAction add kaleoClassName VARCHAR(200) null;
+alter table KaleoAction add kaleoClassPK LONG;
+
+alter table KaleoDefinition add content TEXT null;
+alter table kaleoDefinition add kaleoClassName VARCHAR(200) null;
+alter table kaleoDefinition add kaleoClassPK LONG;
+
+alter table KaleoLog add kaleoClassName VARCHAR(200) null;
+alter table KaleoLog add kaleoClassPK LONG;
+
+alter table KaleoNode add metadata TEXT null;
+
+alter table KaleoTaskAssignment add assigneeActionId VARCHAR(75) null;
+alter table KaleoTaskAssignment add assigneeScript TEXT null;
+alter table KaleoTaskAssignment add assigneeScriptLanguage VARCHAR(75) null;
+alter table KaleoTaskAssignment add kaleoClassName VARCHAR(200) null;
+alter table KaleoTaskAssignment add kaleoClassPK LONG;
+
 create table KaleoTimer (
 	kaleoTimerId LONG not null primary key,
 	groupId LONG,

@@ -4626,6 +4626,8 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 
+		user.setModifiedDate(modifiedDate);
+
 		userPersistence.update(user);
 
 		return user;
