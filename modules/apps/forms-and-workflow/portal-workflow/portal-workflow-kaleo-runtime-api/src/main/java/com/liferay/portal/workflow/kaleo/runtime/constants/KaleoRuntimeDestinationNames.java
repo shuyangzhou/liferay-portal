@@ -12,12 +12,12 @@
  * details.
  */
 
-package com.liferay.portal.workflow.kaleo.runtime.messaging;
+package com.liferay.portal.workflow.kaleo.runtime.constants;
 
 /**
  * @author Michael C. Han
  */
-public class DestinationNames {
+public class KaleoRuntimeDestinationNames {
 
 	public static final String KALEO_GRAPH_WALKER =
 		"liferay/kaleo_graph_walker";
