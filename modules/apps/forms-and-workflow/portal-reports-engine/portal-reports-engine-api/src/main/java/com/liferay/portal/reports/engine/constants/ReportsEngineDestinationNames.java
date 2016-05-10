@@ -12,12 +12,12 @@
  * details.
  */
 
-package com.liferay.portal.reports.engine.messaging;
+package com.liferay.portal.reports.engine.constants;
 
 /**
  * @author Michael C. Han
  */
-public class DestinationNames {
+public class ReportsEngineDestinationNames {
 
 	public static final String REPORT_COMPILER = "liferay/report_compiler";
 
