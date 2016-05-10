@@ -12,12 +12,12 @@
  * details.
  */
 
-package com.liferay.exportimport.resources.importer.messaging;
+package com.liferay.exportimport.resources.importer.constants;
 
 /**
  * @author Daniel Kocsis
  */
-public interface DestinationNames {
+public interface ResourcesImporterDestinationNames {
 
 	public static final String RESOURCES_IMPORTER =
 		"liferay/resources_importer";
