@@ -770,6 +770,8 @@ app.server.type=@{app.server.type}]]></echo>
 						</then>
 						<else>
 							<prepare-test-build />
+
+							<copy file="org.eclipse.osgi.jar" todir="${app.server.parent.dir}/osgi/core" />
 						</else>
 					</if>
 				</test-set-up>
