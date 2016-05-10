@@ -772,6 +772,9 @@ app.server.type=@{app.server.type}]]></echo>
 							<prepare-test-build />
 						</else>
 					</if>
+					<copy file="org.eclipse.osgi.jar" todir="${app.server.parent.dir}/osgi/core" />
+
+					<echo>############Applied patched org.eclipse.osgi.jar</echo>
 				</test-set-up>
 			</run-batch-test>
 		</sequential>
