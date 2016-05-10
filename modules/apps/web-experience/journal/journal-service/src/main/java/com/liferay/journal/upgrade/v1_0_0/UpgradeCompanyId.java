@@ -14,11 +14,12 @@
 
 package com.liferay.journal.upgrade.v1_0_0;
 
+import com.liferay.portal.upgrade.util.BaseUpgradeCompanyId;
+
 /**
  * @author Brian Wing Shun Chan
  */
-public class UpgradeCompanyId
-	extends com.liferay.portal.upgrade.util.UpgradeCompanyId {
+public class UpgradeCompanyId extends BaseUpgradeCompanyId {
 
 	@Override
 	protected TableUpdater[] getTableUpdaters() {

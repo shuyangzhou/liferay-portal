@@ -253,7 +253,7 @@ PortalUtil.addPortletBreadcrumbEntry(request, passwordPolicy.getName(), null);
 							}
 						}
 					},
-					title: '<liferay-ui:message arguments="<%= passwordPolicy.getName() %>" key="add-members-to-x" />',
+					title: '<liferay-ui:message arguments="<%= HtmlUtil.escape(passwordPolicy.getName()) %>" key="add-members-to-x" />',
 					url: '<%= selectMembersURL %>'
 				}
 			);

@@ -62,49 +62,22 @@ public class KaleoWorkflowMessagingConfigurator {
 
 		registerWorkflowDefinitionLinkDestination();
 
-		wireKaleoWorkflowMessageListeners();
+		registerWorkflowMessageListeners();
 
 		registerWorkflowTimerDestination();
 
-		SchedulerEventMessageListenerWrapper
-			schedulerEventMessageListenerWrapper =
-				new SchedulerEventMessageListenerWrapper();
-
-		schedulerEventMessageListenerWrapper.setMessageListener(
-			_timerMessageListener);
-
-		Dictionary<String, Object> properties = new HashMapDictionary<>();
-
-		properties.put("destination.name", DestinationNames.WORKFLOW_TIMER);
-
-		_schedulerEventMessageListenerServiceRegistration =
-			_bundleContext.registerService(
-				MessageListener.class, schedulerEventMessageListenerWrapper,
-				properties);
+		registerSchedulerEventMessageListener();
 	}
 
 	@Deactivate
 	protected void deactivate() {
-		if (!_serviceRegistrations.isEmpty()) {
-			for (ServiceRegistration<Destination> serviceRegistration :
-					_serviceRegistrations.values()) {
+		unregisterKaleoWorkflowDestinations();
 
-				Destination destination = _bundleContext.getService(
-					serviceRegistration.getReference());
+		unregisterWorkflowEngineDestinationListener();
 
-				serviceRegistration.unregister();
+		unregisterWorkflowMessageListeners();
 
-				destination.destroy();
-			}
-
-			_serviceRegistrations.clear();
-		}
-
-		if (_schedulerEventMessageListenerServiceRegistration != null) {
-			_schedulerEventMessageListenerServiceRegistration.unregister();
-
-			_schedulerEventMessageListenerServiceRegistration = null;
-		}
+		unregisterSchedulerEventMessageListener();
 
 		_bundleContext = null;
 	}
@@ -170,7 +143,27 @@ public class KaleoWorkflowMessagingConfigurator {
 		_messageBus.registerMessageListener(
 			destinationName, proxyMessageListener);
 
+		_proxyMessageListeners.put(destinationName, proxyMessageListener);
+
 		return proxyMessageListener;
+	}
+
+	protected void registerSchedulerEventMessageListener() {
+		SchedulerEventMessageListenerWrapper
+			schedulerEventMessageListenerWrapper =
+				new SchedulerEventMessageListenerWrapper();
+
+		schedulerEventMessageListenerWrapper.setMessageListener(
+			_timerMessageListener);
+
+		Dictionary<String, Object> properties = new HashMapDictionary<>();
+
+		properties.put("destination.name", DestinationNames.WORKFLOW_TIMER);
+
+		_schedulerEventMessageListenerServiceRegistration =
+			_bundleContext.registerService(
+				MessageListener.class, schedulerEventMessageListenerWrapper,
+				properties);
 	}
 
 	protected void registerWorkflowDefinitionLinkDestination() {
@@ -180,6 +173,75 @@ public class KaleoWorkflowMessagingConfigurator {
 				DestinationNames.WORKFLOW_DEFINITION_LINK);
 
 		registerDestination(destinationConfiguration);
+	}
+
+	protected void registerWorkflowMessageListeners() {
+		_defaultWorkflowDestinationEventListener =
+			new DefaultWorkflowDestinationEventListener();
+
+		_defaultWorkflowDestinationEventListener.setWorkflowEngineName(
+			"Liferay Kaleo Workflow Engine");
+
+		MessageListener workflowComparatorMessageListener =
+			registerProxyMessageListener(
+				_workflowComparatorFactory,
+				com.liferay.portal.kernel.messaging.DestinationNames.
+					WORKFLOW_COMPARATOR);
+
+		_defaultWorkflowDestinationEventListener.
+			setWorkflowComparatorFactoryListener(
+				workflowComparatorMessageListener);
+
+		MessageListener workflowDefinitionManagerProxyMessageListener =
+			registerProxyMessageListener(
+				_workflowDefinitionManager,
+				com.liferay.portal.kernel.messaging.DestinationNames.
+					WORKFLOW_DEFINITION);
+
+		_defaultWorkflowDestinationEventListener.
+			setWorkflowDefinitionManagerListener(
+				workflowDefinitionManagerProxyMessageListener);
+
+		MessageListener workflowEngineManagerProxyMessageListener =
+			registerProxyMessageListener(
+				_workflowEngineManager,
+				com.liferay.portal.kernel.messaging.DestinationNames.
+					WORKFLOW_ENGINE);
+
+		_defaultWorkflowDestinationEventListener.
+			setWorkflowEngineManagerListener(
+				workflowEngineManagerProxyMessageListener);
+
+		MessageListener workflowInstanceManagerProxyMessageListener =
+			registerProxyMessageListener(
+				_workflowInstanceManager,
+				com.liferay.portal.kernel.messaging.DestinationNames.
+					WORKFLOW_INSTANCE);
+
+		_defaultWorkflowDestinationEventListener.
+			setWorkflowInstanceManagerListener(
+				workflowInstanceManagerProxyMessageListener);
+
+		MessageListener workflowLogManagerProxyMessageListener =
+			registerProxyMessageListener(
+				_workflowLogManagerk,
+				com.liferay.portal.kernel.messaging.DestinationNames.
+					WORKFLOW_LOG);
+
+		_defaultWorkflowDestinationEventListener.setWorkflowLogManagerListener(
+			workflowLogManagerProxyMessageListener);
+
+		MessageListener workflowTaskManagerProxyMessageListener =
+			registerProxyMessageListener(
+				_workflowTaskManager,
+				com.liferay.portal.kernel.messaging.DestinationNames.
+					WORKFLOW_TASK);
+
+		_defaultWorkflowDestinationEventListener.setWorkflowTaskManagerListener(
+			workflowTaskManagerProxyMessageListener);
+
+		_workflowEngineDestination.addDestinationEventListener(
+			_defaultWorkflowDestinationEventListener);
 	}
 
 	protected void registerWorkflowTimerDestination() {
@@ -215,74 +277,45 @@ public class KaleoWorkflowMessagingConfigurator {
 		registerDestination(destinationConfiguration);
 	}
 
-	protected void wireKaleoWorkflowMessageListeners() {
-		DefaultWorkflowDestinationEventListener
-			defaultWorkflowDestinationEventListener =
-				new DefaultWorkflowDestinationEventListener();
+	protected void unregisterKaleoWorkflowDestinations() {
+		for (ServiceRegistration<Destination> serviceRegistration :
+				_serviceRegistrations.values()) {
 
-		defaultWorkflowDestinationEventListener.setWorkflowEngineName(
-			"Liferay Kaleo Workflow Engine");
+			Destination destination = _bundleContext.getService(
+				serviceRegistration.getReference());
 
-		MessageListener workflowComparatorMessageListener =
-			registerProxyMessageListener(
-				_workflowComparatorFactory,
-				com.liferay.portal.kernel.messaging.DestinationNames.
-					WORKFLOW_COMPARATOR);
+			serviceRegistration.unregister();
 
-		defaultWorkflowDestinationEventListener.
-			setWorkflowComparatorFactoryListener(
-				workflowComparatorMessageListener);
+			destination.destroy();
+		}
 
-		MessageListener workflowDefinitionManagerProxyMessageListener =
-			registerProxyMessageListener(
-				_workflowDefinitionManager,
-				com.liferay.portal.kernel.messaging.DestinationNames.
-					WORKFLOW_DEFINITION);
+		_serviceRegistrations.clear();
+	}
 
-		defaultWorkflowDestinationEventListener.
-			setWorkflowDefinitionManagerListener(
-				workflowDefinitionManagerProxyMessageListener);
+	protected void unregisterSchedulerEventMessageListener() {
+		if (_schedulerEventMessageListenerServiceRegistration == null) {
+			return;
+		}
 
-		MessageListener workflowEngineManagerProxyMessageListener =
-			registerProxyMessageListener(
-				_workflowEngineManager,
-				com.liferay.portal.kernel.messaging.DestinationNames.
-					WORKFLOW_ENGINE);
+		_schedulerEventMessageListenerServiceRegistration.unregister();
 
-		defaultWorkflowDestinationEventListener.
-			setWorkflowEngineManagerListener(
-				workflowEngineManagerProxyMessageListener);
+		_schedulerEventMessageListenerServiceRegistration = null;
+	}
 
-		MessageListener workflowInstanceManagerProxyMessageListener =
-			registerProxyMessageListener(
-				_workflowInstanceManager,
-				com.liferay.portal.kernel.messaging.DestinationNames.
-					WORKFLOW_INSTANCE);
+	protected void unregisterWorkflowEngineDestinationListener() {
+		_workflowEngineDestination.removeDestinationEventListener(
+			_defaultWorkflowDestinationEventListener);
+	}
 
-		defaultWorkflowDestinationEventListener.
-			setWorkflowInstanceManagerListener(
-				workflowInstanceManagerProxyMessageListener);
+	protected void unregisterWorkflowMessageListeners() {
+		for (Map.Entry<String, MessageListener> entry :
+				_proxyMessageListeners.entrySet()) {
 
-		MessageListener workflowLogManagerProxyMessageListener =
-			registerProxyMessageListener(
-				_workflowLogManagerk,
-				com.liferay.portal.kernel.messaging.DestinationNames.
-					WORKFLOW_LOG);
+			_messageBus.unregisterMessageListener(
+				entry.getKey(), entry.getValue());
+		}
 
-		defaultWorkflowDestinationEventListener.setWorkflowLogManagerListener(
-			workflowLogManagerProxyMessageListener);
-
-		MessageListener workflowTaskManagerProxyMessageListener =
-			registerProxyMessageListener(
-				_workflowTaskManager,
-				com.liferay.portal.kernel.messaging.DestinationNames.
-					WORKFLOW_TASK);
-
-		defaultWorkflowDestinationEventListener.setWorkflowTaskManagerListener(
-			workflowTaskManagerProxyMessageListener);
-
-		_workflowEngineDestination.addDestinationEventListener(
-			defaultWorkflowDestinationEventListener);
+		_proxyMessageListeners.clear();
 	}
 
 	private static final int _MAXIMUM_QUEUE_SIZE = 200;
@@ -291,6 +324,8 @@ public class KaleoWorkflowMessagingConfigurator {
 		KaleoWorkflowMessagingConfigurator.class);
 
 	private BundleContext _bundleContext;
+	private DefaultWorkflowDestinationEventListener
+		_defaultWorkflowDestinationEventListener;
 
 	@Reference
 	private DestinationFactory _destinationFactory;
@@ -298,6 +333,8 @@ public class KaleoWorkflowMessagingConfigurator {
 	@Reference
 	private MessageBus _messageBus;
 
+	private final Map<String, MessageListener> _proxyMessageListeners =
+		new HashMap<>();
 	private ServiceRegistration<MessageListener>
 		_schedulerEventMessageListenerServiceRegistration;
 	private final Map<String, ServiceRegistration<Destination>>

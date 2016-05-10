@@ -14,6 +14,8 @@
 
 package com.liferay.portal.upgrade.v7_0_0;
 
+import com.liferay.portal.upgrade.util.BaseUpgradeCompanyId;
+
 import java.io.IOException;
 
 import java.sql.Connection;
@@ -22,8 +24,7 @@ import java.sql.SQLException;
 /**
  * @author Brian Wing Shun Chan
  */
-public class UpgradeCompanyId
-	extends com.liferay.portal.upgrade.util.UpgradeCompanyId {
+public class UpgradeCompanyId extends BaseUpgradeCompanyId {
 
 	@Override
 	protected TableUpdater[] getTableUpdaters() {

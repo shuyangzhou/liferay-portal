@@ -18,12 +18,12 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.upgrade.util.BaseUpgradeCompanyId;
 
 /**
  * @author Brian Wing Shun Chan
  */
-public class UpgradeCompanyId
-	extends com.liferay.portal.upgrade.util.UpgradeCompanyId {
+public class UpgradeCompanyId extends BaseUpgradeCompanyId {
 
 	@Override
 	protected void doUpgrade() throws Exception {
