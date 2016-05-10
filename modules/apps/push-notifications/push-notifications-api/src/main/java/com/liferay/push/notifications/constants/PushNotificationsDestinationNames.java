@@ -12,12 +12,12 @@
  * details.
  */
 
-package com.liferay.push.notifications.messaging;
+package com.liferay.push.notifications.constants;
 
 /**
  * @author Bruno Farache
  */
-public class DestinationNames {
+public class PushNotificationsDestinationNames {
 
 	public static final String PUSH_NOTIFICATION = "liferay/push_notification";
 
