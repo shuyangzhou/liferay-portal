@@ -217,12 +217,8 @@ public class I18nFilter extends BasePortalFilter {
 		}
 
 		if (prependFriendlyUrlStyle == 1) {
-			if (!defaultLanguageId.equals(guestLanguageId)) {
-				return guestLanguageId;
-			}
-			else {
-				return null;
-			}
+			return prependIfRequestedLocaleDiffersFromDefaultLocale(
+				defaultLanguageId, guestLanguageId);
 		}
 		else if (prependFriendlyUrlStyle == 2) {
 			return LocaleUtil.toLanguageId(PortalUtil.getLocale(request));
@@ -231,13 +227,32 @@ public class I18nFilter extends BasePortalFilter {
 			if (user != null) {
 				HttpSession session = request.getSession();
 
-				session.setAttribute(Globals.LOCALE_KEY, user.getLocale());
-			}
+				Locale locale = (Locale)session.getAttribute(
+					Globals.LOCALE_KEY);
 
-			return null;
+				if (userLanguageId.equals(LocaleUtil.toLanguageId(locale))) {
+					return null;
+				}
+
+				return LocaleUtil.toLanguageId(locale);
+			}
+			else {
+				return prependIfRequestedLocaleDiffersFromDefaultLocale(
+					defaultLanguageId, guestLanguageId);
+			}
 		}
 
 		return null;
+	}
+
+	protected String prependIfRequestedLocaleDiffersFromDefaultLocale(
+		String defaultLanguageId, String guestLanguageId) {
+
+		if (defaultLanguageId.equals(guestLanguageId)) {
+			return null;
+		}
+
+		return guestLanguageId;
 	}
 
 	@Override
