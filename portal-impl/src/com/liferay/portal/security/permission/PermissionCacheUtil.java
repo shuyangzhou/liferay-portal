@@ -354,6 +354,14 @@ public class PermissionCacheUtil {
 
 		@Override
 		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof PermissionKey)) {
+				return false;
+			}
+
 			PermissionKey permissionKey = (PermissionKey)obj;
 
 			if ((permissionKey._groupId == _groupId) &&
@@ -434,6 +442,14 @@ public class PermissionCacheUtil {
 
 		@Override
 		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof ResourceBlockIdsBagKey)) {
+				return false;
+			}
+
 			ResourceBlockIdsBagKey resourceBlockIdsKey =
 				(ResourceBlockIdsBagKey)obj;
 
@@ -505,6 +521,14 @@ public class PermissionCacheUtil {
 
 		@Override
 		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof UserGroupRoleIdsKey)) {
+				return false;
+			}
+
 			UserGroupRoleIdsKey userGroupRoleIdsKey = (UserGroupRoleIdsKey)obj;
 
 			if ((userGroupRoleIdsKey._userId == _userId) &&
@@ -559,6 +583,14 @@ public class PermissionCacheUtil {
 
 		@Override
 		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof UserPrimaryKeyRoleKey)) {
+				return false;
+			}
+
 			UserPrimaryKeyRoleKey userPrimaryKeyRoleKey =
 				(UserPrimaryKeyRoleKey)obj;
 
@@ -602,6 +634,14 @@ public class PermissionCacheUtil {
 
 		@Override
 		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof UserRoleKey)) {
+				return false;
+			}
+
 			UserRoleKey userRoleKey = (UserRoleKey)obj;
 
 			if ((userRoleKey._userId == _userId) &&
