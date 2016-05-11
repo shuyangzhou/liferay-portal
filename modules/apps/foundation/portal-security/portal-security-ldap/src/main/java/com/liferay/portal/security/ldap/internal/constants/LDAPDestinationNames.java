@@ -12,12 +12,12 @@
  * details.
  */
 
-package com.liferay.portal.security.ldap.internal.messaging;
+package com.liferay.portal.security.ldap.internal.constants;
 
 /**
  * @author Michael C. Han
  */
-public class DestinationNames {
+public class LDAPDestinationNames {
 
 	public static final String SCHEDULED_USER_LDAP_IMPORT =
 		"liferay/scheduled_user_ldap_import";
