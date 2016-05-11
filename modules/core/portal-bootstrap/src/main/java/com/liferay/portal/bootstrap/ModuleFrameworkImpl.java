@@ -823,7 +823,7 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		}
 	}
 
-	private void _installInitialBundle(String location) {
+	private Bundle _installInitialBundle(String location) {
 		boolean start = false;
 		int startLevel = PropsValues.MODULE_FRAMEWORK_BEGINNING_START_LEVEL;
 
@@ -879,7 +879,7 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 					_log.warn(ioe.getMessage());
 				}
 
-				return;
+				return null;
 			}
 
 			if (_log.isDebugEnabled()) {
@@ -895,13 +895,13 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 			}
 
 			if ((bundle == null) || _isFragmentBundle(bundle)) {
-				return;
+				return bundle;
 			}
 
 			if (!start && _hasLazyActivationPolicy(bundle)) {
 				bundle.start(Bundle.START_ACTIVATION_POLICY);
 
-				return;
+				return bundle;
 			}
 
 			if (start) {
@@ -910,30 +910,6 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 				}
 
 				bundle.start();
-
-				final CountDownLatch countDownLatch = new CountDownLatch(1);
-
-				BundleTracker<Void> bundleTracker = new BundleTracker<Void>(
-					_framework.getBundleContext(), Bundle.ACTIVE, null) {
-
-					@Override
-					public Void addingBundle(
-						Bundle trackedBundle, BundleEvent bundleEvent) {
-
-						if (trackedBundle == bundle) {
-							countDownLatch.countDown();
-
-							close();
-						}
-
-						return null;
-					}
-
-				};
-
-				bundleTracker.open();
-
-				countDownLatch.await();
 			}
 
 			if (((bundle.getState() & Bundle.UNINSTALLED) == 0) &&
@@ -954,9 +930,13 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 			if (_log.isDebugEnabled()) {
 				_log.debug("Started bundle " + bundle);
 			}
+
+			return bundle;
 		}
 		catch (Exception e) {
 			_log.error(e, e);
+
+			return null;
 		}
 		finally {
 			StreamUtil.cleanUp(inputStream);
@@ -1082,10 +1062,16 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 			_log.debug("Starting initial bundles");
 		}
 
+		List<Bundle> bundles = new ArrayList<>();
+
 		for (String initialBundle :
 				PropsValues.MODULE_FRAMEWORK_INITIAL_BUNDLES) {
 
-			_installInitialBundle(initialBundle);
+			Bundle bundle = _installInitialBundle(initialBundle);
+
+			if (bundle != null) {
+				bundles.add(bundle);
+			}
 		}
 
 		FrameworkStartLevel frameworkStartLevel = _framework.adapt(
@@ -1093,6 +1079,36 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 		frameworkStartLevel.setStartLevel(
 			PropsValues.MODULE_FRAMEWORK_BEGINNING_START_LEVEL);
+
+		for (final Bundle bundle : bundles) {
+			if (_isFragmentBundle(bundle)) {
+				continue;
+			}
+
+			final CountDownLatch countDownLatch = new CountDownLatch(1);
+
+			BundleTracker<Void> bundleTracker = new BundleTracker<Void>(
+				_framework.getBundleContext(), Bundle.ACTIVE, null) {
+
+				@Override
+				public Void addingBundle(
+					Bundle trackedBundle, BundleEvent bundleEvent) {
+
+					if (trackedBundle == bundle) {
+						countDownLatch.countDown();
+
+						close();
+					}
+
+					return null;
+				}
+
+			};
+
+			bundleTracker.open();
+
+			countDownLatch.await();
+		}
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Started initial bundles");
