@@ -15,9 +15,9 @@
 package com.liferay.journal.web.upgrade;
 
 import com.liferay.journal.constants.JournalPortletKeys;
+import com.liferay.portal.kernel.upgrade.BaseUpgradePortletId;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
-import com.liferay.portal.upgrade.util.UpgradePortletId;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -35,7 +35,7 @@ public class JournalWebUpgrade implements UpgradeStepRegistrator {
 
 		registry.register(
 			"com.liferay.journal.web", "0.0.1", "1.0.0",
-			new UpgradePortletId() {
+			new BaseUpgradePortletId() {
 
 				@Override
 				protected String[][] getRenamePortletIdsArray() {

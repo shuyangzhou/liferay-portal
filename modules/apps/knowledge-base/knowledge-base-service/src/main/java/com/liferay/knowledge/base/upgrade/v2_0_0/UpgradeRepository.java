@@ -14,7 +14,7 @@
 
 package com.liferay.knowledge.base.upgrade.v2_0_0;
 
-import com.liferay.portal.upgrade.util.BaseUpgradeRepository;
+import com.liferay.portal.kernel.upgrade.BaseUpgradeRepository;
 
 /**
  * @author Adolfo Pérez

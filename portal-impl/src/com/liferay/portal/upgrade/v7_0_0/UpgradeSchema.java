@@ -14,9 +14,9 @@
 
 package com.liferay.portal.upgrade.v7_0_0;
 
+import com.liferay.portal.kernel.upgrade.UpgradeMVCCVersion;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.upgrade.util.ParallelUpgradeSchemaUtil;
-import com.liferay.portal.upgrade.util.UpgradeMVCCVersion;
 
 /**
  * @author Julio Camarero

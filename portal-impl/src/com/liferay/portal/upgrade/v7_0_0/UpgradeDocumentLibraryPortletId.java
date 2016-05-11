@@ -16,6 +16,7 @@ package com.liferay.portal.upgrade.v7_0_0;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.upgrade.util.UpgradePortletId;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,8 +25,8 @@ import java.sql.SQLException;
 /**
  * @author Cristina González
  */
-public class UpgradeDocumentLibraryPortletId
-	extends com.liferay.portal.upgrade.util.UpgradePortletId {
+@SuppressWarnings("deprecation")
+public class UpgradeDocumentLibraryPortletId extends UpgradePortletId {
 
 	protected void deleteDuplicateResourceActions() throws SQLException {
 		try (PreparedStatement ps1 = connection.prepareStatement(

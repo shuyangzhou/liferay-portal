@@ -15,9 +15,10 @@
 package com.liferay.blogs.recent.bloggers.web.upgrade;
 
 import com.liferay.blogs.recent.bloggers.web.constants.RecentBloggersPortletKeys;
+import com.liferay.portal.kernel.upgrade.BaseUpgradePortletId;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
+import com.liferay.portal.kernel.upgrade.UpgradeStep;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
-import com.liferay.portal.upgrade.util.UpgradePortletId;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -33,7 +34,7 @@ public class RecentBloggersWebUpgrade implements UpgradeStepRegistrator {
 			"com.liferay.blogs.recent.bloggers.web", "0.0.0", "1.0.0",
 			new DummyUpgradeStep());
 
-		UpgradePortletId upgradePortletId = new UpgradePortletId() {
+		UpgradeStep upgradePortletId = new BaseUpgradePortletId() {
 
 			@Override
 			protected String[][] getRenamePortletIdsArray() {

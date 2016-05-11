@@ -15,9 +15,10 @@
 package com.liferay.comment.page.comments.web.upgrade;
 
 import com.liferay.comment.page.comments.web.constants.PageCommentsPortletKeys;
+import com.liferay.portal.kernel.upgrade.BaseUpgradePortletId;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
+import com.liferay.portal.kernel.upgrade.UpgradeStep;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
-import com.liferay.portal.upgrade.util.UpgradePortletId;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -33,7 +34,7 @@ public class PageCommentsWebUpgrade implements UpgradeStepRegistrator {
 			"com.liferay.comment.page.comments.web", "0.0.0", "1.0.0",
 			new DummyUpgradeStep());
 
-		UpgradePortletId upgradePortletId = new UpgradePortletId() {
+		UpgradeStep upgradePortletId = new BaseUpgradePortletId() {
 
 			@Override
 			protected String[][] getRenamePortletIdsArray() {

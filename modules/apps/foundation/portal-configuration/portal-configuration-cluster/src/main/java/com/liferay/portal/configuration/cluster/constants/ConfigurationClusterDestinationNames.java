@@ -12,14 +12,13 @@
  * details.
  */
 
-package com.liferay.exportimport.resources.importer.messaging;
+package com.liferay.portal.configuration.cluster.constants;
 
 /**
- * @author Daniel Kocsis
+ * @author Michael C. Han
  */
-public interface DestinationNames {
+public class ConfigurationClusterDestinationNames {
 
-	public static final String RESOURCES_IMPORTER =
-		"liferay/resources_importer";
+	public static final String CONFIGURATION = "liferay/configuration";
 
 }

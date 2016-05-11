@@ -25,7 +25,7 @@
 </tr>
 <tr>
 	<td>PORTLET_BODY</td>
-	<td>//div[contains(@id,'knowledgebase')]//div[@class='portlet-body']</td>
+	<td>//div[contains(@id,'knowledge_base_web')]//div[@class='portlet-body']</td>
 	<td></td>
 </tr>
 <tr>

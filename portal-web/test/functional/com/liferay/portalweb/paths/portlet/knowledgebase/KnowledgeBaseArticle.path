@@ -170,12 +170,12 @@
 </tr>
 <tr>
 	<td>HISTORY_VERSION_TABLE_SOURCE</td>
-	<td>//table[contains(@data-searchcontainerid,'knowledgebaseportlet')]//thead[contains(.,'Version')]/..//a[contains(.,'(Source)')]</td>
+	<td>//table[contains(@data-searchcontainerid,'knowledge_base_web')]//thead[contains(.,'Version')]/..//a[contains(.,'(Source)')]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>HISTORY_VERSION_TABLE_TARGET</td>
-	<td>//table[contains(@data-searchcontainerid,'knowledgebaseportlet')]//thead[contains(.,'Version')]/..//a[contains(.,'(Target)')]</td>
+	<td>//table[contains(@data-searchcontainerid,'knowledge_base_web')]//thead[contains(.,'Version')]/..//a[contains(.,'(Target)')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -186,7 +186,7 @@
 <!--SECTIONS-->
 <tr>
 	<td>SECTIONS_SELECT</td>
-	<td>//select[contains(@id,'knowledgebaseportlet_sections')]</td>
+	<td>//select[contains(@id, 'knowledge_base_web') and contains(@id, 'sections')]</td>
 	<td></td>
 </tr>
 <tr>

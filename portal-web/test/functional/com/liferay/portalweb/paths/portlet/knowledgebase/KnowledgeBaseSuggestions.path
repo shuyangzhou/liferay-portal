@@ -15,7 +15,7 @@
 </tr>
 <tr>
 	<td>CONTENT_INPUT</td>
-	<td>//textarea[contains(@id,'knowledgebaseportlet_content')]</td>
+	<td>//textarea[contains(@id, 'knowledge_base_web') and contains(@id, '_content')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -66,7 +66,7 @@
 <!--NAVIGATION-->
 <tr>
 	<td>NAVIGATION_BAR</td>
-	<td>//ul[contains(@id,'knowledgebaseportlet') and contains(@class,'navbar')]</td>
+	<td>//ul[contains(@id,'knowledge_base_web') and contains(@class,'navbar')]</td>
 	<td></td>
 </tr>
 <tr>

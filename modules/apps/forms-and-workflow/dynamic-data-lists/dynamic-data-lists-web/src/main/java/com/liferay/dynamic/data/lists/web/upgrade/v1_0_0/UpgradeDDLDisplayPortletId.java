@@ -20,7 +20,7 @@ import com.liferay.dynamic.data.lists.constants.DDLPortletKeys;
  * @author Leonardo Barros
  */
 public class UpgradeDDLDisplayPortletId
-	extends com.liferay.portal.upgrade.util.UpgradePortletId {
+	extends com.liferay.portal.kernel.upgrade.BaseUpgradePortletId {
 
 	@Override
 	protected String[][] getRenamePortletIdsArray() {

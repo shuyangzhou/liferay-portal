@@ -14,11 +14,12 @@
 
 package com.liferay.knowledge.base.web.upgrade.v1_0_0;
 
+import com.liferay.portal.kernel.upgrade.BaseUpgradePortletId;
+
 /**
  * @author Adolfo Pérez
  */
-public class UpgradePortletId
-	extends com.liferay.portal.upgrade.util.UpgradePortletId {
+public class UpgradePortletId extends BaseUpgradePortletId {
 
 	@Override
 	protected String[][] getRenamePortletIdsArray() {

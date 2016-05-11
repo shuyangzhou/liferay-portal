@@ -14,7 +14,7 @@
 
 package com.liferay.calendar.upgrade.v1_0_3;
 
-import com.liferay.portal.upgrade.util.BaseUpgradeCompanyId;
+import com.liferay.portal.kernel.upgrade.BaseUpgradeCompanyId;
 
 /**
  * @author Inácio Nery
