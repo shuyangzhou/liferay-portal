@@ -16,9 +16,9 @@ package com.liferay.journal.upgrade.v1_0_0;
 
 import com.liferay.journal.upgrade.v1_0_0.util.JournalArticleTable;
 import com.liferay.journal.upgrade.v1_0_0.util.JournalFeedTable;
+import com.liferay.portal.kernel.upgrade.UpgradeMVCCVersion;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.upgrade.util.UpgradeMVCCVersion;
 
 /**
  * @author Eduardo Garcia

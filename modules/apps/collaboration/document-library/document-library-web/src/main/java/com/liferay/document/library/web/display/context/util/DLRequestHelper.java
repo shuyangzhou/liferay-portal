@@ -14,6 +14,7 @@
 
 package com.liferay.document.library.web.display.context.util;
 
+import com.liferay.document.library.web.constants.DLWebKeys;
 import com.liferay.document.library.web.settings.internal.DLPortletInstanceSettings;
 import com.liferay.portal.kernel.display.context.util.BaseRequestHelper;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -33,55 +34,81 @@ public class DLRequestHelper extends BaseRequestHelper {
 	}
 
 	public DLGroupServiceSettings getDLGroupServiceSettings() {
-		try {
-			if (_dlGroupServiceSettings == null) {
-				String portletResource = getPortletResource();
-
-				if (Validator.isNotNull(portletResource)) {
-					HttpServletRequest request = getRequest();
-
-					_dlGroupServiceSettings =
-						DLGroupServiceSettings.getInstance(
-							getScopeGroupId(), request.getParameterMap());
-				}
-				else {
-					_dlGroupServiceSettings =
-						DLGroupServiceSettings.getInstance(getScopeGroupId());
-				}
-			}
-
+		if (_dlGroupServiceSettings != null) {
 			return _dlGroupServiceSettings;
+		}
+
+		HttpServletRequest request = getRequest();
+
+		_dlGroupServiceSettings = (DLGroupServiceSettings)request.getAttribute(
+			DLWebKeys.DOCUMENT_LIBRARY_GROUP_SERVICE_SETTINGS);
+
+		if (_dlGroupServiceSettings != null) {
+			return _dlGroupServiceSettings;
+		}
+
+		String portletResource = getPortletResource();
+
+		try {
+			if (Validator.isNotNull(portletResource)) {
+				_dlGroupServiceSettings = DLGroupServiceSettings.getInstance(
+					getScopeGroupId(), request.getParameterMap());
+			}
+			else {
+				_dlGroupServiceSettings = DLGroupServiceSettings.getInstance(
+					getScopeGroupId());
+			}
 		}
 		catch (PortalException pe) {
 			throw new SystemException(pe);
 		}
+
+		request.setAttribute(
+			DLWebKeys.DOCUMENT_LIBRARY_GROUP_SERVICE_SETTINGS,
+			_dlGroupServiceSettings);
+
+		return _dlGroupServiceSettings;
 	}
 
 	public DLPortletInstanceSettings getDLPortletInstanceSettings() {
-		try {
-			if (_dlPortletInstanceSettings == null) {
-				String portletResource = getPortletResource();
-
-				if (Validator.isNotNull(portletResource)) {
-					HttpServletRequest request = getRequest();
-
-					_dlPortletInstanceSettings =
-						DLPortletInstanceSettings.getInstance(
-							getLayout(), getResourcePortletId(),
-							request.getParameterMap());
-				}
-				else {
-					_dlPortletInstanceSettings =
-						DLPortletInstanceSettings.getInstance(
-							getLayout(), getPortletId());
-				}
-			}
-
+		if (_dlGroupServiceSettings != null) {
 			return _dlPortletInstanceSettings;
+		}
+
+		HttpServletRequest request = getRequest();
+
+		_dlPortletInstanceSettings =
+			(DLPortletInstanceSettings)request.getAttribute(
+				DLWebKeys.DOCUMENT_LIBRARY_PORTLET_INSTANCE_SETTINGS);
+
+		if (_dlPortletInstanceSettings != null) {
+			return _dlPortletInstanceSettings;
+		}
+
+		String portletResource = getPortletResource();
+
+		try {
+			if (Validator.isNotNull(portletResource)) {
+				_dlPortletInstanceSettings =
+					DLPortletInstanceSettings.getInstance(
+						getLayout(), getResourcePortletId(),
+						request.getParameterMap());
+			}
+			else {
+				_dlPortletInstanceSettings =
+					DLPortletInstanceSettings.getInstance(
+						getLayout(), getPortletId());
+			}
 		}
 		catch (PortalException pe) {
 			throw new SystemException(pe);
 		}
+
+		request.setAttribute(
+			DLWebKeys.DOCUMENT_LIBRARY_PORTLET_INSTANCE_SETTINGS,
+			_dlPortletInstanceSettings);
+
+		return _dlPortletInstanceSettings;
 	}
 
 	private DLGroupServiceSettings _dlGroupServiceSettings;

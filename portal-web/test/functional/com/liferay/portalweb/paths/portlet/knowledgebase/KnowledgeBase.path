@@ -118,7 +118,7 @@
 </tr>
 <tr>
 	<td>ARTICLE_TABLE_SELECT_ALL_CHECKBOX</td>
-	<td>//input[@name='_1_WAR_knowledgebaseportlet_allRowIds']</td>
+	<td>//input[contains(@name, 'knowledge_base_web') and contains(@name, 'allRowIds')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -340,17 +340,17 @@
 </tr>
 <tr>
 	<td>MOVE_NEW_PARENT_TITLE_FIELD</td>
-	<td>//div[contains(@id,'knowledgebaseportlet_newParent')]/input</td>
+	<td>//div[contains(@id, 'knowledge_base_web') and contains(@id, 'newParent')]/input</td>
 	<td></td>
 </tr>
 <tr>
 	<td>MOVE_NEW_PARENT_PRIORITY_LABEL</td>
-	<td>//div[contains(@id,'knowledgebaseportlet_newParent')]//label[(@class='control-label') and contains(.,'Priority')]</td>
+	<td>//div[contains(@id, 'knowledge_base_web') and contains(@id, 'newParent')]//label[(@class='control-label') and contains(.,'Priority')]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>MOVE_NEW_PARENT_PRIORITY_FIELD</td>
-	<td>//div[contains(@id,'knowledgebaseportlet_newParent')]/input[2]</td>
+	<td>//div[contains(@id, 'knowledge_base_web') and contains(@id, 'newParent')]/input[2]</td>
 	<td></td>
 </tr>
 <tr>

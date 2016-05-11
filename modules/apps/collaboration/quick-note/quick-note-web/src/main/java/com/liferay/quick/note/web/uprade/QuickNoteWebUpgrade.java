@@ -14,9 +14,9 @@
 
 package com.liferay.quick.note.web.uprade;
 
+import com.liferay.portal.kernel.upgrade.BaseUpgradePortletId;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
-import com.liferay.portal.upgrade.util.UpgradePortletId;
 import com.liferay.quick.note.web.constants.QuickNotePortletKeys;
 
 import org.osgi.service.component.annotations.Component;
@@ -36,7 +36,7 @@ public class QuickNoteWebUpgrade implements UpgradeStepRegistrator {
 
 		registry.register(
 			"com.liferay.quick.note.web", "0.0.1", "1.0.0",
-			new UpgradePortletId() {
+			new BaseUpgradePortletId() {
 
 				@Override
 				protected String[][] getRenamePortletIdsArray() {

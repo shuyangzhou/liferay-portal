@@ -14,13 +14,13 @@
 
 package com.liferay.social.networking.upgrade.v1_0_1;
 
+import com.liferay.portal.kernel.upgrade.BaseUpgradePortletId;
 import com.liferay.social.networking.constants.SocialNetworkingPortletKeys;
 
 /**
  * @author Adolfo Pérez
  */
-public class UpgradePortletId
-	extends com.liferay.portal.upgrade.util.UpgradePortletId {
+public class UpgradePortletId extends BaseUpgradePortletId {
 
 	@Override
 	protected String[][] getRenamePortletIdsArray() {

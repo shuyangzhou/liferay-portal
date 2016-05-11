@@ -1030,14 +1030,14 @@
 
 		<execute macro="FormsAdmin#viewRadioEntry">
 			<var name="fieldLabel" value="New Radio" />
-			<var name="fieldName" value="NewNewRadio" />
+			<var name="fieldName" value="NewRadio" />
 			<var name="fieldValue" value="New Option 1" />
 		</execute>
 
 		<execute macro="FormsAdmin#viewDateEntry">
-			<var name="fieldLabel" value="New NewDate" />
+			<var name="fieldLabel" value="New Date" />
 			<var name="fieldName" value="NewDate" />
-			<var name="fieldValue" value="5/2/16" />
+			<var name="fieldValue" value="05/02/2016" />
 		</execute>
 
 		<execute macro="FormsAdmin#viewCheckboxEntry">
@@ -1281,6 +1281,11 @@
 
 		<execute macro="FormsAdminNavigator#gotoView" />
 
+		<execute macro="FormFields#viewParagraphField">
+			<var name="fieldTitle" value="Paragraph" />
+			<var name="fieldValue" value="Paragraph body text." />
+		</execute>
+
 		<execute macro="FormsAdmin#viewTextEntry">
 			<var name="fieldLabel" value="SingleLineText" />
 			<var name="fieldName" value="SingleLineText" />
@@ -1308,7 +1313,7 @@
 		<execute macro="FormsAdmin#viewDateEntry">
 			<var name="fieldLabel" value="Date" />
 			<var name="fieldName" value="Date" />
-			<var name="fieldValue" value="5/2/16" />
+			<var name="fieldValue" value="05/02/2016" />
 		</execute>
 
 		<execute macro="FormsAdmin#viewCheckboxEntry">

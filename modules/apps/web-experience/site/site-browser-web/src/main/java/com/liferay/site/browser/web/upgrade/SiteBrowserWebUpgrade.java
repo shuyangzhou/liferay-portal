@@ -14,9 +14,9 @@
 
 package com.liferay.site.browser.web.upgrade;
 
+import com.liferay.portal.kernel.upgrade.BaseUpgradePortletId;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
-import com.liferay.portal.upgrade.util.UpgradePortletId;
 import com.liferay.site.browser.web.constants.SiteBrowserPortletKeys;
 
 import org.osgi.service.component.annotations.Component;
@@ -35,7 +35,7 @@ public class SiteBrowserWebUpgrade implements UpgradeStepRegistrator {
 
 		registry.register(
 			"com.liferay.site.browser.web", "0.0.1", "1.0.0",
-			new UpgradePortletId() {
+			new BaseUpgradePortletId() {
 
 				@Override
 				protected String[][] getRenamePortletIdsArray() {

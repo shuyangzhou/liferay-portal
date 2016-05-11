@@ -14,7 +14,7 @@
 
 package com.liferay.journal.upgrade.v1_0_0;
 
-import com.liferay.portal.upgrade.util.BaseUpgradeCompanyId;
+import com.liferay.portal.kernel.upgrade.BaseUpgradeCompanyId;
 
 /**
  * @author Brian Wing Shun Chan

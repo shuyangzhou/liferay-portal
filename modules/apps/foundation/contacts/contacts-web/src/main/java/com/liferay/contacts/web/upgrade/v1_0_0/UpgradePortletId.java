@@ -15,12 +15,12 @@
 package com.liferay.contacts.web.upgrade.v1_0_0;
 
 import com.liferay.contacts.web.constants.ContactsPortletKeys;
+import com.liferay.portal.kernel.upgrade.BaseUpgradePortletId;
 
 /**
  * @author Drew Brokke
  */
-public class UpgradePortletId
-	extends com.liferay.portal.upgrade.util.UpgradePortletId {
+public class UpgradePortletId extends BaseUpgradePortletId {
 
 	@Override
 	protected String[][] getRenamePortletIdsArray() {

@@ -223,7 +223,9 @@
 			<var name="userSegmentRule" value="Regular Role" />
 		</execute>
 
-		<execute function="AssertSelectedLabel" locator1="EditUserSegment#USER_SEGMENT_RULE_USER_ATTRIBUTES_REGULAR_ROLE_SELECT" value1="Administrator" />
+		<var name="key_regularRole" value="${regularRole}" />
+
+		<execute function="AssertSelectedLabel" locator1="EditUserSegment#USER_SEGMENT_RULE_USER_ATTRIBUTES_DEFAULT_REGULAR_ROLE" value1="Administrator" />
 
 		<execute function="Select" locator1="EditUserSegment#USER_SEGMENT_RULE_USER_ATTRIBUTES_REGULAR_ROLE_SELECT" value1="${regularRole}" />
 	</command>
@@ -232,6 +234,8 @@
 		<execute macro="ContentTargetingUserSegment#addRuleCmdCP">
 			<var name="userSegmentRule" value="Site Member" />
 		</execute>
+
+		<var name="key_selectSiteMemberSite" value="${selectSiteMemberSite}" />
 
 		<execute function="Select" locator1="EditUserSegment#USER_SEGMENT_RULE_USER_ATTRIBUTES_SITE_MEMBER_SELECT" value1="${selectSiteMemberSite}" />
 	</command>
@@ -485,6 +489,8 @@
 				<elseif>
 					<equals arg1="${usersegmentRuleName}" arg2="Site Member" />
 					<then>
+						<var name="key_selectSiteMemberSite" value="${selectSiteMemberSite}" />
+
 						<execute function="AssertSelectedLabel" locator1="EditUserSegment#USER_SEGMENT_RULE_USER_ATTRIBUTES_SITE_MEMBER_SELECT" value1="${selectSiteMemberSite}" />
 					</then>
 				</elseif>
@@ -546,6 +552,8 @@
 				<elseif>
 					<equals arg1="${usersegmentRuleName}" arg2="Regular Role" />
 					<then>
+						<var name="key_regularRole" value="${regularRole}" />
+
 						<execute function="AssertSelectedLabel" locator1="EditUserSegment#USER_SEGMENT_RULE_USER_ATTRIBUTES_REGULAR_ROLE_SELECT" value1="${regularRole}" />
 					</then>
 				</elseif>

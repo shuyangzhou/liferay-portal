@@ -191,7 +191,8 @@ public class FreeMarkerManager extends BaseSingleTemplateManager {
 			}
 			catch (TemplateModelException tme) {
 				_log.error(
-					"Unable to add taglib " + entry.getKey() + " to context");
+					"Unable to add taglib " + entry.getKey() + " to context",
+					tme);
 			}
 		}
 	}

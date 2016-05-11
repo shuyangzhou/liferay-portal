@@ -15,9 +15,9 @@
 package com.liferay.my.account.web.upgrade;
 
 import com.liferay.my.account.web.constants.MyAccountPortletKeys;
+import com.liferay.portal.kernel.upgrade.BaseUpgradePortletId;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
-import com.liferay.portal.upgrade.util.UpgradePortletId;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -35,7 +35,7 @@ public class MyAccountWebUpgrade implements UpgradeStepRegistrator {
 
 		registry.register(
 			"com.liferay.my.account.web", "0.0.1", "1.0.0",
-			new UpgradePortletId() {
+			new BaseUpgradePortletId() {
 
 				@Override
 				protected String[][] getRenamePortletIdsArray() {

@@ -34,7 +34,7 @@ import com.liferay.portal.kernel.util.StringUtil;
  * @author Marcellus Tavares
  */
 public class UpgradeDDLFormPortletId
-	extends com.liferay.portal.upgrade.util.UpgradePortletId {
+	extends com.liferay.portal.kernel.upgrade.BaseUpgradePortletId {
 
 	public UpgradeDDLFormPortletId(
 		PortletPreferencesLocalService portletPreferencesLocalService,

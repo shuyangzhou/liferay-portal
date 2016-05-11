@@ -18,7 +18,7 @@ package com.liferay.portal.upgrade.v6_2_0;
  * @author Cristina González
  */
 public class UpgradeMVCCVersion
-	extends com.liferay.portal.upgrade.util.UpgradeMVCCVersion {
+	extends com.liferay.portal.kernel.upgrade.UpgradeMVCCVersion {
 
 	@Override
 	protected String[] getExcludedTableNames() {

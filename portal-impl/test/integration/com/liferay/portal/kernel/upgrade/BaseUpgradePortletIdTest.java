@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.upgrade;
+package com.liferay.portal.kernel.upgrade;
 
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -39,7 +39,6 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portal.upgrade.util.UpgradePortletId;
 import com.liferay.portal.util.test.LayoutTestUtil;
 
 import java.util.HashMap;
@@ -56,7 +55,7 @@ import org.junit.Test;
 /**
  * @author Raymond Augé
  */
-public class UpgradePortletIdTest extends UpgradePortletId {
+public class BaseUpgradePortletIdTest extends BaseUpgradePortletId {
 
 	@ClassRule
 	@Rule

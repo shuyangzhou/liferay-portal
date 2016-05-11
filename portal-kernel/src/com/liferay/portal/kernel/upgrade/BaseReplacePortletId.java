@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.upgrade.util;
+package com.liferay.portal.kernel.upgrade;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,7 +21,7 @@ import java.sql.SQLException;
 /**
  * @author Adolfo Pérez
  */
-public abstract class BaseReplacePortletId extends UpgradePortletId {
+public abstract class BaseReplacePortletId extends BaseUpgradePortletId {
 
 	protected boolean hasPortlet(String portletId) throws SQLException {
 		return hasRow(
