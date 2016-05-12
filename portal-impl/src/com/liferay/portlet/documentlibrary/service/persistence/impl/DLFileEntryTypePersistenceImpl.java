@@ -4081,10 +4081,8 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 			companyId = dlFileEntryType.getCompanyId();
 		}
 
-		for (long dlFolderPK : dlFolderPKs) {
-			dlFileEntryTypeToDLFolderTableMapper.addTableMapping(companyId, pk,
-				dlFolderPK);
-		}
+		dlFileEntryTypeToDLFolderTableMapper.addTableMappings(companyId, pk,
+			dlFolderPKs);
 	}
 
 	/**
@@ -4096,21 +4094,15 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	@Override
 	public void addDLFolders(long pk,
 		List<com.liferay.document.library.kernel.model.DLFolder> dlFolders) {
-		long companyId = 0;
+		long[] dlFolderPKs = new long[dlFolders.size()];
 
-		DLFileEntryType dlFileEntryType = fetchByPrimaryKey(pk);
+		for (int i = 0; i < dlFolders.size(); i++) {
+			com.liferay.document.library.kernel.model.DLFolder dlFolder = dlFolders.get(i);
 
-		if (dlFileEntryType == null) {
-			companyId = companyProvider.getCompanyId();
-		}
-		else {
-			companyId = dlFileEntryType.getCompanyId();
+			dlFolderPKs[i] = dlFolder.getPrimaryKey();
 		}
 
-		for (com.liferay.document.library.kernel.model.DLFolder dlFolder : dlFolders) {
-			dlFileEntryTypeToDLFolderTableMapper.addTableMapping(companyId, pk,
-				dlFolder.getPrimaryKey());
-		}
+		addDLFolders(pk, dlFolderPKs);
 	}
 
 	/**
@@ -4155,10 +4147,7 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	 */
 	@Override
 	public void removeDLFolders(long pk, long[] dlFolderPKs) {
-		for (long dlFolderPK : dlFolderPKs) {
-			dlFileEntryTypeToDLFolderTableMapper.deleteTableMapping(pk,
-				dlFolderPK);
-		}
+		dlFileEntryTypeToDLFolderTableMapper.deleteTableMappings(pk, dlFolderPKs);
 	}
 
 	/**
@@ -4170,10 +4159,15 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	@Override
 	public void removeDLFolders(long pk,
 		List<com.liferay.document.library.kernel.model.DLFolder> dlFolders) {
-		for (com.liferay.document.library.kernel.model.DLFolder dlFolder : dlFolders) {
-			dlFileEntryTypeToDLFolderTableMapper.deleteTableMapping(pk,
-				dlFolder.getPrimaryKey());
+		long[] dlFolderPKs = new long[dlFolders.size()];
+
+		for (int i = 0; i < dlFolders.size(); i++) {
+			com.liferay.document.library.kernel.model.DLFolder dlFolder = dlFolders.get(i);
+
+			dlFolderPKs[i] = dlFolder.getPrimaryKey();
 		}
+
+		removeDLFolders(pk, dlFolderPKs);
 	}
 
 	/**
@@ -4192,12 +4186,26 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 
 		removeDLFolderPKsSet.removeAll(newDLFolderPKsSet);
 
+		long[] removeDLFolderPKs = new long[removeDLFolderPKsSet.size()];
+
+		int i = 0;
+
 		for (long removeDLFolderPK : removeDLFolderPKsSet) {
-			dlFileEntryTypeToDLFolderTableMapper.deleteTableMapping(pk,
-				removeDLFolderPK);
+			removeDLFolderPKs[i++] = removeDLFolderPK;
 		}
 
+		dlFileEntryTypeToDLFolderTableMapper.deleteTableMappings(pk,
+			removeDLFolderPKs);
+
 		newDLFolderPKsSet.removeAll(oldDLFolderPKsSet);
+
+		long[] newDLFolderPKs = new long[newDLFolderPKsSet.size()];
+
+		i = 0;
+
+		for (long newDLFolderPK : newDLFolderPKsSet) {
+			newDLFolderPKs[i++] = newDLFolderPK;
+		}
 
 		long companyId = 0;
 
@@ -4210,10 +4218,8 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 			companyId = dlFileEntryType.getCompanyId();
 		}
 
-		for (long newDLFolderPK : newDLFolderPKsSet) {
-			dlFileEntryTypeToDLFolderTableMapper.addTableMapping(companyId, pk,
-				newDLFolderPK);
-		}
+		dlFileEntryTypeToDLFolderTableMapper.addTableMappings(companyId, pk,
+			newDLFolderPKs);
 	}
 
 	/**

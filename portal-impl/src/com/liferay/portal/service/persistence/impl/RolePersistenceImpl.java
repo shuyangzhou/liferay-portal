@@ -9555,9 +9555,7 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 			companyId = role.getCompanyId();
 		}
 
-		for (long groupPK : groupPKs) {
-			roleToGroupTableMapper.addTableMapping(companyId, pk, groupPK);
-		}
+		roleToGroupTableMapper.addTableMappings(companyId, pk, groupPKs);
 	}
 
 	/**
@@ -9569,21 +9567,15 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 	@Override
 	public void addGroups(long pk,
 		List<com.liferay.portal.kernel.model.Group> groups) {
-		long companyId = 0;
+		long[] groupPKs = new long[groups.size()];
 
-		Role role = fetchByPrimaryKey(pk);
+		for (int i = 0; i < groups.size(); i++) {
+			com.liferay.portal.kernel.model.Group group = groups.get(i);
 
-		if (role == null) {
-			companyId = companyProvider.getCompanyId();
-		}
-		else {
-			companyId = role.getCompanyId();
+			groupPKs[i] = group.getPrimaryKey();
 		}
 
-		for (com.liferay.portal.kernel.model.Group group : groups) {
-			roleToGroupTableMapper.addTableMapping(companyId, pk,
-				group.getPrimaryKey());
-		}
+		addGroups(pk, groupPKs);
 	}
 
 	/**
@@ -9626,9 +9618,7 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 	 */
 	@Override
 	public void removeGroups(long pk, long[] groupPKs) {
-		for (long groupPK : groupPKs) {
-			roleToGroupTableMapper.deleteTableMapping(pk, groupPK);
-		}
+		roleToGroupTableMapper.deleteTableMappings(pk, groupPKs);
 	}
 
 	/**
@@ -9640,9 +9630,15 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 	@Override
 	public void removeGroups(long pk,
 		List<com.liferay.portal.kernel.model.Group> groups) {
-		for (com.liferay.portal.kernel.model.Group group : groups) {
-			roleToGroupTableMapper.deleteTableMapping(pk, group.getPrimaryKey());
+		long[] groupPKs = new long[groups.size()];
+
+		for (int i = 0; i < groups.size(); i++) {
+			com.liferay.portal.kernel.model.Group group = groups.get(i);
+
+			groupPKs[i] = group.getPrimaryKey();
 		}
+
+		removeGroups(pk, groupPKs);
 	}
 
 	/**
@@ -9661,11 +9657,25 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 
 		removeGroupPKsSet.removeAll(newGroupPKsSet);
 
+		long[] removeGroupPKs = new long[removeGroupPKsSet.size()];
+
+		int i = 0;
+
 		for (long removeGroupPK : removeGroupPKsSet) {
-			roleToGroupTableMapper.deleteTableMapping(pk, removeGroupPK);
+			removeGroupPKs[i++] = removeGroupPK;
 		}
 
+		roleToGroupTableMapper.deleteTableMappings(pk, removeGroupPKs);
+
 		newGroupPKsSet.removeAll(oldGroupPKsSet);
+
+		long[] newGroupPKs = new long[newGroupPKsSet.size()];
+
+		i = 0;
+
+		for (long newGroupPK : newGroupPKsSet) {
+			newGroupPKs[i++] = newGroupPK;
+		}
 
 		long companyId = 0;
 
@@ -9678,9 +9688,7 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 			companyId = role.getCompanyId();
 		}
 
-		for (long newGroupPK : newGroupPKsSet) {
-			roleToGroupTableMapper.addTableMapping(companyId, pk, newGroupPK);
-		}
+		roleToGroupTableMapper.addTableMappings(companyId, pk, newGroupPKs);
 	}
 
 	/**
@@ -9871,9 +9879,7 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 			companyId = role.getCompanyId();
 		}
 
-		for (long userPK : userPKs) {
-			roleToUserTableMapper.addTableMapping(companyId, pk, userPK);
-		}
+		roleToUserTableMapper.addTableMappings(companyId, pk, userPKs);
 	}
 
 	/**
@@ -9885,21 +9891,15 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 	@Override
 	public void addUsers(long pk,
 		List<com.liferay.portal.kernel.model.User> users) {
-		long companyId = 0;
+		long[] userPKs = new long[users.size()];
 
-		Role role = fetchByPrimaryKey(pk);
+		for (int i = 0; i < users.size(); i++) {
+			com.liferay.portal.kernel.model.User user = users.get(i);
 
-		if (role == null) {
-			companyId = companyProvider.getCompanyId();
-		}
-		else {
-			companyId = role.getCompanyId();
+			userPKs[i] = user.getPrimaryKey();
 		}
 
-		for (com.liferay.portal.kernel.model.User user : users) {
-			roleToUserTableMapper.addTableMapping(companyId, pk,
-				user.getPrimaryKey());
-		}
+		addUsers(pk, userPKs);
 	}
 
 	/**
@@ -9942,9 +9942,7 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 	 */
 	@Override
 	public void removeUsers(long pk, long[] userPKs) {
-		for (long userPK : userPKs) {
-			roleToUserTableMapper.deleteTableMapping(pk, userPK);
-		}
+		roleToUserTableMapper.deleteTableMappings(pk, userPKs);
 	}
 
 	/**
@@ -9956,9 +9954,15 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 	@Override
 	public void removeUsers(long pk,
 		List<com.liferay.portal.kernel.model.User> users) {
-		for (com.liferay.portal.kernel.model.User user : users) {
-			roleToUserTableMapper.deleteTableMapping(pk, user.getPrimaryKey());
+		long[] userPKs = new long[users.size()];
+
+		for (int i = 0; i < users.size(); i++) {
+			com.liferay.portal.kernel.model.User user = users.get(i);
+
+			userPKs[i] = user.getPrimaryKey();
 		}
+
+		removeUsers(pk, userPKs);
 	}
 
 	/**
@@ -9977,11 +9981,25 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 
 		removeUserPKsSet.removeAll(newUserPKsSet);
 
+		long[] removeUserPKs = new long[removeUserPKsSet.size()];
+
+		int i = 0;
+
 		for (long removeUserPK : removeUserPKsSet) {
-			roleToUserTableMapper.deleteTableMapping(pk, removeUserPK);
+			removeUserPKs[i++] = removeUserPK;
 		}
 
+		roleToUserTableMapper.deleteTableMappings(pk, removeUserPKs);
+
 		newUserPKsSet.removeAll(oldUserPKsSet);
+
+		long[] newUserPKs = new long[newUserPKsSet.size()];
+
+		i = 0;
+
+		for (long newUserPK : newUserPKsSet) {
+			newUserPKs[i++] = newUserPK;
+		}
 
 		long companyId = 0;
 
@@ -9994,9 +10012,7 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 			companyId = role.getCompanyId();
 		}
 
-		for (long newUserPK : newUserPKsSet) {
-			roleToUserTableMapper.addTableMapping(companyId, pk, newUserPK);
-		}
+		roleToUserTableMapper.addTableMappings(companyId, pk, newUserPKs);
 	}
 
 	/**
