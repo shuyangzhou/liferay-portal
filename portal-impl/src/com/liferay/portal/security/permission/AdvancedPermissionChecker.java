@@ -79,79 +79,6 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		return new AdvancedPermissionChecker();
 	}
 
-	public ResourceBlockIdsBag getGuestResourceBlockIdsBag(
-			long companyId, long groupId, String name)
-		throws Exception {
-
-		ResourceBlockIdsBag resourceBlockIdsBag =
-			PermissionCacheUtil.getResourceBlockIdsBag(
-				companyId, groupId, defaultUserId, name);
-
-		if (resourceBlockIdsBag != null) {
-			return resourceBlockIdsBag;
-		}
-
-		try {
-			resourceBlockIdsBag =
-				ResourceBlockLocalServiceUtil.getResourceBlockIdsBag(
-					getCompanyId(), groupId, name, getGuestUserRoleIds());
-
-			PermissionCacheUtil.putResourceBlockIdsBag(
-				companyId, groupId, defaultUserId, name, resourceBlockIdsBag);
-
-			return resourceBlockIdsBag;
-		}
-		catch (Exception e) {
-			PermissionCacheUtil.removeResourceBlockIdsBag(
-				getCompanyId(), groupId, defaultUserId, name);
-
-			throw e;
-		}
-	}
-
-	/**
-	 * Returns the permission checker bag for the guest user.
-	 *
-	 * @return the permission checker bag for the guest user
-	 * @throws Exception if an exception occurred
-	 */
-	public long[] getGuestUserRoleIds() throws Exception {
-		Group guestGroup = GroupLocalServiceUtil.getGroup(
-			getCompanyId(), GroupConstants.GUEST);
-
-		long[] roleIds = PermissionCacheUtil.getUserGroupRoleIds(
-			defaultUserId, guestGroup.getGroupId());
-
-		if (roleIds != null) {
-			return roleIds;
-		}
-
-		try {
-			List<Role> roles = RoleLocalServiceUtil.getUserRelatedRoles(
-				defaultUserId, Collections.singletonList(guestGroup));
-
-			// Only use the guest group for deriving the roles for
-			// unauthenticated users. Do not add the group to the permission bag
-			// as this implies group membership which is incorrect in the case
-			// of unauthenticated users.
-
-			roleIds = ListUtil.toLongArray(roles, Role.ROLE_ID_ACCESSOR);
-
-			Arrays.sort(roleIds);
-
-			PermissionCacheUtil.putUserGroupRoleIds(
-				defaultUserId, guestGroup.getGroupId(), roleIds);
-		}
-		catch (Exception e) {
-			PermissionCacheUtil.removeUserGroupRoleIds(
-				defaultUserId, guestGroup.getGroupId());
-
-			throw e;
-		}
-
-		return roleIds;
-	}
-
 	@Override
 	public List<Long> getOwnerResourceBlockIds(
 		long companyId, long groupId, String name, String actionId) {
@@ -170,38 +97,6 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		}
 
 		return Collections.emptyList();
-	}
-
-	public ResourceBlockIdsBag getOwnerResourceBlockIdsBag(
-		long companyId, long groupId, String name) {
-
-		ResourceBlockIdsBag resourceBlockIdsBag =
-			PermissionCacheUtil.getResourceBlockIdsBag(
-				companyId, groupId, ResourceBlockConstants.OWNER_USER_ID, name);
-
-		if (resourceBlockIdsBag != null) {
-			return resourceBlockIdsBag;
-		}
-
-		try {
-			long[] roleIds = {getOwnerRoleId()};
-
-			resourceBlockIdsBag =
-				ResourceBlockLocalServiceUtil.getResourceBlockIdsBag(
-					getCompanyId(), groupId, name, roleIds);
-
-			PermissionCacheUtil.putResourceBlockIdsBag(
-				companyId, groupId, ResourceBlockConstants.OWNER_USER_ID, name,
-				resourceBlockIdsBag);
-
-			return resourceBlockIdsBag;
-		}
-		catch (Exception e) {
-			PermissionCacheUtil.removeResourceBlockIdsBag(
-				companyId, groupId, ResourceBlockConstants.OWNER_USER_ID, name);
-
-			throw e;
-		}
 	}
 
 	@Override
@@ -223,36 +118,6 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		}
 
 		return Collections.emptyList();
-	}
-
-	public ResourceBlockIdsBag getResourceBlockIdsBag(
-			long companyId, long groupId, String name, long[] roleIds)
-		throws Exception {
-
-		ResourceBlockIdsBag resourceBlockIdsBag =
-			PermissionCacheUtil.getResourceBlockIdsBag(
-				companyId, groupId, getUserId(), name);
-
-		if (resourceBlockIdsBag != null) {
-			return resourceBlockIdsBag;
-		}
-
-		try {
-			resourceBlockIdsBag =
-				ResourceBlockLocalServiceUtil.getResourceBlockIdsBag(
-					getCompanyId(), groupId, name, roleIds);
-
-			PermissionCacheUtil.putResourceBlockIdsBag(
-				companyId, groupId, getUserId(), name, resourceBlockIdsBag);
-
-			return resourceBlockIdsBag;
-		}
-		catch (Exception e) {
-			PermissionCacheUtil.removeResourceBlockIdsBag(
-				companyId, groupId, getUserId(), name);
-
-			throw e;
-		}
 	}
 
 	@Override
@@ -739,6 +604,111 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		}
 	}
 
+	protected ResourceBlockIdsBag getGuestResourceBlockIdsBag(
+			long companyId, long groupId, String name)
+		throws Exception {
+
+		ResourceBlockIdsBag resourceBlockIdsBag =
+			PermissionCacheUtil.getResourceBlockIdsBag(
+				companyId, groupId, defaultUserId, name);
+
+		if (resourceBlockIdsBag != null) {
+			return resourceBlockIdsBag;
+		}
+
+		try {
+			resourceBlockIdsBag =
+				ResourceBlockLocalServiceUtil.getResourceBlockIdsBag(
+					getCompanyId(), groupId, name, getGuestUserRoleIds());
+
+			PermissionCacheUtil.putResourceBlockIdsBag(
+				companyId, groupId, defaultUserId, name, resourceBlockIdsBag);
+
+			return resourceBlockIdsBag;
+		}
+		catch (Exception e) {
+			PermissionCacheUtil.removeResourceBlockIdsBag(
+				getCompanyId(), groupId, defaultUserId, name);
+
+			throw e;
+		}
+	}
+
+	/**
+	 * Returns the permission checker bag for the guest user.
+	 *
+	 * @return the permission checker bag for the guest user
+	 * @throws Exception if an exception occurred
+	 */
+	protected long[] getGuestUserRoleIds() throws Exception {
+		Group guestGroup = GroupLocalServiceUtil.getGroup(
+			getCompanyId(), GroupConstants.GUEST);
+
+		long[] roleIds = PermissionCacheUtil.getUserGroupRoleIds(
+			defaultUserId, guestGroup.getGroupId());
+
+		if (roleIds != null) {
+			return roleIds;
+		}
+
+		try {
+			List<Role> roles = RoleLocalServiceUtil.getUserRelatedRoles(
+				defaultUserId, Collections.singletonList(guestGroup));
+
+			// Only use the guest group for deriving the roles for
+			// unauthenticated users. Do not add the group to the permission bag
+			// as this implies group membership which is incorrect in the case
+			// of unauthenticated users.
+
+			roleIds = ListUtil.toLongArray(roles, Role.ROLE_ID_ACCESSOR);
+
+			Arrays.sort(roleIds);
+
+			PermissionCacheUtil.putUserGroupRoleIds(
+				defaultUserId, guestGroup.getGroupId(), roleIds);
+		}
+		catch (Exception e) {
+			PermissionCacheUtil.removeUserGroupRoleIds(
+				defaultUserId, guestGroup.getGroupId());
+
+			throw e;
+		}
+
+		return roleIds;
+	}
+
+	protected ResourceBlockIdsBag getOwnerResourceBlockIdsBag(
+		long companyId, long groupId, String name) {
+
+		ResourceBlockIdsBag resourceBlockIdsBag =
+			PermissionCacheUtil.getResourceBlockIdsBag(
+				companyId, groupId, ResourceBlockConstants.OWNER_USER_ID, name);
+
+		if (resourceBlockIdsBag != null) {
+			return resourceBlockIdsBag;
+		}
+
+		try {
+			long[] roleIds = {getOwnerRoleId()};
+
+			resourceBlockIdsBag =
+				ResourceBlockLocalServiceUtil.getResourceBlockIdsBag(
+					getCompanyId(), groupId, name, roleIds);
+
+			PermissionCacheUtil.putResourceBlockIdsBag(
+				companyId, groupId, ResourceBlockConstants.OWNER_USER_ID, name,
+				resourceBlockIdsBag);
+
+			return resourceBlockIdsBag;
+		}
+		catch (Exception e) {
+			PermissionCacheUtil.removeResourceBlockIdsBag(
+				companyId, groupId, ResourceBlockConstants.OWNER_USER_ID, name);
+
+			throw e;
+		}
+	}
+
 	protected String getPrimKey(
 		long companyId, long groupId, String name, String primKey) {
 
@@ -814,6 +784,36 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		}
 
 		return primKey;
+	}
+
+	protected ResourceBlockIdsBag getResourceBlockIdsBag(
+			long companyId, long groupId, String name, long[] roleIds)
+		throws Exception {
+
+		ResourceBlockIdsBag resourceBlockIdsBag =
+			PermissionCacheUtil.getResourceBlockIdsBag(
+				companyId, groupId, getUserId(), name);
+
+		if (resourceBlockIdsBag != null) {
+			return resourceBlockIdsBag;
+		}
+
+		try {
+			resourceBlockIdsBag =
+				ResourceBlockLocalServiceUtil.getResourceBlockIdsBag(
+					getCompanyId(), groupId, name, roleIds);
+
+			PermissionCacheUtil.putResourceBlockIdsBag(
+				companyId, groupId, getUserId(), name, resourceBlockIdsBag);
+
+			return resourceBlockIdsBag;
+		}
+		catch (Exception e) {
+			PermissionCacheUtil.removeResourceBlockIdsBag(
+				companyId, groupId, getUserId(), name);
+
+			throw e;
+		}
 	}
 
 	protected boolean hasGuestPermission(
