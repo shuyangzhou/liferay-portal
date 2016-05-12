@@ -15,7 +15,6 @@
 package com.liferay.portal.security.permission;
 
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.exception.NoSuchResourcePermissionException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -28,7 +27,6 @@ import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.OrganizationConstants;
 import com.liferay.portal.kernel.model.PermissionedModel;
 import com.liferay.portal.kernel.model.PortletConstants;
-import com.liferay.portal.kernel.model.Resource;
 import com.liferay.portal.kernel.model.ResourceBlockConstants;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
@@ -44,7 +42,6 @@ import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourceBlockLocalServiceUtil;
-import com.liferay.portal.kernel.service.ResourceLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.TeamLocalServiceUtil;
@@ -60,7 +57,6 @@ import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -906,64 +902,53 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 			long[] roleIds, String actionId)
 		throws Exception {
 
-		// Individual
-
-		List<Resource> resources = new ArrayList<>(4);
-
-		Resource individualResource = ResourceLocalServiceUtil.getResource(
-			companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, primKey);
-
-		resources.add(individualResource);
-
-		// Group
-
-		if (groupId > 0) {
-			Resource groupResource = ResourceLocalServiceUtil.getResource(
-				companyId, name, ResourceConstants.SCOPE_GROUP,
-				String.valueOf(groupId));
-
-			resources.add(groupResource);
-		}
-
-		// Group template
-
-		if (signedIn && (groupId > 0)) {
-			Resource groupTemplateResource =
-				ResourceLocalServiceUtil.getResource(
-					companyId, name, ResourceConstants.SCOPE_GROUP_TEMPLATE,
-					String.valueOf(GroupConstants.DEFAULT_PARENT_GROUP_ID));
-
-			resources.add(groupTemplateResource);
-		}
-
-		// Company
-
-		Resource companyResource = ResourceLocalServiceUtil.getResource(
-			companyId, name, ResourceConstants.SCOPE_COMPANY,
-			String.valueOf(companyId));
-
-		resources.add(companyResource);
-
 		if (roleIds.length == 0) {
 			return false;
 		}
 
-		// Iterate the list of resources in reverse order to test permissions
+		// Check resource permissions in reverse order to test permissions
 		// from company scope to individual scope because it is more likely that
 		// a permission is assigned at a higher scope. Optimizing this method to
 		// one SQL call may actually slow things down since most of the calls
 		// will pull from the cache after the first request.
 
-		for (int i = resources.size() - 1; i >= 0; i--) {
-			Resource resource = resources.get(i);
+		// Company
 
-			if (ResourcePermissionLocalServiceUtil.hasResourcePermission(
-				resource.getCompanyId(), resource.getName(),
-				resource.getScope(), resource.getPrimKey(), roleIds,
+		if (ResourcePermissionLocalServiceUtil.hasResourcePermission(
+			companyId, name, ResourceConstants.SCOPE_COMPANY,
+			String.valueOf(companyId), roleIds, actionId)) {
+
+			return true;
+		}
+
+		// Group template
+
+		if (signedIn && (groupId > 0) &&
+			ResourcePermissionLocalServiceUtil.hasResourcePermission(
+				companyId, name, ResourceConstants.SCOPE_GROUP_TEMPLATE,
+				String.valueOf(GroupConstants.DEFAULT_PARENT_GROUP_ID), roleIds,
 				actionId)) {
 
-				return true;
-			}
+			return true;
+		}
+
+		// Group
+
+		if ((groupId > 0) &&
+			ResourcePermissionLocalServiceUtil.hasResourcePermission(
+				companyId, name, ResourceConstants.SCOPE_GROUP,
+				String.valueOf(groupId), roleIds, actionId)) {
+
+			return true;
+		}
+
+		// Individual
+
+		if (ResourcePermissionLocalServiceUtil.hasResourcePermission(
+			companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, primKey,
+			roleIds, actionId)) {
+
+			return true;
 		}
 
 		return false;
