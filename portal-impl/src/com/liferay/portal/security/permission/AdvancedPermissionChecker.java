@@ -608,8 +608,7 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		// class, then for the group that the class may belong to, and then for
 		// the company that the class belongs to.
 
-		boolean value = ResourceLocalServiceUtil.hasUserPermissions(
-			user.getUserId(), groupId, resources, actionId, roleIds);
+		boolean value = hasResourcePermission(resources, roleIds, actionId);
 
 		logHasUserPermission(groupId, name, primKey, actionId, stopWatch, 4);
 
@@ -937,9 +936,8 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 			List<Resource> resources = getResources(
 				companyId, groupId, name, primKey, actionId);
 
-			return ResourceLocalServiceUtil.hasUserPermissions(
-				defaultUserId, groupId, resources, actionId,
-				getGuestUserRoleIds());
+			return hasResourcePermission(
+				resources, getGuestUserRoleIds(), actionId);
 		}
 		catch (NoSuchResourcePermissionException nsrpe) {
 			throw new IllegalArgumentException(
@@ -1038,6 +1036,97 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 			}
 
 			if (hasLayoutManagerPermission) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Returns <code>true</code> if the roles have permission at the scope to
+	 * perform the action on the resources.
+	 *
+	 * <p>
+	 * Depending on the scope, the value of <code>primKey</code> will have
+	 * different meanings. For more information, see {@link
+	 * com.liferay.portal.model.impl.ResourcePermissionImpl}.
+	 * </p>
+	 *
+	 * @param  resources the resources
+	 * @param  roleIds the primary keys of the roles
+	 * @param  actionId the action ID
+	 * @return <code>true</code> if any one of the roles has permission to
+	 *         perform the action on any one of the resources;
+	 *         <code>false</code> otherwise
+	 */
+	protected boolean hasResourcePermission(
+		List<Resource> resources, long[] roleIds, String actionId)
+		throws PortalException {
+
+		if (roleIds.length == 0) {
+			return false;
+		}
+
+		int size = resources.size();
+
+		if (size < 2) {
+			throw new IllegalArgumentException(
+				"The list of resources must contain at least two values");
+		}
+
+		Resource individualResource = resources.get(0);
+
+		if (individualResource.getScope() !=
+			ResourceConstants.SCOPE_INDIVIDUAL) {
+
+			throw new IllegalArgumentException(
+				"The first resource must be an individual scope");
+		}
+
+		Resource companyResource = resources.get(size - 1);
+
+		if (companyResource.getScope() != ResourceConstants.SCOPE_COMPANY) {
+			throw new IllegalArgumentException(
+				"The last resource must be a company scope");
+		}
+
+		// See LPS-47464
+
+		if (ResourcePermissionLocalServiceUtil.getResourcePermissionsCount(
+			individualResource.getCompanyId(), individualResource.getName(),
+			individualResource.getScope(),
+			individualResource.getPrimKey()) < 1) {
+
+			StringBundler sb = new StringBundler(9);
+
+			sb.append("{companyId=");
+			sb.append(individualResource.getCompanyId());
+			sb.append(", name=");
+			sb.append(individualResource.getName());
+			sb.append(", primKey=");
+			sb.append(individualResource.getPrimKey());
+			sb.append(", scope=");
+			sb.append(individualResource.getScope());
+			sb.append("}");
+
+			throw new NoSuchResourcePermissionException(sb.toString());
+		}
+
+		// Iterate the list of resources in reverse order to test permissions
+		// from company scope to individual scope because it is more likely that
+		// a permission is assigned at a higher scope. Optimizing this method to
+		// one SQL call may actually slow things down since most of the calls
+		// will pull from the cache after the first request.
+
+		for (int i = size - 1; i >= 0; i--) {
+			Resource resource = resources.get(i);
+
+			if (ResourcePermissionLocalServiceUtil.hasResourcePermission(
+				resource.getCompanyId(), resource.getName(),
+				resource.getScope(), resource.getPrimKey(), roleIds,
+				actionId)) {
+
 				return true;
 			}
 		}
