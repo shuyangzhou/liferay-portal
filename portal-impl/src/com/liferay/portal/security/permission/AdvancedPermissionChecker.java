@@ -600,6 +600,8 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 
 		logHasUserPermission(groupId, name, primKey, actionId, stopWatch, 3);
 
+		validateResource(companyId, name, primKey);
+
 		// Check if user has access to perform the action on the given resource
 		// scopes. The resources are scoped to check first for an individual
 		// class, then for the group that the class may belong to, and then for
@@ -783,15 +785,14 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 
 			primKey = getPrimKey(companyId, groupId, name, primKey);
 
+			validateResource(companyId, name, primKey);
+
 			return hasResourcePermission(
 				companyId, groupId, name, primKey, getGuestUserRoleIds(),
 				actionId);
 		}
-		catch (NoSuchResourcePermissionException nsrpe) {
-			throw new IllegalArgumentException(
-				"Someone may be trying to circumvent the permission checker: " +
-					nsrpe.getMessage(),
-				nsrpe);
+		catch (IllegalArgumentException iae) {
+			throw iae;
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -839,22 +840,13 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 			companyId = group.getCompanyId();
 		}
 
-		try {
-			primKey = getPrimKey(companyId, groupId, name, primKey);
+		primKey = getPrimKey(companyId, groupId, name, primKey);
 
-			boolean hasPermission = doCheckPermission(
-				companyId, groupId, name, primKey, roleIds, actionId,
-				stopWatch);
+		if (doCheckPermission(
+			companyId, groupId, name, primKey, roleIds, actionId,
+			stopWatch)) {
 
-			if (hasPermission) {
-				return true;
-			}
-		}
-		catch (NoSuchResourcePermissionException nsrpe) {
-			throw new IllegalArgumentException(
-				"Someone may be trying to circumvent the permission checker: " +
-					nsrpe.getMessage(),
-				nsrpe);
+			return true;
 		}
 
 		if (isOmniadmin()) {
@@ -954,28 +946,6 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 
 		if (roleIds.length == 0) {
 			return false;
-		}
-
-		// See LPS-47464
-
-		if (ResourcePermissionLocalServiceUtil.getResourcePermissionsCount(
-			individualResource.getCompanyId(), individualResource.getName(),
-			individualResource.getScope(),
-			individualResource.getPrimKey()) < 1) {
-
-			StringBundler sb = new StringBundler(9);
-
-			sb.append("{companyId=");
-			sb.append(individualResource.getCompanyId());
-			sb.append(", name=");
-			sb.append(individualResource.getName());
-			sb.append(", primKey=");
-			sb.append(individualResource.getPrimKey());
-			sb.append(", scope=");
-			sb.append(individualResource.getScope());
-			sb.append("}");
-
-			throw new NoSuchResourcePermissionException(sb.toString());
 		}
 
 		// Iterate the list of resources in reverse order to test permissions
@@ -1642,6 +1612,35 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 			"Checking user permission block " + block + " for " + groupId +
 				" " + name + " " + primKey + " " + actionId + " takes " +
 					stopWatch.getTime() + " ms");
+	}
+
+	protected void validateResource(
+		long companyId, String name, String primKey) {
+
+		if (ResourceBlockLocalServiceUtil.isSupported(name)) {
+			return;
+		}
+
+		int count =
+			ResourcePermissionLocalServiceUtil.getResourcePermissionsCount(
+				companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, primKey);
+
+		if (count < 1) {
+			StringBundler sb = new StringBundler(10);
+
+			sb.append("Someone may be trying to circumvent the ");
+			sb.append("permission checker: {companyId=");
+			sb.append(companyId);
+			sb.append(", name=");
+			sb.append(name);
+			sb.append(", primKey=");
+			sb.append(primKey);
+			sb.append(", userId=");
+			sb.append(getUserId());
+			sb.append("}");
+
+			throw new IllegalArgumentException(sb.toString());
+		}
 	}
 
 	/**
