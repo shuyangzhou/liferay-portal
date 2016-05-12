@@ -601,9 +601,6 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		List<Resource> resources = getResources(
 			companyId, groupId, name, primKey, actionId);
 
-		resources = fixMissingResources(
-			companyId, groupId, name, primKey, actionId, resources);
-
 		logHasUserPermission(groupId, name, primKey, actionId, stopWatch, 3);
 
 		// Check if user has access to perform the action on the given resource
@@ -733,96 +730,6 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		}
 	}
 
-	protected List<Resource> fixMissingResources(
-			long companyId, long groupId, String name, String primKey,
-			String actionId, List<Resource> resources)
-		throws Exception {
-
-		int count =
-			ResourcePermissionLocalServiceUtil.getResourcePermissionsCount(
-				companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, primKey);
-
-		if (count > 0) {
-			return resources;
-		}
-
-		String newIndividualResourcePrimKey = null;
-
-		if (primKey.contains(PortletConstants.LAYOUT_SEPARATOR)) {
-
-			// Using defaults because custom permissions defined for portlet
-			// resource are not defined
-
-			newIndividualResourcePrimKey = name;
-
-			if (_log.isDebugEnabled()) {
-				String message =
-					"Using defaults because custom permissions for " +
-						"portlet resource " + name + " are not defined";
-
-				_log.debug(message, new IllegalArgumentException(message));
-			}
-		}
-
-		else if ((groupId > 0) &&
-				 ResourceActionsUtil.isRootModelResource(name)) {
-
-			// Using defaults because custom permissions defined for root model
-			// resource are not defined
-
-			newIndividualResourcePrimKey = name;
-
-			if (_log.isDebugEnabled()) {
-				String message =
-					"Using defaults because custom permissions for " +
-						"root model resource " + name + " are not defined";
-
-				_log.debug(message, new IllegalArgumentException(message));
-			}
-		}
-
-		else if (primKey.equals("0") ||
-				 primKey.equals(String.valueOf(ResourceConstants.PRIMKEY_DNE))
-					 ||
-				 (primKey.equals(String.valueOf(companyId)) &&
-				  !name.equals(Company.class.getName()))) {
-
-			newIndividualResourcePrimKey = name;
-
-			if (_log.isWarnEnabled()) {
-				StringBundler sb = new StringBundler(9);
-
-				sb.append("Using ");
-				sb.append(name);
-				sb.append(" as the primary key instead of the legacy primary ");
-				sb.append("key ");
-				sb.append(primKey);
-				sb.append(" that was used for permission checking of ");
-				sb.append(name);
-				sb.append(" in company ");
-				sb.append(companyId);
-
-				_log.warn(
-					sb.toString(), new IllegalArgumentException(sb.toString()));
-			}
-		}
-
-		if (newIndividualResourcePrimKey != null) {
-			Resource individualResource = resources.get(0);
-
-			if (individualResource.getScope() !=
-					ResourceConstants.SCOPE_INDIVIDUAL) {
-
-				throw new IllegalArgumentException(
-					"The first resource must be an individual scope");
-			}
-
-			individualResource.setPrimKey(name);
-		}
-
-		return resources;
-	}
-
 	/**
 	 * Returns representations of the resource at each scope level.
 	 *
@@ -888,6 +795,88 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 
 		resources.add(companyResource);
 
+		int count =
+			ResourcePermissionLocalServiceUtil.getResourcePermissionsCount(
+				companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, primKey);
+
+		if (count > 0) {
+			return resources;
+		}
+
+		String newIndividualResourcePrimKey = null;
+
+		if (primKey.contains(PortletConstants.LAYOUT_SEPARATOR)) {
+
+			// Using defaults because custom permissions defined for portlet
+			// resource are not defined
+
+			newIndividualResourcePrimKey = name;
+
+			if (_log.isDebugEnabled()) {
+				String message =
+					"Using defaults because custom permissions for " +
+					"portlet resource " + name + " are not defined";
+
+				_log.debug(message, new IllegalArgumentException(message));
+			}
+		}
+
+		else if ((groupId > 0) &&
+				 ResourceActionsUtil.isRootModelResource(name)) {
+
+			// Using defaults because custom permissions defined for root model
+			// resource are not defined
+
+			newIndividualResourcePrimKey = name;
+
+			if (_log.isDebugEnabled()) {
+				String message =
+					"Using defaults because custom permissions for " +
+					"root model resource " + name + " are not defined";
+
+				_log.debug(message, new IllegalArgumentException(message));
+			}
+		}
+
+		else if (primKey.equals("0") ||
+				 primKey.equals(String.valueOf(ResourceConstants.PRIMKEY_DNE))
+				 ||
+				 (primKey.equals(String.valueOf(companyId)) &&
+				  !name.equals(Company.class.getName()))) {
+
+			newIndividualResourcePrimKey = name;
+
+			if (_log.isWarnEnabled()) {
+				StringBundler sb = new StringBundler(9);
+
+				sb.append("Using ");
+				sb.append(name);
+				sb.append(" as the primary key instead of the legacy primary ");
+				sb.append("key ");
+				sb.append(primKey);
+				sb.append(" that was used for permission checking of ");
+				sb.append(name);
+				sb.append(" in company ");
+				sb.append(companyId);
+
+				_log.warn(
+					sb.toString(), new IllegalArgumentException(sb.toString()));
+			}
+		}
+
+		if (newIndividualResourcePrimKey != null) {
+			individualResource = resources.get(0);
+
+			if (individualResource.getScope() !=
+				ResourceConstants.SCOPE_INDIVIDUAL) {
+
+				throw new IllegalArgumentException(
+					"The first resource must be an individual scope");
+			}
+
+			individualResource.setPrimKey(name);
+		}
+
 		return resources;
 	}
 
@@ -947,9 +936,6 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 
 			List<Resource> resources = getResources(
 				companyId, groupId, name, primKey, actionId);
-
-			resources = fixMissingResources(
-				companyId, groupId, name, primKey, actionId, resources);
 
 			return ResourceLocalServiceUtil.hasUserPermissions(
 				defaultUserId, groupId, resources, actionId,
