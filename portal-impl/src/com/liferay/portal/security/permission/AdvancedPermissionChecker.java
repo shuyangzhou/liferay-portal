@@ -598,9 +598,6 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 			return value;
 		}
 
-		List<Resource> resources = getResources(
-			companyId, groupId, name, primKey, actionId);
-
 		logHasUserPermission(groupId, name, primKey, actionId, stopWatch, 3);
 
 		// Check if user has access to perform the action on the given resource
@@ -608,7 +605,8 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		// class, then for the group that the class may belong to, and then for
 		// the company that the class belongs to.
 
-		boolean value = hasResourcePermission(resources, roleIds, actionId);
+		boolean value = hasResourcePermission(
+			companyId, groupId, name, primKey, roleIds, actionId);
 
 		logHasUserPermission(groupId, name, primKey, actionId, stopWatch, 4);
 
@@ -729,156 +727,6 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		}
 	}
 
-	/**
-	 * Returns representations of the resource at each scope level.
-	 *
-	 * <p>
-	 * For example, if the class name and primary key of a blog entry were
-	 * passed to this method, it would return a resource for the blog entry
-	 * itself (individual scope), a resource representing all blog entries
-	 * within its group (group scope), a resource standing for all blog entries
-	 * within a group the user has a suitable role in (group-template scope),
-	 * and a resource signifying all blog entries within the company (company
-	 * scope).
-	 * </p>
-	 *
-	 * @param  companyId the primary key of the company
-	 * @param  groupId the primary key of the group containing the resource
-	 * @param  name the resource's name, which can be either a class name or a
-	 *         portlet ID
-	 * @param  primKey the primary key of the resource
-	 * @param  actionId unused
-	 * @return representations of the resource at each scope level
-	 * @throws Exception if an exception occurred
-	 */
-	protected List<Resource> getResources(
-			long companyId, long groupId, String name, String primKey,
-			String actionId)
-		throws Exception {
-
-		// Individual
-
-		List<Resource> resources = new ArrayList<>(4);
-
-		Resource individualResource = ResourceLocalServiceUtil.getResource(
-			companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, primKey);
-
-		resources.add(individualResource);
-
-		// Group
-
-		if (groupId > 0) {
-			Resource groupResource = ResourceLocalServiceUtil.getResource(
-				companyId, name, ResourceConstants.SCOPE_GROUP,
-				String.valueOf(groupId));
-
-			resources.add(groupResource);
-		}
-
-		// Group template
-
-		if (signedIn && (groupId > 0)) {
-			Resource groupTemplateResource =
-				ResourceLocalServiceUtil.getResource(
-					companyId, name, ResourceConstants.SCOPE_GROUP_TEMPLATE,
-					String.valueOf(GroupConstants.DEFAULT_PARENT_GROUP_ID));
-
-			resources.add(groupTemplateResource);
-		}
-
-		// Company
-
-		Resource companyResource = ResourceLocalServiceUtil.getResource(
-			companyId, name, ResourceConstants.SCOPE_COMPANY,
-			String.valueOf(companyId));
-
-		resources.add(companyResource);
-
-		int count =
-			ResourcePermissionLocalServiceUtil.getResourcePermissionsCount(
-				companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, primKey);
-
-		if (count > 0) {
-			return resources;
-		}
-
-		String newIndividualResourcePrimKey = null;
-
-		if (primKey.contains(PortletConstants.LAYOUT_SEPARATOR)) {
-
-			// Using defaults because custom permissions defined for portlet
-			// resource are not defined
-
-			newIndividualResourcePrimKey = name;
-
-			if (_log.isDebugEnabled()) {
-				String message =
-					"Using defaults because custom permissions for " +
-					"portlet resource " + name + " are not defined";
-
-				_log.debug(message, new IllegalArgumentException(message));
-			}
-		}
-
-		else if ((groupId > 0) &&
-				 ResourceActionsUtil.isRootModelResource(name)) {
-
-			// Using defaults because custom permissions defined for root model
-			// resource are not defined
-
-			newIndividualResourcePrimKey = name;
-
-			if (_log.isDebugEnabled()) {
-				String message =
-					"Using defaults because custom permissions for " +
-					"root model resource " + name + " are not defined";
-
-				_log.debug(message, new IllegalArgumentException(message));
-			}
-		}
-
-		else if (primKey.equals("0") ||
-				 primKey.equals(String.valueOf(ResourceConstants.PRIMKEY_DNE))
-				 ||
-				 (primKey.equals(String.valueOf(companyId)) &&
-				  !name.equals(Company.class.getName()))) {
-
-			newIndividualResourcePrimKey = name;
-
-			if (_log.isWarnEnabled()) {
-				StringBundler sb = new StringBundler(9);
-
-				sb.append("Using ");
-				sb.append(name);
-				sb.append(" as the primary key instead of the legacy primary ");
-				sb.append("key ");
-				sb.append(primKey);
-				sb.append(" that was used for permission checking of ");
-				sb.append(name);
-				sb.append(" in company ");
-				sb.append(companyId);
-
-				_log.warn(
-					sb.toString(), new IllegalArgumentException(sb.toString()));
-			}
-		}
-
-		if (newIndividualResourcePrimKey != null) {
-			individualResource = resources.get(0);
-
-			if (individualResource.getScope() !=
-				ResourceConstants.SCOPE_INDIVIDUAL) {
-
-				throw new IllegalArgumentException(
-					"The first resource must be an individual scope");
-			}
-
-			individualResource.setPrimKey(name);
-		}
-
-		return resources;
-	}
-
 	protected boolean hasGuestPermission(
 			long groupId, String name, String primKey, String actionId)
 		throws Exception {
@@ -933,11 +781,9 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 					resourceBlockIdsBag);
 			}
 
-			List<Resource> resources = getResources(
-				companyId, groupId, name, primKey, actionId);
-
 			return hasResourcePermission(
-				resources, getGuestUserRoleIds(), actionId);
+				companyId, groupId, name, primKey, getGuestUserRoleIds(),
+				actionId);
 		}
 		catch (NoSuchResourcePermissionException nsrpe) {
 			throw new IllegalArgumentException(
@@ -1053,7 +899,6 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 	 * com.liferay.portal.model.impl.ResourcePermissionImpl}.
 	 * </p>
 	 *
-	 * @param  resources the resources
 	 * @param  roleIds the primary keys of the roles
 	 * @param  actionId the action ID
 	 * @return <code>true</code> if any one of the roles has permission to
@@ -1061,8 +906,127 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 	 *         <code>false</code> otherwise
 	 */
 	protected boolean hasResourcePermission(
-		List<Resource> resources, long[] roleIds, String actionId)
-		throws PortalException {
+			long companyId, long groupId, String name, String primKey,
+			long[] roleIds, String actionId)
+		throws Exception {
+
+		// Individual
+
+		List<Resource> resources = new ArrayList<>(4);
+
+		Resource individualResource = ResourceLocalServiceUtil.getResource(
+			companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, primKey);
+
+		resources.add(individualResource);
+
+		// Group
+
+		if (groupId > 0) {
+			Resource groupResource = ResourceLocalServiceUtil.getResource(
+				companyId, name, ResourceConstants.SCOPE_GROUP,
+				String.valueOf(groupId));
+
+			resources.add(groupResource);
+		}
+
+		// Group template
+
+		if (signedIn && (groupId > 0)) {
+			Resource groupTemplateResource =
+				ResourceLocalServiceUtil.getResource(
+					companyId, name, ResourceConstants.SCOPE_GROUP_TEMPLATE,
+					String.valueOf(GroupConstants.DEFAULT_PARENT_GROUP_ID));
+
+			resources.add(groupTemplateResource);
+		}
+
+		// Company
+
+		Resource companyResource = ResourceLocalServiceUtil.getResource(
+			companyId, name, ResourceConstants.SCOPE_COMPANY,
+			String.valueOf(companyId));
+
+		resources.add(companyResource);
+
+		int count =
+			ResourcePermissionLocalServiceUtil.getResourcePermissionsCount(
+				companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, primKey);
+
+		if (count <= 0) {
+			String newIndividualResourcePrimKey = null;
+
+			if (primKey.contains(PortletConstants.LAYOUT_SEPARATOR)) {
+
+				// Using defaults because custom permissions defined for portlet
+				// resource are not defined
+
+				newIndividualResourcePrimKey = name;
+
+				if (_log.isDebugEnabled()) {
+					String message =
+						"Using defaults because custom permissions for " +
+						"portlet resource " + name + " are not defined";
+
+					_log.debug(message, new IllegalArgumentException(message));
+				}
+			}
+
+			else if ((groupId > 0) &&
+					 ResourceActionsUtil.isRootModelResource(name)) {
+
+				// Using defaults because custom permissions defined for root model
+				// resource are not defined
+
+				newIndividualResourcePrimKey = name;
+
+				if (_log.isDebugEnabled()) {
+					String message =
+						"Using defaults because custom permissions for " +
+						"root model resource " + name + " are not defined";
+
+					_log.debug(message, new IllegalArgumentException(message));
+				}
+			}
+
+			else if (primKey.equals("0") ||
+					 primKey.equals(String.valueOf(ResourceConstants.PRIMKEY_DNE))
+					 ||
+					 (primKey.equals(String.valueOf(companyId)) &&
+					  !name.equals(Company.class.getName()))) {
+
+				newIndividualResourcePrimKey = name;
+
+				if (_log.isWarnEnabled()) {
+					StringBundler sb1 = new StringBundler(9);
+
+					sb1.append("Using ");
+					sb1.append(name);
+					sb1.append(" as the primary key instead of the legacy primary ");
+					sb1.append("key ");
+					sb1.append(primKey);
+					sb1.append(" that was used for permission checking of ");
+					sb1.append(name);
+					sb1.append(" in company ");
+					sb1.append(companyId);
+
+					_log.warn(
+						sb1.toString(), new IllegalArgumentException(sb1.toString()));
+				}
+			}
+
+			if (newIndividualResourcePrimKey != null) {
+				individualResource = resources.get(0);
+
+				if (individualResource.getScope() !=
+					ResourceConstants.SCOPE_INDIVIDUAL) {
+
+					throw new IllegalArgumentException(
+						"The first resource must be an individual scope");
+				}
+
+				individualResource.setPrimKey(name);
+			}
+		}
 
 		if (roleIds.length == 0) {
 			return false;
@@ -1075,7 +1039,7 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 				"The list of resources must contain at least two values");
 		}
 
-		Resource individualResource = resources.get(0);
+		individualResource = resources.get(0);
 
 		if (individualResource.getScope() !=
 			ResourceConstants.SCOPE_INDIVIDUAL) {
@@ -1084,7 +1048,7 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 				"The first resource must be an individual scope");
 		}
 
-		Resource companyResource = resources.get(size - 1);
+		companyResource = resources.get(size - 1);
 
 		if (companyResource.getScope() != ResourceConstants.SCOPE_COMPANY) {
 			throw new IllegalArgumentException(
