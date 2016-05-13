@@ -90,6 +90,7 @@ import org.osgi.framework.launch.FrameworkFactory;
 import org.osgi.framework.startlevel.BundleStartLevel;
 import org.osgi.framework.startlevel.FrameworkStartLevel;
 import org.osgi.framework.wiring.BundleRevision;
+import org.osgi.framework.wiring.FrameworkWiring;
 import org.osgi.util.tracker.BundleTracker;
 
 import org.springframework.beans.factory.BeanIsAbstractException;
@@ -1113,6 +1114,47 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		if (_log.isDebugEnabled()) {
 			_log.debug("Started initial bundles");
 		}
+
+		BundleContext bundleContext = _framework.getBundleContext();
+
+		Bundle[] installedBundles = bundleContext.getBundles();
+
+		List<String> fragmentHosts = new ArrayList<>();
+
+		for (Bundle bundle : installedBundles) {
+			BundleStartLevel bundleStartLevel = bundle.adapt(
+				BundleStartLevel.class);
+
+			if (bundleStartLevel.getStartLevel() !=
+					PropsValues.MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL) {
+
+				continue;
+			}
+
+			Dictionary<String, String> headers = bundle.getHeaders();
+
+			String fragmentHost = headers.get(Constants.FRAGMENT_HOST);
+
+			if (fragmentHost == null) {
+				continue;
+			}
+
+			fragmentHosts.add(fragmentHost);
+		}
+
+		List<Bundle> refreshBundles = new ArrayList<>();
+
+		for (Bundle bundle : installedBundles) {
+			if (fragmentHosts.contains(bundle.getSymbolicName())) {
+				refreshBundles.add(bundle);
+
+				break;
+			}
+		}
+		FrameworkWiring frameworkWiring = _framework.adapt(
+			FrameworkWiring.class);
+
+		frameworkWiring.refreshBundles(refreshBundles);
 	}
 
 	private void _setUpPrerequisiteFrameworkServices(
