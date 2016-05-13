@@ -159,8 +159,8 @@ portletDisplay.setURLBack(redirect);
 		document.<portlet:namespace />fm.<portlet:namespace />choicesCount.value = '<%= choicesCount + 1 %>';
 
 		<liferay-portlet:renderURL allowEmptyParam="<%= true %>" var="addPollChoiceURL">
-			<liferay-portlet:param name="redirect" value="<%= currentURL %>" />
 			<liferay-portlet:param name="mvcRenderCommandName" value="/polls/edit_question" />
+			<liferay-portlet:param name="redirect" value="<%= currentURL %>" />
 			<liferay-portlet:param name="<%= EditQuestionMVCActionCommand.CHOICE_DESCRIPTION_PREFIX + (char)(96 + choicesCount + 1) %>" value="" />
 		</liferay-portlet:renderURL>
 
@@ -171,7 +171,12 @@ portletDisplay.setURLBack(redirect);
 		document.<portlet:namespace />fm.<portlet:namespace />choicesCount.value = '<%= choicesCount - 1 %>';
 		document.<portlet:namespace />fm.<portlet:namespace />choiceName.value = '<%= choiceName %>';
 
-		submitForm(document.<portlet:namespace />fm);
+		<liferay-portlet:renderURL allowEmptyParam="<%= true %>" var="deletePollChoiceURL">
+			<liferay-portlet:param name="mvcRenderCommandName" value="/polls/edit_question" />
+			<liferay-portlet:param name="redirect" value="<%= currentURL %>" />
+		</liferay-portlet:renderURL>
+
+		submitForm(document.<portlet:namespace />fm, '<%= deletePollChoiceURL %>');
 	}
 
 	function <portlet:namespace />saveQuestion() {

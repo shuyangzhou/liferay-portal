@@ -33,7 +33,7 @@ AssetRenderer<?> assetRenderer = workflowHandler.getAssetRenderer(classPK);
 
 AssetRendererFactory<?> assetRendererFactory = assetRenderer.getAssetRendererFactory();
 
-AssetEntry assetEntry = assetRendererFactory.getAssetEntry(assetRendererFactory.getClassName(), assetRenderer.getClassPK());
+AssetEntry assetEntry = assetRendererFactory.getAssetEntry(workflowHandler.getClassName(), assetRenderer.getClassPK());
 
 String headerTitle = workflowTaskDisplayContext.getHeaderTitle(workflowTask);
 

@@ -75,7 +75,7 @@
 		</c:if>
 
 		<li class="layout-selector-options">
-			<aui:fieldset label="pages-to-export">
+			<aui:fieldset label='<%= "pages-to-" + action %>'>
 
 				<%
 				long selPlid = ParamUtil.getLong(request, "selPlid", LayoutConstants.DEFAULT_PLID);
