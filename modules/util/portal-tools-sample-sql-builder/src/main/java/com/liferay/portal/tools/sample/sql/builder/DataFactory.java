@@ -2965,7 +2965,7 @@ public class DataFactory {
 		layoutSetModel.setCreateDate(new Date());
 		layoutSetModel.setModifiedDate(new Date());
 		layoutSetModel.setPrivateLayout(privateLayout);
-		layoutSetModel.setThemeId("classic");
+		layoutSetModel.setThemeId("classic_WAR_classictheme");
 		layoutSetModel.setColorSchemeId("01");
 		layoutSetModel.setPageCount(pageCount);
 
