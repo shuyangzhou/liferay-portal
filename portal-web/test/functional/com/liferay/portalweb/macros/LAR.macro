@@ -490,8 +490,6 @@
 		<execute macro="LAR#_gotoExportSite">
 			<var name="siteScopeName" value="${siteScopeName}" />
 		</execute>
-
-		<execute function="Click" locator1="SitePagesExport#CUSTOM_EXPORT_BUTTON" />
 	</command>
 
 	<command name="gotoExportTemplateCP">

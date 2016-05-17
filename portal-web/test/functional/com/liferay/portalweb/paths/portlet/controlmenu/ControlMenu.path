@@ -34,21 +34,6 @@
 	<td></td>
 </tr>
 <tr>
-	<td>ADMIN_LOCALIZED</td>
-	<td>//li[@id='_145_adminLinks']/a</td>
-	<td>Admin Drop Down Button</td>
-</tr>
-<tr>
-	<td>MY_SITES</td>
-	<td>//li[@id='_145_mySites']/a</td>
-	<td></td>
-</tr>
-<tr>
-	<td>IMPERSONATE_USER_ICON</td>
-	<td>//li[@id='_145_userAvatar']/a/span[@class='nav-item-label']/b</td>
-	<td></td>
-</tr>
-<tr>
 	<td>HEADER_TITLE</td>
 	<td>//*[@data-qa-id='headerTitle']</td>
 	<td></td>
@@ -56,11 +41,6 @@
 <tr>
 	<td>SIMULATION</td>
 	<td>//*[@data-qa-id='controlMenu']//*[@data-qa-id='simulation']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>TOGGLE_CONTROLS</td>
-	<td>//*[@data-qa-id='controlMenu']//*[@data-qa-id='showControls']</td>
 	<td></td>
 </tr>
 <tr>
@@ -75,80 +55,9 @@
 </tr>
 <!--ADMIN-->
 <tr>
-	<td>ADMIN_SITE_ADMINISTRATION</td>
-	<td>//div[contains(@id,'product_menu')]//a[contains(.,'Site Administration')]</td>
-	<td>Site Administration Navigation</td>
-</tr>
-<tr>
-	<td>ADMIN_SITE_ADMINISTRATION_CATEGORY</td>
-	<td>//div[contains(@id,'product_menu')]//a[contains(.,' ${key_portletCategoryName}')]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>ADMIN_SITE_ADMINISTRATION_NAVIGATION</td>
-	<td>//div[contains(@id,'product_menu')]//a[contains(.,'Navigation')]</td>
-	<td>Pages Navigation</td>
-</tr>
-<tr>
-	<td>ADMIN_SITE_ADMINISTRATION_CONTENT</td>
-	<td>//div[contains(@id,'product_menu')]//a[contains(.,'Content')]</td>
-	<td>Content Navigation</td>
-</tr>
-<tr>
 	<td>ADMIN_SITE_ADMINISTRATION_USERS</td>
 	<td>//div[contains(@id,'product_menu')]//a[contains(.,'Users')]</td>
 	<td>Users Navigation</td>
-</tr>
-<tr>
-	<td>ADMIN_SITE_ADMINISTRATION_CONFIGURATION</td>
-	<td>//div[contains(@id,'product_menu')]//a[contains(.,'Configuration')]</td>
-	<td>Configuration Navigation</td>
-</tr>
-<tr>
-	<td>ADMIN_SITE_ADMINISTRATION_CONFIGURATION_LOCALIZED</td>
-	<td>//div[contains(@id,'product_menu')]//a[contains(.,'${key_localizedPortletCategoryName}')]</td>
-	<td>Configuration Navigation</td>
-</tr>
-<tr>
-	<td>ADMIN_CONTROL_PANEL</td>
-	<td>//div[contains(@id,'product_menu')]//a[contains(.,'Control Panel')]</td>
-	<td>Control Panel Navigation</td>
-</tr>
-<tr>
-	<td>ADMIN_CONTROL_PANEL_LOCALIZED</td>
-	<td>//div[contains(@id,'product_menu')]//a[contains(.,'${key_localizedControlPanel}')]</td>
-	<td>Control Panel Navigation</td>
-</tr>
-<tr>
-	<td></td>
-	<td></td>
-	<td></td>
-</tr>
-<!--MY_SITES-->
-<tr>
-	<td>MY_SITES_PUBLIC_SITE</td>
-	<td>//span[@class='site-name' and contains(.,'${key_siteName}')]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>MY_SITES_PRIVATE_SITE</td>
-	<td>//span[@class='site-name' and contains(.,'${key_siteName}')]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>MY_SITES_SITE_NAME</td>
-	<td>//span[@class='site-name']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>MY_SITES_SITE_NAME_1</td>
-	<td>//span[@class='site-name']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>MY_SITES_SITE_NAME_2</td>
-	<td>//span[@class='site-name' and contains(.,'${key_siteName}')]</td>
-	<td></td>
 </tr>
 </tbody>
 </table>

@@ -879,7 +879,7 @@
 	<command name="attemptImpersonateCP">
 		<execute function="Type" locator1="NavBar#BASIC_SEARCH_FIELD" value1="${userScreenName}" />
 
-		<execute function="AssertClick" locator1="NavBar#BASIC_SEARCH_BUTTON" value1="Search" />
+		<execute function="Click" locator1="Button#SUBMIT" />
 
 		<var name="key_userScreenName" value="${userScreenName}" />
 

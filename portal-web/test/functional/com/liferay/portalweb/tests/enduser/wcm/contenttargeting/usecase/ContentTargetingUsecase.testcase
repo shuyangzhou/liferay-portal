@@ -608,7 +608,7 @@
 		</execute>
 
 		<execute macro="ContentTargetingCampaign#viewContentReportCP">
-			<var name="reportsContentTableList" value="DM Document Title,Document,View,4" />
+			<var name="reportsContentTableList" value="DM Document Title,Document,View,8" />
 			<var name="reportTitle" value="DM Document Title" />
 		</execute>
 	</command>
@@ -1418,7 +1418,7 @@
 			<var name="displayStyle" value="list" />
 		</execute>
 
-		<var method="selenium#getText('//ul/li/div/h5')" name="valueName" />
+		<var method="selenium#getText('//div/span/span/a')" name="valueName" />
 
 		<echo message="value name ${valueName}" />
 
@@ -1488,7 +1488,7 @@
 			<var name="displayStyle" value="list" />
 		</execute>
 
-		<var method="selenium#getText('//ul/li/div/h5')" name="valueName" />
+		<var method="selenium#getText('//div/span/span/a')" name="valueName" />
 
 		<echo message="value name ${valueName}" />
 
@@ -1564,7 +1564,7 @@
 			<var name="displayStyle" value="list" />
 		</execute>
 
-		<var method="selenium#getText('//ul/li/div/h5')" name="valueName" />
+		<var method="selenium#getText('//div/span/span/a')" name="valueName" />
 
 		<echo message="value name ${valueName}" />
 
@@ -1734,7 +1734,7 @@
 			<var name="displayStyle" value="list" />
 		</execute>
 
-		<var method="selenium#getText('//ul/li/div/h5')" name="valueName" />
+		<var method="selenium#getText('//div/span/span/a')" name="valueName" />
 
 		<echo message="value name ${valueName}" />
 
@@ -1882,13 +1882,32 @@
 			<var name="campaignStartTime" value="12:00 AM" />
 		</execute>
 
+		<execute macro="PortletEntry#save" />
+
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Site Name" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesConfiguration">
+			<var name="portlet" value="Audience Targeting" />
+		</execute>
+
+		<execute macro="ContentTargetingCampaign#gotoAddReport">
+			<var name="campaignName" value="Campaign Name" />
+		</execute>
+
+		<execute macro="ContentTargetingCampaign#addReportName">
+			<var name="reportDescription" value="Content Report Description" />
+			<var name="reportName" value="Content Report Name" />
+		</execute>
+
 		<execute macro="ContentTargetingCampaign#addTrackingActionContentCP">
 			<var name="contentAlias" value="Content Alias" />
 			<var name="contentTitle" value="Web Content Title" />
 			<var name="menulistContent" value="Web Content Article" />
 		</execute>
 
-		<execute macro="ContentTargetingCampaign#saveCP" />
+		<execute macro="PortletEntry#save" />
 
 		<execute macro="LAR#gotoExport">
 			<var name="siteScopeName" value="Site Name" />
@@ -1914,7 +1933,7 @@
 			<var name="displayStyle" value="list" />
 		</execute>
 
-		<var method="selenium#getText('//ul/li/div/h5')" name="valueName" />
+		<var method="selenium#getText('//div/span/span/a')" name="valueName" />
 
 		<echo message="value name ${valueName}" />
 
@@ -2233,6 +2252,8 @@
 			<var name="site" value="Site Name" />
 		</execute>
 
+		<execute macro="Navigator#gotoStagedView" />
+
 		<execute macro="ProductMenu#gotoSitesConfiguration">
 			<var name="portlet" value="Audience Targeting" />
 		</execute>
@@ -2242,6 +2263,8 @@
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
 		</execute>
+
+		<execute macro="Navigator#gotoStagedView" />
 
 		<execute macro="ProductMenu#gotoSitesConfiguration">
 			<var name="portlet" value="Audience Targeting" />
@@ -3059,7 +3082,7 @@
 			<var name="userSegmentName" value="Male User Segment" />
 		</execute>
 
-		<execute macro="UserSegmentContentDisplayPortlet#configureOtherwiseContenDisplayRule">
+		<execute macro="UserSegmentContentDisplayPortlet#configureOtherwiseContentDisplayRule">
 			<var name="otherwiseContentTitle" value="WC Title Woman" />
 			<var name="otherwiseContentType" value="Web Content Article" />
 		</execute>
@@ -3265,7 +3288,7 @@
 			<var name="userSegmentName" value="User Segment Name Age,User Segment Name Reg Role" />
 		</execute>
 
-		<execute macro="UserSegmentContentDisplayPortlet#configureOtherwiseContenDisplayRule">
+		<execute macro="UserSegmentContentDisplayPortlet#configureOtherwiseContentDisplayRule">
 			<var name="otherwiseContentTitle" value="Web Content Title Otherwise" />
 			<var name="otherwiseContentType" value="Web Content Article" />
 		</execute>
@@ -3388,7 +3411,7 @@
 			<var name="userSegmentName" value="User Segment Name Age,User Segment Name Reg Role" />
 		</execute>
 
-		<execute macro="UserSegmentContentDisplayPortlet#configureOtherwiseContenDisplayRule">
+		<execute macro="UserSegmentContentDisplayPortlet#configureOtherwiseContentDisplayRule">
 			<var name="otherwiseContentTitle" value="Web Content Title Otherwise" />
 			<var name="otherwiseContentType" value="Web Content Article" />
 		</execute>
@@ -3476,7 +3499,7 @@
 			<var name="userSegmentName" value="User Segment Name" />
 		</execute>
 
-		<execute macro="UserSegmentContentDisplayPortlet#configureOtherwiseContenDisplayRule">
+		<execute macro="UserSegmentContentDisplayPortlet#configureOtherwiseContentDisplayRule">
 			<var name="otherwiseContentTitle" value="DM Document Title 2" />
 			<var name="otherwiseContentType" value="Document" />
 		</execute>
@@ -3625,7 +3648,7 @@
 			<var name="userSegmentName" value="User Segment Name" />
 		</execute>
 
-		<execute macro="UserSegmentContentDisplayPortlet#configureOtherwiseContenDisplayRule">
+		<execute macro="UserSegmentContentDisplayPortlet#configureOtherwiseContentDisplayRule">
 			<var name="otherwiseContentTitle" value="Web Content Title Male" />
 			<var name="otherwiseContentType" value="Web Content Article" />
 		</execute>
@@ -3688,7 +3711,7 @@
 			<var name="siteName" value="Site Name" />
 		</execute>
 
-		<execute macro="UserSegmentContentDisplayPortlet#viewEntryPG">
+		<execute macro="UserSegmentContentDisplayPortlet#viewContentOnly">
 			<var name="entryContentText" value="Web Content Content Female" />
 		</execute>
 	</command>
@@ -3929,7 +3952,7 @@
 			<var name="userSegmentName" value="Male User Segment Name" />
 		</execute>
 
-		<execute macro="UserSegmentContentDisplayPortlet#configureOtherwiseContenDisplayRule">
+		<execute macro="UserSegmentContentDisplayPortlet#configureOtherwiseContentDisplayRule">
 			<var name="otherwiseContentTitle" value="Web Content Title Female" />
 			<var name="otherwiseContentType" value="Web Content Article" />
 		</execute>

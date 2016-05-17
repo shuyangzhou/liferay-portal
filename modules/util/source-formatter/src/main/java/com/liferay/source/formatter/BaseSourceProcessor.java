@@ -87,11 +87,8 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 
 		List<String> fileNames = getFileNames();
 
-		int processorThreadCount = GetterUtil.getInteger(
-			System.getProperty("source.formatter.processor.thread.count"), 5);
-
 		ExecutorService executorService = Executors.newFixedThreadPool(
-			processorThreadCount);
+			sourceFormatterArgs.getProcessorThreadCount());
 
 		List<Future<Void>> futures = new ArrayList<>(fileNames.size());
 
@@ -1959,11 +1956,6 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		_mainReleaseVersion = releaseVersion.substring(0, pos) + ".0";
 
 		return _mainReleaseVersion;
-	}
-
-	protected int getMaxLineLength() {
-		return GetterUtil.getInteger(
-			System.getProperty("source.formatter.max.line.length"), 80);
 	}
 
 	protected List<String> getModuleLangDirNames(

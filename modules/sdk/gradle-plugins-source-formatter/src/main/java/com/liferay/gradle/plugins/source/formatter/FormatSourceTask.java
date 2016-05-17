@@ -68,6 +68,14 @@ public class FormatSourceTask extends JavaExec {
 		return project.files(fileNames);
 	}
 
+	public int getMaxLineLength() {
+		return _sourceFormatterArgs.getMaxLineLength();
+	}
+
+	public int getProcessorThreadCount() {
+		return _sourceFormatterArgs.getProcessorThreadCount();
+	}
+
 	public boolean isAutoFix() {
 		return _sourceFormatterArgs.isAutoFix();
 	}
@@ -124,8 +132,16 @@ public class FormatSourceTask extends JavaExec {
 		_sourceFormatterArgs.setFormatLocalChanges(formatLocalChanges);
 	}
 
+	public void setMaxLineLength(int maxLineLength) {
+		_sourceFormatterArgs.setMaxLineLength(maxLineLength);
+	}
+
 	public void setPrintErrors(boolean printErrors) {
 		_sourceFormatterArgs.setPrintErrors(printErrors);
+	}
+
+	public void setProcessorThreadCount(int processorThreadCount) {
+		_sourceFormatterArgs.setProcessorThreadCount(processorThreadCount);
 	}
 
 	public void setThrowException(boolean throwException) {
@@ -142,6 +158,8 @@ public class FormatSourceTask extends JavaExec {
 		args.add("format.current.branch=" + isFormatCurrentBranch());
 		args.add("format.latest.author=" + isFormatLatestAuthor());
 		args.add("format.local.changes=" + isFormatLocalChanges());
+		args.add("max.line.length=" + getMaxLineLength());
+		args.add("processor.thread.count=" + getProcessorThreadCount());
 		args.add("source.auto.fix=" + isAutoFix());
 		args.add(
 			"source.copyright.file=" +

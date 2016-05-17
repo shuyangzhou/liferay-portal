@@ -174,7 +174,7 @@
 <!--CONTROL_PANEL_SITES_SITES_RESOURCE_PERMISSIONS-->
 <tr>
 	<td>CONTROL_PANEL_SITES_SITES_RESOURCE_PERMISSIONS_SITE_MANAGE_PAGES_CHECKBOX</td>
-	<td>//input[contains(@value,'GroupMANAGE_LAYOUTS')]</td>
+	<td>//input[contains(@value,'GroupMANAGE_LAYOUTS') and contains(@title,'Select')] </td>
 	<td></td>
 </tr>
 <tr>
@@ -184,7 +184,7 @@
 </tr>
 <tr>
 	<td>CONTROL_PANEL_SITES_SITES_RESOURCE_PERMISSIONS_SITE_VIEW_CHECKBOX</td>
-	<td>//input[contains(@value,'GroupVIEW')]</td>
+	<td>//input[contains(@value,'GroupVIEW') and contains(@title,'Select')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -251,7 +251,7 @@
 </tr>
 <tr>
 	<td>SITE_ADMIN_PAGES_SITE_PAGES_RESOURCE_PERMISSIONS_SITE_MANAGE_SUBSITES_CHECKBOX</td>
-	<td>//input[contains(@value,'GroupMANAGE_SUBGROUPS')]</td>
+	<td>//input[contains(@value,'GroupMANAGE_SUBGROUPS') and contains(@title,'Select')]</td>
 	<td></td>
 </tr>
 <tr>

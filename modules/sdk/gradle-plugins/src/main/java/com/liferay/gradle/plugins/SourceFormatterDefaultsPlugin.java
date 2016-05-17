@@ -14,13 +14,66 @@
 
 package com.liferay.gradle.plugins;
 
+import com.liferay.gradle.plugins.source.formatter.FormatSourceTask;
 import com.liferay.gradle.plugins.source.formatter.SourceFormatterPlugin;
+import com.liferay.gradle.plugins.util.GradleUtil;
+import com.liferay.gradle.util.Validator;
+
+import org.gradle.api.Action;
+import org.gradle.api.Project;
+import org.gradle.api.tasks.TaskContainer;
 
 /**
  * @author Andrea Di Giorgi
+ * @author Hugo Huijser
  */
 public class SourceFormatterDefaultsPlugin
 	extends BasePortalToolDefaultsPlugin<SourceFormatterPlugin> {
+
+	@Override
+	protected void configureDefaults(
+		Project project, SourceFormatterPlugin sourceFormatterPlugin) {
+
+		super.configureDefaults(project, sourceFormatterPlugin);
+
+		configureTasksFormatSource(project);
+	}
+
+	protected void configureTasksFormatSource(
+		FormatSourceTask formatSourceTask) {
+
+		String maxLineLength = GradleUtil.getProperty(
+			formatSourceTask.getProject(), "source.formatter.max.line.length",
+			(String)null);
+
+		if (Validator.isNotNull(maxLineLength)) {
+			formatSourceTask.setMaxLineLength(Integer.parseInt(maxLineLength));
+		}
+
+		String processorThreadCount = GradleUtil.getProperty(
+			formatSourceTask.getProject(),
+			"source.formatter.processor.thread.count", (String)null);
+
+		if (Validator.isNotNull(processorThreadCount)) {
+			formatSourceTask.setProcessorThreadCount(
+				Integer.parseInt(processorThreadCount));
+		}
+	}
+
+	protected void configureTasksFormatSource(Project project) {
+		TaskContainer taskContainer = project.getTasks();
+
+		taskContainer.withType(
+			FormatSourceTask.class,
+			new Action<FormatSourceTask>() {
+
+				@Override
+				public void execute(FormatSourceTask formatSourceTask) {
+					configureTasksFormatSource(formatSourceTask);
+				}
+
+			});
+	}
 
 	@Override
 	protected Class<SourceFormatterPlugin> getPluginClass() {

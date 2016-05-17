@@ -100,11 +100,23 @@ public class SourceFormatter {
 				sourceFormatterArgs.setFileNames(Arrays.asList(fileNames));
 			}
 
+			int maxLineLength = GetterUtil.getInteger(
+				arguments.get("max.line.length"),
+				SourceFormatterArgs.MAX_LINE_LENGTH);
+
+			sourceFormatterArgs.setMaxLineLength(maxLineLength);
+
 			boolean printErrors = GetterUtil.getBoolean(
 				arguments.get("source.print.errors"),
 				SourceFormatterArgs.PRINT_ERRORS);
 
 			sourceFormatterArgs.setPrintErrors(printErrors);
+
+			int processorThreadCount = GetterUtil.getInteger(
+				arguments.get("processor.thread.count"),
+				SourceFormatterArgs.PROCESSOR_THREAD_COUNT);
+
+			sourceFormatterArgs.setProcessorThreadCount(processorThreadCount);
 
 			boolean throwException = GetterUtil.getBoolean(
 				arguments.get("source.throw.exception"),
