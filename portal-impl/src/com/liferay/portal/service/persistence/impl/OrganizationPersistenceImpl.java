@@ -44,7 +44,9 @@ import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapper;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapperFactory;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CharPool;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -7576,10 +7578,7 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 			companyId = organization.getCompanyId();
 		}
 
-		for (long groupPK : groupPKs) {
-			organizationToGroupTableMapper.addTableMapping(companyId, pk,
-				groupPK);
-		}
+		organizationToGroupTableMapper.addTableMappings(companyId, pk, groupPKs);
 	}
 
 	/**
@@ -7591,21 +7590,9 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	@Override
 	public void addGroups(long pk,
 		List<com.liferay.portal.kernel.model.Group> groups) {
-		long companyId = 0;
-
-		Organization organization = fetchByPrimaryKey(pk);
-
-		if (organization == null) {
-			companyId = companyProvider.getCompanyId();
-		}
-		else {
-			companyId = organization.getCompanyId();
-		}
-
-		for (com.liferay.portal.kernel.model.Group group : groups) {
-			organizationToGroupTableMapper.addTableMapping(companyId, pk,
-				group.getPrimaryKey());
-		}
+		addGroups(pk,
+			ListUtil.toLongArray(groups,
+				com.liferay.portal.kernel.model.Group.GROUP_ID_ACCESSOR));
 	}
 
 	/**
@@ -7649,9 +7636,7 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 */
 	@Override
 	public void removeGroups(long pk, long[] groupPKs) {
-		for (long groupPK : groupPKs) {
-			organizationToGroupTableMapper.deleteTableMapping(pk, groupPK);
-		}
+		organizationToGroupTableMapper.deleteTableMappings(pk, groupPKs);
 	}
 
 	/**
@@ -7663,10 +7648,9 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	@Override
 	public void removeGroups(long pk,
 		List<com.liferay.portal.kernel.model.Group> groups) {
-		for (com.liferay.portal.kernel.model.Group group : groups) {
-			organizationToGroupTableMapper.deleteTableMapping(pk,
-				group.getPrimaryKey());
-		}
+		removeGroups(pk,
+			ListUtil.toLongArray(groups,
+				com.liferay.portal.kernel.model.Group.GROUP_ID_ACCESSOR));
 	}
 
 	/**
@@ -7685,9 +7669,8 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 
 		removeGroupPKsSet.removeAll(newGroupPKsSet);
 
-		for (long removeGroupPK : removeGroupPKsSet) {
-			organizationToGroupTableMapper.deleteTableMapping(pk, removeGroupPK);
-		}
+		organizationToGroupTableMapper.deleteTableMappings(pk,
+			ArrayUtil.toLongArray(removeGroupPKsSet));
 
 		newGroupPKsSet.removeAll(oldGroupPKsSet);
 
@@ -7702,10 +7685,8 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 			companyId = organization.getCompanyId();
 		}
 
-		for (long newGroupPK : newGroupPKsSet) {
-			organizationToGroupTableMapper.addTableMapping(companyId, pk,
-				newGroupPK);
-		}
+		organizationToGroupTableMapper.addTableMappings(companyId, pk,
+			ArrayUtil.toLongArray(newGroupPKsSet));
 	}
 
 	/**
@@ -7896,9 +7877,7 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 			companyId = organization.getCompanyId();
 		}
 
-		for (long userPK : userPKs) {
-			organizationToUserTableMapper.addTableMapping(companyId, pk, userPK);
-		}
+		organizationToUserTableMapper.addTableMappings(companyId, pk, userPKs);
 	}
 
 	/**
@@ -7910,21 +7889,9 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	@Override
 	public void addUsers(long pk,
 		List<com.liferay.portal.kernel.model.User> users) {
-		long companyId = 0;
-
-		Organization organization = fetchByPrimaryKey(pk);
-
-		if (organization == null) {
-			companyId = companyProvider.getCompanyId();
-		}
-		else {
-			companyId = organization.getCompanyId();
-		}
-
-		for (com.liferay.portal.kernel.model.User user : users) {
-			organizationToUserTableMapper.addTableMapping(companyId, pk,
-				user.getPrimaryKey());
-		}
+		addUsers(pk,
+			ListUtil.toLongArray(users,
+				com.liferay.portal.kernel.model.User.USER_ID_ACCESSOR));
 	}
 
 	/**
@@ -7968,9 +7935,7 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	 */
 	@Override
 	public void removeUsers(long pk, long[] userPKs) {
-		for (long userPK : userPKs) {
-			organizationToUserTableMapper.deleteTableMapping(pk, userPK);
-		}
+		organizationToUserTableMapper.deleteTableMappings(pk, userPKs);
 	}
 
 	/**
@@ -7982,10 +7947,9 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	@Override
 	public void removeUsers(long pk,
 		List<com.liferay.portal.kernel.model.User> users) {
-		for (com.liferay.portal.kernel.model.User user : users) {
-			organizationToUserTableMapper.deleteTableMapping(pk,
-				user.getPrimaryKey());
-		}
+		removeUsers(pk,
+			ListUtil.toLongArray(users,
+				com.liferay.portal.kernel.model.User.USER_ID_ACCESSOR));
 	}
 
 	/**
@@ -8004,9 +7968,8 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 
 		removeUserPKsSet.removeAll(newUserPKsSet);
 
-		for (long removeUserPK : removeUserPKsSet) {
-			organizationToUserTableMapper.deleteTableMapping(pk, removeUserPK);
-		}
+		organizationToUserTableMapper.deleteTableMappings(pk,
+			ArrayUtil.toLongArray(removeUserPKsSet));
 
 		newUserPKsSet.removeAll(oldUserPKsSet);
 
@@ -8021,10 +7984,8 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 			companyId = organization.getCompanyId();
 		}
 
-		for (long newUserPK : newUserPKsSet) {
-			organizationToUserTableMapper.addTableMapping(companyId, pk,
-				newUserPK);
-		}
+		organizationToUserTableMapper.addTableMappings(companyId, pk,
+			ArrayUtil.toLongArray(newUserPKsSet));
 	}
 
 	/**

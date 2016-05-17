@@ -102,8 +102,7 @@ public class WarArtifactUrlTransformer implements ArtifactUrlTransformer {
 	private String _readServletContextName(File file) throws IOException {
 		try (ZipFile zipFile = new ZipFile(file);
 			InputStream inputStream = zipFile.getInputStream(
-				new ZipEntry(
-					"WEB-INF/liferay-plugin-package.properties"))) {
+				new ZipEntry("WEB-INF/liferay-plugin-package.properties"))) {
 
 			Properties properties = new Properties();
 

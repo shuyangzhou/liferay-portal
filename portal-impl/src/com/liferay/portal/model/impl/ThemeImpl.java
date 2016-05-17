@@ -142,14 +142,16 @@ public class ThemeImpl extends PluginBaseImpl implements Theme {
 
 		String servletContextName = getServletContextName();
 
-		String portalPathContext = PortalUtil.getPathContext();
-
 		if (ServletContextPool.containsKey(servletContextName)) {
 			ServletContext servletContext = ServletContextPool.get(
 				servletContextName);
 
-			return portalPathContext.concat(servletContext.getContextPath());
+			String proxyPath = PortalUtil.getPathProxy();
+
+			return proxyPath.concat(servletContext.getContextPath());
 		}
+
+		String portalPathContext = PortalUtil.getPathContext();
 
 		return portalPathContext.concat(
 			StringPool.SLASH.concat(servletContextName));

@@ -393,12 +393,12 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 	@Override
 	public void shutdown() throws SchedulerException {
 		try {
-			if (!_persistedScheduler.isShutdown()) {
-				_persistedScheduler.shutdown(false);
+			if (!_persistedScheduler.isInStandbyMode()) {
+				_persistedScheduler.standby();
 			}
 
-			if (!_memoryScheduler.isShutdown()) {
-				_memoryScheduler.shutdown(false);
+			if (!_memoryScheduler.isInStandbyMode()) {
+				_memoryScheduler.standby();
 			}
 		}
 		catch (Exception e) {
@@ -534,11 +534,17 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		}
 
 		try {
-			shutdown();
+			if (!_persistedScheduler.isShutdown()) {
+				_persistedScheduler.shutdown(false);
+			}
+
+			if (!_memoryScheduler.isShutdown()) {
+				_memoryScheduler.shutdown(false);
+			}
 		}
-		catch (SchedulerException se) {
+		catch (Exception e) {
 			if (_log.isWarnEnabled()) {
-				_log.warn("Unable to shutdown", se);
+				_log.warn("Unable to deactivate scheduler", e);
 			}
 		}
 	}

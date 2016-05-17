@@ -1345,9 +1345,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 						companyId = ${entity.varName}.getCompanyId();
 					}
 
-					for (${tempEntity.PKClassName} ${tempEntity.varName}PK : ${tempEntity.varName}PKs) {
-						${entity.varName}To${tempEntity.name}TableMapper.addTableMapping(companyId, pk, ${tempEntity.varName}PK);
-					}
+					${entity.varName}To${tempEntity.name}TableMapper.addTableMappings(companyId, pk, ${tempEntity.varName}PKs);
 				}
 
 				/**
@@ -1358,20 +1356,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				 */
 				@Override
 				public void add${tempEntity.names}(${entity.PKClassName} pk, List<${tempEntity.apiPackagePath}.model.${tempEntity.name}> ${tempEntity.varNames}) {
-					long companyId = 0;
-
-					${entity.name} ${entity.varName} = fetchByPrimaryKey(pk);
-
-					if (${entity.varName} == null) {
-						companyId = companyProvider.getCompanyId();
-					}
-					else {
-						companyId = ${entity.varName}.getCompanyId();
-					}
-
-					for (${tempEntity.apiPackagePath}.model.${tempEntity.name} ${tempEntity.varName} : ${tempEntity.varNames}) {
-						${entity.varName}To${tempEntity.name}TableMapper.addTableMapping(companyId, pk, ${tempEntity.varName}.getPrimaryKey());
-					}
+					add${tempEntity.names}(pk, ListUtil.toLongArray(${tempEntity.varNames}, ${tempEntity.apiPackagePath}.model.${tempEntity.name}.${textFormatter.format(textFormatter.format(tempEntity.getPKVarName(), 7), 0)}_ACCESSOR));
 				}
 
 				/**
@@ -1414,9 +1399,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				 */
 				@Override
 				public void remove${tempEntity.names}(${entity.PKClassName} pk, ${tempEntity.PKClassName}[] ${tempEntity.varName}PKs) {
-					for (${tempEntity.PKClassName} ${tempEntity.varName}PK : ${tempEntity.varName}PKs) {
-						${entity.varName}To${tempEntity.name}TableMapper.deleteTableMapping(pk, ${tempEntity.varName}PK);
-					}
+					${entity.varName}To${tempEntity.name}TableMapper.deleteTableMappings(pk, ${tempEntity.varName}PKs);
 				}
 
 				/**
@@ -1427,9 +1410,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				 */
 				@Override
 				public void remove${tempEntity.names}(${entity.PKClassName} pk, List<${tempEntity.apiPackagePath}.model.${tempEntity.name}> ${tempEntity.varNames}) {
-					for (${tempEntity.apiPackagePath}.model.${tempEntity.name} ${tempEntity.varName} : ${tempEntity.varNames}) {
-						${entity.varName}To${tempEntity.name}TableMapper.deleteTableMapping(pk, ${tempEntity.varName}.getPrimaryKey());
-					}
+					remove${tempEntity.names}(pk, ListUtil.toLongArray(${tempEntity.varNames}, ${tempEntity.apiPackagePath}.model.${tempEntity.name}.${textFormatter.format(textFormatter.format(tempEntity.getPKVarName(), 7), 0)}_ACCESSOR));
 				}
 
 				/**
@@ -1447,9 +1428,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 
 					remove${tempEntity.name}PKsSet.removeAll(new${tempEntity.name}PKsSet);
 
-					for (long remove${tempEntity.name}PK : remove${tempEntity.name}PKsSet) {
-						${entity.varName}To${tempEntity.name}TableMapper.deleteTableMapping(pk, remove${tempEntity.name}PK);
-					}
+					${entity.varName}To${tempEntity.name}TableMapper.deleteTableMappings(pk, ArrayUtil.toLongArray(remove${tempEntity.name}PKsSet));
 
 					new${tempEntity.name}PKsSet.removeAll(old${tempEntity.name}PKsSet);
 
@@ -1464,9 +1443,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 						companyId = ${entity.varName}.getCompanyId();
 					}
 
-					for (long new${tempEntity.name}PK :new${tempEntity.name}PKsSet) {
-						${entity.varName}To${tempEntity.name}TableMapper.addTableMapping(companyId, pk, new${tempEntity.name}PK);
-					}
+					${entity.varName}To${tempEntity.name}TableMapper.addTableMappings(companyId, pk, ArrayUtil.toLongArray(new${tempEntity.name}PKsSet));
 				}
 
 				/**

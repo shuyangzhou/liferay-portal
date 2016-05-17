@@ -3977,7 +3977,7 @@
 			<var name="configureUserSegmentNotMatched" value="Male User Segment Name" />
 		</execute>
 
-		<execute macro="UserSegmentContentDisplayPortlet#viewEntryPG">
+		<execute macro="UserSegmentContentDisplayPortlet#viewContentOnly">
 			<var name="entryContentText" value="Web Content Content Female" />
 		</execute>
 	</command>
