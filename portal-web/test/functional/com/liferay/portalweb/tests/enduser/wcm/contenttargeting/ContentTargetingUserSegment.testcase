@@ -1322,12 +1322,12 @@
 		</execute>
 
 		<execute macro="ContentTargetingUserSegment#viewReportContentViews">
-			<var name="reportsContentTableList" value="Test Page Name,Page,View,10" />
+			<var name="reportsContentTableList" value="Test Page Name,Page,View,12" />
 			<var name="reportTitle" value="Test Page Name" />
 		</execute>
 
 		<execute macro="ContentTargetingUserSegment#viewReportContentViews">
-			<var name="reportsContentTableList" value="WC Male View Title,Web Content Article,View,2" />
+			<var name="reportsContentTableList" value="WC Male View Title,Web Content Article,View,6" />
 			<var name="reportTitle" value="WC Male View Title" />
 		</execute>
 	</command>
@@ -1432,7 +1432,7 @@
 			<var name="viewEntryPG" value="Female Users" />
 		</execute>
 
-		<execute macro="UserSegmentContentDisplayPortlet#configureOtherwiseContenDisplayRule">
+		<execute macro="UserSegmentContentDisplayPortlet#configureOtherwiseContentDisplayRule">
 			<var name="otherwiseContentTitle" value="Targeted Web Content Title 2" />
 			<var name="otherwiseContentType" value="Web Content Article" />
 		</execute>

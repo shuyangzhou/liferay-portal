@@ -107,8 +107,22 @@ public class FormatSourceMojo extends AbstractMojo {
 	/**
 	 * @parameter
 	 */
+	public void setMaxLineLength(int maxLineLength) {
+		_sourceFormatterArgs.setMaxLineLength(maxLineLength);
+	}
+
+	/**
+	 * @parameter
+	 */
 	public void setPrintErrors(boolean printErrors) {
 		_sourceFormatterArgs.setPrintErrors(printErrors);
+	}
+
+	/**
+	 * @parameter
+	 */
+	public void setProcessorThreadCount(int processorThreadCount) {
+		_sourceFormatterArgs.setProcessorThreadCount(processorThreadCount);
 	}
 
 	/**

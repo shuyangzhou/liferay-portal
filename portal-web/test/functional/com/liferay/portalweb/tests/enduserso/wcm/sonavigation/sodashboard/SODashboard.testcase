@@ -24,8 +24,10 @@
 	<command name="GoBackToSODashboardFromControlPanel" priority="4">
 		<execute macro="SOUserBar#gotoDashboardPG" />
 
-		<execute function="AssertClick#assertTextClickAtClickDockbar" locator1="ControlMenu#ADMIN" value1="Admin" />
-		<execute function="AssertClick" locator1="ControlMenu#ADMIN_CONTROL_PANEL" value1="Control Panel" />
+		<execute macro="ProductMenu#gotoControlPanelApps">
+			<var name="portlet" value="App Manager" />
+		</execute>
+
 		<execute function="Click" locator1="//a[@title='Back']" />
 
 		<execute function="AssertTextEquals" locator1="SODashboard#NAVIGATION_DASHBOARD" value1="Dashboard" />

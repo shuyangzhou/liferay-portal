@@ -85,7 +85,7 @@
 			<var name="userSegmentRule" value="Facebook Education" />
 		</execute>
 
-		<execute function="Select" locator1="EditUserSegment#USER_SEGMENT_RULE_SOCIAL_FACEBOOK_EDUCATION_LEVEL_SELECT" value1="${facebookEducationLevel}" />
+		<execute function="Select#selectByClick" locator1="EditUserSegment#USER_SEGMENT_RULE_SOCIAL_FACEBOOK_EDUCATION_LEVEL_SELECT" value1="${facebookEducationLevel}" />
 		<execute function="Type" locator1="EditUserSegment#USER_SEGMENT_RULE_SOCIAL_FACEBOOK_EDUCATION_COLLEGE_HIGH_SCHOOL_NAME_FIELD" value1="${facebookCollegeHighSchoolName}" />
 	</command>
 
@@ -94,7 +94,7 @@
 			<var name="userSegmentRule" value="Facebook Friends" />
 		</execute>
 
-		<execute function="Select" locator1="EditUserSegment#USER_SEGMENT_RULE_SOCIAL_FACEBOOK_FRIENDS_MORE_LESS_THAN_SELECT" value1="${moreLessThan}" />
+		<execute function="Select#selectByClick" locator1="EditUserSegment#USER_SEGMENT_RULE_SOCIAL_FACEBOOK_FRIENDS_MORE_LESS_THAN_SELECT" value1="${moreLessThan}" />
 		<execute function="Type" locator1="EditUserSegment#USER_SEGMENT_RULE_SOCIAL_FACEBOOK_FRIENDS_FIELD" value1="${numberOfFriends}" />
 	</command>
 
@@ -136,7 +136,7 @@
 			<var name="userSegmentRule" value="Browser" />
 		</execute>
 
-		<execute function="Select" locator1="EditUserSegment#USER_SEGMENT_RULE_SESSION_ATTRIBUTES_BROWSER_SELECT" value1="${browserName}" />
+		<execute function="Select#selectByClick" locator1="EditUserSegment#USER_SEGMENT_RULE_SESSION_ATTRIBUTES_BROWSER_SELECT" value1="${browserName}" />
 	</command>
 
 	<command name="addSystemAttributesDeviceRuleCP">
@@ -144,7 +144,7 @@
 			<var name="userSegmentRule" value="Device" />
 		</execute>
 
-		<execute function="Select" locator1="EditUserSegment#USER_SEGMENT_RULE_SESSION_ATTRIBUTES_DEVICE_SELECT" value1="${deviceFamilyName}" />
+		<execute function="Select#selectByClick" locator1="EditUserSegment#USER_SEGMENT_RULE_SESSION_ATTRIBUTES_DEVICE_SELECT" value1="${deviceFamilyName}" />
 	</command>
 
 	<command name="addSystemAttributesLocationRuleCP">
@@ -152,8 +152,8 @@
 			<var name="userSegmentRule" value="Location" />
 		</execute>
 
-		<execute function="Select" locator1="EditUserSegment#USER_SEGMENT_RULE_SESSION_ATTRIBUTES_LOCATION_COUNTRY_SELECT" value1="${countryName}" />
-		<execute function="Select" locator1="EditUserSegment#USER_SEGMENT_RULE_SESSION_ATTRIBUTES_LOCATION_REGION_SELECT" value1="${regionName}" />
+		<execute function="Select#selectByClick" locator1="EditUserSegment#USER_SEGMENT_RULE_SESSION_ATTRIBUTES_LOCATION_COUNTRY_SELECT" value1="${countryName}" />
+		<execute function="Select#selectByClick" locator1="EditUserSegment#USER_SEGMENT_RULE_SESSION_ATTRIBUTES_LOCATION_REGION_SELECT" value1="${regionName}" />
 	</command>
 
 	<command name="addSystemAttributesOperatingSystemRuleCP">
@@ -161,7 +161,7 @@
 			<var name="userSegmentRule" value="Operating System" />
 		</execute>
 
-		<execute function="Select" locator1="EditUserSegment#USER_SEGMENT_RULE_SESSION_ATTRIBUTES_OPERATING_SYSTEM_SELECT" value1="${operatingSystemName}" />
+		<execute function="Select#selectByClick" locator1="EditUserSegment#USER_SEGMENT_RULE_SESSION_ATTRIBUTES_OPERATING_SYSTEM_SELECT" value1="${operatingSystemName}" />
 	</command>
 
 	<command name="addSystemAttributesTimeRuleCP">
@@ -206,7 +206,7 @@
 			<var name="userSegmentRule" value="Organization Member" />
 		</execute>
 
-		<execute function="Select" locator1="EditUserSegment#USER_SEGMENT_RULE_USER_ATTRIBUTES_ORGANIZATION_MEMBER_SELECT" value1="${organizationName}" />
+		<execute function="Select#selectByClick" locator1="EditUserSegment#USER_SEGMENT_RULE_USER_ATTRIBUTES_ORGANIZATION_MEMBER_SELECT" value1="${organizationName}" />
 	</command>
 
 	<command name="addUserAttributesOrganizationRoleRuleCP">
@@ -214,8 +214,8 @@
 			<var name="userSegmentRule" value="Organization Role" />
 		</execute>
 
-		<execute function="Select" locator1="EditUserSegment#USER_SEGMENT_RULE_USER_ATTRIBUTES_ORGANIZATION_ORGANIZATION_SELECT" value1="${organizationName}" />
-		<execute function="Select" locator1="EditUserSegment#USER_SEGMENT_RULE_USER_ATTRIBUTES_ORGANIZATION_ROLE_SELECT" value1="${organizationRole}" />
+		<execute function="Select#selectByClick" locator1="EditUserSegment#USER_SEGMENT_RULE_USER_ATTRIBUTES_ORGANIZATION_ORGANIZATION_SELECT" value1="${organizationName}" />
+		<execute function="Select#selectByClick" locator1="EditUserSegment#USER_SEGMENT_RULE_USER_ATTRIBUTES_ORGANIZATION_ROLE_SELECT" value1="${organizationRole}" />
 	</command>
 
 	<command name="addUserAttributesRegularRoleRuleCP">
@@ -227,7 +227,7 @@
 
 		<execute function="AssertSelectedLabel" locator1="EditUserSegment#USER_SEGMENT_RULE_USER_ATTRIBUTES_DEFAULT_REGULAR_ROLE" value1="Administrator" />
 
-		<execute function="Select" locator1="EditUserSegment#USER_SEGMENT_RULE_USER_ATTRIBUTES_REGULAR_ROLE_SELECT" value1="${regularRole}" />
+		<execute function="Select#selectByClick" locator1="EditUserSegment#USER_SEGMENT_RULE_USER_ATTRIBUTES_REGULAR_ROLE_SELECT" value1="${regularRole}" />
 	</command>
 
 	<command name="addUserAttributesSiteMemberRuleCP">
@@ -237,7 +237,7 @@
 
 		<var name="key_selectSiteMemberSite" value="${selectSiteMemberSite}" />
 
-		<execute function="Select" locator1="EditUserSegment#USER_SEGMENT_RULE_USER_ATTRIBUTES_SITE_MEMBER_SELECT" value1="${selectSiteMemberSite}" />
+		<execute function="Select#selectByClick" locator1="EditUserSegment#USER_SEGMENT_RULE_USER_ATTRIBUTES_SITE_MEMBER_SELECT" value1="${selectSiteMemberSite}" />
 	</command>
 
 	<command name="addUserAttributesSiteRoleRuleCP">
@@ -245,8 +245,8 @@
 			<var name="userSegmentRule" value="Site Role" />
 		</execute>
 
-		<execute function="Select" locator1="EditUserSegment#USER_SEGMENT_RULE_USER_ATTRIBUTES_SITE_ROLE_SITE_ROLE_SELECT" value1="${siteRole}" />
-		<execute function="Select" locator1="EditUserSegment#USER_SEGMENT_RULE_USER_ATTRIBUTES_SITE_ROLE_SITE_SELECT" value1="${siteRoleSite}" />
+		<execute function="Select#selectByClick" locator1="EditUserSegment#USER_SEGMENT_RULE_USER_ATTRIBUTES_SITE_ROLE_SITE_ROLE_SELECT" value1="${siteRole}" />
+		<execute function="Select#selectByClick" locator1="EditUserSegment#USER_SEGMENT_RULE_USER_ATTRIBUTES_SITE_ROLE_SITE_SELECT" value1="${siteRoleSite}" />
 	</command>
 
 	<command name="addUserAttributesUserGroupMemberRuleCP">
@@ -254,7 +254,7 @@
 			<var name="userSegmentRule" value="User Group Member" />
 		</execute>
 
-		<execute function="Select" locator1="EditUserSegment#USER_SEGMENT_RULE_USER_ATTRIBUTES_USERGROUP_MEMBER_SELECT" value1="${userGroupName}" />
+		<execute function="Select#selectByClick" locator1="EditUserSegment#USER_SEGMENT_RULE_USER_ATTRIBUTES_USERGROUP_MEMBER_SELECT" value1="${userGroupName}" />
 	</command>
 
 	<command name="addUserAttributesUserSignedInRuleCP">
@@ -334,7 +334,7 @@
 
 	<command name="gotoViewReport">
 		<execute macro="LexiconEntry#gotoEntry">
-			<var name="key_rowEntry" value="${userSegmentName}" />
+			<var name="rowEntry" value="${userSegmentName}" />
 		</execute>
 
 		<execute macro="Navigator#gotoNavItem">
@@ -404,6 +404,7 @@
 
 		<for list="${reportsContentTableList}" param="contentReports">
 			<var name="key_contentReports" value="${contentReports}" />
+			<var name="key_reportTitle" value="${reportTitle}" />
 
 			<execute function="AssertTextEquals" locator1="ContentTargeting#REPORT_TABLE_CONTENT" value1="${contentReports}" />
 		</for>
@@ -604,7 +605,7 @@
 				<elseif>
 					<equals arg1="${usersegmentRuleName}" arg2="Device" />
 					<then>
-						<execute function="Select" locator1="EditUserSegment#USER_SEGMENT_RULE_SESSION_ATTRIBUTES_DEVICE_SELECT" value1="${deviceFamilyName}" />
+						<execute function="Select#selectByClick" locator1="EditUserSegment#USER_SEGMENT_RULE_SESSION_ATTRIBUTES_DEVICE_SELECT" value1="${deviceFamilyName}" />
 					</then>
 				</elseif>
 			</if>

@@ -604,7 +604,7 @@ public class PropertiesSourceProcessor extends BaseSourceProcessor {
 
 	@Override
 	protected void preFormat() throws Exception {
-		_maxLineLength = getMaxLineLength();
+		_maxLineLength = sourceFormatterArgs.getMaxLineLength();
 	}
 
 	protected void removeDuplicateKeys(String fileName, Set<String> lines)

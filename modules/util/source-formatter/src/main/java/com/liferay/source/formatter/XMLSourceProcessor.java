@@ -339,9 +339,15 @@ public class XMLSourceProcessor extends BaseSourceProcessor {
 			"antcall", rootElement, null);
 
 		for (Element antCallElement : antCallElements) {
-			checkTargetName(
-				antCallElement.attributeValue("target"), absolutePath,
-				fileName);
+			String targetName = antCallElement.attributeValue("target");
+
+			if ((targetName == null) ||
+				targetName.contains(StringPool.OPEN_CURLY_BRACE)) {
+
+				continue;
+			}
+
+			checkTargetName(targetName, absolutePath, fileName);
 		}
 
 		String fileDirName = fileName.substring(
@@ -870,8 +876,23 @@ public class XMLSourceProcessor extends BaseSourceProcessor {
 		checkPoshiCharactersAfterDefinition(fileName, content);
 		checkPoshiCharactersBeforeDefinition(fileName, content);
 
-		content = sortPoshiCommands(content);
+		try {
+			Document document = readXML(content);
 
+			Element rootElement = document.getRootElement();
+
+			List<Element> commandElements = rootElement.elements("command");
+
+			for (Element commandElement : commandElements) {
+				checkOrder(
+					fileName, commandElement, "property", null,
+					new ElementComparator());
+			}
+		}
+		catch (Exception e) {
+		}
+
+		content = sortPoshiCommands(content);
 		content = sortPoshiVariables(content);
 
 		content = fixPoshiXMLElementWithNoChild(content);

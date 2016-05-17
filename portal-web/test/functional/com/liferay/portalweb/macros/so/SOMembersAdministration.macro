@@ -296,8 +296,9 @@
 					<var name="siteName" value="${siteName}" />
 				</execute>
 
-				<execute function="AssertClick#assertTextClickAtClickDockbar" locator1="ControlMenu#ADMIN" value1="Admin" />
-				<execute function="AssertClick" locator1="ControlMenu#ADMIN_SITE_ADMINISTRATION_USERS" value1="Users" />
+				<execute macro="ProductMenu#gotoControlPanelUsers">
+					<var name="portlet" value="Users and Organizations" />
+				</execute>
 
 				<var name="key_userScreenName" value="${userScreenName}" />
 

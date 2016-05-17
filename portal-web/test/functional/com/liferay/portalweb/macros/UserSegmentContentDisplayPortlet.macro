@@ -86,13 +86,16 @@
 		<execute function="SelectFrame" value1="relative=top" />
 	</command>
 
-	<command name="configureOtherwiseContenDisplayRule">
+	<command name="configureOtherwiseContentDisplayRule">
 		<execute function="SelectFrame" locator1="IFrame#CONFIGURATION" />
 
 		<if>
 			<isset var="otherwiseContentType" />
 			<then>
 				<execute function="ClickNoError" locator1="ContentTargeting#OTHERWISE_PANEL" />
+
+				<execute function="ScrollWebElementIntoView" locator1="ContentTargeting#OTHERWISE_PANEL_DISPLAY_THIS_CONTENT_RADIO" />
+
 				<execute function="Click" locator1="ContentTargeting#OTHERWISE_PANEL_DISPLAY_THIS_CONTENT_RADIO" />
 
 				<execute function="ClickNoError" locator1="ContentTargeting#OTHERWISE_PANEL_SELECT_CONTENT" />
@@ -194,6 +197,10 @@
 		</if>
 	</command>
 
+	<command name="viewContentOnly">
+		<execute function="AssertTextEquals" locator1="UserSegmentContentDisplay#ENTRY_CONTENT" value1="${entryContentText}" />
+	</command>
+
 	<command name="viewEntryPG">
 		<execute macro="ContentTargeting#expandPreview">
 			<var name="portletName" value="User Segment Content Display" />
@@ -217,8 +224,6 @@
 					</execute>
 
 					<var name="key_previewEntry" value="${previewEntry}" />
-
-					<execute function="AssertClick" locator1="ContentTargeting#PREVIEW" value1="${previewEntry}" />
 
 					<if>
 						<and>

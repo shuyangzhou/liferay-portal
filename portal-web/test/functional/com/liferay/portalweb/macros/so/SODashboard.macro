@@ -2,10 +2,7 @@
 	<command name="tearDownCP">
 		<execute macro="SOUserBar#gotoDashboardPG" />
 
-		<execute function="AssertClick#assertTextClickAtClickDockbar" locator1="ControlMenu#ADMIN" value1="Admin" />
-		<execute function="AssertClick" locator1="ControlMenu#ADMIN_SITE_ADMINISTRATION_NAVIGATION" value1="Navigation" />
-
-		<execute function="AssertClick" locator1="SitePages#NAVIGATION_MY_DASHBOARD" value1="Dashboard" />
+		<execute macro="UserBar#gotoDashboard" />
 
 		<if>
 			<condition function="IsElementPresent" locator1="SitePages#PAGE_TREE_PAGE_LINK_8" />
