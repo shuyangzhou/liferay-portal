@@ -916,8 +916,7 @@ public class GroupFinderImpl
 
 		long groupClassNameId = _getGroupOrganizationClassNameIds()[0];
 		long organizationClassNameId = _getGroupOrganizationClassNameIds()[1];
-		long userGroupClassNameId = ClassNameLocalServiceUtil.getClassNameId(
-			UserGroup.class);
+		long userGroupClassNameId = _getUserGroupClassNameId();
 
 		if (classNameIds == null) {
 			params1.put("classNameIds", _getGroupOrganizationClassNameIds());
@@ -1485,6 +1484,15 @@ public class GroupFinderImpl
 		return _joinMap;
 	}
 
+	private long _getUserGroupClassNameId() {
+		if (_userGroupClassNameId == null) {
+			_userGroupClassNameId = ClassNameLocalServiceUtil.getClassNameId(
+				UserGroup.class);
+		}
+
+		return _userGroupClassNameId;
+	}
+
 	private Map<String, String> _getWhereMap() {
 		if (_whereMap != null) {
 			return _whereMap;
@@ -1562,6 +1570,7 @@ public class GroupFinderImpl
 	private volatile Map<String, String> _joinMap;
 	private final Map<String, String> _replaceJoinAndWhereSQLCache =
 		new ConcurrentHashMap<>();
+	private volatile Long _userGroupClassNameId;
 	private volatile Map<String, String> _whereMap;
 
 }
