@@ -510,7 +510,7 @@ public class GroupFinderImpl
 
 		String sql = null;
 
-		String sqlKey = _buildSQLKey(obc, params1, params2, params3);
+		String sqlKey = _buildSQLCacheKey(obc, params1, params2, params3);
 
 		sql = _findByCompanyIdSQLCache.get(sqlKey);
 
@@ -768,7 +768,7 @@ public class GroupFinderImpl
 		String sqlKey = null;
 
 		if (_isCacheableSQL(classNameIds)) {
-			sqlKey = _buildSQLKey(obc, params1, params2, params3, params4);
+			sqlKey = _buildSQLCacheKey(obc, params1, params2, params3, params4);
 
 			sql = _findByC_C_PG_N_DSQLCache.get(sqlKey);
 		}
@@ -1105,7 +1105,7 @@ public class GroupFinderImpl
 			return StringUtil.removeSubstrings(sql, "[$JOIN$]", "[$WHERE$]");
 		}
 
-		String cacheKey = _getCacheKey(sql, params);
+		String cacheKey = _buildSQLCacheKey(sql, params);
 
 		String resultSQL = _replaceJoinAndWhereSQLCache.get(cacheKey);
 
@@ -1259,8 +1259,15 @@ public class GroupFinderImpl
 	}
 
 	@SafeVarargs
-	private final String _buildSQLKey(
+	private final String _buildSQLCacheKey(
 		OrderByComparator<Group> obc, LinkedHashMap<String, Object>... params) {
+
+		return _buildSQLCacheKey(obc.getOrderBy(), params);
+	}
+
+	@SafeVarargs
+	private final String _buildSQLCacheKey(
+		String sql, LinkedHashMap<String, Object>... params) {
 
 		int size = 1;
 
@@ -1272,11 +1279,29 @@ public class GroupFinderImpl
 
 		StringBundler sb = new StringBundler(size);
 
+		sb.append(sql);
+
 		for (LinkedHashMap<String, Object> param : params) {
 			if (param != null) {
 				for (Map.Entry<String, Object> entry : param.entrySet()) {
+					sb.append(StringPool.COMMA);
+
 					String key = entry.getKey();
 					Object value = entry.getValue();
+
+					if (key.equals("rolePermissions")) {
+						RolePermissions rolePermissions =
+							(RolePermissions)entry.getValue();
+
+						if (ResourceBlockLocalServiceUtil.isSupported(
+								rolePermissions.getName())) {
+
+							key = "rolePermissions_6_block";
+						}
+						else {
+							key = "rolePermissions_6";
+						}
+					}
 
 					sb.append(key);
 					sb.append(StringPool.DASH);
@@ -1294,54 +1319,6 @@ public class GroupFinderImpl
 
 					sb.append(StringPool.COMMA);
 				}
-			}
-		}
-
-		sb.append(obc.getOrderBy());
-
-		return sb.toString();
-	}
-
-	private String _getCacheKey(
-		String sql, LinkedHashMap<String, Object> params) {
-
-		StringBundler sb = new StringBundler(4 * params.size() + 1);
-
-		sb.append(sql);
-
-		for (Map.Entry<String, Object> entry : params.entrySet()) {
-			sb.append(StringPool.COMMA);
-
-			String key = entry.getKey();
-			Object value = entry.getValue();
-
-			if (key.equals("rolePermissions")) {
-				RolePermissions rolePermissions =
-					(RolePermissions)entry.getValue();
-
-				if (ResourceBlockLocalServiceUtil.isSupported(
-						rolePermissions.getName())) {
-
-					key = "rolePermissions_6_block";
-				}
-				else {
-					key = "rolePermissions_6";
-				}
-			}
-
-			sb.append(key);
-
-			if (value instanceof long[]) {
-				long[] values = (long[])value;
-
-				sb.append(StringPool.DASH);
-				sb.append(values.length);
-			}
-			else if (value instanceof List<?>) {
-				List<?> values = (List<?>)value;
-
-				sb.append(StringPool.DASH);
-				sb.append(values.size());
 			}
 		}
 
