@@ -263,22 +263,11 @@ public class GroupFinderImpl
 
 		if (doUnion) {
 			params2 = new LinkedHashMap<>(params1);
-
-			params2.remove("usersGroups");
-			params2.put("groupOrg", userId);
-
 			params3 = new LinkedHashMap<>(params1);
-
-			params3.remove("usersGroups");
-			params3.put("groupsOrgs", userId);
-
 			params4 = new LinkedHashMap<>(params1);
 
-			params4.remove("usersGroups");
-			params4.put("groupsUserGroups", userId);
-
-			addClassNameIdsParams(
-				classNameIds, params1, params2, params3, params4);
+			_populateUnionParams(
+				userId, classNameIds, params1, params2, params3, params4);
 		}
 		else if (classNameIds != null) {
 			params1.put("classNameIds", classNameIds);
@@ -761,22 +750,11 @@ public class GroupFinderImpl
 
 		if (doUnion) {
 			params2 = new LinkedHashMap<>(params1);
-
-			params2.remove("usersGroups");
-			params2.put("groupOrg", userId);
-
 			params3 = new LinkedHashMap<>(params1);
-
-			params3.remove("usersGroups");
-			params3.put("groupsOrgs", userId);
-
 			params4 = new LinkedHashMap<>(params1);
 
-			params4.remove("usersGroups");
-			params4.put("groupsUserGroups", userId);
-
-			addClassNameIdsParams(
-				classNameIds, params1, params2, params3, params4);
+			_populateUnionParams(
+				userId, classNameIds, params1, params2, params3, params4);
 		}
 		else if (classNameIds != null) {
 			params1.put("classNameIds", classNameIds);
@@ -905,39 +883,6 @@ public class GroupFinderImpl
 		}
 		finally {
 			closeSession(session);
-		}
-	}
-
-	protected void addClassNameIdsParams(
-		long[] classNameIds, LinkedHashMap<String, Object> params1,
-		LinkedHashMap<String, Object> params2,
-		LinkedHashMap<String, Object> params3,
-		LinkedHashMap<String, Object> params4) {
-
-		long groupClassNameId = _getGroupOrganizationClassNameIds()[0];
-		long organizationClassNameId = _getGroupOrganizationClassNameIds()[1];
-		long userGroupClassNameId = _getUserGroupClassNameId();
-
-		if (classNameIds == null) {
-			params1.put("classNameIds", _getGroupOrganizationClassNameIds());
-			params2.put("classNameIds", organizationClassNameId);
-			params3.put("classNameIds", groupClassNameId);
-			params4.put("classNameIds", userGroupClassNameId);
-		}
-		else {
-			params1.put("classNameIds", classNameIds);
-
-			if (ArrayUtil.contains(classNameIds, organizationClassNameId)) {
-				params2.put("classNameIds", organizationClassNameId);
-			}
-
-			if (ArrayUtil.contains(classNameIds, groupClassNameId)) {
-				params3.put("classNameIds", groupClassNameId);
-			}
-
-			if (ArrayUtil.contains(classNameIds, userGroupClassNameId)) {
-				params4.put("classNameIds", userGroupClassNameId);
-			}
 		}
 	}
 
@@ -1546,6 +1491,48 @@ public class GroupFinderImpl
 		_whereMap = whereMap;
 
 		return _whereMap;
+	}
+
+	private void _populateUnionParams(
+		long userId, long[] classNameIds, LinkedHashMap<String, Object> params1,
+		LinkedHashMap<String, Object> params2,
+		LinkedHashMap<String, Object> params3,
+		LinkedHashMap<String, Object> params4) {
+
+		params2.remove("usersGroups");
+		params2.put("groupOrg", userId);
+
+		params3.remove("usersGroups");
+		params3.put("groupsOrgs", userId);
+
+		params4.remove("usersGroups");
+		params4.put("groupsUserGroups", userId);
+
+		long groupClassNameId = _getGroupOrganizationClassNameIds()[0];
+		long organizationClassNameId = _getGroupOrganizationClassNameIds()[1];
+		long userGroupClassNameId = _getUserGroupClassNameId();
+
+		if (classNameIds == null) {
+			params1.put("classNameIds", _getGroupOrganizationClassNameIds());
+			params2.put("classNameIds", organizationClassNameId);
+			params3.put("classNameIds", groupClassNameId);
+			params4.put("classNameIds", userGroupClassNameId);
+		}
+		else {
+			params1.put("classNameIds", classNameIds);
+
+			if (ArrayUtil.contains(classNameIds, organizationClassNameId)) {
+				params2.put("classNameIds", organizationClassNameId);
+			}
+
+			if (ArrayUtil.contains(classNameIds, groupClassNameId)) {
+				params3.put("classNameIds", groupClassNameId);
+			}
+
+			if (ArrayUtil.contains(classNameIds, userGroupClassNameId)) {
+				params4.put("classNameIds", userGroupClassNameId);
+			}
+		}
 	}
 
 	private String _removeWhere(String join) {
