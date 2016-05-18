@@ -509,8 +509,7 @@ public class GroupFinderImpl
 
 		String sql = null;
 
-		String sqlKey = _buildSQLKey(
-			params1, params2, params3, null, obc, doUnion);
+		String sqlKey = _buildSQLKey(obc, params1, params2, params3);
 
 		sql = _findByCompanyIdSQLCache.get(sqlKey);
 
@@ -768,8 +767,7 @@ public class GroupFinderImpl
 		String sqlKey = null;
 
 		if (_isCacheableSQL(classNameIds)) {
-			sqlKey = _buildSQLKey(
-				params1, params2, params3, params4, obc, doUnion);
+			sqlKey = _buildSQLKey(obc, params1, params2, params3, params4);
 
 			sql = _findByC_C_PG_N_DSQLCache.get(sqlKey);
 		}
@@ -1259,49 +1257,26 @@ public class GroupFinderImpl
 		}
 	}
 
-	private String _buildSQLKey(
-		LinkedHashMap<String, Object> param1,
-		LinkedHashMap<String, Object> param2,
-		LinkedHashMap<String, Object> param3,
-		LinkedHashMap<String, Object> param4, OrderByComparator<Group> obc,
-		boolean doUnion) {
+	@SafeVarargs
+	private final String _buildSQLKey(
+		OrderByComparator<Group> obc, LinkedHashMap<String, Object>... params) {
 
-		StringBundler sb = null;
+		int size = 1;
 
-		if (doUnion) {
-			if (param4 == null) {
-				sb = new StringBundler(
-					param1.size() + param2.size() + param3.size() + 1);
-			}
-			else {
-				sb = new StringBundler(
-					param1.size() + param2.size() + param3.size() +
-						param4.size() + 1);
-			}
-
-			for (String key : param1.keySet()) {
-				sb.append(key);
-			}
-
-			for (String key : param2.keySet()) {
-				sb.append(key);
-			}
-
-			for (String key : param3.keySet()) {
-				sb.append(key);
-			}
-
-			if (param4 != null) {
-				for (String key : param4.keySet()) {
-					sb.append(key);
-				}
+		for (LinkedHashMap<String, Object> param : params) {
+			if (param != null) {
+				size += param.size() * 2;
 			}
 		}
-		else {
-			sb = new StringBundler(param1.size() + 1);
 
-			for (String key : param1.keySet()) {
-				sb.append(key);
+		StringBundler sb = new StringBundler(size);
+
+		for (LinkedHashMap<String, Object> param : params) {
+			if (param != null) {
+				for (String key : param.keySet()) {
+					sb.append(key);
+					sb.append(StringPool.COMMA);
+				}
 			}
 		}
 
