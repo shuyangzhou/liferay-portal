@@ -2129,6 +2129,24 @@
 				</licenses>
 			</library>
 			<library>
+				<file-name>lib/portal/jooq.jar</file-name>
+				<version>3.8.1</version>
+				<project-name>jooq</project-name>
+				<project-url>http://www.jooq.org</project-url>
+			</library>
+			<library>
+				<file-name>lib/portal/jooq-codegen.jar</file-name>
+				<version>3.8.1</version>
+				<project-name>jooq</project-name>
+				<project-url>http://www.jooq.org</project-url>
+			</library>
+			<library>
+				<file-name>lib/portal/jooq-meta.jar</file-name>
+				<version>3.8.1</version>
+				<project-name>jooq</project-name>
+				<project-url>http://www.jooq.org</project-url>
+			</library>
+			<library>
 				<file-name>lib/portal/jrcs-diff.jar</file-name>
 				<version>0.3.0</version>
 				<project-name>JRCS diff utilities</project-name>
