@@ -16,7 +16,7 @@
 
 <%@ include file="/admin/init.jsp" %>
 
-<liferay-util:include page="/admin/top_tabs.jsp" servletContext="<%= application %>" />
+<liferay-util:include page="/admin/common/top_tabs.jsp" servletContext="<%= application %>" />
 
 <liferay-ui:success
 	key="suggestionDeleted"

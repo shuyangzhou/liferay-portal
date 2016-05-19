@@ -67,9 +67,9 @@ public class BlogsContentEditorConfigContributor
 
 		StringBundler sb = new StringBundler(6);
 
-		sb.append("a[*]; ");
+		sb.append("a[*](*); ");
 		sb.append(getAllowedContentText());
-		sb.append(" div[*]; img[class, !src] {height, width}; ");
+		sb.append(" div(*); img[class, !src] {height, width}; ");
 		sb.append(getAllowedContentLists());
 		sb.append(" p {text-align}; ");
 		sb.append(getAllowedContentTable());
@@ -97,8 +97,8 @@ public class BlogsContentEditorConfigContributor
 	}
 
 	protected String getAllowedContentTable() {
-		return "table[border, cellpadding, cellspacing] {width} thead tbody " +
-			"tr[scope] th[scope] td;";
+		return "table[border, cellpadding, cellspacing] {width}; thead tbody " +
+			"tr[scope]; th[scope]; td;";
 	}
 
 	protected String getAllowedContentText() {

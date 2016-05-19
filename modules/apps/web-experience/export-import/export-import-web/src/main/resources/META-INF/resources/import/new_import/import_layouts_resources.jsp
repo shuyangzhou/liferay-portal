@@ -160,15 +160,20 @@ ManifestSummary manifestSummary = ExportImportHelperUtil.getManifestSummary(user
 				</dl>
 			</aui:fieldset>
 
-			<c:if test="<%= !group.isLayoutPrototype() && !group.isLayoutSetPrototype() && !group.isCompany() %>">
-				<aui:fieldset collapsible="<%= true %>" cssClass="options-group" label="pages">
-					<aui:input id="publicPages" label="public-pages" name="privateLayout" type="radio" value="<%= false %>" />
+			<c:choose>
+				<c:when test="<%= !group.isLayoutPrototype() && !group.isLayoutSetPrototype() && !group.isCompany() %>">
+					<aui:fieldset collapsible="<%= true %>" cssClass="options-group" label="pages">
+						<aui:input id="publicPages" label="public-pages" name="privateLayout" type="radio" value="<%= false %>" />
 
-					<aui:input id="privatePages" label="private-pages" name="privateLayout" type="radio" value="<%= true %>" />
+						<aui:input id="privatePages" label="private-pages" name="privateLayout" type="radio" value="<%= true %>" />
 
-					<aui:input helpMessage="delete-missing-layouts-help" label="delete-missing-layouts" name="<%= PortletDataHandlerKeys.DELETE_MISSING_LAYOUTS %>" type="checkbox" value="<%= false %>" />
-				</aui:fieldset>
-			</c:if>
+						<aui:input helpMessage="delete-missing-layouts-help" label="delete-missing-layouts" name="<%= PortletDataHandlerKeys.DELETE_MISSING_LAYOUTS %>" type="checkbox" value="<%= false %>" />
+					</aui:fieldset>
+				</c:when>
+				<c:otherwise>
+					<aui:input name="privateLayout" type="hidden" value="<%= true %>" />
+				</c:otherwise>
+			</c:choose>
 
 			<%
 			List<Portlet> dataPortlets = ListUtil.sort(manifestSummary.getDataPortlets(), new PortletTitleComparator(application, locale));

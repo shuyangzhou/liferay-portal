@@ -32,7 +32,7 @@ long kbCommentId = BeanParamUtil.getLong(kbComment, request, "kbCommentId");
 boolean helpful = BeanParamUtil.getBoolean(kbComment, request, "helpful", true);
 %>
 
-<c:if test="<%= (enableKBTemplateKBComments && themeDisplay.isSignedIn()) || showKBTemplateKBComments %>">
+<c:if test="<%= themeDisplay.isSignedIn() %>">
 	<div class="kb-template-comments">
 		<aui:form method="post" name="fm" onSubmit='<%= "event.preventDefault(); " + renderResponse.getNamespace() + "updateKBComment();" %>'>
 			<aui:input name="<%= Constants.CMD %>" type="hidden" />
@@ -45,7 +45,7 @@ boolean helpful = BeanParamUtil.getBoolean(kbComment, request, "helpful", true);
 			<aui:model-context bean="<%= kbComment %>" model="<%= KBComment.class %>" />
 
 			<aui:fieldset>
-				<c:if test="<%= enableKBTemplateKBComments && themeDisplay.isSignedIn() %>">
+				<c:if test="<%= themeDisplay.isSignedIn() %>">
 					<liferay-ui:panel-container extended="<%= false %>" id='<%= renderResponse.getNamespace() + "Template" + kbTemplate.getKbTemplateId() + "CommentsPanelContainer" %>' persistState="<%= true %>">
 						<liferay-ui:panel collapsible="<%= true %>" defaultState="closed" extended="<%= true %>" id='<%= renderResponse.getNamespace() + "Template" + kbTemplate.getKbTemplateId() + "CommentsPanel" %>' persistState="<%= true %>" title="comments">
 							<c:if test="<%= kbComment != null %>">
@@ -74,49 +74,47 @@ boolean helpful = BeanParamUtil.getBoolean(kbComment, request, "helpful", true);
 					</liferay-ui:panel-container>
 				</c:if>
 
-				<c:if test="<%= showKBTemplateKBComments %>">
-					<liferay-portlet:renderURL varImpl="iteratorURL">
-						<portlet:param name="mvcPath" value='<%= templatePath + "view_template.jsp" %>' />
-						<portlet:param name="kbTemplateId" value="<%= String.valueOf(kbTemplate.getKbTemplateId()) %>" />
-					</liferay-portlet:renderURL>
+				<liferay-portlet:renderURL varImpl="iteratorURL">
+					<portlet:param name="mvcPath" value='<%= templatePath + "view_template.jsp" %>' />
+					<portlet:param name="kbTemplateId" value="<%= String.valueOf(kbTemplate.getKbTemplateId()) %>" />
+				</liferay-portlet:renderURL>
 
-					<liferay-ui:search-container
-						iteratorURL="<%= iteratorURL %>"
-						total="<%= KBCommentLocalServiceUtil.getKBCommentsCount(KBTemplate.class.getName(), kbTemplate.getKbTemplateId()) %>"
-					>
-						<liferay-ui:search-container-results
-							results="<%= KBCommentLocalServiceUtil.getKBComments(KBTemplate.class.getName(), kbTemplate.getKbTemplateId(), searchContainer.getStart(), searchContainer.getEnd(), null) %>"
-						/>
+				<liferay-ui:search-container
+					iteratorURL="<%= iteratorURL %>"
+					total="<%= KBCommentLocalServiceUtil.getKBCommentsCount(KBTemplate.class.getName(), kbTemplate.getKbTemplateId()) %>"
+				>
+					<liferay-ui:search-container-results
+						results="<%= KBCommentLocalServiceUtil.getKBComments(KBTemplate.class.getName(), kbTemplate.getKbTemplateId(), searchContainer.getStart(), searchContainer.getEnd(), null) %>"
+					/>
 
-						<c:if test="<%= total > 0 %>">
-							<div class="separator"><!-- --></div>
+					<c:if test="<%= total > 0 %>">
+						<div class="separator"><!-- --></div>
 
-							<div class="kb-all-comments">
-								<%= LanguageUtil.format(request, "all-comments-x", total, false) %>
-							</div>
-						</c:if>
+						<div class="kb-all-comments">
+							<%= LanguageUtil.format(request, "all-comments-x", total, false) %>
+						</div>
+					</c:if>
 
-						<%
-						for (KBComment curKBComment : (List<KBComment>)searchContainer.getResults()) {
-						%>
-
-							<%
-							request.setAttribute("template_comment.jsp-kb_comment", curKBComment);
-							%>
-
-							<liferay-util:include page="/admin/template_comment.jsp" servletContext="<%= application %>" />
+					<%
+					for (KBComment curKBComment : (List<KBComment>)searchContainer.getResults()) {
+					%>
 
 						<%
-						}
+						request.setAttribute("template_comment.jsp-kb_comment", curKBComment);
 						%>
 
-						<c:if test="<%= total > searchContainer.getDelta() %>">
-							<div class="taglib-search-iterator-page-iterator-bottom">
-								<liferay-ui:search-paginator searchContainer="<%= searchContainer %>" />
-							</div>
-						</c:if>
-					</liferay-ui:search-container>
-				</c:if>
+						<liferay-util:include page="/admin/template_comment.jsp" servletContext="<%= application %>" />
+
+					<%
+					}
+					%>
+
+					<c:if test="<%= total > searchContainer.getDelta() %>">
+						<div class="taglib-search-iterator-page-iterator-bottom">
+							<liferay-ui:search-paginator searchContainer="<%= searchContainer %>" />
+						</div>
+					</c:if>
+				</liferay-ui:search-container>
 			</aui:fieldset>
 		</aui:form>
 	</div>

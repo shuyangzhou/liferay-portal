@@ -149,6 +149,7 @@ Export-Package:\
 	org.apache.commons.logging;version="1.2",\
 	org.apache.commons.logging.impl;version="1.2",\
 	org.apache.commons.validator.routines;version='1.5.0',\
+	org.jooq.*;version='3.8.1',\
 	org.apache.log4j;version='1.2.17',\
 	org.apache.log4j.config;version='1.2.17',\
 	org.apache.log4j.chainsaw;version='1.2.17',\
@@ -235,6 +236,9 @@ Import-Package: !*
 	@../../../lib/portal/jaxrpc.jar,\
 	@../../../lib/portal/jdom.jar!/org/**,\
 	@../../../lib/portal/jodd.jar,\
+	@../../../lib/portal/jooq.jar,\
+	@../../../lib/portal/jooq-codegen.jar,\
+	@../../../lib/portal/jooq-meta.jar,\
 	@../../../lib/portal/json-java.jar,\
 	@../../../lib/portal/liferay-icu4j.jar,\
 	@../../../lib/portal/log4j-extras.jar,\

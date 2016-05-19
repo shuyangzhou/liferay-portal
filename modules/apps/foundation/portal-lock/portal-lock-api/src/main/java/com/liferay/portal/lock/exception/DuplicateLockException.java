@@ -23,6 +23,8 @@ import com.liferay.portal.lock.model.Lock;
 public class DuplicateLockException extends PortalException {
 
 	public DuplicateLockException(Lock lock) {
+		super(lock.toString());
+
 		_lock = lock;
 	}
 

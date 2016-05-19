@@ -16,6 +16,31 @@
 
 <%@ include file="/admin/init.jsp" %>
 
-<liferay-util:include page="/admin/top_tabs.jsp" servletContext="<%= application %>" />
+<liferay-util:include page="/admin/common/top_tabs.jsp" servletContext="<%= application %>" />
 
-<liferay-util:include page="/admin/common/view_template.jsp" servletContext="<%= application %>" />
+<%
+KBTemplate kbTemplate = (KBTemplate)request.getAttribute(KBWebKeys.KNOWLEDGE_BASE_KB_TEMPLATE);
+%>
+
+<div class="float-container kb-entity-header">
+	<div class="kb-title">
+		<%= HtmlUtil.escape(kbTemplate.getTitle()) %>
+	</div>
+
+	<div class="kb-tools">
+		<liferay-util:include page="/admin/common/template_tools.jsp" servletContext="<%= application %>" />
+	</div>
+</div>
+
+<div class="kb-entity-body">
+
+	<%
+	request.setAttribute("template_icons.jsp-kb_template", kbTemplate);
+	%>
+
+	<liferay-util:include page="/admin/template_icons.jsp" servletContext="<%= application %>" />
+
+	<%= kbTemplate.getContent() %>
+
+	<liferay-util:include page="/admin/template_comments.jsp" servletContext="<%= application %>" />
+</div>

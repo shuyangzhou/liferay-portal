@@ -153,13 +153,45 @@ public abstract class BaseDataPartitioningExporter
 			}
 		}
 		catch (IOException | SQLException e) {
-			_logger.error("Unable to export " + tableName, e);
+			_logger.error(
+				"Unable to generate insert SQL statements for table " +
+					tableName,
+				e);
 		}
 	}
 
 	@Override
 	public void write(String tableName, OutputStream outputStream) {
 		write(0, tableName, outputStream);
+	}
+
+	@Override
+	public void writeDelete(
+		long companyId, String tableName, OutputStream outputStream) {
+
+		DataSource dataSource = getDataSource();
+
+		try (Connection connection = dataSource.getConnection();
+			PreparedStatement preparedStatement = buildPreparedStatement(
+				connection,
+				"select * from " + tableName +" where companyId = ?",
+				companyId);
+			ResultSet resultSet = preparedStatement.executeQuery()) {
+
+			if (resultSet.next()) {
+				String deleteSQL =
+					"delete from " + tableName + " where companyId = " +
+						companyId + ";\n";
+
+				outputStream.write(deleteSQL.getBytes());
+			}
+		}
+		catch (IOException | SQLException e) {
+			_logger.error(
+				"Unable to generate delete SQL statements for table " +
+					tableName,
+				e);
+		}
 	}
 
 	protected PreparedStatement buildPreparedStatement(

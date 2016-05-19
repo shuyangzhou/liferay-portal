@@ -560,17 +560,7 @@ public class UpgradeClient {
 			}
 
 			System.out.println(
-				"Please enter your database host (" + dataSource.getHost() +
-					"): ");
-
-			response = _consoleReader.readLine();
-
-			if (!response.isEmpty()) {
-				dataSource.setHost(response);
-			}
-
-			System.out.println(
-				"Please enter your database JDBC driver class name(" +
+				"Please enter your database JDBC driver class name (" +
 					dataSource.getClassName() + "): ");
 
 			response = _consoleReader.readLine();
@@ -589,6 +579,16 @@ public class UpgradeClient {
 				dataSource.setProtocol(response);
 			}
 
+			System.out.println(
+				"Please enter your database host (" + dataSource.getHost() +
+					"): ");
+
+			response = _consoleReader.readLine();
+
+			if (!response.isEmpty()) {
+				dataSource.setHost(response);
+			}
+
 			String port = null;
 
 			if (dataSource.getPort() > 0) {
@@ -597,20 +597,6 @@ public class UpgradeClient {
 			else {
 				port = "none";
 			}
-
-			System.out.println(
-				"Please enter your database name (" +
-					dataSource.getDatabaseName() + "): ");
-
-			response = _consoleReader.readLine();
-
-			if (!response.isEmpty()) {
-				dataSource.setDatabaseName(response);
-			}
-
-			System.out.println("Please enter your database password: ");
-
-			String password = _consoleReader.readLine();
 
 			System.out.println(
 				"Please enter your database port (" + port + "): ");
@@ -626,9 +612,23 @@ public class UpgradeClient {
 				}
 			}
 
+			System.out.println(
+				"Please enter your database name (" +
+					dataSource.getDatabaseName() + "): ");
+
+			response = _consoleReader.readLine();
+
+			if (!response.isEmpty()) {
+				dataSource.setDatabaseName(response);
+			}
+
 			System.out.println("Please enter your database username: ");
 
 			String username = _consoleReader.readLine();
+
+			System.out.println("Please enter your database password: ");
+
+			String password = _consoleReader.readLine();
 
 			_portalUpgradeDatabaseProperties.setProperty(
 				"jdbc.default.driverClassName", dataSource.getClassName());

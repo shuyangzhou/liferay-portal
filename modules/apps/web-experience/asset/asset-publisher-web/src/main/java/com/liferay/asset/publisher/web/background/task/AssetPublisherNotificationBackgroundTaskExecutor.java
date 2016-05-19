@@ -32,7 +32,6 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.kernel.service.SubscriptionLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portlet.asset.service.permission.AssetEntryPermission;
@@ -74,35 +73,21 @@ public class AssetPublisherNotificationBackgroundTaskExecutor
 		List<AssetEntry> assetEntries = (List<AssetEntry>)taskContextMap.get(
 			"assetEntries");
 
-		long companyId = GetterUtil.getLong(taskContextMap.get("companyId"));
-
 		com.liferay.portal.kernel.model.PortletPreferences
 			portletPreferencesModel =
 				(com.liferay.portal.kernel.model.PortletPreferences)
 					taskContextMap.get("portletPreferences");
 
-		List<Subscription> subscriptions =
-			SubscriptionLocalServiceUtil.getSubscriptions(
-				companyId,
-				com.liferay.portal.kernel.model.PortletPreferences.class.
-					getName(),
-				AssetPublisherUtil.getSubscriptionClassPK(
-					portletPreferencesModel.getPlid(),
-					portletPreferencesModel.getPortletId()));
+		notifySubscribers(assetEntries, portletPreferencesModel);
 
 		PortletPreferences portletPreferences =
 			PortletPreferencesFactoryUtil.fromXML(
-				companyId, portletPreferencesModel.getOwnerId(),
+				portletPreferencesModel.getCompanyId(),
+				portletPreferencesModel.getOwnerId(),
 				portletPreferencesModel.getOwnerType(),
 				portletPreferencesModel.getPlid(),
 				portletPreferencesModel.getPortletId(),
 				portletPreferencesModel.getPreferences());
-
-		for (Subscription subscription : subscriptions) {
-			AssetPublisherUtil.notifySubscriber(
-				subscription.getUserId(), portletPreferences,
-				filterAssetEntries(subscription.getUserId(), assetEntries));
-		}
 
 		try {
 			portletPreferences.setValues(
@@ -169,6 +154,37 @@ public class AssetPublisherNotificationBackgroundTaskExecutor
 		}
 
 		return filteredAssetEntries;
+	}
+
+	protected void notifySubscribers(
+			List<AssetEntry> assetEntries,
+			com.liferay.portal.kernel.model.PortletPreferences
+				portletPreferencesModel)
+		throws PortalException {
+
+		List<Subscription> subscriptions =
+			SubscriptionLocalServiceUtil.getSubscriptions(
+				portletPreferencesModel.getCompanyId(),
+				com.liferay.portal.kernel.model.PortletPreferences.class.
+					getName(),
+				AssetPublisherUtil.getSubscriptionClassPK(
+					portletPreferencesModel.getPlid(),
+					portletPreferencesModel.getPortletId()));
+
+		PortletPreferences portletPreferences =
+			PortletPreferencesFactoryUtil.fromXML(
+				portletPreferencesModel.getCompanyId(),
+				portletPreferencesModel.getOwnerId(),
+				portletPreferencesModel.getOwnerType(),
+				portletPreferencesModel.getPlid(),
+				portletPreferencesModel.getPortletId(),
+				portletPreferencesModel.getPreferences());
+
+		for (Subscription subscription : subscriptions) {
+			AssetPublisherUtil.notifySubscriber(
+				subscription.getUserId(), portletPreferences,
+				filterAssetEntries(subscription.getUserId(), assetEntries));
+		}
 	}
 
 }
