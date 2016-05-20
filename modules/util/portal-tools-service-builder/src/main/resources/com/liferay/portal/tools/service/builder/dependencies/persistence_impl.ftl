@@ -849,11 +849,13 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 	 */
 	@Override
 	public ${entity.name} fetchByPrimaryKey(Serializable primaryKey) {
-		${entity.name} ${entity.varName} = (${entity.name})entityCache.getResult(${entity.name}ModelImpl.ENTITY_CACHE_ENABLED, ${entity.name}Impl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(${entity.name}ModelImpl.ENTITY_CACHE_ENABLED, ${entity.name}Impl.class, primaryKey);
 
-		if (${entity.varName} == _null${entity.name}) {
+		if (serializable == nullModel) {
 			return null;
 		}
+
+		${entity.name} ${entity.varName} = (${entity.name})serializable;
 
 		if (${entity.varName} == null) {
 			Session session = null;
@@ -867,7 +869,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 					cacheResult(${entity.varName});
 				}
 				else {
-					entityCache.putResult(${entity.name}ModelImpl.ENTITY_CACHE_ENABLED, ${entity.name}Impl.class, primaryKey, _null${entity.name});
+					entityCache.putResult(${entity.name}ModelImpl.ENTITY_CACHE_ENABLED, ${entity.name}Impl.class, primaryKey, nullModel);
 				}
 			}
 			catch (Exception e) {
@@ -990,7 +992,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				}
 
 				for (Serializable primaryKey : uncachedPrimaryKeys) {
-					entityCache.putResult(${entity.name}ModelImpl.ENTITY_CACHE_ENABLED, ${entity.name}Impl.class, primaryKey, _null${entity.name});
+					entityCache.putResult(${entity.name}ModelImpl.ENTITY_CACHE_ENABLED, ${entity.name}Impl.class, primaryKey, nullModel);
 				}
 			}
 			catch (Exception e) {
@@ -1844,53 +1846,6 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 					</#if>
 				</#list>
 			});
-	</#if>
-
-	private static final ${entity.name} _null${entity.name} = new ${entity.name}Impl() {
-
-		@Override
-		public Object clone() {
-			return this;
-		}
-
-		@Override
-		public CacheModel<${entity.name}> toCacheModel() {
-			return _null${entity.name}CacheModel;
-		}
-
-	};
-
-	private static final CacheModel<${entity.name}> _null${entity.name}CacheModel =
-
-	<#if entity.isMvccEnabled()>
-		new NullCacheModel();
-
-		private static class NullCacheModel implements CacheModel<${entity.name}>, MVCCModel {
-
-			@Override
-			public long getMvccVersion() {
-				return -1;
-			}
-
-			@Override
-			public void setMvccVersion(long mvccVersion) {
-			}
-
-			@Override
-			public ${entity.name} toEntityModel() {
-				return _null${entity.name};
-			}
-
-		}
-	<#else>
-		new CacheModel<${entity.name}>() {
-
-			@Override
-			public ${entity.name} toEntityModel() {
-				return _null${entity.name};
-			}
-
-		};
 	</#if>
 
 }
