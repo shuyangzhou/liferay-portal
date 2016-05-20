@@ -2441,7 +2441,8 @@ javascript.single.page.application.timeout=300000]]></echo>
 			<generate-jdbc-properties properties.file="portal-impl/test/portal-test-ext.properties">
 				<post-action>
 					<echo file="@{properties.file}" append="true"><![CDATA[
-module.framework.base.dir=${liferay.home}/osgi]]></echo>
+module.framework.base.dir=${liferay.home}/osgi
+sprite.root.dir=/tmp/sprite]]></echo>
 				</post-action>
 			</generate-jdbc-properties>
 		</sequential>
