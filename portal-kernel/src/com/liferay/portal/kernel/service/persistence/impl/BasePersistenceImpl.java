@@ -31,6 +31,9 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.EntityModel;
+import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.model.ModelListenerRegistrationUtil;
 import com.liferay.portal.kernel.model.ModelWrapper;
@@ -527,6 +530,8 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 
 	protected static final String WHERE_OR = " OR ";
 
+	protected static final NullModel nullModel = new NullModel();
+
 	/**
 	 * @deprecated As of 7.0.0, with no direct replacement
 	 */
@@ -542,5 +547,43 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 	private Dialect _dialect;
 	private Class<T> _modelClass;
 	private SessionFactory _sessionFactory;
+
+	private static class NullModel
+		implements CacheModel<NullModel>, EntityModel<NullModel>, MVCCModel {
+
+		@Override
+		public Object clone() {
+			return this;
+		}
+
+		@Override
+		public long getMvccVersion() {
+			return -1;
+		}
+
+		@Override
+		public boolean isCachedModel() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public void setCachedModel(boolean cachedModel) {
+		}
+
+		@Override
+		public void setMvccVersion(long mvccVersion) {
+		}
+
+		@Override
+		public CacheModel<NullModel> toCacheModel() {
+			return this;
+		}
+
+		@Override
+		public NullModel toEntityModel() {
+			return this;
+		}
+
+	}
 
 }

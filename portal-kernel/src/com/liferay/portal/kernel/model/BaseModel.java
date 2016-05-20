@@ -32,7 +32,7 @@ import java.util.Map;
  */
 @ProviderType
 public interface BaseModel<T>
-	extends ClassedModel, Cloneable, Comparable<T>, Serializable {
+	extends ClassedModel, Comparable<T>, EntityModel<T> {
 
 	/**
 	 * Creates a shallow clone of this model instance.
