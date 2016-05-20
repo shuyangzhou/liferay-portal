@@ -162,7 +162,6 @@ page import="com.liferay.trash.kernel.util.TrashUtil" %>
 page import="java.text.NumberFormat" %>
 
 <%@ page import="java.util.ArrayList" %><%@
-page import="java.util.Calendar" %><%@
 page import="java.util.Collections" %><%@
 page import="java.util.Date" %><%@
 page import="java.util.HashMap" %><%@
@@ -195,7 +194,6 @@ boolean allowAnonymousPosting = mbGroupServiceSettings.isAllowAnonymousPosting()
 boolean enableFlags = mbGroupServiceSettings.isEnableFlags();
 boolean enableRatings = mbGroupServiceSettings.isEnableRatings();
 String messageFormat = mbGroupServiceSettings.getMessageFormat();
-String recentPostsDateOffset = mbGroupServiceSettings.getRecentPostsDateOffset();
 boolean subscribeByDefault = mbGroupServiceSettings.isSubscribeByDefault();
 boolean threadAsQuestionByDefault = mbGroupServiceSettings.isThreadAsQuestionByDefault();
 
@@ -208,13 +206,9 @@ boolean childrenMessagesTaggable = true;
 boolean includeFormTag = true;
 boolean showSearch = true;
 
-MBRequestHelper mbRequestHelper = new MBRequestHelper(request);
-
 MBWebComponentProvider mbWebComponentProvider = MBWebComponentProvider.getMBWebComponentProvider();
 
 MBDisplayContextProvider mbDisplayContextProvider = mbWebComponentProvider.getMBDisplayContextProvider();
-
-MBHomeDisplayContext mbHomeDisplayContext = mbDisplayContextProvider.getMBHomeDisplayContext(request, response);
 
 PortalPreferences portalPreferences = PortletPreferencesFactoryUtil.getPortalPreferences(liferayPortletRequest);
 
