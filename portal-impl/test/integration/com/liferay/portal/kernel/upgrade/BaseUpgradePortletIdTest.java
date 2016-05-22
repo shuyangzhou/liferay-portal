@@ -41,11 +41,13 @@ import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.test.LayoutTestUtil;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -68,8 +70,19 @@ public class BaseUpgradePortletIdTest extends BaseUpgradePortletId {
 			Portlet portlet = PortletLocalServiceUtil.getPortletById(
 				TestPropsValues.getCompanyId(), portletId);
 
+			_portlets.add(portlet);
+
 			PortletLocalServiceUtil.destroyPortlet(portlet);
 		}
+	}
+
+	@AfterClass
+	public static void tearDownClass() throws Exception {
+		for (Portlet portlet : _portlets) {
+			PortletLocalServiceUtil.deployPortlet(portlet);
+		}
+
+		_portlets.clear();
 	}
 
 	@After
@@ -265,6 +278,8 @@ public class BaseUpgradePortletIdTest extends BaseUpgradePortletId {
 	private static final String[] _PORTLET_IDS = {
 		"47", com.liferay.portlet.util.test.PortletKeys.TEST
 	};
+
+	private static final List<Portlet> _portlets = new ArrayList<>();
 
 	private boolean _testInstanceable = true;
 
