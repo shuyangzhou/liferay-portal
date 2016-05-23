@@ -23,7 +23,6 @@ import com.liferay.portal.captcha.recaptcha.ReCaptchaImpl;
 import com.liferay.portal.captcha.simplecaptcha.SimpleCaptchaImpl;
 import com.liferay.portal.convert.ConvertException;
 import com.liferay.portal.convert.ConvertProcess;
-import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskConstants;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskManager;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
@@ -31,7 +30,6 @@ import com.liferay.portal.kernel.cache.MultiVMPool;
 import com.liferay.portal.kernel.cache.SingleVMPool;
 import com.liferay.portal.kernel.captcha.Captcha;
 import com.liferay.portal.kernel.captcha.CaptchaUtil;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.image.GhostscriptUtil;
 import com.liferay.portal.kernel.image.ImageMagickUtil;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
@@ -366,8 +364,6 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 
 		final String uuid = _portalUUID.generate();
 
-		taskContextMap.put("uuid", uuid);
-
 		final CountDownLatch countDownLatch = new CountDownLatch(1);
 
 		MessageListener messageListener = new MessageListener() {
@@ -376,46 +372,36 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 			public void receive(Message message)
 				throws MessageListenerException {
 
-				try {
-					BackgroundTask backgroundTask =
-						_backgroundTaskManager.getBackgroundTask(
-							message.getLong(
-								BackgroundTaskConstants.BACKGROUND_TASK_ID));
-
-					Map<String, Serializable> taskContextMap =
-						backgroundTask.getTaskContextMap();
-
-					if (!uuid.equals(taskContextMap.get("uuid"))) {
-						return;
-					}
-				}
-				catch (PortalException pe) {
-					throw new MessageListenerException(pe);
-				}
-
 				int status = message.getInteger("status");
 
-				if ((status == BackgroundTaskConstants.STATUS_CANCELLED) ||
-					(status == BackgroundTaskConstants.STATUS_FAILED) ||
-					(status == BackgroundTaskConstants.STATUS_SUCCESSFUL)) {
+				if ((status != BackgroundTaskConstants.STATUS_CANCELLED) &&
+					(status != BackgroundTaskConstants.STATUS_FAILED) &&
+					(status != BackgroundTaskConstants.STATUS_SUCCESSFUL)) {
 
-					PortletSession portletSession =
-						actionRequest.getPortletSession();
-
-					long lastAccessedTime =
-						portletSession.getLastAccessedTime();
-					int maxInactiveInterval =
-						portletSession.getMaxInactiveInterval();
-
-					int extendedMaxInactiveIntervalTime =
-						(int)(System.currentTimeMillis() - lastAccessedTime +
-							maxInactiveInterval);
-
-					portletSession.setMaxInactiveInterval(
-						extendedMaxInactiveIntervalTime);
-
-					countDownLatch.countDown();
+					return;
 				}
+
+				String name = message.getString("name");
+
+				if ((name == null) || !name.contains(uuid)) {
+					return;
+				}
+
+				PortletSession portletSession =
+					actionRequest.getPortletSession();
+
+				long lastAccessedTime = portletSession.getLastAccessedTime();
+				int maxInactiveInterval =
+					portletSession.getMaxInactiveInterval();
+
+				int extendedMaxInactiveIntervalTime =
+					(int)(System.currentTimeMillis() - lastAccessedTime +
+						maxInactiveInterval);
+
+				portletSession.setMaxInactiveInterval(
+					extendedMaxInactiveIntervalTime);
+
+				countDownLatch.countDown();
 			}
 
 		};
@@ -425,7 +411,7 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 
 		try {
 			_indexWriterHelper.reindex(
-				themeDisplay.getUserId(), "reindex",
+				themeDisplay.getUserId(), "reindex-".concat(uuid),
 				PortalInstances.getCompanyIds(), className, taskContextMap);
 
 			countDownLatch.await(
