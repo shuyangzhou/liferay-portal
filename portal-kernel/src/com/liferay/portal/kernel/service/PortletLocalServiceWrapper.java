@@ -448,6 +448,12 @@ public class PortletLocalServiceWrapper implements PortletLocalService,
 	}
 
 	@Override
+	public void deployPortlet(com.liferay.portal.kernel.model.Portlet portlet)
+		throws java.lang.Exception {
+		_portletLocalService.deployPortlet(portlet);
+	}
+
+	@Override
 	public void destroyPortlet(com.liferay.portal.kernel.model.Portlet portlet) {
 		_portletLocalService.destroyPortlet(portlet);
 	}

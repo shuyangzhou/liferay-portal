@@ -351,6 +351,9 @@ public interface PortletLocalService extends BaseLocalService,
 		long plid) throws PortalException;
 
 	@Skip
+	public void deployPortlet(Portlet portlet) throws java.lang.Exception;
+
+	@Skip
 	public void destroyPortlet(Portlet portlet);
 
 	@Skip
