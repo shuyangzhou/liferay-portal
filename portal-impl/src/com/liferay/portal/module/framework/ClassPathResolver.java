@@ -19,8 +19,8 @@ import java.net.URL;
 /**
  * @author Raymond Augé
  */
-public interface ClasspathResolver {
+public interface ClassPathResolver {
 
-	public URL[] getClasspathURLs() throws Exception;
+	public URL[] getClassPathURLs() throws Exception;
 
 }

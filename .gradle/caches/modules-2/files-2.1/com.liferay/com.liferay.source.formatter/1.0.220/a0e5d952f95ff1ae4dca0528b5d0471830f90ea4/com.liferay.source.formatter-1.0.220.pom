@@ -3,8 +3,8 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.liferay</groupId>
-  <artifactId>com.liferay.javadoc.formatter</artifactId>
-  <version>1.0.11</version>
+  <artifactId>com.liferay.source.formatter</artifactId>
+  <version>1.0.220</version>
   <licenses>
     <license>
       <name>LGPL 2.1</name>
@@ -25,10 +25,10 @@
   </scm>
   <dependencies>
     <dependency>
-      <groupId>com.liferay.portal</groupId>
-      <artifactId>portal-impl</artifactId>
-      <version>7.0.0-SNAPSHOT</version>
-      <scope>provided</scope>
+      <groupId>jaxen</groupId>
+      <artifactId>jaxen</artifactId>
+      <version>1.1.1</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.ant</groupId>
@@ -37,9 +37,21 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
       <groupId>com.liferay.portal</groupId>
-      <artifactId>util-java</artifactId>
-      <version>7.0.0-SNAPSHOT</version>
+      <artifactId>com.liferay.portal.kernel</artifactId>
+      <version>2.1.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.liferay.portal</groupId>
+      <artifactId>com.liferay.portal.impl</artifactId>
+      <version>default</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -49,10 +61,10 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.17</version>
-      <scope>compile</scope>
+      <groupId>com.liferay.portal</groupId>
+      <artifactId>com.liferay.util.java</artifactId>
+      <version>2.0.0</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.thoughtworks.qdox</groupId>
@@ -61,9 +73,9 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>com.liferay.portal</groupId>
-      <artifactId>portal-kernel</artifactId>
-      <version>7.0.0-SNAPSHOT</version>
+      <groupId>xerces</groupId>
+      <artifactId>xercesImpl</artifactId>
+      <version>2.11.0</version>
       <scope>provided</scope>
     </dependency>
     <dependency>

@@ -936,12 +936,12 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 					if (buildFlowTimeStamp != null && buildFlowTimeStamp.matches("\\d+-\\d+-\\d+\\[\\d+:\\d+:\\d+\\]")) {
 						SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd[HH:mm:ss]");
 
-					    Date date = simpleDateFormat.parse(buildFlowTimeStamp);
+						Date date = simpleDateFormat.parse(buildFlowTimeStamp);
 
-					    project.setProperty("build.flow.time.stamp", Long.toString(date.getTime()));
+						project.setProperty("build.flow.time.stamp", Long.toString(date.getTime()));
 					}
 					else {
-					    project.setProperty("build.flow.time.stamp", Long.toString(System.currentTimeMillis()));
+						project.setProperty("build.flow.time.stamp", Long.toString(System.currentTimeMillis()));
 					}
 
 					String jenkinsURL = project.getProperty("env.JENKINS_URL");
@@ -1218,7 +1218,7 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 						</copy>
 
 						<if>
-	  					 	<available file="${liferay.home}/deploy" />
+							<available file="${liferay.home}/deploy" />
 							<then>
 								<copy todir="${test.app.server.parent.dir}/deploy">
 									<fileset dir="${liferay.home}/deploy" />
@@ -1227,7 +1227,7 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 						</if>
 
 						<if>
-	  					 	<available file="${liferay.home}/osgi" />
+							<available file="${liferay.home}/osgi" />
 							<then>
 								<copy todir="${test.app.server.parent.dir}/osgi">
 									<fileset dir="${liferay.home}/osgi" />
@@ -2389,16 +2389,16 @@ ${tomcat-gc-log}
 			/>
 
 			<if>
-				 <equals arg1="@{app.server.bundle.index}" arg2="0" />
-				 <then>
+				<equals arg1="@{app.server.bundle.index}" arg2="0" />
+				<then>
 					<var name="test.app.server.bin.dir" value="@{app.server.bin.dir}" />
 					<var name="test.app.server.classes.portal.dir" value="${app.server.classes.portal.dir}" />
 					<var name="test.app.server.deploy.dir" value="${app.server.deploy.dir}" />
 					<var name="test.app.server.dir" value="${app.server.dir}" />
 					<var name="test.app.server.liferay.home" value="${liferay.home}" />
 					<var name="test.app.server.parent.dir" value="${app.server.parent.dir}" />
-				 </then>
-				 <else>
+				</then>
+				<else>
 					<antelope:stringutil property="test.app.server.bin.dir" string="@{app.server.bin.dir}">
 						<antelope:replace regex="(${app.server.parent.dir})(.*)" replacement="$1-@{app.server.bundle.index}$2" />
 					</antelope:stringutil>
@@ -2420,7 +2420,7 @@ ${tomcat-gc-log}
 					<antelope:stringutil property="test.app.server.parent.dir" string="${app.server.parent.dir}">
 						<antelope:replace regex="(${app.server.parent.dir})(.*)" replacement="$1-@{app.server.bundle.index}$2" />
 					</antelope:stringutil>
-				 </else>
+				</else>
 			</if>
 		</sequential>
 	</macrodef>
@@ -6446,6 +6446,38 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 
 		<ant antfile="build-dist.xml" inheritAll="false" target="unzip-${app.server.type}-custom" />
 
+		<if>
+			<equals arg1="${app.server.type}" arg2="websphere" />
+			<then>
+				<replace
+					dir="${app.server.websphere.dir}"
+					includes="**/*.js,**/*.metadata,**/*.properties,**/*.props,**/*.sh,**/*.txt,**/*.xml"
+				>
+					<replacefilter token="/opt/dev/projects/github/liferay-portal/bundles" value="${app.server.parent.dir}" />
+				</replace>
+
+				<replace
+					dir="${app.server.websphere.dir}"
+					includes="**/*.sh"
+				>
+					<replacefilter token="#!/bin/sh" value="#!/bin/bash" />
+				</replace>
+
+				<chmod perm="a+x">
+					<fileset dir="${app.server.websphere.dir}">
+						<include name="bin/**/*.sh" />
+						<include name="java*/bin/*" />
+					</fileset>
+				</chmod>
+			</then>
+		</if>
+
+		<chmod perm="a+x">
+			<fileset dir="${app.server.bin.dir}">
+				<include name="**/*.sh" />
+			</fileset>
+		</chmod>
+
 		<ant inheritAll="false" target="deploy" />
 
 		<app-server-properties-reset />
@@ -6570,6 +6602,20 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 					<mapper
 						from="[^/]+/(.*)"
 						to="${app.server.dir}//\1"
+						type="regexp"
+					/>
+				</unzip>
+
+				<unzip
+					dest="${app.server.parent.dir}"
+					src="${tstamp.value}.zip"
+				>
+					<patternset
+						includes="liferay-*/tools/**"
+					/>
+					<mapper
+						from="[^/]+/(.*)"
+						to="${app.server.parent.dir}//\1"
 						type="regexp"
 					/>
 				</unzip>
@@ -6861,12 +6907,6 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 	</target>
 
 	<target name="rebuild-legacy-database">
-		<antcall target="rebuild-database">
-			<param name="database.type" value="${database.type}" />
-			<param name="sql.dir" value="sql/create-bare/" />
-			<param name="sql.file" value="create-bare-${database.type}.sql" />
-		</antcall>
-
 		<get-testcase-property property.name="data.archive.type" />
 		<get-testcase-property property.name="portal.version" />
 
@@ -6878,6 +6918,12 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 		<if>
 			<equals arg1="${database.type}" arg2="mysql" />
 			<then>
+				<antcall target="rebuild-database">
+					<param name="database.type" value="${database.type}" />
+					<param name="sql.dir" value="sql/create-bare/" />
+					<param name="sql.file" value="create-bare-${database.type}.sql" />
+				</antcall>
+
 				<get-database-property property.name="database.password" />
 				<get-database-property property.name="database.schema" />
 				<get-database-property property.name="database.username" />
@@ -6891,8 +6937,48 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 				<exec executable="mysql_upgrade" />
 			</then>
 			<elseif>
+				<equals arg1="${database.type}" arg2="oracle" />
+				<then>
+					<sql classpath="${app.server.lib.global.dir}/${jdbc.oracle.driver}" driver="oracle.jdbc.OracleDriver" onerror="continue" output="data.pump.log" password="${oracle.admin.password}" print="true" url="${database.oracle.url}" userid="${oracle.admin.user}">
+						<![CDATA[
+							drop user lportal cascade;
+							select directory_name, directory_path from dba_directories where directory_name='DATA_PUMP_DIR';
+						]]>
+					</sql>
+
+					<loadfile property="data.pump.log.content" srcFile="data.pump.log" />
+
+					<propertyregex
+						input="${data.pump.log.content}"
+						override="true"
+						property="data.pump.dir"
+						regexp="[\s\S]+DATA_PUMP_DIR,(.*)[\s\S]+"
+						replace="\1"
+					/>
+
+					<move file="${liferay.home}/${database.type}.dmp" todir="${data.pump.dir}" />
+
+					<chown file="${data.pump.dir}/${database.type}.dmp" owner="oracle" />
+					<chgrp file="${data.pump.dir}/${database.type}.dmp" group="oracle" />
+
+					<exec executable="impdp">
+						<arg value="${oracle.admin.user}/${oracle.admin.password}" />
+						<arg value="dumpfile=${database.type}.dmp" />
+						<arg value="table_exists_action=replace" />
+					</exec>
+
+					<delete file="${data.pump.dir}/${database.type}.dmp" />
+				</then>
+			</elseif>
+			<elseif>
 				<equals arg1="${database.type}" arg2="postgresql" />
 				<then>
+					<antcall target="rebuild-database">
+						<param name="database.type" value="${database.type}" />
+						<param name="sql.dir" value="sql/create-bare/" />
+						<param name="sql.file" value="create-bare-${database.type}.sql" />
+					</antcall>
+
 					<get-database-property property.name="database.schema" />
 					<get-database-property property.name="database.username" />
 
@@ -7703,6 +7789,10 @@ jdbc.default.password=${database.mysql.password}</echo>
 			</then>
 		</if>
 
+		<antcall inheritAll="false" target="copy-optional-jars">
+			<param name="todir" value="${app.server.lib.global.dir}" />
+		</antcall>
+
 		<get-testcase-property property.name="portal.version" />
 
 		<if>
@@ -7716,10 +7806,6 @@ jdbc.default.password=${database.mysql.password}</echo>
 				<antcall inheritAll="false" target="rebuild-database" />
 			</else>
 		</if>
-
-		<antcall inheritAll="false" target="copy-optional-jars">
-			<param name="todir" value="${app.server.lib.global.dir}" />
-		</antcall>
 
 		<get-testcase-property property.name="skip.clean-app-server-deploy-dir" />
 
