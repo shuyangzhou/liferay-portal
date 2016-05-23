@@ -26,10 +26,10 @@ import java.net.URL;
 /**
  * @author Raymond Augé
  */
-public class RuntimeClasspathResolver implements ClasspathResolver {
+public class RuntimeClassPathResolver implements ClassPathResolver {
 
 	@Override
-	public URL[] getClasspathURLs() throws Exception {
+	public URL[] getClassPathURLs() throws Exception {
 		File coreDir = new File(PropsValues.MODULE_FRAMEWORK_BASE_DIR, "core");
 
 		File[] files = coreDir.listFiles();
