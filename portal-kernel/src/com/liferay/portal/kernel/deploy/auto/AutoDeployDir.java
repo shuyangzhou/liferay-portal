@@ -171,6 +171,8 @@ public class AutoDeployDir {
 			((_autoDeployScanner == null) || !_autoDeployScanner.isAlive())) {
 
 			try {
+				scanDirectory();
+
 				Thread currentThread = Thread.currentThread();
 
 				_autoDeployScanner = new AutoDeployScanner(

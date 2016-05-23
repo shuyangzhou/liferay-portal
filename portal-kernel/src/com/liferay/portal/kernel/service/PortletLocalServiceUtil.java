@@ -410,6 +410,12 @@ public class PortletLocalServiceUtil {
 		getService().deletePortlets(companyId, portletIds, plid);
 	}
 
+	public static void deployPortlet(
+		com.liferay.portal.kernel.model.Portlet portlet)
+		throws java.lang.Exception {
+		getService().deployPortlet(portlet);
+	}
+
 	public static void destroyPortlet(
 		com.liferay.portal.kernel.model.Portlet portlet) {
 		getService().destroyPortlet(portlet);

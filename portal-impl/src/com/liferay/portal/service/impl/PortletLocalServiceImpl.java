@@ -255,6 +255,32 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 	}
 
 	@Override
+	@Skip
+	public void deployPortlet(Portlet portlet) throws Exception {
+		_portletsMap.put(portlet.getRootPortletId(), portlet);
+
+		PortletApp portletApp = portlet.getPortletApp();
+
+		if (portletApp != null) {
+			_portletApps.put(portletApp.getServletContextName(), portletApp);
+		}
+
+		clearCache();
+
+		ServletContext servletContext = portletApp.getServletContext();
+
+		PortletBagFactory portletBagFactory = new PortletBagFactory();
+
+		portletBagFactory.setClassLoader(
+			ClassLoaderPool.getClassLoader(
+				servletContext.getServletContextName()));
+		portletBagFactory.setServletContext(servletContext);
+		portletBagFactory.setWARFile(true);
+
+		portletBagFactory.create(portlet, true);
+	}
+
+	@Override
 	public Portlet deployRemotePortlet(Portlet portlet, String categoryName)
 		throws PortalException {
 
