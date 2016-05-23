@@ -86,6 +86,14 @@ public class ResourceActionLocalServiceImpl
 	public void checkResourceActions(
 		String name, List<String> actionIds, boolean addDefaultActions) {
 
+		List<ResourceAction> resourceActions = getResourceActions(name);
+
+		for (ResourceAction resourceAction : resourceActions) {
+			if (!actionIds.contains(resourceAction.getActionId())) {
+				deleteResourceAction(resourceAction);
+			}
+		}
+
 		long lastBitwiseValue = -1;
 		List<ResourceAction> newResourceActions = null;
 
