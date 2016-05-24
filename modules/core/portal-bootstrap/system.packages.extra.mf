@@ -1,11 +1,11 @@
 Manifest-Version: 1.0
-Bnd-LastModified: 1464111750621
+Bnd-LastModified: 1464119786927
 Bundle-ManifestVersion: 2
 Bundle-Name: portal-bootstrap
 Bundle-SymbolicName: portal-bootstrap
 Bundle-Vendor: Liferay, Inc.
 Bundle-Version: 1.0.0
-Created-By: 1.7.0_71 (Oracle Corporation)
+Created-By: 1.8.0_91 (Oracle Corporation)
 Export-Package: com.liferay.ibm.icu;version="4.0.1",com.liferay.ibm.ic
  u.impl;version="4.0.1";uses:="com.liferay.ibm.icu.math,com.liferay.ib
  m.icu.text,com.liferay.ibm.icu.util",com.liferay.ibm.icu.impl.coll;ve
@@ -1998,7 +1998,7 @@ Export-Package: com.liferay.ibm.icu;version="4.0.1",com.liferay.ibm.ic
  ray.portal.kernel.model",com.liferay.announcements.kernel.constants;v
  ersion="1.0.0",com.liferay.announcements.kernel.exception;version="1.
  0.0";uses:="com.liferay.portal.kernel.exception",com.liferay.announce
- ments.kernel.model;version="1.0.0";uses:="com.liferay.expando.kernel.
+ ments.kernel.model;version="1.1.0";uses:="com.liferay.expando.kernel.
  model,com.liferay.exportimport.kernel.lar,com.liferay.portal.kernel.a
  nnotation,com.liferay.portal.kernel.bean,com.liferay.portal.kernel.ex
  ception,com.liferay.portal.kernel.model,com.liferay.portal.kernel.ser
@@ -2020,14 +2020,14 @@ Export-Package: com.liferay.ibm.icu;version="4.0.1",com.liferay.ibm.ic
  et.kernel.model,com.liferay.portal.kernel.exception",com.liferay.asse
  t.kernel.exception;version="1.0.0";uses:="com.liferay.asset.kernel.mo
  del,com.liferay.portal.kernel.exception",com.liferay.asset.kernel.mod
- el;version="1.1.0";uses:="com.liferay.dynamic.data.mapping.kernel,com
+ el;version="1.2.0";uses:="com.liferay.dynamic.data.mapping.kernel,com
  .liferay.expando.kernel.model,com.liferay.exportimport.kernel.lar,com
  .liferay.portal.kernel.annotation,com.liferay.portal.kernel.bean,com.
  liferay.portal.kernel.exception,com.liferay.portal.kernel.model,com.l
  iferay.portal.kernel.portlet,com.liferay.portal.kernel.security.permi
  ssion,com.liferay.portal.kernel.service,com.liferay.portal.kernel.the
  me,com.liferay.portal.kernel.util,javax.portlet,javax.servlet,javax.s
- ervlet.http",com.liferay.asset.kernel.model.adapter;version="1.0.0";u
+ ervlet.http",com.liferay.asset.kernel.model.adapter;version="1.1.0";u
  ses:="com.liferay.asset.kernel.model,com.liferay.portal.kernel.model"
  ,com.liferay.asset.kernel.service;version="1.2.0";uses:="com.liferay.
  asset.kernel.model,com.liferay.asset.kernel.service.persistence,com.l
@@ -2054,7 +2054,7 @@ Export-Package: com.liferay.ibm.icu;version="4.0.1",com.liferay.ibm.ic
  om.liferay.portal.kernel.backgroundtask,com.liferay.portal.kernel.uti
  l",com.liferay.blogs.kernel.exception;version="1.0.0";uses:="com.life
  ray.portal.kernel.exception",com.liferay.blogs.kernel.model;version="
- 1.0.0";uses:="com.liferay.expando.kernel.model,com.liferay.exportimpo
+ 1.1.0";uses:="com.liferay.expando.kernel.model,com.liferay.exportimpo
  rt.kernel.lar,com.liferay.portal.kernel.annotation,com.liferay.portal
  .kernel.bean,com.liferay.portal.kernel.exception,com.liferay.portal.k
  ernel.model,com.liferay.portal.kernel.service,com.liferay.portal.kern
@@ -2078,7 +2078,7 @@ Export-Package: com.liferay.ibm.icu;version="4.0.1",com.liferay.ibm.ic
  eray.counter;version="1.0.0",com.liferay.counter.kernel;version="2.2.
  0",com.liferay.counter.kernel.exception;version="1.0.0";uses:="com.li
  feray.portal.kernel.exception",com.liferay.counter.kernel.model;versi
- on="1.0.0";uses:="com.liferay.expando.kernel.model,com.liferay.portal
+ on="1.1.0";uses:="com.liferay.expando.kernel.model,com.liferay.portal
  .kernel.annotation,com.liferay.portal.kernel.bean,com.liferay.portal.
  kernel.model,com.liferay.portal.kernel.service,com.liferay.portal.ker
  nel.util",com.liferay.counter.kernel.service;version="1.0.0";uses:="c
@@ -2115,7 +2115,7 @@ Export-Package: com.liferay.ibm.icu;version="4.0.1",com.liferay.ibm.ic
  ry.kernel.antivirus;version="1.0.0";uses:="com.liferay.portal.kernel.
  exception",com.liferay.document.library.kernel.exception;version="1.0
  .0";uses:="com.liferay.portal.kernel.exception",com.liferay.document.
- library.kernel.model;version="1.0.0";uses:="com.liferay.dynamic.data.
+ library.kernel.model;version="1.1.0";uses:="com.liferay.dynamic.data.
  mapping.kernel,com.liferay.expando.kernel.model,com.liferay.exportimp
  ort.kernel.lar,com.liferay.portal.kernel.annotation,com.liferay.porta
  l.kernel.bean,com.liferay.portal.kernel.exception,com.liferay.portal.
@@ -2155,7 +2155,7 @@ Export-Package: com.liferay.ibm.icu;version="4.0.1",com.liferay.ibm.ic
  model,com.liferay.portal.kernel.search,com.liferay.portal.kernel.serv
  ice,com.liferay.portal.kernel.theme",com.liferay.expando.kernel.excep
  tion;version="1.0.0";uses:="com.liferay.portal.kernel.exception",com.
- liferay.expando.kernel.model;version="1.0.0";uses:="com.liferay.porta
+ liferay.expando.kernel.model;version="1.1.0";uses:="com.liferay.porta
  l.kernel.annotation,com.liferay.portal.kernel.bean,com.liferay.portal
  .kernel.exception,com.liferay.portal.kernel.model,com.liferay.portal.
  kernel.service,com.liferay.portal.kernel.theme,com.liferay.portal.ker
@@ -2183,7 +2183,7 @@ Export-Package: com.liferay.ibm.icu;version="4.0.1",com.liferay.ibm.ic
  liferay.exportimport.kernel.model",com.liferay.exportimport.kernel.ex
  ception;version="1.0.0";uses:="com.liferay.exportimport.kernel.lar,co
  m.liferay.portal.kernel.exception",com.liferay.exportimport.kernel.la
- r;version="1.1.0";uses:="com.liferay.asset.kernel.model,com.liferay.e
+ r;version="1.0.0";uses:="com.liferay.asset.kernel.model,com.liferay.e
  xpando.kernel.model,com.liferay.exportimport.kernel.model,com.liferay
  .message.boards.kernel.model,com.liferay.portal.kernel.dao.orm,com.li
  feray.portal.kernel.exception,com.liferay.portal.kernel.lock,com.life
@@ -2194,7 +2194,7 @@ Export-Package: com.liferay.ibm.icu;version="4.0.1",com.liferay.ibm.ic
  liferay.exportimport.kernel.lifecycle;version="1.0.0";uses:="com.life
  ray.exportimport.kernel.lar,com.liferay.exportimport.kernel.model,com
  .liferay.portal.kernel.model",com.liferay.exportimport.kernel.model;v
- ersion="1.0.0";uses:="com.liferay.expando.kernel.model,com.liferay.po
+ ersion="1.1.0";uses:="com.liferay.expando.kernel.model,com.liferay.po
  rtal.kernel.annotation,com.liferay.portal.kernel.bean,com.liferay.por
  tal.kernel.exception,com.liferay.portal.kernel.model,com.liferay.port
  al.kernel.service,com.liferay.portal.kernel.trash,com.liferay.portal.
@@ -2246,7 +2246,7 @@ Export-Package: com.liferay.ibm.icu;version="4.0.1",com.liferay.ibm.ic
  rtal.kernel.util",com.liferay.message.boards.kernel.constants;version
  ="1.0.0",com.liferay.message.boards.kernel.exception;version="1.0.0";
  uses:="com.liferay.portal.kernel.exception",com.liferay.message.board
- s.kernel.model;version="1.0.0";uses:="com.liferay.expando.kernel.mode
+ s.kernel.model;version="1.1.0";uses:="com.liferay.expando.kernel.mode
  l,com.liferay.exportimport.kernel.lar,com.liferay.portal.kernel.annot
  ation,com.liferay.portal.kernel.bean,com.liferay.portal.kernel.except
  ion,com.liferay.portal.kernel.lock,com.liferay.portal.kernel.model,co
@@ -2579,7 +2579,7 @@ Export-Package: com.liferay.ibm.icu;version="4.0.1",com.liferay.ibm.ic
  rnel.microsofttranslator;version="6.2.0";uses:="com.liferay.portal.ke
  rnel.exception",com.liferay.portal.kernel.mobile.device;version="7.0.
  1";uses:="javax.servlet.http",com.liferay.portal.kernel.model;version
- ="1.0.0";uses:="com.liferay.asset.kernel.model,com.liferay.expando.ke
+ ="1.1.0";uses:="com.liferay.asset.kernel.model,com.liferay.expando.ke
  rnel.model,com.liferay.exportimport.kernel.lar,com.liferay.portal.ker
  nel.annotation,com.liferay.portal.kernel.application.type,com.liferay
  .portal.kernel.atom,com.liferay.portal.kernel.bean,com.liferay.portal
@@ -2595,10 +2595,10 @@ Export-Package: com.liferay.ibm.icu;version="4.0.1",com.liferay.ibm.ic
  y.portal.kernel.workflow,com.liferay.portal.kernel.xml,com.liferay.po
  rtal.kernel.xmlrpc,com.liferay.social.kernel.model,com.liferay.trash.
  kernel.model,javax.portlet,javax.servlet,javax.servlet.http",com.life
- ray.portal.kernel.model.adapter;version="1.0.0";uses:="com.liferay.po
+ ray.portal.kernel.model.adapter;version="1.1.0";uses:="com.liferay.po
  rtal.kernel.model",com.liferay.portal.kernel.model.adapter.builder;ve
  rsion="1.0.0",com.liferay.portal.kernel.model.cache;version="1.0.0",c
- om.liferay.portal.kernel.model.impl;version="1.0.0";uses:="com.lifera
+ om.liferay.portal.kernel.model.impl;version="1.1.0";uses:="com.lifera
  y.expando.kernel.model,com.liferay.portal.kernel.exception,com.lifera
  y.portal.kernel.io.unsync,com.liferay.portal.kernel.model,com.liferay
  .portal.kernel.security.permission,com.liferay.portal.kernel.service,
@@ -3562,7 +3562,7 @@ Export-Package: com.liferay.ibm.icu;version="4.0.1",com.liferay.ibm.ic
  m.liferay.asset.kernel.model.adapter,com.liferay.expando.kernel.model
  ,com.liferay.exportimport.kernel.lar,com.liferay.portal.kernel.model,
  com.liferay.portal.kernel.service";version="1.0.0",com.liferay.portle
- t.asset.model.impl;version="1.0.3";uses:="com.liferay.asset.kernel.mo
+ t.asset.model.impl;version="1.0.2";uses:="com.liferay.asset.kernel.mo
  del,com.liferay.expando.kernel.model,com.liferay.exportimport.kernel.
  lar,com.liferay.portal.kernel.exception,com.liferay.portal.kernel.jso
  n,com.liferay.portal.kernel.model,com.liferay.portal.kernel.model.imp
@@ -4039,204 +4039,204 @@ Export-Package: com.liferay.ibm.icu;version="4.0.1",com.liferay.ibm.ic
  on,com.liferay.portal.kernel.spring.osgi,com.liferay.portal.kernel.ut
  il,com.liferay.users.admin.kernel.util,javax.portlet,javax.servlet.ht
  tp";version="1.0.0",com.liferay.ratings.kernel;version="1.0.0",com.li
- feray.ratings.kernel.definition;version="1.1.0";uses:="com.liferay.po
- rtal.kernel.exception,com.liferay.ratings.kernel",com.liferay.ratings
- .kernel.display.context;version="1.0.0";uses:="com.liferay.portal.ker
- nel.util,com.liferay.ratings.kernel,javax.portlet,javax.servlet.http"
- ,com.liferay.ratings.kernel.exception;version="1.0.0";uses:="com.life
- ray.portal.kernel.exception",com.liferay.ratings.kernel.model;version
- ="1.0.0";uses:="com.liferay.expando.kernel.model,com.liferay.exportim
- port.kernel.lar,com.liferay.portal.kernel.annotation,com.liferay.port
- al.kernel.bean,com.liferay.portal.kernel.model,com.liferay.portal.ker
- nel.service,com.liferay.portal.kernel.util",com.liferay.ratings.kerne
- l.service;version="1.0.0";uses:="com.liferay.exportimport.kernel.lar,
- com.liferay.portal.kernel.dao.orm,com.liferay.portal.kernel.exception
- ,com.liferay.portal.kernel.jsonwebservice,com.liferay.portal.kernel.m
- odel,com.liferay.portal.kernel.search,com.liferay.portal.kernel.secur
- ity.access.control,com.liferay.portal.kernel.service,com.liferay.port
- al.kernel.systemevent,com.liferay.portal.kernel.transaction,com.lifer
- ay.portal.kernel.util,com.liferay.ratings.kernel.model",com.liferay.r
- atings.kernel.service.persistence;version="1.0.0";uses:="com.liferay.
- portal.kernel.dao.orm,com.liferay.portal.kernel.service,com.liferay.p
- ortal.kernel.service.persistence,com.liferay.portal.kernel.util,com.l
- iferay.ratings.kernel.exception,com.liferay.ratings.kernel.model",com
- .liferay.ratings.kernel.transformer;version="1.0.0";uses:="com.lifera
- y.portal.kernel.dao.orm,com.liferay.portal.kernel.exception,com.lifer
- ay.portal.kernel.util,com.liferay.ratings.kernel,com.liferay.ratings.
- kernel.model,javax.portlet",com.liferay.registry;version="1.1.0";uses
- :="com.liferay.registry.dependency",com.liferay.registry.collections;
- version="1.0.0";uses:="com.liferay.registry",com.liferay.registry.dep
- endency;version="1.0.0";uses:="com.liferay.registry",com.liferay.regi
- stry.util;version="1.0.0",com.liferay.roles.admin.kernel.util;version
- ="1.0.0";uses:="com.liferay.portal.kernel.model",com.liferay.sites.ke
- rnel.util;version="1.0.0";uses:="com.liferay.portal.kernel.exception,
- com.liferay.portal.kernel.model,com.liferay.portal.kernel.security.pe
- rmission,com.liferay.portal.kernel.service,javax.portlet,javax.servle
- t.http",com.liferay.social.kernel.exception;version="1.0.0";uses:="co
- m.liferay.portal.kernel.exception",com.liferay.social.kernel.model;ve
- rsion="1.0.0";uses:="com.liferay.asset.kernel.model,com.liferay.expan
- do.kernel.model,com.liferay.portal.kernel.annotation,com.liferay.port
- al.kernel.bean,com.liferay.portal.kernel.exception,com.liferay.portal
- .kernel.json,com.liferay.portal.kernel.model,com.liferay.portal.kerne
- l.security.permission,com.liferay.portal.kernel.service,com.liferay.p
- ortal.kernel.theme,com.liferay.portal.kernel.util",com.liferay.social
- .kernel.model.impl;version="1.0.0";uses:="com.liferay.portal.kernel.e
- xception,com.liferay.portal.kernel.security.permission,com.liferay.po
- rtal.kernel.service,com.liferay.portal.kernel.theme,com.liferay.socia
- l.kernel.model",com.liferay.social.kernel.service;version="1.0.0";use
- s:="com.liferay.asset.kernel.model,com.liferay.portal.kernel.dao.orm,
- com.liferay.portal.kernel.exception,com.liferay.portal.kernel.json,co
- m.liferay.portal.kernel.jsonwebservice,com.liferay.portal.kernel.mess
- aging.async,com.liferay.portal.kernel.model,com.liferay.portal.kernel
- .search,com.liferay.portal.kernel.security.access.control,com.liferay
- .portal.kernel.service,com.liferay.portal.kernel.theme,com.liferay.po
- rtal.kernel.transaction,com.liferay.portal.kernel.util,com.liferay.so
- cial.kernel.model",com.liferay.social.kernel.service.permission;versi
- on="1.0.0";uses:="com.liferay.portal.kernel.exception,com.liferay.por
- tal.kernel.security.permission",com.liferay.social.kernel.service.per
- sistence;version="1.0.0";uses:="com.liferay.portal.kernel.dao.orm,com
- .liferay.portal.kernel.service,com.liferay.portal.kernel.service.pers
- istence,com.liferay.portal.kernel.util,com.liferay.social.kernel.exce
- ption,com.liferay.social.kernel.model",com.liferay.social.kernel.util
- ;version="1.0.0";uses:="com.liferay.portal.kernel.service,com.liferay
- .social.kernel.model,javax.servlet.http",com.liferay.social.kernel.ut
- il.comparator;version="1.0.0";uses:="com.liferay.portal.kernel.util,c
- om.liferay.social.kernel.model",com.liferay.trash.kernel.exception;ve
- rsion="1.1.0";uses:="com.liferay.portal.kernel.exception",com.liferay
- .trash.kernel.model;version="1.0.0";uses:="com.liferay.expando.kernel
- .model,com.liferay.portal.kernel.annotation,com.liferay.portal.kernel
- .bean,com.liferay.portal.kernel.model,com.liferay.portal.kernel.servi
- ce,com.liferay.portal.kernel.util",com.liferay.trash.kernel.service;v
- ersion="1.0.0";uses:="com.liferay.portal.kernel.dao.orm,com.liferay.p
- ortal.kernel.exception,com.liferay.portal.kernel.jsonwebservice,com.l
- iferay.portal.kernel.model,com.liferay.portal.kernel.search,com.lifer
- ay.portal.kernel.security.access.control,com.liferay.portal.kernel.se
- curity.auth,com.liferay.portal.kernel.service,com.liferay.portal.kern
- el.transaction,com.liferay.portal.kernel.util,com.liferay.trash.kerne
- l.model",com.liferay.trash.kernel.service.persistence;version="1.0.0"
- ;uses:="com.liferay.portal.kernel.dao.orm,com.liferay.portal.kernel.s
- ervice,com.liferay.portal.kernel.service.persistence,com.liferay.port
- al.kernel.util,com.liferay.trash.kernel.exception,com.liferay.trash.k
- ernel.model",com.liferay.trash.kernel.util;version="1.0.0";uses:="com
+ feray.ratings.kernel.definition;version="1.0.0";uses:="com.liferay.ra
+ tings.kernel",com.liferay.ratings.kernel.display.context;version="1.0
+ .0";uses:="com.liferay.portal.kernel.util,com.liferay.ratings.kernel,
+ javax.portlet,javax.servlet.http",com.liferay.ratings.kernel.exceptio
+ n;version="1.0.0";uses:="com.liferay.portal.kernel.exception",com.lif
+ eray.ratings.kernel.model;version="1.1.0";uses:="com.liferay.expando.
+ kernel.model,com.liferay.exportimport.kernel.lar,com.liferay.portal.k
+ ernel.annotation,com.liferay.portal.kernel.bean,com.liferay.portal.ke
+ rnel.model,com.liferay.portal.kernel.service,com.liferay.portal.kerne
+ l.util",com.liferay.ratings.kernel.service;version="1.0.0";uses:="com
+ .liferay.exportimport.kernel.lar,com.liferay.portal.kernel.dao.orm,co
+ m.liferay.portal.kernel.exception,com.liferay.portal.kernel.jsonwebse
+ rvice,com.liferay.portal.kernel.model,com.liferay.portal.kernel.searc
+ h,com.liferay.portal.kernel.security.access.control,com.liferay.porta
+ l.kernel.service,com.liferay.portal.kernel.systemevent,com.liferay.po
+ rtal.kernel.transaction,com.liferay.portal.kernel.util,com.liferay.ra
+ tings.kernel.model",com.liferay.ratings.kernel.service.persistence;ve
+ rsion="1.0.0";uses:="com.liferay.portal.kernel.dao.orm,com.liferay.po
+ rtal.kernel.service,com.liferay.portal.kernel.service.persistence,com
+ .liferay.portal.kernel.util,com.liferay.ratings.kernel.exception,com.
+ liferay.ratings.kernel.model",com.liferay.ratings.kernel.transformer;
+ version="1.0.0";uses:="com.liferay.portal.kernel.dao.orm,com.liferay.
+ portal.kernel.exception,com.liferay.portal.kernel.util,com.liferay.ra
+ tings.kernel,com.liferay.ratings.kernel.model,javax.portlet",com.life
+ ray.registry;version="1.1.0";uses:="com.liferay.registry.dependency",
+ com.liferay.registry.collections;version="1.0.0";uses:="com.liferay.r
+ egistry",com.liferay.registry.dependency;version="1.0.0";uses:="com.l
+ iferay.registry",com.liferay.registry.util;version="1.0.0",com.lifera
+ y.roles.admin.kernel.util;version="1.0.0";uses:="com.liferay.portal.k
+ ernel.model",com.liferay.sites.kernel.util;version="1.0.0";uses:="com
  .liferay.portal.kernel.exception,com.liferay.portal.kernel.model,com.
- liferay.portal.kernel.portlet,com.liferay.portal.kernel.search,com.li
- feray.portal.kernel.theme,com.liferay.portal.kernel.util,com.liferay.
- trash.kernel.model,javax.portlet,javax.servlet.http",com.liferay.tras
- h.kernel.util.comparator;version="1.0.0";uses:="com.liferay.portal.ke
- rnel.util,com.liferay.trash.kernel.model",com.liferay.users.admin.ker
- nel.util;version="1.0.0";uses:="com.liferay.portal.kernel.exception,c
- om.liferay.portal.kernel.model,com.liferay.portal.kernel.search,com.l
- iferay.portal.kernel.security.permission,com.liferay.portal.kernel.ut
- il,javax.portlet,javax.servlet.http",javax.ccpp;uses:="javax.servlet.
- http";version="1.0.0",javax.ccpp.uaprof;uses:="javax.ccpp";version="1
- .0.0",jodd;version="1.0.0",jodd.asm;uses:="jodd.asm5,jodd.asm5.signat
- ure,jodd.mutable";version="1.0.0",jodd.asm5;version="1.0.0",jodd.asm5
- .signature;version="1.0.0",jodd.cache;version="1.0.0",jodd.core;uses:
- ="jodd.io,jodd.util.cl";version="1.0.0",jodd.csselly;uses:="jodd.laga
- rto,jodd.lagarto.dom";version="1.0.0",jodd.csselly.selector;uses:="jo
- dd.csselly,jodd.lagarto.dom";version="1.0.0",jodd.datetime;uses:="jod
- d.datetime.format";version="1.0.0",jodd.datetime.format;uses:="jodd.d
- atetime";version="1.0.0",jodd.db;uses:="jodd.db.connection,jodd.db.qu
- erymap,jodd.db.type,jodd.exception";version="1.0.0",jodd.db.connectio
- n;version="1.0.0",jodd.db.debug;uses:="jodd.proxetta,jodd.proxetta.im
- pl";version="1.0.0",jodd.db.jtx;uses:="jodd.db,jodd.db.connection,jod
- d.jtx";version="1.0.0",jodd.db.oom;uses:="jodd.db,jodd.db.oom.mapper,
- jodd.db.oom.naming,jodd.db.oom.sqlgen,jodd.db.type,jodd.introspector"
- ;version="1.0.0",jodd.db.oom.config;uses:="jodd.db.oom,jodd.io.findfi
- le";version="1.0.0",jodd.db.oom.dao;uses:="jodd.db.oom";version="1.0.
- 0",jodd.db.oom.mapper;uses:="jodd.db.oom,jodd.db.type";version="1.0.0
- ",jodd.db.oom.meta;uses:="jodd.db.type";version="1.0.0",jodd.db.oom.n
- aming;version="1.0.0",jodd.db.oom.sqlgen;uses:="jodd.db,jodd.db.oom,j
- odd.db.oom.sqlgen.chunks";version="1.0.0",jodd.db.oom.sqlgen.chunks;u
- ses:="jodd.db.oom,jodd.db.oom.sqlgen";version="1.0.0",jodd.db.pool;us
- es:="jodd.db.connection";version="1.0.0",jodd.db.querymap;uses:="jodd
- .props";version="1.0.0",jodd.db.type;uses:="jodd.datetime";version="1
- .0.0",jodd.decora;uses:="javax.servlet,javax.servlet.http,jodd.decora
- .parser,jodd.exception,jodd.servlet.wrapper";version="1.0.0",jodd.dec
- ora.parser;uses:="jodd.lagarto";version="1.0.0",jodd.format;version="
- 1.0.0",jodd.htmlstapler;uses:="javax.servlet,javax.servlet.http,jodd.
- exception,jodd.lagarto,jodd.lagarto.filter";version="1.0.0",jodd.intr
- ospector;version="1.0.0",jodd.jerry;uses:="jodd.lagarto.dom";version=
- "1.0.0",jodd.json;uses:="jodd.exception,jodd.introspector,jodd.json.m
- eta,jodd.util,jodd.util.collection";version="1.0.0",jodd.json.impl;us
- es:="jodd.datetime,jodd.json";version="1.0.0",jodd.json.meta;uses:="j
- odd.util";version="1.0.0",jodd.jtx;uses:="jodd.exception";version="1.
- 0.0",jodd.jtx.meta;uses:="jodd.jtx,jodd.util";version="1.0.0",jodd.jt
- x.proxy;uses:="jodd.jtx,jodd.jtx.meta,jodd.jtx.worker,jodd.proxetta";
- version="1.0.0",jodd.jtx.worker;uses:="jodd.jtx";version="1.0.0",jodd
- .lagarto;uses:="jodd.exception";version="1.0.0",jodd.lagarto.adapter;
- uses:="jodd.lagarto";version="1.0.0",jodd.lagarto.dom;uses:="jodd.css
- elly,jodd.lagarto,jodd.log,jodd.util.collection";version="1.0.0",jodd
- .lagarto.filter;uses:="javax.servlet,javax.servlet.http,jodd.io,jodd.
- lagarto";version="1.0.0",jodd.lagarto.form;uses:="jodd.lagarto";versi
- on="1.0.0",jodd.log;version="1.0.0",jodd.log.impl;uses:="jodd.log,org
- .apache.commons.logging,org.slf4j";version="1.0.0",jodd.madvoc;uses:=
- "javax.servlet,javax.servlet.http,jodd.exception,jodd.madvoc.componen
- t,jodd.madvoc.config,jodd.madvoc.filter,jodd.madvoc.injector,jodd.mad
- voc.interceptor,jodd.madvoc.macro,jodd.madvoc.result,jodd.petite,jodd
- .props";version="1.0.0",jodd.madvoc.action;uses:="jodd.madvoc,jodd.ma
- dvoc.component,jodd.madvoc.filter,jodd.madvoc.interceptor,jodd.madvoc
- .meta,jodd.madvoc.result";version="1.0.0",jodd.madvoc.component;uses:
- ="javax.servlet,javax.servlet.http,jodd.madvoc,jodd.madvoc.filter,jod
- d.madvoc.injector,jodd.madvoc.interceptor,jodd.madvoc.macro,jodd.madv
- oc.meta,jodd.madvoc.path,jodd.madvoc.result,jodd.petite,jodd.petite.m
- eta,jodd.upload,jodd.util.collection";version="1.0.0",jodd.madvoc.con
- fig;uses:="jodd.io.findfile,jodd.madvoc,jodd.madvoc.component,jodd.ma
- dvoc.filter,jodd.madvoc.interceptor,jodd.madvoc.result,jodd.petite.me
- ta";version="1.0.0",jodd.madvoc.filter;uses:="jodd.madvoc,jodd.madvoc
- .interceptor";version="1.0.0",jodd.madvoc.injector;uses:="javax.servl
- et,javax.servlet.http,jodd.madvoc,jodd.madvoc.component,jodd.petite";
- version="1.0.0",jodd.madvoc.interceptor;uses:="jodd.introspector,jodd
- .madvoc,jodd.madvoc.component,jodd.madvoc.injector,jodd.madvoc.meta";
- version="1.0.0",jodd.madvoc.macro;version="1.0.0",jodd.madvoc.meta;us
- es:="jodd.madvoc,jodd.madvoc.filter,jodd.madvoc.interceptor,jodd.madv
- oc.path,jodd.madvoc.result,jodd.util";version="1.0.0",jodd.madvoc.pat
- h;uses:="jodd.madvoc,jodd.madvoc.component,jodd.madvoc.meta";version=
- "1.0.0",jodd.madvoc.petite;uses:="jodd.madvoc,jodd.madvoc.component,j
- odd.madvoc.filter,jodd.madvoc.interceptor,jodd.madvoc.result,jodd.pet
- ite,jodd.petite.meta";version="1.0.0",jodd.madvoc.proxetta;uses:="jod
- d.madvoc,jodd.madvoc.component,jodd.proxetta.impl";version="1.0.0",jo
- dd.madvoc.result;uses:="javax.servlet.http,jodd.bean,jodd.madvoc,jodd
- .madvoc.component,jodd.madvoc.meta,jodd.methref";version="1.0.0",jodd
- .mail;uses:="javax.mail,javax.mail.internet,javax.mail.search,jodd.ex
- ception,jodd.mail.att";version="1.0.0",jodd.mail.att;uses:="jodd.mail
- ";version="1.0.0",jodd.methref;uses:="jodd.proxetta,jodd.proxetta.imp
- l";version="1.0.0",jodd.mutable;version="1.0.0",jodd.paramo;uses:="jo
- dd.exception";version="1.0.0",jodd.petite;uses:="jodd.exception,jodd.
- introspector,jodd.petite.meta,jodd.petite.resolver,jodd.petite.scope,
- jodd.props,jodd.proxetta";version="1.0.0",jodd.petite.config;uses:="j
- odd.io.findfile,jodd.petite";version="1.0.0",jodd.petite.meta;uses:="
- jodd.petite,jodd.petite.scope";version="1.0.0",jodd.petite.proxetta;u
- ses:="jodd.petite,jodd.petite.scope,jodd.proxetta.impl";version="1.0.
- 0",jodd.petite.resolver;uses:="jodd.petite";version="1.0.0",jodd.peti
- te.scope;uses:="javax.servlet.http,jodd.petite";version="1.0.0",jodd.
- props;version="1.0.0",jodd.proxetta;uses:="jodd.asm5,jodd.exception,j
- odd.proxetta.asm";version="1.0.0",jodd.proxetta.advice;uses:="jodd.pr
- oxetta";version="1.0.0",jodd.proxetta.asm;uses:="jodd.asm,jodd.asm5,j
- odd.asm5.signature,jodd.mutable,jodd.proxetta,jodd.util.collection";v
- ersion="1.0.0",jodd.proxetta.impl;uses:="jodd.asm5,jodd.proxetta,jodd
- .proxetta.asm";version="1.0.0",jodd.proxetta.pointcuts;uses:="jodd.pr
- oxetta";version="1.0.0",jodd.servlet;uses:="javax.servlet,javax.servl
- et.http";version="1.0.0",jodd.servlet.filter;uses:="javax.servlet,jav
- ax.servlet.http,jodd.io";version="1.0.0",jodd.servlet.map;uses:="java
- x.servlet,javax.servlet.http,jodd.util.collection";version="1.0.0",jo
- dd.servlet.tag;version="1.0.0",jodd.servlet.upload;uses:="javax.servl
- et.http,jodd.upload";version="1.0.0",jodd.servlet.wrapper;uses:="java
- x.servlet,javax.servlet.http,jodd.io,jodd.servlet.filter";version="1.
- 0.0",jodd.typeconverter;uses:="jodd.datetime,jodd.exception";version=
- "1.0.0",jodd.typeconverter.impl;uses:="jodd.datetime,jodd.mutable,jod
- d.typeconverter";version="1.0.0",jodd.upload;uses:=jodd;version="1.0.
- 0",jodd.upload.impl;uses:="jodd.upload";version="1.0.0",jodd.upload.t
- ypeconverter;uses:="jodd.typeconverter,jodd.upload";version="1.0.0",j
- odd.vtor;uses:="jodd.exception,jodd.introspector";version="1.0.0",jod
- d.vtor.constraint;uses:="jodd.datetime,jodd.vtor";version="1.0.0",org
- .apache.felix.utils.log;version="1.0.0",org.apache.tools.bzip2;versio
- n="1.0.0",org.apache.tools.mail;version="1.0.0",org.apache.tools.tar;
- version="1.0.0",org.apache.tools.zip;version="1.0.0",org.eclipse.pers
- istence.javax.persistence.osgi;uses:="javax.persistence.spi";version=
- "1.0.0",com.liferay.portal.bootstrap.index;version="1.0.0",org.apache
- .commons.validator.routines;version="1.5.0",org.apache.xml.serializer
- ;version="2.7.1",org.objectweb.asm.attrs;version="5.0.1"
+ liferay.portal.kernel.security.permission,com.liferay.portal.kernel.s
+ ervice,javax.portlet,javax.servlet.http",com.liferay.social.kernel.ex
+ ception;version="1.0.0";uses:="com.liferay.portal.kernel.exception",c
+ om.liferay.social.kernel.model;version="1.1.0";uses:="com.liferay.ass
+ et.kernel.model,com.liferay.expando.kernel.model,com.liferay.portal.k
+ ernel.annotation,com.liferay.portal.kernel.bean,com.liferay.portal.ke
+ rnel.exception,com.liferay.portal.kernel.json,com.liferay.portal.kern
+ el.model,com.liferay.portal.kernel.security.permission,com.liferay.po
+ rtal.kernel.service,com.liferay.portal.kernel.theme,com.liferay.porta
+ l.kernel.util",com.liferay.social.kernel.model.impl;version="1.0.0";u
+ ses:="com.liferay.portal.kernel.exception,com.liferay.portal.kernel.s
+ ecurity.permission,com.liferay.portal.kernel.service,com.liferay.port
+ al.kernel.theme,com.liferay.social.kernel.model",com.liferay.social.k
+ ernel.service;version="1.0.0";uses:="com.liferay.asset.kernel.model,c
+ om.liferay.portal.kernel.dao.orm,com.liferay.portal.kernel.exception,
+ com.liferay.portal.kernel.json,com.liferay.portal.kernel.jsonwebservi
+ ce,com.liferay.portal.kernel.messaging.async,com.liferay.portal.kerne
+ l.model,com.liferay.portal.kernel.search,com.liferay.portal.kernel.se
+ curity.access.control,com.liferay.portal.kernel.service,com.liferay.p
+ ortal.kernel.theme,com.liferay.portal.kernel.transaction,com.liferay.
+ portal.kernel.util,com.liferay.social.kernel.model",com.liferay.socia
+ l.kernel.service.permission;version="1.0.0";uses:="com.liferay.portal
+ .kernel.exception,com.liferay.portal.kernel.security.permission",com.
+ liferay.social.kernel.service.persistence;version="1.0.0";uses:="com.
+ liferay.portal.kernel.dao.orm,com.liferay.portal.kernel.service,com.l
+ iferay.portal.kernel.service.persistence,com.liferay.portal.kernel.ut
+ il,com.liferay.social.kernel.exception,com.liferay.social.kernel.mode
+ l",com.liferay.social.kernel.util;version="1.0.0";uses:="com.liferay.
+ portal.kernel.service,com.liferay.social.kernel.model,javax.servlet.h
+ ttp",com.liferay.social.kernel.util.comparator;version="1.0.0";uses:=
+ "com.liferay.portal.kernel.util,com.liferay.social.kernel.model",com.
+ liferay.trash.kernel.exception;version="1.1.0";uses:="com.liferay.por
+ tal.kernel.exception",com.liferay.trash.kernel.model;version="1.1.0";
+ uses:="com.liferay.expando.kernel.model,com.liferay.portal.kernel.ann
+ otation,com.liferay.portal.kernel.bean,com.liferay.portal.kernel.mode
+ l,com.liferay.portal.kernel.service,com.liferay.portal.kernel.util",c
+ om.liferay.trash.kernel.service;version="1.0.0";uses:="com.liferay.po
+ rtal.kernel.dao.orm,com.liferay.portal.kernel.exception,com.liferay.p
+ ortal.kernel.jsonwebservice,com.liferay.portal.kernel.model,com.lifer
+ ay.portal.kernel.search,com.liferay.portal.kernel.security.access.con
+ trol,com.liferay.portal.kernel.security.auth,com.liferay.portal.kerne
+ l.service,com.liferay.portal.kernel.transaction,com.liferay.portal.ke
+ rnel.util,com.liferay.trash.kernel.model",com.liferay.trash.kernel.se
+ rvice.persistence;version="1.0.0";uses:="com.liferay.portal.kernel.da
+ o.orm,com.liferay.portal.kernel.service,com.liferay.portal.kernel.ser
+ vice.persistence,com.liferay.portal.kernel.util,com.liferay.trash.ker
+ nel.exception,com.liferay.trash.kernel.model",com.liferay.trash.kerne
+ l.util;version="1.0.0";uses:="com.liferay.portal.kernel.exception,com
+ .liferay.portal.kernel.model,com.liferay.portal.kernel.portlet,com.li
+ feray.portal.kernel.search,com.liferay.portal.kernel.theme,com.lifera
+ y.portal.kernel.util,com.liferay.trash.kernel.model,javax.portlet,jav
+ ax.servlet.http",com.liferay.trash.kernel.util.comparator;version="1.
+ 0.0";uses:="com.liferay.portal.kernel.util,com.liferay.trash.kernel.m
+ odel",com.liferay.users.admin.kernel.util;version="1.0.0";uses:="com.
+ liferay.portal.kernel.exception,com.liferay.portal.kernel.model,com.l
+ iferay.portal.kernel.search,com.liferay.portal.kernel.security.permis
+ sion,com.liferay.portal.kernel.util,javax.portlet,javax.servlet.http"
+ ,javax.ccpp;uses:="javax.servlet.http";version="1.0.0",javax.ccpp.uap
+ rof;uses:="javax.ccpp";version="1.0.0",jodd;version="1.0.0",jodd.asm;
+ uses:="jodd.asm5,jodd.asm5.signature,jodd.mutable";version="1.0.0",jo
+ dd.asm5;version="1.0.0",jodd.asm5.signature;version="1.0.0",jodd.cach
+ e;version="1.0.0",jodd.core;uses:="jodd.io,jodd.util.cl";version="1.0
+ .0",jodd.csselly;uses:="jodd.lagarto,jodd.lagarto.dom";version="1.0.0
+ ",jodd.csselly.selector;uses:="jodd.csselly,jodd.lagarto.dom";version
+ ="1.0.0",jodd.datetime;uses:="jodd.datetime.format";version="1.0.0",j
+ odd.datetime.format;uses:="jodd.datetime";version="1.0.0",jodd.db;use
+ s:="jodd.db.connection,jodd.db.querymap,jodd.db.type,jodd.exception";
+ version="1.0.0",jodd.db.connection;version="1.0.0",jodd.db.debug;uses
+ :="jodd.proxetta,jodd.proxetta.impl";version="1.0.0",jodd.db.jtx;uses
+ :="jodd.db,jodd.db.connection,jodd.jtx";version="1.0.0",jodd.db.oom;u
+ ses:="jodd.db,jodd.db.oom.mapper,jodd.db.oom.naming,jodd.db.oom.sqlge
+ n,jodd.db.type,jodd.introspector";version="1.0.0",jodd.db.oom.config;
+ uses:="jodd.db.oom,jodd.io.findfile";version="1.0.0",jodd.db.oom.dao;
+ uses:="jodd.db.oom";version="1.0.0",jodd.db.oom.mapper;uses:="jodd.db
+ .oom,jodd.db.type";version="1.0.0",jodd.db.oom.meta;uses:="jodd.db.ty
+ pe";version="1.0.0",jodd.db.oom.naming;version="1.0.0",jodd.db.oom.sq
+ lgen;uses:="jodd.db,jodd.db.oom,jodd.db.oom.sqlgen.chunks";version="1
+ .0.0",jodd.db.oom.sqlgen.chunks;uses:="jodd.db.oom,jodd.db.oom.sqlgen
+ ";version="1.0.0",jodd.db.pool;uses:="jodd.db.connection";version="1.
+ 0.0",jodd.db.querymap;uses:="jodd.props";version="1.0.0",jodd.db.type
+ ;uses:="jodd.datetime";version="1.0.0",jodd.decora;uses:="javax.servl
+ et,javax.servlet.http,jodd.decora.parser,jodd.exception,jodd.servlet.
+ wrapper";version="1.0.0",jodd.decora.parser;uses:="jodd.lagarto";vers
+ ion="1.0.0",jodd.format;version="1.0.0",jodd.htmlstapler;uses:="javax
+ .servlet,javax.servlet.http,jodd.exception,jodd.lagarto,jodd.lagarto.
+ filter";version="1.0.0",jodd.introspector;version="1.0.0",jodd.jerry;
+ uses:="jodd.lagarto.dom";version="1.0.0",jodd.json;uses:="jodd.except
+ ion,jodd.introspector,jodd.json.meta,jodd.util,jodd.util.collection";
+ version="1.0.0",jodd.json.impl;uses:="jodd.datetime,jodd.json";versio
+ n="1.0.0",jodd.json.meta;uses:="jodd.util";version="1.0.0",jodd.jtx;u
+ ses:="jodd.exception";version="1.0.0",jodd.jtx.meta;uses:="jodd.jtx,j
+ odd.util";version="1.0.0",jodd.jtx.proxy;uses:="jodd.jtx,jodd.jtx.met
+ a,jodd.jtx.worker,jodd.proxetta";version="1.0.0",jodd.jtx.worker;uses
+ :="jodd.jtx";version="1.0.0",jodd.lagarto;uses:="jodd.exception";vers
+ ion="1.0.0",jodd.lagarto.adapter;uses:="jodd.lagarto";version="1.0.0"
+ ,jodd.lagarto.dom;uses:="jodd.csselly,jodd.lagarto,jodd.log,jodd.util
+ .collection";version="1.0.0",jodd.lagarto.filter;uses:="javax.servlet
+ ,javax.servlet.http,jodd.io,jodd.lagarto";version="1.0.0",jodd.lagart
+ o.form;uses:="jodd.lagarto";version="1.0.0",jodd.log;version="1.0.0",
+ jodd.log.impl;uses:="jodd.log,org.apache.commons.logging,org.slf4j";v
+ ersion="1.0.0",jodd.madvoc;uses:="javax.servlet,javax.servlet.http,jo
+ dd.exception,jodd.madvoc.component,jodd.madvoc.config,jodd.madvoc.fil
+ ter,jodd.madvoc.injector,jodd.madvoc.interceptor,jodd.madvoc.macro,jo
+ dd.madvoc.result,jodd.petite,jodd.props";version="1.0.0",jodd.madvoc.
+ action;uses:="jodd.madvoc,jodd.madvoc.component,jodd.madvoc.filter,jo
+ dd.madvoc.interceptor,jodd.madvoc.meta,jodd.madvoc.result";version="1
+ .0.0",jodd.madvoc.component;uses:="javax.servlet,javax.servlet.http,j
+ odd.madvoc,jodd.madvoc.filter,jodd.madvoc.injector,jodd.madvoc.interc
+ eptor,jodd.madvoc.macro,jodd.madvoc.meta,jodd.madvoc.path,jodd.madvoc
+ .result,jodd.petite,jodd.petite.meta,jodd.upload,jodd.util.collection
+ ";version="1.0.0",jodd.madvoc.config;uses:="jodd.io.findfile,jodd.mad
+ voc,jodd.madvoc.component,jodd.madvoc.filter,jodd.madvoc.interceptor,
+ jodd.madvoc.result,jodd.petite.meta";version="1.0.0",jodd.madvoc.filt
+ er;uses:="jodd.madvoc,jodd.madvoc.interceptor";version="1.0.0",jodd.m
+ advoc.injector;uses:="javax.servlet,javax.servlet.http,jodd.madvoc,jo
+ dd.madvoc.component,jodd.petite";version="1.0.0",jodd.madvoc.intercep
+ tor;uses:="jodd.introspector,jodd.madvoc,jodd.madvoc.component,jodd.m
+ advoc.injector,jodd.madvoc.meta";version="1.0.0",jodd.madvoc.macro;ve
+ rsion="1.0.0",jodd.madvoc.meta;uses:="jodd.madvoc,jodd.madvoc.filter,
+ jodd.madvoc.interceptor,jodd.madvoc.path,jodd.madvoc.result,jodd.util
+ ";version="1.0.0",jodd.madvoc.path;uses:="jodd.madvoc,jodd.madvoc.com
+ ponent,jodd.madvoc.meta";version="1.0.0",jodd.madvoc.petite;uses:="jo
+ dd.madvoc,jodd.madvoc.component,jodd.madvoc.filter,jodd.madvoc.interc
+ eptor,jodd.madvoc.result,jodd.petite,jodd.petite.meta";version="1.0.0
+ ",jodd.madvoc.proxetta;uses:="jodd.madvoc,jodd.madvoc.component,jodd.
+ proxetta.impl";version="1.0.0",jodd.madvoc.result;uses:="javax.servle
+ t.http,jodd.bean,jodd.madvoc,jodd.madvoc.component,jodd.madvoc.meta,j
+ odd.methref";version="1.0.0",jodd.mail;uses:="javax.mail,javax.mail.i
+ nternet,javax.mail.search,jodd.exception,jodd.mail.att";version="1.0.
+ 0",jodd.mail.att;uses:="jodd.mail";version="1.0.0",jodd.methref;uses:
+ ="jodd.proxetta,jodd.proxetta.impl";version="1.0.0",jodd.mutable;vers
+ ion="1.0.0",jodd.paramo;uses:="jodd.exception";version="1.0.0",jodd.p
+ etite;uses:="jodd.exception,jodd.introspector,jodd.petite.meta,jodd.p
+ etite.resolver,jodd.petite.scope,jodd.props,jodd.proxetta";version="1
+ .0.0",jodd.petite.config;uses:="jodd.io.findfile,jodd.petite";version
+ ="1.0.0",jodd.petite.meta;uses:="jodd.petite,jodd.petite.scope";versi
+ on="1.0.0",jodd.petite.proxetta;uses:="jodd.petite,jodd.petite.scope,
+ jodd.proxetta.impl";version="1.0.0",jodd.petite.resolver;uses:="jodd.
+ petite";version="1.0.0",jodd.petite.scope;uses:="javax.servlet.http,j
+ odd.petite";version="1.0.0",jodd.props;version="1.0.0",jodd.proxetta;
+ uses:="jodd.asm5,jodd.exception,jodd.proxetta.asm";version="1.0.0",jo
+ dd.proxetta.advice;uses:="jodd.proxetta";version="1.0.0",jodd.proxett
+ a.asm;uses:="jodd.asm,jodd.asm5,jodd.asm5.signature,jodd.mutable,jodd
+ .proxetta,jodd.util.collection";version="1.0.0",jodd.proxetta.impl;us
+ es:="jodd.asm5,jodd.proxetta,jodd.proxetta.asm";version="1.0.0",jodd.
+ proxetta.pointcuts;uses:="jodd.proxetta";version="1.0.0",jodd.servlet
+ ;uses:="javax.servlet,javax.servlet.http";version="1.0.0",jodd.servle
+ t.filter;uses:="javax.servlet,javax.servlet.http,jodd.io";version="1.
+ 0.0",jodd.servlet.map;uses:="javax.servlet,javax.servlet.http,jodd.ut
+ il.collection";version="1.0.0",jodd.servlet.tag;version="1.0.0",jodd.
+ servlet.upload;uses:="javax.servlet.http,jodd.upload";version="1.0.0"
+ ,jodd.servlet.wrapper;uses:="javax.servlet,javax.servlet.http,jodd.io
+ ,jodd.servlet.filter";version="1.0.0",jodd.typeconverter;uses:="jodd.
+ datetime,jodd.exception";version="1.0.0",jodd.typeconverter.impl;uses
+ :="jodd.datetime,jodd.mutable,jodd.typeconverter";version="1.0.0",jod
+ d.upload;uses:=jodd;version="1.0.0",jodd.upload.impl;uses:="jodd.uplo
+ ad";version="1.0.0",jodd.upload.typeconverter;uses:="jodd.typeconvert
+ er,jodd.upload";version="1.0.0",jodd.vtor;uses:="jodd.exception,jodd.
+ introspector";version="1.0.0",jodd.vtor.constraint;uses:="jodd.dateti
+ me,jodd.vtor";version="1.0.0",org.apache.felix.utils.log;version="1.0
+ .0",org.apache.tools.bzip2;version="1.0.0",org.apache.tools.mail;vers
+ ion="1.0.0",org.apache.tools.tar;version="1.0.0",org.apache.tools.zip
+ ;version="1.0.0",org.eclipse.persistence.javax.persistence.osgi;uses:
+ ="javax.persistence.spi";version="1.0.0",com.liferay.portal.bootstrap
+ .index;version="1.0.0",org.apache.commons.validator.routines;version=
+ "1.5.0",org.apache.xml.serializer;version="2.7.1",org.objectweb.asm.a
+ ttrs;version="5.0.1"
 Javac-Debug: on
 Javac-Deprecation: off
 Javac-Encoding: UTF-8
