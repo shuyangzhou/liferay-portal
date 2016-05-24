@@ -141,6 +141,8 @@ public class SplitPackagesTest {
 		Map<ExportPackage, Set<String>> allowedSplitPackageNames) {
 
 		for (ExportPackage duplicateExportPackage : duplicateExportPackages) {
+			boolean hasSplitPackages = false;
+
 			Set<String> symbolicNames = allowedSplitPackageNames.get(
 				duplicateExportPackage);
 
@@ -148,10 +150,13 @@ public class SplitPackagesTest {
 				!symbolicNames.contains(currentBundle.getSymbolicName()) ||
 				!symbolicNames.contains(previousBundle.getSymbolicName())) {
 
-				Assert.fail(
-					"Detected split packages " + duplicateExportPackage +
-						" in " + previousBundle + " and " + currentBundle);
+				hasSplitPackages = true;
 			}
+
+			Assert.assertFalse(
+				"Detected split packages " + duplicateExportPackage + " in " +
+					previousBundle + " and " + currentBundle,
+				hasSplitPackages);
 		}
 	}
 

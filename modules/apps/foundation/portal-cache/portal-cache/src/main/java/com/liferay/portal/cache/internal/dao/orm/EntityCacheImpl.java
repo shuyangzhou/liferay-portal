@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.EntityModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.util.AutoResetThreadLocal;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -297,7 +298,7 @@ public class EntityCacheImpl
 			return;
 		}
 
-		result = ((BaseModel<?>)result).toCacheModel();
+		result = ((EntityModel<?>)result).toCacheModel();
 
 		if (_localCacheAvailable) {
 			Map<Serializable, Serializable> localCache = _localCache.get();
@@ -406,7 +407,7 @@ public class EntityCacheImpl
 
 		CacheModel<?> cacheModel = (CacheModel<?>)result;
 
-		BaseModel<?> entityModel = (BaseModel<?>)cacheModel.toEntityModel();
+		EntityModel<?> entityModel = (EntityModel<?>)cacheModel.toEntityModel();
 
 		entityModel.setCachedModel(true);
 

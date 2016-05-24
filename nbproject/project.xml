@@ -289,7 +289,6 @@
 				<classpath mode="compile">lib/development/junit.jar</classpath>
 				<classpath mode="compile">lib/development/jutf7.jar</classpath>
 				<classpath mode="compile">lib/development/jymsg.jar</classpath>
-				<classpath mode="compile">lib/development/liferay-doclet.jar</classpath>
 				<classpath mode="compile">lib/development/mail.jar</classpath>
 				<classpath mode="compile">lib/development/mariadb.jar</classpath>
 				<classpath mode="compile">lib/development/maven-ant-tasks.jar</classpath>

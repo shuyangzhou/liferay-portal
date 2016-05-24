@@ -276,8 +276,8 @@ LayoutsTreeDisplayContext layoutsTreeDisplayContext = new LayoutsTreeDisplayCont
 	String targetNode = "#controlMenuAlertsContainer";
 	%>
 
-	<liferay-ui:success key="layoutAdded" message='<%= LanguageUtil.get(resourceBundle, "the-page-has-been-created-succesfully") %>' targetNode="<%= targetNode %>" />
-	<liferay-ui:success key="layoutDeleted" message='<%= LanguageUtil.get(resourceBundle, "the-page-has-been-deleted-succesfully") %>' targetNode="<%= targetNode %>" />
+	<liferay-ui:success key="layoutAdded" message='<%= LanguageUtil.get(resourceBundle, "the-page-was-created-succesfully") %>' targetNode="<%= targetNode %>" />
+	<liferay-ui:success key="layoutDeleted" message='<%= LanguageUtil.get(resourceBundle, "the-page-was-deleted-succesfully") %>' targetNode="<%= targetNode %>" />
 
 	<%@ include file="/layout_exception.jspf" %>
 

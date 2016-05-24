@@ -15,6 +15,7 @@
 package com.liferay.portal.kernel.upgrade;
 
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
+import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
@@ -41,11 +42,15 @@ import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.test.LayoutTestUtil;
 
+import java.sql.Connection;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -68,12 +73,42 @@ public class BaseUpgradePortletIdTest extends BaseUpgradePortletId {
 			Portlet portlet = PortletLocalServiceUtil.getPortletById(
 				TestPropsValues.getCompanyId(), portletId);
 
+			_portlets.add(portlet);
+
 			PortletLocalServiceUtil.destroyPortlet(portlet);
 		}
 	}
 
+	@AfterClass
+	public static void tearDownClass() throws Exception {
+		for (Portlet portlet : _portlets) {
+			PortletLocalServiceUtil.deployPortlet(portlet);
+		}
+
+		_portlets.clear();
+	}
+
 	@After
 	public void tearDown() throws Exception {
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
+			connection = con;
+
+			String[][] renamePortletIdsArray = getRenamePortletIdsArray();
+
+			for (String[] renamePortletIds : renamePortletIdsArray) {
+				String oldRootPortletId = renamePortletIds[1];
+				String newRootPortletId = renamePortletIds[0];
+
+				updatePortlet(oldRootPortletId, newRootPortletId);
+				updateLayoutRevisions(
+					oldRootPortletId, newRootPortletId, false);
+				updateLayouts(oldRootPortletId, newRootPortletId, false);
+			}
+		}
+		finally {
+			connection = null;
+		}
+
 		for (String portletId : _PORTLET_IDS) {
 			runSQL(
 				"delete from Portlet where portletId = '" + portletId +
@@ -265,6 +300,8 @@ public class BaseUpgradePortletIdTest extends BaseUpgradePortletId {
 	private static final String[] _PORTLET_IDS = {
 		"47", com.liferay.portlet.util.test.PortletKeys.TEST
 	};
+
+	private static final List<Portlet> _portlets = new ArrayList<>();
 
 	private boolean _testInstanceable = true;
 
