@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -1793,12 +1792,14 @@ public class SyncDLFileVersionDiffPersistenceImpl extends BasePersistenceImpl<Sy
 	 */
 	@Override
 	public SyncDLFileVersionDiff fetchByPrimaryKey(Serializable primaryKey) {
-		SyncDLFileVersionDiff syncDLFileVersionDiff = (SyncDLFileVersionDiff)entityCache.getResult(SyncDLFileVersionDiffModelImpl.ENTITY_CACHE_ENABLED,
+		Serializable serializable = entityCache.getResult(SyncDLFileVersionDiffModelImpl.ENTITY_CACHE_ENABLED,
 				SyncDLFileVersionDiffImpl.class, primaryKey);
 
-		if (syncDLFileVersionDiff == _nullSyncDLFileVersionDiff) {
+		if (serializable == nullModel) {
 			return null;
 		}
+
+		SyncDLFileVersionDiff syncDLFileVersionDiff = (SyncDLFileVersionDiff)serializable;
 
 		if (syncDLFileVersionDiff == null) {
 			Session session = null;
@@ -1814,8 +1815,7 @@ public class SyncDLFileVersionDiffPersistenceImpl extends BasePersistenceImpl<Sy
 				}
 				else {
 					entityCache.putResult(SyncDLFileVersionDiffModelImpl.ENTITY_CACHE_ENABLED,
-						SyncDLFileVersionDiffImpl.class, primaryKey,
-						_nullSyncDLFileVersionDiff);
+						SyncDLFileVersionDiffImpl.class, primaryKey, nullModel);
 				}
 			}
 			catch (Exception e) {
@@ -1869,18 +1869,22 @@ public class SyncDLFileVersionDiffPersistenceImpl extends BasePersistenceImpl<Sy
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			SyncDLFileVersionDiff syncDLFileVersionDiff = (SyncDLFileVersionDiff)entityCache.getResult(SyncDLFileVersionDiffModelImpl.ENTITY_CACHE_ENABLED,
+			Serializable serializable = entityCache.getResult(SyncDLFileVersionDiffModelImpl.ENTITY_CACHE_ENABLED,
 					SyncDLFileVersionDiffImpl.class, primaryKey);
 
-			if (syncDLFileVersionDiff == null) {
-				if (uncachedPrimaryKeys == null) {
-					uncachedPrimaryKeys = new HashSet<Serializable>();
-				}
+			if (serializable != nullModel) {
+				SyncDLFileVersionDiff syncDLFileVersionDiff = (SyncDLFileVersionDiff)serializable;
 
-				uncachedPrimaryKeys.add(primaryKey);
-			}
-			else {
-				map.put(primaryKey, syncDLFileVersionDiff);
+				if (syncDLFileVersionDiff == null) {
+					if (uncachedPrimaryKeys == null) {
+						uncachedPrimaryKeys = new HashSet<Serializable>();
+					}
+
+					uncachedPrimaryKeys.add(primaryKey);
+				}
+				else {
+					map.put(primaryKey, syncDLFileVersionDiff);
+				}
 			}
 		}
 
@@ -1923,8 +1927,7 @@ public class SyncDLFileVersionDiffPersistenceImpl extends BasePersistenceImpl<Sy
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
 				entityCache.putResult(SyncDLFileVersionDiffModelImpl.ENTITY_CACHE_ENABLED,
-					SyncDLFileVersionDiffImpl.class, primaryKey,
-					_nullSyncDLFileVersionDiff);
+					SyncDLFileVersionDiffImpl.class, primaryKey, nullModel);
 			}
 		}
 		catch (Exception e) {
@@ -2165,23 +2168,4 @@ public class SyncDLFileVersionDiffPersistenceImpl extends BasePersistenceImpl<Sy
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
 				"size"
 			});
-	private static final SyncDLFileVersionDiff _nullSyncDLFileVersionDiff = new SyncDLFileVersionDiffImpl() {
-			@Override
-			public Object clone() {
-				return this;
-			}
-
-			@Override
-			public CacheModel<SyncDLFileVersionDiff> toCacheModel() {
-				return _nullSyncDLFileVersionDiffCacheModel;
-			}
-		};
-
-	private static final CacheModel<SyncDLFileVersionDiff> _nullSyncDLFileVersionDiffCacheModel =
-		new CacheModel<SyncDLFileVersionDiff>() {
-			@Override
-			public SyncDLFileVersionDiff toEntityModel() {
-				return _nullSyncDLFileVersionDiff;
-			}
-		};
 }
