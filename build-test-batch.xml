@@ -133,7 +133,7 @@
 
 lportal_BS
 		master tcp ether ${hostname} 5001
-		query tcp ether ${hotsname} 5001
+		query tcp ether ${hostname} 5001
 					</echo>
 				</then>
 				<else>
@@ -397,7 +397,6 @@ app.server.type=@{app.server.type}]]></echo>
 /sql/sql.*.properties
 /test.*.properties
 /tools/cobertura-agent/classes
-/tools/liferay-doclet
 /tools/maven/*.asc
 /tools/node*
 /tools/selenium/*.exe
@@ -555,8 +554,13 @@ app.server.type=@{app.server.type}]]></echo>
 							<if>
 								<equals arg1="@{test.legacy.database.dump}" arg2="true" />
 								<then>
+									<get-testcase-property property.name="data.archive.type" />
+
 									<ant dir="${portal.legacy.dir}/@{test.portal.bundle.version}" target="export-database">
+										<property name="data.archive.type" value="${data.archive.type}" />
 										<property name="database.type" value="@{database.type}" />
+										<property name="database.version" value="${database.version}" />
+										<property name="test.class" value="${test.class}" />
 									</ant>
 								</then>
 							</if>
@@ -749,6 +753,10 @@ app.server.type=@{app.server.type}]]></echo>
 									<gradle-execute dir="modules/core/portal-lpkg-deployer-test" task="testIntegration">
 										<arg value="-Dmodules.only.build=true" />
 									</gradle-execute>
+
+									<antcall inheritall="false" target="run-selenium-test">
+										<param name="test.class" value="PortalSmoke#Smoke" />
+									</antcall>
 								</try>
 
 								<finally>

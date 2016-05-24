@@ -27,7 +27,7 @@ public class KBArticlePriorityComparator extends OrderByComparator<KBArticle> {
 
 	public static final String ORDER_BY_DESC = "KBArticle.priority DESC";
 
-	public static final String[] ORDER_BY_FIELDS = {"priority"};
+	public static final String[] ORDER_BY_FIELDS = {"priority", "title"};
 
 	public KBArticlePriorityComparator() {
 		this(false);
@@ -46,6 +46,12 @@ public class KBArticlePriorityComparator extends OrderByComparator<KBArticle> {
 		}
 		else if (kbArticle1.getPriority() > kbArticle2.getPriority()) {
 			value = 1;
+		}
+		else {
+			String title1 = kbArticle1.getTitle();
+			String title2 = kbArticle2.getTitle();
+
+			value = title1.compareToIgnoreCase(title2);
 		}
 
 		if (_ascending) {

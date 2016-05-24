@@ -19,6 +19,8 @@
 <%
 String redirect = ParamUtil.getString(request, "redirect");
 
+MBRequestHelper mbRequestHelper = new MBRequestHelper(request);
+
 MBCategory category = mbRequestHelper.getCategory();
 
 long categoryId = MBUtil.getCategoryId(request, category);
@@ -63,6 +65,8 @@ else {
 }
 
 boolean portletTitleBasedNavigation = GetterUtil.getBoolean(portletConfig.getInitParameter("portlet-title-based-navigation"));
+
+MBHomeDisplayContext mbHomeDisplayContext = mbDisplayContextProvider.getMBHomeDisplayContext(request, response);
 
 if (portletTitleBasedNavigation) {
 	portletDisplay.setShowBackIcon(true);
