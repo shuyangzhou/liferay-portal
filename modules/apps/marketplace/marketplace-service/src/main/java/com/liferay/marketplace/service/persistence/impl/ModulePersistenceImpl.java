@@ -31,7 +31,6 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -3294,12 +3293,14 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 	 */
 	@Override
 	public Module fetchByPrimaryKey(Serializable primaryKey) {
-		Module module = (Module)entityCache.getResult(ModuleModelImpl.ENTITY_CACHE_ENABLED,
+		Serializable serializable = entityCache.getResult(ModuleModelImpl.ENTITY_CACHE_ENABLED,
 				ModuleImpl.class, primaryKey);
 
-		if (module == _nullModule) {
+		if (serializable == nullModel) {
 			return null;
 		}
+
+		Module module = (Module)serializable;
 
 		if (module == null) {
 			Session session = null;
@@ -3314,7 +3315,7 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 				}
 				else {
 					entityCache.putResult(ModuleModelImpl.ENTITY_CACHE_ENABLED,
-						ModuleImpl.class, primaryKey, _nullModule);
+						ModuleImpl.class, primaryKey, nullModel);
 				}
 			}
 			catch (Exception e) {
@@ -3368,18 +3369,22 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Module module = (Module)entityCache.getResult(ModuleModelImpl.ENTITY_CACHE_ENABLED,
+			Serializable serializable = entityCache.getResult(ModuleModelImpl.ENTITY_CACHE_ENABLED,
 					ModuleImpl.class, primaryKey);
 
-			if (module == null) {
-				if (uncachedPrimaryKeys == null) {
-					uncachedPrimaryKeys = new HashSet<Serializable>();
-				}
+			if (serializable != nullModel) {
+				Module module = (Module)serializable;
 
-				uncachedPrimaryKeys.add(primaryKey);
-			}
-			else {
-				map.put(primaryKey, module);
+				if (module == null) {
+					if (uncachedPrimaryKeys == null) {
+						uncachedPrimaryKeys = new HashSet<Serializable>();
+					}
+
+					uncachedPrimaryKeys.add(primaryKey);
+				}
+				else {
+					map.put(primaryKey, module);
+				}
 			}
 		}
 
@@ -3421,7 +3426,7 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
 				entityCache.putResult(ModuleModelImpl.ENTITY_CACHE_ENABLED,
-					ModuleImpl.class, primaryKey, _nullModule);
+					ModuleImpl.class, primaryKey, nullModel);
 			}
 		}
 		catch (Exception e) {
@@ -3663,22 +3668,4 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
 				"uuid"
 			});
-	private static final Module _nullModule = new ModuleImpl() {
-			@Override
-			public Object clone() {
-				return this;
-			}
-
-			@Override
-			public CacheModel<Module> toCacheModel() {
-				return _nullModuleCacheModel;
-			}
-		};
-
-	private static final CacheModel<Module> _nullModuleCacheModel = new CacheModel<Module>() {
-			@Override
-			public Module toEntityModel() {
-				return _nullModule;
-			}
-		};
 }

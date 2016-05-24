@@ -32,7 +32,6 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.CompanyProvider;
@@ -2939,12 +2938,14 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 	 */
 	@Override
 	public MBDiscussion fetchByPrimaryKey(Serializable primaryKey) {
-		MBDiscussion mbDiscussion = (MBDiscussion)entityCache.getResult(MBDiscussionModelImpl.ENTITY_CACHE_ENABLED,
+		Serializable serializable = entityCache.getResult(MBDiscussionModelImpl.ENTITY_CACHE_ENABLED,
 				MBDiscussionImpl.class, primaryKey);
 
-		if (mbDiscussion == _nullMBDiscussion) {
+		if (serializable == nullModel) {
 			return null;
 		}
+
+		MBDiscussion mbDiscussion = (MBDiscussion)serializable;
 
 		if (mbDiscussion == null) {
 			Session session = null;
@@ -2960,7 +2961,7 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 				}
 				else {
 					entityCache.putResult(MBDiscussionModelImpl.ENTITY_CACHE_ENABLED,
-						MBDiscussionImpl.class, primaryKey, _nullMBDiscussion);
+						MBDiscussionImpl.class, primaryKey, nullModel);
 				}
 			}
 			catch (Exception e) {
@@ -3014,18 +3015,22 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			MBDiscussion mbDiscussion = (MBDiscussion)entityCache.getResult(MBDiscussionModelImpl.ENTITY_CACHE_ENABLED,
+			Serializable serializable = entityCache.getResult(MBDiscussionModelImpl.ENTITY_CACHE_ENABLED,
 					MBDiscussionImpl.class, primaryKey);
 
-			if (mbDiscussion == null) {
-				if (uncachedPrimaryKeys == null) {
-					uncachedPrimaryKeys = new HashSet<Serializable>();
-				}
+			if (serializable != nullModel) {
+				MBDiscussion mbDiscussion = (MBDiscussion)serializable;
 
-				uncachedPrimaryKeys.add(primaryKey);
-			}
-			else {
-				map.put(primaryKey, mbDiscussion);
+				if (mbDiscussion == null) {
+					if (uncachedPrimaryKeys == null) {
+						uncachedPrimaryKeys = new HashSet<Serializable>();
+					}
+
+					uncachedPrimaryKeys.add(primaryKey);
+				}
+				else {
+					map.put(primaryKey, mbDiscussion);
+				}
 			}
 		}
 
@@ -3067,7 +3072,7 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
 				entityCache.putResult(MBDiscussionModelImpl.ENTITY_CACHE_ENABLED,
-					MBDiscussionImpl.class, primaryKey, _nullMBDiscussion);
+					MBDiscussionImpl.class, primaryKey, nullModel);
 			}
 		}
 		catch (Exception e) {
@@ -3310,22 +3315,4 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
 				"uuid"
 			});
-	private static final MBDiscussion _nullMBDiscussion = new MBDiscussionImpl() {
-			@Override
-			public Object clone() {
-				return this;
-			}
-
-			@Override
-			public CacheModel<MBDiscussion> toCacheModel() {
-				return _nullMBDiscussionCacheModel;
-			}
-		};
-
-	private static final CacheModel<MBDiscussion> _nullMBDiscussionCacheModel = new CacheModel<MBDiscussion>() {
-			@Override
-			public MBDiscussion toEntityModel() {
-				return _nullMBDiscussion;
-			}
-		};
 }
