@@ -277,8 +277,10 @@ public class ConfigurationImpl
 
 	@Override
 	public Properties getProperties() {
-		if (_properties != null) {
-			return _properties;
+		Properties properties = _properties;
+
+		if (properties != null) {
+			return properties;
 		}
 
 		// For some strange reason, componentProperties.getProperties() returns
@@ -289,7 +291,7 @@ public class ConfigurationImpl
 		// method fixes the weird behavior by returning properties with the
 		// correct values.
 
-		_properties = new Properties();
+		properties = new Properties();
 
 		ComponentProperties componentProperties = getComponentProperties();
 
@@ -297,10 +299,12 @@ public class ConfigurationImpl
 			componentProperties.getProperties();
 
 		for (String key : componentPropertiesProperties.stringPropertyNames()) {
-			_properties.setProperty(key, componentProperties.getString(key));
+			properties.setProperty(key, componentProperties.getString(key));
 		}
 
-		return _properties;
+		_properties = properties;
+
+		return properties;
 	}
 
 	@Override
@@ -485,7 +489,7 @@ public class ConfigurationImpl
 
 	private final ComponentConfiguration _componentConfiguration;
 	private final Set<String> _printedSources = new HashSet<>();
-	private Properties _properties;
+	private volatile Properties _properties;
 	private final Map<String, Object> _values = new ConcurrentHashMap<>();
 
 }
