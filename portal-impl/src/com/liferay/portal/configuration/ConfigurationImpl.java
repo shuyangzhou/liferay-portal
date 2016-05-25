@@ -133,8 +133,6 @@ public class ConfigurationImpl
 
 			configurations.add(0, newConfiguration);
 
-			_properties = null;
-
 			clearCache();
 		}
 		catch (Exception e) {
@@ -352,8 +350,6 @@ public class ConfigurationImpl
 						configuration);
 				}
 			}
-
-			_properties = null;
 
 			clearCache();
 		}
