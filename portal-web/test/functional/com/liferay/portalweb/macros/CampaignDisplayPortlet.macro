@@ -2,6 +2,19 @@
 	<command name="configureCampaignRule">
 		<execute function="SelectFrame" locator1="IFrame#CONFIGURATION" />
 
+		<var method="selenium#getNumberDecrement('${rowNumber}')" name="rowIndexNumber" />
+
+		<if>
+			<not>
+				<equals arg1="${rowIndexNumber}" arg2="0" />
+			</not>
+			<then>
+				<var name="key_indexNumber" value="${rowIndexNumber}" />
+
+				<execute function="Click" locator1="ContentTargeting#PLUS_LINK" />
+			</then>
+		</if>
+
 		<var name="key_rowNumber" value="${rowNumber}" />
 
 		<execute function="Select" locator1="CampaignContentDisplay#RULE_PANEL_CAMPAIGN_SELECT" value1="${campaignName}" />
@@ -17,11 +30,6 @@
 		<var name="key_rowEntry" value="${contentTitle}" />
 
 		<execute function="ClickNoError" locator1="ContentRow#ENTRY_CONTENT_ENTRY_NAME_LINK" />
-
-		<execute function="SelectFrame" value1="relative=top" />
-		<execute function="SelectFrame" locator1="IFrame#CONFIGURATION" />
-
-		<execute function="ClickNoError" locator1="CampaignContentDisplay#RULE_PANEL_ADD_ROW_BUTTON" />
 
 		<execute function="SelectFrame" value1="relative=top" />
 	</command>

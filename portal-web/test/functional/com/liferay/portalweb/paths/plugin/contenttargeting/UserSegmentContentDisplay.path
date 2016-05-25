@@ -14,11 +14,6 @@
 	<td></td>
 </tr>
 <tr>
-	<td>CONTENT_PLUS_LINK</td>
-	<td>xpath=(//div[contains(@class,'lfr-form-row')]//button[contains(@class,'add-row')])[${key_indexNumber}]</td>
-	<td></td>
-</tr>
-<tr>
 	<td></td>
 	<td></td>
 	<td></td>

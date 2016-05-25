@@ -47,12 +47,12 @@
 <!--VIEW_ENTRY-->
 <tr>
 	<td>VIEW_ENTRY_CONTENT</td>
-	<td>//div[@class='asset-display'][contains(.,'${key_entryContent}')]</td>
+	<td>//div[@class='asset-content'][contains(.,'${key_entryContent}')]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>VIEW_ENTRY_CONTENT_BASIC</td>
-	<td>//div[@class='asset-display']</td>
+	<td>//div[@class='asset-content']</td>
 	<td></td>
 </tr>
 </tbody>

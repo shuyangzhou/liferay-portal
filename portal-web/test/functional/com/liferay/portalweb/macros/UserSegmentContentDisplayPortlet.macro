@@ -11,7 +11,7 @@
 			<then>
 				<var name="key_indexNumber" value="${rowIndexNumber}" />
 
-				<execute function="Click" locator1="UserSegmentContentDisplay#CONTENT_PLUS_LINK" />
+				<execute function="Click" locator1="ContentTargeting#PLUS_LINK" />
 			</then>
 		</if>
 

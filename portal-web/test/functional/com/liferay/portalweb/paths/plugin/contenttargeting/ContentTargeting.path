@@ -8,6 +8,11 @@
 <tr><td rowspan="1" colspan="3">ContentTargeting</td></tr>
 </thead>
 <tbody>
+<tr>
+	<td>PLUS_LINK</td>
+	<td>xpath=(//div[contains(@class,'lfr-form-row')]//button[contains(@class,'add-row')])[${key_indexNumber}]</td>
+	<td></td>
+</tr>
 <!--FORM-->
 <tr>
 	<td>FORM_SEARCH_FIELD</td>
