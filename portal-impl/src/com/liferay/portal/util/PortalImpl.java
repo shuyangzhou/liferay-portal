@@ -1753,7 +1753,7 @@ public class PortalImpl implements Portal {
 
 		if (Validator.isNull(PropsValues.COMPANY_SECURITY_STRANGERS_URL)) {
 			PortletURL createAccountURL = PortletURLFactoryUtil.create(
-				request, PortletKeys.LOGIN, themeDisplay.getPlid(),
+				request, PortletKeys.LOGIN, themeDisplay,
 				PortletRequest.RENDER_PHASE);
 
 			createAccountURL.setParameter(
