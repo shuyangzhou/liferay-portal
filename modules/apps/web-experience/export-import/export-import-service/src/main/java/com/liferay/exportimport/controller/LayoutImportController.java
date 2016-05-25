@@ -371,12 +371,6 @@ public class LayoutImportController implements ImportController {
 		boolean deleteMissingLayouts = MapUtil.getBoolean(
 			parameterMap, PortletDataHandlerKeys.DELETE_MISSING_LAYOUTS,
 			Boolean.TRUE.booleanValue());
-		boolean importPermissions = MapUtil.getBoolean(
-			parameterMap, PortletDataHandlerKeys.PERMISSIONS);
-		boolean importLogo = MapUtil.getBoolean(
-			parameterMap, PortletDataHandlerKeys.LOGO);
-		boolean importLayoutSetSettings = MapUtil.getBoolean(
-			parameterMap, PortletDataHandlerKeys.LAYOUT_SET_SETTINGS);
 
 		boolean layoutSetPrototypeLinkEnabled = MapUtil.getBoolean(
 			parameterMap,
@@ -389,12 +383,20 @@ public class LayoutImportController implements ImportController {
 			layoutSetPrototypeLinkEnabled = false;
 		}
 
+		boolean layoutSetPrototypeSettings = MapUtil.getBoolean(
+			parameterMap, PortletDataHandlerKeys.LAYOUT_SET_PROTOTYPE_SETTINGS);
+		boolean layoutSetSettings = MapUtil.getBoolean(
+			parameterMap, PortletDataHandlerKeys.LAYOUT_SET_SETTINGS);
 		String layoutsImportMode = MapUtil.getString(
 			parameterMap, PortletDataHandlerKeys.LAYOUTS_IMPORT_MODE,
 			PortletDataHandlerKeys.LAYOUTS_IMPORT_MODE_MERGE_BY_LAYOUT_UUID);
+		boolean logo = MapUtil.getBoolean(
+			parameterMap, PortletDataHandlerKeys.LOGO);
+		boolean permissions = MapUtil.getBoolean(
+			parameterMap, PortletDataHandlerKeys.PERMISSIONS);
 
 		if (_log.isDebugEnabled()) {
-			_log.debug("Import permissions " + importPermissions);
+			_log.debug("Import permissions " + permissions);
 		}
 
 		StopWatch stopWatch = new StopWatch();
@@ -447,15 +449,12 @@ public class LayoutImportController implements ImportController {
 
 		// Layout and layout set prototype
 
-		Element layoutsElement = portletDataContext.getImportDataGroupElement(
-			Layout.class);
-
-		String layoutSetPrototypeUuid = layoutsElement.attributeValue(
-			"layout-set-prototype-uuid");
-
 		Element rootElement = portletDataContext.getImportDataRootElement();
 
 		Element headerElement = rootElement.element("header");
+
+		String layoutSetPrototypeUuid = headerElement.attributeValue(
+			"layout-set-prototype-uuid");
 
 		String larType = headerElement.attributeValue("type");
 
@@ -542,11 +541,15 @@ public class LayoutImportController implements ImportController {
 			}
 		}
 		else if (larType.equals("layout-set-prototype")) {
+			layoutSetPrototypeSettings = true;
+
 			layoutSetPrototypeUuid = GetterUtil.getString(
 				headerElement.attributeValue("type-uuid"));
 		}
 
-		if (Validator.isNotNull(layoutSetPrototypeUuid)) {
+		if (layoutSetPrototypeSettings &&
+			Validator.isNotNull(layoutSetPrototypeUuid)) {
+
 			layoutSet.setLayoutSetPrototypeUuid(layoutSetPrototypeUuid);
 			layoutSet.setLayoutSetPrototypeLinkEnabled(
 				layoutSetPrototypeLinkEnabled);
@@ -556,7 +559,7 @@ public class LayoutImportController implements ImportController {
 
 		// Look and feel
 
-		if (importLogo) {
+		if (logo) {
 			String logoPath = headerElement.attributeValue("logo-path");
 
 			byte[] iconBytes = portletDataContext.getZipEntryAsByteArray(
@@ -576,7 +579,7 @@ public class LayoutImportController implements ImportController {
 
 		_themeImporter.importTheme(portletDataContext, layoutSet);
 
-		if (importLayoutSetSettings) {
+		if (layoutSetSettings) {
 			String settings = GetterUtil.getString(
 				headerElement.elementText("settings"));
 
@@ -612,7 +615,7 @@ public class LayoutImportController implements ImportController {
 		// Read expando tables, locks, and permissions to make them
 		// available to the data handlers through the portlet data context
 
-		if (importPermissions) {
+		if (permissions) {
 			for (Element portletElement : portletElements) {
 				String portletPath = portletElement.attributeValue("path");
 
@@ -671,6 +674,9 @@ public class LayoutImportController implements ImportController {
 				}
 			}
 		}
+
+		Element layoutsElement = portletDataContext.getImportDataGroupElement(
+			Layout.class);
 
 		List<Element> layoutElements = layoutsElement.elements();
 
@@ -809,7 +815,7 @@ public class LayoutImportController implements ImportController {
 
 			// Portlet permissions
 
-			if (importPermissions) {
+			if (permissions) {
 				_permissionImporter.importPortletPermissions(
 					layoutCache, companyId, portletDataContext.getGroupId(),
 					userId, layout, portletElement, portletId);
@@ -1402,16 +1408,16 @@ public class LayoutImportController implements ImportController {
 		Element layoutsElement = rootElement.element(
 			Layout.class.getSimpleName());
 
-		validateLayoutPrototypes(companyId, layoutsElement);
+		validateLayoutPrototypes(companyId, headerElement, layoutsElement);
 	}
 
 	protected void validateLayoutPrototypes(
-			long companyId, Element layoutsElement)
+			long companyId, Element headerElement, Element layoutsElement)
 		throws Exception {
 
 		List<Tuple> missingLayoutPrototypes = new ArrayList<>();
 
-		String layoutSetPrototypeUuid = layoutsElement.attributeValue(
+		String layoutSetPrototypeUuid = headerElement.attributeValue(
 			"layout-set-prototype-uuid");
 
 		if (Validator.isNotNull(layoutSetPrototypeUuid)) {
@@ -1421,7 +1427,7 @@ public class LayoutImportController implements ImportController {
 						layoutSetPrototypeUuid, companyId);
 			}
 			catch (NoSuchLayoutSetPrototypeException nslspe) {
-				String layoutSetPrototypeName = layoutsElement.attributeValue(
+				String layoutSetPrototypeName = headerElement.attributeValue(
 					"layout-set-prototype-name");
 
 				missingLayoutPrototypes.add(

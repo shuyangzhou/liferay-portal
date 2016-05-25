@@ -27,7 +27,7 @@ public class KBArticleStatusComparator extends OrderByComparator<KBArticle> {
 
 	public static final String ORDER_BY_DESC = "KBArticle.status DESC";
 
-	public static final String[] ORDER_BY_FIELDS = {"status"};
+	public static final String[] ORDER_BY_FIELDS = {"status", "title"};
 
 	public KBArticleStatusComparator() {
 		this(false);
@@ -46,6 +46,12 @@ public class KBArticleStatusComparator extends OrderByComparator<KBArticle> {
 		}
 		else if (kbArticle1.getStatus() > kbArticle2.getStatus()) {
 			value = 1;
+		}
+		else {
+			String title1 = kbArticle1.getTitle();
+			String title2 = kbArticle2.getTitle();
+
+			value = title1.compareToIgnoreCase(title2);
 		}
 
 		if (_ascending) {

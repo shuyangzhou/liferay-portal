@@ -83,7 +83,7 @@ mbGroupServiceSettings = MBGroupServiceSettings.getInstance(themeDisplay.getSite
 
 					<aui:input name="preferences--threadAsQuestionByDefault--" type="checkbox" value="<%= threadAsQuestionByDefault %>" />
 
-					<aui:select label="show-recent-posts-from-last" name="preferences--recentPostsDateOffset--" value="<%= recentPostsDateOffset %>">
+					<aui:select label="show-recent-posts-from-last" name="preferences--recentPostsDateOffset--" value="<%= mbGroupServiceSettings.getRecentPostsDateOffset() %>">
 						<aui:option label='<%= LanguageUtil.format(request, "x-hours", "24", false) %>' value="1" />
 						<aui:option label='<%= LanguageUtil.format(request, "x-days", "7", false) %>' value="7" />
 						<aui:option label='<%= LanguageUtil.format(request, "x-days", "30", false) %>' value="30" />

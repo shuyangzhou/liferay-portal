@@ -15,6 +15,7 @@
 package com.liferay.portal.osgi.web.wab.generator.internal.artifact;
 
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.osgi.web.wab.generator.internal.util.ManifestUtil;
 
 import java.io.File;
@@ -75,7 +76,8 @@ public class WarArtifactUrlTransformer implements ArtifactUrlTransformer {
 				return artifact;
 			}
 
-			contextName = _readServletContextName(new File(artifact.getPath()));
+			contextName = _readServletContextName(
+				new File(URLCodec.decodeURL(artifact.getPath())));
 		}
 		else {
 			Path tempFilePath = Files.createTempFile(null, null);

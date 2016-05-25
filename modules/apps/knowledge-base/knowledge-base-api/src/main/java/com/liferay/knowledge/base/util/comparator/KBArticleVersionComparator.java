@@ -27,7 +27,7 @@ public class KBArticleVersionComparator extends OrderByComparator<KBArticle> {
 
 	public static final String ORDER_BY_DESC = "KBArticle.version DESC";
 
-	public static final String[] ORDER_BY_FIELDS = {"version"};
+	public static final String[] ORDER_BY_FIELDS = {"version", "title"};
 
 	public KBArticleVersionComparator() {
 		this(false);
@@ -46,6 +46,12 @@ public class KBArticleVersionComparator extends OrderByComparator<KBArticle> {
 		}
 		else if (kbArticle1.getVersion() > kbArticle2.getVersion()) {
 			value = 1;
+		}
+		else {
+			String title1 = kbArticle1.getTitle();
+			String title2 = kbArticle2.getTitle();
+
+			value = title1.compareToIgnoreCase(title2);
 		}
 
 		if (_ascending) {

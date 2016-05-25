@@ -131,7 +131,7 @@ public class BaseJSONHandler extends BaseHandler {
 		String innerException = "";
 
 		if (exception.contains("$")) {
-			String[] exceptionParts = exception.split("$");
+			String[] exceptionParts = exception.split("\\$");
 
 			exception = exceptionParts[0];
 			innerException = exceptionParts[1];

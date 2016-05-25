@@ -17,7 +17,7 @@ package com.liferay.sync.security.servlet.filter;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.security.service.access.policy.ServiceAccessPolicyThreadLocal;
-import com.liferay.sync.security.service.access.policy.SyncPolicies;
+import com.liferay.sync.security.service.access.policy.SyncSAPEntryActivator;
 
 import java.io.IOException;
 
@@ -58,7 +58,8 @@ public class SyncAuthFilter implements Filter {
 
 		if ((permissionChecker != null) && permissionChecker.isSignedIn()) {
 			ServiceAccessPolicyThreadLocal.addActiveServiceAccessPolicyName(
-				String.valueOf(SyncPolicies.POLICIES[1][0]));
+				String.valueOf(
+					SyncSAPEntryActivator.SAP_ENTRY_OBJECT_ARRAYS[1][0]));
 		}
 
 		filterChain.doFilter(servletRequest, servletResponse);

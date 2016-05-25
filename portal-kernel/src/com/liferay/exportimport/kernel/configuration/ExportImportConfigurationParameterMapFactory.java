@@ -76,6 +76,14 @@ public class ExportImportConfigurationParameterMapFactory {
 		}
 
 		if (!parameterMap.containsKey(
+				PortletDataHandlerKeys.LAYOUT_SET_PROTOTYPE_SETTINGS)) {
+
+			parameterMap.put(
+				PortletDataHandlerKeys.LAYOUT_SET_PROTOTYPE_SETTINGS,
+				new String[] {Boolean.FALSE.toString()});
+		}
+
+		if (!parameterMap.containsKey(
 				PortletDataHandlerKeys.LAYOUT_SET_SETTINGS)) {
 
 			parameterMap.put(
@@ -210,6 +218,19 @@ public class ExportImportConfigurationParameterMapFactory {
 			new String[] {
 				String.valueOf(layoutSetPrototypeLinkEnabledParameter)
 			});
+
+		// Layout set prototype settings
+
+		boolean layoutSetPrototypeSettingsParameter = false;
+
+		if (layoutSetPrototypeLinkEnabled != null) {
+			layoutSetPrototypeSettingsParameter =
+				layoutSetPrototypeLinkEnabled.booleanValue();
+		}
+
+		parameterMap.put(
+			PortletDataHandlerKeys.LAYOUT_SET_PROTOTYPE_SETTINGS,
+			new String[] {String.valueOf(layoutSetPrototypeSettingsParameter)});
 
 		// Layout set settings
 
