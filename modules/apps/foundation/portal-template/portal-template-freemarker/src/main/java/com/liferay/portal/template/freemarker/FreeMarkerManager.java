@@ -614,6 +614,8 @@ public class FreeMarkerManager extends BaseSingleTemplateManager {
 				getServletContextWrapper(servletContext));
 
 			_taglibFactory.setObjectWrapper(getBeansWrapper());
+
+			_servletContext = servletContext;
 		}
 
 		@Override
@@ -632,6 +634,14 @@ public class FreeMarkerManager extends BaseSingleTemplateManager {
 
 					templateModel = _taglibFactory.get(uri);
 				}
+				catch (TemplateModelException tme) {
+					_log.error(
+						"Unable to load uri " + uri + " from " +
+							_servletContext.getServletContextName(),
+						tme);
+
+					throw tme;
+				}
 				finally {
 					currentThread.setContextClassLoader(contextClassLoader);
 				}
@@ -648,6 +658,7 @@ public class FreeMarkerManager extends BaseSingleTemplateManager {
 		}
 
 		private final TaglibFactory _taglibFactory;
+		private final ServletContext _servletContext;
 
 	}
 
