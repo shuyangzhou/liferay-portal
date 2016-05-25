@@ -2226,9 +2226,9 @@ public class DataFactory {
 
 		StringBundler sb = new StringBundler(3);
 
-		sb.append(getClassName(ddmStructureModel.getClassNameId()));
-		sb.append(StringPool.DASH);
 		sb.append(DDMStructure.class.getName());
+		sb.append(StringPool.DASH);
+		sb.append(getClassName(ddmStructureModel.getClassNameId()));
 
 		String name = sb.toString();
 
@@ -2256,9 +2256,9 @@ public class DataFactory {
 
 		StringBundler sb = new StringBundler(3);
 
-		sb.append(getClassName(ddmTemplateModel.getResourceClassNameId()));
-		sb.append(StringPool.DASH);
 		sb.append(DDMTemplate.class.getName());
+		sb.append(StringPool.DASH);
+		sb.append(getClassName(ddmTemplateModel.getResourceClassNameId()));
 
 		String name = sb.toString();
 
