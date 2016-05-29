@@ -14,7 +14,11 @@
 
 package com.liferay.portal.target.platform.indexer.main;
 
-import com.liferay.portal.target.platform.indexer.internal.IndexValidator;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+
+import com.liferay.portal.kernel.util.Time;
+import com.liferay.portal.target.platform.indexer.Indexer;
+import com.liferay.portal.target.platform.indexer.internal.DefaultIndexValidator;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -35,6 +39,20 @@ public class IndexValidatorMain {
 			System.err.println(
 				"== Usage: <cmd> <list of index files or directories " +
 					"containing index files>");
+
+			return;
+		}
+
+		Boolean includeTargetPlatform = Boolean.getBoolean(
+			"include.target.platform");
+
+		String moduleFrameworkBaseDirName = System.getProperty(
+			"module.framework.base.dir");
+
+		if (includeTargetPlatform && (moduleFrameworkBaseDirName == null)) {
+			System.err.println(
+				"== -Dmodule.framework.base.dir must be set when " +
+					"-Dinclude.target.platform is set.");
 
 			return;
 		}
@@ -86,19 +104,56 @@ public class IndexValidatorMain {
 			return;
 		}
 
-		IndexValidator indexValidator = new IndexValidator();
+		List<URI> targetPlatformIndexURIs = new ArrayList<>();
 
-		List<String> messages = indexValidator.validate(indexURIs);
+		File targetPlatformDir = new File(
+			moduleFrameworkBaseDirName, Indexer.DIR_NAME_TARGET_PLATFORM);
 
-		if (!messages.isEmpty()) {
-			System.out.println("== Validation errors");
+		if (targetPlatformDir.exists() && targetPlatformDir.canRead()) {
+			File[] indexFiles = targetPlatformDir.listFiles(
+				new FilenameFilter() {
 
-			for (String message : messages) {
-				System.out.println("== " + message);
+					@Override
+					public boolean accept(File dir, String name) {
+						if (name.endsWith(".xml") || name.endsWith(".xml.gz")) {
+							return true;
+						}
+
+						return false;
+					}
+
+				});
+
+			for (File indexFile : indexFiles) {
+				targetPlatformIndexURIs.add(indexFile.toURI());
 			}
 		}
-		else {
-			System.out.println("== Successfully validated");
+
+		DefaultIndexValidator defaultIndexValidator = new DefaultIndexValidator(
+			targetPlatformIndexURIs);
+
+		long start = System.currentTimeMillis();
+
+		try {
+			List<String> messages = defaultIndexValidator.validate(indexURIs);
+
+			if (!messages.isEmpty()) {
+				System.out.println("== Validation errors");
+
+				for (String message : messages) {
+					System.out.println("== " + message);
+				}
+			}
+			else {
+				System.out.println("== Successfully validated");
+			}
+		}
+		finally {
+			long duration = System.currentTimeMillis() - start;
+
+			System.out.printf(
+				"== Time %02d:%02ds\n", MILLISECONDS.toMinutes(duration),
+				MILLISECONDS.toSeconds(duration % Time.MINUTE));
 		}
 	}
 

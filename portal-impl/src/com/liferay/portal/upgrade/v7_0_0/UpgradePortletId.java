@@ -24,6 +24,13 @@ public class UpgradePortletId
 	extends com.liferay.portal.upgrade.util.UpgradePortletId {
 
 	@Override
+	protected void doUpgrade() throws Exception {
+		upgrade(UpgradeUserNotificationEvent.class);
+
+		super.doUpgrade();
+	}
+
+	@Override
 	protected String[][] getRenamePortletIdsArray() {
 		return new String[][] {
 			new String[] {"115", PortletKeys.BLOGS_AGGREGATOR},

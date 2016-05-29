@@ -14,22 +14,26 @@
 
 package com.liferay.portal.target.platform.indexer.main;
 
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
-import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.target.platform.indexer.Indexer;
 import com.liferay.portal.target.platform.indexer.internal.LPKGIndexer;
-import com.liferay.portal.util.FastDateFormatFactoryImpl;
-import com.liferay.portal.util.FileImpl;
-import com.liferay.portal.util.PropsImpl;
-import com.liferay.portal.util.PropsValues;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.InputStream;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+
+import org.osgi.framework.Version;
 
 /**
  * @author Raymond Augé
@@ -45,28 +49,27 @@ public class LPKGIndexerMain {
 			return;
 		}
 
-		FastDateFormatFactoryUtil fastDateFormatFactoryUtil =
-			new FastDateFormatFactoryUtil();
+		String moduleFrameworkBaseDirName = System.getProperty(
+			"module.framework.base.dir");
 
-		fastDateFormatFactoryUtil.setFastDateFormatFactory(
-			new FastDateFormatFactoryImpl());
-
-		FileUtil fileUtil = new FileUtil();
-
-		fileUtil.setFile(new FileImpl());
-
-		PropsUtil.setProps(new PropsImpl());
-
-		File targetPlatformDir = new File(
-			PropsValues.MODULE_FRAMEWORK_BASE_DIR,
-			Indexer.DIR_NAME_TARGET_PLATFORM);
-
-		if (!targetPlatformDir.exists() && !targetPlatformDir.mkdirs()) {
-			System.err.printf(
-				"== Unable to create directory %s\n", targetPlatformDir);
+		if (moduleFrameworkBaseDirName == null) {
+			System.err.println(
+				"== -Dmodule.framework.base.dir= must point to a valid " +
+					"directory");
 
 			return;
 		}
+
+		Path outputDirPath = Paths.get(
+			moduleFrameworkBaseDirName, Indexer.DIR_NAME_TARGET_PLATFORM);
+
+		String outputDirName = System.getProperty("output.dir");
+
+		if (outputDirName != null) {
+			outputDirPath = Paths.get(outputDirName);
+		}
+
+		Files.createDirectories(outputDirPath);
 
 		List<File> lpkgFiles = new ArrayList<>();
 
@@ -114,9 +117,60 @@ public class LPKGIndexerMain {
 		for (File lpkgFile : lpkgFiles) {
 			LPKGIndexer lpkgIndexer = new LPKGIndexer(lpkgFile);
 
-			File indexFile = lpkgIndexer.index(targetPlatformDir);
+			ByteArrayOutputStream byteArrayOutputStream =
+				new ByteArrayOutputStream();
 
-			System.out.println("== Wrote index file " + indexFile);
+			lpkgIndexer.index(byteArrayOutputStream);
+
+			Path indexFilePath = _getIndexFilePath(outputDirPath, lpkgFile);
+
+			Files.write(indexFilePath, byteArrayOutputStream.toByteArray());
+
+			System.out.println("== Wrote index file " + indexFilePath);
+		}
+	}
+
+	private static Path _getIndexFilePath(Path outputDirPath, File lpkgFile)
+		throws Exception {
+
+		try (ZipFile zipFile = new ZipFile(lpkgFile)) {
+			ZipEntry zipEntry = zipFile.getEntry(
+				"liferay-marketplace.properties");
+
+			if (zipEntry == null) {
+				throw new Exception(
+					lpkgFile + " does not have liferay-marketplace.properties");
+			}
+
+			Properties properties = new Properties();
+
+			try (InputStream inputStream = zipFile.getInputStream(zipEntry)) {
+				properties.load(inputStream);
+			}
+
+			String symbolicName = properties.getProperty("title");
+
+			if ((symbolicName == null) || symbolicName.isEmpty()) {
+				throw new Exception(
+					lpkgFile + " does not have a valid symbolic name");
+			}
+
+			Version version = null;
+
+			String versionString = properties.getProperty("version");
+
+			try {
+				version = new Version(versionString);
+			}
+			catch (IllegalArgumentException iae) {
+				throw new Exception(
+					lpkgFile + " does not have a valid version: " +
+						versionString,
+					iae);
+			}
+
+			return outputDirPath.resolve(
+				symbolicName + "-" + version + "-index.xml");
 		}
 	}
 

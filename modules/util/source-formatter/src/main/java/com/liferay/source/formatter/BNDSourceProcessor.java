@@ -109,7 +109,8 @@ public class BNDSourceProcessor extends BaseSourceProcessor {
 		if (absolutePath.contains("/portal-kernel/") ||
 			absolutePath.contains("/util-bridges/") ||
 			absolutePath.contains("/util-java/") ||
-			absolutePath.contains("/util-taglib/")) {
+			absolutePath.contains("/util-taglib/") ||
+			fileName.endsWith("/system.packages.extra.bnd")) {
 
 			return;
 		}
@@ -130,7 +131,7 @@ public class BNDSourceProcessor extends BaseSourceProcessor {
 			if (wildcardImport.matches("^!?com\\.liferay\\..+")) {
 				processErrorMessage(
 					fileName,
-					"Don't use wildcard in Export-Package '" + wildcardImport +
+					"Do not use wildcard in Export-Package '" + wildcardImport +
 						"': " + fileName);
 			}
 		}

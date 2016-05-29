@@ -16,8 +16,6 @@
 	</tear-down>
 
 	<command name="WeatherPortletSmoke" priority="4">
-		<property name="portlet.plugins.includes" value="weather-portlet" />
-
 		<var name="appName" value="Weather" />
 
 		<execute macro="Navigator#gotoPage">
@@ -27,7 +25,5 @@
 		<execute macro="Portlet#addPG">
 			<var name="portletName" value="Weather" />
 		</execute>
-
-		<execute function="AntCommand#antCommand" locator1="build-test.xml" value1="remove-plugin -Dplugin.name=weather-portlet" />
 	</command>
 </definition>
