@@ -56,6 +56,8 @@ public class SearchContainer<R> {
 
 	public static final String DEFAULT_DEPRECATED_TOTAL_VAR = "deprecatedTotal";
 
+	public static final boolean DEFAULT_FORCE_POST = false;
+
 	public static final String DEFAULT_ORDER_BY_COL_PARAM = "orderByCol";
 
 	public static final String DEFAULT_ORDER_BY_TYPE_PARAM = "orderByType";
@@ -350,6 +352,10 @@ public class SearchContainer<R> {
 		return _deltaConfigurable;
 	}
 
+	public boolean isForcePost() {
+		return _forcePost;
+	}
+
 	public boolean isHover() {
 		return _hover;
 	}
@@ -412,6 +418,10 @@ public class SearchContainer<R> {
 		String emptyResultsMessageCssClass) {
 
 		_emptyResultsMessageCssClass = emptyResultsMessageCssClass;
+	}
+
+	public void setForcePost(boolean forcePost) {
+		_forcePost = forcePost;
 	}
 
 	public void setHeaderNames(List<String> headerNames) {
@@ -554,6 +564,7 @@ public class SearchContainer<R> {
 	private String _emptyResultsMessage;
 	private String _emptyResultsMessageCssClass;
 	private int _end;
+	private boolean _forcePost = DEFAULT_FORCE_POST;
 	private List<String> _headerNames;
 	private boolean _hover = true;
 	private String _id;

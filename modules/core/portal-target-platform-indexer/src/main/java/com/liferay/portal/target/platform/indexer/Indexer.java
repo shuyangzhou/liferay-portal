@@ -14,7 +14,7 @@
 
 package com.liferay.portal.target.platform.indexer;
 
-import java.io.File;
+import java.io.OutputStream;
 
 /**
  * @author Raymond Augé
@@ -23,6 +23,6 @@ public interface Indexer {
 
 	public static final String DIR_NAME_TARGET_PLATFORM = "target-platform";
 
-	public File index(File outputFile) throws Exception;
+	public void index(OutputStream outputStream) throws Exception;
 
 }

@@ -19,12 +19,13 @@
 		<if>
 			<equals arg1="${deviceType}" arg2="smartphone" />
 			<then>
-				<execute function="AssertVisible" locator1="//iframe[@id='simulationDeviceIframe' and contains(@style,'height: 640px;') and contains(@style,'width: 400px;')]" />
-
 				<take-screenshot />
 
 				<execute function="Click" locator1="ControlMenuPreviewPanel#PREVIEW_SMARTPHONE" />
-				<execute function="AssertVisible" locator1="//iframe[@id='simulationDeviceIframe' and contains(@style,'height: 400px;') and contains(@style,'width: 640px;')]" />
+
+				<var name="key_deviceType" value="${deviceType}" />
+
+				<execute function="AssertElementPresent" locator1="PREVIEW_DEVICE_IFRAME" />
 
 				<take-screenshot />
 			</then>
@@ -32,12 +33,14 @@
 				<equals arg1="${deviceType}" arg2="tablet" />
 				<then>
 					<execute function="Click" locator1="ControlMenuPreviewPanel#PREVIEW_TABLET" />
-					<execute function="AssertVisible" locator1="//iframe[@id='simulationDeviceIframe' and contains(@style,'height: 900px;') and contains(@style,'width: 760px;')]" />
 
 					<take-screenshot />
 
 					<execute function="Click" locator1="ControlMenuPreviewPanel#PREVIEW_TABLET" />
-					<execute function="AssertVisible" locator1="//iframe[@id='simulationDeviceIframe' and contains(@style,'height: 760px;') and contains(@style,'width: 900px;')]" />
+
+					<var name="key_deviceType" value="${deviceType}" />
+
+					<execute function="AssertElementPresent" locator1="PREVIEW_DEVICE_IFRAME" />
 
 					<take-screenshot />
 				</then>
@@ -46,7 +49,8 @@
 				<equals arg1="${deviceType}" arg2="desktop" />
 				<then>
 					<execute function="Click" locator1="ControlMenuPreviewPanel#PREVIEW_DESKTOP" />
-					<execute function="AssertVisible" locator1="//iframe[@id='simulationDeviceIframe' and contains(@style,'height: 1050px;') and contains(@style,'width: 1300px;')]" />
+
+					<execute function="AssertElementPresent" locator1="PREVIEW_DEVICE_GENERAL_IFRAME" />
 
 					<take-screenshot />
 				</then>
@@ -55,6 +59,8 @@
 				<equals arg1="${deviceType}" arg2="custom" />
 				<then>
 					<execute function="Click" locator1="ControlMenuPreviewPanel#PREVIEW_CUSTOM" />
+
+					<execute function="AssertElementPresent" locator1="PREVIEW_DEVICE_GENERAL_IFRAME" />
 
 					<take-screenshot />
 
@@ -77,8 +83,6 @@
 							<var name="width" value="400" />
 						</else>
 					</if>
-
-					<execute function="AssertVisible" locator1="//iframe[@id='simulationDeviceIframe' and contains(@style,'height: ${height}px;') and contains(@style,'width: ${width}px;')]" />
 
 					<take-screenshot />
 				</then>

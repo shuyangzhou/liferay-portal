@@ -1626,8 +1626,14 @@ public class LanguageImpl implements Language, Serializable {
 		Cookie languageIdCookie = new Cookie(
 			CookieKeys.GUEST_LANGUAGE_ID, languageId);
 
-		languageIdCookie.setPath(StringPool.SLASH);
+		String domain = CookieKeys.getDomain(request);
+
+		if (Validator.isNotNull(domain)) {
+			languageIdCookie.setDomain(domain);
+		}
+
 		languageIdCookie.setMaxAge(CookieKeys.MAX_AGE);
+		languageIdCookie.setPath(StringPool.SLASH);
 
 		CookieKeys.addCookie(request, response, languageIdCookie);
 	}
