@@ -14,11 +14,10 @@
 
 package com.liferay.portal.target.platform.indexer.internal;
 
-import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.target.platform.indexer.Indexer;
 
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.OutputStream;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -28,7 +27,6 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -48,24 +46,19 @@ public class LPKGIndexer implements Indexer {
 		_config.put(
 			"license.url", "https://www.liferay.com/downloads/ce-license");
 		_config.put("pretty", "true");
-		_config.put("repository.name", ReleaseInfo.getReleaseInfo());
+		_config.put("repository.name", _getRepositoryName(lpkgFile));
 		_config.put("stylesheet", "http://www.osgi.org/www/obr2html.xsl");
 	}
 
 	@Override
-	public File index(File outputFile) throws Exception {
+	public void index(OutputStream outputStream) throws Exception {
 		Path tempPath = Files.createTempDirectory(null);
 
 		File tempDir = tempPath.toFile();
 
-		_config.put("root.url", tempDir.getCanonicalPath());
-
-		String bundleSymbolicName = _lpkgFile.getName();
-		String bundleVersion = "1.0.0";
+		_config.put("root.url", tempDir.getPath());
 
 		try (ZipFile zipFile = new ZipFile(_lpkgFile)) {
-			ResourceIndexer resourceIndexer = new RepoIndex();
-
 			Set<File> files = new LinkedHashSet<>();
 
 			Enumeration<? extends ZipEntry> enumeration = zipFile.entries();
@@ -75,51 +68,38 @@ public class LPKGIndexer implements Indexer {
 
 				String name = zipEntry.getName();
 
-				if (name.endsWith("liferay-marketplace.properties")) {
-					Properties properties = new Properties();
-
-					properties.load(zipFile.getInputStream(zipEntry));
-
-					bundleSymbolicName = properties.getProperty("title");
-					bundleVersion = properties.getProperty("version");
-
-					continue;
-				}
-				else if (!name.endsWith(".jar")) {
+				if (!name.endsWith(".jar")) {
 					continue;
 				}
 
 				File file = new File(tempDir, name);
 
-				Files.copy(zipFile.getInputStream(zipEntry), file.toPath());
+				Files.copy(
+					zipFile.getInputStream(zipEntry), file.toPath(),
+					StandardCopyOption.REPLACE_EXISTING);
 
 				files.add(file);
 			}
 
-			File indexFile = new File(
-				tempDir,
-				bundleSymbolicName + "-" + bundleVersion + "-index.xml");
+			ResourceIndexer resourceIndexer = new RepoIndex();
 
-			try (FileOutputStream fileOutputStream =
-					new FileOutputStream(indexFile)) {
-
-				resourceIndexer.index(files, fileOutputStream, _config);
-			}
-
-			if (outputFile.isDirectory()) {
-				outputFile = new File(outputFile, indexFile.getName());
-			}
-
-			Files.copy(
-				indexFile.toPath(), outputFile.toPath(),
-				StandardCopyOption.COPY_ATTRIBUTES,
-				StandardCopyOption.REPLACE_EXISTING);
-
-			return outputFile;
+			resourceIndexer.index(files, outputStream, _config);
 		}
 		finally {
 			PathUtil.deltree(tempPath);
 		}
+	}
+
+	private String _getRepositoryName(File lpkgFile) {
+		String fileName = lpkgFile.getName();
+
+		int index = fileName.lastIndexOf('.');
+
+		if (index > 0) {
+			fileName = fileName.substring(0, index);
+		}
+
+		return fileName;
 	}
 
 	private final Map<String, String> _config = new HashMap<>();

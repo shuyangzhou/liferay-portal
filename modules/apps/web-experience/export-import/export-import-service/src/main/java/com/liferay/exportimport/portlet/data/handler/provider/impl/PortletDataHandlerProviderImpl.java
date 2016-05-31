@@ -30,6 +30,7 @@ import org.osgi.service.component.annotations.Reference;
 public class PortletDataHandlerProviderImpl
 	implements PortletDataHandlerProvider {
 
+	@Override
 	public PortletDataHandler provide(long companyId, String portletId) {
 		if ((companyId <= 0) || Validator.isNull(portletId)) {
 			return null;
@@ -41,10 +42,12 @@ public class PortletDataHandlerProviderImpl
 		return doProvide(portlet);
 	}
 
+	@Override
 	public PortletDataHandler provide(Portlet portlet) {
 		return doProvide(portlet);
 	}
 
+	@Override
 	public PortletDataHandler provide(String portletId) {
 		if (Validator.isNull(portletId)) {
 			return null;

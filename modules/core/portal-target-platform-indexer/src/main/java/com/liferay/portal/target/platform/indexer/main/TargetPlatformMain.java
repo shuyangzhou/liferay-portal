@@ -14,415 +14,343 @@
 
 package com.liferay.portal.target.platform.indexer.main;
 
-import aQute.bnd.header.Attrs;
-import aQute.bnd.header.Parameters;
-import aQute.bnd.osgi.Constants;
-import aQute.bnd.osgi.Jar;
-import aQute.bnd.osgi.Verifier;
-import aQute.bnd.osgi.resource.CapabilityBuilder;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
-import com.liferay.portal.bootstrap.ModuleFrameworkImpl;
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
-import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.PropsUtil;
-import com.liferay.portal.kernel.util.ReleaseInfo;
-import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.target.platform.indexer.Indexer;
+import com.liferay.portal.target.platform.indexer.internal.DefaultIndexValidator;
+import com.liferay.portal.target.platform.indexer.internal.LPKGIndexer;
 import com.liferay.portal.target.platform.indexer.internal.PathUtil;
-import com.liferay.portal.util.FastDateFormatFactoryImpl;
-import com.liferay.portal.util.FileImpl;
-import com.liferay.portal.util.PropsImpl;
-import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.target.platform.indexer.internal.TargetPlatformIndexer;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InputStream;
 
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
+import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.BasicFileAttributes;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.jar.Attributes;
-import java.util.jar.Manifest;
+import java.util.ServiceLoader;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.launch.Framework;
-import org.osgi.framework.namespace.BundleNamespace;
-import org.osgi.framework.namespace.HostNamespace;
-import org.osgi.framework.namespace.IdentityNamespace;
-import org.osgi.framework.namespace.NativeNamespace;
-import org.osgi.framework.namespace.PackageNamespace;
-import org.osgi.framework.wiring.BundleRevision;
-import org.osgi.resource.Capability;
-import org.osgi.service.indexer.ResourceIndexer;
-import org.osgi.service.indexer.impl.RepoIndex;
-import org.osgi.service.repository.ContentNamespace;
+import org.osgi.framework.launch.FrameworkFactory;
 
 /**
- * @author Raymond Augé
+ * @author Shuyang Zhou
  */
-public class TargetPlatformMain implements Indexer {
+public class TargetPlatformMain {
 
 	public static void main(String[] args) throws Exception {
-		FastDateFormatFactoryUtil fastDateFormatFactoryUtil =
-			new FastDateFormatFactoryUtil();
+		String moduleFrameworkBaseDir = System.getProperty(
+			"module.framework.base.dir");
 
-		fastDateFormatFactoryUtil.setFastDateFormatFactory(
-			new FastDateFormatFactoryImpl());
-
-		FileUtil fileUtil = new FileUtil();
-
-		fileUtil.setFile(new FileImpl());
-
-		Path tempPath = Files.createTempDirectory(null);
-
-		File tempDir = tempPath.toFile();
-
-		com.liferay.portal.util.PropsUtil.set(
-			PropsKeys.MODULE_FRAMEWORK_STATE_DIR, tempDir.getCanonicalPath());
-
-		PropsUtil.setProps(new PropsImpl());
-
-		String[] moduleFrameworkInitialBundles = PropsUtil.getArray(
-			PropsKeys.MODULE_FRAMEWORK_INITIAL_BUNDLES);
-
-		for (int i = 0; i < moduleFrameworkInitialBundles.length; i++) {
-			String moduleFrameworkInitialBundle =
-				moduleFrameworkInitialBundles[i];
-
-			if (moduleFrameworkInitialBundle.endsWith("@start")) {
-				moduleFrameworkInitialBundles[i] =
-					moduleFrameworkInitialBundle.substring(
-						0, moduleFrameworkInitialBundle.length() - 6);
-			}
-		}
-
-		com.liferay.portal.util.PropsUtil.set(
-			PropsKeys.MODULE_FRAMEWORK_INITIAL_BUNDLES,
-			StringUtil.merge(moduleFrameworkInitialBundles));
-
-		File targetPlatformDir = new File(
-			PropsValues.MODULE_FRAMEWORK_BASE_DIR, DIR_NAME_TARGET_PLATFORM);
-
-		if (!targetPlatformDir.exists() && !targetPlatformDir.mkdirs()) {
-			System.err.printf(
-				"== Unable to create directory %s\n", targetPlatformDir);
+		if (moduleFrameworkBaseDir == null) {
+			System.err.println(
+				"== -Dmodule.framework.base.dir must point to a valid " +
+					"directory");
 
 			return;
 		}
 
-		TargetPlatformMain targetPlatformMain = new TargetPlatformMain(
-			"com.liferay.target.platform", ReleaseInfo.getVersion());
+		BytesURLSupport.init();
+
+		String moduleFrameworkStaticDir = System.getProperty(
+			"module.framework.static.dir",
+			moduleFrameworkBaseDir.concat("/static"));
+
+		String moduleFrameworkModulesDir = System.getProperty(
+			"module.framework.modules.dir",
+			moduleFrameworkBaseDir.concat("/modules"));
+
+		String moduleFrameworkPortalDir = System.getProperty(
+			"module.framework.portal.dir",
+			moduleFrameworkBaseDir.concat("/portal"));
+
+		String moduleFrameworkMarketplaceDir = System.getProperty(
+			"module.framework.marketplace.dir",
+			moduleFrameworkBaseDir.concat("/marketplace"));
+
+		String indexesFile = System.getProperty(
+			"indexes.file",
+			moduleFrameworkBaseDir + "/" + Indexer.DIR_NAME_TARGET_PLATFORM +
+				"/target-platform-indexes-" + System.currentTimeMillis() +
+					".zip");
+
+		String integrityProperties = System.getProperty(
+			"integrity.properties",
+			moduleFrameworkBaseDir + "/" + Indexer.DIR_NAME_TARGET_PLATFORM +
+				"/integrity.properties");
+
+		List<URI> uris = _index(
+			indexesFile, moduleFrameworkStaticDir, moduleFrameworkModulesDir,
+			moduleFrameworkPortalDir, moduleFrameworkMarketplaceDir);
+
+		if (_validate(uris)) {
+			_updateIntegrity(uris, Paths.get(integrityProperties));
+		}
+	}
+
+	private static List<URI> _index(
+			String indexesFileName, String moduleFrameworkStaticDir,
+			String moduleFrameworkModulesDir, String moduleFrameworkPortalDir,
+			String moduleFrameworkMarketplaceDir)
+		throws Exception {
+
+		Path indexFilePath = Paths.get(indexesFileName);
+
+		if (Files.exists(indexFilePath)) {
+			return _loadIndexes(indexFilePath);
+		}
+
+		List<URI> uris = new ArrayList<>();
+
+		uris.add(
+			_indexTargetPlatform(
+				moduleFrameworkStaticDir, moduleFrameworkModulesDir,
+				moduleFrameworkPortalDir));
+
+		uris.addAll(
+			_indexLPKGFiles(
+				Utilities.listFiles(moduleFrameworkMarketplaceDir, "*.lpkg")));
+
+		_saveIndexes(indexesFileName, uris);
+
+		return uris;
+	}
+
+	private static List<URI> _indexLPKGFiles(List<File> lpkgFiles)
+		throws Exception {
+
+		List<URI> uris = new ArrayList<>(lpkgFiles.size());
+
+		ByteArrayOutputStream byteArrayOutputStream =
+			new ByteArrayOutputStream();
+
+		for (File lpkgFile : lpkgFiles) {
+			LPKGIndexer lpkgIndexer = new LPKGIndexer(lpkgFile);
+
+			lpkgIndexer.index(byteArrayOutputStream);
+
+			String name = lpkgFile.getName();
+
+			URL url = BytesURLSupport.putData(
+				name.substring(0, name.length() - 5),
+				byteArrayOutputStream.toByteArray());
+
+			byteArrayOutputStream.reset();
+
+			uris.add(url.toURI());
+		}
+
+		return uris;
+	}
+
+	private static URI _indexTargetPlatform(String... dirNames)
+		throws Exception {
+
+		Framework framework = null;
+
+		Path tempPath = Files.createTempDirectory(null);
 
 		try {
-			File indexFile = targetPlatformMain.index(targetPlatformDir);
+			ServiceLoader<FrameworkFactory> serviceLoader = ServiceLoader.load(
+				FrameworkFactory.class);
 
-			System.out.println("== Wrote index file " + indexFile);
+			FrameworkFactory frameworkFactory = serviceLoader.iterator().next();
+
+			framework = frameworkFactory.newFramework(
+				Collections.singletonMap(
+					org.osgi.framework.Constants.FRAMEWORK_STORAGE,
+					tempPath.toString()));
+
+			framework.init();
+
+			BundleContext bundleContext = framework.getBundleContext();
+
+			Bundle systemBundle = bundleContext.getBundle(0);
+
+			TargetPlatformIndexer targetPlatformIndexer =
+				new TargetPlatformIndexer(systemBundle, dirNames);
+
+			ByteArrayOutputStream byteArrayOutputStream =
+				new ByteArrayOutputStream();
+
+			targetPlatformIndexer.index(byteArrayOutputStream);
+
+			URL url = BytesURLSupport.putData(
+				"liferay-target-platform", byteArrayOutputStream.toByteArray());
+
+			return url.toURI();
 		}
 		finally {
+			framework.stop();
+
 			PathUtil.deltree(tempPath);
 		}
 	}
 
-	public TargetPlatformMain(String bundleSymbolicName, String bundleVersion) {
-		_bundleSymbolicName = bundleSymbolicName;
-		_bundleVersion = bundleVersion;
+	private static List<URI> _loadIndexes(Path indexesFilePath)
+		throws IOException {
 
-		_config.put("compressed", "false");
-		_config.put(
-			"license.url", "https://www.liferay.com/downloads/ce-license");
-		_config.put("pretty", "true");
-		_config.put("repository.name", ReleaseInfo.getReleaseInfo());
-		_config.put("stylesheet", "http://www.osgi.org/www/obr2html.xsl");
-	}
+		final List<URI> uris = new ArrayList<>();
 
-	@Override
-	public File index(File outputFile) throws Exception {
-		Path tempPath = Files.createTempDirectory(null);
+		try (FileSystem fileSystem = FileSystems.newFileSystem(
+				indexesFilePath, null)) {
 
-		File tempDir = tempPath.toFile();
-
-		_config.put("root.url", tempDir.getCanonicalPath());
-
-		_moduleFrameworkImpl.initFramework();
-
-		_moduleFrameworkImpl.startFramework();
-
-		Framework framework = _moduleFrameworkImpl.getFramework();
-
-		BundleContext bundleContext = framework.getBundleContext();
-
-		processBundle(bundleContext.getBundle(0));
-
-		Manifest manifest = new Manifest();
-
-		Attributes attributes = manifest.getMainAttributes();
-
-		attributes.putValue(
-			Constants.BUNDLE_DESCRIPTION, ReleaseInfo.getReleaseInfo());
-		attributes.putValue(
-			Constants.BUNDLE_COPYRIGHT,
-			"Copyright (c) 2000-present All rights reserved.");
-		attributes.putValue(
-			Constants.BUNDLE_LICENSE,
-			"http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt");
-		attributes.putValue(Constants.BUNDLE_MANIFESTVERSION, "2");
-		attributes.putValue(Constants.BUNDLE_SYMBOLICNAME, _bundleSymbolicName);
-		attributes.putValue(Constants.BUNDLE_VENDOR, ReleaseInfo.getVendor());
-		attributes.putValue(Constants.BUNDLE_VERSION, _bundleVersion);
-
-		String exportPackage = StringUtil.replace(
-			_packagesParamters.toString(), "version:Version", "version");
-
-		attributes.putValue(Constants.EXPORT_PACKAGE, exportPackage);
-
-		StringBundler sb = new StringBundler();
-
-		for (Parameters parameter : _parametersList) {
-			sb.append(parameter.toString());
-			sb.append(",");
-		}
-
-		sb.setIndex(sb.index() - 1);
-
-		String capabilities = sb.toString();
-
-		attributes.putValue(Constants.PROVIDE_CAPABILITY, capabilities);
-
-		Jar jar = new Jar("distro");
-
-		jar.setManifest(manifest);
-
-		try (Verifier verifier = new Verifier(jar)) {
-			verifier.setProperty(
-				Constants.FIXUPMESSAGES,
-				"osgi.* namespace must not be specified with generic " +
-					"capabilities");
-
-			verifier.verify();
-
-			verifier.getErrors();
-
-			if (!verifier.isOk()) {
-				List<String> errors = verifier.getErrors();
-
-				sb = new StringBundler((errors.size() * 4) + 3);
-
-				sb.append(TargetPlatformMain.class.getName());
-				sb.append(" failed with {");
-
-				for (String error : verifier.getErrors()) {
-					sb.append("[");
-					sb.append(error);
-					sb.append("]");
-					sb.append(",");
-				}
-
-				sb.setIndex(sb.index() - 1);
-
-				sb.append("}");
-
-				throw new Exception(sb.toString());
-			}
-
-			File jarFile = new File(
-				tempPath.toFile(),
-				_bundleSymbolicName + "-" + _bundleVersion + ".jar");
-
-			jar.write(jarFile);
-
-			Set<File> jarFiles = new LinkedHashSet<>();
-
-			jarFiles.add(jarFile);
-
-			for (String moduleFrameworkInitialBundle :
-					PropsValues.MODULE_FRAMEWORK_INITIAL_BUNDLES) {
-
-				addBundle(
-					jarFiles, moduleFrameworkInitialBundle,
-					PropsValues.MODULE_FRAMEWORK_BASE_DIR + "/static/",
-					tempPath.toFile());
-			}
-
-			String[] autoDeployDirs = ArrayUtil.append(
-				new String[] {PropsValues.MODULE_FRAMEWORK_PORTAL_DIR},
-				PropsValues.MODULE_FRAMEWORK_AUTO_DEPLOY_DIRS);
-
-			for (String autoDeployDir : autoDeployDirs) {
-				File dir = new File(autoDeployDir);
-
-				if (!dir.isDirectory() || !dir.canRead()) {
-					continue;
-				}
-
-				File[] childFiles = dir.listFiles(
-					new FilenameFilter() {
+			for (Path rootPath : fileSystem.getRootDirectories()) {
+				Files.walkFileTree(
+					rootPath,
+					new SimpleFileVisitor<Path>() {
 
 						@Override
-						public boolean accept(File dir, String name) {
-							return name.endsWith(".jar");
+						public FileVisitResult visitFile(
+								Path filePath,
+								BasicFileAttributes basicFileAttributes)
+							throws IOException {
+
+							Path fileNamePath = filePath.getFileName();
+
+							String fileName = fileNamePath.toString();
+
+							if (!fileName.endsWith(".xml")) {
+								return FileVisitResult.CONTINUE;
+							}
+
+							URL url = BytesURLSupport.putData(
+								fileName.substring(0, fileName.length() - 4),
+								Files.readAllBytes(filePath));
+
+							try {
+								uris.add(url.toURI());
+							}
+							catch (URISyntaxException urise) {
+								throw new RuntimeException(urise);
+							}
+
+							return super.visitFile(
+								filePath, basicFileAttributes);
 						}
 
 					});
+			}
+		}
 
-				for (File childFile : childFiles) {
-					addBundle(jarFiles, childFile, tempPath.toFile());
+		return uris;
+	}
+
+	private static void _saveIndexes(String indexesFileName, List<URI> uris)
+		throws IOException {
+
+		Path path = Paths.get(indexesFileName);
+
+		Files.createDirectories(path.getParent());
+
+		try (FileSystem fileSystem = FileSystems.newFileSystem(
+				URI.create("jar:file:" + indexesFileName),
+				Collections.singletonMap("create", "true"))) {
+
+			for (URI uri : uris) {
+				URL url = uri.toURL();
+
+				String name = url.getFile();
+
+				int index = name.lastIndexOf('/');
+
+				if (index != -1) {
+					name = name.substring(index + 1);
+				}
+
+				index = name.lastIndexOf('.');
+
+				if (index != -1) {
+					name = name.substring(0, index);
+				}
+
+				try (InputStream inputStream = url.openStream()) {
+					Files.copy(
+						inputStream, fileSystem.getPath(name.concat(".xml")),
+						StandardCopyOption.REPLACE_EXISTING);
 				}
 			}
+		}
 
-			ResourceIndexer resourceIndexer = new RepoIndex();
+		System.out.println("== Saved indexes file at " + indexesFileName);
+	}
 
-			File tempIndexFile = new File(
-				tempPath.toFile(),
-				_bundleSymbolicName + "-" + _bundleVersion + "-index.xml");
+	private static void _updateIntegrity(
+			List<URI> uris, Path integrityPropertiesPath)
+		throws Exception {
 
-			try (FileOutputStream fileOutputStream =
-					new FileOutputStream(tempIndexFile)) {
+		Collections.sort(uris);
 
-				resourceIndexer.index(jarFiles, fileOutputStream, _config);
+		StringBuilder sb = new StringBuilder();
+
+		for (URI uri : uris) {
+			sb.append(Utilities.toIntegrityKey(uri));
+			sb.append('=');
+			sb.append(Utilities.toChecksum(uri));
+			sb.append('\n');
+		}
+
+		sb.setLength(sb.length() - 1);
+
+		Files.createDirectories(integrityPropertiesPath.getParent());
+
+		Files.write(
+			integrityPropertiesPath, Collections.singleton(sb.toString()),
+			StandardCharsets.UTF_8);
+
+		System.out.println(
+			"== Saved integrity.properties at " + integrityPropertiesPath);
+	}
+
+	private static boolean _validate(List<URI> uris) throws Exception {
+		DefaultIndexValidator defaultIndexValidator = new DefaultIndexValidator(
+			Collections.<URI>emptyList());
+
+		long start = System.currentTimeMillis();
+
+		try {
+			List<String> messages = defaultIndexValidator.validate(uris);
+
+			if (!messages.isEmpty()) {
+				System.out.println("== Validation errors");
+
+				for (String message : messages) {
+					System.out.println("== " + message);
+				}
+
+				return false;
 			}
 
-			File indexFile = new File(outputFile, tempIndexFile.getName());
+			System.out.println("== Successfully validated");
 
-			Files.copy(
-				tempIndexFile.toPath(), indexFile.toPath(),
-				StandardCopyOption.COPY_ATTRIBUTES,
-				StandardCopyOption.REPLACE_EXISTING);
-
-			return indexFile;
+			return true;
 		}
 		finally {
-			PathUtil.deltree(tempPath);
+			long duration = System.currentTimeMillis() - start;
 
-			_moduleFrameworkImpl.stopFramework(0);
+			System.out.printf(
+				"== Time %02d:%02ds\n", MILLISECONDS.toMinutes(duration),
+				MILLISECONDS.toSeconds(duration % 60000));
 		}
 	}
-
-	protected void addBundle(Set<File> jarFiles, File bundleFile, File tempDir)
-		throws IOException {
-
-		File jarFile = new File(tempDir, bundleFile.getName());
-
-		Files.copy(
-			bundleFile.toPath(), jarFile.toPath(),
-			StandardCopyOption.COPY_ATTRIBUTES,
-			StandardCopyOption.REPLACE_EXISTING);
-
-		jarFiles.add(jarFile);
-	}
-
-	protected void addBundle(
-			Set<File> jarFiles, String bundleLocation, String baseDirName,
-			File tempDir)
-		throws IOException {
-
-		int index = bundleLocation.indexOf('@');
-
-		if (index != -1) {
-			bundleLocation = bundleLocation.substring(0, index);
-		}
-
-		if (!bundleLocation.startsWith("file:")) {
-			bundleLocation = "file:" + baseDirName + bundleLocation;
-		}
-
-		if (!bundleLocation.endsWith(".jar")) {
-			return;
-		}
-
-		URI uri = URI.create(bundleLocation);
-
-		File bundleFile = new File(uri);
-
-		if (!bundleFile.exists() || !bundleFile.canRead()) {
-			return;
-		}
-
-		File jarFile = new File(tempDir, bundleFile.getName());
-
-		Files.copy(
-			bundleFile.toPath(), jarFile.toPath(),
-			StandardCopyOption.COPY_ATTRIBUTES,
-			StandardCopyOption.REPLACE_EXISTING);
-
-		jarFiles.add(jarFile);
-	}
-
-	protected void processBundle(Bundle bundle) throws Exception {
-		BundleRevision bundleRevision = bundle.adapt(BundleRevision.class);
-
-		for (Capability capability : bundleRevision.getCapabilities(null)) {
-			String namespace = capability.getNamespace();
-
-			CapabilityBuilder capabilityBuilder = new CapabilityBuilder(
-				namespace);
-
-			capabilityBuilder.addAttributes(capability.getAttributes());
-			capabilityBuilder.addDirectives(capability.getDirectives());
-
-			Attrs attrs = capabilityBuilder.toAttrs();
-
-			if (capabilityBuilder.isPackage()) {
-				attrs.remove(Constants.BUNDLE_SYMBOLIC_NAME_ATTRIBUTE);
-				attrs.remove(Constants.BUNDLE_VERSION_ATTRIBUTE);
-
-				String packageName = attrs.remove(
-					PackageNamespace.PACKAGE_NAMESPACE);
-
-				if (packageName != null) {
-					_packagesParamters.put(packageName, attrs);
-				}
-			}
-			else if (!_ignoredNamespaces.contains(namespace)) {
-				Parameters parameters = new Parameters();
-
-				if (namespace.equals(NativeNamespace.NATIVE_NAMESPACE)) {
-					Set<String> keys = new LinkedHashSet<>(attrs.keySet());
-
-					for (String key : keys) {
-						if (!key.startsWith(NativeNamespace.NATIVE_NAMESPACE)) {
-							attrs.remove(key);
-						}
-					}
-				}
-
-				parameters.put(namespace, attrs);
-
-				_parametersList.add(parameters);
-			}
-		}
-	}
-
-	private static final Set<String> _ignoredNamespaces = new HashSet<>();
-
-	static {
-		_ignoredNamespaces.add(BundleNamespace.BUNDLE_NAMESPACE);
-		_ignoredNamespaces.add(ContentNamespace.CONTENT_NAMESPACE);
-		_ignoredNamespaces.add(HostNamespace.HOST_NAMESPACE);
-		_ignoredNamespaces.add(IdentityNamespace.IDENTITY_NAMESPACE);
-		_ignoredNamespaces.add(PackageNamespace.PACKAGE_NAMESPACE);
-	}
-
-	private final String _bundleSymbolicName;
-	private final String _bundleVersion;
-	private final Map<String, String> _config = new HashMap<>();
-	private final ModuleFrameworkImpl _moduleFrameworkImpl =
-		new ModuleFrameworkImpl();
-	private final Parameters _packagesParamters = new Parameters();
-	private final List<Parameters> _parametersList = new ArrayList<>();
 
 }

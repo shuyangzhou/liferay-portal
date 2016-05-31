@@ -20,7 +20,7 @@ Bundle-Version: 3.1.2
 	@jna-[0-9]*.jar,\
 	@logback-classic-[0-9]*.jar,\
 	@logback-core-[0-9]*.jar,\
-	@net.sf.jpathwatch--[0-9]*.jar,\
+	@net.sf.jpathwatch-[0-9]*.jar,\
 	@ormlite-core-[0-9]*.jar,\
 	@ormlite-jdbc-[0-9]*.jar,\
 	@poi-[0-9]*.jar,\

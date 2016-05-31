@@ -50,7 +50,6 @@ import com.liferay.portal.upgrade.v7_0_0.UpgradeSchema;
 import com.liferay.portal.upgrade.v7_0_0.UpgradeSharding;
 import com.liferay.portal.upgrade.v7_0_0.UpgradeSocial;
 import com.liferay.portal.upgrade.v7_0_0.UpgradeSubscription;
-import com.liferay.portal.upgrade.v7_0_0.UpgradeUserNotificationEvent;
 import com.liferay.portal.upgrade.v7_0_0.UpgradeWebsite;
 
 /**
@@ -100,7 +99,6 @@ public class UpgradeProcess_7_0_0 extends UpgradeProcess {
 		upgrade(UpgradeResourcePermission.class);
 		upgrade(UpgradeSocial.class);
 		upgrade(UpgradeSubscription.class);
-		upgrade(UpgradeUserNotificationEvent.class);
 		upgrade(UpgradeWebsite.class);
 
 		upgrade(UpgradeSharding.class);

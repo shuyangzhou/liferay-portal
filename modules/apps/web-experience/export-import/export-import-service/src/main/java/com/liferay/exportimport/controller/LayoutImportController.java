@@ -1411,6 +1411,20 @@ public class LayoutImportController implements ImportController {
 		validateLayoutPrototypes(companyId, headerElement, layoutsElement);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #validateLayoutPrototypes(long, Element, Element)}
+	 */
+	@Deprecated
+	protected void validateLayoutPrototypes(
+			long companyId, Element layoutsElement)
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method is deprecated and replaced by " +
+				"#validateLayoutPrototypes(long, Element, Element)");
+	}
+
 	protected void validateLayoutPrototypes(
 			long companyId, Element headerElement, Element layoutsElement)
 		throws Exception {

@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * @author     Bruno Farache
+ * @author Bruno Farache
  */
 public class LayoutsLocalPublisherRequest implements Serializable {
 
