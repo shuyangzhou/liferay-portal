@@ -3,7 +3,7 @@ Bundle-ClassPath:\
 	lib/jython-standalone.jar
 Bundle-Name: Liferay Portal Scripting Python
 Bundle-SymbolicName: com.liferay.portal.scripting.python
-Bundle-Version: 2.0.2
+Bundle-Version: 2.0.3
 Import-Package:\
 	!com.informix.*,\
 	\

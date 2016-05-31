@@ -173,12 +173,12 @@
 </tr>
 <tr>
 	<td>SEO_HTML_TITLE</td>
-	<td>//div[contains(.,'HTML Title')]/span/input</td>
+	<td>//div[contains(.,'HTML')]/span/input</td>
 	<td></td>
 </tr>
 <tr>
 	<td>SEO_HTML_TITLE_META_TAGS</td>
-	<td>//div[contains(.,'HTML Title')]/span//ul/li[@data-value='${key_defaultSiteLanguageKey}']</td>
+	<td>//div[contains(.,'HTML')]/span//ul/li[@data-value='${key_defaultSiteLanguageKey}']</td>
 	<td></td>
 </tr>
 <tr>

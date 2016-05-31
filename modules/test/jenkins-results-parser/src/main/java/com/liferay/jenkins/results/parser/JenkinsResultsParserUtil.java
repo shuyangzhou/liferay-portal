@@ -17,7 +17,6 @@ package com.liferay.jenkins.results.parser;
 import java.io.BufferedReader;
 import java.io.CharArrayWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -534,8 +533,14 @@ public class JenkinsResultsParserUtil {
 			int timeout)
 		throws Exception {
 
-		return createJSONObject(
-			toString(url, checkCache, maxRetries, retryPeriod, timeout));
+		String response = toString(
+			url, checkCache, maxRetries, retryPeriod, timeout);
+
+		if (response.endsWith("was truncated due to its size.")) {
+			return null;
+		}
+
+		return createJSONObject(response);
 	}
 
 	public static String toString(String url) throws Exception {
@@ -594,38 +599,42 @@ public class JenkinsResultsParserUtil {
 					urlConnection.setReadTimeout(timeout);
 				}
 
-				InputStreamReader inputStreamReader = new InputStreamReader(
-					urlConnection.getInputStream());
-
-				BufferedReader bufferedReader = new BufferedReader(
-					inputStreamReader);
-
+				int bytes = 0;
 				String line = null;
 
-				while ((line = bufferedReader.readLine()) != null) {
-					sb.append(line);
-					sb.append("\n");
+				try (BufferedReader bufferedReader = new BufferedReader(
+						new InputStreamReader(
+							urlConnection.getInputStream()))) {
+
+					while ((line = bufferedReader.readLine()) != null) {
+						byte[] lineBytes = line.getBytes();
+
+						bytes += lineBytes.length;
+
+						if (bytes > (30 * 1024 * 1024)) {
+							sb.append("Response for ");
+							sb.append(url);
+							sb.append(" was truncated due to its size.");
+
+							break;
+						}
+
+						sb.append(line);
+						sb.append("\n");
+					}
 				}
 
-				bufferedReader.close();
-
-				String string = sb.toString();
-
-				byte[] bytes = string.getBytes();
-
-				if (!url.startsWith("file:") &&
-					(bytes.length < (3 * 1024 * 1024))) {
-
-					_toStringCache.put(key, string);
+				if (!url.startsWith("file:") && (bytes < (3 * 1024 * 1024))) {
+					_toStringCache.put(key, sb.toString());
 				}
 
-				return string;
+				return sb.toString();
 			}
-			catch (FileNotFoundException fnfe) {
+			catch (IOException ioe) {
 				retryCount++;
 
 				if ((maxRetries >= 0) && (retryCount >= maxRetries)) {
-					throw fnfe;
+					throw ioe;
 				}
 
 				System.out.println("Retry in " + retryPeriod + " seconds");
@@ -641,7 +650,7 @@ public class JenkinsResultsParserUtil {
 
 		File parentDir = file.getParentFile();
 
-		if (!parentDir.exists()) {
+		if ((parentDir != null) && !parentDir.exists()) {
 			System.out.println("Make parent directories for " + file);
 
 			parentDir.mkdirs();

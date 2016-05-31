@@ -139,6 +139,7 @@ public class FileSystemImporter extends BaseImporter {
 		MimeTypes mimeTypes, Portal portal,
 		PortletPreferencesFactory portletPreferencesFactory,
 		PortletPreferencesLocalService portletPreferencesLocalService,
+		PortletPreferencesTranslator portletPreferencesTranslator,
 		Map<String, PortletPreferencesTranslator> portletPreferencesTranslators,
 		RepositoryLocalService repositoryLocalService, SAXReader saxReader,
 		ThemeLocalService themeLocalService) {
@@ -163,7 +164,9 @@ public class FileSystemImporter extends BaseImporter {
 		this.portal = portal;
 		this.portletPreferencesFactory = portletPreferencesFactory;
 		this.portletPreferencesLocalService = portletPreferencesLocalService;
-		this.portletPreferencesTranslators = portletPreferencesTranslators;
+		this.portletPreferencesTranslators =
+			new DefaultedPortletPreferencesTranslatorMap(
+				portletPreferencesTranslators, portletPreferencesTranslator);
 		this.repositoryLocalService = repositoryLocalService;
 		this.saxReader = saxReader;
 		this.themeLocalService = themeLocalService;
@@ -1706,18 +1709,22 @@ public class FileSystemImporter extends BaseImporter {
 	protected void resetLayoutColumns(Layout layout) {
 		UnicodeProperties typeSettings = layout.getTypeSettingsProperties();
 
-		int count = 1;
+		Set<Map.Entry<String, String>> set = typeSettings.entrySet();
 
-		do {
-			String portletIds = typeSettings.remove("column-" + count++);
+		Iterator<Map.Entry<String, String>> iterator = set.iterator();
 
-			if (Validator.isNull(portletIds)) {
-				break;
+		while (iterator.hasNext()) {
+			Map.Entry<String, String> entry = iterator.next();
+
+			String key = entry.getKey();
+
+			if (!key.startsWith("column-")) {
+				continue;
 			}
 
-			String[] portletIdsArray = StringUtil.split(portletIds);
+			String[] portletIds = StringUtil.split(entry.getValue());
 
-			for (String portletId : portletIdsArray) {
+			for (String portletId : portletIds) {
 				try {
 					portletPreferencesLocalService.deletePortletPreferences(
 						PortletKeys.PREFS_OWNER_ID_DEFAULT,
@@ -1733,8 +1740,9 @@ public class FileSystemImporter extends BaseImporter {
 					}
 				}
 			}
+
+			iterator.remove();
 		}
-		while (true);
 
 		layout.setTypeSettingsProperties(typeSettings);
 
@@ -2008,5 +2016,34 @@ public class FileSystemImporter extends BaseImporter {
 		"\\[\\$FILE=([^\\$]+)\\$\\]");
 	private final Map<String, Set<Long>> _primaryKeys = new HashMap<>();
 	private File _resourcesDir;
+
+	private class DefaultedPortletPreferencesTranslatorMap
+		extends HashMap<String, PortletPreferencesTranslator> {
+
+		public DefaultedPortletPreferencesTranslatorMap(
+			Map<String, PortletPreferencesTranslator>
+				portletPreferencesTranslators,
+			PortletPreferencesTranslator portletPreferencesTranslator) {
+
+			super(portletPreferencesTranslators);
+
+			_portletPreferencesTranslator = portletPreferencesTranslator;
+		}
+
+		@Override
+		public PortletPreferencesTranslator get(Object key) {
+			PortletPreferencesTranslator value = super.get(key);
+
+			if (value == null) {
+				value = _portletPreferencesTranslator;
+			}
+
+			return value;
+		}
+
+		private final PortletPreferencesTranslator
+			_portletPreferencesTranslator;
+
+	}
 
 }

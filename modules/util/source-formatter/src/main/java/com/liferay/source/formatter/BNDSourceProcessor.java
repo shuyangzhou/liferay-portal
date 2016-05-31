@@ -82,6 +82,10 @@ public class BNDSourceProcessor extends BaseSourceProcessor {
 			}
 		}
 
+		if (dirName.contains("-import-") || dirName.contains("-private-")) {
+			return;
+		}
+
 		matcher = _bundleSymbolicNamePattern.matcher(content);
 
 		if (matcher.find()) {
@@ -92,13 +96,21 @@ public class BNDSourceProcessor extends BaseSourceProcessor {
 					StringUtil.replace(
 						dirName, StringPool.DASH, StringPool.PERIOD);
 
-			if (!expectedBundleSymbolicName.contains(".import.") &&
-				!expectedBundleSymbolicName.contains(".private.") &&
-				!bundleSymbolicName.equalsIgnoreCase(
+			if (!bundleSymbolicName.equalsIgnoreCase(
 					expectedBundleSymbolicName)) {
 
 				processErrorMessage(
 					fileName, "Bundle-SymbolicName: " + fileName);
+			}
+		}
+
+		matcher = _webContextPathNamePattern.matcher(content);
+
+		if (matcher.find()) {
+			String webContextPath = matcher.group(1);
+
+			if (!webContextPath.equals("/" + dirName)) {
+				processErrorMessage(fileName, "Web-ContextPath: " + fileName);
 			}
 		}
 	}
@@ -109,7 +121,8 @@ public class BNDSourceProcessor extends BaseSourceProcessor {
 		if (absolutePath.contains("/portal-kernel/") ||
 			absolutePath.contains("/util-bridges/") ||
 			absolutePath.contains("/util-java/") ||
-			absolutePath.contains("/util-taglib/")) {
+			absolutePath.contains("/util-taglib/") ||
+			fileName.endsWith("/system.packages.extra.bnd")) {
 
 			return;
 		}
@@ -130,7 +143,7 @@ public class BNDSourceProcessor extends BaseSourceProcessor {
 			if (wildcardImport.matches("^!?com\\.liferay\\..+")) {
 				processErrorMessage(
 					fileName,
-					"Don't use wildcard in Export-Package '" + wildcardImport +
+					"Do not use wildcard in Export-Package '" + wildcardImport +
 						"': " + fileName);
 			}
 		}
@@ -331,6 +344,8 @@ public class BNDSourceProcessor extends BaseSourceProcessor {
 		"\n[^\t].*:\\\\\n(\t{2,})[^\t]");
 	private final Pattern _singleValueOnMultipleLinesPattern = Pattern.compile(
 		"\n.*:(\\\\\n\t).*(\n[^\t]|\\Z)");
+	private final Pattern _webContextPathNamePattern = Pattern.compile(
+		"^Web-ContextPath: (.*)\n", Pattern.MULTILINE);
 	private final Pattern _wilcardImportPattern = Pattern.compile(
 		"(\\S+\\*)(,\\\\\n|\n|\\Z)");
 

@@ -798,6 +798,7 @@ public class ResourceActionsImpl implements ResourceActions {
 			elements,
 			new Comparator<Element>() {
 
+				@Override
 				public int compare(Element element1, Element element2) {
 					String textTrim1 = GetterUtil.getString(
 						element1.getTextTrim());

@@ -91,6 +91,11 @@ public class LiferayRepositoryDefiner extends BaseRepositoryDefiner {
 		capabilityRegistry.addExportedCapability(
 			BulkOperationCapability.class, bulkOperationCapability);
 
+		if (PropsValues.DL_FILE_ENTRY_COMMENTS_ENABLED) {
+			capabilityRegistry.addExportedCapability(
+				CommentCapability.class, _commentCapability);
+		}
+
 		RepositoryEntryConverter repositoryEntryConverter =
 			new RepositoryEntryConverter();
 		RepositoryEntryChecker repositoryEntryChecker =
@@ -121,11 +126,6 @@ public class LiferayRepositoryDefiner extends BaseRepositoryDefiner {
 			new LiferayWorkflowCapability(
 				dlFileEntryServiceAdapter,
 				DLFileVersionServiceAdapter.create(documentRepository)));
-
-		if (PropsValues.DL_FILE_ENTRY_COMMENTS_ENABLED) {
-			capabilityRegistry.addSupportedCapability(
-				CommentCapability.class, _commentCapability);
-		}
 
 		capabilityRegistry.addSupportedCapability(
 			ProcessorCapability.class, _processorCapability);

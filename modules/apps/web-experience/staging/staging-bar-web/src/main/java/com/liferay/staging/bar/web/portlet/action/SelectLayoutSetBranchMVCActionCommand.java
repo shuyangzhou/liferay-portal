@@ -53,18 +53,19 @@ public class SelectLayoutSetBranchMVCActionCommand
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		HttpServletRequest request = PortalUtil.getHttpServletRequest(
-			actionRequest);
-
-		long groupId = ParamUtil.getLong(actionRequest, "groupId");
-		long layoutSetBranchId = ParamUtil.getLong(
-			actionRequest, "layoutSetBranchId");
-		boolean privateLayout = ParamUtil.getBoolean(
-			actionRequest, "privateLayout");
-
 		try {
+			HttpServletRequest request = PortalUtil.getHttpServletRequest(
+				actionRequest);
+
+			long groupId = ParamUtil.getLong(actionRequest, "groupId");
+			boolean privateLayout = ParamUtil.getBoolean(
+				actionRequest, "privateLayout");
+
 			LayoutSet layoutSet = _layoutSetLocalService.getLayoutSet(
 				groupId, privateLayout);
+
+			long layoutSetBranchId = ParamUtil.getLong(
+				actionRequest, "layoutSetBranchId");
 
 			LayoutSetBranch layoutSetBranch =
 				_layoutSetBranchLocalService.getLayoutSetBranch(

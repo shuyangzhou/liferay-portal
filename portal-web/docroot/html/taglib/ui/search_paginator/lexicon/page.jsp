@@ -32,12 +32,9 @@ String type = (String)request.getAttribute("liferay-ui:search:type");
 
 PortletURL iteratorURL = searchContainer.getIteratorURL();
 
-String url = StringPool.BLANK;
-
 if (iteratorURL != null) {
+	iteratorURL.setParameter(searchContainer.getCurParam(), (String)null);
 	iteratorURL.setParameter("resetCur", Boolean.FALSE.toString());
-
-	url = HttpUtil.removeParameter(iteratorURL.toString(), namespace + searchContainer.getCurParam());
 }
 %>
 
@@ -48,11 +45,12 @@ if (iteratorURL != null) {
 		delta="<%= searchContainer.getDelta() %>"
 		deltaConfigurable="<%= searchContainer.isDeltaConfigurable() %>"
 		deltaParam="<%= searchContainer.getDeltaParam() %>"
+		forcePost="<%= searchContainer.isForcePost() %>"
 		id="<%= id %>"
 		markupView="<%= markupView %>"
 		maxPages="<%= PropsValues.SEARCH_CONTAINER_PAGE_ITERATOR_MAX_PAGES %>"
+		portletURL="<%= iteratorURL %>"
 		total="<%= searchContainer.getTotal() %>"
 		type="<%= type %>"
-		url="<%= url %>"
 	/>
 </c:if>

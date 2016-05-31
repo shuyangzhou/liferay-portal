@@ -743,7 +743,7 @@
 <!--SITE_ADMIN_CONTENT_CATEGORIES_RESOURCE_PERMISSIONS_ASSET_ENTRIES-->
 <tr>
 	<td>SITE_ADMIN_CONTENT_CATEGORIES_RESOURCE_PERMISSIONS_ASSET_ENTRIES_ADD_CATEGORY_CHECKBOX</td>
-	<td>//input[contains(@value,'assetADD_CATEGORY')]</td>
+	<td>//label/input[contains(@value,'assetADD_CATEGORY')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -775,7 +775,7 @@
 <!--SITE_ADMIN_CONTENT_CATEGORIES_RESOURCE_PERMISSIONS_CATEGORY-->
 <tr>
 	<td>SITE_ADMIN_CONTENT_CATEGORIES_RESOURCE_PERMISSIONS_CATEGORY_ADD_CATEGORY_CHECKBOX</td>
-	<td>//input[contains(@value,'AssetCategoryADD_CATEGORY')]</td>
+	<td>//label/input[contains(@value,'AssetCategoryADD_CATEGORY')]</td>
 	<td></td>
 </tr>
 <tr>

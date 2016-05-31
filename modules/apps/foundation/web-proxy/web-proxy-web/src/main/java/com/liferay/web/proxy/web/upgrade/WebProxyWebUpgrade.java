@@ -14,9 +14,9 @@
 
 package com.liferay.web.proxy.web.upgrade;
 
+import com.liferay.portal.kernel.upgrade.BaseUpgradePortletId;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
-import com.liferay.portal.upgrade.util.UpgradePortletId;
 import com.liferay.web.proxy.web.constants.WebProxyPortletKeys;
 
 import org.osgi.service.component.annotations.Component;
@@ -35,7 +35,7 @@ public class WebProxyWebUpgrade implements UpgradeStepRegistrator {
 
 		registry.register(
 			"com.liferay.web.proxy.web", "0.0.1", "1.0.0",
-			new UpgradePortletId() {
+			new BaseUpgradePortletId() {
 
 				@Override
 				protected String[][] getRenamePortletIdsArray() {

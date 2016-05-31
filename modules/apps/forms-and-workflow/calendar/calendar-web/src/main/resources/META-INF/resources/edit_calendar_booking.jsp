@@ -27,9 +27,13 @@ if (allDay) {
 	calendarBookingTimeZone = utcTimeZone;
 }
 
-java.util.Calendar nowJCalendar = CalendarFactoryUtil.getCalendar(calendarBookingTimeZone);
+java.util.Calendar defaultStartTimeJCalendar = CalendarFactoryUtil.getCalendar(calendarBookingTimeZone);
 
-long date = ParamUtil.getLong(request, "date", nowJCalendar.getTimeInMillis());
+defaultStartTimeJCalendar.add(java.util.Calendar.HOUR, 1);
+
+defaultStartTimeJCalendar.set(java.util.Calendar.MINUTE, 0);
+
+long date = ParamUtil.getLong(request, "date", defaultStartTimeJCalendar.getTimeInMillis());
 
 long calendarBookingId = BeanPropertiesUtil.getLong(calendarBooking, "calendarBookingId");
 
@@ -37,13 +41,9 @@ int instanceIndex = BeanParamUtil.getInteger(calendarBooking, request, "instance
 
 long calendarId = BeanParamUtil.getLong(calendarBooking, request, "calendarId", defaultCalendar.getCalendarId());
 
-long startTime = BeanPropertiesUtil.getLong(calendarBooking, "startTime", nowJCalendar.getTimeInMillis());
+long startTime = BeanPropertiesUtil.getLong(calendarBooking, "startTime", defaultStartTimeJCalendar.getTimeInMillis());
 
 java.util.Calendar startTimeJCalendar = JCalendarUtil.getJCalendar(startTime, calendarBookingTimeZone);
-
-startTimeJCalendar.add(java.util.Calendar.HOUR, 1);
-
-startTimeJCalendar.set(java.util.Calendar.MINUTE, 0);
 
 int startTimeYear = ParamUtil.getInteger(request, "startTimeYear", startTimeJCalendar.get(java.util.Calendar.YEAR));
 int startTimeMonth = ParamUtil.getInteger(request, "startTimeMonth", startTimeJCalendar.get(java.util.Calendar.MONTH));

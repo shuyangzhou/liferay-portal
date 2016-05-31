@@ -4,7 +4,7 @@
 ;
 [subrepo]
 	cmdver = liferay
-	commit = 97e588fbd72aeb0efda94bb2fabfc6a1f8ff7412
+	commit = 6a4160957b588f8a43e6525bfbbf82710dd5a35b
 	mode = push
-	parent = 47479c57f81feb7dc37ca2a28543f653f958d5ff
+	parent = 14962b8d14bf1c17486fbf2489f6f690131ef0b9
 	remote = git@github.com:liferay/com-liferay-dynamic-data-mapping.git

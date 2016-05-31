@@ -1088,6 +1088,7 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 
 		Map<String, Object> bundleDefaultInstructions = new HashMap<>();
 
+		bundleDefaultInstructions.put("-check", "all");
 		bundleDefaultInstructions.put(Constants.BUNDLE_VENDOR, "Liferay, Inc.");
 		bundleDefaultInstructions.put(
 			Constants.DONOTCOPY,
@@ -1981,7 +1982,7 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 	}
 
 	protected String getModuleDependency(
-		Project project, boolean roundToMajorVersion) {
+		Project project, boolean roundToMinorVersion) {
 
 		StringBuilder sb = new StringBuilder();
 
@@ -1993,11 +1994,12 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 
 		String versionString = String.valueOf(project.getVersion());
 
-		if (roundToMajorVersion) {
+		if (roundToMinorVersion) {
 			Version version = getVersion(versionString);
 
 			if (version != null) {
-				version = new Version(version.getMajor(), 0, 0);
+				version = new Version(
+					version.getMajor(), version.getMinor(), 0);
 
 				versionString = version.toString();
 			}
