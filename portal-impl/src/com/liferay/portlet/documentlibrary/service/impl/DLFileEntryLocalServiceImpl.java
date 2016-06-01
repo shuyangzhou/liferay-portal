@@ -1549,6 +1549,13 @@ public class DLFileEntryLocalServiceImpl
 			return;
 		}
 
+		dlFileEntry = dlFileEntryPersistence.fetchByPrimaryKey(
+			dlFileEntry.getFileEntryId());
+
+		if (dlFileEntry == null) {
+			return;
+		}
+
 		dlFileEntry.setModifiedDate(dlFileEntry.getModifiedDate());
 		dlFileEntry.setReadCount(dlFileEntry.getReadCount() + increment);
 
