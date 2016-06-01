@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -57,13 +56,22 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+import java.net.URI;
 import java.net.URL;
+
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 
 import java.security.CodeSource;
 import java.security.ProtectionDomain;
 
 import java.util.ArrayList;
 import java.util.Dictionary;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -76,6 +84,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.jar.Attributes;
 import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import javax.servlet.ServletContext;
 
@@ -837,72 +847,16 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		}
 	}
 
-	private Bundle _installInitialBundle(String location) {
-		boolean start = false;
-		int startLevel = PropsValues.MODULE_FRAMEWORK_BEGINNING_START_LEVEL;
-
-		if (_log.isDebugEnabled()) {
-			_log.debug(
-				"Install initial bundle " + location + " at start level " +
-					startLevel);
-		}
-
-		int index = location.lastIndexOf(StringPool.AT);
-
-		if (index != -1) {
-			String[] parts = StringUtil.split(
-				location.substring(index + 1), StringPool.COLON);
-
-			for (String part : parts) {
-				if (part.equals("start")) {
-					start = true;
-				}
-				else {
-					startLevel = GetterUtil.getInteger(part);
-				}
-			}
-
-			location = location.substring(0, index);
-		}
-
-		InputStream inputStream = null;
+	private Bundle _installInitialBundle(
+		String location, InputStream inputStream) {
 
 		try {
-			if (!location.startsWith("file:")) {
-				location =
-					"file:" + PropsValues.MODULE_FRAMEWORK_BASE_DIR +
-						"/static/" + location;
-			}
-
 			if (_log.isDebugEnabled()) {
-				_log.debug("Attempting to start initial bundle " + location);
-			}
-
-			URL initialBundleURL = new URL(location);
-
-			try {
-				inputStream = new BufferedInputStream(
-					initialBundleURL.openStream());
-			}
-			catch (IOException ioe) {
-				if (_log.isDebugEnabled()) {
-					_log.debug("Unable to locate initial bundle " + location);
-				}
-
-				if (_log.isWarnEnabled()) {
-					_log.warn(ioe.getMessage());
-				}
-
-				return null;
-			}
-
-			if (_log.isDebugEnabled()) {
-				_log.debug(
-					"Adding initial bundle " + initialBundleURL.toString());
+				_log.debug("Adding initial bundle " + location.toString());
 			}
 
 			final Bundle bundle = _addBundle(
-				"reference:" + initialBundleURL.toString(), inputStream, false);
+				"reference:" + location, inputStream, false);
 
 			if (_log.isDebugEnabled()) {
 				_log.debug("Added initial bundle " + bundle);
@@ -912,34 +866,23 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 				return bundle;
 			}
 
-			if (!start && _hasLazyActivationPolicy(bundle)) {
-				bundle.start(Bundle.START_ACTIVATION_POLICY);
-
-				return bundle;
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Setting bundle " + bundle + " at start level " +
+						PropsValues.MODULE_FRAMEWORK_BEGINNING_START_LEVEL);
 			}
 
-			if (((bundle.getState() & Bundle.UNINSTALLED) == 0) &&
-				(startLevel > 0)) {
+			BundleStartLevel bundleStartLevel = bundle.adapt(
+				BundleStartLevel.class);
 
-				if (_log.isDebugEnabled()) {
-					_log.debug(
-						"Setting bundle " + bundle + " at start level " +
-							startLevel);
-				}
+			bundleStartLevel.setStartLevel(
+				PropsValues.MODULE_FRAMEWORK_BEGINNING_START_LEVEL);
 
-				BundleStartLevel bundleStartLevel = bundle.adapt(
-					BundleStartLevel.class);
-
-				bundleStartLevel.setStartLevel(startLevel);
+			if (_log.isDebugEnabled()) {
+				_log.debug("Starting initial bundle " + bundle);
 			}
 
-			if (start) {
-				if (_log.isDebugEnabled()) {
-					_log.debug("Starting initial bundle " + bundle);
-				}
-
-				bundle.start();
-			}
+			bundle.start();
 
 			if (_log.isDebugEnabled()) {
 				_log.debug("Started bundle " + bundle);
@@ -1087,15 +1030,65 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		bundleContext.registerService(
 			ThrowableCollector.class, throwableCollector, dictionary);
 
-		List<Bundle> bundles = new ArrayList<>();
+		final List<Bundle> bundles = new ArrayList<>();
 
-		for (String initialBundle :
-				PropsValues.MODULE_FRAMEWORK_INITIAL_BUNDLES) {
+		Files.walkFileTree(
+			Paths.get(PropsValues.MODULE_FRAMEWORK_BASE_DIR, "/static/"),
+			new SimpleFileVisitor<Path>() {
 
-			Bundle bundle = _installInitialBundle(initialBundle);
+				@Override
+				public FileVisitResult visitFile(
+						Path filePath, BasicFileAttributes basicFileAttributes)
+					throws IOException {
 
-			if (bundle != null) {
-				bundles.add(bundle);
+					Path fileNamePath = filePath.getFileName();
+
+					String fileName = StringUtil.toLowerCase(
+						fileNamePath.toString());
+
+					if (fileName.endsWith(".jar")) {
+						URI uri = filePath.toUri();
+
+						URL url = uri.toURL();
+
+						Bundle bundle = _installInitialBundle(
+							url.toString(), url.openStream());
+
+						if (bundle != null) {
+							bundles.add(bundle);
+						}
+					}
+
+					return FileVisitResult.CONTINUE;
+				}
+
+			});
+
+		File file = new File(
+			bundleContext.getProperty("lpkg.deployer.dir") + StringPool.SLASH +
+				"static.lpkg");
+
+		if (file.exists()) {
+			ZipFile zipFile = new ZipFile(file);
+
+			Enumeration<? extends ZipEntry> enumeration = zipFile.entries();
+
+			while (enumeration.hasMoreElements()) {
+				ZipEntry zipEntry = enumeration.nextElement();
+
+				String name = StringUtil.toLowerCase(zipEntry.getName());
+
+				if (!name.endsWith(".jar")) {
+					continue;
+				}
+
+				Bundle bundle = _installInitialBundle(
+					StringPool.SLASH.concat(zipEntry.getName()),
+					new BufferedInputStream(zipFile.getInputStream(zipEntry)));
+
+				if (bundle != null) {
+					bundles.add(bundle);
+				}
 			}
 		}
 
