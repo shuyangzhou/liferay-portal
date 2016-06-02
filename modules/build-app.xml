@@ -2,7 +2,7 @@
 <!DOCTYPE project>
 
 <project name="build-app">
-	<property name="build.modules.excludes" value="apps/foundation/required-dependencies/required-dependencies" />
+	<property name="build.modules.excludes" value="apps/static/required-dependencies/required-dependencies" />
 	<property name="osgi.dir" value="${basedir}/../../bundles/osgi" />
 
 	<macrodef name="set-artifact-versions-previous-release">
@@ -29,7 +29,7 @@
 		<pathconvert pathsep="," property="app.names">
 			<globmapper from="${modules.dir}${file.separator}apps${file.separator}*" to="*" />
 			<path>
-				<dirset dir="${basedir}" includes="apps/*" />
+				<dirset dir="${basedir}" excludes="apps/static" includes="apps/*" />
 			</path>
 		</pathconvert>
 
@@ -194,7 +194,7 @@
 			<chainedmapper>
 				<flattenmapper />
 
-				<regexpmapper from="([a-z.]+)-(\d[\d.]+\d)" to="\1#\2##" />
+				<regexpmapper from="^(.+?)-(\d.*?)\.jar$" to="\1#\2##" />
 			</chainedmapper>
 			<fileset dir="${osgi.dir}/marketplace" includes="*.jar" />
 		</pathconvert>
@@ -205,8 +205,7 @@
 
 			<!-- Order is important -->
 
-			<fileset dir="${osgi.dir}/static" includes="com.liferay.portal.target.platform.indexer.jar" />
-			<fileset dir="${osgi.dir}/../tools/portal-target-platform-indexer-main" includes="com.liferay.portal.target.platform.indexer.main.jar" />
+			<fileset dir="${osgi.dir}/../tools/portal-target-platform-indexer-main" includes="com.liferay.portal.target.platform.indexer.jar,com.liferay.portal.target.platform.indexer.main.jar" />
 			<fileset dir="${osgi.dir}/core" includes="com.liferay.portal.bootstrap.jar,org.eclipse.osgi.jar" />
 		</path>
 

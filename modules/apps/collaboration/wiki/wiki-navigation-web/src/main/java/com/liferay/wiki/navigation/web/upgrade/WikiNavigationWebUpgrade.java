@@ -14,27 +14,62 @@
 
 package com.liferay.wiki.navigation.web.upgrade;
 
+import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
+import com.liferay.portal.kernel.upgrade.BaseUpgradeRelease;
+import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
+import com.liferay.portal.kernel.upgrade.UpgradeException;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 import com.liferay.wiki.navigation.web.upgrade.v1_0_0.UpgradePortletPreferences;
 import com.liferay.wiki.navigation.web.upgrade.v1_0_1.UpgradePortletId;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Sergio González
  */
-@Component(immediate = true, service = WikiNavigationWebUpgrade.class)
+@Component(immediate = true, service = UpgradeStepRegistrator.class)
 public class WikiNavigationWebUpgrade implements UpgradeStepRegistrator {
 
 	@Override
 	public void register(Registry registry) {
+		BaseUpgradeRelease upgradeRelease = new BaseUpgradeRelease() {
+
+			protected String getBundleSymbolicName() {
+				return "com.liferay.wiki.navigation.web";
+			}
+
+			protected String[] getPortletIds() {
+				return new String[] {
+					"1_WAR_wikinavigationportlet", "2_WAR_wikinavigationportlet"
+				};
+			}
+
+		};
+
+		try {
+			upgradeRelease.upgrade();
+		}
+		catch (UpgradeException ue) {
+			throw new RuntimeException(ue);
+		}
+
 		registry.register(
-			"com.liferay.wiki.navigation.web", "0.0.0", "1.0.0",
+			"com.liferay.wiki.navigation.web", "0.0.0", "1.0.1",
+			new DummyUpgradeStep());
+
+		registry.register(
+			"com.liferay.wiki.navigation.web", "0.0.1", "1.0.0",
 			new UpgradePortletPreferences());
 
 		registry.register(
 			"com.liferay.wiki.navigation.web", "1.0.0", "1.0.1",
 			new UpgradePortletId());
+	}
+
+	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")
+	protected void setModuleServiceLifecycle(
+		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
 }

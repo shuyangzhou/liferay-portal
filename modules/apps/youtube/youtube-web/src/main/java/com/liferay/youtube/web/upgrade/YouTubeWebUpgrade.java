@@ -14,11 +14,11 @@
 
 package com.liferay.youtube.web.upgrade;
 
-import com.liferay.counter.kernel.service.CounterLocalService;
+import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
+import com.liferay.portal.kernel.upgrade.BaseUpgradeRelease;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
 import com.liferay.portal.kernel.upgrade.UpgradeException;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
-import com.liferay.youtube.web.upgrade.util.UpgradePluginRelease;
 import com.liferay.youtube.web.upgrade.v1_0_0.UpgradePortletId;
 
 import org.osgi.service.component.annotations.Component;
@@ -32,7 +32,24 @@ public class YouTubeWebUpgrade implements UpgradeStepRegistrator {
 
 	@Override
 	public void register(Registry registry) {
-		_upgradeRelease();
+		BaseUpgradeRelease upgradeRelease = new BaseUpgradeRelease() {
+
+			protected String getBundleSymbolicName() {
+				return "com.liferay.youtube.web";
+			}
+
+			protected String[] getPortletIds() {
+				return new String[] {"1_WAR_youtubeportlet"};
+			}
+
+		};
+
+		try {
+			upgradeRelease.upgrade();
+		}
+		catch (UpgradeException ue) {
+			throw new RuntimeException(ue);
+		}
 
 		registry.register(
 			"com.liferay.youtube.web", "0.0.0", "1.0.0",
@@ -43,19 +60,9 @@ public class YouTubeWebUpgrade implements UpgradeStepRegistrator {
 			new UpgradePortletId());
 	}
 
-	@Reference
-	protected CounterLocalService counterLocalService;
-
-	private void _upgradeRelease() {
-		try {
-			UpgradePluginRelease upgradePluginRelease =
-				new UpgradePluginRelease(counterLocalService);
-
-			upgradePluginRelease.upgrade();
-		}
-		catch (UpgradeException ue) {
-			throw new RuntimeException(ue);
-		}
+	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")
+	protected void setModuleServiceLifecycle(
+		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
 }
