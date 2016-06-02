@@ -15,6 +15,7 @@
 package com.liferay.portal.convert.documentlibrary;
 
 import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
+import com.liferay.document.library.kernel.model.DLContent;
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.document.library.kernel.service.DLAppLocalServiceUtil;
@@ -166,11 +167,12 @@ public class DocumentLibraryConvertProcessTest {
 
 		Assert.assertTrue(title.endsWith(".docx"));
 
-		DLContentLocalServiceUtil.getContent(
-			dlFileEntry.getCompanyId(),
-			DLFolderConstants.getDataRepositoryId(
-				dlFileEntry.getRepositoryId(), dlFileEntry.getFolderId()),
-			dlFileEntry.getName());
+		_dlContents.add(
+			DLContentLocalServiceUtil.getContent(
+				dlFileEntry.getCompanyId(),
+				DLFolderConstants.getDataRepositoryId(
+					dlFileEntry.getRepositoryId(), dlFileEntry.getFolderId()),
+				dlFileEntry.getName()));
 	}
 
 	@Test
@@ -283,6 +285,22 @@ public class DocumentLibraryConvertProcessTest {
 				folderDLFileEntry.getCompanyId(),
 				folderDLFileEntry.getDataRepositoryId(),
 				folderDLFileEntry.getName()));
+
+		_dlContents.add(
+			DLContentLocalServiceUtil.getContent(
+				folderDLFileEntry.getCompanyId(),
+				DLFolderConstants.getDataRepositoryId(
+					folderDLFileEntry.getRepositoryId(),
+					folderDLFileEntry.getFolderId()),
+				folderDLFileEntry.getName()));
+
+		_dlContents.add(
+			DLContentLocalServiceUtil.getContent(
+				rootDLFileEntry.getCompanyId(),
+				DLFolderConstants.getDataRepositoryId(
+					rootDLFileEntry.getRepositoryId(),
+					rootDLFileEntry.getFolderId()),
+				rootDLFileEntry.getName()));
 	}
 
 	protected void testMigrateDL(long folderId) throws Exception {
@@ -295,11 +313,12 @@ public class DocumentLibraryConvertProcessTest {
 
 		DLFileEntry dlFileEntry = (DLFileEntry)fileEntry.getModel();
 
-		DLContentLocalServiceUtil.getContent(
-			dlFileEntry.getCompanyId(),
-			DLFolderConstants.getDataRepositoryId(
-				dlFileEntry.getRepositoryId(), dlFileEntry.getFolderId()),
-			dlFileEntry.getName());
+		_dlContents.add(
+			DLContentLocalServiceUtil.getContent(
+				dlFileEntry.getCompanyId(),
+				DLFolderConstants.getDataRepositoryId(
+					dlFileEntry.getRepositoryId(), dlFileEntry.getFolderId()),
+				dlFileEntry.getName()));
 	}
 
 	private static final String _CLASS_NAME_DB_STORE =
@@ -308,6 +327,9 @@ public class DocumentLibraryConvertProcessTest {
 	private static StoreFactory _storeFactory;
 
 	private ConvertProcess _convertProcess;
+
+	@DeleteAfterTestRun
+	private final List<DLContent> _dlContents = new ArrayList<>();
 
 	@DeleteAfterTestRun
 	private Group _group;
