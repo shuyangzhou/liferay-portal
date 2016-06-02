@@ -30,6 +30,7 @@ import com.liferay.message.boards.kernel.model.MBMessage;
 import com.liferay.message.boards.kernel.model.MBMessageConstants;
 import com.liferay.message.boards.kernel.service.MBMessageLocalServiceUtil;
 import com.liferay.portal.convert.ConvertProcess;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Image;
 import com.liferay.portal.kernel.model.User;
@@ -59,9 +60,13 @@ import com.liferay.portlet.messageboards.util.test.MBTestUtil;
 import java.io.InputStream;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -84,6 +89,24 @@ public class DocumentLibraryConvertProcessTest {
 	@BeforeClass
 	public static void setUpClass() throws Exception {
 		_storeFactory = StoreFactory.getInstance();
+
+		List<Image> images = ImageLocalServiceUtil.getImages();
+
+		for (Image image : images) {
+			_imageMap.put(image, image.getTextObj());
+
+			ImageLocalServiceUtil.deleteImage(image);
+		}
+	}
+
+	@AfterClass
+	public static void tearDownClass() throws PortalException {
+		for (Entry<Image, byte[]> entry : _imageMap.entrySet()) {
+			Image image = entry.getKey();
+
+			ImageLocalServiceUtil.updateImage(
+				image.getImageId(), entry.getValue());
+		}
 	}
 
 	@Before
@@ -324,6 +347,7 @@ public class DocumentLibraryConvertProcessTest {
 	private static final String _CLASS_NAME_DB_STORE =
 		"com.liferay.portal.store.db.DBStore";
 
+	private static final Map<Image, byte[]> _imageMap = new HashMap<>();
 	private static StoreFactory _storeFactory;
 
 	private ConvertProcess _convertProcess;
