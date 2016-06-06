@@ -33,8 +33,8 @@ public class JspPrecompileBundleActivator implements BundleActivator {
 	public void start(BundleContext bundleContext) {
 		Dictionary<String, String> dictionary = new HashMapDictionary<>();
 
-		dictionary.put("javax.portlet.name", JspPrecompilePortlet.PORTLET_NAME);
 		dictionary.put("javax.portlet.display-name", "Jsp Precompile Portlet");
+		dictionary.put("javax.portlet.name", JspPrecompilePortlet.PORTLET_NAME);
 
 		_serviceRegistration = bundleContext.registerService(
 			Portlet.class, new JspPrecompilePortlet(), dictionary);

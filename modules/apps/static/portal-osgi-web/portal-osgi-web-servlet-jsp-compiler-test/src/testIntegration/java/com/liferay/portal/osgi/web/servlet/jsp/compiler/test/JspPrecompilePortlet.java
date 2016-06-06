@@ -43,7 +43,7 @@ public class JspPrecompilePortlet extends MVCPortlet {
 		sb.append(StringPool.UNDERLINE);
 		sb.append(PORTLET_NAME);
 		sb.append(StringPool.UNDERLINE);
-		sb.append(_JSP_PARAMETER);
+		sb.append(_JSP_PARAMETER_NAME);
 
 		return sb.toString();
 	}
@@ -53,11 +53,11 @@ public class JspPrecompilePortlet extends MVCPortlet {
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws IOException, PortletException {
 
-		String jsp = renderRequest.getParameter(_JSP_PARAMETER);
+		String jsp = renderRequest.getParameter(_JSP_PARAMETER_NAME);
 
 		if (jsp == null) {
 			throw new IllegalArgumentException(
-				_JSP_PARAMETER + " query must not be null");
+				_JSP_PARAMETER_NAME + " query must not be null");
 		}
 
 		PortletContext portletContext = getPortletContext();
@@ -68,6 +68,6 @@ public class JspPrecompilePortlet extends MVCPortlet {
 		portletRequestDispatcher.include(renderRequest, renderResponse);
 	}
 
-	private static final String _JSP_PARAMETER = "jsp";
+	private static final String _JSP_PARAMETER_NAME = "jsp";
 
 }

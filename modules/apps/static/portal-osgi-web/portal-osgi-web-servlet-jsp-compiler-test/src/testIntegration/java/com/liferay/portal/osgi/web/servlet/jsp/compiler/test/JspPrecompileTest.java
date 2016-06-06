@@ -149,14 +149,14 @@ public class JspPrecompileTest {
 
 	@Test
 	public void testPrecompiledJsp() throws Exception {
-		String packagePathString = _JSP_PACKAGE.replace(
+		String packagePathString = _JSP_PACKAGE_NAME.replace(
 			CharPool.PERIOD, CharPool.SLASH);
 
 		Path packagePath = _workDirPath.resolve(packagePathString);
 
 		Files.createDirectories(packagePath);
 
-		String jspClassName = _PRECOMPILE_JSP.replace(
+		String jspClassName = _PRECOMPILE_JSP_FILE_NAME.replace(
 			CharPool.PERIOD, CharPool.UNDERLINE);
 
 		Path jspClassPath = packagePath.resolve(jspClassName.concat(".class"));
@@ -196,11 +196,12 @@ public class JspPrecompileTest {
 				Log4JLoggerTestUtil.configureLog4JLogger(
 					_JSP_COMPILER_CLASS_NAME, Level.DEBUG)) {
 
-			_doJspTest(_PRECOMPILE_JSP, "Precompiled");
+			_doJspTest(_PRECOMPILE_JSP_FILE_NAME, "Precompiled");
 
 			Assert.assertFalse(
 				"JSP was compiled at runtime",
-				_containsCompilerLog(captureAppender, _PRECOMPILE_JSP));
+				_containsCompilerLog(
+					captureAppender, _PRECOMPILE_JSP_FILE_NAME));
 		}
 		finally {
 			Files.delete(jspClassPath);
@@ -213,11 +214,12 @@ public class JspPrecompileTest {
 				Log4JLoggerTestUtil.configureLog4JLogger(
 					_JSP_COMPILER_CLASS_NAME, Level.DEBUG)) {
 
-			_doJspTest(_RUNTIME_COMPILE_JSP, "Runtime Compiled");
+			_doJspTest(_RUNTIME_COMPILE_JSP_FILE_NAME, "Runtime Compiled");
 
 			Assert.assertTrue(
 				"No JSP was compiled at runtime",
-				_containsCompilerLog(captureAppender, _RUNTIME_COMPILE_JSP));
+				_containsCompilerLog(
+					captureAppender, _RUNTIME_COMPILE_JSP_FILE_NAME));
 		}
 	}
 
@@ -264,6 +266,7 @@ public class JspPrecompileTest {
 
 				attributes.putValue(
 					Constants.BUNDLE_SYMBOLICNAME, pkg.getName() + ".bundle");
+
 				attributes.putValue(Constants.BUNDLE_VERSION, "1.0.0");
 				attributes.putValue(
 					Constants.IMPORT_PACKAGE,
@@ -286,8 +289,8 @@ public class JspPrecompileTest {
 				ClassLoader classLoader =
 					JspPrecompileTest.class.getClassLoader();
 
-				String path =
-					"META-INF/resources/".concat(_RUNTIME_COMPILE_JSP);
+				String path = "META-INF/resources/".concat(
+					_RUNTIME_COMPILE_JSP_FILE_NAME);
 
 				jarOutputStream.putNextEntry(new ZipEntry(path));
 
@@ -303,7 +306,8 @@ public class JspPrecompileTest {
 
 				jarOutputStream.putNextEntry(
 					new ZipEntry(
-						"META-INF/resources/".concat(_PRECOMPILE_JSP)));
+						"META-INF/resources/".concat(
+							_PRECOMPILE_JSP_FILE_NAME)));
 
 				jarOutputStream.closeEntry();
 			}
@@ -348,7 +352,7 @@ public class JspPrecompileTest {
 		StringBundler sb = new StringBundler(3);
 
 		sb.append("Compiling JSP: ");
-		sb.append(_JSP_PACKAGE);
+		sb.append(_JSP_PACKAGE_NAME);
 		sb.append(
 			StringUtil.replace(jspName, CharPool.PERIOD, CharPool.UNDERLINE));
 
@@ -395,11 +399,12 @@ public class JspPrecompileTest {
 	private static final String _JSP_COMPILER_CLASS_NAME =
 		"com.liferay.portal.osgi.web.servlet.jsp.compiler.internal.JspCompiler";
 
-	private static final String _JSP_PACKAGE = "org.apache.jsp.";
+	private static final String _JSP_PACKAGE_NAME = "org.apache.jsp.";
 
-	private static final String _PRECOMPILE_JSP = "PrecompileTestServlet.jsp";
+	private static final String _PRECOMPILE_JSP_FILE_NAME =
+		"PrecompileTestServlet.jsp";
 
-	private static final String _RUNTIME_COMPILE_JSP = "runtime.jsp";
+	private static final String _RUNTIME_COMPILE_JSP_FILE_NAME = "runtime.jsp";
 
 	private static Bundle _bundle;
 	private static Path _workDirPath;
