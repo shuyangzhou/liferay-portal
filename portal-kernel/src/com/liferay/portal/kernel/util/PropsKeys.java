@@ -1357,6 +1357,8 @@ public interface PropsKeys {
 
 	public static final String MODULE_FRAMEWORK_REGISTER_LIFERAY_SERVICES = "module.framework.register.liferay.services";
 
+	public static final String MODULE_FRAMEWORK_REQUIRED_STARTUP_DIRS = "module.framework.required.startup.dirs";
+
 	public static final String MODULE_FRAMEWORK_RUNTIME_START_LEVEL = "module.framework.runtime.start.level";
 
 	public static final String MODULE_FRAMEWORK_SERVICES_IGNORED_INTERFACES = "module.framework.services.ignored.interfaces";
