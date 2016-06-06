@@ -129,9 +129,9 @@ public class JspPrecompileTest {
 
 		LayoutTemplate layoutTemplate = layoutTypePortlet.getLayoutTemplate();
 
-		List<String> columns = layoutTemplate.getColumns();
+		List<String> columnIds = layoutTemplate.getColumns();
 
-		String columnId = columns.get(0);
+		String columnId = columnIds.get(0);
 
 		layoutTypePortlet.addPortletId(
 			TestPropsValues.getUserId(), JspPrecompilePortlet.PORTLET_NAME,
@@ -196,7 +196,7 @@ public class JspPrecompileTest {
 				Log4JLoggerTestUtil.configureLog4JLogger(
 					_JSP_COMPILER_CLASS_NAME, Level.DEBUG)) {
 
-			_doJspTest(_PRECOMPILE_JSP_FILE_NAME, "Precompiled");
+			_invokeJSP(_PRECOMPILE_JSP_FILE_NAME, "Precompiled");
 
 			Assert.assertFalse(
 				"JSP was compiled at runtime",
@@ -214,7 +214,7 @@ public class JspPrecompileTest {
 				Log4JLoggerTestUtil.configureLog4JLogger(
 					_JSP_COMPILER_CLASS_NAME, Level.DEBUG)) {
 
-			_doJspTest(_RUNTIME_COMPILE_JSP_FILE_NAME, "Runtime Compiled");
+			_invokeJSP(_RUNTIME_COMPILE_JSP_FILE_NAME, "Runtime Compiled");
 
 			Assert.assertTrue(
 				"No JSP was compiled at runtime",
@@ -369,7 +369,7 @@ public class JspPrecompileTest {
 		return false;
 	}
 
-	private void _doJspTest(String jsp, String expectedMessage)
+	private void _invokeJSP(String jspFileName, String expectedMessage)
 		throws IOException {
 
 		StringBundler sb = new StringBundler(9);
@@ -380,9 +380,9 @@ public class JspPrecompileTest {
 		sb.append("p_p_id=");
 		sb.append(JspPrecompilePortlet.PORTLET_NAME);
 		sb.append(StringPool.AMPERSAND);
-		sb.append(JspPrecompilePortlet.getJSPParameterName());
+		sb.append(JspPrecompilePortlet.getJspFileNameParameterName());
 		sb.append("=/");
-		sb.append(jsp);
+		sb.append(jspFileName);
 
 		URL url = new URL(sb.toString());
 

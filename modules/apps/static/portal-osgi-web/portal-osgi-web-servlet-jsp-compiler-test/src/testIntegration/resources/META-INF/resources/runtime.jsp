@@ -14,9 +14,9 @@
  */
 --%>
 
-<HTML>
-	<HEAD><TITLE>JspPrecompileTest</TITLE></HEAD>
-	<BODY>
-		<H1>Runtime Compiled</H1>
-	</BODY>
-</HTML>
+<html>
+	<head><title>JspPrecompileTest</title></head>
+	<body>
+		<h1>Runtime Compiled</h1>
+	</body>
+</html>

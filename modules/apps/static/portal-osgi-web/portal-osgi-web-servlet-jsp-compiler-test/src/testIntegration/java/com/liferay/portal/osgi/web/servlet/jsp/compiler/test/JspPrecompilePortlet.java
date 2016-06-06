@@ -37,13 +37,13 @@ public class JspPrecompilePortlet extends MVCPortlet {
 		JspPrecompilePortlet.class.getName(), CharPool.PERIOD,
 		CharPool.UNDERLINE);
 
-	public static String getJSPParameterName() {
+	public static String getJspFileNameParameterName() {
 		StringBundler sb = new StringBundler(4);
 
 		sb.append(StringPool.UNDERLINE);
 		sb.append(PORTLET_NAME);
 		sb.append(StringPool.UNDERLINE);
-		sb.append(_JSP_PARAMETER_NAME);
+		sb.append(_JSP_FILE_NAME_PARAMETER_NAME);
 
 		return sb.toString();
 	}
@@ -53,21 +53,22 @@ public class JspPrecompilePortlet extends MVCPortlet {
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws IOException, PortletException {
 
-		String jsp = renderRequest.getParameter(_JSP_PARAMETER_NAME);
+		String jspFileName = renderRequest.getParameter(
+			_JSP_FILE_NAME_PARAMETER_NAME);
 
-		if (jsp == null) {
+		if (jspFileName == null) {
 			throw new IllegalArgumentException(
-				_JSP_PARAMETER_NAME + " query must not be null");
+				_JSP_FILE_NAME_PARAMETER_NAME + " query must not be null");
 		}
 
 		PortletContext portletContext = getPortletContext();
 
 		PortletRequestDispatcher portletRequestDispatcher =
-			portletContext.getRequestDispatcher(jsp);
+			portletContext.getRequestDispatcher(jspFileName);
 
 		portletRequestDispatcher.include(renderRequest, renderResponse);
 	}
 
-	private static final String _JSP_PARAMETER_NAME = "jsp";
+	private static final String _JSP_FILE_NAME_PARAMETER_NAME = "jspFileName";
 
 }
