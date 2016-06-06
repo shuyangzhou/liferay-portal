@@ -63,6 +63,8 @@ public class InitUtilTest {
 
 		_fileImpl.deltree(PropsValues.MODULE_FRAMEWORK_STATE_DIR);
 
+		_fileImpl.deltree(PropsValues.MODULE_FRAMEWORK_BASE_DIR + "/static");
+
 		InitUtil.init();
 
 		ReflectionTestUtil.setFieldValue(InitUtil.class, "_initialized", false);
