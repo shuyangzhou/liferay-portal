@@ -1,4 +1,4 @@
-define("frontend-js-metal-web@1.0.7/html2incdom/src/HTMLParser", [], function () {
+define("frontend-js-metal-web@1.0.8/html2incdom/src/HTMLParser", [], function () {
 	"use strict";
 
 	/* jshint ignore:start */

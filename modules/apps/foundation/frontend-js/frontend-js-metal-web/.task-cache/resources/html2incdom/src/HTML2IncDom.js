@@ -1,4 +1,4 @@
-define("frontend-js-metal-web@1.0.7/html2incdom/src/HTML2IncDom", ['exports', './unescape'], function (exports, _unescape) {
+define("frontend-js-metal-web@1.0.8/html2incdom/src/HTML2IncDom", ['exports', './unescape'], function (exports, _unescape) {
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {

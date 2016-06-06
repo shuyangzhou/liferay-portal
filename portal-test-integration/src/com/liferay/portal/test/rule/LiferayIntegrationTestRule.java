@@ -20,10 +20,8 @@ import com.liferay.portal.kernel.test.rule.BaseTestRule;
 import com.liferay.portal.kernel.test.rule.BaseTestRule.StatementWrapper;
 import com.liferay.portal.kernel.test.rule.callback.CompanyProviderTestCallback;
 import com.liferay.portal.kernel.test.rule.callback.DeleteAfterTestRunTestCallback;
-import com.liferay.portal.kernel.util.ClassLoaderUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.kernel.util.SystemProperties;
@@ -115,9 +113,6 @@ public class LiferayIntegrationTestRule extends AggregateTestRule {
 
 								configureLog4j = true;
 							}
-
-							PortalClassLoaderUtil.setClassLoader(
-								ClassLoaderUtil.getContextClassLoader());
 
 							ClassPathUtil.initializeClassPaths(
 								new MockServletContext());

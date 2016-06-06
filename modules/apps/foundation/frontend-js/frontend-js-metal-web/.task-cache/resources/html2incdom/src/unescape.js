@@ -1,4 +1,4 @@
-define("frontend-js-metal-web@1.0.7/html2incdom/src/unescape", ['exports'], function (exports) {
+define("frontend-js-metal-web@1.0.8/html2incdom/src/unescape", ['exports'], function (exports) {
   'use strict';
 
   // Copyright 2006 The Closure Library Authors. All Rights Reserved.

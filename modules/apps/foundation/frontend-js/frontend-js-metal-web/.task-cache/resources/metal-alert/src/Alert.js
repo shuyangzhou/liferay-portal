@@ -1,4 +1,4 @@
-define("frontend-js-metal-web@1.0.7/metal-alert/src/Alert", ['exports', 'metal/src/metal', 'metal-dom/src/all/dom', 'metal-anim/src/Anim', 'metal-component/src/all/component', 'metal-events/src/events', 'metal-soy/src/Soy', './Alert.soy', 'metal-jquery-adapter/src/JQueryAdapter'], function (exports, _metal, _dom, _Anim, _component, _events, _Soy, _Alert, _JQueryAdapter) {
+define("frontend-js-metal-web@1.0.8/metal-alert/src/Alert", ['exports', 'metal/src/metal', 'metal-dom/src/all/dom', 'metal-anim/src/Anim', 'metal-component/src/all/component', 'metal-events/src/events', 'metal-soy/src/Soy', './Alert.soy', 'metal-jquery-adapter/src/JQueryAdapter'], function (exports, _metal, _dom, _Anim, _component, _events, _Soy, _Alert, _JQueryAdapter) {
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {

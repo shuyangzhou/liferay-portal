@@ -1,6 +1,6 @@
 dependencies {
 	provided group: "com.liferay", name: "com.liferay.exportimport.api", version: "2.0.0"
-	provided group: "com.liferay", name: "com.liferay.exportimport.service", version: "2.0.0"
+	provided group: "com.liferay", name: "com.liferay.exportimport.service", version: "3.0.0"
 	provided group: "com.liferay", name: "com.liferay.portlet.display.template", version: "2.0.0"
 	provided group: "com.liferay", name: "com.liferay.user.groups.admin.api", version: "2.0.0"
 	provided group: "com.liferay", name: "com.liferay.xstream.configurator.api", version: "2.0.0"

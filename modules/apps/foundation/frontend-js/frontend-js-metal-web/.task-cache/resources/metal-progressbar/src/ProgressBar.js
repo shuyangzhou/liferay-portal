@@ -1,4 +1,4 @@
-define("frontend-js-metal-web@1.0.7/metal-progressbar/src/ProgressBar", ['exports', 'metal/src/metal', 'metal-component/src/all/component', 'metal-soy/src/Soy', './ProgressBar.soy', 'metal-jquery-adapter/src/JQueryAdapter'], function (exports, _metal, _component, _Soy, _ProgressBar, _JQueryAdapter) {
+define("frontend-js-metal-web@1.0.8/metal-progressbar/src/ProgressBar", ['exports', 'metal/src/metal', 'metal-component/src/all/component', 'metal-soy/src/Soy', './ProgressBar.soy', 'metal-jquery-adapter/src/JQueryAdapter'], function (exports, _metal, _component, _Soy, _ProgressBar, _JQueryAdapter) {
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {

@@ -23,6 +23,14 @@
 		<execute function="Click" locator1="Form#PUBLISH_FORM_SWITCHER" />
 	</command>
 
+	<command name="configureRequireCaptcha">
+		<execute macro="FormFields#enableSwitcher">
+			<var name="fieldName" value="requireCaptcha" />
+		</execute>
+
+		<execute macro="Button#clickDone" />
+	</command>
+
 	<command name="configureWorkflow">
 		<execute function="Select" locator1="AssetWorkflow#ALL_STRUCTURES_WORKFLOW_SELECT" value1="${workflowDefinition}" />
 
@@ -53,7 +61,7 @@
 
 		<var method="StringUtil#replace('${fieldValue}', ' ', '')" name="fieldName" />
 
-		<execute macro="FormFields#viewFormName">
+		<execute macro="FormFields#viewFieldName">
 			<var name="fieldName" value="${fieldName}" />
 		</execute>
 	</command>

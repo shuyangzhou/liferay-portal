@@ -1,4 +1,4 @@
-define("frontend-js-metal-web@1.0.7/metal-slider/src/Slider", ['exports', 'metal/src/metal', 'metal-dom/src/all/dom', 'metal-component/src/all/component', 'metal-drag-drop/src/all/drag', 'metal-position/src/all/position', 'metal-soy/src/Soy', './Slider.soy', 'metal-jquery-adapter/src/JQueryAdapter'], function (exports, _metal, _dom, _component, _drag, _position, _Soy, _Slider, _JQueryAdapter) {
+define("frontend-js-metal-web@1.0.8/metal-slider/src/Slider", ['exports', 'metal/src/metal', 'metal-dom/src/all/dom', 'metal-component/src/all/component', 'metal-drag-drop/src/all/drag', 'metal-position/src/all/position', 'metal-soy/src/Soy', './Slider.soy', 'metal-jquery-adapter/src/JQueryAdapter'], function (exports, _metal, _dom, _component, _drag, _position, _Soy, _Slider, _JQueryAdapter) {
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {

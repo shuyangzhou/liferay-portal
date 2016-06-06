@@ -1,4 +1,4 @@
-define("frontend-js-metal-web@1.0.7/html2incdom/src/HTMLParser-min", [], function(){"use strict";/*
+define("frontend-js-metal-web@1.0.8/html2incdom/src/HTMLParser-min", [], function(){"use strict";/*
   * HTML5 Parser By Sam Blowes
   *
   * Designed for HTML5 documents

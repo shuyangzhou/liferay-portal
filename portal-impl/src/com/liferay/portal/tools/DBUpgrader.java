@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.model.ReleaseConstants;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
+import com.liferay.portal.kernel.process.ClassPathUtil;
 import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.service.ReleaseLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourceActionLocalServiceUtil;
@@ -90,6 +91,8 @@ public class DBUpgrader {
 			StopWatch stopWatch = new StopWatch();
 
 			stopWatch.start();
+
+			ClassPathUtil.initializeClassPaths(null);
 
 			InitUtil.initWithSpring(true, false);
 

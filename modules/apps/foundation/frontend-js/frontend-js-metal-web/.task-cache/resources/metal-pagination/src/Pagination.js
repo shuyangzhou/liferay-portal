@@ -1,4 +1,4 @@
-define("frontend-js-metal-web@1.0.7/metal-pagination/src/Pagination", ['exports', 'metal/src/metal', './Pagination.soy', 'metal-component/src/all/component', 'metal-soy/src/Soy', 'metal-jquery-adapter/src/JQueryAdapter'], function (exports, _metal, _Pagination, _component, _Soy, _JQueryAdapter) {
+define("frontend-js-metal-web@1.0.8/metal-pagination/src/Pagination", ['exports', 'metal/src/metal', './Pagination.soy', 'metal-component/src/all/component', 'metal-soy/src/Soy', 'metal-jquery-adapter/src/JQueryAdapter'], function (exports, _metal, _Pagination, _component, _Soy, _JQueryAdapter) {
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {

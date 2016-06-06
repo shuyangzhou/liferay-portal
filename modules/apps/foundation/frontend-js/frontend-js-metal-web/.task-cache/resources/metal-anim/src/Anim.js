@@ -1,4 +1,4 @@
-define("frontend-js-metal-web@1.0.7/metal-anim/src/Anim", ['exports', 'metal/src/metal', 'metal-dom/src/all/dom'], function (exports, _metal, _dom) {
+define("frontend-js-metal-web@1.0.8/metal-anim/src/Anim", ['exports', 'metal/src/metal', 'metal-dom/src/all/dom'], function (exports, _metal, _dom) {
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {

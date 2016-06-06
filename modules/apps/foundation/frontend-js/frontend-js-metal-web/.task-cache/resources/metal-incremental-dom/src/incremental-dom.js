@@ -1,4 +1,4 @@
-define("frontend-js-metal-web@1.0.7/metal-incremental-dom/src/incremental-dom", [], function () {
+define("frontend-js-metal-web@1.0.8/metal-incremental-dom/src/incremental-dom", [], function () {
   'use strict';
 
   var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {

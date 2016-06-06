@@ -1,4 +1,4 @@
-define("frontend-js-metal-web@1.0.7/metal-affix/src/Affix", ['exports', 'metal/src/metal', 'metal-dom/src/all/dom', 'metal-state/src/State', 'metal-events/src/events', 'metal-position/src/all/position', 'metal-jquery-adapter/src/JQueryAdapter'], function (exports, _metal, _dom, _State2, _events, _position, _JQueryAdapter) {
+define("frontend-js-metal-web@1.0.8/metal-affix/src/Affix", ['exports', 'metal/src/metal', 'metal-dom/src/all/dom', 'metal-state/src/State', 'metal-events/src/events', 'metal-position/src/all/position', 'metal-jquery-adapter/src/JQueryAdapter'], function (exports, _metal, _dom, _State2, _events, _position, _JQueryAdapter) {
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {

@@ -1,4 +1,4 @@
-define("frontend-js-metal-web@1.0.7/metal-incremental-dom/src/IncrementalDomAop", ['exports', 'metal/src/metal', './incremental-dom'], function (exports, _metal) {
+define("frontend-js-metal-web@1.0.8/metal-incremental-dom/src/IncrementalDomAop", ['exports', 'metal/src/metal', './incremental-dom'], function (exports, _metal) {
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
