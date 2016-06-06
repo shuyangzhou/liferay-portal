@@ -1,4 +1,4 @@
-define("frontend-js-metal-web@1.0.7/metal-button-group/src/ButtonGroup", ['exports', 'metal/src/metal', 'metal-component/src/all/component', 'metal-soy/src/Soy', './ButtonGroup.soy', 'metal-jquery-adapter/src/JQueryAdapter'], function (exports, _metal, _component, _Soy, _ButtonGroup, _JQueryAdapter) {
+define("frontend-js-metal-web@1.0.8/metal-button-group/src/ButtonGroup", ['exports', 'metal/src/metal', 'metal-component/src/all/component', 'metal-soy/src/Soy', './ButtonGroup.soy', 'metal-jquery-adapter/src/JQueryAdapter'], function (exports, _metal, _component, _Soy, _ButtonGroup, _JQueryAdapter) {
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {

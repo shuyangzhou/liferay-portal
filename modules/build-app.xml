@@ -2,7 +2,16 @@
 <!DOCTYPE project>
 
 <project name="build-app">
-	<property name="osgi.dir" value="${basedir}/../../bundles/osgi" />
+	<property file="../app.server.${user.name}.properties" />
+	<property file="../app.server.${env.COMPUTERNAME}.properties" />
+	<property file="../app.server.${env.HOST}.properties" />
+	<property file="../app.server.${env.HOSTNAME}.properties" />
+	<property file="../app.server.properties" />
+
+	<property name="liferay.home" value="${basedir}/../bundles" />
+	<property name="portal.lib.dir" value="${app.server.tomcat.lib.portal.dir}" />
+
+	<property name="osgi.dir" value="${liferay.home}/osgi" />
 
 	<macrodef name="set-artifact-versions-previous-release">
 		<attribute name="app.version.previous.release" />
@@ -54,7 +63,9 @@
 	</target>
 
 	<target depends="check-app-version,init-build-app" name="check-stale-artifacts">
-		<exec executable="${gradle.wrapper.path}" outputproperty="stale.artifacts.output">
+		<property location="${gradle.wrapper.path}" name="gradle.wrapper.path.absolute" />
+
+		<exec dir="${app.dir}" executable="${gradle.wrapper.path.absolute}" outputproperty="stale.artifacts.output">
 			<arg value="printStaleArtifact" />
 			<arg value="-q" />
 		</exec>
@@ -70,9 +81,7 @@
 
 		<fail message="Stale artifacts detected:${line.separator}${module.stale.artifacts}">
 			<condition>
-				<not>
-					<equals arg1="${stale.artifacts.output}" arg2="" />
-				</not>
+				<isset property="module.stale.artifacts" />
 			</condition>
 		</fail>
 	</target>
@@ -204,17 +213,18 @@
 
 			<!-- Order is important -->
 
-			<fileset dir="${osgi.dir}/../tools/portal-target-platform-indexer-main" includes="com.liferay.portal.target.platform.indexer.jar,com.liferay.portal.target.platform.indexer.main.jar" />
+			<fileset dir="${liferay.home}/tools/portal-tools-target-platform-indexer-client" includes="com.liferay.portal.target.platform.indexer.jar,com.liferay.portal.tools.target.platform.indexer.client.jar" />
 			<fileset dir="${osgi.dir}/core" includes="com.liferay.portal.bootstrap.jar,org.eclipse.osgi.jar" />
 		</path>
 
 		<java
-			classname="com.liferay.portal.target.platform.indexer.main.TargetPlatformMain"
+			classname="com.liferay.portal.tools.target.platform.indexer.client.TargetPlatformIndexerClient"
 			classpathref="target.platform.indexer.classpath"
 			fork="true"
 			newenvironment="true"
 		>
-			<jvmarg value="-Dmodule.framework.base.dir=${osgi.dir}" />
+			<jvmarg value="-Dliferay.home=${liferay.home}" />
+			<jvmarg value="-Dportal.lib.dir=${portal.lib.dir}" />
 		</java>
 	</target>
 
@@ -295,7 +305,7 @@
 	</target>
 
 	<target name="reset-all">
-		<property location="${osgi.dir}/../deploy" name="deploy.dir.absolute" />
+		<property location="${liferay.home}/deploy" name="deploy.dir.absolute" />
 		<property location="${osgi.dir}" name="osgi.dir.absolute" />
 
 		<fail message="${osgi.dir.absolute} and ${deploy.dir.absolute} cannot be reset if ${osgi.dir.absolute}_backup and/or ${deploy.dir.absolute}_backup are not present.">

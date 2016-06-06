@@ -51,6 +51,8 @@
 				/>
 			</delete>
 
+			<delete file="${liferay.home}/.liferay-home" />
+
 			<delete dir="${liferay.home}/data/elasticsearch" />
 
 			<delete failonerror="false">
@@ -232,6 +234,8 @@
 		<ant dir="portal-test-integration" inheritAll="false" target="deploy" />
 
 		<ant dir="portal-web" inheritAll="false" target="deploy" />
+
+		<touch file="${liferay.home}/.liferay-home" />
 
 		<copy todir="${liferay.home}/data/hypersonic">
 			<fileset dir="sql">

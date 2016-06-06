@@ -5,7 +5,6 @@ dependencies {
 	provided group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "2.4.0"
 	provided group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.4.0"
 	provided group: "org.osgi", name: "org.osgi.core", version: "6.0.0"
-	provided project(":core:portal-bootstrap")
 }
 
 deploy {
@@ -14,7 +13,7 @@ deploy {
 
 deployTool {
 	from jar
-	into new File(liferay.liferayHome, "tools/portal-target-platform-indexer-main")
+	into new File(liferay.liferayHome, "tools/portal-tools-target-platform-indexer-client")
 
 	rename {
 		"com.liferay.portal.target.platform.indexer.jar"

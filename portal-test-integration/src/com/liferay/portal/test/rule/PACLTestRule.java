@@ -25,9 +25,7 @@ import com.liferay.portal.kernel.servlet.ServletContextPool;
 import com.liferay.portal.kernel.servlet.filters.invoker.InvokerFilterHelper;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.util.ClassLoaderPool;
-import com.liferay.portal.kernel.util.ClassLoaderUtil;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.PortalLifecycleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -237,9 +235,6 @@ public class PACLTestRule implements TestRule {
 		"com.liferay.portal.security.pacl.test.";
 
 	static {
-		PortalClassLoaderUtil.setClassLoader(
-			ClassLoaderUtil.getContextClassLoader());
-
 		ClassPathUtil.initializeClassPaths(new MockServletContext());
 
 		List<String> configLocations = ListUtil.fromArray(

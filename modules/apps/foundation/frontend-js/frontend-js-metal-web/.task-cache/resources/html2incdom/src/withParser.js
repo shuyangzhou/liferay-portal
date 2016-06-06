@@ -1,4 +1,4 @@
-define("frontend-js-metal-web@1.0.7/html2incdom/src/withParser", ['exports', './HTML2IncDom', './HTMLParser'], function (exports, _HTML2IncDom) {
+define("frontend-js-metal-web@1.0.8/html2incdom/src/withParser", ['exports', './HTML2IncDom', './HTMLParser'], function (exports, _HTML2IncDom) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {

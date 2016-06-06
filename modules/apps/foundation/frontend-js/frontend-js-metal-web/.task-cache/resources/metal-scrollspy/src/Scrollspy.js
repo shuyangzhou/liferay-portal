@@ -1,4 +1,4 @@
-define("frontend-js-metal-web@1.0.7/metal-scrollspy/src/Scrollspy", ['exports', 'metal/src/metal', 'metal-dom/src/all/dom', 'metal-position/src/all/position', 'metal-state/src/State', 'metal-jquery-adapter/src/JQueryAdapter'], function (exports, _metal, _dom, _position, _State2, _JQueryAdapter) {
+define("frontend-js-metal-web@1.0.8/metal-scrollspy/src/Scrollspy", ['exports', 'metal/src/metal', 'metal-dom/src/all/dom', 'metal-position/src/all/position', 'metal-state/src/State', 'metal-jquery-adapter/src/JQueryAdapter'], function (exports, _metal, _dom, _position, _State2, _JQueryAdapter) {
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {

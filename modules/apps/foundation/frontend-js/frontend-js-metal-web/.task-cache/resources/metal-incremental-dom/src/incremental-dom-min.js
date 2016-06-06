@@ -1,4 +1,4 @@
-define("frontend-js-metal-web@1.0.7/metal-incremental-dom/src/incremental-dom-min", [], function(){"use strict";var e="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol?"symbol":typeof e};/**
+define("frontend-js-metal-web@1.0.8/metal-incremental-dom/src/incremental-dom-min", [], function(){"use strict";var e="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol?"symbol":typeof e};/**
    * @license
    * Copyright 2015 The Incremental DOM Authors. All Rights Reserved.
    *

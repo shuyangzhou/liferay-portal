@@ -1,4 +1,4 @@
-define("frontend-js-metal-web@1.0.7/metal-clipboard/src/Clipboard", ['exports', 'metal/src/metal', 'metal-dom/src/all/dom', 'metal-state/src/State', 'metal-jquery-adapter/src/JQueryAdapter'], function (exports, _metal, _dom, _State3, _JQueryAdapter) {
+define("frontend-js-metal-web@1.0.8/metal-clipboard/src/Clipboard", ['exports', 'metal/src/metal', 'metal-dom/src/all/dom', 'metal-state/src/State', 'metal-jquery-adapter/src/JQueryAdapter'], function (exports, _metal, _dom, _State3, _JQueryAdapter) {
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {

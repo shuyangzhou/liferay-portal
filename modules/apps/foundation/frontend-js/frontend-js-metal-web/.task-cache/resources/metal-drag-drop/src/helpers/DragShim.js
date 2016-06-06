@@ -1,4 +1,4 @@
-define("frontend-js-metal-web@1.0.7/metal-drag-drop/src/helpers/DragShim", ['exports', 'metal-dom/src/all/dom'], function (exports, _dom) {
+define("frontend-js-metal-web@1.0.8/metal-drag-drop/src/helpers/DragShim", ['exports', 'metal-dom/src/all/dom'], function (exports, _dom) {
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {

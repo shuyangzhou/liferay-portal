@@ -1,4 +1,4 @@
-define("frontend-js-metal-web@1.0.7/metal-autocomplete/src/Autocomplete", ['exports', 'metal/src/metal', 'metal-debounce/src/debounce', 'metal-dom/src/all/dom', 'metal-promise/src/promise/Promise', 'metal-position/src/all/position', './AutocompleteBase', 'metal-soy/src/Soy', './Autocomplete.soy', 'metal-jquery-adapter/src/JQueryAdapter', 'metal-list/src/List'], function (exports, _metal, _debounce, _dom, _Promise, _position, _AutocompleteBase2, _Soy, _Autocomplete, _JQueryAdapter) {
+define("frontend-js-metal-web@1.0.8/metal-autocomplete/src/Autocomplete", ['exports', 'metal/src/metal', 'metal-debounce/src/debounce', 'metal-dom/src/all/dom', 'metal-promise/src/promise/Promise', 'metal-position/src/all/position', './AutocompleteBase', 'metal-soy/src/Soy', './Autocomplete.soy', 'metal-jquery-adapter/src/JQueryAdapter', 'metal-list/src/List'], function (exports, _metal, _debounce, _dom, _Promise, _position, _AutocompleteBase2, _Soy, _Autocomplete, _JQueryAdapter) {
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {

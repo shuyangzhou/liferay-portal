@@ -1,4 +1,4 @@
-define("frontend-js-metal-web@1.0.7/metal/src/core", ['exports'], function (exports) {
+define("frontend-js-metal-web@1.0.8/metal/src/core", ['exports'], function (exports) {
 	'use strict';
 
 	/**

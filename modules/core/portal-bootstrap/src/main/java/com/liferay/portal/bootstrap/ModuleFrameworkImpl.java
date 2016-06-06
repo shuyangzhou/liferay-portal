@@ -1027,10 +1027,10 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 		final List<Bundle> bundles = new ArrayList<>();
 
-		final List<Path> lpkgPaths = new ArrayList<>();
+		final List<Path> jarPaths = new ArrayList<>();
 
 		Files.walkFileTree(
-			Paths.get(PropsValues.MODULE_FRAMEWORK_BASE_DIR, "/static/"),
+			Paths.get(PropsValues.MODULE_FRAMEWORK_BASE_DIR, "static"),
 			new SimpleFileVisitor<Path>() {
 
 				@Override
@@ -1044,7 +1044,7 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 						fileNamePath.toString());
 
 					if (fileName.endsWith(".jar")) {
-						lpkgPaths.add(filePath.toAbsolutePath());
+						jarPaths.add(filePath.toAbsolutePath());
 					}
 
 					return FileVisitResult.CONTINUE;
@@ -1052,12 +1052,15 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 			});
 
-		Collections.sort(lpkgPaths);
+		jarPaths.add(
+			Paths.get(PropsValues.LIFERAY_LIB_PORTAL_DIR, "util-taglib.jar"));
 
-		for (Path lpkgPath : lpkgPaths) {
-			try (InputStream inputStream = Files.newInputStream(lpkgPath)) {
+		Collections.sort(jarPaths);
+
+		for (Path jarPath : jarPaths) {
+			try (InputStream inputStream = Files.newInputStream(jarPath)) {
 				Bundle bundle = _installInitialBundle(
-					lpkgPath.toString(), inputStream);
+					jarPath.toString(), inputStream);
 
 				if (bundle != null) {
 					bundles.add(bundle);

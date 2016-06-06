@@ -1908,6 +1908,7 @@ tell application "Safari" to quit
 							<ant dir="portal-test-integration" inheritAll="false" target="deploy" />
 
 							<ant dir="util-java" inheritAll="false" target="deploy" />
+							<ant dir="util-taglib" inheritAll="false" target="deploy" />
 
 							<ant dir="portal-impl" inheritAll="false" target="deploy" />
 
@@ -3286,7 +3287,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 			<echo>Waiting for ${app.server.waiting.url} to load</echo>
 
-			<waitfor maxwait="15" maxwaitunit="minute" timeoutproperty="app.server.waiting.timeout">
+			<waitfor maxwait="${timeout.app.server.wait}" maxwaitunit="second" timeoutproperty="app.server.waiting.timeout">
 				<http url="${app.server.waiting.url}" />
 			</waitfor>
 
@@ -3384,6 +3385,8 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 							System.out.println("Waiting for server startup message");
 
+							int timeout = Integer.parseInt(project.getProperty("timeout.app.server.wait"));
+
 							int second = 0;
 
 							while (true) {
@@ -3398,8 +3401,8 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 									e.printStackTrace();
 								}
 
-								if (second >= 900) {
-									project.setProperty("wait.for.app.server.log.timed.out.message", "Unable to find startup message after 15 minutes.");
+								if (second >= timeout) {
+									project.setProperty("wait.for.app.server.log.timed.out.message", "Unable to find startup message after " + (timeout / 60) + " minutes.");
 
 									break;
 								}
@@ -6918,6 +6921,10 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 							<os family="windows" />
 							<then>
 								<exec executable="${db2.executable}">
+									<arg line="/c /w db2 disconnect lportal" />
+								</exec>
+
+								<exec executable="${db2.executable}">
 									<arg line="/c /w db2 drop db lportal" />
 								</exec>
 
@@ -6926,6 +6933,10 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 								</exec>
 							</then>
 							<else>
+								<exec executable="${db2.executable}">
+									<arg line="disconnect lportal" />
+								</exec>
+
 								<exec executable="${db2.executable}">
 									<arg line="drop db lportal" />
 								</exec>
@@ -7067,26 +7078,42 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 		/>
 
 		<if>
-			<equals arg1="${database.type}" arg2="mariadb" />
+			<equals arg1="${database.type}" arg2="db2" />
 			<then>
-				<antcall target="rebuild-database">
-					<param name="database.type" value="${database.type}" />
-					<param name="sql.dir" value="sql/create-bare/" />
-					<param name="sql.file" value="create-bare-mysql.sql" />
-				</antcall>
+				<echo>chmod -v 777 ${liferay.home}</echo>
 
-				<get-database-property property.name="database.password" />
-				<get-database-property property.name="database.schema" />
-				<get-database-property property.name="database.username" />
+				<chmod file="${liferay.home}" perm="777" type="dir" verbose="true" />
 
-				<exec executable="${mariadb.executable}" input="${liferay.home}/${database.type}.sql">
-					<arg value="--database=${database.schema}" />
-					<arg value="--password=${database.password}" />
-					<arg value="--user=${database.username}" />
+				<echo>${db2.executable} restore database lportal from ${liferay.home} replace existing</echo>
+
+				<exec executable="${db2.executable}" outputproperty="db2.executable.output">
+					<arg line="restore database lportal from ${liferay.home} replace existing" />
 				</exec>
 
-				<exec executable="mysql_upgrade" />
+				<echo>${db2.executable.output}</echo>
 			</then>
+			<elseif>
+				<equals arg1="${database.type}" arg2="mariadb" />
+				<then>
+					<antcall target="rebuild-database">
+						<param name="database.type" value="${database.type}" />
+						<param name="sql.dir" value="sql/create-bare/" />
+						<param name="sql.file" value="create-bare-mysql.sql" />
+					</antcall>
+
+					<get-database-property property.name="database.password" />
+					<get-database-property property.name="database.schema" />
+					<get-database-property property.name="database.username" />
+
+					<exec executable="${mariadb.executable}" input="${liferay.home}/${database.type}.sql">
+						<arg value="--database=${database.schema}" />
+						<arg value="--password=${database.password}" />
+						<arg value="--user=${database.username}" />
+					</exec>
+
+					<exec executable="mysql_upgrade" />
+				</then>
+			</elseif>
 			<elseif>
 				<equals arg1="${database.type}" arg2="mysql" />
 				<then>
@@ -8006,7 +8033,6 @@ jdbc.default.password=${database.mysql.password}</echo>
 				<equals arg1="${os.name}" arg2="SunOS" />
 			</not>
 			<then>
-				<antcall inheritAll="false" target="clean-up-db2-processes" />
 				<antcall inheritAll="false" target="clean-up-java-processes" />
 			</then>
 		</if>

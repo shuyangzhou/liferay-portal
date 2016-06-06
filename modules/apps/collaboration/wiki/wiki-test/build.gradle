@@ -1,6 +1,6 @@
 dependencies {
 	testCompile group: "com.liferay", name: "com.liferay.exportimport.api", version: "2.0.0"
-	testCompile group: "com.liferay", name: "com.liferay.exportimport.service", version: "2.0.0"
+	testCompile group: "com.liferay", name: "com.liferay.exportimport.service", version: "3.0.0"
 	testCompile group: "com.liferay", name: "com.liferay.wiki.api", version: "2.0.0"
 	testCompile group: "com.liferay", name: "com.liferay.wiki.service", version: "1.0.0"
 	testCompile group: "com.liferay", name: "com.liferay.wiki.web", version: "1.0.0"

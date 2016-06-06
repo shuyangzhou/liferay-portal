@@ -1,4 +1,4 @@
-define("frontend-js-metal-web@1.0.7/metal-soy/src/Soy", ['exports', 'metal/src/metal', 'metal-component/src/all/component', 'html2incdom/src/withParser', 'metal-incremental-dom/src/IncrementalDomRenderer', './SoyAop', 'metal-soy-bundle/build/bundle'], function (exports, _metal, _component, _withParser, _IncrementalDomRenderer, _SoyAop) {
+define("frontend-js-metal-web@1.0.8/metal-soy/src/Soy", ['exports', 'metal/src/metal', 'metal-component/src/all/component', 'html2incdom/src/withParser', 'metal-incremental-dom/src/IncrementalDomRenderer', './SoyAop', 'metal-soy-bundle/build/bundle'], function (exports, _metal, _component, _withParser, _IncrementalDomRenderer, _SoyAop) {
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
