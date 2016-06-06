@@ -934,6 +934,8 @@ public class PropsValues {
 
 	public static final boolean MODULE_FRAMEWORK_REGISTER_LIFERAY_SERVICES = GetterUtil.getBoolean(PropsUtil.get(PropsKeys.MODULE_FRAMEWORK_REGISTER_LIFERAY_SERVICES));
 
+	public static final String[] MODULE_FRAMEWORK_REQUIRED_STARTUP_DIRS = PropsUtil.getArray(PropsKeys.MODULE_FRAMEWORK_REQUIRED_STARTUP_DIRS);
+
 	public static final int MODULE_FRAMEWORK_RUNTIME_START_LEVEL = GetterUtil.getInteger(PropsUtil.get(PropsKeys.MODULE_FRAMEWORK_RUNTIME_START_LEVEL));
 
 	public static final String[] MODULE_FRAMEWORK_SERVICES_IGNORED_INTERFACES = PropsUtil.getArray(PropsKeys.MODULE_FRAMEWORK_SERVICES_IGNORED_INTERFACES);

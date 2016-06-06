@@ -246,7 +246,7 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 			_log.debug("Initializing the OSGi framework");
 		}
 
-		_initFelixFileInstallDirs();
+		_initRequiredStartupDirs();
 
 		List<ServiceLoaderCondition> serviceLoaderConditions =
 			ServiceLoader.load(ServiceLoaderCondition.class);
@@ -833,14 +833,14 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		return false;
 	}
 
-	private void _initFelixFileInstallDirs() {
+	private void _initRequiredStartupDirs() {
 		if (_log.isDebugEnabled()) {
-			_log.debug("Initializing Felix file install directories");
+			_log.debug("Initializing required startup directories");
 		}
 
-		String[] dirNames = StringUtil.split(_getFelixFileInstallDir());
+		for (String dirName :
+				PropsValues.MODULE_FRAMEWORK_REQUIRED_STARTUP_DIRS) {
 
-		for (String dirName : dirNames) {
 			FileUtil.mkdirs(dirName);
 		}
 	}
