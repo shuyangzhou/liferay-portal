@@ -14,6 +14,7 @@
 
 package com.liferay.portal.target.platform.indexer;
 
+import com.liferay.portal.kernel.process.ProcessException;
 import com.liferay.portal.target.platform.indexer.internal.PathUtil;
 import com.liferay.portal.target.platform.indexer.internal.TargetPlatformIndexer;
 
@@ -34,6 +35,7 @@ import java.util.jar.Manifest;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
+import org.osgi.framework.FrameworkEvent;
 import org.osgi.framework.launch.Framework;
 import org.osgi.framework.launch.FrameworkFactory;
 
@@ -44,7 +46,7 @@ public class TargetPlatformIndexerUtil {
 
 	public static void indexTargetPlatform(
 			OutputStream outputStream, List<File> additionalJarFiles,
-			String... dirNames)
+			long stopWaitTimeout, String... dirNames)
 		throws Exception {
 
 		Framework framework = null;
@@ -90,6 +92,15 @@ public class TargetPlatformIndexerUtil {
 		}
 		finally {
 			framework.stop();
+
+			FrameworkEvent frameworkEvent = framework.waitForStop(
+				stopWaitTimeout);
+
+			if (frameworkEvent.getType() == FrameworkEvent.WAIT_TIMEDOUT) {
+				throw new ProcessException(
+					"OSGi framework event " + frameworkEvent +
+						" triggered after a " + stopWaitTimeout + "ms timeout");
+			}
 
 			PathUtil.deltree(tempPath);
 		}

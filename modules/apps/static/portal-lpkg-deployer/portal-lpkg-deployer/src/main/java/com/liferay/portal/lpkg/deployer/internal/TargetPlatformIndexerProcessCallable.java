@@ -30,9 +30,11 @@ public class TargetPlatformIndexerProcessCallable
 	implements ProcessCallable<byte[]> {
 
 	public TargetPlatformIndexerProcessCallable(
-		List<File> additionalJarFiles, String... dirNames) {
+		List<File> additionalJarFiles, long stopWaitTimeout,
+		String... dirNames) {
 
 		_additionalJarFiles = additionalJarFiles;
+		_stopWaitTimeout = stopWaitTimeout;
 		_dirNames = dirNames;
 	}
 
@@ -43,7 +45,8 @@ public class TargetPlatformIndexerProcessCallable
 				new UnsyncByteArrayOutputStream();
 
 			TargetPlatformIndexerUtil.indexTargetPlatform(
-				unsyncByteArrayOutputStream, _additionalJarFiles, _dirNames);
+				unsyncByteArrayOutputStream, _additionalJarFiles,
+				_stopWaitTimeout, _dirNames);
 
 			return unsyncByteArrayOutputStream.toByteArray();
 		}
@@ -61,5 +64,6 @@ public class TargetPlatformIndexerProcessCallable
 
 	private final List<File> _additionalJarFiles;
 	private final String[] _dirNames;
+	private final long _stopWaitTimeout;
 
 }

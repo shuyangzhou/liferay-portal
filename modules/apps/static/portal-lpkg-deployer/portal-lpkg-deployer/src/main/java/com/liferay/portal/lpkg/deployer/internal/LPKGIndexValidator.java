@@ -306,6 +306,7 @@ public class LPKGIndexValidator {
 							new File(
 								PropsValues.LIFERAY_LIB_PORTAL_DIR,
 								"util-taglib.jar")),
+						PropsValues.MODULE_FRAMEWORK_STOP_WAIT_TIMEOUT,
 						PropsValues.MODULE_FRAMEWORK_BASE_DIR + "/static",
 						PropsValues.MODULE_FRAMEWORK_MODULES_DIR,
 						PropsValues.MODULE_FRAMEWORK_PORTAL_DIR));
