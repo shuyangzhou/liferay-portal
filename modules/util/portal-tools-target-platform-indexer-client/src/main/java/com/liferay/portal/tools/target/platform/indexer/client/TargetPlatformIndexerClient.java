@@ -79,6 +79,8 @@ public class TargetPlatformIndexerClient {
 			liferayHome + "/osgi/" + Indexer.DIR_NAME_TARGET_PLATFORM +
 				"/target-platform-indexes-" + System.currentTimeMillis() +
 					".zip");
+		long stopWaitTimeout = Long.parseLong(
+			System.getProperty("stop.wait.timeout", "30000"));
 		String moduleFrameworkStaticDirName = System.getProperty(
 			"module.framework.static.dir", liferayHome.concat("/osgi/static"));
 		String moduleFrameworkModulesDirName = System.getProperty(
@@ -93,8 +95,9 @@ public class TargetPlatformIndexerClient {
 		List<URI> uris = _index(
 			indexesFileName,
 			Arrays.asList(new File(portalLibDirName, "util-taglib.jar")),
-			moduleFrameworkStaticDirName, moduleFrameworkModulesDirName,
-			moduleFrameworkPortalDirName, moduleFrameworkMarketplaceDir);
+			stopWaitTimeout, moduleFrameworkStaticDirName,
+			moduleFrameworkModulesDirName, moduleFrameworkPortalDirName,
+			moduleFrameworkMarketplaceDir);
 
 		if (_validate(uris)) {
 			String integrityPropertiesFileName = System.getProperty(
@@ -109,7 +112,7 @@ public class TargetPlatformIndexerClient {
 
 	private static List<URI> _index(
 			String indexesFileName, List<File> additionalJarFiles,
-			String moduleFrameworkStaticDirName,
+			long stopWaitTimeout, String moduleFrameworkStaticDirName,
 			String moduleFrameworkModulesDirName,
 			String moduleFrameworkPortalDirName,
 			String moduleFrameworkMarketplaceDirName)
@@ -125,8 +128,9 @@ public class TargetPlatformIndexerClient {
 
 		uris.add(
 			_indexTargetPlatform(
-				additionalJarFiles, moduleFrameworkStaticDirName,
-				moduleFrameworkModulesDirName, moduleFrameworkPortalDirName));
+				additionalJarFiles, stopWaitTimeout,
+				moduleFrameworkStaticDirName, moduleFrameworkModulesDirName,
+				moduleFrameworkPortalDirName));
 
 		uris.addAll(
 			_indexLPKGFiles(
@@ -169,14 +173,16 @@ public class TargetPlatformIndexerClient {
 	}
 
 	private static URI _indexTargetPlatform(
-			List<File> additionalJarFiles, String... dirNames)
+			List<File> additionalJarFiles, long stopWaitTimeout,
+			String... dirNames)
 		throws Exception {
 
 		ByteArrayOutputStream byteArrayOutputStream =
 			new ByteArrayOutputStream();
 
 		TargetPlatformIndexerUtil.indexTargetPlatform(
-			byteArrayOutputStream, additionalJarFiles, dirNames);
+			byteArrayOutputStream, additionalJarFiles, stopWaitTimeout,
+			dirNames);
 
 		URL url = BytesURLSupport.putBytes(
 			"liferay-target-platform", byteArrayOutputStream.toByteArray());
