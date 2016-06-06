@@ -1908,6 +1908,7 @@ tell application "Safari" to quit
 							<ant dir="portal-test-integration" inheritAll="false" target="deploy" />
 
 							<ant dir="util-java" inheritAll="false" target="deploy" />
+							<ant dir="util-taglib" inheritAll="false" target="deploy" />
 
 							<ant dir="portal-impl" inheritAll="false" target="deploy" />
 
