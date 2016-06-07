@@ -16,6 +16,8 @@ package com.liferay.portal.osgi.web.wab.generator.internal;
 
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.util.HashMapDictionary;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.osgi.web.wab.generator.internal.artifact.InitalWarArtifactUrlCollectorTransformer;
 import com.liferay.portal.osgi.web.wab.generator.internal.artifact.WarArtifactUrlTransformer;
 import com.liferay.portal.osgi.web.wab.generator.internal.handler.WabURLStreamHandlerService;
 import com.liferay.portal.osgi.web.wab.generator.internal.processor.WabProcessor;
@@ -25,11 +27,14 @@ import java.io.IOException;
 
 import java.util.Dictionary;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.CountDownLatch;
 
 import org.apache.felix.fileinstall.ArtifactUrlTransformer;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleEvent;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -37,6 +42,7 @@ import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.url.URLConstants;
 import org.osgi.service.url.URLStreamHandlerService;
+import org.osgi.util.tracker.BundleTracker;
 
 /**
  * @author Miguel Pastor
@@ -60,9 +66,38 @@ public class WabGenerator
 
 	@Activate
 	public void start(BundleContext bundleContext) throws Exception {
+		final Set<String> locations =
+			InitalWarArtifactUrlCollectorTransformer.getLocations();
+
+		final CountDownLatch countDownLatch = new CountDownLatch(
+			locations.size());
+
+		BundleTracker<Void> bundleTracker = new BundleTracker<Void>(
+			bundleContext, Bundle.ACTIVE, null) {
+
+			@Override
+			public Void addingBundle(Bundle bundle, BundleEvent event) {
+				if (locations.contains(
+						StringUtil.removeSubstring(
+							bundle.getLocation(), "webbundle:"))) {
+
+					countDownLatch.countDown();
+				}
+
+				return null;
+			}
+
+		};
+
+		bundleTracker.open();
+
 		registerURLStreamHandlerService(bundleContext);
 
 		registerArtifactUrlTransformer(bundleContext);
+
+		countDownLatch.await();
+
+		bundleTracker.close();
 	}
 
 	@Deactivate
