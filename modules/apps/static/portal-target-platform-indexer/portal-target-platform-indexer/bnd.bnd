@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Portal Target Platform Indexer
 Bundle-SymbolicName: com.liferay.portal.target.platform.indexer
-Bundle-Version: 3.0.0
+Bundle-Version: 3.0.1
 Export-Package: com.liferay.portal.target.platform.indexer
 Import-Package:\
 	!com.liferay.portal.bootstrap,\
