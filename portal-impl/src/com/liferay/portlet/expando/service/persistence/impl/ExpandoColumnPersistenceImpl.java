@@ -21,10 +21,6 @@ import com.liferay.expando.kernel.model.ExpandoColumn;
 import com.liferay.expando.kernel.service.persistence.ExpandoColumnPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -1718,6 +1714,8 @@ public class ExpandoColumnPersistenceImpl extends BasePersistenceImpl<ExpandoCol
 
 	public ExpandoColumnPersistenceImpl() {
 		setModelClass(ExpandoColumn.class);
+		setModelImplClass(ExpandoColumnImpl.class);
+		setEntityCacheEnabled(ExpandoColumnModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1761,7 +1759,7 @@ public class ExpandoColumnPersistenceImpl extends BasePersistenceImpl<ExpandoCol
 	 * Clears the cache for all expando columns.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1777,7 +1775,7 @@ public class ExpandoColumnPersistenceImpl extends BasePersistenceImpl<ExpandoCol
 	 * Clears the cache for the expando column.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2105,54 +2103,6 @@ public class ExpandoColumnPersistenceImpl extends BasePersistenceImpl<ExpandoCol
 	/**
 	 * Returns the expando column with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the expando column
-	 * @return the expando column, or <code>null</code> if a expando column with the primary key could not be found
-	 */
-	@Override
-	public ExpandoColumn fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ExpandoColumnModelImpl.ENTITY_CACHE_ENABLED,
-				ExpandoColumnImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		ExpandoColumn expandoColumn = (ExpandoColumn)serializable;
-
-		if (expandoColumn == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				expandoColumn = (ExpandoColumn)session.get(ExpandoColumnImpl.class,
-						primaryKey);
-
-				if (expandoColumn != null) {
-					cacheResult(expandoColumn);
-				}
-				else {
-					entityCache.putResult(ExpandoColumnModelImpl.ENTITY_CACHE_ENABLED,
-						ExpandoColumnImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ExpandoColumnModelImpl.ENTITY_CACHE_ENABLED,
-					ExpandoColumnImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return expandoColumn;
-	}
-
-	/**
-	 * Returns the expando column with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param columnId the primary key of the expando column
 	 * @return the expando column, or <code>null</code> if a expando column with the primary key could not be found
 	 */
@@ -2471,8 +2421,6 @@ public class ExpandoColumnPersistenceImpl extends BasePersistenceImpl<ExpandoCol
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_EXPANDOCOLUMN = "SELECT expandoColumn FROM ExpandoColumn expandoColumn";
 	private static final String _SQL_SELECT_EXPANDOCOLUMN_WHERE_PKS_IN = "SELECT expandoColumn FROM ExpandoColumn expandoColumn WHERE columnId IN (";
 	private static final String _SQL_SELECT_EXPANDOCOLUMN_WHERE = "SELECT expandoColumn FROM ExpandoColumn expandoColumn WHERE ";

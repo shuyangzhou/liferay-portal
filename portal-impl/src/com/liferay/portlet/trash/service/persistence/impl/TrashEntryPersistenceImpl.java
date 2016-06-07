@@ -17,10 +17,6 @@ package com.liferay.portlet.trash.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -2426,6 +2422,8 @@ public class TrashEntryPersistenceImpl extends BasePersistenceImpl<TrashEntry>
 
 	public TrashEntryPersistenceImpl() {
 		setModelClass(TrashEntry.class);
+		setModelImplClass(TrashEntryImpl.class);
+		setEntityCacheEnabled(TrashEntryModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2468,7 +2466,7 @@ public class TrashEntryPersistenceImpl extends BasePersistenceImpl<TrashEntry>
 	 * Clears the cache for all trash entries.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2484,7 +2482,7 @@ public class TrashEntryPersistenceImpl extends BasePersistenceImpl<TrashEntry>
 	 * Clears the cache for the trash entry.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2832,54 +2830,6 @@ public class TrashEntryPersistenceImpl extends BasePersistenceImpl<TrashEntry>
 	/**
 	 * Returns the trash entry with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the trash entry
-	 * @return the trash entry, or <code>null</code> if a trash entry with the primary key could not be found
-	 */
-	@Override
-	public TrashEntry fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(TrashEntryModelImpl.ENTITY_CACHE_ENABLED,
-				TrashEntryImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		TrashEntry trashEntry = (TrashEntry)serializable;
-
-		if (trashEntry == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				trashEntry = (TrashEntry)session.get(TrashEntryImpl.class,
-						primaryKey);
-
-				if (trashEntry != null) {
-					cacheResult(trashEntry);
-				}
-				else {
-					entityCache.putResult(TrashEntryModelImpl.ENTITY_CACHE_ENABLED,
-						TrashEntryImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(TrashEntryModelImpl.ENTITY_CACHE_ENABLED,
-					TrashEntryImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return trashEntry;
-	}
-
-	/**
-	 * Returns the trash entry with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param entryId the primary key of the trash entry
 	 * @return the trash entry, or <code>null</code> if a trash entry with the primary key could not be found
 	 */
@@ -3193,8 +3143,6 @@ public class TrashEntryPersistenceImpl extends BasePersistenceImpl<TrashEntry>
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_TRASHENTRY = "SELECT trashEntry FROM TrashEntry trashEntry";
 	private static final String _SQL_SELECT_TRASHENTRY_WHERE_PKS_IN = "SELECT trashEntry FROM TrashEntry trashEntry WHERE entryId IN (";
 	private static final String _SQL_SELECT_TRASHENTRY_WHERE = "SELECT trashEntry FROM TrashEntry trashEntry WHERE ";

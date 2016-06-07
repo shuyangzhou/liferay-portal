@@ -21,10 +21,6 @@ import com.liferay.asset.kernel.model.AssetTagStats;
 import com.liferay.asset.kernel.service.persistence.AssetTagStatsPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -1325,6 +1321,8 @@ public class AssetTagStatsPersistenceImpl extends BasePersistenceImpl<AssetTagSt
 
 	public AssetTagStatsPersistenceImpl() {
 		setModelClass(AssetTagStats.class);
+		setModelImplClass(AssetTagStatsImpl.class);
+		setEntityCacheEnabled(AssetTagStatsModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1369,7 +1367,7 @@ public class AssetTagStatsPersistenceImpl extends BasePersistenceImpl<AssetTagSt
 	 * Clears the cache for all asset tag statses.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1385,7 +1383,7 @@ public class AssetTagStatsPersistenceImpl extends BasePersistenceImpl<AssetTagSt
 	 * Clears the cache for the asset tag stats.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1707,54 +1705,6 @@ public class AssetTagStatsPersistenceImpl extends BasePersistenceImpl<AssetTagSt
 	/**
 	 * Returns the asset tag stats with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the asset tag stats
-	 * @return the asset tag stats, or <code>null</code> if a asset tag stats with the primary key could not be found
-	 */
-	@Override
-	public AssetTagStats fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(AssetTagStatsModelImpl.ENTITY_CACHE_ENABLED,
-				AssetTagStatsImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		AssetTagStats assetTagStats = (AssetTagStats)serializable;
-
-		if (assetTagStats == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				assetTagStats = (AssetTagStats)session.get(AssetTagStatsImpl.class,
-						primaryKey);
-
-				if (assetTagStats != null) {
-					cacheResult(assetTagStats);
-				}
-				else {
-					entityCache.putResult(AssetTagStatsModelImpl.ENTITY_CACHE_ENABLED,
-						AssetTagStatsImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(AssetTagStatsModelImpl.ENTITY_CACHE_ENABLED,
-					AssetTagStatsImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return assetTagStats;
-	}
-
-	/**
-	 * Returns the asset tag stats with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param tagStatsId the primary key of the asset tag stats
 	 * @return the asset tag stats, or <code>null</code> if a asset tag stats with the primary key could not be found
 	 */
@@ -2068,8 +2018,6 @@ public class AssetTagStatsPersistenceImpl extends BasePersistenceImpl<AssetTagSt
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_ASSETTAGSTATS = "SELECT assetTagStats FROM AssetTagStats assetTagStats";
 	private static final String _SQL_SELECT_ASSETTAGSTATS_WHERE_PKS_IN = "SELECT assetTagStats FROM AssetTagStats assetTagStats WHERE tagStatsId IN (";
 	private static final String _SQL_SELECT_ASSETTAGSTATS_WHERE = "SELECT assetTagStats FROM AssetTagStats assetTagStats WHERE ";

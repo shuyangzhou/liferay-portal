@@ -22,8 +22,6 @@ import com.liferay.journal.model.impl.JournalFeedImpl;
 import com.liferay.journal.model.impl.JournalFeedModelImpl;
 import com.liferay.journal.service.persistence.JournalFeedPersistence;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -2592,6 +2590,8 @@ public class JournalFeedPersistenceImpl extends BasePersistenceImpl<JournalFeed>
 
 	public JournalFeedPersistenceImpl() {
 		setModelClass(JournalFeed.class);
+		setModelImplClass(JournalFeedImpl.class);
+		setEntityCacheEnabled(JournalFeedModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2638,7 +2638,7 @@ public class JournalFeedPersistenceImpl extends BasePersistenceImpl<JournalFeed>
 	 * Clears the cache for all journal feeds.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2654,7 +2654,7 @@ public class JournalFeedPersistenceImpl extends BasePersistenceImpl<JournalFeed>
 	 * Clears the cache for the journal feed.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -3088,54 +3088,6 @@ public class JournalFeedPersistenceImpl extends BasePersistenceImpl<JournalFeed>
 	/**
 	 * Returns the journal feed with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the journal feed
-	 * @return the journal feed, or <code>null</code> if a journal feed with the primary key could not be found
-	 */
-	@Override
-	public JournalFeed fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(JournalFeedModelImpl.ENTITY_CACHE_ENABLED,
-				JournalFeedImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		JournalFeed journalFeed = (JournalFeed)serializable;
-
-		if (journalFeed == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				journalFeed = (JournalFeed)session.get(JournalFeedImpl.class,
-						primaryKey);
-
-				if (journalFeed != null) {
-					cacheResult(journalFeed);
-				}
-				else {
-					entityCache.putResult(JournalFeedModelImpl.ENTITY_CACHE_ENABLED,
-						JournalFeedImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(JournalFeedModelImpl.ENTITY_CACHE_ENABLED,
-					JournalFeedImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return journalFeed;
-	}
-
-	/**
-	 * Returns the journal feed with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param id the primary key of the journal feed
 	 * @return the journal feed, or <code>null</code> if a journal feed with the primary key could not be found
 	 */
@@ -3454,10 +3406,6 @@ public class JournalFeedPersistenceImpl extends BasePersistenceImpl<JournalFeed>
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_JOURNALFEED = "SELECT journalFeed FROM JournalFeed journalFeed";
 	private static final String _SQL_SELECT_JOURNALFEED_WHERE_PKS_IN = "SELECT journalFeed FROM JournalFeed journalFeed WHERE id_ IN (";
 	private static final String _SQL_SELECT_JOURNALFEED_WHERE = "SELECT journalFeed FROM JournalFeed journalFeed WHERE ";

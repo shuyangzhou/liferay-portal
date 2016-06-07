@@ -16,8 +16,6 @@ package com.liferay.sync.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -30,7 +28,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import com.liferay.sync.exception.NoSuchDLFileVersionDiffException;
 import com.liferay.sync.model.SyncDLFileVersionDiff;
@@ -1405,6 +1402,8 @@ public class SyncDLFileVersionDiffPersistenceImpl extends BasePersistenceImpl<Sy
 
 	public SyncDLFileVersionDiffPersistenceImpl() {
 		setModelClass(SyncDLFileVersionDiff.class);
+		setModelImplClass(SyncDLFileVersionDiffImpl.class);
+		setEntityCacheEnabled(SyncDLFileVersionDiffModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1452,7 +1451,7 @@ public class SyncDLFileVersionDiffPersistenceImpl extends BasePersistenceImpl<Sy
 	 * Clears the cache for all sync d l file version diffs.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1468,7 +1467,7 @@ public class SyncDLFileVersionDiffPersistenceImpl extends BasePersistenceImpl<Sy
 	 * Clears the cache for the sync d l file version diff.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1781,54 +1780,6 @@ public class SyncDLFileVersionDiffPersistenceImpl extends BasePersistenceImpl<Sy
 	public SyncDLFileVersionDiff findByPrimaryKey(long syncDLFileVersionDiffId)
 		throws NoSuchDLFileVersionDiffException {
 		return findByPrimaryKey((Serializable)syncDLFileVersionDiffId);
-	}
-
-	/**
-	 * Returns the sync d l file version diff with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the sync d l file version diff
-	 * @return the sync d l file version diff, or <code>null</code> if a sync d l file version diff with the primary key could not be found
-	 */
-	@Override
-	public SyncDLFileVersionDiff fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(SyncDLFileVersionDiffModelImpl.ENTITY_CACHE_ENABLED,
-				SyncDLFileVersionDiffImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		SyncDLFileVersionDiff syncDLFileVersionDiff = (SyncDLFileVersionDiff)serializable;
-
-		if (syncDLFileVersionDiff == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				syncDLFileVersionDiff = (SyncDLFileVersionDiff)session.get(SyncDLFileVersionDiffImpl.class,
-						primaryKey);
-
-				if (syncDLFileVersionDiff != null) {
-					cacheResult(syncDLFileVersionDiff);
-				}
-				else {
-					entityCache.putResult(SyncDLFileVersionDiffModelImpl.ENTITY_CACHE_ENABLED,
-						SyncDLFileVersionDiffImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(SyncDLFileVersionDiffModelImpl.ENTITY_CACHE_ENABLED,
-					SyncDLFileVersionDiffImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return syncDLFileVersionDiff;
 	}
 
 	/**
@@ -2151,10 +2102,6 @@ public class SyncDLFileVersionDiffPersistenceImpl extends BasePersistenceImpl<Sy
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_SYNCDLFILEVERSIONDIFF = "SELECT syncDLFileVersionDiff FROM SyncDLFileVersionDiff syncDLFileVersionDiff";
 	private static final String _SQL_SELECT_SYNCDLFILEVERSIONDIFF_WHERE_PKS_IN = "SELECT syncDLFileVersionDiff FROM SyncDLFileVersionDiff syncDLFileVersionDiff WHERE syncDLFileVersionDiffId IN (";
 	private static final String _SQL_SELECT_SYNCDLFILEVERSIONDIFF_WHERE = "SELECT syncDLFileVersionDiff FROM SyncDLFileVersionDiff syncDLFileVersionDiff WHERE ";

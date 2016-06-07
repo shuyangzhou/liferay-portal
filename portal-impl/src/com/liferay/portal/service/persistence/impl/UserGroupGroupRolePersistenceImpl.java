@@ -17,10 +17,6 @@ package com.liferay.portal.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -2709,6 +2705,8 @@ public class UserGroupGroupRolePersistenceImpl extends BasePersistenceImpl<UserG
 
 	public UserGroupGroupRolePersistenceImpl() {
 		setModelClass(UserGroupGroupRole.class);
+		setModelImplClass(UserGroupGroupRoleImpl.class);
+		setEntityCacheEnabled(UserGroupGroupRoleModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2749,7 +2747,7 @@ public class UserGroupGroupRolePersistenceImpl extends BasePersistenceImpl<UserG
 	 * Clears the cache for all user group group roles.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2765,7 +2763,7 @@ public class UserGroupGroupRolePersistenceImpl extends BasePersistenceImpl<UserG
 	 * Clears the cache for the user group group role.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -3092,54 +3090,6 @@ public class UserGroupGroupRolePersistenceImpl extends BasePersistenceImpl<UserG
 	/**
 	 * Returns the user group group role with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the user group group role
-	 * @return the user group group role, or <code>null</code> if a user group group role with the primary key could not be found
-	 */
-	@Override
-	public UserGroupGroupRole fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(UserGroupGroupRoleModelImpl.ENTITY_CACHE_ENABLED,
-				UserGroupGroupRoleImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		UserGroupGroupRole userGroupGroupRole = (UserGroupGroupRole)serializable;
-
-		if (userGroupGroupRole == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				userGroupGroupRole = (UserGroupGroupRole)session.get(UserGroupGroupRoleImpl.class,
-						primaryKey);
-
-				if (userGroupGroupRole != null) {
-					cacheResult(userGroupGroupRole);
-				}
-				else {
-					entityCache.putResult(UserGroupGroupRoleModelImpl.ENTITY_CACHE_ENABLED,
-						UserGroupGroupRoleImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(UserGroupGroupRoleModelImpl.ENTITY_CACHE_ENABLED,
-					UserGroupGroupRoleImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return userGroupGroupRole;
-	}
-
-	/**
-	 * Returns the user group group role with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param userGroupGroupRolePK the primary key of the user group group role
 	 * @return the user group group role, or <code>null</code> if a user group group role with the primary key could not be found
 	 */
@@ -3380,8 +3330,6 @@ public class UserGroupGroupRolePersistenceImpl extends BasePersistenceImpl<UserG
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_USERGROUPGROUPROLE = "SELECT userGroupGroupRole FROM UserGroupGroupRole userGroupGroupRole";
 	private static final String _SQL_SELECT_USERGROUPGROUPROLE_WHERE = "SELECT userGroupGroupRole FROM UserGroupGroupRole userGroupGroupRole WHERE ";
 	private static final String _SQL_COUNT_USERGROUPGROUPROLE = "SELECT COUNT(userGroupGroupRole) FROM UserGroupGroupRole userGroupGroupRole";

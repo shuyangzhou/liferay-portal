@@ -16,10 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -317,6 +313,8 @@ public class ClassNamePersistenceImpl extends BasePersistenceImpl<ClassName>
 
 	public ClassNamePersistenceImpl() {
 		setModelClass(ClassName.class);
+		setModelImplClass(ClassNameImpl.class);
+		setEntityCacheEnabled(ClassNameModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -357,7 +355,7 @@ public class ClassNamePersistenceImpl extends BasePersistenceImpl<ClassName>
 	 * Clears the cache for all class names.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -373,7 +371,7 @@ public class ClassNamePersistenceImpl extends BasePersistenceImpl<ClassName>
 	 * Clears the cache for the class name.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -637,54 +635,6 @@ public class ClassNamePersistenceImpl extends BasePersistenceImpl<ClassName>
 	public ClassName findByPrimaryKey(long classNameId)
 		throws NoSuchClassNameException {
 		return findByPrimaryKey((Serializable)classNameId);
-	}
-
-	/**
-	 * Returns the class name with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the class name
-	 * @return the class name, or <code>null</code> if a class name with the primary key could not be found
-	 */
-	@Override
-	public ClassName fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ClassNameModelImpl.ENTITY_CACHE_ENABLED,
-				ClassNameImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		ClassName className = (ClassName)serializable;
-
-		if (className == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				className = (ClassName)session.get(ClassNameImpl.class,
-						primaryKey);
-
-				if (className != null) {
-					cacheResult(className);
-				}
-				else {
-					entityCache.putResult(ClassNameModelImpl.ENTITY_CACHE_ENABLED,
-						ClassNameImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ClassNameModelImpl.ENTITY_CACHE_ENABLED,
-					ClassNameImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return className;
 	}
 
 	/**
@@ -1001,8 +951,6 @@ public class ClassNamePersistenceImpl extends BasePersistenceImpl<ClassName>
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_CLASSNAME = "SELECT className FROM ClassName className";
 	private static final String _SQL_SELECT_CLASSNAME_WHERE_PKS_IN = "SELECT className FROM ClassName className WHERE classNameId IN (";
 	private static final String _SQL_SELECT_CLASSNAME_WHERE = "SELECT className FROM ClassName className WHERE ";

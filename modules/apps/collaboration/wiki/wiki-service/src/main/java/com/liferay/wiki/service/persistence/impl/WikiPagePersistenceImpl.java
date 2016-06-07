@@ -16,8 +16,6 @@ package com.liferay.wiki.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -21889,6 +21887,8 @@ public class WikiPagePersistenceImpl extends BasePersistenceImpl<WikiPage>
 
 	public WikiPagePersistenceImpl() {
 		setModelClass(WikiPage.class);
+		setModelImplClass(WikiPageImpl.class);
+		setEntityCacheEnabled(WikiPageModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -21940,7 +21940,7 @@ public class WikiPagePersistenceImpl extends BasePersistenceImpl<WikiPage>
 	 * Clears the cache for all wiki pages.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -21956,7 +21956,7 @@ public class WikiPagePersistenceImpl extends BasePersistenceImpl<WikiPage>
 	 * Clears the cache for the wiki page.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -23020,53 +23020,6 @@ public class WikiPagePersistenceImpl extends BasePersistenceImpl<WikiPage>
 	/**
 	 * Returns the wiki page with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the wiki page
-	 * @return the wiki page, or <code>null</code> if a wiki page with the primary key could not be found
-	 */
-	@Override
-	public WikiPage fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(WikiPageModelImpl.ENTITY_CACHE_ENABLED,
-				WikiPageImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		WikiPage wikiPage = (WikiPage)serializable;
-
-		if (wikiPage == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				wikiPage = (WikiPage)session.get(WikiPageImpl.class, primaryKey);
-
-				if (wikiPage != null) {
-					cacheResult(wikiPage);
-				}
-				else {
-					entityCache.putResult(WikiPageModelImpl.ENTITY_CACHE_ENABLED,
-						WikiPageImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(WikiPageModelImpl.ENTITY_CACHE_ENABLED,
-					WikiPageImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return wikiPage;
-	}
-
-	/**
-	 * Returns the wiki page with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param pageId the primary key of the wiki page
 	 * @return the wiki page, or <code>null</code> if a wiki page with the primary key could not be found
 	 */
@@ -23384,10 +23337,6 @@ public class WikiPagePersistenceImpl extends BasePersistenceImpl<WikiPage>
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_WIKIPAGE = "SELECT wikiPage FROM WikiPage wikiPage";
 	private static final String _SQL_SELECT_WIKIPAGE_WHERE_PKS_IN = "SELECT wikiPage FROM WikiPage wikiPage WHERE pageId IN (";
 	private static final String _SQL_SELECT_WIKIPAGE_WHERE = "SELECT wikiPage FROM WikiPage wikiPage WHERE ";

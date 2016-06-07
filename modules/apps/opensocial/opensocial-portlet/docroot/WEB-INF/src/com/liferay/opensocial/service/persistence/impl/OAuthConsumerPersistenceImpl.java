@@ -23,10 +23,6 @@ import com.liferay.opensocial.model.impl.OAuthConsumerModelImpl;
 import com.liferay.opensocial.service.persistence.OAuthConsumerPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -939,6 +935,8 @@ public class OAuthConsumerPersistenceImpl extends BasePersistenceImpl<OAuthConsu
 
 	public OAuthConsumerPersistenceImpl() {
 		setModelClass(OAuthConsumer.class);
+		setModelImplClass(OAuthConsumerImpl.class);
+		setEntityCacheEnabled(OAuthConsumerModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -983,7 +981,7 @@ public class OAuthConsumerPersistenceImpl extends BasePersistenceImpl<OAuthConsu
 	 * Clears the cache for all o auth consumers.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -999,7 +997,7 @@ public class OAuthConsumerPersistenceImpl extends BasePersistenceImpl<OAuthConsu
 	 * Clears the cache for the o auth consumer.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1332,54 +1330,6 @@ public class OAuthConsumerPersistenceImpl extends BasePersistenceImpl<OAuthConsu
 	/**
 	 * Returns the o auth consumer with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the o auth consumer
-	 * @return the o auth consumer, or <code>null</code> if a o auth consumer with the primary key could not be found
-	 */
-	@Override
-	public OAuthConsumer fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(OAuthConsumerModelImpl.ENTITY_CACHE_ENABLED,
-				OAuthConsumerImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		OAuthConsumer oAuthConsumer = (OAuthConsumer)serializable;
-
-		if (oAuthConsumer == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				oAuthConsumer = (OAuthConsumer)session.get(OAuthConsumerImpl.class,
-						primaryKey);
-
-				if (oAuthConsumer != null) {
-					cacheResult(oAuthConsumer);
-				}
-				else {
-					entityCache.putResult(OAuthConsumerModelImpl.ENTITY_CACHE_ENABLED,
-						OAuthConsumerImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(OAuthConsumerModelImpl.ENTITY_CACHE_ENABLED,
-					OAuthConsumerImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return oAuthConsumer;
-	}
-
-	/**
-	 * Returns the o auth consumer with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param oAuthConsumerId the primary key of the o auth consumer
 	 * @return the o auth consumer, or <code>null</code> if a o auth consumer with the primary key could not be found
 	 */
@@ -1693,8 +1643,6 @@ public class OAuthConsumerPersistenceImpl extends BasePersistenceImpl<OAuthConsu
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_OAUTHCONSUMER = "SELECT oAuthConsumer FROM OAuthConsumer oAuthConsumer";
 	private static final String _SQL_SELECT_OAUTHCONSUMER_WHERE_PKS_IN = "SELECT oAuthConsumer FROM OAuthConsumer oAuthConsumer WHERE oAuthConsumerId IN (";
 	private static final String _SQL_SELECT_OAUTHCONSUMER_WHERE = "SELECT oAuthConsumer FROM OAuthConsumer oAuthConsumer WHERE ";

@@ -16,8 +16,6 @@ package com.liferay.sync.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -1799,6 +1797,8 @@ public class SyncDevicePersistenceImpl extends BasePersistenceImpl<SyncDevice>
 
 	public SyncDevicePersistenceImpl() {
 		setModelClass(SyncDevice.class);
+		setModelImplClass(SyncDeviceImpl.class);
+		setEntityCacheEnabled(SyncDeviceModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1837,7 +1837,7 @@ public class SyncDevicePersistenceImpl extends BasePersistenceImpl<SyncDevice>
 	 * Clears the cache for all sync devices.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1853,7 +1853,7 @@ public class SyncDevicePersistenceImpl extends BasePersistenceImpl<SyncDevice>
 	 * Clears the cache for the sync device.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2153,54 +2153,6 @@ public class SyncDevicePersistenceImpl extends BasePersistenceImpl<SyncDevice>
 	public SyncDevice findByPrimaryKey(long syncDeviceId)
 		throws NoSuchDeviceException {
 		return findByPrimaryKey((Serializable)syncDeviceId);
-	}
-
-	/**
-	 * Returns the sync device with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the sync device
-	 * @return the sync device, or <code>null</code> if a sync device with the primary key could not be found
-	 */
-	@Override
-	public SyncDevice fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(SyncDeviceModelImpl.ENTITY_CACHE_ENABLED,
-				SyncDeviceImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		SyncDevice syncDevice = (SyncDevice)serializable;
-
-		if (syncDevice == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				syncDevice = (SyncDevice)session.get(SyncDeviceImpl.class,
-						primaryKey);
-
-				if (syncDevice != null) {
-					cacheResult(syncDevice);
-				}
-				else {
-					entityCache.putResult(SyncDeviceModelImpl.ENTITY_CACHE_ENABLED,
-						SyncDeviceImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(SyncDeviceModelImpl.ENTITY_CACHE_ENABLED,
-					SyncDeviceImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return syncDevice;
 	}
 
 	/**
@@ -2524,10 +2476,6 @@ public class SyncDevicePersistenceImpl extends BasePersistenceImpl<SyncDevice>
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_SYNCDEVICE = "SELECT syncDevice FROM SyncDevice syncDevice";
 	private static final String _SQL_SELECT_SYNCDEVICE_WHERE_PKS_IN = "SELECT syncDevice FROM SyncDevice syncDevice WHERE syncDeviceId IN (";
 	private static final String _SQL_SELECT_SYNCDEVICE_WHERE = "SELECT syncDevice FROM SyncDevice syncDevice WHERE ";

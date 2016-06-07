@@ -22,8 +22,6 @@ import com.liferay.marketplace.model.impl.ModuleImpl;
 import com.liferay.marketplace.model.impl.ModuleModelImpl;
 import com.liferay.marketplace.service.persistence.ModulePersistence;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -39,7 +37,6 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
-import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
@@ -2824,6 +2821,8 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 
 	public ModulePersistenceImpl() {
 		setModelClass(Module.class);
+		setModelImplClass(ModuleImpl.class);
+		setEntityCacheEnabled(ModuleModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2870,7 +2869,7 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 	 * Clears the cache for all modules.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2886,7 +2885,7 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 	 * Clears the cache for the module.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -3288,53 +3287,6 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 	/**
 	 * Returns the module with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the module
-	 * @return the module, or <code>null</code> if a module with the primary key could not be found
-	 */
-	@Override
-	public Module fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ModuleModelImpl.ENTITY_CACHE_ENABLED,
-				ModuleImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Module module = (Module)serializable;
-
-		if (module == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				module = (Module)session.get(ModuleImpl.class, primaryKey);
-
-				if (module != null) {
-					cacheResult(module);
-				}
-				else {
-					entityCache.putResult(ModuleModelImpl.ENTITY_CACHE_ENABLED,
-						ModuleImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ModuleModelImpl.ENTITY_CACHE_ENABLED,
-					ModuleImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return module;
-	}
-
-	/**
-	 * Returns the module with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param moduleId the primary key of the module
 	 * @return the module, or <code>null</code> if a module with the primary key could not be found
 	 */
@@ -3650,10 +3602,6 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_MODULE = "SELECT module FROM Module module";
 	private static final String _SQL_SELECT_MODULE_WHERE_PKS_IN = "SELECT module FROM Module module WHERE moduleId IN (";
 	private static final String _SQL_SELECT_MODULE_WHERE = "SELECT module FROM Module module WHERE ";

@@ -16,8 +16,6 @@ package com.liferay.portal.workflow.kaleo.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -2129,6 +2127,8 @@ public class KaleoTransitionPersistenceImpl extends BasePersistenceImpl<KaleoTra
 
 	public KaleoTransitionPersistenceImpl() {
 		setModelClass(KaleoTransition.class);
+		setModelImplClass(KaleoTransitionImpl.class);
+		setEntityCacheEnabled(KaleoTransitionModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2180,7 +2180,7 @@ public class KaleoTransitionPersistenceImpl extends BasePersistenceImpl<KaleoTra
 	 * Clears the cache for all kaleo transitions.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2196,7 +2196,7 @@ public class KaleoTransitionPersistenceImpl extends BasePersistenceImpl<KaleoTra
 	 * Clears the cache for the kaleo transition.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2616,54 +2616,6 @@ public class KaleoTransitionPersistenceImpl extends BasePersistenceImpl<KaleoTra
 	/**
 	 * Returns the kaleo transition with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the kaleo transition
-	 * @return the kaleo transition, or <code>null</code> if a kaleo transition with the primary key could not be found
-	 */
-	@Override
-	public KaleoTransition fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(KaleoTransitionModelImpl.ENTITY_CACHE_ENABLED,
-				KaleoTransitionImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		KaleoTransition kaleoTransition = (KaleoTransition)serializable;
-
-		if (kaleoTransition == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				kaleoTransition = (KaleoTransition)session.get(KaleoTransitionImpl.class,
-						primaryKey);
-
-				if (kaleoTransition != null) {
-					cacheResult(kaleoTransition);
-				}
-				else {
-					entityCache.putResult(KaleoTransitionModelImpl.ENTITY_CACHE_ENABLED,
-						KaleoTransitionImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(KaleoTransitionModelImpl.ENTITY_CACHE_ENABLED,
-					KaleoTransitionImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return kaleoTransition;
-	}
-
-	/**
-	 * Returns the kaleo transition with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param kaleoTransitionId the primary key of the kaleo transition
 	 * @return the kaleo transition, or <code>null</code> if a kaleo transition with the primary key could not be found
 	 */
@@ -2977,10 +2929,6 @@ public class KaleoTransitionPersistenceImpl extends BasePersistenceImpl<KaleoTra
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_KALEOTRANSITION = "SELECT kaleoTransition FROM KaleoTransition kaleoTransition";
 	private static final String _SQL_SELECT_KALEOTRANSITION_WHERE_PKS_IN = "SELECT kaleoTransition FROM KaleoTransition kaleoTransition WHERE kaleoTransitionId IN (";
 	private static final String _SQL_SELECT_KALEOTRANSITION_WHERE = "SELECT kaleoTransition FROM KaleoTransition kaleoTransition WHERE ";

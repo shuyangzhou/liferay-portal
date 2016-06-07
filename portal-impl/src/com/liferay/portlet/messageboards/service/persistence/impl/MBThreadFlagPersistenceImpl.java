@@ -21,10 +21,6 @@ import com.liferay.message.boards.kernel.model.MBThreadFlag;
 import com.liferay.message.boards.kernel.service.persistence.MBThreadFlagPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -2707,6 +2703,8 @@ public class MBThreadFlagPersistenceImpl extends BasePersistenceImpl<MBThreadFla
 
 	public MBThreadFlagPersistenceImpl() {
 		setModelClass(MBThreadFlag.class);
+		setModelImplClass(MBThreadFlagImpl.class);
+		setEntityCacheEnabled(MBThreadFlagModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2753,7 +2751,7 @@ public class MBThreadFlagPersistenceImpl extends BasePersistenceImpl<MBThreadFla
 	 * Clears the cache for all message boards thread flags.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2769,7 +2767,7 @@ public class MBThreadFlagPersistenceImpl extends BasePersistenceImpl<MBThreadFla
 	 * Clears the cache for the message boards thread flag.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -3209,54 +3207,6 @@ public class MBThreadFlagPersistenceImpl extends BasePersistenceImpl<MBThreadFla
 	/**
 	 * Returns the message boards thread flag with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the message boards thread flag
-	 * @return the message boards thread flag, or <code>null</code> if a message boards thread flag with the primary key could not be found
-	 */
-	@Override
-	public MBThreadFlag fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(MBThreadFlagModelImpl.ENTITY_CACHE_ENABLED,
-				MBThreadFlagImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		MBThreadFlag mbThreadFlag = (MBThreadFlag)serializable;
-
-		if (mbThreadFlag == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				mbThreadFlag = (MBThreadFlag)session.get(MBThreadFlagImpl.class,
-						primaryKey);
-
-				if (mbThreadFlag != null) {
-					cacheResult(mbThreadFlag);
-				}
-				else {
-					entityCache.putResult(MBThreadFlagModelImpl.ENTITY_CACHE_ENABLED,
-						MBThreadFlagImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(MBThreadFlagModelImpl.ENTITY_CACHE_ENABLED,
-					MBThreadFlagImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return mbThreadFlag;
-	}
-
-	/**
-	 * Returns the message boards thread flag with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param threadFlagId the primary key of the message boards thread flag
 	 * @return the message boards thread flag, or <code>null</code> if a message boards thread flag with the primary key could not be found
 	 */
@@ -3575,8 +3525,6 @@ public class MBThreadFlagPersistenceImpl extends BasePersistenceImpl<MBThreadFla
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_MBTHREADFLAG = "SELECT mbThreadFlag FROM MBThreadFlag mbThreadFlag";
 	private static final String _SQL_SELECT_MBTHREADFLAG_WHERE_PKS_IN = "SELECT mbThreadFlag FROM MBThreadFlag mbThreadFlag WHERE threadFlagId IN (";
 	private static final String _SQL_SELECT_MBTHREADFLAG_WHERE = "SELECT mbThreadFlag FROM MBThreadFlag mbThreadFlag WHERE ";

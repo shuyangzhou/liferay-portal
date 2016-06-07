@@ -22,10 +22,6 @@ import com.liferay.document.library.kernel.service.persistence.DLFileEntryTypePe
 import com.liferay.document.library.kernel.service.persistence.DLFolderPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -3083,6 +3079,8 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 
 	public DLFileEntryTypePersistenceImpl() {
 		setModelClass(DLFileEntryType.class);
+		setModelImplClass(DLFileEntryTypeImpl.class);
+		setEntityCacheEnabled(DLFileEntryTypeModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -3133,7 +3131,7 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	 * Clears the cache for all document library file entry types.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -3149,7 +3147,7 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	 * Clears the cache for the document library file entry type.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -3572,54 +3570,6 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	public DLFileEntryType findByPrimaryKey(long fileEntryTypeId)
 		throws NoSuchFileEntryTypeException {
 		return findByPrimaryKey((Serializable)fileEntryTypeId);
-	}
-
-	/**
-	 * Returns the document library file entry type with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the document library file entry type
-	 * @return the document library file entry type, or <code>null</code> if a document library file entry type with the primary key could not be found
-	 */
-	@Override
-	public DLFileEntryType fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DLFileEntryTypeModelImpl.ENTITY_CACHE_ENABLED,
-				DLFileEntryTypeImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		DLFileEntryType dlFileEntryType = (DLFileEntryType)serializable;
-
-		if (dlFileEntryType == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				dlFileEntryType = (DLFileEntryType)session.get(DLFileEntryTypeImpl.class,
-						primaryKey);
-
-				if (dlFileEntryType != null) {
-					cacheResult(dlFileEntryType);
-				}
-				else {
-					entityCache.putResult(DLFileEntryTypeModelImpl.ENTITY_CACHE_ENABLED,
-						DLFileEntryTypeImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(DLFileEntryTypeModelImpl.ENTITY_CACHE_ENABLED,
-					DLFileEntryTypeImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return dlFileEntryType;
 	}
 
 	/**
@@ -4252,8 +4202,6 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	@BeanReference(type = DLFolderPersistence.class)
 	protected DLFolderPersistence dlFolderPersistence;
 	protected TableMapper<DLFileEntryType, com.liferay.document.library.kernel.model.DLFolder> dlFileEntryTypeToDLFolderTableMapper;

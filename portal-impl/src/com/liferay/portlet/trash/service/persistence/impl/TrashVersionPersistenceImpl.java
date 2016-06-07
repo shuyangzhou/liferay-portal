@@ -17,10 +17,6 @@ package com.liferay.portlet.trash.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -1355,6 +1351,8 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 
 	public TrashVersionPersistenceImpl() {
 		setModelClass(TrashVersion.class);
+		setModelImplClass(TrashVersionImpl.class);
+		setEntityCacheEnabled(TrashVersionModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1398,7 +1396,7 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 	 * Clears the cache for all trash versions.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1414,7 +1412,7 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 	 * Clears the cache for the trash version.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1742,54 +1740,6 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 	/**
 	 * Returns the trash version with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the trash version
-	 * @return the trash version, or <code>null</code> if a trash version with the primary key could not be found
-	 */
-	@Override
-	public TrashVersion fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(TrashVersionModelImpl.ENTITY_CACHE_ENABLED,
-				TrashVersionImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		TrashVersion trashVersion = (TrashVersion)serializable;
-
-		if (trashVersion == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				trashVersion = (TrashVersion)session.get(TrashVersionImpl.class,
-						primaryKey);
-
-				if (trashVersion != null) {
-					cacheResult(trashVersion);
-				}
-				else {
-					entityCache.putResult(TrashVersionModelImpl.ENTITY_CACHE_ENABLED,
-						TrashVersionImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(TrashVersionModelImpl.ENTITY_CACHE_ENABLED,
-					TrashVersionImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return trashVersion;
-	}
-
-	/**
-	 * Returns the trash version with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param versionId the primary key of the trash version
 	 * @return the trash version, or <code>null</code> if a trash version with the primary key could not be found
 	 */
@@ -2103,8 +2053,6 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_TRASHVERSION = "SELECT trashVersion FROM TrashVersion trashVersion";
 	private static final String _SQL_SELECT_TRASHVERSION_WHERE_PKS_IN = "SELECT trashVersion FROM TrashVersion trashVersion WHERE versionId IN (";
 	private static final String _SQL_SELECT_TRASHVERSION_WHERE = "SELECT trashVersion FROM TrashVersion trashVersion WHERE ";

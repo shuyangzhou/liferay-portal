@@ -22,8 +22,6 @@ import com.liferay.dynamic.data.lists.model.impl.DDLRecordSetImpl;
 import com.liferay.dynamic.data.lists.model.impl.DDLRecordSetModelImpl;
 import com.liferay.dynamic.data.lists.service.persistence.DDLRecordSetPersistence;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -3058,6 +3056,8 @@ public class DDLRecordSetPersistenceImpl extends BasePersistenceImpl<DDLRecordSe
 
 	public DDLRecordSetPersistenceImpl() {
 		setModelClass(DDLRecordSet.class);
+		setModelImplClass(DDLRecordSetImpl.class);
+		setEntityCacheEnabled(DDLRecordSetModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -3105,7 +3105,7 @@ public class DDLRecordSetPersistenceImpl extends BasePersistenceImpl<DDLRecordSe
 	 * Clears the cache for all d d l record sets.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -3121,7 +3121,7 @@ public class DDLRecordSetPersistenceImpl extends BasePersistenceImpl<DDLRecordSe
 	 * Clears the cache for the d d l record set.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -3550,54 +3550,6 @@ public class DDLRecordSetPersistenceImpl extends BasePersistenceImpl<DDLRecordSe
 	/**
 	 * Returns the d d l record set with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the d d l record set
-	 * @return the d d l record set, or <code>null</code> if a d d l record set with the primary key could not be found
-	 */
-	@Override
-	public DDLRecordSet fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DDLRecordSetModelImpl.ENTITY_CACHE_ENABLED,
-				DDLRecordSetImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		DDLRecordSet ddlRecordSet = (DDLRecordSet)serializable;
-
-		if (ddlRecordSet == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				ddlRecordSet = (DDLRecordSet)session.get(DDLRecordSetImpl.class,
-						primaryKey);
-
-				if (ddlRecordSet != null) {
-					cacheResult(ddlRecordSet);
-				}
-				else {
-					entityCache.putResult(DDLRecordSetModelImpl.ENTITY_CACHE_ENABLED,
-						DDLRecordSetImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(DDLRecordSetModelImpl.ENTITY_CACHE_ENABLED,
-					DDLRecordSetImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return ddlRecordSet;
-	}
-
-	/**
-	 * Returns the d d l record set with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param recordSetId the primary key of the d d l record set
 	 * @return the d d l record set, or <code>null</code> if a d d l record set with the primary key could not be found
 	 */
@@ -3916,10 +3868,6 @@ public class DDLRecordSetPersistenceImpl extends BasePersistenceImpl<DDLRecordSe
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_DDLRECORDSET = "SELECT ddlRecordSet FROM DDLRecordSet ddlRecordSet";
 	private static final String _SQL_SELECT_DDLRECORDSET_WHERE_PKS_IN = "SELECT ddlRecordSet FROM DDLRecordSet ddlRecordSet WHERE recordSetId IN (";
 	private static final String _SQL_SELECT_DDLRECORDSET_WHERE = "SELECT ddlRecordSet FROM DDLRecordSet ddlRecordSet WHERE ";

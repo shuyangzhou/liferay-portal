@@ -17,10 +17,6 @@ package com.liferay.portlet.social.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -3185,6 +3181,8 @@ public class SocialActivityAchievementPersistenceImpl
 
 	public SocialActivityAchievementPersistenceImpl() {
 		setModelClass(SocialActivityAchievement.class);
+		setModelImplClass(SocialActivityAchievementImpl.class);
+		setEntityCacheEnabled(SocialActivityAchievementModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -3233,7 +3231,7 @@ public class SocialActivityAchievementPersistenceImpl
 	 * Clears the cache for all social activity achievements.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -3249,7 +3247,7 @@ public class SocialActivityAchievementPersistenceImpl
 	 * Clears the cache for the social activity achievement.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -3658,55 +3656,6 @@ public class SocialActivityAchievementPersistenceImpl
 	/**
 	 * Returns the social activity achievement with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the social activity achievement
-	 * @return the social activity achievement, or <code>null</code> if a social activity achievement with the primary key could not be found
-	 */
-	@Override
-	public SocialActivityAchievement fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(SocialActivityAchievementModelImpl.ENTITY_CACHE_ENABLED,
-				SocialActivityAchievementImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		SocialActivityAchievement socialActivityAchievement = (SocialActivityAchievement)serializable;
-
-		if (socialActivityAchievement == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				socialActivityAchievement = (SocialActivityAchievement)session.get(SocialActivityAchievementImpl.class,
-						primaryKey);
-
-				if (socialActivityAchievement != null) {
-					cacheResult(socialActivityAchievement);
-				}
-				else {
-					entityCache.putResult(SocialActivityAchievementModelImpl.ENTITY_CACHE_ENABLED,
-						SocialActivityAchievementImpl.class, primaryKey,
-						nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(SocialActivityAchievementModelImpl.ENTITY_CACHE_ENABLED,
-					SocialActivityAchievementImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return socialActivityAchievement;
-	}
-
-	/**
-	 * Returns the social activity achievement with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param activityAchievementId the primary key of the social activity achievement
 	 * @return the social activity achievement, or <code>null</code> if a social activity achievement with the primary key could not be found
 	 */
@@ -4022,8 +3971,6 @@ public class SocialActivityAchievementPersistenceImpl
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_SOCIALACTIVITYACHIEVEMENT = "SELECT socialActivityAchievement FROM SocialActivityAchievement socialActivityAchievement";
 	private static final String _SQL_SELECT_SOCIALACTIVITYACHIEVEMENT_WHERE_PKS_IN =
 		"SELECT socialActivityAchievement FROM SocialActivityAchievement socialActivityAchievement WHERE activityAchievementId IN (";

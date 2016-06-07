@@ -21,10 +21,6 @@ import com.liferay.announcements.kernel.model.AnnouncementsDelivery;
 import com.liferay.announcements.kernel.service.persistence.AnnouncementsDeliveryPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -855,6 +851,8 @@ public class AnnouncementsDeliveryPersistenceImpl extends BasePersistenceImpl<An
 
 	public AnnouncementsDeliveryPersistenceImpl() {
 		setModelClass(AnnouncementsDelivery.class);
+		setModelImplClass(AnnouncementsDeliveryImpl.class);
+		setEntityCacheEnabled(AnnouncementsDeliveryModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -901,7 +899,7 @@ public class AnnouncementsDeliveryPersistenceImpl extends BasePersistenceImpl<An
 	 * Clears the cache for all announcements deliveries.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -917,7 +915,7 @@ public class AnnouncementsDeliveryPersistenceImpl extends BasePersistenceImpl<An
 	 * Clears the cache for the announcements delivery.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1226,54 +1224,6 @@ public class AnnouncementsDeliveryPersistenceImpl extends BasePersistenceImpl<An
 	public AnnouncementsDelivery findByPrimaryKey(long deliveryId)
 		throws NoSuchDeliveryException {
 		return findByPrimaryKey((Serializable)deliveryId);
-	}
-
-	/**
-	 * Returns the announcements delivery with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the announcements delivery
-	 * @return the announcements delivery, or <code>null</code> if a announcements delivery with the primary key could not be found
-	 */
-	@Override
-	public AnnouncementsDelivery fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(AnnouncementsDeliveryModelImpl.ENTITY_CACHE_ENABLED,
-				AnnouncementsDeliveryImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		AnnouncementsDelivery announcementsDelivery = (AnnouncementsDelivery)serializable;
-
-		if (announcementsDelivery == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				announcementsDelivery = (AnnouncementsDelivery)session.get(AnnouncementsDeliveryImpl.class,
-						primaryKey);
-
-				if (announcementsDelivery != null) {
-					cacheResult(announcementsDelivery);
-				}
-				else {
-					entityCache.putResult(AnnouncementsDeliveryModelImpl.ENTITY_CACHE_ENABLED,
-						AnnouncementsDeliveryImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(AnnouncementsDeliveryModelImpl.ENTITY_CACHE_ENABLED,
-					AnnouncementsDeliveryImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return announcementsDelivery;
 	}
 
 	/**
@@ -1598,8 +1548,6 @@ public class AnnouncementsDeliveryPersistenceImpl extends BasePersistenceImpl<An
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_ANNOUNCEMENTSDELIVERY = "SELECT announcementsDelivery FROM AnnouncementsDelivery announcementsDelivery";
 	private static final String _SQL_SELECT_ANNOUNCEMENTSDELIVERY_WHERE_PKS_IN = "SELECT announcementsDelivery FROM AnnouncementsDelivery announcementsDelivery WHERE deliveryId IN (";
 	private static final String _SQL_SELECT_ANNOUNCEMENTSDELIVERY_WHERE = "SELECT announcementsDelivery FROM AnnouncementsDelivery announcementsDelivery WHERE ";

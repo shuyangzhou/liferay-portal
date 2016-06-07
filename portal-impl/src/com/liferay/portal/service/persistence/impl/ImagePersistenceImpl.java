@@ -17,10 +17,6 @@ package com.liferay.portal.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -569,6 +565,8 @@ public class ImagePersistenceImpl extends BasePersistenceImpl<Image>
 
 	public ImagePersistenceImpl() {
 		setModelClass(Image.class);
+		setModelImplClass(ImageImpl.class);
+		setEntityCacheEnabled(ImageModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -606,7 +604,7 @@ public class ImagePersistenceImpl extends BasePersistenceImpl<Image>
 	 * Clears the cache for all images.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -622,7 +620,7 @@ public class ImagePersistenceImpl extends BasePersistenceImpl<Image>
 	 * Clears the cache for the image.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -842,53 +840,6 @@ public class ImagePersistenceImpl extends BasePersistenceImpl<Image>
 	@Override
 	public Image findByPrimaryKey(long imageId) throws NoSuchImageException {
 		return findByPrimaryKey((Serializable)imageId);
-	}
-
-	/**
-	 * Returns the image with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the image
-	 * @return the image, or <code>null</code> if a image with the primary key could not be found
-	 */
-	@Override
-	public Image fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ImageModelImpl.ENTITY_CACHE_ENABLED,
-				ImageImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Image image = (Image)serializable;
-
-		if (image == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				image = (Image)session.get(ImageImpl.class, primaryKey);
-
-				if (image != null) {
-					cacheResult(image);
-				}
-				else {
-					entityCache.putResult(ImageModelImpl.ENTITY_CACHE_ENABLED,
-						ImageImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ImageModelImpl.ENTITY_CACHE_ENABLED,
-					ImageImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return image;
 	}
 
 	/**
@@ -1211,8 +1162,6 @@ public class ImagePersistenceImpl extends BasePersistenceImpl<Image>
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_IMAGE = "SELECT image FROM Image image";
 	private static final String _SQL_SELECT_IMAGE_WHERE_PKS_IN = "SELECT image FROM Image image WHERE imageId IN (";
 	private static final String _SQL_SELECT_IMAGE_WHERE = "SELECT image FROM Image image WHERE ";

@@ -17,10 +17,6 @@ package com.liferay.portlet.social.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -3539,6 +3535,8 @@ public class SocialActivitySetPersistenceImpl extends BasePersistenceImpl<Social
 
 	public SocialActivitySetPersistenceImpl() {
 		setModelClass(SocialActivitySet.class);
+		setModelImplClass(SocialActivitySetImpl.class);
+		setEntityCacheEnabled(SocialActivitySetModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -3579,7 +3577,7 @@ public class SocialActivitySetPersistenceImpl extends BasePersistenceImpl<Social
 	 * Clears the cache for all social activity sets.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -3595,7 +3593,7 @@ public class SocialActivitySetPersistenceImpl extends BasePersistenceImpl<Social
 	 * Clears the cache for the social activity set.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -3963,54 +3961,6 @@ public class SocialActivitySetPersistenceImpl extends BasePersistenceImpl<Social
 	/**
 	 * Returns the social activity set with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the social activity set
-	 * @return the social activity set, or <code>null</code> if a social activity set with the primary key could not be found
-	 */
-	@Override
-	public SocialActivitySet fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(SocialActivitySetModelImpl.ENTITY_CACHE_ENABLED,
-				SocialActivitySetImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		SocialActivitySet socialActivitySet = (SocialActivitySet)serializable;
-
-		if (socialActivitySet == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				socialActivitySet = (SocialActivitySet)session.get(SocialActivitySetImpl.class,
-						primaryKey);
-
-				if (socialActivitySet != null) {
-					cacheResult(socialActivitySet);
-				}
-				else {
-					entityCache.putResult(SocialActivitySetModelImpl.ENTITY_CACHE_ENABLED,
-						SocialActivitySetImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(SocialActivitySetModelImpl.ENTITY_CACHE_ENABLED,
-					SocialActivitySetImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return socialActivitySet;
-	}
-
-	/**
-	 * Returns the social activity set with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param activitySetId the primary key of the social activity set
 	 * @return the social activity set, or <code>null</code> if a social activity set with the primary key could not be found
 	 */
@@ -4329,8 +4279,6 @@ public class SocialActivitySetPersistenceImpl extends BasePersistenceImpl<Social
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_SOCIALACTIVITYSET = "SELECT socialActivitySet FROM SocialActivitySet socialActivitySet";
 	private static final String _SQL_SELECT_SOCIALACTIVITYSET_WHERE_PKS_IN = "SELECT socialActivitySet FROM SocialActivitySet socialActivitySet WHERE activitySetId IN (";
 	private static final String _SQL_SELECT_SOCIALACTIVITYSET_WHERE = "SELECT socialActivitySet FROM SocialActivitySet socialActivitySet WHERE ";

@@ -22,8 +22,6 @@ import com.liferay.dynamic.data.mapping.model.impl.DDMDataProviderInstanceLinkIm
 import com.liferay.dynamic.data.mapping.model.impl.DDMDataProviderInstanceLinkModelImpl;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMDataProviderInstanceLinkPersistence;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -1372,6 +1370,8 @@ public class DDMDataProviderInstanceLinkPersistenceImpl
 
 	public DDMDataProviderInstanceLinkPersistenceImpl() {
 		setModelClass(DDMDataProviderInstanceLink.class);
+		setModelImplClass(DDMDataProviderInstanceLinkImpl.class);
+		setEntityCacheEnabled(DDMDataProviderInstanceLinkModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1421,7 +1421,7 @@ public class DDMDataProviderInstanceLinkPersistenceImpl
 	 * Clears the cache for all d d m data provider instance links.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1437,7 +1437,7 @@ public class DDMDataProviderInstanceLinkPersistenceImpl
 	 * Clears the cache for the d d m data provider instance link.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1777,56 +1777,6 @@ public class DDMDataProviderInstanceLinkPersistenceImpl
 	/**
 	 * Returns the d d m data provider instance link with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the d d m data provider instance link
-	 * @return the d d m data provider instance link, or <code>null</code> if a d d m data provider instance link with the primary key could not be found
-	 */
-	@Override
-	public DDMDataProviderInstanceLink fetchByPrimaryKey(
-		Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DDMDataProviderInstanceLinkModelImpl.ENTITY_CACHE_ENABLED,
-				DDMDataProviderInstanceLinkImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		DDMDataProviderInstanceLink ddmDataProviderInstanceLink = (DDMDataProviderInstanceLink)serializable;
-
-		if (ddmDataProviderInstanceLink == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				ddmDataProviderInstanceLink = (DDMDataProviderInstanceLink)session.get(DDMDataProviderInstanceLinkImpl.class,
-						primaryKey);
-
-				if (ddmDataProviderInstanceLink != null) {
-					cacheResult(ddmDataProviderInstanceLink);
-				}
-				else {
-					entityCache.putResult(DDMDataProviderInstanceLinkModelImpl.ENTITY_CACHE_ENABLED,
-						DDMDataProviderInstanceLinkImpl.class, primaryKey,
-						nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(DDMDataProviderInstanceLinkModelImpl.ENTITY_CACHE_ENABLED,
-					DDMDataProviderInstanceLinkImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return ddmDataProviderInstanceLink;
-	}
-
-	/**
-	 * Returns the d d m data provider instance link with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param dataProviderInstanceLinkId the primary key of the d d m data provider instance link
 	 * @return the d d m data provider instance link, or <code>null</code> if a d d m data provider instance link with the primary key could not be found
 	 */
@@ -2143,10 +2093,6 @@ public class DDMDataProviderInstanceLinkPersistenceImpl
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_DDMDATAPROVIDERINSTANCELINK = "SELECT ddmDataProviderInstanceLink FROM DDMDataProviderInstanceLink ddmDataProviderInstanceLink";
 	private static final String _SQL_SELECT_DDMDATAPROVIDERINSTANCELINK_WHERE_PKS_IN =
 		"SELECT ddmDataProviderInstanceLink FROM DDMDataProviderInstanceLink ddmDataProviderInstanceLink WHERE dataProviderInstanceLinkId IN (";

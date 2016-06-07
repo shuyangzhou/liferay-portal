@@ -21,10 +21,6 @@ import com.liferay.expando.kernel.model.ExpandoValue;
 import com.liferay.expando.kernel.service.persistence.ExpandoValuePersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -4869,6 +4865,8 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 
 	public ExpandoValuePersistenceImpl() {
 		setModelClass(ExpandoValue.class);
+		setModelImplClass(ExpandoValueImpl.class);
+		setEntityCacheEnabled(ExpandoValueModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -4917,7 +4915,7 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	 * Clears the cache for all expando values.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -4933,7 +4931,7 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	 * Clears the cache for the expando value.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -5428,54 +5426,6 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	/**
 	 * Returns the expando value with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the expando value
-	 * @return the expando value, or <code>null</code> if a expando value with the primary key could not be found
-	 */
-	@Override
-	public ExpandoValue fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ExpandoValueModelImpl.ENTITY_CACHE_ENABLED,
-				ExpandoValueImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		ExpandoValue expandoValue = (ExpandoValue)serializable;
-
-		if (expandoValue == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				expandoValue = (ExpandoValue)session.get(ExpandoValueImpl.class,
-						primaryKey);
-
-				if (expandoValue != null) {
-					cacheResult(expandoValue);
-				}
-				else {
-					entityCache.putResult(ExpandoValueModelImpl.ENTITY_CACHE_ENABLED,
-						ExpandoValueImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ExpandoValueModelImpl.ENTITY_CACHE_ENABLED,
-					ExpandoValueImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return expandoValue;
-	}
-
-	/**
-	 * Returns the expando value with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param valueId the primary key of the expando value
 	 * @return the expando value, or <code>null</code> if a expando value with the primary key could not be found
 	 */
@@ -5794,8 +5744,6 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_EXPANDOVALUE = "SELECT expandoValue FROM ExpandoValue expandoValue";
 	private static final String _SQL_SELECT_EXPANDOVALUE_WHERE_PKS_IN = "SELECT expandoValue FROM ExpandoValue expandoValue WHERE valueId IN (";
 	private static final String _SQL_SELECT_EXPANDOVALUE_WHERE = "SELECT expandoValue FROM ExpandoValue expandoValue WHERE ";

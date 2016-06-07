@@ -16,8 +16,6 @@ package com.liferay.portal.workflow.kaleo.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -3456,6 +3454,8 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 
 	public KaleoLogPersistenceImpl() {
 		setModelClass(KaleoLog.class);
+		setModelImplClass(KaleoLogImpl.class);
+		setEntityCacheEnabled(KaleoLogModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -3493,7 +3493,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 * Clears the cache for all kaleo logs.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -3509,7 +3509,7 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	 * Clears the cache for the kaleo log.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -3907,53 +3907,6 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	/**
 	 * Returns the kaleo log with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the kaleo log
-	 * @return the kaleo log, or <code>null</code> if a kaleo log with the primary key could not be found
-	 */
-	@Override
-	public KaleoLog fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(KaleoLogModelImpl.ENTITY_CACHE_ENABLED,
-				KaleoLogImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		KaleoLog kaleoLog = (KaleoLog)serializable;
-
-		if (kaleoLog == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				kaleoLog = (KaleoLog)session.get(KaleoLogImpl.class, primaryKey);
-
-				if (kaleoLog != null) {
-					cacheResult(kaleoLog);
-				}
-				else {
-					entityCache.putResult(KaleoLogModelImpl.ENTITY_CACHE_ENABLED,
-						KaleoLogImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(KaleoLogModelImpl.ENTITY_CACHE_ENABLED,
-					KaleoLogImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return kaleoLog;
-	}
-
-	/**
-	 * Returns the kaleo log with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param kaleoLogId the primary key of the kaleo log
 	 * @return the kaleo log, or <code>null</code> if a kaleo log with the primary key could not be found
 	 */
@@ -4271,10 +4224,6 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_KALEOLOG = "SELECT kaleoLog FROM KaleoLog kaleoLog";
 	private static final String _SQL_SELECT_KALEOLOG_WHERE_PKS_IN = "SELECT kaleoLog FROM KaleoLog kaleoLog WHERE kaleoLogId IN (";
 	private static final String _SQL_SELECT_KALEOLOG_WHERE = "SELECT kaleoLog FROM KaleoLog kaleoLog WHERE ";

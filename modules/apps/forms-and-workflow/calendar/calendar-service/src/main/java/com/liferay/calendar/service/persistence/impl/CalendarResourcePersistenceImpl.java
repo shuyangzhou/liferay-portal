@@ -22,8 +22,6 @@ import com.liferay.calendar.model.impl.CalendarResourceImpl;
 import com.liferay.calendar.model.impl.CalendarResourceModelImpl;
 import com.liferay.calendar.service.persistence.CalendarResourcePersistence;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -6516,6 +6514,8 @@ public class CalendarResourcePersistenceImpl extends BasePersistenceImpl<Calenda
 
 	public CalendarResourcePersistenceImpl() {
 		setModelClass(CalendarResource.class);
+		setModelImplClass(CalendarResourceImpl.class);
+		setEntityCacheEnabled(CalendarResourceModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -6566,7 +6566,7 @@ public class CalendarResourcePersistenceImpl extends BasePersistenceImpl<Calenda
 	 * Clears the cache for all calendar resources.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -6582,7 +6582,7 @@ public class CalendarResourcePersistenceImpl extends BasePersistenceImpl<Calenda
 	 * Clears the cache for the calendar resource.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -7094,54 +7094,6 @@ public class CalendarResourcePersistenceImpl extends BasePersistenceImpl<Calenda
 	/**
 	 * Returns the calendar resource with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the calendar resource
-	 * @return the calendar resource, or <code>null</code> if a calendar resource with the primary key could not be found
-	 */
-	@Override
-	public CalendarResource fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(CalendarResourceModelImpl.ENTITY_CACHE_ENABLED,
-				CalendarResourceImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		CalendarResource calendarResource = (CalendarResource)serializable;
-
-		if (calendarResource == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				calendarResource = (CalendarResource)session.get(CalendarResourceImpl.class,
-						primaryKey);
-
-				if (calendarResource != null) {
-					cacheResult(calendarResource);
-				}
-				else {
-					entityCache.putResult(CalendarResourceModelImpl.ENTITY_CACHE_ENABLED,
-						CalendarResourceImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(CalendarResourceModelImpl.ENTITY_CACHE_ENABLED,
-					CalendarResourceImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return calendarResource;
-	}
-
-	/**
-	 * Returns the calendar resource with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param calendarResourceId the primary key of the calendar resource
 	 * @return the calendar resource, or <code>null</code> if a calendar resource with the primary key could not be found
 	 */
@@ -7460,10 +7412,6 @@ public class CalendarResourcePersistenceImpl extends BasePersistenceImpl<Calenda
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_CALENDARRESOURCE = "SELECT calendarResource FROM CalendarResource calendarResource";
 	private static final String _SQL_SELECT_CALENDARRESOURCE_WHERE_PKS_IN = "SELECT calendarResource FROM CalendarResource calendarResource WHERE calendarResourceId IN (";
 	private static final String _SQL_SELECT_CALENDARRESOURCE_WHERE = "SELECT calendarResource FROM CalendarResource calendarResource WHERE ";

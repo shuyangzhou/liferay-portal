@@ -17,10 +17,6 @@ package com.liferay.portal.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -938,6 +934,8 @@ public class UserNotificationDeliveryPersistenceImpl extends BasePersistenceImpl
 
 	public UserNotificationDeliveryPersistenceImpl() {
 		setModelClass(UserNotificationDelivery.class);
+		setModelImplClass(UserNotificationDeliveryImpl.class);
+		setEntityCacheEnabled(UserNotificationDeliveryModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -988,7 +986,7 @@ public class UserNotificationDeliveryPersistenceImpl extends BasePersistenceImpl
 	 * Clears the cache for all user notification deliveries.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1004,7 +1002,7 @@ public class UserNotificationDeliveryPersistenceImpl extends BasePersistenceImpl
 	 * Clears the cache for the user notification delivery.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1337,55 +1335,6 @@ public class UserNotificationDeliveryPersistenceImpl extends BasePersistenceImpl
 	/**
 	 * Returns the user notification delivery with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the user notification delivery
-	 * @return the user notification delivery, or <code>null</code> if a user notification delivery with the primary key could not be found
-	 */
-	@Override
-	public UserNotificationDelivery fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(UserNotificationDeliveryModelImpl.ENTITY_CACHE_ENABLED,
-				UserNotificationDeliveryImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		UserNotificationDelivery userNotificationDelivery = (UserNotificationDelivery)serializable;
-
-		if (userNotificationDelivery == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				userNotificationDelivery = (UserNotificationDelivery)session.get(UserNotificationDeliveryImpl.class,
-						primaryKey);
-
-				if (userNotificationDelivery != null) {
-					cacheResult(userNotificationDelivery);
-				}
-				else {
-					entityCache.putResult(UserNotificationDeliveryModelImpl.ENTITY_CACHE_ENABLED,
-						UserNotificationDeliveryImpl.class, primaryKey,
-						nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(UserNotificationDeliveryModelImpl.ENTITY_CACHE_ENABLED,
-					UserNotificationDeliveryImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return userNotificationDelivery;
-	}
-
-	/**
-	 * Returns the user notification delivery with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param userNotificationDeliveryId the primary key of the user notification delivery
 	 * @return the user notification delivery, or <code>null</code> if a user notification delivery with the primary key could not be found
 	 */
@@ -1701,8 +1650,6 @@ public class UserNotificationDeliveryPersistenceImpl extends BasePersistenceImpl
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_USERNOTIFICATIONDELIVERY = "SELECT userNotificationDelivery FROM UserNotificationDelivery userNotificationDelivery";
 	private static final String _SQL_SELECT_USERNOTIFICATIONDELIVERY_WHERE_PKS_IN =
 		"SELECT userNotificationDelivery FROM UserNotificationDelivery userNotificationDelivery WHERE userNotificationDeliveryId IN (";

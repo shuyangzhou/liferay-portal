@@ -17,10 +17,6 @@ package com.liferay.portal.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -313,6 +309,8 @@ public class WebDAVPropsPersistenceImpl extends BasePersistenceImpl<WebDAVProps>
 
 	public WebDAVPropsPersistenceImpl() {
 		setModelClass(WebDAVProps.class);
+		setModelImplClass(WebDAVPropsImpl.class);
+		setEntityCacheEnabled(WebDAVPropsModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -355,7 +353,7 @@ public class WebDAVPropsPersistenceImpl extends BasePersistenceImpl<WebDAVProps>
 	 * Clears the cache for all web d a v propses.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -371,7 +369,7 @@ public class WebDAVPropsPersistenceImpl extends BasePersistenceImpl<WebDAVProps>
 	 * Clears the cache for the web d a v props.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -678,54 +676,6 @@ public class WebDAVPropsPersistenceImpl extends BasePersistenceImpl<WebDAVProps>
 	public WebDAVProps findByPrimaryKey(long webDavPropsId)
 		throws NoSuchWebDAVPropsException {
 		return findByPrimaryKey((Serializable)webDavPropsId);
-	}
-
-	/**
-	 * Returns the web d a v props with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the web d a v props
-	 * @return the web d a v props, or <code>null</code> if a web d a v props with the primary key could not be found
-	 */
-	@Override
-	public WebDAVProps fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(WebDAVPropsModelImpl.ENTITY_CACHE_ENABLED,
-				WebDAVPropsImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		WebDAVProps webDAVProps = (WebDAVProps)serializable;
-
-		if (webDAVProps == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				webDAVProps = (WebDAVProps)session.get(WebDAVPropsImpl.class,
-						primaryKey);
-
-				if (webDAVProps != null) {
-					cacheResult(webDAVProps);
-				}
-				else {
-					entityCache.putResult(WebDAVPropsModelImpl.ENTITY_CACHE_ENABLED,
-						WebDAVPropsImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(WebDAVPropsModelImpl.ENTITY_CACHE_ENABLED,
-					WebDAVPropsImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return webDAVProps;
 	}
 
 	/**
@@ -1044,8 +994,6 @@ public class WebDAVPropsPersistenceImpl extends BasePersistenceImpl<WebDAVProps>
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_WEBDAVPROPS = "SELECT webDAVProps FROM WebDAVProps webDAVProps";
 	private static final String _SQL_SELECT_WEBDAVPROPS_WHERE_PKS_IN = "SELECT webDAVProps FROM WebDAVProps webDAVProps WHERE webDavPropsId IN (";
 	private static final String _SQL_SELECT_WEBDAVPROPS_WHERE = "SELECT webDAVProps FROM WebDAVProps webDAVProps WHERE ";

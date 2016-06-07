@@ -23,10 +23,6 @@ import com.liferay.mail.model.impl.AttachmentModelImpl;
 import com.liferay.mail.service.persistence.AttachmentPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -594,6 +590,8 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 
 	public AttachmentPersistenceImpl() {
 		setModelClass(Attachment.class);
+		setModelImplClass(AttachmentImpl.class);
+		setEntityCacheEnabled(AttachmentModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -632,7 +630,7 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 	 * Clears the cache for all attachments.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -648,7 +646,7 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 	 * Clears the cache for the attachment.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -894,54 +892,6 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 	public Attachment findByPrimaryKey(long attachmentId)
 		throws NoSuchAttachmentException {
 		return findByPrimaryKey((Serializable)attachmentId);
-	}
-
-	/**
-	 * Returns the attachment with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the attachment
-	 * @return the attachment, or <code>null</code> if a attachment with the primary key could not be found
-	 */
-	@Override
-	public Attachment fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(AttachmentModelImpl.ENTITY_CACHE_ENABLED,
-				AttachmentImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Attachment attachment = (Attachment)serializable;
-
-		if (attachment == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				attachment = (Attachment)session.get(AttachmentImpl.class,
-						primaryKey);
-
-				if (attachment != null) {
-					cacheResult(attachment);
-				}
-				else {
-					entityCache.putResult(AttachmentModelImpl.ENTITY_CACHE_ENABLED,
-						AttachmentImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(AttachmentModelImpl.ENTITY_CACHE_ENABLED,
-					AttachmentImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return attachment;
 	}
 
 	/**
@@ -1265,8 +1215,6 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_ATTACHMENT = "SELECT attachment FROM Attachment attachment";
 	private static final String _SQL_SELECT_ATTACHMENT_WHERE_PKS_IN = "SELECT attachment FROM Attachment attachment WHERE attachmentId IN (";
 	private static final String _SQL_SELECT_ATTACHMENT_WHERE = "SELECT attachment FROM Attachment attachment WHERE ";

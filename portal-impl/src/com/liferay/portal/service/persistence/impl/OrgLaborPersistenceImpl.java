@@ -17,10 +17,6 @@ package com.liferay.portal.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -599,6 +595,8 @@ public class OrgLaborPersistenceImpl extends BasePersistenceImpl<OrgLabor>
 
 	public OrgLaborPersistenceImpl() {
 		setModelClass(OrgLabor.class);
+		setModelImplClass(OrgLaborImpl.class);
+		setEntityCacheEnabled(OrgLaborModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -636,7 +634,7 @@ public class OrgLaborPersistenceImpl extends BasePersistenceImpl<OrgLabor>
 	 * Clears the cache for all org labors.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -652,7 +650,7 @@ public class OrgLaborPersistenceImpl extends BasePersistenceImpl<OrgLabor>
 	 * Clears the cache for the org labor.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -909,53 +907,6 @@ public class OrgLaborPersistenceImpl extends BasePersistenceImpl<OrgLabor>
 	public OrgLabor findByPrimaryKey(long orgLaborId)
 		throws NoSuchOrgLaborException {
 		return findByPrimaryKey((Serializable)orgLaborId);
-	}
-
-	/**
-	 * Returns the org labor with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the org labor
-	 * @return the org labor, or <code>null</code> if a org labor with the primary key could not be found
-	 */
-	@Override
-	public OrgLabor fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(OrgLaborModelImpl.ENTITY_CACHE_ENABLED,
-				OrgLaborImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		OrgLabor orgLabor = (OrgLabor)serializable;
-
-		if (orgLabor == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				orgLabor = (OrgLabor)session.get(OrgLaborImpl.class, primaryKey);
-
-				if (orgLabor != null) {
-					cacheResult(orgLabor);
-				}
-				else {
-					entityCache.putResult(OrgLaborModelImpl.ENTITY_CACHE_ENABLED,
-						OrgLaborImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(OrgLaborModelImpl.ENTITY_CACHE_ENABLED,
-					OrgLaborImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return orgLabor;
 	}
 
 	/**
@@ -1273,8 +1224,6 @@ public class OrgLaborPersistenceImpl extends BasePersistenceImpl<OrgLabor>
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_ORGLABOR = "SELECT orgLabor FROM OrgLabor orgLabor";
 	private static final String _SQL_SELECT_ORGLABOR_WHERE_PKS_IN = "SELECT orgLabor FROM OrgLabor orgLabor WHERE orgLaborId IN (";
 	private static final String _SQL_SELECT_ORGLABOR_WHERE = "SELECT orgLabor FROM OrgLabor orgLabor WHERE ";

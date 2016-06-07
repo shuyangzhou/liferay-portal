@@ -17,10 +17,6 @@ package com.liferay.portal.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -1349,6 +1345,8 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 
 	public ResourceBlockPermissionPersistenceImpl() {
 		setModelClass(ResourceBlockPermission.class);
+		setModelImplClass(ResourceBlockPermissionImpl.class);
+		setEntityCacheEnabled(ResourceBlockPermissionModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1396,7 +1394,7 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 	 * Clears the cache for all resource block permissions.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1412,7 +1410,7 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 	 * Clears the cache for the resource block permission.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1749,54 +1747,6 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 	/**
 	 * Returns the resource block permission with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the resource block permission
-	 * @return the resource block permission, or <code>null</code> if a resource block permission with the primary key could not be found
-	 */
-	@Override
-	public ResourceBlockPermission fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ResourceBlockPermissionModelImpl.ENTITY_CACHE_ENABLED,
-				ResourceBlockPermissionImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		ResourceBlockPermission resourceBlockPermission = (ResourceBlockPermission)serializable;
-
-		if (resourceBlockPermission == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				resourceBlockPermission = (ResourceBlockPermission)session.get(ResourceBlockPermissionImpl.class,
-						primaryKey);
-
-				if (resourceBlockPermission != null) {
-					cacheResult(resourceBlockPermission);
-				}
-				else {
-					entityCache.putResult(ResourceBlockPermissionModelImpl.ENTITY_CACHE_ENABLED,
-						ResourceBlockPermissionImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ResourceBlockPermissionModelImpl.ENTITY_CACHE_ENABLED,
-					ResourceBlockPermissionImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return resourceBlockPermission;
-	}
-
-	/**
-	 * Returns the resource block permission with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param resourceBlockPermissionId the primary key of the resource block permission
 	 * @return the resource block permission, or <code>null</code> if a resource block permission with the primary key could not be found
 	 */
@@ -2112,8 +2062,6 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_RESOURCEBLOCKPERMISSION = "SELECT resourceBlockPermission FROM ResourceBlockPermission resourceBlockPermission";
 	private static final String _SQL_SELECT_RESOURCEBLOCKPERMISSION_WHERE_PKS_IN =
 		"SELECT resourceBlockPermission FROM ResourceBlockPermission resourceBlockPermission WHERE resourceBlockPermissionId IN (";

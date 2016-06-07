@@ -17,10 +17,6 @@ package com.liferay.portal.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -2894,6 +2890,8 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 
 	public SubscriptionPersistenceImpl() {
 		setModelClass(Subscription.class);
+		setModelImplClass(SubscriptionImpl.class);
+		setEntityCacheEnabled(SubscriptionModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2938,7 +2936,7 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 	 * Clears the cache for all subscriptions.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2954,7 +2952,7 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 	 * Clears the cache for the subscription.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -3386,54 +3384,6 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 	/**
 	 * Returns the subscription with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the subscription
-	 * @return the subscription, or <code>null</code> if a subscription with the primary key could not be found
-	 */
-	@Override
-	public Subscription fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(SubscriptionModelImpl.ENTITY_CACHE_ENABLED,
-				SubscriptionImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Subscription subscription = (Subscription)serializable;
-
-		if (subscription == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				subscription = (Subscription)session.get(SubscriptionImpl.class,
-						primaryKey);
-
-				if (subscription != null) {
-					cacheResult(subscription);
-				}
-				else {
-					entityCache.putResult(SubscriptionModelImpl.ENTITY_CACHE_ENABLED,
-						SubscriptionImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(SubscriptionModelImpl.ENTITY_CACHE_ENABLED,
-					SubscriptionImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return subscription;
-	}
-
-	/**
-	 * Returns the subscription with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param subscriptionId the primary key of the subscription
 	 * @return the subscription, or <code>null</code> if a subscription with the primary key could not be found
 	 */
@@ -3747,8 +3697,6 @@ public class SubscriptionPersistenceImpl extends BasePersistenceImpl<Subscriptio
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_SUBSCRIPTION = "SELECT subscription FROM Subscription subscription";
 	private static final String _SQL_SELECT_SUBSCRIPTION_WHERE_PKS_IN = "SELECT subscription FROM Subscription subscription WHERE subscriptionId IN (";
 	private static final String _SQL_SELECT_SUBSCRIPTION_WHERE = "SELECT subscription FROM Subscription subscription WHERE ";

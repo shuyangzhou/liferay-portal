@@ -16,8 +16,6 @@ package com.liferay.portal.workflow.kaleo.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -2015,6 +2013,8 @@ public class KaleoTimerInstanceTokenPersistenceImpl extends BasePersistenceImpl<
 
 	public KaleoTimerInstanceTokenPersistenceImpl() {
 		setModelClass(KaleoTimerInstanceToken.class);
+		setModelImplClass(KaleoTimerInstanceTokenImpl.class);
+		setEntityCacheEnabled(KaleoTimerInstanceTokenModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2062,7 +2062,7 @@ public class KaleoTimerInstanceTokenPersistenceImpl extends BasePersistenceImpl<
 	 * Clears the cache for all kaleo timer instance tokens.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2078,7 +2078,7 @@ public class KaleoTimerInstanceTokenPersistenceImpl extends BasePersistenceImpl<
 	 * Clears the cache for the kaleo timer instance token.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2480,54 +2480,6 @@ public class KaleoTimerInstanceTokenPersistenceImpl extends BasePersistenceImpl<
 	/**
 	 * Returns the kaleo timer instance token with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the kaleo timer instance token
-	 * @return the kaleo timer instance token, or <code>null</code> if a kaleo timer instance token with the primary key could not be found
-	 */
-	@Override
-	public KaleoTimerInstanceToken fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(KaleoTimerInstanceTokenModelImpl.ENTITY_CACHE_ENABLED,
-				KaleoTimerInstanceTokenImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		KaleoTimerInstanceToken kaleoTimerInstanceToken = (KaleoTimerInstanceToken)serializable;
-
-		if (kaleoTimerInstanceToken == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				kaleoTimerInstanceToken = (KaleoTimerInstanceToken)session.get(KaleoTimerInstanceTokenImpl.class,
-						primaryKey);
-
-				if (kaleoTimerInstanceToken != null) {
-					cacheResult(kaleoTimerInstanceToken);
-				}
-				else {
-					entityCache.putResult(KaleoTimerInstanceTokenModelImpl.ENTITY_CACHE_ENABLED,
-						KaleoTimerInstanceTokenImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(KaleoTimerInstanceTokenModelImpl.ENTITY_CACHE_ENABLED,
-					KaleoTimerInstanceTokenImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return kaleoTimerInstanceToken;
-	}
-
-	/**
-	 * Returns the kaleo timer instance token with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param kaleoTimerInstanceTokenId the primary key of the kaleo timer instance token
 	 * @return the kaleo timer instance token, or <code>null</code> if a kaleo timer instance token with the primary key could not be found
 	 */
@@ -2843,10 +2795,6 @@ public class KaleoTimerInstanceTokenPersistenceImpl extends BasePersistenceImpl<
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_KALEOTIMERINSTANCETOKEN = "SELECT kaleoTimerInstanceToken FROM KaleoTimerInstanceToken kaleoTimerInstanceToken";
 	private static final String _SQL_SELECT_KALEOTIMERINSTANCETOKEN_WHERE_PKS_IN =
 		"SELECT kaleoTimerInstanceToken FROM KaleoTimerInstanceToken kaleoTimerInstanceToken WHERE kaleoTimerInstanceTokenId IN (";

@@ -21,10 +21,6 @@ import com.liferay.message.boards.kernel.model.MBDiscussion;
 import com.liferay.message.boards.kernel.service.persistence.MBDiscussionPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -2412,6 +2408,8 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 
 	public MBDiscussionPersistenceImpl() {
 		setModelClass(MBDiscussion.class);
+		setModelImplClass(MBDiscussionImpl.class);
+		setEntityCacheEnabled(MBDiscussionModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2462,7 +2460,7 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 	 * Clears the cache for all message boards discussions.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2478,7 +2476,7 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 	 * Clears the cache for the message boards discussion.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2933,54 +2931,6 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 	/**
 	 * Returns the message boards discussion with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the message boards discussion
-	 * @return the message boards discussion, or <code>null</code> if a message boards discussion with the primary key could not be found
-	 */
-	@Override
-	public MBDiscussion fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(MBDiscussionModelImpl.ENTITY_CACHE_ENABLED,
-				MBDiscussionImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		MBDiscussion mbDiscussion = (MBDiscussion)serializable;
-
-		if (mbDiscussion == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				mbDiscussion = (MBDiscussion)session.get(MBDiscussionImpl.class,
-						primaryKey);
-
-				if (mbDiscussion != null) {
-					cacheResult(mbDiscussion);
-				}
-				else {
-					entityCache.putResult(MBDiscussionModelImpl.ENTITY_CACHE_ENABLED,
-						MBDiscussionImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(MBDiscussionModelImpl.ENTITY_CACHE_ENABLED,
-					MBDiscussionImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return mbDiscussion;
-	}
-
-	/**
-	 * Returns the message boards discussion with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param discussionId the primary key of the message boards discussion
 	 * @return the message boards discussion, or <code>null</code> if a message boards discussion with the primary key could not be found
 	 */
@@ -3299,8 +3249,6 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_MBDISCUSSION = "SELECT mbDiscussion FROM MBDiscussion mbDiscussion";
 	private static final String _SQL_SELECT_MBDISCUSSION_WHERE_PKS_IN = "SELECT mbDiscussion FROM MBDiscussion mbDiscussion WHERE discussionId IN (";
 	private static final String _SQL_SELECT_MBDISCUSSION_WHERE = "SELECT mbDiscussion FROM MBDiscussion mbDiscussion WHERE ";

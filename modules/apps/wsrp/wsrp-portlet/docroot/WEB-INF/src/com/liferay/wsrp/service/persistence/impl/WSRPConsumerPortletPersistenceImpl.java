@@ -17,10 +17,6 @@ package com.liferay.wsrp.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -2029,6 +2025,8 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 
 	public WSRPConsumerPortletPersistenceImpl() {
 		setModelClass(WSRPConsumerPortlet.class);
+		setModelImplClass(WSRPConsumerPortletImpl.class);
+		setEntityCacheEnabled(WSRPConsumerPortletModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2075,7 +2073,7 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 	 * Clears the cache for all w s r p consumer portlets.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2091,7 +2089,7 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 	 * Clears the cache for the w s r p consumer portlet.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2481,54 +2479,6 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 	/**
 	 * Returns the w s r p consumer portlet with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the w s r p consumer portlet
-	 * @return the w s r p consumer portlet, or <code>null</code> if a w s r p consumer portlet with the primary key could not be found
-	 */
-	@Override
-	public WSRPConsumerPortlet fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(WSRPConsumerPortletModelImpl.ENTITY_CACHE_ENABLED,
-				WSRPConsumerPortletImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		WSRPConsumerPortlet wsrpConsumerPortlet = (WSRPConsumerPortlet)serializable;
-
-		if (wsrpConsumerPortlet == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				wsrpConsumerPortlet = (WSRPConsumerPortlet)session.get(WSRPConsumerPortletImpl.class,
-						primaryKey);
-
-				if (wsrpConsumerPortlet != null) {
-					cacheResult(wsrpConsumerPortlet);
-				}
-				else {
-					entityCache.putResult(WSRPConsumerPortletModelImpl.ENTITY_CACHE_ENABLED,
-						WSRPConsumerPortletImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(WSRPConsumerPortletModelImpl.ENTITY_CACHE_ENABLED,
-					WSRPConsumerPortletImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return wsrpConsumerPortlet;
-	}
-
-	/**
-	 * Returns the w s r p consumer portlet with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param wsrpConsumerPortletId the primary key of the w s r p consumer portlet
 	 * @return the w s r p consumer portlet, or <code>null</code> if a w s r p consumer portlet with the primary key could not be found
 	 */
@@ -2848,8 +2798,6 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_WSRPCONSUMERPORTLET = "SELECT wsrpConsumerPortlet FROM WSRPConsumerPortlet wsrpConsumerPortlet";
 	private static final String _SQL_SELECT_WSRPCONSUMERPORTLET_WHERE_PKS_IN = "SELECT wsrpConsumerPortlet FROM WSRPConsumerPortlet wsrpConsumerPortlet WHERE wsrpConsumerPortletId IN (";
 	private static final String _SQL_SELECT_WSRPCONSUMERPORTLET_WHERE = "SELECT wsrpConsumerPortlet FROM WSRPConsumerPortlet wsrpConsumerPortlet WHERE ";

@@ -17,10 +17,6 @@ package com.liferay.wsrp.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -1986,6 +1982,8 @@ public class WSRPProducerPersistenceImpl extends BasePersistenceImpl<WSRPProduce
 
 	public WSRPProducerPersistenceImpl() {
 		setModelClass(WSRPProducer.class);
+		setModelImplClass(WSRPProducerImpl.class);
+		setEntityCacheEnabled(WSRPProducerModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2028,7 +2026,7 @@ public class WSRPProducerPersistenceImpl extends BasePersistenceImpl<WSRPProduce
 	 * Clears the cache for all w s r p producers.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2044,7 +2042,7 @@ public class WSRPProducerPersistenceImpl extends BasePersistenceImpl<WSRPProduce
 	 * Clears the cache for the w s r p producer.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2425,54 +2423,6 @@ public class WSRPProducerPersistenceImpl extends BasePersistenceImpl<WSRPProduce
 	/**
 	 * Returns the w s r p producer with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the w s r p producer
-	 * @return the w s r p producer, or <code>null</code> if a w s r p producer with the primary key could not be found
-	 */
-	@Override
-	public WSRPProducer fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(WSRPProducerModelImpl.ENTITY_CACHE_ENABLED,
-				WSRPProducerImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		WSRPProducer wsrpProducer = (WSRPProducer)serializable;
-
-		if (wsrpProducer == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				wsrpProducer = (WSRPProducer)session.get(WSRPProducerImpl.class,
-						primaryKey);
-
-				if (wsrpProducer != null) {
-					cacheResult(wsrpProducer);
-				}
-				else {
-					entityCache.putResult(WSRPProducerModelImpl.ENTITY_CACHE_ENABLED,
-						WSRPProducerImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(WSRPProducerModelImpl.ENTITY_CACHE_ENABLED,
-					WSRPProducerImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return wsrpProducer;
-	}
-
-	/**
-	 * Returns the w s r p producer with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param wsrpProducerId the primary key of the w s r p producer
 	 * @return the w s r p producer, or <code>null</code> if a w s r p producer with the primary key could not be found
 	 */
@@ -2791,8 +2741,6 @@ public class WSRPProducerPersistenceImpl extends BasePersistenceImpl<WSRPProduce
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_WSRPPRODUCER = "SELECT wsrpProducer FROM WSRPProducer wsrpProducer";
 	private static final String _SQL_SELECT_WSRPPRODUCER_WHERE_PKS_IN = "SELECT wsrpProducer FROM WSRPProducer wsrpProducer WHERE wsrpProducerId IN (";
 	private static final String _SQL_SELECT_WSRPPRODUCER_WHERE = "SELECT wsrpProducer FROM WSRPProducer wsrpProducer WHERE ";

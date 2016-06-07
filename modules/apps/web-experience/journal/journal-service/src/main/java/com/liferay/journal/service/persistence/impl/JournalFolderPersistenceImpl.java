@@ -22,8 +22,6 @@ import com.liferay.journal.model.impl.JournalFolderImpl;
 import com.liferay.journal.model.impl.JournalFolderModelImpl;
 import com.liferay.journal.service.persistence.JournalFolderPersistence;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -7264,6 +7262,8 @@ public class JournalFolderPersistenceImpl extends BasePersistenceImpl<JournalFol
 
 	public JournalFolderPersistenceImpl() {
 		setModelClass(JournalFolder.class);
+		setModelImplClass(JournalFolderImpl.class);
+		setEntityCacheEnabled(JournalFolderModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -7317,7 +7317,7 @@ public class JournalFolderPersistenceImpl extends BasePersistenceImpl<JournalFol
 	 * Clears the cache for all journal folders.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -7333,7 +7333,7 @@ public class JournalFolderPersistenceImpl extends BasePersistenceImpl<JournalFol
 	 * Clears the cache for the journal folder.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -7871,54 +7871,6 @@ public class JournalFolderPersistenceImpl extends BasePersistenceImpl<JournalFol
 	/**
 	 * Returns the journal folder with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the journal folder
-	 * @return the journal folder, or <code>null</code> if a journal folder with the primary key could not be found
-	 */
-	@Override
-	public JournalFolder fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(JournalFolderModelImpl.ENTITY_CACHE_ENABLED,
-				JournalFolderImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		JournalFolder journalFolder = (JournalFolder)serializable;
-
-		if (journalFolder == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				journalFolder = (JournalFolder)session.get(JournalFolderImpl.class,
-						primaryKey);
-
-				if (journalFolder != null) {
-					cacheResult(journalFolder);
-				}
-				else {
-					entityCache.putResult(JournalFolderModelImpl.ENTITY_CACHE_ENABLED,
-						JournalFolderImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(JournalFolderModelImpl.ENTITY_CACHE_ENABLED,
-					JournalFolderImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return journalFolder;
-	}
-
-	/**
-	 * Returns the journal folder with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param folderId the primary key of the journal folder
 	 * @return the journal folder, or <code>null</code> if a journal folder with the primary key could not be found
 	 */
@@ -8237,10 +8189,6 @@ public class JournalFolderPersistenceImpl extends BasePersistenceImpl<JournalFol
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_JOURNALFOLDER = "SELECT journalFolder FROM JournalFolder journalFolder";
 	private static final String _SQL_SELECT_JOURNALFOLDER_WHERE_PKS_IN = "SELECT journalFolder FROM JournalFolder journalFolder WHERE folderId IN (";
 	private static final String _SQL_SELECT_JOURNALFOLDER_WHERE = "SELECT journalFolder FROM JournalFolder journalFolder WHERE ";

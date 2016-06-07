@@ -21,10 +21,6 @@ import com.liferay.asset.kernel.model.AssetLink;
 import com.liferay.asset.kernel.service.persistence.AssetLinkPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -2960,6 +2956,8 @@ public class AssetLinkPersistenceImpl extends BasePersistenceImpl<AssetLink>
 
 	public AssetLinkPersistenceImpl() {
 		setModelClass(AssetLink.class);
+		setModelImplClass(AssetLinkImpl.class);
+		setEntityCacheEnabled(AssetLinkModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -3003,7 +3001,7 @@ public class AssetLinkPersistenceImpl extends BasePersistenceImpl<AssetLink>
 	 * Clears the cache for all asset links.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -3019,7 +3017,7 @@ public class AssetLinkPersistenceImpl extends BasePersistenceImpl<AssetLink>
 	 * Clears the cache for the asset link.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -3408,54 +3406,6 @@ public class AssetLinkPersistenceImpl extends BasePersistenceImpl<AssetLink>
 	/**
 	 * Returns the asset link with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the asset link
-	 * @return the asset link, or <code>null</code> if a asset link with the primary key could not be found
-	 */
-	@Override
-	public AssetLink fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(AssetLinkModelImpl.ENTITY_CACHE_ENABLED,
-				AssetLinkImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		AssetLink assetLink = (AssetLink)serializable;
-
-		if (assetLink == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				assetLink = (AssetLink)session.get(AssetLinkImpl.class,
-						primaryKey);
-
-				if (assetLink != null) {
-					cacheResult(assetLink);
-				}
-				else {
-					entityCache.putResult(AssetLinkModelImpl.ENTITY_CACHE_ENABLED,
-						AssetLinkImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(AssetLinkModelImpl.ENTITY_CACHE_ENABLED,
-					AssetLinkImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return assetLink;
-	}
-
-	/**
-	 * Returns the asset link with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param linkId the primary key of the asset link
 	 * @return the asset link, or <code>null</code> if a asset link with the primary key could not be found
 	 */
@@ -3774,8 +3724,6 @@ public class AssetLinkPersistenceImpl extends BasePersistenceImpl<AssetLink>
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_ASSETLINK = "SELECT assetLink FROM AssetLink assetLink";
 	private static final String _SQL_SELECT_ASSETLINK_WHERE_PKS_IN = "SELECT assetLink FROM AssetLink assetLink WHERE linkId IN (";
 	private static final String _SQL_SELECT_ASSETLINK_WHERE = "SELECT assetLink FROM AssetLink assetLink WHERE ";

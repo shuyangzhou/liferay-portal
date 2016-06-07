@@ -16,10 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -1262,6 +1258,8 @@ public class CompanyPersistenceImpl extends BasePersistenceImpl<Company>
 
 	public CompanyPersistenceImpl() {
 		setModelClass(Company.class);
+		setModelImplClass(CompanyImpl.class);
+		setEntityCacheEnabled(CompanyModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1308,7 +1306,7 @@ public class CompanyPersistenceImpl extends BasePersistenceImpl<Company>
 	 * Clears the cache for all companies.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1324,7 +1322,7 @@ public class CompanyPersistenceImpl extends BasePersistenceImpl<Company>
 	 * Clears the cache for the company.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1677,53 +1675,6 @@ public class CompanyPersistenceImpl extends BasePersistenceImpl<Company>
 	/**
 	 * Returns the company with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the company
-	 * @return the company, or <code>null</code> if a company with the primary key could not be found
-	 */
-	@Override
-	public Company fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(CompanyModelImpl.ENTITY_CACHE_ENABLED,
-				CompanyImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Company company = (Company)serializable;
-
-		if (company == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				company = (Company)session.get(CompanyImpl.class, primaryKey);
-
-				if (company != null) {
-					cacheResult(company);
-				}
-				else {
-					entityCache.putResult(CompanyModelImpl.ENTITY_CACHE_ENABLED,
-						CompanyImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(CompanyModelImpl.ENTITY_CACHE_ENABLED,
-					CompanyImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return company;
-	}
-
-	/**
-	 * Returns the company with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param companyId the primary key of the company
 	 * @return the company, or <code>null</code> if a company with the primary key could not be found
 	 */
@@ -2039,8 +1990,6 @@ public class CompanyPersistenceImpl extends BasePersistenceImpl<Company>
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_COMPANY = "SELECT company FROM Company company";
 	private static final String _SQL_SELECT_COMPANY_WHERE_PKS_IN = "SELECT company FROM Company company WHERE companyId IN (";
 	private static final String _SQL_SELECT_COMPANY_WHERE = "SELECT company FROM Company company WHERE ";

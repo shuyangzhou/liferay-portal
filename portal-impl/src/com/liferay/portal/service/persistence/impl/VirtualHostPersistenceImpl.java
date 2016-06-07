@@ -17,10 +17,6 @@ package com.liferay.portal.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -546,6 +542,8 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 
 	public VirtualHostPersistenceImpl() {
 		setModelClass(VirtualHost.class);
+		setModelImplClass(VirtualHostImpl.class);
+		setEntityCacheEnabled(VirtualHostModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -592,7 +590,7 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	 * Clears the cache for all virtual hosts.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -608,7 +606,7 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	 * Clears the cache for the virtual host.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -920,54 +918,6 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	public VirtualHost findByPrimaryKey(long virtualHostId)
 		throws NoSuchVirtualHostException {
 		return findByPrimaryKey((Serializable)virtualHostId);
-	}
-
-	/**
-	 * Returns the virtual host with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the virtual host
-	 * @return the virtual host, or <code>null</code> if a virtual host with the primary key could not be found
-	 */
-	@Override
-	public VirtualHost fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
-				VirtualHostImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		VirtualHost virtualHost = (VirtualHost)serializable;
-
-		if (virtualHost == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				virtualHost = (VirtualHost)session.get(VirtualHostImpl.class,
-						primaryKey);
-
-				if (virtualHost != null) {
-					cacheResult(virtualHost);
-				}
-				else {
-					entityCache.putResult(VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
-						VirtualHostImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
-					VirtualHostImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return virtualHost;
 	}
 
 	/**
@@ -1286,8 +1236,6 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_VIRTUALHOST = "SELECT virtualHost FROM VirtualHost virtualHost";
 	private static final String _SQL_SELECT_VIRTUALHOST_WHERE_PKS_IN = "SELECT virtualHost FROM VirtualHost virtualHost WHERE virtualHostId IN (";
 	private static final String _SQL_SELECT_VIRTUALHOST_WHERE = "SELECT virtualHost FROM VirtualHost virtualHost WHERE ";

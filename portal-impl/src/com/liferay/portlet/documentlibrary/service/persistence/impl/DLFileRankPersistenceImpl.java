@@ -21,10 +21,6 @@ import com.liferay.document.library.kernel.model.DLFileRank;
 import com.liferay.document.library.kernel.service.persistence.DLFileRankPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -2480,6 +2476,8 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 
 	public DLFileRankPersistenceImpl() {
 		setModelClass(DLFileRank.class);
+		setModelImplClass(DLFileRankImpl.class);
+		setEntityCacheEnabled(DLFileRankModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2524,7 +2522,7 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 	 * Clears the cache for all document library file ranks.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2540,7 +2538,7 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 	 * Clears the cache for the document library file rank.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2911,54 +2909,6 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 	/**
 	 * Returns the document library file rank with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the document library file rank
-	 * @return the document library file rank, or <code>null</code> if a document library file rank with the primary key could not be found
-	 */
-	@Override
-	public DLFileRank fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DLFileRankModelImpl.ENTITY_CACHE_ENABLED,
-				DLFileRankImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		DLFileRank dlFileRank = (DLFileRank)serializable;
-
-		if (dlFileRank == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				dlFileRank = (DLFileRank)session.get(DLFileRankImpl.class,
-						primaryKey);
-
-				if (dlFileRank != null) {
-					cacheResult(dlFileRank);
-				}
-				else {
-					entityCache.putResult(DLFileRankModelImpl.ENTITY_CACHE_ENABLED,
-						DLFileRankImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(DLFileRankModelImpl.ENTITY_CACHE_ENABLED,
-					DLFileRankImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return dlFileRank;
-	}
-
-	/**
-	 * Returns the document library file rank with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param fileRankId the primary key of the document library file rank
 	 * @return the document library file rank, or <code>null</code> if a document library file rank with the primary key could not be found
 	 */
@@ -3277,8 +3227,6 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_DLFILERANK = "SELECT dlFileRank FROM DLFileRank dlFileRank";
 	private static final String _SQL_SELECT_DLFILERANK_WHERE_PKS_IN = "SELECT dlFileRank FROM DLFileRank dlFileRank WHERE fileRankId IN (";
 	private static final String _SQL_SELECT_DLFILERANK_WHERE = "SELECT dlFileRank FROM DLFileRank dlFileRank WHERE ";

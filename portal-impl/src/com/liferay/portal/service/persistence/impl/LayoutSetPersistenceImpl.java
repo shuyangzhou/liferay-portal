@@ -17,10 +17,6 @@ package com.liferay.portal.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -1387,6 +1383,8 @@ public class LayoutSetPersistenceImpl extends BasePersistenceImpl<LayoutSet>
 
 	public LayoutSetPersistenceImpl() {
 		setModelClass(LayoutSet.class);
+		setModelImplClass(LayoutSetImpl.class);
+		setEntityCacheEnabled(LayoutSetModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1428,7 +1426,7 @@ public class LayoutSetPersistenceImpl extends BasePersistenceImpl<LayoutSet>
 	 * Clears the cache for all layout sets.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1444,7 +1442,7 @@ public class LayoutSetPersistenceImpl extends BasePersistenceImpl<LayoutSet>
 	 * Clears the cache for the layout set.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1801,54 +1799,6 @@ public class LayoutSetPersistenceImpl extends BasePersistenceImpl<LayoutSet>
 	/**
 	 * Returns the layout set with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the layout set
-	 * @return the layout set, or <code>null</code> if a layout set with the primary key could not be found
-	 */
-	@Override
-	public LayoutSet fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(LayoutSetModelImpl.ENTITY_CACHE_ENABLED,
-				LayoutSetImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		LayoutSet layoutSet = (LayoutSet)serializable;
-
-		if (layoutSet == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				layoutSet = (LayoutSet)session.get(LayoutSetImpl.class,
-						primaryKey);
-
-				if (layoutSet != null) {
-					cacheResult(layoutSet);
-				}
-				else {
-					entityCache.putResult(LayoutSetModelImpl.ENTITY_CACHE_ENABLED,
-						LayoutSetImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(LayoutSetModelImpl.ENTITY_CACHE_ENABLED,
-					LayoutSetImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return layoutSet;
-	}
-
-	/**
-	 * Returns the layout set with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param layoutSetId the primary key of the layout set
 	 * @return the layout set, or <code>null</code> if a layout set with the primary key could not be found
 	 */
@@ -2167,8 +2117,6 @@ public class LayoutSetPersistenceImpl extends BasePersistenceImpl<LayoutSet>
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_LAYOUTSET = "SELECT layoutSet FROM LayoutSet layoutSet";
 	private static final String _SQL_SELECT_LAYOUTSET_WHERE_PKS_IN = "SELECT layoutSet FROM LayoutSet layoutSet WHERE layoutSetId IN (";
 	private static final String _SQL_SELECT_LAYOUTSET_WHERE = "SELECT layoutSet FROM LayoutSet layoutSet WHERE ";

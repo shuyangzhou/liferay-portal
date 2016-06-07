@@ -22,8 +22,6 @@ import com.liferay.bookmarks.model.impl.BookmarksFolderImpl;
 import com.liferay.bookmarks.model.impl.BookmarksFolderModelImpl;
 import com.liferay.bookmarks.service.persistence.BookmarksFolderPersistence;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -7015,6 +7013,8 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 
 	public BookmarksFolderPersistenceImpl() {
 		setModelClass(BookmarksFolder.class);
+		setModelImplClass(BookmarksFolderImpl.class);
+		setEntityCacheEnabled(BookmarksFolderModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -7059,7 +7059,7 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * Clears the cache for all bookmarks folders.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -7075,7 +7075,7 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	 * Clears the cache for the bookmarks folder.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -7546,54 +7546,6 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	/**
 	 * Returns the bookmarks folder with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the bookmarks folder
-	 * @return the bookmarks folder, or <code>null</code> if a bookmarks folder with the primary key could not be found
-	 */
-	@Override
-	public BookmarksFolder fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(BookmarksFolderModelImpl.ENTITY_CACHE_ENABLED,
-				BookmarksFolderImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		BookmarksFolder bookmarksFolder = (BookmarksFolder)serializable;
-
-		if (bookmarksFolder == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				bookmarksFolder = (BookmarksFolder)session.get(BookmarksFolderImpl.class,
-						primaryKey);
-
-				if (bookmarksFolder != null) {
-					cacheResult(bookmarksFolder);
-				}
-				else {
-					entityCache.putResult(BookmarksFolderModelImpl.ENTITY_CACHE_ENABLED,
-						BookmarksFolderImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(BookmarksFolderModelImpl.ENTITY_CACHE_ENABLED,
-					BookmarksFolderImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return bookmarksFolder;
-	}
-
-	/**
-	 * Returns the bookmarks folder with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param folderId the primary key of the bookmarks folder
 	 * @return the bookmarks folder, or <code>null</code> if a bookmarks folder with the primary key could not be found
 	 */
@@ -7912,10 +7864,6 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_BOOKMARKSFOLDER = "SELECT bookmarksFolder FROM BookmarksFolder bookmarksFolder";
 	private static final String _SQL_SELECT_BOOKMARKSFOLDER_WHERE_PKS_IN = "SELECT bookmarksFolder FROM BookmarksFolder bookmarksFolder WHERE folderId IN (";
 	private static final String _SQL_SELECT_BOOKMARKSFOLDER_WHERE = "SELECT bookmarksFolder FROM BookmarksFolder bookmarksFolder WHERE ";

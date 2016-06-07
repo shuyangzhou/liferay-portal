@@ -22,8 +22,6 @@ import com.liferay.dynamic.data.mapping.model.impl.DDMStructureImpl;
 import com.liferay.dynamic.data.mapping.model.impl.DDMStructureModelImpl;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMStructurePersistence;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -8712,6 +8710,8 @@ public class DDMStructurePersistenceImpl extends BasePersistenceImpl<DDMStructur
 
 	public DDMStructurePersistenceImpl() {
 		setModelClass(DDMStructure.class);
+		setModelImplClass(DDMStructureImpl.class);
+		setEntityCacheEnabled(DDMStructureModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -8760,7 +8760,7 @@ public class DDMStructurePersistenceImpl extends BasePersistenceImpl<DDMStructur
 	 * Clears the cache for all d d m structures.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -8776,7 +8776,7 @@ public class DDMStructurePersistenceImpl extends BasePersistenceImpl<DDMStructur
 	 * Clears the cache for the d d m structure.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -9352,54 +9352,6 @@ public class DDMStructurePersistenceImpl extends BasePersistenceImpl<DDMStructur
 	/**
 	 * Returns the d d m structure with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the d d m structure
-	 * @return the d d m structure, or <code>null</code> if a d d m structure with the primary key could not be found
-	 */
-	@Override
-	public DDMStructure fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DDMStructureModelImpl.ENTITY_CACHE_ENABLED,
-				DDMStructureImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		DDMStructure ddmStructure = (DDMStructure)serializable;
-
-		if (ddmStructure == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				ddmStructure = (DDMStructure)session.get(DDMStructureImpl.class,
-						primaryKey);
-
-				if (ddmStructure != null) {
-					cacheResult(ddmStructure);
-				}
-				else {
-					entityCache.putResult(DDMStructureModelImpl.ENTITY_CACHE_ENABLED,
-						DDMStructureImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(DDMStructureModelImpl.ENTITY_CACHE_ENABLED,
-					DDMStructureImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return ddmStructure;
-	}
-
-	/**
-	 * Returns the d d m structure with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param structureId the primary key of the d d m structure
 	 * @return the d d m structure, or <code>null</code> if a d d m structure with the primary key could not be found
 	 */
@@ -9718,10 +9670,6 @@ public class DDMStructurePersistenceImpl extends BasePersistenceImpl<DDMStructur
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_DDMSTRUCTURE = "SELECT ddmStructure FROM DDMStructure ddmStructure";
 	private static final String _SQL_SELECT_DDMSTRUCTURE_WHERE_PKS_IN = "SELECT ddmStructure FROM DDMStructure ddmStructure WHERE structureId IN (";
 	private static final String _SQL_SELECT_DDMSTRUCTURE_WHERE = "SELECT ddmStructure FROM DDMStructure ddmStructure WHERE ";

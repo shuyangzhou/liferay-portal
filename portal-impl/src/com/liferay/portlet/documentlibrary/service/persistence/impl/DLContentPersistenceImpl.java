@@ -21,10 +21,6 @@ import com.liferay.document.library.kernel.model.DLContent;
 import com.liferay.document.library.kernel.service.persistence.DLContentPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -2218,6 +2214,8 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 
 	public DLContentPersistenceImpl() {
 		setModelClass(DLContent.class);
+		setModelImplClass(DLContentImpl.class);
+		setEntityCacheEnabled(DLContentModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2261,7 +2259,7 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 	 * Clears the cache for all document library contents.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2277,7 +2275,7 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 	 * Clears the cache for the document library content.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2622,54 +2620,6 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 	/**
 	 * Returns the document library content with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the document library content
-	 * @return the document library content, or <code>null</code> if a document library content with the primary key could not be found
-	 */
-	@Override
-	public DLContent fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DLContentModelImpl.ENTITY_CACHE_ENABLED,
-				DLContentImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		DLContent dlContent = (DLContent)serializable;
-
-		if (dlContent == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				dlContent = (DLContent)session.get(DLContentImpl.class,
-						primaryKey);
-
-				if (dlContent != null) {
-					cacheResult(dlContent);
-				}
-				else {
-					entityCache.putResult(DLContentModelImpl.ENTITY_CACHE_ENABLED,
-						DLContentImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(DLContentModelImpl.ENTITY_CACHE_ENABLED,
-					DLContentImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return dlContent;
-	}
-
-	/**
-	 * Returns the document library content with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param contentId the primary key of the document library content
 	 * @return the document library content, or <code>null</code> if a document library content with the primary key could not be found
 	 */
@@ -2988,8 +2938,6 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_DLCONTENT = "SELECT dlContent FROM DLContent dlContent";
 	private static final String _SQL_SELECT_DLCONTENT_WHERE_PKS_IN = "SELECT dlContent FROM DLContent dlContent WHERE contentId IN (";
 	private static final String _SQL_SELECT_DLCONTENT_WHERE = "SELECT dlContent FROM DLContent dlContent WHERE ";

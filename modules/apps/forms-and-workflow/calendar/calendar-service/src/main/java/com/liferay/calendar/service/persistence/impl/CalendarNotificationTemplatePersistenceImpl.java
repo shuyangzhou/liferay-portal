@@ -22,8 +22,6 @@ import com.liferay.calendar.model.impl.CalendarNotificationTemplateImpl;
 import com.liferay.calendar.model.impl.CalendarNotificationTemplateModelImpl;
 import com.liferay.calendar.service.persistence.CalendarNotificationTemplatePersistence;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -2372,6 +2370,8 @@ public class CalendarNotificationTemplatePersistenceImpl
 
 	public CalendarNotificationTemplatePersistenceImpl() {
 		setModelClass(CalendarNotificationTemplate.class);
+		setModelImplClass(CalendarNotificationTemplateImpl.class);
+		setEntityCacheEnabled(CalendarNotificationTemplateModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2428,7 +2428,7 @@ public class CalendarNotificationTemplatePersistenceImpl
 	 * Clears the cache for all calendar notification templates.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2444,7 +2444,7 @@ public class CalendarNotificationTemplatePersistenceImpl
 	 * Clears the cache for the calendar notification template.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2896,56 +2896,6 @@ public class CalendarNotificationTemplatePersistenceImpl
 	/**
 	 * Returns the calendar notification template with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the calendar notification template
-	 * @return the calendar notification template, or <code>null</code> if a calendar notification template with the primary key could not be found
-	 */
-	@Override
-	public CalendarNotificationTemplate fetchByPrimaryKey(
-		Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(CalendarNotificationTemplateModelImpl.ENTITY_CACHE_ENABLED,
-				CalendarNotificationTemplateImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		CalendarNotificationTemplate calendarNotificationTemplate = (CalendarNotificationTemplate)serializable;
-
-		if (calendarNotificationTemplate == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				calendarNotificationTemplate = (CalendarNotificationTemplate)session.get(CalendarNotificationTemplateImpl.class,
-						primaryKey);
-
-				if (calendarNotificationTemplate != null) {
-					cacheResult(calendarNotificationTemplate);
-				}
-				else {
-					entityCache.putResult(CalendarNotificationTemplateModelImpl.ENTITY_CACHE_ENABLED,
-						CalendarNotificationTemplateImpl.class, primaryKey,
-						nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(CalendarNotificationTemplateModelImpl.ENTITY_CACHE_ENABLED,
-					CalendarNotificationTemplateImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return calendarNotificationTemplate;
-	}
-
-	/**
-	 * Returns the calendar notification template with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param calendarNotificationTemplateId the primary key of the calendar notification template
 	 * @return the calendar notification template, or <code>null</code> if a calendar notification template with the primary key could not be found
 	 */
@@ -3268,10 +3218,6 @@ public class CalendarNotificationTemplatePersistenceImpl
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_CALENDARNOTIFICATIONTEMPLATE = "SELECT calendarNotificationTemplate FROM CalendarNotificationTemplate calendarNotificationTemplate";
 	private static final String _SQL_SELECT_CALENDARNOTIFICATIONTEMPLATE_WHERE_PKS_IN =
 		"SELECT calendarNotificationTemplate FROM CalendarNotificationTemplate calendarNotificationTemplate WHERE calendarNotificationTemplateId IN (";

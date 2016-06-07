@@ -22,8 +22,6 @@ import com.liferay.dynamic.data.lists.model.impl.DDLRecordImpl;
 import com.liferay.dynamic.data.lists.model.impl.DDLRecordModelImpl;
 import com.liferay.dynamic.data.lists.service.persistence.DDLRecordPersistence;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -3027,6 +3025,8 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 
 	public DDLRecordPersistenceImpl() {
 		setModelClass(DDLRecord.class);
+		setModelImplClass(DDLRecordImpl.class);
+		setEntityCacheEnabled(DDLRecordModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -3068,7 +3068,7 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 	 * Clears the cache for all d d l records.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -3084,7 +3084,7 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 	 * Clears the cache for the d d l record.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -3505,54 +3505,6 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 	/**
 	 * Returns the d d l record with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the d d l record
-	 * @return the d d l record, or <code>null</code> if a d d l record with the primary key could not be found
-	 */
-	@Override
-	public DDLRecord fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DDLRecordModelImpl.ENTITY_CACHE_ENABLED,
-				DDLRecordImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		DDLRecord ddlRecord = (DDLRecord)serializable;
-
-		if (ddlRecord == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				ddlRecord = (DDLRecord)session.get(DDLRecordImpl.class,
-						primaryKey);
-
-				if (ddlRecord != null) {
-					cacheResult(ddlRecord);
-				}
-				else {
-					entityCache.putResult(DDLRecordModelImpl.ENTITY_CACHE_ENABLED,
-						DDLRecordImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(DDLRecordModelImpl.ENTITY_CACHE_ENABLED,
-					DDLRecordImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return ddlRecord;
-	}
-
-	/**
-	 * Returns the d d l record with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param recordId the primary key of the d d l record
 	 * @return the d d l record, or <code>null</code> if a d d l record with the primary key could not be found
 	 */
@@ -3871,10 +3823,6 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_DDLRECORD = "SELECT ddlRecord FROM DDLRecord ddlRecord";
 	private static final String _SQL_SELECT_DDLRECORD_WHERE_PKS_IN = "SELECT ddlRecord FROM DDLRecord ddlRecord WHERE recordId IN (";
 	private static final String _SQL_SELECT_DDLRECORD_WHERE = "SELECT ddlRecord FROM DDLRecord ddlRecord WHERE ";

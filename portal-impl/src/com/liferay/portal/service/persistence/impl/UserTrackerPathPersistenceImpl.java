@@ -17,10 +17,6 @@ package com.liferay.portal.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -605,6 +601,8 @@ public class UserTrackerPathPersistenceImpl extends BasePersistenceImpl<UserTrac
 
 	public UserTrackerPathPersistenceImpl() {
 		setModelClass(UserTrackerPath.class);
+		setModelImplClass(UserTrackerPathImpl.class);
+		setEntityCacheEnabled(UserTrackerPathModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -645,7 +643,7 @@ public class UserTrackerPathPersistenceImpl extends BasePersistenceImpl<UserTrac
 	 * Clears the cache for all user tracker paths.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -661,7 +659,7 @@ public class UserTrackerPathPersistenceImpl extends BasePersistenceImpl<UserTrac
 	 * Clears the cache for the user tracker path.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -907,54 +905,6 @@ public class UserTrackerPathPersistenceImpl extends BasePersistenceImpl<UserTrac
 	public UserTrackerPath findByPrimaryKey(long userTrackerPathId)
 		throws NoSuchUserTrackerPathException {
 		return findByPrimaryKey((Serializable)userTrackerPathId);
-	}
-
-	/**
-	 * Returns the user tracker path with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the user tracker path
-	 * @return the user tracker path, or <code>null</code> if a user tracker path with the primary key could not be found
-	 */
-	@Override
-	public UserTrackerPath fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(UserTrackerPathModelImpl.ENTITY_CACHE_ENABLED,
-				UserTrackerPathImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		UserTrackerPath userTrackerPath = (UserTrackerPath)serializable;
-
-		if (userTrackerPath == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				userTrackerPath = (UserTrackerPath)session.get(UserTrackerPathImpl.class,
-						primaryKey);
-
-				if (userTrackerPath != null) {
-					cacheResult(userTrackerPath);
-				}
-				else {
-					entityCache.putResult(UserTrackerPathModelImpl.ENTITY_CACHE_ENABLED,
-						UserTrackerPathImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(UserTrackerPathModelImpl.ENTITY_CACHE_ENABLED,
-					UserTrackerPathImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return userTrackerPath;
 	}
 
 	/**
@@ -1278,8 +1228,6 @@ public class UserTrackerPathPersistenceImpl extends BasePersistenceImpl<UserTrac
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_USERTRACKERPATH = "SELECT userTrackerPath FROM UserTrackerPath userTrackerPath";
 	private static final String _SQL_SELECT_USERTRACKERPATH_WHERE_PKS_IN = "SELECT userTrackerPath FROM UserTrackerPath userTrackerPath WHERE userTrackerPathId IN (";
 	private static final String _SQL_SELECT_USERTRACKERPATH_WHERE = "SELECT userTrackerPath FROM UserTrackerPath userTrackerPath WHERE ";

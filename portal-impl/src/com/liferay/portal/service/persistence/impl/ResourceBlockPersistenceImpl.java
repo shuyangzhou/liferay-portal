@@ -17,10 +17,6 @@ package com.liferay.portal.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -1652,6 +1648,8 @@ public class ResourceBlockPersistenceImpl extends BasePersistenceImpl<ResourceBl
 
 	public ResourceBlockPersistenceImpl() {
 		setModelClass(ResourceBlock.class);
+		setModelImplClass(ResourceBlockImpl.class);
+		setEntityCacheEnabled(ResourceBlockModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1697,7 +1695,7 @@ public class ResourceBlockPersistenceImpl extends BasePersistenceImpl<ResourceBl
 	 * Clears the cache for all resource blocks.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1713,7 +1711,7 @@ public class ResourceBlockPersistenceImpl extends BasePersistenceImpl<ResourceBl
 	 * Clears the cache for the resource block.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2056,54 +2054,6 @@ public class ResourceBlockPersistenceImpl extends BasePersistenceImpl<ResourceBl
 	/**
 	 * Returns the resource block with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the resource block
-	 * @return the resource block, or <code>null</code> if a resource block with the primary key could not be found
-	 */
-	@Override
-	public ResourceBlock fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ResourceBlockModelImpl.ENTITY_CACHE_ENABLED,
-				ResourceBlockImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		ResourceBlock resourceBlock = (ResourceBlock)serializable;
-
-		if (resourceBlock == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				resourceBlock = (ResourceBlock)session.get(ResourceBlockImpl.class,
-						primaryKey);
-
-				if (resourceBlock != null) {
-					cacheResult(resourceBlock);
-				}
-				else {
-					entityCache.putResult(ResourceBlockModelImpl.ENTITY_CACHE_ENABLED,
-						ResourceBlockImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ResourceBlockModelImpl.ENTITY_CACHE_ENABLED,
-					ResourceBlockImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return resourceBlock;
-	}
-
-	/**
-	 * Returns the resource block with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param resourceBlockId the primary key of the resource block
 	 * @return the resource block, or <code>null</code> if a resource block with the primary key could not be found
 	 */
@@ -2417,8 +2367,6 @@ public class ResourceBlockPersistenceImpl extends BasePersistenceImpl<ResourceBl
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_RESOURCEBLOCK = "SELECT resourceBlock FROM ResourceBlock resourceBlock";
 	private static final String _SQL_SELECT_RESOURCEBLOCK_WHERE_PKS_IN = "SELECT resourceBlock FROM ResourceBlock resourceBlock WHERE resourceBlockId IN (";
 	private static final String _SQL_SELECT_RESOURCEBLOCK_WHERE = "SELECT resourceBlock FROM ResourceBlock resourceBlock WHERE ";

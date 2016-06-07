@@ -17,10 +17,6 @@ package com.liferay.portlet.social.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -2019,6 +2015,8 @@ public class SocialActivityLimitPersistenceImpl extends BasePersistenceImpl<Soci
 
 	public SocialActivityLimitPersistenceImpl() {
 		setModelClass(SocialActivityLimit.class);
+		setModelImplClass(SocialActivityLimitImpl.class);
+		setEntityCacheEnabled(SocialActivityLimitModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2069,7 +2067,7 @@ public class SocialActivityLimitPersistenceImpl extends BasePersistenceImpl<Soci
 	 * Clears the cache for all social activity limits.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2085,7 +2083,7 @@ public class SocialActivityLimitPersistenceImpl extends BasePersistenceImpl<Soci
 	 * Clears the cache for the social activity limit.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2453,54 +2451,6 @@ public class SocialActivityLimitPersistenceImpl extends BasePersistenceImpl<Soci
 	/**
 	 * Returns the social activity limit with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the social activity limit
-	 * @return the social activity limit, or <code>null</code> if a social activity limit with the primary key could not be found
-	 */
-	@Override
-	public SocialActivityLimit fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(SocialActivityLimitModelImpl.ENTITY_CACHE_ENABLED,
-				SocialActivityLimitImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		SocialActivityLimit socialActivityLimit = (SocialActivityLimit)serializable;
-
-		if (socialActivityLimit == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				socialActivityLimit = (SocialActivityLimit)session.get(SocialActivityLimitImpl.class,
-						primaryKey);
-
-				if (socialActivityLimit != null) {
-					cacheResult(socialActivityLimit);
-				}
-				else {
-					entityCache.putResult(SocialActivityLimitModelImpl.ENTITY_CACHE_ENABLED,
-						SocialActivityLimitImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(SocialActivityLimitModelImpl.ENTITY_CACHE_ENABLED,
-					SocialActivityLimitImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return socialActivityLimit;
-	}
-
-	/**
-	 * Returns the social activity limit with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param activityLimitId the primary key of the social activity limit
 	 * @return the social activity limit, or <code>null</code> if a social activity limit with the primary key could not be found
 	 */
@@ -2815,8 +2765,6 @@ public class SocialActivityLimitPersistenceImpl extends BasePersistenceImpl<Soci
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_SOCIALACTIVITYLIMIT = "SELECT socialActivityLimit FROM SocialActivityLimit socialActivityLimit";
 	private static final String _SQL_SELECT_SOCIALACTIVITYLIMIT_WHERE_PKS_IN = "SELECT socialActivityLimit FROM SocialActivityLimit socialActivityLimit WHERE activityLimitId IN (";
 	private static final String _SQL_SELECT_SOCIALACTIVITYLIMIT_WHERE = "SELECT socialActivityLimit FROM SocialActivityLimit socialActivityLimit WHERE ";

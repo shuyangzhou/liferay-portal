@@ -22,8 +22,6 @@ import com.liferay.dynamic.data.mapping.model.impl.DDMStorageLinkImpl;
 import com.liferay.dynamic.data.mapping.model.impl.DDMStorageLinkModelImpl;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMStorageLinkPersistence;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -1939,6 +1937,8 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 
 	public DDMStorageLinkPersistenceImpl() {
 		setModelClass(DDMStorageLink.class);
+		setModelImplClass(DDMStorageLinkImpl.class);
+		setEntityCacheEnabled(DDMStorageLinkModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1981,7 +1981,7 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 	 * Clears the cache for all d d m storage links.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1997,7 +1997,7 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 	 * Clears the cache for the d d m storage link.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2342,54 +2342,6 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 	/**
 	 * Returns the d d m storage link with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the d d m storage link
-	 * @return the d d m storage link, or <code>null</code> if a d d m storage link with the primary key could not be found
-	 */
-	@Override
-	public DDMStorageLink fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DDMStorageLinkModelImpl.ENTITY_CACHE_ENABLED,
-				DDMStorageLinkImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		DDMStorageLink ddmStorageLink = (DDMStorageLink)serializable;
-
-		if (ddmStorageLink == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				ddmStorageLink = (DDMStorageLink)session.get(DDMStorageLinkImpl.class,
-						primaryKey);
-
-				if (ddmStorageLink != null) {
-					cacheResult(ddmStorageLink);
-				}
-				else {
-					entityCache.putResult(DDMStorageLinkModelImpl.ENTITY_CACHE_ENABLED,
-						DDMStorageLinkImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(DDMStorageLinkModelImpl.ENTITY_CACHE_ENABLED,
-					DDMStorageLinkImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return ddmStorageLink;
-	}
-
-	/**
-	 * Returns the d d m storage link with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param storageLinkId the primary key of the d d m storage link
 	 * @return the d d m storage link, or <code>null</code> if a d d m storage link with the primary key could not be found
 	 */
@@ -2708,10 +2660,6 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_DDMSTORAGELINK = "SELECT ddmStorageLink FROM DDMStorageLink ddmStorageLink";
 	private static final String _SQL_SELECT_DDMSTORAGELINK_WHERE_PKS_IN = "SELECT ddmStorageLink FROM DDMStorageLink ddmStorageLink WHERE storageLinkId IN (";
 	private static final String _SQL_SELECT_DDMSTORAGELINK_WHERE = "SELECT ddmStorageLink FROM DDMStorageLink ddmStorageLink WHERE ";

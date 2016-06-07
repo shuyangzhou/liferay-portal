@@ -23,10 +23,6 @@ import com.liferay.mail.model.impl.MessageModelImpl;
 import com.liferay.mail.service.persistence.MessagePersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -1326,6 +1322,8 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 
 	public MessagePersistenceImpl() {
 		setModelClass(Message.class);
+		setModelImplClass(MessageImpl.class);
+		setEntityCacheEnabled(MessageModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1367,7 +1365,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 	 * Clears the cache for all messages.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1383,7 +1381,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 	 * Clears the cache for the message.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1739,53 +1737,6 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 	/**
 	 * Returns the message with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the message
-	 * @return the message, or <code>null</code> if a message with the primary key could not be found
-	 */
-	@Override
-	public Message fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(MessageModelImpl.ENTITY_CACHE_ENABLED,
-				MessageImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Message message = (Message)serializable;
-
-		if (message == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				message = (Message)session.get(MessageImpl.class, primaryKey);
-
-				if (message != null) {
-					cacheResult(message);
-				}
-				else {
-					entityCache.putResult(MessageModelImpl.ENTITY_CACHE_ENABLED,
-						MessageImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(MessageModelImpl.ENTITY_CACHE_ENABLED,
-					MessageImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return message;
-	}
-
-	/**
-	 * Returns the message with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param messageId the primary key of the message
 	 * @return the message, or <code>null</code> if a message with the primary key could not be found
 	 */
@@ -2103,8 +2054,6 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_MESSAGE = "SELECT message FROM Message message";
 	private static final String _SQL_SELECT_MESSAGE_WHERE_PKS_IN = "SELECT message FROM Message message WHERE messageId IN (";
 	private static final String _SQL_SELECT_MESSAGE_WHERE = "SELECT message FROM Message message WHERE ";

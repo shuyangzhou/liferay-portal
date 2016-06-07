@@ -22,8 +22,6 @@ import com.liferay.dynamic.data.lists.model.impl.DDLRecordVersionImpl;
 import com.liferay.dynamic.data.lists.model.impl.DDLRecordVersionModelImpl;
 import com.liferay.dynamic.data.lists.service.persistence.DDLRecordVersionPersistence;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -1395,6 +1393,8 @@ public class DDLRecordVersionPersistenceImpl extends BasePersistenceImpl<DDLReco
 
 	public DDLRecordVersionPersistenceImpl() {
 		setModelClass(DDLRecordVersion.class);
+		setModelImplClass(DDLRecordVersionImpl.class);
+		setEntityCacheEnabled(DDLRecordVersionModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1440,7 +1440,7 @@ public class DDLRecordVersionPersistenceImpl extends BasePersistenceImpl<DDLReco
 	 * Clears the cache for all d d l record versions.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1456,7 +1456,7 @@ public class DDLRecordVersionPersistenceImpl extends BasePersistenceImpl<DDLReco
 	 * Clears the cache for the d d l record version.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1794,54 +1794,6 @@ public class DDLRecordVersionPersistenceImpl extends BasePersistenceImpl<DDLReco
 	/**
 	 * Returns the d d l record version with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the d d l record version
-	 * @return the d d l record version, or <code>null</code> if a d d l record version with the primary key could not be found
-	 */
-	@Override
-	public DDLRecordVersion fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DDLRecordVersionModelImpl.ENTITY_CACHE_ENABLED,
-				DDLRecordVersionImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		DDLRecordVersion ddlRecordVersion = (DDLRecordVersion)serializable;
-
-		if (ddlRecordVersion == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				ddlRecordVersion = (DDLRecordVersion)session.get(DDLRecordVersionImpl.class,
-						primaryKey);
-
-				if (ddlRecordVersion != null) {
-					cacheResult(ddlRecordVersion);
-				}
-				else {
-					entityCache.putResult(DDLRecordVersionModelImpl.ENTITY_CACHE_ENABLED,
-						DDLRecordVersionImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(DDLRecordVersionModelImpl.ENTITY_CACHE_ENABLED,
-					DDLRecordVersionImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return ddlRecordVersion;
-	}
-
-	/**
-	 * Returns the d d l record version with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param recordVersionId the primary key of the d d l record version
 	 * @return the d d l record version, or <code>null</code> if a d d l record version with the primary key could not be found
 	 */
@@ -2155,10 +2107,6 @@ public class DDLRecordVersionPersistenceImpl extends BasePersistenceImpl<DDLReco
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_DDLRECORDVERSION = "SELECT ddlRecordVersion FROM DDLRecordVersion ddlRecordVersion";
 	private static final String _SQL_SELECT_DDLRECORDVERSION_WHERE_PKS_IN = "SELECT ddlRecordVersion FROM DDLRecordVersion ddlRecordVersion WHERE recordVersionId IN (";
 	private static final String _SQL_SELECT_DDLRECORDVERSION_WHERE = "SELECT ddlRecordVersion FROM DDLRecordVersion ddlRecordVersion WHERE ";

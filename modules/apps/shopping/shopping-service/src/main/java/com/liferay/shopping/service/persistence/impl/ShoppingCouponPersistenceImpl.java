@@ -16,8 +16,6 @@ package com.liferay.shopping.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -831,6 +829,8 @@ public class ShoppingCouponPersistenceImpl extends BasePersistenceImpl<ShoppingC
 
 	public ShoppingCouponPersistenceImpl() {
 		setModelClass(ShoppingCoupon.class);
+		setModelImplClass(ShoppingCouponImpl.class);
+		setEntityCacheEnabled(ShoppingCouponModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -873,7 +873,7 @@ public class ShoppingCouponPersistenceImpl extends BasePersistenceImpl<ShoppingC
 	 * Clears the cache for all shopping coupons.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -889,7 +889,7 @@ public class ShoppingCouponPersistenceImpl extends BasePersistenceImpl<ShoppingC
 	 * Clears the cache for the shopping coupon.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1218,54 +1218,6 @@ public class ShoppingCouponPersistenceImpl extends BasePersistenceImpl<ShoppingC
 	/**
 	 * Returns the shopping coupon with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the shopping coupon
-	 * @return the shopping coupon, or <code>null</code> if a shopping coupon with the primary key could not be found
-	 */
-	@Override
-	public ShoppingCoupon fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ShoppingCouponModelImpl.ENTITY_CACHE_ENABLED,
-				ShoppingCouponImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		ShoppingCoupon shoppingCoupon = (ShoppingCoupon)serializable;
-
-		if (shoppingCoupon == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				shoppingCoupon = (ShoppingCoupon)session.get(ShoppingCouponImpl.class,
-						primaryKey);
-
-				if (shoppingCoupon != null) {
-					cacheResult(shoppingCoupon);
-				}
-				else {
-					entityCache.putResult(ShoppingCouponModelImpl.ENTITY_CACHE_ENABLED,
-						ShoppingCouponImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ShoppingCouponModelImpl.ENTITY_CACHE_ENABLED,
-					ShoppingCouponImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return shoppingCoupon;
-	}
-
-	/**
-	 * Returns the shopping coupon with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param couponId the primary key of the shopping coupon
 	 * @return the shopping coupon, or <code>null</code> if a shopping coupon with the primary key could not be found
 	 */
@@ -1584,10 +1536,6 @@ public class ShoppingCouponPersistenceImpl extends BasePersistenceImpl<ShoppingC
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_SHOPPINGCOUPON = "SELECT shoppingCoupon FROM ShoppingCoupon shoppingCoupon";
 	private static final String _SQL_SELECT_SHOPPINGCOUPON_WHERE_PKS_IN = "SELECT shoppingCoupon FROM ShoppingCoupon shoppingCoupon WHERE couponId IN (";
 	private static final String _SQL_SELECT_SHOPPINGCOUPON_WHERE = "SELECT shoppingCoupon FROM ShoppingCoupon shoppingCoupon WHERE ";

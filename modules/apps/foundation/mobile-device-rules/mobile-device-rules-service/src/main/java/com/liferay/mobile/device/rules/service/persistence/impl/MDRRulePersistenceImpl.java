@@ -22,8 +22,6 @@ import com.liferay.mobile.device.rules.model.impl.MDRRuleImpl;
 import com.liferay.mobile.device.rules.model.impl.MDRRuleModelImpl;
 import com.liferay.mobile.device.rules.service.persistence.MDRRulePersistence;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -1980,6 +1978,8 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 
 	public MDRRulePersistenceImpl() {
 		setModelClass(MDRRule.class);
+		setModelImplClass(MDRRuleImpl.class);
+		setEntityCacheEnabled(MDRRuleModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2020,7 +2020,7 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 	 * Clears the cache for all m d r rules.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2036,7 +2036,7 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 	 * Clears the cache for the m d r rule.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2411,53 +2411,6 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 	/**
 	 * Returns the m d r rule with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the m d r rule
-	 * @return the m d r rule, or <code>null</code> if a m d r rule with the primary key could not be found
-	 */
-	@Override
-	public MDRRule fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(MDRRuleModelImpl.ENTITY_CACHE_ENABLED,
-				MDRRuleImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		MDRRule mdrRule = (MDRRule)serializable;
-
-		if (mdrRule == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				mdrRule = (MDRRule)session.get(MDRRuleImpl.class, primaryKey);
-
-				if (mdrRule != null) {
-					cacheResult(mdrRule);
-				}
-				else {
-					entityCache.putResult(MDRRuleModelImpl.ENTITY_CACHE_ENABLED,
-						MDRRuleImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(MDRRuleModelImpl.ENTITY_CACHE_ENABLED,
-					MDRRuleImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return mdrRule;
-	}
-
-	/**
-	 * Returns the m d r rule with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param ruleId the primary key of the m d r rule
 	 * @return the m d r rule, or <code>null</code> if a m d r rule with the primary key could not be found
 	 */
@@ -2775,10 +2728,6 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_MDRRULE = "SELECT mdrRule FROM MDRRule mdrRule";
 	private static final String _SQL_SELECT_MDRRULE_WHERE_PKS_IN = "SELECT mdrRule FROM MDRRule mdrRule WHERE ruleId IN (";
 	private static final String _SQL_SELECT_MDRRULE_WHERE = "SELECT mdrRule FROM MDRRule mdrRule WHERE ";

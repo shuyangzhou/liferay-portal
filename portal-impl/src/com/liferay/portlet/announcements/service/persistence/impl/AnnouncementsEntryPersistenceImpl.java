@@ -21,10 +21,6 @@ import com.liferay.announcements.kernel.model.AnnouncementsEntry;
 import com.liferay.announcements.kernel.service.persistence.AnnouncementsEntryPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -4866,6 +4862,8 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 
 	public AnnouncementsEntryPersistenceImpl() {
 		setModelClass(AnnouncementsEntry.class);
+		setModelImplClass(AnnouncementsEntryImpl.class);
+		setEntityCacheEnabled(AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -4906,7 +4904,7 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 	 * Clears the cache for all announcements entries.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -4922,7 +4920,7 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 	 * Clears the cache for the announcements entry.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -5324,54 +5322,6 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 	/**
 	 * Returns the announcements entry with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the announcements entry
-	 * @return the announcements entry, or <code>null</code> if a announcements entry with the primary key could not be found
-	 */
-	@Override
-	public AnnouncementsEntry fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
-				AnnouncementsEntryImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		AnnouncementsEntry announcementsEntry = (AnnouncementsEntry)serializable;
-
-		if (announcementsEntry == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				announcementsEntry = (AnnouncementsEntry)session.get(AnnouncementsEntryImpl.class,
-						primaryKey);
-
-				if (announcementsEntry != null) {
-					cacheResult(announcementsEntry);
-				}
-				else {
-					entityCache.putResult(AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
-						AnnouncementsEntryImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(AnnouncementsEntryModelImpl.ENTITY_CACHE_ENABLED,
-					AnnouncementsEntryImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return announcementsEntry;
-	}
-
-	/**
-	 * Returns the announcements entry with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param entryId the primary key of the announcements entry
 	 * @return the announcements entry, or <code>null</code> if a announcements entry with the primary key could not be found
 	 */
@@ -5691,8 +5641,6 @@ public class AnnouncementsEntryPersistenceImpl extends BasePersistenceImpl<Annou
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_ANNOUNCEMENTSENTRY = "SELECT announcementsEntry FROM AnnouncementsEntry announcementsEntry";
 	private static final String _SQL_SELECT_ANNOUNCEMENTSENTRY_WHERE_PKS_IN = "SELECT announcementsEntry FROM AnnouncementsEntry announcementsEntry WHERE entryId IN (";
 	private static final String _SQL_SELECT_ANNOUNCEMENTSENTRY_WHERE = "SELECT announcementsEntry FROM AnnouncementsEntry announcementsEntry WHERE ";

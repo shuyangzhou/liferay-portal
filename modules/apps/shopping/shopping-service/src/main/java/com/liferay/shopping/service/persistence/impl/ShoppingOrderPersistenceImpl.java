@@ -16,8 +16,6 @@ package com.liferay.shopping.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -2515,6 +2513,8 @@ public class ShoppingOrderPersistenceImpl extends BasePersistenceImpl<ShoppingOr
 
 	public ShoppingOrderPersistenceImpl() {
 		setModelClass(ShoppingOrder.class);
+		setModelImplClass(ShoppingOrderImpl.class);
+		setEntityCacheEnabled(ShoppingOrderModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2560,7 +2560,7 @@ public class ShoppingOrderPersistenceImpl extends BasePersistenceImpl<ShoppingOr
 	 * Clears the cache for all shopping orders.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2576,7 +2576,7 @@ public class ShoppingOrderPersistenceImpl extends BasePersistenceImpl<ShoppingOr
 	 * Clears the cache for the shopping order.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2991,54 +2991,6 @@ public class ShoppingOrderPersistenceImpl extends BasePersistenceImpl<ShoppingOr
 	/**
 	 * Returns the shopping order with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the shopping order
-	 * @return the shopping order, or <code>null</code> if a shopping order with the primary key could not be found
-	 */
-	@Override
-	public ShoppingOrder fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ShoppingOrderModelImpl.ENTITY_CACHE_ENABLED,
-				ShoppingOrderImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		ShoppingOrder shoppingOrder = (ShoppingOrder)serializable;
-
-		if (shoppingOrder == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				shoppingOrder = (ShoppingOrder)session.get(ShoppingOrderImpl.class,
-						primaryKey);
-
-				if (shoppingOrder != null) {
-					cacheResult(shoppingOrder);
-				}
-				else {
-					entityCache.putResult(ShoppingOrderModelImpl.ENTITY_CACHE_ENABLED,
-						ShoppingOrderImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ShoppingOrderModelImpl.ENTITY_CACHE_ENABLED,
-					ShoppingOrderImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return shoppingOrder;
-	}
-
-	/**
-	 * Returns the shopping order with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param orderId the primary key of the shopping order
 	 * @return the shopping order, or <code>null</code> if a shopping order with the primary key could not be found
 	 */
@@ -3357,10 +3309,6 @@ public class ShoppingOrderPersistenceImpl extends BasePersistenceImpl<ShoppingOr
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_SHOPPINGORDER = "SELECT shoppingOrder FROM ShoppingOrder shoppingOrder";
 	private static final String _SQL_SELECT_SHOPPINGORDER_WHERE_PKS_IN = "SELECT shoppingOrder FROM ShoppingOrder shoppingOrder WHERE orderId IN (";
 	private static final String _SQL_SELECT_SHOPPINGORDER_WHERE = "SELECT shoppingOrder FROM ShoppingOrder shoppingOrder WHERE ";

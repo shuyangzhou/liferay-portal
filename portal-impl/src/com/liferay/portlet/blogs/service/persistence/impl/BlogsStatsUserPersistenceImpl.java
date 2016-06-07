@@ -21,10 +21,6 @@ import com.liferay.blogs.kernel.model.BlogsStatsUser;
 import com.liferay.blogs.kernel.service.persistence.BlogsStatsUserPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -2970,6 +2966,8 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 
 	public BlogsStatsUserPersistenceImpl() {
 		setModelClass(BlogsStatsUser.class);
+		setModelImplClass(BlogsStatsUserImpl.class);
+		setEntityCacheEnabled(BlogsStatsUserModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -3013,7 +3011,7 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 	 * Clears the cache for all blogs stats users.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -3029,7 +3027,7 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 	 * Clears the cache for the blogs stats user.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -3377,54 +3375,6 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 	/**
 	 * Returns the blogs stats user with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the blogs stats user
-	 * @return the blogs stats user, or <code>null</code> if a blogs stats user with the primary key could not be found
-	 */
-	@Override
-	public BlogsStatsUser fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(BlogsStatsUserModelImpl.ENTITY_CACHE_ENABLED,
-				BlogsStatsUserImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		BlogsStatsUser blogsStatsUser = (BlogsStatsUser)serializable;
-
-		if (blogsStatsUser == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				blogsStatsUser = (BlogsStatsUser)session.get(BlogsStatsUserImpl.class,
-						primaryKey);
-
-				if (blogsStatsUser != null) {
-					cacheResult(blogsStatsUser);
-				}
-				else {
-					entityCache.putResult(BlogsStatsUserModelImpl.ENTITY_CACHE_ENABLED,
-						BlogsStatsUserImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(BlogsStatsUserModelImpl.ENTITY_CACHE_ENABLED,
-					BlogsStatsUserImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return blogsStatsUser;
-	}
-
-	/**
-	 * Returns the blogs stats user with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param statsUserId the primary key of the blogs stats user
 	 * @return the blogs stats user, or <code>null</code> if a blogs stats user with the primary key could not be found
 	 */
@@ -3738,8 +3688,6 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_BLOGSSTATSUSER = "SELECT blogsStatsUser FROM BlogsStatsUser blogsStatsUser";
 	private static final String _SQL_SELECT_BLOGSSTATSUSER_WHERE_PKS_IN = "SELECT blogsStatsUser FROM BlogsStatsUser blogsStatsUser WHERE statsUserId IN (";
 	private static final String _SQL_SELECT_BLOGSSTATSUSER_WHERE = "SELECT blogsStatsUser FROM BlogsStatsUser blogsStatsUser WHERE ";

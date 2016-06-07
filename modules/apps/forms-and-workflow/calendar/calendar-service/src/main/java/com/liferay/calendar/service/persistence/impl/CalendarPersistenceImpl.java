@@ -22,8 +22,6 @@ import com.liferay.calendar.model.impl.CalendarImpl;
 import com.liferay.calendar.model.impl.CalendarModelImpl;
 import com.liferay.calendar.service.persistence.CalendarPersistence;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -3783,6 +3781,8 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 
 	public CalendarPersistenceImpl() {
 		setModelClass(Calendar.class);
+		setModelImplClass(CalendarImpl.class);
+		setEntityCacheEnabled(CalendarModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -3823,7 +3823,7 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 	 * Clears the cache for all calendars.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -3839,7 +3839,7 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 	 * Clears the cache for the calendar.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -4267,53 +4267,6 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 	/**
 	 * Returns the calendar with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the calendar
-	 * @return the calendar, or <code>null</code> if a calendar with the primary key could not be found
-	 */
-	@Override
-	public Calendar fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(CalendarModelImpl.ENTITY_CACHE_ENABLED,
-				CalendarImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Calendar calendar = (Calendar)serializable;
-
-		if (calendar == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				calendar = (Calendar)session.get(CalendarImpl.class, primaryKey);
-
-				if (calendar != null) {
-					cacheResult(calendar);
-				}
-				else {
-					entityCache.putResult(CalendarModelImpl.ENTITY_CACHE_ENABLED,
-						CalendarImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(CalendarModelImpl.ENTITY_CACHE_ENABLED,
-					CalendarImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return calendar;
-	}
-
-	/**
-	 * Returns the calendar with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param calendarId the primary key of the calendar
 	 * @return the calendar, or <code>null</code> if a calendar with the primary key could not be found
 	 */
@@ -4631,10 +4584,6 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_CALENDAR = "SELECT calendar FROM Calendar calendar";
 	private static final String _SQL_SELECT_CALENDAR_WHERE_PKS_IN = "SELECT calendar FROM Calendar calendar WHERE calendarId IN (";
 	private static final String _SQL_SELECT_CALENDAR_WHERE = "SELECT calendar FROM Calendar calendar WHERE ";

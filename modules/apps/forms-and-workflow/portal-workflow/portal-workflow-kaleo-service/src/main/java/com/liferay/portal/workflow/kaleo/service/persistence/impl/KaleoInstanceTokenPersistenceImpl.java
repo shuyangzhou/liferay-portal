@@ -16,8 +16,6 @@ package com.liferay.portal.workflow.kaleo.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -2853,6 +2851,8 @@ public class KaleoInstanceTokenPersistenceImpl extends BasePersistenceImpl<Kaleo
 
 	public KaleoInstanceTokenPersistenceImpl() {
 		setModelClass(KaleoInstanceToken.class);
+		setModelImplClass(KaleoInstanceTokenImpl.class);
+		setEntityCacheEnabled(KaleoInstanceTokenModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2893,7 +2893,7 @@ public class KaleoInstanceTokenPersistenceImpl extends BasePersistenceImpl<Kaleo
 	 * Clears the cache for all kaleo instance tokens.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2909,7 +2909,7 @@ public class KaleoInstanceTokenPersistenceImpl extends BasePersistenceImpl<Kaleo
 	 * Clears the cache for the kaleo instance token.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -3280,54 +3280,6 @@ public class KaleoInstanceTokenPersistenceImpl extends BasePersistenceImpl<Kaleo
 	/**
 	 * Returns the kaleo instance token with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the kaleo instance token
-	 * @return the kaleo instance token, or <code>null</code> if a kaleo instance token with the primary key could not be found
-	 */
-	@Override
-	public KaleoInstanceToken fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(KaleoInstanceTokenModelImpl.ENTITY_CACHE_ENABLED,
-				KaleoInstanceTokenImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		KaleoInstanceToken kaleoInstanceToken = (KaleoInstanceToken)serializable;
-
-		if (kaleoInstanceToken == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				kaleoInstanceToken = (KaleoInstanceToken)session.get(KaleoInstanceTokenImpl.class,
-						primaryKey);
-
-				if (kaleoInstanceToken != null) {
-					cacheResult(kaleoInstanceToken);
-				}
-				else {
-					entityCache.putResult(KaleoInstanceTokenModelImpl.ENTITY_CACHE_ENABLED,
-						KaleoInstanceTokenImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(KaleoInstanceTokenModelImpl.ENTITY_CACHE_ENABLED,
-					KaleoInstanceTokenImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return kaleoInstanceToken;
-	}
-
-	/**
-	 * Returns the kaleo instance token with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param kaleoInstanceTokenId the primary key of the kaleo instance token
 	 * @return the kaleo instance token, or <code>null</code> if a kaleo instance token with the primary key could not be found
 	 */
@@ -3642,10 +3594,6 @@ public class KaleoInstanceTokenPersistenceImpl extends BasePersistenceImpl<Kaleo
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_KALEOINSTANCETOKEN = "SELECT kaleoInstanceToken FROM KaleoInstanceToken kaleoInstanceToken";
 	private static final String _SQL_SELECT_KALEOINSTANCETOKEN_WHERE_PKS_IN = "SELECT kaleoInstanceToken FROM KaleoInstanceToken kaleoInstanceToken WHERE kaleoInstanceTokenId IN (";
 	private static final String _SQL_SELECT_KALEOINSTANCETOKEN_WHERE = "SELECT kaleoInstanceToken FROM KaleoInstanceToken kaleoInstanceToken WHERE ";

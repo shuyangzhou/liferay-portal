@@ -22,8 +22,6 @@ import com.liferay.knowledge.base.model.impl.KBArticleImpl;
 import com.liferay.knowledge.base.model.impl.KBArticleModelImpl;
 import com.liferay.knowledge.base.service.persistence.KBArticlePersistence;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -31804,6 +31802,8 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 
 	public KBArticlePersistenceImpl() {
 		setModelClass(KBArticle.class);
+		setModelImplClass(KBArticleImpl.class);
+		setEntityCacheEnabled(KBArticleModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -31855,7 +31855,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 	 * Clears the cache for all k b articles.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -31871,7 +31871,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 	 * Clears the cache for the k b article.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -32862,54 +32862,6 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 	/**
 	 * Returns the k b article with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the k b article
-	 * @return the k b article, or <code>null</code> if a k b article with the primary key could not be found
-	 */
-	@Override
-	public KBArticle fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(KBArticleModelImpl.ENTITY_CACHE_ENABLED,
-				KBArticleImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		KBArticle kbArticle = (KBArticle)serializable;
-
-		if (kbArticle == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				kbArticle = (KBArticle)session.get(KBArticleImpl.class,
-						primaryKey);
-
-				if (kbArticle != null) {
-					cacheResult(kbArticle);
-				}
-				else {
-					entityCache.putResult(KBArticleModelImpl.ENTITY_CACHE_ENABLED,
-						KBArticleImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(KBArticleModelImpl.ENTITY_CACHE_ENABLED,
-					KBArticleImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return kbArticle;
-	}
-
-	/**
-	 * Returns the k b article with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param kbArticleId the primary key of the k b article
 	 * @return the k b article, or <code>null</code> if a k b article with the primary key could not be found
 	 */
@@ -33228,10 +33180,6 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_KBARTICLE = "SELECT kbArticle FROM KBArticle kbArticle";
 	private static final String _SQL_SELECT_KBARTICLE_WHERE_PKS_IN = "SELECT kbArticle FROM KBArticle kbArticle WHERE kbArticleId IN (";
 	private static final String _SQL_SELECT_KBARTICLE_WHERE = "SELECT kbArticle FROM KBArticle kbArticle WHERE ";

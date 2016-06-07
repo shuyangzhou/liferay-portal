@@ -16,10 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -919,6 +915,8 @@ public class ResourceActionPersistenceImpl extends BasePersistenceImpl<ResourceA
 
 	public ResourceActionPersistenceImpl() {
 		setModelClass(ResourceAction.class);
+		setModelImplClass(ResourceActionImpl.class);
+		setEntityCacheEnabled(ResourceActionModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -962,7 +960,7 @@ public class ResourceActionPersistenceImpl extends BasePersistenceImpl<ResourceA
 	 * Clears the cache for all resource actions.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -978,7 +976,7 @@ public class ResourceActionPersistenceImpl extends BasePersistenceImpl<ResourceA
 	 * Clears the cache for the resource action.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1277,54 +1275,6 @@ public class ResourceActionPersistenceImpl extends BasePersistenceImpl<ResourceA
 	public ResourceAction findByPrimaryKey(long resourceActionId)
 		throws NoSuchResourceActionException {
 		return findByPrimaryKey((Serializable)resourceActionId);
-	}
-
-	/**
-	 * Returns the resource action with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the resource action
-	 * @return the resource action, or <code>null</code> if a resource action with the primary key could not be found
-	 */
-	@Override
-	public ResourceAction fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ResourceActionModelImpl.ENTITY_CACHE_ENABLED,
-				ResourceActionImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		ResourceAction resourceAction = (ResourceAction)serializable;
-
-		if (resourceAction == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				resourceAction = (ResourceAction)session.get(ResourceActionImpl.class,
-						primaryKey);
-
-				if (resourceAction != null) {
-					cacheResult(resourceAction);
-				}
-				else {
-					entityCache.putResult(ResourceActionModelImpl.ENTITY_CACHE_ENABLED,
-						ResourceActionImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ResourceActionModelImpl.ENTITY_CACHE_ENABLED,
-					ResourceActionImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return resourceAction;
 	}
 
 	/**
@@ -1641,8 +1591,6 @@ public class ResourceActionPersistenceImpl extends BasePersistenceImpl<ResourceA
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_RESOURCEACTION = "SELECT resourceAction FROM ResourceAction resourceAction";
 	private static final String _SQL_SELECT_RESOURCEACTION_WHERE_PKS_IN = "SELECT resourceAction FROM ResourceAction resourceAction WHERE resourceActionId IN (";
 	private static final String _SQL_SELECT_RESOURCEACTION_WHERE = "SELECT resourceAction FROM ResourceAction resourceAction WHERE ";

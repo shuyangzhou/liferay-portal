@@ -22,8 +22,6 @@ import com.liferay.marketplace.model.impl.AppImpl;
 import com.liferay.marketplace.model.impl.AppModelImpl;
 import com.liferay.marketplace.service.persistence.AppPersistence;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -2450,6 +2448,8 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 
 	public AppPersistenceImpl() {
 		setModelClass(App.class);
+		setModelImplClass(AppImpl.class);
+		setEntityCacheEnabled(AppModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2490,7 +2490,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	 * Clears the cache for all apps.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2506,7 +2506,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	 * Clears the cache for the app.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2882,53 +2882,6 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 	/**
 	 * Returns the app with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the app
-	 * @return the app, or <code>null</code> if a app with the primary key could not be found
-	 */
-	@Override
-	public App fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(AppModelImpl.ENTITY_CACHE_ENABLED,
-				AppImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		App app = (App)serializable;
-
-		if (app == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				app = (App)session.get(AppImpl.class, primaryKey);
-
-				if (app != null) {
-					cacheResult(app);
-				}
-				else {
-					entityCache.putResult(AppModelImpl.ENTITY_CACHE_ENABLED,
-						AppImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(AppModelImpl.ENTITY_CACHE_ENABLED,
-					AppImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return app;
-	}
-
-	/**
-	 * Returns the app with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param appId the primary key of the app
 	 * @return the app, or <code>null</code> if a app with the primary key could not be found
 	 */
@@ -3244,10 +3197,6 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_APP = "SELECT app FROM App app";
 	private static final String _SQL_SELECT_APP_WHERE_PKS_IN = "SELECT app FROM App app WHERE appId IN (";
 	private static final String _SQL_SELECT_APP_WHERE = "SELECT app FROM App app WHERE ";

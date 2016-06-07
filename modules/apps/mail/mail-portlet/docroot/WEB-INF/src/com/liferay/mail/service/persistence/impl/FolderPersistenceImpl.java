@@ -23,10 +23,6 @@ import com.liferay.mail.model.impl.FolderModelImpl;
 import com.liferay.mail.service.persistence.FolderPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -856,6 +852,8 @@ public class FolderPersistenceImpl extends BasePersistenceImpl<Folder>
 
 	public FolderPersistenceImpl() {
 		setModelClass(Folder.class);
+		setModelImplClass(FolderImpl.class);
+		setEntityCacheEnabled(FolderModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -896,7 +894,7 @@ public class FolderPersistenceImpl extends BasePersistenceImpl<Folder>
 	 * Clears the cache for all folders.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -912,7 +910,7 @@ public class FolderPersistenceImpl extends BasePersistenceImpl<Folder>
 	 * Clears the cache for the folder.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1238,53 +1236,6 @@ public class FolderPersistenceImpl extends BasePersistenceImpl<Folder>
 	/**
 	 * Returns the folder with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the folder
-	 * @return the folder, or <code>null</code> if a folder with the primary key could not be found
-	 */
-	@Override
-	public Folder fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(FolderModelImpl.ENTITY_CACHE_ENABLED,
-				FolderImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Folder folder = (Folder)serializable;
-
-		if (folder == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				folder = (Folder)session.get(FolderImpl.class, primaryKey);
-
-				if (folder != null) {
-					cacheResult(folder);
-				}
-				else {
-					entityCache.putResult(FolderModelImpl.ENTITY_CACHE_ENABLED,
-						FolderImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(FolderModelImpl.ENTITY_CACHE_ENABLED,
-					FolderImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return folder;
-	}
-
-	/**
-	 * Returns the folder with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param folderId the primary key of the folder
 	 * @return the folder, or <code>null</code> if a folder with the primary key could not be found
 	 */
@@ -1597,8 +1548,6 @@ public class FolderPersistenceImpl extends BasePersistenceImpl<Folder>
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_FOLDER = "SELECT folder FROM Folder folder";
 	private static final String _SQL_SELECT_FOLDER_WHERE_PKS_IN = "SELECT folder FROM Folder folder WHERE folderId IN (";
 	private static final String _SQL_SELECT_FOLDER_WHERE = "SELECT folder FROM Folder folder WHERE ";

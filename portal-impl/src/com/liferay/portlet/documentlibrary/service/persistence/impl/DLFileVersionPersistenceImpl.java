@@ -21,10 +21,6 @@ import com.liferay.document.library.kernel.model.DLFileVersion;
 import com.liferay.document.library.kernel.service.persistence.DLFileVersionPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -5690,6 +5686,8 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 
 	public DLFileVersionPersistenceImpl() {
 		setModelClass(DLFileVersion.class);
+		setModelImplClass(DLFileVersionImpl.class);
+		setEntityCacheEnabled(DLFileVersionModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -5738,7 +5736,7 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	 * Clears the cache for all document library file versions.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -5754,7 +5752,7 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	 * Clears the cache for the document library file version.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -6299,54 +6297,6 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	/**
 	 * Returns the document library file version with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the document library file version
-	 * @return the document library file version, or <code>null</code> if a document library file version with the primary key could not be found
-	 */
-	@Override
-	public DLFileVersion fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DLFileVersionModelImpl.ENTITY_CACHE_ENABLED,
-				DLFileVersionImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		DLFileVersion dlFileVersion = (DLFileVersion)serializable;
-
-		if (dlFileVersion == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				dlFileVersion = (DLFileVersion)session.get(DLFileVersionImpl.class,
-						primaryKey);
-
-				if (dlFileVersion != null) {
-					cacheResult(dlFileVersion);
-				}
-				else {
-					entityCache.putResult(DLFileVersionModelImpl.ENTITY_CACHE_ENABLED,
-						DLFileVersionImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(DLFileVersionModelImpl.ENTITY_CACHE_ENABLED,
-					DLFileVersionImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return dlFileVersion;
-	}
-
-	/**
-	 * Returns the document library file version with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param fileVersionId the primary key of the document library file version
 	 * @return the document library file version, or <code>null</code> if a document library file version with the primary key could not be found
 	 */
@@ -6665,8 +6615,6 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_DLFILEVERSION = "SELECT dlFileVersion FROM DLFileVersion dlFileVersion";
 	private static final String _SQL_SELECT_DLFILEVERSION_WHERE_PKS_IN = "SELECT dlFileVersion FROM DLFileVersion dlFileVersion WHERE fileVersionId IN (";
 	private static final String _SQL_SELECT_DLFILEVERSION_WHERE = "SELECT dlFileVersion FROM DLFileVersion dlFileVersion WHERE ";

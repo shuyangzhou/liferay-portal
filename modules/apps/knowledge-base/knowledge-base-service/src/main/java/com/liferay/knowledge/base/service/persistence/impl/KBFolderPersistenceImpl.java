@@ -22,8 +22,6 @@ import com.liferay.knowledge.base.model.impl.KBFolderImpl;
 import com.liferay.knowledge.base.model.impl.KBFolderModelImpl;
 import com.liferay.knowledge.base.service.persistence.KBFolderPersistence;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -2972,6 +2970,8 @@ public class KBFolderPersistenceImpl extends BasePersistenceImpl<KBFolder>
 
 	public KBFolderPersistenceImpl() {
 		setModelClass(KBFolder.class);
+		setModelImplClass(KBFolderImpl.class);
+		setEntityCacheEnabled(KBFolderModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -3024,7 +3024,7 @@ public class KBFolderPersistenceImpl extends BasePersistenceImpl<KBFolder>
 	 * Clears the cache for all k b folders.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -3040,7 +3040,7 @@ public class KBFolderPersistenceImpl extends BasePersistenceImpl<KBFolder>
 	 * Clears the cache for the k b folder.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -3513,53 +3513,6 @@ public class KBFolderPersistenceImpl extends BasePersistenceImpl<KBFolder>
 	/**
 	 * Returns the k b folder with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the k b folder
-	 * @return the k b folder, or <code>null</code> if a k b folder with the primary key could not be found
-	 */
-	@Override
-	public KBFolder fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(KBFolderModelImpl.ENTITY_CACHE_ENABLED,
-				KBFolderImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		KBFolder kbFolder = (KBFolder)serializable;
-
-		if (kbFolder == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				kbFolder = (KBFolder)session.get(KBFolderImpl.class, primaryKey);
-
-				if (kbFolder != null) {
-					cacheResult(kbFolder);
-				}
-				else {
-					entityCache.putResult(KBFolderModelImpl.ENTITY_CACHE_ENABLED,
-						KBFolderImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(KBFolderModelImpl.ENTITY_CACHE_ENABLED,
-					KBFolderImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return kbFolder;
-	}
-
-	/**
-	 * Returns the k b folder with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param kbFolderId the primary key of the k b folder
 	 * @return the k b folder, or <code>null</code> if a k b folder with the primary key could not be found
 	 */
@@ -3877,10 +3830,6 @@ public class KBFolderPersistenceImpl extends BasePersistenceImpl<KBFolder>
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_KBFOLDER = "SELECT kbFolder FROM KBFolder kbFolder";
 	private static final String _SQL_SELECT_KBFOLDER_WHERE_PKS_IN = "SELECT kbFolder FROM KBFolder kbFolder WHERE kbFolderId IN (";
 	private static final String _SQL_SELECT_KBFOLDER_WHERE = "SELECT kbFolder FROM KBFolder kbFolder WHERE ";

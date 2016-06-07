@@ -21,10 +21,6 @@ import com.liferay.message.boards.kernel.model.MBBan;
 import com.liferay.message.boards.kernel.service.persistence.MBBanPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -3181,6 +3177,8 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 
 	public MBBanPersistenceImpl() {
 		setModelClass(MBBan.class);
+		setModelImplClass(MBBanImpl.class);
+		setEntityCacheEnabled(MBBanModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -3224,7 +3222,7 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 	 * Clears the cache for all message boards bans.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -3240,7 +3238,7 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 	 * Clears the cache for the message boards ban.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -3678,53 +3676,6 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 	/**
 	 * Returns the message boards ban with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the message boards ban
-	 * @return the message boards ban, or <code>null</code> if a message boards ban with the primary key could not be found
-	 */
-	@Override
-	public MBBan fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(MBBanModelImpl.ENTITY_CACHE_ENABLED,
-				MBBanImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		MBBan mbBan = (MBBan)serializable;
-
-		if (mbBan == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				mbBan = (MBBan)session.get(MBBanImpl.class, primaryKey);
-
-				if (mbBan != null) {
-					cacheResult(mbBan);
-				}
-				else {
-					entityCache.putResult(MBBanModelImpl.ENTITY_CACHE_ENABLED,
-						MBBanImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(MBBanModelImpl.ENTITY_CACHE_ENABLED,
-					MBBanImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return mbBan;
-	}
-
-	/**
-	 * Returns the message boards ban with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param banId the primary key of the message boards ban
 	 * @return the message boards ban, or <code>null</code> if a message boards ban with the primary key could not be found
 	 */
@@ -4042,8 +3993,6 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_MBBAN = "SELECT mbBan FROM MBBan mbBan";
 	private static final String _SQL_SELECT_MBBAN_WHERE_PKS_IN = "SELECT mbBan FROM MBBan mbBan WHERE banId IN (";
 	private static final String _SQL_SELECT_MBBAN_WHERE = "SELECT mbBan FROM MBBan mbBan WHERE ";

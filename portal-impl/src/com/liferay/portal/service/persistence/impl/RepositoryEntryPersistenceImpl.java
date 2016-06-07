@@ -17,10 +17,6 @@ package com.liferay.portal.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -2256,6 +2252,8 @@ public class RepositoryEntryPersistenceImpl extends BasePersistenceImpl<Reposito
 
 	public RepositoryEntryPersistenceImpl() {
 		setModelClass(RepositoryEntry.class);
+		setModelImplClass(RepositoryEntryImpl.class);
+		setEntityCacheEnabled(RepositoryEntryModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2305,7 +2303,7 @@ public class RepositoryEntryPersistenceImpl extends BasePersistenceImpl<Reposito
 	 * Clears the cache for all repository entries.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2321,7 +2319,7 @@ public class RepositoryEntryPersistenceImpl extends BasePersistenceImpl<Reposito
 	 * Clears the cache for the repository entry.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2748,54 +2746,6 @@ public class RepositoryEntryPersistenceImpl extends BasePersistenceImpl<Reposito
 	/**
 	 * Returns the repository entry with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the repository entry
-	 * @return the repository entry, or <code>null</code> if a repository entry with the primary key could not be found
-	 */
-	@Override
-	public RepositoryEntry fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(RepositoryEntryModelImpl.ENTITY_CACHE_ENABLED,
-				RepositoryEntryImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		RepositoryEntry repositoryEntry = (RepositoryEntry)serializable;
-
-		if (repositoryEntry == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				repositoryEntry = (RepositoryEntry)session.get(RepositoryEntryImpl.class,
-						primaryKey);
-
-				if (repositoryEntry != null) {
-					cacheResult(repositoryEntry);
-				}
-				else {
-					entityCache.putResult(RepositoryEntryModelImpl.ENTITY_CACHE_ENABLED,
-						RepositoryEntryImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(RepositoryEntryModelImpl.ENTITY_CACHE_ENABLED,
-					RepositoryEntryImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return repositoryEntry;
-	}
-
-	/**
-	 * Returns the repository entry with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param repositoryEntryId the primary key of the repository entry
 	 * @return the repository entry, or <code>null</code> if a repository entry with the primary key could not be found
 	 */
@@ -3114,8 +3064,6 @@ public class RepositoryEntryPersistenceImpl extends BasePersistenceImpl<Reposito
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_REPOSITORYENTRY = "SELECT repositoryEntry FROM RepositoryEntry repositoryEntry";
 	private static final String _SQL_SELECT_REPOSITORYENTRY_WHERE_PKS_IN = "SELECT repositoryEntry FROM RepositoryEntry repositoryEntry WHERE repositoryEntryId IN (";
 	private static final String _SQL_SELECT_REPOSITORYENTRY_WHERE = "SELECT repositoryEntry FROM RepositoryEntry repositoryEntry WHERE ";

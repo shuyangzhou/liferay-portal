@@ -16,8 +16,6 @@ package com.liferay.portal.workflow.kaleo.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -3935,6 +3933,8 @@ public class KaleoTaskAssignmentInstancePersistenceImpl
 
 	public KaleoTaskAssignmentInstancePersistenceImpl() {
 		setModelClass(KaleoTaskAssignmentInstance.class);
+		setModelImplClass(KaleoTaskAssignmentInstanceImpl.class);
+		setEntityCacheEnabled(KaleoTaskAssignmentInstanceModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -3978,7 +3978,7 @@ public class KaleoTaskAssignmentInstancePersistenceImpl
 	 * Clears the cache for all kaleo task assignment instances.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -3994,7 +3994,7 @@ public class KaleoTaskAssignmentInstancePersistenceImpl
 	 * Clears the cache for the kaleo task assignment instance.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -4419,56 +4419,6 @@ public class KaleoTaskAssignmentInstancePersistenceImpl
 	/**
 	 * Returns the kaleo task assignment instance with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the kaleo task assignment instance
-	 * @return the kaleo task assignment instance, or <code>null</code> if a kaleo task assignment instance with the primary key could not be found
-	 */
-	@Override
-	public KaleoTaskAssignmentInstance fetchByPrimaryKey(
-		Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(KaleoTaskAssignmentInstanceModelImpl.ENTITY_CACHE_ENABLED,
-				KaleoTaskAssignmentInstanceImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		KaleoTaskAssignmentInstance kaleoTaskAssignmentInstance = (KaleoTaskAssignmentInstance)serializable;
-
-		if (kaleoTaskAssignmentInstance == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				kaleoTaskAssignmentInstance = (KaleoTaskAssignmentInstance)session.get(KaleoTaskAssignmentInstanceImpl.class,
-						primaryKey);
-
-				if (kaleoTaskAssignmentInstance != null) {
-					cacheResult(kaleoTaskAssignmentInstance);
-				}
-				else {
-					entityCache.putResult(KaleoTaskAssignmentInstanceModelImpl.ENTITY_CACHE_ENABLED,
-						KaleoTaskAssignmentInstanceImpl.class, primaryKey,
-						nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(KaleoTaskAssignmentInstanceModelImpl.ENTITY_CACHE_ENABLED,
-					KaleoTaskAssignmentInstanceImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return kaleoTaskAssignmentInstance;
-	}
-
-	/**
-	 * Returns the kaleo task assignment instance with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param kaleoTaskAssignmentInstanceId the primary key of the kaleo task assignment instance
 	 * @return the kaleo task assignment instance, or <code>null</code> if a kaleo task assignment instance with the primary key could not be found
 	 */
@@ -4785,10 +4735,6 @@ public class KaleoTaskAssignmentInstancePersistenceImpl
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_KALEOTASKASSIGNMENTINSTANCE = "SELECT kaleoTaskAssignmentInstance FROM KaleoTaskAssignmentInstance kaleoTaskAssignmentInstance";
 	private static final String _SQL_SELECT_KALEOTASKASSIGNMENTINSTANCE_WHERE_PKS_IN =
 		"SELECT kaleoTaskAssignmentInstance FROM KaleoTaskAssignmentInstance kaleoTaskAssignmentInstance WHERE kaleoTaskAssignmentInstanceId IN (";

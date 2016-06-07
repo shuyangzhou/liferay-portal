@@ -16,10 +16,6 @@ package com.liferay.portal.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -330,6 +326,8 @@ public class ReleasePersistenceImpl extends BasePersistenceImpl<Release>
 
 	public ReleasePersistenceImpl() {
 		setModelClass(Release.class);
+		setModelImplClass(ReleaseImpl.class);
+		setEntityCacheEnabled(ReleaseModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -370,7 +368,7 @@ public class ReleasePersistenceImpl extends BasePersistenceImpl<Release>
 	 * Clears the cache for all releases.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -386,7 +384,7 @@ public class ReleasePersistenceImpl extends BasePersistenceImpl<Release>
 	 * Clears the cache for the release.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -684,53 +682,6 @@ public class ReleasePersistenceImpl extends BasePersistenceImpl<Release>
 	public Release findByPrimaryKey(long releaseId)
 		throws NoSuchReleaseException {
 		return findByPrimaryKey((Serializable)releaseId);
-	}
-
-	/**
-	 * Returns the release with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the release
-	 * @return the release, or <code>null</code> if a release with the primary key could not be found
-	 */
-	@Override
-	public Release fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ReleaseModelImpl.ENTITY_CACHE_ENABLED,
-				ReleaseImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Release release = (Release)serializable;
-
-		if (release == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				release = (Release)session.get(ReleaseImpl.class, primaryKey);
-
-				if (release != null) {
-					cacheResult(release);
-				}
-				else {
-					entityCache.putResult(ReleaseModelImpl.ENTITY_CACHE_ENABLED,
-						ReleaseImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ReleaseModelImpl.ENTITY_CACHE_ENABLED,
-					ReleaseImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return release;
 	}
 
 	/**
@@ -1051,8 +1002,6 @@ public class ReleasePersistenceImpl extends BasePersistenceImpl<Release>
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_RELEASE = "SELECT release FROM Release release";
 	private static final String _SQL_SELECT_RELEASE_WHERE_PKS_IN = "SELECT release FROM Release release WHERE releaseId IN (";
 	private static final String _SQL_SELECT_RELEASE_WHERE = "SELECT release FROM Release release WHERE ";

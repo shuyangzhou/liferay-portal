@@ -17,10 +17,6 @@ package com.liferay.portal.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -1884,6 +1880,8 @@ public class RecentLayoutRevisionPersistenceImpl extends BasePersistenceImpl<Rec
 
 	public RecentLayoutRevisionPersistenceImpl() {
 		setModelClass(RecentLayoutRevision.class);
+		setModelImplClass(RecentLayoutRevisionImpl.class);
+		setEntityCacheEnabled(RecentLayoutRevisionModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1931,7 +1929,7 @@ public class RecentLayoutRevisionPersistenceImpl extends BasePersistenceImpl<Rec
 	 * Clears the cache for all recent layout revisions.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1947,7 +1945,7 @@ public class RecentLayoutRevisionPersistenceImpl extends BasePersistenceImpl<Rec
 	 * Clears the cache for the recent layout revision.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2303,54 +2301,6 @@ public class RecentLayoutRevisionPersistenceImpl extends BasePersistenceImpl<Rec
 	/**
 	 * Returns the recent layout revision with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the recent layout revision
-	 * @return the recent layout revision, or <code>null</code> if a recent layout revision with the primary key could not be found
-	 */
-	@Override
-	public RecentLayoutRevision fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(RecentLayoutRevisionModelImpl.ENTITY_CACHE_ENABLED,
-				RecentLayoutRevisionImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		RecentLayoutRevision recentLayoutRevision = (RecentLayoutRevision)serializable;
-
-		if (recentLayoutRevision == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				recentLayoutRevision = (RecentLayoutRevision)session.get(RecentLayoutRevisionImpl.class,
-						primaryKey);
-
-				if (recentLayoutRevision != null) {
-					cacheResult(recentLayoutRevision);
-				}
-				else {
-					entityCache.putResult(RecentLayoutRevisionModelImpl.ENTITY_CACHE_ENABLED,
-						RecentLayoutRevisionImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(RecentLayoutRevisionModelImpl.ENTITY_CACHE_ENABLED,
-					RecentLayoutRevisionImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return recentLayoutRevision;
-	}
-
-	/**
-	 * Returns the recent layout revision with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param recentLayoutRevisionId the primary key of the recent layout revision
 	 * @return the recent layout revision, or <code>null</code> if a recent layout revision with the primary key could not be found
 	 */
@@ -2665,8 +2615,6 @@ public class RecentLayoutRevisionPersistenceImpl extends BasePersistenceImpl<Rec
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_RECENTLAYOUTREVISION = "SELECT recentLayoutRevision FROM RecentLayoutRevision recentLayoutRevision";
 	private static final String _SQL_SELECT_RECENTLAYOUTREVISION_WHERE_PKS_IN = "SELECT recentLayoutRevision FROM RecentLayoutRevision recentLayoutRevision WHERE recentLayoutRevisionId IN (";
 	private static final String _SQL_SELECT_RECENTLAYOUTREVISION_WHERE = "SELECT recentLayoutRevision FROM RecentLayoutRevision recentLayoutRevision WHERE ";
