@@ -83,7 +83,7 @@ public class ConfigJSModulesTask
 	}
 
 	@Override
-	public void executeNode() {
+	public void executeNode() throws Exception {
 		Project project = getProject();
 
 		final File outputDir = getOutputDir();
