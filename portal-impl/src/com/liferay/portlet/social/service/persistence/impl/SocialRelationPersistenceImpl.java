@@ -17,10 +17,6 @@ package com.liferay.portlet.social.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -5674,6 +5670,8 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 
 	public SocialRelationPersistenceImpl() {
 		setModelClass(SocialRelation.class);
+		setModelImplClass(SocialRelationImpl.class);
+		setEntityCacheEnabled(SocialRelationModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -5719,7 +5717,7 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 * Clears the cache for all social relations.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -5735,7 +5733,7 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	 * Clears the cache for the social relation.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -6230,54 +6228,6 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	/**
 	 * Returns the social relation with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the social relation
-	 * @return the social relation, or <code>null</code> if a social relation with the primary key could not be found
-	 */
-	@Override
-	public SocialRelation fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(SocialRelationModelImpl.ENTITY_CACHE_ENABLED,
-				SocialRelationImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		SocialRelation socialRelation = (SocialRelation)serializable;
-
-		if (socialRelation == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				socialRelation = (SocialRelation)session.get(SocialRelationImpl.class,
-						primaryKey);
-
-				if (socialRelation != null) {
-					cacheResult(socialRelation);
-				}
-				else {
-					entityCache.putResult(SocialRelationModelImpl.ENTITY_CACHE_ENABLED,
-						SocialRelationImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(SocialRelationModelImpl.ENTITY_CACHE_ENABLED,
-					SocialRelationImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return socialRelation;
-	}
-
-	/**
-	 * Returns the social relation with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param relationId the primary key of the social relation
 	 * @return the social relation, or <code>null</code> if a social relation with the primary key could not be found
 	 */
@@ -6596,8 +6546,6 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_SOCIALRELATION = "SELECT socialRelation FROM SocialRelation socialRelation";
 	private static final String _SQL_SELECT_SOCIALRELATION_WHERE_PKS_IN = "SELECT socialRelation FROM SocialRelation socialRelation WHERE relationId IN (";
 	private static final String _SQL_SELECT_SOCIALRELATION_WHERE = "SELECT socialRelation FROM SocialRelation socialRelation WHERE ";

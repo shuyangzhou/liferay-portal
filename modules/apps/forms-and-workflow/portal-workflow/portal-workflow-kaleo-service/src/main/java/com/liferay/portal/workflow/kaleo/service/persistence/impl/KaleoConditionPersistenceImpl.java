@@ -16,8 +16,6 @@ package com.liferay.portal.workflow.kaleo.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -1330,6 +1328,8 @@ public class KaleoConditionPersistenceImpl extends BasePersistenceImpl<KaleoCond
 
 	public KaleoConditionPersistenceImpl() {
 		setModelClass(KaleoCondition.class);
+		setModelImplClass(KaleoConditionImpl.class);
+		setEntityCacheEnabled(KaleoConditionModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1372,7 +1372,7 @@ public class KaleoConditionPersistenceImpl extends BasePersistenceImpl<KaleoCond
 	 * Clears the cache for all kaleo conditions.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1388,7 +1388,7 @@ public class KaleoConditionPersistenceImpl extends BasePersistenceImpl<KaleoCond
 	 * Clears the cache for the kaleo condition.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1737,54 +1737,6 @@ public class KaleoConditionPersistenceImpl extends BasePersistenceImpl<KaleoCond
 	/**
 	 * Returns the kaleo condition with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the kaleo condition
-	 * @return the kaleo condition, or <code>null</code> if a kaleo condition with the primary key could not be found
-	 */
-	@Override
-	public KaleoCondition fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(KaleoConditionModelImpl.ENTITY_CACHE_ENABLED,
-				KaleoConditionImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		KaleoCondition kaleoCondition = (KaleoCondition)serializable;
-
-		if (kaleoCondition == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				kaleoCondition = (KaleoCondition)session.get(KaleoConditionImpl.class,
-						primaryKey);
-
-				if (kaleoCondition != null) {
-					cacheResult(kaleoCondition);
-				}
-				else {
-					entityCache.putResult(KaleoConditionModelImpl.ENTITY_CACHE_ENABLED,
-						KaleoConditionImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(KaleoConditionModelImpl.ENTITY_CACHE_ENABLED,
-					KaleoConditionImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return kaleoCondition;
-	}
-
-	/**
-	 * Returns the kaleo condition with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param kaleoConditionId the primary key of the kaleo condition
 	 * @return the kaleo condition, or <code>null</code> if a kaleo condition with the primary key could not be found
 	 */
@@ -2098,10 +2050,6 @@ public class KaleoConditionPersistenceImpl extends BasePersistenceImpl<KaleoCond
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_KALEOCONDITION = "SELECT kaleoCondition FROM KaleoCondition kaleoCondition";
 	private static final String _SQL_SELECT_KALEOCONDITION_WHERE_PKS_IN = "SELECT kaleoCondition FROM KaleoCondition kaleoCondition WHERE kaleoConditionId IN (";
 	private static final String _SQL_SELECT_KALEOCONDITION_WHERE = "SELECT kaleoCondition FROM KaleoCondition kaleoCondition WHERE ";

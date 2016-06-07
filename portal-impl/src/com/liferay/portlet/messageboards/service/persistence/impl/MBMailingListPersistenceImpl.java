@@ -21,10 +21,6 @@ import com.liferay.message.boards.kernel.model.MBMailingList;
 import com.liferay.message.boards.kernel.service.persistence.MBMailingListPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -2210,6 +2206,8 @@ public class MBMailingListPersistenceImpl extends BasePersistenceImpl<MBMailingL
 
 	public MBMailingListPersistenceImpl() {
 		setModelClass(MBMailingList.class);
+		setModelImplClass(MBMailingListImpl.class);
+		setEntityCacheEnabled(MBMailingListModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2258,7 +2256,7 @@ public class MBMailingListPersistenceImpl extends BasePersistenceImpl<MBMailingL
 	 * Clears the cache for all message boards mailing lists.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2274,7 +2272,7 @@ public class MBMailingListPersistenceImpl extends BasePersistenceImpl<MBMailingL
 	 * Clears the cache for the message boards mailing list.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2714,54 +2712,6 @@ public class MBMailingListPersistenceImpl extends BasePersistenceImpl<MBMailingL
 	/**
 	 * Returns the message boards mailing list with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the message boards mailing list
-	 * @return the message boards mailing list, or <code>null</code> if a message boards mailing list with the primary key could not be found
-	 */
-	@Override
-	public MBMailingList fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(MBMailingListModelImpl.ENTITY_CACHE_ENABLED,
-				MBMailingListImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		MBMailingList mbMailingList = (MBMailingList)serializable;
-
-		if (mbMailingList == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				mbMailingList = (MBMailingList)session.get(MBMailingListImpl.class,
-						primaryKey);
-
-				if (mbMailingList != null) {
-					cacheResult(mbMailingList);
-				}
-				else {
-					entityCache.putResult(MBMailingListModelImpl.ENTITY_CACHE_ENABLED,
-						MBMailingListImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(MBMailingListModelImpl.ENTITY_CACHE_ENABLED,
-					MBMailingListImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return mbMailingList;
-	}
-
-	/**
-	 * Returns the message boards mailing list with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param mailingListId the primary key of the message boards mailing list
 	 * @return the message boards mailing list, or <code>null</code> if a message boards mailing list with the primary key could not be found
 	 */
@@ -3080,8 +3030,6 @@ public class MBMailingListPersistenceImpl extends BasePersistenceImpl<MBMailingL
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_MBMAILINGLIST = "SELECT mbMailingList FROM MBMailingList mbMailingList";
 	private static final String _SQL_SELECT_MBMAILINGLIST_WHERE_PKS_IN = "SELECT mbMailingList FROM MBMailingList mbMailingList WHERE mailingListId IN (";
 	private static final String _SQL_SELECT_MBMAILINGLIST_WHERE = "SELECT mbMailingList FROM MBMailingList mbMailingList WHERE ";

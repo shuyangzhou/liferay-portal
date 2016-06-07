@@ -17,10 +17,6 @@ package com.liferay.portal.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -9391,6 +9387,8 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 
 	public GroupPersistenceImpl() {
 		setModelClass(Group.class);
+		setModelImplClass(GroupImpl.class);
+		setEntityCacheEnabled(GroupModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -9457,7 +9455,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * Clears the cache for all groups.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -9473,7 +9471,7 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	 * Clears the cache for the group.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -10277,53 +10275,6 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	@Override
 	public Group findByPrimaryKey(long groupId) throws NoSuchGroupException {
 		return findByPrimaryKey((Serializable)groupId);
-	}
-
-	/**
-	 * Returns the group with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the group
-	 * @return the group, or <code>null</code> if a group with the primary key could not be found
-	 */
-	@Override
-	public Group fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(GroupModelImpl.ENTITY_CACHE_ENABLED,
-				GroupImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Group group = (Group)serializable;
-
-		if (group == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				group = (Group)session.get(GroupImpl.class, primaryKey);
-
-				if (group != null) {
-					cacheResult(group);
-				}
-				else {
-					entityCache.putResult(GroupModelImpl.ENTITY_CACHE_ENABLED,
-						GroupImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(GroupModelImpl.ENTITY_CACHE_ENABLED,
-					GroupImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return group;
 	}
 
 	/**
@@ -11866,8 +11817,6 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	@BeanReference(type = OrganizationPersistence.class)
 	protected OrganizationPersistence organizationPersistence;
 	protected TableMapper<Group, com.liferay.portal.kernel.model.Organization> groupToOrganizationTableMapper;

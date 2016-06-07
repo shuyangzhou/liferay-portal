@@ -16,8 +16,6 @@ package com.liferay.shopping.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -596,6 +594,8 @@ public class ShoppingOrderItemPersistenceImpl extends BasePersistenceImpl<Shoppi
 
 	public ShoppingOrderItemPersistenceImpl() {
 		setModelClass(ShoppingOrderItem.class);
+		setModelImplClass(ShoppingOrderItemImpl.class);
+		setEntityCacheEnabled(ShoppingOrderItemModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -636,7 +636,7 @@ public class ShoppingOrderItemPersistenceImpl extends BasePersistenceImpl<Shoppi
 	 * Clears the cache for all shopping order items.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -652,7 +652,7 @@ public class ShoppingOrderItemPersistenceImpl extends BasePersistenceImpl<Shoppi
 	 * Clears the cache for the shopping order item.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -902,54 +902,6 @@ public class ShoppingOrderItemPersistenceImpl extends BasePersistenceImpl<Shoppi
 	public ShoppingOrderItem findByPrimaryKey(long orderItemId)
 		throws NoSuchOrderItemException {
 		return findByPrimaryKey((Serializable)orderItemId);
-	}
-
-	/**
-	 * Returns the shopping order item with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the shopping order item
-	 * @return the shopping order item, or <code>null</code> if a shopping order item with the primary key could not be found
-	 */
-	@Override
-	public ShoppingOrderItem fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ShoppingOrderItemModelImpl.ENTITY_CACHE_ENABLED,
-				ShoppingOrderItemImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		ShoppingOrderItem shoppingOrderItem = (ShoppingOrderItem)serializable;
-
-		if (shoppingOrderItem == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				shoppingOrderItem = (ShoppingOrderItem)session.get(ShoppingOrderItemImpl.class,
-						primaryKey);
-
-				if (shoppingOrderItem != null) {
-					cacheResult(shoppingOrderItem);
-				}
-				else {
-					entityCache.putResult(ShoppingOrderItemModelImpl.ENTITY_CACHE_ENABLED,
-						ShoppingOrderItemImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ShoppingOrderItemModelImpl.ENTITY_CACHE_ENABLED,
-					ShoppingOrderItemImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return shoppingOrderItem;
 	}
 
 	/**
@@ -1268,10 +1220,6 @@ public class ShoppingOrderItemPersistenceImpl extends BasePersistenceImpl<Shoppi
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_SHOPPINGORDERITEM = "SELECT shoppingOrderItem FROM ShoppingOrderItem shoppingOrderItem";
 	private static final String _SQL_SELECT_SHOPPINGORDERITEM_WHERE_PKS_IN = "SELECT shoppingOrderItem FROM ShoppingOrderItem shoppingOrderItem WHERE orderItemId IN (";
 	private static final String _SQL_SELECT_SHOPPINGORDERITEM_WHERE = "SELECT shoppingOrderItem FROM ShoppingOrderItem shoppingOrderItem WHERE ";

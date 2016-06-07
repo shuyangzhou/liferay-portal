@@ -16,8 +16,6 @@ package com.liferay.shopping.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -2152,6 +2150,8 @@ public class ShoppingCategoryPersistenceImpl extends BasePersistenceImpl<Shoppin
 
 	public ShoppingCategoryPersistenceImpl() {
 		setModelClass(ShoppingCategory.class);
+		setModelImplClass(ShoppingCategoryImpl.class);
+		setEntityCacheEnabled(ShoppingCategoryModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2197,7 +2197,7 @@ public class ShoppingCategoryPersistenceImpl extends BasePersistenceImpl<Shoppin
 	 * Clears the cache for all shopping categories.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2213,7 +2213,7 @@ public class ShoppingCategoryPersistenceImpl extends BasePersistenceImpl<Shoppin
 	 * Clears the cache for the shopping category.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2569,54 +2569,6 @@ public class ShoppingCategoryPersistenceImpl extends BasePersistenceImpl<Shoppin
 	/**
 	 * Returns the shopping category with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the shopping category
-	 * @return the shopping category, or <code>null</code> if a shopping category with the primary key could not be found
-	 */
-	@Override
-	public ShoppingCategory fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ShoppingCategoryModelImpl.ENTITY_CACHE_ENABLED,
-				ShoppingCategoryImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		ShoppingCategory shoppingCategory = (ShoppingCategory)serializable;
-
-		if (shoppingCategory == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				shoppingCategory = (ShoppingCategory)session.get(ShoppingCategoryImpl.class,
-						primaryKey);
-
-				if (shoppingCategory != null) {
-					cacheResult(shoppingCategory);
-				}
-				else {
-					entityCache.putResult(ShoppingCategoryModelImpl.ENTITY_CACHE_ENABLED,
-						ShoppingCategoryImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ShoppingCategoryModelImpl.ENTITY_CACHE_ENABLED,
-					ShoppingCategoryImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return shoppingCategory;
-	}
-
-	/**
-	 * Returns the shopping category with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param categoryId the primary key of the shopping category
 	 * @return the shopping category, or <code>null</code> if a shopping category with the primary key could not be found
 	 */
@@ -2930,10 +2882,6 @@ public class ShoppingCategoryPersistenceImpl extends BasePersistenceImpl<Shoppin
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_SHOPPINGCATEGORY = "SELECT shoppingCategory FROM ShoppingCategory shoppingCategory";
 	private static final String _SQL_SELECT_SHOPPINGCATEGORY_WHERE_PKS_IN = "SELECT shoppingCategory FROM ShoppingCategory shoppingCategory WHERE categoryId IN (";
 	private static final String _SQL_SELECT_SHOPPINGCATEGORY_WHERE = "SELECT shoppingCategory FROM ShoppingCategory shoppingCategory WHERE ";

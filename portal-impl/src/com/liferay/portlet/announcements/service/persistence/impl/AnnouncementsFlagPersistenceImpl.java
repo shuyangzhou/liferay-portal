@@ -21,10 +21,6 @@ import com.liferay.announcements.kernel.model.AnnouncementsFlag;
 import com.liferay.announcements.kernel.service.persistence.AnnouncementsFlagPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -850,6 +846,8 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 
 	public AnnouncementsFlagPersistenceImpl() {
 		setModelClass(AnnouncementsFlag.class);
+		setModelImplClass(AnnouncementsFlagImpl.class);
+		setEntityCacheEnabled(AnnouncementsFlagModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -896,7 +894,7 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 	 * Clears the cache for all announcements flags.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -912,7 +910,7 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 	 * Clears the cache for the announcements flag.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1218,54 +1216,6 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 	public AnnouncementsFlag findByPrimaryKey(long flagId)
 		throws NoSuchFlagException {
 		return findByPrimaryKey((Serializable)flagId);
-	}
-
-	/**
-	 * Returns the announcements flag with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the announcements flag
-	 * @return the announcements flag, or <code>null</code> if a announcements flag with the primary key could not be found
-	 */
-	@Override
-	public AnnouncementsFlag fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(AnnouncementsFlagModelImpl.ENTITY_CACHE_ENABLED,
-				AnnouncementsFlagImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		AnnouncementsFlag announcementsFlag = (AnnouncementsFlag)serializable;
-
-		if (announcementsFlag == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				announcementsFlag = (AnnouncementsFlag)session.get(AnnouncementsFlagImpl.class,
-						primaryKey);
-
-				if (announcementsFlag != null) {
-					cacheResult(announcementsFlag);
-				}
-				else {
-					entityCache.putResult(AnnouncementsFlagModelImpl.ENTITY_CACHE_ENABLED,
-						AnnouncementsFlagImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(AnnouncementsFlagModelImpl.ENTITY_CACHE_ENABLED,
-					AnnouncementsFlagImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return announcementsFlag;
 	}
 
 	/**
@@ -1584,8 +1534,6 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_ANNOUNCEMENTSFLAG = "SELECT announcementsFlag FROM AnnouncementsFlag announcementsFlag";
 	private static final String _SQL_SELECT_ANNOUNCEMENTSFLAG_WHERE_PKS_IN = "SELECT announcementsFlag FROM AnnouncementsFlag announcementsFlag WHERE flagId IN (";
 	private static final String _SQL_SELECT_ANNOUNCEMENTSFLAG_WHERE = "SELECT announcementsFlag FROM AnnouncementsFlag announcementsFlag WHERE ";

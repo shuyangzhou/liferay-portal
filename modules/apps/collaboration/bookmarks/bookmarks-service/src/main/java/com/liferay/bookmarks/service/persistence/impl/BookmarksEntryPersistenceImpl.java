@@ -22,8 +22,6 @@ import com.liferay.bookmarks.model.impl.BookmarksEntryImpl;
 import com.liferay.bookmarks.model.impl.BookmarksEntryModelImpl;
 import com.liferay.bookmarks.service.persistence.BookmarksEntryPersistence;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -12309,6 +12307,8 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 
 	public BookmarksEntryPersistenceImpl() {
 		setModelClass(BookmarksEntry.class);
+		setModelImplClass(BookmarksEntryImpl.class);
+		setEntityCacheEnabled(BookmarksEntryModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -12352,7 +12352,7 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * Clears the cache for all bookmarks entries.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -12368,7 +12368,7 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	 * Clears the cache for the bookmarks entry.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -12892,54 +12892,6 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	/**
 	 * Returns the bookmarks entry with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the bookmarks entry
-	 * @return the bookmarks entry, or <code>null</code> if a bookmarks entry with the primary key could not be found
-	 */
-	@Override
-	public BookmarksEntry fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(BookmarksEntryModelImpl.ENTITY_CACHE_ENABLED,
-				BookmarksEntryImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		BookmarksEntry bookmarksEntry = (BookmarksEntry)serializable;
-
-		if (bookmarksEntry == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				bookmarksEntry = (BookmarksEntry)session.get(BookmarksEntryImpl.class,
-						primaryKey);
-
-				if (bookmarksEntry != null) {
-					cacheResult(bookmarksEntry);
-				}
-				else {
-					entityCache.putResult(BookmarksEntryModelImpl.ENTITY_CACHE_ENABLED,
-						BookmarksEntryImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(BookmarksEntryModelImpl.ENTITY_CACHE_ENABLED,
-					BookmarksEntryImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return bookmarksEntry;
-	}
-
-	/**
-	 * Returns the bookmarks entry with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param entryId the primary key of the bookmarks entry
 	 * @return the bookmarks entry, or <code>null</code> if a bookmarks entry with the primary key could not be found
 	 */
@@ -13258,10 +13210,6 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_BOOKMARKSENTRY = "SELECT bookmarksEntry FROM BookmarksEntry bookmarksEntry";
 	private static final String _SQL_SELECT_BOOKMARKSENTRY_WHERE_PKS_IN = "SELECT bookmarksEntry FROM BookmarksEntry bookmarksEntry WHERE entryId IN (";
 	private static final String _SQL_SELECT_BOOKMARKSENTRY_WHERE = "SELECT bookmarksEntry FROM BookmarksEntry bookmarksEntry WHERE ";

@@ -22,8 +22,6 @@ import com.liferay.dynamic.data.mapping.model.impl.DDMTemplateImpl;
 import com.liferay.dynamic.data.mapping.model.impl.DDMTemplateModelImpl;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMTemplatePersistence;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -11872,6 +11870,8 @@ public class DDMTemplatePersistenceImpl extends BasePersistenceImpl<DDMTemplate>
 
 	public DDMTemplatePersistenceImpl() {
 		setModelClass(DDMTemplate.class);
+		setModelImplClass(DDMTemplateImpl.class);
+		setEntityCacheEnabled(DDMTemplateModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -11923,7 +11923,7 @@ public class DDMTemplatePersistenceImpl extends BasePersistenceImpl<DDMTemplate>
 	 * Clears the cache for all d d m templates.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -11939,7 +11939,7 @@ public class DDMTemplatePersistenceImpl extends BasePersistenceImpl<DDMTemplate>
 	 * Clears the cache for the d d m template.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -12621,54 +12621,6 @@ public class DDMTemplatePersistenceImpl extends BasePersistenceImpl<DDMTemplate>
 	/**
 	 * Returns the d d m template with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the d d m template
-	 * @return the d d m template, or <code>null</code> if a d d m template with the primary key could not be found
-	 */
-	@Override
-	public DDMTemplate fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DDMTemplateModelImpl.ENTITY_CACHE_ENABLED,
-				DDMTemplateImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		DDMTemplate ddmTemplate = (DDMTemplate)serializable;
-
-		if (ddmTemplate == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				ddmTemplate = (DDMTemplate)session.get(DDMTemplateImpl.class,
-						primaryKey);
-
-				if (ddmTemplate != null) {
-					cacheResult(ddmTemplate);
-				}
-				else {
-					entityCache.putResult(DDMTemplateModelImpl.ENTITY_CACHE_ENABLED,
-						DDMTemplateImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(DDMTemplateModelImpl.ENTITY_CACHE_ENABLED,
-					DDMTemplateImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return ddmTemplate;
-	}
-
-	/**
-	 * Returns the d d m template with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param templateId the primary key of the d d m template
 	 * @return the d d m template, or <code>null</code> if a d d m template with the primary key could not be found
 	 */
@@ -12987,10 +12939,6 @@ public class DDMTemplatePersistenceImpl extends BasePersistenceImpl<DDMTemplate>
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_DDMTEMPLATE = "SELECT ddmTemplate FROM DDMTemplate ddmTemplate";
 	private static final String _SQL_SELECT_DDMTEMPLATE_WHERE_PKS_IN = "SELECT ddmTemplate FROM DDMTemplate ddmTemplate WHERE templateId IN (";
 	private static final String _SQL_SELECT_DDMTEMPLATE_WHERE = "SELECT ddmTemplate FROM DDMTemplate ddmTemplate WHERE ";

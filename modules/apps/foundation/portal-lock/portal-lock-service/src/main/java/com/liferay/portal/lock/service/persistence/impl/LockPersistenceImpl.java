@@ -16,8 +16,6 @@ package com.liferay.portal.lock.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -2023,6 +2021,8 @@ public class LockPersistenceImpl extends BasePersistenceImpl<Lock>
 
 	public LockPersistenceImpl() {
 		setModelClass(Lock.class);
+		setModelImplClass(LockImpl.class);
+		setEntityCacheEnabled(LockModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2063,7 +2063,7 @@ public class LockPersistenceImpl extends BasePersistenceImpl<Lock>
 	 * Clears the cache for all locks.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2079,7 +2079,7 @@ public class LockPersistenceImpl extends BasePersistenceImpl<Lock>
 	 * Clears the cache for the lock.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2409,53 +2409,6 @@ public class LockPersistenceImpl extends BasePersistenceImpl<Lock>
 	/**
 	 * Returns the lock with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the lock
-	 * @return the lock, or <code>null</code> if a lock with the primary key could not be found
-	 */
-	@Override
-	public Lock fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(LockModelImpl.ENTITY_CACHE_ENABLED,
-				LockImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Lock lock = (Lock)serializable;
-
-		if (lock == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				lock = (Lock)session.get(LockImpl.class, primaryKey);
-
-				if (lock != null) {
-					cacheResult(lock);
-				}
-				else {
-					entityCache.putResult(LockModelImpl.ENTITY_CACHE_ENABLED,
-						LockImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(LockModelImpl.ENTITY_CACHE_ENABLED,
-					LockImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return lock;
-	}
-
-	/**
-	 * Returns the lock with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param lockId the primary key of the lock
 	 * @return the lock, or <code>null</code> if a lock with the primary key could not be found
 	 */
@@ -2773,10 +2726,6 @@ public class LockPersistenceImpl extends BasePersistenceImpl<Lock>
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_LOCK = "SELECT lock FROM Lock lock";
 	private static final String _SQL_SELECT_LOCK_WHERE_PKS_IN = "SELECT lock FROM Lock lock WHERE lockId IN (";
 	private static final String _SQL_SELECT_LOCK_WHERE = "SELECT lock FROM Lock lock WHERE ";

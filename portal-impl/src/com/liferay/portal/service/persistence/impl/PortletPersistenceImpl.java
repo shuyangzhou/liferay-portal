@@ -17,10 +17,6 @@ package com.liferay.portal.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -844,6 +840,8 @@ public class PortletPersistenceImpl extends BasePersistenceImpl<Portlet>
 
 	public PortletPersistenceImpl() {
 		setModelClass(Portlet.class);
+		setModelImplClass(PortletImpl.class);
+		setEntityCacheEnabled(PortletModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -885,7 +883,7 @@ public class PortletPersistenceImpl extends BasePersistenceImpl<Portlet>
 	 * Clears the cache for all portlets.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -901,7 +899,7 @@ public class PortletPersistenceImpl extends BasePersistenceImpl<Portlet>
 	 * Clears the cache for the portlet.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1197,53 +1195,6 @@ public class PortletPersistenceImpl extends BasePersistenceImpl<Portlet>
 	@Override
 	public Portlet findByPrimaryKey(long id) throws NoSuchPortletException {
 		return findByPrimaryKey((Serializable)id);
-	}
-
-	/**
-	 * Returns the portlet with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the portlet
-	 * @return the portlet, or <code>null</code> if a portlet with the primary key could not be found
-	 */
-	@Override
-	public Portlet fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(PortletModelImpl.ENTITY_CACHE_ENABLED,
-				PortletImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Portlet portlet = (Portlet)serializable;
-
-		if (portlet == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				portlet = (Portlet)session.get(PortletImpl.class, primaryKey);
-
-				if (portlet != null) {
-					cacheResult(portlet);
-				}
-				else {
-					entityCache.putResult(PortletModelImpl.ENTITY_CACHE_ENABLED,
-						PortletImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(PortletModelImpl.ENTITY_CACHE_ENABLED,
-					PortletImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return portlet;
 	}
 
 	/**
@@ -1566,8 +1517,6 @@ public class PortletPersistenceImpl extends BasePersistenceImpl<Portlet>
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_PORTLET = "SELECT portlet FROM Portlet portlet";
 	private static final String _SQL_SELECT_PORTLET_WHERE_PKS_IN = "SELECT portlet FROM Portlet portlet WHERE id_ IN (";
 	private static final String _SQL_SELECT_PORTLET_WHERE = "SELECT portlet FROM Portlet portlet WHERE ";

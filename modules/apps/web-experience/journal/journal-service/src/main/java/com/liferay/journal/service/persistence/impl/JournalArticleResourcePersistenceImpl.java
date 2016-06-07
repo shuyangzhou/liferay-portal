@@ -22,8 +22,6 @@ import com.liferay.journal.model.impl.JournalArticleResourceImpl;
 import com.liferay.journal.model.impl.JournalArticleResourceModelImpl;
 import com.liferay.journal.service.persistence.JournalArticleResourcePersistence;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -2263,6 +2261,8 @@ public class JournalArticleResourcePersistenceImpl extends BasePersistenceImpl<J
 
 	public JournalArticleResourcePersistenceImpl() {
 		setModelClass(JournalArticleResource.class);
+		setModelImplClass(JournalArticleResourceImpl.class);
+		setEntityCacheEnabled(JournalArticleResourceModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2316,7 +2316,7 @@ public class JournalArticleResourcePersistenceImpl extends BasePersistenceImpl<J
 	 * Clears the cache for all journal article resources.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2332,7 +2332,7 @@ public class JournalArticleResourcePersistenceImpl extends BasePersistenceImpl<J
 	 * Clears the cache for the journal article resource.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2735,54 +2735,6 @@ public class JournalArticleResourcePersistenceImpl extends BasePersistenceImpl<J
 	/**
 	 * Returns the journal article resource with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the journal article resource
-	 * @return the journal article resource, or <code>null</code> if a journal article resource with the primary key could not be found
-	 */
-	@Override
-	public JournalArticleResource fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(JournalArticleResourceModelImpl.ENTITY_CACHE_ENABLED,
-				JournalArticleResourceImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		JournalArticleResource journalArticleResource = (JournalArticleResource)serializable;
-
-		if (journalArticleResource == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				journalArticleResource = (JournalArticleResource)session.get(JournalArticleResourceImpl.class,
-						primaryKey);
-
-				if (journalArticleResource != null) {
-					cacheResult(journalArticleResource);
-				}
-				else {
-					entityCache.putResult(JournalArticleResourceModelImpl.ENTITY_CACHE_ENABLED,
-						JournalArticleResourceImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(JournalArticleResourceModelImpl.ENTITY_CACHE_ENABLED,
-					JournalArticleResourceImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return journalArticleResource;
-	}
-
-	/**
-	 * Returns the journal article resource with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param resourcePrimKey the primary key of the journal article resource
 	 * @return the journal article resource, or <code>null</code> if a journal article resource with the primary key could not be found
 	 */
@@ -3102,10 +3054,6 @@ public class JournalArticleResourcePersistenceImpl extends BasePersistenceImpl<J
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_JOURNALARTICLERESOURCE = "SELECT journalArticleResource FROM JournalArticleResource journalArticleResource";
 	private static final String _SQL_SELECT_JOURNALARTICLERESOURCE_WHERE_PKS_IN = "SELECT journalArticleResource FROM JournalArticleResource journalArticleResource WHERE resourcePrimKey IN (";
 	private static final String _SQL_SELECT_JOURNALARTICLERESOURCE_WHERE = "SELECT journalArticleResource FROM JournalArticleResource journalArticleResource WHERE ";

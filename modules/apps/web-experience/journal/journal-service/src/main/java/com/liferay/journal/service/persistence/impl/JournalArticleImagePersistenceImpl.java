@@ -22,8 +22,6 @@ import com.liferay.journal.model.impl.JournalArticleImageImpl;
 import com.liferay.journal.model.impl.JournalArticleImageModelImpl;
 import com.liferay.journal.service.persistence.JournalArticleImagePersistence;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -2200,6 +2198,8 @@ public class JournalArticleImagePersistenceImpl extends BasePersistenceImpl<Jour
 
 	public JournalArticleImagePersistenceImpl() {
 		setModelClass(JournalArticleImage.class);
+		setModelImplClass(JournalArticleImageImpl.class);
+		setEntityCacheEnabled(JournalArticleImageModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2250,7 +2250,7 @@ public class JournalArticleImagePersistenceImpl extends BasePersistenceImpl<Jour
 	 * Clears the cache for all journal article images.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2266,7 +2266,7 @@ public class JournalArticleImagePersistenceImpl extends BasePersistenceImpl<Jour
 	 * Clears the cache for the journal article image.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2636,54 +2636,6 @@ public class JournalArticleImagePersistenceImpl extends BasePersistenceImpl<Jour
 	/**
 	 * Returns the journal article image with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the journal article image
-	 * @return the journal article image, or <code>null</code> if a journal article image with the primary key could not be found
-	 */
-	@Override
-	public JournalArticleImage fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(JournalArticleImageModelImpl.ENTITY_CACHE_ENABLED,
-				JournalArticleImageImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		JournalArticleImage journalArticleImage = (JournalArticleImage)serializable;
-
-		if (journalArticleImage == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				journalArticleImage = (JournalArticleImage)session.get(JournalArticleImageImpl.class,
-						primaryKey);
-
-				if (journalArticleImage != null) {
-					cacheResult(journalArticleImage);
-				}
-				else {
-					entityCache.putResult(JournalArticleImageModelImpl.ENTITY_CACHE_ENABLED,
-						JournalArticleImageImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(JournalArticleImageModelImpl.ENTITY_CACHE_ENABLED,
-					JournalArticleImageImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return journalArticleImage;
-	}
-
-	/**
-	 * Returns the journal article image with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param articleImageId the primary key of the journal article image
 	 * @return the journal article image, or <code>null</code> if a journal article image with the primary key could not be found
 	 */
@@ -2998,10 +2950,6 @@ public class JournalArticleImagePersistenceImpl extends BasePersistenceImpl<Jour
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_JOURNALARTICLEIMAGE = "SELECT journalArticleImage FROM JournalArticleImage journalArticleImage";
 	private static final String _SQL_SELECT_JOURNALARTICLEIMAGE_WHERE_PKS_IN = "SELECT journalArticleImage FROM JournalArticleImage journalArticleImage WHERE articleImageId IN (";
 	private static final String _SQL_SELECT_JOURNALARTICLEIMAGE_WHERE = "SELECT journalArticleImage FROM JournalArticleImage journalArticleImage WHERE ";

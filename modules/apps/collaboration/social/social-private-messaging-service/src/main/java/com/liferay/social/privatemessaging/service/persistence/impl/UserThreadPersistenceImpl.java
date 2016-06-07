@@ -16,8 +16,6 @@ package com.liferay.social.privatemessaging.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -2454,6 +2452,8 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 
 	public UserThreadPersistenceImpl() {
 		setModelClass(UserThread.class);
+		setModelImplClass(UserThreadImpl.class);
+		setEntityCacheEnabled(UserThreadModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2496,7 +2496,7 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	 * Clears the cache for all user threads.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2512,7 +2512,7 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	 * Clears the cache for the user thread.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2905,54 +2905,6 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	/**
 	 * Returns the user thread with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the user thread
-	 * @return the user thread, or <code>null</code> if a user thread with the primary key could not be found
-	 */
-	@Override
-	public UserThread fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(UserThreadModelImpl.ENTITY_CACHE_ENABLED,
-				UserThreadImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		UserThread userThread = (UserThread)serializable;
-
-		if (userThread == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				userThread = (UserThread)session.get(UserThreadImpl.class,
-						primaryKey);
-
-				if (userThread != null) {
-					cacheResult(userThread);
-				}
-				else {
-					entityCache.putResult(UserThreadModelImpl.ENTITY_CACHE_ENABLED,
-						UserThreadImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(UserThreadModelImpl.ENTITY_CACHE_ENABLED,
-					UserThreadImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return userThread;
-	}
-
-	/**
-	 * Returns the user thread with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param userThreadId the primary key of the user thread
 	 * @return the user thread, or <code>null</code> if a user thread with the primary key could not be found
 	 */
@@ -3271,10 +3223,6 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_USERTHREAD = "SELECT userThread FROM UserThread userThread";
 	private static final String _SQL_SELECT_USERTHREAD_WHERE_PKS_IN = "SELECT userThread FROM UserThread userThread WHERE userThreadId IN (";
 	private static final String _SQL_SELECT_USERTHREAD_WHERE = "SELECT userThread FROM UserThread userThread WHERE ";

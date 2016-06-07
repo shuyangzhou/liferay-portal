@@ -16,8 +16,6 @@ package com.liferay.portal.workflow.kaleo.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -1330,6 +1328,8 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 
 	public KaleoTimerPersistenceImpl() {
 		setModelClass(KaleoTimer.class);
+		setModelImplClass(KaleoTimerImpl.class);
+		setEntityCacheEnabled(KaleoTimerModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1368,7 +1368,7 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 	 * Clears the cache for all kaleo timers.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1384,7 +1384,7 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 	 * Clears the cache for the kaleo timer.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1688,54 +1688,6 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 	public KaleoTimer findByPrimaryKey(long kaleoTimerId)
 		throws NoSuchTimerException {
 		return findByPrimaryKey((Serializable)kaleoTimerId);
-	}
-
-	/**
-	 * Returns the kaleo timer with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the kaleo timer
-	 * @return the kaleo timer, or <code>null</code> if a kaleo timer with the primary key could not be found
-	 */
-	@Override
-	public KaleoTimer fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(KaleoTimerModelImpl.ENTITY_CACHE_ENABLED,
-				KaleoTimerImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		KaleoTimer kaleoTimer = (KaleoTimer)serializable;
-
-		if (kaleoTimer == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				kaleoTimer = (KaleoTimer)session.get(KaleoTimerImpl.class,
-						primaryKey);
-
-				if (kaleoTimer != null) {
-					cacheResult(kaleoTimer);
-				}
-				else {
-					entityCache.putResult(KaleoTimerModelImpl.ENTITY_CACHE_ENABLED,
-						KaleoTimerImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(KaleoTimerModelImpl.ENTITY_CACHE_ENABLED,
-					KaleoTimerImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return kaleoTimer;
 	}
 
 	/**
@@ -2054,10 +2006,6 @@ public class KaleoTimerPersistenceImpl extends BasePersistenceImpl<KaleoTimer>
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_KALEOTIMER = "SELECT kaleoTimer FROM KaleoTimer kaleoTimer";
 	private static final String _SQL_SELECT_KALEOTIMER_WHERE_PKS_IN = "SELECT kaleoTimer FROM KaleoTimer kaleoTimer WHERE kaleoTimerId IN (";
 	private static final String _SQL_SELECT_KALEOTIMER_WHERE = "SELECT kaleoTimer FROM KaleoTimer kaleoTimer WHERE ";

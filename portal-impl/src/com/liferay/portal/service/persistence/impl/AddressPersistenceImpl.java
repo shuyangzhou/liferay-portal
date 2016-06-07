@@ -17,10 +17,6 @@ package com.liferay.portal.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -4600,6 +4596,8 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 
 	public AddressPersistenceImpl() {
 		setModelClass(Address.class);
+		setModelImplClass(AddressImpl.class);
+		setEntityCacheEnabled(AddressModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -4637,7 +4635,7 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 	 * Clears the cache for all addresses.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -4653,7 +4651,7 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 	 * Clears the cache for the address.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -5092,53 +5090,6 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 	/**
 	 * Returns the address with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the address
-	 * @return the address, or <code>null</code> if a address with the primary key could not be found
-	 */
-	@Override
-	public Address fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(AddressModelImpl.ENTITY_CACHE_ENABLED,
-				AddressImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Address address = (Address)serializable;
-
-		if (address == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				address = (Address)session.get(AddressImpl.class, primaryKey);
-
-				if (address != null) {
-					cacheResult(address);
-				}
-				else {
-					entityCache.putResult(AddressModelImpl.ENTITY_CACHE_ENABLED,
-						AddressImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(AddressModelImpl.ENTITY_CACHE_ENABLED,
-					AddressImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return address;
-	}
-
-	/**
-	 * Returns the address with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param addressId the primary key of the address
 	 * @return the address, or <code>null</code> if a address with the primary key could not be found
 	 */
@@ -5456,8 +5407,6 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_ADDRESS = "SELECT address FROM Address address";
 	private static final String _SQL_SELECT_ADDRESS_WHERE_PKS_IN = "SELECT address FROM Address address WHERE addressId IN (";
 	private static final String _SQL_SELECT_ADDRESS_WHERE = "SELECT address FROM Address address WHERE ";

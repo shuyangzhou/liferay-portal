@@ -17,10 +17,6 @@ package com.liferay.portlet.social.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -2497,6 +2493,8 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 
 	public SocialActivityCounterPersistenceImpl() {
 		setModelClass(SocialActivityCounter.class);
+		setModelImplClass(SocialActivityCounterImpl.class);
+		setEntityCacheEnabled(SocialActivityCounterModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2557,7 +2555,7 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 	 * Clears the cache for all social activity counters.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2573,7 +2571,7 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 	 * Clears the cache for the social activity counter.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -3013,54 +3011,6 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 	/**
 	 * Returns the social activity counter with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the social activity counter
-	 * @return the social activity counter, or <code>null</code> if a social activity counter with the primary key could not be found
-	 */
-	@Override
-	public SocialActivityCounter fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(SocialActivityCounterModelImpl.ENTITY_CACHE_ENABLED,
-				SocialActivityCounterImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		SocialActivityCounter socialActivityCounter = (SocialActivityCounter)serializable;
-
-		if (socialActivityCounter == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				socialActivityCounter = (SocialActivityCounter)session.get(SocialActivityCounterImpl.class,
-						primaryKey);
-
-				if (socialActivityCounter != null) {
-					cacheResult(socialActivityCounter);
-				}
-				else {
-					entityCache.putResult(SocialActivityCounterModelImpl.ENTITY_CACHE_ENABLED,
-						SocialActivityCounterImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(SocialActivityCounterModelImpl.ENTITY_CACHE_ENABLED,
-					SocialActivityCounterImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return socialActivityCounter;
-	}
-
-	/**
-	 * Returns the social activity counter with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param activityCounterId the primary key of the social activity counter
 	 * @return the social activity counter, or <code>null</code> if a social activity counter with the primary key could not be found
 	 */
@@ -3380,8 +3330,6 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_SOCIALACTIVITYCOUNTER = "SELECT socialActivityCounter FROM SocialActivityCounter socialActivityCounter";
 	private static final String _SQL_SELECT_SOCIALACTIVITYCOUNTER_WHERE_PKS_IN = "SELECT socialActivityCounter FROM SocialActivityCounter socialActivityCounter WHERE activityCounterId IN (";
 	private static final String _SQL_SELECT_SOCIALACTIVITYCOUNTER_WHERE = "SELECT socialActivityCounter FROM SocialActivityCounter socialActivityCounter WHERE ";

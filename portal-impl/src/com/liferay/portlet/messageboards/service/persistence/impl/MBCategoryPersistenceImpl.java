@@ -21,10 +21,6 @@ import com.liferay.message.boards.kernel.model.MBCategory;
 import com.liferay.message.boards.kernel.service.persistence.MBCategoryPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -9811,6 +9807,8 @@ public class MBCategoryPersistenceImpl extends BasePersistenceImpl<MBCategory>
 
 	public MBCategoryPersistenceImpl() {
 		setModelClass(MBCategory.class);
+		setModelImplClass(MBCategoryImpl.class);
+		setEntityCacheEnabled(MBCategoryModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -9853,7 +9851,7 @@ public class MBCategoryPersistenceImpl extends BasePersistenceImpl<MBCategory>
 	 * Clears the cache for all message boards categories.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -9869,7 +9867,7 @@ public class MBCategoryPersistenceImpl extends BasePersistenceImpl<MBCategory>
 	 * Clears the cache for the message boards category.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -10360,54 +10358,6 @@ public class MBCategoryPersistenceImpl extends BasePersistenceImpl<MBCategory>
 	/**
 	 * Returns the message boards category with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the message boards category
-	 * @return the message boards category, or <code>null</code> if a message boards category with the primary key could not be found
-	 */
-	@Override
-	public MBCategory fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(MBCategoryModelImpl.ENTITY_CACHE_ENABLED,
-				MBCategoryImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		MBCategory mbCategory = (MBCategory)serializable;
-
-		if (mbCategory == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				mbCategory = (MBCategory)session.get(MBCategoryImpl.class,
-						primaryKey);
-
-				if (mbCategory != null) {
-					cacheResult(mbCategory);
-				}
-				else {
-					entityCache.putResult(MBCategoryModelImpl.ENTITY_CACHE_ENABLED,
-						MBCategoryImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(MBCategoryModelImpl.ENTITY_CACHE_ENABLED,
-					MBCategoryImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return mbCategory;
-	}
-
-	/**
-	 * Returns the message boards category with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param categoryId the primary key of the message boards category
 	 * @return the message boards category, or <code>null</code> if a message boards category with the primary key could not be found
 	 */
@@ -10726,8 +10676,6 @@ public class MBCategoryPersistenceImpl extends BasePersistenceImpl<MBCategory>
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_MBCATEGORY = "SELECT mbCategory FROM MBCategory mbCategory";
 	private static final String _SQL_SELECT_MBCATEGORY_WHERE_PKS_IN = "SELECT mbCategory FROM MBCategory mbCategory WHERE categoryId IN (";
 	private static final String _SQL_SELECT_MBCATEGORY_WHERE = "SELECT mbCategory FROM MBCategory mbCategory WHERE ";

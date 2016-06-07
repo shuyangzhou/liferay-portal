@@ -17,10 +17,6 @@ package com.liferay.portal.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -3973,6 +3969,8 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 
 	public WebsitePersistenceImpl() {
 		setModelClass(Website.class);
+		setModelImplClass(WebsiteImpl.class);
+		setEntityCacheEnabled(WebsiteModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -4010,7 +4008,7 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	 * Clears the cache for all websites.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -4026,7 +4024,7 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	 * Clears the cache for the website.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -4434,53 +4432,6 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	/**
 	 * Returns the website with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the website
-	 * @return the website, or <code>null</code> if a website with the primary key could not be found
-	 */
-	@Override
-	public Website fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(WebsiteModelImpl.ENTITY_CACHE_ENABLED,
-				WebsiteImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Website website = (Website)serializable;
-
-		if (website == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				website = (Website)session.get(WebsiteImpl.class, primaryKey);
-
-				if (website != null) {
-					cacheResult(website);
-				}
-				else {
-					entityCache.putResult(WebsiteModelImpl.ENTITY_CACHE_ENABLED,
-						WebsiteImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(WebsiteModelImpl.ENTITY_CACHE_ENABLED,
-					WebsiteImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return website;
-	}
-
-	/**
-	 * Returns the website with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param websiteId the primary key of the website
 	 * @return the website, or <code>null</code> if a website with the primary key could not be found
 	 */
@@ -4798,8 +4749,6 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_WEBSITE = "SELECT website FROM Website website";
 	private static final String _SQL_SELECT_WEBSITE_WHERE_PKS_IN = "SELECT website FROM Website website WHERE websiteId IN (";
 	private static final String _SQL_SELECT_WEBSITE_WHERE = "SELECT website FROM Website website WHERE ";

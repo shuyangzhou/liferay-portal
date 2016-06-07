@@ -16,8 +16,6 @@ package com.liferay.shopping.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -1315,6 +1313,8 @@ public class ShoppingCartPersistenceImpl extends BasePersistenceImpl<ShoppingCar
 
 	public ShoppingCartPersistenceImpl() {
 		setModelClass(ShoppingCart.class);
+		setModelImplClass(ShoppingCartImpl.class);
+		setEntityCacheEnabled(ShoppingCartModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1357,7 +1357,7 @@ public class ShoppingCartPersistenceImpl extends BasePersistenceImpl<ShoppingCar
 	 * Clears the cache for all shopping carts.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1373,7 +1373,7 @@ public class ShoppingCartPersistenceImpl extends BasePersistenceImpl<ShoppingCar
 	 * Clears the cache for the shopping cart.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1723,54 +1723,6 @@ public class ShoppingCartPersistenceImpl extends BasePersistenceImpl<ShoppingCar
 	/**
 	 * Returns the shopping cart with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the shopping cart
-	 * @return the shopping cart, or <code>null</code> if a shopping cart with the primary key could not be found
-	 */
-	@Override
-	public ShoppingCart fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ShoppingCartModelImpl.ENTITY_CACHE_ENABLED,
-				ShoppingCartImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		ShoppingCart shoppingCart = (ShoppingCart)serializable;
-
-		if (shoppingCart == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				shoppingCart = (ShoppingCart)session.get(ShoppingCartImpl.class,
-						primaryKey);
-
-				if (shoppingCart != null) {
-					cacheResult(shoppingCart);
-				}
-				else {
-					entityCache.putResult(ShoppingCartModelImpl.ENTITY_CACHE_ENABLED,
-						ShoppingCartImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ShoppingCartModelImpl.ENTITY_CACHE_ENABLED,
-					ShoppingCartImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return shoppingCart;
-	}
-
-	/**
-	 * Returns the shopping cart with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param cartId the primary key of the shopping cart
 	 * @return the shopping cart, or <code>null</code> if a shopping cart with the primary key could not be found
 	 */
@@ -2084,10 +2036,6 @@ public class ShoppingCartPersistenceImpl extends BasePersistenceImpl<ShoppingCar
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_SHOPPINGCART = "SELECT shoppingCart FROM ShoppingCart shoppingCart";
 	private static final String _SQL_SELECT_SHOPPINGCART_WHERE_PKS_IN = "SELECT shoppingCart FROM ShoppingCart shoppingCart WHERE cartId IN (";
 	private static final String _SQL_SELECT_SHOPPINGCART_WHERE = "SELECT shoppingCart FROM ShoppingCart shoppingCart WHERE ";

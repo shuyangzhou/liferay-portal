@@ -17,10 +17,6 @@ package com.liferay.portal.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -1541,6 +1537,8 @@ public class ResourceTypePermissionPersistenceImpl extends BasePersistenceImpl<R
 
 	public ResourceTypePermissionPersistenceImpl() {
 		setModelClass(ResourceTypePermission.class);
+		setModelImplClass(ResourceTypePermissionImpl.class);
+		setEntityCacheEnabled(ResourceTypePermissionModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1590,7 +1588,7 @@ public class ResourceTypePermissionPersistenceImpl extends BasePersistenceImpl<R
 	 * Clears the cache for all resource type permissions.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1606,7 +1604,7 @@ public class ResourceTypePermissionPersistenceImpl extends BasePersistenceImpl<R
 	 * Clears the cache for the resource type permission.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1953,54 +1951,6 @@ public class ResourceTypePermissionPersistenceImpl extends BasePersistenceImpl<R
 	/**
 	 * Returns the resource type permission with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the resource type permission
-	 * @return the resource type permission, or <code>null</code> if a resource type permission with the primary key could not be found
-	 */
-	@Override
-	public ResourceTypePermission fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ResourceTypePermissionModelImpl.ENTITY_CACHE_ENABLED,
-				ResourceTypePermissionImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		ResourceTypePermission resourceTypePermission = (ResourceTypePermission)serializable;
-
-		if (resourceTypePermission == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				resourceTypePermission = (ResourceTypePermission)session.get(ResourceTypePermissionImpl.class,
-						primaryKey);
-
-				if (resourceTypePermission != null) {
-					cacheResult(resourceTypePermission);
-				}
-				else {
-					entityCache.putResult(ResourceTypePermissionModelImpl.ENTITY_CACHE_ENABLED,
-						ResourceTypePermissionImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ResourceTypePermissionModelImpl.ENTITY_CACHE_ENABLED,
-					ResourceTypePermissionImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return resourceTypePermission;
-	}
-
-	/**
-	 * Returns the resource type permission with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param resourceTypePermissionId the primary key of the resource type permission
 	 * @return the resource type permission, or <code>null</code> if a resource type permission with the primary key could not be found
 	 */
@@ -2316,8 +2266,6 @@ public class ResourceTypePermissionPersistenceImpl extends BasePersistenceImpl<R
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_RESOURCETYPEPERMISSION = "SELECT resourceTypePermission FROM ResourceTypePermission resourceTypePermission";
 	private static final String _SQL_SELECT_RESOURCETYPEPERMISSION_WHERE_PKS_IN = "SELECT resourceTypePermission FROM ResourceTypePermission resourceTypePermission WHERE resourceTypePermissionId IN (";
 	private static final String _SQL_SELECT_RESOURCETYPEPERMISSION_WHERE = "SELECT resourceTypePermission FROM ResourceTypePermission resourceTypePermission WHERE ";

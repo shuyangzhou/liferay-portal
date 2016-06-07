@@ -16,8 +16,6 @@ package com.liferay.social.networking.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -1631,6 +1629,8 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 
 	public WallEntryPersistenceImpl() {
 		setModelClass(WallEntry.class);
+		setModelImplClass(WallEntryImpl.class);
+		setEntityCacheEnabled(WallEntryModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1668,7 +1668,7 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 * Clears the cache for all wall entries.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1684,7 +1684,7 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	 * Clears the cache for the wall entry.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1988,54 +1988,6 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	public WallEntry findByPrimaryKey(long wallEntryId)
 		throws NoSuchWallEntryException {
 		return findByPrimaryKey((Serializable)wallEntryId);
-	}
-
-	/**
-	 * Returns the wall entry with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the wall entry
-	 * @return the wall entry, or <code>null</code> if a wall entry with the primary key could not be found
-	 */
-	@Override
-	public WallEntry fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(WallEntryModelImpl.ENTITY_CACHE_ENABLED,
-				WallEntryImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		WallEntry wallEntry = (WallEntry)serializable;
-
-		if (wallEntry == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				wallEntry = (WallEntry)session.get(WallEntryImpl.class,
-						primaryKey);
-
-				if (wallEntry != null) {
-					cacheResult(wallEntry);
-				}
-				else {
-					entityCache.putResult(WallEntryModelImpl.ENTITY_CACHE_ENABLED,
-						WallEntryImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(WallEntryModelImpl.ENTITY_CACHE_ENABLED,
-					WallEntryImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return wallEntry;
 	}
 
 	/**
@@ -2354,10 +2306,6 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_WALLENTRY = "SELECT wallEntry FROM WallEntry wallEntry";
 	private static final String _SQL_SELECT_WALLENTRY_WHERE_PKS_IN = "SELECT wallEntry FROM WallEntry wallEntry WHERE wallEntryId IN (";
 	private static final String _SQL_SELECT_WALLENTRY_WHERE = "SELECT wallEntry FROM WallEntry wallEntry WHERE ";

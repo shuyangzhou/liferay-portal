@@ -23,10 +23,6 @@ import com.liferay.mail.model.impl.AccountModelImpl;
 import com.liferay.mail.service.persistence.AccountPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -855,6 +851,8 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 
 	public AccountPersistenceImpl() {
 		setModelClass(Account.class);
+		setModelImplClass(AccountImpl.class);
+		setEntityCacheEnabled(AccountModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -895,7 +893,7 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 * Clears the cache for all accounts.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -911,7 +909,7 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	 * Clears the cache for the account.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1254,53 +1252,6 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	/**
 	 * Returns the account with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the account
-	 * @return the account, or <code>null</code> if a account with the primary key could not be found
-	 */
-	@Override
-	public Account fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(AccountModelImpl.ENTITY_CACHE_ENABLED,
-				AccountImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Account account = (Account)serializable;
-
-		if (account == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				account = (Account)session.get(AccountImpl.class, primaryKey);
-
-				if (account != null) {
-					cacheResult(account);
-				}
-				else {
-					entityCache.putResult(AccountModelImpl.ENTITY_CACHE_ENABLED,
-						AccountImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(AccountModelImpl.ENTITY_CACHE_ENABLED,
-					AccountImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return account;
-	}
-
-	/**
-	 * Returns the account with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param accountId the primary key of the account
 	 * @return the account, or <code>null</code> if a account with the primary key could not be found
 	 */
@@ -1618,8 +1569,6 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_ACCOUNT = "SELECT account FROM Account account";
 	private static final String _SQL_SELECT_ACCOUNT_WHERE_PKS_IN = "SELECT account FROM Account account WHERE accountId IN (";
 	private static final String _SQL_SELECT_ACCOUNT_WHERE = "SELECT account FROM Account account WHERE ";

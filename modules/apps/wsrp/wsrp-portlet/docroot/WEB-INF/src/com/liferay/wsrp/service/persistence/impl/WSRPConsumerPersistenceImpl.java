@@ -17,10 +17,6 @@ package com.liferay.wsrp.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -1732,6 +1728,8 @@ public class WSRPConsumerPersistenceImpl extends BasePersistenceImpl<WSRPConsume
 
 	public WSRPConsumerPersistenceImpl() {
 		setModelClass(WSRPConsumer.class);
+		setModelImplClass(WSRPConsumerImpl.class);
+		setEntityCacheEnabled(WSRPConsumerModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1770,7 +1768,7 @@ public class WSRPConsumerPersistenceImpl extends BasePersistenceImpl<WSRPConsume
 	 * Clears the cache for all w s r p consumers.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1786,7 +1784,7 @@ public class WSRPConsumerPersistenceImpl extends BasePersistenceImpl<WSRPConsume
 	 * Clears the cache for the w s r p consumer.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2113,54 +2111,6 @@ public class WSRPConsumerPersistenceImpl extends BasePersistenceImpl<WSRPConsume
 	/**
 	 * Returns the w s r p consumer with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the w s r p consumer
-	 * @return the w s r p consumer, or <code>null</code> if a w s r p consumer with the primary key could not be found
-	 */
-	@Override
-	public WSRPConsumer fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(WSRPConsumerModelImpl.ENTITY_CACHE_ENABLED,
-				WSRPConsumerImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		WSRPConsumer wsrpConsumer = (WSRPConsumer)serializable;
-
-		if (wsrpConsumer == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				wsrpConsumer = (WSRPConsumer)session.get(WSRPConsumerImpl.class,
-						primaryKey);
-
-				if (wsrpConsumer != null) {
-					cacheResult(wsrpConsumer);
-				}
-				else {
-					entityCache.putResult(WSRPConsumerModelImpl.ENTITY_CACHE_ENABLED,
-						WSRPConsumerImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(WSRPConsumerModelImpl.ENTITY_CACHE_ENABLED,
-					WSRPConsumerImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return wsrpConsumer;
-	}
-
-	/**
-	 * Returns the w s r p consumer with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param wsrpConsumerId the primary key of the w s r p consumer
 	 * @return the w s r p consumer, or <code>null</code> if a w s r p consumer with the primary key could not be found
 	 */
@@ -2479,8 +2429,6 @@ public class WSRPConsumerPersistenceImpl extends BasePersistenceImpl<WSRPConsume
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_WSRPCONSUMER = "SELECT wsrpConsumer FROM WSRPConsumer wsrpConsumer";
 	private static final String _SQL_SELECT_WSRPCONSUMER_WHERE_PKS_IN = "SELECT wsrpConsumer FROM WSRPConsumer wsrpConsumer WHERE wsrpConsumerId IN (";
 	private static final String _SQL_SELECT_WSRPCONSUMER_WHERE = "SELECT wsrpConsumer FROM WSRPConsumer wsrpConsumer WHERE ";

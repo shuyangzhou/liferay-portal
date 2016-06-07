@@ -21,10 +21,6 @@ import com.liferay.message.boards.kernel.model.MBStatsUser;
 import com.liferay.message.boards.kernel.service.persistence.MBStatsUserPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -1883,6 +1879,8 @@ public class MBStatsUserPersistenceImpl extends BasePersistenceImpl<MBStatsUser>
 
 	public MBStatsUserPersistenceImpl() {
 		setModelClass(MBStatsUser.class);
+		setModelImplClass(MBStatsUserImpl.class);
+		setEntityCacheEnabled(MBStatsUserModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1925,7 +1923,7 @@ public class MBStatsUserPersistenceImpl extends BasePersistenceImpl<MBStatsUser>
 	 * Clears the cache for all message boards stats users.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1941,7 +1939,7 @@ public class MBStatsUserPersistenceImpl extends BasePersistenceImpl<MBStatsUser>
 	 * Clears the cache for the message boards stats user.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2264,54 +2262,6 @@ public class MBStatsUserPersistenceImpl extends BasePersistenceImpl<MBStatsUser>
 	/**
 	 * Returns the message boards stats user with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the message boards stats user
-	 * @return the message boards stats user, or <code>null</code> if a message boards stats user with the primary key could not be found
-	 */
-	@Override
-	public MBStatsUser fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(MBStatsUserModelImpl.ENTITY_CACHE_ENABLED,
-				MBStatsUserImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		MBStatsUser mbStatsUser = (MBStatsUser)serializable;
-
-		if (mbStatsUser == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				mbStatsUser = (MBStatsUser)session.get(MBStatsUserImpl.class,
-						primaryKey);
-
-				if (mbStatsUser != null) {
-					cacheResult(mbStatsUser);
-				}
-				else {
-					entityCache.putResult(MBStatsUserModelImpl.ENTITY_CACHE_ENABLED,
-						MBStatsUserImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(MBStatsUserModelImpl.ENTITY_CACHE_ENABLED,
-					MBStatsUserImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return mbStatsUser;
-	}
-
-	/**
-	 * Returns the message boards stats user with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param statsUserId the primary key of the message boards stats user
 	 * @return the message boards stats user, or <code>null</code> if a message boards stats user with the primary key could not be found
 	 */
@@ -2625,8 +2575,6 @@ public class MBStatsUserPersistenceImpl extends BasePersistenceImpl<MBStatsUser>
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_MBSTATSUSER = "SELECT mbStatsUser FROM MBStatsUser mbStatsUser";
 	private static final String _SQL_SELECT_MBSTATSUSER_WHERE_PKS_IN = "SELECT mbStatsUser FROM MBStatsUser mbStatsUser WHERE statsUserId IN (";
 	private static final String _SQL_SELECT_MBSTATSUSER_WHERE = "SELECT mbStatsUser FROM MBStatsUser mbStatsUser WHERE ";

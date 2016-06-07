@@ -22,8 +22,6 @@ import com.liferay.dynamic.data.mapping.model.impl.DDMTemplateVersionImpl;
 import com.liferay.dynamic.data.mapping.model.impl.DDMTemplateVersionModelImpl;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMTemplateVersionPersistence;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -1402,6 +1400,8 @@ public class DDMTemplateVersionPersistenceImpl extends BasePersistenceImpl<DDMTe
 
 	public DDMTemplateVersionPersistenceImpl() {
 		setModelClass(DDMTemplateVersion.class);
+		setModelImplClass(DDMTemplateVersionImpl.class);
+		setEntityCacheEnabled(DDMTemplateVersionModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1448,7 +1448,7 @@ public class DDMTemplateVersionPersistenceImpl extends BasePersistenceImpl<DDMTe
 	 * Clears the cache for all d d m template versions.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1464,7 +1464,7 @@ public class DDMTemplateVersionPersistenceImpl extends BasePersistenceImpl<DDMTe
 	 * Clears the cache for the d d m template version.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1806,54 +1806,6 @@ public class DDMTemplateVersionPersistenceImpl extends BasePersistenceImpl<DDMTe
 	/**
 	 * Returns the d d m template version with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the d d m template version
-	 * @return the d d m template version, or <code>null</code> if a d d m template version with the primary key could not be found
-	 */
-	@Override
-	public DDMTemplateVersion fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DDMTemplateVersionModelImpl.ENTITY_CACHE_ENABLED,
-				DDMTemplateVersionImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		DDMTemplateVersion ddmTemplateVersion = (DDMTemplateVersion)serializable;
-
-		if (ddmTemplateVersion == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				ddmTemplateVersion = (DDMTemplateVersion)session.get(DDMTemplateVersionImpl.class,
-						primaryKey);
-
-				if (ddmTemplateVersion != null) {
-					cacheResult(ddmTemplateVersion);
-				}
-				else {
-					entityCache.putResult(DDMTemplateVersionModelImpl.ENTITY_CACHE_ENABLED,
-						DDMTemplateVersionImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(DDMTemplateVersionModelImpl.ENTITY_CACHE_ENABLED,
-					DDMTemplateVersionImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return ddmTemplateVersion;
-	}
-
-	/**
-	 * Returns the d d m template version with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param templateVersionId the primary key of the d d m template version
 	 * @return the d d m template version, or <code>null</code> if a d d m template version with the primary key could not be found
 	 */
@@ -2168,10 +2120,6 @@ public class DDMTemplateVersionPersistenceImpl extends BasePersistenceImpl<DDMTe
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_DDMTEMPLATEVERSION = "SELECT ddmTemplateVersion FROM DDMTemplateVersion ddmTemplateVersion";
 	private static final String _SQL_SELECT_DDMTEMPLATEVERSION_WHERE_PKS_IN = "SELECT ddmTemplateVersion FROM DDMTemplateVersion ddmTemplateVersion WHERE templateVersionId IN (";
 	private static final String _SQL_SELECT_DDMTEMPLATEVERSION_WHERE = "SELECT ddmTemplateVersion FROM DDMTemplateVersion ddmTemplateVersion WHERE ";

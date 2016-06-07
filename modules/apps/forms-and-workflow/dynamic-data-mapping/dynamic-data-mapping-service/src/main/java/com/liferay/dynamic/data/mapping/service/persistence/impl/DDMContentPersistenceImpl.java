@@ -22,8 +22,6 @@ import com.liferay.dynamic.data.mapping.model.impl.DDMContentImpl;
 import com.liferay.dynamic.data.mapping.model.impl.DDMContentModelImpl;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMContentPersistence;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -2480,6 +2478,8 @@ public class DDMContentPersistenceImpl extends BasePersistenceImpl<DDMContent>
 
 	public DDMContentPersistenceImpl() {
 		setModelClass(DDMContent.class);
+		setModelImplClass(DDMContentImpl.class);
+		setEntityCacheEnabled(DDMContentModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2522,7 +2522,7 @@ public class DDMContentPersistenceImpl extends BasePersistenceImpl<DDMContent>
 	 * Clears the cache for all d d m contents.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2538,7 +2538,7 @@ public class DDMContentPersistenceImpl extends BasePersistenceImpl<DDMContent>
 	 * Clears the cache for the d d m content.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2934,54 +2934,6 @@ public class DDMContentPersistenceImpl extends BasePersistenceImpl<DDMContent>
 	/**
 	 * Returns the d d m content with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the d d m content
-	 * @return the d d m content, or <code>null</code> if a d d m content with the primary key could not be found
-	 */
-	@Override
-	public DDMContent fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DDMContentModelImpl.ENTITY_CACHE_ENABLED,
-				DDMContentImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		DDMContent ddmContent = (DDMContent)serializable;
-
-		if (ddmContent == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				ddmContent = (DDMContent)session.get(DDMContentImpl.class,
-						primaryKey);
-
-				if (ddmContent != null) {
-					cacheResult(ddmContent);
-				}
-				else {
-					entityCache.putResult(DDMContentModelImpl.ENTITY_CACHE_ENABLED,
-						DDMContentImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(DDMContentModelImpl.ENTITY_CACHE_ENABLED,
-					DDMContentImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return ddmContent;
-	}
-
-	/**
-	 * Returns the d d m content with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param contentId the primary key of the d d m content
 	 * @return the d d m content, or <code>null</code> if a d d m content with the primary key could not be found
 	 */
@@ -3300,10 +3252,6 @@ public class DDMContentPersistenceImpl extends BasePersistenceImpl<DDMContent>
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_DDMCONTENT = "SELECT ddmContent FROM DDMContent ddmContent";
 	private static final String _SQL_SELECT_DDMCONTENT_WHERE_PKS_IN = "SELECT ddmContent FROM DDMContent ddmContent WHERE contentId IN (";
 	private static final String _SQL_SELECT_DDMCONTENT_WHERE = "SELECT ddmContent FROM DDMContent ddmContent WHERE ";

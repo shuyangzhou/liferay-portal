@@ -22,8 +22,6 @@ import com.liferay.mobile.device.rules.model.impl.MDRActionImpl;
 import com.liferay.mobile.device.rules.model.impl.MDRActionModelImpl;
 import com.liferay.mobile.device.rules.service.persistence.MDRActionPersistence;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -1988,6 +1986,8 @@ public class MDRActionPersistenceImpl extends BasePersistenceImpl<MDRAction>
 
 	public MDRActionPersistenceImpl() {
 		setModelClass(MDRAction.class);
+		setModelImplClass(MDRActionImpl.class);
+		setEntityCacheEnabled(MDRActionModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2029,7 +2029,7 @@ public class MDRActionPersistenceImpl extends BasePersistenceImpl<MDRAction>
 	 * Clears the cache for all m d r actions.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2045,7 +2045,7 @@ public class MDRActionPersistenceImpl extends BasePersistenceImpl<MDRAction>
 	 * Clears the cache for the m d r action.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2431,54 +2431,6 @@ public class MDRActionPersistenceImpl extends BasePersistenceImpl<MDRAction>
 	/**
 	 * Returns the m d r action with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the m d r action
-	 * @return the m d r action, or <code>null</code> if a m d r action with the primary key could not be found
-	 */
-	@Override
-	public MDRAction fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(MDRActionModelImpl.ENTITY_CACHE_ENABLED,
-				MDRActionImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		MDRAction mdrAction = (MDRAction)serializable;
-
-		if (mdrAction == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				mdrAction = (MDRAction)session.get(MDRActionImpl.class,
-						primaryKey);
-
-				if (mdrAction != null) {
-					cacheResult(mdrAction);
-				}
-				else {
-					entityCache.putResult(MDRActionModelImpl.ENTITY_CACHE_ENABLED,
-						MDRActionImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(MDRActionModelImpl.ENTITY_CACHE_ENABLED,
-					MDRActionImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return mdrAction;
-	}
-
-	/**
-	 * Returns the m d r action with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param actionId the primary key of the m d r action
 	 * @return the m d r action, or <code>null</code> if a m d r action with the primary key could not be found
 	 */
@@ -2797,10 +2749,6 @@ public class MDRActionPersistenceImpl extends BasePersistenceImpl<MDRAction>
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_MDRACTION = "SELECT mdrAction FROM MDRAction mdrAction";
 	private static final String _SQL_SELECT_MDRACTION_WHERE_PKS_IN = "SELECT mdrAction FROM MDRAction mdrAction WHERE actionId IN (";
 	private static final String _SQL_SELECT_MDRACTION_WHERE = "SELECT mdrAction FROM MDRAction mdrAction WHERE ";

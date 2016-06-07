@@ -23,10 +23,6 @@ import com.liferay.opensocial.model.impl.GadgetModelImpl;
 import com.liferay.opensocial.service.persistence.GadgetPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -3147,6 +3143,8 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 
 	public GadgetPersistenceImpl() {
 		setModelClass(Gadget.class);
+		setModelImplClass(GadgetImpl.class);
+		setEntityCacheEnabled(GadgetModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -3187,7 +3185,7 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	 * Clears the cache for all gadgets.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -3203,7 +3201,7 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	 * Clears the cache for the gadget.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -3572,53 +3570,6 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	/**
 	 * Returns the gadget with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the gadget
-	 * @return the gadget, or <code>null</code> if a gadget with the primary key could not be found
-	 */
-	@Override
-	public Gadget fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(GadgetModelImpl.ENTITY_CACHE_ENABLED,
-				GadgetImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Gadget gadget = (Gadget)serializable;
-
-		if (gadget == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				gadget = (Gadget)session.get(GadgetImpl.class, primaryKey);
-
-				if (gadget != null) {
-					cacheResult(gadget);
-				}
-				else {
-					entityCache.putResult(GadgetModelImpl.ENTITY_CACHE_ENABLED,
-						GadgetImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(GadgetModelImpl.ENTITY_CACHE_ENABLED,
-					GadgetImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return gadget;
-	}
-
-	/**
-	 * Returns the gadget with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param gadgetId the primary key of the gadget
 	 * @return the gadget, or <code>null</code> if a gadget with the primary key could not be found
 	 */
@@ -3936,8 +3887,6 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_GADGET = "SELECT gadget FROM Gadget gadget";
 	private static final String _SQL_SELECT_GADGET_WHERE_PKS_IN = "SELECT gadget FROM Gadget gadget WHERE gadgetId IN (";
 	private static final String _SQL_SELECT_GADGET_WHERE = "SELECT gadget FROM Gadget gadget WHERE ";

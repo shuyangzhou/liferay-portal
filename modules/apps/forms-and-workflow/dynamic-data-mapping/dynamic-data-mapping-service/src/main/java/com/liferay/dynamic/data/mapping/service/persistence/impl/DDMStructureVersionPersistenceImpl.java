@@ -22,8 +22,6 @@ import com.liferay.dynamic.data.mapping.model.impl.DDMStructureVersionImpl;
 import com.liferay.dynamic.data.mapping.model.impl.DDMStructureVersionModelImpl;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMStructureVersionPersistence;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -1407,6 +1405,8 @@ public class DDMStructureVersionPersistenceImpl extends BasePersistenceImpl<DDMS
 
 	public DDMStructureVersionPersistenceImpl() {
 		setModelClass(DDMStructureVersion.class);
+		setModelImplClass(DDMStructureVersionImpl.class);
+		setEntityCacheEnabled(DDMStructureVersionModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1453,7 +1453,7 @@ public class DDMStructureVersionPersistenceImpl extends BasePersistenceImpl<DDMS
 	 * Clears the cache for all d d m structure versions.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1469,7 +1469,7 @@ public class DDMStructureVersionPersistenceImpl extends BasePersistenceImpl<DDMS
 	 * Clears the cache for the d d m structure version.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1815,54 +1815,6 @@ public class DDMStructureVersionPersistenceImpl extends BasePersistenceImpl<DDMS
 	/**
 	 * Returns the d d m structure version with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the d d m structure version
-	 * @return the d d m structure version, or <code>null</code> if a d d m structure version with the primary key could not be found
-	 */
-	@Override
-	public DDMStructureVersion fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DDMStructureVersionModelImpl.ENTITY_CACHE_ENABLED,
-				DDMStructureVersionImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		DDMStructureVersion ddmStructureVersion = (DDMStructureVersion)serializable;
-
-		if (ddmStructureVersion == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				ddmStructureVersion = (DDMStructureVersion)session.get(DDMStructureVersionImpl.class,
-						primaryKey);
-
-				if (ddmStructureVersion != null) {
-					cacheResult(ddmStructureVersion);
-				}
-				else {
-					entityCache.putResult(DDMStructureVersionModelImpl.ENTITY_CACHE_ENABLED,
-						DDMStructureVersionImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(DDMStructureVersionModelImpl.ENTITY_CACHE_ENABLED,
-					DDMStructureVersionImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return ddmStructureVersion;
-	}
-
-	/**
-	 * Returns the d d m structure version with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param structureVersionId the primary key of the d d m structure version
 	 * @return the d d m structure version, or <code>null</code> if a d d m structure version with the primary key could not be found
 	 */
@@ -2182,10 +2134,6 @@ public class DDMStructureVersionPersistenceImpl extends BasePersistenceImpl<DDMS
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_DDMSTRUCTUREVERSION = "SELECT ddmStructureVersion FROM DDMStructureVersion ddmStructureVersion";
 	private static final String _SQL_SELECT_DDMSTRUCTUREVERSION_WHERE_PKS_IN = "SELECT ddmStructureVersion FROM DDMStructureVersion ddmStructureVersion WHERE structureVersionId IN (";
 	private static final String _SQL_SELECT_DDMSTRUCTUREVERSION_WHERE = "SELECT ddmStructureVersion FROM DDMStructureVersion ddmStructureVersion WHERE ";

@@ -16,8 +16,6 @@ package com.liferay.social.networking.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -1097,6 +1095,8 @@ public class MeetupsEntryPersistenceImpl extends BasePersistenceImpl<MeetupsEntr
 
 	public MeetupsEntryPersistenceImpl() {
 		setModelClass(MeetupsEntry.class);
+		setModelImplClass(MeetupsEntryImpl.class);
+		setEntityCacheEnabled(MeetupsEntryModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1135,7 +1135,7 @@ public class MeetupsEntryPersistenceImpl extends BasePersistenceImpl<MeetupsEntr
 	 * Clears the cache for all meetups entries.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1151,7 +1151,7 @@ public class MeetupsEntryPersistenceImpl extends BasePersistenceImpl<MeetupsEntr
 	 * Clears the cache for the meetups entry.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1442,54 +1442,6 @@ public class MeetupsEntryPersistenceImpl extends BasePersistenceImpl<MeetupsEntr
 	public MeetupsEntry findByPrimaryKey(long meetupsEntryId)
 		throws NoSuchMeetupsEntryException {
 		return findByPrimaryKey((Serializable)meetupsEntryId);
-	}
-
-	/**
-	 * Returns the meetups entry with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the meetups entry
-	 * @return the meetups entry, or <code>null</code> if a meetups entry with the primary key could not be found
-	 */
-	@Override
-	public MeetupsEntry fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(MeetupsEntryModelImpl.ENTITY_CACHE_ENABLED,
-				MeetupsEntryImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		MeetupsEntry meetupsEntry = (MeetupsEntry)serializable;
-
-		if (meetupsEntry == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				meetupsEntry = (MeetupsEntry)session.get(MeetupsEntryImpl.class,
-						primaryKey);
-
-				if (meetupsEntry != null) {
-					cacheResult(meetupsEntry);
-				}
-				else {
-					entityCache.putResult(MeetupsEntryModelImpl.ENTITY_CACHE_ENABLED,
-						MeetupsEntryImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(MeetupsEntryModelImpl.ENTITY_CACHE_ENABLED,
-					MeetupsEntryImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return meetupsEntry;
 	}
 
 	/**
@@ -1808,10 +1760,6 @@ public class MeetupsEntryPersistenceImpl extends BasePersistenceImpl<MeetupsEntr
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_MEETUPSENTRY = "SELECT meetupsEntry FROM MeetupsEntry meetupsEntry";
 	private static final String _SQL_SELECT_MEETUPSENTRY_WHERE_PKS_IN = "SELECT meetupsEntry FROM MeetupsEntry meetupsEntry WHERE meetupsEntryId IN (";
 	private static final String _SQL_SELECT_MEETUPSENTRY_WHERE = "SELECT meetupsEntry FROM MeetupsEntry meetupsEntry WHERE ";

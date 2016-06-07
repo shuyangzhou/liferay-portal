@@ -27,10 +27,6 @@ import ${apiPackagePath}.service.persistence.${entity.name}Persistence;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -206,6 +202,8 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 
 	public ${entity.name}PersistenceImpl() {
 		setModelClass(${entity.name}.class);
+		setModelImplClass(${entity.name}Impl.class);
+		setEntityCacheEnabled(${entity.name}ModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -839,50 +837,6 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 	@Override
 	public ${entity.name} findByPrimaryKey(${entity.PKClassName} ${entity.PKVarName}) throws ${noSuchEntity}Exception {
 		return findByPrimaryKey((Serializable)${entity.PKVarName});
-	}
-
-	/**
-	 * Returns the ${entity.humanName} with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the ${entity.humanName}
-	 * @return the ${entity.humanName}, or <code>null</code> if a ${entity.humanName} with the primary key could not be found
-	 */
-	@Override
-	public ${entity.name} fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(${entity.name}ModelImpl.ENTITY_CACHE_ENABLED, ${entity.name}Impl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		${entity.name} ${entity.varName} = (${entity.name})serializable;
-
-		if (${entity.varName} == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				${entity.varName} = (${entity.name})session.get(${entity.name}Impl.class, primaryKey);
-
-				if (${entity.varName} != null) {
-					cacheResult(${entity.varName});
-				}
-				else {
-					entityCache.putResult(${entity.name}ModelImpl.ENTITY_CACHE_ENABLED, ${entity.name}Impl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(${entity.name}ModelImpl.ENTITY_CACHE_ENABLED, ${entity.name}Impl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return ${entity.varName};
 	}
 
 	/**
@@ -1755,17 +1709,6 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				<#break>
 			</#if>
 		</#list>
-	</#if>
-
-	<#if osgiModule>
-		@ServiceReference(type = EntityCache.class)
-		protected EntityCache entityCache;
-
-		@ServiceReference(type = FinderCache.class)
-		protected FinderCache finderCache;
-	<#else>
-		protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-		protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	</#if>
 
 	<#list entity.columnList as column>

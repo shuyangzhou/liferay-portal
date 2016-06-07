@@ -17,10 +17,6 @@ package com.liferay.portal.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -908,6 +904,8 @@ public class TicketPersistenceImpl extends BasePersistenceImpl<Ticket>
 
 	public TicketPersistenceImpl() {
 		setModelClass(Ticket.class);
+		setModelImplClass(TicketImpl.class);
+		setEntityCacheEnabled(TicketModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -948,7 +946,7 @@ public class TicketPersistenceImpl extends BasePersistenceImpl<Ticket>
 	 * Clears the cache for all tickets.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -964,7 +962,7 @@ public class TicketPersistenceImpl extends BasePersistenceImpl<Ticket>
 	 * Clears the cache for the ticket.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1257,53 +1255,6 @@ public class TicketPersistenceImpl extends BasePersistenceImpl<Ticket>
 	@Override
 	public Ticket findByPrimaryKey(long ticketId) throws NoSuchTicketException {
 		return findByPrimaryKey((Serializable)ticketId);
-	}
-
-	/**
-	 * Returns the ticket with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the ticket
-	 * @return the ticket, or <code>null</code> if a ticket with the primary key could not be found
-	 */
-	@Override
-	public Ticket fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(TicketModelImpl.ENTITY_CACHE_ENABLED,
-				TicketImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Ticket ticket = (Ticket)serializable;
-
-		if (ticket == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				ticket = (Ticket)session.get(TicketImpl.class, primaryKey);
-
-				if (ticket != null) {
-					cacheResult(ticket);
-				}
-				else {
-					entityCache.putResult(TicketModelImpl.ENTITY_CACHE_ENABLED,
-						TicketImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(TicketModelImpl.ENTITY_CACHE_ENABLED,
-					TicketImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return ticket;
 	}
 
 	/**
@@ -1626,8 +1577,6 @@ public class TicketPersistenceImpl extends BasePersistenceImpl<Ticket>
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_TICKET = "SELECT ticket FROM Ticket ticket";
 	private static final String _SQL_SELECT_TICKET_WHERE_PKS_IN = "SELECT ticket FROM Ticket ticket WHERE ticketId IN (";
 	private static final String _SQL_SELECT_TICKET_WHERE = "SELECT ticket FROM Ticket ticket WHERE ";

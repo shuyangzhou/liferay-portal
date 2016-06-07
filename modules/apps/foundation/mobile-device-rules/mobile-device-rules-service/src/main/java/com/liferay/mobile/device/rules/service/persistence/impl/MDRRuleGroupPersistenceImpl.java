@@ -22,8 +22,6 @@ import com.liferay.mobile.device.rules.model.impl.MDRRuleGroupImpl;
 import com.liferay.mobile.device.rules.model.impl.MDRRuleGroupModelImpl;
 import com.liferay.mobile.device.rules.service.persistence.MDRRuleGroupPersistence;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -2807,6 +2805,8 @@ public class MDRRuleGroupPersistenceImpl extends BasePersistenceImpl<MDRRuleGrou
 
 	public MDRRuleGroupPersistenceImpl() {
 		setModelClass(MDRRuleGroup.class);
+		setModelImplClass(MDRRuleGroupImpl.class);
+		setEntityCacheEnabled(MDRRuleGroupModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2849,7 +2849,7 @@ public class MDRRuleGroupPersistenceImpl extends BasePersistenceImpl<MDRRuleGrou
 	 * Clears the cache for all m d r rule groups.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2865,7 +2865,7 @@ public class MDRRuleGroupPersistenceImpl extends BasePersistenceImpl<MDRRuleGrou
 	 * Clears the cache for the m d r rule group.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -3247,54 +3247,6 @@ public class MDRRuleGroupPersistenceImpl extends BasePersistenceImpl<MDRRuleGrou
 	/**
 	 * Returns the m d r rule group with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the m d r rule group
-	 * @return the m d r rule group, or <code>null</code> if a m d r rule group with the primary key could not be found
-	 */
-	@Override
-	public MDRRuleGroup fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(MDRRuleGroupModelImpl.ENTITY_CACHE_ENABLED,
-				MDRRuleGroupImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		MDRRuleGroup mdrRuleGroup = (MDRRuleGroup)serializable;
-
-		if (mdrRuleGroup == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				mdrRuleGroup = (MDRRuleGroup)session.get(MDRRuleGroupImpl.class,
-						primaryKey);
-
-				if (mdrRuleGroup != null) {
-					cacheResult(mdrRuleGroup);
-				}
-				else {
-					entityCache.putResult(MDRRuleGroupModelImpl.ENTITY_CACHE_ENABLED,
-						MDRRuleGroupImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(MDRRuleGroupModelImpl.ENTITY_CACHE_ENABLED,
-					MDRRuleGroupImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return mdrRuleGroup;
-	}
-
-	/**
-	 * Returns the m d r rule group with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param ruleGroupId the primary key of the m d r rule group
 	 * @return the m d r rule group, or <code>null</code> if a m d r rule group with the primary key could not be found
 	 */
@@ -3613,10 +3565,6 @@ public class MDRRuleGroupPersistenceImpl extends BasePersistenceImpl<MDRRuleGrou
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_MDRRULEGROUP = "SELECT mdrRuleGroup FROM MDRRuleGroup mdrRuleGroup";
 	private static final String _SQL_SELECT_MDRRULEGROUP_WHERE_PKS_IN = "SELECT mdrRuleGroup FROM MDRRuleGroup mdrRuleGroup WHERE ruleGroupId IN (";
 	private static final String _SQL_SELECT_MDRRULEGROUP_WHERE = "SELECT mdrRuleGroup FROM MDRRuleGroup mdrRuleGroup WHERE ";

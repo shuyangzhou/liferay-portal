@@ -17,10 +17,6 @@ package com.liferay.portal.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -1131,6 +1127,8 @@ public class UserIdMapperPersistenceImpl extends BasePersistenceImpl<UserIdMappe
 
 	public UserIdMapperPersistenceImpl() {
 		setModelClass(UserIdMapper.class);
+		setModelImplClass(UserIdMapperImpl.class);
+		setEntityCacheEnabled(UserIdMapperModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1178,7 +1176,7 @@ public class UserIdMapperPersistenceImpl extends BasePersistenceImpl<UserIdMappe
 	 * Clears the cache for all user ID mappers.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1194,7 +1192,7 @@ public class UserIdMapperPersistenceImpl extends BasePersistenceImpl<UserIdMappe
 	 * Clears the cache for the user ID mapper.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1544,54 +1542,6 @@ public class UserIdMapperPersistenceImpl extends BasePersistenceImpl<UserIdMappe
 	/**
 	 * Returns the user ID mapper with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the user ID mapper
-	 * @return the user ID mapper, or <code>null</code> if a user ID mapper with the primary key could not be found
-	 */
-	@Override
-	public UserIdMapper fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(UserIdMapperModelImpl.ENTITY_CACHE_ENABLED,
-				UserIdMapperImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		UserIdMapper userIdMapper = (UserIdMapper)serializable;
-
-		if (userIdMapper == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				userIdMapper = (UserIdMapper)session.get(UserIdMapperImpl.class,
-						primaryKey);
-
-				if (userIdMapper != null) {
-					cacheResult(userIdMapper);
-				}
-				else {
-					entityCache.putResult(UserIdMapperModelImpl.ENTITY_CACHE_ENABLED,
-						UserIdMapperImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(UserIdMapperModelImpl.ENTITY_CACHE_ENABLED,
-					UserIdMapperImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return userIdMapper;
-	}
-
-	/**
-	 * Returns the user ID mapper with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param userIdMapperId the primary key of the user ID mapper
 	 * @return the user ID mapper, or <code>null</code> if a user ID mapper with the primary key could not be found
 	 */
@@ -1910,8 +1860,6 @@ public class UserIdMapperPersistenceImpl extends BasePersistenceImpl<UserIdMappe
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_USERIDMAPPER = "SELECT userIdMapper FROM UserIdMapper userIdMapper";
 	private static final String _SQL_SELECT_USERIDMAPPER_WHERE_PKS_IN = "SELECT userIdMapper FROM UserIdMapper userIdMapper WHERE userIdMapperId IN (";
 	private static final String _SQL_SELECT_USERIDMAPPER_WHERE = "SELECT userIdMapper FROM UserIdMapper userIdMapper WHERE ";

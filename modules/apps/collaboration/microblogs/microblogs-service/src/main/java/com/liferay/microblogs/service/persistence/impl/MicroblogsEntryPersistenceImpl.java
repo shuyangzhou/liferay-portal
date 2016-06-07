@@ -22,8 +22,6 @@ import com.liferay.microblogs.model.impl.MicroblogsEntryImpl;
 import com.liferay.microblogs.model.impl.MicroblogsEntryModelImpl;
 import com.liferay.microblogs.service.persistence.MicroblogsEntryPersistence;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -5195,6 +5193,8 @@ public class MicroblogsEntryPersistenceImpl extends BasePersistenceImpl<Microblo
 
 	public MicroblogsEntryPersistenceImpl() {
 		setModelClass(MicroblogsEntry.class);
+		setModelImplClass(MicroblogsEntryImpl.class);
+		setEntityCacheEnabled(MicroblogsEntryModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -5235,7 +5235,7 @@ public class MicroblogsEntryPersistenceImpl extends BasePersistenceImpl<Microblo
 	 * Clears the cache for all microblogs entries.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -5251,7 +5251,7 @@ public class MicroblogsEntryPersistenceImpl extends BasePersistenceImpl<Microblo
 	 * Clears the cache for the microblogs entry.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -5678,54 +5678,6 @@ public class MicroblogsEntryPersistenceImpl extends BasePersistenceImpl<Microblo
 	/**
 	 * Returns the microblogs entry with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the microblogs entry
-	 * @return the microblogs entry, or <code>null</code> if a microblogs entry with the primary key could not be found
-	 */
-	@Override
-	public MicroblogsEntry fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(MicroblogsEntryModelImpl.ENTITY_CACHE_ENABLED,
-				MicroblogsEntryImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		MicroblogsEntry microblogsEntry = (MicroblogsEntry)serializable;
-
-		if (microblogsEntry == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				microblogsEntry = (MicroblogsEntry)session.get(MicroblogsEntryImpl.class,
-						primaryKey);
-
-				if (microblogsEntry != null) {
-					cacheResult(microblogsEntry);
-				}
-				else {
-					entityCache.putResult(MicroblogsEntryModelImpl.ENTITY_CACHE_ENABLED,
-						MicroblogsEntryImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(MicroblogsEntryModelImpl.ENTITY_CACHE_ENABLED,
-					MicroblogsEntryImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return microblogsEntry;
-	}
-
-	/**
-	 * Returns the microblogs entry with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param microblogsEntryId the primary key of the microblogs entry
 	 * @return the microblogs entry, or <code>null</code> if a microblogs entry with the primary key could not be found
 	 */
@@ -6044,10 +5996,6 @@ public class MicroblogsEntryPersistenceImpl extends BasePersistenceImpl<Microblo
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_MICROBLOGSENTRY = "SELECT microblogsEntry FROM MicroblogsEntry microblogsEntry";
 	private static final String _SQL_SELECT_MICROBLOGSENTRY_WHERE_PKS_IN = "SELECT microblogsEntry FROM MicroblogsEntry microblogsEntry WHERE microblogsEntryId IN (";
 	private static final String _SQL_SELECT_MICROBLOGSENTRY_WHERE = "SELECT microblogsEntry FROM MicroblogsEntry microblogsEntry WHERE ";

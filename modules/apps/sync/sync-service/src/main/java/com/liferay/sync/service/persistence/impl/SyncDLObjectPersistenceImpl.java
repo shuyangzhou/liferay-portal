@@ -16,8 +16,6 @@ package com.liferay.sync.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -6290,6 +6288,8 @@ public class SyncDLObjectPersistenceImpl extends BasePersistenceImpl<SyncDLObjec
 
 	public SyncDLObjectPersistenceImpl() {
 		setModelClass(SyncDLObject.class);
+		setModelImplClass(SyncDLObjectImpl.class);
+		setEntityCacheEnabled(SyncDLObjectModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -6332,7 +6332,7 @@ public class SyncDLObjectPersistenceImpl extends BasePersistenceImpl<SyncDLObjec
 	 * Clears the cache for all sync d l objects.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -6348,7 +6348,7 @@ public class SyncDLObjectPersistenceImpl extends BasePersistenceImpl<SyncDLObjec
 	 * Clears the cache for the sync d l object.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -6745,54 +6745,6 @@ public class SyncDLObjectPersistenceImpl extends BasePersistenceImpl<SyncDLObjec
 	/**
 	 * Returns the sync d l object with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the sync d l object
-	 * @return the sync d l object, or <code>null</code> if a sync d l object with the primary key could not be found
-	 */
-	@Override
-	public SyncDLObject fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(SyncDLObjectModelImpl.ENTITY_CACHE_ENABLED,
-				SyncDLObjectImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		SyncDLObject syncDLObject = (SyncDLObject)serializable;
-
-		if (syncDLObject == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				syncDLObject = (SyncDLObject)session.get(SyncDLObjectImpl.class,
-						primaryKey);
-
-				if (syncDLObject != null) {
-					cacheResult(syncDLObject);
-				}
-				else {
-					entityCache.putResult(SyncDLObjectModelImpl.ENTITY_CACHE_ENABLED,
-						SyncDLObjectImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(SyncDLObjectModelImpl.ENTITY_CACHE_ENABLED,
-					SyncDLObjectImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return syncDLObject;
-	}
-
-	/**
-	 * Returns the sync d l object with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param syncDLObjectId the primary key of the sync d l object
 	 * @return the sync d l object, or <code>null</code> if a sync d l object with the primary key could not be found
 	 */
@@ -7111,10 +7063,6 @@ public class SyncDLObjectPersistenceImpl extends BasePersistenceImpl<SyncDLObjec
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_SYNCDLOBJECT = "SELECT syncDLObject FROM SyncDLObject syncDLObject";
 	private static final String _SQL_SELECT_SYNCDLOBJECT_WHERE_PKS_IN = "SELECT syncDLObject FROM SyncDLObject syncDLObject WHERE syncDLObjectId IN (";
 	private static final String _SQL_SELECT_SYNCDLOBJECT_WHERE = "SELECT syncDLObject FROM SyncDLObject syncDLObject WHERE ";

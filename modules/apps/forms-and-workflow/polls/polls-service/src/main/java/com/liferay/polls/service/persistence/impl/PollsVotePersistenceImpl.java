@@ -22,8 +22,6 @@ import com.liferay.polls.model.impl.PollsVoteImpl;
 import com.liferay.polls.model.impl.PollsVoteModelImpl;
 import com.liferay.polls.service.persistence.PollsVotePersistence;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -3021,6 +3019,8 @@ public class PollsVotePersistenceImpl extends BasePersistenceImpl<PollsVote>
 
 	public PollsVotePersistenceImpl() {
 		setModelClass(PollsVote.class);
+		setModelImplClass(PollsVoteImpl.class);
+		setEntityCacheEnabled(PollsVoteModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -3062,7 +3062,7 @@ public class PollsVotePersistenceImpl extends BasePersistenceImpl<PollsVote>
 	 * Clears the cache for all polls votes.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -3078,7 +3078,7 @@ public class PollsVotePersistenceImpl extends BasePersistenceImpl<PollsVote>
 	 * Clears the cache for the polls vote.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -3494,54 +3494,6 @@ public class PollsVotePersistenceImpl extends BasePersistenceImpl<PollsVote>
 	/**
 	 * Returns the polls vote with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the polls vote
-	 * @return the polls vote, or <code>null</code> if a polls vote with the primary key could not be found
-	 */
-	@Override
-	public PollsVote fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(PollsVoteModelImpl.ENTITY_CACHE_ENABLED,
-				PollsVoteImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		PollsVote pollsVote = (PollsVote)serializable;
-
-		if (pollsVote == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				pollsVote = (PollsVote)session.get(PollsVoteImpl.class,
-						primaryKey);
-
-				if (pollsVote != null) {
-					cacheResult(pollsVote);
-				}
-				else {
-					entityCache.putResult(PollsVoteModelImpl.ENTITY_CACHE_ENABLED,
-						PollsVoteImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(PollsVoteModelImpl.ENTITY_CACHE_ENABLED,
-					PollsVoteImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return pollsVote;
-	}
-
-	/**
-	 * Returns the polls vote with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param voteId the primary key of the polls vote
 	 * @return the polls vote, or <code>null</code> if a polls vote with the primary key could not be found
 	 */
@@ -3860,10 +3812,6 @@ public class PollsVotePersistenceImpl extends BasePersistenceImpl<PollsVote>
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_POLLSVOTE = "SELECT pollsVote FROM PollsVote pollsVote";
 	private static final String _SQL_SELECT_POLLSVOTE_WHERE_PKS_IN = "SELECT pollsVote FROM PollsVote pollsVote WHERE voteId IN (";
 	private static final String _SQL_SELECT_POLLSVOTE_WHERE = "SELECT pollsVote FROM PollsVote pollsVote WHERE ";

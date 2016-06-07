@@ -21,10 +21,6 @@ import com.liferay.message.boards.kernel.model.MBThread;
 import com.liferay.message.boards.kernel.service.persistence.MBThreadPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -12913,6 +12909,8 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 
 	public MBThreadPersistenceImpl() {
 		setModelClass(MBThread.class);
+		setModelImplClass(MBThreadImpl.class);
+		setEntityCacheEnabled(MBThreadModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -12956,7 +12954,7 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * Clears the cache for all message boards threads.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -12972,7 +12970,7 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	 * Clears the cache for the message boards thread.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -13520,53 +13518,6 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	/**
 	 * Returns the message boards thread with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the message boards thread
-	 * @return the message boards thread, or <code>null</code> if a message boards thread with the primary key could not be found
-	 */
-	@Override
-	public MBThread fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(MBThreadModelImpl.ENTITY_CACHE_ENABLED,
-				MBThreadImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		MBThread mbThread = (MBThread)serializable;
-
-		if (mbThread == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				mbThread = (MBThread)session.get(MBThreadImpl.class, primaryKey);
-
-				if (mbThread != null) {
-					cacheResult(mbThread);
-				}
-				else {
-					entityCache.putResult(MBThreadModelImpl.ENTITY_CACHE_ENABLED,
-						MBThreadImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(MBThreadModelImpl.ENTITY_CACHE_ENABLED,
-					MBThreadImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return mbThread;
-	}
-
-	/**
-	 * Returns the message boards thread with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param threadId the primary key of the message boards thread
 	 * @return the message boards thread, or <code>null</code> if a message boards thread with the primary key could not be found
 	 */
@@ -13884,8 +13835,6 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_MBTHREAD = "SELECT mbThread FROM MBThread mbThread";
 	private static final String _SQL_SELECT_MBTHREAD_WHERE_PKS_IN = "SELECT mbThread FROM MBThread mbThread WHERE threadId IN (";
 	private static final String _SQL_SELECT_MBTHREAD_WHERE = "SELECT mbThread FROM MBThread mbThread WHERE ";

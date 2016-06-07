@@ -22,8 +22,6 @@ import com.liferay.journal.model.impl.JournalArticleImpl;
 import com.liferay.journal.model.impl.JournalArticleModelImpl;
 import com.liferay.journal.service.persistence.JournalArticlePersistence;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -31496,6 +31494,8 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	public JournalArticlePersistenceImpl() {
 		setModelClass(JournalArticle.class);
+		setModelImplClass(JournalArticleImpl.class);
+		setEntityCacheEnabled(JournalArticleModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -31551,7 +31551,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * Clears the cache for all journal articles.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -31567,7 +31567,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	 * Clears the cache for the journal article.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -32652,54 +32652,6 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	/**
 	 * Returns the journal article with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the journal article
-	 * @return the journal article, or <code>null</code> if a journal article with the primary key could not be found
-	 */
-	@Override
-	public JournalArticle fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
-				JournalArticleImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		JournalArticle journalArticle = (JournalArticle)serializable;
-
-		if (journalArticle == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				journalArticle = (JournalArticle)session.get(JournalArticleImpl.class,
-						primaryKey);
-
-				if (journalArticle != null) {
-					cacheResult(journalArticle);
-				}
-				else {
-					entityCache.putResult(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
-						JournalArticleImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(JournalArticleModelImpl.ENTITY_CACHE_ENABLED,
-					JournalArticleImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return journalArticle;
-	}
-
-	/**
-	 * Returns the journal article with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param id the primary key of the journal article
 	 * @return the journal article, or <code>null</code> if a journal article with the primary key could not be found
 	 */
@@ -33018,10 +32970,6 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_JOURNALARTICLE = "SELECT journalArticle FROM JournalArticle journalArticle";
 	private static final String _SQL_SELECT_JOURNALARTICLE_WHERE_PKS_IN = "SELECT journalArticle FROM JournalArticle journalArticle WHERE id_ IN (";
 	private static final String _SQL_SELECT_JOURNALARTICLE_WHERE = "SELECT journalArticle FROM JournalArticle journalArticle WHERE ";

@@ -16,8 +16,6 @@ package com.liferay.social.networking.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -1395,6 +1393,8 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 
 	public MeetupsRegistrationPersistenceImpl() {
 		setModelClass(MeetupsRegistration.class);
+		setModelImplClass(MeetupsRegistrationImpl.class);
+		setEntityCacheEnabled(MeetupsRegistrationModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1441,7 +1441,7 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 	 * Clears the cache for all meetups registrations.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1457,7 +1457,7 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 	 * Clears the cache for the meetups registration.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1820,54 +1820,6 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 	/**
 	 * Returns the meetups registration with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the meetups registration
-	 * @return the meetups registration, or <code>null</code> if a meetups registration with the primary key could not be found
-	 */
-	@Override
-	public MeetupsRegistration fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(MeetupsRegistrationModelImpl.ENTITY_CACHE_ENABLED,
-				MeetupsRegistrationImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		MeetupsRegistration meetupsRegistration = (MeetupsRegistration)serializable;
-
-		if (meetupsRegistration == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				meetupsRegistration = (MeetupsRegistration)session.get(MeetupsRegistrationImpl.class,
-						primaryKey);
-
-				if (meetupsRegistration != null) {
-					cacheResult(meetupsRegistration);
-				}
-				else {
-					entityCache.putResult(MeetupsRegistrationModelImpl.ENTITY_CACHE_ENABLED,
-						MeetupsRegistrationImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(MeetupsRegistrationModelImpl.ENTITY_CACHE_ENABLED,
-					MeetupsRegistrationImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return meetupsRegistration;
-	}
-
-	/**
-	 * Returns the meetups registration with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param meetupsRegistrationId the primary key of the meetups registration
 	 * @return the meetups registration, or <code>null</code> if a meetups registration with the primary key could not be found
 	 */
@@ -2182,10 +2134,6 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_MEETUPSREGISTRATION = "SELECT meetupsRegistration FROM MeetupsRegistration meetupsRegistration";
 	private static final String _SQL_SELECT_MEETUPSREGISTRATION_WHERE_PKS_IN = "SELECT meetupsRegistration FROM MeetupsRegistration meetupsRegistration WHERE meetupsRegistrationId IN (";
 	private static final String _SQL_SELECT_MEETUPSREGISTRATION_WHERE = "SELECT meetupsRegistration FROM MeetupsRegistration meetupsRegistration WHERE ";

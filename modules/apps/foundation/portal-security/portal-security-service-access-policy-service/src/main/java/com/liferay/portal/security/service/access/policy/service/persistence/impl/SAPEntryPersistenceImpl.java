@@ -16,8 +16,6 @@ package com.liferay.portal.security.service.access.policy.service.persistence.im
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -4071,6 +4069,8 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 
 	public SAPEntryPersistenceImpl() {
 		setModelClass(SAPEntry.class);
+		setModelImplClass(SAPEntryImpl.class);
+		setEntityCacheEnabled(SAPEntryModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -4112,7 +4112,7 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 	 * Clears the cache for all s a p entries.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -4128,7 +4128,7 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 	 * Clears the cache for the s a p entry.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -4525,53 +4525,6 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 	/**
 	 * Returns the s a p entry with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the s a p entry
-	 * @return the s a p entry, or <code>null</code> if a s a p entry with the primary key could not be found
-	 */
-	@Override
-	public SAPEntry fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(SAPEntryModelImpl.ENTITY_CACHE_ENABLED,
-				SAPEntryImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		SAPEntry sapEntry = (SAPEntry)serializable;
-
-		if (sapEntry == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				sapEntry = (SAPEntry)session.get(SAPEntryImpl.class, primaryKey);
-
-				if (sapEntry != null) {
-					cacheResult(sapEntry);
-				}
-				else {
-					entityCache.putResult(SAPEntryModelImpl.ENTITY_CACHE_ENABLED,
-						SAPEntryImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(SAPEntryModelImpl.ENTITY_CACHE_ENABLED,
-					SAPEntryImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return sapEntry;
-	}
-
-	/**
-	 * Returns the s a p entry with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param sapEntryId the primary key of the s a p entry
 	 * @return the s a p entry, or <code>null</code> if a s a p entry with the primary key could not be found
 	 */
@@ -4889,10 +4842,6 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_SAPENTRY = "SELECT sapEntry FROM SAPEntry sapEntry";
 	private static final String _SQL_SELECT_SAPENTRY_WHERE_PKS_IN = "SELECT sapEntry FROM SAPEntry sapEntry WHERE sapEntryId IN (";
 	private static final String _SQL_SELECT_SAPENTRY_WHERE = "SELECT sapEntry FROM SAPEntry sapEntry WHERE ";

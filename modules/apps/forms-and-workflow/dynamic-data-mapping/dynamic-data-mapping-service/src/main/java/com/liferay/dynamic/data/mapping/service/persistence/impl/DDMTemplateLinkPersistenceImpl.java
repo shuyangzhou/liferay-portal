@@ -22,8 +22,6 @@ import com.liferay.dynamic.data.mapping.model.impl.DDMTemplateLinkImpl;
 import com.liferay.dynamic.data.mapping.model.impl.DDMTemplateLinkModelImpl;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMTemplateLinkPersistence;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -1329,6 +1327,8 @@ public class DDMTemplateLinkPersistenceImpl extends BasePersistenceImpl<DDMTempl
 
 	public DDMTemplateLinkPersistenceImpl() {
 		setModelClass(DDMTemplateLink.class);
+		setModelImplClass(DDMTemplateLinkImpl.class);
+		setEntityCacheEnabled(DDMTemplateLinkModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1374,7 +1374,7 @@ public class DDMTemplateLinkPersistenceImpl extends BasePersistenceImpl<DDMTempl
 	 * Clears the cache for all d d m template links.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1390,7 +1390,7 @@ public class DDMTemplateLinkPersistenceImpl extends BasePersistenceImpl<DDMTempl
 	 * Clears the cache for the d d m template link.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1713,54 +1713,6 @@ public class DDMTemplateLinkPersistenceImpl extends BasePersistenceImpl<DDMTempl
 	/**
 	 * Returns the d d m template link with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the d d m template link
-	 * @return the d d m template link, or <code>null</code> if a d d m template link with the primary key could not be found
-	 */
-	@Override
-	public DDMTemplateLink fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DDMTemplateLinkModelImpl.ENTITY_CACHE_ENABLED,
-				DDMTemplateLinkImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		DDMTemplateLink ddmTemplateLink = (DDMTemplateLink)serializable;
-
-		if (ddmTemplateLink == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				ddmTemplateLink = (DDMTemplateLink)session.get(DDMTemplateLinkImpl.class,
-						primaryKey);
-
-				if (ddmTemplateLink != null) {
-					cacheResult(ddmTemplateLink);
-				}
-				else {
-					entityCache.putResult(DDMTemplateLinkModelImpl.ENTITY_CACHE_ENABLED,
-						DDMTemplateLinkImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(DDMTemplateLinkModelImpl.ENTITY_CACHE_ENABLED,
-					DDMTemplateLinkImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return ddmTemplateLink;
-	}
-
-	/**
-	 * Returns the d d m template link with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param templateLinkId the primary key of the d d m template link
 	 * @return the d d m template link, or <code>null</code> if a d d m template link with the primary key could not be found
 	 */
@@ -2074,10 +2026,6 @@ public class DDMTemplateLinkPersistenceImpl extends BasePersistenceImpl<DDMTempl
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_DDMTEMPLATELINK = "SELECT ddmTemplateLink FROM DDMTemplateLink ddmTemplateLink";
 	private static final String _SQL_SELECT_DDMTEMPLATELINK_WHERE_PKS_IN = "SELECT ddmTemplateLink FROM DDMTemplateLink ddmTemplateLink WHERE templateLinkId IN (";
 	private static final String _SQL_SELECT_DDMTEMPLATELINK_WHERE = "SELECT ddmTemplateLink FROM DDMTemplateLink ddmTemplateLink WHERE ";

@@ -17,10 +17,6 @@ package com.liferay.portal.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -1643,6 +1639,8 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 
 	public UserTrackerPersistenceImpl() {
 		setModelClass(UserTracker.class);
+		setModelImplClass(UserTrackerImpl.class);
+		setEntityCacheEnabled(UserTrackerModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1681,7 +1679,7 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 	 * Clears the cache for all user trackers.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1697,7 +1695,7 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 	 * Clears the cache for the user tracker.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1978,54 +1976,6 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 	public UserTracker findByPrimaryKey(long userTrackerId)
 		throws NoSuchUserTrackerException {
 		return findByPrimaryKey((Serializable)userTrackerId);
-	}
-
-	/**
-	 * Returns the user tracker with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the user tracker
-	 * @return the user tracker, or <code>null</code> if a user tracker with the primary key could not be found
-	 */
-	@Override
-	public UserTracker fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(UserTrackerModelImpl.ENTITY_CACHE_ENABLED,
-				UserTrackerImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		UserTracker userTracker = (UserTracker)serializable;
-
-		if (userTracker == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				userTracker = (UserTracker)session.get(UserTrackerImpl.class,
-						primaryKey);
-
-				if (userTracker != null) {
-					cacheResult(userTracker);
-				}
-				else {
-					entityCache.putResult(UserTrackerModelImpl.ENTITY_CACHE_ENABLED,
-						UserTrackerImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(UserTrackerModelImpl.ENTITY_CACHE_ENABLED,
-					UserTrackerImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return userTracker;
 	}
 
 	/**
@@ -2344,8 +2294,6 @@ public class UserTrackerPersistenceImpl extends BasePersistenceImpl<UserTracker>
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_USERTRACKER = "SELECT userTracker FROM UserTracker userTracker";
 	private static final String _SQL_SELECT_USERTRACKER_WHERE_PKS_IN = "SELECT userTracker FROM UserTracker userTracker WHERE userTrackerId IN (";
 	private static final String _SQL_SELECT_USERTRACKER_WHERE = "SELECT userTracker FROM UserTracker userTracker WHERE ";

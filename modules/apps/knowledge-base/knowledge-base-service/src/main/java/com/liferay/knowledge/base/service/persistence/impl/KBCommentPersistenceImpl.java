@@ -22,8 +22,6 @@ import com.liferay.knowledge.base.model.impl.KBCommentImpl;
 import com.liferay.knowledge.base.model.impl.KBCommentModelImpl;
 import com.liferay.knowledge.base.service.persistence.KBCommentPersistence;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -5079,6 +5077,8 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 
 	public KBCommentPersistenceImpl() {
 		setModelClass(KBComment.class);
+		setModelImplClass(KBCommentImpl.class);
+		setEntityCacheEnabled(KBCommentModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -5120,7 +5120,7 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 	 * Clears the cache for all k b comments.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -5136,7 +5136,7 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 	 * Clears the cache for the k b comment.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -5627,54 +5627,6 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 	/**
 	 * Returns the k b comment with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the k b comment
-	 * @return the k b comment, or <code>null</code> if a k b comment with the primary key could not be found
-	 */
-	@Override
-	public KBComment fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(KBCommentModelImpl.ENTITY_CACHE_ENABLED,
-				KBCommentImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		KBComment kbComment = (KBComment)serializable;
-
-		if (kbComment == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				kbComment = (KBComment)session.get(KBCommentImpl.class,
-						primaryKey);
-
-				if (kbComment != null) {
-					cacheResult(kbComment);
-				}
-				else {
-					entityCache.putResult(KBCommentModelImpl.ENTITY_CACHE_ENABLED,
-						KBCommentImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(KBCommentModelImpl.ENTITY_CACHE_ENABLED,
-					KBCommentImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return kbComment;
-	}
-
-	/**
-	 * Returns the k b comment with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param kbCommentId the primary key of the k b comment
 	 * @return the k b comment, or <code>null</code> if a k b comment with the primary key could not be found
 	 */
@@ -5993,10 +5945,6 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_KBCOMMENT = "SELECT kbComment FROM KBComment kbComment";
 	private static final String _SQL_SELECT_KBCOMMENT_WHERE_PKS_IN = "SELECT kbComment FROM KBComment kbComment WHERE kbCommentId IN (";
 	private static final String _SQL_SELECT_KBCOMMENT_WHERE = "SELECT kbComment FROM KBComment kbComment WHERE ";

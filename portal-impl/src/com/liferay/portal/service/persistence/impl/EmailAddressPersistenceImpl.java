@@ -17,10 +17,6 @@ package com.liferay.portal.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -3989,6 +3985,8 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 
 	public EmailAddressPersistenceImpl() {
 		setModelClass(EmailAddress.class);
+		setModelImplClass(EmailAddressImpl.class);
+		setEntityCacheEnabled(EmailAddressModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -4027,7 +4025,7 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 	 * Clears the cache for all email addresses.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -4043,7 +4041,7 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 	 * Clears the cache for the email address.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -4455,54 +4453,6 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 	/**
 	 * Returns the email address with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the email address
-	 * @return the email address, or <code>null</code> if a email address with the primary key could not be found
-	 */
-	@Override
-	public EmailAddress fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(EmailAddressModelImpl.ENTITY_CACHE_ENABLED,
-				EmailAddressImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		EmailAddress emailAddress = (EmailAddress)serializable;
-
-		if (emailAddress == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				emailAddress = (EmailAddress)session.get(EmailAddressImpl.class,
-						primaryKey);
-
-				if (emailAddress != null) {
-					cacheResult(emailAddress);
-				}
-				else {
-					entityCache.putResult(EmailAddressModelImpl.ENTITY_CACHE_ENABLED,
-						EmailAddressImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(EmailAddressModelImpl.ENTITY_CACHE_ENABLED,
-					EmailAddressImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return emailAddress;
-	}
-
-	/**
-	 * Returns the email address with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param emailAddressId the primary key of the email address
 	 * @return the email address, or <code>null</code> if a email address with the primary key could not be found
 	 */
@@ -4821,8 +4771,6 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_EMAILADDRESS = "SELECT emailAddress FROM EmailAddress emailAddress";
 	private static final String _SQL_SELECT_EMAILADDRESS_WHERE_PKS_IN = "SELECT emailAddress FROM EmailAddress emailAddress WHERE emailAddressId IN (";
 	private static final String _SQL_SELECT_EMAILADDRESS_WHERE = "SELECT emailAddress FROM EmailAddress emailAddress WHERE ";

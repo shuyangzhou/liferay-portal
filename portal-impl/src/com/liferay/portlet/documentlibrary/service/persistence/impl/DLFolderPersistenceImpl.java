@@ -22,10 +22,6 @@ import com.liferay.document.library.kernel.service.persistence.DLFileEntryTypePe
 import com.liferay.document.library.kernel.service.persistence.DLFolderPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -12194,6 +12190,8 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 	public DLFolderPersistenceImpl() {
 		setModelClass(DLFolder.class);
+		setModelImplClass(DLFolderImpl.class);
+		setEntityCacheEnabled(DLFolderModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -12244,7 +12242,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * Clears the cache for all document library folders.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -12260,7 +12258,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	 * Clears the cache for the document library folder.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -12934,53 +12932,6 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	/**
 	 * Returns the document library folder with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the document library folder
-	 * @return the document library folder, or <code>null</code> if a document library folder with the primary key could not be found
-	 */
-	@Override
-	public DLFolder fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DLFolderModelImpl.ENTITY_CACHE_ENABLED,
-				DLFolderImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		DLFolder dlFolder = (DLFolder)serializable;
-
-		if (dlFolder == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				dlFolder = (DLFolder)session.get(DLFolderImpl.class, primaryKey);
-
-				if (dlFolder != null) {
-					cacheResult(dlFolder);
-				}
-				else {
-					entityCache.putResult(DLFolderModelImpl.ENTITY_CACHE_ENABLED,
-						DLFolderImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(DLFolderModelImpl.ENTITY_CACHE_ENABLED,
-					DLFolderImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return dlFolder;
-	}
-
-	/**
-	 * Returns the document library folder with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param folderId the primary key of the document library folder
 	 * @return the document library folder, or <code>null</code> if a document library folder with the primary key could not be found
 	 */
@@ -13610,8 +13561,6 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	@BeanReference(type = DLFileEntryTypePersistence.class)
 	protected DLFileEntryTypePersistence dlFileEntryTypePersistence;
 	protected TableMapper<DLFolder, com.liferay.document.library.kernel.model.DLFileEntryType> dlFolderToDLFileEntryTypeTableMapper;

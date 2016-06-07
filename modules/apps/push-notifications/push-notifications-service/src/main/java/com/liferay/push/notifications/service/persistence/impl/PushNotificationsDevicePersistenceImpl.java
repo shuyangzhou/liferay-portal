@@ -16,8 +16,6 @@ package com.liferay.push.notifications.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -31,7 +29,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import com.liferay.push.notifications.exception.NoSuchDeviceException;
 import com.liferay.push.notifications.model.PushNotificationsDevice;
@@ -1236,6 +1233,8 @@ public class PushNotificationsDevicePersistenceImpl extends BasePersistenceImpl<
 
 	public PushNotificationsDevicePersistenceImpl() {
 		setModelClass(PushNotificationsDevice.class);
+		setModelImplClass(PushNotificationsDeviceImpl.class);
+		setEntityCacheEnabled(PushNotificationsDeviceModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1281,7 +1280,7 @@ public class PushNotificationsDevicePersistenceImpl extends BasePersistenceImpl<
 	 * Clears the cache for all push notifications devices.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1297,7 +1296,7 @@ public class PushNotificationsDevicePersistenceImpl extends BasePersistenceImpl<
 	 * Clears the cache for the push notifications device.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1602,54 +1601,6 @@ public class PushNotificationsDevicePersistenceImpl extends BasePersistenceImpl<
 	public PushNotificationsDevice findByPrimaryKey(
 		long pushNotificationsDeviceId) throws NoSuchDeviceException {
 		return findByPrimaryKey((Serializable)pushNotificationsDeviceId);
-	}
-
-	/**
-	 * Returns the push notifications device with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the push notifications device
-	 * @return the push notifications device, or <code>null</code> if a push notifications device with the primary key could not be found
-	 */
-	@Override
-	public PushNotificationsDevice fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(PushNotificationsDeviceModelImpl.ENTITY_CACHE_ENABLED,
-				PushNotificationsDeviceImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		PushNotificationsDevice pushNotificationsDevice = (PushNotificationsDevice)serializable;
-
-		if (pushNotificationsDevice == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				pushNotificationsDevice = (PushNotificationsDevice)session.get(PushNotificationsDeviceImpl.class,
-						primaryKey);
-
-				if (pushNotificationsDevice != null) {
-					cacheResult(pushNotificationsDevice);
-				}
-				else {
-					entityCache.putResult(PushNotificationsDeviceModelImpl.ENTITY_CACHE_ENABLED,
-						PushNotificationsDeviceImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(PushNotificationsDeviceModelImpl.ENTITY_CACHE_ENABLED,
-					PushNotificationsDeviceImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return pushNotificationsDevice;
 	}
 
 	/**
@@ -1968,10 +1919,6 @@ public class PushNotificationsDevicePersistenceImpl extends BasePersistenceImpl<
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_PUSHNOTIFICATIONSDEVICE = "SELECT pushNotificationsDevice FROM PushNotificationsDevice pushNotificationsDevice";
 	private static final String _SQL_SELECT_PUSHNOTIFICATIONSDEVICE_WHERE_PKS_IN =
 		"SELECT pushNotificationsDevice FROM PushNotificationsDevice pushNotificationsDevice WHERE pushNotificationsDeviceId IN (";

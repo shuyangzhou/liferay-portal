@@ -23,10 +23,6 @@ import com.liferay.opensocial.model.impl.OAuthTokenModelImpl;
 import com.liferay.opensocial.service.persistence.OAuthTokenPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -1128,6 +1124,8 @@ public class OAuthTokenPersistenceImpl extends BasePersistenceImpl<OAuthToken>
 
 	public OAuthTokenPersistenceImpl() {
 		setModelClass(OAuthToken.class);
+		setModelImplClass(OAuthTokenImpl.class);
+		setEntityCacheEnabled(OAuthTokenModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1173,7 +1171,7 @@ public class OAuthTokenPersistenceImpl extends BasePersistenceImpl<OAuthToken>
 	 * Clears the cache for all o auth tokens.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1189,7 +1187,7 @@ public class OAuthTokenPersistenceImpl extends BasePersistenceImpl<OAuthToken>
 	 * Clears the cache for the o auth token.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1541,54 +1539,6 @@ public class OAuthTokenPersistenceImpl extends BasePersistenceImpl<OAuthToken>
 	/**
 	 * Returns the o auth token with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the o auth token
-	 * @return the o auth token, or <code>null</code> if a o auth token with the primary key could not be found
-	 */
-	@Override
-	public OAuthToken fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(OAuthTokenModelImpl.ENTITY_CACHE_ENABLED,
-				OAuthTokenImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		OAuthToken oAuthToken = (OAuthToken)serializable;
-
-		if (oAuthToken == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				oAuthToken = (OAuthToken)session.get(OAuthTokenImpl.class,
-						primaryKey);
-
-				if (oAuthToken != null) {
-					cacheResult(oAuthToken);
-				}
-				else {
-					entityCache.putResult(OAuthTokenModelImpl.ENTITY_CACHE_ENABLED,
-						OAuthTokenImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(OAuthTokenModelImpl.ENTITY_CACHE_ENABLED,
-					OAuthTokenImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return oAuthToken;
-	}
-
-	/**
-	 * Returns the o auth token with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param oAuthTokenId the primary key of the o auth token
 	 * @return the o auth token, or <code>null</code> if a o auth token with the primary key could not be found
 	 */
@@ -1902,8 +1852,6 @@ public class OAuthTokenPersistenceImpl extends BasePersistenceImpl<OAuthToken>
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_OAUTHTOKEN = "SELECT oAuthToken FROM OAuthToken oAuthToken";
 	private static final String _SQL_SELECT_OAUTHTOKEN_WHERE_PKS_IN = "SELECT oAuthToken FROM OAuthToken oAuthToken WHERE oAuthTokenId IN (";
 	private static final String _SQL_SELECT_OAUTHTOKEN_WHERE = "SELECT oAuthToken FROM OAuthToken oAuthToken WHERE ";

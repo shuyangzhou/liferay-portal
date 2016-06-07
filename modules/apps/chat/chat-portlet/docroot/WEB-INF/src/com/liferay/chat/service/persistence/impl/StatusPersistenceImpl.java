@@ -22,10 +22,6 @@ import com.liferay.chat.model.impl.StatusImpl;
 import com.liferay.chat.model.impl.StatusModelImpl;
 import com.liferay.chat.service.persistence.StatusPersistence;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -1833,6 +1829,8 @@ public class StatusPersistenceImpl extends BasePersistenceImpl<Status>
 
 	public StatusPersistenceImpl() {
 		setModelClass(Status.class);
+		setModelImplClass(StatusImpl.class);
+		setEntityCacheEnabled(StatusModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1873,7 +1871,7 @@ public class StatusPersistenceImpl extends BasePersistenceImpl<Status>
 	 * Clears the cache for all statuses.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1889,7 +1887,7 @@ public class StatusPersistenceImpl extends BasePersistenceImpl<Status>
 	 * Clears the cache for the status.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2214,53 +2212,6 @@ public class StatusPersistenceImpl extends BasePersistenceImpl<Status>
 	/**
 	 * Returns the status with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the status
-	 * @return the status, or <code>null</code> if a status with the primary key could not be found
-	 */
-	@Override
-	public Status fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(StatusModelImpl.ENTITY_CACHE_ENABLED,
-				StatusImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Status status = (Status)serializable;
-
-		if (status == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				status = (Status)session.get(StatusImpl.class, primaryKey);
-
-				if (status != null) {
-					cacheResult(status);
-				}
-				else {
-					entityCache.putResult(StatusModelImpl.ENTITY_CACHE_ENABLED,
-						StatusImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(StatusModelImpl.ENTITY_CACHE_ENABLED,
-					StatusImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return status;
-	}
-
-	/**
-	 * Returns the status with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param statusId the primary key of the status
 	 * @return the status, or <code>null</code> if a status with the primary key could not be found
 	 */
@@ -2576,8 +2527,6 @@ public class StatusPersistenceImpl extends BasePersistenceImpl<Status>
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_STATUS = "SELECT status FROM Status status";
 	private static final String _SQL_SELECT_STATUS_WHERE_PKS_IN = "SELECT status FROM Status status WHERE statusId IN (";
 	private static final String _SQL_SELECT_STATUS_WHERE = "SELECT status FROM Status status WHERE ";

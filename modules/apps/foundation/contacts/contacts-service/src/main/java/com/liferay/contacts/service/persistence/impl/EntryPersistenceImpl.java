@@ -22,8 +22,6 @@ import com.liferay.contacts.model.impl.EntryImpl;
 import com.liferay.contacts.model.impl.EntryModelImpl;
 import com.liferay.contacts.service.persistence.EntryPersistence;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -849,6 +847,8 @@ public class EntryPersistenceImpl extends BasePersistenceImpl<Entry>
 
 	public EntryPersistenceImpl() {
 		setModelClass(Entry.class);
+		setModelImplClass(EntryImpl.class);
+		setEntityCacheEnabled(EntryModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -889,7 +889,7 @@ public class EntryPersistenceImpl extends BasePersistenceImpl<Entry>
 	 * Clears the cache for all entries.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -905,7 +905,7 @@ public class EntryPersistenceImpl extends BasePersistenceImpl<Entry>
 	 * Clears the cache for the entry.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1228,53 +1228,6 @@ public class EntryPersistenceImpl extends BasePersistenceImpl<Entry>
 	/**
 	 * Returns the entry with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the entry
-	 * @return the entry, or <code>null</code> if a entry with the primary key could not be found
-	 */
-	@Override
-	public Entry fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(EntryModelImpl.ENTITY_CACHE_ENABLED,
-				EntryImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Entry entry = (Entry)serializable;
-
-		if (entry == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				entry = (Entry)session.get(EntryImpl.class, primaryKey);
-
-				if (entry != null) {
-					cacheResult(entry);
-				}
-				else {
-					entityCache.putResult(EntryModelImpl.ENTITY_CACHE_ENABLED,
-						EntryImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(EntryModelImpl.ENTITY_CACHE_ENABLED,
-					EntryImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return entry;
-	}
-
-	/**
-	 * Returns the entry with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param entryId the primary key of the entry
 	 * @return the entry, or <code>null</code> if a entry with the primary key could not be found
 	 */
@@ -1587,10 +1540,6 @@ public class EntryPersistenceImpl extends BasePersistenceImpl<Entry>
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_ENTRY = "SELECT entry FROM Entry entry";
 	private static final String _SQL_SELECT_ENTRY_WHERE_PKS_IN = "SELECT entry FROM Entry entry WHERE entryId IN (";
 	private static final String _SQL_SELECT_ENTRY_WHERE = "SELECT entry FROM Entry entry WHERE ";

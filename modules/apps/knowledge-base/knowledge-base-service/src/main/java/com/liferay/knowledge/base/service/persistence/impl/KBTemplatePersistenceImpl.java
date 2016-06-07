@@ -22,8 +22,6 @@ import com.liferay.knowledge.base.model.impl.KBTemplateImpl;
 import com.liferay.knowledge.base.model.impl.KBTemplateModelImpl;
 import com.liferay.knowledge.base.service.persistence.KBTemplatePersistence;
 
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -2338,6 +2336,8 @@ public class KBTemplatePersistenceImpl extends BasePersistenceImpl<KBTemplate>
 
 	public KBTemplatePersistenceImpl() {
 		setModelClass(KBTemplate.class);
+		setModelImplClass(KBTemplateImpl.class);
+		setEntityCacheEnabled(KBTemplateModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2380,7 +2380,7 @@ public class KBTemplatePersistenceImpl extends BasePersistenceImpl<KBTemplate>
 	 * Clears the cache for all k b templates.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2396,7 +2396,7 @@ public class KBTemplatePersistenceImpl extends BasePersistenceImpl<KBTemplate>
 	 * Clears the cache for the k b template.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -2775,54 +2775,6 @@ public class KBTemplatePersistenceImpl extends BasePersistenceImpl<KBTemplate>
 	/**
 	 * Returns the k b template with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the k b template
-	 * @return the k b template, or <code>null</code> if a k b template with the primary key could not be found
-	 */
-	@Override
-	public KBTemplate fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(KBTemplateModelImpl.ENTITY_CACHE_ENABLED,
-				KBTemplateImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		KBTemplate kbTemplate = (KBTemplate)serializable;
-
-		if (kbTemplate == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				kbTemplate = (KBTemplate)session.get(KBTemplateImpl.class,
-						primaryKey);
-
-				if (kbTemplate != null) {
-					cacheResult(kbTemplate);
-				}
-				else {
-					entityCache.putResult(KBTemplateModelImpl.ENTITY_CACHE_ENABLED,
-						KBTemplateImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(KBTemplateModelImpl.ENTITY_CACHE_ENABLED,
-					KBTemplateImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return kbTemplate;
-	}
-
-	/**
-	 * Returns the k b template with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param kbTemplateId the primary key of the k b template
 	 * @return the k b template, or <code>null</code> if a k b template with the primary key could not be found
 	 */
@@ -3141,10 +3093,6 @@ public class KBTemplatePersistenceImpl extends BasePersistenceImpl<KBTemplate>
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_KBTEMPLATE = "SELECT kbTemplate FROM KBTemplate kbTemplate";
 	private static final String _SQL_SELECT_KBTEMPLATE_WHERE_PKS_IN = "SELECT kbTemplate FROM KBTemplate kbTemplate WHERE kbTemplateId IN (";
 	private static final String _SQL_SELECT_KBTEMPLATE_WHERE = "SELECT kbTemplate FROM KBTemplate kbTemplate WHERE ";

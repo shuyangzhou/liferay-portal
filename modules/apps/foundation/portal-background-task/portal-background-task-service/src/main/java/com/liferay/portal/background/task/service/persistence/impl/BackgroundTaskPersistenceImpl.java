@@ -21,8 +21,6 @@ import com.liferay.portal.background.task.model.BackgroundTask;
 import com.liferay.portal.background.task.model.impl.BackgroundTaskImpl;
 import com.liferay.portal.background.task.model.impl.BackgroundTaskModelImpl;
 import com.liferay.portal.background.task.service.persistence.BackgroundTaskPersistence;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -8275,6 +8273,8 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 
 	public BackgroundTaskPersistenceImpl() {
 		setModelClass(BackgroundTask.class);
+		setModelImplClass(BackgroundTaskImpl.class);
+		setEntityCacheEnabled(BackgroundTaskModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -8314,7 +8314,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 * Clears the cache for all background tasks.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -8330,7 +8330,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	 * Clears the cache for the background task.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -8803,54 +8803,6 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 	/**
 	 * Returns the background task with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the background task
-	 * @return the background task, or <code>null</code> if a background task with the primary key could not be found
-	 */
-	@Override
-	public BackgroundTask fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(BackgroundTaskModelImpl.ENTITY_CACHE_ENABLED,
-				BackgroundTaskImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		BackgroundTask backgroundTask = (BackgroundTask)serializable;
-
-		if (backgroundTask == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				backgroundTask = (BackgroundTask)session.get(BackgroundTaskImpl.class,
-						primaryKey);
-
-				if (backgroundTask != null) {
-					cacheResult(backgroundTask);
-				}
-				else {
-					entityCache.putResult(BackgroundTaskModelImpl.ENTITY_CACHE_ENABLED,
-						BackgroundTaskImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(BackgroundTaskModelImpl.ENTITY_CACHE_ENABLED,
-					BackgroundTaskImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return backgroundTask;
-	}
-
-	/**
-	 * Returns the background task with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param backgroundTaskId the primary key of the background task
 	 * @return the background task, or <code>null</code> if a background task with the primary key could not be found
 	 */
@@ -9164,10 +9116,6 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_BACKGROUNDTASK = "SELECT backgroundTask FROM BackgroundTask backgroundTask";
 	private static final String _SQL_SELECT_BACKGROUNDTASK_WHERE_PKS_IN = "SELECT backgroundTask FROM BackgroundTask backgroundTask WHERE backgroundTaskId IN (";
 	private static final String _SQL_SELECT_BACKGROUNDTASK_WHERE = "SELECT backgroundTask FROM BackgroundTask backgroundTask WHERE ";

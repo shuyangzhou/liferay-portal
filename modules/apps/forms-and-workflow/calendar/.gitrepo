@@ -4,7 +4,7 @@
 ;
 [subrepo]
 	cmdver = liferay
-	commit = 8599781cdcb10fae16a9aeb9bfc8a01d3fcfb10b
+	commit = a28be50d04dc6600ca359db84243e7ca951d0f8d
 	mode = push
-	parent = dbd80adeff4cbed3c84dbbf19f145bc915891cf2
+	parent = a8e25fc38386c12401a0d747e2834936e4569646
 	remote = git@github.com:liferay/com-liferay-calendar.git
