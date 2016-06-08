@@ -1,4 +1,4 @@
-define("frontend-js-spa-web@1.0.7/metal/src/object/object", ['exports'], function (exports) {
+define("frontend-js-spa-web@1.0.8/metal/src/object/object", ['exports'], function (exports) {
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {

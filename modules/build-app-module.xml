@@ -91,6 +91,8 @@
 					<regexp pattern="[0-9a-f]{40}\^\.\.[0-9a-f]{40}" />
 				</linecontainsregexp>
 
+				<tailfilter lines="1" />
+
 				<tokenfilter>
 					<filetokenizer />
 					<replaceregex flags="g" pattern="[0-9a-f]{40}\^\.\.[0-9a-f]{40}=" replace="" />
@@ -199,6 +201,11 @@
 		</loadfile>
 
 		<property name="artifact.location.dest" value="${osgi.dir}/marketplace/${artifact.name}-${artifact.version}.war" />
+
+		<condition property="artifact.location.src" value="${osgi.dir}/war/${artifact.name}.war">
+			<available file="${osgi.dir}/war/${artifact.name}.war" />
+		</condition>
+
 		<property name="artifact.location.src" value="${osgi.dir}/../deploy/${artifact.name}.war" />
 	</target>
 

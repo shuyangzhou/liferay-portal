@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Push Notifications Sender Microsoft
 Bundle-SymbolicName: com.liferay.push.notifications.sender.microsoft
-Bundle-Version: 1.0.2
+Bundle-Version: 1.0.3
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title:
 -includeresource:\

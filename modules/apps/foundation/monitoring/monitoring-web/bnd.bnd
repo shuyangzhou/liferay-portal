@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Monitoring Web
 Bundle-SymbolicName: com.liferay.monitoring.web
-Bundle-Version: 1.0.4
+Bundle-Version: 1.0.5
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title:
 Web-ContextPath: /monitoring-web

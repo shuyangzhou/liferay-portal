@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
-import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.lpkg.deployer.LPKGDeployer;
 import com.liferay.portal.lpkg.deployer.LPKGVerifyException;
 import com.liferay.portal.target.platform.indexer.IndexValidator;
@@ -394,7 +393,7 @@ public class LPKGIndexValidator {
 			integrityKey = integrityKey.substring(index + 1);
 		}
 
-		return URLCodec.decodeURL(integrityKey);
+		return integrityKey;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

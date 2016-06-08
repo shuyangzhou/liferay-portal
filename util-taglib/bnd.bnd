@@ -25,8 +25,6 @@ Include-Resource:\
 	@../util-java/util-java.jar!/com/liferay/util/JS.class,\
 	@../util-java/util-java.jar!/com/liferay/util/PwdGenerator.class,\
 	@../util-java/util-java.jar!/com/liferay/util/RSSUtil.class
-Liferay-Releng-Module-Group-Description:
-Liferay-Releng-Module-Group-Title:
 Provide-Capability:\
 	osgi.extender;\
 		osgi.extender="jsp.taglib";\
@@ -73,4 +71,3 @@ Provide-Capability:\
 		uri="http://liferay.com/tld/util";\
 		version:Version="${Bundle-Version}"
 -baseline: *;file=${project.dir}/.bnd/ant-baseline-cache/com.liferay.util.taglib-2.3.0.jar
--include: ../modules/apps/static/app.bnd

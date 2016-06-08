@@ -1,4 +1,4 @@
-define("frontend-js-spa-web@1.0.7/senna/src/globals/globals", ["exports"], function (exports) {
+define("frontend-js-spa-web@1.0.8/senna/src/globals/globals", ["exports"], function (exports) {
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
