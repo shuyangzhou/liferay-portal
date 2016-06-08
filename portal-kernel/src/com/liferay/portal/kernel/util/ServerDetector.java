@@ -222,7 +222,7 @@ public class ServerDetector {
 			_wildfly = true;
 		}
 
-		if (_serverId == null) {
+		if (Validator.isNull(_serverId)) {
 			if (_isJetty()) {
 				_serverId = JETTY_ID;
 				_jetty = true;
