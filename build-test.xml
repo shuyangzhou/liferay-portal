@@ -8506,6 +8506,13 @@ jdbc.default.password=${database.password}</echo>
 			</then>
 		</if>
 
+		<echo append="true" file="${app.server.classes.portal.dir}/portal-ext.properties">
+
+module.framework.auto.deploy.dirs=\
+    ${module.framework.base.dir}/configs,\
+    ${module.framework.base.dir}/marketplace,\
+    ${module.framework.base.dir}/modules</echo>
+
 		<java
 			dir="${liferay.home}/tools/portal-tools-db-upgrade-client"
 			failonerror="true"
