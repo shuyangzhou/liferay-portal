@@ -222,7 +222,9 @@ public class ServerDetector {
 			_wildfly = true;
 		}
 
-		if (_serverId == null) {
+		System.out.println("###################" + _serverId);
+
+		if (Validator.isNull(_serverId)) {
 			if (_isJetty()) {
 				_serverId = JETTY_ID;
 				_jetty = true;
@@ -232,6 +234,10 @@ public class ServerDetector {
 				_tomcat = true;
 			}
 		}
+
+		System.out.println("*******************" + _serverId);
+
+		new Exception().printStackTrace(System.out);
 
 		if (System.getProperty("external-properties") == null) {
 			if (_log.isInfoEnabled()) {
