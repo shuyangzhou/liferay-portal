@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.lpkg.deployer.LPKGDeployer;
 import com.liferay.portal.lpkg.deployer.LPKGVerifier;
 import com.liferay.portal.lpkg.deployer.LPKGVerifyException;
-import com.liferay.portal.lpkg.deployer.LPKGWARBundleRegistry;
 import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
@@ -198,7 +197,6 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 	@Deactivate
 	protected void deactivate() {
 		_lpkgBundleTracker.close();
-		_warWrapperBundlerTracker.close();
 	}
 
 	private void _doActivate(final BundleContext bundleContext)
@@ -212,12 +210,6 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 		bundleContext.registerService(
 			URLStreamHandlerService.class.getName(),
 			new LPKGURLStreamHandlerService(_urls), properties);
-
-		_warWrapperBundlerTracker = new BundleTracker<>(
-			bundleContext, ~Bundle.UNINSTALLED,
-			new WARWrapperBundleTrackCustomizer(_lpkgWarBundleRegistry));
-
-		_warWrapperBundlerTracker.open();
 
 		_lpkgBundleTracker = new BundleTracker<>(
 			bundleContext, ~Bundle.UNINSTALLED,
@@ -353,13 +345,9 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 	@Reference
 	private LPKGVerifier _lpkgVerifier;
 
-	@Reference
-	private LPKGWARBundleRegistry _lpkgWarBundleRegistry;
-
 	@Reference(target = "(throwable.collector=initial.bundles)")
 	private ThrowableCollector _throwableCollector;
 
 	private final Map<String, URL> _urls = new ConcurrentHashMap<>();
-	private BundleTracker<Bundle> _warWrapperBundlerTracker;
 
 }

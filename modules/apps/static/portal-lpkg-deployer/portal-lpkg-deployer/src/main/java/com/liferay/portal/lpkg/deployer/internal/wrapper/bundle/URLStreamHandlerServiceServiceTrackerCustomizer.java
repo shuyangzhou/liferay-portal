@@ -14,8 +14,6 @@
 
 package com.liferay.portal.lpkg.deployer.internal.wrapper.bundle;
 
-import com.liferay.portal.lpkg.deployer.LPKGWARBundleRegistry;
-
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -35,13 +33,12 @@ public class URLStreamHandlerServiceServiceTrackerCustomizer
 
 	public URLStreamHandlerServiceServiceTrackerCustomizer(
 		BundleContext bundleContext, String contextName, URL lpkgURL,
-		int startLevel, LPKGWARBundleRegistry lpkgWARBundleRegistry) {
+		int startLevel) {
 
 		_bundleContext = bundleContext;
 		_contextName = contextName;
 		_lpkgURL = lpkgURL;
 		_startLevel = startLevel;
-		_lpkgWARBundleRegistry = lpkgWARBundleRegistry;
 	}
 
 	@Override
@@ -78,9 +75,6 @@ public class URLStreamHandlerServiceServiceTrackerCustomizer
 			Bundle newBundle = _bundleContext.installBundle(
 				wabURL.toExternalForm(), urlConnection.getInputStream());
 
-			_lpkgWARBundleRegistry.register(
-				_bundleContext.getBundle(), newBundle);
-
 			BundleStartLevel bundleStartLevel = newBundle.adapt(
 				BundleStartLevel.class);
 
@@ -110,7 +104,6 @@ public class URLStreamHandlerServiceServiceTrackerCustomizer
 	private final BundleContext _bundleContext;
 	private final String _contextName;
 	private final URL _lpkgURL;
-	private final LPKGWARBundleRegistry _lpkgWARBundleRegistry;
 	private final int _startLevel;
 
 }
