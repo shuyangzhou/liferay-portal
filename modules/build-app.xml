@@ -46,14 +46,6 @@
 	</target>
 
 	<target depends="dist-module-artifacts-lpkg,write-lpkg-marketplace-properties" name="build-app-lpkg" unless="module.dirs.null">
-		<loadproperties srcFile="${modules.dir}${file.separator}apps${file.separator}${app.name}${file.separator}app.bnd">
-			<filterchain>
-				<linecontains>
-					<contains value="Liferay-Releng-App-Title" />
-				</linecontains>
-			</filterchain>
-		</loadproperties>
-
 		<zip basedir="${osgi.dir}/marketplace" destfile="${osgi.dir}/marketplace/${Liferay-Releng-App-Title}.lpkg" includes="*.jar,*.war,liferay-marketplace.properties" />
 
 		<delete>
@@ -330,6 +322,14 @@
 
 			<flattenmapper />
 		</pathconvert>
+
+		<loadproperties srcFile="${app.dir}/app.bnd">
+			<filterchain>
+				<linecontains>
+					<contains value="Liferay-Releng-App-Title" />
+				</linecontains>
+			</filterchain>
+		</loadproperties>
 	</target>
 
 	<target name="reset-all">
