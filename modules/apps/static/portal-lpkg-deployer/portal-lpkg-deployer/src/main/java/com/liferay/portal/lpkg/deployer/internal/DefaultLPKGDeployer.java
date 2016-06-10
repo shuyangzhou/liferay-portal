@@ -14,6 +14,7 @@
 
 package com.liferay.portal.lpkg.deployer.internal;
 
+import com.liferay.portal.kernel.concurrent.DefaultNoticeableFuture;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.log.Log;
@@ -26,7 +27,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.lpkg.deployer.LPKGDeployer;
 import com.liferay.portal.lpkg.deployer.LPKGVerifier;
 import com.liferay.portal.lpkg.deployer.LPKGVerifyException;
-import com.liferay.portal.lpkg.deployer.LPKGWARBundleRegistry;
 import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
@@ -60,7 +60,10 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.Constants;
+import org.osgi.framework.FrameworkEvent;
+import org.osgi.framework.FrameworkListener;
 import org.osgi.framework.startlevel.BundleStartLevel;
+import org.osgi.framework.wiring.FrameworkWiring;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -98,7 +101,9 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 						_deploymentDirPath);
 		}
 
-		for (Bundle bundle : _lpkgVerifier.verify(lpkgFile)) {
+		List<Bundle> oldBundles = _lpkgVerifier.verify(lpkgFile);
+
+		for (Bundle bundle : oldBundles) {
 			try {
 				bundle.uninstall();
 
@@ -150,10 +155,14 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 				_lpkgIndexValidator.updateIntegrityProperties();
 			}
 
+			if (!oldBundles.isEmpty()) {
+				_refreshRemovalPendingBundles(bundleContext, lpkgBundle);
+			}
+
 			return bundles;
 		}
-		catch (BundleException be) {
-			throw new IOException(be);
+		catch (Exception e) {
+			throw new IOException(e);
 		}
 	}
 
@@ -198,7 +207,6 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 	@Deactivate
 	protected void deactivate() {
 		_lpkgBundleTracker.close();
-		_warWrapperBundlerTracker.close();
 	}
 
 	private void _doActivate(final BundleContext bundleContext)
@@ -212,12 +220,6 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 		bundleContext.registerService(
 			URLStreamHandlerService.class.getName(),
 			new LPKGURLStreamHandlerService(_urls), properties);
-
-		_warWrapperBundlerTracker = new BundleTracker<>(
-			bundleContext, ~Bundle.UNINSTALLED,
-			new WARWrapperBundleTrackCustomizer(_lpkgWarBundleRegistry));
-
-		_warWrapperBundlerTracker.open();
 
 		_lpkgBundleTracker = new BundleTracker<>(
 			bundleContext, ~Bundle.UNINSTALLED,
@@ -309,6 +311,60 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 		}
 	}
 
+	/**
+	 * @see FrameworkWiring#getRemovalPendingBundles
+	 */
+	private void _refreshRemovalPendingBundles(
+			BundleContext bundleContext, Bundle bundle)
+		throws Exception {
+
+		Bundle systemBundle = bundleContext.getBundle(0);
+
+		FrameworkWiring frameworkWiring = systemBundle.adapt(
+			FrameworkWiring.class);
+
+		final DefaultNoticeableFuture<FrameworkEvent> defaultNoticeableFuture =
+			new DefaultNoticeableFuture<>();
+
+		if (_log.isInfoEnabled()) {
+			_log.info(
+				"Start refreshing references to point to the new bundle " +
+					bundle);
+		}
+
+		frameworkWiring.refreshBundles(
+			null,
+			new FrameworkListener() {
+
+				@Override
+				public void frameworkEvent(FrameworkEvent frameworkEvent) {
+					if (frameworkEvent.getType() == FrameworkEvent.ERROR) {
+						defaultNoticeableFuture.setException(
+							frameworkEvent.getThrowable());
+					}
+					else {
+						defaultNoticeableFuture.set(frameworkEvent);
+					}
+				}
+
+			});
+
+		FrameworkEvent frameworkEvent = defaultNoticeableFuture.get();
+
+		if (frameworkEvent.getType() == FrameworkEvent.PACKAGES_REFRESHED) {
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					"Finished refreshing references to point to the new " +
+						"bundle " + bundle);
+			}
+		}
+		else {
+			throw new Exception(
+				"Unable to refresh references to the new bundle " + bundle +
+					" because of framework event " + frameworkEvent);
+		}
+	}
+
 	private void _writeManifest(
 			ZipFile zipFile, JarOutputStream jarOutputStream)
 		throws IOException {
@@ -353,13 +409,9 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 	@Reference
 	private LPKGVerifier _lpkgVerifier;
 
-	@Reference
-	private LPKGWARBundleRegistry _lpkgWarBundleRegistry;
-
 	@Reference(target = "(throwable.collector=initial.bundles)")
 	private ThrowableCollector _throwableCollector;
 
 	private final Map<String, URL> _urls = new ConcurrentHashMap<>();
-	private BundleTracker<Bundle> _warWrapperBundlerTracker;
 
 }

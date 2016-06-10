@@ -46,14 +46,6 @@
 	</target>
 
 	<target depends="dist-module-artifacts-lpkg,write-lpkg-marketplace-properties" name="build-app-lpkg" unless="module.dirs.null">
-		<loadproperties srcFile="${modules.dir}${file.separator}apps${file.separator}${app.name}${file.separator}app.bnd">
-			<filterchain>
-				<linecontains>
-					<contains value="Liferay-Releng-App-Title" />
-				</linecontains>
-			</filterchain>
-		</loadproperties>
-
 		<zip basedir="${osgi.dir}/marketplace" destfile="${osgi.dir}/marketplace/${Liferay-Releng-App-Title}.lpkg" includes="*.jar,*.war,liferay-marketplace.properties" />
 
 		<delete>
@@ -330,6 +322,14 @@
 
 			<flattenmapper />
 		</pathconvert>
+
+		<loadproperties srcFile="${app.dir}/app.bnd">
+			<filterchain>
+				<linecontains>
+					<contains value="Liferay-Releng-App-Title" />
+				</linecontains>
+			</filterchain>
+		</loadproperties>
 	</target>
 
 	<target name="reset-all">
@@ -394,7 +394,7 @@
 
 		<echo append="true" file="${osgi.dir}/marketplace/liferay-marketplace.properties" message="${line.separator}" />
 
-		<echo append="true" file="${osgi.dir}/marketplace/liferay-marketplace.properties" message="remote-app-id=${app.name}" />
+		<echo append="true" file="${osgi.dir}/marketplace/liferay-marketplace.properties" message="remote-app-id=${Liferay-Releng-App-Title}" />
 
 		<echo append="true" file="${osgi.dir}/marketplace/liferay-marketplace.properties" message="${line.separator}" />
 
@@ -402,15 +402,15 @@
 
 		<echo append="true" file="${osgi.dir}/marketplace/liferay-marketplace.properties" message="${line.separator}" />
 
-		<echo append="true" file="${osgi.dir}/marketplace/liferay-marketplace.properties" message="category=${app.name}" />
+		<echo append="true" file="${osgi.dir}/marketplace/liferay-marketplace.properties" message="category=${Liferay-Releng-App-Title}" />
 
 		<echo append="true" file="${osgi.dir}/marketplace/liferay-marketplace.properties" message="${line.separator}" />
 
-		<echo append="true" file="${osgi.dir}/marketplace/liferay-marketplace.properties" message="description=${app.name}" />
+		<echo append="true" file="${osgi.dir}/marketplace/liferay-marketplace.properties" message="description=${Liferay-Releng-App-Title}" />
 
 		<echo append="true" file="${osgi.dir}/marketplace/liferay-marketplace.properties" message="${line.separator}" />
 
-		<echo append="true" file="${osgi.dir}/marketplace/liferay-marketplace.properties" message="title=${app.name}" />
+		<echo append="true" file="${osgi.dir}/marketplace/liferay-marketplace.properties" message="title=${Liferay-Releng-App-Title}" />
 
 		<echo append="true" file="${osgi.dir}/marketplace/liferay-marketplace.properties" message="${line.separator}" />
 
