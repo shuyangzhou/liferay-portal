@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.lpkg.deployer.LPKGWARBundleRegistry;
+import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.lpkg.deployer.internal.wrapper.bundle.URLStreamHandlerServiceServiceTrackerCustomizer;
 import com.liferay.portal.lpkg.deployer.internal.wrapper.bundle.WARBundleWrapperBundleActivator;
 import com.liferay.portal.util.PropsValues;
@@ -168,9 +168,33 @@ public class LPKGBundleTrackerCustomizer
 			return;
 		}
 
+		String lpkgBundleSymbolicName = bundle.getSymbolicName();
+
+		String prefix = lpkgBundleSymbolicName.concat(StringPool.DASH);
+
 		for (Bundle newBundle : bundles) {
 			try {
 				newBundle.uninstall();
+
+				String symbolicName = newBundle.getSymbolicName();
+
+				if (symbolicName.startsWith(prefix) &&
+					symbolicName.endsWith("-wrapper")) {
+
+					String wrappedBundleSymbolicName = symbolicName.substring(
+						prefix.length(), symbolicName.length() - 8);
+
+					Version version = newBundle.getVersion();
+
+					for (Bundle curBundle : _bundleContext.getBundles()) {
+						if (wrappedBundleSymbolicName.equals(
+								curBundle.getSymbolicName()) &&
+							version.equals(curBundle.getVersion())) {
+
+							curBundle.uninstall();
+						}
+					}
+				}
 			}
 			catch (BundleException be) {
 				_log.error(
@@ -208,16 +232,20 @@ public class LPKGBundleTrackerCustomizer
 		String contextName = pathString.substring(
 			pathString.lastIndexOf('/') + 1, pathString.lastIndexOf(".war"));
 
+		String version = String.valueOf(bundle.getVersion());
+
 		int index = contextName.lastIndexOf('-');
 
 		if (index >= 0) {
+			version = contextName.substring(index + 1);
+
 			contextName = contextName.substring(0, index);
 		}
 
 		StringBundler sb = new StringBundler(7);
 
 		sb.append("lpkg://");
-		sb.append(bundle.getSymbolicName());
+		sb.append(URLCodec.encodeURL(bundle.getSymbolicName()));
 		sb.append(StringPool.DASH);
 		sb.append(bundle.getVersion());
 		sb.append(StringPool.SLASH);
@@ -238,7 +266,8 @@ public class LPKGBundleTrackerCustomizer
 			try (JarOutputStream jarOutputStream = new JarOutputStream(
 					unsyncByteArrayOutputStream)) {
 
-				_writeManifest(bundle, contextName, lpkgURL, jarOutputStream);
+				_writeManifest(
+					bundle, contextName, version, lpkgURL, jarOutputStream);
 
 				_writeClasses(
 					jarOutputStream, WARBundleWrapperBundleActivator.class,
@@ -276,7 +305,7 @@ public class LPKGBundleTrackerCustomizer
 	}
 
 	private void _writeManifest(
-			Bundle bundle, String contextName, String lpkgURL,
+			Bundle bundle, String contextName, String version, String lpkgURL,
 			JarOutputStream jarOutputStream)
 		throws IOException {
 
@@ -292,15 +321,12 @@ public class LPKGBundleTrackerCustomizer
 			Constants.BUNDLE_SYMBOLICNAME,
 			bundle.getSymbolicName() + "-" + contextName + "-wrapper");
 
-		Version version = bundle.getVersion();
-
-		attributes.putValue(Constants.BUNDLE_VERSION, version.toString());
+		attributes.putValue(Constants.BUNDLE_VERSION, version);
 		attributes.putValue(
 			Constants.IMPORT_PACKAGE,
 			_buildImportPackageString(
 				BundleActivator.class, BundleStartLevel.class,
-				ServiceTrackerCustomizer.class, LPKGWARBundleRegistry.class,
-				URLConstants.class));
+				ServiceTrackerCustomizer.class, URLConstants.class));
 		attributes.putValue("Liferay-WAB-Context-Name", contextName);
 		attributes.putValue("Liferay-WAB-LPKG-URL", lpkgURL);
 		attributes.putValue(

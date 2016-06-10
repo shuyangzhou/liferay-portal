@@ -37,7 +37,8 @@ page import="com.liferay.portal.kernel.util.StringPool" %><%@
 page import="com.liferay.portal.kernel.util.StringUtil" %><%@
 page import="com.liferay.portal.kernel.util.Validator" %><%@
 page import="com.liferay.portal.kernel.util.WebKeys" %><%@
-page import="com.liferay.portlet.asset.service.permission.AssetTagPermission" %>
+page import="com.liferay.portlet.asset.service.permission.AssetTagPermission" %><%@
+page import="com.liferay.portlet.asset.util.AssetUtil" %>
 
 <%@ page import="java.util.Objects" %>
 

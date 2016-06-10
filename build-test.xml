@@ -2257,6 +2257,8 @@ ${tomcat-gc-log}
 						directoryScanner.setBasedir(project.getBaseDir());
 						directoryScanner.setExcludes(
 							new String[] {
+								"modules/apps/static/portal-lpkg-deployer/portal-lpkg-deployer-test/src/test/java/com/liferay/portal/lpkg/LPKGUpgradeLogAssertorTest.java",
+								"modules/apps/static/portal-lpkg-deployer/portal-lpkg-deployer-test/src/test/java/com/liferay/portal/lpkg/LPKGUpgradeTest.java",
 								"modules/apps/static/portal-lpkg-deployer/portal-lpkg-deployer-test/src/testIntegration/java/com/liferay/portal/lpkg/deployer/test/LPKGDeployerTest.java",
 								"portal-kernel/test/unit/com/liferay/portal/log/assertor/PortalLogAssertorTest.java",
 								"*/pacl/test/[\\w]+Test.class",
@@ -2790,6 +2792,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 	<macrodef name="start-app-server">
 		<attribute default="0" name="app.server.bundle.index" />
+		<attribute default="true" name="delete.liferay.home" />
 		<attribute default="" name="testable.portal.started.marker.file" />
 
 		<sequential>
@@ -2799,18 +2802,21 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 					<start-app-server-cmd
 						app.server.bin.dir="${app.server.tcat.admin.bin.dir}"
 						app.server.bundle.index="@{app.server.bundle.index}"
+						delete.liferay.home="@{delete.liferay.home}"
 						testable.portal.started.marker.file="@{testable.portal.started.marker.file}"
 					/>
 
 					<start-app-server-cmd
 						app.server.bin.dir="${app.server.tcat.agent.bin.dir}"
 						app.server.bundle.index="@{app.server.bundle.index}"
+						delete.liferay.home="@{delete.liferay.home}"
 						testable.portal.started.marker.file="@{testable.portal.started.marker.file}"
 					/>
 				</then>
 				<else>
 					<start-app-server-cmd
 						app.server.bundle.index="@{app.server.bundle.index}"
+						delete.liferay.home="@{delete.liferay.home}"
 						testable.portal.started.marker.file="@{testable.portal.started.marker.file}"
 					/>
 				</else>
@@ -2821,6 +2827,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 	<macrodef name="start-app-server-cmd">
 		<attribute default="${app.server.bin.dir}" name="app.server.bin.dir" />
 		<attribute default="0" name="app.server.bundle.index" />
+		<attribute default="true" name="delete.liferay.home" />
 		<attribute default="" name="testable.portal.started.marker.file" />
 
 		<sequential>
@@ -2878,9 +2885,12 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 					<get-testcase-property property.name="portal.version" />
 
 					<if>
-						<not>
-							<isset property="portal.version" />
-						</not>
+						<and>
+							<not>
+								<isset property="portal.version" />
+							</not>
+							<equals arg1="@{delete.liferay.home}" arg2="true" />
+						</and>
 						<then>
 							<antcall target="delete-liferay-home">
 								<param name="keep.hypersonicdb" value="true" />
@@ -6911,7 +6921,16 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 				<isset property="skip.rebuild-database" />
 			</not>
 			<then>
-				<antcall target="delete-liferay-home" />
+				<get-testcase-property property.name="portal.version" />
+
+				<if>
+					<not>
+						<isset property="portal.version" />
+					</not>
+					<then>
+						<antcall target="delete-liferay-home" />
+					</then>
+				</if>
 
 				<if>
 					<equals arg1="${database.type}" arg2="db2" />
@@ -8333,6 +8352,24 @@ jdbc.default.password=${database.mysql.password}</echo>
 
 		<start-app-server
 			app.server.bundle.index="${app.server.bundle.index}"
+			delete.liferay.home="true"
+			testable.portal.started.marker.file="${testable.portal.started.marker.file}"
+		/>
+	</target>
+
+	<target name="start-app-server-preserve-liferay-home">
+		<if>
+			<not>
+				<isset property="app.server.bundle.index" />
+			</not>
+			<then>
+				<var name="app.server.bundle.index" value="0" />
+			</then>
+		</if>
+
+		<start-app-server
+			app.server.bundle.index="${app.server.bundle.index}"
+			delete.liferay.home="false"
 			testable.portal.started.marker.file="${testable.portal.started.marker.file}"
 		/>
 	</target>
@@ -8424,7 +8461,8 @@ jdbc.default.password=${database.mysql.password}</echo>
 				<echo file="${liferay.home}/tools/portal-tools-db-upgrade-client/app-server.properties">dir=${app.server.dir}
 extra.lib.dirs=
 global.lib.dir=modules/com/liferay/portal/main
-portal.dir=standalone/deployments/ROOT.war</echo>
+portal.dir=standalone/deployments/ROOT.war
+server.detector.server.id=jboss</echo>
 			</then>
 			<elseif>
 				<equals arg1="${app.server.type}" arg2="tomcat" />
@@ -8432,7 +8470,8 @@ portal.dir=standalone/deployments/ROOT.war</echo>
 					<echo file="${liferay.home}/tools/portal-tools-db-upgrade-client/app-server.properties">dir=${app.server.dir}
 extra.lib.dirs=bin
 global.lib.dir=lib
-portal.dir=webapps/ROOT</echo>
+portal.dir=webapps/ROOT
+server.detector.server.id=tomcat</echo>
 				</then>
 			</elseif>
 			<elseif>
@@ -8441,7 +8480,8 @@ portal.dir=webapps/ROOT</echo>
 					<echo file="${liferay.home}/tools/portal-tools-db-upgrade-client/app-server.properties">dir=${app.server.dir}
 extra.lib.dirs=modules/system/layers/base/javax/mail,modules/system/layers/base/javax/persistence,modules/system/layers/base/javax/servlet,modules/system/layers/base/javax/transaction
 global.lib.dir=modules/com/liferay/portal/main
-portal.dir=standalone/deployments/ROOT.war</echo>
+portal.dir=standalone/deployments/ROOT.war
+server.detector.server.id=wildfly</echo>
 				</then>
 			</elseif>
 		</if>
@@ -8458,68 +8498,47 @@ jdbc.default.password=${database.password}</echo>
 
 		<echo file="${liferay.home}/tools/portal-tools-db-upgrade-client/portal-upgrade-ext.properties">liferay.home=${liferay.home}</echo>
 
-		<get-testcase-property property.name="portal.version" />
-
-		<propertyregex
-			input="${portal.version}"
-			property="portal.major.version"
-			regexp="(\d+\.\d+)\.\d+"
-			select="\1"
-		/>
-
-		<if>
-			<or>
-				<equals arg1="${portal.major.version}" arg2="6.0" />
-				<equals arg1="${portal.major.version}" arg2="6.1" />
-				<equals arg1="${portal.major.version}" arg2="6.2" />
-			</or>
-			<then>
-				<prepare-portal-legacy-properties
-					portal.ext.properties.file.path="${liferay.home}/tools/portal-tools-db-upgrade-client/portal-upgrade-ext.properties"
-					portal.major.version="6.2"
+		<trycatch property="upgrade.error">
+			<try>
+				<java
+					dir="${liferay.home}/tools/portal-tools-db-upgrade-client"
+					failonerror="true"
+					fork="true"
+					jar="${liferay.home}/tools/portal-tools-db-upgrade-client/com.liferay.portal.tools.db.upgrade.client.jar"
+					timeout="900000"
 				/>
-			</then>
-		</if>
+			</try>
+			<catch>
+				<execute>
+					jps > jps_output
+				</execute>
 
-		<if>
-			<or>
-				<equals arg1="${portal.major.version}" arg2="6.0" />
-				<equals arg1="${portal.major.version}" arg2="6.1" />
-			</or>
-			<then>
-				<prepare-portal-legacy-properties
-					portal.ext.properties.file.path="${liferay.home}/tools/portal-tools-db-upgrade-client/portal-upgrade-ext.properties"
-					portal.major.version="6.1"
-				/>
-			</then>
-		</if>
+				<var name="jps.output" unset="true" />
 
-		<if>
-			<or>
-				<equals arg1="${portal.major.version}" arg2="6.0" />
-			</or>
-			<then>
-				<prepare-portal-legacy-properties
-					portal.ext.properties.file.path="${liferay.home}/tools/portal-tools-db-upgrade-client/portal-upgrade-ext.properties"
-					portal.major.version="6.0"
-				/>
-			</then>
-		</if>
+				<loadfile property="jps.output" srcfile="jps_output" />
 
-		<java
-			dir="${liferay.home}/tools/portal-tools-db-upgrade-client"
-			failonerror="true"
-			fork="true"
-			jar="${liferay.home}/tools/portal-tools-db-upgrade-client/com.liferay.portal.tools.db.upgrade.client.jar"
-			timeout="900000"
-		/>
+				<if>
+					<contains string="${jps.output}" substring="DBUpgrader" />
+					<then>
+						<propertyregex
+							input="${jps.output}"
+							override="true"
+							property="db.upgrader.pid"
+							regexp="(|[\S\s]*\n)([0-9]+) DBUpgrader[\S\s]*"
+							replace="\2"
+						/>
 
-		<waitfor maxwait="15" maxwaitunit="minute">
-			<resourcecontains
-				resource="${liferay.home}/tools/portal-tools-db-upgrade-client/upgrade.log"
-				substring="Checking to see if all upgrades have completed... done."
-			/>
-		</waitfor>
+						<execute>
+							jstack ${db.upgrader.pid}
+						</execute>
+					</then>
+				</if>
+
+				<delete file="jps_output" />
+
+				<fail message="${upgrade.error}" />
+			</catch>
+		</trycatch>
 
 		<echo file="${liferay.home}/osgi/configs/com.liferay.portal.search.configuration.IndexStatusManagerConfiguration.cfg">indexReadOnly=false</echo>
 	</target>

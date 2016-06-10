@@ -186,6 +186,7 @@ public interface JournalFolderLocalService extends BaseLocalService,
 		long parentFolderId, ServiceContext serviceContext)
 		throws PortalException;
 
+	@Indexable(type = IndexableType.REINDEX)
 	public JournalFolder moveFolderToTrash(long userId, long folderId)
 		throws PortalException;
 
