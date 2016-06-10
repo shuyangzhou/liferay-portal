@@ -1,0 +1,273 @@
+diff --git a/org/apache/jasper/compiler/JspReader.java b/org/apache/jasper/compiler/JspReader.java
+index 5956ec1..aa02be8 100644
+--- a/org/apache/jasper/compiler/JspReader.java
++++ b/org/apache/jasper/compiler/JspReader.java
+@@ -101,6 +101,11 @@ class JspReader {
+     private JspCompilationContext context;
+     private ErrorDispatcher err;
+ 
++	// Marks
++	private int markedCol;
++	private int markedCursor;
++	private int markedLine;
++
+     /*
+      * Set to true when using the JspReader on a single file where we read up
+      * to the end and reset to the beginning many times.
+@@ -192,13 +197,13 @@ class JspReader {
+     }
+ 
+     String getText(Mark start, Mark stop) throws JasperException {
+-	Mark oldstart = mark();
+-	reset(start);
++	mark();
++	current.sync(start);
+ 	CharArrayWriter caw = new CharArrayWriter();
+-	while (!stop.equals(mark()))
++	while (!stop.equals(current))
+ 	    caw.write(nextChar());
+ 	caw.close();
+-	reset(oldstart);
++	reset();
+ 	return caw.toString();
+     }
+ 
+@@ -208,26 +213,28 @@ class JspReader {
+ 	return current.stream[current.cursor];
+     }
+ 
+-    Mark mark() {
+-	return new Mark(current);
++    void mark() {
++		markedCol = current.col;
++		markedCursor = current.cursor;
++		markedLine = current.col;
+     }
+ 
+-    void reset(Mark mark) {
+-	current = new Mark(mark);
++    void reset() {
++		current.sync(markedCol, markedCursor, markedLine);
+     }
+ 
+     boolean matchesIgnoreCase(String string) throws JasperException {
+-	Mark mark = mark();
++	mark();
+ 	int ch = 0;
+ 	int i = 0;
+ 	do {
+ 	    ch = nextChar();
+ 	    if (Character.toLowerCase((char) ch) != string.charAt(i++)) {
+-		reset(mark);
++		reset();
+ 		return false;
+ 	    }
+ 	} while (i < string.length());
+-	reset(mark);
++	reset();
+ 	return true;
+     }
+ 
+@@ -239,13 +246,13 @@ class JspReader {
+      *	       false</strong> otherwise, position in stream unchanged.
+      */
+     boolean matches(String string) throws JasperException {
+-	Mark mark = mark();
++	mark();
+ 	int ch = 0;
+ 	int i = 0;
+ 	do {
+ 	    ch = nextChar();
+ 	    if (((char) ch) != string.charAt(i++)) {
+-		reset(mark);
++		reset();
+ 		return false;
+ 	    }
+ 	} while (i < string.length());
+@@ -253,7 +260,7 @@ class JspReader {
+     }
+ 
+     boolean matchesETag(String tagName) throws JasperException {
+-	Mark mark = mark();
++	mark();
+ 
+ 	if (!matches("</" + tagName))
+ 	    return false;
+@@ -261,14 +268,14 @@ class JspReader {
+ 	if (nextChar() == '>')
+ 	    return true;
+ 
+-	reset(mark);
++	reset();
+ 	return false;
+     }
+ 
+     boolean matchesETagWithoutLessThan(String tagName)
+         throws JasperException
+     {
+-       Mark mark = mark();
++       mark();
+ 
+        if (!matches("/" + tagName))
+            return false;
+@@ -276,7 +283,7 @@ class JspReader {
+        if (nextChar() == '>')
+            return true;
+ 
+-       reset(mark);
++       reset();
+        return false;
+     }
+ 
+@@ -290,12 +297,12 @@ class JspReader {
+     boolean matchesOptionalSpacesFollowedBy( String s )
+ 	throws JasperException
+     {
+-        Mark mark = mark();
++        mark();
+ 
+         skipSpaces();
+         boolean result = matches( s );
+         if( !result ) {
+-            reset( mark );
++            reset();
+         }
+ 
+         return result;
+@@ -320,24 +327,27 @@ class JspReader {
+      *         otherwise.
+      */
+     Mark skipUntil(String limit) throws JasperException {
+-        Mark ret = null;
++        mark();
+         int limlen = limit.length();
+         int ch;
+ 
+     skip:
+-        for (ret = mark(), ch = nextChar() ; ch != -1 ;
+-                 ret = mark(), ch = nextChar()) {
++        for (ch = nextChar() ; ch != -1 ; ch = nextChar()) {
++			mark();
+             if (ch == limit.charAt(0)) {
+-                Mark restart = mark();
+                 for (int i = 1 ; i < limlen ; i++) {
+                     if (peekChar() == limit.charAt(i))
+                         nextChar();
+                     else {
+-                        reset(restart);
++                        reset();
+                         continue skip;
+                     }
+                 }
+-                return ret;
++			Mark returnMark = new Mark(current);
++
++			returnMark.sync(markedCol, markedCursor, markedLine);
++
++			return returnMark;
+             }
+         }
+         return null;
+@@ -354,14 +364,14 @@ class JspReader {
+      *         otherwise.
+      */
+     Mark skipUntilIgnoreEsc(String limit) throws JasperException {
+-	Mark ret = null;
++	mark();
+ 	int limlen = limit.length();
+ 	int ch;
+ 	int prev = 'x';	// Doesn't matter
+ 	
+     skip:
+-	for (ret = mark(), ch = nextChar() ; ch != -1 ;
+-	         ret = mark(), prev = ch, ch = nextChar()) {	    
++	for (ch = nextChar() ; ch != -1 ; prev = ch, ch = nextChar()) {	   
++		mark();
+ 	    if (ch == '\\' && prev == '\\') {
+ 		ch = 0;		// Double \ is not an escape char anymore
+ 	    }
+@@ -369,10 +379,16 @@ class JspReader {
+ 		for (int i = 1 ; i < limlen ; i++) {
+ 		    if (peekChar() == limit.charAt(i))
+ 			nextChar();
+-		    else
+-			continue skip;
++			else {
++				reset();
++				continue skip;
++			}
+ 		}
+-		return ret;
++		Mark returnMark = new Mark(current);
++
++		returnMark.sync(markedCol, markedCursor, markedLine);
++
++		return returnMark;
+ 	    }
+ 	}
+ 	return null;
+@@ -433,10 +449,10 @@ class JspReader {
+ 		}
+ 		// Check end of quote, skip closing quote:
+ 		if (ch == -1) {
+-		    err.jspError(mark(), "jsp.error.quotes.unterminated");
++		    err.jspError(current, "jsp.error.quotes.unterminated");
+ 		}
+ 	    } else {
+-		err.jspError(mark(), "jsp.error.attr.quoted");
++		err.jspError(current, "jsp.error.attr.quoted");
+ 	    }
+ 	} else {
+ 	    if (!isDelimiter()) {
+@@ -492,13 +508,13 @@ class JspReader {
+ 	    }
+ 	    // Look for an end-of-comment or end-of-tag:		
+ 	    if (ch == '-') {
+-		Mark mark = mark();
++		mark();
+ 		if (((ch = nextChar()) == '>')
+ 		        || ((ch == '-') && (nextChar() == '>'))) {
+-		    reset(mark);
++		    reset();
+ 		    return true;
+ 		} else {
+-		    reset(mark);
++		    reset();
+ 		    return false;
+ 		}
+ 	    }
+@@ -621,4 +637,4 @@ class JspReader {
+ 	return false;
+     }
+ }
+-
++/* @generated */
+\ No newline at end of file
+diff --git a/org/apache/jasper/compiler/Mark.java b/org/apache/jasper/compiler/Mark.java
+index d92920d..fa29c50 100644
+--- a/org/apache/jasper/compiler/Mark.java
++++ b/org/apache/jasper/compiler/Mark.java
+@@ -296,5 +296,21 @@ final class Mark {
+         return greater;
+     }
+ 
+-}
++	public void sync(Mark other) {
++		this.line = other.line;
++		this.col = other.col;
++		this.cursor = other.cursor;
++
++		includeStack = new Stack<IncludeState>();
++		for ( int i=0; i < other.includeStack.size(); i++ ) {
++			includeStack.addElement( other.includeStack.elementAt(i) );
++		}
++	}
+ 
++	public void sync(int col, int cursor, int line) {
++		this.col = col;
++		this.cursor = cursor;
++		this.line = line;
++	}
++}
++/* @generated */
+\ No newline at end of file
