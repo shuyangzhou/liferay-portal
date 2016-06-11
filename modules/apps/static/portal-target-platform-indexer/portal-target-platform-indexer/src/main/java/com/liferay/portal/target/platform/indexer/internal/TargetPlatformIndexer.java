@@ -22,15 +22,20 @@ import aQute.bnd.osgi.resource.CapabilityBuilder;
 
 import com.liferay.portal.target.platform.indexer.Indexer;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+
+import java.security.MessageDigest;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,6 +47,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.namespace.BundleNamespace;
@@ -87,7 +94,10 @@ public class TargetPlatformIndexer implements Indexer {
 		Set<File> jarFiles = new LinkedHashSet<>();
 
 		try {
-			_processSystemBundle(tempDir, jarFiles);
+			Object[] objects = _processSystemBundle(tempDir, jarFiles);
+
+			String sha256sum = (String)objects[0];
+			int size = (int)objects[1];
 
 			for (String dirName : _dirNames) {
 				Path path = Paths.get(dirName);
@@ -121,11 +131,29 @@ public class TargetPlatformIndexer implements Indexer {
 
 			ResourceIndexer resourceIndexer = new RepoIndex();
 
-			resourceIndexer.index(jarFiles, outputStream, _config);
+			ByteArrayOutputStream byteArrayOutputStream =
+				new ByteArrayOutputStream();
+
+			resourceIndexer.index(jarFiles, byteArrayOutputStream, _config);
+
+			outputStream.write(
+				_fixSystemBundleOSGiContent(
+					byteArrayOutputStream.toString("UTF-8"), sha256sum, size));
 		}
 		finally {
 			PathUtil.deltree(tempPath);
 		}
+	}
+
+	private static String _bytesToHexString(byte[] bytes) {
+		char[] chars = new char[bytes.length * 2];
+
+		for (int i = 0; i < bytes.length; i++) {
+			chars[i * 2] = _HEX_DIGITS[(bytes[i] & 0xFF) >> 4];
+			chars[i * 2 + 1] = _HEX_DIGITS[bytes[i] & 0x0F];
+		}
+
+		return new String(chars);
 	}
 
 	private void _addBundle(Path tempPath, Path jarPath, Set<File> jarFiles)
@@ -138,6 +166,67 @@ public class TargetPlatformIndexer implements Indexer {
 			StandardCopyOption.REPLACE_EXISTING);
 
 		jarFiles.add(tempJarPath.toFile());
+	}
+
+	private byte[] _fixSystemBundleOSGiContent(
+			String content, String sha256sum, long size)
+		throws UnsupportedEncodingException {
+
+		String url =
+			_systemBundle.getSymbolicName() + "-" + _systemBundle.getVersion() +
+				".jar";
+
+		int index = content.indexOf(url);
+
+		if (index == -1) {
+			throw new IllegalStateException(
+				"Indexed content:\n" + content +
+					"\nMissing system bundle URL: " + url);
+		}
+
+		int start = content.lastIndexOf(_ATTRIBUTE_PREFIX_OSGI_CONTENT, index);
+
+		if (start == -1) {
+			throw new IllegalStateException(
+				"Indexed content:\n" + content.substring(0, index) +
+					"\nMissing OSGI content attribute: " +
+						_ATTRIBUTE_PREFIX_OSGI_CONTENT);
+		}
+
+		start += _ATTRIBUTE_PREFIX_OSGI_CONTENT.length();
+
+		int end = content.lastIndexOf("\"/>", index);
+
+		String prefix = content.substring(0, start);
+
+		String postfix = content.substring(end);
+
+		String newContent = prefix.concat(sha256sum).concat(postfix);
+
+		index = newContent.indexOf(url);
+
+		index += url.length() + 3;
+
+		start = newContent.indexOf(_ATTRIBUTE_PREFIX_SIZE, index);
+
+		if (start == -1) {
+			throw new IllegalStateException(
+				"Indexed content:\n" + content + "\nMissing size attribute: " +
+					_ATTRIBUTE_PREFIX_SIZE);
+		}
+
+		start += _ATTRIBUTE_PREFIX_SIZE.length();
+
+		end = newContent.indexOf("\"/>", index);
+
+		prefix = newContent.substring(0, start);
+		postfix = newContent.substring(end);
+
+		newContent = prefix.concat(String.valueOf(size)).concat(postfix);
+
+		newContent = newContent.replace("\r\n", "\n");
+
+		return newContent.getBytes("UTF-8");
 	}
 
 	private void _processBundle(Bundle bundle) throws Exception {
@@ -185,7 +274,7 @@ public class TargetPlatformIndexer implements Indexer {
 		}
 	}
 
-	private void _processSystemBundle(File tempDir, Set<File> jarFiles)
+	private Object[] _processSystemBundle(File tempDir, Set<File> jarFiles)
 		throws Exception {
 
 		try (Jar jar = new Jar("system.bundle")) {
@@ -210,7 +299,21 @@ public class TargetPlatformIndexer implements Indexer {
 			StringBuilder sb = new StringBuilder();
 
 			for (Parameters parameter : _parametersList) {
-				sb.append(parameter.toString());
+				String parameterString = parameter.toString();
+
+				if (parameterString.startsWith("osgi.ee;osgi.ee=")) {
+					if (parameterString.startsWith("osgi.ee;osgi.ee=JavaSE")) {
+						parameterString = _PARAMETER_STRING_JDK_VERSION;
+					}
+
+					continue;
+				}
+				else if (parameterString.startsWith("eclipse.platform;")) {
+					parameterString = _PARAMETER_STRING_OS_VERSION;
+				}
+
+				sb.append(parameterString);
+
 				sb.append(",");
 			}
 
@@ -230,8 +333,56 @@ public class TargetPlatformIndexer implements Indexer {
 			jar.write(jarFile);
 
 			jarFiles.add(jarFile);
+
+			try (ZipFile zipFile = new ZipFile(jarFile)) {
+				ZipEntry zipEntry = zipFile.getEntry("META-INF/MANIFEST.MF");
+
+				ByteArrayOutputStream byteArrayOutputStream =
+					new ByteArrayOutputStream();
+
+				try (InputStream inputStream = zipFile.getInputStream(
+						zipEntry)) {
+
+					byte[] buffer = new byte[4096];
+
+					int size = -1;
+
+					while ((size = inputStream.read(buffer)) != -1) {
+						byteArrayOutputStream.write(buffer, 0, size);
+					}
+				}
+
+				MessageDigest messageDigest = MessageDigest.getInstance(
+					"SHA-256");
+
+				messageDigest.update(byteArrayOutputStream.toByteArray());
+
+				return new Object[] {
+					_bytesToHexString(messageDigest.digest()),
+					byteArrayOutputStream.size()
+				};
+			}
 		}
 	}
+
+	private static final String _ATTRIBUTE_PREFIX_OSGI_CONTENT =
+		"<attribute name=\"osgi.content\" value=\"";
+
+	private static final String _ATTRIBUTE_PREFIX_SIZE =
+		"<attribute name=\"size\" type=\"Long\" value=\"";
+
+	private static final char[] _HEX_DIGITS = {
+		'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd',
+		'e', 'f'
+	};
+
+	private static final String _PARAMETER_STRING_JDK_VERSION =
+		"osgi.ee;osgi.ee=JavaSE;version:List<Version>=\"1.0.0,1.1.0,1.2.0," +
+			"1.3.0,1.4.0,1.5.0,1.6.0,1.7.0,1.8.0\"";
+
+	private static final String _PARAMETER_STRING_OS_VERSION =
+		"eclipse.platform;osgi.os=linux;osgi.arch=x86_64;osgi.ws=gtk;osgi.nl=" +
+			"en_US";
 
 	private static final Set<String> _ignoredNamespaces = new HashSet<>();
 
@@ -240,6 +391,7 @@ public class TargetPlatformIndexer implements Indexer {
 		_ignoredNamespaces.add(ContentNamespace.CONTENT_NAMESPACE);
 		_ignoredNamespaces.add(HostNamespace.HOST_NAMESPACE);
 		_ignoredNamespaces.add(IdentityNamespace.IDENTITY_NAMESPACE);
+		_ignoredNamespaces.add(NativeNamespace.NATIVE_NAMESPACE);
 		_ignoredNamespaces.add(PackageNamespace.PACKAGE_NAMESPACE);
 	}
 

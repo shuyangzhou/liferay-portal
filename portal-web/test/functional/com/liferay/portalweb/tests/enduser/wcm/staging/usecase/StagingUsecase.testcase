@@ -179,6 +179,10 @@
 			<var name="webContentTitle" value="WC WebContent Title" />
 		</execute>
 
+		<execute macro="WebContent#viewPGViaWCD">
+			<var name="webContentContent" value="WC WebContent Content" />
+		</execute>
+
 		<execute macro="SitePageNavigator#gotoPages">
 			<var name="page" value="Public Pages" />
 			<var name="site" value="Site Name" />
@@ -608,6 +612,10 @@
 		<execute macro="WebContent#addPGViaWCD">
 			<var name="webContentContent" value="WebContent Content" />
 			<var name="webContentTitle" value="WebContent Title" />
+		</execute>
+
+		<execute macro="WebContent#viewPGViaWCD">
+			<var name="webContentContent" value="WebContent Content" />
 		</execute>
 
 		<execute macro="Navigator#gotoSitePage">
@@ -3440,7 +3448,7 @@
 	<command name="StagingRemoteDMViaGlobalScope" priority="3">
 		<property name="app.server.bundles.size" value="1" />
 		<property name="cluster.enabled" value="true" />
-		<property name="custom.properties" value="tunneling.servlet.shared.secret=1234567890123456${line.separator}auth.verifier.TunnelAuthVerifier.hosts.allowed=${line.separator}dl.store.impl=com.liferay.portal.store.db.DBStore" />
+		<property name="custom.properties" value="tunneling.servlet.shared.secret=1234567890123456${line.separator}auth.verifier.TunnelAuthVerifier.hosts.allowed=" />
 		<property name="test.name.skip.portal.instance" value="StagingUsecase#StagingRemoteDMViaGlobalScope" />
 
 		<execute macro="Navigator#openURL" />
@@ -3480,26 +3488,6 @@
 			<var name="site" value="Global" />
 		</execute>
 
-		<execute macro="ProductMenu#gotoSitesPublishing">
-			<var name="portlet" value="Staging" />
-		</execute>
-
-		<execute macro="Staging#activateStagingCP">
-			<var name="nodePort" value="9080" />
-			<var name="remotePort" value="8080" />
-			<var name="remoteStaging" value="true" />
-			<var name="siteID" value="${siteID}" />
-			<var name="siteName" value="Global" />
-		</execute>
-
-		<execute macro="Navigator#openSpecificURL">
-			<var name="url" value="http://localhost:9080/" />
-		</execute>
-
-		<execute macro="ProductMenu#gotoSite">
-			<var name="site" value="Global" />
-		</execute>
-
 		<execute macro="ProductMenu#gotoSitesContent">
 			<var name="portlet" value="Documents and Media" />
 		</execute>
@@ -3514,11 +3502,31 @@
 		</execute>
 
 		<execute macro="Navigator#openSpecificURL">
-			<var name="url" value="http://localhost:9080/" />
+			<var name="url" value="http://localhost:9080" />
 		</execute>
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Global" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesPublishing">
+			<var name="portlet" value="Staging" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Global" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesPublishing">
+			<var name="portlet" value="Staging" />
+		</execute>
+
+		<execute macro="Staging#activateStagingCP">
+			<var name="nodePort" value="9080" />
+			<var name="remotePort" value="8080" />
+			<var name="remoteStaging" value="true" />
+			<var name="siteID" value="${siteID}" />
+			<var name="siteName" value="Global" />
 		</execute>
 
 		<execute macro="ProductMenu#gotoSitesPublishing">
@@ -4021,6 +4029,10 @@
 			<var name="webContentTitle" value="Web Content Title" />
 		</execute>
 
+		<execute macro="WebContent#viewPGViaWCD">
+			<var name="webContentContent" value="Web Content Content" />
+		</execute>
+
 		<execute macro="Navigator#gotoStagedSitePage">
 			<var name="pageName" value="Test Page 2" />
 			<var name="siteName" value="Site Name" />
@@ -4047,6 +4059,10 @@
 		<execute macro="WebContent#addPGViaWCD">
 			<var name="webContentContent" value="Web Content Content" />
 			<var name="webContentTitle" value="Web Content Title" />
+		</execute>
+
+		<execute macro="WebContent#viewPGViaWCD">
+			<var name="webContentContent" value="Web Content Content" />
 		</execute>
 
 		<execute macro="ProductMenu#gotoSite">
@@ -4163,6 +4179,10 @@
 		<execute macro="WebContent#addPGViaWCD">
 			<var name="webContentContent" value="Web Content Content" />
 			<var name="webContentTitle" value="Web Content Title" />
+		</execute>
+
+		<execute macro="WebContent#viewPGViaWCD">
+			<var name="webContentContent" value="Web Content Content" />
 		</execute>
 
 		<execute macro="Navigator#gotoStagedSitePage">
