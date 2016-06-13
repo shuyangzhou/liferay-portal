@@ -17,6 +17,7 @@ package com.liferay.portal.kernel.cache.index;
 import com.liferay.portal.kernel.cache.MultiVMPoolUtil;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.PortalCacheListener;
+import com.liferay.portal.kernel.cluster.ClusterInvokeThreadLocal;
 import com.liferay.portal.kernel.concurrent.test.MappedMethodCallableInvocationHandler;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
@@ -73,6 +74,8 @@ public class PortalCacheIndexerTest {
 				ClassLoader.getSystemClassLoader(),
 				new Class<?>[] {ConcurrentMap.class},
 				_mappedMethodCallableInvocationHandler));
+
+		ClusterInvokeThreadLocal.setEnabled(false);
 	}
 
 	@Test
