@@ -118,7 +118,7 @@ public class LiferayRelengPlugin implements Plugin<Project> {
 
 			});
 
-		GradleUtil.withPlugin(
+		/*GradleUtil.withPlugin(
 			project, LiferayOSGiPlugin.class,
 			new Action<LiferayOSGiPlugin>() {
 
@@ -131,7 +131,7 @@ public class LiferayRelengPlugin implements Plugin<Project> {
 					}
 				}
 
-			});
+			});*/
 	}
 
 	protected PrintArtifactPublishCommandsTask

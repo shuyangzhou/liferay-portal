@@ -46,7 +46,6 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portlet.exportimport.staging.ProxiedLayoutsThreadLocal;
 import com.liferay.portlet.exportimport.staging.StagingAdvicesThreadLocal;
@@ -247,7 +246,7 @@ public class LayoutLocalServiceStagingAdvice implements MethodInterceptor {
 			groupId, privateLayout, parentLayoutId);
 		String name = nameMap.get(LocaleUtil.getSiteDefault());
 		friendlyURLMap = layoutLocalServiceHelper.getFriendlyURLMap(
-			groupId, privateLayout, layoutId, StringPool.BLANK, friendlyURLMap);
+			groupId, privateLayout, layoutId, name, friendlyURLMap);
 		String friendlyURL = friendlyURLMap.get(LocaleUtil.getSiteDefault());
 
 		layoutLocalServiceHelper.validate(

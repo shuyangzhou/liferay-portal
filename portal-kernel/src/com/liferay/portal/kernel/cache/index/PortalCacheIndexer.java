@@ -14,9 +14,12 @@
 
 package com.liferay.portal.kernel.cache.index;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.PortalCacheListener;
 import com.liferay.portal.kernel.concurrent.ConcurrentHashSet;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Serializable;
 
@@ -29,6 +32,7 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * @author Shuyang Zhou
  */
+@ProviderType
 public class PortalCacheIndexer<I, K extends Serializable, V> {
 
 	public PortalCacheIndexer(
@@ -44,6 +48,15 @@ public class PortalCacheIndexer<I, K extends Serializable, V> {
 		for (K indexedCacheKey : _portalCache.getKeys()) {
 			_addIndexedCacheKey(indexedCacheKey);
 		}
+
+		Class<?> indexEncoderClass = _indexEncoder.getClass();
+
+		_portalCacheIndexerName =
+			portalCache.getPortalCacheName() + StringPool.POUND +
+				indexEncoderClass.getName();
+
+		PortalCacheIndexerUtil.registerPortalCacheIndexer(
+			_portalCacheIndexerName, this);
 	}
 
 	public Set<K> getKeys(I index) {
@@ -57,6 +70,13 @@ public class PortalCacheIndexer<I, K extends Serializable, V> {
 	}
 
 	public void removeKeys(I index) {
+		removeKeysFromNode(index);
+
+		PortalCacheIndexerUtil.removeKeysFromCluster(
+			_portalCacheIndexerName, index);
+	}
+
+	public void removeKeysFromNode(I index) {
 		Set<K> keys = _indexedCacheKeys.remove(index);
 
 		if (keys == null) {
@@ -110,6 +130,7 @@ public class PortalCacheIndexer<I, K extends Serializable, V> {
 		new ConcurrentHashMap<>();
 	private final IndexEncoder<I, K> _indexEncoder;
 	private final PortalCache<K, V> _portalCache;
+	private final String _portalCacheIndexerName;
 
 	private class IndexerPortalCacheListener
 		implements PortalCacheListener<K, V> {

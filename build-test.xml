@@ -6911,7 +6911,16 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 				<isset property="skip.rebuild-database" />
 			</not>
 			<then>
-				<antcall target="delete-liferay-home" />
+				<get-testcase-property property.name="portal.version" />
+
+				<if>
+					<not>
+						<isset property="portal.version" />
+					</not>
+					<then>
+						<antcall target="delete-liferay-home" />
+					</then>
+				</if>
 
 				<if>
 					<equals arg1="${database.type}" arg2="db2" />
@@ -8424,7 +8433,8 @@ jdbc.default.password=${database.mysql.password}</echo>
 				<echo file="${liferay.home}/tools/portal-tools-db-upgrade-client/app-server.properties">dir=${app.server.dir}
 extra.lib.dirs=
 global.lib.dir=modules/com/liferay/portal/main
-portal.dir=standalone/deployments/ROOT.war</echo>
+portal.dir=standalone/deployments/ROOT.war
+server.detector.server.id=jboss</echo>
 			</then>
 			<elseif>
 				<equals arg1="${app.server.type}" arg2="tomcat" />
@@ -8432,7 +8442,8 @@ portal.dir=standalone/deployments/ROOT.war</echo>
 					<echo file="${liferay.home}/tools/portal-tools-db-upgrade-client/app-server.properties">dir=${app.server.dir}
 extra.lib.dirs=bin
 global.lib.dir=lib
-portal.dir=webapps/ROOT</echo>
+portal.dir=webapps/ROOT
+server.detector.server.id=tomcat</echo>
 				</then>
 			</elseif>
 			<elseif>
@@ -8441,7 +8452,8 @@ portal.dir=webapps/ROOT</echo>
 					<echo file="${liferay.home}/tools/portal-tools-db-upgrade-client/app-server.properties">dir=${app.server.dir}
 extra.lib.dirs=modules/system/layers/base/javax/mail,modules/system/layers/base/javax/persistence,modules/system/layers/base/javax/servlet,modules/system/layers/base/javax/transaction
 global.lib.dir=modules/com/liferay/portal/main
-portal.dir=standalone/deployments/ROOT.war</echo>
+portal.dir=standalone/deployments/ROOT.war
+server.detector.server.id=wildfly</echo>
 				</then>
 			</elseif>
 		</if>
@@ -8458,68 +8470,47 @@ jdbc.default.password=${database.password}</echo>
 
 		<echo file="${liferay.home}/tools/portal-tools-db-upgrade-client/portal-upgrade-ext.properties">liferay.home=${liferay.home}</echo>
 
-		<get-testcase-property property.name="portal.version" />
-
-		<propertyregex
-			input="${portal.version}"
-			property="portal.major.version"
-			regexp="(\d+\.\d+)\.\d+"
-			select="\1"
-		/>
-
-		<if>
-			<or>
-				<equals arg1="${portal.major.version}" arg2="6.0" />
-				<equals arg1="${portal.major.version}" arg2="6.1" />
-				<equals arg1="${portal.major.version}" arg2="6.2" />
-			</or>
-			<then>
-				<prepare-portal-legacy-properties
-					portal.ext.properties.file.path="${liferay.home}/tools/portal-tools-db-upgrade-client/portal-upgrade-ext.properties"
-					portal.major.version="6.2"
+		<trycatch property="upgrade.error">
+			<try>
+				<java
+					dir="${liferay.home}/tools/portal-tools-db-upgrade-client"
+					failonerror="true"
+					fork="true"
+					jar="${liferay.home}/tools/portal-tools-db-upgrade-client/com.liferay.portal.tools.db.upgrade.client.jar"
+					timeout="900000"
 				/>
-			</then>
-		</if>
+			</try>
+			<catch>
+				<execute>
+					jps > jps_output
+				</execute>
 
-		<if>
-			<or>
-				<equals arg1="${portal.major.version}" arg2="6.0" />
-				<equals arg1="${portal.major.version}" arg2="6.1" />
-			</or>
-			<then>
-				<prepare-portal-legacy-properties
-					portal.ext.properties.file.path="${liferay.home}/tools/portal-tools-db-upgrade-client/portal-upgrade-ext.properties"
-					portal.major.version="6.1"
-				/>
-			</then>
-		</if>
+				<var name="jps.output" unset="true" />
 
-		<if>
-			<or>
-				<equals arg1="${portal.major.version}" arg2="6.0" />
-			</or>
-			<then>
-				<prepare-portal-legacy-properties
-					portal.ext.properties.file.path="${liferay.home}/tools/portal-tools-db-upgrade-client/portal-upgrade-ext.properties"
-					portal.major.version="6.0"
-				/>
-			</then>
-		</if>
+				<loadfile property="jps.output" srcfile="jps_output" />
 
-		<java
-			dir="${liferay.home}/tools/portal-tools-db-upgrade-client"
-			failonerror="true"
-			fork="true"
-			jar="${liferay.home}/tools/portal-tools-db-upgrade-client/com.liferay.portal.tools.db.upgrade.client.jar"
-			timeout="900000"
-		/>
+				<if>
+					<contains string="${jps.output}" substring="DBUpgrader" />
+					<then>
+						<propertyregex
+							input="${jps.output}"
+							override="true"
+							property="db.upgrader.pid"
+							regexp="(|[\S\s]*\n)([0-9]+) DBUpgrader[\S\s]*"
+							replace="\2"
+						/>
 
-		<waitfor maxwait="15" maxwaitunit="minute">
-			<resourcecontains
-				resource="${liferay.home}/tools/portal-tools-db-upgrade-client/upgrade.log"
-				substring="Checking to see if all upgrades have completed... done."
-			/>
-		</waitfor>
+						<execute>
+							jstack ${db.upgrader.pid}
+						</execute>
+					</then>
+				</if>
+
+				<delete file="jps_output" />
+
+				<fail message="${upgrade.error}" />
+			</catch>
+		</trycatch>
 
 		<echo file="${liferay.home}/osgi/configs/com.liferay.portal.search.configuration.IndexStatusManagerConfiguration.cfg">indexReadOnly=false</echo>
 	</target>
