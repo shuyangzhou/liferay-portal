@@ -19,12 +19,17 @@ import com.liferay.portal.kernel.cache.MultiVMPoolUtil;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.index.IndexEncoder;
 import com.liferay.portal.kernel.cache.index.PortalCacheIndexer;
+import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
+import com.liferay.portal.kernel.cluster.ClusterInvokeThreadLocal;
+import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.security.permission.ResourceBlockIdsBag;
 import com.liferay.portal.kernel.security.permission.UserBag;
 import com.liferay.portal.kernel.util.HashUtil;
+import com.liferay.portal.kernel.util.MethodHandler;
+import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.util.PropsValues;
@@ -89,6 +94,8 @@ public class PermissionCacheUtil {
 
 		_permissionPortalCache.removeAll();
 		_resourceBlockIdsBagCache.removeAll();
+
+		_sendClearCacheClusterMessage(_clearCacheMethodKey, userIds);
 	}
 
 	public static void clearResourceBlockCache(
@@ -104,6 +111,9 @@ public class PermissionCacheUtil {
 		_resourceBlockIdsBagCacheIndexer.removeKeys(
 			ResourceBlockIdsBagKeyIndexEncoder.encode(
 				companyId, groupId, name));
+
+		_sendClearCacheClusterMessage(
+			_clearResourceBlockCacheMethodKey, companyId, groupId, name);
 	}
 
 	public static void clearResourceCache() {
@@ -126,10 +136,16 @@ public class PermissionCacheUtil {
 		if (scope == ResourceConstants.SCOPE_INDIVIDUAL) {
 			_permissionPortalCacheNamePrimKeyIndexer.removeKeys(
 				PermissionKeyNamePrimKeyIndexEncoder.encode(name, primKey));
+
+			_sendClearCacheClusterMessage(
+				_clearResourcePermissionCacheMethodKey, scope, name, primKey);
 		}
 		else if (scope == ResourceConstants.SCOPE_GROUP) {
 			_permissionPortalCacheGroupIdIndexer.removeKeys(
 				Long.valueOf(primKey));
+
+			_sendClearCacheClusterMessage(
+				_clearResourcePermissionCacheMethodKey, scope, name, primKey);
 		}
 		else {
 			_permissionPortalCache.removeAll();
@@ -301,6 +317,32 @@ public class PermissionCacheUtil {
 		_userPrimaryKeyRolePortalCache.remove(userPrimaryKeyRoleKey);
 	}
 
+	private static void _sendClearCacheClusterMessage(
+		MethodKey methodKey, Object... arguments) {
+
+		if (ClusterInvokeThreadLocal.isEnabled()) {
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, arguments);
+
+			ClusterRequest clusterRequest =
+				ClusterRequest.createMulticastRequest(methodHandler, true);
+
+			clusterRequest.setFireAndForget(true);
+
+			ClusterExecutorUtil.execute(clusterRequest);
+		}
+	}
+
+	private static final MethodKey _clearCacheMethodKey = new MethodKey(
+		PermissionCacheUtil.class, "clearCache", long[].class);
+	private static final MethodKey _clearResourceBlockCacheMethodKey =
+		new MethodKey(
+			PermissionCacheUtil.class, "clearResourceBlockCache", long.class,
+			long.class, String.class);
+	private static final MethodKey _clearResourcePermissionCacheMethodKey =
+		new MethodKey(
+			PermissionCacheUtil.class, "clearResourcePermissionCache",
+			long.class, String.class, String.class);
 	private static final PortalCache<PermissionKey, Boolean>
 		_permissionPortalCache = MultiVMPoolUtil.getPortalCache(
 			PERMISSION_CACHE_NAME,
