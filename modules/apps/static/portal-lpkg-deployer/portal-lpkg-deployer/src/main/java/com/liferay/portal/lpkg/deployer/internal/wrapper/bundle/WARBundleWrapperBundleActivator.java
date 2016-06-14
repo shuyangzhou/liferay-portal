@@ -14,8 +14,6 @@
 
 package com.liferay.portal.lpkg.deployer.internal.wrapper.bundle;
 
-import com.liferay.portal.lpkg.deployer.LPKGWARBundleRegistry;
-
 import java.net.URL;
 
 import java.util.Dictionary;
@@ -61,9 +59,6 @@ public class WARBundleWrapperBundleActivator implements BundleActivator {
 
 		int startLevel = Integer.parseInt(startLevelString);
 
-		LPKGWARBundleRegistry lpkgWarBundleRegistry = bundleContext.getService(
-			bundleContext.getServiceReference(LPKGWARBundleRegistry.class));
-
 		// Defer WAR bundle installation until WAB protocol handler is ready
 
 		_serviceTracker = new ServiceTracker<>(
@@ -73,8 +68,8 @@ public class WARBundleWrapperBundleActivator implements BundleActivator {
 					"=webbundle)(objectClass=" +
 						URLStreamHandlerService.class.getName() + "))"),
 			new URLStreamHandlerServiceServiceTrackerCustomizer(
-				bundleContext, contextName, new URL(lpkgURLString), startLevel,
-				lpkgWarBundleRegistry));
+				bundleContext, contextName, new URL(lpkgURLString),
+				startLevel));
 
 		_serviceTracker.open();
 	}

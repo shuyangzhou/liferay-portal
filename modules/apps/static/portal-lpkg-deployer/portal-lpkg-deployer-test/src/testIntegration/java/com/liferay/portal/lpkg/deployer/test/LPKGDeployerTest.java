@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.lpkg.StaticLPKGResolver;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.lpkg.deployer.LPKGDeployer;
 
 import java.io.File;
@@ -55,7 +56,20 @@ import org.osgi.util.tracker.ServiceTracker;
 public class LPKGDeployerTest {
 
 	@Test
-	public void testDeployedLPKGs() throws Exception {
+	public void testPostUpgradeDeployedLPKGS() throws Exception {
+		if (!Boolean.getBoolean("before.lpkg.upgrade")) {
+			testDeployedLPKGs();
+		}
+	}
+
+	@Test
+	public void testPreUpgradeDeployedLPKGS() throws Exception {
+		if (Boolean.getBoolean("before.lpkg.upgrade")) {
+			testDeployedLPKGs();
+		}
+	}
+
+	protected void testDeployedLPKGs() throws Exception {
 		Bundle testBundle = FrameworkUtil.getBundle(LPKGDeployerTest.class);
 
 		BundleContext bundleContext = testBundle.getBundleContext();
@@ -190,15 +204,17 @@ public class LPKGDeployerTest {
 						contextName = contextName.substring(0, index);
 					}
 
-					StringBundler sb = new StringBundler(8);
+					StringBundler sb = new StringBundler(10);
 
 					sb.append("webbundle:lpkg://");
-					sb.append(lpkgBundle.getSymbolicName());
+					sb.append(URLCodec.encodeURL(lpkgBundle.getSymbolicName()));
 					sb.append(StringPool.DASH);
 					sb.append(lpkgBundle.getVersion());
 					sb.append(StringPool.SLASH);
 					sb.append(contextName);
-					sb.append(".war?Web-ContextPath=/");
+					sb.append(".war?Bundle-Version=");
+					sb.append(bundle.getVersion());
+					sb.append("&Web-ContextPath=/");
 					sb.append(contextName);
 
 					String location = sb.toString();
