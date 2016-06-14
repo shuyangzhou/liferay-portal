@@ -69,7 +69,7 @@ public class JournalContentImpl implements JournalContent {
 	public void clearCache(
 		long groupId, String articleId, String ddmTemplateKey) {
 
-		_getPortalCacheIndexer().removeKeys(
+		_portalCacheIndexer.removeKeys(
 			JournalContentKeyIndexEncoder.encode(
 				groupId, articleId, ddmTemplateKey));
 	}
@@ -302,20 +302,12 @@ public class JournalContentImpl implements JournalContent {
 		_portalCache =
 			(PortalCache<JournalContentKey, JournalArticleDisplay>)
 				multiVMPool.getPortalCache(CACHE_NAME);
+
+		_portalCacheIndexer = new PortalCacheIndexer<>(
+			new JournalContentKeyIndexEncoder(), _portalCache);
 	}
 
 	protected static final String CACHE_NAME = JournalContent.class.getName();
-
-	private PortalCacheIndexer<String, JournalContentKey, JournalArticleDisplay>
-		_getPortalCacheIndexer() {
-
-		if (_portalCacheIndexer == null) {
-			_portalCacheIndexer = new PortalCacheIndexer<>(
-				new JournalContentKeyIndexEncoder(), _portalCache);
-		}
-
-		return _portalCacheIndexer;
-	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		JournalContentImpl.class);
