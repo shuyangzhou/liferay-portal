@@ -57,16 +57,26 @@ public class IPGeocoderImpl implements IPGeocoder {
 
 	@Activate
 	public void activate(Map<String, String> properties) {
-		configure(properties);
+		_properties = properties;
+
+		_requiresConfigure = true;
 	}
 
 	@Deactivate
 	public void deactivate(Map<String, String> properties) {
 		_lookupService = null;
+
+		_properties = null;
 	}
 
 	@Override
 	public IPInfo getIPInfo(String ipAddress) {
+		if (_requiresConfigure) {
+			configure();
+
+			_requiresConfigure = false;
+		}
+
 		if (_lookupService == null) {
 			_logger.error("IP Geocoder is not configured properly");
 
@@ -82,14 +92,17 @@ public class IPGeocoderImpl implements IPGeocoder {
 	public void modified(Map<String, String> properties) {
 		_lookupService = null;
 
-		configure(properties);
+		_properties = properties;
+
+		_requiresConfigure = true;
 	}
 
-	protected void configure(Map<String, String> properties) {
-		_igGeocoderConfiguration = ConfigurableUtil.createConfigurable(
-			IPGeocoderConfiguration.class, properties);
+	protected void configure() {
+		IPGeocoderConfiguration igGeocoderConfiguration =
+			ConfigurableUtil.createConfigurable(
+				IPGeocoderConfiguration.class, _properties);
 
-		String filePath = _igGeocoderConfiguration.filePath();
+		String filePath = igGeocoderConfiguration.filePath();
 
 		if ((filePath == null) || filePath.equals("")) {
 			filePath =
@@ -99,7 +112,7 @@ public class IPGeocoderImpl implements IPGeocoder {
 
 		try {
 			File ipGeocoderFile = getIPGeocoderFile(
-				filePath, _igGeocoderConfiguration.fileURL(), false);
+				filePath, igGeocoderConfiguration.fileURL(), false);
 
 			_lookupService = new LookupService(
 				ipGeocoderFile, LookupService.GEOIP_MEMORY_CACHE);
@@ -186,6 +199,7 @@ public class IPGeocoderImpl implements IPGeocoder {
 
 	private static LookupService _lookupService;
 
-	private volatile IPGeocoderConfiguration _igGeocoderConfiguration;
+	private Map<String, String> _properties;
+	private boolean _requiresConfigure = true;
 
 }
