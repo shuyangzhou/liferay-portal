@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.index.IndexEncoder;
 import com.liferay.portal.kernel.cache.index.PortalCacheIndexer;
 import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
-import com.liferay.portal.kernel.cluster.ClusterInvokeThreadLocal;
 import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -49,10 +48,6 @@ import javax.portlet.RenderRequest;
 
 import org.apache.commons.lang.time.StopWatch;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -78,21 +73,17 @@ public class JournalContentImpl implements JournalContent {
 	public void clearCache(
 		long groupId, String articleId, String ddmTemplateKey) {
 
-		_portalCacheIndexer.removeKeys(
-			JournalContentKeyIndexEncoder.encode(
-				groupId, articleId, ddmTemplateKey));
+		_clearCache(groupId, articleId, ddmTemplateKey);
 
-		if (ClusterInvokeThreadLocal.isEnabled()) {
-			MethodHandler methodHandler = new MethodHandler(
-				_clearCacheMethodKey, groupId, articleId, ddmTemplateKey);
+		MethodHandler methodHandler = new MethodHandler(
+			_clearCacheMethodKey, groupId, articleId, ddmTemplateKey);
 
-			ClusterRequest clusterRequest =
-				ClusterRequest.createMulticastRequest(methodHandler, true);
+		ClusterRequest clusterRequest = ClusterRequest.createMulticastRequest(
+			methodHandler, true);
 
-			clusterRequest.setFireAndForget(true);
+		clusterRequest.setFireAndForget(true);
 
-			ClusterExecutorUtil.execute(clusterRequest);
-		}
+		ClusterExecutorUtil.execute(clusterRequest);
 	}
 
 	@Override
@@ -333,27 +324,11 @@ public class JournalContentImpl implements JournalContent {
 	private static void _clearCache(
 		long groupId, String articleId, String ddmTemplateKey) {
 
-		Bundle bundle = FrameworkUtil.getBundle(JournalContent.class);
-
-		BundleContext bundleContext = bundle.getBundleContext();
-
-		ServiceReference<JournalContent> journalContentServiceReference =
-			bundleContext.getServiceReference(JournalContent.class);
-
-		if (journalContentServiceReference == null) {
-			return;
+		if (_portalCacheIndexer != null) {
+			_portalCacheIndexer.removeKeys(
+				JournalContentKeyIndexEncoder.encode(
+					groupId, articleId, ddmTemplateKey));
 		}
-
-		JournalContent journalContent = bundleContext.getService(
-			journalContentServiceReference);
-
-		if (journalContent == null) {
-			return;
-		}
-
-		journalContent.clearCache(groupId, articleId, ddmTemplateKey);
-
-		bundleContext.ungetService(journalContentServiceReference);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
