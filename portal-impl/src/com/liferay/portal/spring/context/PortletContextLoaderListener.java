@@ -20,7 +20,6 @@ import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
 import com.liferay.portal.kernel.util.MethodCache;
 import com.liferay.portal.spring.bean.BeanReferenceRefreshUtil;
 import com.liferay.portal.util.PropsValues;
@@ -46,14 +45,12 @@ public class PortletContextLoaderListener extends ContextLoaderListener {
 
 	@Override
 	public void contextDestroyed(ServletContextEvent servletContextEvent) {
-		ClassLoader classLoader = PortletClassLoaderUtil.getClassLoader();
-
 		ServletContext servletContext = servletContextEvent.getServletContext();
 
 		try {
 			Class<?> beanLocatorUtilClass = Class.forName(
 				"com.liferay.util.bean.PortletBeanLocatorUtil", true,
-				classLoader);
+				servletContext.getClassLoader());
 
 			Method setBeanLocatorMethod = beanLocatorUtilClass.getMethod(
 				"setBeanLocator", new Class[] {BeanLocator.class});
@@ -99,8 +96,6 @@ public class PortletContextLoaderListener extends ContextLoaderListener {
 		servletContext.removeAttribute(
 			WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);
 
-		ClassLoader classLoader = PortletClassLoaderUtil.getClassLoader();
-
 		super.contextInitialized(servletContextEvent);
 
 		PortletBeanFactoryCleaner.readBeans();
@@ -115,6 +110,8 @@ public class PortletContextLoaderListener extends ContextLoaderListener {
 		catch (Exception e) {
 			_log.error(e, e);
 		}
+
+		ClassLoader classLoader = servletContext.getClassLoader();
 
 		BeanLocatorImpl beanLocatorImpl = new BeanLocatorImpl(
 			classLoader, applicationContext);
@@ -176,7 +173,7 @@ public class PortletContextLoaderListener extends ContextLoaderListener {
 
 		try {
 			ConfigurationFactoryUtil.getConfiguration(
-				PortletClassLoaderUtil.getClassLoader(), "service");
+				servletContext.getClassLoader(), "service");
 		}
 		catch (Exception e) {
 			return null;
