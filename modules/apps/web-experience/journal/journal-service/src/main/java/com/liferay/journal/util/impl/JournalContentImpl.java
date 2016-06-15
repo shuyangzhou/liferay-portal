@@ -23,6 +23,8 @@ import com.liferay.portal.kernel.cache.MultiVMPool;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.index.IndexEncoder;
 import com.liferay.portal.kernel.cache.index.PortalCacheIndexer;
+import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
+import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.LayoutSet;
@@ -32,6 +34,8 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashUtil;
+import com.liferay.portal.kernel.util.MethodHandler;
+import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -69,9 +73,17 @@ public class JournalContentImpl implements JournalContent {
 	public void clearCache(
 		long groupId, String articleId, String ddmTemplateKey) {
 
-		_getPortalCacheIndexer().removeKeys(
-			JournalContentKeyIndexEncoder.encode(
-				groupId, articleId, ddmTemplateKey));
+		_clearCache(groupId, articleId, ddmTemplateKey);
+
+		MethodHandler methodHandler = new MethodHandler(
+			_clearCacheMethodKey, groupId, articleId, ddmTemplateKey);
+
+		ClusterRequest clusterRequest = ClusterRequest.createMulticastRequest(
+			methodHandler, true);
+
+		clusterRequest.setFireAndForget(true);
+
+		ClusterExecutorUtil.execute(clusterRequest);
 	}
 
 	@Override
@@ -302,24 +314,29 @@ public class JournalContentImpl implements JournalContent {
 		_portalCache =
 			(PortalCache<JournalContentKey, JournalArticleDisplay>)
 				multiVMPool.getPortalCache(CACHE_NAME);
+
+		_portalCacheIndexer = new PortalCacheIndexer<>(
+			new JournalContentKeyIndexEncoder(), _portalCache);
 	}
 
 	protected static final String CACHE_NAME = JournalContent.class.getName();
 
-	private PortalCacheIndexer<String, JournalContentKey, JournalArticleDisplay>
-		_getPortalCacheIndexer() {
+	private static void _clearCache(
+		long groupId, String articleId, String ddmTemplateKey) {
 
-		if (_portalCacheIndexer == null) {
-			_portalCacheIndexer = new PortalCacheIndexer<>(
-				new JournalContentKeyIndexEncoder(), _portalCache);
+		if (_portalCacheIndexer != null) {
+			_portalCacheIndexer.removeKeys(
+				JournalContentKeyIndexEncoder.encode(
+					groupId, articleId, ddmTemplateKey));
 		}
-
-		return _portalCacheIndexer;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		JournalContentImpl.class);
 
+	private static final MethodKey _clearCacheMethodKey = new MethodKey(
+		JournalContentImpl.class, "_clearCache", long.class, String.class,
+		String.class);
 	private static PortalCache<JournalContentKey, JournalArticleDisplay>
 		_portalCache;
 	private static PortalCacheIndexer
