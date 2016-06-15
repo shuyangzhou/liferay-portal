@@ -278,7 +278,7 @@
 		</execute>
 
 		<execute macro="Staging#activateStagingCP">
-			<var name="siteName" value="Liferay" />
+			<var name="siteName" value="Liferay DXP" />
 		</execute>
 
 		<execute macro="Navigator#openURL" />
@@ -335,7 +335,7 @@
 		</execute>
 
 		<execute macro="Staging#deactivateStagingCP">
-			<var name="siteName" value="Liferay" />
+			<var name="siteName" value="Liferay DXP" />
 		</execute>
 
 		<execute macro="User#logoutPG">

@@ -17,16 +17,21 @@ package com.liferay.gradle.plugins;
 import com.liferay.gradle.plugins.extensions.LiferayExtension;
 import com.liferay.gradle.plugins.jasper.jspc.CompileJSPTask;
 import com.liferay.gradle.plugins.jasper.jspc.JspCPlugin;
+import com.liferay.gradle.plugins.tasks.WritePropertiesTask;
 import com.liferay.gradle.plugins.util.FileUtil;
 import com.liferay.gradle.plugins.util.GradleUtil;
+import com.liferay.gradle.util.Validator;
 
 import java.io.File;
+import java.io.IOException;
 
+import java.util.Properties;
 import java.util.concurrent.Callable;
 
 import org.gradle.api.Action;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
+import org.gradle.api.UncheckedIOException;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.internal.plugins.osgi.OsgiHelper;
 import org.gradle.api.plugins.JavaPlugin;
@@ -119,9 +124,38 @@ public class JspCDefaultsPlugin
 		JavaCompile javaCompile = (JavaCompile)GradleUtil.getTask(
 			project, JspCPlugin.COMPILE_JSP_TASK_NAME);
 
-		String dirName =
-			_osgiHelper.getBundleSymbolicName(project) + "-" +
-				project.getVersion();
+		String dirName = null;
+
+		if (GradleUtil.hasPlugin(project, LiferayRelengPlugin.class)) {
+			WritePropertiesTask writePropertiesTask =
+				(WritePropertiesTask)GradleUtil.getTask(
+					project, LiferayRelengPlugin.RECORD_ARTIFACT_TASK_NAME);
+
+			Properties artifactProperties;
+
+			try {
+				artifactProperties = FileUtil.readProperties(
+					writePropertiesTask.getOutputFile());
+			}
+			catch (IOException ioe) {
+				throw new UncheckedIOException(ioe);
+			}
+
+			String artifactURL = artifactProperties.getProperty("artifact.url");
+
+			if (Validator.isNotNull(artifactURL)) {
+				int index = artifactURL.lastIndexOf('/');
+
+				dirName = artifactURL.substring(
+					index + 1, artifactURL.length() - 4);
+			}
+		}
+
+		if (Validator.isNull(dirName)) {
+			dirName =
+				_osgiHelper.getBundleSymbolicName(project) + "-" +
+					project.getVersion();
+		}
 
 		LiferayExtension liferayExtension = GradleUtil.getExtension(
 			project, LiferayExtension.class);

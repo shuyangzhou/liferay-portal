@@ -264,6 +264,11 @@
 	</command>
 
 	<command name="OnlySiteOwnersCanAssignSiteRolesToUserGroups" priority="3">
+		<execute macro="TestCase#getSiteName">
+			<return from="siteName" name="siteName" />
+			<var name="siteName" value="${siteName}" />
+		</execute>
+
 		<execute macro="ProductMenu#gotoControlPanelUsers">
 			<var name="portlet" value="Roles" />
 		</execute>
@@ -374,7 +379,7 @@
 		</execute>
 
 		<execute macro="User#editUserSiteCP">
-			<var name="siteName" value="Liferay" />
+			<var name="siteName" value="${siteName}" />
 			<var name="userScreenName" value="usersn" />
 		</execute>
 
@@ -424,6 +429,11 @@
 	</command>
 
 	<command name="PrivateVirtualHostUrlDoesNotRedirectUserToLoginPage" priority="4">
+		<execute macro="TestCase#getSiteName">
+			<return from="siteName" name="siteName" />
+			<var name="siteName" value="${siteName}" />
+		</execute>
+
 		<execute macro="Navigator#openURL" />
 
 		<execute macro="ProductMenu#gotoSitesConfiguration">
@@ -484,7 +494,7 @@
 		</execute>
 
 		<execute macro="User#editUserSiteCP">
-			<var name="siteName" value="Liferay" />
+			<var name="siteName" value="${siteName}" />
 			<var name="userScreenName" value="usersn" />
 		</execute>
 
@@ -508,6 +518,11 @@
 
 	<command name="ReturnWrongLayoutForSignedInUserWithVirtualHostsConfigured" priority="3">
 		<property name="custom.properties" value="layout.default.template.id=2_columns_iii${line.separator}layout.user.private.layouts.enabled=false${line.separator}layout.user.private.layouts.auto.create=false${line.separator}layout.user.private.layouts.power.user.required=true${line.separator}layout.user.public.layouts.enabled=false${line.separator}layout.user.public.layouts.auto.create=false${line.separator}layout.user.public.layouts.power.user.required=true" />
+
+		<execute macro="TestCase#getSiteName">
+			<return from="siteName" name="siteName" />
+			<var name="siteName" value="${siteName}" />
+		</execute>
 
 		<execute macro="ProductMenu#gotoControlPanelConfiguration">
 			<var name="portlet" value="Instance Settings" />
@@ -651,7 +666,7 @@
 
 		<execute function="Click" locator1="Gmail#EMAIL_ADDRESS_VERIFICATION_URL" />
 
-		<execute function="SelectWindow" locator1="title=Verify Email Address - Site Name - Liferay" />
+		<execute function="SelectWindow" locator1="title=Verify Email Address - Site Name - ${siteName}" />
 		<execute function="AssertLocation" value1="${emailAddressVerificationURL}" />
 
 		<execute macro="Site#viewDefaultThemePG" />
@@ -1216,21 +1231,10 @@
 	</command>
 
 	<command name="SiteTeamsPermissions" priority="4">
-		<var name="pageName" value="Blog Page Template" />
-		<var name="permissionDefinitionKey" value="CONTENT_PERMISSIONS_VIEW_CHECKBOX" />
-		<var name="permissionInLineCheckLists" value="ACTION_ADD_DISCUSSION,ACTION_ADD_LAYOUT,ACTION_CONFIGURE_PORTLETS,ACTION_CUSTOMIZE,ACTION_DELETE,ACTION_DELETE_DISCUSSION,ACTION_PERMISSIONS,ACTION_UPDATE,ACTION_UPDATE_DISCUSSION,ACTION_VIEW" />
-		<var name="permissionInLineUncheckLists" value="CONTENT_PERMISSIONS_ADD_DISCUSSION_CHECKBOX,CONTENT_PERMISSIONS_VIEW_CHECKBOX" />
-		<var name="siteName" value="Site Name" />
-		<var name="teamDescription" value="Site Team Description" />
-		<var name="teamName" value="Site Team Name" />
-		<var name="userEmailAddress1" value="userea1@liferay.com" />
-		<var name="userEmailAddress2" value="userea2@liferay.com" />
-		<var name="userFirstName1" value="userfn1" />
-		<var name="userFirstName2" value="userfn2" />
-		<var name="userLastName1" value="userln1" />
-		<var name="userLastName2" value="userln2" />
-		<var name="userScreenName1" value="usersn1" />
-		<var name="userScreenName2" value="usersn2" />
+		<execute macro="TestCase#getSiteName">
+			<return from="siteName" name="siteName" />
+			<var name="siteName" value="${siteName}" />
+		</execute>
 
 		<execute macro="ProductMenu#gotoControlPanelUsers">
 			<var name="portlet" value="Users and Organizations" />
@@ -1257,7 +1261,7 @@
 		</execute>
 
 		<execute macro="User#editUserSiteCP">
-			<var name="siteName" value="Liferay" />
+			<var name="siteName" value="${siteName}" />
 			<var name="userScreenName" value="usersn1" />
 		</execute>
 
@@ -1286,7 +1290,7 @@
 		</execute>
 
 		<execute macro="User#editUserSiteCP">
-			<var name="siteName" value="Liferay" />
+			<var name="siteName" value="${siteName}" />
 			<var name="userScreenName" value="usersn2" />
 		</execute>
 
@@ -1333,7 +1337,7 @@
 		</execute>
 
 		<execute macro="ProductMenu#gotoSite">
-			<var name="site" value="Liferay" />
+			<var name="site" value="Site Name" />
 		</execute>
 
 		<execute macro="ProductMenu#gotoPublicPages" />
@@ -1345,7 +1349,7 @@
 
 		<execute macro="Navigator#gotoSitePage">
 			<var name="pageName" value="Blog Page Template" />
-			<var name="siteName" value="${siteName}" />
+			<var name="siteName" value="Site Name" />
 		</execute>
 
 		<execute macro="PermissionsInline#gotoPagePG">
@@ -1359,7 +1363,7 @@
 
 		<execute macro="Navigator#gotoSitePage">
 			<var name="pageName" value="Blog Page Template" />
-			<var name="siteName" value="${siteName}" />
+			<var name="siteName" value="Site Name" />
 		</execute>
 
 		<execute macro="PermissionsInline#gotoPagePG">
@@ -1376,7 +1380,7 @@
 
 		<execute macro="Navigator#gotoSitePage">
 			<var name="pageName" value="Blog Page Template" />
-			<var name="siteName" value="${siteName}" />
+			<var name="siteName" value="Site Name" />
 		</execute>
 
 		<execute macro="PermissionsInline#gotoPagePG">

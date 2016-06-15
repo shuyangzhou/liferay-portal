@@ -268,6 +268,11 @@
 	</command>
 
 	<command name="GroupScopePermissionCheck" priority="4">
+		<execute macro="TestCase#getSiteName">
+			<return from="siteName" name="siteName" />
+			<var name="siteName" value="${siteName}" />
+		</execute>
+
 		<execute macro="ProductMenu#gotoControlPanelUsers">
 			<var name="portlet" value="Roles" />
 		</execute>
@@ -309,6 +314,10 @@
 			<var name="bookmarkViewableBy" value="Owner" />
 		</execute>
 
+		<execute macro="Navigator#gotoPage">
+			<var name="pageName" value="Bookmarks Page" />
+		</execute>
+
 		<execute macro="ProductMenu#gotoControlPanelSites">
 			<var name="portlet" value="Sites" />
 		</execute>
@@ -347,6 +356,11 @@
 			<var name="bookmarkViewableBy" value="Owner" />
 		</execute>
 
+		<execute macro="Navigator#gotoSitePage">
+			<var name="pageName" value="Bookmarks Page" />
+			<var name="siteName" value="google.com Name" />
+		</execute>
+
 		<execute macro="ProductMenu#gotoControlPanelUsers">
 			<var name="portlet" value="Users and Organizations" />
 		</execute>
@@ -372,7 +386,7 @@
 		</execute>
 
 		<execute macro="User#editUserSiteCP">
-			<var name="siteName" value="Liferay" />
+			<var name="siteName" value="${siteName}" />
 			<var name="userScreenName" value="usersn" />
 		</execute>
 
@@ -719,6 +733,11 @@
 	</command>
 
 	<command name="RolesPermissionsDynamicDataLists" priority="4">
+		<execute macro="TestCase#getSiteName">
+			<return from="siteName" name="siteName" />
+			<var name="siteName" value="${siteName}" />
+		</execute>
+
 		<execute macro="ProductMenu#gotoControlPanelUsers">
 			<var name="portlet" value="Roles" />
 		</execute>
@@ -806,7 +825,7 @@
 		</execute>
 
 		<execute macro="User#editUserSiteCP">
-			<var name="siteName" value="Liferay" />
+			<var name="siteName" value="${siteName}" />
 			<var name="userScreenName" value="usersn1" />
 		</execute>
 
@@ -844,7 +863,7 @@
 		</execute>
 
 		<execute macro="User#editUserSiteCP">
-			<var name="siteName" value="Liferay" />
+			<var name="siteName" value="${siteName}" />
 			<var name="userScreenName" value="usersn2" />
 		</execute>
 
@@ -1078,6 +1097,11 @@
 	</command>
 
 	<command name="RolesSiteSearch" priority="4">
+		<execute macro="TestCase#getSiteName">
+			<return from="siteName" name="siteName" />
+			<var name="siteName" value="${siteName}" />
+		</execute>
+
 		<execute macro="ProductMenu#gotoControlPanelUsers">
 			<var name="portlet" value="Roles" />
 		</execute>
@@ -1123,7 +1147,7 @@
 		</execute>
 
 		<execute macro="User#editUserSiteCP">
-			<var name="siteName" value="Liferay" />
+			<var name="siteName" value="${siteName}" />
 			<var name="userScreenName" value="usersn1" />
 		</execute>
 
@@ -1152,7 +1176,7 @@
 		</execute>
 
 		<execute macro="User#editUserSiteCP">
-			<var name="siteName" value="Liferay" />
+			<var name="siteName" value="${siteName}" />
 			<var name="userScreenName" value="usersn2" />
 		</execute>
 
@@ -1981,6 +2005,11 @@
 	</command>
 
 	<command name="SiteRoleBookmarksInlinePermissions" priority="4">
+		<execute macro="TestCase#getSiteName">
+			<return from="siteName" name="siteName" />
+			<var name="siteName" value="${siteName}" />
+		</execute>
+
 		<execute macro="ProductMenu#gotoControlPanelUsers">
 			<var name="portlet" value="Roles" />
 		</execute>
@@ -2023,6 +2052,10 @@
 			<var name="bookmarkViewableBy" value="Owner" />
 		</execute>
 
+		<execute macro="Navigator#gotoPage">
+			<var name="pageName" value="Bookmarks Page" />
+		</execute>
+
 		<execute macro="ProductMenu#gotoControlPanelUsers">
 			<var name="portlet" value="Users and Organizations" />
 		</execute>
@@ -2048,7 +2081,7 @@
 		</execute>
 
 		<execute macro="User#editUserSiteCP">
-			<var name="siteName" value="Liferay" />
+			<var name="siteName" value="${siteName}" />
 			<var name="userScreenName" value="usersn" />
 		</execute>
 
@@ -2096,6 +2129,10 @@
 			<var name="bookmarkURL" value="https://www.liferay.com" />
 		</execute>
 
+		<execute macro="Navigator#gotoPage">
+			<var name="pageName" value="Bookmarks Page" />
+		</execute>
+
 		<execute macro="User#logoutPG" />
 
 		<execute macro="User#loginUserPG">
@@ -2105,6 +2142,11 @@
 	</command>
 
 	<command name="TeamPermissionsSite" priority="4">
+		<execute macro="TestCase#getSiteName">
+			<return from="siteName" name="siteName" />
+			<var name="siteName" value="${siteName}" />
+		</execute>
+
 		<for list="1,2" param="userNumber">
 			<execute macro="ProductMenu#gotoControlPanelUsers">
 				<var name="portlet" value="Users and Organizations" />
@@ -2131,7 +2173,7 @@
 			</execute>
 
 			<execute macro="User#editUserSiteCP">
-				<var name="siteName" value="Liferay" />
+				<var name="siteName" value="${siteName}" />
 				<var name="userScreenName" value="usersn${userNumber}" />
 			</execute>
 		</for>
@@ -2308,6 +2350,11 @@
 	</command>
 
 	<command name="ViewPreferencesPanelPermissionSiteMemberRole" priority="4">
+		<execute macro="TestCase#getSiteName">
+			<return from="siteName" name="siteName" />
+			<var name="siteName" value="${siteName}" />
+		</execute>
+
 		<execute macro="ProductMenu#gotoControlPanelUsers">
 			<var name="portlet" value="Users and Organizations" />
 		</execute>
@@ -2324,7 +2371,7 @@
 		</execute>
 
 		<execute macro="User#editUserSiteCP">
-			<var name="siteName" value="Liferay" />
+			<var name="siteName" value="${siteName}" />
 			<var name="userScreenName" value="usersn" />
 		</execute>
 

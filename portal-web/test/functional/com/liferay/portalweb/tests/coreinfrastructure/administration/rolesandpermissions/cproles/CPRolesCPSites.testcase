@@ -257,7 +257,7 @@
 
 		<execute function="Click" locator1="Button#SUBMIT" />
 
-		<execute function="AssertTextEquals" locator1="Sites#SITE_TABLE_NAME" value1="Parent Site Name" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="Sites#SITE_TABLE_NAME" value1="Parent Site Name" />
 		<execute function="AssertTextNotPresent" value1="Child SiteName" />
 
 		<var name="key_siteName" value="Child SiteName" />
@@ -266,7 +266,7 @@
 
 		<execute function="Click" locator1="Button#SUBMIT" />
 
-		<execute function="AssertTextEquals" locator1="Sites#SITE_TABLE_NAME" value1="Child SiteName" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="Sites#SITE_TABLE_NAME" value1="Child SiteName" />
 		<execute function="AssertTextNotPresent" value1="Parent Site Name" />
 
 		<execute function="Type" locator1="NavBar#BASIC_SEARCH_FIELD" value1="Site" />
@@ -275,11 +275,11 @@
 
 		<var name="key_siteName" value="Parent Site Name" />
 
-		<execute function="AssertTextEquals" locator1="Sites#SITE_TABLE_NAME" value1="Parent Site Name" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="Sites#SITE_TABLE_NAME" value1="Parent Site Name" />
 
 		<var name="key_siteName" value="Child SiteName" />
 
-		<execute function="AssertTextEquals" locator1="Sites#SITE_TABLE_NAME" value1="Child SiteName" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="Sites#SITE_TABLE_NAME" value1="Child SiteName" />
 
 		<execute macro="Site#viewSiteAdminPermissionsCP">
 			<var name="siteName" value="Parent Site Name" />

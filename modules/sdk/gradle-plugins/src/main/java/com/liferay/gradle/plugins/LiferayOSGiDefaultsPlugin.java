@@ -91,7 +91,9 @@ import org.gradle.api.artifacts.dsl.ArtifactHandler;
 import org.gradle.api.artifacts.dsl.RepositoryHandler;
 import org.gradle.api.artifacts.maven.Conf2ScopeMapping;
 import org.gradle.api.artifacts.maven.Conf2ScopeMappingContainer;
+import org.gradle.api.artifacts.repositories.AuthenticationContainer;
 import org.gradle.api.artifacts.repositories.MavenArtifactRepository;
+import org.gradle.api.artifacts.repositories.PasswordCredentials;
 import org.gradle.api.execution.TaskExecutionGraph;
 import org.gradle.api.file.CopySpec;
 import org.gradle.api.file.DuplicatesStrategy;
@@ -135,6 +137,7 @@ import org.gradle.api.tasks.testing.logging.TestLoggingContainer;
 import org.gradle.execution.ProjectConfigurer;
 import org.gradle.external.javadoc.CoreJavadocOptions;
 import org.gradle.external.javadoc.StandardJavadocDocletOptions;
+import org.gradle.internal.authentication.DefaultBasicAuthentication;
 import org.gradle.internal.service.ServiceRegistry;
 import org.gradle.plugins.ide.eclipse.EclipsePlugin;
 import org.gradle.plugins.ide.eclipse.model.EclipseClasspath;
@@ -160,6 +163,9 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 	public static final String DEFAULT_REPOSITORY_URL =
 		"https://cdn.lfrs.sl/repository.liferay.com/nexus/content/groups/" +
 			"public";
+
+	public static final String DEPLOY_APP_SERVER_LIB_TASK_NAME =
+		"deployAppServerLib";
 
 	public static final String DEPLOY_TOOL_TASK_NAME = "deployTool";
 
@@ -190,7 +196,16 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 			project.getRootProject(), "portal-impl");
 		final boolean publishing = isPublishing(project);
 		boolean testProject = isTestProject(project);
-		boolean deployToTools = isDeployToTools(project);
+
+		boolean deployToAppServerLibs = false;
+		boolean deployToTools = false;
+
+		if (FileUtil.exists(project, ".lfrbuild-app-server-lib")) {
+			deployToAppServerLibs = true;
+		}
+		else if (FileUtil.exists(project, ".lfrbuild-tool")) {
+			deployToTools = true;
+		}
 
 		applyPlugins(project);
 
@@ -237,8 +252,15 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 
 		addTaskCopyLibs(project);
 
-		if (isDeployToTools(project)) {
-			addTaskDeployTool(project);
+		if (deployToAppServerLibs) {
+			addTaskAlias(
+				project, DEPLOY_APP_SERVER_LIB_TASK_NAME,
+				LiferayBasePlugin.DEPLOY_TASK_NAME);
+		}
+		else if (deployToTools) {
+			addTaskAlias(
+				project, DEPLOY_TOOL_TASK_NAME,
+				LiferayBasePlugin.DEPLOY_TASK_NAME);
 		}
 
 		final Jar jarJavadocTask = addTaskJarJavadoc(project);
@@ -253,7 +275,7 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 		configureBasePlugin(project, portalRootDir);
 		configureBundleDefaultInstructions(project, portalRootDir, publishing);
 		configureConfigurations(project);
-		configureDeployDir(project, deployToTools);
+		configureDeployDir(project, deployToAppServerLibs, deployToTools);
 		configureJavaPlugin(project);
 		configureProject(project);
 		configureRepositories(project);
@@ -356,6 +378,53 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 				}
 
 			});
+
+		if (Validator.isNotNull(_REPOSITORY_PRIVATE_PASSWORD) &&
+			Validator.isNotNull(_REPOSITORY_PRIVATE_URL) &&
+			Validator.isNotNull(_REPOSITORY_PRIVATE_USERNAME)) {
+
+			MavenArtifactRepository mavenArtifactRepository =
+				repositoryHandler.maven(
+					new Action<MavenArtifactRepository>() {
+
+						@Override
+						public void execute(
+							MavenArtifactRepository mavenArtifactRepository) {
+
+							mavenArtifactRepository.setUrl(
+								_REPOSITORY_PRIVATE_URL);
+						}
+
+					});
+
+			mavenArtifactRepository.authentication(
+				new Action<AuthenticationContainer>() {
+
+					@Override
+					public void execute(
+						AuthenticationContainer authenticationContainer) {
+
+						authenticationContainer.add(
+							new DefaultBasicAuthentication("basic"));
+					}
+
+				});
+
+			mavenArtifactRepository.credentials(
+				new Action<PasswordCredentials>() {
+
+					@Override
+					public void execute(
+						PasswordCredentials passwordCredentials) {
+
+						passwordCredentials.setPassword(
+							_REPOSITORY_PRIVATE_PASSWORD);
+						passwordCredentials.setUsername(
+							_REPOSITORY_PRIVATE_USERNAME);
+					}
+
+				});
+		}
 	}
 
 	protected static boolean isTestProject(Project project) {
@@ -448,6 +517,20 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 		GradleUtil.addDependency(
 			project, JavaPlugin.TEST_COMPILE_CONFIGURATION_NAME,
 			"org.springframework", "spring-test", "3.2.15.RELEASE");
+	}
+
+	protected Task addTaskAlias(
+		Project project, String taskName, String originalTaskName) {
+
+		Task task = project.task(taskName);
+
+		Task originalTask = GradleUtil.getTask(project, originalTaskName);
+
+		task.dependsOn(originalTask);
+		task.setDescription("Alias for " + originalTask);
+		task.setGroup(originalTask.getGroup());
+
+		return task;
 	}
 
 	protected Task addTaskBaseline(
@@ -692,19 +775,6 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 		classesTask.dependsOn(copy);
 
 		return copy;
-	}
-
-	protected Task addTaskDeployTool(Project project) {
-		Task task = project.task(DEPLOY_TOOL_TASK_NAME);
-
-		Task deployTask = GradleUtil.getTask(
-			project, LiferayBasePlugin.DEPLOY_TASK_NAME);
-
-		task.dependsOn(deployTask);
-		task.setDescription("Alias for " + deployTask);
-		task.setGroup(BasePlugin.BUILD_GROUP);
-
-		return task;
 	}
 
 	protected InstallCacheTask addTaskInstallCache(final Project project) {
@@ -1274,7 +1344,8 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 	}
 
 	protected void configureDeployDir(
-		final Project project, final boolean deployToTools) {
+		final Project project, final boolean deployToAppServerLibs,
+		final boolean deployToTools) {
 
 		final LiferayExtension liferayExtension = GradleUtil.getExtension(
 			project, LiferayExtension.class);
@@ -1284,6 +1355,12 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 
 				@Override
 				public File call() throws Exception {
+					if (deployToAppServerLibs) {
+						return new File(
+							liferayExtension.getAppServerPortalDir(),
+							"WEB-INF/lib");
+					}
+
 					if (deployToTools) {
 						return new File(
 							liferayExtension.getLiferayHome(),
@@ -2144,14 +2221,6 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 		return false;
 	}
 
-	protected boolean isDeployToTools(Project project) {
-		if (FileUtil.exists(project, ".lfrbuild-tool")) {
-			return true;
-		}
-
-		return false;
-	}
-
 	protected boolean isPublishing(Project project) {
 		Gradle gradle = project.getGradle();
 
@@ -2181,6 +2250,15 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 
 	private static final boolean _MAVEN_LOCAL_IGNORE = Boolean.getBoolean(
 		"maven.local.ignore");
+
+	private static final String _REPOSITORY_PRIVATE_PASSWORD =
+		System.getProperty("repository.private.password");
+
+	private static final String _REPOSITORY_PRIVATE_URL = System.getProperty(
+		"repository.private.url");
+
+	private static final String _REPOSITORY_PRIVATE_USERNAME =
+		System.getProperty("repository.private.username");
 
 	private static final String _REPOSITORY_URL = System.getProperty(
 		"repository.url", DEFAULT_REPOSITORY_URL);
