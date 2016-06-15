@@ -17,7 +17,7 @@ package com.liferay.util.portlet;
 import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
 import com.liferay.portal.kernel.configuration.Filter;
-import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
+import com.liferay.portal.kernel.portlet.PortletClassLoaderThreadLocal;
 
 import java.util.Properties;
 
@@ -64,7 +64,7 @@ public class PortletProps {
 
 	private PortletProps() {
 		_configuration = ConfigurationFactoryUtil.getConfiguration(
-			PortletClassLoaderUtil.getClassLoader(), "portlet");
+			PortletClassLoaderThreadLocal.getClassLoader(), "portlet");
 	}
 
 	private static final PortletProps _instance = new PortletProps();

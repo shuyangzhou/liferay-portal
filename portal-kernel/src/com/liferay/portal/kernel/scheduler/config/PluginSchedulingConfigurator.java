@@ -19,7 +19,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.messaging.proxy.ProxyModeThreadLocal;
-import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
+import com.liferay.portal.kernel.portlet.PortletClassLoaderThreadLocal;
 import com.liferay.portal.kernel.scheduler.SchedulerEngineHelperUtil;
 import com.liferay.portal.kernel.scheduler.SchedulerEntry;
 import com.liferay.portal.kernel.util.InstanceFactory;
@@ -55,7 +55,7 @@ public class PluginSchedulingConfigurator {
 				try {
 					MessageListener messageListener =
 						(MessageListener)InstanceFactory.newInstance(
-							PortletClassLoaderUtil.getClassLoader(),
+							PortletClassLoaderThreadLocal.getClassLoader(),
 							schedulerEntry.getEventListenerClass());
 
 					SchedulerEngineHelperUtil.register(

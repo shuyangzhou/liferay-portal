@@ -18,7 +18,7 @@ import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
+import com.liferay.portal.kernel.portlet.PortletClassLoaderThreadLocal;
 import com.liferay.portal.kernel.util.AggregateClassLoader;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ClassLoaderUtil;
@@ -71,14 +71,12 @@ public class PortletApplicationContext extends XmlWebApplicationContext {
 	protected String[] getPortletConfigLocations() {
 		String[] configLocations = getConfigLocations();
 
-		ClassLoader classLoader = PortletClassLoaderUtil.getClassLoader();
-
 		Configuration serviceBuilderPropertiesConfiguration = null;
 
 		try {
 			serviceBuilderPropertiesConfiguration =
 				ConfigurationFactoryUtil.getConfiguration(
-					classLoader, "service");
+					PortletClassLoaderThreadLocal.getClassLoader(), "service");
 		}
 		catch (Exception e) {
 			if (_log.isDebugEnabled()) {
@@ -176,7 +174,7 @@ public class PortletApplicationContext extends XmlWebApplicationContext {
 			ClassLoader beanClassLoader =
 				AggregateClassLoader.getAggregateClassLoader(
 					new ClassLoader[] {
-						PortletClassLoaderUtil.getClassLoader(),
+						PortletClassLoaderThreadLocal.getClassLoader(),
 						ClassLoaderUtil.getPortalClassLoader()
 					});
 

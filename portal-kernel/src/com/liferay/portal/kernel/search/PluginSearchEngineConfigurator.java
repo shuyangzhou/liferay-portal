@@ -16,7 +16,7 @@ package com.liferay.portal.kernel.search;
 
 import com.liferay.portal.kernel.bean.BeanLocator;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
+import com.liferay.portal.kernel.portlet.PortletClassLoaderThreadLocal;
 
 /**
  * @author Michael C. Han
@@ -51,7 +51,8 @@ public class PluginSearchEngineConfigurator
 
 	@Override
 	protected ClassLoader getOperatingClassloader() {
-		ClassLoader classLoader = PortletClassLoaderUtil.getClassLoader();
+		ClassLoader classLoader =
+			PortletClassLoaderThreadLocal.getClassLoader();
 
 		if (classLoader == null) {
 			Thread currentThread = Thread.currentThread();

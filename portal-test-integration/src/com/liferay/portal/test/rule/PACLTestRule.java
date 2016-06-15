@@ -19,7 +19,7 @@ import com.liferay.portal.deploy.hot.ServiceWrapperRegistry;
 import com.liferay.portal.kernel.deploy.hot.DependencyManagementThreadLocal;
 import com.liferay.portal.kernel.deploy.hot.HotDeployEvent;
 import com.liferay.portal.kernel.deploy.hot.HotDeployUtil;
-import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
+import com.liferay.portal.kernel.portlet.PortletClassLoaderThreadLocal;
 import com.liferay.portal.kernel.process.ClassPathUtil;
 import com.liferay.portal.kernel.servlet.ServletContextPool;
 import com.liferay.portal.kernel.servlet.filters.invoker.InvokerFilterHelper;
@@ -113,16 +113,20 @@ public class PACLTestRule implements TestRule {
 		ClassLoaderPool.register(
 			hotDeployEvent.getServletContextName(),
 			hotDeployEvent.getContextClassLoader());
-		PortletClassLoaderUtil.setServletContextName(
-			hotDeployEvent.getServletContextName());
+
+		ServletContext servletContext = hotDeployEvent.getServletContext();
+
+		PortletClassLoaderThreadLocal.setClassLoader(
+			servletContext.getClassLoader());
 
 		try {
 			portletContextLoaderListener.contextDestroyed(
 				new ServletContextEvent(hotDeployEvent.getServletContext()));
 		}
 		finally {
+			PortletClassLoaderThreadLocal.removeClassLoader();
+
 			ClassLoaderPool.unregister(hotDeployEvent.getServletContextName());
-			PortletClassLoaderUtil.setServletContextName(null);
 		}
 	}
 
@@ -170,16 +174,17 @@ public class PACLTestRule implements TestRule {
 		ClassLoaderPool.register(
 			hotDeployEvent.getServletContextName(),
 			hotDeployEvent.getContextClassLoader());
-		PortletClassLoaderUtil.setServletContextName(
-			hotDeployEvent.getServletContextName());
+		PortletClassLoaderThreadLocal.setClassLoader(
+			mockServletContext.getClassLoader());
 
 		try {
 			portletContextLoaderListener.contextInitialized(
 				new ServletContextEvent(mockServletContext));
 		}
 		finally {
+			PortletClassLoaderThreadLocal.removeClassLoader();
+
 			ClassLoaderPool.unregister(hotDeployEvent.getServletContextName());
-			PortletClassLoaderUtil.setServletContextName(null);
 		}
 
 		return hotDeployEvent;

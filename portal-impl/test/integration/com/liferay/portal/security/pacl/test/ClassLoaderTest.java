@@ -17,7 +17,6 @@ package com.liferay.portal.security.pacl.test;
 import com.liferay.blogs.kernel.service.BlogsEntryLocalService;
 import com.liferay.blogs.kernel.service.BlogsEntryLocalServiceUtil;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
@@ -157,7 +156,7 @@ public class ClassLoaderTest {
 
 	@Test
 	public void testGet11() throws Exception {
-		PortalRuntimePermission.checkGetClassLoader("pacl-test-portlet");
+		PortalRuntimePermission.checkGetClassLoader("flash-portlet");
 	}
 
 	@Test
@@ -191,38 +190,6 @@ public class ClassLoaderTest {
 		}
 		catch (SecurityException se) {
 		}
-	}
-
-	@Test
-	public void testGet15() throws Exception {
-		try {
-			PortletClassLoaderUtil.getClassLoader("1_WAR_chatportlet");
-
-			Assert.fail();
-		}
-		catch (SecurityException se) {
-		}
-	}
-
-	@Test
-	public void testGet16() throws Exception {
-		PortletClassLoaderUtil.getClassLoader("1_WAR_pacl_testportlet");
-	}
-
-	@Test
-	public void testGet17() throws Exception {
-		try {
-			PortletClassLoaderUtil.getClassLoader("chat-portlet");
-
-			Assert.fail();
-		}
-		catch (SecurityException se) {
-		}
-	}
-
-	@Test
-	public void testGet18() throws Exception {
-		PortletClassLoaderUtil.getClassLoader("pacl-test-portlet");
 	}
 
 	@Test
