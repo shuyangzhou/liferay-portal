@@ -1,0 +1,42 @@
+import com.liferay.gradle.plugins.patcher.PatchTask
+
+apply plugin: "com.liferay.patcher"
+
+task deployJar(type: Copy)
+task patch(type: PatchTask)
+
+sourceCompatibility = "1.7"
+targetCompatibility = "1.7"
+
+dependencies {
+	compile group: "org.springframework", name: "spring-core", optional, version: "4.1.9.RELEASE"
+}
+
+deploy {
+	finalizedBy deployJar
+}
+
+
+deployJar {
+	ext {
+		autoClean = false
+	}
+
+	from jar
+	into "../../../lib/portal"
+
+	rename {
+		"spring-core.jar"
+	}
+}
+
+patch {
+	ext {
+		autoClean = false
+	}
+
+	fileNames "org/springframework/core/NamedThreadLocal.java"
+	fileNames "org/springframework/core/CentralizedThreadLocal.java"
+
+	originalLibModuleName = "spring-core"
+}

@@ -1731,14 +1731,12 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 			userId, page, SocialActivityConstants.TYPE_MOVE_TO_TRASH,
 			extraDataJSONObject.toString(), 0);
 
-		if (!pageVersions.isEmpty()) {
-			Indexer<WikiPage> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
-				WikiPage.class);
+		// Indexer
 
-			for (WikiPage pageVersion : pageVersions) {
-				indexer.reindex(pageVersion);
-			}
-		}
+		Indexer<WikiPage> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
+			WikiPage.class);
+
+		indexer.reindex(page);
 
 		// Workflow
 
@@ -2594,7 +2592,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 				node.getStatusByUserId(), fileEntry.getFileEntryId());
 		}
 
-		// Index
+		// Indexer
 
 		Indexer<WikiPage> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
 			WikiPage.class);
@@ -2896,14 +2894,10 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 			userId, page, SocialActivityConstants.TYPE_RESTORE_FROM_TRASH,
 			extraDataJSONObject.toString(), 0);
 
-		if (!pageVersions.isEmpty()) {
-			Indexer<WikiPage> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
-				WikiPage.class);
+		Indexer<WikiPage> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
+			WikiPage.class);
 
-			for (WikiPage pageVersion : pageVersions) {
-				indexer.reindex(pageVersion);
-			}
-		}
+		indexer.reindex(page);
 	}
 
 	protected void notifySubscribers(

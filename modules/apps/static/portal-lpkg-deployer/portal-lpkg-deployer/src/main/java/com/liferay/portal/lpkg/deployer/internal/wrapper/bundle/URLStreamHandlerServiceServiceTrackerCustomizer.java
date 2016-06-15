@@ -14,13 +14,12 @@
 
 package com.liferay.portal.lpkg.deployer.internal.wrapper.bundle;
 
-import com.liferay.portal.lpkg.deployer.LPKGWARBundleRegistry;
-
 import java.net.URL;
 import java.net.URLConnection;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.startlevel.BundleStartLevel;
 import org.osgi.service.url.AbstractURLStreamHandlerService;
@@ -35,13 +34,12 @@ public class URLStreamHandlerServiceServiceTrackerCustomizer
 
 	public URLStreamHandlerServiceServiceTrackerCustomizer(
 		BundleContext bundleContext, String contextName, URL lpkgURL,
-		int startLevel, LPKGWARBundleRegistry lpkgWARBundleRegistry) {
+		int startLevel) {
 
 		_bundleContext = bundleContext;
 		_contextName = contextName;
 		_lpkgURL = lpkgURL;
 		_startLevel = startLevel;
-		_lpkgWARBundleRegistry = lpkgWARBundleRegistry;
 	}
 
 	@Override
@@ -66,10 +64,13 @@ public class URLStreamHandlerServiceServiceTrackerCustomizer
 			// The WAB URL must not change over reboots. See
 			// LPKGBundleTrackerCustomizer#_toWARWrapperBundle.
 
+			Bundle bundle = _bundleContext.getBundle();
+
 			URL wabURL = new URL(
 				"webbundle", null, -1,
-				_lpkgURL.toExternalForm() + "?Web-ContextPath=/" +
-					_contextName,
+				_lpkgURL.toExternalForm() + "?" + Constants.BUNDLE_VERSION +
+					"=" + bundle.getVersion() + "&Web-ContextPath=/" +
+						_contextName,
 				abstractURLStreamHandlerService);
 
 			URLConnection urlConnection =
@@ -77,9 +78,6 @@ public class URLStreamHandlerServiceServiceTrackerCustomizer
 
 			Bundle newBundle = _bundleContext.installBundle(
 				wabURL.toExternalForm(), urlConnection.getInputStream());
-
-			_lpkgWARBundleRegistry.register(
-				_bundleContext.getBundle(), newBundle);
 
 			BundleStartLevel bundleStartLevel = newBundle.adapt(
 				BundleStartLevel.class);
@@ -110,7 +108,6 @@ public class URLStreamHandlerServiceServiceTrackerCustomizer
 	private final BundleContext _bundleContext;
 	private final String _contextName;
 	private final URL _lpkgURL;
-	private final LPKGWARBundleRegistry _lpkgWARBundleRegistry;
 	private final int _startLevel;
 
 }

@@ -712,7 +712,7 @@ public class BookmarksFolderLocalServiceImpl
 				BookmarksFolder.class.getName(), folder.getFolderId(), false);
 		}
 
-		// Index
+		// Indexer
 
 		Indexer<BookmarksFolder> indexer =
 			IndexerRegistryUtil.nullSafeGetIndexer(BookmarksFolder.class);
@@ -887,7 +887,7 @@ public class BookmarksFolderLocalServiceImpl
 					BookmarksFolder.class.getName(), folder.getFolderId(),
 					false);
 
-				// Index
+				// Indexer
 
 				Indexer<BookmarksFolder> indexer =
 					IndexerRegistryUtil.nullSafeGetIndexer(
@@ -992,7 +992,7 @@ public class BookmarksFolderLocalServiceImpl
 					BookmarksFolder.class.getName(), folder.getFolderId(),
 					true);
 
-				// Index
+				// Indexer
 
 				Indexer<BookmarksFolder> indexer =
 					IndexerRegistryUtil.nullSafeGetIndexer(
