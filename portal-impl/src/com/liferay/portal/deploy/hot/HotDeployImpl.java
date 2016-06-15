@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.deploy.hot.HotDeployException;
 import com.liferay.portal.kernel.deploy.hot.HotDeployListener;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
+import com.liferay.portal.kernel.portlet.PortletClassLoaderThreadLocal;
 import com.liferay.portal.kernel.security.pacl.DoPrivileged;
 import com.liferay.portal.kernel.servlet.ServletContextPool;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
@@ -110,8 +110,10 @@ public class HotDeployImpl implements HotDeploy {
 		for (int i = _hotDeployListeners.size() - 1; i >= 0; i--) {
 			HotDeployListener hotDeployListener = _hotDeployListeners.get(i);
 
-			PortletClassLoaderUtil.setServletContextName(
-				hotDeployEvent.getServletContextName());
+			ServletContext servletContext = hotDeployEvent.getServletContext();
+
+			PortletClassLoaderThreadLocal.setClassLoader(
+				servletContext.getClassLoader());
 
 			try {
 				hotDeployListener.invokeUndeploy(hotDeployEvent);
@@ -120,7 +122,7 @@ public class HotDeployImpl implements HotDeploy {
 				_log.error(hde, hde);
 			}
 			finally {
-				PortletClassLoaderUtil.setServletContextName(null);
+				PortletClassLoaderThreadLocal.removeClassLoader();
 			}
 		}
 
@@ -226,12 +228,15 @@ public class HotDeployImpl implements HotDeploy {
 				_log.info("Deploying " + servletContextName + " from queue");
 			}
 
+			ServletContext servletContext = hotDeployEvent.getServletContext();
+
+			ClassLoader classLoader = servletContext.getClassLoader();
+
 			for (int i = 0; i < _hotDeployListeners.size(); i++) {
 				HotDeployListener hotDeployListener = _hotDeployListeners.get(
 					i);
 
-				PortletClassLoaderUtil.setServletContextName(
-					hotDeployEvent.getServletContextName());
+				PortletClassLoaderThreadLocal.setClassLoader(classLoader);
 
 				try {
 					hotDeployListener.invokeDeploy(hotDeployEvent);
@@ -240,7 +245,7 @@ public class HotDeployImpl implements HotDeploy {
 					_log.error(hde, hde);
 				}
 				finally {
-					PortletClassLoaderUtil.setServletContextName(null);
+					PortletClassLoaderThreadLocal.removeClassLoader();
 				}
 			}
 
