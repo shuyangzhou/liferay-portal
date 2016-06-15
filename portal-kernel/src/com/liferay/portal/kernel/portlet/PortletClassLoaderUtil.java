@@ -24,7 +24,10 @@ import javax.servlet.ServletContext;
 
 /**
  * @author Brian Wing Shun Chan
+ * @deprecated As of 7.1.0, moved to
+ *    {@link com.liferay.portal.kernel.portlet.PortletClassLoaderThreadLocal}
  */
+@Deprecated
 @ProviderType
 public class PortletClassLoaderUtil {
 
