@@ -1,0 +1,3 @@
+Bundle-SymbolicName: org.springframework.core
+Bundle-Version: 4.1.9.LIFERAY-PATCHED-1
+Export-Package: org.springframework.*
