@@ -193,7 +193,7 @@ public class ClassLoaderTest {
 	}
 
 	@Test
-	public void testGet19() throws Exception {
+	public void testGet15() throws Exception {
 		try {
 			Thread thread = Thread.currentThread();
 
@@ -206,7 +206,7 @@ public class ClassLoaderTest {
 	}
 
 	@Test
-	public void testGet20() throws Exception {
+	public void testGet16() throws Exception {
 		try {
 			User.class.getClassLoader();
 
@@ -217,7 +217,7 @@ public class ClassLoaderTest {
 	}
 
 	@Test
-	public void testGet21() throws Exception {
+	public void testGet17() throws Exception {
 		try {
 			UserLocalService userLocalService =
 				UserLocalServiceUtil.getService();
