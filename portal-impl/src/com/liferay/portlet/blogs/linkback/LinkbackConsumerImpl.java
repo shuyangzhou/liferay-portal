@@ -32,11 +32,13 @@ import java.util.List;
 public class LinkbackConsumerImpl implements LinkbackConsumer {
 
 	public LinkbackConsumerImpl() {
-		this(CommentManagerUtil.getCommentManager());
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
 	public LinkbackConsumerImpl(CommentManager commentManager) {
-		_commentManager = commentManager;
 	}
 
 	@Override
@@ -84,7 +86,6 @@ public class LinkbackConsumerImpl implements LinkbackConsumer {
 	private static final Log _log = LogFactoryUtil.getLog(
 		LinkbackConsumerImpl.class);
 
-	private final CommentManager _commentManager;
 	private final List<Tuple> _trackbacks = Collections.synchronizedList(
 		new ArrayList<Tuple>());
 
