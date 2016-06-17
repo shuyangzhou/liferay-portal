@@ -74,7 +74,7 @@ public class LinkbackConsumerImpl implements LinkbackConsumer {
 		}
 
 		try {
-			_commentManager.deleteComment(commentId);
+			CommentManagerUtil.deleteComment(commentId);
 		}
 		catch (Exception e) {
 			_log.error("Unable to delete trackback comment " + commentId, e);

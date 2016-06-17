@@ -52,13 +52,13 @@ public class TrackbackImpl implements Trackback {
 
 		String body = buildBody(themeDisplay, excerpt, url);
 
-		long commentId = _commentManager.addComment(
+		long commentId = CommentManagerUtil.addComment(
 			userId, groupId, className, classPK, blogName, title, body,
 			serviceContextFunction);
 
 		String entryURL = buildEntryURL(entry, themeDisplay);
 
-		_linkbackConsumer.addNewTrackback(commentId, url, entryURL);
+		LinkbackConsumerUtil.addNewTrackback(commentId, url, entryURL);
 	}
 
 	@Override
