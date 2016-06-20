@@ -151,7 +151,6 @@ public interface ReleaseLocalService extends BaseLocalService,
 		java.lang.String schemaVersion, int buildNumber, Date buildDate,
 		boolean verified) throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getBuildNumberOrCreate() throws PortalException;
 
 	/**
