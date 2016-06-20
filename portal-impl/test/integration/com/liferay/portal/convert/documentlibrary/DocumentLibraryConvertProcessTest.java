@@ -113,12 +113,9 @@ public class DocumentLibraryConvertProcessTest {
 
 	@Before
 	public void setUp() throws Exception {
-		PropsValues.DL_STORE_IMPL =
-			"com.liferay.portal.store.file.system.FileSystemStore";
+		_sourceStore = _storeFactory.getStore(_CLASS_NAME_FILE_SYSTEM_STORE);
 
-		_sourceStore = _storeFactory.getStore(PropsValues.DL_STORE_IMPL);
-
-		_storeFactory.setStore(PropsValues.DL_STORE_IMPL);
+		_storeFactory.setStore(_CLASS_NAME_FILE_SYSTEM_STORE);
 
 		_group = GroupTestUtil.addGroup();
 
@@ -131,6 +128,15 @@ public class DocumentLibraryConvertProcessTest {
 
 	@After
 	public void tearDown() throws Exception {
+		_storeFactory.setStore(_CLASS_NAME_DB_STORE);
+
+		_convertProcess.setParameterValues(
+			new String[] {
+				_CLASS_NAME_FILE_SYSTEM_STORE, Boolean.TRUE.toString()
+			});
+
+		_convertProcess.convert();
+
 		PropsValues.DL_STORE_IMPL = PropsUtil.get(PropsKeys.DL_STORE_IMPL);
 
 		_storeFactory.setStore(PropsValues.DL_STORE_IMPL);
@@ -348,6 +354,9 @@ public class DocumentLibraryConvertProcessTest {
 
 	private static final String _CLASS_NAME_DB_STORE =
 		"com.liferay.portal.store.db.DBStore";
+
+	private static final String _CLASS_NAME_FILE_SYSTEM_STORE =
+		"com.liferay.portal.store.file.system.FileSystemStore";
 
 	private static final Map<Image, byte[]> _bytesMap = new HashMap<>();
 	private static StoreFactory _storeFactory;
