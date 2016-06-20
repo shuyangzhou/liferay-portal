@@ -29,7 +29,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.memory.EqualityWeakReference;
 import com.liferay.portal.kernel.memory.FinalizeManager;
-import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
+import com.liferay.portal.kernel.portlet.PortletClassLoaderThreadLocal;
 import com.liferay.portal.kernel.security.pacl.PACLConstants;
 import com.liferay.portal.kernel.security.pacl.permission.PortalFilePermission;
 import com.liferay.portal.kernel.security.pacl.permission.PortalHookPermission;
@@ -1317,7 +1317,7 @@ public class PortalSecurityManagerImpl
 		public ClassLoader getBeanClassLoader() {
 			return DoPrivilegedFactory.wrap(
 				new PreloadClassLoader(
-					PortletClassLoaderUtil.getClassLoader(), _classes));
+					PortletClassLoaderThreadLocal.getClassLoader(), _classes));
 		}
 
 		private static final Map<String, Class<?>> _classes = new HashMap<>();
