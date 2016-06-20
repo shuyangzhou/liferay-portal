@@ -1940,6 +1940,8 @@
 		<finder name="ServletContextName" return-type="Release" unique="true">
 			<finder-column case-sensitive="false" name="servletContextName" />
 		</finder>
+
+		<tx-required>getBuildNumberOrCreate</tx-required>
 	</entity>
 	<entity local-service="true" name="Repository" remote-service="true" uuid="true">
 
