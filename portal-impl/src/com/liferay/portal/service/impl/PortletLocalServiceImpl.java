@@ -2634,7 +2634,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 					String rootPortletId = PortletConstants.getRootPortletId(
 						portletId);
 
-					_friendlyURLMapperRootPortletIds.add(rootPortletId);
+					_sortedAdd(_friendlyURLMapperRootPortletIds, rootPortletId);
 				}
 
 				return portletIds;
@@ -2659,8 +2659,19 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 			String[] rootPortletIds) {
 
 			for (String rootPortletId : rootPortletIds) {
-				_friendlyURLMapperRootPortletIds.remove(rootPortletId);
+				_sortedAdd(_friendlyURLMapperRootPortletIds, rootPortletId);
 			}
+		}
+
+		private void _sortedAdd(List<String> list, String string) {
+			for (int i = 0; i < list.size(); i++) {
+				if (string.compareTo(list.get(i)) < 1) {
+					list.add(i, string);
+					return;
+				}
+			}
+
+			list.add(string);
 		}
 
 	}
