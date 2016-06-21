@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.servlet;
 
+import com.liferay.portal.kernel.concurrent.ConcurrentHashSet;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
@@ -24,9 +25,7 @@ import com.liferay.registry.ServiceTrackerCustomizer;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Set;
 
 import javax.servlet.ServletContext;
 
@@ -34,6 +33,12 @@ import javax.servlet.ServletContext;
  * @author Peter Fellwock
  */
 public class PortalWebResourcesUtil {
+
+	public static String getContextPath(PortalWebResources portalWebResources) {
+		String pathProxy = PortalUtil.getPathProxy();
+
+		return pathProxy.concat(portalWebResources.getContextPath());
+	}
 
 	public static String getContextPath(String resourceType) {
 		String pathProxy = PortalUtil.getPathProxy();
@@ -56,9 +61,7 @@ public class PortalWebResourcesUtil {
 	}
 
 	public static String getPathResourceType(String path) {
-		for (PortalWebResources portalWebResources :
-				_instance._getPortalWebResourcesList()) {
-
+		for (PortalWebResources portalWebResources : _portalWebResources) {
 			if (path.contains(portalWebResources.getContextPath())) {
 				return portalWebResources.getResourceType();
 			}
@@ -68,9 +71,7 @@ public class PortalWebResourcesUtil {
 	}
 
 	public static ServletContext getPathServletContext(String path) {
-		for (PortalWebResources portalWebResources :
-				_instance._getPortalWebResourcesList()) {
-
+		for (PortalWebResources portalWebResources : _portalWebResources) {
 			ServletContext servletContext =
 				portalWebResources.getServletContext();
 
@@ -87,10 +88,18 @@ public class PortalWebResourcesUtil {
 	public static PortalWebResources getPortalWebResources(
 		String resourceType) {
 
-		for (PortalWebResources portalWebResources :
-				_instance._getPortalWebResourcesList()) {
-
+		for (PortalWebResources portalWebResources : _portalWebResources) {
 			if (resourceType.equals(portalWebResources.getResourceType())) {
+				return portalWebResources;
+			}
+		}
+
+		return null;
+	}
+
+	public static PortalWebResources getPortalWebResourcesByPath(String path) {
+		for (PortalWebResources portalWebResources : _portalWebResources) {
+			if (path.contains(portalWebResources.getContextPath())) {
 				return portalWebResources;
 			}
 		}
@@ -132,9 +141,7 @@ public class PortalWebResourcesUtil {
 	}
 
 	public static boolean hasContextPath(String requestURI) {
-		for (PortalWebResources portalWebResources :
-				_instance._getPortalWebResourcesList()) {
-
+		for (PortalWebResources portalWebResources : _portalWebResources) {
 			if (requestURI.startsWith(portalWebResources.getContextPath())) {
 				return true;
 			}
@@ -165,7 +172,12 @@ public class PortalWebResourcesUtil {
 		return path;
 	}
 
-	private PortalWebResourcesUtil() {
+	private static final Set<PortalWebResources> _portalWebResources =
+		new ConcurrentHashSet<>();
+	private static final ServiceTracker<PortalWebResources, PortalWebResources>
+		_serviceTracker;
+
+	static {
 		Registry registry = RegistryUtil.getRegistry();
 
 		_serviceTracker = registry.trackServices(
@@ -175,19 +187,7 @@ public class PortalWebResourcesUtil {
 		_serviceTracker.open();
 	}
 
-	private Collection<PortalWebResources> _getPortalWebResourcesList() {
-		return _portalWebResourcesMap.values();
-	}
-
-	private static final PortalWebResourcesUtil _instance =
-		new PortalWebResourcesUtil();
-
-	private final Map<ServiceReference<PortalWebResources>, PortalWebResources>
-		_portalWebResourcesMap = new ConcurrentHashMap<>();
-	private final ServiceTracker<PortalWebResources, PortalWebResources>
-		_serviceTracker;
-
-	private class PortalWebResourcesServiceTrackerCustomizer
+	private static class PortalWebResourcesServiceTrackerCustomizer
 		implements ServiceTrackerCustomizer
 			<PortalWebResources, PortalWebResources> {
 
@@ -200,7 +200,7 @@ public class PortalWebResourcesUtil {
 			PortalWebResources portalWebResources = registry.getService(
 				serviceReference);
 
-			_portalWebResourcesMap.put(serviceReference, portalWebResources);
+			_portalWebResources.add(portalWebResources);
 
 			return portalWebResources;
 		}
@@ -209,6 +209,9 @@ public class PortalWebResourcesUtil {
 		public void modifiedService(
 			ServiceReference<PortalWebResources> serviceReference,
 			PortalWebResources portalWebResources) {
+
+			removedService(serviceReference, portalWebResources);
+			addingService(serviceReference);
 		}
 
 		@Override
@@ -220,7 +223,7 @@ public class PortalWebResourcesUtil {
 
 			registry.ungetService(serviceReference);
 
-			_portalWebResourcesMap.remove(serviceReference);
+			_portalWebResources.remove(portalWebResources);
 		}
 
 	}

@@ -16,7 +16,7 @@ package com.liferay.frontend.theme.contributor.extender.internal;
 
 import com.liferay.frontend.theme.contributor.extender.BundleWebResources;
 import com.liferay.portal.kernel.servlet.PortalWebResourceConstants;
-import com.liferay.portal.kernel.servlet.PortalWebResourcesUtil;
+import com.liferay.portal.kernel.servlet.PortalWebResources;
 import com.liferay.portal.kernel.servlet.taglib.DynamicInclude;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -57,8 +57,7 @@ public class ThemeContributorDynamicInclude implements DynamicInclude {
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		long themeLastModified = PortalWebResourcesUtil.getLastModified(
-			PortalWebResourceConstants.RESOURCE_TYPE_THEME_CONTRIBUTOR);
+		long themeLastModified = _portalWebResources.getLastModified();
 
 		PortalResourceURLRenderer portalResourceURLRenderer = _create(
 			themeDisplay.isThemeCssFastLoad(), "css", themeLastModified);
@@ -190,6 +189,11 @@ public class ThemeContributorDynamicInclude implements DynamicInclude {
 		Collections.emptyList();
 	private volatile Collection<String> _jsResourceURLs =
 		Collections.emptyList();
+
+	@Reference(
+		target = "(resource.type=" + PortalWebResourceConstants.RESOURCE_TYPE_THEME_CONTRIBUTOR + ")"
+	)
+	private PortalWebResources _portalWebResources;
 
 	private static class ComboPortalResourceURLRenderer
 		implements PortalResourceURLRenderer {

@@ -18,6 +18,7 @@ import com.liferay.frontend.theme.contributor.extender.BundleWebResources;
 import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.portal.kernel.servlet.PortalWebResourceConstants;
 import com.liferay.portal.kernel.servlet.PortalWebResources;
+import com.liferay.portal.kernel.util.HashMapDictionary;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -81,12 +82,20 @@ public class ThemeContributorExtension implements Extension {
 					ServletContext servletContext = bundleContext.getService(
 						serviceReference);
 
+					Dictionary<String, String> dictionary =
+						new HashMapDictionary<>();
+
+					dictionary.put(
+						"resource.type",
+						PortalWebResourceConstants.
+							RESOURCE_TYPE_THEME_CONTRIBUTOR);
+
 					serviceRegistrations.add(
 						bundleContext.registerService(
 							PortalWebResources.class.getName(),
 							new ThemeContributorPortalWebResources(
 								servletContext),
-							null));
+							dictionary));
 
 					String contextPath = servletContext.getContextPath();
 

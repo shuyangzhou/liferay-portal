@@ -139,6 +139,7 @@ import com.liferay.portal.kernel.servlet.NonSerializableObjectRequestWrapper;
 import com.liferay.portal.kernel.servlet.PersistentHttpServletRequestWrapper;
 import com.liferay.portal.kernel.servlet.PortalMessages;
 import com.liferay.portal.kernel.servlet.PortalSessionThreadLocal;
+import com.liferay.portal.kernel.servlet.PortalWebResources;
 import com.liferay.portal.kernel.servlet.PortalWebResourcesUtil;
 import com.liferay.portal.kernel.servlet.PortletServlet;
 import com.liferay.portal.kernel.servlet.ServletContextUtil;
@@ -2789,14 +2790,22 @@ public class PortalImpl implements Portal {
 	public String getLayoutFriendlyURL(Layout layout, ThemeDisplay themeDisplay)
 		throws PortalException {
 
-		LayoutType layoutType = layout.getLayoutType();
+		LayoutTypeController layoutTypeController =
+			LayoutTypeControllerTracker.getLayoutTypeController(
+				layout.getType());
 
-		if (!layoutType.isURLFriendliable()) {
+		if (!layoutTypeController.isURLFriendliable()) {
 			return null;
 		}
 
+		LayoutSet layoutSet = themeDisplay.getLayoutSet();
+
+		if ((layoutSet == null) || !layout.equals(themeDisplay.getLayout())) {
+			layoutSet = layout.getLayoutSet();
+		}
+
 		String groupFriendlyURL = getGroupFriendlyURL(
-			layout.getLayoutSet(), themeDisplay, false);
+			layoutSet, themeDisplay, false);
 
 		return groupFriendlyURL.concat(
 			layout.getFriendlyURL(themeDisplay.getLocale()));
@@ -5282,12 +5291,17 @@ public class PortalImpl implements Portal {
 					timestamp = ServletContextUtil.getLastModified(
 						servletContext, path, true);
 				}
-				else if (PortalWebResourcesUtil.hasContextPath(path)) {
-					timestamp = PortalWebResourcesUtil.getLastModified(
-						PortalWebResourcesUtil.getPathResourceType(path));
-				}
 				else {
-					timestamp = theme.getTimestamp();
+					PortalWebResources portalWebResources =
+						PortalWebResourcesUtil.getPortalWebResourcesByPath(
+							path);
+
+					if (portalWebResources == null) {
+						timestamp = theme.getTimestamp();
+					}
+					else {
+						timestamp = portalWebResources.getLastModified();
+					}
 				}
 			}
 
