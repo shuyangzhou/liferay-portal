@@ -15,7 +15,7 @@
 package com.liferay.portal.kernel.search.query;
 
 import com.liferay.portal.kernel.search.Query;
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceRetriever;
 
 /**
  * @author Michael C. Han
@@ -25,11 +25,15 @@ public class FieldQueryFactoryUtil {
 	public static Query createQuery(
 		String field, String value, boolean like, boolean splitKeywords) {
 
-		return _fieldQueryFactory.createQuery(
+		return _getFieldQueryFactory().createQuery(
 			field, value, like, splitKeywords);
 	}
 
-	private static final FieldQueryFactory _fieldQueryFactory =
-		ProxyFactory.newServiceTrackedInstance(FieldQueryFactory.class);
+	private static FieldQueryFactory _getFieldQueryFactory() {
+		return _serviceRetriever.getService();
+	}
+
+	private static final ServiceRetriever<FieldQueryFactory> _serviceRetriever =
+		new ServiceRetriever<>(FieldQueryFactory.class);
 
 }

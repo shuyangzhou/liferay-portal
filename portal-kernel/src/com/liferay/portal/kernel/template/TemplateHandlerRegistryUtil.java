@@ -16,7 +16,7 @@ package com.liferay.portal.kernel.template;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceRetriever;
 
 import java.util.List;
 
@@ -27,22 +27,27 @@ import java.util.List;
 public class TemplateHandlerRegistryUtil {
 
 	public static long[] getClassNameIds() {
-		return _templateHandlerRegistry.getClassNameIds();
+		return _getTemplateHandlerRegistry().getClassNameIds();
 	}
 
 	public static TemplateHandler getTemplateHandler(long classNameId) {
-		return _templateHandlerRegistry.getTemplateHandler(classNameId);
+		return _getTemplateHandlerRegistry().getTemplateHandler(classNameId);
 	}
 
 	public static TemplateHandler getTemplateHandler(String className) {
-		return _templateHandlerRegistry.getTemplateHandler(className);
+		return _getTemplateHandlerRegistry().getTemplateHandler(className);
 	}
 
 	public static List<TemplateHandler> getTemplateHandlers() {
-		return _templateHandlerRegistry.getTemplateHandlers();
+		return _getTemplateHandlerRegistry().getTemplateHandlers();
 	}
 
-	private static final TemplateHandlerRegistry _templateHandlerRegistry =
-		ProxyFactory.newServiceTrackedInstance(TemplateHandlerRegistry.class);
+	private static TemplateHandlerRegistry _getTemplateHandlerRegistry() {
+		return _serviceRetriever.getService();
+	}
+
+	private static final ServiceRetriever<TemplateHandlerRegistry>
+		_serviceRetriever = new ServiceRetriever<>(
+			TemplateHandlerRegistry.class);
 
 }

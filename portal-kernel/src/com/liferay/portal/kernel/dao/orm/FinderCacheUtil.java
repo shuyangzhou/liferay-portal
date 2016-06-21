@@ -17,7 +17,7 @@ package com.liferay.portal.kernel.dao.orm;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceRetriever;
 
 /**
  * @author Brian Wing Shun Chan
@@ -79,10 +79,10 @@ public class FinderCacheUtil {
 	private static FinderCache _getFinderCache() {
 		PortalRuntimePermission.checkGetBeanProperty(FinderCacheUtil.class);
 
-		return _finderCache;
+		return _serviceRetriever.getService();
 	}
 
-	private static final FinderCache _finderCache =
-		ProxyFactory.newServiceTrackedInstance(FinderCache.class);
+	private static final ServiceRetriever<FinderCache> _serviceRetriever =
+		new ServiceRetriever<>(FinderCache.class);
 
 }

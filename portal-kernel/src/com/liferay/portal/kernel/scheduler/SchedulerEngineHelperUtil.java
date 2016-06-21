@@ -19,7 +19,7 @@ import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.scheduler.messaging.SchedulerResponse;
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
 import com.liferay.portal.kernel.util.ObjectValuePair;
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceRetriever;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -327,10 +327,10 @@ public class SchedulerEngineHelperUtil {
 		PortalRuntimePermission.checkGetBeanProperty(
 			SchedulerEngineHelperUtil.class);
 
-		return _instance;
+		return _serviceRetriever.getService();
 	}
 
-	private static final SchedulerEngineHelper _instance =
-		ProxyFactory.newServiceTrackedInstance(SchedulerEngineHelper.class);
+	private static final ServiceRetriever<SchedulerEngineHelper>
+		_serviceRetriever = new ServiceRetriever<>(SchedulerEngineHelper.class);
 
 }

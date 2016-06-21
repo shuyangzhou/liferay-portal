@@ -19,7 +19,7 @@ import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermissio
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.Function;
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceRetriever;
 
 /**
  * @author Adolfo Pérez
@@ -163,10 +163,10 @@ public class CommentManagerUtil {
 	private static CommentManager _getCommentManager() {
 		PortalRuntimePermission.checkGetBeanProperty(CommentManagerUtil.class);
 
-		return _commentManager;
+		return _serviceRetriever.getService();
 	}
 
-	private static final CommentManager _commentManager =
-		ProxyFactory.newServiceTrackedInstance(CommentManager.class);
+	private static final ServiceRetriever<CommentManager> _serviceRetriever =
+		new ServiceRetriever<>(CommentManager.class);
 
 }
