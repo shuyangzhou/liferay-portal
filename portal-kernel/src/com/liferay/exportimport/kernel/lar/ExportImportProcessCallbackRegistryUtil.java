@@ -14,7 +14,7 @@
 
 package com.liferay.exportimport.kernel.lar;
 
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceRetriever;
 
 import java.util.concurrent.Callable;
 
@@ -24,12 +24,17 @@ import java.util.concurrent.Callable;
 public class ExportImportProcessCallbackRegistryUtil {
 
 	public static void registerCallback(Callable<?> callable) {
-		_exportImportProcessCommitCallbackRegistry.registerCallback(callable);
+		_getExportImportProcessCallbackRegistry().registerCallback(callable);
 	}
 
-	private static final ExportImportProcessCallbackRegistry
-		_exportImportProcessCommitCallbackRegistry =
-			ProxyFactory.newServiceTrackedInstance(
-				ExportImportProcessCallbackRegistry.class);
+	private static ExportImportProcessCallbackRegistry
+		_getExportImportProcessCallbackRegistry() {
+
+		return _serviceRetriever.getService();
+	}
+
+	private static final ServiceRetriever<ExportImportProcessCallbackRegistry>
+		_serviceRetriever = new ServiceRetriever<>(
+			ExportImportProcessCallbackRegistry.class);
 
 }

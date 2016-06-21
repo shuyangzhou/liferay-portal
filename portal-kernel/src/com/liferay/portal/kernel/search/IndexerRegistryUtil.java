@@ -14,7 +14,7 @@
 
 package com.liferay.portal.kernel.search;
 
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceRetriever;
 
 import java.util.Set;
 
@@ -72,10 +72,10 @@ public class IndexerRegistryUtil {
 	}
 
 	private static IndexerRegistry _getIndexerRegistry() {
-		return _indexerRegistry;
+		return _serviceRetriever.getService();
 	}
 
-	private static final IndexerRegistry _indexerRegistry =
-		ProxyFactory.newServiceTrackedInstance(IndexerRegistry.class);
+	private static final ServiceRetriever<IndexerRegistry> _serviceRetriever =
+		new ServiceRetriever<>(IndexerRegistry.class);
 
 }

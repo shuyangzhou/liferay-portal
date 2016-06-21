@@ -15,7 +15,7 @@
 package com.liferay.portal.kernel.backgroundtask;
 
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceRetriever;
 
 /**
  * @author Michael C. Han
@@ -59,11 +59,11 @@ public class BackgroundTaskStatusRegistryUtil {
 		PortalRuntimePermission.checkGetBeanProperty(
 			BackgroundTaskStatusRegistryUtil.class);
 
-		return _backgroundTaskStatusRegistry;
+		return _serviceRetriever.getService();
 	}
 
-	private static final BackgroundTaskStatusRegistry
-		_backgroundTaskStatusRegistry = ProxyFactory.newServiceTrackedInstance(
+	private static final ServiceRetriever<BackgroundTaskStatusRegistry>
+		_serviceRetriever = new ServiceRetriever<>(
 			BackgroundTaskStatusRegistry.class);
 
 }

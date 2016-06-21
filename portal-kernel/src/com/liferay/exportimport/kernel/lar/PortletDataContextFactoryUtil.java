@@ -17,7 +17,7 @@ package com.liferay.exportimport.kernel.lar;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceRetriever;
 import com.liferay.portal.kernel.zip.ZipReader;
 import com.liferay.portal.kernel.zip.ZipWriter;
 
@@ -33,7 +33,7 @@ public class PortletDataContextFactoryUtil {
 	public static PortletDataContext clonePortletDataContext(
 		PortletDataContext portletDataContext) {
 
-		return _portletDataContextFactory.clonePortletDataContext(
+		return _getPortletDataContextFactory().clonePortletDataContext(
 			portletDataContext);
 	}
 
@@ -42,7 +42,7 @@ public class PortletDataContextFactoryUtil {
 			Date startDate, Date endDate, ZipWriter zipWriter)
 		throws PortletDataException {
 
-		return _portletDataContextFactory.createExportPortletDataContext(
+		return _getPortletDataContextFactory().createExportPortletDataContext(
 			companyId, groupId, parameterMap, startDate, endDate, zipWriter);
 	}
 
@@ -51,7 +51,7 @@ public class PortletDataContextFactoryUtil {
 			UserIdStrategy userIdStrategy, ZipReader zipReader)
 		throws PortletDataException {
 
-		return _portletDataContextFactory.createImportPortletDataContext(
+		return _getPortletDataContextFactory().createImportPortletDataContext(
 			companyId, groupId, parameterMap, userIdStrategy, zipReader);
 	}
 
@@ -59,7 +59,7 @@ public class PortletDataContextFactoryUtil {
 			long companyId, long groupId, Date startDate, Date endDate)
 		throws PortletDataException {
 
-		return _portletDataContextFactory.createPreparePortletDataContext(
+		return _getPortletDataContextFactory().createPreparePortletDataContext(
 			companyId, groupId, startDate, endDate);
 	}
 
@@ -67,11 +67,16 @@ public class PortletDataContextFactoryUtil {
 			ThemeDisplay themeDisplay, Date startDate, Date endDate)
 		throws PortletDataException {
 
-		return _portletDataContextFactory.createPreparePortletDataContext(
+		return _getPortletDataContextFactory().createPreparePortletDataContext(
 			themeDisplay, startDate, endDate);
 	}
 
-	private static final PortletDataContextFactory _portletDataContextFactory =
-		ProxyFactory.newServiceTrackedInstance(PortletDataContextFactory.class);
+	private static PortletDataContextFactory _getPortletDataContextFactory() {
+		return _serviceRetriever.getService();
+	}
+
+	private static final ServiceRetriever<PortletDataContextFactory>
+		_serviceRetriever = new ServiceRetriever<>(
+			PortletDataContextFactory.class);
 
 }

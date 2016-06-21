@@ -14,7 +14,7 @@
 
 package com.liferay.portal.kernel.backgroundtask;
 
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceRetriever;
 
 /**
  * @author Michael C. Han
@@ -24,7 +24,7 @@ public class BackgroundTaskExecutorRegistryUtil {
 	public static BackgroundTaskExecutor getBackgroundTaskExecutor(
 		String backgroundTaskExecutorClassName) {
 
-		return _backgroundTaskExecutorRegistry.getBackgroundTaskExecutor(
+		return _getBackgroundTaskExecutorRegistrys().getBackgroundTaskExecutor(
 			backgroundTaskExecutorClassName);
 	}
 
@@ -32,20 +32,25 @@ public class BackgroundTaskExecutorRegistryUtil {
 		String backgroundTaskExecutorClassName,
 		BackgroundTaskExecutor backgroundTaskExecutor) {
 
-		_backgroundTaskExecutorRegistry.registerBackgroundTaskExecutor(
+		_getBackgroundTaskExecutorRegistrys().registerBackgroundTaskExecutor(
 			backgroundTaskExecutorClassName, backgroundTaskExecutor);
 	}
 
 	public static void unregisterBackgroundTaskExecutor(
 		String backgroundTaskExecutorClassName) {
 
-		_backgroundTaskExecutorRegistry.unregisterBackgroundTaskExecutor(
+		_getBackgroundTaskExecutorRegistrys().unregisterBackgroundTaskExecutor(
 			backgroundTaskExecutorClassName);
 	}
 
-	private static final BackgroundTaskExecutorRegistry
-		_backgroundTaskExecutorRegistry =
-			ProxyFactory.newServiceTrackedInstance(
-				BackgroundTaskExecutorRegistry.class);
+	private static BackgroundTaskExecutorRegistry
+		_getBackgroundTaskExecutorRegistrys() {
+
+		return _serviceRetriever.getService();
+	}
+
+	private static final ServiceRetriever<BackgroundTaskExecutorRegistry>
+		_serviceRetriever = new ServiceRetriever<>(
+			BackgroundTaskExecutorRegistry.class);
 
 }

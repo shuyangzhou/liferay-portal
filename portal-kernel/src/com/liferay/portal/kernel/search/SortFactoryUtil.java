@@ -15,7 +15,7 @@
 package com.liferay.portal.kernel.search;
 
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceRetriever;
 
 import java.util.List;
 
@@ -72,10 +72,10 @@ public class SortFactoryUtil {
 	private static SortFactory _getSortFactory() {
 		PortalRuntimePermission.checkGetBeanProperty(SortFactoryUtil.class);
 
-		return _sortFactory;
+		return _serviceRetriever.getService();
 	}
 
-	private static final SortFactory _sortFactory =
-		ProxyFactory.newServiceTrackedInstance(SortFactory.class);
+	private static final ServiceRetriever<SortFactory> _serviceRetriever =
+		new ServiceRetriever<>(SortFactory.class);
 
 }

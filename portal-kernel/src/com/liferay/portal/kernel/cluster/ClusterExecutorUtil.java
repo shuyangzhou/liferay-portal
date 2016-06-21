@@ -17,7 +17,7 @@ package com.liferay.portal.kernel.cluster;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceRetriever;
 
 import java.util.List;
 
@@ -72,13 +72,13 @@ public class ClusterExecutorUtil {
 	private static ClusterExecutor _getClusterExecutor() {
 		PortalRuntimePermission.checkGetBeanProperty(ClusterExecutorUtil.class);
 
-		return _clusterExecutor;
+		return _serviceRetriever.getService();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ClusterExecutorUtil.class);
 
-	private static final ClusterExecutor _clusterExecutor =
-		ProxyFactory.newServiceTrackedInstance(ClusterExecutor.class);
+	private static final ServiceRetriever<ClusterExecutor> _serviceRetriever =
+		new ServiceRetriever<>(ClusterExecutor.class);
 
 }

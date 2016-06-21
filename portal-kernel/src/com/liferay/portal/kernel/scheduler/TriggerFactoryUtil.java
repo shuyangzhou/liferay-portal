@@ -14,7 +14,7 @@
 
 package com.liferay.portal.kernel.scheduler;
 
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceRetriever;
 
 import java.util.Date;
 
@@ -27,7 +27,7 @@ public class TriggerFactoryUtil {
 		String jobName, String groupName, Date startDate, Date endDate,
 		int interval, TimeUnit timeUnit) {
 
-		return _triggerFactory.createTrigger(
+		return _getTriggerFactory().createTrigger(
 			jobName, groupName, startDate, endDate, interval, timeUnit);
 	}
 
@@ -35,7 +35,7 @@ public class TriggerFactoryUtil {
 		String jobName, String groupName, Date startDate, Date endDate,
 		String cronExpression) {
 
-		return _triggerFactory.createTrigger(
+		return _getTriggerFactory().createTrigger(
 			jobName, groupName, startDate, endDate, cronExpression);
 	}
 
@@ -43,7 +43,7 @@ public class TriggerFactoryUtil {
 		String jobName, String groupName, Date startDate, int interval,
 		TimeUnit timeUnit) {
 
-		return _triggerFactory.createTrigger(
+		return _getTriggerFactory().createTrigger(
 			jobName, groupName, startDate, null, interval, timeUnit);
 	}
 
@@ -51,25 +51,29 @@ public class TriggerFactoryUtil {
 		String jobName, String groupName, Date startDate,
 		String cronExpression) {
 
-		return _triggerFactory.createTrigger(
+		return _getTriggerFactory().createTrigger(
 			jobName, groupName, startDate, null, cronExpression);
 	}
 
 	public static Trigger createTrigger(
 		String jobName, String groupName, int interval, TimeUnit timeUnit) {
 
-		return _triggerFactory.createTrigger(
+		return _getTriggerFactory().createTrigger(
 			jobName, groupName, null, null, interval, timeUnit);
 	}
 
 	public static Trigger createTrigger(
 		String jobName, String groupName, String cronExpression) {
 
-		return _triggerFactory.createTrigger(
+		return _getTriggerFactory().createTrigger(
 			jobName, groupName, null, null, cronExpression);
 	}
 
-	private static final TriggerFactory _triggerFactory =
-		ProxyFactory.newServiceTrackedInstance(TriggerFactory.class);
+	private static TriggerFactory _getTriggerFactory() {
+		return _serviceRetriever.getService();
+	}
+
+	private static final ServiceRetriever<TriggerFactory> _serviceRetriever =
+		new ServiceRetriever<>(TriggerFactory.class);
 
 }

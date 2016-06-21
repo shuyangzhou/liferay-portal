@@ -16,7 +16,7 @@ package com.liferay.exportimport.kernel.staging.permission;
 
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceRetriever;
 
 /**
  * @author Jorge Ferrer
@@ -27,7 +27,7 @@ public class StagingPermissionUtil {
 		PermissionChecker permissionChecker, Group group, String className,
 		long classPK, String portletId, String actionId) {
 
-		return _stagingPermission.hasPermission(
+		return _getStagingPermission().hasPermission(
 			permissionChecker, group, className, classPK, portletId, actionId);
 	}
 
@@ -35,12 +35,16 @@ public class StagingPermissionUtil {
 		PermissionChecker permissionChecker, long groupId, String className,
 		long classPK, String portletId, String actionId) {
 
-		return _stagingPermission.hasPermission(
+		return _getStagingPermission().hasPermission(
 			permissionChecker, groupId, className, classPK, portletId,
 			actionId);
 	}
 
-	private static final StagingPermission _stagingPermission =
-		ProxyFactory.newServiceTrackedInstance(StagingPermission.class);
+	private static StagingPermission _getStagingPermission() {
+		return _serviceRetriever.getService();
+	}
+
+	private static final ServiceRetriever<StagingPermission> _serviceRetriever =
+		new ServiceRetriever<>(StagingPermission.class);
 
 }

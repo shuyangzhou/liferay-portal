@@ -16,7 +16,7 @@ package com.liferay.portal.kernel.portletdisplaytemplate;
 
 import com.liferay.dynamic.data.mapping.kernel.DDMTemplate;
 import com.liferay.portal.kernel.template.TemplateVariableGroup;
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceRetriever;
 
 import java.util.List;
 import java.util.Map;
@@ -33,18 +33,19 @@ public class PortletDisplayTemplateManagerUtil {
 		long groupId, long classNameId, String displayStyle,
 		boolean useDefault) {
 
-		return _portletDisplayTemplateManager.getDDMTemplate(
+		return _getPortletDisplayTemplateManager().getDDMTemplate(
 			groupId, classNameId, displayStyle, useDefault);
 	}
 
 	public static String getDisplayStyle(String ddmTemplateKey) {
-		return _portletDisplayTemplateManager.getDisplayStyle(ddmTemplateKey);
+		return _getPortletDisplayTemplateManager().getDisplayStyle(
+			ddmTemplateKey);
 	}
 
 	public static Map<String, TemplateVariableGroup> getTemplateVariableGroups(
 		String language) {
 
-		return _portletDisplayTemplateManager.getTemplateVariableGroups(
+		return _getPortletDisplayTemplateManager().getTemplateVariableGroups(
 			language);
 	}
 
@@ -54,12 +55,18 @@ public class PortletDisplayTemplateManagerUtil {
 			Map<String, Object> contextObjects)
 		throws Exception {
 
-		return _portletDisplayTemplateManager.renderDDMTemplate(
+		return _getPortletDisplayTemplateManager().renderDDMTemplate(
 			request, response, templateId, entries, contextObjects);
 	}
 
-	private static final PortletDisplayTemplateManager
-		_portletDisplayTemplateManager = ProxyFactory.newServiceTrackedInstance(
+	private static PortletDisplayTemplateManager
+		_getPortletDisplayTemplateManager() {
+
+		return _serviceRetriever.getService();
+	}
+
+	private static final ServiceRetriever<PortletDisplayTemplateManager>
+		_serviceRetriever = new ServiceRetriever<>(
 			PortletDisplayTemplateManager.class);
 
 }

@@ -20,7 +20,7 @@ import com.liferay.portal.kernel.messaging.sender.SingleDestinationMessageSender
 import com.liferay.portal.kernel.messaging.sender.SynchronousMessageSender;
 import com.liferay.portal.kernel.security.pacl.permission.PortalMessageBusPermission;
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceRetriever;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
 import com.liferay.registry.ServiceReference;
@@ -198,7 +198,7 @@ public class MessageBusUtil {
 				"Unable to initialize MessageBusUtil", ie);
 		}
 
-		return _messageBus;
+		return _serviceRetriever.getService();
 	}
 
 	private boolean _hasMessageListener(String destinationName) {
@@ -313,11 +313,11 @@ public class MessageBusUtil {
 
 	private static final MessageBusUtil _instance = new MessageBusUtil();
 
+	private static final ServiceRetriever<MessageBus> _serviceRetriever =
+		new ServiceRetriever<>(MessageBus.class);
 	private static SynchronousMessageSender.Mode _synchronousMessageSenderMode;
 
 	private volatile boolean _initialized;
-	private final MessageBus _messageBus =
-		ProxyFactory.newServiceTrackedInstance(MessageBus.class);
 	private final ServiceTracker<MessageBus, MessageBus> _serviceTracker;
 
 	private class MessageBusServiceTrackerCustomizer

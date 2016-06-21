@@ -18,7 +18,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceRetriever;
 
 /**
  * @author Shuyang Zhou
@@ -67,7 +67,7 @@ public class ClusterLinkUtil {
 	private static ClusterLink _getClusterLink() {
 		PortalRuntimePermission.checkGetBeanProperty(ClusterLinkUtil.class);
 
-		return _clusterLink;
+		return _serviceRetriever.getService();
 	}
 
 	private static final String _ADDRESS = "CLUSTER_ADDRESS";
@@ -75,7 +75,7 @@ public class ClusterLinkUtil {
 	private static final Log _log = LogFactoryUtil.getLog(
 		ClusterLinkUtil.class);
 
-	private static final ClusterLink _clusterLink =
-		ProxyFactory.newServiceTrackedInstance(ClusterLink.class);
+	private static final ServiceRetriever<ClusterLink> _serviceRetriever =
+		new ServiceRetriever<>(ClusterLink.class);
 
 }

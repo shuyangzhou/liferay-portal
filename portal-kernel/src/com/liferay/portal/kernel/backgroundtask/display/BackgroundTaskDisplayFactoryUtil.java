@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskStatusRegistryUtil;
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceRetriever;
 
 /**
  * @author Andrew Betts
@@ -57,11 +57,11 @@ public class BackgroundTaskDisplayFactoryUtil {
 		PortalRuntimePermission.checkGetBeanProperty(
 			BackgroundTaskStatusRegistryUtil.class);
 
-		return _backgroundTaskDisplayFactory;
+		return _serviceRetriever.getService();
 	}
 
-	private static final BackgroundTaskDisplayFactory
-		_backgroundTaskDisplayFactory = ProxyFactory.newServiceTrackedInstance(
+	private static final ServiceRetriever<BackgroundTaskDisplayFactory>
+		_serviceRetriever = new ServiceRetriever<>(
 			BackgroundTaskDisplayFactory.class);
 
 }
