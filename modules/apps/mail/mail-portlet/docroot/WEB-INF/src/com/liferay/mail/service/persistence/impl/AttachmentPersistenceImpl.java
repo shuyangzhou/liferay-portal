@@ -23,9 +23,7 @@ import com.liferay.mail.model.impl.AttachmentModelImpl;
 import com.liferay.mail.service.persistence.AttachmentPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
@@ -191,7 +189,7 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 		List<Attachment> list = null;
 
 		if (retrieveFromCache) {
-			list = (List<Attachment>)finderCache.getResult(finderPath,
+			list = (List<Attachment>)FinderCacheUtil.getResult(finderPath,
 					finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
@@ -257,10 +255,10 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				FinderCacheUtil.putResult(finderPath, finderArgs, list);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
 
 				throw processException(e);
 			}
@@ -551,7 +549,8 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 
 		Object[] finderArgs = new Object[] { messageId };
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = (Long)FinderCacheUtil.getResult(finderPath, finderArgs,
+				this);
 
 		if (count == null) {
 			StringBundler query = new StringBundler(2);
@@ -575,10 +574,10 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 
 				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				FinderCacheUtil.putResult(finderPath, finderArgs, count);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
 
 				throw processException(e);
 			}
@@ -603,7 +602,7 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 	 */
 	@Override
 	public void cacheResult(Attachment attachment) {
-		entityCache.putResult(AttachmentModelImpl.ENTITY_CACHE_ENABLED,
+		EntityCacheUtil.putResult(AttachmentModelImpl.ENTITY_CACHE_ENABLED,
 			AttachmentImpl.class, attachment.getPrimaryKey(), attachment);
 
 		attachment.resetOriginalValues();
@@ -617,7 +616,7 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 	@Override
 	public void cacheResult(List<Attachment> attachments) {
 		for (Attachment attachment : attachments) {
-			if (entityCache.getResult(
+			if (EntityCacheUtil.getResult(
 						AttachmentModelImpl.ENTITY_CACHE_ENABLED,
 						AttachmentImpl.class, attachment.getPrimaryKey()) == null) {
 				cacheResult(attachment);
@@ -632,41 +631,41 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 	 * Clears the cache for all attachments.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache() {
-		entityCache.clearCache(AttachmentImpl.class);
+		EntityCacheUtil.clearCache(AttachmentImpl.class);
 
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
 	 * Clears the cache for the attachment.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(Attachment attachment) {
-		entityCache.removeResult(AttachmentModelImpl.ENTITY_CACHE_ENABLED,
+		EntityCacheUtil.removeResult(AttachmentModelImpl.ENTITY_CACHE_ENABLED,
 			AttachmentImpl.class, attachment.getPrimaryKey());
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	@Override
 	public void clearCache(List<Attachment> attachments) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (Attachment attachment : attachments) {
-			entityCache.removeResult(AttachmentModelImpl.ENTITY_CACHE_ENABLED,
+			EntityCacheUtil.removeResult(AttachmentModelImpl.ENTITY_CACHE_ENABLED,
 				AttachmentImpl.class, attachment.getPrimaryKey());
 		}
 	}
@@ -803,10 +802,10 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
 		if (isNew || !AttachmentModelImpl.COLUMN_BITMASK_ENABLED) {
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
 
 		else {
@@ -816,19 +815,21 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 						attachmentModelImpl.getOriginalMessageId()
 					};
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_MESSAGEID, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_MESSAGEID,
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_MESSAGEID,
+					args);
+				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_MESSAGEID,
 					args);
 
 				args = new Object[] { attachmentModelImpl.getMessageId() };
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_MESSAGEID, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_MESSAGEID,
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_MESSAGEID,
+					args);
+				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_MESSAGEID,
 					args);
 			}
 		}
 
-		entityCache.putResult(AttachmentModelImpl.ENTITY_CACHE_ENABLED,
+		EntityCacheUtil.putResult(AttachmentModelImpl.ENTITY_CACHE_ENABLED,
 			AttachmentImpl.class, attachment.getPrimaryKey(), attachment, false);
 
 		attachment.resetOriginalValues();
@@ -904,7 +905,7 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 	 */
 	@Override
 	public Attachment fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(AttachmentModelImpl.ENTITY_CACHE_ENABLED,
+		Serializable serializable = EntityCacheUtil.getResult(AttachmentModelImpl.ENTITY_CACHE_ENABLED,
 				AttachmentImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
@@ -926,12 +927,12 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 					cacheResult(attachment);
 				}
 				else {
-					entityCache.putResult(AttachmentModelImpl.ENTITY_CACHE_ENABLED,
+					EntityCacheUtil.putResult(AttachmentModelImpl.ENTITY_CACHE_ENABLED,
 						AttachmentImpl.class, primaryKey, nullModel);
 				}
 			}
 			catch (Exception e) {
-				entityCache.removeResult(AttachmentModelImpl.ENTITY_CACHE_ENABLED,
+				EntityCacheUtil.removeResult(AttachmentModelImpl.ENTITY_CACHE_ENABLED,
 					AttachmentImpl.class, primaryKey);
 
 				throw processException(e);
@@ -981,7 +982,7 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(AttachmentModelImpl.ENTITY_CACHE_ENABLED,
+			Serializable serializable = EntityCacheUtil.getResult(AttachmentModelImpl.ENTITY_CACHE_ENABLED,
 					AttachmentImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
@@ -1035,7 +1036,7 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(AttachmentModelImpl.ENTITY_CACHE_ENABLED,
+				EntityCacheUtil.putResult(AttachmentModelImpl.ENTITY_CACHE_ENABLED,
 					AttachmentImpl.class, primaryKey, nullModel);
 			}
 		}
@@ -1128,7 +1129,7 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 		List<Attachment> list = null;
 
 		if (retrieveFromCache) {
-			list = (List<Attachment>)finderCache.getResult(finderPath,
+			list = (List<Attachment>)FinderCacheUtil.getResult(finderPath,
 					finderArgs, this);
 		}
 
@@ -1177,10 +1178,10 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				FinderCacheUtil.putResult(finderPath, finderArgs, list);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
 
 				throw processException(e);
 			}
@@ -1210,7 +1211,7 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
+		Long count = (Long)FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
 				FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
@@ -1223,11 +1224,11 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 
 				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
-					count);
+				FinderCacheUtil.putResult(FINDER_PATH_COUNT_ALL,
+					FINDER_ARGS_EMPTY, count);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_ALL,
 					FINDER_ARGS_EMPTY);
 
 				throw processException(e);
@@ -1257,16 +1258,14 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 	}
 
 	public void destroy() {
-		entityCache.removeCache(AttachmentImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		EntityCacheUtil.removeCache(AttachmentImpl.class.getName());
+		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_ATTACHMENT = "SELECT attachment FROM Attachment attachment";
 	private static final String _SQL_SELECT_ATTACHMENT_WHERE_PKS_IN = "SELECT attachment FROM Attachment attachment WHERE attachmentId IN (";
 	private static final String _SQL_SELECT_ATTACHMENT_WHERE = "SELECT attachment FROM Attachment attachment WHERE ";

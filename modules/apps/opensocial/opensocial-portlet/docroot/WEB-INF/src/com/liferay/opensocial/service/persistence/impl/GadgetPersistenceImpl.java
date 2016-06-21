@@ -23,9 +23,7 @@ import com.liferay.opensocial.model.impl.GadgetModelImpl;
 import com.liferay.opensocial.service.persistence.GadgetPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
@@ -196,8 +194,8 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 		List<Gadget> list = null;
 
 		if (retrieveFromCache) {
-			list = (List<Gadget>)finderCache.getResult(finderPath, finderArgs,
-					this);
+			list = (List<Gadget>)FinderCacheUtil.getResult(finderPath,
+					finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (Gadget gadget : list) {
@@ -276,10 +274,10 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				FinderCacheUtil.putResult(finderPath, finderArgs, list);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
 
 				throw processException(e);
 			}
@@ -913,7 +911,8 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 
 		Object[] finderArgs = new Object[] { uuid };
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = (Long)FinderCacheUtil.getResult(finderPath, finderArgs,
+				this);
 
 		if (count == null) {
 			StringBundler query = new StringBundler(2);
@@ -951,10 +950,10 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 
 				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				FinderCacheUtil.putResult(finderPath, finderArgs, count);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
 
 				throw processException(e);
 			}
@@ -1148,8 +1147,8 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 		List<Gadget> list = null;
 
 		if (retrieveFromCache) {
-			list = (List<Gadget>)finderCache.getResult(finderPath, finderArgs,
-					this);
+			list = (List<Gadget>)FinderCacheUtil.getResult(finderPath,
+					finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (Gadget gadget : list) {
@@ -1233,10 +1232,10 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				FinderCacheUtil.putResult(finderPath, finderArgs, list);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
 
 				throw processException(e);
 			}
@@ -1904,7 +1903,8 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 
 		Object[] finderArgs = new Object[] { uuid, companyId };
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = (Long)FinderCacheUtil.getResult(finderPath, finderArgs,
+				this);
 
 		if (count == null) {
 			StringBundler query = new StringBundler(3);
@@ -1946,10 +1946,10 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 
 				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				FinderCacheUtil.putResult(finderPath, finderArgs, count);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
 
 				throw processException(e);
 			}
@@ -2139,8 +2139,8 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 		List<Gadget> list = null;
 
 		if (retrieveFromCache) {
-			list = (List<Gadget>)finderCache.getResult(finderPath, finderArgs,
-					this);
+			list = (List<Gadget>)FinderCacheUtil.getResult(finderPath,
+					finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (Gadget gadget : list) {
@@ -2205,10 +2205,10 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				FinderCacheUtil.putResult(finderPath, finderArgs, list);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
 
 				throw processException(e);
 			}
@@ -2803,7 +2803,8 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 
 		Object[] finderArgs = new Object[] { companyId };
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = (Long)FinderCacheUtil.getResult(finderPath, finderArgs,
+				this);
 
 		if (count == null) {
 			StringBundler query = new StringBundler(2);
@@ -2827,10 +2828,10 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 
 				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				FinderCacheUtil.putResult(finderPath, finderArgs, count);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
 
 				throw processException(e);
 			}
@@ -2965,7 +2966,7 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 		Object result = null;
 
 		if (retrieveFromCache) {
-			result = finderCache.getResult(FINDER_PATH_FETCH_BY_C_U,
+			result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_C_U,
 					finderArgs, this);
 		}
 
@@ -3019,8 +3020,8 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 				List<Gadget> list = q.list();
 
 				if (list.isEmpty()) {
-					finderCache.putResult(FINDER_PATH_FETCH_BY_C_U, finderArgs,
-						list);
+					FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_C_U,
+						finderArgs, list);
 				}
 				else {
 					Gadget gadget = list.get(0);
@@ -3032,13 +3033,14 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 					if ((gadget.getCompanyId() != companyId) ||
 							(gadget.getUrl() == null) ||
 							!gadget.getUrl().equals(url)) {
-						finderCache.putResult(FINDER_PATH_FETCH_BY_C_U,
+						FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_C_U,
 							finderArgs, gadget);
 					}
 				}
 			}
 			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_FETCH_BY_C_U, finderArgs);
+				FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_C_U,
+					finderArgs);
 
 				throw processException(e);
 			}
@@ -3083,7 +3085,8 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 
 		Object[] finderArgs = new Object[] { companyId, url };
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = (Long)FinderCacheUtil.getResult(finderPath, finderArgs,
+				this);
 
 		if (count == null) {
 			StringBundler query = new StringBundler(3);
@@ -3125,10 +3128,10 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 
 				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				FinderCacheUtil.putResult(finderPath, finderArgs, count);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
 
 				throw processException(e);
 			}
@@ -3156,10 +3159,10 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	 */
 	@Override
 	public void cacheResult(Gadget gadget) {
-		entityCache.putResult(GadgetModelImpl.ENTITY_CACHE_ENABLED,
+		EntityCacheUtil.putResult(GadgetModelImpl.ENTITY_CACHE_ENABLED,
 			GadgetImpl.class, gadget.getPrimaryKey(), gadget);
 
-		finderCache.putResult(FINDER_PATH_FETCH_BY_C_U,
+		FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_C_U,
 			new Object[] { gadget.getCompanyId(), gadget.getUrl() }, gadget);
 
 		gadget.resetOriginalValues();
@@ -3173,8 +3176,9 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	@Override
 	public void cacheResult(List<Gadget> gadgets) {
 		for (Gadget gadget : gadgets) {
-			if (entityCache.getResult(GadgetModelImpl.ENTITY_CACHE_ENABLED,
-						GadgetImpl.class, gadget.getPrimaryKey()) == null) {
+			if (EntityCacheUtil.getResult(
+						GadgetModelImpl.ENTITY_CACHE_ENABLED, GadgetImpl.class,
+						gadget.getPrimaryKey()) == null) {
 				cacheResult(gadget);
 			}
 			else {
@@ -3187,43 +3191,43 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	 * Clears the cache for all gadgets.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache() {
-		entityCache.clearCache(GadgetImpl.class);
+		EntityCacheUtil.clearCache(GadgetImpl.class);
 
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
 	 * Clears the cache for the gadget.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(Gadget gadget) {
-		entityCache.removeResult(GadgetModelImpl.ENTITY_CACHE_ENABLED,
+		EntityCacheUtil.removeResult(GadgetModelImpl.ENTITY_CACHE_ENABLED,
 			GadgetImpl.class, gadget.getPrimaryKey());
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		clearUniqueFindersCache((GadgetModelImpl)gadget);
 	}
 
 	@Override
 	public void clearCache(List<Gadget> gadgets) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (Gadget gadget : gadgets) {
-			entityCache.removeResult(GadgetModelImpl.ENTITY_CACHE_ENABLED,
+			EntityCacheUtil.removeResult(GadgetModelImpl.ENTITY_CACHE_ENABLED,
 				GadgetImpl.class, gadget.getPrimaryKey());
 
 			clearUniqueFindersCache((GadgetModelImpl)gadget);
@@ -3237,9 +3241,9 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 					gadgetModelImpl.getCompanyId(), gadgetModelImpl.getUrl()
 				};
 
-			finderCache.putResult(FINDER_PATH_COUNT_BY_C_U, args,
+			FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_C_U, args,
 				Long.valueOf(1));
-			finderCache.putResult(FINDER_PATH_FETCH_BY_C_U, args,
+			FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_C_U, args,
 				gadgetModelImpl);
 		}
 		else {
@@ -3249,9 +3253,9 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 						gadgetModelImpl.getCompanyId(), gadgetModelImpl.getUrl()
 					};
 
-				finderCache.putResult(FINDER_PATH_COUNT_BY_C_U, args,
+				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_C_U, args,
 					Long.valueOf(1));
-				finderCache.putResult(FINDER_PATH_FETCH_BY_C_U, args,
+				FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_C_U, args,
 					gadgetModelImpl);
 			}
 		}
@@ -3262,8 +3266,8 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 				gadgetModelImpl.getCompanyId(), gadgetModelImpl.getUrl()
 			};
 
-		finderCache.removeResult(FINDER_PATH_COUNT_BY_C_U, args);
-		finderCache.removeResult(FINDER_PATH_FETCH_BY_C_U, args);
+		FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_C_U, args);
+		FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_C_U, args);
 
 		if ((gadgetModelImpl.getColumnBitmask() &
 				FINDER_PATH_FETCH_BY_C_U.getColumnBitmask()) != 0) {
@@ -3272,8 +3276,8 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 					gadgetModelImpl.getOriginalUrl()
 				};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_U, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_C_U, args);
+			FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_C_U, args);
+			FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_C_U, args);
 		}
 	}
 
@@ -3438,10 +3442,10 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
 		if (isNew || !GadgetModelImpl.COLUMN_BITMASK_ENABLED) {
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
 
 		else {
@@ -3449,14 +3453,14 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] { gadgetModelImpl.getOriginalUuid() };
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_UUID, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID,
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_UUID, args);
+				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID,
 					args);
 
 				args = new Object[] { gadgetModelImpl.getUuid() };
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_UUID, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID,
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_UUID, args);
+				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID,
 					args);
 			}
 
@@ -3467,8 +3471,8 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 						gadgetModelImpl.getOriginalCompanyId()
 					};
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_UUID_C, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID_C,
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_UUID_C, args);
+				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID_C,
 					args);
 
 				args = new Object[] {
@@ -3476,8 +3480,8 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 						gadgetModelImpl.getCompanyId()
 					};
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_UUID_C, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID_C,
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_UUID_C, args);
+				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID_C,
 					args);
 			}
 
@@ -3487,19 +3491,21 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 						gadgetModelImpl.getOriginalCompanyId()
 					};
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_COMPANYID, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID,
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_COMPANYID,
+					args);
+				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID,
 					args);
 
 				args = new Object[] { gadgetModelImpl.getCompanyId() };
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_COMPANYID, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID,
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_COMPANYID,
+					args);
+				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID,
 					args);
 			}
 		}
 
-		entityCache.putResult(GadgetModelImpl.ENTITY_CACHE_ENABLED,
+		EntityCacheUtil.putResult(GadgetModelImpl.ENTITY_CACHE_ENABLED,
 			GadgetImpl.class, gadget.getPrimaryKey(), gadget, false);
 
 		clearUniqueFindersCache(gadgetModelImpl);
@@ -3577,7 +3583,7 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	 */
 	@Override
 	public Gadget fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(GadgetModelImpl.ENTITY_CACHE_ENABLED,
+		Serializable serializable = EntityCacheUtil.getResult(GadgetModelImpl.ENTITY_CACHE_ENABLED,
 				GadgetImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
@@ -3598,12 +3604,12 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 					cacheResult(gadget);
 				}
 				else {
-					entityCache.putResult(GadgetModelImpl.ENTITY_CACHE_ENABLED,
+					EntityCacheUtil.putResult(GadgetModelImpl.ENTITY_CACHE_ENABLED,
 						GadgetImpl.class, primaryKey, nullModel);
 				}
 			}
 			catch (Exception e) {
-				entityCache.removeResult(GadgetModelImpl.ENTITY_CACHE_ENABLED,
+				EntityCacheUtil.removeResult(GadgetModelImpl.ENTITY_CACHE_ENABLED,
 					GadgetImpl.class, primaryKey);
 
 				throw processException(e);
@@ -3653,7 +3659,7 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(GadgetModelImpl.ENTITY_CACHE_ENABLED,
+			Serializable serializable = EntityCacheUtil.getResult(GadgetModelImpl.ENTITY_CACHE_ENABLED,
 					GadgetImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
@@ -3707,7 +3713,7 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(GadgetModelImpl.ENTITY_CACHE_ENABLED,
+				EntityCacheUtil.putResult(GadgetModelImpl.ENTITY_CACHE_ENABLED,
 					GadgetImpl.class, primaryKey, nullModel);
 			}
 		}
@@ -3799,8 +3805,8 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 		List<Gadget> list = null;
 
 		if (retrieveFromCache) {
-			list = (List<Gadget>)finderCache.getResult(finderPath, finderArgs,
-					this);
+			list = (List<Gadget>)FinderCacheUtil.getResult(finderPath,
+					finderArgs, this);
 		}
 
 		if (list == null) {
@@ -3848,10 +3854,10 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				FinderCacheUtil.putResult(finderPath, finderArgs, list);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
 
 				throw processException(e);
 			}
@@ -3881,7 +3887,7 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
+		Long count = (Long)FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
 				FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
@@ -3894,11 +3900,11 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 
 				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
-					count);
+				FinderCacheUtil.putResult(FINDER_PATH_COUNT_ALL,
+					FINDER_ARGS_EMPTY, count);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_ALL,
 					FINDER_ARGS_EMPTY);
 
 				throw processException(e);
@@ -3928,16 +3934,14 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	}
 
 	public void destroy() {
-		entityCache.removeCache(GadgetImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		EntityCacheUtil.removeCache(GadgetImpl.class.getName());
+		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_GADGET = "SELECT gadget FROM Gadget gadget";
 	private static final String _SQL_SELECT_GADGET_WHERE_PKS_IN = "SELECT gadget FROM Gadget gadget WHERE gadgetId IN (";
 	private static final String _SQL_SELECT_GADGET_WHERE = "SELECT gadget FROM Gadget gadget WHERE ";

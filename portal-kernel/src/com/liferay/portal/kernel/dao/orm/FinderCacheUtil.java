@@ -17,7 +17,7 @@ package com.liferay.portal.kernel.dao.orm;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceRetriever;
 
 /**
  * @author Brian Wing Shun Chan
@@ -25,28 +25,31 @@ import com.liferay.portal.kernel.util.ProxyFactory;
 public class FinderCacheUtil {
 
 	public static void clearCache() {
-		_finderCache.clearCache();
+		_getFinderCache().clearCache();
 	}
 
 	public static void clearCache(String className) {
-		_finderCache.clearCache(className);
+		_getFinderCache().clearCache(className);
 	}
 
 	public static void clearLocalCache() {
-		_finderCache.clearLocalCache();
+		_getFinderCache().clearLocalCache();
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #_getFinderCache()}
+	 */
+	@Deprecated
 	public static FinderCache getFinderCache() {
-		PortalRuntimePermission.checkGetBeanProperty(FinderCacheUtil.class);
-
-		return _finderCache;
+		return _getFinderCache();
 	}
 
 	public static Object getResult(
 		FinderPath finderPath, Object[] args,
 		BasePersistenceImpl<? extends BaseModel<?>> basePersistenceImpl) {
 
-		return _finderCache.getResult(finderPath, args, basePersistenceImpl);
+		return _getFinderCache().getResult(
+			finderPath, args, basePersistenceImpl);
 	}
 
 	public static void invalidate() {
@@ -56,24 +59,30 @@ public class FinderCacheUtil {
 	public static void putResult(
 		FinderPath finderPath, Object[] args, Object result) {
 
-		_finderCache.putResult(finderPath, args, result);
+		_getFinderCache().putResult(finderPath, args, result);
 	}
 
 	public static void putResult(
 		FinderPath finderPath, Object[] args, Object result, boolean quiet) {
 
-		_finderCache.putResult(finderPath, args, result, quiet);
+		_getFinderCache().putResult(finderPath, args, result, quiet);
 	}
 
 	public static void removeCache(String className) {
-		_finderCache.removeCache(className);
+		_getFinderCache().removeCache(className);
 	}
 
 	public static void removeResult(FinderPath finderPath, Object[] args) {
-		_finderCache.removeResult(finderPath, args);
+		_getFinderCache().removeResult(finderPath, args);
 	}
 
-	private static final FinderCache _finderCache =
-		ProxyFactory.newServiceTrackedInstance(FinderCache.class);
+	private static FinderCache _getFinderCache() {
+		PortalRuntimePermission.checkGetBeanProperty(FinderCacheUtil.class);
+
+		return _serviceRetriever.getService();
+	}
+
+	private static final ServiceRetriever<FinderCache> _serviceRetriever =
+		new ServiceRetriever<>(FinderCache.class);
 
 }

@@ -15,7 +15,7 @@
 package com.liferay.portal.kernel.backgroundtask;
 
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceRetriever;
 
 /**
  * @author Michael C. Han
@@ -25,35 +25,45 @@ public class BackgroundTaskStatusRegistryUtil {
 	public static BackgroundTaskStatus getBackgroundTaskStatus(
 		long backgroundTaskId) {
 
-		return getBackgroundTaskStatusRegistry().getBackgroundTaskStatus(
+		return _getBackgroundTaskStatusRegistry().getBackgroundTaskStatus(
 			backgroundTaskId);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #_getBackgroundTaskStatusRegistry()}
+	 */
+	@Deprecated
 	public static BackgroundTaskStatusRegistry
 		getBackgroundTaskStatusRegistry() {
 
-		PortalRuntimePermission.checkGetBeanProperty(
-			BackgroundTaskStatusRegistryUtil.class);
-
-		return _backgroundTaskStatusRegistry;
+		return _getBackgroundTaskStatusRegistry();
 	}
 
 	public static BackgroundTaskStatus registerBackgroundTaskStatus(
 		long backgroundTaskId) {
 
-		return getBackgroundTaskStatusRegistry().registerBackgroundTaskStatus(
+		return _getBackgroundTaskStatusRegistry().registerBackgroundTaskStatus(
 			backgroundTaskId);
 	}
 
 	public static BackgroundTaskStatus unregisterBackgroundTaskStatus(
 		long backgroundTaskId) {
 
-		return getBackgroundTaskStatusRegistry().unregisterBackgroundTaskStatus(
-			backgroundTaskId);
+		return _getBackgroundTaskStatusRegistry().
+			unregisterBackgroundTaskStatus(backgroundTaskId);
 	}
 
-	private static final BackgroundTaskStatusRegistry
-		_backgroundTaskStatusRegistry = ProxyFactory.newServiceTrackedInstance(
+	private static BackgroundTaskStatusRegistry
+		_getBackgroundTaskStatusRegistry() {
+
+		PortalRuntimePermission.checkGetBeanProperty(
+			BackgroundTaskStatusRegistryUtil.class);
+
+		return _serviceRetriever.getService();
+	}
+
+	private static final ServiceRetriever<BackgroundTaskStatusRegistry>
+		_serviceRetriever = new ServiceRetriever<>(
 			BackgroundTaskStatusRegistry.class);
 
 }

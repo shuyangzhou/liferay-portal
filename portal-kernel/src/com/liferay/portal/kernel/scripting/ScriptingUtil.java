@@ -15,7 +15,7 @@
 package com.liferay.portal.kernel.scripting;
 
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceRetriever;
 
 import java.util.Map;
 import java.util.Set;
@@ -28,13 +28,13 @@ import java.util.Set;
 public class ScriptingUtil {
 
 	public static void clearCache(String language) throws ScriptingException {
-		getScripting().clearCache(language);
+		_getScripting().clearCache(language);
 	}
 
 	public static ScriptingExecutor createScriptingExecutor(
 		String language, boolean executeInSeparateThread) {
 
-		return getScripting().createScriptingExecutor(
+		return _getScripting().createScriptingExecutor(
 			language, executeInSeparateThread);
 	}
 
@@ -43,7 +43,7 @@ public class ScriptingUtil {
 			Set<String> outputNames, String language, String script)
 		throws ScriptingException {
 
-		return getScripting().eval(
+		return _getScripting().eval(
 			allowedClasses, inputObjects, outputNames, language, script);
 	}
 
@@ -58,7 +58,7 @@ public class ScriptingUtil {
 			String... servletContextNames)
 		throws ScriptingException {
 
-		return getScripting().eval(
+		return _getScripting().eval(
 			allowedClasses, inputObjects, outputNames, language, script,
 			servletContextNames);
 	}
@@ -68,7 +68,7 @@ public class ScriptingUtil {
 			String language, String script)
 		throws ScriptingException {
 
-		getScripting().exec(allowedClasses, inputObjects, language, script);
+		_getScripting().exec(allowedClasses, inputObjects, language, script);
 	}
 
 	/**
@@ -81,22 +81,30 @@ public class ScriptingUtil {
 			String language, String script, String... servletContextNames)
 		throws ScriptingException {
 
-		getScripting().exec(
+		_getScripting().exec(
 			allowedClasses, inputObjects, language, script,
 			servletContextNames);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #_getScripting()}
+	 */
+	@Deprecated
 	public static Scripting getScripting() {
-		PortalRuntimePermission.checkGetBeanProperty(ScriptingUtil.class);
-
-		return _scripting;
+		return _getScripting();
 	}
 
 	public static Set<String> getSupportedLanguages() {
-		return getScripting().getSupportedLanguages();
+		return _getScripting().getSupportedLanguages();
 	}
 
-	private static final Scripting _scripting =
-		ProxyFactory.newServiceTrackedInstance(Scripting.class);
+	private static Scripting _getScripting() {
+		PortalRuntimePermission.checkGetBeanProperty(ScriptingUtil.class);
+
+		return _serviceRetriever.getService();
+	}
+
+	private static final ServiceRetriever<Scripting> _serviceRetriever =
+		new ServiceRetriever<>(Scripting.class);
 
 }

@@ -14,7 +14,7 @@
 
 package com.liferay.exportimport.kernel.lifecycle;
 
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceRetriever;
 
 import java.io.Serializable;
 
@@ -26,13 +26,18 @@ public class ExportImportLifecycleEventFactoryUtil {
 	public static ExportImportLifecycleEvent create(
 		int code, int processFlag, Serializable... attributes) {
 
-		return _exportImportLifecycleEventFactory.create(
+		return _getExportImportLifecycleEventFactory().create(
 			code, processFlag, attributes);
 	}
 
-	private static final ExportImportLifecycleEventFactory
-		_exportImportLifecycleEventFactory =
-			ProxyFactory.newServiceTrackedInstance(
-				ExportImportLifecycleEventFactory.class);
+	private static ExportImportLifecycleEventFactory
+		_getExportImportLifecycleEventFactory() {
+
+		return _serviceRetriever.getService();
+	}
+
+	private static final ServiceRetriever<ExportImportLifecycleEventFactory>
+		_serviceRetriever = new ServiceRetriever<>(
+			ExportImportLifecycleEventFactory.class);
 
 }

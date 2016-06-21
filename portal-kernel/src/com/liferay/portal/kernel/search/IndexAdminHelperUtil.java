@@ -14,7 +14,7 @@
 
 package com.liferay.portal.kernel.search;
 
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceRetriever;
 
 /**
  * @author Michael C. Han
@@ -24,41 +24,46 @@ public class IndexAdminHelperUtil {
 	public static void backup(long companyId, String backupName)
 		throws SearchException {
 
-		_indexAdminHelper.backup(companyId, backupName);
+		_getIndexAdminHelper().backup(companyId, backupName);
 	}
 
 	public static String backup(
 			long companyId, String searchEngineId, String backupName)
 		throws SearchException {
 
-		return _indexAdminHelper.backup(companyId, searchEngineId, backupName);
+		return _getIndexAdminHelper().backup(
+			companyId, searchEngineId, backupName);
 	}
 
 	public static void backup(String backupName) throws SearchException {
-		_indexAdminHelper.backup(backupName);
+		_getIndexAdminHelper().backup(backupName);
 	}
 
 	public static void removeBackup(long companyId, String backupName)
 		throws SearchException {
 
-		_indexAdminHelper.removeBackup(companyId, backupName);
+		_getIndexAdminHelper().removeBackup(companyId, backupName);
 	}
 
 	public static void removeBackup(String backupName) throws SearchException {
-		_indexAdminHelper.removeBackup(backupName);
+		_getIndexAdminHelper().removeBackup(backupName);
 	}
 
 	public static void restore(long companyId, String backupName)
 		throws SearchException {
 
-		_indexAdminHelper.restore(companyId, backupName);
+		_getIndexAdminHelper().restore(companyId, backupName);
 	}
 
 	public static void restore(String backupName) throws SearchException {
-		_indexAdminHelper.restore(backupName);
+		_getIndexAdminHelper().restore(backupName);
 	}
 
-	private static final IndexAdminHelper _indexAdminHelper =
-		ProxyFactory.newServiceTrackedInstance(IndexAdminHelper.class);
+	private static IndexAdminHelper _getIndexAdminHelper() {
+		return _serviceRetriever.getService();
+	}
+
+	private static final ServiceRetriever<IndexAdminHelper> _serviceRetriever =
+		new ServiceRetriever<>(IndexAdminHelper.class);
 
 }

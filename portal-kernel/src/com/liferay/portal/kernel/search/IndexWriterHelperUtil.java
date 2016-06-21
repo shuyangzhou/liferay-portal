@@ -17,7 +17,7 @@ package com.liferay.portal.kernel.search;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceRetriever;
 
 import java.io.Serializable;
 
@@ -36,7 +36,7 @@ public class IndexWriterHelperUtil {
 			boolean commitImmediately)
 		throws SearchException {
 
-		_indexWriterHelper.addDocument(
+		_getIndexWriterHelper().addDocument(
 			searchEngineId, companyId, document, commitImmediately);
 	}
 
@@ -45,18 +45,18 @@ public class IndexWriterHelperUtil {
 			Collection<Document> documents, boolean commitImmediately)
 		throws SearchException {
 
-		_indexWriterHelper.addDocuments(
+		_getIndexWriterHelper().addDocuments(
 			searchEngineId, companyId, documents, commitImmediately);
 	}
 
 	public static void commit(String searchEngineId) throws SearchException {
-		_indexWriterHelper.commit(searchEngineId);
+		_getIndexWriterHelper().commit(searchEngineId);
 	}
 
 	public static void commit(String searchEngineId, long companyId)
 		throws SearchException {
 
-		_indexWriterHelper.commit(searchEngineId, companyId);
+		_getIndexWriterHelper().commit(searchEngineId, companyId);
 	}
 
 	public static void deleteDocument(
@@ -64,7 +64,7 @@ public class IndexWriterHelperUtil {
 			boolean commitImmediately)
 		throws SearchException {
 
-		_indexWriterHelper.deleteDocument(
+		_getIndexWriterHelper().deleteDocument(
 			searchEngineId, companyId, uid, commitImmediately);
 	}
 
@@ -73,7 +73,7 @@ public class IndexWriterHelperUtil {
 			boolean commitImmediately)
 		throws SearchException {
 
-		_indexWriterHelper.deleteDocuments(
+		_getIndexWriterHelper().deleteDocuments(
 			searchEngineId, companyId, uids, commitImmediately);
 	}
 
@@ -82,14 +82,14 @@ public class IndexWriterHelperUtil {
 			boolean commitImmediately)
 		throws SearchException {
 
-		_indexWriterHelper.deleteEntityDocuments(
+		_getIndexWriterHelper().deleteEntityDocuments(
 			searchEngineId, companyId, className, commitImmediately);
 	}
 
 	public static int getReindexTaskCount(long groupId, boolean completed)
 		throws SearchException {
 
-		return _indexWriterHelper.getReindexTaskCount(groupId, completed);
+		return _getIndexWriterHelper().getReindexTaskCount(groupId, completed);
 	}
 
 	public static void indexKeyword(
@@ -97,7 +97,7 @@ public class IndexWriterHelperUtil {
 			String keywordType, Locale locale)
 		throws SearchException {
 
-		_indexWriterHelper.indexKeyword(
+		_getIndexWriterHelper().indexKeyword(
 			companyId, querySuggestion, weight, keywordType, locale);
 	}
 
@@ -106,7 +106,7 @@ public class IndexWriterHelperUtil {
 			float weight, String keywordType, Locale locale)
 		throws SearchException {
 
-		_indexWriterHelper.indexKeyword(
+		_getIndexWriterHelper().indexKeyword(
 			searchEngineId, companyId, querySuggestion, weight, keywordType,
 			locale);
 	}
@@ -114,14 +114,14 @@ public class IndexWriterHelperUtil {
 	public static void indexQuerySuggestionDictionaries(long companyId)
 		throws SearchException {
 
-		_indexWriterHelper.indexQuerySuggestionDictionaries(companyId);
+		_getIndexWriterHelper().indexQuerySuggestionDictionaries(companyId);
 	}
 
 	public static void indexQuerySuggestionDictionaries(
 			String searchEngineId, long companyId)
 		throws SearchException {
 
-		_indexWriterHelper.indexQuerySuggestionDictionaries(
+		_getIndexWriterHelper().indexQuerySuggestionDictionaries(
 			searchEngineId, companyId);
 	}
 
@@ -129,28 +129,29 @@ public class IndexWriterHelperUtil {
 			long companyId, Locale locale)
 		throws SearchException {
 
-		_indexWriterHelper.indexQuerySuggestionDictionary(companyId, locale);
+		_getIndexWriterHelper().indexQuerySuggestionDictionary(
+			companyId, locale);
 	}
 
 	public static void indexQuerySuggestionDictionary(
 			String searchEngineId, long companyId, Locale locale)
 		throws SearchException {
 
-		_indexWriterHelper.indexQuerySuggestionDictionary(
+		_getIndexWriterHelper().indexQuerySuggestionDictionary(
 			searchEngineId, companyId, locale);
 	}
 
 	public static void indexSpellCheckerDictionaries(long companyId)
 		throws SearchException {
 
-		_indexWriterHelper.indexSpellCheckerDictionaries(companyId);
+		_getIndexWriterHelper().indexSpellCheckerDictionaries(companyId);
 	}
 
 	public static void indexSpellCheckerDictionaries(
 			String searchEngineId, long companyId)
 		throws SearchException {
 
-		_indexWriterHelper.indexSpellCheckerDictionaries(
+		_getIndexWriterHelper().indexSpellCheckerDictionaries(
 			searchEngineId, companyId);
 	}
 
@@ -158,14 +159,14 @@ public class IndexWriterHelperUtil {
 			long companyId, Locale locale)
 		throws SearchException {
 
-		_indexWriterHelper.indexSpellCheckerDictionary(companyId, locale);
+		_getIndexWriterHelper().indexSpellCheckerDictionary(companyId, locale);
 	}
 
 	public static void indexSpellCheckerDictionary(
 			String searchEngineId, long companyId, Locale locale)
 		throws SearchException {
 
-		_indexWriterHelper.indexSpellCheckerDictionary(
+		_getIndexWriterHelper().indexSpellCheckerDictionary(
 			searchEngineId, companyId, locale);
 	}
 
@@ -176,7 +177,7 @@ public class IndexWriterHelperUtil {
 	 */
 	@Deprecated
 	public static boolean isIndexReadOnly() {
-		return _indexWriterHelper.isIndexReadOnly();
+		return _getIndexWriterHelper().isIndexReadOnly();
 	}
 
 	public static void partiallyUpdateDocument(
@@ -184,7 +185,7 @@ public class IndexWriterHelperUtil {
 			boolean commitImmediately)
 		throws SearchException {
 
-		_indexWriterHelper.partiallyUpdateDocument(
+		_getIndexWriterHelper().partiallyUpdateDocument(
 			searchEngineId, companyId, document, commitImmediately);
 	}
 
@@ -193,7 +194,7 @@ public class IndexWriterHelperUtil {
 			Collection<Document> documents, boolean commitImmediately)
 		throws SearchException {
 
-		_indexWriterHelper.partiallyUpdateDocuments(
+		_getIndexWriterHelper().partiallyUpdateDocuments(
 			searchEngineId, companyId, documents, commitImmediately);
 	}
 
@@ -202,7 +203,7 @@ public class IndexWriterHelperUtil {
 			Map<String, Serializable> taskContextMap)
 		throws SearchException {
 
-		return _indexWriterHelper.reindex(
+		return _getIndexWriterHelper().reindex(
 			userId, jobName, companyIds, taskContextMap);
 	}
 
@@ -211,7 +212,7 @@ public class IndexWriterHelperUtil {
 			Map<String, Serializable> taskContextMap)
 		throws SearchException {
 
-		return _indexWriterHelper.reindex(
+		return _getIndexWriterHelper().reindex(
 			userId, jobName, companyIds, className, taskContextMap);
 	}
 
@@ -222,7 +223,7 @@ public class IndexWriterHelperUtil {
 	 */
 	@Deprecated
 	public static void setIndexReadOnly(boolean indexReadOnly) {
-		_indexWriterHelper.setIndexReadOnly(indexReadOnly);
+		_getIndexWriterHelper().setIndexReadOnly(indexReadOnly);
 	}
 
 	public static void updateDocument(
@@ -230,7 +231,7 @@ public class IndexWriterHelperUtil {
 			boolean commitImmediately)
 		throws SearchException {
 
-		_indexWriterHelper.updateDocument(
+		_getIndexWriterHelper().updateDocument(
 			searchEngineId, companyId, document, commitImmediately);
 	}
 
@@ -239,15 +240,19 @@ public class IndexWriterHelperUtil {
 			Collection<Document> documents, boolean commitImmediately)
 		throws SearchException {
 
-		_indexWriterHelper.updateDocuments(
+		_getIndexWriterHelper().updateDocuments(
 			searchEngineId, companyId, documents, commitImmediately);
 	}
 
 	public static void updatePermissionFields(String name, String primKey) {
-		_indexWriterHelper.updatePermissionFields(name, primKey);
+		_getIndexWriterHelper().updatePermissionFields(name, primKey);
 	}
 
-	private static final IndexWriterHelper _indexWriterHelper =
-		ProxyFactory.newServiceTrackedInstance(IndexWriterHelper.class);
+	private static IndexWriterHelper _getIndexWriterHelper() {
+		return _serviceRetriever.getService();
+	}
+
+	private static final ServiceRetriever<IndexWriterHelper> _serviceRetriever =
+		new ServiceRetriever<>(IndexWriterHelper.class);
 
 }

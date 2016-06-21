@@ -18,7 +18,7 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceRetriever;
 
 import java.io.File;
 
@@ -40,7 +40,7 @@ public class DDMTemplateManagerUtil {
 			File smallImageFile, ServiceContext serviceContext)
 		throws PortalException {
 
-		return _ddmTemplateManager.addTemplate(
+		return _getDDMTemplateManager().addTemplate(
 			userId, groupId, classNameId, classPK, resourceClassNameId,
 			templateKey, nameMap, descriptionMap, type, mode, language, script,
 			cacheable, smallImage, smallImageURL, smallImageFile,
@@ -50,17 +50,21 @@ public class DDMTemplateManagerUtil {
 	public static DDMTemplate fetchTemplate(
 		long groupId, long classNameId, String templateKey) {
 
-		return _ddmTemplateManager.fetchTemplate(
+		return _getDDMTemplateManager().fetchTemplate(
 			groupId, classNameId, templateKey);
 	}
 
 	public static DDMTemplate getTemplate(long templateId)
 		throws PortalException {
 
-		return _ddmTemplateManager.getTemplate(templateId);
+		return _getDDMTemplateManager().getTemplate(templateId);
 	}
 
-	private static final DDMTemplateManager _ddmTemplateManager =
-		ProxyFactory.newServiceTrackedInstance(DDMTemplateManager.class);
+	private static DDMTemplateManager _getDDMTemplateManager() {
+		return _serviceRetriever.getService();
+	}
+
+	private static final ServiceRetriever<DDMTemplateManager>
+		_serviceRetriever = new ServiceRetriever<>(DDMTemplateManager.class);
 
 }
