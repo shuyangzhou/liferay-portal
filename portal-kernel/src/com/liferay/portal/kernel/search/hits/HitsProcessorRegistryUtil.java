@@ -24,14 +24,22 @@ import com.liferay.portal.kernel.util.ProxyFactory;
  */
 public class HitsProcessorRegistryUtil {
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #_getHitsProcessorRegistry()}
+	 */
+	@Deprecated
 	public static HitsProcessorRegistry getHitsProcessorRegistry() {
-		return _hitsProcessorRegistry;
+		return _getHitsProcessorRegistry();
 	}
 
 	public static boolean process(SearchContext searchContext, Hits hits)
 		throws SearchException {
 
-		return getHitsProcessorRegistry().process(searchContext, hits);
+		return _getHitsProcessorRegistry().process(searchContext, hits);
+	}
+
+	private static HitsProcessorRegistry _getHitsProcessorRegistry() {
+		return _hitsProcessorRegistry;
 	}
 
 	private static final HitsProcessorRegistry _hitsProcessorRegistry =
