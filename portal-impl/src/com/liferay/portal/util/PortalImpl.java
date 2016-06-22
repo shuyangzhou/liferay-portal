@@ -2789,14 +2789,22 @@ public class PortalImpl implements Portal {
 	public String getLayoutFriendlyURL(Layout layout, ThemeDisplay themeDisplay)
 		throws PortalException {
 
-		LayoutType layoutType = layout.getLayoutType();
+		LayoutTypeController layoutTypeController =
+			LayoutTypeControllerTracker.getLayoutTypeController(
+				layout.getType());
 
-		if (!layoutType.isURLFriendliable()) {
+		if (!layoutTypeController.isURLFriendliable()) {
 			return null;
 		}
 
+		LayoutSet layoutSet = themeDisplay.getLayoutSet();
+
+		if ((layoutSet == null) || !layout.equals(themeDisplay.getLayout())) {
+			layoutSet = layout.getLayoutSet();
+		}
+
 		String groupFriendlyURL = getGroupFriendlyURL(
-			layout.getLayoutSet(), themeDisplay, false);
+			layoutSet, themeDisplay, false);
 
 		return groupFriendlyURL.concat(
 			layout.getFriendlyURL(themeDisplay.getLocale()));

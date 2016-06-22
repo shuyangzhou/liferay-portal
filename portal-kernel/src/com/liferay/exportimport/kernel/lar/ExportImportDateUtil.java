@@ -246,15 +246,10 @@ public class ExportImportDateUtil {
 			PortletPreferences jxPortletPreferences)
 		throws PortalException {
 
-		Group group = GroupLocalServiceUtil.getGroup(
-			portletDataContext.getGroupId());
-
 		String range = MapUtil.getString(
 			portletDataContext.getParameterMap(), RANGE);
 
-		if (!group.isStagedRemotely() &&
-			range.equals(RANGE_FROM_LAST_PUBLISH_DATE)) {
-
+		if (range.equals(RANGE_FROM_LAST_PUBLISH_DATE)) {
 			Date portletLastPublishDate = getLastPublishDate(
 				jxPortletPreferences);
 
