@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.search.IndexWriterHelperUtil;
 import com.liferay.portal.kernel.service.ReleaseLocalService;
+import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.NotificationThreadLocal;
 import com.liferay.portal.kernel.workflow.WorkflowThreadLocal;
 import com.liferay.portal.output.stream.container.OutputStreamContainer;
@@ -41,6 +42,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
+import java.util.Dictionary;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -135,6 +137,8 @@ public class VerifyProcessTracker {
 	protected void activate(
 		BundleContext bundleContext, Map<String, Object> properties) {
 
+		_bundleContext = bundleContext;
+
 		_verifyProcessTrackerConfiguration =
 			ConfigurableUtil.createConfigurable(
 				VerifyProcessTrackerConfiguration.class, properties);
@@ -148,7 +152,7 @@ public class VerifyProcessTracker {
 		}
 
 		_verifyProcesses = ServiceTrackerMapFactory.multiValueMap(
-			bundleContext, VerifyProcess.class, null,
+			_bundleContext, VerifyProcess.class, null,
 			new PropertyServiceReferenceMapper<String, VerifyProcess>(
 				"verify.process.name"),
 			new PropertyServiceReferenceComparator("service.ranking"),
@@ -228,6 +232,14 @@ public class VerifyProcessTracker {
 				release.setVerified(true);
 
 				_releaseLocalService.updateRelease(release);
+
+				Dictionary<String, String> dictionary =
+					new HashMapDictionary<>();
+
+				dictionary.put("verify.process.name", verifyProcessName);
+
+				_bundleContext.registerService(
+					Object.class, new Object(), dictionary);
 			}
 		}
 		finally {
@@ -333,6 +345,7 @@ public class VerifyProcessTracker {
 	private static final Log _log = LogFactoryUtil.getLog(
 		VerifyProcessTracker.class);
 
+	private BundleContext _bundleContext;
 	private CounterLocalService _counterLocalService;
 	private OutputStreamContainerFactoryTracker
 		_outputStreamContainerFactoryTracker;
