@@ -216,8 +216,12 @@ public class WabGenerator
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
-	protected void unsetModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
+	@Reference(
+		target = "(&(verify.process.name=com.liferay.document.library.service))",
+		unbind = "-"
+	)
+	protected void setObject(Object object) {
+		System.out.println("HI");
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(WabGenerator.class);
