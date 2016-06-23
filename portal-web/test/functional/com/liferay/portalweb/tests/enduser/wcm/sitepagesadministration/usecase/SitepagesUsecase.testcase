@@ -186,8 +186,7 @@
 			<var name="page" value="Page Name" />
 		</execute>
 
-		<execute macro="Page#viewPageFriendURLPG">
-			<var name="localizedFriendlyURL" value="/german" />
+		<execute macro="Page#viewPageFriendlyURLPG">
 			<var name="pageName" value="page-name" />
 		</execute>
 	</command>
@@ -247,6 +246,15 @@
 
 		<execute macro="User#editPasswordCP">
 			<var name="userEmailAddress" value="userea@liferay.com" />
+			<var name="userScreenName" value="usersn" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoControlPanelUsers">
+			<var name="portlet" value="Roles" />
+		</execute>
+
+		<execute macro="Role#assignRegRoleCP">
+			<var name="roleName" value="Power User" />
 			<var name="userScreenName" value="usersn" />
 		</execute>
 
@@ -554,7 +562,7 @@
 			<var name="gmailMessageBody" value="Blogs Entry Title" />
 			<var name="gmailMessageBodyClosing" value="Sincerely" />
 			<var name="gmailMessageBodyGreeting" value="Joe Bloggs" />
-			<var name="gmailMessageTitle" value="Test Test Published &quot;Blogs Entry Title&quot; on Liferay Blogs" />
+			<var name="gmailMessageTitle" value="Test Test Published &quot;Blogs Entry Title&quot; on ${siteName} Blogs" />
 		</execute>
 
 		<execute macro="Gmail#openMessageContinueReadingButton">
@@ -790,7 +798,7 @@
 			<var name="gmailMessageBody" value="Blogs Entry Title" />
 			<var name="gmailMessageBodyClosing" value="Sincerely" />
 			<var name="gmailMessageBodyGreeting" value="Joe Bloggs" />
-			<var name="gmailMessageTitle" value="Test Test Published &quot;Blogs Entry Title&quot; on Liferay Blogs" />
+			<var name="gmailMessageTitle" value="Test Test Published &quot;Blogs Entry Title&quot; on ${siteName} Blogs" />
 		</execute>
 
 		<execute macro="Gmail#openMessageContinueReadingButton">
@@ -1038,7 +1046,7 @@
 			<var name="gmailMessageBody" value="Blogs Entry Title" />
 			<var name="gmailMessageBodyClosing" value="Sincerely" />
 			<var name="gmailMessageBodyGreeting" value="Joe Bloggs" />
-			<var name="gmailMessageTitle" value="Test Test Published &quot;Blogs Entry Title&quot; on Liferay Blogs" />
+			<var name="gmailMessageTitle" value="Test Test Published &quot;Blogs Entry Title&quot; on ${siteName} Blogs" />
 		</execute>
 
 		<execute macro="Gmail#openMessageContinueReadingButton">
