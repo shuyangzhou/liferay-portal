@@ -51,6 +51,13 @@ public class ExpandoTableLocalServiceImpl
 	public ExpandoTable addTable(long companyId, long classNameId, String name)
 		throws PortalException {
 
+		ExpandoTable expandoTable = expandoTablePersistence.fetchByC_C_N(
+			companyId, classNameId, name);
+
+		if (expandoTable != null) {
+			return expandoTable;
+		}
+
 		validate(companyId, 0, classNameId, name);
 
 		long tableId = counterLocalService.increment();
