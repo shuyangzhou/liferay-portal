@@ -15,7 +15,6 @@
 package com.liferay.portal.convert.documentlibrary;
 
 import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
-import com.liferay.document.library.kernel.model.DLContent;
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.document.library.kernel.service.DLAppLocalServiceUtil;
@@ -30,7 +29,6 @@ import com.liferay.message.boards.kernel.model.MBMessage;
 import com.liferay.message.boards.kernel.model.MBMessageConstants;
 import com.liferay.message.boards.kernel.service.MBMessageLocalServiceUtil;
 import com.liferay.portal.convert.ConvertProcess;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Image;
 import com.liferay.portal.kernel.model.User;
@@ -60,13 +58,9 @@ import com.liferay.portlet.messageboards.util.test.MBTestUtil;
 import java.io.InputStream;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -89,36 +83,13 @@ public class DocumentLibraryConvertProcessTest {
 	@BeforeClass
 	public static void setUpClass() throws Exception {
 		_storeFactory = StoreFactory.getInstance();
-
-		List<Image> images = ImageLocalServiceUtil.getImages();
-
-		for (Image image : images) {
-			_bytesMap.put(image, image.getTextObj());
-
-			ImageLocalServiceUtil.deleteImage(image);
-		}
-	}
-
-	@AfterClass
-	public static void tearDownClass() throws PortalException {
-		for (Entry<Image, byte[]> entry : _bytesMap.entrySet()) {
-			Image image = entry.getKey();
-
-			ImageLocalServiceUtil.updateImage(
-				image.getImageId(), entry.getValue());
-		}
-
-		_bytesMap.clear();
 	}
 
 	@Before
 	public void setUp() throws Exception {
-		PropsValues.DL_STORE_IMPL =
-			"com.liferay.portal.store.file.system.FileSystemStore";
+		_sourceStore = _storeFactory.getStore(_CLASS_NAME_FILE_SYSTEM_STORE);
 
-		_sourceStore = _storeFactory.getStore(PropsValues.DL_STORE_IMPL);
-
-		_storeFactory.setStore(PropsValues.DL_STORE_IMPL);
+		_storeFactory.setStore(_CLASS_NAME_FILE_SYSTEM_STORE);
 
 		_group = GroupTestUtil.addGroup();
 
@@ -131,6 +102,15 @@ public class DocumentLibraryConvertProcessTest {
 
 	@After
 	public void tearDown() throws Exception {
+		_storeFactory.setStore(_CLASS_NAME_DB_STORE);
+
+		_convertProcess.setParameterValues(
+			new String[] {
+				_CLASS_NAME_FILE_SYSTEM_STORE, Boolean.TRUE.toString()
+			});
+
+		_convertProcess.convert();
+
 		PropsValues.DL_STORE_IMPL = PropsUtil.get(PropsKeys.DL_STORE_IMPL);
 
 		_storeFactory.setStore(PropsValues.DL_STORE_IMPL);
@@ -167,17 +147,12 @@ public class DocumentLibraryConvertProcessTest {
 
 	@Test
 	public void testMigrateImages() throws Exception {
-		Image image = addImage();
+		_image = addImage();
 
-		try {
-			_convertProcess.convert();
+		_convertProcess.convert();
 
-			DLContentLocalServiceUtil.getContent(
-				0, 0, image.getImageId() + ".jpg");
-		}
-		finally {
-			ImageLocalServiceUtil.deleteImage(image);
-		}
+		DLContentLocalServiceUtil.getContent(
+			0, 0, _image.getImageId() + ".jpg");
 	}
 
 	@Test
@@ -192,12 +167,11 @@ public class DocumentLibraryConvertProcessTest {
 
 		Assert.assertTrue(title.endsWith(".docx"));
 
-		_dlContents.add(
-			DLContentLocalServiceUtil.getContent(
-				dlFileEntry.getCompanyId(),
-				DLFolderConstants.getDataRepositoryId(
-					dlFileEntry.getRepositoryId(), dlFileEntry.getFolderId()),
-				dlFileEntry.getName()));
+		DLContentLocalServiceUtil.getContent(
+			dlFileEntry.getCompanyId(),
+			DLFolderConstants.getDataRepositoryId(
+				dlFileEntry.getRepositoryId(), dlFileEntry.getFolderId()),
+			dlFileEntry.getName());
 	}
 
 	@Test
@@ -311,21 +285,19 @@ public class DocumentLibraryConvertProcessTest {
 				folderDLFileEntry.getDataRepositoryId(),
 				folderDLFileEntry.getName()));
 
-		_dlContents.add(
-			DLContentLocalServiceUtil.getContent(
-				folderDLFileEntry.getCompanyId(),
-				DLFolderConstants.getDataRepositoryId(
-					folderDLFileEntry.getRepositoryId(),
-					folderDLFileEntry.getFolderId()),
-				folderDLFileEntry.getName()));
+		DLContentLocalServiceUtil.getContent(
+			folderDLFileEntry.getCompanyId(),
+			DLFolderConstants.getDataRepositoryId(
+				folderDLFileEntry.getRepositoryId(),
+				folderDLFileEntry.getFolderId()),
+			folderDLFileEntry.getName());
 
-		_dlContents.add(
-			DLContentLocalServiceUtil.getContent(
-				rootDLFileEntry.getCompanyId(),
-				DLFolderConstants.getDataRepositoryId(
-					rootDLFileEntry.getRepositoryId(),
-					rootDLFileEntry.getFolderId()),
-				rootDLFileEntry.getName()));
+		DLContentLocalServiceUtil.getContent(
+			rootDLFileEntry.getCompanyId(),
+			DLFolderConstants.getDataRepositoryId(
+				rootDLFileEntry.getRepositoryId(),
+				rootDLFileEntry.getFolderId()),
+			rootDLFileEntry.getName());
 	}
 
 	protected void testMigrateDL(long folderId) throws Exception {
@@ -338,27 +310,28 @@ public class DocumentLibraryConvertProcessTest {
 
 		DLFileEntry dlFileEntry = (DLFileEntry)fileEntry.getModel();
 
-		_dlContents.add(
-			DLContentLocalServiceUtil.getContent(
-				dlFileEntry.getCompanyId(),
-				DLFolderConstants.getDataRepositoryId(
-					dlFileEntry.getRepositoryId(), dlFileEntry.getFolderId()),
-				dlFileEntry.getName()));
+		DLContentLocalServiceUtil.getContent(
+			dlFileEntry.getCompanyId(),
+			DLFolderConstants.getDataRepositoryId(
+				dlFileEntry.getRepositoryId(), dlFileEntry.getFolderId()),
+			dlFileEntry.getName());
 	}
 
 	private static final String _CLASS_NAME_DB_STORE =
 		"com.liferay.portal.store.db.DBStore";
 
-	private static final Map<Image, byte[]> _bytesMap = new HashMap<>();
+	private static final String _CLASS_NAME_FILE_SYSTEM_STORE =
+		"com.liferay.portal.store.file.system.FileSystemStore";
+
 	private static StoreFactory _storeFactory;
 
 	private ConvertProcess _convertProcess;
 
 	@DeleteAfterTestRun
-	private final List<DLContent> _dlContents = new ArrayList<>();
+	private Group _group;
 
 	@DeleteAfterTestRun
-	private Group _group;
+	private Image _image;
 
 	private Store _sourceStore;
 

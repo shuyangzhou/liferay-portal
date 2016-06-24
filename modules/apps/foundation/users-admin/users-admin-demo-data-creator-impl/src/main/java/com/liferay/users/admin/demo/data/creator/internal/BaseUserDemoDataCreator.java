@@ -52,7 +52,7 @@ public abstract class BaseUserDemoDataCreator
 		String firstName = fullNameArray[0];
 		String lastName = fullNameArray[1];
 
-		boolean autoPassword = true;
+		boolean autoPassword = false;
 		String password1 = "test";
 		String password2 = "test";
 		long facebookId = 0;
