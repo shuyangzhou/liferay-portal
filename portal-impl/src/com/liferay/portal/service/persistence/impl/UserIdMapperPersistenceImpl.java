@@ -1131,6 +1131,8 @@ public class UserIdMapperPersistenceImpl extends BasePersistenceImpl<UserIdMappe
 
 	public UserIdMapperPersistenceImpl() {
 		setModelClass(UserIdMapper.class);
+		setModelImplClass(UserIdMapperImpl.class);
+		setEntityCacheEnabled(UserIdMapperModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1386,6 +1388,11 @@ public class UserIdMapperPersistenceImpl extends BasePersistenceImpl<UserIdMappe
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected UserIdMapper removeImpl(UserIdMapper userIdMapper) {
 		userIdMapper = toUnwrappedModel(userIdMapper);
 
@@ -1539,54 +1546,6 @@ public class UserIdMapperPersistenceImpl extends BasePersistenceImpl<UserIdMappe
 	public UserIdMapper findByPrimaryKey(long userIdMapperId)
 		throws NoSuchUserIdMapperException {
 		return findByPrimaryKey((Serializable)userIdMapperId);
-	}
-
-	/**
-	 * Returns the user ID mapper with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the user ID mapper
-	 * @return the user ID mapper, or <code>null</code> if a user ID mapper with the primary key could not be found
-	 */
-	@Override
-	public UserIdMapper fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(UserIdMapperModelImpl.ENTITY_CACHE_ENABLED,
-				UserIdMapperImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		UserIdMapper userIdMapper = (UserIdMapper)serializable;
-
-		if (userIdMapper == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				userIdMapper = (UserIdMapper)session.get(UserIdMapperImpl.class,
-						primaryKey);
-
-				if (userIdMapper != null) {
-					cacheResult(userIdMapper);
-				}
-				else {
-					entityCache.putResult(UserIdMapperModelImpl.ENTITY_CACHE_ENABLED,
-						UserIdMapperImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(UserIdMapperModelImpl.ENTITY_CACHE_ENABLED,
-					UserIdMapperImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return userIdMapper;
 	}
 
 	/**

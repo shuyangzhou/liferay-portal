@@ -1884,6 +1884,8 @@ public class RecentLayoutRevisionPersistenceImpl extends BasePersistenceImpl<Rec
 
 	public RecentLayoutRevisionPersistenceImpl() {
 		setModelClass(RecentLayoutRevision.class);
+		setModelImplClass(RecentLayoutRevisionImpl.class);
+		setEntityCacheEnabled(RecentLayoutRevisionModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2103,6 +2105,11 @@ public class RecentLayoutRevisionPersistenceImpl extends BasePersistenceImpl<Rec
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected RecentLayoutRevision removeImpl(
 		RecentLayoutRevision recentLayoutRevision) {
 		recentLayoutRevision = toUnwrappedModel(recentLayoutRevision);
@@ -2298,54 +2305,6 @@ public class RecentLayoutRevisionPersistenceImpl extends BasePersistenceImpl<Rec
 	public RecentLayoutRevision findByPrimaryKey(long recentLayoutRevisionId)
 		throws NoSuchRecentLayoutRevisionException {
 		return findByPrimaryKey((Serializable)recentLayoutRevisionId);
-	}
-
-	/**
-	 * Returns the recent layout revision with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the recent layout revision
-	 * @return the recent layout revision, or <code>null</code> if a recent layout revision with the primary key could not be found
-	 */
-	@Override
-	public RecentLayoutRevision fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(RecentLayoutRevisionModelImpl.ENTITY_CACHE_ENABLED,
-				RecentLayoutRevisionImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		RecentLayoutRevision recentLayoutRevision = (RecentLayoutRevision)serializable;
-
-		if (recentLayoutRevision == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				recentLayoutRevision = (RecentLayoutRevision)session.get(RecentLayoutRevisionImpl.class,
-						primaryKey);
-
-				if (recentLayoutRevision != null) {
-					cacheResult(recentLayoutRevision);
-				}
-				else {
-					entityCache.putResult(RecentLayoutRevisionModelImpl.ENTITY_CACHE_ENABLED,
-						RecentLayoutRevisionImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(RecentLayoutRevisionModelImpl.ENTITY_CACHE_ENABLED,
-					RecentLayoutRevisionImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return recentLayoutRevision;
 	}
 
 	/**

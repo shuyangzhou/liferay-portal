@@ -786,6 +786,8 @@ public class DLSyncEventPersistenceImpl extends BasePersistenceImpl<DLSyncEvent>
 
 	public DLSyncEventPersistenceImpl() {
 		setModelClass(DLSyncEvent.class);
+		setModelImplClass(DLSyncEventImpl.class);
+		setEntityCacheEnabled(DLSyncEventModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -980,6 +982,11 @@ public class DLSyncEventPersistenceImpl extends BasePersistenceImpl<DLSyncEvent>
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected DLSyncEvent removeImpl(DLSyncEvent dlSyncEvent) {
 		dlSyncEvent = toUnwrappedModel(dlSyncEvent);
 
@@ -1113,54 +1120,6 @@ public class DLSyncEventPersistenceImpl extends BasePersistenceImpl<DLSyncEvent>
 	public DLSyncEvent findByPrimaryKey(long syncEventId)
 		throws NoSuchSyncEventException {
 		return findByPrimaryKey((Serializable)syncEventId);
-	}
-
-	/**
-	 * Returns the d l sync event with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the d l sync event
-	 * @return the d l sync event, or <code>null</code> if a d l sync event with the primary key could not be found
-	 */
-	@Override
-	public DLSyncEvent fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DLSyncEventModelImpl.ENTITY_CACHE_ENABLED,
-				DLSyncEventImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		DLSyncEvent dlSyncEvent = (DLSyncEvent)serializable;
-
-		if (dlSyncEvent == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				dlSyncEvent = (DLSyncEvent)session.get(DLSyncEventImpl.class,
-						primaryKey);
-
-				if (dlSyncEvent != null) {
-					cacheResult(dlSyncEvent);
-				}
-				else {
-					entityCache.putResult(DLSyncEventModelImpl.ENTITY_CACHE_ENABLED,
-						DLSyncEventImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(DLSyncEventModelImpl.ENTITY_CACHE_ENABLED,
-					DLSyncEventImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return dlSyncEvent;
 	}
 
 	/**

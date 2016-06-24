@@ -18750,6 +18750,8 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 
 	public BlogsEntryPersistenceImpl() {
 		setModelClass(BlogsEntry.class);
+		setModelImplClass(BlogsEntryImpl.class);
+		setEntityCacheEnabled(BlogsEntryModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -19003,6 +19005,11 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -19401,54 +19408,6 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 	public BlogsEntry findByPrimaryKey(long entryId)
 		throws NoSuchEntryException {
 		return findByPrimaryKey((Serializable)entryId);
-	}
-
-	/**
-	 * Returns the blogs entry with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the blogs entry
-	 * @return the blogs entry, or <code>null</code> if a blogs entry with the primary key could not be found
-	 */
-	@Override
-	public BlogsEntry fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(BlogsEntryModelImpl.ENTITY_CACHE_ENABLED,
-				BlogsEntryImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		BlogsEntry blogsEntry = (BlogsEntry)serializable;
-
-		if (blogsEntry == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				blogsEntry = (BlogsEntry)session.get(BlogsEntryImpl.class,
-						primaryKey);
-
-				if (blogsEntry != null) {
-					cacheResult(blogsEntry);
-				}
-				else {
-					entityCache.putResult(BlogsEntryModelImpl.ENTITY_CACHE_ENABLED,
-						BlogsEntryImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(BlogsEntryModelImpl.ENTITY_CACHE_ENABLED,
-					BlogsEntryImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return blogsEntry;
 	}
 
 	/**

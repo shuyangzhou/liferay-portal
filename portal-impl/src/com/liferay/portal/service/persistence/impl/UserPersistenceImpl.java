@@ -7301,6 +7301,8 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 
 	public UserPersistenceImpl() {
 		setModelClass(User.class);
+		setModelImplClass(UserImpl.class);
+		setEntityCacheEnabled(UserModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -7824,6 +7826,11 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected User removeImpl(User user) {
 		user = toUnwrappedModel(user);
 
@@ -8207,53 +8214,6 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	@Override
 	public User findByPrimaryKey(long userId) throws NoSuchUserException {
 		return findByPrimaryKey((Serializable)userId);
-	}
-
-	/**
-	 * Returns the user with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the user
-	 * @return the user, or <code>null</code> if a user with the primary key could not be found
-	 */
-	@Override
-	public User fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(UserModelImpl.ENTITY_CACHE_ENABLED,
-				UserImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		User user = (User)serializable;
-
-		if (user == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				user = (User)session.get(UserImpl.class, primaryKey);
-
-				if (user != null) {
-					cacheResult(user);
-				}
-				else {
-					entityCache.putResult(UserModelImpl.ENTITY_CACHE_ENABLED,
-						UserImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(UserModelImpl.ENTITY_CACHE_ENABLED,
-					UserImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return user;
 	}
 
 	/**

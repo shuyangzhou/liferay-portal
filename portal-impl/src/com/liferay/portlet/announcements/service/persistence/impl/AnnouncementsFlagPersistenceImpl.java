@@ -850,6 +850,8 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 
 	public AnnouncementsFlagPersistenceImpl() {
 		setModelClass(AnnouncementsFlag.class);
+		setModelImplClass(AnnouncementsFlagImpl.class);
+		setEntityCacheEnabled(AnnouncementsFlagModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1065,6 +1067,11 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected AnnouncementsFlag removeImpl(AnnouncementsFlag announcementsFlag) {
 		announcementsFlag = toUnwrappedModel(announcementsFlag);
 
@@ -1218,54 +1225,6 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 	public AnnouncementsFlag findByPrimaryKey(long flagId)
 		throws NoSuchFlagException {
 		return findByPrimaryKey((Serializable)flagId);
-	}
-
-	/**
-	 * Returns the announcements flag with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the announcements flag
-	 * @return the announcements flag, or <code>null</code> if a announcements flag with the primary key could not be found
-	 */
-	@Override
-	public AnnouncementsFlag fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(AnnouncementsFlagModelImpl.ENTITY_CACHE_ENABLED,
-				AnnouncementsFlagImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		AnnouncementsFlag announcementsFlag = (AnnouncementsFlag)serializable;
-
-		if (announcementsFlag == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				announcementsFlag = (AnnouncementsFlag)session.get(AnnouncementsFlagImpl.class,
-						primaryKey);
-
-				if (announcementsFlag != null) {
-					cacheResult(announcementsFlag);
-				}
-				else {
-					entityCache.putResult(AnnouncementsFlagModelImpl.ENTITY_CACHE_ENABLED,
-						AnnouncementsFlagImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(AnnouncementsFlagModelImpl.ENTITY_CACHE_ENABLED,
-					AnnouncementsFlagImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return announcementsFlag;
 	}
 
 	/**

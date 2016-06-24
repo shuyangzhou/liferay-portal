@@ -2497,6 +2497,8 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 
 	public SocialActivityCounterPersistenceImpl() {
 		setModelClass(SocialActivityCounter.class);
+		setModelImplClass(SocialActivityCounterImpl.class);
+		setEntityCacheEnabled(SocialActivityCounterModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2800,6 +2802,11 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected SocialActivityCounter removeImpl(
 		SocialActivityCounter socialActivityCounter) {
 		socialActivityCounter = toUnwrappedModel(socialActivityCounter);
@@ -3008,54 +3015,6 @@ public class SocialActivityCounterPersistenceImpl extends BasePersistenceImpl<So
 	public SocialActivityCounter findByPrimaryKey(long activityCounterId)
 		throws NoSuchActivityCounterException {
 		return findByPrimaryKey((Serializable)activityCounterId);
-	}
-
-	/**
-	 * Returns the social activity counter with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the social activity counter
-	 * @return the social activity counter, or <code>null</code> if a social activity counter with the primary key could not be found
-	 */
-	@Override
-	public SocialActivityCounter fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(SocialActivityCounterModelImpl.ENTITY_CACHE_ENABLED,
-				SocialActivityCounterImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		SocialActivityCounter socialActivityCounter = (SocialActivityCounter)serializable;
-
-		if (socialActivityCounter == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				socialActivityCounter = (SocialActivityCounter)session.get(SocialActivityCounterImpl.class,
-						primaryKey);
-
-				if (socialActivityCounter != null) {
-					cacheResult(socialActivityCounter);
-				}
-				else {
-					entityCache.putResult(SocialActivityCounterModelImpl.ENTITY_CACHE_ENABLED,
-						SocialActivityCounterImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(SocialActivityCounterModelImpl.ENTITY_CACHE_ENABLED,
-					SocialActivityCounterImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return socialActivityCounter;
 	}
 
 	/**

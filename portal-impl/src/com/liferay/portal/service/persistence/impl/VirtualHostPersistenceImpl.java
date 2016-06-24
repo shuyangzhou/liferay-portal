@@ -546,6 +546,8 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 
 	public VirtualHostPersistenceImpl() {
 		setModelClass(VirtualHost.class);
+		setModelImplClass(VirtualHostImpl.class);
+		setEntityCacheEnabled(VirtualHostModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -788,6 +790,11 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected VirtualHost removeImpl(VirtualHost virtualHost) {
 		virtualHost = toUnwrappedModel(virtualHost);
 
@@ -920,54 +927,6 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	public VirtualHost findByPrimaryKey(long virtualHostId)
 		throws NoSuchVirtualHostException {
 		return findByPrimaryKey((Serializable)virtualHostId);
-	}
-
-	/**
-	 * Returns the virtual host with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the virtual host
-	 * @return the virtual host, or <code>null</code> if a virtual host with the primary key could not be found
-	 */
-	@Override
-	public VirtualHost fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
-				VirtualHostImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		VirtualHost virtualHost = (VirtualHost)serializable;
-
-		if (virtualHost == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				virtualHost = (VirtualHost)session.get(VirtualHostImpl.class,
-						primaryKey);
-
-				if (virtualHost != null) {
-					cacheResult(virtualHost);
-				}
-				else {
-					entityCache.putResult(VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
-						VirtualHostImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(VirtualHostModelImpl.ENTITY_CACHE_ENABLED,
-					VirtualHostImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return virtualHost;
 	}
 
 	/**

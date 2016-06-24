@@ -4602,6 +4602,8 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 
 	public AssetTagPersistenceImpl() {
 		setModelClass(AssetTag.class);
+		setModelImplClass(AssetTagImpl.class);
+		setEntityCacheEnabled(AssetTagModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -4850,6 +4852,11 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected AssetTag removeImpl(AssetTag assetTag) {
 		assetTag = toUnwrappedModel(assetTag);
 
@@ -5071,53 +5078,6 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	@Override
 	public AssetTag findByPrimaryKey(long tagId) throws NoSuchTagException {
 		return findByPrimaryKey((Serializable)tagId);
-	}
-
-	/**
-	 * Returns the asset tag with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the asset tag
-	 * @return the asset tag, or <code>null</code> if a asset tag with the primary key could not be found
-	 */
-	@Override
-	public AssetTag fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(AssetTagModelImpl.ENTITY_CACHE_ENABLED,
-				AssetTagImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		AssetTag assetTag = (AssetTag)serializable;
-
-		if (assetTag == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				assetTag = (AssetTag)session.get(AssetTagImpl.class, primaryKey);
-
-				if (assetTag != null) {
-					cacheResult(assetTag);
-				}
-				else {
-					entityCache.putResult(AssetTagModelImpl.ENTITY_CACHE_ENABLED,
-						AssetTagImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(AssetTagModelImpl.ENTITY_CACHE_ENABLED,
-					AssetTagImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return assetTag;
 	}
 
 	/**

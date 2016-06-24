@@ -3058,6 +3058,8 @@ public class DDLRecordSetPersistenceImpl extends BasePersistenceImpl<DDLRecordSe
 
 	public DDLRecordSetPersistenceImpl() {
 		setModelClass(DDLRecordSet.class);
+		setModelImplClass(DDLRecordSetImpl.class);
+		setEntityCacheEnabled(DDLRecordSetModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -3317,6 +3319,11 @@ public class DDLRecordSetPersistenceImpl extends BasePersistenceImpl<DDLRecordSe
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected DDLRecordSet removeImpl(DDLRecordSet ddlRecordSet) {
 		ddlRecordSet = toUnwrappedModel(ddlRecordSet);
 
@@ -3545,54 +3552,6 @@ public class DDLRecordSetPersistenceImpl extends BasePersistenceImpl<DDLRecordSe
 	public DDLRecordSet findByPrimaryKey(long recordSetId)
 		throws NoSuchRecordSetException {
 		return findByPrimaryKey((Serializable)recordSetId);
-	}
-
-	/**
-	 * Returns the d d l record set with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the d d l record set
-	 * @return the d d l record set, or <code>null</code> if a d d l record set with the primary key could not be found
-	 */
-	@Override
-	public DDLRecordSet fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DDLRecordSetModelImpl.ENTITY_CACHE_ENABLED,
-				DDLRecordSetImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		DDLRecordSet ddlRecordSet = (DDLRecordSet)serializable;
-
-		if (ddlRecordSet == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				ddlRecordSet = (DDLRecordSet)session.get(DDLRecordSetImpl.class,
-						primaryKey);
-
-				if (ddlRecordSet != null) {
-					cacheResult(ddlRecordSet);
-				}
-				else {
-					entityCache.putResult(DDLRecordSetModelImpl.ENTITY_CACHE_ENABLED,
-						DDLRecordSetImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(DDLRecordSetModelImpl.ENTITY_CACHE_ENABLED,
-					DDLRecordSetImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return ddlRecordSet;
 	}
 
 	/**

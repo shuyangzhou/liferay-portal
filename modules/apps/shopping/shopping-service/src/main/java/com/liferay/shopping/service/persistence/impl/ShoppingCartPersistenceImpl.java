@@ -1315,6 +1315,8 @@ public class ShoppingCartPersistenceImpl extends BasePersistenceImpl<ShoppingCar
 
 	public ShoppingCartPersistenceImpl() {
 		setModelClass(ShoppingCart.class);
+		setModelImplClass(ShoppingCartImpl.class);
+		setEntityCacheEnabled(ShoppingCartModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1522,6 +1524,11 @@ public class ShoppingCartPersistenceImpl extends BasePersistenceImpl<ShoppingCar
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected ShoppingCart removeImpl(ShoppingCart shoppingCart) {
 		shoppingCart = toUnwrappedModel(shoppingCart);
 
@@ -1718,54 +1725,6 @@ public class ShoppingCartPersistenceImpl extends BasePersistenceImpl<ShoppingCar
 	public ShoppingCart findByPrimaryKey(long cartId)
 		throws NoSuchCartException {
 		return findByPrimaryKey((Serializable)cartId);
-	}
-
-	/**
-	 * Returns the shopping cart with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the shopping cart
-	 * @return the shopping cart, or <code>null</code> if a shopping cart with the primary key could not be found
-	 */
-	@Override
-	public ShoppingCart fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ShoppingCartModelImpl.ENTITY_CACHE_ENABLED,
-				ShoppingCartImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		ShoppingCart shoppingCart = (ShoppingCart)serializable;
-
-		if (shoppingCart == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				shoppingCart = (ShoppingCart)session.get(ShoppingCartImpl.class,
-						primaryKey);
-
-				if (shoppingCart != null) {
-					cacheResult(shoppingCart);
-				}
-				else {
-					entityCache.putResult(ShoppingCartModelImpl.ENTITY_CACHE_ENABLED,
-						ShoppingCartImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ShoppingCartModelImpl.ENTITY_CACHE_ENABLED,
-					ShoppingCartImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return shoppingCart;
 	}
 
 	/**

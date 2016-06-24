@@ -1652,6 +1652,8 @@ public class ResourceBlockPersistenceImpl extends BasePersistenceImpl<ResourceBl
 
 	public ResourceBlockPersistenceImpl() {
 		setModelClass(ResourceBlock.class);
+		setModelImplClass(ResourceBlockImpl.class);
+		setEntityCacheEnabled(ResourceBlockModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1871,6 +1873,11 @@ public class ResourceBlockPersistenceImpl extends BasePersistenceImpl<ResourceBl
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected ResourceBlock removeImpl(ResourceBlock resourceBlock) {
 		resourceBlock = toUnwrappedModel(resourceBlock);
 
@@ -2051,54 +2058,6 @@ public class ResourceBlockPersistenceImpl extends BasePersistenceImpl<ResourceBl
 	public ResourceBlock findByPrimaryKey(long resourceBlockId)
 		throws NoSuchResourceBlockException {
 		return findByPrimaryKey((Serializable)resourceBlockId);
-	}
-
-	/**
-	 * Returns the resource block with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the resource block
-	 * @return the resource block, or <code>null</code> if a resource block with the primary key could not be found
-	 */
-	@Override
-	public ResourceBlock fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ResourceBlockModelImpl.ENTITY_CACHE_ENABLED,
-				ResourceBlockImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		ResourceBlock resourceBlock = (ResourceBlock)serializable;
-
-		if (resourceBlock == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				resourceBlock = (ResourceBlock)session.get(ResourceBlockImpl.class,
-						primaryKey);
-
-				if (resourceBlock != null) {
-					cacheResult(resourceBlock);
-				}
-				else {
-					entityCache.putResult(ResourceBlockModelImpl.ENTITY_CACHE_ENABLED,
-						ResourceBlockImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ResourceBlockModelImpl.ENTITY_CACHE_ENABLED,
-					ResourceBlockImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return resourceBlock;
 	}
 
 	/**

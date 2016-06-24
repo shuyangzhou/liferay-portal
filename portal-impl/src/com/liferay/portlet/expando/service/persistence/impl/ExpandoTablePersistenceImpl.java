@@ -912,6 +912,8 @@ public class ExpandoTablePersistenceImpl extends BasePersistenceImpl<ExpandoTabl
 
 	public ExpandoTablePersistenceImpl() {
 		setModelClass(ExpandoTable.class);
+		setModelImplClass(ExpandoTableImpl.class);
+		setEntityCacheEnabled(ExpandoTableModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1125,6 +1127,11 @@ public class ExpandoTablePersistenceImpl extends BasePersistenceImpl<ExpandoTabl
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected ExpandoTable removeImpl(ExpandoTable expandoTable) {
 		expandoTable = toUnwrappedModel(expandoTable);
 
@@ -1279,54 +1286,6 @@ public class ExpandoTablePersistenceImpl extends BasePersistenceImpl<ExpandoTabl
 	public ExpandoTable findByPrimaryKey(long tableId)
 		throws NoSuchTableException {
 		return findByPrimaryKey((Serializable)tableId);
-	}
-
-	/**
-	 * Returns the expando table with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the expando table
-	 * @return the expando table, or <code>null</code> if a expando table with the primary key could not be found
-	 */
-	@Override
-	public ExpandoTable fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ExpandoTableModelImpl.ENTITY_CACHE_ENABLED,
-				ExpandoTableImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		ExpandoTable expandoTable = (ExpandoTable)serializable;
-
-		if (expandoTable == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				expandoTable = (ExpandoTable)session.get(ExpandoTableImpl.class,
-						primaryKey);
-
-				if (expandoTable != null) {
-					cacheResult(expandoTable);
-				}
-				else {
-					entityCache.putResult(ExpandoTableModelImpl.ENTITY_CACHE_ENABLED,
-						ExpandoTableImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ExpandoTableModelImpl.ENTITY_CACHE_ENABLED,
-					ExpandoTableImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return expandoTable;
 	}
 
 	/**

@@ -605,6 +605,8 @@ public class UserTrackerPathPersistenceImpl extends BasePersistenceImpl<UserTrac
 
 	public UserTrackerPathPersistenceImpl() {
 		setModelClass(UserTrackerPath.class);
+		setModelImplClass(UserTrackerPathImpl.class);
+		setEntityCacheEnabled(UserTrackerPathModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -753,6 +755,11 @@ public class UserTrackerPathPersistenceImpl extends BasePersistenceImpl<UserTrac
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -907,54 +914,6 @@ public class UserTrackerPathPersistenceImpl extends BasePersistenceImpl<UserTrac
 	public UserTrackerPath findByPrimaryKey(long userTrackerPathId)
 		throws NoSuchUserTrackerPathException {
 		return findByPrimaryKey((Serializable)userTrackerPathId);
-	}
-
-	/**
-	 * Returns the user tracker path with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the user tracker path
-	 * @return the user tracker path, or <code>null</code> if a user tracker path with the primary key could not be found
-	 */
-	@Override
-	public UserTrackerPath fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(UserTrackerPathModelImpl.ENTITY_CACHE_ENABLED,
-				UserTrackerPathImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		UserTrackerPath userTrackerPath = (UserTrackerPath)serializable;
-
-		if (userTrackerPath == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				userTrackerPath = (UserTrackerPath)session.get(UserTrackerPathImpl.class,
-						primaryKey);
-
-				if (userTrackerPath != null) {
-					cacheResult(userTrackerPath);
-				}
-				else {
-					entityCache.putResult(UserTrackerPathModelImpl.ENTITY_CACHE_ENABLED,
-						UserTrackerPathImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(UserTrackerPathModelImpl.ENTITY_CACHE_ENABLED,
-					UserTrackerPathImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return userTrackerPath;
 	}
 
 	/**

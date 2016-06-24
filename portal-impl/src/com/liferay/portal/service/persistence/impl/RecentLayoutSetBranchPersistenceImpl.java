@@ -1857,6 +1857,8 @@ public class RecentLayoutSetBranchPersistenceImpl extends BasePersistenceImpl<Re
 
 	public RecentLayoutSetBranchPersistenceImpl() {
 		setModelClass(RecentLayoutSetBranch.class);
+		setModelImplClass(RecentLayoutSetBranchImpl.class);
+		setEntityCacheEnabled(RecentLayoutSetBranchModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2072,6 +2074,11 @@ public class RecentLayoutSetBranchPersistenceImpl extends BasePersistenceImpl<Re
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected RecentLayoutSetBranch removeImpl(
 		RecentLayoutSetBranch recentLayoutSetBranch) {
 		recentLayoutSetBranch = toUnwrappedModel(recentLayoutSetBranch);
@@ -2266,54 +2273,6 @@ public class RecentLayoutSetBranchPersistenceImpl extends BasePersistenceImpl<Re
 	public RecentLayoutSetBranch findByPrimaryKey(long recentLayoutSetBranchId)
 		throws NoSuchRecentLayoutSetBranchException {
 		return findByPrimaryKey((Serializable)recentLayoutSetBranchId);
-	}
-
-	/**
-	 * Returns the recent layout set branch with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the recent layout set branch
-	 * @return the recent layout set branch, or <code>null</code> if a recent layout set branch with the primary key could not be found
-	 */
-	@Override
-	public RecentLayoutSetBranch fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(RecentLayoutSetBranchModelImpl.ENTITY_CACHE_ENABLED,
-				RecentLayoutSetBranchImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		RecentLayoutSetBranch recentLayoutSetBranch = (RecentLayoutSetBranch)serializable;
-
-		if (recentLayoutSetBranch == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				recentLayoutSetBranch = (RecentLayoutSetBranch)session.get(RecentLayoutSetBranchImpl.class,
-						primaryKey);
-
-				if (recentLayoutSetBranch != null) {
-					cacheResult(recentLayoutSetBranch);
-				}
-				else {
-					entityCache.putResult(RecentLayoutSetBranchModelImpl.ENTITY_CACHE_ENABLED,
-						RecentLayoutSetBranchImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(RecentLayoutSetBranchModelImpl.ENTITY_CACHE_ENABLED,
-					RecentLayoutSetBranchImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return recentLayoutSetBranch;
 	}
 
 	/**

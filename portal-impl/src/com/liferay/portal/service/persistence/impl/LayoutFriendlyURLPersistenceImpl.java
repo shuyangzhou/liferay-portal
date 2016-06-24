@@ -4844,6 +4844,8 @@ public class LayoutFriendlyURLPersistenceImpl extends BasePersistenceImpl<Layout
 
 	public LayoutFriendlyURLPersistenceImpl() {
 		setModelClass(LayoutFriendlyURL.class);
+		setModelImplClass(LayoutFriendlyURLImpl.class);
+		setEntityCacheEnabled(LayoutFriendlyURLModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -5164,6 +5166,11 @@ public class LayoutFriendlyURLPersistenceImpl extends BasePersistenceImpl<Layout
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected LayoutFriendlyURL removeImpl(LayoutFriendlyURL layoutFriendlyURL) {
 		layoutFriendlyURL = toUnwrappedModel(layoutFriendlyURL);
 
@@ -5471,54 +5478,6 @@ public class LayoutFriendlyURLPersistenceImpl extends BasePersistenceImpl<Layout
 	public LayoutFriendlyURL findByPrimaryKey(long layoutFriendlyURLId)
 		throws NoSuchLayoutFriendlyURLException {
 		return findByPrimaryKey((Serializable)layoutFriendlyURLId);
-	}
-
-	/**
-	 * Returns the layout friendly u r l with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the layout friendly u r l
-	 * @return the layout friendly u r l, or <code>null</code> if a layout friendly u r l with the primary key could not be found
-	 */
-	@Override
-	public LayoutFriendlyURL fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(LayoutFriendlyURLModelImpl.ENTITY_CACHE_ENABLED,
-				LayoutFriendlyURLImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		LayoutFriendlyURL layoutFriendlyURL = (LayoutFriendlyURL)serializable;
-
-		if (layoutFriendlyURL == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				layoutFriendlyURL = (LayoutFriendlyURL)session.get(LayoutFriendlyURLImpl.class,
-						primaryKey);
-
-				if (layoutFriendlyURL != null) {
-					cacheResult(layoutFriendlyURL);
-				}
-				else {
-					entityCache.putResult(LayoutFriendlyURLModelImpl.ENTITY_CACHE_ENABLED,
-						LayoutFriendlyURLImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(LayoutFriendlyURLModelImpl.ENTITY_CACHE_ENABLED,
-					LayoutFriendlyURLImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return layoutFriendlyURL;
 	}
 
 	/**

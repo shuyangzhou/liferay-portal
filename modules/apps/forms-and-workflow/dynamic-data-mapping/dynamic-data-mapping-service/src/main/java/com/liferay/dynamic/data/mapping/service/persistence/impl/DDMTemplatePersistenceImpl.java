@@ -11872,6 +11872,8 @@ public class DDMTemplatePersistenceImpl extends BasePersistenceImpl<DDMTemplate>
 
 	public DDMTemplatePersistenceImpl() {
 		setModelClass(DDMTemplate.class);
+		setModelImplClass(DDMTemplateImpl.class);
+		setEntityCacheEnabled(DDMTemplateModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -12167,6 +12169,11 @@ public class DDMTemplatePersistenceImpl extends BasePersistenceImpl<DDMTemplate>
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -12616,54 +12623,6 @@ public class DDMTemplatePersistenceImpl extends BasePersistenceImpl<DDMTemplate>
 	public DDMTemplate findByPrimaryKey(long templateId)
 		throws NoSuchTemplateException {
 		return findByPrimaryKey((Serializable)templateId);
-	}
-
-	/**
-	 * Returns the d d m template with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the d d m template
-	 * @return the d d m template, or <code>null</code> if a d d m template with the primary key could not be found
-	 */
-	@Override
-	public DDMTemplate fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DDMTemplateModelImpl.ENTITY_CACHE_ENABLED,
-				DDMTemplateImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		DDMTemplate ddmTemplate = (DDMTemplate)serializable;
-
-		if (ddmTemplate == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				ddmTemplate = (DDMTemplate)session.get(DDMTemplateImpl.class,
-						primaryKey);
-
-				if (ddmTemplate != null) {
-					cacheResult(ddmTemplate);
-				}
-				else {
-					entityCache.putResult(DDMTemplateModelImpl.ENTITY_CACHE_ENABLED,
-						DDMTemplateImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(DDMTemplateModelImpl.ENTITY_CACHE_ENABLED,
-					DDMTemplateImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return ddmTemplate;
 	}
 
 	/**

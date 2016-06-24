@@ -2579,6 +2579,8 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 
 	public TeamPersistenceImpl() {
 		setModelClass(Team.class);
+		setModelImplClass(TeamImpl.class);
+		setEntityCacheEnabled(TeamModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2821,6 +2823,11 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected Team removeImpl(Team team) {
 		team = toUnwrappedModel(team);
 
@@ -3041,53 +3048,6 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 	@Override
 	public Team findByPrimaryKey(long teamId) throws NoSuchTeamException {
 		return findByPrimaryKey((Serializable)teamId);
-	}
-
-	/**
-	 * Returns the team with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the team
-	 * @return the team, or <code>null</code> if a team with the primary key could not be found
-	 */
-	@Override
-	public Team fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(TeamModelImpl.ENTITY_CACHE_ENABLED,
-				TeamImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Team team = (Team)serializable;
-
-		if (team == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				team = (Team)session.get(TeamImpl.class, primaryKey);
-
-				if (team != null) {
-					cacheResult(team);
-				}
-				else {
-					entityCache.putResult(TeamModelImpl.ENTITY_CACHE_ENABLED,
-						TeamImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(TeamModelImpl.ENTITY_CACHE_ENABLED,
-					TeamImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return team;
 	}
 
 	/**

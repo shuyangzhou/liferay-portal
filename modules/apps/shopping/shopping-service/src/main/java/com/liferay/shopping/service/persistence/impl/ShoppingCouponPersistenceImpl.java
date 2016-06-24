@@ -831,6 +831,8 @@ public class ShoppingCouponPersistenceImpl extends BasePersistenceImpl<ShoppingC
 
 	public ShoppingCouponPersistenceImpl() {
 		setModelClass(ShoppingCoupon.class);
+		setModelImplClass(ShoppingCouponImpl.class);
+		setEntityCacheEnabled(ShoppingCouponModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1026,6 +1028,11 @@ public class ShoppingCouponPersistenceImpl extends BasePersistenceImpl<ShoppingC
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected ShoppingCoupon removeImpl(ShoppingCoupon shoppingCoupon) {
 		shoppingCoupon = toUnwrappedModel(shoppingCoupon);
 
@@ -1213,54 +1220,6 @@ public class ShoppingCouponPersistenceImpl extends BasePersistenceImpl<ShoppingC
 	public ShoppingCoupon findByPrimaryKey(long couponId)
 		throws NoSuchCouponException {
 		return findByPrimaryKey((Serializable)couponId);
-	}
-
-	/**
-	 * Returns the shopping coupon with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the shopping coupon
-	 * @return the shopping coupon, or <code>null</code> if a shopping coupon with the primary key could not be found
-	 */
-	@Override
-	public ShoppingCoupon fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ShoppingCouponModelImpl.ENTITY_CACHE_ENABLED,
-				ShoppingCouponImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		ShoppingCoupon shoppingCoupon = (ShoppingCoupon)serializable;
-
-		if (shoppingCoupon == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				shoppingCoupon = (ShoppingCoupon)session.get(ShoppingCouponImpl.class,
-						primaryKey);
-
-				if (shoppingCoupon != null) {
-					cacheResult(shoppingCoupon);
-				}
-				else {
-					entityCache.putResult(ShoppingCouponModelImpl.ENTITY_CACHE_ENABLED,
-						ShoppingCouponImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ShoppingCouponModelImpl.ENTITY_CACHE_ENABLED,
-					ShoppingCouponImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return shoppingCoupon;
 	}
 
 	/**

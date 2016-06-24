@@ -836,6 +836,8 @@ public class PasswordPolicyRelPersistenceImpl extends BasePersistenceImpl<Passwo
 
 	public PasswordPolicyRelPersistenceImpl() {
 		setModelClass(PasswordPolicyRel.class);
+		setModelImplClass(PasswordPolicyRelImpl.class);
+		setEntityCacheEnabled(PasswordPolicyRelModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1048,6 +1050,11 @@ public class PasswordPolicyRelPersistenceImpl extends BasePersistenceImpl<Passwo
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected PasswordPolicyRel removeImpl(PasswordPolicyRel passwordPolicyRel) {
 		passwordPolicyRel = toUnwrappedModel(passwordPolicyRel);
 
@@ -1205,54 +1212,6 @@ public class PasswordPolicyRelPersistenceImpl extends BasePersistenceImpl<Passwo
 	public PasswordPolicyRel findByPrimaryKey(long passwordPolicyRelId)
 		throws NoSuchPasswordPolicyRelException {
 		return findByPrimaryKey((Serializable)passwordPolicyRelId);
-	}
-
-	/**
-	 * Returns the password policy rel with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the password policy rel
-	 * @return the password policy rel, or <code>null</code> if a password policy rel with the primary key could not be found
-	 */
-	@Override
-	public PasswordPolicyRel fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(PasswordPolicyRelModelImpl.ENTITY_CACHE_ENABLED,
-				PasswordPolicyRelImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		PasswordPolicyRel passwordPolicyRel = (PasswordPolicyRel)serializable;
-
-		if (passwordPolicyRel == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				passwordPolicyRel = (PasswordPolicyRel)session.get(PasswordPolicyRelImpl.class,
-						primaryKey);
-
-				if (passwordPolicyRel != null) {
-					cacheResult(passwordPolicyRel);
-				}
-				else {
-					entityCache.putResult(PasswordPolicyRelModelImpl.ENTITY_CACHE_ENABLED,
-						PasswordPolicyRelImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(PasswordPolicyRelModelImpl.ENTITY_CACHE_ENABLED,
-					PasswordPolicyRelImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return passwordPolicyRel;
 	}
 
 	/**

@@ -2256,6 +2256,8 @@ public class RepositoryEntryPersistenceImpl extends BasePersistenceImpl<Reposito
 
 	public RepositoryEntryPersistenceImpl() {
 		setModelClass(RepositoryEntry.class);
+		setModelImplClass(RepositoryEntryImpl.class);
+		setEntityCacheEnabled(RepositoryEntryModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2517,6 +2519,11 @@ public class RepositoryEntryPersistenceImpl extends BasePersistenceImpl<Reposito
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected RepositoryEntry removeImpl(RepositoryEntry repositoryEntry) {
 		repositoryEntry = toUnwrappedModel(repositoryEntry);
 
@@ -2743,54 +2750,6 @@ public class RepositoryEntryPersistenceImpl extends BasePersistenceImpl<Reposito
 	public RepositoryEntry findByPrimaryKey(long repositoryEntryId)
 		throws NoSuchRepositoryEntryException {
 		return findByPrimaryKey((Serializable)repositoryEntryId);
-	}
-
-	/**
-	 * Returns the repository entry with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the repository entry
-	 * @return the repository entry, or <code>null</code> if a repository entry with the primary key could not be found
-	 */
-	@Override
-	public RepositoryEntry fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(RepositoryEntryModelImpl.ENTITY_CACHE_ENABLED,
-				RepositoryEntryImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		RepositoryEntry repositoryEntry = (RepositoryEntry)serializable;
-
-		if (repositoryEntry == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				repositoryEntry = (RepositoryEntry)session.get(RepositoryEntryImpl.class,
-						primaryKey);
-
-				if (repositoryEntry != null) {
-					cacheResult(repositoryEntry);
-				}
-				else {
-					entityCache.putResult(RepositoryEntryModelImpl.ENTITY_CACHE_ENABLED,
-						RepositoryEntryImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(RepositoryEntryModelImpl.ENTITY_CACHE_ENABLED,
-					RepositoryEntryImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return repositoryEntry;
 	}
 
 	/**

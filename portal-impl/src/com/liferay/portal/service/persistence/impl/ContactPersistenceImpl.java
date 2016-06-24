@@ -1633,6 +1633,8 @@ public class ContactPersistenceImpl extends BasePersistenceImpl<Contact>
 
 	public ContactPersistenceImpl() {
 		setModelClass(Contact.class);
+		setModelImplClass(ContactImpl.class);
+		setEntityCacheEnabled(ContactModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1776,6 +1778,11 @@ public class ContactPersistenceImpl extends BasePersistenceImpl<Contact>
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -2010,53 +2017,6 @@ public class ContactPersistenceImpl extends BasePersistenceImpl<Contact>
 	public Contact findByPrimaryKey(long contactId)
 		throws NoSuchContactException {
 		return findByPrimaryKey((Serializable)contactId);
-	}
-
-	/**
-	 * Returns the contact with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the contact
-	 * @return the contact, or <code>null</code> if a contact with the primary key could not be found
-	 */
-	@Override
-	public Contact fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ContactModelImpl.ENTITY_CACHE_ENABLED,
-				ContactImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Contact contact = (Contact)serializable;
-
-		if (contact == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				contact = (Contact)session.get(ContactImpl.class, primaryKey);
-
-				if (contact != null) {
-					cacheResult(contact);
-				}
-				else {
-					entityCache.putResult(ContactModelImpl.ENTITY_CACHE_ENABLED,
-						ContactImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ContactModelImpl.ENTITY_CACHE_ENABLED,
-					ContactImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return contact;
 	}
 
 	/**

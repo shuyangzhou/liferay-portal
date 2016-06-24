@@ -1732,6 +1732,8 @@ public class WSRPConsumerPersistenceImpl extends BasePersistenceImpl<WSRPConsume
 
 	public WSRPConsumerPersistenceImpl() {
 		setModelClass(WSRPConsumer.class);
+		setModelImplClass(WSRPConsumerImpl.class);
+		setEntityCacheEnabled(WSRPConsumerModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1882,6 +1884,11 @@ public class WSRPConsumerPersistenceImpl extends BasePersistenceImpl<WSRPConsume
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -2108,54 +2115,6 @@ public class WSRPConsumerPersistenceImpl extends BasePersistenceImpl<WSRPConsume
 	public WSRPConsumer findByPrimaryKey(long wsrpConsumerId)
 		throws NoSuchConsumerException {
 		return findByPrimaryKey((Serializable)wsrpConsumerId);
-	}
-
-	/**
-	 * Returns the w s r p consumer with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the w s r p consumer
-	 * @return the w s r p consumer, or <code>null</code> if a w s r p consumer with the primary key could not be found
-	 */
-	@Override
-	public WSRPConsumer fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(WSRPConsumerModelImpl.ENTITY_CACHE_ENABLED,
-				WSRPConsumerImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		WSRPConsumer wsrpConsumer = (WSRPConsumer)serializable;
-
-		if (wsrpConsumer == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				wsrpConsumer = (WSRPConsumer)session.get(WSRPConsumerImpl.class,
-						primaryKey);
-
-				if (wsrpConsumer != null) {
-					cacheResult(wsrpConsumer);
-				}
-				else {
-					entityCache.putResult(WSRPConsumerModelImpl.ENTITY_CACHE_ENABLED,
-						WSRPConsumerImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(WSRPConsumerModelImpl.ENTITY_CACHE_ENABLED,
-					WSRPConsumerImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return wsrpConsumer;
 	}
 
 	/**

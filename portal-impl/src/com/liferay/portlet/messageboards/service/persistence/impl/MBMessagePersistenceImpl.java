@@ -18895,6 +18895,8 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 	public MBMessagePersistenceImpl() {
 		setModelClass(MBMessage.class);
+		setModelImplClass(MBMessageImpl.class);
+		setEntityCacheEnabled(MBMessageModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -19101,6 +19103,11 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -19858,54 +19865,6 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	public MBMessage findByPrimaryKey(long messageId)
 		throws NoSuchMessageException {
 		return findByPrimaryKey((Serializable)messageId);
-	}
-
-	/**
-	 * Returns the message-boards message with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the message-boards message
-	 * @return the message-boards message, or <code>null</code> if a message-boards message with the primary key could not be found
-	 */
-	@Override
-	public MBMessage fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(MBMessageModelImpl.ENTITY_CACHE_ENABLED,
-				MBMessageImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		MBMessage mbMessage = (MBMessage)serializable;
-
-		if (mbMessage == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				mbMessage = (MBMessage)session.get(MBMessageImpl.class,
-						primaryKey);
-
-				if (mbMessage != null) {
-					cacheResult(mbMessage);
-				}
-				else {
-					entityCache.putResult(MBMessageModelImpl.ENTITY_CACHE_ENABLED,
-						MBMessageImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(MBMessageModelImpl.ENTITY_CACHE_ENABLED,
-					MBMessageImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return mbMessage;
 	}
 
 	/**

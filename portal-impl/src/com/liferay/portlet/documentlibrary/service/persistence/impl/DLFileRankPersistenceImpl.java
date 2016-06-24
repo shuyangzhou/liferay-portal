@@ -2480,6 +2480,8 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 
 	public DLFileRankPersistenceImpl() {
 		setModelClass(DLFileRank.class);
+		setModelImplClass(DLFileRankImpl.class);
+		setEntityCacheEnabled(DLFileRankModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2690,6 +2692,11 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -2906,54 +2913,6 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 	public DLFileRank findByPrimaryKey(long fileRankId)
 		throws NoSuchFileRankException {
 		return findByPrimaryKey((Serializable)fileRankId);
-	}
-
-	/**
-	 * Returns the document library file rank with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the document library file rank
-	 * @return the document library file rank, or <code>null</code> if a document library file rank with the primary key could not be found
-	 */
-	@Override
-	public DLFileRank fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DLFileRankModelImpl.ENTITY_CACHE_ENABLED,
-				DLFileRankImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		DLFileRank dlFileRank = (DLFileRank)serializable;
-
-		if (dlFileRank == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				dlFileRank = (DLFileRank)session.get(DLFileRankImpl.class,
-						primaryKey);
-
-				if (dlFileRank != null) {
-					cacheResult(dlFileRank);
-				}
-				else {
-					entityCache.putResult(DLFileRankModelImpl.ENTITY_CACHE_ENABLED,
-						DLFileRankImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(DLFileRankModelImpl.ENTITY_CACHE_ENABLED,
-					DLFileRankImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return dlFileRank;
 	}
 
 	/**

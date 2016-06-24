@@ -5674,6 +5674,8 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 
 	public SocialRelationPersistenceImpl() {
 		setModelClass(SocialRelation.class);
+		setModelImplClass(SocialRelationImpl.class);
+		setEntityCacheEnabled(SocialRelationModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -5890,6 +5892,11 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -6225,54 +6232,6 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	public SocialRelation findByPrimaryKey(long relationId)
 		throws NoSuchRelationException {
 		return findByPrimaryKey((Serializable)relationId);
-	}
-
-	/**
-	 * Returns the social relation with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the social relation
-	 * @return the social relation, or <code>null</code> if a social relation with the primary key could not be found
-	 */
-	@Override
-	public SocialRelation fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(SocialRelationModelImpl.ENTITY_CACHE_ENABLED,
-				SocialRelationImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		SocialRelation socialRelation = (SocialRelation)serializable;
-
-		if (socialRelation == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				socialRelation = (SocialRelation)session.get(SocialRelationImpl.class,
-						primaryKey);
-
-				if (socialRelation != null) {
-					cacheResult(socialRelation);
-				}
-				else {
-					entityCache.putResult(SocialRelationModelImpl.ENTITY_CACHE_ENABLED,
-						SocialRelationImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(SocialRelationModelImpl.ENTITY_CACHE_ENABLED,
-					SocialRelationImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return socialRelation;
 	}
 
 	/**

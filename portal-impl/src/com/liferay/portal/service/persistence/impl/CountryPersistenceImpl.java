@@ -1279,6 +1279,8 @@ public class CountryPersistenceImpl extends BasePersistenceImpl<Country>
 
 	public CountryPersistenceImpl() {
 		setModelClass(Country.class);
+		setModelImplClass(CountryImpl.class);
+		setEntityCacheEnabled(CountryModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1532,6 +1534,11 @@ public class CountryPersistenceImpl extends BasePersistenceImpl<Country>
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected Country removeImpl(Country country) {
 		country = toUnwrappedModel(country);
 
@@ -1686,53 +1693,6 @@ public class CountryPersistenceImpl extends BasePersistenceImpl<Country>
 	public Country findByPrimaryKey(long countryId)
 		throws NoSuchCountryException {
 		return findByPrimaryKey((Serializable)countryId);
-	}
-
-	/**
-	 * Returns the country with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the country
-	 * @return the country, or <code>null</code> if a country with the primary key could not be found
-	 */
-	@Override
-	public Country fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(CountryModelImpl.ENTITY_CACHE_ENABLED,
-				CountryImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Country country = (Country)serializable;
-
-		if (country == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				country = (Country)session.get(CountryImpl.class, primaryKey);
-
-				if (country != null) {
-					cacheResult(country);
-				}
-				else {
-					entityCache.putResult(CountryModelImpl.ENTITY_CACHE_ENABLED,
-						CountryImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(CountryModelImpl.ENTITY_CACHE_ENABLED,
-					CountryImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return country;
 	}
 
 	/**

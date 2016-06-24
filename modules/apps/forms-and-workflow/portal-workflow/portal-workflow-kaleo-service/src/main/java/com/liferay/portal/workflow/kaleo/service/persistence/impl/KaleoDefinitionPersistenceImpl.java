@@ -2657,6 +2657,8 @@ public class KaleoDefinitionPersistenceImpl extends BasePersistenceImpl<KaleoDef
 
 	public KaleoDefinitionPersistenceImpl() {
 		setModelClass(KaleoDefinition.class);
+		setModelImplClass(KaleoDefinitionImpl.class);
+		setEntityCacheEnabled(KaleoDefinitionModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2870,6 +2872,11 @@ public class KaleoDefinitionPersistenceImpl extends BasePersistenceImpl<KaleoDef
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -3121,54 +3128,6 @@ public class KaleoDefinitionPersistenceImpl extends BasePersistenceImpl<KaleoDef
 	public KaleoDefinition findByPrimaryKey(long kaleoDefinitionId)
 		throws NoSuchDefinitionException {
 		return findByPrimaryKey((Serializable)kaleoDefinitionId);
-	}
-
-	/**
-	 * Returns the kaleo definition with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the kaleo definition
-	 * @return the kaleo definition, or <code>null</code> if a kaleo definition with the primary key could not be found
-	 */
-	@Override
-	public KaleoDefinition fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(KaleoDefinitionModelImpl.ENTITY_CACHE_ENABLED,
-				KaleoDefinitionImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		KaleoDefinition kaleoDefinition = (KaleoDefinition)serializable;
-
-		if (kaleoDefinition == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				kaleoDefinition = (KaleoDefinition)session.get(KaleoDefinitionImpl.class,
-						primaryKey);
-
-				if (kaleoDefinition != null) {
-					cacheResult(kaleoDefinition);
-				}
-				else {
-					entityCache.putResult(KaleoDefinitionModelImpl.ENTITY_CACHE_ENABLED,
-						KaleoDefinitionImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(KaleoDefinitionModelImpl.ENTITY_CACHE_ENABLED,
-					KaleoDefinitionImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return kaleoDefinition;
 	}
 
 	/**
