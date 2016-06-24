@@ -1899,6 +1899,8 @@ public class ShoppingItemPersistenceImpl extends BasePersistenceImpl<ShoppingIte
 
 	public ShoppingItemPersistenceImpl() {
 		setModelClass(ShoppingItem.class);
+		setModelImplClass(ShoppingItemImpl.class);
+		setEntityCacheEnabled(ShoppingItemModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2211,6 +2213,11 @@ public class ShoppingItemPersistenceImpl extends BasePersistenceImpl<ShoppingIte
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected ShoppingItem removeImpl(ShoppingItem shoppingItem) {
 		shoppingItem = toUnwrappedModel(shoppingItem);
 
@@ -2417,54 +2424,6 @@ public class ShoppingItemPersistenceImpl extends BasePersistenceImpl<ShoppingIte
 	public ShoppingItem findByPrimaryKey(long itemId)
 		throws NoSuchItemException {
 		return findByPrimaryKey((Serializable)itemId);
-	}
-
-	/**
-	 * Returns the shopping item with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the shopping item
-	 * @return the shopping item, or <code>null</code> if a shopping item with the primary key could not be found
-	 */
-	@Override
-	public ShoppingItem fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
-				ShoppingItemImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		ShoppingItem shoppingItem = (ShoppingItem)serializable;
-
-		if (shoppingItem == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				shoppingItem = (ShoppingItem)session.get(ShoppingItemImpl.class,
-						primaryKey);
-
-				if (shoppingItem != null) {
-					cacheResult(shoppingItem);
-				}
-				else {
-					entityCache.putResult(ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
-						ShoppingItemImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ShoppingItemModelImpl.ENTITY_CACHE_ENABLED,
-					ShoppingItemImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return shoppingItem;
 	}
 
 	/**

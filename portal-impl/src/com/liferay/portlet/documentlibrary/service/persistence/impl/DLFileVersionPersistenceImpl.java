@@ -5690,6 +5690,8 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 
 	public DLFileVersionPersistenceImpl() {
 		setModelClass(DLFileVersion.class);
+		setModelImplClass(DLFileVersionImpl.class);
+		setEntityCacheEnabled(DLFileVersionModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -5947,6 +5949,11 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -6294,54 +6301,6 @@ public class DLFileVersionPersistenceImpl extends BasePersistenceImpl<DLFileVers
 	public DLFileVersion findByPrimaryKey(long fileVersionId)
 		throws NoSuchFileVersionException {
 		return findByPrimaryKey((Serializable)fileVersionId);
-	}
-
-	/**
-	 * Returns the document library file version with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the document library file version
-	 * @return the document library file version, or <code>null</code> if a document library file version with the primary key could not be found
-	 */
-	@Override
-	public DLFileVersion fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DLFileVersionModelImpl.ENTITY_CACHE_ENABLED,
-				DLFileVersionImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		DLFileVersion dlFileVersion = (DLFileVersion)serializable;
-
-		if (dlFileVersion == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				dlFileVersion = (DLFileVersion)session.get(DLFileVersionImpl.class,
-						primaryKey);
-
-				if (dlFileVersion != null) {
-					cacheResult(dlFileVersion);
-				}
-				else {
-					entityCache.putResult(DLFileVersionModelImpl.ENTITY_CACHE_ENABLED,
-						DLFileVersionImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(DLFileVersionModelImpl.ENTITY_CACHE_ENABLED,
-					DLFileVersionImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return dlFileVersion;
 	}
 
 	/**

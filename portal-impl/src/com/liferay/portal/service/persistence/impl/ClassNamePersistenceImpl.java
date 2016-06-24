@@ -317,6 +317,8 @@ public class ClassNamePersistenceImpl extends BasePersistenceImpl<ClassName>
 
 	public ClassNamePersistenceImpl() {
 		setModelClass(ClassName.class);
+		setModelImplClass(ClassNameImpl.class);
+		setEntityCacheEnabled(ClassNameModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -508,6 +510,11 @@ public class ClassNamePersistenceImpl extends BasePersistenceImpl<ClassName>
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected ClassName removeImpl(ClassName className) {
 		className = toUnwrappedModel(className);
 
@@ -637,54 +644,6 @@ public class ClassNamePersistenceImpl extends BasePersistenceImpl<ClassName>
 	public ClassName findByPrimaryKey(long classNameId)
 		throws NoSuchClassNameException {
 		return findByPrimaryKey((Serializable)classNameId);
-	}
-
-	/**
-	 * Returns the class name with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the class name
-	 * @return the class name, or <code>null</code> if a class name with the primary key could not be found
-	 */
-	@Override
-	public ClassName fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ClassNameModelImpl.ENTITY_CACHE_ENABLED,
-				ClassNameImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		ClassName className = (ClassName)serializable;
-
-		if (className == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				className = (ClassName)session.get(ClassNameImpl.class,
-						primaryKey);
-
-				if (className != null) {
-					cacheResult(className);
-				}
-				else {
-					entityCache.putResult(ClassNameModelImpl.ENTITY_CACHE_ENABLED,
-						ClassNameImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ClassNameModelImpl.ENTITY_CACHE_ENABLED,
-					ClassNameImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return className;
 	}
 
 	/**

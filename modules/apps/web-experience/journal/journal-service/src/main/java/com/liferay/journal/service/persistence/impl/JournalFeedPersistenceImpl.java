@@ -2592,6 +2592,8 @@ public class JournalFeedPersistenceImpl extends BasePersistenceImpl<JournalFeed>
 
 	public JournalFeedPersistenceImpl() {
 		setModelClass(JournalFeed.class);
+		setModelImplClass(JournalFeedImpl.class);
+		setEntityCacheEnabled(JournalFeedModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2849,6 +2851,11 @@ public class JournalFeedPersistenceImpl extends BasePersistenceImpl<JournalFeed>
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected JournalFeed removeImpl(JournalFeed journalFeed) {
 		journalFeed = toUnwrappedModel(journalFeed);
 
@@ -3083,54 +3090,6 @@ public class JournalFeedPersistenceImpl extends BasePersistenceImpl<JournalFeed>
 	@Override
 	public JournalFeed findByPrimaryKey(long id) throws NoSuchFeedException {
 		return findByPrimaryKey((Serializable)id);
-	}
-
-	/**
-	 * Returns the journal feed with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the journal feed
-	 * @return the journal feed, or <code>null</code> if a journal feed with the primary key could not be found
-	 */
-	@Override
-	public JournalFeed fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(JournalFeedModelImpl.ENTITY_CACHE_ENABLED,
-				JournalFeedImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		JournalFeed journalFeed = (JournalFeed)serializable;
-
-		if (journalFeed == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				journalFeed = (JournalFeed)session.get(JournalFeedImpl.class,
-						primaryKey);
-
-				if (journalFeed != null) {
-					cacheResult(journalFeed);
-				}
-				else {
-					entityCache.putResult(JournalFeedModelImpl.ENTITY_CACHE_ENABLED,
-						JournalFeedImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(JournalFeedModelImpl.ENTITY_CACHE_ENABLED,
-					JournalFeedImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return journalFeed;
 	}
 
 	/**

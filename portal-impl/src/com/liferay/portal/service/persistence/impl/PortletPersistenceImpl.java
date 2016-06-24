@@ -844,6 +844,8 @@ public class PortletPersistenceImpl extends BasePersistenceImpl<Portlet>
 
 	public PortletPersistenceImpl() {
 		setModelClass(Portlet.class);
+		setModelImplClass(PortletImpl.class);
+		setEntityCacheEnabled(PortletModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1047,6 +1049,11 @@ public class PortletPersistenceImpl extends BasePersistenceImpl<Portlet>
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected Portlet removeImpl(Portlet portlet) {
 		portlet = toUnwrappedModel(portlet);
 
@@ -1197,53 +1204,6 @@ public class PortletPersistenceImpl extends BasePersistenceImpl<Portlet>
 	@Override
 	public Portlet findByPrimaryKey(long id) throws NoSuchPortletException {
 		return findByPrimaryKey((Serializable)id);
-	}
-
-	/**
-	 * Returns the portlet with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the portlet
-	 * @return the portlet, or <code>null</code> if a portlet with the primary key could not be found
-	 */
-	@Override
-	public Portlet fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(PortletModelImpl.ENTITY_CACHE_ENABLED,
-				PortletImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Portlet portlet = (Portlet)serializable;
-
-		if (portlet == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				portlet = (Portlet)session.get(PortletImpl.class, primaryKey);
-
-				if (portlet != null) {
-					cacheResult(portlet);
-				}
-				else {
-					entityCache.putResult(PortletModelImpl.ENTITY_CACHE_ENABLED,
-						PortletImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(PortletModelImpl.ENTITY_CACHE_ENABLED,
-					PortletImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return portlet;
 	}
 
 	/**

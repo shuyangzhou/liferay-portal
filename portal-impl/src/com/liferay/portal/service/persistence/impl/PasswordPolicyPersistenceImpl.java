@@ -3411,6 +3411,8 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 
 	public PasswordPolicyPersistenceImpl() {
 		setModelClass(PasswordPolicy.class);
+		setModelImplClass(PasswordPolicyImpl.class);
+		setEntityCacheEnabled(PasswordPolicyModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -3671,6 +3673,11 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected PasswordPolicy removeImpl(PasswordPolicy passwordPolicy) {
 		passwordPolicy = toUnwrappedModel(passwordPolicy);
 
@@ -3919,54 +3926,6 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 	public PasswordPolicy findByPrimaryKey(long passwordPolicyId)
 		throws NoSuchPasswordPolicyException {
 		return findByPrimaryKey((Serializable)passwordPolicyId);
-	}
-
-	/**
-	 * Returns the password policy with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the password policy
-	 * @return the password policy, or <code>null</code> if a password policy with the primary key could not be found
-	 */
-	@Override
-	public PasswordPolicy fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(PasswordPolicyModelImpl.ENTITY_CACHE_ENABLED,
-				PasswordPolicyImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		PasswordPolicy passwordPolicy = (PasswordPolicy)serializable;
-
-		if (passwordPolicy == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				passwordPolicy = (PasswordPolicy)session.get(PasswordPolicyImpl.class,
-						primaryKey);
-
-				if (passwordPolicy != null) {
-					cacheResult(passwordPolicy);
-				}
-				else {
-					entityCache.putResult(PasswordPolicyModelImpl.ENTITY_CACHE_ENABLED,
-						PasswordPolicyImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(PasswordPolicyModelImpl.ENTITY_CACHE_ENABLED,
-					PasswordPolicyImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return passwordPolicy;
 	}
 
 	/**

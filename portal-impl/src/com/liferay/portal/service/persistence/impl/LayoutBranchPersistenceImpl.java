@@ -2009,6 +2009,8 @@ public class LayoutBranchPersistenceImpl extends BasePersistenceImpl<LayoutBranc
 
 	public LayoutBranchPersistenceImpl() {
 		setModelClass(LayoutBranch.class);
+		setModelImplClass(LayoutBranchImpl.class);
+		setEntityCacheEnabled(LayoutBranchModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2222,6 +2224,11 @@ public class LayoutBranchPersistenceImpl extends BasePersistenceImpl<LayoutBranc
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected LayoutBranch removeImpl(LayoutBranch layoutBranch) {
 		layoutBranch = toUnwrappedModel(layoutBranch);
 
@@ -2425,54 +2432,6 @@ public class LayoutBranchPersistenceImpl extends BasePersistenceImpl<LayoutBranc
 	public LayoutBranch findByPrimaryKey(long layoutBranchId)
 		throws NoSuchLayoutBranchException {
 		return findByPrimaryKey((Serializable)layoutBranchId);
-	}
-
-	/**
-	 * Returns the layout branch with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the layout branch
-	 * @return the layout branch, or <code>null</code> if a layout branch with the primary key could not be found
-	 */
-	@Override
-	public LayoutBranch fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(LayoutBranchModelImpl.ENTITY_CACHE_ENABLED,
-				LayoutBranchImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		LayoutBranch layoutBranch = (LayoutBranch)serializable;
-
-		if (layoutBranch == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				layoutBranch = (LayoutBranch)session.get(LayoutBranchImpl.class,
-						primaryKey);
-
-				if (layoutBranch != null) {
-					cacheResult(layoutBranch);
-				}
-				else {
-					entityCache.putResult(LayoutBranchModelImpl.ENTITY_CACHE_ENABLED,
-						LayoutBranchImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(LayoutBranchModelImpl.ENTITY_CACHE_ENABLED,
-					LayoutBranchImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return layoutBranch;
 	}
 
 	/**

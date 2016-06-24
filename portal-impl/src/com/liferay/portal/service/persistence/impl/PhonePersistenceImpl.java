@@ -3951,6 +3951,8 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 
 	public PhonePersistenceImpl() {
 		setModelClass(Phone.class);
+		setModelImplClass(PhoneImpl.class);
+		setEntityCacheEnabled(PhoneModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -4097,6 +4099,11 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -4401,53 +4408,6 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 	@Override
 	public Phone findByPrimaryKey(long phoneId) throws NoSuchPhoneException {
 		return findByPrimaryKey((Serializable)phoneId);
-	}
-
-	/**
-	 * Returns the phone with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the phone
-	 * @return the phone, or <code>null</code> if a phone with the primary key could not be found
-	 */
-	@Override
-	public Phone fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(PhoneModelImpl.ENTITY_CACHE_ENABLED,
-				PhoneImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Phone phone = (Phone)serializable;
-
-		if (phone == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				phone = (Phone)session.get(PhoneImpl.class, primaryKey);
-
-				if (phone != null) {
-					cacheResult(phone);
-				}
-				else {
-					entityCache.putResult(PhoneModelImpl.ENTITY_CACHE_ENABLED,
-						PhoneImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(PhoneModelImpl.ENTITY_CACHE_ENABLED,
-					PhoneImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return phone;
 	}
 
 	/**

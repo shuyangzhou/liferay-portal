@@ -1718,6 +1718,8 @@ public class ExpandoColumnPersistenceImpl extends BasePersistenceImpl<ExpandoCol
 
 	public ExpandoColumnPersistenceImpl() {
 		setModelClass(ExpandoColumn.class);
+		setModelImplClass(ExpandoColumnImpl.class);
+		setEntityCacheEnabled(ExpandoColumnModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1926,6 +1928,11 @@ public class ExpandoColumnPersistenceImpl extends BasePersistenceImpl<ExpandoCol
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected ExpandoColumn removeImpl(ExpandoColumn expandoColumn) {
 		expandoColumn = toUnwrappedModel(expandoColumn);
 
@@ -2100,54 +2107,6 @@ public class ExpandoColumnPersistenceImpl extends BasePersistenceImpl<ExpandoCol
 	public ExpandoColumn findByPrimaryKey(long columnId)
 		throws NoSuchColumnException {
 		return findByPrimaryKey((Serializable)columnId);
-	}
-
-	/**
-	 * Returns the expando column with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the expando column
-	 * @return the expando column, or <code>null</code> if a expando column with the primary key could not be found
-	 */
-	@Override
-	public ExpandoColumn fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ExpandoColumnModelImpl.ENTITY_CACHE_ENABLED,
-				ExpandoColumnImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		ExpandoColumn expandoColumn = (ExpandoColumn)serializable;
-
-		if (expandoColumn == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				expandoColumn = (ExpandoColumn)session.get(ExpandoColumnImpl.class,
-						primaryKey);
-
-				if (expandoColumn != null) {
-					cacheResult(expandoColumn);
-				}
-				else {
-					entityCache.putResult(ExpandoColumnModelImpl.ENTITY_CACHE_ENABLED,
-						ExpandoColumnImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ExpandoColumnModelImpl.ENTITY_CACHE_ENABLED,
-					ExpandoColumnImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return expandoColumn;
 	}
 
 	/**

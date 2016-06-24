@@ -12913,6 +12913,8 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 
 	public MBThreadPersistenceImpl() {
 		setModelClass(MBThread.class);
+		setModelImplClass(MBThreadImpl.class);
+		setEntityCacheEnabled(MBThreadModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -13151,6 +13153,11 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -13515,53 +13522,6 @@ public class MBThreadPersistenceImpl extends BasePersistenceImpl<MBThread>
 	public MBThread findByPrimaryKey(long threadId)
 		throws NoSuchThreadException {
 		return findByPrimaryKey((Serializable)threadId);
-	}
-
-	/**
-	 * Returns the message boards thread with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the message boards thread
-	 * @return the message boards thread, or <code>null</code> if a message boards thread with the primary key could not be found
-	 */
-	@Override
-	public MBThread fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(MBThreadModelImpl.ENTITY_CACHE_ENABLED,
-				MBThreadImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		MBThread mbThread = (MBThread)serializable;
-
-		if (mbThread == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				mbThread = (MBThread)session.get(MBThreadImpl.class, primaryKey);
-
-				if (mbThread != null) {
-					cacheResult(mbThread);
-				}
-				else {
-					entityCache.putResult(MBThreadModelImpl.ENTITY_CACHE_ENABLED,
-						MBThreadImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(MBThreadModelImpl.ENTITY_CACHE_ENABLED,
-					MBThreadImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return mbThread;
 	}
 
 	/**

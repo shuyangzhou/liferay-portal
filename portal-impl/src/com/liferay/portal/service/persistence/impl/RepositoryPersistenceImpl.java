@@ -2288,6 +2288,8 @@ public class RepositoryPersistenceImpl extends BasePersistenceImpl<Repository>
 
 	public RepositoryPersistenceImpl() {
 		setModelClass(Repository.class);
+		setModelImplClass(RepositoryImpl.class);
+		setEntityCacheEnabled(RepositoryModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2550,6 +2552,11 @@ public class RepositoryPersistenceImpl extends BasePersistenceImpl<Repository>
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected Repository removeImpl(Repository repository) {
 		repository = toUnwrappedModel(repository);
 
@@ -2777,54 +2784,6 @@ public class RepositoryPersistenceImpl extends BasePersistenceImpl<Repository>
 	public Repository findByPrimaryKey(long repositoryId)
 		throws NoSuchRepositoryException {
 		return findByPrimaryKey((Serializable)repositoryId);
-	}
-
-	/**
-	 * Returns the repository with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the repository
-	 * @return the repository, or <code>null</code> if a repository with the primary key could not be found
-	 */
-	@Override
-	public Repository fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(RepositoryModelImpl.ENTITY_CACHE_ENABLED,
-				RepositoryImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Repository repository = (Repository)serializable;
-
-		if (repository == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				repository = (Repository)session.get(RepositoryImpl.class,
-						primaryKey);
-
-				if (repository != null) {
-					cacheResult(repository);
-				}
-				else {
-					entityCache.putResult(RepositoryModelImpl.ENTITY_CACHE_ENABLED,
-						RepositoryImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(RepositoryModelImpl.ENTITY_CACHE_ENABLED,
-					RepositoryImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return repository;
 	}
 
 	/**

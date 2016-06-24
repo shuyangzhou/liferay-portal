@@ -1402,6 +1402,8 @@ public class DDMTemplateVersionPersistenceImpl extends BasePersistenceImpl<DDMTe
 
 	public DDMTemplateVersionPersistenceImpl() {
 		setModelClass(DDMTemplateVersion.class);
+		setModelImplClass(DDMTemplateVersionImpl.class);
+		setEntityCacheEnabled(DDMTemplateVersionModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1614,6 +1616,11 @@ public class DDMTemplateVersionPersistenceImpl extends BasePersistenceImpl<DDMTe
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected DDMTemplateVersion removeImpl(
 		DDMTemplateVersion ddmTemplateVersion) {
 		ddmTemplateVersion = toUnwrappedModel(ddmTemplateVersion);
@@ -1801,54 +1808,6 @@ public class DDMTemplateVersionPersistenceImpl extends BasePersistenceImpl<DDMTe
 	public DDMTemplateVersion findByPrimaryKey(long templateVersionId)
 		throws NoSuchTemplateVersionException {
 		return findByPrimaryKey((Serializable)templateVersionId);
-	}
-
-	/**
-	 * Returns the d d m template version with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the d d m template version
-	 * @return the d d m template version, or <code>null</code> if a d d m template version with the primary key could not be found
-	 */
-	@Override
-	public DDMTemplateVersion fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DDMTemplateVersionModelImpl.ENTITY_CACHE_ENABLED,
-				DDMTemplateVersionImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		DDMTemplateVersion ddmTemplateVersion = (DDMTemplateVersion)serializable;
-
-		if (ddmTemplateVersion == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				ddmTemplateVersion = (DDMTemplateVersion)session.get(DDMTemplateVersionImpl.class,
-						primaryKey);
-
-				if (ddmTemplateVersion != null) {
-					cacheResult(ddmTemplateVersion);
-				}
-				else {
-					entityCache.putResult(DDMTemplateVersionModelImpl.ENTITY_CACHE_ENABLED,
-						DDMTemplateVersionImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(DDMTemplateVersionModelImpl.ENTITY_CACHE_ENABLED,
-					DDMTemplateVersionImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return ddmTemplateVersion;
 	}
 
 	/**

@@ -1313,6 +1313,8 @@ public class ExpandoRowPersistenceImpl extends BasePersistenceImpl<ExpandoRow>
 
 	public ExpandoRowPersistenceImpl() {
 		setModelClass(ExpandoRow.class);
+		setModelImplClass(ExpandoRowImpl.class);
+		setEntityCacheEnabled(ExpandoRowModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1519,6 +1521,11 @@ public class ExpandoRowPersistenceImpl extends BasePersistenceImpl<ExpandoRow>
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected ExpandoRow removeImpl(ExpandoRow expandoRow) {
 		expandoRow = toUnwrappedModel(expandoRow);
 
@@ -1685,54 +1692,6 @@ public class ExpandoRowPersistenceImpl extends BasePersistenceImpl<ExpandoRow>
 	@Override
 	public ExpandoRow findByPrimaryKey(long rowId) throws NoSuchRowException {
 		return findByPrimaryKey((Serializable)rowId);
-	}
-
-	/**
-	 * Returns the expando row with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the expando row
-	 * @return the expando row, or <code>null</code> if a expando row with the primary key could not be found
-	 */
-	@Override
-	public ExpandoRow fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ExpandoRowModelImpl.ENTITY_CACHE_ENABLED,
-				ExpandoRowImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		ExpandoRow expandoRow = (ExpandoRow)serializable;
-
-		if (expandoRow == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				expandoRow = (ExpandoRow)session.get(ExpandoRowImpl.class,
-						primaryKey);
-
-				if (expandoRow != null) {
-					cacheResult(expandoRow);
-				}
-				else {
-					entityCache.putResult(ExpandoRowModelImpl.ENTITY_CACHE_ENABLED,
-						ExpandoRowImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ExpandoRowModelImpl.ENTITY_CACHE_ENABLED,
-					ExpandoRowImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return expandoRow;
 	}
 
 	/**

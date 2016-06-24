@@ -2709,6 +2709,8 @@ public class UserGroupGroupRolePersistenceImpl extends BasePersistenceImpl<UserG
 
 	public UserGroupGroupRolePersistenceImpl() {
 		setModelClass(UserGroupGroupRole.class);
+		setModelImplClass(UserGroupGroupRoleImpl.class);
+		setEntityCacheEnabled(UserGroupGroupRoleModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2857,6 +2859,11 @@ public class UserGroupGroupRolePersistenceImpl extends BasePersistenceImpl<UserG
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -3087,54 +3094,6 @@ public class UserGroupGroupRolePersistenceImpl extends BasePersistenceImpl<UserG
 		UserGroupGroupRolePK userGroupGroupRolePK)
 		throws NoSuchUserGroupGroupRoleException {
 		return findByPrimaryKey((Serializable)userGroupGroupRolePK);
-	}
-
-	/**
-	 * Returns the user group group role with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the user group group role
-	 * @return the user group group role, or <code>null</code> if a user group group role with the primary key could not be found
-	 */
-	@Override
-	public UserGroupGroupRole fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(UserGroupGroupRoleModelImpl.ENTITY_CACHE_ENABLED,
-				UserGroupGroupRoleImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		UserGroupGroupRole userGroupGroupRole = (UserGroupGroupRole)serializable;
-
-		if (userGroupGroupRole == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				userGroupGroupRole = (UserGroupGroupRole)session.get(UserGroupGroupRoleImpl.class,
-						primaryKey);
-
-				if (userGroupGroupRole != null) {
-					cacheResult(userGroupGroupRole);
-				}
-				else {
-					entityCache.putResult(UserGroupGroupRoleModelImpl.ENTITY_CACHE_ENABLED,
-						UserGroupGroupRoleImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(UserGroupGroupRoleModelImpl.ENTITY_CACHE_ENABLED,
-					UserGroupGroupRoleImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return userGroupGroupRole;
 	}
 
 	/**

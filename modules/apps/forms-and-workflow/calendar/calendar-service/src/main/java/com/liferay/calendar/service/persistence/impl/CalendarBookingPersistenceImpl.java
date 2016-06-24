@@ -5442,6 +5442,8 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 
 	public CalendarBookingPersistenceImpl() {
 		setModelClass(CalendarBooking.class);
+		setModelImplClass(CalendarBookingImpl.class);
+		setEntityCacheEnabled(CalendarBookingModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -5748,6 +5750,11 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -6098,54 +6105,6 @@ public class CalendarBookingPersistenceImpl extends BasePersistenceImpl<Calendar
 	public CalendarBooking findByPrimaryKey(long calendarBookingId)
 		throws NoSuchBookingException {
 		return findByPrimaryKey((Serializable)calendarBookingId);
-	}
-
-	/**
-	 * Returns the calendar booking with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the calendar booking
-	 * @return the calendar booking, or <code>null</code> if a calendar booking with the primary key could not be found
-	 */
-	@Override
-	public CalendarBooking fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(CalendarBookingModelImpl.ENTITY_CACHE_ENABLED,
-				CalendarBookingImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		CalendarBooking calendarBooking = (CalendarBooking)serializable;
-
-		if (calendarBooking == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				calendarBooking = (CalendarBooking)session.get(CalendarBookingImpl.class,
-						primaryKey);
-
-				if (calendarBooking != null) {
-					cacheResult(calendarBooking);
-				}
-				else {
-					entityCache.putResult(CalendarBookingModelImpl.ENTITY_CACHE_ENABLED,
-						CalendarBookingImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(CalendarBookingModelImpl.ENTITY_CACHE_ENABLED,
-					CalendarBookingImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return calendarBooking;
 	}
 
 	/**

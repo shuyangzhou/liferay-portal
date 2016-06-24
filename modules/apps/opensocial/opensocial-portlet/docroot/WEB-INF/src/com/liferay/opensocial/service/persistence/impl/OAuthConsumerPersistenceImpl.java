@@ -939,6 +939,8 @@ public class OAuthConsumerPersistenceImpl extends BasePersistenceImpl<OAuthConsu
 
 	public OAuthConsumerPersistenceImpl() {
 		setModelClass(OAuthConsumer.class);
+		setModelImplClass(OAuthConsumerImpl.class);
+		setEntityCacheEnabled(OAuthConsumerModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1149,6 +1151,11 @@ public class OAuthConsumerPersistenceImpl extends BasePersistenceImpl<OAuthConsu
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected OAuthConsumer removeImpl(OAuthConsumer oAuthConsumer) {
 		oAuthConsumer = toUnwrappedModel(oAuthConsumer);
 
@@ -1327,54 +1334,6 @@ public class OAuthConsumerPersistenceImpl extends BasePersistenceImpl<OAuthConsu
 	public OAuthConsumer findByPrimaryKey(long oAuthConsumerId)
 		throws NoSuchOAuthConsumerException {
 		return findByPrimaryKey((Serializable)oAuthConsumerId);
-	}
-
-	/**
-	 * Returns the o auth consumer with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the o auth consumer
-	 * @return the o auth consumer, or <code>null</code> if a o auth consumer with the primary key could not be found
-	 */
-	@Override
-	public OAuthConsumer fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(OAuthConsumerModelImpl.ENTITY_CACHE_ENABLED,
-				OAuthConsumerImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		OAuthConsumer oAuthConsumer = (OAuthConsumer)serializable;
-
-		if (oAuthConsumer == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				oAuthConsumer = (OAuthConsumer)session.get(OAuthConsumerImpl.class,
-						primaryKey);
-
-				if (oAuthConsumer != null) {
-					cacheResult(oAuthConsumer);
-				}
-				else {
-					entityCache.putResult(OAuthConsumerModelImpl.ENTITY_CACHE_ENABLED,
-						OAuthConsumerImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(OAuthConsumerModelImpl.ENTITY_CACHE_ENABLED,
-					OAuthConsumerImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return oAuthConsumer;
 	}
 
 	/**

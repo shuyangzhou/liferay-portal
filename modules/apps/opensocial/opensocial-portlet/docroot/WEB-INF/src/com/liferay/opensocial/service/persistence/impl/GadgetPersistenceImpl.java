@@ -3147,6 +3147,8 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 
 	public GadgetPersistenceImpl() {
 		setModelClass(Gadget.class);
+		setModelImplClass(GadgetImpl.class);
+		setEntityCacheEnabled(GadgetModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -3347,6 +3349,11 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -3567,53 +3574,6 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	@Override
 	public Gadget findByPrimaryKey(long gadgetId) throws NoSuchGadgetException {
 		return findByPrimaryKey((Serializable)gadgetId);
-	}
-
-	/**
-	 * Returns the gadget with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the gadget
-	 * @return the gadget, or <code>null</code> if a gadget with the primary key could not be found
-	 */
-	@Override
-	public Gadget fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(GadgetModelImpl.ENTITY_CACHE_ENABLED,
-				GadgetImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Gadget gadget = (Gadget)serializable;
-
-		if (gadget == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				gadget = (Gadget)session.get(GadgetImpl.class, primaryKey);
-
-				if (gadget != null) {
-					cacheResult(gadget);
-				}
-				else {
-					entityCache.putResult(GadgetModelImpl.ENTITY_CACHE_ENABLED,
-						GadgetImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(GadgetModelImpl.ENTITY_CACHE_ENABLED,
-					GadgetImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return gadget;
 	}
 
 	/**

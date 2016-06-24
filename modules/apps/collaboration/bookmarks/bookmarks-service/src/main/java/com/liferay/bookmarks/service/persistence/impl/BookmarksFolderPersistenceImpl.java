@@ -7015,6 +7015,8 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 
 	public BookmarksFolderPersistenceImpl() {
 		setModelClass(BookmarksFolder.class);
+		setModelImplClass(BookmarksFolderImpl.class);
+		setEntityCacheEnabled(BookmarksFolderModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -7225,6 +7227,11 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -7541,54 +7548,6 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	public BookmarksFolder findByPrimaryKey(long folderId)
 		throws NoSuchFolderException {
 		return findByPrimaryKey((Serializable)folderId);
-	}
-
-	/**
-	 * Returns the bookmarks folder with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the bookmarks folder
-	 * @return the bookmarks folder, or <code>null</code> if a bookmarks folder with the primary key could not be found
-	 */
-	@Override
-	public BookmarksFolder fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(BookmarksFolderModelImpl.ENTITY_CACHE_ENABLED,
-				BookmarksFolderImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		BookmarksFolder bookmarksFolder = (BookmarksFolder)serializable;
-
-		if (bookmarksFolder == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				bookmarksFolder = (BookmarksFolder)session.get(BookmarksFolderImpl.class,
-						primaryKey);
-
-				if (bookmarksFolder != null) {
-					cacheResult(bookmarksFolder);
-				}
-				else {
-					entityCache.putResult(BookmarksFolderModelImpl.ENTITY_CACHE_ENABLED,
-						BookmarksFolderImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(BookmarksFolderModelImpl.ENTITY_CACHE_ENABLED,
-					BookmarksFolderImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return bookmarksFolder;
 	}
 
 	/**

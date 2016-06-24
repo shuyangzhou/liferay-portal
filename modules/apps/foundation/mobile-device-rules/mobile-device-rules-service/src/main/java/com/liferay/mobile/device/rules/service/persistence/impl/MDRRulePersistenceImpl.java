@@ -1980,6 +1980,8 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 
 	public MDRRulePersistenceImpl() {
 		setModelClass(MDRRule.class);
+		setModelImplClass(MDRRuleImpl.class);
+		setEntityCacheEnabled(MDRRuleModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2181,6 +2183,11 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -2406,53 +2413,6 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 	@Override
 	public MDRRule findByPrimaryKey(long ruleId) throws NoSuchRuleException {
 		return findByPrimaryKey((Serializable)ruleId);
-	}
-
-	/**
-	 * Returns the m d r rule with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the m d r rule
-	 * @return the m d r rule, or <code>null</code> if a m d r rule with the primary key could not be found
-	 */
-	@Override
-	public MDRRule fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(MDRRuleModelImpl.ENTITY_CACHE_ENABLED,
-				MDRRuleImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		MDRRule mdrRule = (MDRRule)serializable;
-
-		if (mdrRule == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				mdrRule = (MDRRule)session.get(MDRRuleImpl.class, primaryKey);
-
-				if (mdrRule != null) {
-					cacheResult(mdrRule);
-				}
-				else {
-					entityCache.putResult(MDRRuleModelImpl.ENTITY_CACHE_ENABLED,
-						MDRRuleImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(MDRRuleModelImpl.ENTITY_CACHE_ENABLED,
-					MDRRuleImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return mdrRule;
 	}
 
 	/**

@@ -2129,6 +2129,8 @@ public class KaleoTransitionPersistenceImpl extends BasePersistenceImpl<KaleoTra
 
 	public KaleoTransitionPersistenceImpl() {
 		setModelClass(KaleoTransition.class);
+		setModelImplClass(KaleoTransitionImpl.class);
+		setEntityCacheEnabled(KaleoTransitionModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2388,6 +2390,11 @@ public class KaleoTransitionPersistenceImpl extends BasePersistenceImpl<KaleoTra
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected KaleoTransition removeImpl(KaleoTransition kaleoTransition) {
 		kaleoTransition = toUnwrappedModel(kaleoTransition);
 
@@ -2611,54 +2618,6 @@ public class KaleoTransitionPersistenceImpl extends BasePersistenceImpl<KaleoTra
 	public KaleoTransition findByPrimaryKey(long kaleoTransitionId)
 		throws NoSuchTransitionException {
 		return findByPrimaryKey((Serializable)kaleoTransitionId);
-	}
-
-	/**
-	 * Returns the kaleo transition with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the kaleo transition
-	 * @return the kaleo transition, or <code>null</code> if a kaleo transition with the primary key could not be found
-	 */
-	@Override
-	public KaleoTransition fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(KaleoTransitionModelImpl.ENTITY_CACHE_ENABLED,
-				KaleoTransitionImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		KaleoTransition kaleoTransition = (KaleoTransition)serializable;
-
-		if (kaleoTransition == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				kaleoTransition = (KaleoTransition)session.get(KaleoTransitionImpl.class,
-						primaryKey);
-
-				if (kaleoTransition != null) {
-					cacheResult(kaleoTransition);
-				}
-				else {
-					entityCache.putResult(KaleoTransitionModelImpl.ENTITY_CACHE_ENABLED,
-						KaleoTransitionImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(KaleoTransitionModelImpl.ENTITY_CACHE_ENABLED,
-					KaleoTransitionImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return kaleoTransition;
 	}
 
 	/**

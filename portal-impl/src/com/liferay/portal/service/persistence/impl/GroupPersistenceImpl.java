@@ -9391,6 +9391,8 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 
 	public GroupPersistenceImpl() {
 		setModelClass(Group.class);
+		setModelImplClass(GroupImpl.class);
+		setEntityCacheEnabled(GroupModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -9867,6 +9869,11 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected Group removeImpl(Group group) {
 		group = toUnwrappedModel(group);
 
@@ -10277,53 +10284,6 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	@Override
 	public Group findByPrimaryKey(long groupId) throws NoSuchGroupException {
 		return findByPrimaryKey((Serializable)groupId);
-	}
-
-	/**
-	 * Returns the group with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the group
-	 * @return the group, or <code>null</code> if a group with the primary key could not be found
-	 */
-	@Override
-	public Group fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(GroupModelImpl.ENTITY_CACHE_ENABLED,
-				GroupImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Group group = (Group)serializable;
-
-		if (group == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				group = (Group)session.get(GroupImpl.class, primaryKey);
-
-				if (group != null) {
-					cacheResult(group);
-				}
-				else {
-					entityCache.putResult(GroupModelImpl.ENTITY_CACHE_ENABLED,
-						GroupImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(GroupModelImpl.ENTITY_CACHE_ENABLED,
-					GroupImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return group;
 	}
 
 	/**

@@ -2019,6 +2019,8 @@ public class SocialActivityLimitPersistenceImpl extends BasePersistenceImpl<Soci
 
 	public SocialActivityLimitPersistenceImpl() {
 		setModelClass(SocialActivityLimit.class);
+		setModelImplClass(SocialActivityLimitImpl.class);
+		setEntityCacheEnabled(SocialActivityLimitModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2252,6 +2254,11 @@ public class SocialActivityLimitPersistenceImpl extends BasePersistenceImpl<Soci
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected SocialActivityLimit removeImpl(
 		SocialActivityLimit socialActivityLimit) {
 		socialActivityLimit = toUnwrappedModel(socialActivityLimit);
@@ -2448,54 +2455,6 @@ public class SocialActivityLimitPersistenceImpl extends BasePersistenceImpl<Soci
 	public SocialActivityLimit findByPrimaryKey(long activityLimitId)
 		throws NoSuchActivityLimitException {
 		return findByPrimaryKey((Serializable)activityLimitId);
-	}
-
-	/**
-	 * Returns the social activity limit with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the social activity limit
-	 * @return the social activity limit, or <code>null</code> if a social activity limit with the primary key could not be found
-	 */
-	@Override
-	public SocialActivityLimit fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(SocialActivityLimitModelImpl.ENTITY_CACHE_ENABLED,
-				SocialActivityLimitImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		SocialActivityLimit socialActivityLimit = (SocialActivityLimit)serializable;
-
-		if (socialActivityLimit == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				socialActivityLimit = (SocialActivityLimit)session.get(SocialActivityLimitImpl.class,
-						primaryKey);
-
-				if (socialActivityLimit != null) {
-					cacheResult(socialActivityLimit);
-				}
-				else {
-					entityCache.putResult(SocialActivityLimitModelImpl.ENTITY_CACHE_ENABLED,
-						SocialActivityLimitImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(SocialActivityLimitModelImpl.ENTITY_CACHE_ENABLED,
-					SocialActivityLimitImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return socialActivityLimit;
 	}
 
 	/**

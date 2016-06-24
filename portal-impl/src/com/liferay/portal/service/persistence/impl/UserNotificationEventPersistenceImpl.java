@@ -8296,6 +8296,8 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 
 	public UserNotificationEventPersistenceImpl() {
 		setModelClass(UserNotificationEvent.class);
+		setModelImplClass(UserNotificationEventImpl.class);
+		setEntityCacheEnabled(UserNotificationEventModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -8450,6 +8452,11 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -8903,54 +8910,6 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 	public UserNotificationEvent findByPrimaryKey(long userNotificationEventId)
 		throws NoSuchUserNotificationEventException {
 		return findByPrimaryKey((Serializable)userNotificationEventId);
-	}
-
-	/**
-	 * Returns the user notification event with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the user notification event
-	 * @return the user notification event, or <code>null</code> if a user notification event with the primary key could not be found
-	 */
-	@Override
-	public UserNotificationEvent fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(UserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
-				UserNotificationEventImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		UserNotificationEvent userNotificationEvent = (UserNotificationEvent)serializable;
-
-		if (userNotificationEvent == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				userNotificationEvent = (UserNotificationEvent)session.get(UserNotificationEventImpl.class,
-						primaryKey);
-
-				if (userNotificationEvent != null) {
-					cacheResult(userNotificationEvent);
-				}
-				else {
-					entityCache.putResult(UserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
-						UserNotificationEventImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(UserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
-					UserNotificationEventImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return userNotificationEvent;
 	}
 
 	/**

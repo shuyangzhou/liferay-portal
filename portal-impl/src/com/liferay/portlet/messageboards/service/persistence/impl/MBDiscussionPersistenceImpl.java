@@ -2412,6 +2412,8 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 
 	public MBDiscussionPersistenceImpl() {
 		setModelClass(MBDiscussion.class);
+		setModelImplClass(MBDiscussionImpl.class);
+		setEntityCacheEnabled(MBDiscussionModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2704,6 +2706,11 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected MBDiscussion removeImpl(MBDiscussion mbDiscussion) {
 		mbDiscussion = toUnwrappedModel(mbDiscussion);
 
@@ -2928,54 +2935,6 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 	public MBDiscussion findByPrimaryKey(long discussionId)
 		throws NoSuchDiscussionException {
 		return findByPrimaryKey((Serializable)discussionId);
-	}
-
-	/**
-	 * Returns the message boards discussion with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the message boards discussion
-	 * @return the message boards discussion, or <code>null</code> if a message boards discussion with the primary key could not be found
-	 */
-	@Override
-	public MBDiscussion fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(MBDiscussionModelImpl.ENTITY_CACHE_ENABLED,
-				MBDiscussionImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		MBDiscussion mbDiscussion = (MBDiscussion)serializable;
-
-		if (mbDiscussion == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				mbDiscussion = (MBDiscussion)session.get(MBDiscussionImpl.class,
-						primaryKey);
-
-				if (mbDiscussion != null) {
-					cacheResult(mbDiscussion);
-				}
-				else {
-					entityCache.putResult(MBDiscussionModelImpl.ENTITY_CACHE_ENABLED,
-						MBDiscussionImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(MBDiscussionModelImpl.ENTITY_CACHE_ENABLED,
-					MBDiscussionImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return mbDiscussion;
 	}
 
 	/**

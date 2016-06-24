@@ -1652,6 +1652,8 @@ public class MemberRequestPersistenceImpl extends BasePersistenceImpl<MemberRequ
 
 	public MemberRequestPersistenceImpl() {
 		setModelClass(MemberRequest.class);
+		setModelImplClass(MemberRequestImpl.class);
+		setEntityCacheEnabled(MemberRequestModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1900,6 +1902,11 @@ public class MemberRequestPersistenceImpl extends BasePersistenceImpl<MemberRequ
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected MemberRequest removeImpl(MemberRequest memberRequest) {
 		memberRequest = toUnwrappedModel(memberRequest);
 
@@ -2104,54 +2111,6 @@ public class MemberRequestPersistenceImpl extends BasePersistenceImpl<MemberRequ
 	public MemberRequest findByPrimaryKey(long memberRequestId)
 		throws NoSuchMemberRequestException {
 		return findByPrimaryKey((Serializable)memberRequestId);
-	}
-
-	/**
-	 * Returns the member request with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the member request
-	 * @return the member request, or <code>null</code> if a member request with the primary key could not be found
-	 */
-	@Override
-	public MemberRequest fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(MemberRequestModelImpl.ENTITY_CACHE_ENABLED,
-				MemberRequestImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		MemberRequest memberRequest = (MemberRequest)serializable;
-
-		if (memberRequest == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				memberRequest = (MemberRequest)session.get(MemberRequestImpl.class,
-						primaryKey);
-
-				if (memberRequest != null) {
-					cacheResult(memberRequest);
-				}
-				else {
-					entityCache.putResult(MemberRequestModelImpl.ENTITY_CACHE_ENABLED,
-						MemberRequestImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(MemberRequestModelImpl.ENTITY_CACHE_ENABLED,
-					MemberRequestImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return memberRequest;
 	}
 
 	/**

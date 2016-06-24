@@ -1647,6 +1647,8 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 
 	public KaleoNodePersistenceImpl() {
 		setModelClass(KaleoNode.class);
+		setModelImplClass(KaleoNodeImpl.class);
+		setEntityCacheEnabled(KaleoNodeModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1790,6 +1792,11 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -2011,54 +2018,6 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 	public KaleoNode findByPrimaryKey(long kaleoNodeId)
 		throws NoSuchNodeException {
 		return findByPrimaryKey((Serializable)kaleoNodeId);
-	}
-
-	/**
-	 * Returns the kaleo node with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the kaleo node
-	 * @return the kaleo node, or <code>null</code> if a kaleo node with the primary key could not be found
-	 */
-	@Override
-	public KaleoNode fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(KaleoNodeModelImpl.ENTITY_CACHE_ENABLED,
-				KaleoNodeImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		KaleoNode kaleoNode = (KaleoNode)serializable;
-
-		if (kaleoNode == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				kaleoNode = (KaleoNode)session.get(KaleoNodeImpl.class,
-						primaryKey);
-
-				if (kaleoNode != null) {
-					cacheResult(kaleoNode);
-				}
-				else {
-					entityCache.putResult(KaleoNodeModelImpl.ENTITY_CACHE_ENABLED,
-						KaleoNodeImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(KaleoNodeModelImpl.ENTITY_CACHE_ENABLED,
-					KaleoNodeImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return kaleoNode;
 	}
 
 	/**

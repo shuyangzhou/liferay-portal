@@ -2263,6 +2263,8 @@ public class JournalArticleResourcePersistenceImpl extends BasePersistenceImpl<J
 
 	public JournalArticleResourcePersistenceImpl() {
 		setModelClass(JournalArticleResource.class);
+		setModelImplClass(JournalArticleResourceImpl.class);
+		setEntityCacheEnabled(JournalArticleResourceModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2531,6 +2533,11 @@ public class JournalArticleResourcePersistenceImpl extends BasePersistenceImpl<J
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected JournalArticleResource removeImpl(
 		JournalArticleResource journalArticleResource) {
 		journalArticleResource = toUnwrappedModel(journalArticleResource);
@@ -2730,54 +2737,6 @@ public class JournalArticleResourcePersistenceImpl extends BasePersistenceImpl<J
 	public JournalArticleResource findByPrimaryKey(long resourcePrimKey)
 		throws NoSuchArticleResourceException {
 		return findByPrimaryKey((Serializable)resourcePrimKey);
-	}
-
-	/**
-	 * Returns the journal article resource with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the journal article resource
-	 * @return the journal article resource, or <code>null</code> if a journal article resource with the primary key could not be found
-	 */
-	@Override
-	public JournalArticleResource fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(JournalArticleResourceModelImpl.ENTITY_CACHE_ENABLED,
-				JournalArticleResourceImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		JournalArticleResource journalArticleResource = (JournalArticleResource)serializable;
-
-		if (journalArticleResource == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				journalArticleResource = (JournalArticleResource)session.get(JournalArticleResourceImpl.class,
-						primaryKey);
-
-				if (journalArticleResource != null) {
-					cacheResult(journalArticleResource);
-				}
-				else {
-					entityCache.putResult(JournalArticleResourceModelImpl.ENTITY_CACHE_ENABLED,
-						JournalArticleResourceImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(JournalArticleResourceModelImpl.ENTITY_CACHE_ENABLED,
-					JournalArticleResourceImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return journalArticleResource;
 	}
 
 	/**

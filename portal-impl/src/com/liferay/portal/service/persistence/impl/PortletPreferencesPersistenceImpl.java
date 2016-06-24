@@ -4504,6 +4504,8 @@ public class PortletPreferencesPersistenceImpl extends BasePersistenceImpl<Portl
 
 	public PortletPreferencesPersistenceImpl() {
 		setModelClass(PortletPreferences.class);
+		setModelImplClass(PortletPreferencesImpl.class);
+		setEntityCacheEnabled(PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -4722,6 +4724,11 @@ public class PortletPreferencesPersistenceImpl extends BasePersistenceImpl<Portl
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -5009,54 +5016,6 @@ public class PortletPreferencesPersistenceImpl extends BasePersistenceImpl<Portl
 	public PortletPreferences findByPrimaryKey(long portletPreferencesId)
 		throws NoSuchPortletPreferencesException {
 		return findByPrimaryKey((Serializable)portletPreferencesId);
-	}
-
-	/**
-	 * Returns the portlet preferences with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the portlet preferences
-	 * @return the portlet preferences, or <code>null</code> if a portlet preferences with the primary key could not be found
-	 */
-	@Override
-	public PortletPreferences fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
-				PortletPreferencesImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		PortletPreferences portletPreferences = (PortletPreferences)serializable;
-
-		if (portletPreferences == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				portletPreferences = (PortletPreferences)session.get(PortletPreferencesImpl.class,
-						primaryKey);
-
-				if (portletPreferences != null) {
-					cacheResult(portletPreferences);
-				}
-				else {
-					entityCache.putResult(PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
-						PortletPreferencesImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(PortletPreferencesModelImpl.ENTITY_CACHE_ENABLED,
-					PortletPreferencesImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return portletPreferences;
 	}
 
 	/**

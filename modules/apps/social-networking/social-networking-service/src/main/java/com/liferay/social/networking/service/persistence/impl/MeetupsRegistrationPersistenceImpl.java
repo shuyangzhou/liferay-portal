@@ -1395,6 +1395,8 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 
 	public MeetupsRegistrationPersistenceImpl() {
 		setModelClass(MeetupsRegistration.class);
+		setModelImplClass(MeetupsRegistrationImpl.class);
+		setEntityCacheEnabled(MeetupsRegistrationModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1608,6 +1610,11 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected MeetupsRegistration removeImpl(
 		MeetupsRegistration meetupsRegistration) {
 		meetupsRegistration = toUnwrappedModel(meetupsRegistration);
@@ -1815,54 +1822,6 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 	public MeetupsRegistration findByPrimaryKey(long meetupsRegistrationId)
 		throws NoSuchMeetupsRegistrationException {
 		return findByPrimaryKey((Serializable)meetupsRegistrationId);
-	}
-
-	/**
-	 * Returns the meetups registration with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the meetups registration
-	 * @return the meetups registration, or <code>null</code> if a meetups registration with the primary key could not be found
-	 */
-	@Override
-	public MeetupsRegistration fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(MeetupsRegistrationModelImpl.ENTITY_CACHE_ENABLED,
-				MeetupsRegistrationImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		MeetupsRegistration meetupsRegistration = (MeetupsRegistration)serializable;
-
-		if (meetupsRegistration == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				meetupsRegistration = (MeetupsRegistration)session.get(MeetupsRegistrationImpl.class,
-						primaryKey);
-
-				if (meetupsRegistration != null) {
-					cacheResult(meetupsRegistration);
-				}
-				else {
-					entityCache.putResult(MeetupsRegistrationModelImpl.ENTITY_CACHE_ENABLED,
-						MeetupsRegistrationImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(MeetupsRegistrationModelImpl.ENTITY_CACHE_ENABLED,
-					MeetupsRegistrationImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return meetupsRegistration;
 	}
 
 	/**

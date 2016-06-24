@@ -2426,6 +2426,8 @@ public class TrashEntryPersistenceImpl extends BasePersistenceImpl<TrashEntry>
 
 	public TrashEntryPersistenceImpl() {
 		setModelClass(TrashEntry.class);
+		setModelImplClass(TrashEntryImpl.class);
+		setEntityCacheEnabled(TrashEntryModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2633,6 +2635,11 @@ public class TrashEntryPersistenceImpl extends BasePersistenceImpl<TrashEntry>
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected TrashEntry removeImpl(TrashEntry trashEntry) {
 		trashEntry = toUnwrappedModel(trashEntry);
 
@@ -2827,54 +2834,6 @@ public class TrashEntryPersistenceImpl extends BasePersistenceImpl<TrashEntry>
 	public TrashEntry findByPrimaryKey(long entryId)
 		throws NoSuchEntryException {
 		return findByPrimaryKey((Serializable)entryId);
-	}
-
-	/**
-	 * Returns the trash entry with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the trash entry
-	 * @return the trash entry, or <code>null</code> if a trash entry with the primary key could not be found
-	 */
-	@Override
-	public TrashEntry fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(TrashEntryModelImpl.ENTITY_CACHE_ENABLED,
-				TrashEntryImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		TrashEntry trashEntry = (TrashEntry)serializable;
-
-		if (trashEntry == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				trashEntry = (TrashEntry)session.get(TrashEntryImpl.class,
-						primaryKey);
-
-				if (trashEntry != null) {
-					cacheResult(trashEntry);
-				}
-				else {
-					entityCache.putResult(TrashEntryModelImpl.ENTITY_CACHE_ENABLED,
-						TrashEntryImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(TrashEntryModelImpl.ENTITY_CACHE_ENABLED,
-					TrashEntryImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return trashEntry;
 	}
 
 	/**

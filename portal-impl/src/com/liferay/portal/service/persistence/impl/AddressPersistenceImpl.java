@@ -4600,6 +4600,8 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 
 	public AddressPersistenceImpl() {
 		setModelClass(Address.class);
+		setModelImplClass(AddressImpl.class);
+		setEntityCacheEnabled(AddressModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -4747,6 +4749,11 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -5087,53 +5094,6 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 	public Address findByPrimaryKey(long addressId)
 		throws NoSuchAddressException {
 		return findByPrimaryKey((Serializable)addressId);
-	}
-
-	/**
-	 * Returns the address with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the address
-	 * @return the address, or <code>null</code> if a address with the primary key could not be found
-	 */
-	@Override
-	public Address fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(AddressModelImpl.ENTITY_CACHE_ENABLED,
-				AddressImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Address address = (Address)serializable;
-
-		if (address == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				address = (Address)session.get(AddressImpl.class, primaryKey);
-
-				if (address != null) {
-					cacheResult(address);
-				}
-				else {
-					entityCache.putResult(AddressModelImpl.ENTITY_CACHE_ENABLED,
-						AddressImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(AddressModelImpl.ENTITY_CACHE_ENABLED,
-					AddressImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return address;
 	}
 
 	/**

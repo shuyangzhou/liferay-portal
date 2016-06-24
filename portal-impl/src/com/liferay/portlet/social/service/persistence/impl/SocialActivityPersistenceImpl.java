@@ -6154,6 +6154,8 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 
 	public SocialActivityPersistenceImpl() {
 		setModelClass(SocialActivity.class);
+		setModelImplClass(SocialActivityImpl.class);
+		setEntityCacheEnabled(SocialActivityModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -6426,6 +6428,11 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -6774,54 +6781,6 @@ public class SocialActivityPersistenceImpl extends BasePersistenceImpl<SocialAct
 	public SocialActivity findByPrimaryKey(long activityId)
 		throws NoSuchActivityException {
 		return findByPrimaryKey((Serializable)activityId);
-	}
-
-	/**
-	 * Returns the social activity with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the social activity
-	 * @return the social activity, or <code>null</code> if a social activity with the primary key could not be found
-	 */
-	@Override
-	public SocialActivity fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(SocialActivityModelImpl.ENTITY_CACHE_ENABLED,
-				SocialActivityImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		SocialActivity socialActivity = (SocialActivity)serializable;
-
-		if (socialActivity == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				socialActivity = (SocialActivity)session.get(SocialActivityImpl.class,
-						primaryKey);
-
-				if (socialActivity != null) {
-					cacheResult(socialActivity);
-				}
-				else {
-					entityCache.putResult(SocialActivityModelImpl.ENTITY_CACHE_ENABLED,
-						SocialActivityImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(SocialActivityModelImpl.ENTITY_CACHE_ENABLED,
-					SocialActivityImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return socialActivity;
 	}
 
 	/**

@@ -1407,6 +1407,8 @@ public class DDMStructureVersionPersistenceImpl extends BasePersistenceImpl<DDMS
 
 	public DDMStructureVersionPersistenceImpl() {
 		setModelClass(DDMStructureVersion.class);
+		setModelImplClass(DDMStructureVersionImpl.class);
+		setEntityCacheEnabled(DDMStructureVersionModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1620,6 +1622,11 @@ public class DDMStructureVersionPersistenceImpl extends BasePersistenceImpl<DDMS
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected DDMStructureVersion removeImpl(
 		DDMStructureVersion ddmStructureVersion) {
 		ddmStructureVersion = toUnwrappedModel(ddmStructureVersion);
@@ -1810,54 +1817,6 @@ public class DDMStructureVersionPersistenceImpl extends BasePersistenceImpl<DDMS
 	public DDMStructureVersion findByPrimaryKey(long structureVersionId)
 		throws NoSuchStructureVersionException {
 		return findByPrimaryKey((Serializable)structureVersionId);
-	}
-
-	/**
-	 * Returns the d d m structure version with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the d d m structure version
-	 * @return the d d m structure version, or <code>null</code> if a d d m structure version with the primary key could not be found
-	 */
-	@Override
-	public DDMStructureVersion fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DDMStructureVersionModelImpl.ENTITY_CACHE_ENABLED,
-				DDMStructureVersionImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		DDMStructureVersion ddmStructureVersion = (DDMStructureVersion)serializable;
-
-		if (ddmStructureVersion == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				ddmStructureVersion = (DDMStructureVersion)session.get(DDMStructureVersionImpl.class,
-						primaryKey);
-
-				if (ddmStructureVersion != null) {
-					cacheResult(ddmStructureVersion);
-				}
-				else {
-					entityCache.putResult(DDMStructureVersionModelImpl.ENTITY_CACHE_ENABLED,
-						DDMStructureVersionImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(DDMStructureVersionModelImpl.ENTITY_CACHE_ENABLED,
-					DDMStructureVersionImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return ddmStructureVersion;
 	}
 
 	/**

@@ -4869,6 +4869,8 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 
 	public ExpandoValuePersistenceImpl() {
 		setModelClass(ExpandoValue.class);
+		setModelImplClass(ExpandoValueImpl.class);
+		setEntityCacheEnabled(ExpandoValueModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -5125,6 +5127,11 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -5423,54 +5430,6 @@ public class ExpandoValuePersistenceImpl extends BasePersistenceImpl<ExpandoValu
 	public ExpandoValue findByPrimaryKey(long valueId)
 		throws NoSuchValueException {
 		return findByPrimaryKey((Serializable)valueId);
-	}
-
-	/**
-	 * Returns the expando value with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the expando value
-	 * @return the expando value, or <code>null</code> if a expando value with the primary key could not be found
-	 */
-	@Override
-	public ExpandoValue fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ExpandoValueModelImpl.ENTITY_CACHE_ENABLED,
-				ExpandoValueImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		ExpandoValue expandoValue = (ExpandoValue)serializable;
-
-		if (expandoValue == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				expandoValue = (ExpandoValue)session.get(ExpandoValueImpl.class,
-						primaryKey);
-
-				if (expandoValue != null) {
-					cacheResult(expandoValue);
-				}
-				else {
-					entityCache.putResult(ExpandoValueModelImpl.ENTITY_CACHE_ENABLED,
-						ExpandoValueImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ExpandoValueModelImpl.ENTITY_CACHE_ENABLED,
-					ExpandoValueImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return expandoValue;
 	}
 
 	/**

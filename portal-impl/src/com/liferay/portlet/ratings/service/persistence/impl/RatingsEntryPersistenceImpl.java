@@ -2597,6 +2597,8 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 
 	public RatingsEntryPersistenceImpl() {
 		setModelClass(RatingsEntry.class);
+		setModelImplClass(RatingsEntryImpl.class);
+		setEntityCacheEnabled(RatingsEntryModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2811,6 +2813,11 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -3063,54 +3070,6 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 	public RatingsEntry findByPrimaryKey(long entryId)
 		throws NoSuchEntryException {
 		return findByPrimaryKey((Serializable)entryId);
-	}
-
-	/**
-	 * Returns the ratings entry with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the ratings entry
-	 * @return the ratings entry, or <code>null</code> if a ratings entry with the primary key could not be found
-	 */
-	@Override
-	public RatingsEntry fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(RatingsEntryModelImpl.ENTITY_CACHE_ENABLED,
-				RatingsEntryImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		RatingsEntry ratingsEntry = (RatingsEntry)serializable;
-
-		if (ratingsEntry == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				ratingsEntry = (RatingsEntry)session.get(RatingsEntryImpl.class,
-						primaryKey);
-
-				if (ratingsEntry != null) {
-					cacheResult(ratingsEntry);
-				}
-				else {
-					entityCache.putResult(RatingsEntryModelImpl.ENTITY_CACHE_ENABLED,
-						RatingsEntryImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(RatingsEntryModelImpl.ENTITY_CACHE_ENABLED,
-					RatingsEntryImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return ratingsEntry;
 	}
 
 	/**

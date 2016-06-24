@@ -2615,6 +2615,8 @@ public class SocialActivitySettingPersistenceImpl extends BasePersistenceImpl<So
 
 	public SocialActivitySettingPersistenceImpl() {
 		setModelClass(SocialActivitySetting.class);
+		setModelImplClass(SocialActivitySettingImpl.class);
+		setEntityCacheEnabled(SocialActivitySettingModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2840,6 +2842,11 @@ public class SocialActivitySettingPersistenceImpl extends BasePersistenceImpl<So
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected SocialActivitySetting removeImpl(
 		SocialActivitySetting socialActivitySetting) {
 		socialActivitySetting = toUnwrappedModel(socialActivitySetting);
@@ -3061,54 +3068,6 @@ public class SocialActivitySettingPersistenceImpl extends BasePersistenceImpl<So
 	public SocialActivitySetting findByPrimaryKey(long activitySettingId)
 		throws NoSuchActivitySettingException {
 		return findByPrimaryKey((Serializable)activitySettingId);
-	}
-
-	/**
-	 * Returns the social activity setting with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the social activity setting
-	 * @return the social activity setting, or <code>null</code> if a social activity setting with the primary key could not be found
-	 */
-	@Override
-	public SocialActivitySetting fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(SocialActivitySettingModelImpl.ENTITY_CACHE_ENABLED,
-				SocialActivitySettingImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		SocialActivitySetting socialActivitySetting = (SocialActivitySetting)serializable;
-
-		if (socialActivitySetting == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				socialActivitySetting = (SocialActivitySetting)session.get(SocialActivitySettingImpl.class,
-						primaryKey);
-
-				if (socialActivitySetting != null) {
-					cacheResult(socialActivitySetting);
-				}
-				else {
-					entityCache.putResult(SocialActivitySettingModelImpl.ENTITY_CACHE_ENABLED,
-						SocialActivitySettingImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(SocialActivitySettingModelImpl.ENTITY_CACHE_ENABLED,
-					SocialActivitySettingImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return socialActivitySetting;
 	}
 
 	/**

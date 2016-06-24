@@ -3083,6 +3083,8 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 
 	public DLFileEntryTypePersistenceImpl() {
 		setModelClass(DLFileEntryType.class);
+		setModelImplClass(DLFileEntryTypeImpl.class);
+		setEntityCacheEnabled(DLFileEntryTypeModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -3345,6 +3347,11 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected DLFileEntryType removeImpl(DLFileEntryType dlFileEntryType) {
 		dlFileEntryType = toUnwrappedModel(dlFileEntryType);
 
@@ -3572,54 +3579,6 @@ public class DLFileEntryTypePersistenceImpl extends BasePersistenceImpl<DLFileEn
 	public DLFileEntryType findByPrimaryKey(long fileEntryTypeId)
 		throws NoSuchFileEntryTypeException {
 		return findByPrimaryKey((Serializable)fileEntryTypeId);
-	}
-
-	/**
-	 * Returns the document library file entry type with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the document library file entry type
-	 * @return the document library file entry type, or <code>null</code> if a document library file entry type with the primary key could not be found
-	 */
-	@Override
-	public DLFileEntryType fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DLFileEntryTypeModelImpl.ENTITY_CACHE_ENABLED,
-				DLFileEntryTypeImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		DLFileEntryType dlFileEntryType = (DLFileEntryType)serializable;
-
-		if (dlFileEntryType == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				dlFileEntryType = (DLFileEntryType)session.get(DLFileEntryTypeImpl.class,
-						primaryKey);
-
-				if (dlFileEntryType != null) {
-					cacheResult(dlFileEntryType);
-				}
-				else {
-					entityCache.putResult(DLFileEntryTypeModelImpl.ENTITY_CACHE_ENABLED,
-						DLFileEntryTypeImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(DLFileEntryTypeModelImpl.ENTITY_CACHE_ENABLED,
-					DLFileEntryTypeImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return dlFileEntryType;
 	}
 
 	/**

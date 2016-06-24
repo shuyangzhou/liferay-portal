@@ -593,6 +593,8 @@ public class ShoppingItemPricePersistenceImpl extends BasePersistenceImpl<Shoppi
 
 	public ShoppingItemPricePersistenceImpl() {
 		setModelClass(ShoppingItemPrice.class);
+		setModelImplClass(ShoppingItemPriceImpl.class);
+		setEntityCacheEnabled(ShoppingItemPriceModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -741,6 +743,11 @@ public class ShoppingItemPricePersistenceImpl extends BasePersistenceImpl<Shoppi
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -899,54 +906,6 @@ public class ShoppingItemPricePersistenceImpl extends BasePersistenceImpl<Shoppi
 	public ShoppingItemPrice findByPrimaryKey(long itemPriceId)
 		throws NoSuchItemPriceException {
 		return findByPrimaryKey((Serializable)itemPriceId);
-	}
-
-	/**
-	 * Returns the shopping item price with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the shopping item price
-	 * @return the shopping item price, or <code>null</code> if a shopping item price with the primary key could not be found
-	 */
-	@Override
-	public ShoppingItemPrice fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ShoppingItemPriceModelImpl.ENTITY_CACHE_ENABLED,
-				ShoppingItemPriceImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		ShoppingItemPrice shoppingItemPrice = (ShoppingItemPrice)serializable;
-
-		if (shoppingItemPrice == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				shoppingItemPrice = (ShoppingItemPrice)session.get(ShoppingItemPriceImpl.class,
-						primaryKey);
-
-				if (shoppingItemPrice != null) {
-					cacheResult(shoppingItemPrice);
-				}
-				else {
-					entityCache.putResult(ShoppingItemPriceModelImpl.ENTITY_CACHE_ENABLED,
-						ShoppingItemPriceImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ShoppingItemPriceModelImpl.ENTITY_CACHE_ENABLED,
-					ShoppingItemPriceImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return shoppingItemPrice;
 	}
 
 	/**

@@ -8712,6 +8712,8 @@ public class DDMStructurePersistenceImpl extends BasePersistenceImpl<DDMStructur
 
 	public DDMStructurePersistenceImpl() {
 		setModelClass(DDMStructure.class);
+		setModelImplClass(DDMStructureImpl.class);
+		setEntityCacheEnabled(DDMStructureModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -8973,6 +8975,11 @@ public class DDMStructurePersistenceImpl extends BasePersistenceImpl<DDMStructur
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -9347,54 +9354,6 @@ public class DDMStructurePersistenceImpl extends BasePersistenceImpl<DDMStructur
 	public DDMStructure findByPrimaryKey(long structureId)
 		throws NoSuchStructureException {
 		return findByPrimaryKey((Serializable)structureId);
-	}
-
-	/**
-	 * Returns the d d m structure with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the d d m structure
-	 * @return the d d m structure, or <code>null</code> if a d d m structure with the primary key could not be found
-	 */
-	@Override
-	public DDMStructure fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DDMStructureModelImpl.ENTITY_CACHE_ENABLED,
-				DDMStructureImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		DDMStructure ddmStructure = (DDMStructure)serializable;
-
-		if (ddmStructure == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				ddmStructure = (DDMStructure)session.get(DDMStructureImpl.class,
-						primaryKey);
-
-				if (ddmStructure != null) {
-					cacheResult(ddmStructure);
-				}
-				else {
-					entityCache.putResult(DDMStructureModelImpl.ENTITY_CACHE_ENABLED,
-						DDMStructureImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(DDMStructureModelImpl.ENTITY_CACHE_ENABLED,
-					DDMStructureImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return ddmStructure;
 	}
 
 	/**

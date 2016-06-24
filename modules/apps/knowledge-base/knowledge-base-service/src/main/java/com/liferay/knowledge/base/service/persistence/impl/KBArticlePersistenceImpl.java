@@ -31804,6 +31804,8 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 
 	public KBArticlePersistenceImpl() {
 		setModelClass(KBArticle.class);
+		setModelImplClass(KBArticleImpl.class);
+		setEntityCacheEnabled(KBArticleModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -32107,6 +32109,11 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -32857,54 +32864,6 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 	public KBArticle findByPrimaryKey(long kbArticleId)
 		throws NoSuchArticleException {
 		return findByPrimaryKey((Serializable)kbArticleId);
-	}
-
-	/**
-	 * Returns the k b article with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the k b article
-	 * @return the k b article, or <code>null</code> if a k b article with the primary key could not be found
-	 */
-	@Override
-	public KBArticle fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(KBArticleModelImpl.ENTITY_CACHE_ENABLED,
-				KBArticleImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		KBArticle kbArticle = (KBArticle)serializable;
-
-		if (kbArticle == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				kbArticle = (KBArticle)session.get(KBArticleImpl.class,
-						primaryKey);
-
-				if (kbArticle != null) {
-					cacheResult(kbArticle);
-				}
-				else {
-					entityCache.putResult(KBArticleModelImpl.ENTITY_CACHE_ENABLED,
-						KBArticleImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(KBArticleModelImpl.ENTITY_CACHE_ENABLED,
-					KBArticleImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return kbArticle;
 	}
 
 	/**

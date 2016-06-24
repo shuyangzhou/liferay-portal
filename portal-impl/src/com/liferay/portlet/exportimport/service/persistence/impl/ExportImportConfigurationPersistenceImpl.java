@@ -2820,6 +2820,8 @@ public class ExportImportConfigurationPersistenceImpl
 
 	public ExportImportConfigurationPersistenceImpl() {
 		setModelClass(ExportImportConfiguration.class);
+		setModelImplClass(ExportImportConfigurationImpl.class);
+		setEntityCacheEnabled(ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2972,6 +2974,11 @@ public class ExportImportConfigurationPersistenceImpl
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -3249,55 +3256,6 @@ public class ExportImportConfigurationPersistenceImpl
 	public ExportImportConfiguration findByPrimaryKey(
 		long exportImportConfigurationId) throws NoSuchConfigurationException {
 		return findByPrimaryKey((Serializable)exportImportConfigurationId);
-	}
-
-	/**
-	 * Returns the export import configuration with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the export import configuration
-	 * @return the export import configuration, or <code>null</code> if a export import configuration with the primary key could not be found
-	 */
-	@Override
-	public ExportImportConfiguration fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
-				ExportImportConfigurationImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		ExportImportConfiguration exportImportConfiguration = (ExportImportConfiguration)serializable;
-
-		if (exportImportConfiguration == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				exportImportConfiguration = (ExportImportConfiguration)session.get(ExportImportConfigurationImpl.class,
-						primaryKey);
-
-				if (exportImportConfiguration != null) {
-					cacheResult(exportImportConfiguration);
-				}
-				else {
-					entityCache.putResult(ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
-						ExportImportConfigurationImpl.class, primaryKey,
-						nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ExportImportConfigurationModelImpl.ENTITY_CACHE_ENABLED,
-					ExportImportConfigurationImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return exportImportConfiguration;
 	}
 
 	/**

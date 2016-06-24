@@ -1880,6 +1880,8 @@ public class RegionPersistenceImpl extends BasePersistenceImpl<Region>
 
 	public RegionPersistenceImpl() {
 		setModelClass(Region.class);
+		setModelImplClass(RegionImpl.class);
+		setEntityCacheEnabled(RegionModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2080,6 +2082,11 @@ public class RegionPersistenceImpl extends BasePersistenceImpl<Region>
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected Region removeImpl(Region region) {
 		region = toUnwrappedModel(region);
 
@@ -2266,53 +2273,6 @@ public class RegionPersistenceImpl extends BasePersistenceImpl<Region>
 	@Override
 	public Region findByPrimaryKey(long regionId) throws NoSuchRegionException {
 		return findByPrimaryKey((Serializable)regionId);
-	}
-
-	/**
-	 * Returns the region with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the region
-	 * @return the region, or <code>null</code> if a region with the primary key could not be found
-	 */
-	@Override
-	public Region fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(RegionModelImpl.ENTITY_CACHE_ENABLED,
-				RegionImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Region region = (Region)serializable;
-
-		if (region == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				region = (Region)session.get(RegionImpl.class, primaryKey);
-
-				if (region != null) {
-					cacheResult(region);
-				}
-				else {
-					entityCache.putResult(RegionModelImpl.ENTITY_CACHE_ENABLED,
-						RegionImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(RegionModelImpl.ENTITY_CACHE_ENABLED,
-					RegionImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return region;
 	}
 
 	/**

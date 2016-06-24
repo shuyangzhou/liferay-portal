@@ -3853,6 +3853,8 @@ public class LayoutPrototypePersistenceImpl extends BasePersistenceImpl<LayoutPr
 
 	public LayoutPrototypePersistenceImpl() {
 		setModelClass(LayoutPrototype.class);
+		setModelImplClass(LayoutPrototypeImpl.class);
+		setEntityCacheEnabled(LayoutPrototypeModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -4005,6 +4007,11 @@ public class LayoutPrototypePersistenceImpl extends BasePersistenceImpl<LayoutPr
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -4251,54 +4258,6 @@ public class LayoutPrototypePersistenceImpl extends BasePersistenceImpl<LayoutPr
 	public LayoutPrototype findByPrimaryKey(long layoutPrototypeId)
 		throws NoSuchLayoutPrototypeException {
 		return findByPrimaryKey((Serializable)layoutPrototypeId);
-	}
-
-	/**
-	 * Returns the layout prototype with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the layout prototype
-	 * @return the layout prototype, or <code>null</code> if a layout prototype with the primary key could not be found
-	 */
-	@Override
-	public LayoutPrototype fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(LayoutPrototypeModelImpl.ENTITY_CACHE_ENABLED,
-				LayoutPrototypeImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		LayoutPrototype layoutPrototype = (LayoutPrototype)serializable;
-
-		if (layoutPrototype == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				layoutPrototype = (LayoutPrototype)session.get(LayoutPrototypeImpl.class,
-						primaryKey);
-
-				if (layoutPrototype != null) {
-					cacheResult(layoutPrototype);
-				}
-				else {
-					entityCache.putResult(LayoutPrototypeModelImpl.ENTITY_CACHE_ENABLED,
-						LayoutPrototypeImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(LayoutPrototypeModelImpl.ENTITY_CACHE_ENABLED,
-					LayoutPrototypeImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return layoutPrototype;
 	}
 
 	/**

@@ -2029,6 +2029,8 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 
 	public WSRPConsumerPortletPersistenceImpl() {
 		setModelClass(WSRPConsumerPortlet.class);
+		setModelImplClass(WSRPConsumerPortletImpl.class);
+		setEntityCacheEnabled(WSRPConsumerPortletModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2243,6 +2245,11 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -2476,54 +2483,6 @@ public class WSRPConsumerPortletPersistenceImpl extends BasePersistenceImpl<WSRP
 	public WSRPConsumerPortlet findByPrimaryKey(long wsrpConsumerPortletId)
 		throws NoSuchConsumerPortletException {
 		return findByPrimaryKey((Serializable)wsrpConsumerPortletId);
-	}
-
-	/**
-	 * Returns the w s r p consumer portlet with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the w s r p consumer portlet
-	 * @return the w s r p consumer portlet, or <code>null</code> if a w s r p consumer portlet with the primary key could not be found
-	 */
-	@Override
-	public WSRPConsumerPortlet fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(WSRPConsumerPortletModelImpl.ENTITY_CACHE_ENABLED,
-				WSRPConsumerPortletImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		WSRPConsumerPortlet wsrpConsumerPortlet = (WSRPConsumerPortlet)serializable;
-
-		if (wsrpConsumerPortlet == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				wsrpConsumerPortlet = (WSRPConsumerPortlet)session.get(WSRPConsumerPortletImpl.class,
-						primaryKey);
-
-				if (wsrpConsumerPortlet != null) {
-					cacheResult(wsrpConsumerPortlet);
-				}
-				else {
-					entityCache.putResult(WSRPConsumerPortletModelImpl.ENTITY_CACHE_ENABLED,
-						WSRPConsumerPortletImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(WSRPConsumerPortletModelImpl.ENTITY_CACHE_ENABLED,
-					WSRPConsumerPortletImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return wsrpConsumerPortlet;
 	}
 
 	/**
