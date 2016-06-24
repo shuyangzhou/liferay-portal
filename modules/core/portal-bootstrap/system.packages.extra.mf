@@ -1,11 +1,11 @@
 Manifest-Version: 1.0
-Bnd-LastModified: 1465496756127
+Bnd-LastModified: 1466806231309
 Bundle-ManifestVersion: 2
 Bundle-Name: system.packages.extra
 Bundle-SymbolicName: system.packages.extra
 Bundle-Vendor: Liferay, Inc.
 Bundle-Version: 1.0.0
-Created-By: 1.7.0_71 (Oracle Corporation)
+Created-By: 1.8.0_91 (Oracle Corporation)
 Export-Package: com.liferay.ibm.icu;version="4.0.1",com.liferay.ibm.ic
  u.impl;version="4.0.1";uses:="com.liferay.ibm.icu.math,com.liferay.ib
  m.icu.text,com.liferay.ibm.icu.util",com.liferay.ibm.icu.impl.coll;ve
@@ -2873,7 +2873,7 @@ Export-Package: com.liferay.ibm.icu;version="4.0.1",com.liferay.ibm.ic
  .liferay.portal.kernel.dao.orm,com.liferay.portal.kernel.exception,co
  m.liferay.portal.kernel.model,com.liferay.portal.kernel.security.perm
  ission,com.liferay.portal.kernel.service,com.liferay.portal.kernel.ut
- il",com.liferay.portal.kernel.service.persistence.impl;version="1.2.0
+ il",com.liferay.portal.kernel.service.persistence.impl;version="1.3.0
  ";uses:="com.liferay.portal.kernel.cache,com.liferay.portal.kernel.da
  o.db,com.liferay.portal.kernel.dao.jdbc,com.liferay.portal.kernel.dao
  .orm,com.liferay.portal.kernel.exception,com.liferay.portal.kernel.mo
