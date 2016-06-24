@@ -4581,6 +4581,8 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 
 	public AssetVocabularyPersistenceImpl() {
 		setModelClass(AssetVocabulary.class);
+		setModelImplClass(AssetVocabularyImpl.class);
+		setEntityCacheEnabled(AssetVocabularyModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -4841,6 +4843,11 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected AssetVocabulary removeImpl(AssetVocabulary assetVocabulary) {
 		assetVocabulary = toUnwrappedModel(assetVocabulary);
 
@@ -5084,54 +5091,6 @@ public class AssetVocabularyPersistenceImpl extends BasePersistenceImpl<AssetVoc
 	public AssetVocabulary findByPrimaryKey(long vocabularyId)
 		throws NoSuchVocabularyException {
 		return findByPrimaryKey((Serializable)vocabularyId);
-	}
-
-	/**
-	 * Returns the asset vocabulary with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the asset vocabulary
-	 * @return the asset vocabulary, or <code>null</code> if a asset vocabulary with the primary key could not be found
-	 */
-	@Override
-	public AssetVocabulary fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(AssetVocabularyModelImpl.ENTITY_CACHE_ENABLED,
-				AssetVocabularyImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		AssetVocabulary assetVocabulary = (AssetVocabulary)serializable;
-
-		if (assetVocabulary == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				assetVocabulary = (AssetVocabulary)session.get(AssetVocabularyImpl.class,
-						primaryKey);
-
-				if (assetVocabulary != null) {
-					cacheResult(assetVocabulary);
-				}
-				else {
-					entityCache.putResult(AssetVocabularyModelImpl.ENTITY_CACHE_ENABLED,
-						AssetVocabularyImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(AssetVocabularyModelImpl.ENTITY_CACHE_ENABLED,
-					AssetVocabularyImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return assetVocabulary;
 	}
 
 	/**

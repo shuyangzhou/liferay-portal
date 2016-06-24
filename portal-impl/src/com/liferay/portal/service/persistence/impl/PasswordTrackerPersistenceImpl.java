@@ -596,6 +596,8 @@ public class PasswordTrackerPersistenceImpl extends BasePersistenceImpl<Password
 
 	public PasswordTrackerPersistenceImpl() {
 		setModelClass(PasswordTracker.class);
+		setModelImplClass(PasswordTrackerImpl.class);
+		setEntityCacheEnabled(PasswordTrackerModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -744,6 +746,11 @@ public class PasswordTrackerPersistenceImpl extends BasePersistenceImpl<Password
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -896,54 +903,6 @@ public class PasswordTrackerPersistenceImpl extends BasePersistenceImpl<Password
 	public PasswordTracker findByPrimaryKey(long passwordTrackerId)
 		throws NoSuchPasswordTrackerException {
 		return findByPrimaryKey((Serializable)passwordTrackerId);
-	}
-
-	/**
-	 * Returns the password tracker with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the password tracker
-	 * @return the password tracker, or <code>null</code> if a password tracker with the primary key could not be found
-	 */
-	@Override
-	public PasswordTracker fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(PasswordTrackerModelImpl.ENTITY_CACHE_ENABLED,
-				PasswordTrackerImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		PasswordTracker passwordTracker = (PasswordTracker)serializable;
-
-		if (passwordTracker == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				passwordTracker = (PasswordTracker)session.get(PasswordTrackerImpl.class,
-						primaryKey);
-
-				if (passwordTracker != null) {
-					cacheResult(passwordTracker);
-				}
-				else {
-					entityCache.putResult(PasswordTrackerModelImpl.ENTITY_CACHE_ENABLED,
-						PasswordTrackerImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(PasswordTrackerModelImpl.ENTITY_CACHE_ENABLED,
-					PasswordTrackerImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return passwordTracker;
 	}
 
 	/**

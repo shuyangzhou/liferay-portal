@@ -1236,6 +1236,8 @@ public class PushNotificationsDevicePersistenceImpl extends BasePersistenceImpl<
 
 	public PushNotificationsDevicePersistenceImpl() {
 		setModelClass(PushNotificationsDevice.class);
+		setModelImplClass(PushNotificationsDeviceImpl.class);
+		setEntityCacheEnabled(PushNotificationsDeviceModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1443,6 +1445,11 @@ public class PushNotificationsDevicePersistenceImpl extends BasePersistenceImpl<
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected PushNotificationsDevice removeImpl(
 		PushNotificationsDevice pushNotificationsDevice) {
 		pushNotificationsDevice = toUnwrappedModel(pushNotificationsDevice);
@@ -1602,54 +1609,6 @@ public class PushNotificationsDevicePersistenceImpl extends BasePersistenceImpl<
 	public PushNotificationsDevice findByPrimaryKey(
 		long pushNotificationsDeviceId) throws NoSuchDeviceException {
 		return findByPrimaryKey((Serializable)pushNotificationsDeviceId);
-	}
-
-	/**
-	 * Returns the push notifications device with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the push notifications device
-	 * @return the push notifications device, or <code>null</code> if a push notifications device with the primary key could not be found
-	 */
-	@Override
-	public PushNotificationsDevice fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(PushNotificationsDeviceModelImpl.ENTITY_CACHE_ENABLED,
-				PushNotificationsDeviceImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		PushNotificationsDevice pushNotificationsDevice = (PushNotificationsDevice)serializable;
-
-		if (pushNotificationsDevice == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				pushNotificationsDevice = (PushNotificationsDevice)session.get(PushNotificationsDeviceImpl.class,
-						primaryKey);
-
-				if (pushNotificationsDevice != null) {
-					cacheResult(pushNotificationsDevice);
-				}
-				else {
-					entityCache.putResult(PushNotificationsDeviceModelImpl.ENTITY_CACHE_ENABLED,
-						PushNotificationsDeviceImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(PushNotificationsDeviceModelImpl.ENTITY_CACHE_ENABLED,
-					PushNotificationsDeviceImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return pushNotificationsDevice;
 	}
 
 	/**

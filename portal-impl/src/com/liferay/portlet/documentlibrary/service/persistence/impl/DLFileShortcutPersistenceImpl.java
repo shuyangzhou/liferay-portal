@@ -5994,6 +5994,8 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 
 	public DLFileShortcutPersistenceImpl() {
 		setModelClass(DLFileShortcut.class);
+		setModelImplClass(DLFileShortcutImpl.class);
+		setEntityCacheEnabled(DLFileShortcutModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -6204,6 +6206,11 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -6526,54 +6533,6 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 	public DLFileShortcut findByPrimaryKey(long fileShortcutId)
 		throws NoSuchFileShortcutException {
 		return findByPrimaryKey((Serializable)fileShortcutId);
-	}
-
-	/**
-	 * Returns the document library file shortcut with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the document library file shortcut
-	 * @return the document library file shortcut, or <code>null</code> if a document library file shortcut with the primary key could not be found
-	 */
-	@Override
-	public DLFileShortcut fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DLFileShortcutModelImpl.ENTITY_CACHE_ENABLED,
-				DLFileShortcutImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		DLFileShortcut dlFileShortcut = (DLFileShortcut)serializable;
-
-		if (dlFileShortcut == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				dlFileShortcut = (DLFileShortcut)session.get(DLFileShortcutImpl.class,
-						primaryKey);
-
-				if (dlFileShortcut != null) {
-					cacheResult(dlFileShortcut);
-				}
-				else {
-					entityCache.putResult(DLFileShortcutModelImpl.ENTITY_CACHE_ENABLED,
-						DLFileShortcutImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(DLFileShortcutModelImpl.ENTITY_CACHE_ENABLED,
-					DLFileShortcutImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return dlFileShortcut;
 	}
 
 	/**

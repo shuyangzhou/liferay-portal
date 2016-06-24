@@ -84,6 +84,8 @@ public class CounterPersistenceImpl extends BasePersistenceImpl<Counter>
 
 	public CounterPersistenceImpl() {
 		setModelClass(Counter.class);
+		setModelImplClass(CounterImpl.class);
+		setEntityCacheEnabled(CounterModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -228,6 +230,11 @@ public class CounterPersistenceImpl extends BasePersistenceImpl<Counter>
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected Counter removeImpl(Counter counter) {
 		counter = toUnwrappedModel(counter);
 
@@ -350,53 +357,6 @@ public class CounterPersistenceImpl extends BasePersistenceImpl<Counter>
 	@Override
 	public Counter findByPrimaryKey(String name) throws NoSuchCounterException {
 		return findByPrimaryKey((Serializable)name);
-	}
-
-	/**
-	 * Returns the counter with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the counter
-	 * @return the counter, or <code>null</code> if a counter with the primary key could not be found
-	 */
-	@Override
-	public Counter fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(CounterModelImpl.ENTITY_CACHE_ENABLED,
-				CounterImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Counter counter = (Counter)serializable;
-
-		if (counter == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				counter = (Counter)session.get(CounterImpl.class, primaryKey);
-
-				if (counter != null) {
-					cacheResult(counter);
-				}
-				else {
-					entityCache.putResult(CounterModelImpl.ENTITY_CACHE_ENABLED,
-						CounterImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(CounterModelImpl.ENTITY_CACHE_ENABLED,
-					CounterImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return counter;
 	}
 
 	/**

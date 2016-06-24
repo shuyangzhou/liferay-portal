@@ -2168,6 +2168,8 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 
 	public WorkflowDefinitionLinkPersistenceImpl() {
 		setModelClass(WorkflowDefinitionLink.class);
+		setModelImplClass(WorkflowDefinitionLinkImpl.class);
+		setEntityCacheEnabled(WorkflowDefinitionLinkModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2396,6 +2398,11 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -2635,54 +2642,6 @@ public class WorkflowDefinitionLinkPersistenceImpl extends BasePersistenceImpl<W
 		long workflowDefinitionLinkId)
 		throws NoSuchWorkflowDefinitionLinkException {
 		return findByPrimaryKey((Serializable)workflowDefinitionLinkId);
-	}
-
-	/**
-	 * Returns the workflow definition link with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the workflow definition link
-	 * @return the workflow definition link, or <code>null</code> if a workflow definition link with the primary key could not be found
-	 */
-	@Override
-	public WorkflowDefinitionLink fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(WorkflowDefinitionLinkModelImpl.ENTITY_CACHE_ENABLED,
-				WorkflowDefinitionLinkImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		WorkflowDefinitionLink workflowDefinitionLink = (WorkflowDefinitionLink)serializable;
-
-		if (workflowDefinitionLink == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				workflowDefinitionLink = (WorkflowDefinitionLink)session.get(WorkflowDefinitionLinkImpl.class,
-						primaryKey);
-
-				if (workflowDefinitionLink != null) {
-					cacheResult(workflowDefinitionLink);
-				}
-				else {
-					entityCache.putResult(WorkflowDefinitionLinkModelImpl.ENTITY_CACHE_ENABLED,
-						WorkflowDefinitionLinkImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(WorkflowDefinitionLinkModelImpl.ENTITY_CACHE_ENABLED,
-					WorkflowDefinitionLinkImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return workflowDefinitionLink;
 	}
 
 	/**

@@ -1405,6 +1405,8 @@ public class SyncDLFileVersionDiffPersistenceImpl extends BasePersistenceImpl<Sy
 
 	public SyncDLFileVersionDiffPersistenceImpl() {
 		setModelClass(SyncDLFileVersionDiff.class);
+		setModelImplClass(SyncDLFileVersionDiffImpl.class);
+		setEntityCacheEnabled(SyncDLFileVersionDiffModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1623,6 +1625,11 @@ public class SyncDLFileVersionDiffPersistenceImpl extends BasePersistenceImpl<Sy
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected SyncDLFileVersionDiff removeImpl(
 		SyncDLFileVersionDiff syncDLFileVersionDiff) {
 		syncDLFileVersionDiff = toUnwrappedModel(syncDLFileVersionDiff);
@@ -1781,54 +1788,6 @@ public class SyncDLFileVersionDiffPersistenceImpl extends BasePersistenceImpl<Sy
 	public SyncDLFileVersionDiff findByPrimaryKey(long syncDLFileVersionDiffId)
 		throws NoSuchDLFileVersionDiffException {
 		return findByPrimaryKey((Serializable)syncDLFileVersionDiffId);
-	}
-
-	/**
-	 * Returns the sync d l file version diff with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the sync d l file version diff
-	 * @return the sync d l file version diff, or <code>null</code> if a sync d l file version diff with the primary key could not be found
-	 */
-	@Override
-	public SyncDLFileVersionDiff fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(SyncDLFileVersionDiffModelImpl.ENTITY_CACHE_ENABLED,
-				SyncDLFileVersionDiffImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		SyncDLFileVersionDiff syncDLFileVersionDiff = (SyncDLFileVersionDiff)serializable;
-
-		if (syncDLFileVersionDiff == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				syncDLFileVersionDiff = (SyncDLFileVersionDiff)session.get(SyncDLFileVersionDiffImpl.class,
-						primaryKey);
-
-				if (syncDLFileVersionDiff != null) {
-					cacheResult(syncDLFileVersionDiff);
-				}
-				else {
-					entityCache.putResult(SyncDLFileVersionDiffModelImpl.ENTITY_CACHE_ENABLED,
-						SyncDLFileVersionDiffImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(SyncDLFileVersionDiffModelImpl.ENTITY_CACHE_ENABLED,
-					SyncDLFileVersionDiffImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return syncDLFileVersionDiff;
 	}
 
 	/**

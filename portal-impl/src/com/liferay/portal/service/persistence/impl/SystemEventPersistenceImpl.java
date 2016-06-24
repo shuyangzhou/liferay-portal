@@ -2337,6 +2337,8 @@ public class SystemEventPersistenceImpl extends BasePersistenceImpl<SystemEvent>
 
 	public SystemEventPersistenceImpl() {
 		setModelClass(SystemEvent.class);
+		setModelImplClass(SystemEventImpl.class);
+		setEntityCacheEnabled(SystemEventModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2483,6 +2485,11 @@ public class SystemEventPersistenceImpl extends BasePersistenceImpl<SystemEvent>
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -2713,54 +2720,6 @@ public class SystemEventPersistenceImpl extends BasePersistenceImpl<SystemEvent>
 	public SystemEvent findByPrimaryKey(long systemEventId)
 		throws NoSuchSystemEventException {
 		return findByPrimaryKey((Serializable)systemEventId);
-	}
-
-	/**
-	 * Returns the system event with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the system event
-	 * @return the system event, or <code>null</code> if a system event with the primary key could not be found
-	 */
-	@Override
-	public SystemEvent fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(SystemEventModelImpl.ENTITY_CACHE_ENABLED,
-				SystemEventImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		SystemEvent systemEvent = (SystemEvent)serializable;
-
-		if (systemEvent == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				systemEvent = (SystemEvent)session.get(SystemEventImpl.class,
-						primaryKey);
-
-				if (systemEvent != null) {
-					cacheResult(systemEvent);
-				}
-				else {
-					entityCache.putResult(SystemEventModelImpl.ENTITY_CACHE_ENABLED,
-						SystemEventImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(SystemEventModelImpl.ENTITY_CACHE_ENABLED,
-					SystemEventImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return systemEvent;
 	}
 
 	/**

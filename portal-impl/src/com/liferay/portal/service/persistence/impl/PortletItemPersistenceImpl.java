@@ -1607,6 +1607,8 @@ public class PortletItemPersistenceImpl extends BasePersistenceImpl<PortletItem>
 
 	public PortletItemPersistenceImpl() {
 		setModelClass(PortletItem.class);
+		setModelImplClass(PortletItemImpl.class);
+		setEntityCacheEnabled(PortletItemModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1825,6 +1827,11 @@ public class PortletItemPersistenceImpl extends BasePersistenceImpl<PortletItem>
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected PortletItem removeImpl(PortletItem portletItem) {
 		portletItem = toUnwrappedModel(portletItem);
 
@@ -2031,54 +2038,6 @@ public class PortletItemPersistenceImpl extends BasePersistenceImpl<PortletItem>
 	public PortletItem findByPrimaryKey(long portletItemId)
 		throws NoSuchPortletItemException {
 		return findByPrimaryKey((Serializable)portletItemId);
-	}
-
-	/**
-	 * Returns the portlet item with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the portlet item
-	 * @return the portlet item, or <code>null</code> if a portlet item with the primary key could not be found
-	 */
-	@Override
-	public PortletItem fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(PortletItemModelImpl.ENTITY_CACHE_ENABLED,
-				PortletItemImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		PortletItem portletItem = (PortletItem)serializable;
-
-		if (portletItem == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				portletItem = (PortletItem)session.get(PortletItemImpl.class,
-						primaryKey);
-
-				if (portletItem != null) {
-					cacheResult(portletItem);
-				}
-				else {
-					entityCache.putResult(PortletItemModelImpl.ENTITY_CACHE_ENABLED,
-						PortletItemImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(PortletItemModelImpl.ENTITY_CACHE_ENABLED,
-					PortletItemImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return portletItem;
 	}
 
 	/**

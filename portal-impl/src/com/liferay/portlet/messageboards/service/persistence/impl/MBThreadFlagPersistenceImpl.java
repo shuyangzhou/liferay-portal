@@ -2707,6 +2707,8 @@ public class MBThreadFlagPersistenceImpl extends BasePersistenceImpl<MBThreadFla
 
 	public MBThreadFlagPersistenceImpl() {
 		setModelClass(MBThreadFlag.class);
+		setModelImplClass(MBThreadFlagImpl.class);
+		setEntityCacheEnabled(MBThreadFlagModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2965,6 +2967,11 @@ public class MBThreadFlagPersistenceImpl extends BasePersistenceImpl<MBThreadFla
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected MBThreadFlag removeImpl(MBThreadFlag mbThreadFlag) {
 		mbThreadFlag = toUnwrappedModel(mbThreadFlag);
 
@@ -3204,54 +3211,6 @@ public class MBThreadFlagPersistenceImpl extends BasePersistenceImpl<MBThreadFla
 	public MBThreadFlag findByPrimaryKey(long threadFlagId)
 		throws NoSuchThreadFlagException {
 		return findByPrimaryKey((Serializable)threadFlagId);
-	}
-
-	/**
-	 * Returns the message boards thread flag with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the message boards thread flag
-	 * @return the message boards thread flag, or <code>null</code> if a message boards thread flag with the primary key could not be found
-	 */
-	@Override
-	public MBThreadFlag fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(MBThreadFlagModelImpl.ENTITY_CACHE_ENABLED,
-				MBThreadFlagImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		MBThreadFlag mbThreadFlag = (MBThreadFlag)serializable;
-
-		if (mbThreadFlag == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				mbThreadFlag = (MBThreadFlag)session.get(MBThreadFlagImpl.class,
-						primaryKey);
-
-				if (mbThreadFlag != null) {
-					cacheResult(mbThreadFlag);
-				}
-				else {
-					entityCache.putResult(MBThreadFlagModelImpl.ENTITY_CACHE_ENABLED,
-						MBThreadFlagImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(MBThreadFlagModelImpl.ENTITY_CACHE_ENABLED,
-					MBThreadFlagImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return mbThreadFlag;
 	}
 
 	/**

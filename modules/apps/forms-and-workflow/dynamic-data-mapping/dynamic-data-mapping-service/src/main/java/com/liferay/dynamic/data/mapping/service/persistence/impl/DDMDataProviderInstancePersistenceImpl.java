@@ -3363,6 +3363,8 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 
 	public DDMDataProviderInstancePersistenceImpl() {
 		setModelClass(DDMDataProviderInstance.class);
+		setModelImplClass(DDMDataProviderInstanceImpl.class);
+		setEntityCacheEnabled(DDMDataProviderInstanceModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -3581,6 +3583,11 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -3835,54 +3842,6 @@ public class DDMDataProviderInstancePersistenceImpl extends BasePersistenceImpl<
 	public DDMDataProviderInstance findByPrimaryKey(long dataProviderInstanceId)
 		throws NoSuchDataProviderInstanceException {
 		return findByPrimaryKey((Serializable)dataProviderInstanceId);
-	}
-
-	/**
-	 * Returns the d d m data provider instance with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the d d m data provider instance
-	 * @return the d d m data provider instance, or <code>null</code> if a d d m data provider instance with the primary key could not be found
-	 */
-	@Override
-	public DDMDataProviderInstance fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DDMDataProviderInstanceModelImpl.ENTITY_CACHE_ENABLED,
-				DDMDataProviderInstanceImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		DDMDataProviderInstance ddmDataProviderInstance = (DDMDataProviderInstance)serializable;
-
-		if (ddmDataProviderInstance == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				ddmDataProviderInstance = (DDMDataProviderInstance)session.get(DDMDataProviderInstanceImpl.class,
-						primaryKey);
-
-				if (ddmDataProviderInstance != null) {
-					cacheResult(ddmDataProviderInstance);
-				}
-				else {
-					entityCache.putResult(DDMDataProviderInstanceModelImpl.ENTITY_CACHE_ENABLED,
-						DDMDataProviderInstanceImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(DDMDataProviderInstanceModelImpl.ENTITY_CACHE_ENABLED,
-					DDMDataProviderInstanceImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return ddmDataProviderInstance;
 	}
 
 	/**

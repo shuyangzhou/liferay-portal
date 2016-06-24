@@ -5861,6 +5861,8 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 
 	public LayoutRevisionPersistenceImpl() {
 		setModelClass(LayoutRevision.class);
+		setModelImplClass(LayoutRevisionImpl.class);
+		setEntityCacheEnabled(LayoutRevisionModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -6073,6 +6075,11 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -6448,54 +6455,6 @@ public class LayoutRevisionPersistenceImpl extends BasePersistenceImpl<LayoutRev
 	public LayoutRevision findByPrimaryKey(long layoutRevisionId)
 		throws NoSuchLayoutRevisionException {
 		return findByPrimaryKey((Serializable)layoutRevisionId);
-	}
-
-	/**
-	 * Returns the layout revision with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the layout revision
-	 * @return the layout revision, or <code>null</code> if a layout revision with the primary key could not be found
-	 */
-	@Override
-	public LayoutRevision fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(LayoutRevisionModelImpl.ENTITY_CACHE_ENABLED,
-				LayoutRevisionImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		LayoutRevision layoutRevision = (LayoutRevision)serializable;
-
-		if (layoutRevision == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				layoutRevision = (LayoutRevision)session.get(LayoutRevisionImpl.class,
-						primaryKey);
-
-				if (layoutRevision != null) {
-					cacheResult(layoutRevision);
-				}
-				else {
-					entityCache.putResult(LayoutRevisionModelImpl.ENTITY_CACHE_ENABLED,
-						LayoutRevisionImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(LayoutRevisionModelImpl.ENTITY_CACHE_ENABLED,
-					LayoutRevisionImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return layoutRevision;
 	}
 
 	/**

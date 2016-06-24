@@ -318,6 +318,8 @@ public class PortalPreferencesPersistenceImpl extends BasePersistenceImpl<Portal
 
 	public PortalPreferencesPersistenceImpl() {
 		setModelClass(PortalPreferences.class);
+		setModelImplClass(PortalPreferencesImpl.class);
+		setEntityCacheEnabled(PortalPreferencesModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -527,6 +529,11 @@ public class PortalPreferencesPersistenceImpl extends BasePersistenceImpl<Portal
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected PortalPreferences removeImpl(PortalPreferences portalPreferences) {
 		portalPreferences = toUnwrappedModel(portalPreferences);
 
@@ -660,54 +667,6 @@ public class PortalPreferencesPersistenceImpl extends BasePersistenceImpl<Portal
 	public PortalPreferences findByPrimaryKey(long portalPreferencesId)
 		throws NoSuchPreferencesException {
 		return findByPrimaryKey((Serializable)portalPreferencesId);
-	}
-
-	/**
-	 * Returns the portal preferences with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the portal preferences
-	 * @return the portal preferences, or <code>null</code> if a portal preferences with the primary key could not be found
-	 */
-	@Override
-	public PortalPreferences fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(PortalPreferencesModelImpl.ENTITY_CACHE_ENABLED,
-				PortalPreferencesImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		PortalPreferences portalPreferences = (PortalPreferences)serializable;
-
-		if (portalPreferences == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				portalPreferences = (PortalPreferences)session.get(PortalPreferencesImpl.class,
-						primaryKey);
-
-				if (portalPreferences != null) {
-					cacheResult(portalPreferences);
-				}
-				else {
-					entityCache.putResult(PortalPreferencesModelImpl.ENTITY_CACHE_ENABLED,
-						PortalPreferencesImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(PortalPreferencesModelImpl.ENTITY_CACHE_ENABLED,
-					PortalPreferencesImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return portalPreferences;
 	}
 
 	/**

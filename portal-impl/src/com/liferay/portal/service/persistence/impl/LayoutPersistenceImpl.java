@@ -8029,6 +8029,8 @@ public class LayoutPersistenceImpl extends BasePersistenceImpl<Layout>
 
 	public LayoutPersistenceImpl() {
 		setModelClass(Layout.class);
+		setModelImplClass(LayoutImpl.class);
+		setEntityCacheEnabled(LayoutModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -8424,6 +8426,11 @@ public class LayoutPersistenceImpl extends BasePersistenceImpl<Layout>
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected Layout removeImpl(Layout layout) {
 		layout = toUnwrappedModel(layout);
 
@@ -8786,53 +8793,6 @@ public class LayoutPersistenceImpl extends BasePersistenceImpl<Layout>
 	@Override
 	public Layout findByPrimaryKey(long plid) throws NoSuchLayoutException {
 		return findByPrimaryKey((Serializable)plid);
-	}
-
-	/**
-	 * Returns the layout with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the layout
-	 * @return the layout, or <code>null</code> if a layout with the primary key could not be found
-	 */
-	@Override
-	public Layout fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(LayoutModelImpl.ENTITY_CACHE_ENABLED,
-				LayoutImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Layout layout = (Layout)serializable;
-
-		if (layout == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				layout = (Layout)session.get(LayoutImpl.class, primaryKey);
-
-				if (layout != null) {
-					cacheResult(layout);
-				}
-				else {
-					entityCache.putResult(LayoutModelImpl.ENTITY_CACHE_ENABLED,
-						LayoutImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(LayoutModelImpl.ENTITY_CACHE_ENABLED,
-					LayoutImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return layout;
 	}
 
 	/**

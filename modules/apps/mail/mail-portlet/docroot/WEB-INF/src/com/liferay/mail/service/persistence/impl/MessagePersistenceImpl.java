@@ -1326,6 +1326,8 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 
 	public MessagePersistenceImpl() {
 		setModelClass(Message.class);
+		setModelImplClass(MessageImpl.class);
+		setEntityCacheEnabled(MessageModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1527,6 +1529,11 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -1734,53 +1741,6 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 	public Message findByPrimaryKey(long messageId)
 		throws NoSuchMessageException {
 		return findByPrimaryKey((Serializable)messageId);
-	}
-
-	/**
-	 * Returns the message with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the message
-	 * @return the message, or <code>null</code> if a message with the primary key could not be found
-	 */
-	@Override
-	public Message fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(MessageModelImpl.ENTITY_CACHE_ENABLED,
-				MessageImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Message message = (Message)serializable;
-
-		if (message == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				message = (Message)session.get(MessageImpl.class, primaryKey);
-
-				if (message != null) {
-					cacheResult(message);
-				}
-				else {
-					entityCache.putResult(MessageModelImpl.ENTITY_CACHE_ENABLED,
-						MessageImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(MessageModelImpl.ENTITY_CACHE_ENABLED,
-					MessageImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return message;
 	}
 
 	/**

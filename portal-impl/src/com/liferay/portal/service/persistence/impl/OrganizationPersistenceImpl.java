@@ -6587,6 +6587,8 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 
 	public OrganizationPersistenceImpl() {
 		setModelClass(Organization.class);
+		setModelImplClass(OrganizationImpl.class);
+		setEntityCacheEnabled(OrganizationModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -6796,6 +6798,11 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -7071,54 +7078,6 @@ public class OrganizationPersistenceImpl extends BasePersistenceImpl<Organizatio
 	public Organization findByPrimaryKey(long organizationId)
 		throws NoSuchOrganizationException {
 		return findByPrimaryKey((Serializable)organizationId);
-	}
-
-	/**
-	 * Returns the organization with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the organization
-	 * @return the organization, or <code>null</code> if a organization with the primary key could not be found
-	 */
-	@Override
-	public Organization fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(OrganizationModelImpl.ENTITY_CACHE_ENABLED,
-				OrganizationImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Organization organization = (Organization)serializable;
-
-		if (organization == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				organization = (Organization)session.get(OrganizationImpl.class,
-						primaryKey);
-
-				if (organization != null) {
-					cacheResult(organization);
-				}
-				else {
-					entityCache.putResult(OrganizationModelImpl.ENTITY_CACHE_ENABLED,
-						OrganizationImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(OrganizationModelImpl.ENTITY_CACHE_ENABLED,
-					OrganizationImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return organization;
 	}
 
 	/**

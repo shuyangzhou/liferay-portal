@@ -291,6 +291,8 @@ public class BrowserTrackerPersistenceImpl extends BasePersistenceImpl<BrowserTr
 
 	public BrowserTrackerPersistenceImpl() {
 		setModelClass(BrowserTracker.class);
+		setModelImplClass(BrowserTrackerImpl.class);
+		setEntityCacheEnabled(BrowserTrackerModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -487,6 +489,11 @@ public class BrowserTrackerPersistenceImpl extends BasePersistenceImpl<BrowserTr
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected BrowserTracker removeImpl(BrowserTracker browserTracker) {
 		browserTracker = toUnwrappedModel(browserTracker);
 
@@ -619,54 +626,6 @@ public class BrowserTrackerPersistenceImpl extends BasePersistenceImpl<BrowserTr
 	public BrowserTracker findByPrimaryKey(long browserTrackerId)
 		throws NoSuchBrowserTrackerException {
 		return findByPrimaryKey((Serializable)browserTrackerId);
-	}
-
-	/**
-	 * Returns the browser tracker with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the browser tracker
-	 * @return the browser tracker, or <code>null</code> if a browser tracker with the primary key could not be found
-	 */
-	@Override
-	public BrowserTracker fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(BrowserTrackerModelImpl.ENTITY_CACHE_ENABLED,
-				BrowserTrackerImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		BrowserTracker browserTracker = (BrowserTracker)serializable;
-
-		if (browserTracker == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				browserTracker = (BrowserTracker)session.get(BrowserTrackerImpl.class,
-						primaryKey);
-
-				if (browserTracker != null) {
-					cacheResult(browserTracker);
-				}
-				else {
-					entityCache.putResult(BrowserTrackerModelImpl.ENTITY_CACHE_ENABLED,
-						BrowserTrackerImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(BrowserTrackerModelImpl.ENTITY_CACHE_ENABLED,
-					BrowserTrackerImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return browserTracker;
 	}
 
 	/**

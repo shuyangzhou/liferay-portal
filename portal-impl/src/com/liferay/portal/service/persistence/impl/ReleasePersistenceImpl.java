@@ -330,6 +330,8 @@ public class ReleasePersistenceImpl extends BasePersistenceImpl<Release>
 
 	public ReleasePersistenceImpl() {
 		setModelClass(Release.class);
+		setModelImplClass(ReleaseImpl.class);
+		setEntityCacheEnabled(ReleaseModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -525,6 +527,11 @@ public class ReleasePersistenceImpl extends BasePersistenceImpl<Release>
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected Release removeImpl(Release release) {
 		release = toUnwrappedModel(release);
 
@@ -684,53 +691,6 @@ public class ReleasePersistenceImpl extends BasePersistenceImpl<Release>
 	public Release findByPrimaryKey(long releaseId)
 		throws NoSuchReleaseException {
 		return findByPrimaryKey((Serializable)releaseId);
-	}
-
-	/**
-	 * Returns the release with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the release
-	 * @return the release, or <code>null</code> if a release with the primary key could not be found
-	 */
-	@Override
-	public Release fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ReleaseModelImpl.ENTITY_CACHE_ENABLED,
-				ReleaseImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Release release = (Release)serializable;
-
-		if (release == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				release = (Release)session.get(ReleaseImpl.class, primaryKey);
-
-				if (release != null) {
-					cacheResult(release);
-				}
-				else {
-					entityCache.putResult(ReleaseModelImpl.ENTITY_CACHE_ENABLED,
-						ReleaseImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ReleaseModelImpl.ENTITY_CACHE_ENABLED,
-					ReleaseImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return release;
 	}
 
 	/**

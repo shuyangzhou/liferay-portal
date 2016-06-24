@@ -12416,6 +12416,8 @@ public class DLFileEntryPersistenceImpl extends BasePersistenceImpl<DLFileEntry>
 
 	public DLFileEntryPersistenceImpl() {
 		setModelClass(DLFileEntry.class);
+		setModelImplClass(DLFileEntryImpl.class);
+		setEntityCacheEnabled(DLFileEntryModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -12780,6 +12782,11 @@ public class DLFileEntryPersistenceImpl extends BasePersistenceImpl<DLFileEntry>
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -13250,54 +13257,6 @@ public class DLFileEntryPersistenceImpl extends BasePersistenceImpl<DLFileEntry>
 	public DLFileEntry findByPrimaryKey(long fileEntryId)
 		throws NoSuchFileEntryException {
 		return findByPrimaryKey((Serializable)fileEntryId);
-	}
-
-	/**
-	 * Returns the document library file entry with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the document library file entry
-	 * @return the document library file entry, or <code>null</code> if a document library file entry with the primary key could not be found
-	 */
-	@Override
-	public DLFileEntry fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-				DLFileEntryImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		DLFileEntry dlFileEntry = (DLFileEntry)serializable;
-
-		if (dlFileEntry == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				dlFileEntry = (DLFileEntry)session.get(DLFileEntryImpl.class,
-						primaryKey);
-
-				if (dlFileEntry != null) {
-					cacheResult(dlFileEntry);
-				}
-				else {
-					entityCache.putResult(DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-						DLFileEntryImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(DLFileEntryModelImpl.ENTITY_CACHE_ENABLED,
-					DLFileEntryImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return dlFileEntry;
 	}
 
 	/**

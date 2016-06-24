@@ -912,6 +912,8 @@ public class ServiceComponentPersistenceImpl extends BasePersistenceImpl<Service
 
 	public ServiceComponentPersistenceImpl() {
 		setModelClass(ServiceComponent.class);
+		setModelImplClass(ServiceComponentImpl.class);
+		setEntityCacheEnabled(ServiceComponentModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1122,6 +1124,11 @@ public class ServiceComponentPersistenceImpl extends BasePersistenceImpl<Service
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected ServiceComponent removeImpl(ServiceComponent serviceComponent) {
 		serviceComponent = toUnwrappedModel(serviceComponent);
 
@@ -1279,54 +1286,6 @@ public class ServiceComponentPersistenceImpl extends BasePersistenceImpl<Service
 	public ServiceComponent findByPrimaryKey(long serviceComponentId)
 		throws NoSuchServiceComponentException {
 		return findByPrimaryKey((Serializable)serviceComponentId);
-	}
-
-	/**
-	 * Returns the service component with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the service component
-	 * @return the service component, or <code>null</code> if a service component with the primary key could not be found
-	 */
-	@Override
-	public ServiceComponent fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ServiceComponentModelImpl.ENTITY_CACHE_ENABLED,
-				ServiceComponentImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		ServiceComponent serviceComponent = (ServiceComponent)serializable;
-
-		if (serviceComponent == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				serviceComponent = (ServiceComponent)session.get(ServiceComponentImpl.class,
-						primaryKey);
-
-				if (serviceComponent != null) {
-					cacheResult(serviceComponent);
-				}
-				else {
-					entityCache.putResult(ServiceComponentModelImpl.ENTITY_CACHE_ENABLED,
-						ServiceComponentImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ServiceComponentModelImpl.ENTITY_CACHE_ENABLED,
-					ServiceComponentImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return serviceComponent;
 	}
 
 	/**

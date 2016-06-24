@@ -595,6 +595,8 @@ public class ShoppingItemFieldPersistenceImpl extends BasePersistenceImpl<Shoppi
 
 	public ShoppingItemFieldPersistenceImpl() {
 		setModelClass(ShoppingItemField.class);
+		setModelImplClass(ShoppingItemFieldImpl.class);
+		setEntityCacheEnabled(ShoppingItemFieldModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -743,6 +745,11 @@ public class ShoppingItemFieldPersistenceImpl extends BasePersistenceImpl<Shoppi
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -896,54 +903,6 @@ public class ShoppingItemFieldPersistenceImpl extends BasePersistenceImpl<Shoppi
 	public ShoppingItemField findByPrimaryKey(long itemFieldId)
 		throws NoSuchItemFieldException {
 		return findByPrimaryKey((Serializable)itemFieldId);
-	}
-
-	/**
-	 * Returns the shopping item field with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the shopping item field
-	 * @return the shopping item field, or <code>null</code> if a shopping item field with the primary key could not be found
-	 */
-	@Override
-	public ShoppingItemField fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ShoppingItemFieldModelImpl.ENTITY_CACHE_ENABLED,
-				ShoppingItemFieldImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		ShoppingItemField shoppingItemField = (ShoppingItemField)serializable;
-
-		if (shoppingItemField == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				shoppingItemField = (ShoppingItemField)session.get(ShoppingItemFieldImpl.class,
-						primaryKey);
-
-				if (shoppingItemField != null) {
-					cacheResult(shoppingItemField);
-				}
-				else {
-					entityCache.putResult(ShoppingItemFieldModelImpl.ENTITY_CACHE_ENABLED,
-						ShoppingItemFieldImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ShoppingItemFieldModelImpl.ENTITY_CACHE_ENABLED,
-					ShoppingItemFieldImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return shoppingItemField;
 	}
 
 	/**

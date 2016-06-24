@@ -3539,6 +3539,8 @@ public class SocialActivitySetPersistenceImpl extends BasePersistenceImpl<Social
 
 	public SocialActivitySetPersistenceImpl() {
 		setModelClass(SocialActivitySet.class);
+		setModelImplClass(SocialActivitySetImpl.class);
+		setEntityCacheEnabled(SocialActivitySetModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -3687,6 +3689,11 @@ public class SocialActivitySetPersistenceImpl extends BasePersistenceImpl<Social
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -3958,54 +3965,6 @@ public class SocialActivitySetPersistenceImpl extends BasePersistenceImpl<Social
 	public SocialActivitySet findByPrimaryKey(long activitySetId)
 		throws NoSuchActivitySetException {
 		return findByPrimaryKey((Serializable)activitySetId);
-	}
-
-	/**
-	 * Returns the social activity set with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the social activity set
-	 * @return the social activity set, or <code>null</code> if a social activity set with the primary key could not be found
-	 */
-	@Override
-	public SocialActivitySet fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(SocialActivitySetModelImpl.ENTITY_CACHE_ENABLED,
-				SocialActivitySetImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		SocialActivitySet socialActivitySet = (SocialActivitySet)serializable;
-
-		if (socialActivitySet == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				socialActivitySet = (SocialActivitySet)session.get(SocialActivitySetImpl.class,
-						primaryKey);
-
-				if (socialActivitySet != null) {
-					cacheResult(socialActivitySet);
-				}
-				else {
-					entityCache.putResult(SocialActivitySetModelImpl.ENTITY_CACHE_ENABLED,
-						SocialActivitySetImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(SocialActivitySetModelImpl.ENTITY_CACHE_ENABLED,
-					SocialActivitySetImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return socialActivitySet;
 	}
 
 	/**

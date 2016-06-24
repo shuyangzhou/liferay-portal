@@ -855,6 +855,8 @@ public class AnnouncementsDeliveryPersistenceImpl extends BasePersistenceImpl<An
 
 	public AnnouncementsDeliveryPersistenceImpl() {
 		setModelClass(AnnouncementsDelivery.class);
+		setModelImplClass(AnnouncementsDeliveryImpl.class);
+		setEntityCacheEnabled(AnnouncementsDeliveryModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1070,6 +1072,11 @@ public class AnnouncementsDeliveryPersistenceImpl extends BasePersistenceImpl<An
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected AnnouncementsDelivery removeImpl(
 		AnnouncementsDelivery announcementsDelivery) {
 		announcementsDelivery = toUnwrappedModel(announcementsDelivery);
@@ -1226,54 +1233,6 @@ public class AnnouncementsDeliveryPersistenceImpl extends BasePersistenceImpl<An
 	public AnnouncementsDelivery findByPrimaryKey(long deliveryId)
 		throws NoSuchDeliveryException {
 		return findByPrimaryKey((Serializable)deliveryId);
-	}
-
-	/**
-	 * Returns the announcements delivery with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the announcements delivery
-	 * @return the announcements delivery, or <code>null</code> if a announcements delivery with the primary key could not be found
-	 */
-	@Override
-	public AnnouncementsDelivery fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(AnnouncementsDeliveryModelImpl.ENTITY_CACHE_ENABLED,
-				AnnouncementsDeliveryImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		AnnouncementsDelivery announcementsDelivery = (AnnouncementsDelivery)serializable;
-
-		if (announcementsDelivery == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				announcementsDelivery = (AnnouncementsDelivery)session.get(AnnouncementsDeliveryImpl.class,
-						primaryKey);
-
-				if (announcementsDelivery != null) {
-					cacheResult(announcementsDelivery);
-				}
-				else {
-					entityCache.putResult(AnnouncementsDeliveryModelImpl.ENTITY_CACHE_ENABLED,
-						AnnouncementsDeliveryImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(AnnouncementsDeliveryModelImpl.ENTITY_CACHE_ENABLED,
-					AnnouncementsDeliveryImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return announcementsDelivery;
 	}
 
 	/**

@@ -1349,6 +1349,8 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 
 	public ResourceBlockPermissionPersistenceImpl() {
 		setModelClass(ResourceBlockPermission.class);
+		setModelImplClass(ResourceBlockPermissionImpl.class);
+		setEntityCacheEnabled(ResourceBlockPermissionModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1566,6 +1568,11 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected ResourceBlockPermission removeImpl(
 		ResourceBlockPermission resourceBlockPermission) {
 		resourceBlockPermission = toUnwrappedModel(resourceBlockPermission);
@@ -1744,54 +1751,6 @@ public class ResourceBlockPermissionPersistenceImpl extends BasePersistenceImpl<
 		long resourceBlockPermissionId)
 		throws NoSuchResourceBlockPermissionException {
 		return findByPrimaryKey((Serializable)resourceBlockPermissionId);
-	}
-
-	/**
-	 * Returns the resource block permission with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the resource block permission
-	 * @return the resource block permission, or <code>null</code> if a resource block permission with the primary key could not be found
-	 */
-	@Override
-	public ResourceBlockPermission fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ResourceBlockPermissionModelImpl.ENTITY_CACHE_ENABLED,
-				ResourceBlockPermissionImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		ResourceBlockPermission resourceBlockPermission = (ResourceBlockPermission)serializable;
-
-		if (resourceBlockPermission == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				resourceBlockPermission = (ResourceBlockPermission)session.get(ResourceBlockPermissionImpl.class,
-						primaryKey);
-
-				if (resourceBlockPermission != null) {
-					cacheResult(resourceBlockPermission);
-				}
-				else {
-					entityCache.putResult(ResourceBlockPermissionModelImpl.ENTITY_CACHE_ENABLED,
-						ResourceBlockPermissionImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ResourceBlockPermissionModelImpl.ENTITY_CACHE_ENABLED,
-					ResourceBlockPermissionImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return resourceBlockPermission;
 	}
 
 	/**

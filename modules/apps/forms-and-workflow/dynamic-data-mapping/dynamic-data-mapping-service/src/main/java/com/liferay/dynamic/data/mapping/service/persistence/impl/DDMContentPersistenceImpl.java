@@ -2480,6 +2480,8 @@ public class DDMContentPersistenceImpl extends BasePersistenceImpl<DDMContent>
 
 	public DDMContentPersistenceImpl() {
 		setModelClass(DDMContent.class);
+		setModelImplClass(DDMContentImpl.class);
+		setEntityCacheEnabled(DDMContentModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2687,6 +2689,11 @@ public class DDMContentPersistenceImpl extends BasePersistenceImpl<DDMContent>
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -2929,54 +2936,6 @@ public class DDMContentPersistenceImpl extends BasePersistenceImpl<DDMContent>
 	public DDMContent findByPrimaryKey(long contentId)
 		throws NoSuchContentException {
 		return findByPrimaryKey((Serializable)contentId);
-	}
-
-	/**
-	 * Returns the d d m content with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the d d m content
-	 * @return the d d m content, or <code>null</code> if a d d m content with the primary key could not be found
-	 */
-	@Override
-	public DDMContent fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DDMContentModelImpl.ENTITY_CACHE_ENABLED,
-				DDMContentImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		DDMContent ddmContent = (DDMContent)serializable;
-
-		if (ddmContent == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				ddmContent = (DDMContent)session.get(DDMContentImpl.class,
-						primaryKey);
-
-				if (ddmContent != null) {
-					cacheResult(ddmContent);
-				}
-				else {
-					entityCache.putResult(DDMContentModelImpl.ENTITY_CACHE_ENABLED,
-						DDMContentImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(DDMContentModelImpl.ENTITY_CACHE_ENABLED,
-					DDMContentImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return ddmContent;
 	}
 
 	/**

@@ -2200,6 +2200,8 @@ public class JournalArticleImagePersistenceImpl extends BasePersistenceImpl<Jour
 
 	public JournalArticleImagePersistenceImpl() {
 		setModelClass(JournalArticleImage.class);
+		setModelImplClass(JournalArticleImageImpl.class);
+		setEntityCacheEnabled(JournalArticleImageModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2433,6 +2435,11 @@ public class JournalArticleImagePersistenceImpl extends BasePersistenceImpl<Jour
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected JournalArticleImage removeImpl(
 		JournalArticleImage journalArticleImage) {
 		journalArticleImage = toUnwrappedModel(journalArticleImage);
@@ -2631,54 +2638,6 @@ public class JournalArticleImagePersistenceImpl extends BasePersistenceImpl<Jour
 	public JournalArticleImage findByPrimaryKey(long articleImageId)
 		throws NoSuchArticleImageException {
 		return findByPrimaryKey((Serializable)articleImageId);
-	}
-
-	/**
-	 * Returns the journal article image with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the journal article image
-	 * @return the journal article image, or <code>null</code> if a journal article image with the primary key could not be found
-	 */
-	@Override
-	public JournalArticleImage fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(JournalArticleImageModelImpl.ENTITY_CACHE_ENABLED,
-				JournalArticleImageImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		JournalArticleImage journalArticleImage = (JournalArticleImage)serializable;
-
-		if (journalArticleImage == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				journalArticleImage = (JournalArticleImage)session.get(JournalArticleImageImpl.class,
-						primaryKey);
-
-				if (journalArticleImage != null) {
-					cacheResult(journalArticleImage);
-				}
-				else {
-					entityCache.putResult(JournalArticleImageModelImpl.ENTITY_CACHE_ENABLED,
-						JournalArticleImageImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(JournalArticleImageModelImpl.ENTITY_CACHE_ENABLED,
-					JournalArticleImageImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return journalArticleImage;
 	}
 
 	/**

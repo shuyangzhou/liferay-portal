@@ -919,6 +919,8 @@ public class ResourceActionPersistenceImpl extends BasePersistenceImpl<ResourceA
 
 	public ResourceActionPersistenceImpl() {
 		setModelClass(ResourceAction.class);
+		setModelImplClass(ResourceActionImpl.class);
+		setEntityCacheEnabled(ResourceActionModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1126,6 +1128,11 @@ public class ResourceActionPersistenceImpl extends BasePersistenceImpl<ResourceA
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected ResourceAction removeImpl(ResourceAction resourceAction) {
 		resourceAction = toUnwrappedModel(resourceAction);
 
@@ -1277,54 +1284,6 @@ public class ResourceActionPersistenceImpl extends BasePersistenceImpl<ResourceA
 	public ResourceAction findByPrimaryKey(long resourceActionId)
 		throws NoSuchResourceActionException {
 		return findByPrimaryKey((Serializable)resourceActionId);
-	}
-
-	/**
-	 * Returns the resource action with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the resource action
-	 * @return the resource action, or <code>null</code> if a resource action with the primary key could not be found
-	 */
-	@Override
-	public ResourceAction fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ResourceActionModelImpl.ENTITY_CACHE_ENABLED,
-				ResourceActionImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		ResourceAction resourceAction = (ResourceAction)serializable;
-
-		if (resourceAction == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				resourceAction = (ResourceAction)session.get(ResourceActionImpl.class,
-						primaryKey);
-
-				if (resourceAction != null) {
-					cacheResult(resourceAction);
-				}
-				else {
-					entityCache.putResult(ResourceActionModelImpl.ENTITY_CACHE_ENABLED,
-						ResourceActionImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ResourceActionModelImpl.ENTITY_CACHE_ENABLED,
-					ResourceActionImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return resourceAction;
 	}
 
 	/**

@@ -2807,6 +2807,8 @@ public class MDRRuleGroupPersistenceImpl extends BasePersistenceImpl<MDRRuleGrou
 
 	public MDRRuleGroupPersistenceImpl() {
 		setModelClass(MDRRuleGroup.class);
+		setModelImplClass(MDRRuleGroupImpl.class);
+		setEntityCacheEnabled(MDRRuleGroupModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -3016,6 +3018,11 @@ public class MDRRuleGroupPersistenceImpl extends BasePersistenceImpl<MDRRuleGrou
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -3242,54 +3249,6 @@ public class MDRRuleGroupPersistenceImpl extends BasePersistenceImpl<MDRRuleGrou
 	public MDRRuleGroup findByPrimaryKey(long ruleGroupId)
 		throws NoSuchRuleGroupException {
 		return findByPrimaryKey((Serializable)ruleGroupId);
-	}
-
-	/**
-	 * Returns the m d r rule group with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the m d r rule group
-	 * @return the m d r rule group, or <code>null</code> if a m d r rule group with the primary key could not be found
-	 */
-	@Override
-	public MDRRuleGroup fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(MDRRuleGroupModelImpl.ENTITY_CACHE_ENABLED,
-				MDRRuleGroupImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		MDRRuleGroup mdrRuleGroup = (MDRRuleGroup)serializable;
-
-		if (mdrRuleGroup == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				mdrRuleGroup = (MDRRuleGroup)session.get(MDRRuleGroupImpl.class,
-						primaryKey);
-
-				if (mdrRuleGroup != null) {
-					cacheResult(mdrRuleGroup);
-				}
-				else {
-					entityCache.putResult(MDRRuleGroupModelImpl.ENTITY_CACHE_ENABLED,
-						MDRRuleGroupImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(MDRRuleGroupModelImpl.ENTITY_CACHE_ENABLED,
-					MDRRuleGroupImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return mdrRuleGroup;
 	}
 
 	/**

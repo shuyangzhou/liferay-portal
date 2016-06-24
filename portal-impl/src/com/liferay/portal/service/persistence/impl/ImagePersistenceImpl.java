@@ -569,6 +569,8 @@ public class ImagePersistenceImpl extends BasePersistenceImpl<Image>
 
 	public ImagePersistenceImpl() {
 		setModelClass(Image.class);
+		setModelImplClass(ImageImpl.class);
+		setEntityCacheEnabled(ImageModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -714,6 +716,11 @@ public class ImagePersistenceImpl extends BasePersistenceImpl<Image>
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected Image removeImpl(Image image) {
 		image = toUnwrappedModel(image);
 
@@ -842,53 +849,6 @@ public class ImagePersistenceImpl extends BasePersistenceImpl<Image>
 	@Override
 	public Image findByPrimaryKey(long imageId) throws NoSuchImageException {
 		return findByPrimaryKey((Serializable)imageId);
-	}
-
-	/**
-	 * Returns the image with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the image
-	 * @return the image, or <code>null</code> if a image with the primary key could not be found
-	 */
-	@Override
-	public Image fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ImageModelImpl.ENTITY_CACHE_ENABLED,
-				ImageImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Image image = (Image)serializable;
-
-		if (image == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				image = (Image)session.get(ImageImpl.class, primaryKey);
-
-				if (image != null) {
-					cacheResult(image);
-				}
-				else {
-					entityCache.putResult(ImageModelImpl.ENTITY_CACHE_ENABLED,
-						ImageImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ImageModelImpl.ENTITY_CACHE_ENABLED,
-					ImageImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return image;
 	}
 
 	/**

@@ -313,6 +313,8 @@ public class WebDAVPropsPersistenceImpl extends BasePersistenceImpl<WebDAVProps>
 
 	public WebDAVPropsPersistenceImpl() {
 		setModelClass(WebDAVProps.class);
+		setModelImplClass(WebDAVPropsImpl.class);
+		setEntityCacheEnabled(WebDAVPropsModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -521,6 +523,11 @@ public class WebDAVPropsPersistenceImpl extends BasePersistenceImpl<WebDAVProps>
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected WebDAVProps removeImpl(WebDAVProps webDAVProps) {
 		webDAVProps = toUnwrappedModel(webDAVProps);
 
@@ -678,54 +685,6 @@ public class WebDAVPropsPersistenceImpl extends BasePersistenceImpl<WebDAVProps>
 	public WebDAVProps findByPrimaryKey(long webDavPropsId)
 		throws NoSuchWebDAVPropsException {
 		return findByPrimaryKey((Serializable)webDavPropsId);
-	}
-
-	/**
-	 * Returns the web d a v props with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the web d a v props
-	 * @return the web d a v props, or <code>null</code> if a web d a v props with the primary key could not be found
-	 */
-	@Override
-	public WebDAVProps fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(WebDAVPropsModelImpl.ENTITY_CACHE_ENABLED,
-				WebDAVPropsImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		WebDAVProps webDAVProps = (WebDAVProps)serializable;
-
-		if (webDAVProps == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				webDAVProps = (WebDAVProps)session.get(WebDAVPropsImpl.class,
-						primaryKey);
-
-				if (webDAVProps != null) {
-					cacheResult(webDAVProps);
-				}
-				else {
-					entityCache.putResult(WebDAVPropsModelImpl.ENTITY_CACHE_ENABLED,
-						WebDAVPropsImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(WebDAVPropsModelImpl.ENTITY_CACHE_ENABLED,
-					WebDAVPropsImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return webDAVProps;
 	}
 
 	/**

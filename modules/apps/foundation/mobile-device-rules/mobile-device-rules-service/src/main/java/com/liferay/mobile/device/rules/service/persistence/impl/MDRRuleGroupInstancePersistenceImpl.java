@@ -4668,6 +4668,8 @@ public class MDRRuleGroupInstancePersistenceImpl extends BasePersistenceImpl<MDR
 
 	public MDRRuleGroupInstancePersistenceImpl() {
 		setModelClass(MDRRuleGroupInstance.class);
+		setModelImplClass(MDRRuleGroupInstanceImpl.class);
+		setEntityCacheEnabled(MDRRuleGroupInstanceModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -4936,6 +4938,11 @@ public class MDRRuleGroupInstancePersistenceImpl extends BasePersistenceImpl<MDR
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -5232,54 +5239,6 @@ public class MDRRuleGroupInstancePersistenceImpl extends BasePersistenceImpl<MDR
 	public MDRRuleGroupInstance findByPrimaryKey(long ruleGroupInstanceId)
 		throws NoSuchRuleGroupInstanceException {
 		return findByPrimaryKey((Serializable)ruleGroupInstanceId);
-	}
-
-	/**
-	 * Returns the m d r rule group instance with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the m d r rule group instance
-	 * @return the m d r rule group instance, or <code>null</code> if a m d r rule group instance with the primary key could not be found
-	 */
-	@Override
-	public MDRRuleGroupInstance fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(MDRRuleGroupInstanceModelImpl.ENTITY_CACHE_ENABLED,
-				MDRRuleGroupInstanceImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		MDRRuleGroupInstance mdrRuleGroupInstance = (MDRRuleGroupInstance)serializable;
-
-		if (mdrRuleGroupInstance == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				mdrRuleGroupInstance = (MDRRuleGroupInstance)session.get(MDRRuleGroupInstanceImpl.class,
-						primaryKey);
-
-				if (mdrRuleGroupInstance != null) {
-					cacheResult(mdrRuleGroupInstance);
-				}
-				else {
-					entityCache.putResult(MDRRuleGroupInstanceModelImpl.ENTITY_CACHE_ENABLED,
-						MDRRuleGroupInstanceImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(MDRRuleGroupInstanceModelImpl.ENTITY_CACHE_ENABLED,
-					MDRRuleGroupInstanceImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return mdrRuleGroupInstance;
 	}
 
 	/**

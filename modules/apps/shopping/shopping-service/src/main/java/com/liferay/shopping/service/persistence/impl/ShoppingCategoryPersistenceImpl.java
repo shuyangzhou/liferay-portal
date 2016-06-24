@@ -2152,6 +2152,8 @@ public class ShoppingCategoryPersistenceImpl extends BasePersistenceImpl<Shoppin
 
 	public ShoppingCategoryPersistenceImpl() {
 		setModelClass(ShoppingCategory.class);
+		setModelImplClass(ShoppingCategoryImpl.class);
+		setEntityCacheEnabled(ShoppingCategoryModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2363,6 +2365,11 @@ public class ShoppingCategoryPersistenceImpl extends BasePersistenceImpl<Shoppin
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected ShoppingCategory removeImpl(ShoppingCategory shoppingCategory) {
 		shoppingCategory = toUnwrappedModel(shoppingCategory);
 
@@ -2564,54 +2571,6 @@ public class ShoppingCategoryPersistenceImpl extends BasePersistenceImpl<Shoppin
 	public ShoppingCategory findByPrimaryKey(long categoryId)
 		throws NoSuchCategoryException {
 		return findByPrimaryKey((Serializable)categoryId);
-	}
-
-	/**
-	 * Returns the shopping category with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the shopping category
-	 * @return the shopping category, or <code>null</code> if a shopping category with the primary key could not be found
-	 */
-	@Override
-	public ShoppingCategory fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ShoppingCategoryModelImpl.ENTITY_CACHE_ENABLED,
-				ShoppingCategoryImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		ShoppingCategory shoppingCategory = (ShoppingCategory)serializable;
-
-		if (shoppingCategory == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				shoppingCategory = (ShoppingCategory)session.get(ShoppingCategoryImpl.class,
-						primaryKey);
-
-				if (shoppingCategory != null) {
-					cacheResult(shoppingCategory);
-				}
-				else {
-					entityCache.putResult(ShoppingCategoryModelImpl.ENTITY_CACHE_ENABLED,
-						ShoppingCategoryImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ShoppingCategoryModelImpl.ENTITY_CACHE_ENABLED,
-					ShoppingCategoryImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return shoppingCategory;
 	}
 
 	/**

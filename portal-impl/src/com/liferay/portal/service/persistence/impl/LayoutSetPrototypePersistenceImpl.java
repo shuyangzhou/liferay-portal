@@ -3869,6 +3869,8 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 
 	public LayoutSetPrototypePersistenceImpl() {
 		setModelClass(LayoutSetPrototype.class);
+		setModelImplClass(LayoutSetPrototypeImpl.class);
+		setEntityCacheEnabled(LayoutSetPrototypeModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -4021,6 +4023,11 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -4270,54 +4277,6 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 	public LayoutSetPrototype findByPrimaryKey(long layoutSetPrototypeId)
 		throws NoSuchLayoutSetPrototypeException {
 		return findByPrimaryKey((Serializable)layoutSetPrototypeId);
-	}
-
-	/**
-	 * Returns the layout set prototype with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the layout set prototype
-	 * @return the layout set prototype, or <code>null</code> if a layout set prototype with the primary key could not be found
-	 */
-	@Override
-	public LayoutSetPrototype fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(LayoutSetPrototypeModelImpl.ENTITY_CACHE_ENABLED,
-				LayoutSetPrototypeImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		LayoutSetPrototype layoutSetPrototype = (LayoutSetPrototype)serializable;
-
-		if (layoutSetPrototype == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				layoutSetPrototype = (LayoutSetPrototype)session.get(LayoutSetPrototypeImpl.class,
-						primaryKey);
-
-				if (layoutSetPrototype != null) {
-					cacheResult(layoutSetPrototype);
-				}
-				else {
-					entityCache.putResult(LayoutSetPrototypeModelImpl.ENTITY_CACHE_ENABLED,
-						LayoutSetPrototypeImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(LayoutSetPrototypeModelImpl.ENTITY_CACHE_ENABLED,
-					LayoutSetPrototypeImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return layoutSetPrototype;
 	}
 
 	/**

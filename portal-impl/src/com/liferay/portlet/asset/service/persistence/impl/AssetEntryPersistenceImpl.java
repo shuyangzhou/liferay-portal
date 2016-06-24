@@ -3729,6 +3729,8 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 
 	public AssetEntryPersistenceImpl() {
 		setModelClass(AssetEntry.class);
+		setModelImplClass(AssetEntryImpl.class);
+		setEntityCacheEnabled(AssetEntryModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -3979,6 +3981,11 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -4267,54 +4274,6 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 	public AssetEntry findByPrimaryKey(long entryId)
 		throws NoSuchEntryException {
 		return findByPrimaryKey((Serializable)entryId);
-	}
-
-	/**
-	 * Returns the asset entry with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the asset entry
-	 * @return the asset entry, or <code>null</code> if a asset entry with the primary key could not be found
-	 */
-	@Override
-	public AssetEntry fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(AssetEntryModelImpl.ENTITY_CACHE_ENABLED,
-				AssetEntryImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		AssetEntry assetEntry = (AssetEntry)serializable;
-
-		if (assetEntry == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				assetEntry = (AssetEntry)session.get(AssetEntryImpl.class,
-						primaryKey);
-
-				if (assetEntry != null) {
-					cacheResult(assetEntry);
-				}
-				else {
-					entityCache.putResult(AssetEntryModelImpl.ENTITY_CACHE_ENABLED,
-						AssetEntryImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(AssetEntryModelImpl.ENTITY_CACHE_ENABLED,
-					AssetEntryImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return assetEntry;
 	}
 
 	/**

@@ -3181,6 +3181,8 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 
 	public MBBanPersistenceImpl() {
 		setModelClass(MBBan.class);
+		setModelImplClass(MBBanImpl.class);
+		setEntityCacheEnabled(MBBanModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -3423,6 +3425,11 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -3673,53 +3680,6 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 	@Override
 	public MBBan findByPrimaryKey(long banId) throws NoSuchBanException {
 		return findByPrimaryKey((Serializable)banId);
-	}
-
-	/**
-	 * Returns the message boards ban with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the message boards ban
-	 * @return the message boards ban, or <code>null</code> if a message boards ban with the primary key could not be found
-	 */
-	@Override
-	public MBBan fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(MBBanModelImpl.ENTITY_CACHE_ENABLED,
-				MBBanImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		MBBan mbBan = (MBBan)serializable;
-
-		if (mbBan == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				mbBan = (MBBan)session.get(MBBanImpl.class, primaryKey);
-
-				if (mbBan != null) {
-					cacheResult(mbBan);
-				}
-				else {
-					entityCache.putResult(MBBanModelImpl.ENTITY_CACHE_ENABLED,
-						MBBanImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(MBBanModelImpl.ENTITY_CACHE_ENABLED,
-					MBBanImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return mbBan;
 	}
 
 	/**

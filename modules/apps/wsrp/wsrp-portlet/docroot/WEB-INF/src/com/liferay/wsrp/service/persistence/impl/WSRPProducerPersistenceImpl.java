@@ -1986,6 +1986,8 @@ public class WSRPProducerPersistenceImpl extends BasePersistenceImpl<WSRPProduce
 
 	public WSRPProducerPersistenceImpl() {
 		setModelClass(WSRPProducer.class);
+		setModelImplClass(WSRPProducerImpl.class);
+		setEntityCacheEnabled(WSRPProducerModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2195,6 +2197,11 @@ public class WSRPProducerPersistenceImpl extends BasePersistenceImpl<WSRPProduce
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -2420,54 +2427,6 @@ public class WSRPProducerPersistenceImpl extends BasePersistenceImpl<WSRPProduce
 	public WSRPProducer findByPrimaryKey(long wsrpProducerId)
 		throws NoSuchProducerException {
 		return findByPrimaryKey((Serializable)wsrpProducerId);
-	}
-
-	/**
-	 * Returns the w s r p producer with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the w s r p producer
-	 * @return the w s r p producer, or <code>null</code> if a w s r p producer with the primary key could not be found
-	 */
-	@Override
-	public WSRPProducer fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(WSRPProducerModelImpl.ENTITY_CACHE_ENABLED,
-				WSRPProducerImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		WSRPProducer wsrpProducer = (WSRPProducer)serializable;
-
-		if (wsrpProducer == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				wsrpProducer = (WSRPProducer)session.get(WSRPProducerImpl.class,
-						primaryKey);
-
-				if (wsrpProducer != null) {
-					cacheResult(wsrpProducer);
-				}
-				else {
-					entityCache.putResult(WSRPProducerModelImpl.ENTITY_CACHE_ENABLED,
-						WSRPProducerImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(WSRPProducerModelImpl.ENTITY_CACHE_ENABLED,
-					WSRPProducerImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return wsrpProducer;
 	}
 
 	/**
