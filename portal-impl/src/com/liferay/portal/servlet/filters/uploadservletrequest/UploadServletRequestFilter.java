@@ -43,66 +43,66 @@ public class UploadServletRequestFilter extends BasePortalFilter {
 			"#COPY_MULTIPART_STREAM_TO_FILE";
 
 	@Override
+	public boolean isFilterEnabled(
+		HttpServletRequest request, HttpServletResponse response) {
+
+		String contentType = request.getHeader(HttpHeaders.CONTENT_TYPE);
+
+		if ((contentType == null) ||
+			!contentType.startsWith(ContentTypes.MULTIPART_FORM_DATA)) {
+
+			return false;
+		}
+
+		return true;
+	}
+
+	@Override
 	public void processFilter(
 			HttpServletRequest request, HttpServletResponse response,
 			FilterChain filterChain)
 		throws Exception {
 
-		UploadServletRequest uploadServletRequest = null;
+		String portletId = ParamUtil.getString(request, "p_p_id");
 
-		String contentType = request.getHeader(HttpHeaders.CONTENT_TYPE);
+		if (Validator.isNotNull(portletId)) {
+			long companyId = PortalUtil.getCompanyId(request);
 
-		if ((contentType != null) &&
-			contentType.startsWith(ContentTypes.MULTIPART_FORM_DATA)) {
+			Portlet portlet = PortletLocalServiceUtil.getPortletById(
+				companyId, portletId);
 
-			String portletId = ParamUtil.getString(request, "p_p_id");
+			if (portlet != null) {
+				ServletContext servletContext =
+					(ServletContext)request.getAttribute(WebKeys.CTX);
 
-			if (Validator.isNotNull(portletId)) {
-				long companyId = PortalUtil.getCompanyId(request);
+				InvokerPortlet invokerPortlet =
+					PortletInstanceFactoryUtil.create(portlet, servletContext);
 
-				Portlet portlet = PortletLocalServiceUtil.getPortletById(
-					companyId, portletId);
+				LiferayPortletConfig liferayPortletConfig =
+					(LiferayPortletConfig)invokerPortlet.getPortletConfig();
 
-				if (portlet != null) {
-					ServletContext servletContext =
-						(ServletContext)request.getAttribute(WebKeys.CTX);
+				if (invokerPortlet.isStrutsPortlet() ||
+					liferayPortletConfig.isCopyRequestParameters() ||
+					!liferayPortletConfig.isWARFile()) {
 
-					InvokerPortlet invokerPortlet =
-						PortletInstanceFactoryUtil.create(
-							portlet, servletContext);
-
-					LiferayPortletConfig liferayPortletConfig =
-						(LiferayPortletConfig)invokerPortlet.getPortletConfig();
-
-					if (invokerPortlet.isStrutsPortlet() ||
-						liferayPortletConfig.isCopyRequestParameters() ||
-						!liferayPortletConfig.isWARFile()) {
-
-						request.setAttribute(
-							UploadServletRequestFilter.
-								COPY_MULTIPART_STREAM_TO_FILE,
-							Boolean.FALSE);
-					}
+					request.setAttribute(
+						UploadServletRequestFilter.
+							COPY_MULTIPART_STREAM_TO_FILE,
+						Boolean.FALSE);
 				}
 			}
-
-			uploadServletRequest = PortalUtil.getUploadServletRequest(request);
 		}
 
-		if (uploadServletRequest == null) {
+		UploadServletRequest uploadServletRequest =
+			PortalUtil.getUploadServletRequest(request);
+
+		try {
 			processFilter(
-				UploadServletRequestFilter.class.getName(), request, response,
-				filterChain);
+				UploadServletRequestFilter.class.getName(),
+				uploadServletRequest, response, filterChain);
 		}
-		else {
-			try {
-				processFilter(
-					UploadServletRequestFilter.class.getName(),
-					uploadServletRequest, response, filterChain);
-			}
-			finally {
-				uploadServletRequest.cleanUp();
-			}
+		finally {
+			uploadServletRequest.cleanUp();
 		}
 	}
 
