@@ -1262,6 +1262,8 @@ public class CompanyPersistenceImpl extends BasePersistenceImpl<Company>
 
 	public CompanyPersistenceImpl() {
 		setModelClass(Company.class);
+		setModelImplClass(CompanyImpl.class);
+		setEntityCacheEnabled(CompanyModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1516,6 +1518,11 @@ public class CompanyPersistenceImpl extends BasePersistenceImpl<Company>
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected Company removeImpl(Company company) {
 		company = toUnwrappedModel(company);
 
@@ -1672,53 +1679,6 @@ public class CompanyPersistenceImpl extends BasePersistenceImpl<Company>
 	public Company findByPrimaryKey(long companyId)
 		throws NoSuchCompanyException {
 		return findByPrimaryKey((Serializable)companyId);
-	}
-
-	/**
-	 * Returns the company with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the company
-	 * @return the company, or <code>null</code> if a company with the primary key could not be found
-	 */
-	@Override
-	public Company fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(CompanyModelImpl.ENTITY_CACHE_ENABLED,
-				CompanyImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Company company = (Company)serializable;
-
-		if (company == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				company = (Company)session.get(CompanyImpl.class, primaryKey);
-
-				if (company != null) {
-					cacheResult(company);
-				}
-				else {
-					entityCache.putResult(CompanyModelImpl.ENTITY_CACHE_ENABLED,
-						CompanyImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(CompanyModelImpl.ENTITY_CACHE_ENABLED,
-					CompanyImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return company;
 	}
 
 	/**

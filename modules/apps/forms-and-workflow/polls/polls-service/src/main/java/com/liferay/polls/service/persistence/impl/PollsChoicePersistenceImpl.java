@@ -2240,6 +2240,8 @@ public class PollsChoicePersistenceImpl extends BasePersistenceImpl<PollsChoice>
 
 	public PollsChoicePersistenceImpl() {
 		setModelClass(PollsChoice.class);
+		setModelImplClass(PollsChoiceImpl.class);
+		setEntityCacheEnabled(PollsChoiceModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2497,6 +2499,11 @@ public class PollsChoicePersistenceImpl extends BasePersistenceImpl<PollsChoice>
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected PollsChoice removeImpl(PollsChoice pollsChoice) {
 		pollsChoice = toUnwrappedModel(pollsChoice);
 
@@ -2721,54 +2728,6 @@ public class PollsChoicePersistenceImpl extends BasePersistenceImpl<PollsChoice>
 	public PollsChoice findByPrimaryKey(long choiceId)
 		throws NoSuchChoiceException {
 		return findByPrimaryKey((Serializable)choiceId);
-	}
-
-	/**
-	 * Returns the polls choice with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the polls choice
-	 * @return the polls choice, or <code>null</code> if a polls choice with the primary key could not be found
-	 */
-	@Override
-	public PollsChoice fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(PollsChoiceModelImpl.ENTITY_CACHE_ENABLED,
-				PollsChoiceImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		PollsChoice pollsChoice = (PollsChoice)serializable;
-
-		if (pollsChoice == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				pollsChoice = (PollsChoice)session.get(PollsChoiceImpl.class,
-						primaryKey);
-
-				if (pollsChoice != null) {
-					cacheResult(pollsChoice);
-				}
-				else {
-					entityCache.putResult(PollsChoiceModelImpl.ENTITY_CACHE_ENABLED,
-						PollsChoiceImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(PollsChoiceModelImpl.ENTITY_CACHE_ENABLED,
-					PollsChoiceImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return pollsChoice;
 	}
 
 	/**

@@ -3989,6 +3989,8 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 
 	public EmailAddressPersistenceImpl() {
 		setModelClass(EmailAddress.class);
+		setModelImplClass(EmailAddressImpl.class);
+		setEntityCacheEnabled(EmailAddressModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -4139,6 +4141,11 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -4450,54 +4457,6 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 	public EmailAddress findByPrimaryKey(long emailAddressId)
 		throws NoSuchEmailAddressException {
 		return findByPrimaryKey((Serializable)emailAddressId);
-	}
-
-	/**
-	 * Returns the email address with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the email address
-	 * @return the email address, or <code>null</code> if a email address with the primary key could not be found
-	 */
-	@Override
-	public EmailAddress fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(EmailAddressModelImpl.ENTITY_CACHE_ENABLED,
-				EmailAddressImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		EmailAddress emailAddress = (EmailAddress)serializable;
-
-		if (emailAddress == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				emailAddress = (EmailAddress)session.get(EmailAddressImpl.class,
-						primaryKey);
-
-				if (emailAddress != null) {
-					cacheResult(emailAddress);
-				}
-				else {
-					entityCache.putResult(EmailAddressModelImpl.ENTITY_CACHE_ENABLED,
-						EmailAddressImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(EmailAddressModelImpl.ENTITY_CACHE_ENABLED,
-					EmailAddressImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return emailAddress;
 	}
 
 	/**

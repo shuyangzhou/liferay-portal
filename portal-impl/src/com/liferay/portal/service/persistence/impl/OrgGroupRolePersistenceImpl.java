@@ -1091,6 +1091,8 @@ public class OrgGroupRolePersistenceImpl extends BasePersistenceImpl<OrgGroupRol
 
 	public OrgGroupRolePersistenceImpl() {
 		setModelClass(OrgGroupRole.class);
+		setModelImplClass(OrgGroupRoleImpl.class);
+		setEntityCacheEnabled(OrgGroupRoleModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1237,6 +1239,11 @@ public class OrgGroupRolePersistenceImpl extends BasePersistenceImpl<OrgGroupRol
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -1405,54 +1412,6 @@ public class OrgGroupRolePersistenceImpl extends BasePersistenceImpl<OrgGroupRol
 	public OrgGroupRole findByPrimaryKey(OrgGroupRolePK orgGroupRolePK)
 		throws NoSuchOrgGroupRoleException {
 		return findByPrimaryKey((Serializable)orgGroupRolePK);
-	}
-
-	/**
-	 * Returns the org group role with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the org group role
-	 * @return the org group role, or <code>null</code> if a org group role with the primary key could not be found
-	 */
-	@Override
-	public OrgGroupRole fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(OrgGroupRoleModelImpl.ENTITY_CACHE_ENABLED,
-				OrgGroupRoleImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		OrgGroupRole orgGroupRole = (OrgGroupRole)serializable;
-
-		if (orgGroupRole == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				orgGroupRole = (OrgGroupRole)session.get(OrgGroupRoleImpl.class,
-						primaryKey);
-
-				if (orgGroupRole != null) {
-					cacheResult(orgGroupRole);
-				}
-				else {
-					entityCache.putResult(OrgGroupRoleModelImpl.ENTITY_CACHE_ENABLED,
-						OrgGroupRoleImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(OrgGroupRoleModelImpl.ENTITY_CACHE_ENABLED,
-					OrgGroupRoleImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return orgGroupRole;
 	}
 
 	/**

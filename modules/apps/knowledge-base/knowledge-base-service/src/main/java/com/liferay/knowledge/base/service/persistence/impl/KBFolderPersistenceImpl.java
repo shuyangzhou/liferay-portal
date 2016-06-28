@@ -2972,6 +2972,8 @@ public class KBFolderPersistenceImpl extends BasePersistenceImpl<KBFolder>
 
 	public KBFolderPersistenceImpl() {
 		setModelClass(KBFolder.class);
+		setModelImplClass(KBFolderImpl.class);
+		setEntityCacheEnabled(KBFolderModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -3282,6 +3284,11 @@ public class KBFolderPersistenceImpl extends BasePersistenceImpl<KBFolder>
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected KBFolder removeImpl(KBFolder kbFolder) {
 		kbFolder = toUnwrappedModel(kbFolder);
 
@@ -3508,53 +3515,6 @@ public class KBFolderPersistenceImpl extends BasePersistenceImpl<KBFolder>
 	public KBFolder findByPrimaryKey(long kbFolderId)
 		throws NoSuchFolderException {
 		return findByPrimaryKey((Serializable)kbFolderId);
-	}
-
-	/**
-	 * Returns the k b folder with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the k b folder
-	 * @return the k b folder, or <code>null</code> if a k b folder with the primary key could not be found
-	 */
-	@Override
-	public KBFolder fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(KBFolderModelImpl.ENTITY_CACHE_ENABLED,
-				KBFolderImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		KBFolder kbFolder = (KBFolder)serializable;
-
-		if (kbFolder == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				kbFolder = (KBFolder)session.get(KBFolderImpl.class, primaryKey);
-
-				if (kbFolder != null) {
-					cacheResult(kbFolder);
-				}
-				else {
-					entityCache.putResult(KBFolderModelImpl.ENTITY_CACHE_ENABLED,
-						KBFolderImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(KBFolderModelImpl.ENTITY_CACHE_ENABLED,
-					KBFolderImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return kbFolder;
 	}
 
 	/**

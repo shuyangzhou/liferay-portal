@@ -2515,6 +2515,8 @@ public class ShoppingOrderPersistenceImpl extends BasePersistenceImpl<ShoppingOr
 
 	public ShoppingOrderPersistenceImpl() {
 		setModelClass(ShoppingOrder.class);
+		setModelImplClass(ShoppingOrderImpl.class);
+		setEntityCacheEnabled(ShoppingOrderModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2740,6 +2742,11 @@ public class ShoppingOrderPersistenceImpl extends BasePersistenceImpl<ShoppingOr
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -2986,54 +2993,6 @@ public class ShoppingOrderPersistenceImpl extends BasePersistenceImpl<ShoppingOr
 	public ShoppingOrder findByPrimaryKey(long orderId)
 		throws NoSuchOrderException {
 		return findByPrimaryKey((Serializable)orderId);
-	}
-
-	/**
-	 * Returns the shopping order with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the shopping order
-	 * @return the shopping order, or <code>null</code> if a shopping order with the primary key could not be found
-	 */
-	@Override
-	public ShoppingOrder fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ShoppingOrderModelImpl.ENTITY_CACHE_ENABLED,
-				ShoppingOrderImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		ShoppingOrder shoppingOrder = (ShoppingOrder)serializable;
-
-		if (shoppingOrder == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				shoppingOrder = (ShoppingOrder)session.get(ShoppingOrderImpl.class,
-						primaryKey);
-
-				if (shoppingOrder != null) {
-					cacheResult(shoppingOrder);
-				}
-				else {
-					entityCache.putResult(ShoppingOrderModelImpl.ENTITY_CACHE_ENABLED,
-						ShoppingOrderImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ShoppingOrderModelImpl.ENTITY_CACHE_ENABLED,
-					ShoppingOrderImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return shoppingOrder;
 	}
 
 	/**

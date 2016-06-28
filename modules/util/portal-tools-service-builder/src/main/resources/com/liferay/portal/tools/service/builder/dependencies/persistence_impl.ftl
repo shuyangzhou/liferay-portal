@@ -206,6 +206,8 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 
 	public ${entity.name}PersistenceImpl() {
 		setModelClass(${entity.name}.class);
+		setModelImplClass(${entity.name}Impl.class);
+		setEntityCacheEnabled(${entity.name}ModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -459,6 +461,11 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -839,50 +846,6 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 	@Override
 	public ${entity.name} findByPrimaryKey(${entity.PKClassName} ${entity.PKVarName}) throws ${noSuchEntity}Exception {
 		return findByPrimaryKey((Serializable)${entity.PKVarName});
-	}
-
-	/**
-	 * Returns the ${entity.humanName} with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the ${entity.humanName}
-	 * @return the ${entity.humanName}, or <code>null</code> if a ${entity.humanName} with the primary key could not be found
-	 */
-	@Override
-	public ${entity.name} fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(${entity.name}ModelImpl.ENTITY_CACHE_ENABLED, ${entity.name}Impl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		${entity.name} ${entity.varName} = (${entity.name})serializable;
-
-		if (${entity.varName} == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				${entity.varName} = (${entity.name})session.get(${entity.name}Impl.class, primaryKey);
-
-				if (${entity.varName} != null) {
-					cacheResult(${entity.varName});
-				}
-				else {
-					entityCache.putResult(${entity.name}ModelImpl.ENTITY_CACHE_ENABLED, ${entity.name}Impl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(${entity.name}ModelImpl.ENTITY_CACHE_ENABLED, ${entity.name}Impl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return ${entity.varName};
 	}
 
 	/**

@@ -3530,6 +3530,8 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 
 	public KaleoInstancePersistenceImpl() {
 		setModelClass(KaleoInstance.class);
+		setModelImplClass(KaleoInstanceImpl.class);
+		setEntityCacheEnabled(KaleoInstanceModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -3677,6 +3679,11 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -3971,54 +3978,6 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 	public KaleoInstance findByPrimaryKey(long kaleoInstanceId)
 		throws NoSuchInstanceException {
 		return findByPrimaryKey((Serializable)kaleoInstanceId);
-	}
-
-	/**
-	 * Returns the kaleo instance with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the kaleo instance
-	 * @return the kaleo instance, or <code>null</code> if a kaleo instance with the primary key could not be found
-	 */
-	@Override
-	public KaleoInstance fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(KaleoInstanceModelImpl.ENTITY_CACHE_ENABLED,
-				KaleoInstanceImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		KaleoInstance kaleoInstance = (KaleoInstance)serializable;
-
-		if (kaleoInstance == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				kaleoInstance = (KaleoInstance)session.get(KaleoInstanceImpl.class,
-						primaryKey);
-
-				if (kaleoInstance != null) {
-					cacheResult(kaleoInstance);
-				}
-				else {
-					entityCache.putResult(KaleoInstanceModelImpl.ENTITY_CACHE_ENABLED,
-						KaleoInstanceImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(KaleoInstanceModelImpl.ENTITY_CACHE_ENABLED,
-					KaleoInstanceImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return kaleoInstance;
 	}
 
 	/**

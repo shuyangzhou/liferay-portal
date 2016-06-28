@@ -6290,6 +6290,8 @@ public class SyncDLObjectPersistenceImpl extends BasePersistenceImpl<SyncDLObjec
 
 	public SyncDLObjectPersistenceImpl() {
 		setModelClass(SyncDLObject.class);
+		setModelImplClass(SyncDLObjectImpl.class);
+		setEntityCacheEnabled(SyncDLObjectModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -6495,6 +6497,11 @@ public class SyncDLObjectPersistenceImpl extends BasePersistenceImpl<SyncDLObjec
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -6740,54 +6747,6 @@ public class SyncDLObjectPersistenceImpl extends BasePersistenceImpl<SyncDLObjec
 	public SyncDLObject findByPrimaryKey(long syncDLObjectId)
 		throws NoSuchDLObjectException {
 		return findByPrimaryKey((Serializable)syncDLObjectId);
-	}
-
-	/**
-	 * Returns the sync d l object with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the sync d l object
-	 * @return the sync d l object, or <code>null</code> if a sync d l object with the primary key could not be found
-	 */
-	@Override
-	public SyncDLObject fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(SyncDLObjectModelImpl.ENTITY_CACHE_ENABLED,
-				SyncDLObjectImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		SyncDLObject syncDLObject = (SyncDLObject)serializable;
-
-		if (syncDLObject == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				syncDLObject = (SyncDLObject)session.get(SyncDLObjectImpl.class,
-						primaryKey);
-
-				if (syncDLObject != null) {
-					cacheResult(syncDLObject);
-				}
-				else {
-					entityCache.putResult(SyncDLObjectModelImpl.ENTITY_CACHE_ENABLED,
-						SyncDLObjectImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(SyncDLObjectModelImpl.ENTITY_CACHE_ENABLED,
-					SyncDLObjectImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return syncDLObject;
 	}
 
 	/**

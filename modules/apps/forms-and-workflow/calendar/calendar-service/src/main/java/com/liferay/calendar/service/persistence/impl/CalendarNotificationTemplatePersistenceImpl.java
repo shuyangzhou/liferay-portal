@@ -2372,6 +2372,8 @@ public class CalendarNotificationTemplatePersistenceImpl
 
 	public CalendarNotificationTemplatePersistenceImpl() {
 		setModelClass(CalendarNotificationTemplate.class);
+		setModelImplClass(CalendarNotificationTemplateImpl.class);
+		setEntityCacheEnabled(CalendarNotificationTemplateModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2651,6 +2653,11 @@ public class CalendarNotificationTemplatePersistenceImpl
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected CalendarNotificationTemplate removeImpl(
 		CalendarNotificationTemplate calendarNotificationTemplate) {
 		calendarNotificationTemplate = toUnwrappedModel(calendarNotificationTemplate);
@@ -2891,56 +2898,6 @@ public class CalendarNotificationTemplatePersistenceImpl
 		long calendarNotificationTemplateId)
 		throws NoSuchNotificationTemplateException {
 		return findByPrimaryKey((Serializable)calendarNotificationTemplateId);
-	}
-
-	/**
-	 * Returns the calendar notification template with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the calendar notification template
-	 * @return the calendar notification template, or <code>null</code> if a calendar notification template with the primary key could not be found
-	 */
-	@Override
-	public CalendarNotificationTemplate fetchByPrimaryKey(
-		Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(CalendarNotificationTemplateModelImpl.ENTITY_CACHE_ENABLED,
-				CalendarNotificationTemplateImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		CalendarNotificationTemplate calendarNotificationTemplate = (CalendarNotificationTemplate)serializable;
-
-		if (calendarNotificationTemplate == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				calendarNotificationTemplate = (CalendarNotificationTemplate)session.get(CalendarNotificationTemplateImpl.class,
-						primaryKey);
-
-				if (calendarNotificationTemplate != null) {
-					cacheResult(calendarNotificationTemplate);
-				}
-				else {
-					entityCache.putResult(CalendarNotificationTemplateModelImpl.ENTITY_CACHE_ENABLED,
-						CalendarNotificationTemplateImpl.class, primaryKey,
-						nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(CalendarNotificationTemplateModelImpl.ENTITY_CACHE_ENABLED,
-					CalendarNotificationTemplateImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return calendarNotificationTemplate;
 	}
 
 	/**

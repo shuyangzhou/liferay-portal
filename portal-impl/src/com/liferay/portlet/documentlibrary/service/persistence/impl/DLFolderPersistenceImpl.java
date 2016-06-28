@@ -12194,6 +12194,8 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 	public DLFolderPersistenceImpl() {
 		setModelClass(DLFolder.class);
+		setModelImplClass(DLFolderImpl.class);
+		setEntityCacheEnabled(DLFolderModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -12495,6 +12497,11 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -12929,53 +12936,6 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 	public DLFolder findByPrimaryKey(long folderId)
 		throws NoSuchFolderException {
 		return findByPrimaryKey((Serializable)folderId);
-	}
-
-	/**
-	 * Returns the document library folder with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the document library folder
-	 * @return the document library folder, or <code>null</code> if a document library folder with the primary key could not be found
-	 */
-	@Override
-	public DLFolder fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DLFolderModelImpl.ENTITY_CACHE_ENABLED,
-				DLFolderImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		DLFolder dlFolder = (DLFolder)serializable;
-
-		if (dlFolder == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				dlFolder = (DLFolder)session.get(DLFolderImpl.class, primaryKey);
-
-				if (dlFolder != null) {
-					cacheResult(dlFolder);
-				}
-				else {
-					entityCache.putResult(DLFolderModelImpl.ENTITY_CACHE_ENABLED,
-						DLFolderImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(DLFolderModelImpl.ENTITY_CACHE_ENABLED,
-					DLFolderImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return dlFolder;
 	}
 
 	/**

@@ -1329,6 +1329,8 @@ public class DDMTemplateLinkPersistenceImpl extends BasePersistenceImpl<DDMTempl
 
 	public DDMTemplateLinkPersistenceImpl() {
 		setModelClass(DDMTemplateLink.class);
+		setModelImplClass(DDMTemplateLinkImpl.class);
+		setEntityCacheEnabled(DDMTemplateLinkModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1540,6 +1542,11 @@ public class DDMTemplateLinkPersistenceImpl extends BasePersistenceImpl<DDMTempl
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected DDMTemplateLink removeImpl(DDMTemplateLink ddmTemplateLink) {
 		ddmTemplateLink = toUnwrappedModel(ddmTemplateLink);
 
@@ -1708,54 +1715,6 @@ public class DDMTemplateLinkPersistenceImpl extends BasePersistenceImpl<DDMTempl
 	public DDMTemplateLink findByPrimaryKey(long templateLinkId)
 		throws NoSuchTemplateLinkException {
 		return findByPrimaryKey((Serializable)templateLinkId);
-	}
-
-	/**
-	 * Returns the d d m template link with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the d d m template link
-	 * @return the d d m template link, or <code>null</code> if a d d m template link with the primary key could not be found
-	 */
-	@Override
-	public DDMTemplateLink fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DDMTemplateLinkModelImpl.ENTITY_CACHE_ENABLED,
-				DDMTemplateLinkImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		DDMTemplateLink ddmTemplateLink = (DDMTemplateLink)serializable;
-
-		if (ddmTemplateLink == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				ddmTemplateLink = (DDMTemplateLink)session.get(DDMTemplateLinkImpl.class,
-						primaryKey);
-
-				if (ddmTemplateLink != null) {
-					cacheResult(ddmTemplateLink);
-				}
-				else {
-					entityCache.putResult(DDMTemplateLinkModelImpl.ENTITY_CACHE_ENABLED,
-						DDMTemplateLinkImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(DDMTemplateLinkModelImpl.ENTITY_CACHE_ENABLED,
-					DDMTemplateLinkImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return ddmTemplateLink;
 	}
 
 	/**

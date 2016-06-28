@@ -1988,6 +1988,8 @@ public class MDRActionPersistenceImpl extends BasePersistenceImpl<MDRAction>
 
 	public MDRActionPersistenceImpl() {
 		setModelClass(MDRAction.class);
+		setModelImplClass(MDRActionImpl.class);
+		setEntityCacheEnabled(MDRActionModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2194,6 +2196,11 @@ public class MDRActionPersistenceImpl extends BasePersistenceImpl<MDRAction>
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -2426,54 +2433,6 @@ public class MDRActionPersistenceImpl extends BasePersistenceImpl<MDRAction>
 	public MDRAction findByPrimaryKey(long actionId)
 		throws NoSuchActionException {
 		return findByPrimaryKey((Serializable)actionId);
-	}
-
-	/**
-	 * Returns the m d r action with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the m d r action
-	 * @return the m d r action, or <code>null</code> if a m d r action with the primary key could not be found
-	 */
-	@Override
-	public MDRAction fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(MDRActionModelImpl.ENTITY_CACHE_ENABLED,
-				MDRActionImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		MDRAction mdrAction = (MDRAction)serializable;
-
-		if (mdrAction == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				mdrAction = (MDRAction)session.get(MDRActionImpl.class,
-						primaryKey);
-
-				if (mdrAction != null) {
-					cacheResult(mdrAction);
-				}
-				else {
-					entityCache.putResult(MDRActionModelImpl.ENTITY_CACHE_ENABLED,
-						MDRActionImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(MDRActionModelImpl.ENTITY_CACHE_ENABLED,
-					MDRActionImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return mdrAction;
 	}
 
 	/**

@@ -90,6 +90,8 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 
 	public AccountPersistenceImpl() {
 		setModelClass(Account.class);
+		setModelImplClass(AccountImpl.class);
+		setEntityCacheEnabled(AccountModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -233,6 +235,11 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -398,53 +405,6 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	public Account findByPrimaryKey(long accountId)
 		throws NoSuchAccountException {
 		return findByPrimaryKey((Serializable)accountId);
-	}
-
-	/**
-	 * Returns the account with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the account
-	 * @return the account, or <code>null</code> if a account with the primary key could not be found
-	 */
-	@Override
-	public Account fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(AccountModelImpl.ENTITY_CACHE_ENABLED,
-				AccountImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Account account = (Account)serializable;
-
-		if (account == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				account = (Account)session.get(AccountImpl.class, primaryKey);
-
-				if (account != null) {
-					cacheResult(account);
-				}
-				else {
-					entityCache.putResult(AccountModelImpl.ENTITY_CACHE_ENABLED,
-						AccountImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(AccountModelImpl.ENTITY_CACHE_ENABLED,
-					AccountImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return account;
 	}
 
 	/**

@@ -1372,6 +1372,8 @@ public class DDMDataProviderInstanceLinkPersistenceImpl
 
 	public DDMDataProviderInstanceLinkPersistenceImpl() {
 		setModelClass(DDMDataProviderInstanceLink.class);
+		setModelImplClass(DDMDataProviderInstanceLinkImpl.class);
+		setEntityCacheEnabled(DDMDataProviderInstanceLinkModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1592,6 +1594,11 @@ public class DDMDataProviderInstanceLinkPersistenceImpl
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected DDMDataProviderInstanceLink removeImpl(
 		DDMDataProviderInstanceLink ddmDataProviderInstanceLink) {
 		ddmDataProviderInstanceLink = toUnwrappedModel(ddmDataProviderInstanceLink);
@@ -1772,56 +1779,6 @@ public class DDMDataProviderInstanceLinkPersistenceImpl
 		long dataProviderInstanceLinkId)
 		throws NoSuchDataProviderInstanceLinkException {
 		return findByPrimaryKey((Serializable)dataProviderInstanceLinkId);
-	}
-
-	/**
-	 * Returns the d d m data provider instance link with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the d d m data provider instance link
-	 * @return the d d m data provider instance link, or <code>null</code> if a d d m data provider instance link with the primary key could not be found
-	 */
-	@Override
-	public DDMDataProviderInstanceLink fetchByPrimaryKey(
-		Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DDMDataProviderInstanceLinkModelImpl.ENTITY_CACHE_ENABLED,
-				DDMDataProviderInstanceLinkImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		DDMDataProviderInstanceLink ddmDataProviderInstanceLink = (DDMDataProviderInstanceLink)serializable;
-
-		if (ddmDataProviderInstanceLink == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				ddmDataProviderInstanceLink = (DDMDataProviderInstanceLink)session.get(DDMDataProviderInstanceLinkImpl.class,
-						primaryKey);
-
-				if (ddmDataProviderInstanceLink != null) {
-					cacheResult(ddmDataProviderInstanceLink);
-				}
-				else {
-					entityCache.putResult(DDMDataProviderInstanceLinkModelImpl.ENTITY_CACHE_ENABLED,
-						DDMDataProviderInstanceLinkImpl.class, primaryKey,
-						nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(DDMDataProviderInstanceLinkModelImpl.ENTITY_CACHE_ENABLED,
-					DDMDataProviderInstanceLinkImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return ddmDataProviderInstanceLink;
 	}
 
 	/**

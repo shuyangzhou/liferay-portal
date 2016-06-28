@@ -2495,6 +2495,8 @@ public class DLFileEntryMetadataPersistenceImpl extends BasePersistenceImpl<DLFi
 
 	public DLFileEntryMetadataPersistenceImpl() {
 		setModelClass(DLFileEntryMetadata.class);
+		setModelImplClass(DLFileEntryMetadataImpl.class);
+		setEntityCacheEnabled(DLFileEntryMetadataModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2709,6 +2711,11 @@ public class DLFileEntryMetadataPersistenceImpl extends BasePersistenceImpl<DLFi
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -2935,54 +2942,6 @@ public class DLFileEntryMetadataPersistenceImpl extends BasePersistenceImpl<DLFi
 	public DLFileEntryMetadata findByPrimaryKey(long fileEntryMetadataId)
 		throws NoSuchFileEntryMetadataException {
 		return findByPrimaryKey((Serializable)fileEntryMetadataId);
-	}
-
-	/**
-	 * Returns the document library file entry metadata with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the document library file entry metadata
-	 * @return the document library file entry metadata, or <code>null</code> if a document library file entry metadata with the primary key could not be found
-	 */
-	@Override
-	public DLFileEntryMetadata fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DLFileEntryMetadataModelImpl.ENTITY_CACHE_ENABLED,
-				DLFileEntryMetadataImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		DLFileEntryMetadata dlFileEntryMetadata = (DLFileEntryMetadata)serializable;
-
-		if (dlFileEntryMetadata == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				dlFileEntryMetadata = (DLFileEntryMetadata)session.get(DLFileEntryMetadataImpl.class,
-						primaryKey);
-
-				if (dlFileEntryMetadata != null) {
-					cacheResult(dlFileEntryMetadata);
-				}
-				else {
-					entityCache.putResult(DLFileEntryMetadataModelImpl.ENTITY_CACHE_ENABLED,
-						DLFileEntryMetadataImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(DLFileEntryMetadataModelImpl.ENTITY_CACHE_ENABLED,
-					DLFileEntryMetadataImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return dlFileEntryMetadata;
 	}
 
 	/**

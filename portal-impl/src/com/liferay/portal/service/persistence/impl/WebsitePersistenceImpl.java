@@ -3973,6 +3973,8 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 
 	public WebsitePersistenceImpl() {
 		setModelClass(Website.class);
+		setModelImplClass(WebsiteImpl.class);
+		setEntityCacheEnabled(WebsiteModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -4120,6 +4122,11 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -4429,53 +4436,6 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	public Website findByPrimaryKey(long websiteId)
 		throws NoSuchWebsiteException {
 		return findByPrimaryKey((Serializable)websiteId);
-	}
-
-	/**
-	 * Returns the website with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the website
-	 * @return the website, or <code>null</code> if a website with the primary key could not be found
-	 */
-	@Override
-	public Website fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(WebsiteModelImpl.ENTITY_CACHE_ENABLED,
-				WebsiteImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Website website = (Website)serializable;
-
-		if (website == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				website = (Website)session.get(WebsiteImpl.class, primaryKey);
-
-				if (website != null) {
-					cacheResult(website);
-				}
-				else {
-					entityCache.putResult(WebsiteModelImpl.ENTITY_CACHE_ENABLED,
-						WebsiteImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(WebsiteModelImpl.ENTITY_CACHE_ENABLED,
-					WebsiteImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return website;
 	}
 
 	/**

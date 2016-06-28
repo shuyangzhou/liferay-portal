@@ -3027,6 +3027,8 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 
 	public DDLRecordPersistenceImpl() {
 		setModelClass(DDLRecord.class);
+		setModelImplClass(DDLRecordImpl.class);
+		setEntityCacheEnabled(DDLRecordModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -3233,6 +3235,11 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -3500,54 +3507,6 @@ public class DDLRecordPersistenceImpl extends BasePersistenceImpl<DDLRecord>
 	public DDLRecord findByPrimaryKey(long recordId)
 		throws NoSuchRecordException {
 		return findByPrimaryKey((Serializable)recordId);
-	}
-
-	/**
-	 * Returns the d d l record with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the d d l record
-	 * @return the d d l record, or <code>null</code> if a d d l record with the primary key could not be found
-	 */
-	@Override
-	public DDLRecord fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(DDLRecordModelImpl.ENTITY_CACHE_ENABLED,
-				DDLRecordImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		DDLRecord ddlRecord = (DDLRecord)serializable;
-
-		if (ddlRecord == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				ddlRecord = (DDLRecord)session.get(DDLRecordImpl.class,
-						primaryKey);
-
-				if (ddlRecord != null) {
-					cacheResult(ddlRecord);
-				}
-				else {
-					entityCache.putResult(DDLRecordModelImpl.ENTITY_CACHE_ENABLED,
-						DDLRecordImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(DDLRecordModelImpl.ENTITY_CACHE_ENABLED,
-					DDLRecordImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return ddlRecord;
 	}
 
 	/**

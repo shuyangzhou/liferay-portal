@@ -2687,6 +2687,8 @@ public class UserGroupRolePersistenceImpl extends BasePersistenceImpl<UserGroupR
 
 	public UserGroupRolePersistenceImpl() {
 		setModelClass(UserGroupRole.class);
+		setModelImplClass(UserGroupRoleImpl.class);
+		setEntityCacheEnabled(UserGroupRoleModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2834,6 +2836,11 @@ public class UserGroupRolePersistenceImpl extends BasePersistenceImpl<UserGroupR
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -3061,54 +3068,6 @@ public class UserGroupRolePersistenceImpl extends BasePersistenceImpl<UserGroupR
 	public UserGroupRole findByPrimaryKey(UserGroupRolePK userGroupRolePK)
 		throws NoSuchUserGroupRoleException {
 		return findByPrimaryKey((Serializable)userGroupRolePK);
-	}
-
-	/**
-	 * Returns the user group role with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the user group role
-	 * @return the user group role, or <code>null</code> if a user group role with the primary key could not be found
-	 */
-	@Override
-	public UserGroupRole fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(UserGroupRoleModelImpl.ENTITY_CACHE_ENABLED,
-				UserGroupRoleImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		UserGroupRole userGroupRole = (UserGroupRole)serializable;
-
-		if (userGroupRole == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				userGroupRole = (UserGroupRole)session.get(UserGroupRoleImpl.class,
-						primaryKey);
-
-				if (userGroupRole != null) {
-					cacheResult(userGroupRole);
-				}
-				else {
-					entityCache.putResult(UserGroupRoleModelImpl.ENTITY_CACHE_ENABLED,
-						UserGroupRoleImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(UserGroupRoleModelImpl.ENTITY_CACHE_ENABLED,
-					UserGroupRoleImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return userGroupRole;
 	}
 
 	/**

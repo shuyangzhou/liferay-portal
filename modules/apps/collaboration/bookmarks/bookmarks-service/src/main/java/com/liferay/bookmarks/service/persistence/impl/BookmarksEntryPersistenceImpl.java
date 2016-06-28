@@ -12309,6 +12309,8 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 
 	public BookmarksEntryPersistenceImpl() {
 		setModelClass(BookmarksEntry.class);
+		setModelImplClass(BookmarksEntryImpl.class);
+		setEntityCacheEnabled(BookmarksEntryModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -12518,6 +12520,11 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -12887,54 +12894,6 @@ public class BookmarksEntryPersistenceImpl extends BasePersistenceImpl<Bookmarks
 	public BookmarksEntry findByPrimaryKey(long entryId)
 		throws NoSuchEntryException {
 		return findByPrimaryKey((Serializable)entryId);
-	}
-
-	/**
-	 * Returns the bookmarks entry with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the bookmarks entry
-	 * @return the bookmarks entry, or <code>null</code> if a bookmarks entry with the primary key could not be found
-	 */
-	@Override
-	public BookmarksEntry fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(BookmarksEntryModelImpl.ENTITY_CACHE_ENABLED,
-				BookmarksEntryImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		BookmarksEntry bookmarksEntry = (BookmarksEntry)serializable;
-
-		if (bookmarksEntry == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				bookmarksEntry = (BookmarksEntry)session.get(BookmarksEntryImpl.class,
-						primaryKey);
-
-				if (bookmarksEntry != null) {
-					cacheResult(bookmarksEntry);
-				}
-				else {
-					entityCache.putResult(BookmarksEntryModelImpl.ENTITY_CACHE_ENABLED,
-						BookmarksEntryImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(BookmarksEntryModelImpl.ENTITY_CACHE_ENABLED,
-					BookmarksEntryImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return bookmarksEntry;
 	}
 
 	/**

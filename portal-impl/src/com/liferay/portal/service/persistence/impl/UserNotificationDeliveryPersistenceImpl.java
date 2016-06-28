@@ -938,6 +938,8 @@ public class UserNotificationDeliveryPersistenceImpl extends BasePersistenceImpl
 
 	public UserNotificationDeliveryPersistenceImpl() {
 		setModelClass(UserNotificationDelivery.class);
+		setModelImplClass(UserNotificationDeliveryImpl.class);
+		setEntityCacheEnabled(UserNotificationDeliveryModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1170,6 +1172,11 @@ public class UserNotificationDeliveryPersistenceImpl extends BasePersistenceImpl
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected UserNotificationDelivery removeImpl(
 		UserNotificationDelivery userNotificationDelivery) {
 		userNotificationDelivery = toUnwrappedModel(userNotificationDelivery);
@@ -1332,55 +1339,6 @@ public class UserNotificationDeliveryPersistenceImpl extends BasePersistenceImpl
 		long userNotificationDeliveryId)
 		throws NoSuchUserNotificationDeliveryException {
 		return findByPrimaryKey((Serializable)userNotificationDeliveryId);
-	}
-
-	/**
-	 * Returns the user notification delivery with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the user notification delivery
-	 * @return the user notification delivery, or <code>null</code> if a user notification delivery with the primary key could not be found
-	 */
-	@Override
-	public UserNotificationDelivery fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(UserNotificationDeliveryModelImpl.ENTITY_CACHE_ENABLED,
-				UserNotificationDeliveryImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		UserNotificationDelivery userNotificationDelivery = (UserNotificationDelivery)serializable;
-
-		if (userNotificationDelivery == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				userNotificationDelivery = (UserNotificationDelivery)session.get(UserNotificationDeliveryImpl.class,
-						primaryKey);
-
-				if (userNotificationDelivery != null) {
-					cacheResult(userNotificationDelivery);
-				}
-				else {
-					entityCache.putResult(UserNotificationDeliveryModelImpl.ENTITY_CACHE_ENABLED,
-						UserNotificationDeliveryImpl.class, primaryKey,
-						nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(UserNotificationDeliveryModelImpl.ENTITY_CACHE_ENABLED,
-					UserNotificationDeliveryImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return userNotificationDelivery;
 	}
 
 	/**

@@ -2210,6 +2210,8 @@ public class MBMailingListPersistenceImpl extends BasePersistenceImpl<MBMailingL
 
 	public MBMailingListPersistenceImpl() {
 		setModelClass(MBMailingList.class);
+		setModelImplClass(MBMailingListImpl.class);
+		setEntityCacheEnabled(MBMailingListModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2470,6 +2472,11 @@ public class MBMailingListPersistenceImpl extends BasePersistenceImpl<MBMailingL
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected MBMailingList removeImpl(MBMailingList mbMailingList) {
 		mbMailingList = toUnwrappedModel(mbMailingList);
 
@@ -2709,54 +2716,6 @@ public class MBMailingListPersistenceImpl extends BasePersistenceImpl<MBMailingL
 	public MBMailingList findByPrimaryKey(long mailingListId)
 		throws NoSuchMailingListException {
 		return findByPrimaryKey((Serializable)mailingListId);
-	}
-
-	/**
-	 * Returns the message boards mailing list with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the message boards mailing list
-	 * @return the message boards mailing list, or <code>null</code> if a message boards mailing list with the primary key could not be found
-	 */
-	@Override
-	public MBMailingList fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(MBMailingListModelImpl.ENTITY_CACHE_ENABLED,
-				MBMailingListImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		MBMailingList mbMailingList = (MBMailingList)serializable;
-
-		if (mbMailingList == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				mbMailingList = (MBMailingList)session.get(MBMailingListImpl.class,
-						primaryKey);
-
-				if (mbMailingList != null) {
-					cacheResult(mbMailingList);
-				}
-				else {
-					entityCache.putResult(MBMailingListModelImpl.ENTITY_CACHE_ENABLED,
-						MBMailingListImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(MBMailingListModelImpl.ENTITY_CACHE_ENABLED,
-					MBMailingListImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return mbMailingList;
 	}
 
 	/**

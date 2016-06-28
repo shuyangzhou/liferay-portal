@@ -2235,6 +2235,8 @@ public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<Member
 
 	public MembershipRequestPersistenceImpl() {
 		setModelClass(MembershipRequest.class);
+		setModelImplClass(MembershipRequestImpl.class);
+		setEntityCacheEnabled(MembershipRequestModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -2383,6 +2385,11 @@ public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<Member
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -2602,54 +2609,6 @@ public class MembershipRequestPersistenceImpl extends BasePersistenceImpl<Member
 	public MembershipRequest findByPrimaryKey(long membershipRequestId)
 		throws NoSuchMembershipRequestException {
 		return findByPrimaryKey((Serializable)membershipRequestId);
-	}
-
-	/**
-	 * Returns the membership request with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the membership request
-	 * @return the membership request, or <code>null</code> if a membership request with the primary key could not be found
-	 */
-	@Override
-	public MembershipRequest fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-				MembershipRequestImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		MembershipRequest membershipRequest = (MembershipRequest)serializable;
-
-		if (membershipRequest == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				membershipRequest = (MembershipRequest)session.get(MembershipRequestImpl.class,
-						primaryKey);
-
-				if (membershipRequest != null) {
-					cacheResult(membershipRequest);
-				}
-				else {
-					entityCache.putResult(MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-						MembershipRequestImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(MembershipRequestModelImpl.ENTITY_CACHE_ENABLED,
-					MembershipRequestImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return membershipRequest;
 	}
 
 	/**

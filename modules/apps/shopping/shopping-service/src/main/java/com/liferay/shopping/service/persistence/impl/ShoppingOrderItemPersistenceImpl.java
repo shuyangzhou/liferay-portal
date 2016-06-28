@@ -596,6 +596,8 @@ public class ShoppingOrderItemPersistenceImpl extends BasePersistenceImpl<Shoppi
 
 	public ShoppingOrderItemPersistenceImpl() {
 		setModelClass(ShoppingOrderItem.class);
+		setModelImplClass(ShoppingOrderItemImpl.class);
+		setEntityCacheEnabled(ShoppingOrderItemModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -744,6 +746,11 @@ public class ShoppingOrderItemPersistenceImpl extends BasePersistenceImpl<Shoppi
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -902,54 +909,6 @@ public class ShoppingOrderItemPersistenceImpl extends BasePersistenceImpl<Shoppi
 	public ShoppingOrderItem findByPrimaryKey(long orderItemId)
 		throws NoSuchOrderItemException {
 		return findByPrimaryKey((Serializable)orderItemId);
-	}
-
-	/**
-	 * Returns the shopping order item with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the shopping order item
-	 * @return the shopping order item, or <code>null</code> if a shopping order item with the primary key could not be found
-	 */
-	@Override
-	public ShoppingOrderItem fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ShoppingOrderItemModelImpl.ENTITY_CACHE_ENABLED,
-				ShoppingOrderItemImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		ShoppingOrderItem shoppingOrderItem = (ShoppingOrderItem)serializable;
-
-		if (shoppingOrderItem == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				shoppingOrderItem = (ShoppingOrderItem)session.get(ShoppingOrderItemImpl.class,
-						primaryKey);
-
-				if (shoppingOrderItem != null) {
-					cacheResult(shoppingOrderItem);
-				}
-				else {
-					entityCache.putResult(ShoppingOrderItemModelImpl.ENTITY_CACHE_ENABLED,
-						ShoppingOrderItemImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(ShoppingOrderItemModelImpl.ENTITY_CACHE_ENABLED,
-					ShoppingOrderItemImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return shoppingOrderItem;
 	}
 
 	/**

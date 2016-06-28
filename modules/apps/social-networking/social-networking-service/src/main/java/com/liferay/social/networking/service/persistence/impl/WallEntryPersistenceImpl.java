@@ -1631,6 +1631,8 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 
 	public WallEntryPersistenceImpl() {
 		setModelClass(WallEntry.class);
+		setModelImplClass(WallEntryImpl.class);
+		setEntityCacheEnabled(WallEntryModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1775,6 +1777,11 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -1988,54 +1995,6 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	public WallEntry findByPrimaryKey(long wallEntryId)
 		throws NoSuchWallEntryException {
 		return findByPrimaryKey((Serializable)wallEntryId);
-	}
-
-	/**
-	 * Returns the wall entry with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the wall entry
-	 * @return the wall entry, or <code>null</code> if a wall entry with the primary key could not be found
-	 */
-	@Override
-	public WallEntry fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(WallEntryModelImpl.ENTITY_CACHE_ENABLED,
-				WallEntryImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		WallEntry wallEntry = (WallEntry)serializable;
-
-		if (wallEntry == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				wallEntry = (WallEntry)session.get(WallEntryImpl.class,
-						primaryKey);
-
-				if (wallEntry != null) {
-					cacheResult(wallEntry);
-				}
-				else {
-					entityCache.putResult(WallEntryModelImpl.ENTITY_CACHE_ENABLED,
-						WallEntryImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(WallEntryModelImpl.ENTITY_CACHE_ENABLED,
-					WallEntryImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return wallEntry;
 	}
 
 	/**

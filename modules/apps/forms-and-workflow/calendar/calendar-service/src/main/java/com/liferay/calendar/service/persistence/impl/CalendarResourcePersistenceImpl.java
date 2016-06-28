@@ -6516,6 +6516,8 @@ public class CalendarResourcePersistenceImpl extends BasePersistenceImpl<Calenda
 
 	public CalendarResourcePersistenceImpl() {
 		setModelClass(CalendarResource.class);
+		setModelImplClass(CalendarResourceImpl.class);
+		setEntityCacheEnabled(CalendarResourceModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -6775,6 +6777,11 @@ public class CalendarResourcePersistenceImpl extends BasePersistenceImpl<Calenda
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -7089,54 +7096,6 @@ public class CalendarResourcePersistenceImpl extends BasePersistenceImpl<Calenda
 	public CalendarResource findByPrimaryKey(long calendarResourceId)
 		throws NoSuchResourceException {
 		return findByPrimaryKey((Serializable)calendarResourceId);
-	}
-
-	/**
-	 * Returns the calendar resource with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the calendar resource
-	 * @return the calendar resource, or <code>null</code> if a calendar resource with the primary key could not be found
-	 */
-	@Override
-	public CalendarResource fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(CalendarResourceModelImpl.ENTITY_CACHE_ENABLED,
-				CalendarResourceImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		CalendarResource calendarResource = (CalendarResource)serializable;
-
-		if (calendarResource == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				calendarResource = (CalendarResource)session.get(CalendarResourceImpl.class,
-						primaryKey);
-
-				if (calendarResource != null) {
-					cacheResult(calendarResource);
-				}
-				else {
-					entityCache.putResult(CalendarResourceModelImpl.ENTITY_CACHE_ENABLED,
-						CalendarResourceImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(CalendarResourceModelImpl.ENTITY_CACHE_ENABLED,
-					CalendarResourceImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return calendarResource;
 	}
 
 	/**

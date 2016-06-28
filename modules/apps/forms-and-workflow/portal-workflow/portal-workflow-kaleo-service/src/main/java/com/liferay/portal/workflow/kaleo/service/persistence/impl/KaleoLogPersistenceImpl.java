@@ -3456,6 +3456,8 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 
 	public KaleoLogPersistenceImpl() {
 		setModelClass(KaleoLog.class);
+		setModelImplClass(KaleoLogImpl.class);
+		setEntityCacheEnabled(KaleoLogModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -3599,6 +3601,11 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -3902,53 +3909,6 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 	@Override
 	public KaleoLog findByPrimaryKey(long kaleoLogId) throws NoSuchLogException {
 		return findByPrimaryKey((Serializable)kaleoLogId);
-	}
-
-	/**
-	 * Returns the kaleo log with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the kaleo log
-	 * @return the kaleo log, or <code>null</code> if a kaleo log with the primary key could not be found
-	 */
-	@Override
-	public KaleoLog fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(KaleoLogModelImpl.ENTITY_CACHE_ENABLED,
-				KaleoLogImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		KaleoLog kaleoLog = (KaleoLog)serializable;
-
-		if (kaleoLog == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				kaleoLog = (KaleoLog)session.get(KaleoLogImpl.class, primaryKey);
-
-				if (kaleoLog != null) {
-					cacheResult(kaleoLog);
-				}
-				else {
-					entityCache.putResult(KaleoLogModelImpl.ENTITY_CACHE_ENABLED,
-						KaleoLogImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(KaleoLogModelImpl.ENTITY_CACHE_ENABLED,
-					KaleoLogImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return kaleoLog;
 	}
 
 	/**

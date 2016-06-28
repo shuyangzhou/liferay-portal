@@ -10638,6 +10638,8 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 
 	public AssetCategoryPersistenceImpl() {
 		setModelClass(AssetCategory.class);
+		setModelImplClass(AssetCategoryImpl.class);
+		setEntityCacheEnabled(AssetCategoryModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -10899,6 +10901,11 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -11334,54 +11341,6 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 	public AssetCategory findByPrimaryKey(long categoryId)
 		throws NoSuchCategoryException {
 		return findByPrimaryKey((Serializable)categoryId);
-	}
-
-	/**
-	 * Returns the asset category with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the asset category
-	 * @return the asset category, or <code>null</code> if a asset category with the primary key could not be found
-	 */
-	@Override
-	public AssetCategory fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(AssetCategoryModelImpl.ENTITY_CACHE_ENABLED,
-				AssetCategoryImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		AssetCategory assetCategory = (AssetCategory)serializable;
-
-		if (assetCategory == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				assetCategory = (AssetCategory)session.get(AssetCategoryImpl.class,
-						primaryKey);
-
-				if (assetCategory != null) {
-					cacheResult(assetCategory);
-				}
-				else {
-					entityCache.putResult(AssetCategoryModelImpl.ENTITY_CACHE_ENABLED,
-						AssetCategoryImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(AssetCategoryModelImpl.ENTITY_CACHE_ENABLED,
-					AssetCategoryImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return assetCategory;
 	}
 
 	/**

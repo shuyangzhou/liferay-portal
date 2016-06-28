@@ -1387,6 +1387,8 @@ public class LayoutSetPersistenceImpl extends BasePersistenceImpl<LayoutSet>
 
 	public LayoutSetPersistenceImpl() {
 		setModelClass(LayoutSet.class);
+		setModelImplClass(LayoutSetImpl.class);
+		setEntityCacheEnabled(LayoutSetModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -1593,6 +1595,11 @@ public class LayoutSetPersistenceImpl extends BasePersistenceImpl<LayoutSet>
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
 	protected LayoutSet removeImpl(LayoutSet layoutSet) {
 		layoutSet = toUnwrappedModel(layoutSet);
 
@@ -1796,54 +1803,6 @@ public class LayoutSetPersistenceImpl extends BasePersistenceImpl<LayoutSet>
 	public LayoutSet findByPrimaryKey(long layoutSetId)
 		throws NoSuchLayoutSetException {
 		return findByPrimaryKey((Serializable)layoutSetId);
-	}
-
-	/**
-	 * Returns the layout set with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the layout set
-	 * @return the layout set, or <code>null</code> if a layout set with the primary key could not be found
-	 */
-	@Override
-	public LayoutSet fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(LayoutSetModelImpl.ENTITY_CACHE_ENABLED,
-				LayoutSetImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		LayoutSet layoutSet = (LayoutSet)serializable;
-
-		if (layoutSet == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				layoutSet = (LayoutSet)session.get(LayoutSetImpl.class,
-						primaryKey);
-
-				if (layoutSet != null) {
-					cacheResult(layoutSet);
-				}
-				else {
-					entityCache.putResult(LayoutSetModelImpl.ENTITY_CACHE_ENABLED,
-						LayoutSetImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(LayoutSetModelImpl.ENTITY_CACHE_ENABLED,
-					LayoutSetImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return layoutSet;
 	}
 
 	/**

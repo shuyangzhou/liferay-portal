@@ -2960,6 +2960,8 @@ public class AssetLinkPersistenceImpl extends BasePersistenceImpl<AssetLink>
 
 	public AssetLinkPersistenceImpl() {
 		setModelClass(AssetLink.class);
+		setModelImplClass(AssetLinkImpl.class);
+		setEntityCacheEnabled(AssetLinkModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -3167,6 +3169,11 @@ public class AssetLinkPersistenceImpl extends BasePersistenceImpl<AssetLink>
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -3403,54 +3410,6 @@ public class AssetLinkPersistenceImpl extends BasePersistenceImpl<AssetLink>
 	@Override
 	public AssetLink findByPrimaryKey(long linkId) throws NoSuchLinkException {
 		return findByPrimaryKey((Serializable)linkId);
-	}
-
-	/**
-	 * Returns the asset link with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the asset link
-	 * @return the asset link, or <code>null</code> if a asset link with the primary key could not be found
-	 */
-	@Override
-	public AssetLink fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(AssetLinkModelImpl.ENTITY_CACHE_ENABLED,
-				AssetLinkImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		AssetLink assetLink = (AssetLink)serializable;
-
-		if (assetLink == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				assetLink = (AssetLink)session.get(AssetLinkImpl.class,
-						primaryKey);
-
-				if (assetLink != null) {
-					cacheResult(assetLink);
-				}
-				else {
-					entityCache.putResult(AssetLinkModelImpl.ENTITY_CACHE_ENABLED,
-						AssetLinkImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(AssetLinkModelImpl.ENTITY_CACHE_ENABLED,
-					AssetLinkImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return assetLink;
 	}
 
 	/**

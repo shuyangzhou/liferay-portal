@@ -8490,6 +8490,8 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 
 	public RolePersistenceImpl() {
 		setModelClass(Role.class);
+		setModelImplClass(RoleImpl.class);
+		setEntityCacheEnabled(RoleModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -8738,6 +8740,11 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 		finally {
 			closeSession(session);
 		}
+	}
+
+	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
 	}
 
 	@Override
@@ -9051,53 +9058,6 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 	@Override
 	public Role findByPrimaryKey(long roleId) throws NoSuchRoleException {
 		return findByPrimaryKey((Serializable)roleId);
-	}
-
-	/**
-	 * Returns the role with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param primaryKey the primary key of the role
-	 * @return the role, or <code>null</code> if a role with the primary key could not be found
-	 */
-	@Override
-	public Role fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(RoleModelImpl.ENTITY_CACHE_ENABLED,
-				RoleImpl.class, primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		Role role = (Role)serializable;
-
-		if (role == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				role = (Role)session.get(RoleImpl.class, primaryKey);
-
-				if (role != null) {
-					cacheResult(role);
-				}
-				else {
-					entityCache.putResult(RoleModelImpl.ENTITY_CACHE_ENABLED,
-						RoleImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception e) {
-				entityCache.removeResult(RoleModelImpl.ENTITY_CACHE_ENABLED,
-					RoleImpl.class, primaryKey);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return role;
 	}
 
 	/**
