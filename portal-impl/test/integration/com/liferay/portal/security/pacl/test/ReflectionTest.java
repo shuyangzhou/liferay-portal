@@ -17,6 +17,7 @@ package com.liferay.portal.security.pacl.test;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.util.JavaDetector;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.test.rule.PACLTestRule;
@@ -24,6 +25,8 @@ import com.liferay.portal.test.rule.PACLTestRule;
 import java.lang.reflect.Field;
 
 import org.junit.Assert;
+import org.junit.Assume;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -38,6 +41,11 @@ public class ReflectionTest {
 	@ClassRule
 	@Rule
 	public static final PACLTestRule paclTestRule = new PACLTestRule();
+
+	@BeforeClass
+	public static void setUpClass() {
+		Assume.assumeTrue(JavaDetector.isJDK7());
+	}
 
 	@Test
 	public void testPlugin1() throws Exception {
