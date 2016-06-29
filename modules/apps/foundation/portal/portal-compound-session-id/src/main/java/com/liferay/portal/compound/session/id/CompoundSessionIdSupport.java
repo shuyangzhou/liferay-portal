@@ -15,7 +15,6 @@
 package com.liferay.portal.compound.session.id;
 
 import com.liferay.portal.kernel.servlet.filters.compoundsessionid.CompoundSessionIdSplitterUtil;
-import com.liferay.portal.servlet.filters.compoundsessionid.CompoundSessionIdServletRequestFactory;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
