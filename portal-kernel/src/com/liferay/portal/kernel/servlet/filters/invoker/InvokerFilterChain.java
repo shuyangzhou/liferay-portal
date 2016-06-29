@@ -111,8 +111,6 @@ public class InvokerFilterChain implements FilterChain {
 				else {
 					processDoFilter(filter, request, response);
 				}
-
-				return;
 			}
 		}
 
@@ -184,11 +182,6 @@ public class InvokerFilterChain implements FilterChain {
 			}
 
 			tryFilter.doFilterTry(request, response);
-
-			doFilter(request, response);
-		}
-		else {
-			doFilter(request, response);
 		}
 	}
 
