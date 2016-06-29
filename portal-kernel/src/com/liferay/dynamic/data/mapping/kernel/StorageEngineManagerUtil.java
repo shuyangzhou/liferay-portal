@@ -18,7 +18,7 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceRetriever;
 
 /**
  * @author Rafael Praxedes
@@ -31,18 +31,18 @@ public class StorageEngineManagerUtil {
 			ServiceContext serviceContext)
 		throws PortalException {
 
-		return _storageEngineManager.create(
+		return _getStorageEngineManager().create(
 			companyId, ddmStructureId, ddmFormValues, serviceContext);
 	}
 
 	public static void deleteByClass(long classPK) throws PortalException {
-		_storageEngineManager.deleteByClass(classPK);
+		_getStorageEngineManager().deleteByClass(classPK);
 	}
 
 	public static DDMFormValues getDDMFormValues(long classPK)
 		throws PortalException {
 
-		return _storageEngineManager.getDDMFormValues(classPK);
+		return _getStorageEngineManager().getDDMFormValues(classPK);
 	}
 
 	public static DDMFormValues getDDMFormValues(
@@ -50,7 +50,7 @@ public class StorageEngineManagerUtil {
 			ServiceContext serviceContext)
 		throws PortalException {
 
-		return _storageEngineManager.getDDMFormValues(
+		return _getStorageEngineManager().getDDMFormValues(
 			ddmStructureId, fieldNamespace, serviceContext);
 	}
 
@@ -59,10 +59,15 @@ public class StorageEngineManagerUtil {
 			ServiceContext serviceContext)
 		throws PortalException {
 
-		_storageEngineManager.update(classPK, ddmFormValues, serviceContext);
+		_getStorageEngineManager().update(
+			classPK, ddmFormValues, serviceContext);
 	}
 
-	private static final StorageEngineManager _storageEngineManager =
-		ProxyFactory.newServiceTrackedInstance(StorageEngineManager.class);
+	private static StorageEngineManager _getStorageEngineManager() {
+		return _serviceRetriever.getService();
+	}
+
+	private static final ServiceRetriever<StorageEngineManager>
+		_serviceRetriever = new ServiceRetriever<>(StorageEngineManager.class);
 
 }

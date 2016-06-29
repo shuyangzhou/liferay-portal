@@ -14,7 +14,7 @@
 
 package com.liferay.journal.kernel.util;
 
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceRetriever;
 
 import java.util.Locale;
 
@@ -30,10 +30,16 @@ public class JournalConverterManagerUtil {
 	public static String getDDMXSD(String journalXSD, Locale defaultLocale)
 		throws Exception {
 
-		return _journalConverterManager.getDDMXSD(journalXSD, defaultLocale);
+		return _getJournalConverterManager().getDDMXSD(
+			journalXSD, defaultLocale);
 	}
 
-	private static final JournalConverterManager _journalConverterManager =
-		ProxyFactory.newServiceTrackedInstance(JournalConverterManager.class);
+	private static JournalConverterManager _getJournalConverterManager() {
+		return _serviceRetriever.getService();
+	}
+
+	private static final ServiceRetriever<JournalConverterManager>
+		_serviceRetriever = new ServiceRetriever<>(
+			JournalConverterManager.class);
 
 }

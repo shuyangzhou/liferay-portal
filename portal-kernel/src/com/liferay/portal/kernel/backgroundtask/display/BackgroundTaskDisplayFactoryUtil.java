@@ -19,7 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskStatusRegistryUtil;
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceRetriever;
 
 /**
  * @author Andrew Betts
@@ -30,28 +30,38 @@ public class BackgroundTaskDisplayFactoryUtil {
 	public static BackgroundTaskDisplay getBackgroundTaskDisplay(
 		BackgroundTask backgroundTask) {
 
-		return getBackgroundTaskDisplayFactory().getBackgroundTaskDisplay(
+		return _getBackgroundTaskDisplayFactory().getBackgroundTaskDisplay(
 			backgroundTask);
 	}
 
 	public static BackgroundTaskDisplay getBackgroundTaskDisplay(
 		long backgroundTaskId) {
 
-		return getBackgroundTaskDisplayFactory().getBackgroundTaskDisplay(
+		return _getBackgroundTaskDisplayFactory().getBackgroundTaskDisplay(
 			backgroundTaskId);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #_getBackgroundTaskDisplayFactory()}
+	 */
+	@Deprecated
 	public static BackgroundTaskDisplayFactory
 		getBackgroundTaskDisplayFactory() {
+
+		return _getBackgroundTaskDisplayFactory();
+	}
+
+	private static BackgroundTaskDisplayFactory
+		_getBackgroundTaskDisplayFactory() {
 
 		PortalRuntimePermission.checkGetBeanProperty(
 			BackgroundTaskStatusRegistryUtil.class);
 
-		return _backgroundTaskDisplayFactory;
+		return _serviceRetriever.getService();
 	}
 
-	private static final BackgroundTaskDisplayFactory
-		_backgroundTaskDisplayFactory = ProxyFactory.newServiceTrackedInstance(
+	private static final ServiceRetriever<BackgroundTaskDisplayFactory>
+		_serviceRetriever = new ServiceRetriever<>(
 			BackgroundTaskDisplayFactory.class);
 
 }

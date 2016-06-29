@@ -18,7 +18,7 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.model.StagedModel;
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceRetriever;
 
 /**
  * @author Michael C. Han
@@ -26,13 +26,14 @@ import com.liferay.portal.kernel.util.ProxyFactory;
 @ProviderType
 public class PortletDataHandlerStatusMessageSenderUtil {
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #_getPortletDataHandlerStatusMessageSender()}
+	 */
+	@Deprecated
 	public static PortletDataHandlerStatusMessageSender
 		getPortletDataHandlerStatusMessageSender() {
 
-		PortalRuntimePermission.checkGetBeanProperty(
-			PortletDataHandlerStatusMessageSenderUtil.class);
-
-		return _dataHandlerStatusMessageSender;
+		return _getPortletDataHandlerStatusMessageSender();
 	}
 
 	/**
@@ -43,14 +44,14 @@ public class PortletDataHandlerStatusMessageSenderUtil {
 	public static void sendStatusMessage(
 		String messageType, ManifestSummary manifestSummary) {
 
-		getPortletDataHandlerStatusMessageSender().sendStatusMessage(
+		_getPortletDataHandlerStatusMessageSender().sendStatusMessage(
 			messageType, manifestSummary);
 	}
 
 	public static void sendStatusMessage(
 		String messageType, String portletId, ManifestSummary manifestSummary) {
 
-		getPortletDataHandlerStatusMessageSender().sendStatusMessage(
+		_getPortletDataHandlerStatusMessageSender().sendStatusMessage(
 			messageType, portletId, manifestSummary);
 	}
 
@@ -58,20 +59,28 @@ public class PortletDataHandlerStatusMessageSenderUtil {
 		String messageType, String[] portletIds,
 		ManifestSummary manifestSummary) {
 
-		getPortletDataHandlerStatusMessageSender().sendStatusMessage(
+		_getPortletDataHandlerStatusMessageSender().sendStatusMessage(
 			messageType, portletIds, manifestSummary);
 	}
 
 	public static <T extends StagedModel> void sendStatusMessage(
 		String messageType, T stagedModel, ManifestSummary manifestSummary) {
 
-		getPortletDataHandlerStatusMessageSender().sendStatusMessage(
+		_getPortletDataHandlerStatusMessageSender().sendStatusMessage(
 			messageType, stagedModel, manifestSummary);
 	}
 
-	private static final PortletDataHandlerStatusMessageSender
-		_dataHandlerStatusMessageSender =
-			ProxyFactory.newServiceTrackedInstance(
-				PortletDataHandlerStatusMessageSender.class);
+	private static PortletDataHandlerStatusMessageSender
+		_getPortletDataHandlerStatusMessageSender() {
+
+		PortalRuntimePermission.checkGetBeanProperty(
+			PortletDataHandlerStatusMessageSenderUtil.class);
+
+		return _serviceRetriever.getService();
+	}
+
+	private static final ServiceRetriever<PortletDataHandlerStatusMessageSender>
+		_serviceRetriever = new ServiceRetriever<>(
+			PortletDataHandlerStatusMessageSender.class);
 
 }

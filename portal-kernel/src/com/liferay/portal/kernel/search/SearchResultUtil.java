@@ -15,7 +15,7 @@
 package com.liferay.portal.kernel.search;
 
 import com.liferay.portal.kernel.search.result.SearchResultTranslator;
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceRetriever;
 
 import java.util.List;
 import java.util.Locale;
@@ -38,11 +38,16 @@ public class SearchResultUtil {
 		Hits hits, Locale locale, PortletRequest portletRequest,
 		PortletResponse portletResponse) {
 
-		return _searchResultTranslator.translate(
+		return _getSearchResultTranslator().translate(
 			hits, locale, portletRequest, portletResponse);
 	}
 
-	private static final SearchResultTranslator _searchResultTranslator =
-		ProxyFactory.newServiceTrackedInstance(SearchResultTranslator.class);
+	private static SearchResultTranslator _getSearchResultTranslator() {
+		return _serviceRetriever.getService();
+	}
+
+	private static final ServiceRetriever<SearchResultTranslator>
+		_serviceRetriever = new ServiceRetriever<>(
+			SearchResultTranslator.class);
 
 }

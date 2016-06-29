@@ -17,7 +17,7 @@ package com.liferay.dynamic.data.mapping.kernel;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceRetriever;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ public class DDMStructureLinkManagerUtil {
 	public static DDMStructureLink addStructureLink(
 		long classNameId, long classPK, long structureId) {
 
-		return _ddmStructureLinkManager.addStructureLink(
+		return _getDDMStructureLinkManager().addStructureLink(
 			classNameId, classPK, structureId);
 	}
 
@@ -38,27 +38,35 @@ public class DDMStructureLinkManagerUtil {
 			long classNameId, long classPK, long structureId)
 		throws PortalException {
 
-		_ddmStructureLinkManager.deleteStructureLink(
+		_getDDMStructureLinkManager().deleteStructureLink(
 			classNameId, classPK, structureId);
 	}
 
 	public static void deleteStructureLinks(long classNameId, long classPK) {
-		_ddmStructureLinkManager.deleteStructureLinks(classNameId, classPK);
+		_getDDMStructureLinkManager().deleteStructureLinks(
+			classNameId, classPK);
 	}
 
 	public static List<DDMStructureLink> getClassNameStructureLinks(
 		long classNameId) {
 
-		return _ddmStructureLinkManager.getClassNameStructureLinks(classNameId);
+		return _getDDMStructureLinkManager().getClassNameStructureLinks(
+			classNameId);
 	}
 
 	public static List<DDMStructureLink> getStructureLinks(
 		long classNameId, long classPK) {
 
-		return _ddmStructureLinkManager.getStructureLinks(classNameId, classPK);
+		return _getDDMStructureLinkManager().getStructureLinks(
+			classNameId, classPK);
 	}
 
-	private static final DDMStructureLinkManager _ddmStructureLinkManager =
-		ProxyFactory.newServiceTrackedInstance(DDMStructureLinkManager.class);
+	private static DDMStructureLinkManager _getDDMStructureLinkManager() {
+		return _serviceRetriever.getService();
+	}
+
+	private static final ServiceRetriever<DDMStructureLinkManager>
+		_serviceRetriever = new ServiceRetriever<>(
+			DDMStructureLinkManager.class);
 
 }

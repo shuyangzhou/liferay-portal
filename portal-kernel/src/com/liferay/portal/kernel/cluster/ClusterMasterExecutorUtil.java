@@ -17,7 +17,7 @@ package com.liferay.portal.kernel.cluster;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.util.MethodHandler;
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceRetriever;
 
 import java.util.concurrent.Future;
 
@@ -31,70 +31,43 @@ public class ClusterMasterExecutorUtil {
 		ClusterMasterTokenTransitionListener
 			clusterMasterTokenTransitionListener) {
 
-		ClusterMasterExecutor clusterMasterExecutor =
-			getClusterMasterExecutor();
-
-		if (clusterMasterExecutor == null) {
-			return;
-		}
-
-		clusterMasterExecutor.addClusterMasterTokenTransitionListener(
+		_getClusterMasterExecutor().addClusterMasterTokenTransitionListener(
 			clusterMasterTokenTransitionListener);
 	}
 
 	public static <T> Future<T> executeOnMaster(MethodHandler methodHandler) {
-		ClusterMasterExecutor clusterMasterExecutor =
-			getClusterMasterExecutor();
-
-		if (clusterMasterExecutor == null) {
-			return null;
-		}
-
-		return clusterMasterExecutor.executeOnMaster(methodHandler);
+		return _getClusterMasterExecutor().executeOnMaster(methodHandler);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #_getClusterMasterExecutor()}
+	 */
+	@Deprecated
 	public static ClusterMasterExecutor getClusterMasterExecutor() {
-		return _instance;
+		return _getClusterMasterExecutor();
 	}
 
 	public static boolean isEnabled() {
-		ClusterMasterExecutor clusterMasterExecutor =
-			getClusterMasterExecutor();
-
-		if (clusterMasterExecutor == null) {
-			return false;
-		}
-
-		return clusterMasterExecutor.isEnabled();
+		return _getClusterMasterExecutor().isEnabled();
 	}
 
 	public static boolean isMaster() {
-		ClusterMasterExecutor clusterMasterExecutor =
-			getClusterMasterExecutor();
-
-		if (clusterMasterExecutor == null) {
-			return false;
-		}
-
-		return clusterMasterExecutor.isMaster();
+		return _getClusterMasterExecutor().isMaster();
 	}
 
 	public static void removeClusterMasterTokenTransitionListener(
 		ClusterMasterTokenTransitionListener
 			clusterMasterTokenTransitionListener) {
 
-		ClusterMasterExecutor clusterMasterExecutor =
-			getClusterMasterExecutor();
-
-		if (clusterMasterExecutor == null) {
-			return;
-		}
-
-		clusterMasterExecutor.removeClusterMasterTokenTransitionListener(
+		_getClusterMasterExecutor().removeClusterMasterTokenTransitionListener(
 			clusterMasterTokenTransitionListener);
 	}
 
-	private static final ClusterMasterExecutor _instance =
-		ProxyFactory.newServiceTrackedInstance(ClusterMasterExecutor.class);
+	private static ClusterMasterExecutor _getClusterMasterExecutor() {
+		return _serviceRetriever.getService();
+	}
+
+	private static final ServiceRetriever<ClusterMasterExecutor>
+		_serviceRetriever = new ServiceRetriever<>(ClusterMasterExecutor.class);
 
 }

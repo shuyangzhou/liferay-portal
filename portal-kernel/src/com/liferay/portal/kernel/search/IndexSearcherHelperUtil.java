@@ -14,7 +14,7 @@
 
 package com.liferay.portal.kernel.search;
 
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceRetriever;
 
 import java.util.List;
 import java.util.Map;
@@ -27,42 +27,47 @@ public class IndexSearcherHelperUtil {
 	public static String getQueryString(
 		SearchContext searchContext, Query query) {
 
-		return _indexSearcherHelper.getQueryString(searchContext, query);
+		return _getIndexSearcherHelper().getQueryString(searchContext, query);
 	}
 
 	public static Hits search(SearchContext searchContext, Query query)
 		throws SearchException {
 
-		return _indexSearcherHelper.search(searchContext, query);
+		return _getIndexSearcherHelper().search(searchContext, query);
 	}
 
 	public static long searchCount(SearchContext searchContext, Query query)
 		throws SearchException {
 
-		return _indexSearcherHelper.searchCount(searchContext, query);
+		return _getIndexSearcherHelper().searchCount(searchContext, query);
 	}
 
 	public static String spellCheckKeywords(SearchContext searchContext)
 		throws SearchException {
 
-		return _indexSearcherHelper.spellCheckKeywords(searchContext);
+		return _getIndexSearcherHelper().spellCheckKeywords(searchContext);
 	}
 
 	public static Map<String, List<String>> spellCheckKeywords(
 			SearchContext searchContext, int max)
 		throws SearchException {
 
-		return _indexSearcherHelper.spellCheckKeywords(searchContext, max);
+		return _getIndexSearcherHelper().spellCheckKeywords(searchContext, max);
 	}
 
 	public static String[] suggestKeywordQueries(
 			SearchContext searchContext, int max)
 		throws SearchException {
 
-		return _indexSearcherHelper.suggestKeywordQueries(searchContext, max);
+		return _getIndexSearcherHelper().suggestKeywordQueries(
+			searchContext, max);
 	}
 
-	private static final IndexSearcherHelper _indexSearcherHelper =
-		ProxyFactory.newServiceTrackedInstance(IndexSearcherHelper.class);
+	private static IndexSearcherHelper _getIndexSearcherHelper() {
+		return _serviceRetriever.getService();
+	}
+
+	private static final ServiceRetriever<IndexSearcherHelper>
+		_serviceRetriever = new ServiceRetriever<>(IndexSearcherHelper.class);
 
 }
