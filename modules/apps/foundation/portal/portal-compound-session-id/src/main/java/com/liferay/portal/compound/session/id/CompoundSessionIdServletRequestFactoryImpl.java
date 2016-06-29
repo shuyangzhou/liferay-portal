@@ -14,8 +14,6 @@
 
 package com.liferay.portal.compound.session.id;
 
-import com.liferay.portal.servlet.filters.compoundsessionid.CompoundSessionIdServletRequestFactory;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
