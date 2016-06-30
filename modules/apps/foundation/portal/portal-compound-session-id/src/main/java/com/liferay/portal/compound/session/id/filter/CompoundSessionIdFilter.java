@@ -17,12 +17,13 @@ package com.liferay.portal.compound.session.id.filter;
 import com.liferay.portal.compound.session.id.CompoundSessionIdServletRequestFactory;
 import com.liferay.portal.kernel.servlet.WrapHttpServletRequestFilter;
 import com.liferay.portal.servlet.filters.BasePortalFilter;
-import com.liferay.registry.Registry;
-import com.liferay.registry.RegistryUtil;
-import com.liferay.registry.ServiceTracker;
 
+import javax.servlet.Filter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * <p>
@@ -31,24 +32,17 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Michael C. Han
  */
+@Component(
+	enabled = false, immediate = true,
+	property = {
+		"dispatcher=ERROR", "dispatcher=FORWARD", "dispatcher=INCLUDE",
+		"dispatcher=REQUEST", "servlet-context-name=",
+		"servlet-filter-name=Compound Session Id Filter", "url-pattern=/*"
+	},
+	service = Filter.class
+)
 public class CompoundSessionIdFilter
 	extends BasePortalFilter implements WrapHttpServletRequestFilter {
-
-	public CompoundSessionIdFilter() {
-		Registry registry = RegistryUtil.getRegistry();
-
-		_serviceTracker = registry.trackServices(
-			CompoundSessionIdServletRequestFactory.class);
-
-		_serviceTracker.open();
-	}
-
-	@Override
-	public void destroy() {
-		_serviceTracker.close();
-
-		super.destroy();
-	}
 
 	@Override
 	public HttpServletRequest getWrappedHttpServletRequest(
@@ -56,7 +50,7 @@ public class CompoundSessionIdFilter
 
 		CompoundSessionIdServletRequestFactory
 			compoundSessionIdServletRequestFactory =
-				_serviceTracker.getService();
+				_compoundSessionIdServletRequestFactory;
 
 		if (compoundSessionIdServletRequestFactory != null) {
 			return compoundSessionIdServletRequestFactory.create(request);
@@ -65,17 +59,16 @@ public class CompoundSessionIdFilter
 		return request;
 	}
 
-	@Override
-	public boolean isFilterEnabled() {
-		if (_serviceTracker.isEmpty()) {
-			return false;
-		}
+	@Reference(unbind = "-")
+	protected void setCompoundSessionIdServletRequestFactory(
+		CompoundSessionIdServletRequestFactory
+			compoundSessionIdServletRequestFactory) {
 
-		return true;
+		_compoundSessionIdServletRequestFactory =
+			compoundSessionIdServletRequestFactory;
 	}
 
-	private final ServiceTracker
-		<CompoundSessionIdServletRequestFactory,
-			CompoundSessionIdServletRequestFactory> _serviceTracker;
+	private CompoundSessionIdServletRequestFactory
+		_compoundSessionIdServletRequestFactory;
 
 }
