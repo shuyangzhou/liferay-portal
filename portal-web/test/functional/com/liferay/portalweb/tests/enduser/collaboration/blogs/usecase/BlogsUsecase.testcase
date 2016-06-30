@@ -2046,7 +2046,11 @@
 
 		<execute function="AssertElementPresent" locator1="Message#EMPTY_INFO" />
 
-		<execute macro="IFrame#selectTopFrame" />
+		<execute macro="IFrame#closeFrame" />
+
+		<var name="key_modalTitle" value="Configuration" />
+
+		<execute function="Click" locator1="Button#CLOSE_MODAL" />
 
 		<execute macro="ProductMenu#gotoControlPanelUsers">
 			<var name="portlet" value="Users and Organizations" />

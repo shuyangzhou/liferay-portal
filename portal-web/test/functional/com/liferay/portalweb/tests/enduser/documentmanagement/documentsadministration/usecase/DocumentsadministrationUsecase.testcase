@@ -238,6 +238,8 @@
 
 		<execute macro="DMDocument#enableActionsMenuOnPortlet" />
 
+		<execute macro="IFrame#closeFrame" />
+
 		<execute macro="DMDocument#checkoutPG">
 			<var name="dmDocumentTitle" value="Document_1.doc" />
 		</execute>
@@ -425,7 +427,7 @@
 		</execute>
 
 		<execute macro="DMDocument#viewCP">
-			<var name="dmDocumentSize" value="0" />
+			<var name="dmDocumentSize" value="0KB" />
 			<var name="dmDocumentTitle" value="Zero Document File" />
 		</execute>
 
@@ -682,6 +684,8 @@
 		<execute macro="LAR#importPortlet">
 			<var name="larFileName" value="DM_Test_DB_Store.lar" />
 		</execute>
+
+		<execute macro="Navigator#openURL" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />

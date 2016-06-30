@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.xml.Element;
@@ -44,6 +43,22 @@ public class LayoutSitemapURLProvider implements SitemapURLProvider {
 		return Layout.class.getName();
 	}
 
+	@Override
+	public void visitLayout(
+			Element element, String layoutUuid, LayoutSet layoutSet,
+			ThemeDisplay themeDisplay)
+		throws PortalException {
+
+		Layout layout = LayoutLocalServiceUtil.getLayoutByUuidAndGroupId(
+			layoutUuid, layoutSet.getGroupId(), layoutSet.getPrivateLayout());
+
+		visitLayout(element, layout, themeDisplay);
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public void visitLayoutSet(
 			Element element, LayoutSet layoutSet, ThemeDisplay themeDisplay)
@@ -97,25 +112,10 @@ public class LayoutSitemapURLProvider implements SitemapURLProvider {
 		Map<Locale, String> alternateURLs = SitemapUtil.getAlternateURLs(
 			layoutFullURL, themeDisplay, layout);
 
-		SitemapUtil.addURLElement(
-			element, layoutFullURL, typeSettingsProperties,
-			layout.getModifiedDate(), layoutFullURL, alternateURLs);
-
-		if (alternateURLs.size() > 1) {
-			Locale defaultLocale = LocaleUtil.getSiteDefault();
-
-			for (Map.Entry<Locale, String> entry : alternateURLs.entrySet()) {
-				Locale availableLocale = entry.getKey();
-				String alternateURL = entry.getValue();
-
-				if (!availableLocale.equals(defaultLocale) ||
-					(PropsValues.LOCALE_PREPEND_FRIENDLY_URL_STYLE == 2)) {
-
-					SitemapUtil.addURLElement(
-						element, alternateURL, typeSettingsProperties,
-						layout.getModifiedDate(), layoutFullURL, alternateURLs);
-				}
-			}
+		for (String alternateURL : alternateURLs.values()) {
+			SitemapUtil.addURLElement(
+				element, alternateURL, typeSettingsProperties,
+				layout.getModifiedDate(), layoutFullURL, alternateURLs);
 		}
 	}
 

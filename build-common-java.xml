@@ -3,30 +3,12 @@
 <project name="build-common-java" xmlns:antelope="antlib:ise.antelope.tasks" xmlns:artifact="antlib:org.apache.maven.artifact.ant" xmlns:if="ant:if" xmlns:unless="ant:unless">
 	<import file="build-common.xml" />
 
-	<macrodef name="clean">
-		<sequential>
-			<clean-cmd />
-		</sequential>
-	</macrodef>
-
-	<macrodef name="clean-cmd">
-		<element name="clean-post" optional="true" />
-
-		<sequential>
-			<delete dir="classes" />
-			<delete dir="test-classes" />
-			<delete dir="test-coverage" />
-			<delete dir="test-results" />
-			<delete dir="woven-classes" />
-			<delete dir="${doc.dir}/${ant.project.name}/javadocs" />
-			<delete failonerror="false" file="${deploy.dir}/${jar.file}.jar" />
-			<delete failonerror="false" file="${jar.file}.jar" />
-			<delete failonerror="false" file="${jar.file}-javadoc.jar" />
-			<delete failonerror="false" file="${jar.file}-sources.jar" />
-
-			<clean-post />
-		</sequential>
-	</macrodef>
+	<condition else="${project.dir}/portal-impl/classes" property="portal-impl.classes.dir" value="${project.dir}/portal-web/docroot/WEB-INF/classes">
+		<and>
+			<equals arg1="${app.server.type}" arg2="tomcat" />
+			<antelope:endswith string="${app.server.portal.dir}" with="/portal-web/docroot" />
+		</and>
+	</condition>
 
 	<macrodef name="compile-java">
 		<sequential>
@@ -285,21 +267,17 @@
 		</sequential>
 	</macrodef>
 
-	<if>
-		<and>
-			<equals arg1="${app.server.type}" arg2="tomcat" />
-			<antelope:endswith string="${app.server.portal.dir}" with="/portal-web/docroot" />
-		</and>
-		<then>
-			<property name="portal-impl.classes.dir" value="${project.dir}/portal-web/docroot/WEB-INF/classes" />
-		</then>
-		<else>
-			<property name="portal-impl.classes.dir" value="${project.dir}/portal-impl/classes" />
-		</else>
-	</if>
-
 	<target name="clean">
-		<clean />
+		<delete dir="classes" />
+		<delete dir="test-classes" />
+		<delete dir="test-coverage" />
+		<delete dir="test-results" />
+		<delete dir="woven-classes" />
+		<delete dir="${doc.dir}/${ant.project.name}/javadocs" />
+		<delete failonerror="false" file="${deploy.dir}/${jar.file}.jar" />
+		<delete failonerror="false" file="${jar.file}.jar" />
+		<delete failonerror="false" file="${jar.file}-javadoc.jar" />
+		<delete failonerror="false" file="${jar.file}-sources.jar" />
 	</target>
 
 	<target name="compile">

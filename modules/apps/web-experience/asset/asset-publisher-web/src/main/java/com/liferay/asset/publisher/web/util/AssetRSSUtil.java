@@ -89,7 +89,8 @@ public class AssetRSSUtil {
 		String rss = exportToRSS(
 			portletRequest, portletResponse, rssName, null, format, version,
 			rssDisplayStyle, assetLinkBehavior,
-			getAssetEntries(portletRequest, portletPreferences));
+			getAssetEntries(
+				portletRequest, portletResponse, portletPreferences));
 
 		return rss.getBytes(StringPool.UTF8);
 	}
@@ -181,8 +182,24 @@ public class AssetRSSUtil {
 		return RSSUtil.export(syndFeed);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #getAssetEntries(PortletRequest, PortletResponse,
+	 *             PortletPreferences)}
+	 */
+	@Deprecated
 	protected static List<AssetEntry> getAssetEntries(
 			PortletRequest portletRequest,
+			PortletPreferences portletPreferences)
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method is deprecated and replaced by #getAssetEntries(" +
+				"PortletRequest, PortletResponse, PortletPreferences)");
+	}
+
+	protected static List<AssetEntry> getAssetEntries(
+			PortletRequest portletRequest, PortletResponse portletResponse,
 			PortletPreferences portletPreferences)
 		throws Exception {
 
@@ -192,8 +209,7 @@ public class AssetRSSUtil {
 
 		AssetPublisherDisplayContext assetPublisherDisplayContext =
 			new AssetPublisherDisplayContext(
-				PortalUtil.getHttpServletRequest(portletRequest),
-				portletPreferences);
+				portletRequest, portletResponse, portletPreferences);
 
 		searchContainer.setDelta(assetPublisherDisplayContext.getRSSDelta());
 
