@@ -473,6 +473,18 @@ public class ResourcePermissionLocalServiceWrapper
 	/**
 	* Returns the resource permissions that apply to the resource.
 	*
+	* @param name the resource's name, which can be either a class name or a
+	portlet ID
+	*/
+	@Override
+	public java.util.List<com.liferay.portal.kernel.model.ResourcePermission> getResourceResourcePermissions(
+		java.lang.String name) {
+		return _resourcePermissionLocalService.getResourceResourcePermissions(name);
+	}
+
+	/**
+	* Returns the resource permissions that apply to the resource.
+	*
 	* @param companyId the primary key of the resource's company
 	* @param groupId the primary key of the resource's group
 	* @param name the resource's name, which can be either a class name or a

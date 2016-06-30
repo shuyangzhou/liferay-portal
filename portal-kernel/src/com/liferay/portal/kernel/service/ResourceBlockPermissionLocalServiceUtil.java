@@ -242,6 +242,11 @@ public class ResourceBlockPermissionLocalServiceUtil {
 		return getService().getResourceBlockPermissions(start, end);
 	}
 
+	public static java.util.List<com.liferay.portal.kernel.model.ResourceBlockPermission> getResourceResourceBlockPermissions(
+		java.lang.String name) {
+		return getService().getResourceResourceBlockPermissions(name);
+	}
+
 	public static java.util.Map<java.lang.Long, java.util.Set<java.lang.String>> getAvailableResourceBlockPermissionActionIds(
 		java.lang.String name, long primKey,
 		java.util.List<java.lang.String> actionIds)

@@ -252,6 +252,12 @@ public class ResourceBlockPermissionLocalServiceWrapper
 	}
 
 	@Override
+	public java.util.List<com.liferay.portal.kernel.model.ResourceBlockPermission> getResourceResourceBlockPermissions(
+		java.lang.String name) {
+		return _resourceBlockPermissionLocalService.getResourceResourceBlockPermissions(name);
+	}
+
+	@Override
 	public java.util.Map<java.lang.Long, java.util.Set<java.lang.String>> getAvailableResourceBlockPermissionActionIds(
 		java.lang.String name, long primKey,
 		java.util.List<java.lang.String> actionIds)

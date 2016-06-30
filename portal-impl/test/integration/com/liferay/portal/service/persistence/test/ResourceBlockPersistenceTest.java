@@ -150,6 +150,15 @@ public class ResourceBlockPersistenceTest {
 	}
 
 	@Test
+	public void testCountByName() throws Exception {
+		_persistence.countByName(StringPool.BLANK);
+
+		_persistence.countByName(StringPool.NULL);
+
+		_persistence.countByName((String)null);
+	}
+
+	@Test
 	public void testCountByC_N() throws Exception {
 		_persistence.countByC_N(RandomTestUtil.nextLong(), StringPool.BLANK);
 

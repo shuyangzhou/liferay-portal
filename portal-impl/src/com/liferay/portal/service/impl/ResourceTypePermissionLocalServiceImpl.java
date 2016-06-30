@@ -92,6 +92,13 @@ public class ResourceTypePermissionLocalServiceImpl
 	}
 
 	@Override
+	public List<ResourceTypePermission> getResourceResourceTypePermissions(
+		String name) {
+
+		return resourceTypePermissionPersistence.findByName(name);
+	}
+
+	@Override
 	public List<ResourceTypePermission> getRoleResourceTypePermissions(
 		long roleId) {
 

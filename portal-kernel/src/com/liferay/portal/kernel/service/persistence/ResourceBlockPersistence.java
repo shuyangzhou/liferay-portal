@@ -40,6 +40,138 @@ public interface ResourceBlockPersistence extends BasePersistence<ResourceBlock>
 	 */
 
 	/**
+	* Returns all the resource blocks where name = &#63;.
+	*
+	* @param name the name
+	* @return the matching resource blocks
+	*/
+	public java.util.List<ResourceBlock> findByName(java.lang.String name);
+
+	/**
+	* Returns a range of all the resource blocks where name = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ResourceBlockModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param name the name
+	* @param start the lower bound of the range of resource blocks
+	* @param end the upper bound of the range of resource blocks (not inclusive)
+	* @return the range of matching resource blocks
+	*/
+	public java.util.List<ResourceBlock> findByName(java.lang.String name,
+		int start, int end);
+
+	/**
+	* Returns an ordered range of all the resource blocks where name = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ResourceBlockModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param name the name
+	* @param start the lower bound of the range of resource blocks
+	* @param end the upper bound of the range of resource blocks (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching resource blocks
+	*/
+	public java.util.List<ResourceBlock> findByName(java.lang.String name,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<ResourceBlock> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the resource blocks where name = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ResourceBlockModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param name the name
+	* @param start the lower bound of the range of resource blocks
+	* @param end the upper bound of the range of resource blocks (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the ordered range of matching resource blocks
+	*/
+	public java.util.List<ResourceBlock> findByName(java.lang.String name,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<ResourceBlock> orderByComparator,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns the first resource block in the ordered set where name = &#63;.
+	*
+	* @param name the name
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching resource block
+	* @throws NoSuchResourceBlockException if a matching resource block could not be found
+	*/
+	public ResourceBlock findByName_First(java.lang.String name,
+		com.liferay.portal.kernel.util.OrderByComparator<ResourceBlock> orderByComparator)
+		throws NoSuchResourceBlockException;
+
+	/**
+	* Returns the first resource block in the ordered set where name = &#63;.
+	*
+	* @param name the name
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching resource block, or <code>null</code> if a matching resource block could not be found
+	*/
+	public ResourceBlock fetchByName_First(java.lang.String name,
+		com.liferay.portal.kernel.util.OrderByComparator<ResourceBlock> orderByComparator);
+
+	/**
+	* Returns the last resource block in the ordered set where name = &#63;.
+	*
+	* @param name the name
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching resource block
+	* @throws NoSuchResourceBlockException if a matching resource block could not be found
+	*/
+	public ResourceBlock findByName_Last(java.lang.String name,
+		com.liferay.portal.kernel.util.OrderByComparator<ResourceBlock> orderByComparator)
+		throws NoSuchResourceBlockException;
+
+	/**
+	* Returns the last resource block in the ordered set where name = &#63;.
+	*
+	* @param name the name
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching resource block, or <code>null</code> if a matching resource block could not be found
+	*/
+	public ResourceBlock fetchByName_Last(java.lang.String name,
+		com.liferay.portal.kernel.util.OrderByComparator<ResourceBlock> orderByComparator);
+
+	/**
+	* Returns the resource blocks before and after the current resource block in the ordered set where name = &#63;.
+	*
+	* @param resourceBlockId the primary key of the current resource block
+	* @param name the name
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the previous, current, and next resource block
+	* @throws NoSuchResourceBlockException if a resource block with the primary key could not be found
+	*/
+	public ResourceBlock[] findByName_PrevAndNext(long resourceBlockId,
+		java.lang.String name,
+		com.liferay.portal.kernel.util.OrderByComparator<ResourceBlock> orderByComparator)
+		throws NoSuchResourceBlockException;
+
+	/**
+	* Removes all the resource blocks where name = &#63; from the database.
+	*
+	* @param name the name
+	*/
+	public void removeByName(java.lang.String name);
+
+	/**
+	* Returns the number of resource blocks where name = &#63;.
+	*
+	* @param name the name
+	* @return the number of matching resource blocks
+	*/
+	public int countByName(java.lang.String name);
+
+	/**
 	* Returns all the resource blocks where companyId = &#63; and name = &#63;.
 	*
 	* @param companyId the company ID

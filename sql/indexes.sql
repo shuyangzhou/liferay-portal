@@ -387,6 +387,7 @@ create unique index IX_EDB9986E on ResourceAction (name[$COLUMN_LENGTH:255$], ac
 
 create unique index IX_AEEA209C on ResourceBlock (companyId, groupId, name[$COLUMN_LENGTH:75$], permissionsHash[$COLUMN_LENGTH:75$]);
 create index IX_2D4CC782 on ResourceBlock (companyId, name[$COLUMN_LENGTH:75$]);
+create index IX_F5D71104 on ResourceBlock (name[$COLUMN_LENGTH:75$]);
 
 create unique index IX_D63D20BB on ResourceBlockPermission (resourceBlockId, roleId);
 create index IX_20A2E3D9 on ResourceBlockPermission (roleId);
@@ -401,6 +402,7 @@ create index IX_F4555981 on ResourcePermission (scope);
 
 create unique index IX_BA497163 on ResourceTypePermission (companyId, groupId, name[$COLUMN_LENGTH:75$], roleId);
 create index IX_7D81F66F on ResourceTypePermission (companyId, name[$COLUMN_LENGTH:75$], roleId);
+create index IX_771D7C7C on ResourceTypePermission (name[$COLUMN_LENGTH:75$]);
 create index IX_A82690E2 on ResourceTypePermission (roleId);
 
 create unique index IX_A88E424E on Role_ (companyId, classNameId, classPK);

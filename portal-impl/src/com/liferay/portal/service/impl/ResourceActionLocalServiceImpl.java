@@ -17,7 +17,10 @@ package com.liferay.portal.service.impl;
 import com.liferay.portal.kernel.exception.NoSuchResourceActionException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.ResourceAction;
+import com.liferay.portal.kernel.model.ResourceBlockPermission;
 import com.liferay.portal.kernel.model.ResourceConstants;
+import com.liferay.portal.kernel.model.ResourcePermission;
+import com.liferay.portal.kernel.model.ResourceTypePermission;
 import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
@@ -25,10 +28,10 @@ import com.liferay.portal.kernel.spring.aop.Skip;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.comparator.ResourceActionBitwiseValueComparator;
 import com.liferay.portal.service.base.ResourceActionLocalServiceBaseImpl;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -86,7 +89,26 @@ public class ResourceActionLocalServiceImpl
 	public void checkResourceActions(
 		String name, List<String> actionIds, boolean addDefaultActions) {
 
-		long lastBitwiseValue = -1;
+		List<ResourceAction> resourceActions = getResourceActions(name);
+		LinkedList<Long> availableBitwiseValues = new LinkedList<>();
+
+		long bitwiseValue = 2;
+
+		for (int i = 0; i < Long.SIZE - 1; i++) {
+			availableBitwiseValues.add(bitwiseValue);
+
+			bitwiseValue = bitwiseValue << 1;
+		}
+
+		for (ResourceAction resourceAction : resourceActions) {
+			if (!actionIds.contains(resourceAction.getActionId())) {
+				deleteResourceAction(resourceAction);
+			}
+			else {
+				availableBitwiseValues.remove(resourceAction.getBitwiseValue());
+			}
+		}
+
 		List<ResourceAction> newResourceActions = null;
 
 		for (String actionId : actionIds) {
@@ -102,27 +124,11 @@ public class ResourceActionLocalServiceImpl
 				name, actionId);
 
 			if (resourceAction == null) {
-				long bitwiseValue = 1;
-
 				if (!actionId.equals(ActionKeys.VIEW)) {
-					if (lastBitwiseValue < 0) {
-						ResourceAction lastResourceAction =
-							resourceActionPersistence.fetchByName_First(
-								name,
-								new ResourceActionBitwiseValueComparator());
-
-						if (lastResourceAction != null) {
-							lastBitwiseValue =
-								lastResourceAction.getBitwiseValue();
-						}
-						else {
-							lastBitwiseValue = 1;
-						}
-					}
-
-					lastBitwiseValue = lastBitwiseValue << 1;
-
-					bitwiseValue = lastBitwiseValue;
+					bitwiseValue = availableBitwiseValues.pop();
+				}
+				else {
+					bitwiseValue = 1;
 				}
 
 				try {
@@ -205,6 +211,60 @@ public class ResourceActionLocalServiceImpl
 	public ResourceAction deleteResourceAction(ResourceAction resourceAction) {
 		_resourceActions.remove(
 			encodeKey(resourceAction.getName(), resourceAction.getActionId()));
+
+		List<ResourcePermission> resourcePermissions =
+			resourcePermissionLocalService.getResourceResourcePermissions(
+				resourceAction.getName());
+
+		for (ResourcePermission resourcePermission : resourcePermissions) {
+			long actionIds = resourcePermission.getActionIds();
+
+			if ((actionIds & resourceAction.getBitwiseValue()) != 0) {
+				actionIds = actionIds ^ resourceAction.getBitwiseValue();
+
+				resourcePermission.setActionIds(actionIds);
+
+				resourcePermissionPersistence.update(resourcePermission);
+			}
+		}
+
+		List<ResourceTypePermission> resourceTypePermissions =
+			resourceTypePermissionLocalService.
+				getResourceResourceTypePermissions(resourceAction.getName());
+
+		for (ResourceTypePermission resourceTypePermission :
+				resourceTypePermissions) {
+
+			long actionIds = resourceTypePermission.getActionIds();
+
+			if ((actionIds & resourceAction.getBitwiseValue()) != 0) {
+				actionIds = actionIds ^ resourceAction.getBitwiseValue();
+
+				resourceTypePermission.setActionIds(actionIds);
+
+				resourceTypePermissionPersistence.update(
+					resourceTypePermission);
+			}
+		}
+
+		List<ResourceBlockPermission> resourceBlockPermissions =
+			resourceBlockPermissionLocalService.
+				getResourceResourceBlockPermissions(resourceAction.getName());
+
+		for (ResourceBlockPermission resourceBlockPermission :
+				resourceBlockPermissions) {
+
+			long actionIds = resourceBlockPermission.getActionIds();
+
+			if ((actionIds & resourceAction.getBitwiseValue()) != 0) {
+				actionIds = actionIds ^ resourceAction.getBitwiseValue();
+
+				resourceBlockPermission.setActionIds(actionIds);
+
+				resourceBlockPermissionPersistence.update(
+					resourceBlockPermission);
+			}
+		}
 
 		return resourceActionPersistence.remove(resourceAction);
 	}

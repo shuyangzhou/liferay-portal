@@ -457,6 +457,17 @@ public class ResourcePermissionLocalServiceUtil {
 	/**
 	* Returns the resource permissions that apply to the resource.
 	*
+	* @param name the resource's name, which can be either a class name or a
+	portlet ID
+	*/
+	public static java.util.List<com.liferay.portal.kernel.model.ResourcePermission> getResourceResourcePermissions(
+		java.lang.String name) {
+		return getService().getResourceResourcePermissions(name);
+	}
+
+	/**
+	* Returns the resource permissions that apply to the resource.
+	*
 	* @param companyId the primary key of the resource's company
 	* @param groupId the primary key of the resource's group
 	* @param name the resource's name, which can be either a class name or a

@@ -2076,7 +2076,9 @@
 
 		<!-- References -->
 
+		<reference entity="ResourceBlockPermission" package-path="com.liferay.portal" />
 		<reference entity="ResourcePermission" package-path="com.liferay.portal" />
+		<reference entity="ResourceTypePermission" package-path="com.liferay.portal" />
 	</entity>
 	<entity local-service="true" name="ResourceBlock" remote-service="true">
 
@@ -2097,6 +2099,9 @@
 
 		<!-- Finder methods -->
 
+		<finder name="Name" return-type="Collection">
+			<finder-column name="name" />
+		</finder>
 		<finder name="C_N" return-type="Collection">
 			<finder-column name="companyId" />
 			<finder-column name="name" />
@@ -2245,6 +2250,9 @@
 
 		<!-- Finder methods -->
 
+		<finder name="Name" return-type="Collection">
+			<finder-column name="name" />
+		</finder>
 		<finder name="RoleId" return-type="Collection">
 			<finder-column name="roleId" />
 		</finder>

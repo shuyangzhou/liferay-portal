@@ -220,6 +220,10 @@ public interface ResourceTypePermissionLocalService extends BaseLocalService,
 	public List<ResourceTypePermission> getGroupScopeResourceTypePermissions(
 		long companyId, java.lang.String name, long roleId);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<ResourceTypePermission> getResourceResourceTypePermissions(
+		java.lang.String name);
+
 	/**
 	* Returns a range of all the resource type permissions.
 	*

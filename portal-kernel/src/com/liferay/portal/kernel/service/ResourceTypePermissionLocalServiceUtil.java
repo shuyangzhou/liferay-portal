@@ -247,6 +247,11 @@ public class ResourceTypePermissionLocalServiceUtil {
 				   .getGroupScopeResourceTypePermissions(companyId, name, roleId);
 	}
 
+	public static java.util.List<com.liferay.portal.kernel.model.ResourceTypePermission> getResourceResourceTypePermissions(
+		java.lang.String name) {
+		return getService().getResourceResourceTypePermissions(name);
+	}
+
 	/**
 	* Returns a range of all the resource type permissions.
 	*

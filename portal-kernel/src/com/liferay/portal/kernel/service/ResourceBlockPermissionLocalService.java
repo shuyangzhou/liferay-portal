@@ -223,6 +223,10 @@ public interface ResourceBlockPermissionLocalService extends BaseLocalService,
 		int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<ResourceBlockPermission> getResourceResourceBlockPermissions(
+		java.lang.String name);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Map<java.lang.Long, Set<java.lang.String>> getAvailableResourceBlockPermissionActionIds(
 		java.lang.String name, long primKey, List<java.lang.String> actionIds)
 		throws PortalException;

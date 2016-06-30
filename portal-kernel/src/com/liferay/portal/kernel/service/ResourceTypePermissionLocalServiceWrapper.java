@@ -258,6 +258,12 @@ public class ResourceTypePermissionLocalServiceWrapper
 			name, roleId);
 	}
 
+	@Override
+	public java.util.List<com.liferay.portal.kernel.model.ResourceTypePermission> getResourceResourceTypePermissions(
+		java.lang.String name) {
+		return _resourceTypePermissionLocalService.getResourceResourceTypePermissions(name);
+	}
+
 	/**
 	* Returns a range of all the resource type permissions.
 	*

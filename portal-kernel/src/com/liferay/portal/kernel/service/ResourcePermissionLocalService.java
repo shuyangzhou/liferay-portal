@@ -411,6 +411,16 @@ public interface ResourcePermissionLocalService extends BaseLocalService,
 	/**
 	* Returns the resource permissions that apply to the resource.
 	*
+	* @param name the resource's name, which can be either a class name or a
+	portlet ID
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<ResourcePermission> getResourceResourcePermissions(
+		java.lang.String name);
+
+	/**
+	* Returns the resource permissions that apply to the resource.
+	*
 	* @param companyId the primary key of the resource's company
 	* @param groupId the primary key of the resource's group
 	* @param name the resource's name, which can be either a class name or a
