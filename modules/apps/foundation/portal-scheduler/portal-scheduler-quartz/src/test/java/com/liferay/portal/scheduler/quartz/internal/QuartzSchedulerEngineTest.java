@@ -76,6 +76,8 @@ import org.mockito.stubbing.Answer;
 import org.quartz.Calendar;
 import org.quartz.CalendarIntervalTrigger;
 import org.quartz.CronTrigger;
+import org.quartz.DateBuilder;
+import org.quartz.DateBuilder.IntervalUnit;
 import org.quartz.JobBuilder;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
@@ -86,6 +88,8 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerContext;
 import org.quartz.SchedulerMetaData;
 import org.quartz.TriggerKey;
+import org.quartz.TriggerListener;
+import org.quartz.core.ListenerManagerImpl;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.quartz.spi.JobFactory;
 
@@ -202,6 +206,18 @@ public class QuartzSchedulerEngineTest {
 		schedulerResponses = _quartzSchedulerEngine.getScheduledJobs();
 
 		Assert.assertEquals(2 * _DEFAULT_JOB_NUMBER, schedulerResponses.size());
+	}
+
+	@Test
+	public void testExecuteJobFutureDatedTrigger() throws Exception {
+		_testExecuteJobDatedTrigger(
+			DateBuilder.futureDate(_DEFAULT_INTERVAL, IntervalUnit.SECOND),
+			false);
+	}
+
+	@Test
+	public void testExecuteJobOldDatedTrigger() throws Exception {
+		_testExecuteJobDatedTrigger(_YESTERDAY, true);
 	}
 
 	@Test
@@ -341,6 +357,18 @@ public class QuartzSchedulerEngineTest {
 		Assert.assertEquals(_DEFAULT_JOB_NUMBER + 1, schedulerResponses.size());
 		Assert.assertEquals(
 			0, _synchronousDestination.getMessageListenerCount());
+	}
+
+	@Test
+	public void testScheduleFutureDatedTrigger() throws Exception {
+		_testScheduledDatedTrigger(
+			DateBuilder.futureDate(_DEFAULT_INTERVAL, IntervalUnit.SECOND),
+			false);
+	}
+
+	@Test
+	public void testScheduleOldDatedTrigger() throws Exception {
+		_testScheduledDatedTrigger(_YESTERDAY, true);
 	}
 
 	@Test
@@ -810,6 +838,79 @@ public class QuartzSchedulerEngineTest {
 		return props;
 	}
 
+	private void _testExecuteJobDatedTrigger(Date input, boolean expected)
+		throws Exception {
+
+		Trigger trigger = _quartzTriggerFactory.createTrigger(
+			_TEST_JOB_NAME_PREFIX + "memory", _MEMORY_TEST_GROUP_NAME, input,
+			null, _DEFAULT_INTERVAL, TimeUnit.SECOND);
+		trigger = Mockito.spy(trigger);
+
+		org.quartz.Trigger quartzTrigger = Mockito.spy(
+			(org.quartz.Trigger)trigger.getWrappedTrigger());
+		Mockito.when(quartzTrigger.getNextFireTime()).thenReturn(input);
+
+		Mockito.when(trigger.getWrappedTrigger()).thenReturn(quartzTrigger);
+
+		_quartzSchedulerEngine.schedule(
+			trigger, StringPool.BLANK, _TEST_DESTINATION_NAME, new Message(),
+			StorageType.MEMORY);
+
+		Scheduler scheduler = _quartzSchedulerEngine.getScheduler(
+			StorageType.MEMORY);
+
+		ListenerManager listenerManager = scheduler.getListenerManager();
+
+		TriggerListener triggerListener = listenerManager.getTriggerListener(
+			_TRIGGER_LISTENER_NAME);
+
+		Assert.assertEquals(
+			expected,
+			triggerListener.vetoJobExecution(
+				quartzTrigger, Mockito.mock(JobExecutionContext.class)));
+
+		Assert.assertFalse(
+			triggerListener.vetoJobExecution(
+				quartzTrigger, Mockito.mock(JobExecutionContext.class)));
+	}
+
+	private void _testScheduledDatedTrigger(Date input, boolean expected)
+		throws Exception {
+
+		Trigger trigger = _quartzTriggerFactory.createTrigger(
+			_TEST_JOB_NAME_PREFIX + "memory", _MEMORY_TEST_GROUP_NAME, input,
+			null, _DEFAULT_INTERVAL, TimeUnit.SECOND);
+		trigger = Mockito.spy(trigger);
+
+		org.quartz.Trigger quartzTrigger = Mockito.spy(
+			(org.quartz.Trigger)trigger.getWrappedTrigger());
+		Mockito.when(quartzTrigger.getNextFireTime()).thenReturn(input);
+
+		Mockito.when(trigger.getWrappedTrigger()).thenReturn(quartzTrigger);
+
+		_quartzSchedulerEngine.schedule(
+			trigger, StringPool.BLANK, _TEST_DESTINATION_NAME, new Message(),
+			StorageType.MEMORY);
+
+		SchedulerResponse schedulerResponse =
+			_quartzSchedulerEngine.getScheduledJob(
+				_TEST_JOB_NAME_PREFIX + "memory", _MEMORY_TEST_GROUP_NAME,
+				StorageType.MEMORY);
+
+		JobKey jobKey = new JobKey(
+			schedulerResponse.getJobName(), schedulerResponse.getGroupName());
+
+		Scheduler scheduler = _quartzSchedulerEngine.getScheduler(
+			StorageType.MEMORY);
+
+		JobDetail jobDetail = scheduler.getJobDetail(jobKey);
+
+		JobDataMap jobDataMap = jobDetail.getJobDataMap();
+
+		Assert.assertEquals(
+			expected, (boolean)jobDataMap.get(SchedulerEngine.DISABLE));
+	}
+
 	private static final int _DEFAULT_INTERVAL = 10;
 
 	private static final int _DEFAULT_JOB_NUMBER = 3;
@@ -826,6 +927,12 @@ public class QuartzSchedulerEngineTest {
 	private static final String _TEST_JOB_NAME_PREFIX = "test.job.";
 
 	private static final String _TEST_PORTLET_ID = "testPortletId";
+
+	private static final String _TRIGGER_LISTENER_NAME =
+		"QUARTZ_TRIGGER_LISTENER";
+
+	private static final Date _YESTERDAY = new Date(
+		DateBuilder.newDate().build().getTime() - (24L * 60 * 60 * 1000));
 
 	private JSONFactory _jsonFactory;
 	private QuartzSchedulerEngine _quartzSchedulerEngine;
@@ -985,7 +1092,7 @@ public class QuartzSchedulerEngineTest {
 
 		@Override
 		public ListenerManager getListenerManager() {
-			return null;
+			return _listenerManager;
 		}
 
 		@Override
@@ -1241,6 +1348,8 @@ public class QuartzSchedulerEngineTest {
 		}
 
 		private final Map<JobKey, Tuple> _jobs = new HashMap<>();
+		private final ListenerManager _listenerManager =
+			new ListenerManagerImpl();
 		private boolean _ready;
 
 	}
