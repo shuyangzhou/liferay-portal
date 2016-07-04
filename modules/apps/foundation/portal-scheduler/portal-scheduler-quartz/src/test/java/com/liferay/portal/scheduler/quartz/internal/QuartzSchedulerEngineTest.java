@@ -926,8 +926,6 @@ public class QuartzSchedulerEngineTest {
 
 	private static final String _TEST_JOB_NAME_PREFIX = "test.job.";
 
-	private static final String _TEST_PORTLET_ID = "testPortletId";
-
 	private static final String _TRIGGER_LISTENER_NAME =
 		"QUARTZ_TRIGGER_LISTENER";
 
