@@ -40,6 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Raymond Augé
@@ -76,6 +77,10 @@ public class FriendlyURLMapperTrackerImpl implements FriendlyURLMapperTracker {
 
 	@Override
 	public FriendlyURLMapper getFriendlyURLMapper() {
+		if (_friendlyURLMapperCount.get() == 0) {
+			return null;
+		}
+
 		return _serviceTracker.getService();
 	}
 
@@ -150,6 +155,7 @@ public class FriendlyURLMapperTrackerImpl implements FriendlyURLMapperTracker {
 		_serviceRegistrations = new ConcurrentHashMap<>();
 	private final ServiceTracker<FriendlyURLMapper, FriendlyURLMapper>
 		_serviceTracker;
+	private final AtomicInteger _friendlyURLMapperCount = new AtomicInteger();
 
 	private class FriendlyURLMapperServiceTrackerCustomizer
 		implements
@@ -197,6 +203,8 @@ public class FriendlyURLMapperTrackerImpl implements FriendlyURLMapperTracker {
 				return null;
 			}
 
+			_friendlyURLMapperCount.incrementAndGet();
+
 			return friendlyURLMapper;
 		}
 
@@ -214,6 +222,8 @@ public class FriendlyURLMapperTrackerImpl implements FriendlyURLMapperTracker {
 			Registry registry = RegistryUtil.getRegistry();
 
 			registry.ungetService(serviceReference);
+
+			_friendlyURLMapperCount.decrementAndGet();
 		}
 
 		protected Router newFriendlyURLRouter(String xml) throws Exception {
