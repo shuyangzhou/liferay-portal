@@ -42,7 +42,7 @@ int defaultSpeed = 3000;
 		</aui:col>
 
 		<aui:col width="<%= 50 %>">
-			<aui:select inlineLabel="left" name="speed" onChange='<%= renderResponse.getNamespace() + "pause();" + renderResponse.getNamespace() + "speed = this[this.selectedIndex].value * 1000;" + renderResponse.getNamespace() + "play();" %>'>
+			<aui:select inlineLabel="left" name="speed" onChange='<%= renderResponse.getNamespace() + "changeSpeed(this[this.selectedIndex].value * 1000);" %>'>
 
 				<%
 				for (int i = 1; i <= 10; i++) {
@@ -101,6 +101,14 @@ int defaultSpeed = 3000;
 	var <portlet:namespace />imgArrayPos = 0;
 	var <portlet:namespace />speed = <%= defaultSpeed %>;
 	var <portlet:namespace />timeout = 0;
+
+	function <portlet:namespace />changeSpeed(speed) {
+		<portlet:namespace />pause();
+
+		<portlet:namespace />speed = speed;
+
+		<portlet:namespace />play();
+	}
 
 	function <portlet:namespace />pause() {
 		clearInterval(<portlet:namespace />timeout);

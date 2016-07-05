@@ -442,7 +442,15 @@
 		<var name="key_ddlRecordFieldData" value="${ddlRecordFieldData}" />
 		<var name="key_fieldFieldLabel" value="${fieldFieldLabel}" />
 
-		<execute function="AssertTextEquals" locator1="DDL#RECORD_TABLE_ENTRY" value1="${ddlRecordFieldData}" />
+		<if>
+			<equals arg1="${ddlRecordFieldData}" arg2="" />
+			<then>
+				<execute function="AssertElementPresent" locator1="DDL#RECORD_TABLE_ENTRY" />
+			</then>
+			<else>
+				<execute function="AssertTextEquals" locator1="DDL#RECORD_TABLE_ENTRY" value1="${ddlRecordFieldData}" />
+			</else>
+		</if>
 
 		<if>
 			<isset var="ddlRecordNestedFieldData" />
@@ -462,7 +470,7 @@
 		<execute function="AssertClick" locator1="MenuItem#VIEW" value1="View" />
 
 		<if>
-			<equals arg1="${fieldBlank}" arg2="true" />
+			<equals arg1="${ddlRecordFieldData}" arg2="" />
 			<then>
 				<execute function="AssertTextEquals#assertPartialText" locator1="DDLRecord#FIELD" value1="${fieldFieldLabel}${ddlRecordFieldData}" />
 			</then>
@@ -808,6 +816,13 @@
 		<execute function="AssertClick" locator1="PGDynamicdatalists#RECORD_MENULIST_VIEW" value1="View" />
 
 		<execute function="AssertTextEquals" locator1="DDLRecord#FIELD_2" value1="${fieldFieldLabel} ${ddlRecordFieldData}" />
+	</command>
+
+	<command name="viewStatusViaDDLDisplayTable">
+		<var name="key_fieldFieldLabel" value="${fieldFieldLabel}" />
+		<var name="key_workflowStatus" value="${workflowStatus}" />
+
+		<execute function="AssertTextEquals" locator1="DDL#RECORD_TABLE_WORKFLOW_STATUS" value1="${workflowStatus}" />
 	</command>
 
 	<command name="viewTextFieldRepeated">

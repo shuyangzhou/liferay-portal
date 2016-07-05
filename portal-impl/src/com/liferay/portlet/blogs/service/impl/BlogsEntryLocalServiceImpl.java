@@ -25,7 +25,6 @@ import com.liferay.blogs.kernel.exception.EntryTitleException;
 import com.liferay.blogs.kernel.model.BlogsEntry;
 import com.liferay.blogs.kernel.util.comparator.EntryDisplayDateComparator;
 import com.liferay.document.library.kernel.model.DLFolderConstants;
-import com.liferay.portal.kernel.comment.CommentManager;
 import com.liferay.portal.kernel.comment.CommentManagerUtil;
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -262,8 +261,6 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 		entry.setUserName(user.getFullName());
 		entry.setTitle(title);
 		entry.setSubtitle(subtitle);
-		entry.setUrlTitle(
-			getUniqueUrlTitle(entryId, title, null, serviceContext));
 		entry.setDescription(description);
 		entry.setContent(content);
 		entry.setDisplayDate(displayDate);
@@ -1083,8 +1080,6 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 
 		entry.setTitle(title);
 		entry.setSubtitle(subtitle);
-		entry.setUrlTitle(
-			getUniqueUrlTitle(entryId, title, oldUrlTitle, serviceContext));
 		entry.setDescription(description);
 		entry.setContent(content);
 		entry.setDisplayDate(displayDate);
@@ -1294,6 +1289,14 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 		entry.setStatusByUserName(user.getFullName());
 		entry.setStatusDate(serviceContext.getModifiedDate(now));
 
+		if ((status == WorkflowConstants.STATUS_APPROVED) &&
+			Validator.isNull(entry.getUrlTitle())) {
+
+			entry.setUrlTitle(
+				getUniqueUrlTitle(
+					entryId, entry.getGroupId(), entry.getTitle()));
+		}
+
 		blogsEntryPersistence.update(entry);
 
 		// Statistics
@@ -1341,7 +1344,7 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 
 			if (oldStatus == WorkflowConstants.STATUS_IN_TRASH) {
 				if (PropsValues.BLOGS_ENTRY_COMMENTS_ENABLED) {
-					commentManager.restoreDiscussionFromTrash(
+					CommentManagerUtil.restoreDiscussionFromTrash(
 						BlogsEntry.class.getName(), entryId);
 				}
 
@@ -1397,7 +1400,7 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 
 			if (status == WorkflowConstants.STATUS_IN_TRASH) {
 				if (PropsValues.BLOGS_ENTRY_COMMENTS_ENABLED) {
-					commentManager.moveDiscussionToTrash(
+					CommentManagerUtil.moveDiscussionToTrash(
 						BlogsEntry.class.getName(), entryId);
 				}
 
@@ -1408,7 +1411,7 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 			}
 			else if (oldStatus == WorkflowConstants.STATUS_IN_TRASH) {
 				if (PropsValues.BLOGS_ENTRY_COMMENTS_ENABLED) {
-					commentManager.restoreDiscussionFromTrash(
+					CommentManagerUtil.restoreDiscussionFromTrash(
 						BlogsEntry.class.getName(), entryId);
 				}
 
@@ -1464,7 +1467,7 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 		throws PortalException {
 
 		if (PropsValues.BLOGS_ENTRY_COMMENTS_ENABLED) {
-			commentManager.addDiscussion(
+			CommentManagerUtil.addDiscussion(
 				userId, groupId, BlogsEntry.class.getName(), entry.getEntryId(),
 				entry.getUserName());
 		}
@@ -1535,7 +1538,7 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 	}
 
 	protected void deleteDiscussion(BlogsEntry entry) throws PortalException {
-		commentManager.deleteDiscussion(
+		CommentManagerUtil.deleteDiscussion(
 			BlogsEntry.class.getName(), entry.getEntryId());
 	}
 
@@ -1628,39 +1631,6 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 
 				urlTitle = prefix + suffix;
 			}
-		}
-
-		return urlTitle;
-	}
-
-	protected String getUniqueUrlTitle(
-		long entryId, String title, String oldUrlTitle,
-		ServiceContext serviceContext) {
-
-		String serviceContextUrlTitle = ParamUtil.getString(
-			serviceContext, "urlTitle");
-
-		String urlTitle = null;
-
-		if (Validator.isNotNull(serviceContextUrlTitle)) {
-			urlTitle = BlogsUtil.getUrlTitle(entryId, serviceContextUrlTitle);
-		}
-		else if (Validator.isNotNull(oldUrlTitle)) {
-			return oldUrlTitle;
-		}
-		else {
-			urlTitle = getUniqueUrlTitle(
-				entryId, serviceContext.getScopeGroupId(), title);
-		}
-
-		BlogsEntry urlTitleEntry = blogsEntryPersistence.fetchByG_UT(
-			serviceContext.getScopeGroupId(), urlTitle);
-
-		if ((urlTitleEntry != null) &&
-			(urlTitleEntry.getEntryId() != entryId)) {
-
-			urlTitle = getUniqueUrlTitle(
-				entryId, serviceContext.getScopeGroupId(), urlTitle);
 		}
 
 		return urlTitle;
@@ -2085,9 +2055,6 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 				"Content has more than " + contentMaxLength + " characters");
 		}
 	}
-
-	protected CommentManager commentManager =
-		CommentManagerUtil.getCommentManager();
 
 	private static final String _COVER_IMAGE_FOLDER_NAME = "Cover Image";
 

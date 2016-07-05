@@ -52,9 +52,11 @@ import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.TempFileEntryUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portlet.blogs.constants.BlogsConstants;
+import com.liferay.portlet.blogs.util.BlogsUtil;
 import com.liferay.portlet.blogs.util.test.BlogsTestUtil;
 
 import java.io.InputStream;
@@ -114,7 +116,7 @@ public class BlogsEntryLocalServiceTest {
 
 		BlogsEntryLocalServiceUtil.addEntry(
 			_user.getUserId(), RandomTestUtil.randomString(), content,
-			new Date(), serviceContext);
+			serviceContext);
 	}
 
 	@Test(expected = EntryTitleException.class)
@@ -128,7 +130,7 @@ public class BlogsEntryLocalServiceTest {
 			ServiceContextTestUtil.getServiceContext(_group, _user.getUserId());
 
 		BlogsEntryLocalServiceUtil.addEntry(
-			_user.getUserId(), title, RandomTestUtil.randomString(), new Date(),
+			_user.getUserId(), title, RandomTestUtil.randomString(),
 			serviceContext);
 	}
 
@@ -140,7 +142,7 @@ public class BlogsEntryLocalServiceTest {
 
 		BlogsEntry blogsEntry = BlogsEntryLocalServiceUtil.addEntry(
 			_user.getUserId(), RandomTestUtil.randomString(),
-			RandomTestUtil.randomString(), new Date(), serviceContext);
+			RandomTestUtil.randomString(), serviceContext);
 
 		FileEntry tempFileEntry = getTempFileEntry(
 			_user.getUserId(), _group.getGroupId(), "image.jpg");
@@ -508,6 +510,111 @@ public class BlogsEntryLocalServiceTest {
 
 		BlogsEntryLocalServiceUtil.updateEntryResources(
 			entry, new String[] {ActionKeys.ADD_DISCUSSION}, null);
+	}
+
+	@Test
+	public void testURLTitleIsNotSavedWhenAddingDraftEntry() throws Exception {
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group, _user.getUserId());
+
+		serviceContext.setWorkflowAction(WorkflowConstants.STATUS_DRAFT);
+
+		BlogsEntry entry = BlogsEntryLocalServiceUtil.addEntry(
+			_user.getUserId(), RandomTestUtil.randomString(),
+			RandomTestUtil.randomString(), serviceContext);
+
+		Assert.assertTrue(Validator.isNull(entry.getUrlTitle()));
+	}
+
+	@Test
+	public void testURLTitleIsNotSavedWhenAddingDraftEntryWithWorkflow()
+		throws Exception {
+
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group, _user.getUserId());
+
+		BlogsEntry entry = BlogsTestUtil.addEntryWithWorkflow(
+			_user.getUserId(), RandomTestUtil.randomString(), false,
+			serviceContext);
+
+		Assert.assertTrue(Validator.isNull(entry.getUrlTitle()));
+	}
+
+	@Test
+	public void testURLTitleIsNotUpdatedWhenUpdatingEntryTitle()
+		throws Exception {
+
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group, _user.getUserId());
+
+		BlogsEntry entry = BlogsEntryLocalServiceUtil.addEntry(
+			_user.getUserId(), RandomTestUtil.randomString(),
+			RandomTestUtil.randomString(), serviceContext);
+
+		String urlTitle = entry.getUrlTitle();
+
+		entry = BlogsEntryLocalServiceUtil.updateEntry(
+			_user.getUserId(), entry.getEntryId(),
+			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+			serviceContext);
+
+		Assert.assertEquals(urlTitle, entry.getUrlTitle());
+	}
+
+	@Test
+	public void testURLTitleIsNotUpdatedWhenUpdatingEntryTitleToDraftEntry()
+		throws Exception {
+
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group, _user.getUserId());
+
+		BlogsEntry entry = BlogsEntryLocalServiceUtil.addEntry(
+			_user.getUserId(), RandomTestUtil.randomString(),
+			RandomTestUtil.randomString(), serviceContext);
+
+		String urlTitle = entry.getUrlTitle();
+
+		serviceContext.setWorkflowAction(WorkflowConstants.STATUS_DRAFT);
+
+		entry = BlogsEntryLocalServiceUtil.updateEntry(
+			_user.getUserId(), entry.getEntryId(),
+			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+			serviceContext);
+
+		Assert.assertEquals(urlTitle, entry.getUrlTitle());
+	}
+
+	@Test
+	public void testURLTitleIsSavedWhenAddingApprovedEntry() throws Exception {
+		String title = RandomTestUtil.randomString();
+
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group, _user.getUserId());
+
+		BlogsEntry entry = BlogsEntryLocalServiceUtil.addEntry(
+			_user.getUserId(), title, RandomTestUtil.randomString(),
+			serviceContext);
+
+		Assert.assertEquals(
+			BlogsUtil.getUrlTitle(entry.getEntryId(), title),
+			entry.getUrlTitle());
+	}
+
+	@Test
+	public void testURLTitleIsSavedWhenAddingApprovedEntryWithWorkflow()
+		throws Exception {
+
+		String title = RandomTestUtil.randomString();
+
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group, _user.getUserId());
+
+		BlogsEntry entry = BlogsTestUtil.addEntryWithWorkflow(
+			_user.getUserId(), title, true, serviceContext);
+
+		Assert.assertEquals(
+			BlogsUtil.getUrlTitle(entry.getEntryId(), title),
+			entry.getUrlTitle());
 	}
 
 	protected BlogsEntry addEntry(boolean statusInTrash) throws Exception {

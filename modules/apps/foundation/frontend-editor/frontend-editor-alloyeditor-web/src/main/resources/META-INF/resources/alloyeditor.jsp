@@ -356,7 +356,7 @@ if (showSource) {
 			var data = '';
 
 			if (alloyEditor && alloyEditor.instanceReady) {
-				data = A.Lang.String.escapeHTML(alloyEditor.getText());
+				data = alloyEditor.getText();
 			}
 			else {
 				data = getInitialContent();

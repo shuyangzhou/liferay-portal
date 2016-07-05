@@ -14,10 +14,16 @@
 
 package com.liferay.document.library.web.internal.portlet.action;
 
+import com.liferay.document.library.kernel.model.DLFolder;
+import com.liferay.document.library.kernel.model.DLFolderConstants;
+import com.liferay.document.library.kernel.service.DLAppService;
+import com.liferay.document.library.kernel.service.DLFolderLocalService;
 import com.liferay.document.library.web.internal.constants.DLPortletKeys;
 import com.liferay.document.library.web.internal.constants.DLWebKeys;
 import com.liferay.document.library.web.internal.portlet.toolbar.contributor.DLPortletToolbarContributor;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
+import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.util.ParamUtil;
 
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
@@ -49,12 +55,59 @@ public class DLViewMVCRenderCommand extends GetFolderMVCRenderCommand {
 			DLWebKeys.DOCUMENT_LIBRARY_PORTLET_TOOLBAR_CONTRIBUTOR,
 			_dlPortletToolbarContributor);
 
+		try {
+			pingFolderRepository(renderRequest);
+		}
+		catch (Exception e) {
+			SessionErrors.add(renderRequest, e.getClass(), e);
+
+			return getPath();
+		}
+
 		return super.render(renderRequest, renderResponse);
+	}
+
+	@Reference(unbind = "-")
+	public void setDLAppService(DLAppService dlAppService) {
+		_dlAppService = dlAppService;
+	}
+
+	@Reference(unbind = "-")
+	public void setDLFolderLocalService(
+		DLFolderLocalService dlFolderLocalService) {
+
+		_dlFolderLocalService = dlFolderLocalService;
 	}
 
 	@Override
 	protected String getPath() {
 		return "/document_library/view.jsp";
+	}
+
+	protected void pingFolderRepository(RenderRequest renderRequest)
+		throws Exception {
+
+		String mvcRenderCommandName = ParamUtil.getString(
+			renderRequest, "mvcRenderCommandName");
+
+		if (!mvcRenderCommandName.equals("/document_library/view_folder")) {
+			return;
+		}
+
+		long folderId = ParamUtil.getLong(renderRequest, "folderId");
+
+		if (folderId == DLFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
+			return;
+		}
+
+		DLFolder dlFolder = _dlFolderLocalService.fetchDLFolder(folderId);
+
+		if ((dlFolder == null) || !dlFolder.isMountPoint()) {
+			return;
+		}
+
+		_dlAppService.getFileEntriesCount(
+			dlFolder.getRepositoryId(), dlFolder.getFolderId());
 	}
 
 	@Reference(unbind = "-")
@@ -64,6 +117,8 @@ public class DLViewMVCRenderCommand extends GetFolderMVCRenderCommand {
 		_dlPortletToolbarContributor = dlPortletToolbarContributor;
 	}
 
+	private DLAppService _dlAppService;
+	private DLFolderLocalService _dlFolderLocalService;
 	private DLPortletToolbarContributor _dlPortletToolbarContributor;
 
 }

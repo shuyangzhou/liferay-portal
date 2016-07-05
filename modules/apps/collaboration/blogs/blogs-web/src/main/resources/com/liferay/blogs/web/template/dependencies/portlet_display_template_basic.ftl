@@ -4,7 +4,12 @@
 
 		${viewURL.setParameter("mvcRenderCommandName", "/blogs/view_entry")}
 		${viewURL.setParameter("redirect", currentURL)}
-		${viewURL.setParameter("urlTitle", entry.getUrlTitle())}
+
+		<#if validator.isNotNull(entry.getUrlTitle())>
+			${viewURL.setParameter("urlTitle", entry.getUrlTitle())}
+		<#else>
+			${viewURL.setParameter("entryId", entry.getEntryId()?string)}
+		</#if>
 
 		<div class="entry-content">
 			<div class="entry-title">

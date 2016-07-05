@@ -130,7 +130,6 @@ String keywords = ParamUtil.getString(request, "keywords");
 				escapedModel="<%= true %>"
 				keyProperty="entryId"
 				modelVar="entry"
-				rowIdProperty="urlTitle"
 			>
 				<liferay-portlet:renderURL varImpl="rowURL">
 					<portlet:param name="mvcRenderCommandName" value="/blogs/edit_entry" />

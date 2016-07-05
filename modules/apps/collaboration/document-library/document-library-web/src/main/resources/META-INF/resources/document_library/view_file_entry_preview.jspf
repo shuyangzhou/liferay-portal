@@ -24,32 +24,32 @@
 	String[] previewFileURLs = null;
 	String videoThumbnailURL = null;
 
-	String previewQueryString = null;
+	if (hasAudio || hasImages || hasPDFImages || hasVideo) {
+		String previewQueryString = null;
 
-	if (hasAudio) {
-		previewQueryString = "&audioPreview=1";
-	}
-	else if (hasImages) {
-		previewQueryString = "&imagePreview=1";
-	}
-	else if (hasPDFImages) {
-		previewFileCount = PDFProcessorUtil.getPreviewFileCount(fileVersion);
+		if (hasAudio) {
+			previewQueryString = "&audioPreview=1";
+		}
+		else if (hasImages) {
+			previewQueryString = "&imagePreview=1";
+		}
+		else if (hasPDFImages) {
+			previewFileCount = PDFProcessorUtil.getPreviewFileCount(fileVersion);
 
-		previewQueryString = "&previewFileIndex=";
+			previewQueryString = "&previewFileIndex=";
 
-		previewFileURL = DLUtil.getPreviewURL(fileEntry, fileVersion, themeDisplay, previewQueryString);
-	}
-	else if (hasVideo) {
-		previewQueryString = "&videoPreview=1";
+			previewFileURL = DLUtil.getPreviewURL(fileEntry, fileVersion, themeDisplay, previewQueryString);
+		}
+		else if (hasVideo) {
+			previewQueryString = "&videoPreview=1";
 
-		videoThumbnailURL = DLUtil.getPreviewURL(fileEntry, fileVersion, themeDisplay, "&videoThumbnail=1");
-	}
+			videoThumbnailURL = DLUtil.getPreviewURL(fileEntry, fileVersion, themeDisplay, "&videoThumbnail=1");
+		}
 
-	if (status != WorkflowConstants.STATUS_ANY) {
-		previewQueryString = "&status=" + status;
-	}
+		if (status != WorkflowConstants.STATUS_ANY) {
+			previewQueryString += "&status=" + status;
+		}
 
-	if (Validator.isNotNull(previewQueryString)) {
 		if (hasAudio) {
 			previewFileURLs = new String[PropsValues.DL_FILE_ENTRY_PREVIEW_AUDIO_CONTAINERS.length];
 

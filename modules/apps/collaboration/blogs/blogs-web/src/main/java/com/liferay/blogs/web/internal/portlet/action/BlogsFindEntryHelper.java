@@ -18,6 +18,7 @@ import com.liferay.blogs.kernel.model.BlogsEntry;
 import com.liferay.blogs.kernel.service.BlogsEntryLocalService;
 import com.liferay.blogs.web.constants.BlogsPortletKeys;
 import com.liferay.portal.kernel.portlet.PortletLayoutFinder;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.struts.BaseFindActionHelper;
 import com.liferay.portal.struts.FindActionHelper;
 
@@ -64,7 +65,13 @@ public class BlogsFindEntryHelper extends BaseFindActionHelper {
 
 		BlogsEntry entry = _blogsEntryLocalService.getEntry(primaryKey);
 
-		portletURL.setParameter("urlTitle", entry.getUrlTitle());
+		if (Validator.isNotNull(entry.getUrlTitle())) {
+			portletURL.setParameter("urlTitle", entry.getUrlTitle());
+		}
+		else {
+			portletURL.setParameter(
+				"entryId", String.valueOf(entry.getEntryId()));
+		}
 	}
 
 	@Override
