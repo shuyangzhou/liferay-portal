@@ -111,7 +111,7 @@ public class SyncWatchEvent extends BaseModel {
 	@DatabaseField(useGetSet = true)
 	protected String eventType;
 
-	@DatabaseField(useGetSet = true, width = 16777216)
+	@DatabaseField(index = true, useGetSet = true, width = 16777216)
 	protected String filePathName;
 
 	@DatabaseField(useGetSet = true)

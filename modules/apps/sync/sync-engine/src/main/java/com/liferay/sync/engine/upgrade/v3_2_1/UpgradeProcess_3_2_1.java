@@ -12,24 +12,26 @@
  * details.
  */
 
-package com.liferay.portal.target.platform.indexer;
+package com.liferay.sync.engine.upgrade.v3_2_1;
 
-import com.liferay.portal.target.platform.indexer.internal.LPKGIndexer;
-
-import java.io.File;
-
-import java.util.Set;
-
-import org.osgi.service.component.annotations.Component;
+import com.liferay.sync.engine.upgrade.BaseUpgradeProcess;
 
 /**
- * @author Raymond Augé
+ * @author Dennis Ju
+ * @author Shinn Lok
  */
-@Component(immediate = true, service = IndexerFactory.class)
-public class IndexerFactory {
+public class UpgradeProcess_3_2_1 extends BaseUpgradeProcess {
 
-	public Indexer createLPKGIndexer(File lpkgFile, Set<String> blackListSet) {
-		return new LPKGIndexer(lpkgFile, blackListSet);
+	@Override
+	public int getThreshold() {
+		return 3201;
+	}
+
+	@Override
+	public void upgradeSchema() throws Exception {
+		runSQL(
+			"CREATE INDEX syncwatchevent_filepathname_idx ON " +
+				"SyncWatchEvent(filePathName);");
 	}
 
 }

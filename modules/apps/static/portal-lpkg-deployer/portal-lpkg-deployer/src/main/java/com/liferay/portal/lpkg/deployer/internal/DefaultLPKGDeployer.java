@@ -49,11 +49,14 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -230,9 +233,13 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 			URLStreamHandlerService.class.getName(),
 			new LPKGURLStreamHandlerService(_urls), properties);
 
+		Map<String, Set<String>> lpkgItemBlacklistMap = _parseLPKGItemBlacklist(
+			bundleContext);
+
 		_lpkgBundleTracker = new BundleTracker<>(
 			bundleContext, ~Bundle.UNINSTALLED,
-			new LPKGBundleTrackerCustomizer(bundleContext, _urls));
+			new LPKGBundleTrackerCustomizer(
+				bundleContext, _urls, lpkgItemBlacklistMap));
 
 		_lpkgBundleTracker.open();
 
@@ -271,6 +278,7 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 			});
 
 		_lpkgIndexValidator.setLPKGDeployer(this);
+		_lpkgIndexValidator.setLPKGItemBlackListMap(lpkgItemBlacklistMap);
 
 		boolean updateIntegrityProperties = _lpkgIndexValidator.validate(
 			lpkgFiles);
@@ -318,6 +326,29 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 		finally {
 			LPKGIndexValidatorThreadLocal.setEnabled(enabled);
 		}
+	}
+
+	private Map<String, Set<String>> _parseLPKGItemBlacklist(
+		BundleContext bundleContext) {
+
+		Stream<String> entryStream = Stream.of(
+			StringUtil.split(bundleContext.getProperty("lpkg.item.blacklist")));
+
+		Stream<String[]> pairStream = entryStream.map(
+			entry -> StringUtil.split(entry, ':'));
+
+		Stream<String[]> flattenPairStream = pairStream.flatMap(
+			pair -> {
+				Stream<String> itemStream = Stream.of(
+					StringUtil.split(pair[1], ';'));
+
+				return itemStream.map(item -> new String[] {pair[0], item});
+			});
+
+		return flattenPairStream.collect(
+			Collectors.groupingBy(
+				pair -> pair[0],
+				Collectors.mapping(pair -> pair[1], Collectors.toSet())));
 	}
 
 	/**

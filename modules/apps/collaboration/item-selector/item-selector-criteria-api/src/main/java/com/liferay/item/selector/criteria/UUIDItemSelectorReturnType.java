@@ -17,6 +17,9 @@ package com.liferay.item.selector.criteria;
 import com.liferay.item.selector.ItemSelectorReturnType;
 
 /**
+ * This return type should return the Universally Unique Identifier (UUID) of
+ * the entity as a string.
+ *
  * @author Sergio González
  */
 public class UUIDItemSelectorReturnType implements ItemSelectorReturnType {

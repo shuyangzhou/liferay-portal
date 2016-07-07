@@ -720,7 +720,7 @@
 
 		<execute function="AssertClick" locator1="MenuItem#MOVE" value1="Move" />
 
-		<execute function="AssertTextEquals" locator1="Portlet#H3_HEADER" value1="${kbArticleTitle}" />
+		<execute function="AssertTextEquals" locator1="ControlMenu#HEADER_TITLE" value1="${kbArticleTitle}" />
 		<execute function="AssertTextEquals" locator1="KnowledgeBase#MOVE_CURRENT_PARENT_TITLE_LABEL" value1="Current Parent" />
 		<execute function="AssertTextEquals" locator1="KnowledgeBase#MOVE_CURRENT_PARENT_TITLE_FIELD" value1="${kbArticleCurrentParent}" />
 		<execute function="AssertTextEquals" locator1="KnowledgeBase#MOVE_CURRENT_PARENT_PRIORITY_LABEL" value1="Priority" />
@@ -735,7 +735,7 @@
 
 		<execute function="AssertClick" locator1="KnowledgeBase#KB_TOOLS" value1="Move" />
 
-		<execute function="AssertTextEquals" locator1="Portlet#H3_HEADER" value1="${kbArticleTitle}" />
+		<execute function="AssertTextEquals" locator1="ControlMenu#HEADER_TITLE" value1="${kbArticleTitle}" />
 		<execute function="AssertTextEquals" locator1="PGKnowledgebasedisplayMoveArticle#CURRENT_PARENT_TITLE_LABEL" value1="Current Parent" />
 		<execute function="AssertTextEquals" locator1="KnowledgeBase#MOVE_CURRENT_PARENT_TITLE_FIELD" value1="(None)" />
 		<execute function="AssertTextEquals" locator1="KnowledgeBase#MOVE_CURRENT_PARENT_PRIORITY_LABEL" value1="Priority" />
@@ -1023,8 +1023,6 @@
 	<command name="viewArticleHistoryPG">
 		<execute function="AssertClick" locator1="KnowledgeBaseArticle#HISTORY" value1="History" />
 
-		<execute function="AssertTextEquals" locator1="KnowledgeBaseArticle#HISTORY_TITLE" value1="${kbArticleTitle}" />
-
 		<if>
 			<isset var="kbArticleTitleRemovedDiff" />
 			<then>
@@ -1039,11 +1037,11 @@
 			</then>
 		</if>
 
-		<execute function="AssertTextEquals" locator1="KnowledgeBaseArticle#HISTORY_CONTENT" value1="${kbArticleContent}" />
-
 		<if>
 			<isset var="kbArticleContentRemovedDiff" />
 			<then>
+				<var name="key_kbArticleContentRemovedDiff" value="${kbArticleContentRemovedDiff}" />
+
 				<execute function="AssertTextEquals" locator1="KnowledgeBaseArticle#HISTORY_CONTENT_REMOVED_DIFF" value1="${kbArticleContentRemovedDiff}" />
 			</then>
 		</if>
