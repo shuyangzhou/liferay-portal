@@ -49,11 +49,14 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -230,9 +233,13 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 			URLStreamHandlerService.class.getName(),
 			new LPKGURLStreamHandlerService(_urls), properties);
 
+		Map<String, Set<String>> lpkgItemBlacklistMap = _parseLPKGItemBlacklist(
+			bundleContext);
+
 		_lpkgBundleTracker = new BundleTracker<>(
 			bundleContext, ~Bundle.UNINSTALLED,
-			new LPKGBundleTrackerCustomizer(bundleContext, _urls));
+			new LPKGBundleTrackerCustomizer(
+				bundleContext, _urls, lpkgItemBlacklistMap));
 
 		_lpkgBundleTracker.open();
 
@@ -271,6 +278,7 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 			});
 
 		_lpkgIndexValidator.setLPKGDeployer(this);
+		_lpkgIndexValidator.setLPKGItemBlackListMap(lpkgItemBlacklistMap);
 
 		boolean updateIntegrityProperties = _lpkgIndexValidator.validate(
 			lpkgFiles);
@@ -318,6 +326,23 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 		finally {
 			LPKGIndexValidatorThreadLocal.setEnabled(enabled);
 		}
+	}
+
+	private Map<String, Set<String>> _parseLPKGItemBlacklist(
+		BundleContext bundleContext) {
+
+		return Stream.of(
+				StringUtil.split(
+					bundleContext.getProperty("lpkg.item.blacklist")))
+			.map(entry -> StringUtil.split(entry, ':'))
+			.flatMap(
+				pair ->
+					Stream.of(StringUtil.split(pair[1], ';'))
+						.map(item -> new String[] {pair[0], item}))
+			.collect(
+				Collectors.groupingBy(
+					pair -> pair[0],
+					Collectors.mapping(pair -> pair[1], Collectors.toSet())));
 	}
 
 	/**
