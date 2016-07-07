@@ -25,28 +25,31 @@ import com.liferay.portal.kernel.util.ProxyFactory;
 public class FinderCacheUtil {
 
 	public static void clearCache() {
-		_finderCache.clearCache();
+		_getFinderCache().clearCache();
 	}
 
 	public static void clearCache(String className) {
-		_finderCache.clearCache(className);
+		_getFinderCache().clearCache(className);
 	}
 
 	public static void clearLocalCache() {
-		_finderCache.clearLocalCache();
+		_getFinderCache().clearLocalCache();
 	}
 
+	/**
+	 * @deprecated As of 7.1.0, replaced by {@link #_getFinderCache()}
+	 */
+	@Deprecated
 	public static FinderCache getFinderCache() {
-		PortalRuntimePermission.checkGetBeanProperty(FinderCacheUtil.class);
-
-		return _finderCache;
+		return _getFinderCache();
 	}
 
 	public static Object getResult(
 		FinderPath finderPath, Object[] args,
 		BasePersistenceImpl<? extends BaseModel<?>> basePersistenceImpl) {
 
-		return _finderCache.getResult(finderPath, args, basePersistenceImpl);
+		return _getFinderCache().getResult(
+			finderPath, args, basePersistenceImpl);
 	}
 
 	public static void invalidate() {
@@ -56,21 +59,27 @@ public class FinderCacheUtil {
 	public static void putResult(
 		FinderPath finderPath, Object[] args, Object result) {
 
-		_finderCache.putResult(finderPath, args, result);
+		_getFinderCache().putResult(finderPath, args, result);
 	}
 
 	public static void putResult(
 		FinderPath finderPath, Object[] args, Object result, boolean quiet) {
 
-		_finderCache.putResult(finderPath, args, result, quiet);
+		_getFinderCache().putResult(finderPath, args, result, quiet);
 	}
 
 	public static void removeCache(String className) {
-		_finderCache.removeCache(className);
+		_getFinderCache().removeCache(className);
 	}
 
 	public static void removeResult(FinderPath finderPath, Object[] args) {
-		_finderCache.removeResult(finderPath, args);
+		_getFinderCache().removeResult(finderPath, args);
+	}
+
+	private static FinderCache _getFinderCache() {
+		PortalRuntimePermission.checkGetBeanProperty(FinderCacheUtil.class);
+
+		return _finderCache;
 	}
 
 	private static volatile FinderCache _finderCache =

@@ -26,44 +26,47 @@ import java.io.Serializable;
 public class EntityCacheUtil {
 
 	public static void clearCache() {
-		_entityCache.clearCache();
+		_getEntityCache().clearCache();
 	}
 
 	public static void clearCache(Class<?> clazz) {
-		_entityCache.clearCache(clazz);
+		_getEntityCache().clearCache(clazz);
 	}
 
 	public static void clearLocalCache() {
-		_entityCache.clearLocalCache();
+		_getEntityCache().clearLocalCache();
 	}
 
+	/**
+	 * @deprecated As of 7.1.0, replaced by {@link #_getEntityCache()}
+	 */
+	@Deprecated
 	public static EntityCache getEntityCache() {
-		PortalRuntimePermission.checkGetBeanProperty(EntityCacheUtil.class);
-
-		return _entityCache;
+		return _getEntityCache();
 	}
 
 	public static PortalCache<Serializable, Serializable> getPortalCache(
 		Class<?> clazz) {
 
-		return _entityCache.getPortalCache(clazz);
+		return _getEntityCache().getPortalCache(clazz);
 	}
 
 	public static Serializable getResult(
 		boolean entityCacheEnabled, Class<?> clazz, Serializable primaryKey) {
 
-		return _entityCache.getResult(entityCacheEnabled, clazz, primaryKey);
+		return _getEntityCache().getResult(
+			entityCacheEnabled, clazz, primaryKey);
 	}
 
 	public static void invalidate() {
-		_entityCache.invalidate();
+		_getEntityCache().invalidate();
 	}
 
 	public static Serializable loadResult(
 		boolean entityCacheEnabled, Class<?> clazz, Serializable primaryKey,
 		SessionFactory sessionFactory) {
 
-		return _entityCache.loadResult(
+		return _getEntityCache().loadResult(
 			entityCacheEnabled, clazz, primaryKey, sessionFactory);
 	}
 
@@ -71,25 +74,32 @@ public class EntityCacheUtil {
 		boolean entityCacheEnabled, Class<?> clazz, Serializable primaryKey,
 		Serializable result) {
 
-		_entityCache.putResult(entityCacheEnabled, clazz, primaryKey, result);
+		_getEntityCache().putResult(
+			entityCacheEnabled, clazz, primaryKey, result);
 	}
 
 	public static void putResult(
 		boolean entityCacheEnabled, Class<?> clazz, Serializable primaryKey,
 		Serializable result, boolean quiet) {
 
-		_entityCache.putResult(
+		_getEntityCache().putResult(
 			entityCacheEnabled, clazz, primaryKey, result, quiet);
 	}
 
 	public static void removeCache(String className) {
-		_entityCache.removeCache(className);
+		_getEntityCache().removeCache(className);
 	}
 
 	public static void removeResult(
 		boolean entityCacheEnabled, Class<?> clazz, Serializable primaryKey) {
 
-		_entityCache.removeResult(entityCacheEnabled, clazz, primaryKey);
+		_getEntityCache().removeResult(entityCacheEnabled, clazz, primaryKey);
+	}
+
+	private static EntityCache _getEntityCache() {
+		PortalRuntimePermission.checkGetBeanProperty(EntityCacheUtil.class);
+
+		return _entityCache;
 	}
 
 	private static volatile EntityCache _entityCache =
