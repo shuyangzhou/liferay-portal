@@ -331,18 +331,24 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 	private Map<String, Set<String>> _parseLPKGItemBlacklist(
 		BundleContext bundleContext) {
 
-		return Stream.of(
-				StringUtil.split(
-					bundleContext.getProperty("lpkg.item.blacklist")))
-			.map(entry -> StringUtil.split(entry, ':'))
-			.flatMap(
-				pair ->
-					Stream.of(StringUtil.split(pair[1], ';'))
-						.map(item -> new String[] {pair[0], item}))
-			.collect(
-				Collectors.groupingBy(
-					pair -> pair[0],
-					Collectors.mapping(pair -> pair[1], Collectors.toSet())));
+		Stream<String> entryStream = Stream.of(
+			StringUtil.split(bundleContext.getProperty("lpkg.item.blacklist")));
+
+		Stream<String[]> pairStream = entryStream.map(
+			entry -> StringUtil.split(entry, ':'));
+
+		Stream<String[]> flattenPairStream = pairStream.flatMap(
+			pair -> {
+				Stream<String> itemStream = Stream.of(
+					StringUtil.split(pair[1], ';'));
+
+				return itemStream.map(item -> new String[] {pair[0], item});
+			});
+
+		return flattenPairStream.collect(
+			Collectors.groupingBy(
+				pair -> pair[0],
+				Collectors.mapping(pair -> pair[1], Collectors.toSet())));
 	}
 
 	/**
