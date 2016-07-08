@@ -14,7 +14,7 @@
 
 package com.liferay.invitation.invite.members.web.internal.portlet;
 
-import com.liferay.invitation.invite.members.constants.InviteMembersPortletKeys;
+import com.liferay.invitation.invite.members.internal.constants.InviteMembersPortletKeys;
 import com.liferay.invitation.invite.members.service.MemberRequestLocalService;
 import com.liferay.invitation.invite.members.util.InviteMembersUserHelper;
 import com.liferay.portal.kernel.json.JSONArray;

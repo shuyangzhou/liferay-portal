@@ -14,7 +14,7 @@
 
 package com.liferay.invitation.invite.members.internal.upgrade.v1_0_0;
 
-import com.liferay.invitation.invite.members.constants.InviteMembersPortletKeys;
+import com.liferay.invitation.invite.members.internal.constants.InviteMembersPortletKeys;
 import com.liferay.portal.kernel.upgrade.BaseUpgradePortletId;
 
 /**
