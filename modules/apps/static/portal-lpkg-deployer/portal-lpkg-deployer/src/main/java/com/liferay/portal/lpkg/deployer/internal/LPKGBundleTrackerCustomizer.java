@@ -44,6 +44,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
@@ -70,10 +71,12 @@ public class LPKGBundleTrackerCustomizer
 	implements BundleTrackerCustomizer<List<Bundle>> {
 
 	public LPKGBundleTrackerCustomizer(
-		BundleContext bundleContext, Map<String, URL> urls) {
+		BundleContext bundleContext, Map<String, URL> urls,
+		Map<String, Set<String>> lpkgItemBlacklistMap) {
 
 		_bundleContext = bundleContext;
 		_urls = urls;
+		_lpkgItemBlacklistMap = lpkgItemBlacklistMap;
 	}
 
 	@Override
@@ -102,6 +105,10 @@ public class LPKGBundleTrackerCustomizer
 				while (enumeration.hasMoreElements()) {
 					url = enumeration.nextElement();
 
+					if (_checkBlackList(symbolicName, url)) {
+						continue;
+					}
+
 					Bundle newBundle = _bundleContext.installBundle(
 						url.getPath(), url.openStream());
 
@@ -124,6 +131,10 @@ public class LPKGBundleTrackerCustomizer
 
 			while (enumeration.hasMoreElements()) {
 				url = enumeration.nextElement();
+
+				if (_checkBlackList(symbolicName, url)) {
+					continue;
+				}
 
 				// Install a wrapper bundle for this WAR bundle. The wrapper
 				// bundle defers the WAR bundle installation until the WAB
@@ -228,6 +239,30 @@ public class LPKGBundleTrackerCustomizer
 		}
 
 		return sb.toString();
+	}
+
+	private boolean _checkBlackList(String symbolicName, URL url)
+		throws BundleException {
+
+		Set<String> blacklistSet = _lpkgItemBlacklistMap.get(symbolicName);
+
+		if ((blacklistSet != null) && blacklistSet.contains(url.getPath())) {
+			Bundle blacklistBundle = _bundleContext.getBundle(url.getPath());
+
+			if (blacklistBundle != null) {
+				blacklistBundle.uninstall();
+			}
+
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					"Disabling black list item of " + symbolicName + ":" +
+						url.getPath());
+			}
+
+			return true;
+		}
+
+		return false;
 	}
 
 	private String _readServletContextName(URL url) throws IOException {
@@ -400,6 +435,7 @@ public class LPKGBundleTrackerCustomizer
 		LPKGBundleTrackerCustomizer.class);
 
 	private final BundleContext _bundleContext;
+	private final Map<String, Set<String>> _lpkgItemBlacklistMap;
 	private final Map<String, URL> _urls;
 
 }
