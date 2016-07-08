@@ -17,9 +17,7 @@ package com.liferay.portlet.trash.service.persistence.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
@@ -189,7 +187,7 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 		List<TrashVersion> list = null;
 
 		if (retrieveFromCache) {
-			list = (List<TrashVersion>)finderCache.getResult(finderPath,
+			list = (List<TrashVersion>)FinderCacheUtil.getResult(finderPath,
 					finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
@@ -255,10 +253,10 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				FinderCacheUtil.putResult(finderPath, finderArgs, list);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
 
 				throw processException(e);
 			}
@@ -548,7 +546,8 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 
 		Object[] finderArgs = new Object[] { entryId };
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = (Long)FinderCacheUtil.getResult(finderPath, finderArgs,
+				this);
 
 		if (count == null) {
 			StringBundler query = new StringBundler(2);
@@ -572,10 +571,10 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 
 				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				FinderCacheUtil.putResult(finderPath, finderArgs, count);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
 
 				throw processException(e);
 			}
@@ -702,7 +701,7 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 		List<TrashVersion> list = null;
 
 		if (retrieveFromCache) {
-			list = (List<TrashVersion>)finderCache.getResult(finderPath,
+			list = (List<TrashVersion>)FinderCacheUtil.getResult(finderPath,
 					finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
@@ -773,10 +772,10 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				FinderCacheUtil.putResult(finderPath, finderArgs, list);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
 
 				throw processException(e);
 			}
@@ -1084,7 +1083,8 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 
 		Object[] finderArgs = new Object[] { entryId, classNameId };
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = (Long)FinderCacheUtil.getResult(finderPath, finderArgs,
+				this);
 
 		if (count == null) {
 			StringBundler query = new StringBundler(3);
@@ -1112,10 +1112,10 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 
 				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				FinderCacheUtil.putResult(finderPath, finderArgs, count);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
 
 				throw processException(e);
 			}
@@ -1204,7 +1204,7 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 		Object result = null;
 
 		if (retrieveFromCache) {
-			result = finderCache.getResult(FINDER_PATH_FETCH_BY_C_C,
+			result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_C_C,
 					finderArgs, this);
 		}
 
@@ -1244,8 +1244,8 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 				List<TrashVersion> list = q.list();
 
 				if (list.isEmpty()) {
-					finderCache.putResult(FINDER_PATH_FETCH_BY_C_C, finderArgs,
-						list);
+					FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_C_C,
+						finderArgs, list);
 				}
 				else {
 					TrashVersion trashVersion = list.get(0);
@@ -1256,13 +1256,14 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 
 					if ((trashVersion.getClassNameId() != classNameId) ||
 							(trashVersion.getClassPK() != classPK)) {
-						finderCache.putResult(FINDER_PATH_FETCH_BY_C_C,
+						FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_C_C,
 							finderArgs, trashVersion);
 					}
 				}
 			}
 			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_FETCH_BY_C_C, finderArgs);
+				FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_C_C,
+					finderArgs);
 
 				throw processException(e);
 			}
@@ -1307,7 +1308,8 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 
 		Object[] finderArgs = new Object[] { classNameId, classPK };
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = (Long)FinderCacheUtil.getResult(finderPath, finderArgs,
+				this);
 
 		if (count == null) {
 			StringBundler query = new StringBundler(3);
@@ -1335,10 +1337,10 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 
 				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				FinderCacheUtil.putResult(finderPath, finderArgs, count);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
 
 				throw processException(e);
 			}
@@ -1364,10 +1366,10 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 	 */
 	@Override
 	public void cacheResult(TrashVersion trashVersion) {
-		entityCache.putResult(TrashVersionModelImpl.ENTITY_CACHE_ENABLED,
+		EntityCacheUtil.putResult(TrashVersionModelImpl.ENTITY_CACHE_ENABLED,
 			TrashVersionImpl.class, trashVersion.getPrimaryKey(), trashVersion);
 
-		finderCache.putResult(FINDER_PATH_FETCH_BY_C_C,
+		FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_C_C,
 			new Object[] {
 				trashVersion.getClassNameId(), trashVersion.getClassPK()
 			}, trashVersion);
@@ -1383,7 +1385,7 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 	@Override
 	public void cacheResult(List<TrashVersion> trashVersions) {
 		for (TrashVersion trashVersion : trashVersions) {
-			if (entityCache.getResult(
+			if (EntityCacheUtil.getResult(
 						TrashVersionModelImpl.ENTITY_CACHE_ENABLED,
 						TrashVersionImpl.class, trashVersion.getPrimaryKey()) == null) {
 				cacheResult(trashVersion);
@@ -1398,43 +1400,43 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 	 * Clears the cache for all trash versions.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache() {
-		entityCache.clearCache(TrashVersionImpl.class);
+		EntityCacheUtil.clearCache(TrashVersionImpl.class);
 
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
 	 * Clears the cache for the trash version.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(TrashVersion trashVersion) {
-		entityCache.removeResult(TrashVersionModelImpl.ENTITY_CACHE_ENABLED,
+		EntityCacheUtil.removeResult(TrashVersionModelImpl.ENTITY_CACHE_ENABLED,
 			TrashVersionImpl.class, trashVersion.getPrimaryKey());
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		clearUniqueFindersCache((TrashVersionModelImpl)trashVersion);
 	}
 
 	@Override
 	public void clearCache(List<TrashVersion> trashVersions) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (TrashVersion trashVersion : trashVersions) {
-			entityCache.removeResult(TrashVersionModelImpl.ENTITY_CACHE_ENABLED,
+			EntityCacheUtil.removeResult(TrashVersionModelImpl.ENTITY_CACHE_ENABLED,
 				TrashVersionImpl.class, trashVersion.getPrimaryKey());
 
 			clearUniqueFindersCache((TrashVersionModelImpl)trashVersion);
@@ -1449,9 +1451,9 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 					trashVersionModelImpl.getClassPK()
 				};
 
-			finderCache.putResult(FINDER_PATH_COUNT_BY_C_C, args,
+			FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_C_C, args,
 				Long.valueOf(1));
-			finderCache.putResult(FINDER_PATH_FETCH_BY_C_C, args,
+			FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_C_C, args,
 				trashVersionModelImpl);
 		}
 		else {
@@ -1462,9 +1464,9 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 						trashVersionModelImpl.getClassPK()
 					};
 
-				finderCache.putResult(FINDER_PATH_COUNT_BY_C_C, args,
+				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_C_C, args,
 					Long.valueOf(1));
-				finderCache.putResult(FINDER_PATH_FETCH_BY_C_C, args,
+				FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_C_C, args,
 					trashVersionModelImpl);
 			}
 		}
@@ -1477,8 +1479,8 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 				trashVersionModelImpl.getClassPK()
 			};
 
-		finderCache.removeResult(FINDER_PATH_COUNT_BY_C_C, args);
-		finderCache.removeResult(FINDER_PATH_FETCH_BY_C_C, args);
+		FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_C_C, args);
+		FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_C_C, args);
 
 		if ((trashVersionModelImpl.getColumnBitmask() &
 				FINDER_PATH_FETCH_BY_C_C.getColumnBitmask()) != 0) {
@@ -1487,8 +1489,8 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 					trashVersionModelImpl.getOriginalClassPK()
 				};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_C, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_C_C, args);
+			FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_C_C, args);
+			FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_C_C, args);
 		}
 	}
 
@@ -1623,10 +1625,10 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
 		if (isNew || !TrashVersionModelImpl.COLUMN_BITMASK_ENABLED) {
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
 
 		else {
@@ -1636,14 +1638,14 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 						trashVersionModelImpl.getOriginalEntryId()
 					};
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_ENTRYID, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ENTRYID,
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_ENTRYID, args);
+				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ENTRYID,
 					args);
 
 				args = new Object[] { trashVersionModelImpl.getEntryId() };
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_ENTRYID, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ENTRYID,
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_ENTRYID, args);
+				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ENTRYID,
 					args);
 			}
 
@@ -1654,8 +1656,8 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 						trashVersionModelImpl.getOriginalClassNameId()
 					};
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_E_C, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_E_C,
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_E_C, args);
+				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_E_C,
 					args);
 
 				args = new Object[] {
@@ -1663,13 +1665,13 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 						trashVersionModelImpl.getClassNameId()
 					};
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_E_C, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_E_C,
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_E_C, args);
+				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_E_C,
 					args);
 			}
 		}
 
-		entityCache.putResult(TrashVersionModelImpl.ENTITY_CACHE_ENABLED,
+		EntityCacheUtil.putResult(TrashVersionModelImpl.ENTITY_CACHE_ENABLED,
 			TrashVersionImpl.class, trashVersion.getPrimaryKey(), trashVersion,
 			false);
 
@@ -1747,7 +1749,7 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 	 */
 	@Override
 	public TrashVersion fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(TrashVersionModelImpl.ENTITY_CACHE_ENABLED,
+		Serializable serializable = EntityCacheUtil.getResult(TrashVersionModelImpl.ENTITY_CACHE_ENABLED,
 				TrashVersionImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
@@ -1769,12 +1771,12 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 					cacheResult(trashVersion);
 				}
 				else {
-					entityCache.putResult(TrashVersionModelImpl.ENTITY_CACHE_ENABLED,
+					EntityCacheUtil.putResult(TrashVersionModelImpl.ENTITY_CACHE_ENABLED,
 						TrashVersionImpl.class, primaryKey, nullModel);
 				}
 			}
 			catch (Exception e) {
-				entityCache.removeResult(TrashVersionModelImpl.ENTITY_CACHE_ENABLED,
+				EntityCacheUtil.removeResult(TrashVersionModelImpl.ENTITY_CACHE_ENABLED,
 					TrashVersionImpl.class, primaryKey);
 
 				throw processException(e);
@@ -1824,7 +1826,7 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(TrashVersionModelImpl.ENTITY_CACHE_ENABLED,
+			Serializable serializable = EntityCacheUtil.getResult(TrashVersionModelImpl.ENTITY_CACHE_ENABLED,
 					TrashVersionImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
@@ -1878,7 +1880,7 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(TrashVersionModelImpl.ENTITY_CACHE_ENABLED,
+				EntityCacheUtil.putResult(TrashVersionModelImpl.ENTITY_CACHE_ENABLED,
 					TrashVersionImpl.class, primaryKey, nullModel);
 			}
 		}
@@ -1971,7 +1973,7 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 		List<TrashVersion> list = null;
 
 		if (retrieveFromCache) {
-			list = (List<TrashVersion>)finderCache.getResult(finderPath,
+			list = (List<TrashVersion>)FinderCacheUtil.getResult(finderPath,
 					finderArgs, this);
 		}
 
@@ -2020,10 +2022,10 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				FinderCacheUtil.putResult(finderPath, finderArgs, list);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
 
 				throw processException(e);
 			}
@@ -2053,7 +2055,7 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
+		Long count = (Long)FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
 				FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
@@ -2066,11 +2068,11 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 
 				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
-					count);
+				FinderCacheUtil.putResult(FINDER_PATH_COUNT_ALL,
+					FINDER_ARGS_EMPTY, count);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_ALL,
 					FINDER_ARGS_EMPTY);
 
 				throw processException(e);
@@ -2095,16 +2097,14 @@ public class TrashVersionPersistenceImpl extends BasePersistenceImpl<TrashVersio
 	}
 
 	public void destroy() {
-		entityCache.removeCache(TrashVersionImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		EntityCacheUtil.removeCache(TrashVersionImpl.class.getName());
+		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_TRASHVERSION = "SELECT trashVersion FROM TrashVersion trashVersion";
 	private static final String _SQL_SELECT_TRASHVERSION_WHERE_PKS_IN = "SELECT trashVersion FROM TrashVersion trashVersion WHERE versionId IN (";
 	private static final String _SQL_SELECT_TRASHVERSION_WHERE = "SELECT trashVersion FROM TrashVersion trashVersion WHERE ";

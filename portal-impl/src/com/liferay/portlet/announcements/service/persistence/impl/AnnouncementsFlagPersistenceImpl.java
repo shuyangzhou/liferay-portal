@@ -21,9 +21,7 @@ import com.liferay.announcements.kernel.model.AnnouncementsFlag;
 import com.liferay.announcements.kernel.service.persistence.AnnouncementsFlagPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
@@ -196,7 +194,7 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 		List<AnnouncementsFlag> list = null;
 
 		if (retrieveFromCache) {
-			list = (List<AnnouncementsFlag>)finderCache.getResult(finderPath,
+			list = (List<AnnouncementsFlag>)FinderCacheUtil.getResult(finderPath,
 					finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
@@ -262,10 +260,10 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				FinderCacheUtil.putResult(finderPath, finderArgs, list);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
 
 				throw processException(e);
 			}
@@ -556,7 +554,8 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 
 		Object[] finderArgs = new Object[] { entryId };
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = (Long)FinderCacheUtil.getResult(finderPath, finderArgs,
+				this);
 
 		if (count == null) {
 			StringBundler query = new StringBundler(2);
@@ -580,10 +579,10 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 
 				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				FinderCacheUtil.putResult(finderPath, finderArgs, count);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
 
 				throw processException(e);
 			}
@@ -686,7 +685,7 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 		Object result = null;
 
 		if (retrieveFromCache) {
-			result = finderCache.getResult(FINDER_PATH_FETCH_BY_U_E_V,
+			result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_U_E_V,
 					finderArgs, this);
 		}
 
@@ -731,7 +730,7 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 				List<AnnouncementsFlag> list = q.list();
 
 				if (list.isEmpty()) {
-					finderCache.putResult(FINDER_PATH_FETCH_BY_U_E_V,
+					FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_U_E_V,
 						finderArgs, list);
 				}
 				else {
@@ -744,13 +743,14 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 					if ((announcementsFlag.getUserId() != userId) ||
 							(announcementsFlag.getEntryId() != entryId) ||
 							(announcementsFlag.getValue() != value)) {
-						finderCache.putResult(FINDER_PATH_FETCH_BY_U_E_V,
+						FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_U_E_V,
 							finderArgs, announcementsFlag);
 					}
 				}
 			}
 			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_FETCH_BY_U_E_V, finderArgs);
+				FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_U_E_V,
+					finderArgs);
 
 				throw processException(e);
 			}
@@ -797,7 +797,8 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 
 		Object[] finderArgs = new Object[] { userId, entryId, value };
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = (Long)FinderCacheUtil.getResult(finderPath, finderArgs,
+				this);
 
 		if (count == null) {
 			StringBundler query = new StringBundler(4);
@@ -829,10 +830,10 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 
 				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				FinderCacheUtil.putResult(finderPath, finderArgs, count);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
 
 				throw processException(e);
 			}
@@ -859,11 +860,11 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 	 */
 	@Override
 	public void cacheResult(AnnouncementsFlag announcementsFlag) {
-		entityCache.putResult(AnnouncementsFlagModelImpl.ENTITY_CACHE_ENABLED,
+		EntityCacheUtil.putResult(AnnouncementsFlagModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsFlagImpl.class, announcementsFlag.getPrimaryKey(),
 			announcementsFlag);
 
-		finderCache.putResult(FINDER_PATH_FETCH_BY_U_E_V,
+		FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_U_E_V,
 			new Object[] {
 				announcementsFlag.getUserId(), announcementsFlag.getEntryId(),
 				announcementsFlag.getValue()
@@ -880,7 +881,7 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 	@Override
 	public void cacheResult(List<AnnouncementsFlag> announcementsFlags) {
 		for (AnnouncementsFlag announcementsFlag : announcementsFlags) {
-			if (entityCache.getResult(
+			if (EntityCacheUtil.getResult(
 						AnnouncementsFlagModelImpl.ENTITY_CACHE_ENABLED,
 						AnnouncementsFlagImpl.class,
 						announcementsFlag.getPrimaryKey()) == null) {
@@ -896,43 +897,43 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 	 * Clears the cache for all announcements flags.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache() {
-		entityCache.clearCache(AnnouncementsFlagImpl.class);
+		EntityCacheUtil.clearCache(AnnouncementsFlagImpl.class);
 
-		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	/**
 	 * Clears the cache for the announcements flag.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The {@link com.liferay.portal.kernel.dao.orm.EntityCache} and {@link com.liferay.portal.kernel.dao.orm.FinderCache} are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(AnnouncementsFlag announcementsFlag) {
-		entityCache.removeResult(AnnouncementsFlagModelImpl.ENTITY_CACHE_ENABLED,
+		EntityCacheUtil.removeResult(AnnouncementsFlagModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsFlagImpl.class, announcementsFlag.getPrimaryKey());
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		clearUniqueFindersCache((AnnouncementsFlagModelImpl)announcementsFlag);
 	}
 
 	@Override
 	public void clearCache(List<AnnouncementsFlag> announcementsFlags) {
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (AnnouncementsFlag announcementsFlag : announcementsFlags) {
-			entityCache.removeResult(AnnouncementsFlagModelImpl.ENTITY_CACHE_ENABLED,
+			EntityCacheUtil.removeResult(AnnouncementsFlagModelImpl.ENTITY_CACHE_ENABLED,
 				AnnouncementsFlagImpl.class, announcementsFlag.getPrimaryKey());
 
 			clearUniqueFindersCache((AnnouncementsFlagModelImpl)announcementsFlag);
@@ -948,9 +949,9 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 					announcementsFlagModelImpl.getValue()
 				};
 
-			finderCache.putResult(FINDER_PATH_COUNT_BY_U_E_V, args,
+			FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_U_E_V, args,
 				Long.valueOf(1));
-			finderCache.putResult(FINDER_PATH_FETCH_BY_U_E_V, args,
+			FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_U_E_V, args,
 				announcementsFlagModelImpl);
 		}
 		else {
@@ -962,9 +963,9 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 						announcementsFlagModelImpl.getValue()
 					};
 
-				finderCache.putResult(FINDER_PATH_COUNT_BY_U_E_V, args,
+				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_U_E_V, args,
 					Long.valueOf(1));
-				finderCache.putResult(FINDER_PATH_FETCH_BY_U_E_V, args,
+				FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_U_E_V, args,
 					announcementsFlagModelImpl);
 			}
 		}
@@ -978,8 +979,8 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 				announcementsFlagModelImpl.getValue()
 			};
 
-		finderCache.removeResult(FINDER_PATH_COUNT_BY_U_E_V, args);
-		finderCache.removeResult(FINDER_PATH_FETCH_BY_U_E_V, args);
+		FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_U_E_V, args);
+		FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_U_E_V, args);
 
 		if ((announcementsFlagModelImpl.getColumnBitmask() &
 				FINDER_PATH_FETCH_BY_U_E_V.getColumnBitmask()) != 0) {
@@ -989,8 +990,8 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 					announcementsFlagModelImpl.getOriginalValue()
 				};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_U_E_V, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_U_E_V, args);
+			FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_U_E_V, args);
+			FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_U_E_V, args);
 		}
 	}
 
@@ -1125,10 +1126,10 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 			closeSession(session);
 		}
 
-		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
 		if (isNew || !AnnouncementsFlagModelImpl.COLUMN_BITMASK_ENABLED) {
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
 
 		else {
@@ -1138,19 +1139,19 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 						announcementsFlagModelImpl.getOriginalEntryId()
 					};
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_ENTRYID, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ENTRYID,
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_ENTRYID, args);
+				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ENTRYID,
 					args);
 
 				args = new Object[] { announcementsFlagModelImpl.getEntryId() };
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_ENTRYID, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ENTRYID,
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_ENTRYID, args);
+				FinderCacheUtil.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ENTRYID,
 					args);
 			}
 		}
 
-		entityCache.putResult(AnnouncementsFlagModelImpl.ENTITY_CACHE_ENABLED,
+		EntityCacheUtil.putResult(AnnouncementsFlagModelImpl.ENTITY_CACHE_ENABLED,
 			AnnouncementsFlagImpl.class, announcementsFlag.getPrimaryKey(),
 			announcementsFlag, false);
 
@@ -1228,7 +1229,7 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 	 */
 	@Override
 	public AnnouncementsFlag fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(AnnouncementsFlagModelImpl.ENTITY_CACHE_ENABLED,
+		Serializable serializable = EntityCacheUtil.getResult(AnnouncementsFlagModelImpl.ENTITY_CACHE_ENABLED,
 				AnnouncementsFlagImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
@@ -1250,12 +1251,12 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 					cacheResult(announcementsFlag);
 				}
 				else {
-					entityCache.putResult(AnnouncementsFlagModelImpl.ENTITY_CACHE_ENABLED,
+					EntityCacheUtil.putResult(AnnouncementsFlagModelImpl.ENTITY_CACHE_ENABLED,
 						AnnouncementsFlagImpl.class, primaryKey, nullModel);
 				}
 			}
 			catch (Exception e) {
-				entityCache.removeResult(AnnouncementsFlagModelImpl.ENTITY_CACHE_ENABLED,
+				EntityCacheUtil.removeResult(AnnouncementsFlagModelImpl.ENTITY_CACHE_ENABLED,
 					AnnouncementsFlagImpl.class, primaryKey);
 
 				throw processException(e);
@@ -1305,7 +1306,7 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(AnnouncementsFlagModelImpl.ENTITY_CACHE_ENABLED,
+			Serializable serializable = EntityCacheUtil.getResult(AnnouncementsFlagModelImpl.ENTITY_CACHE_ENABLED,
 					AnnouncementsFlagImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
@@ -1359,7 +1360,7 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(AnnouncementsFlagModelImpl.ENTITY_CACHE_ENABLED,
+				EntityCacheUtil.putResult(AnnouncementsFlagModelImpl.ENTITY_CACHE_ENABLED,
 					AnnouncementsFlagImpl.class, primaryKey, nullModel);
 			}
 		}
@@ -1452,7 +1453,7 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 		List<AnnouncementsFlag> list = null;
 
 		if (retrieveFromCache) {
-			list = (List<AnnouncementsFlag>)finderCache.getResult(finderPath,
+			list = (List<AnnouncementsFlag>)FinderCacheUtil.getResult(finderPath,
 					finderArgs, this);
 		}
 
@@ -1501,10 +1502,10 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				FinderCacheUtil.putResult(finderPath, finderArgs, list);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
 
 				throw processException(e);
 			}
@@ -1534,7 +1535,7 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
+		Long count = (Long)FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
 				FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
@@ -1547,11 +1548,11 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 
 				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
-					count);
+				FinderCacheUtil.putResult(FINDER_PATH_COUNT_ALL,
+					FINDER_ARGS_EMPTY, count);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_ALL,
 					FINDER_ARGS_EMPTY);
 
 				throw processException(e);
@@ -1576,16 +1577,14 @@ public class AnnouncementsFlagPersistenceImpl extends BasePersistenceImpl<Announ
 	}
 
 	public void destroy() {
-		entityCache.removeCache(AnnouncementsFlagImpl.class.getName());
-		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		EntityCacheUtil.removeCache(AnnouncementsFlagImpl.class.getName());
+		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_ANNOUNCEMENTSFLAG = "SELECT announcementsFlag FROM AnnouncementsFlag announcementsFlag";
 	private static final String _SQL_SELECT_ANNOUNCEMENTSFLAG_WHERE_PKS_IN = "SELECT announcementsFlag FROM AnnouncementsFlag announcementsFlag WHERE flagId IN (";
 	private static final String _SQL_SELECT_ANNOUNCEMENTSFLAG_WHERE = "SELECT announcementsFlag FROM AnnouncementsFlag announcementsFlag WHERE ";
