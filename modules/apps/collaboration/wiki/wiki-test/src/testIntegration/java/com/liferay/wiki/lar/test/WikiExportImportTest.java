@@ -39,7 +39,7 @@ import com.liferay.wiki.service.WikiNodeLocalServiceUtil;
 import com.liferay.wiki.service.WikiPageLocalServiceUtil;
 import com.liferay.wiki.service.WikiPageResourceLocalServiceUtil;
 import com.liferay.wiki.util.test.WikiTestUtil;
-import com.liferay.wiki.web.lar.WikiPortletDataHandler;
+import com.liferay.wiki.web.internal.exportimport.data.handler.WikiPortletDataHandler;
 
 import java.util.Date;
 import java.util.List;

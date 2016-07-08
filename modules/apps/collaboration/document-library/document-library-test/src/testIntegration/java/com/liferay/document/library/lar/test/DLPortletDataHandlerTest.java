@@ -25,7 +25,7 @@ import com.liferay.document.library.kernel.service.DLAppServiceUtil;
 import com.liferay.document.library.kernel.service.DLFileEntryTypeLocalServiceUtil;
 import com.liferay.document.library.kernel.service.DLFolderLocalServiceUtil;
 import com.liferay.document.library.kernel.service.DLTrashServiceUtil;
-import com.liferay.document.library.web.constants.DLPortletKeys;
+import com.liferay.document.library.web.internal.constants.DLPortletKeys;
 import com.liferay.document.library.web.lar.DLPortletDataHandler;
 import com.liferay.dynamic.data.mapping.kernel.DDMStructure;
 import com.liferay.exportimport.kernel.lar.ExportImportPathUtil;

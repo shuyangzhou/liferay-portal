@@ -15,7 +15,7 @@
 package com.liferay.frontend.image.editor.integration.document.library.portlet.configuration.icon;
 
 import com.liferay.document.library.kernel.service.DLAppService;
-import com.liferay.document.library.web.constants.DLPortletKeys;
+import com.liferay.document.library.web.internal.constants.DLPortletKeys;
 import com.liferay.frontend.image.editor.integration.document.library.constants.ImageEditorIntegrationDLWebKeys;
 import com.liferay.frontend.image.editor.integration.document.library.display.context.logic.ImageEditorDLDisplayContextHelper;
 import com.liferay.portal.kernel.language.LanguageUtil;
