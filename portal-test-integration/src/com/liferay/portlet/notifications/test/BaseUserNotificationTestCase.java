@@ -36,6 +36,7 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -163,6 +164,7 @@ public abstract class BaseUserNotificationTestCase {
 		Assert.assertEquals(0, userNotificationEventsJSONObjects.size());
 	}
 
+	@Ignore
 	@Test
 	public void testUpdateUserNotification() throws Exception {
 		BaseModel<?> baseModel = addBaseModel();
@@ -198,6 +200,7 @@ public abstract class BaseUserNotificationTestCase {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void testUpdateUserNotificationWhenEmailNotificationsDisabled()
 		throws Exception {
@@ -242,6 +245,7 @@ public abstract class BaseUserNotificationTestCase {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void testUpdateUserNotificationWhenNotificationsDisabled()
 		throws Exception {
