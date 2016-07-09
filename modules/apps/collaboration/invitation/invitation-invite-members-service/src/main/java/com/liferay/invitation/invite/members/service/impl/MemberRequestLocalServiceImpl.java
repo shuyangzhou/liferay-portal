@@ -16,9 +16,9 @@ package com.liferay.invitation.invite.members.service.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.invitation.invite.members.constants.InviteMembersConstants;
 import com.liferay.invitation.invite.members.exception.MemberRequestAlreadyUsedException;
 import com.liferay.invitation.invite.members.exception.MemberRequestInvalidUserException;
+import com.liferay.invitation.invite.members.internal.constants.InviteMembersConstants;
 import com.liferay.invitation.invite.members.model.MemberRequest;
 import com.liferay.invitation.invite.members.service.base.MemberRequestLocalServiceBaseImpl;
 import com.liferay.mail.kernel.model.MailMessage;

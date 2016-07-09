@@ -19,7 +19,7 @@ import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.mentions.constants.MentionsConstants;
 import com.liferay.mentions.util.MentionsNotifier;
 import com.liferay.mentions.util.MentionsUserFinder;
-import com.liferay.mentions.web.constants.MentionsPortletKeys;
+import com.liferay.mentions.web.internal.constants.MentionsPortletKeys;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;

@@ -40,7 +40,7 @@ import com.liferay.document.library.kernel.model.DLFileEntryTypeModel;
 import com.liferay.document.library.kernel.model.DLFileVersionModel;
 import com.liferay.document.library.kernel.model.DLFolder;
 import com.liferay.document.library.kernel.model.DLFolderModel;
-import com.liferay.document.library.web.constants.DLPortletKeys;
+import com.liferay.document.library.web.internal.constants.DLPortletKeys;
 import com.liferay.dynamic.data.lists.constants.DDLPortletKeys;
 import com.liferay.dynamic.data.lists.model.DDLRecordConstants;
 import com.liferay.dynamic.data.lists.model.DDLRecordModel;
