@@ -458,6 +458,7 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 
 						if (disabled) {
 							jobDataMap.put(SchedulerEngine.DISABLE, false);
+
 							return true;
 						}
 						else {
@@ -842,7 +843,7 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			boolean disabled = false;
 
 			if ((trigger.getNextFireTime() != null) &&
-				(trigger.getNextFireTime().getTime() + _EPSILON) <
+				(trigger.getNextFireTime().getTime() + _EPSILON_MILLISECONDS) <
 					System.currentTimeMillis()) {
 
 				disabled = true;
@@ -1059,7 +1060,7 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		scheduler.addJob(jobDetail, true);
 	}
 
-	private static final long _EPSILON = 10000;
+	private static final long _EPSILON_MILLISECONDS = 10000;
 
 	private static final String _TRIGGER_LISTENER_NAME =
 		"QUARTZ_TRIGGER_LISTENER";

@@ -844,10 +844,12 @@ public class QuartzSchedulerEngineTest {
 		Trigger trigger = _quartzTriggerFactory.createTrigger(
 			_TEST_JOB_NAME_PREFIX + "memory", _MEMORY_TEST_GROUP_NAME, input,
 			null, _DEFAULT_INTERVAL, TimeUnit.SECOND);
+
 		trigger = Mockito.spy(trigger);
 
 		org.quartz.Trigger quartzTrigger = Mockito.spy(
 			(org.quartz.Trigger)trigger.getWrappedTrigger());
+
 		Mockito.when(quartzTrigger.getNextFireTime()).thenReturn(input);
 
 		Mockito.when(trigger.getWrappedTrigger()).thenReturn(quartzTrigger);
@@ -880,10 +882,12 @@ public class QuartzSchedulerEngineTest {
 		Trigger trigger = _quartzTriggerFactory.createTrigger(
 			_TEST_JOB_NAME_PREFIX + "memory", _MEMORY_TEST_GROUP_NAME, input,
 			null, _DEFAULT_INTERVAL, TimeUnit.SECOND);
+
 		trigger = Mockito.spy(trigger);
 
 		org.quartz.Trigger quartzTrigger = Mockito.spy(
 			(org.quartz.Trigger)trigger.getWrappedTrigger());
+
 		Mockito.when(quartzTrigger.getNextFireTime()).thenReturn(input);
 
 		Mockito.when(trigger.getWrappedTrigger()).thenReturn(quartzTrigger);
@@ -930,7 +934,7 @@ public class QuartzSchedulerEngineTest {
 		"QUARTZ_TRIGGER_LISTENER";
 
 	private static final Date _YESTERDAY = new Date(
-		DateBuilder.newDate().build().getTime() - (24L * 60 * 60 * 1000));
+		System.currentTimeMillis() - (24L * 60 * 60 * 1000));
 
 	private JSONFactory _jsonFactory;
 	private QuartzSchedulerEngine _quartzSchedulerEngine;
