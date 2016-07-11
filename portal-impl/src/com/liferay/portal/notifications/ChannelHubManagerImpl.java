@@ -103,6 +103,8 @@ public class ChannelHubManagerImpl implements ChannelHubManager {
 				"Channel already exists with company id " + companyId);
 		}
 
+		_portalReady = true;
+
 		return channelHub;
 	}
 
@@ -132,13 +134,19 @@ public class ChannelHubManagerImpl implements ChannelHubManager {
 	public void destroyChannel(long companyId, long userId)
 		throws ChannelException {
 
+		if (!ClusterInvokeThreadLocal.isEnabled()) {
+			if (_portalReady) {
+				ChannelHub channelHub = getChannelHub(companyId);
+
+				channelHub.destroyChannel(userId);
+			}
+
+			return;
+		}
+
 		ChannelHub channelHub = getChannelHub(companyId);
 
 		channelHub.destroyChannel(userId);
-
-		if (!ClusterInvokeThreadLocal.isEnabled()) {
-			return;
-		}
 
 		MethodHandler methodHandler = new MethodHandler(
 			_destroyChannelMethodKey, companyId, userId);
@@ -162,6 +170,8 @@ public class ChannelHubManagerImpl implements ChannelHubManager {
 		if (channelHub != null) {
 			channelHub.destroy();
 		}
+
+		_portalReady = false;
 	}
 
 	@Override
@@ -333,13 +343,19 @@ public class ChannelHubManagerImpl implements ChannelHubManager {
 			long companyId, long userId, NotificationEvent notificationEvent)
 		throws ChannelException {
 
+		if (!ClusterInvokeThreadLocal.isEnabled()) {
+			if (_portalReady) {
+				ChannelHub channelHub = getChannelHub(companyId);
+
+				channelHub.sendNotificationEvent(userId, notificationEvent);
+			}
+
+			return;
+		}
+
 		ChannelHub channelHub = getChannelHub(companyId);
 
 		channelHub.sendNotificationEvent(userId, notificationEvent);
-
-		if (!ClusterInvokeThreadLocal.isEnabled()) {
-			return;
-		}
 
 		MethodHandler methodHandler = new MethodHandler(
 			_storeNotificationEventMethodKey, companyId, userId,
@@ -404,5 +420,6 @@ public class ChannelHubManagerImpl implements ChannelHubManager {
 
 	private final ConcurrentMap<Long, ChannelHub> _channelHubs =
 		new ConcurrentHashMap<>();
+	private volatile boolean _portalReady;
 
 }
