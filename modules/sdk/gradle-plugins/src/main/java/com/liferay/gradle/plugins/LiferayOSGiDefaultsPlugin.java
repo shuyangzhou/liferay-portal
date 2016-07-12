@@ -928,10 +928,16 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 						return content;
 					}
 
+					String configuration =
+						ProvidedBasePlugin.getPROVIDED_CONFIGURATION_NAME() +
+							" ";
+
 					return content.replaceAll(
-						Pattern.quote(getProjectDependency(project)),
+						Pattern.quote(
+							configuration + getProjectDependency(project)),
 						Matcher.quoteReplacement(
-							getModuleDependency(project, true)));
+							configuration +
+								getModuleDependency(project, true)));
 				}
 
 			});
@@ -1944,7 +1950,9 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 		}
 
 		args.put("dir", portalRootDir);
-		args.put("include", "**/*.gradle");
+		args.put(
+			"includes",
+			Arrays.asList("**/*.gradle", "**/sdk/*/README.markdown"));
 
 		updateFileVersionsTask.match(regex, project.fileTree(args));
 	}
