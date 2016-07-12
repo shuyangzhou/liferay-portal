@@ -26,7 +26,9 @@
 		<liferay-ui:search-container-column-text
 			colspan="<%= 2 %>"
 		>
-			<h5><%= user2.getFullName() %></h5>
+			<h5>
+				<aui:a href="<%= String.valueOf(rowURL) %>"><%= user2.getFullName() %></aui:a>
+			</h5>
 
 			<h6 class="text-default">
 				<span><%= user2.getScreenName() %></span>
@@ -53,6 +55,7 @@
 				rowChecker="<%= rowChecker %>"
 				subtitle="<%= user2.getScreenName() %>"
 				title="<%= user2.getFullName() %>"
+				url="<%= String.valueOf(rowURL) %>"
 				userId="<%= user2.getUserId() %>"
 			/>
 		</liferay-ui:search-container-column-text>
