@@ -96,8 +96,9 @@ AUI.add(
 							submitForm(form);
 						}
 						else {
-							var errorMessageContainer = instance.byId('errorMessageContainer');
 							var errorMessage = responseData.errorMessage;
+
+							var errorMessageContainer = instance.byId('errorMessageContainer');
 
 							if (errorMessage) {
 								errorMessageContainer.html(Liferay.Language.get(responseData.errorMessage));
@@ -107,8 +108,8 @@ AUI.add(
 							else {
 								errorMessageContainer.hide();
 
-								var newName = instance.byId('newName');
 								var messageContainer = instance.byId('messageContainer');
+								var newName = instance.byId('newName');
 
 								messageContainer.html(Lang.sub(Liferay.Language.get('an-entry-with-name-x-already-exists'), [newName.val()]));
 							}
@@ -182,8 +183,8 @@ AUI.add(
 							closeButton.on('click', instance._popup.hide, instance._popup);
 						}
 
-						var rename = instance.byId('rename');
 						var newName = instance.byId('newName');
+						var rename = instance.byId('rename');
 
 						rename.on('click', A.fn('focusFormField', Liferay.Util, newName));
 

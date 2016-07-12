@@ -11,6 +11,7 @@ AUI.add(
 			var instance = this;
 
 			var portlets = column.all(Layout.options.portletBoundary);
+
 			var lastIndex = portlets.size() - 1;
 
 			return portlets.item(lastIndex);
@@ -46,6 +47,7 @@ AUI.add(
 						var instance = this;
 
 						var portalLayout = event.currentTarget;
+
 						var activeDrop = portalLayout.lastAlignDrop || portalLayout.activeDrop;
 
 						if (activeDrop) {
@@ -114,6 +116,7 @@ AUI.add(
 								},
 								placeholderAlign: function(event) {
 									var portalLayout = event.currentTarget;
+
 									var activeDrop = portalLayout.activeDrop;
 									var lastActiveDrop = portalLayout.lastActiveDrop;
 
@@ -121,11 +124,12 @@ AUI.add(
 										var activeDropNode = activeDrop.get('node');
 										var lastActiveDropNode = lastActiveDrop.get('node');
 
-										var quadrant = portalLayout.quadrant;
 										var isStatic = activeDropNode.isStatic;
+										var quadrant = portalLayout.quadrant;
 
 										if (isStatic) {
 											var start = (isStatic == 'start');
+
 											var siblingPos = (start ? 'nextSibling' : 'previousSibling');
 
 											var siblingPortlet = Layout.findSiblingPortlet(activeDropNode, siblingPos);
@@ -151,6 +155,7 @@ AUI.add(
 
 													if (referencePortlet && referencePortlet.isStatic) {
 														var options = Layout.options;
+
 														var dropColumn = activeDropNode.one(options.dropContainer);
 														var foundReferencePortlet = Layout.findReferencePortlet(dropColumn);
 

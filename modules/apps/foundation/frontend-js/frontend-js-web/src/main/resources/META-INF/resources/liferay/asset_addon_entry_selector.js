@@ -1,8 +1,6 @@
 AUI.add(
 	'liferay-asset-addon-entry-selector',
 	function(A) {
-		var AArray = A.Array;
-
 		var Lang = A.Lang;
 
 		var NAME = 'assetaddonentryselector';
@@ -223,7 +221,7 @@ AUI.add(
 					_syncUI: function() {
 						var instance = this;
 
-						var entries = instance.get(STR_ASSET_ADDON_ENTRIES);
+						instance.get(STR_ASSET_ADDON_ENTRIES);
 
 						var selectedAssetAddonEntries = instance.get(STR_SELECTED_ASSET_ADDON_ENTRIES);
 

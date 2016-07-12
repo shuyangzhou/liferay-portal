@@ -1,8 +1,6 @@
 AUI.add(
 	'liferay-widget-zindex',
 	function(A) {
-		var Lang = A.Lang;
-
 		var STR_HOST = 'host';
 
 		var WidgetZIndex = A.Component.create(
