@@ -1,10 +1,6 @@
 AUI().add(
 	'liferay-token-list',
 	function(A) {
-		var Lang = A.Lang;
-
-		var BUFFER = [];
-
 		var TPL_TOKEN = A.Template(
 			'<tpl for=".">',
 				'<span class="lfr-token" data-fieldValues="{fieldValues}" data-clearFields="{clearFields}">',

@@ -74,9 +74,11 @@ AUI.add(
 		};
 
 		PortletURL.prototype = {
+
 			/*
 			 * @deprecated
 			 */
+
 			setCopyCurrentRenderParameters: function() {
 				var instance = this;
 
@@ -102,6 +104,7 @@ AUI.add(
 			/*
 			 * @deprecated
 			 */
+
 			setEncrypt: function() {
 				var instance = this;
 
@@ -181,6 +184,7 @@ AUI.add(
 			/*
 			 * @deprecated
 			 */
+
 			setPortletConfiguration: function() {
 				var instance = this;
 
