@@ -21,8 +21,8 @@
 <%@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %>
 <%@ taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
-<%@ page import="com.liferay.layout.admin.web.constants.LayoutAdminPortletKeys" %>
-<%@ page import="com.liferay.layout.admin.web.product.navigation.control.menu.InformationMessagesProductNavigationControlMenuEntry" %>
+<%@ page import="com.liferay.layout.admin.web.internal.constants.LayoutAdminPortletKeys" %>
+<%@ page import="com.liferay.layout.admin.web.internal.product.navigation.control.menu.InformationMessagesProductNavigationControlMenuEntry" %>
 <%@ page import="com.liferay.portal.kernel.model.Group" %>
 <%@ page import="com.liferay.portal.kernel.portlet.PortletURLFactoryUtil" %>
 <%@ page import="com.liferay.portal.kernel.util.GetterUtil" %>
@@ -78,7 +78,7 @@ data.put("qa-id", "info");
 				</span>
 
 				<%
-				PortletURL resetPrototypeURL = PortletURLFactoryUtil.create(request, LayoutAdminPortletKeys.LAYOUT_ADMIN, plid, PortletRequest.ACTION_PHASE);
+				PortletURL resetPrototypeURL = PortletURLFactoryUtil.create(request, LayoutAdminPortletKeys.LAYOUT_ADMIN, PortletRequest.ACTION_PHASE);
 
 				resetPrototypeURL.setParameter(ActionRequest.ACTION_NAME, "resetPrototype");
 				resetPrototypeURL.setParameter("redirect", PortalUtil.getLayoutURL(themeDisplay));
