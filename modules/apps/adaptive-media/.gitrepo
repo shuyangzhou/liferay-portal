@@ -1,0 +1,10 @@
+;
+; Do not manually edit this file. See
+; https://github.com/git-commands/git-subrepo#readme for more information.
+;
+[subrepo]
+	cmdver = liferay
+	commit = 832454886f8984b08ca76691102c6c87d19b851b
+	mode = push
+	parent = 37c9a3e9d56df5dd828139a27a8401a540113fe4
+	remote = git@github.com:liferay/com-liferay-adaptive-media.git

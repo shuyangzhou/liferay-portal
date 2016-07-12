@@ -2,6 +2,7 @@ AUI.add(
 	'liferay-inline-editor-base',
 	function(A) {
 		var Lang = A.Lang;
+
 		var isNumber = Lang.isNumber;
 		var isString = Lang.isString;
 
@@ -16,10 +17,6 @@ AUI.add(
 		var EDITOR_NAME = 'editorName';
 
 		var EDITOR_PREFIX = 'editorPrefix';
-
-		var EDITOR_SUFFIX = 'editorSuffix';
-
-		var NOTICE_INSTANCE = 'noticeInstance';
 
 		var RESPONSE_DATA = 'responseData';
 
@@ -132,8 +129,6 @@ AUI.add(
 
 				if (!editNotice) {
 					var triggerNode = A.one(instance.get(EDITOR_PREFIX) + instance.get(EDITOR_NAME));
-
-					var inlineEditorNoticeId = A.guid();
 
 					var editNoticeNode = A.Node.create(TPL_NOTICE);
 
