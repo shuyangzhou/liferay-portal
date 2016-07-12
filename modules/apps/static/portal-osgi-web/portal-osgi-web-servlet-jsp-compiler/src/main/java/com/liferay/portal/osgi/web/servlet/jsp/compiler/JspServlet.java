@@ -549,8 +549,7 @@ public class JspServlet extends HttpServlet {
 	private static final String _ANALYZED_TLDS =
 		JspServlet.class.getName().concat("#ANALYZED_TLDS");
 
-	private static final String _DIR_NAME_RESOURCES =
-		File.separator + "META-INF" + File.separator + "resources";
+	private static final String _DIR_NAME_RESOURCES = "/META-INF/resources";
 
 	private static final String _INIT_PARAMETER_NAME_SCRATCH_DIR = "scratchdir";
 
