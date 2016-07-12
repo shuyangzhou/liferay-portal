@@ -1599,7 +1599,6 @@
 					}
 				);
 			}
-
 		},
 		['aui-base', 'liferay-util-window']
 	);

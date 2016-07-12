@@ -1,14 +1,10 @@
 AUI.add(
 	'liferay-menu-toggle',
 	function(A) {
-		var AArray = A.Array;
 		var AEvent = A.Event;
 		var Lang = A.Lang;
-		var Util = Liferay.Util;
 
 		var NAME = 'menutoggle';
-
-		var SELECTOR_NAV_ITEM_FILTER = '.nav-item-filter';
 
 		var MenuToggle = A.Component.create(
 			{

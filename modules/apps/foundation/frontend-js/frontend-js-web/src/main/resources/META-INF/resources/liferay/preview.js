@@ -316,7 +316,7 @@ AUI.add(
 
 						var target = event.currentTarget;
 
-						var maxOverlay = instance._getMaxOverlay();
+						instance._getMaxOverlay();
 
 						if (target.hasClass('lfr-preview-file-arrow')) {
 							if (target.hasClass('right')) {
