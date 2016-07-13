@@ -45,9 +45,13 @@ AUI.add(
 							validAction = instance.get('filter').indexOf(event.keyCode) > -1;
 						}
 
+						var retVal;
+
 						if (!validAction) {
-							return new A.Do.Prevent();
+							retVal = new A.Do.Prevent();
 						}
+
+						return retVal;
 					}
 				}
 			}
