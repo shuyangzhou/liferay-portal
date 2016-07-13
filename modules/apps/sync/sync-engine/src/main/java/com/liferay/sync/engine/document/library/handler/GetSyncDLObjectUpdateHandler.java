@@ -679,12 +679,13 @@ public class GetSyncDLObjectUpdateHandler extends BaseSyncDLObjectHandler {
 
 			if ((sourceSyncFile != null) &&
 				(sourceSyncFile.getModifiedTime() ==
-					targetSyncFile.getModifiedTime()) &&
-				!Validator.isBlank(targetSyncFile.getChecksum())) {
+					targetSyncFile.getModifiedTime())) {
 
-				sourceSyncFile.setChecksum(targetSyncFile.getChecksum());
+				if (!Validator.isBlank(targetSyncFile.getChecksum())) {
+					sourceSyncFile.setChecksum(targetSyncFile.getChecksum());
 
-				SyncFileService.update(sourceSyncFile);
+					SyncFileService.update(sourceSyncFile);
+				}
 
 				return;
 			}

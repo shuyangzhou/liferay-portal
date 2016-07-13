@@ -63,6 +63,14 @@ public class ServiceRankingUtil {
 			return (Integer)serviceRanking;
 		}
 
+		if (serviceRanking instanceof String) {
+			try {
+				return Integer.parseInt((String)serviceRanking);
+			}
+			catch (NumberFormatException nfe) {
+			}
+		}
+
 		return 0;
 	}
 

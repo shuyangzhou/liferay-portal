@@ -107,7 +107,7 @@ AUI.add(
 						var resizable = node.hasClass('yui3-resize');
 
 						if (!resizable) {
-							var resize = new A.Resize(
+							new A.Resize(
 								{
 									after: {
 										end: function(event) {

@@ -313,8 +313,12 @@
 			<var name="portlet" value="Audience Targeting" />
 		</execute>
 
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
 		<execute macro="ContentTargetingUserSegment#viewRulesCP">
-			<var name="userSegmentName" value="User Segment Name" />
 			<var name="viewUserSegmentRuleList" value="Content Visited" />
 			<var name="webContentTitle" value="Web Content Title" />
 		</execute>
@@ -350,9 +354,13 @@
 			<var name="portlet" value="Audience Targeting" />
 		</execute>
 
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
 		<execute macro="ContentTargetingUserSegment#viewRulesCP">
 			<var name="friendlyURL" value="/test-page-name" />
-			<var name="userSegmentName" value="User Segment Name" />
 			<var name="viewUserSegmentRuleList" value="Page Visited" />
 		</execute>
 	</command>
@@ -388,10 +396,14 @@
 			<var name="portlet" value="Audience Targeting" />
 		</execute>
 
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
 		<execute macro="ContentTargetingUserSegment#viewRulesCP">
 			<var name="condition" value="Contains" />
 			<var name="conditionValue" value="able.com" />
-			<var name="userSegmentName" value="User Segment Name" />
 			<var name="viewUserSegmentRuleList" value="Previously Visited Site" />
 		</execute>
 	</command>
@@ -427,10 +439,14 @@
 			<var name="portlet" value="Audience Targeting" />
 		</execute>
 
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
 		<execute macro="ContentTargetingUserSegment#viewRulesCP">
 			<var name="condition" value="Starts with" />
 			<var name="conditionValue" value="http://www.able.com" />
-			<var name="userSegmentName" value="User Segment Name" />
 			<var name="viewUserSegmentRuleList" value="Previously Visited Site" />
 		</execute>
 	</command>
@@ -465,9 +481,13 @@
 			<var name="portlet" value="Audience Targeting" />
 		</execute>
 
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
 		<execute macro="ContentTargetingUserSegment#viewRulesCP">
 			<var name="scorePoints" value="100" />
-			<var name="userSegmentName" value="User Segment Name" />
 			<var name="viewUserSegmentRuleList" value="Score Points" />
 		</execute>
 	</command>
@@ -489,6 +509,531 @@
 		</execute>
 
 		<execute macro="PortletEntry#save" />
+	</command>
+
+	<command name="AddUserSegmentMultipleBehaviorContentVisitedCP" priority="4">
+		<property name="content.targeting.release" value="true" />
+
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Site Name" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesContent">
+			<var name="portlet" value="Web Content" />
+		</execute>
+
+		<execute macro="WebContentNavigator#gotoAddCP" />
+
+		<execute macro="WebContent#addCP">
+			<var name="webContentContent" value="Web Content Content 1" />
+			<var name="webContentTitle" value="Web Content Title 1" />
+		</execute>
+
+		<execute macro="PortletEntry#publish" />
+
+		<execute macro="WebContent#viewTitle">
+			<var name="webContentTitle" value="Web Content Title 1" />
+		</execute>
+
+		<execute macro="WebContentNavigator#gotoAddCP" />
+
+		<execute macro="WebContent#addCP">
+			<var name="webContentContent" value="Web Content Content 2" />
+			<var name="webContentTitle" value="Web Content Title 2" />
+		</execute>
+
+		<execute macro="PortletEntry#publish" />
+
+		<execute macro="WebContent#viewTitle">
+			<var name="webContentTitle" value="Web Content Title 2" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Site Name" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesConfiguration">
+			<var name="portlet" value="Audience Targeting" />
+		</execute>
+
+		<execute macro="ContentTargetingUserSegment#addCP">
+			<var name="userSegmentDescription" value="User Segment Description" />
+			<var name="userSegmentName" value="User Segment Name" />
+		</execute>
+
+		<for list="Web Content Title 1,Web Content Title 2" param="webContentTitle">
+			<execute macro="ContentTargetingUserSegment#addBehaviorContentVisitedRuleCP">
+				<var name="contentVisitedContent" value="Basic Web Content" />
+				<var name="webContentTitle" value="${webContentTitle}" />
+			</execute>
+		</for>
+
+		<execute macro="PortletEntry#save" />
+
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Site Name" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesConfiguration">
+			<var name="portlet" value="Audience Targeting" />
+		</execute>
+
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
+		<execute macro="ContentTargetingUserSegment#viewRulesCP">
+			<var name="viewUserSegmentRuleList" value="Content Visited" />
+			<var name="webContentTitle" value="Web Content Title 1" />
+		</execute>
+
+		<execute macro="ContentTargetingUserSegment#viewRulesCP">
+			<var name="ruleInstance" value="2" />
+			<var name="viewUserSegmentRuleList" value="Content Visited" />
+			<var name="webContentTitle" value="Web Content Title 2" />
+		</execute>
+	</command>
+
+	<command name="AddUserSegmentMultipleBehaviorPageVisitedCP" priority="4">
+		<property name="content.targeting.release" value="true" />
+
+		<execute macro="ProductMenu#gotoControlPanelSites">
+			<var name="portlet" value="Sites" />
+		</execute>
+
+		<execute macro="Page#add">
+			<var name="pageName" value="Site Page Name" />
+			<var name="siteName" value="Site Name" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesConfiguration">
+			<var name="portlet" value="Audience Targeting" />
+		</execute>
+
+		<execute macro="ContentTargetingUserSegment#addCP">
+			<var name="userSegmentDescription" value="User Segment Description" />
+			<var name="userSegmentName" value="User Segment Name" />
+		</execute>
+
+		<for list="/test-page-name,/site-page-name" param="friendlyURL">
+			<execute macro="ContentTargetingUserSegment#addBehaviorPageVisitedRuleCP">
+				<var name="friendlyURL" value="${friendlyURL}" />
+			</execute>
+		</for>
+
+		<execute macro="PortletEntry#save" />
+
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Site Name" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesConfiguration">
+			<var name="portlet" value="Audience Targeting" />
+		</execute>
+
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
+		<execute macro="ContentTargetingUserSegment#viewRulesCP">
+			<var name="friendlyURL" value="/test-page-name" />
+			<var name="viewUserSegmentRuleList" value="Page Visited" />
+		</execute>
+
+		<execute macro="ContentTargetingUserSegment#viewRulesCP">
+			<var name="friendlyURL" value="/site-page-name" />
+			<var name="ruleInstance" value="2" />
+			<var name="viewUserSegmentRuleList" value="Page Visited" />
+		</execute>
+	</command>
+
+	<command name="AddUserSegmentMultipleUserAttributesCustomFieldCP" priority="4">
+		<property name="content.targeting.release" value="true" />
+
+		<execute macro="ProductMenu#gotoControlPanelConfiguration">
+			<var name="portlet" value="Custom Fields" />
+		</execute>
+
+		<execute macro="CustomFields#addCP">
+			<var name="customFieldName" value="Usercustomfield" />
+			<var name="customFieldType" value="Text Field - Indexed" />
+			<var name="resourceName" value="User" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Site Name" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesConfiguration">
+			<var name="portlet" value="Audience Targeting" />
+		</execute>
+
+		<execute macro="ContentTargetingUserSegment#addCP">
+			<var name="userSegmentDescription" value="User Segment Description" />
+			<var name="userSegmentName" value="User Segment Name" />
+		</execute>
+
+		<for list="User Custom Field Value 1,User Custom Field Value 2" param="customFieldValue">
+			<execute macro="ContentTargetingUserSegment#addUserAttributesCustomFieldCP">
+				<var name="customFieldKey" value="usercustomfield" />
+				<var name="customFieldValue" value="${customFieldValue}" />
+			</execute>
+		</for>
+
+		<execute macro="PortletEntry#save" />
+
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Site Name" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesConfiguration">
+			<var name="portlet" value="Audience Targeting" />
+		</execute>
+
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
+		<execute macro="ContentTargetingUserSegment#viewRulesCP">
+			<var name="customFieldKey" value="usercustomfield" />
+			<var name="customFieldValue" value="User Custom Field Value 1" />
+			<var name="viewUserSegmentRuleList" value="Custom Field" />
+		</execute>
+
+		<execute macro="ContentTargetingUserSegment#viewRulesCP">
+			<var name="customFieldKey" value="usercustomfield" />
+			<var name="customFieldValue" value="User Custom Field Value 2" />
+			<var name="ruleInstance" value="2" />
+			<var name="viewUserSegmentRuleList" value="Custom Field" />
+		</execute>
+	</command>
+
+	<command name="AddUserSegmentMultipleUserAttributesOrganizationMemberCP" priority="4">
+		<property name="content.targeting.release" value="true" />
+
+		<for list="Organization Name 1,Organization Name 2" param="orgName">
+			<execute macro="ProductMenu#gotoControlPanelUsers">
+				<var name="portlet" value="Users and Organizations" />
+			</execute>
+
+			<execute macro="Organization#addCP">
+				<var name="orgName" value="${orgName}" />
+				<var name="orgType" value="Organization" />
+			</execute>
+		</for>
+
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Site Name" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesConfiguration">
+			<var name="portlet" value="Audience Targeting" />
+		</execute>
+
+		<execute macro="ContentTargetingUserSegment#addCP">
+			<var name="userSegmentDescription" value="User Segment Description" />
+			<var name="userSegmentName" value="User Segment Name" />
+		</execute>
+
+		<for list="Organization Name 1,Organization Name 2" param="organizationName">
+			<execute macro="ContentTargetingUserSegment#addUserAttributesOrganizationMemberRuleCP">
+				<var name="organizationName" value="${organizationName}" />
+			</execute>
+		</for>
+
+		<execute macro="PortletEntry#save" />
+
+		<execute macro="ProductMenu#gotoSitesConfiguration">
+			<var name="portlet" value="Audience Targeting" />
+		</execute>
+
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
+		<execute macro="ContentTargetingUserSegment#viewRulesCP">
+			<var name="organizationName" value="Organization Name 1" />
+			<var name="viewUserSegmentRuleList" value="Organization Member" />
+		</execute>
+
+		<execute macro="ContentTargetingUserSegment#viewRulesCP">
+			<var name="organizationName" value="Organization Name 2" />
+			<var name="ruleInstance" value="2" />
+			<var name="viewUserSegmentRuleList" value="Organization Member" />
+		</execute>
+	</command>
+
+	<command name="AddUserSegmentMultipleUserAttributesOrganizationRoleCP" priority="4">
+		<property name="content.targeting.release" value="true" />
+
+		<for list="Organization Name 1,Organization Name 2" param="orgName">
+			<execute macro="ProductMenu#gotoControlPanelUsers">
+				<var name="portlet" value="Users and Organizations" />
+			</execute>
+
+			<execute macro="Organization#addCP">
+				<var name="orgName" value="${orgName}" />
+				<var name="orgType" value="Organization" />
+			</execute>
+		</for>
+
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Site Name" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesConfiguration">
+			<var name="portlet" value="Audience Targeting" />
+		</execute>
+
+		<execute macro="ContentTargetingUserSegment#addCP">
+			<var name="userSegmentDescription" value="User Segment Description" />
+			<var name="userSegmentName" value="User Segment Name" />
+		</execute>
+
+		<for list="Organization Name 1,Organization Name 2" param="organizationName">
+			<execute macro="ContentTargetingUserSegment#addUserAttributesOrganizationRoleRuleCP">
+				<var name="organizationName" value="${organizationName}" />
+				<var name="organizationRole" value="Organization Owner" />
+			</execute>
+		</for>
+
+		<execute macro="PortletEntry#save" />
+
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Site Name" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesConfiguration">
+			<var name="portlet" value="Audience Targeting" />
+		</execute>
+
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
+		<execute macro="ContentTargetingUserSegment#viewRulesCP">
+			<var name="organizationName" value="Organization Name 1" />
+			<var name="organizationRole" value="Organization Owner" />
+			<var name="viewUserSegmentRuleList" value="Organization Role" />
+		</execute>
+
+		<execute macro="ContentTargetingUserSegment#viewRulesCP">
+			<var name="organizationName" value="Organization Name 2" />
+			<var name="organizationRole" value="Organization Owner" />
+			<var name="ruleInstance" value="2" />
+			<var name="viewUserSegmentRuleList" value="Organization Role" />
+		</execute>
+	</command>
+
+	<command name="AddUserSegmentMultipleUserAttributesRegularRoleCP" priority="4">
+		<property name="content.targeting.release" value="true" />
+
+		<execute macro="ProductMenu#gotoSitesConfiguration">
+			<var name="portlet" value="Audience Targeting" />
+		</execute>
+
+		<execute macro="ContentTargetingUserSegment#addCP">
+			<var name="userSegmentDescription" value="User Segment Description" />
+			<var name="userSegmentName" value="User Segment Name" />
+		</execute>
+
+		<for list="Administrator,Power User" param="regularRole">
+			<execute macro="ContentTargetingUserSegment#addUserAttributesRegularRoleRuleCP">
+				<var name="regularRole" value="${regularRole}" />
+			</execute>
+		</for>
+
+		<execute macro="PortletEntry#save" />
+
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Site Name" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesConfiguration">
+			<var name="portlet" value="Audience Targeting" />
+		</execute>
+
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
+		<execute macro="ContentTargetingUserSegment#viewRulesCP">
+			<var name="regularRole" value="Administrator" />
+			<var name="viewUserSegmentRuleList" value="Regular Role" />
+		</execute>
+
+		<execute macro="ContentTargetingUserSegment#viewRulesCP">
+			<var name="regularRole" value="Power User" />
+			<var name="ruleInstance" value="2" />
+			<var name="viewUserSegmentRuleList" value="Regular Role" />
+		</execute>
+	</command>
+
+	<command name="AddUserSegmentMultipleUserAttributesSiteMemberCP" priority="4">
+		<property name="content.targeting.release" value="true" />
+
+		<execute macro="ProductMenu#gotoSitesConfiguration">
+			<var name="portlet" value="Audience Targeting" />
+		</execute>
+
+		<execute macro="ContentTargetingUserSegment#addCP">
+			<var name="userSegmentDescription" value="User Segment Description" />
+			<var name="userSegmentName" value="User Segment Name" />
+		</execute>
+
+		<execute macro="TestCase#getSiteName">
+			<return from="siteName" name="siteName" />
+			<var name="siteName" value="${siteName}" />
+		</execute>
+
+		<for list="Site Name,${siteName}" param="selectSiteMemberSite">
+			<execute macro="ContentTargetingUserSegment#addUserAttributesSiteMemberRuleCP">
+				<var name="selectSiteMemberSite" value="${selectSiteMemberSite}" />
+			</execute>
+		</for>
+
+		<execute macro="PortletEntry#save" />
+
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Site Name" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesConfiguration">
+			<var name="portlet" value="Audience Targeting" />
+		</execute>
+
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
+		<execute macro="ContentTargetingUserSegment#viewRulesCP">
+			<var name="selectSiteMemberSite" value="Site Name" />
+			<var name="viewUserSegmentRuleList" value="Site Member" />
+		</execute>
+
+		<execute macro="ContentTargetingUserSegment#viewRulesCP">
+			<var name="ruleInstance" value="2" />
+			<var name="selectSiteMemberSite" value="${siteName}" />
+			<var name="viewUserSegmentRuleList" value="Site Member" />
+		</execute>
+	</command>
+
+	<command name="AddUserSegmentMultipleUserAttributesSiteRoleCP" priority="4">
+		<property name="content.targeting.release" value="true" />
+
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Site Name" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesConfiguration">
+			<var name="portlet" value="Audience Targeting" />
+		</execute>
+
+		<execute macro="ContentTargetingUserSegment#addCP">
+			<var name="userSegmentDescription" value="User Segment Description" />
+			<var name="userSegmentName" value="User Segment Name" />
+		</execute>
+
+		<for list="Site Administrator,Site Owner" param="siteRole">
+			<execute macro="ContentTargetingUserSegment#addUserAttributesSiteRoleRuleCP">
+				<var name="siteRole" value="${siteRole}" />
+				<var name="siteRoleSite" value="Site Name" />
+			</execute>
+		</for>
+
+		<execute macro="PortletEntry#save" />
+
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Site Name" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesConfiguration">
+			<var name="portlet" value="Audience Targeting" />
+		</execute>
+
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
+		<execute macro="ContentTargetingUserSegment#viewRulesCP">
+			<var name="siteRole" value="Site Administrator" />
+			<var name="siteRoleSite" value="Site Name" />
+			<var name="viewUserSegmentRuleList" value="Site Role" />
+		</execute>
+
+		<execute macro="ContentTargetingUserSegment#viewRulesCP">
+			<var name="ruleInstance" value="2" />
+			<var name="siteRole" value="Site Owner" />
+			<var name="siteRoleSite" value="Site Name" />
+			<var name="viewUserSegmentRuleList" value="Site Role" />
+		</execute>
+	</command>
+
+	<command name="AddUserSegmentMultipleUserAttributesUserGroupMemberCP" priority="4">
+		<property name="content.targeting.release" value="true" />
+
+		<for list="User Group Name 1,User Group Name 2" param="userGroupName">
+			<execute macro="ProductMenu#gotoControlPanelUsers">
+				<var name="portlet" value="User Groups" />
+			</execute>
+
+			<execute macro="UserGroup#addCP">
+				<var name="userGroupName" value="${userGroupName}" />
+			</execute>
+		</for>
+
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Site Name" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesConfiguration">
+			<var name="portlet" value="Audience Targeting" />
+		</execute>
+
+		<execute macro="ContentTargetingUserSegment#addCP">
+			<var name="userSegmentDescription" value="User Segment Description" />
+			<var name="userSegmentName" value="User Segment Name" />
+		</execute>
+
+		<for list="User Group Name 1,User Group Name 2" param="userGroupName">
+			<execute macro="ContentTargetingUserSegment#addUserAttributesUserGroupMemberRuleCP">
+				<var name="userGroupName" value="${userGroupName}" />
+			</execute>
+		</for>
+
+		<execute macro="PortletEntry#save" />
+
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Site Name" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesConfiguration">
+			<var name="portlet" value="Audience Targeting" />
+		</execute>
+
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
+		<execute macro="ContentTargetingUserSegment#viewRulesCP">
+			<var name="userGroupName" value="User Group Name 1" />
+			<var name="viewUserSegmentRuleList" value="User Group Member" />
+		</execute>
+
+		<execute macro="ContentTargetingUserSegment#viewRulesCP">
+			<var name="ruleInstance" value="2" />
+			<var name="userGroupName" value="User Group Name 2" />
+			<var name="viewUserSegmentRuleList" value="User Group Member" />
+		</execute>
 	</command>
 
 	<command name="AddUserSegmentSocialFacebookAgeCP" priority="5">
@@ -522,10 +1067,14 @@
 			<var name="portlet" value="Audience Targeting" />
 		</execute>
 
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
 		<execute macro="ContentTargetingUserSegment#viewRulesCP">
 			<var name="facebookOlderThanAge" value="18" />
 			<var name="facebookYoungerThanAge" value="50" />
-			<var name="userSegmentName" value="User Segment Name" />
 			<var name="viewUserSegmentRuleList" value="Facebook Age" />
 		</execute>
 	</command>
@@ -560,9 +1109,13 @@
 			<var name="portlet" value="Audience Targeting" />
 		</execute>
 
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
 		<execute macro="ContentTargetingUserSegment#viewRulesCP">
 			<var name="facebookCity" value="Diamond Bar" />
-			<var name="userSegmentName" value="User Segment Name" />
 			<var name="viewUserSegmentRuleList" value="Facebook City" />
 		</execute>
 	</command>
@@ -598,10 +1151,14 @@
 			<var name="portlet" value="Audience Targeting" />
 		</execute>
 
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
 		<execute macro="ContentTargetingUserSegment#viewRulesCP">
 			<var name="facebookCollegeHighSchoolName" value="UC Irvine" />
 			<var name="facebookEducationLevel" value="College" />
-			<var name="userSegmentName" value="User Segment Name" />
 			<var name="viewUserSegmentRuleList" value="Facebook Education" />
 		</execute>
 	</command>
@@ -637,10 +1194,14 @@
 			<var name="portlet" value="Audience Targeting" />
 		</execute>
 
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
 		<execute macro="ContentTargetingUserSegment#viewRulesCP">
 			<var name="moreLessThan" value="More" />
 			<var name="numberOfFriends" value="50" />
-			<var name="userSegmentName" value="User Segment Name" />
 			<var name="viewUserSegmentRuleList" value="Facebook Friends" />
 		</execute>
 	</command>
@@ -675,9 +1236,13 @@
 			<var name="portlet" value="Audience Targeting" />
 		</execute>
 
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
 		<execute macro="ContentTargetingUserSegment#viewRulesCP">
 			<var name="facebookGenderRadio" value="Male" />
-			<var name="userSegmentName" value="User Segment Name" />
 			<var name="viewUserSegmentRuleList" value="Facebook Gender" />
 		</execute>
 	</command>
@@ -712,9 +1277,13 @@
 			<var name="portlet" value="Audience Targeting" />
 		</execute>
 
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
 		<execute macro="ContentTargetingUserSegment#viewRulesCP">
 			<var name="facebookURL" value="liferay" />
-			<var name="userSegmentName" value="User Segment Name" />
 			<var name="viewUserSegmentRuleList" value="Facebook Page Like" />
 		</execute>
 	</command>
@@ -749,9 +1318,13 @@
 			<var name="portlet" value="Audience Targeting" />
 		</execute>
 
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
 		<execute macro="ContentTargetingUserSegment#viewRulesCP">
 			<var name="browserName" value="Firefox" />
-			<var name="userSegmentName" value="User Segment Name" />
 			<var name="viewUserSegmentRuleList" value="Browser" />
 		</execute>
 	</command>
@@ -799,9 +1372,13 @@
 			<var name="portlet" value="Audience Targeting" />
 		</execute>
 
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
 		<execute macro="ContentTargetingUserSegment#viewRulesCP">
 			<var name="deviceFamilyName" value="Device Family Name" />
-			<var name="userSegmentName" value="User Segment Name" />
 			<var name="viewUserSegmentRuleList" value="Device" />
 		</execute>
 	</command>
@@ -837,10 +1414,14 @@
 			<var name="portlet" value="Audience Targeting" />
 		</execute>
 
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
 		<execute macro="ContentTargetingUserSegment#viewRulesCP">
 			<var name="countryName" value="Spain" />
 			<var name="regionName" value="Madrid" />
-			<var name="userSegmentName" value="User Segment Name" />
 			<var name="viewUserSegmentRuleList" value="Location" />
 		</execute>
 	</command>
@@ -875,9 +1456,13 @@
 			<var name="portlet" value="Audience Targeting" />
 		</execute>
 
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
 		<execute macro="ContentTargetingUserSegment#viewRulesCP">
 			<var name="operatingSystemName" value="Mac" />
-			<var name="userSegmentName" value="User Segment Name" />
 			<var name="viewUserSegmentRuleList" value="Operating System" />
 		</execute>
 	</command>
@@ -913,10 +1498,14 @@
 			<var name="portlet" value="Audience Targeting" />
 		</execute>
 
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
 		<execute macro="ContentTargetingUserSegment#viewRulesCP">
 			<var name="endTime" value="11:30 PM" />
 			<var name="startTime" value="10:30 AM" />
-			<var name="userSegmentName" value="User Segment Name" />
 			<var name="viewUserSegmentRuleList" value="Time" />
 		</execute>
 	</command>
@@ -952,11 +1541,68 @@
 			<var name="portlet" value="Audience Targeting" />
 		</execute>
 
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
 		<execute macro="ContentTargetingUserSegment#viewRulesCP">
 			<var name="olderThanAge" value="21" />
-			<var name="userSegmentName" value="User Segment Name" />
 			<var name="viewUserSegmentRuleList" value="Age" />
 			<var name="youngerThanAge" value="99" />
+		</execute>
+	</command>
+
+	<command name="AddUserSegmentUserAttributesCustomFieldCP" priority="5">
+		<property name="content.targeting.release" value="true" />
+
+		<execute macro="ProductMenu#gotoControlPanelConfiguration">
+			<var name="portlet" value="Custom Fields" />
+		</execute>
+
+		<execute macro="CustomFields#addCP">
+			<var name="customFieldName" value="Usercustomfield" />
+			<var name="customFieldType" value="Text Field - Indexed" />
+			<var name="resourceName" value="User" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Site Name" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesConfiguration">
+			<var name="portlet" value="Audience Targeting" />
+		</execute>
+
+		<execute macro="ContentTargetingUserSegment#addCP">
+			<var name="userSegmentDescription" value="User Segment Description" />
+			<var name="userSegmentName" value="User Segment Name" />
+		</execute>
+
+		<execute macro="ContentTargetingUserSegment#addUserAttributesCustomFieldCP">
+			<var name="customFieldKey" value="usercustomfield" />
+			<var name="customFieldValue" value="User Custom Field Value" />
+		</execute>
+
+		<execute macro="PortletEntry#save" />
+
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Site Name" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesConfiguration">
+			<var name="portlet" value="Audience Targeting" />
+		</execute>
+
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
+		<execute macro="ContentTargetingUserSegment#viewRulesCP">
+			<var name="customFieldKey" value="usercustomfield" />
+			<var name="customFieldValue" value="User Custom Field Value" />
+			<var name="viewUserSegmentRuleList" value="Custom Field" />
 		</execute>
 	</command>
 
@@ -990,9 +1636,13 @@
 			<var name="portlet" value="Audience Targeting" />
 		</execute>
 
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
 		<execute macro="ContentTargetingUserSegment#viewRulesCP">
 			<var name="genderRadio" value="Female" />
-			<var name="userSegmentName" value="User Segment Name" />
 			<var name="viewUserSegmentRuleList" value="Gender" />
 		</execute>
 	</command>
@@ -1036,9 +1686,13 @@
 			<var name="portlet" value="Audience Targeting" />
 		</execute>
 
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
 		<execute macro="ContentTargetingUserSegment#viewRulesCP">
 			<var name="organizationName" value="Organization Name" />
-			<var name="userSegmentName" value="User Segment Name" />
 			<var name="viewUserSegmentRuleList" value="Organization Member" />
 		</execute>
 
@@ -1085,10 +1739,14 @@
 			<var name="portlet" value="Audience Targeting" />
 		</execute>
 
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
 		<execute macro="ContentTargetingUserSegment#viewRulesCP">
 			<var name="organizationName" value="Organization Name" />
 			<var name="organizationRole" value="Organization Owner" />
-			<var name="userSegmentName" value="User Segment Name" />
 			<var name="viewUserSegmentRuleList" value="Organization Role" />
 		</execute>
 
@@ -1125,9 +1783,13 @@
 			<var name="portlet" value="Audience Targeting" />
 		</execute>
 
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
 		<execute macro="ContentTargetingUserSegment#viewRulesCP">
 			<var name="regularRole" value="Guest" />
-			<var name="userSegmentName" value="User Segment Name" />
 			<var name="viewUserSegmentRuleList" value="Regular Role" />
 		</execute>
 	</command>
@@ -1162,15 +1824,24 @@
 			<var name="portlet" value="Audience Targeting" />
 		</execute>
 
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
 		<execute macro="ContentTargetingUserSegment#viewRulesCP">
 			<var name="selectSiteMemberSite" value="Site Name" />
-			<var name="userSegmentName" value="User Segment Name" />
 			<var name="viewUserSegmentRuleList" value="Site Member" />
 		</execute>
 	</command>
 
 	<command name="AddUserSegmentUserAttributesSiteRoleCP" priority="5">
 		<property name="content.targeting.release" value="true" />
+
+		<execute macro="TestCase#getSiteName">
+			<return from="siteName" name="siteName" />
+			<var name="siteName" value="${siteName}" />
+		</execute>
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -1187,7 +1858,7 @@
 
 		<execute macro="ContentTargetingUserSegment#addUserAttributesSiteRoleRuleCP">
 			<var name="siteRole" value="Site Owner" />
-			<var name="siteRoleSite" value="Liferay" />
+			<var name="siteRoleSite" value="${siteName}" />
 		</execute>
 
 		<execute macro="PortletEntry#save" />
@@ -1200,10 +1871,14 @@
 			<var name="portlet" value="Audience Targeting" />
 		</execute>
 
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
 		<execute macro="ContentTargetingUserSegment#viewRulesCP">
 			<var name="siteRole" value="Site Owner" />
-			<var name="siteRoleSite" value="Liferay" />
-			<var name="userSegmentName" value="User Segment Name" />
+			<var name="siteRoleSite" value="${siteName}" />
 			<var name="viewUserSegmentRuleList" value="Site Role" />
 		</execute>
 	</command>
@@ -1246,9 +1921,13 @@
 			<var name="portlet" value="Audience Targeting" />
 		</execute>
 
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
 		<execute macro="ContentTargetingUserSegment#viewRulesCP">
 			<var name="userGroupName" value="User Group Name" />
-			<var name="userSegmentName" value="User Segment Name" />
 			<var name="viewUserSegmentRuleList" value="User Group Member" />
 		</execute>
 	</command>
@@ -1281,8 +1960,12 @@
 			<var name="portlet" value="Audience Targeting" />
 		</execute>
 
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Edit" />
+			<var name="rowEntry" value="User Segment Name" />
+		</execute>
+
 		<execute macro="ContentTargetingUserSegment#viewRulesCP">
-			<var name="userSegmentName" value="User Segment Name" />
 			<var name="viewUserSegmentRuleList" value="User Signed In" />
 		</execute>
 	</command>

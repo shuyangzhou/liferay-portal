@@ -13,7 +13,8 @@ AUI.add(
 
 		var STR_NEW_LINE = '\n';
 
-		var AutcompleteInputCaretIndex = function(){};
+		var AutcompleteInputCaretIndex = function() {
+		};
 
 		AutcompleteInputCaretIndex.prototype = {
 			_getCaretIndex: function(node) {

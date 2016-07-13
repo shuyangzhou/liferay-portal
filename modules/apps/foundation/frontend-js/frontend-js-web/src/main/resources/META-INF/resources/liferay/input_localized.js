@@ -62,16 +62,16 @@ AUI.add(
 						setter: A.one
 					},
 
+					instanceId: {
+						value: Lang.isString
+					},
+
 					items: {
 						value: availableLanguageIds
 					},
 
 					itemsError: {
 						validator: Array.isArray
-					},
-
-					instanceId: {
-						value: Lang.isString
 					},
 
 					name: {

@@ -202,13 +202,13 @@ AUI.add(
 						value: true
 					},
 
-					render: {
-						value: true
-					},
-
 					removeOnComplete: {
 						validator: Lang.isBoolean,
 						value: false
+					},
+
+					render: {
+						value: true
 					},
 
 					restoreState: {
@@ -401,8 +401,6 @@ AUI.add(
 						var uploader = instance._uploader;
 
 						var queue = uploader.queue;
-
-						var fileList = queue.get('fileList');
 
 						queue.pauseUpload();
 
