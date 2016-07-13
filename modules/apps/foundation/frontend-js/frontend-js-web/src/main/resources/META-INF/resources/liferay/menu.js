@@ -561,7 +561,6 @@ AUI.add(
 
 					MAP_LIVE_SEARCH[id] = liveSearch;
 				}
-
 			},
 			['liferay-menu-filter'],
 			true

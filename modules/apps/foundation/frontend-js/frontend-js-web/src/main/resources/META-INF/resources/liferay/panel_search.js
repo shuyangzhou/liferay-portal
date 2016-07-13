@@ -127,42 +127,40 @@ AUI.add(
 								instance._collapsedCategories = null;
 							}
 						}
+						else if (query === '*') {
+							categories.show();
+
+							instance._setItemsVisibility(true);
+						}
 						else {
-							if (query === '*') {
-								categories.show();
+							categories.hide();
 
-								instance._setItemsVisibility(true);
-							}
-							else {
-								categories.hide();
+							instance._setItemsVisibility(false);
 
-								instance._setItemsVisibility(false);
+							event.results.forEach(
+								function(item, index) {
+									var node = item.raw.node;
 
-								event.results.forEach(
-									function(item, index) {
-										var node = item.raw.node;
+									var nodeContainerSelector = instance.get('nodeContainerSelector');
 
-										var nodeContainerSelector = instance.get('nodeContainerSelector');
-
-										if (nodeContainerSelector) {
-											node = node.ancestor(nodeContainerSelector);
-										}
-
-										if (node) {
-											node.show();
-										}
-
-										var contentParent = node.ancestorsByClassName(instance.get('categorySelector'));
-
-										if (contentParent) {
-											contentParent.show();
-
-											contentParent.all('> .list-group-heading').removeClass('collapsed');
-											contentParent.all('> .list-group-panel').addClass('in');
-										}
+									if (nodeContainerSelector) {
+										node = node.ancestor(nodeContainerSelector);
 									}
-								);
-							}
+
+									if (node) {
+										node.show();
+									}
+
+									var contentParent = node.ancestorsByClassName(instance.get('categorySelector'));
+
+									if (contentParent) {
+										contentParent.show();
+
+										contentParent.all('> .list-group-heading').removeClass('collapsed');
+										contentParent.all('> .list-group-panel').addClass('in');
+									}
+								}
+							);
 						}
 					}
 				}

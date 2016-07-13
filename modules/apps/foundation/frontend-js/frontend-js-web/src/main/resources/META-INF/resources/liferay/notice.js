@@ -176,8 +176,8 @@ AUI.add(
 
 					var visible = 0;
 
-					var showText = instance._showText;
 					var hideText = instance._hideText;
+					var showText = instance._showText;
 
 					toggleButton.on(
 						STR_CLICK,

@@ -1,13 +1,12 @@
+/**
+ * The Social Bookmarks Component.
+ *
+ * @module liferay-social-bookmarks
+ */
+
 AUI.add(
 	'liferay-social-bookmarks',
 	function(A) {
-
-		/**
-		 * The Social Bookmarks Component.
-		 *
-		 * @module liferay-social-bookmarks
-		 */
-
 		var NAME = 'social-bookmarks';
 
 		var SHARE_WINDOW_HEIGHT = 436;
@@ -26,6 +25,7 @@ AUI.add(
 		 * widget configuration properties.
 		 * @constructor
 		 */
+
 		var SocialBookmarks = A.Component.create(
 			{
 
@@ -37,6 +37,7 @@ AUI.add(
 				 * @type Object
 				 * @static
 				 */
+
 				ATTRS: {
 
 					/**
@@ -46,6 +47,7 @@ AUI.add(
 					 * @attribute contentBox
 					 * @type String | Node
 					 */
+
 					contentBox: {
 						setter: A.one
 					}
@@ -58,6 +60,7 @@ AUI.add(
 				 * @type Object
 				 * @static
 				 */
+
 				EXTENDS: A.Base,
 
 				/**
@@ -67,6 +70,7 @@ AUI.add(
 				 * @type String
 				 * @static
 				 */
+
 				NAME: NAME,
 
 				prototype: {
@@ -78,6 +82,7 @@ AUI.add(
 				 	 * @method initializer
 				 	 * @protected
 				 	 */
+
 					initializer: function() {
 						var instance = this;
 
