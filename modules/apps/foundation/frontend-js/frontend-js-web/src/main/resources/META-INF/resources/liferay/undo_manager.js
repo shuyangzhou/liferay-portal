@@ -138,9 +138,6 @@ AUI.add(
 
 									undoCache.removeAt(0);
 								}
-								else {
-									return false;
-								}
 							}
 						);
 
@@ -183,10 +180,11 @@ AUI.add(
 						var instance = this;
 
 						var itemsLeft = instance._undoCache.size();
+
 						var contentBox = instance.get('contentBox');
 
-						var actionSingle = 'removeClass';
 						var actionEmpty = 'addClass';
+						var actionSingle = 'removeClass';
 
 						if (itemsLeft > 0) {
 							if (itemsLeft == 1) {

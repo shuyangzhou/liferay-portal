@@ -14,6 +14,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>ADD_EXPLANATION_POST</td>
+	<td>//input[contains(@id,'addExplanationPost')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>ADD_SAMPLE_DATA</td>
 	<td>//label[contains(.,'Add Sample Data')]/input[@type='checkbox']</td>
 	<td></td>
@@ -214,6 +219,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>LOWER_CASE_LETTERS</td>
+	<td>//label[contains(.,'Lower Case Letters')]/input[@type='checkbox']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>MAILING</td>
 	<td>//label[contains(.,'Mailing')]/input[@type='checkbox']</td>
 	<td></td>
@@ -246,6 +256,11 @@
 <tr>
 	<td>NEVER_REVIEW</td>
 	<td>//input[contains(@name,'neverReview') and @type='checkbox']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NUMBERS</td>
+	<td>//label[contains(.,'Numbers')]/input[@type='checkbox']</td>
 	<td></td>
 </tr>
 <tr>
@@ -324,6 +339,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>SOURCE_URL_ENABLED</td>
+	<td>//label[contains(@for,'sourceURLEnabled')]//input[@type='checkbox']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>STAGED_CONTENT</td>
 	<td>//li[contains(.,'${key_contentName}')]//input</td>
 	<td></td>
@@ -346,6 +366,11 @@
 <tr>
 	<td>TWITTER</td>
 	<td>//input[contains(@id,'twitter')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>UPPER_CASE_LETTERS</td>
+	<td>//label[contains(.,'Upper Case Letters')]/input[@type='checkbox']</td>
 	<td></td>
 </tr>
 </tbody>

@@ -1,13 +1,9 @@
 AUI.add(
 	'liferay-message',
 	function(A) {
-		var Lang = A.Lang;
-
 		var EVENT_DATA_DISMISS_ALL = {
 			categoryVisible: false
 		};
-
-		var EVENT_HOVER = ['mouseenter', 'mouseleave'];
 
 		var NAME = 'liferaymessage';
 
