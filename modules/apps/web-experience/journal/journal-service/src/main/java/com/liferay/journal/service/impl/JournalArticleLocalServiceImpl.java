@@ -3422,19 +3422,33 @@ public class JournalArticleLocalServiceImpl
 		List<JournalArticle> articles = journalArticlePersistence.findByG_A(
 			groupId, articleId);
 
+		String treePath = null;
+
+		JournalArticle latestApprovedArticle = getLatestArticle(
+			groupId, articleId, WorkflowConstants.STATUS_APPROVED);
+
 		for (JournalArticle article : articles) {
-			if (serviceContext != null) {
+			if ((serviceContext != null) &&
+				article.equals(latestApprovedArticle)) {
+
 				notifySubscribers(
 					serviceContext.getUserId(), article, "move_from",
 					serviceContext);
 			}
 
 			article.setFolderId(newFolderId);
-			article.setTreePath(article.buildTreePath());
+
+			if (treePath == null) {
+				treePath = article.buildTreePath();
+			}
+
+			article.setTreePath(treePath);
 
 			journalArticlePersistence.update(article);
 
-			if (serviceContext != null) {
+			if ((serviceContext != null) &&
+				article.equals(latestApprovedArticle)) {
+
 				notifySubscribers(
 					serviceContext.getUserId(), article, "move_to",
 					serviceContext);
