@@ -2,8 +2,8 @@ AUI.add(
 	'liferay-list-view',
 	function(A) {
 		var Lang = A.Lang;
+
 		var isString = Lang.isString;
-		var getClassName = A.getClassName;
 
 		var CONTENT_BOX = 'contentBox';
 
@@ -216,8 +216,6 @@ AUI.add(
 							top: 0
 						};
 
-						var valid = true;
-
 						if (direction == STR_LEFT) {
 							styles.left = targetRegion.width;
 						}
@@ -229,9 +227,6 @@ AUI.add(
 						}
 						else if (direction == STR_BOTTOM) {
 							styles.top = targetRegion.height;
-						}
-						else {
-							valid = false;
 						}
 
 						dataContainer.setStyles(styles);

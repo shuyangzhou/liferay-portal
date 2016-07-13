@@ -1,7 +1,6 @@
 AUI.add(
 	'liferay-pagination',
 	function(A) {
-		var AArray = A.Array;
 		var ANode = A.Node;
 		var Lang = A.Lang;
 
@@ -16,8 +15,6 @@ AUI.add(
 		var PAGE = 'page';
 
 		var RESULTS = 'results';
-
-		var STRINGS = 'strings';
 
 		var STR_SPACE = ' ';
 
