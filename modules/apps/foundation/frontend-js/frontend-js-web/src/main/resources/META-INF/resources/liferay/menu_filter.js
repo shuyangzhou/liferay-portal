@@ -2,9 +2,6 @@ AUI.add(
 	'liferay-menu-filter',
 	function(A) {
 		var Lang = A.Lang;
-		var AArray = A.Array;
-		var AEvent = A.Event;
-		var Util = Liferay.Util;
 
 		var CSS_HIDDEN = 'hidden';
 

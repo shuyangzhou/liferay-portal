@@ -2,7 +2,6 @@ AUI.add(
 	'liferay-xml-formatter',
 	function(A) {
 		var Lang = A.Lang;
-		var AArray = A.Array;
 
 		var REGEX_DECLARATIVE_CLOSE = /-->|\]>/;
 
@@ -101,7 +100,7 @@ AUI.add(
 										--level;
 									}
 								}
-								else if (REGEX_ELEMENT_OPEN.test(item) && !REGEX_TAG_CLOSE.test(item) && !REGEX_TAG_SINGLE_CLOSE.test(item) ) {
+								else if (REGEX_ELEMENT_OPEN.test(item) && !REGEX_TAG_CLOSE.test(item) && !REGEX_TAG_SINGLE_CLOSE.test(item)) {
 									if (inComment) {
 										result += item;
 									}
@@ -125,7 +124,7 @@ AUI.add(
 										result += instance._indent(lineIndent, tagIndent, --level) + item;
 									}
 								}
-								else if (REGEX_TAG_SINGLE_CLOSE.test(item) ) {
+								else if (REGEX_TAG_SINGLE_CLOSE.test(item)) {
 									if (inComment) {
 										result += item;
 									}

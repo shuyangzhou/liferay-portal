@@ -5,7 +5,8 @@ AUI.add(
 
 		var DOC = A.config.doc;
 
-		var AutcompleteInputCaretOffset = function(){};
+		var AutcompleteInputCaretOffset = function() {
+		};
 
 		AutcompleteInputCaretOffset.prototype = {
 			_getCaretOffset: function(node) {
