@@ -87,6 +87,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.jar.Attributes;
 import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -1069,13 +1071,57 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 		Collections.sort(jarPaths);
 
+		String prefix = "reference:".concat(_STATIC_JAR);
+
+		List<Bundle> refreshBundles = new ArrayList<>();
+
+		for (Bundle bundle : bundleContext.getBundles()) {
+			String location = bundle.getLocation();
+
+			if (!location.startsWith(prefix)) {
+				continue;
+			}
+
+			Path filePath = Paths.get(location.substring(prefix.length()));
+
+			if (jarPaths.contains(filePath)) {
+				bundles.add(bundle);
+
+				continue;
+			}
+
+			bundle.uninstall();
+
+			refreshBundles.add(bundle);
+
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					"Uninstalled orphan overwritten static JAR bundle " +
+						location);
+			}
+		}
+
+		FrameworkWiring frameworkWiring = _framework.adapt(
+			FrameworkWiring.class);
+
+		frameworkWiring.refreshBundles(refreshBundles);
+
+		refreshBundles.clear();
+
+		Set<String> overwrittenFileNames = new HashSet<>();
+
 		for (Path jarPath : jarPaths) {
 			try (InputStream inputStream = Files.newInputStream(jarPath)) {
+				String path = jarPath.toString();
+
 				Bundle bundle = _installInitialBundle(
-					jarPath.toString(), inputStream);
+					_STATIC_JAR.concat(path), inputStream);
 
 				if (bundle != null) {
 					bundles.add(bundle);
+
+					overwrittenFileNames.add(
+						path.substring(path.lastIndexOf(StringPool.SLASH) + 1));
 				}
 			}
 		}
@@ -1122,9 +1168,36 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 					try (InputStream inputStream = zipFile.getInputStream(
 							zipEntry)) {
 
+						String zipEntryName = zipEntry.getName();
+
+						Matcher matcher = _pattern.matcher(zipEntryName);
+
+						if (matcher.matches()) {
+							String fileName =
+								matcher.group(1) + matcher.group(4);
+
+							if (overwrittenFileNames.contains(fileName)) {
+								if (_log.isInfoEnabled()) {
+									StringBundler sb = new StringBundler(7);
+
+									sb.append(zipFile);
+									sb.append(":");
+									sb.append(zipEntry);
+									sb.append(" is overwritten by ");
+									sb.append(
+										PropsValues.MODULE_FRAMEWORK_BASE_DIR);
+									sb.append("/static/");
+									sb.append(fileName);
+
+									_log.info(sb.toString());
+								}
+
+								continue;
+							}
+						}
+
 						Bundle bundle = _installInitialBundle(
-							StringPool.SLASH.concat(zipEntry.getName()),
-							inputStream);
+							StringPool.SLASH.concat(zipEntryName), inputStream);
 
 						if (bundle != null) {
 							bundles.add(bundle);
@@ -1209,18 +1282,13 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 			hostBundleSymbolicNames.add(fragmentHost);
 		}
 
-		List<Bundle> hostBundles = new ArrayList<>();
-
 		for (Bundle bundle : installedBundles) {
 			if (hostBundleSymbolicNames.contains(bundle.getSymbolicName())) {
-				hostBundles.add(bundle);
+				refreshBundles.add(bundle);
 			}
 		}
 
-		FrameworkWiring frameworkWiring = _framework.adapt(
-			FrameworkWiring.class);
-
-		frameworkWiring.refreshBundles(hostBundles);
+		frameworkWiring.refreshBundles(refreshBundles);
 
 		return new HashSet<>(Arrays.asList(initialBundles));
 	}
@@ -1338,8 +1406,13 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		}
 	}
 
+	private static final String _STATIC_JAR = "Static-Jar::";
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		ModuleFrameworkImpl.class);
+
+	private static final Pattern _pattern = Pattern.compile(
+		"(.*?)(-\\d+\\.\\d+\\.\\d+)(\\..+)?(\\.jar)");
 
 	private Framework _framework;
 	private final Map<ApplicationContext, List<ServiceRegistration<?>>>

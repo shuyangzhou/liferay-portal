@@ -3,6 +3,30 @@
 		icons: {
 			minus: themeDisplay.getPathThemeImages() + '/arrows/01_minus.png',
 			plus: themeDisplay.getPathThemeImages() + '/arrows/01_plus.png'
+		},
+
+		publishToLive: function(options) {
+			options = options || {};
+
+			Liferay.Util.openWindow(
+				{
+					dialog: {
+						constrain: true,
+						modal: true,
+						on: {
+							visibleChange: function(event) {
+								var instance = this;
+
+								if (!event.newVal) {
+									instance.destroy();
+								}
+							}
+						}
+					},
+					title: options.title,
+					uri: options.url
+				}
+			);
 		}
 	};
 
@@ -93,34 +117,6 @@
 			);
 		},
 		['liferay-util-window']
-	);
-
-	Liferay.provide(
-		LayoutExporter,
-		'publishToLive',
-		function(options) {
-			options = options || {};
-
-			Liferay.Util.openWindow(
-				{
-					dialog: {
-						constrain: true,
-						modal: true,
-						on: {
-							visibleChange: function(event) {
-								var instance = this;
-
-								if (!event.newVal) {
-									instance.destroy();
-								}
-							}
-						}
-					},
-					title: options.title,
-					uri: options.url
-				}
-			);
-		}
 	);
 
 	Liferay.provide(

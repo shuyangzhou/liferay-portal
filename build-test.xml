@@ -2257,9 +2257,12 @@ ${tomcat-gc-log}
 						directoryScanner.setBasedir(project.getBaseDir());
 						directoryScanner.setExcludes(
 							new String[] {
+								"modules/apps/static/portal-lpkg-deployer/portal-lpkg-deployer-test/src/test/java/com/liferay/portal/lpkg/overwrite/LPKGOverwriteTest.java",
 								"modules/apps/static/portal-lpkg-deployer/portal-lpkg-deployer-test/src/test/java/com/liferay/portal/lpkg/LPKGUpgradeLogAssertorTest.java",
 								"modules/apps/static/portal-lpkg-deployer/portal-lpkg-deployer-test/src/test/java/com/liferay/portal/lpkg/LPKGUpgradeTest.java",
 								"modules/apps/static/portal-lpkg-deployer/portal-lpkg-deployer-test/src/testIntegration/java/com/liferay/portal/lpkg/deployer/test/LPKGDeployerTest.java",
+								"modules/apps/static/portal-lpkg-deployer/portal-lpkg-deployer-test/src/testIntegration/java/com/liferay/portal/lpkg/overwrite/test/LPKGOverwriteVerifyTest.java",
+								"modules/apps/static/portal-lpkg-deployer/portal-lpkg-deployer-test/src/testIntegration/java/com/liferay/portal/lpkg/overwrite/test/LPKGRevertOverwriteVerifyTest.java",
 								"portal-kernel/test/unit/com/liferay/portal/log/assertor/PortalLogAssertorTest.java",
 								"*/pacl/test/[\\w]+Test.class",
 								"**/*ServiceHttpTest.java",
@@ -5481,6 +5484,56 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 		</replace>
 	</target>
 
+	<target name="prepare-portlet-ext-properties">
+		<for list="${test.case.available.property.names}" param="test.case.available.property.name">
+			<sequential>
+				<if>
+					<contains string="@{test.case.available.property.name}" substring="portlet.properties.com.liferay" />
+					<then>
+						<get-testcase-property property.name="@{test.case.available.property.name}" />
+
+						<propertycopy from="@{test.case.available.property.name}" name="osgi.module.custom.properties" silent="true" />
+
+						<if>
+							<isset property="osgi.module.custom.properties" />
+							<then>
+								<propertyregex
+									input="@{test.case.available.property.name}"
+									override="true"
+									property="osgi.module.name"
+									regexp="portlet\.properties\.(.*)"
+									select="\1"
+								/>
+
+								<pathconvert property="osgi.module.jar.file">
+									<path>
+										<fileset dir="${liferay.home}/osgi">
+											<include name="**/${osgi.module.name}.jar" />
+										</fileset>
+									</path>
+								</pathconvert>
+
+								<echo file="${liferay.home}/tmp/portlet-ext.properties">${osgi.module.custom.properties}</echo>
+
+								<jar destfile="${osgi.module.jar.file}" update="true">
+									<fileset dir="${liferay.home}/tmp">
+										<include name="portlet-ext.properties" />
+									</fileset>
+								</jar>
+
+								<delete dir="${liferay.home}/tmp" />
+							</then>
+						</if>
+					</then>
+				</if>
+
+				<var name="osgi.module.custom.properties" unset="true" />
+				<var name="osgi.module.jar.file" unset="true" />
+				<var name="osgi.module.name" unset="true" />
+			</sequential>
+		</for>
+	</target>
+
 	<target name="prepare-poshi-runner-properties">
 		<echo append="true" file="${test.ext.properties.file}">
 			component.names=${component.names}
@@ -7031,38 +7084,6 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 							<get-database-property property.name="database.schema" />
 							<get-database-property property.name="database.username" />
 
-							<echo>${env.SYBASE}/${env.SYBASE_ASE}/bin/charset -P${database.password} -S${database.schema} -U${database.username} binary.srt utf8</echo>
-
-							<exec executable="${env.SYBASE}/${env.SYBASE_ASE}/bin/charset">
-								<arg value="-P${database.password}" />
-								<arg value="-S${database.schema}" />
-								<arg value="-U${database.username}" />
-								<arg value="binary.srt" />
-								<arg value="utf8" />
-							</exec>
-
-							<echo>${sybase.executable} -P${database.password} -S${database.schema} -U${database.username} sp_configure 'default sortorder id', 50, 'utf8'</echo>
-
-							<exec executable="${sybase.executable}">
-								<arg value="-P${database.password}" />
-								<arg value="-S${database.schema}" />
-								<arg value="-U${database.username}" />
-								<arg line="sp_configure 'default sortorder id', 50, 'utf8'" />
-							</exec>
-
-							<echo>service sybase restart</echo>
-
-							<exec executable="service">
-								<arg value="sybase" />
-								<arg value="restart" />
-							</exec>
-
-							<waitfor maxwait="60" maxwaitunit="second">
-								<socket port="5000" server="localhost" />
-							</waitfor>
-
-							<echo>${sybase.executable} -i create.sql -P ${database.password} -S ${database.schema} -U ${database.username}</echo>
-
 							<exec executable="${sybase.executable}" failonerror="true">
 								<arg value="-i" />
 								<arg value="create.sql" />
@@ -7948,6 +7969,8 @@ jdbc.default.password=${database.mysql.password}</echo>
 				<antcall target="prepare-portal-properties" />
 
 				<antcall target="prepare-portal-ext-properties" />
+
+				<antcall target="prepare-portlet-ext-properties" />
 
 				<antcall target="prepare-system-ext-properties" />
 			</else>

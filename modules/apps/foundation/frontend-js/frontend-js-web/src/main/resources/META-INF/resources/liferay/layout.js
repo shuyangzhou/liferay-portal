@@ -94,9 +94,13 @@ AUI.add(
 			fire: function() {
 				var layoutHandler = Layout.getLayoutHandler();
 
+				var retVal;
+
 				if (layoutHandler) {
-					return layoutHandler.fire.apply(layoutHandler, arguments);
+					retVal = layoutHandler.fire.apply(layoutHandler, arguments);
 				}
+
+				return retVal;
 			},
 
 			getActiveDropContainer: function() {
@@ -161,9 +165,13 @@ AUI.add(
 			on: function() {
 				var layoutHandler = Layout.getLayoutHandler();
 
+				var retVal;
+
 				if (layoutHandler) {
-					return layoutHandler.on.apply(layoutHandler, arguments);
+					retVal = layoutHandler.on.apply(layoutHandler, arguments);
 				}
+
+				return retVal;
 			},
 
 			refresh: function(portlet) {

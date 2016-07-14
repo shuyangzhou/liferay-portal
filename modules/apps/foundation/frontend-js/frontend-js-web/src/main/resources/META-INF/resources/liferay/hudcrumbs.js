@@ -5,8 +5,6 @@ AUI.add(
 
 		var NAME = 'hudcrumbs';
 
-		var getClassName = A.ClassNameManager.getClassName;
-
 		var Hudcrumbs = A.Component.create(
 			{
 				ATTRS: {
@@ -39,15 +37,14 @@ AUI.add(
 
 						var breadcrumbs = instance.get('host');
 						var hudcrumbs = breadcrumbs.clone();
-						var region = breadcrumbs.get('region');
 
 						hudcrumbs.resetId();
 
-						var win = A.getWin();
 						var body = A.getBody();
+						var win = A.getWin();
 
-						instance._win = win;
 						instance._body = body;
+						instance._win = win;
 
 						hudcrumbs.hide();
 
@@ -97,6 +94,7 @@ AUI.add(
 						var instance = this;
 
 						var scrollTop = event.currentTarget.get('scrollTop');
+
 						var hudcrumbs = instance.get('clone');
 
 						var action = 'hide';

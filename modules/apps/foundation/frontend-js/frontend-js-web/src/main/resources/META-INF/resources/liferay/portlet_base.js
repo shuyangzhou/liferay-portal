@@ -1,12 +1,6 @@
 AUI.add(
 	'liferay-portlet-base',
 	function(A) {
-		var Lang = A.Lang;
-		var LString = Lang.String;
-
-		var prefix = LString.prefix;
-		var startsWith = LString.startsWith;
-
 		var PortletBase = function(config) {
 			var instance = this;
 
