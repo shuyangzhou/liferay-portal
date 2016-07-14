@@ -1,7 +1,6 @@
 AUI.add(
 	'liferay-autocomplete-input-caretoffset',
 	function(A) {
-		var AArray = A.Array;
 		var ANode = A.Node;
 
 		var MIRROR_STYLES = [
@@ -26,7 +25,8 @@ AUI.add(
 
 		var STR_INPUT_NODE = 'inputNode';
 
-		var AutcompleteInputCaretOffset = function(){};
+		var AutcompleteInputCaretOffset = function() {
+		};
 
 		AutcompleteInputCaretOffset.prototype = {
 			TPL_CARET: '<span class="input-caret">&nbsp</span>',
@@ -43,7 +43,7 @@ AUI.add(
 				var caretIndex = instance._getCaretIndex().start;
 
 				if (caretIndex === value.length) {
-					value = value + instance.TPL_CARET;
+					value += instance.TPL_CARET;
 				}
 				else {
 					if (instance.get('caretAtTerm')) {

@@ -13,50 +13,12 @@
 
 	<import file="../build-common-java.xml" />
 
+	<property name="copy.jar" value="false" />
 	<property name="deploy.dir" value="${app.server.lib.portal.dir}" />
 	<property name="jar.file" value="${ant.project.name}" />
 	<property name="manifest.bundle.name" value="Liferay Portal Impl" />
 	<property name="manifest.bundle.symbolic.name" value="com.liferay.portal.impl;singleton:=true" />
 	<property name="service.file" value="service.xml" />
-
-	<macrodef name="deploy">
-		<attribute name="deploy.dir" />
-		<attribute name="jar.file" />
-		<attribute name="src.dir" />
-
-		<sequential>
-			<deploy-cmd
-				copy.jar="false"
-				deploy.dir="@{deploy.dir}"
-				jar.file="@{jar.file}"
-				src.dir="@{src.dir}"
-			>
-				<deploy-post>
-					<ant dir="../portal-kernel" inheritAll="false" target="deploy" />
-
-					<deploy-properties />
-
-					<if>
-						<and>
-							<equals arg1="${app.server.type}" arg2="tomcat" />
-							<antelope:endswith string="${app.server.portal.dir}" with="/portal-web/docroot" />
-						</and>
-						<then>
-							<delete failonerror="false" file="@{deploy.dir}/@{jar.file}" />
-
-							<unjar dest="${app.server.classes.portal.dir}" src="portal-impl.jar" />
-						</then>
-						<else>
-							<copy file="@{jar.file}.jar" preservelastmodified="true" todir="@{deploy.dir}" />
-
-							<copy file="classes/log4j.properties" preservelastmodified="true" todir="${app.server.classes.portal.dir}" />
-							<copy file="classes/logging.properties" preservelastmodified="true" todir="${app.server.classes.portal.dir}" />
-						</else>
-					</if>
-				</deploy-post>
-			</deploy-cmd>
-		</sequential>
-	</macrodef>
 
 	<target name="build-alloy-taglib-jar">
 		<if>
@@ -173,6 +135,8 @@ svn://svn.liferay.com/repos/public/alloy/trunk/sandbox/taglibs.
 			<jvmarg value="-Dfile.encoding=UTF-8" />
 			<jvmarg value="-Duser.country=US" />
 			<jvmarg value="-Duser.language=en" />
+			<arg value="build.current.branch=${build.current.branch}" />
+			<arg value="git.working.branch.name=${git.working.branch.name}" />
 			<arg value="lang.dir=${lang.dir}" />
 			<arg value="lang.file=${lang.file}" />
 			<arg value="lang.plugin=false" />
@@ -180,6 +144,14 @@ svn://svn.liferay.com/repos/public/alloy/trunk/sandbox/taglibs.
 			<arg value="lang.translate.client.id=${microsoft.translator.client.id}" />
 			<arg value="lang.translate.client.secret=${microsoft.translator.client.secret}" />
 		</java>
+	</target>
+
+	<target name="build-lang-current-branch">
+		<antcall target="build-lang-cmd">
+			<param name="build.current.branch" value="true" />
+			<param name="lang.dir" value="src/content" />
+			<param name="lang.file" value="Language" />
+		</antcall>
 	</target>
 
 	<target name="build-lib-versions">
@@ -553,6 +525,30 @@ svn://svn.liferay.com/repos/public/alloy/trunk/sandbox/taglibs.
 		/>
 	</target>
 
+	<target depends="build-common-java.deploy" name="deploy" unless="deploy.uptodate">
+		<ant dir="../portal-kernel" inheritAll="false" target="deploy" />
+
+		<deploy-properties />
+
+		<if>
+			<and>
+				<equals arg1="${app.server.type}" arg2="tomcat" />
+				<antelope:endswith string="${app.server.portal.dir}" with="/portal-web/docroot" />
+			</and>
+			<then>
+				<delete failonerror="false" file="${deploy.dir}/${jar.file}" />
+
+				<unjar dest="${app.server.classes.portal.dir}" src="portal-impl.jar" />
+			</then>
+			<else>
+				<copy file="${jar.file}.jar" preservelastmodified="true" todir="${deploy.dir}" />
+
+				<copy file="classes/log4j.properties" preservelastmodified="true" todir="${app.server.classes.portal.dir}" />
+				<copy file="classes/logging.properties" preservelastmodified="true" todir="${app.server.classes.portal.dir}" />
+			</else>
+		</if>
+	</target>
+
 	<target name="format-source">
 		<path id="source.formatter.classpath">
 			<fileset dir="${sdk.dir}/dependencies/com.liferay.source.formatter/lib" includes="*.jar" />
@@ -581,12 +577,19 @@ svn://svn.liferay.com/repos/public/alloy/trunk/sandbox/taglibs.
 			<jvmarg value="-Dsource.formatter.check.registry.in.test.classes=${source.formatter.check.registry.in.test.classes}" />
 			<jvmarg value="-Dsource.formatter.check.unprocessed.exceptions=${source.formatter.check.unprocessed.exceptions}" />
 			<jvmarg value="-Dsource.formatter.excludes=${source.formatter.excludes}" />
-			<jvmarg value="-Dsource.formatter.git.working.branch.name=${source.formatter.git.working.branch.name}" />
-			<jvmarg value="-Dsource.formatter.max.line.length=${source.formatter.max.line.length}" />
-			<jvmarg value="-Dsource.formatter.processor.thread.count=${source.formatter.processor.thread.count}" />
 			<arg value="format.current.branch=${format.current.branch}" />
 			<arg value="format.latest.author=${format.latest.author}" />
 			<arg value="format.local.changes=${format.local.changes}" />
+			<arg value="git.working.branch.name=${git.working.branch.name}" />
+			<arg value="max.line.length=${source.formatter.max.line.length}" />
+			<arg value="processor.thread.count=${source.formatter.processor.thread.count}" />
+			<arg value="source.auto.fix=${source.auto.fix}" />
+			<arg value="source.base.dir=${source.base.dir}" />
+			<arg value="source.copyright.file=${source.copyright.file}" />
+			<arg value="source.files=${source.files}" />
+			<arg value="source.print.errors=${source.print.errors}" />
+			<arg value="source.throw.exception=${source.throw.exception}" />
+			<arg value="source.use.properties=${source.use.properties}" />
 		</java>
 
 		<delete file="ServiceBuilder.temp" />
