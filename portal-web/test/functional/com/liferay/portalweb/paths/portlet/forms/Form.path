@@ -92,12 +92,7 @@
 </tr>
 <!--ADD_FIELD-->
 <tr>
-	<td>ADD_ADDITIONAL_FIELD</td>
-	<td>//div[contains(@class,'col col-md-${key_columnSize}') and contains(.,'${key_previousFieldLabel}')]/../../following-sibling::div//span[contains(@class,'plus-icon')]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>ADD_FIRST_FIELD</td>
+	<td>ADD_FIELD</td>
 	<td>//div[contains(@class,'col col-md-${key_columnSize}')]//span[contains(@class,'add-button-plus-icon')]</td>
 	<td></td>
 </tr>
@@ -125,6 +120,17 @@
 <tr>
 	<td>PUBLISH_FORM_PUBLIC_URL</td>
 	<td>//input[@class='form-control' and @type='text']</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--SETTINGS_TAB-->
+<tr>
+	<td>SETTINGS_TAB_EMAIL_NOTIFICATIONS</td>
+	<td>//a[contains(@class,'tab-content') and contains(.,'Email Notifications')]</td>
 	<td></td>
 </tr>
 <tr>

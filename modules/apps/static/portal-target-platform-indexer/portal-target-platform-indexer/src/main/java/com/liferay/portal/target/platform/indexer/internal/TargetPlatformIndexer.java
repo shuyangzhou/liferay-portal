@@ -303,7 +303,8 @@ public class TargetPlatformIndexer implements Indexer {
 
 				if (parameterString.startsWith("osgi.ee;osgi.ee=")) {
 					if (parameterString.startsWith("osgi.ee;osgi.ee=JavaSE")) {
-						parameterString = _PARAMETER_STRING_JDK_VERSION;
+						sb.append(_PARAMETER_STRING_JDK_VERSION);
+						sb.append(",");
 					}
 
 					continue;
@@ -313,7 +314,6 @@ public class TargetPlatformIndexer implements Indexer {
 				}
 
 				sb.append(parameterString);
-
 				sb.append(",");
 			}
 

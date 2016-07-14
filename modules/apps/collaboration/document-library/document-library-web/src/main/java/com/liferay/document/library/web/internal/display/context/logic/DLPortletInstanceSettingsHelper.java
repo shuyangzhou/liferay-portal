@@ -410,6 +410,8 @@ public class DLPortletInstanceSettingsHelper {
 		String[] mediaGalleryMimeTypes =
 			dlPortletInstanceSettings.getMimeTypes();
 
+		Arrays.sort(mediaGalleryMimeTypes);
+
 		ThemeDisplay themeDisplay = _dlRequestHelper.getThemeDisplay();
 
 		_currentMimeTypes = new ArrayList<>();

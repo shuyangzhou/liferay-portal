@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Source Formatter
 Bundle-SymbolicName: com.liferay.source.formatter
-Bundle-Version: 1.0.239
+Bundle-Version: 1.0.243
 Import-Package:\
 	!javax.portlet,\
 	\
@@ -14,9 +14,12 @@ Import-Package:\
 	@com.liferay.portal.impl-[0-9]*.jar!/com/liferay/portal/tools/ArgumentsMap.class,\
 	@com.liferay.portal.impl-[0-9]*.jar!/com/liferay/portal/tools/ArgumentsUtil.class,\
 	@com.liferay.portal.impl-[0-9]*.jar!/com/liferay/portal/tools/BaseImportsFormatter.class,\
+	@com.liferay.portal.impl-[0-9]*.jar!/com/liferay/portal/tools/GitException.class,\
+	@com.liferay.portal.impl-[0-9]*.jar!/com/liferay/portal/tools/GitUtil.class,\
 	@com.liferay.portal.impl-[0-9]*.jar!/com/liferay/portal/tools/ImportPackage.class,\
 	@com.liferay.portal.impl-[0-9]*.jar!/com/liferay/portal/tools/ImportsFormatter.class,\
 	@com.liferay.portal.impl-[0-9]*.jar!/com/liferay/portal/tools/JavaImportsFormatter.class,\
+	@com.liferay.portal.impl-[0-9]*.jar!/com/liferay/portal/tools/LangBuilder.class,\
 	@com.liferay.portal.impl-[0-9]*.jar!/com/liferay/portal/tools/ToolsUtil.class,\
 	@com.liferay.portal.impl-[0-9]*.jar!/com/liferay/portal/util/EntityResolver.class,\
 	@com.liferay.portal.impl-[0-9]*.jar!/com/liferay/portal/xml/SAXReaderFactory.class,\

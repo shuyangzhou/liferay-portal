@@ -14,9 +14,9 @@
 	<command name="_selectSpecificEventCurrentDay">
 		<var name="key_eventTitle" value="${eventTitle}" />
 
-		<execute function="ScrollWebElementIntoView" locator1="PGCalendar#SCHEDULER_REGULAR_EVENT_SPECIFIC_CURRENT_DAY_VIA_DAY_OR_WEEK_VIEW" />
+		<execute function="ScrollWebElementIntoView" locator1="Calendar#SCHEDULER_REGULAR_EVENT_SPECIFIC_CURRENT_DAY_VIA_DAY_OR_WEEK_VIEW" />
 
-		<execute function="AssertClick#assertTextClickNoMouseOver" locator1="PGCalendar#SCHEDULER_REGULAR_EVENT_SPECIFIC_CURRENT_DAY_VIA_DAY_OR_WEEK_VIEW" value1="${eventTitle}" />
+		<execute function="AssertClick#assertPartialTextClickAt" locator1="Calendar#SCHEDULER_REGULAR_EVENT_SPECIFIC_CURRENT_DAY_VIA_DAY_OR_WEEK_VIEW" value1="${eventTitle}" />
 	</command>
 
 	<command name="_viewCalendarViaDialogBox">
@@ -152,7 +152,7 @@
 	</command>
 
 	<command name="gotoAddViaDayView">
-		<execute function="SikuliClick" locator1="PGCalendar#SCHEDULER_DAY_VIEW_PNG" />
+		<execute function="SikuliClick" locator1="Calendar#SCHEDULER_DAY_VIEW_PNG" />
 	</command>
 
 	<command name="gotoDetailsViaDialogBox">
@@ -220,15 +220,7 @@
 	</command>
 
 	<command name="selectSpecificEvent">
-		<var method="selenium#getCurrentHour()" name="currentHour" />
 		<var name="key_eventTitle" value="${eventTitle}" />
-
-		<if>
-			<equals arg1="${currentHour}" arg2="23" />
-			<then>
-				<var name="eventToday" value="false" />
-			</then>
-		</if>
 
 		<if>
 			<contains string="${eventTitle}" substring="All Day" />
@@ -236,11 +228,15 @@
 				<execute function="AssertClick#assertTextClickNoMouseOver" locator1="Calendar#SCHEDULER_EVENT_SPECIFIC_ALL_DAY" value1="${eventTitle}" />
 			</then>
 			<elseif>
-				<equals arg1="${eventToday}" arg2="false" />
+				<condition function="IsElementNotPresent" locator1="Calendar#SCHEDULER_VIEW_EVENT_DAY_AND_WEEK_VIEW" />
 				<then>
+					<execute macro="CalendarNavigator#gotoView">
+						<var name="viewType" value="Week" />
+					</execute>
+
 					<execute function="ScrollWebElementIntoView" locator1="Calendar#SCHEDULER_VIEW_EVENT_NOT_TODAY" />
 
-					<execute function="AssertClick" locator1="Calendar#SCHEDULER_VIEW_EVENT_NOT_TODAY" value1="${eventTitle}" />
+					<execute function="AssertClick#assertPartialTextClickAt" locator1="Calendar#SCHEDULER_VIEW_EVENT_NOT_TODAY" value1="${eventTitle}" />
 				</then>
 			</elseif>
 			<else>
@@ -277,11 +273,10 @@
 
 		<execute function="Pause" value1="1000" />
 
-		<var method="selenium#getCurrentHour()" name="currentHour" />
 		<var name="key_eventTitle" value="${eventTitle}" />
 
 		<if>
-			<equals arg1="${currentHour}" arg2="23" />
+			<condition function="IsElementNotPresent" locator1="Calendar#SCHEDULER_VIEW_EVENT_DAY_AND_WEEK_VIEW" />
 			<then>
 				<execute macro="CalendarNavigator#gotoNextDay" />
 
@@ -411,8 +406,8 @@
 	</command>
 
 	<command name="viewEventTimesViaDialogBox">
-		<execute function="AssertTextEquals#assertPartialText" locator1="PGCalendar#SCHEDULER_EVENT_DIALOG_BOX_WHEN_FIELD" value1="${startDateTime}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="PGCalendar#SCHEDULER_EVENT_DIALOG_BOX_WHEN_FIELD" value1="${endDateTime}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="Calendar#SCHEDULER_EVENT_DIALOG_BOX_WHEN_FIELD" value1="${startDateTime}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="Calendar#SCHEDULER_EVENT_DIALOG_BOX_WHEN_FIELD" value1="${endDateTime}" />
 	</command>
 
 	<command name="viewEventTitleViaDialogBox">
@@ -428,10 +423,10 @@
 	</command>
 
 	<command name="viewEventUsersViaDialogBox">
-		<execute function="AssertTextEquals" locator1="PGCalendar#SCHEDULER_EVENT_DIALOG_BOX_USERS_LABEL" value1="Users:" />
+		<execute function="AssertTextEquals" locator1="Calendar#SCHEDULER_EVENT_DIALOG_BOX_USERS_LABEL" value1="Users:" />
 
 		<for list="${usersList}" param="user">
-			<execute function="AssertTextEquals#assertPartialText" locator1="PGCalendar#SCHEDULER_EVENT_DIALOG_BOX_USERS_FIELD" value1="${user}" />
+			<execute function="AssertTextEquals#assertPartialText" locator1="Calendar#SCHEDULER_EVENT_DIALOG_BOX_USERS_FIELD" value1="${user}" />
 		</for>
 	</command>
 
@@ -451,7 +446,7 @@
 			<var name="viewType" value="Day" />
 		</execute>
 
-		<execute function="AssertTextEquals" locator1="PGCalendar#SCHEDULER_VIEW_DAY_FIRST_HOUR" value1="${firstHour}" />
+		<execute function="AssertTextEquals" locator1="Calendar#SCHEDULER_VIEW_DAY_FIRST_HOUR" value1="${firstHour}" />
 
 		<execute macro="CalendarNavigator#gotoView">
 			<var name="viewType" value="Week" />
@@ -465,7 +460,7 @@
 			<var name="viewType" value="Day" />
 		</execute>
 
-		<execute function="AssertTextEquals" locator1="PGCalendar#SCHEDULER_VIEW_DAY_LAST_HOUR" value1="${lastHour}" />
+		<execute function="AssertTextEquals" locator1="Calendar#SCHEDULER_VIEW_DAY_LAST_HOUR" value1="${lastHour}" />
 
 		<execute macro="CalendarNavigator#gotoView">
 			<var name="viewType" value="Week" />
@@ -576,8 +571,8 @@
 	<command name="viewSelectedView">
 		<var method="StringUtil#upperCase('${view}')" name="viewUppercase" />
 
-		<execute function="AssertElementPresent" locator1="PGCalendar#VIEW_${viewUppercase}_BUTTON_ACTIVE" />
-		<execute function="AssertElementPresent#assertVisible" locator1="PGCalendar#SCHEDULER_VIEW_${viewUppercase}" />
+		<execute function="AssertElementPresent" locator1="Calendar#VIEW_${viewUppercase}_BUTTON_ACTIVE" />
+		<execute function="AssertElementPresent#assertVisible" locator1="Calendar#SCHEDULER_VIEW_${viewUppercase}" />
 	</command>
 
 	<command name="viewShowMoreLocalizedViaDayView">
@@ -587,7 +582,7 @@
 
 		<var name="key_messageLocalized" value="${messageLocalized}" />
 
-		<execute function="AssertTextEquals" locator1="PGCalendar#SCHEDULER_VIEW_DAY_SHOW_MORE_LOCALIZED" value1="${messageLocalized}" />
+		<execute function="AssertTextEquals" locator1="Calendar#SCHEDULER_VIEW_DAY_SHOW_MORE_LOCALIZED" value1="${messageLocalized}" />
 	</command>
 
 	<command name="viewShowMoreLocalizedViaMonthView">
@@ -597,7 +592,7 @@
 
 		<var name="key_messageLocalized" value="${messageLocalized}" />
 
-		<execute function="AssertTextEquals" locator1="PGCalendar#SCHEDULER_VIEW_MONTH_SHOW_MORE_LOCALIZED" value1="${messageLocalized}" />
+		<execute function="AssertTextEquals" locator1="Calendar#SCHEDULER_VIEW_MONTH_SHOW_MORE_LOCALIZED" value1="${messageLocalized}" />
 	</command>
 
 	<command name="viewShowMoreLocalizedViaWeekView">
@@ -622,11 +617,10 @@
 			<var name="viewType" value="Week" />
 		</execute>
 
-		<var method="selenium#getCurrentHour()" name="currentHour" />
 		<var name="key_eventTitle" value="${eventTitle}" />
 
 		<if>
-			<equals arg1="${currentHour}" arg2="23" />
+			<condition function="IsElementNotPresent" locator1="Calendar#SCHEDULER_VIEW_EVENT_DAY_AND_WEEK_VIEW" />
 			<then>
 				<execute function="AssertElementPresent" locator1="Calendar#SCHEDULER_EVENT_SPECIFIC" value1="${eventTitle}" />
 			</then>
