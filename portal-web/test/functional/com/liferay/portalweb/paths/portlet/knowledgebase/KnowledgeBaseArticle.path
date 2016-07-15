@@ -19,6 +19,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>HEADER_TITLE</td>
+	<td>//h3[@class='header-title']/span</td>
+	<td></td>
+</tr>
+<tr>
 	<td>CONTENT_IMAGE</td>
 	<td>//p/img</td>
 	<td></td>
@@ -26,6 +31,16 @@
 <tr>
 	<td>EDIT_ON_GITHUB</td>
 	<td>//span[contains(.,'Edit on GitHub')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ARTICLE_TITLE</td>
+	<td>//div[@class='kb-article-container']//h1[@class='kb-title']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ARTICLE_CONTENT</td>
+	<td>//div[@class='kb-article-container']//div[@class='kb-article-body']</td>
 	<td></td>
 </tr>
 <tr>
@@ -55,7 +70,7 @@
 </tr>
 <tr>
 	<td>DO_YOU_HAVE_ANY_SUGGESTIONS</td>
-	<td>//div[contains(@class,'kb-entity-body')]//h5[contains(.,'Do you have any suggestions?')]</td>
+	<td>//div[contains(.,'Do you have any suggestions?')]/h5</td>
 	<td></td>
 </tr>
 <tr>
@@ -185,7 +200,12 @@
 <!--SECTIONS-->
 <tr>
 	<td>SECTIONS_SELECT</td>
-	<td>//select[contains(@id, 'knowledge_base_web') and contains(@id, 'sections')]</td>
+	<td>//select[contains(@id, 'knowledge_base_web') and contains(@id, 'sections')]//option[contains(.,'${key_kbArticleSection}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADMIN_KB_ARTICLE_SECTION</td>
+	<td>xpath=(//div[contains(@data-fieldname,'KBArticleSections')]//textarea)[${key_counter}]</td>
 	<td></td>
 </tr>
 <tr>

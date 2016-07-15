@@ -24,7 +24,9 @@
 		<liferay-ui:search-container-column-text
 			colspan="<%= 2 %>"
 		>
-			<h5><%= organization.getName() %></h5>
+			<h5>
+				<aui:a href="<%= String.valueOf(rowURL) %>"><%= organization.getName() %></aui:a>
+			</h5>
 
 			<h6 class="text-default">
 				<span><%= HtmlUtil.escape(organization.getParentOrganizationName()) %></span>
@@ -62,6 +64,7 @@
 				rowChecker="<%= rowChecker %>"
 				subtitle="<%= LanguageUtil.get(request, organization.getType()) %>"
 				title="<%= organization.getName() %>"
+				url="<%= String.valueOf(rowURL) %>"
 			/>
 		</liferay-ui:search-container-column-text>
 	</c:when>

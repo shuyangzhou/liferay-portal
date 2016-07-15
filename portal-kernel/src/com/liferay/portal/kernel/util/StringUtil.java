@@ -443,7 +443,11 @@ public class StringUtil {
 	 *         character, ignoring case; <code>false</code> otherwise
 	 */
 	public static boolean endsWith(String s, char end) {
-		return endsWith(s, (Character.valueOf(end)).toString());
+		if ((s == null) || s.isEmpty()) {
+			return false;
+		}
+
+		return equalsIgnoreCase(s.charAt(s.length() - 1), end);
 	}
 
 	/**
@@ -502,6 +506,43 @@ public class StringUtil {
 		return s1.equals(s2);
 	}
 
+	public static boolean equalsIgnoreCase(char c1, char c2) {
+		if (c1 == c2) {
+			return true;
+		}
+
+		// Fast fallback for non-acsii code.
+
+		if ((c1 > 127) || (c2 > 127)) {
+
+			// Georgian alphabet needs to check both upper and lower case
+
+			if ((Character.toLowerCase(c1) == Character.toLowerCase(c2)) ||
+				(Character.toUpperCase(c1) == Character.toUpperCase(c2))) {
+
+				return true;
+			}
+
+			return false;
+		}
+
+		// Fast fallback for non-letter ascii code
+
+		if ((c1 < CharPool.UPPER_CASE_A) || (c1 > CharPool.LOWER_CASE_Z) ||
+			(c2 < CharPool.UPPER_CASE_A) || (c2 > CharPool.LOWER_CASE_Z)) {
+
+			return false;
+		}
+
+		int delta = c1 - c2;
+
+		if ((delta != 32) && (delta != -32)) {
+			return false;
+		}
+
+		return true;
+	}
+
 	/**
 	 * Returns <code>true</code> if the strings are equal, ignoring case.
 	 *
@@ -524,40 +565,7 @@ public class StringUtil {
 		}
 
 		for (int i = 0; i < s1.length(); i++) {
-			char c1 = s1.charAt(i);
-
-			char c2 = s2.charAt(i);
-
-			if (c1 == c2) {
-				continue;
-			}
-
-			// Fast fallback for non-acsii code.
-
-			if ((c1 > 127) || (c2 > 127)) {
-
-				// Georgian alphabet needs to check both upper and lower case
-
-				if ((Character.toLowerCase(c1) == Character.toLowerCase(c2)) ||
-					(Character.toUpperCase(c1) == Character.toUpperCase(c2))) {
-
-					continue;
-				}
-
-				return false;
-			}
-
-			// Fast fallback for non-letter ascii code
-
-			if ((c1 < CharPool.UPPER_CASE_A) || (c1 > CharPool.LOWER_CASE_Z) ||
-				(c2 < CharPool.UPPER_CASE_A) || (c2 > CharPool.LOWER_CASE_Z)) {
-
-				return false;
-			}
-
-			int delta = c1 - c2;
-
-			if ((delta != 32) && (delta != -32)) {
+			if (!equalsIgnoreCase(s1.charAt(i), s2.charAt(i))) {
 				return false;
 			}
 		}
@@ -3955,7 +3963,11 @@ public class StringUtil {
 	 *         specified character; <code>false</code> otherwise
 	 */
 	public static boolean startsWith(String s, char begin) {
-		return startsWith(s, (Character.valueOf(begin)).toString());
+		if ((s == null) || s.isEmpty()) {
+			return false;
+		}
+
+		return equalsIgnoreCase(s.charAt(0), begin);
 	}
 
 	/**

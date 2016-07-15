@@ -857,8 +857,9 @@ public class Validator {
 			return false;
 		}
 
-		if (StringUtil.startsWith(ipAddress, CharPool.OPEN_BRACKET) &&
-			StringUtil.endsWith(ipAddress, CharPool.CLOSE_BRACKET)) {
+		if ((ipAddress.charAt(0) == CharPool.OPEN_BRACKET) &&
+			(ipAddress.charAt(ipAddress.length() - 1) ==
+				CharPool.CLOSE_BRACKET)) {
 
 			ipAddress = ipAddress.substring(1, ipAddress.length() - 1);
 		}

@@ -192,10 +192,19 @@ public abstract class DoulosServlet extends HttpServlet {
 
 		String validIpsString = servletConfig.getInitParameter("validIps");
 
-		_validIps = validIpsString.split(",");
+		if (validIpsString != null) {
+			_validIps = validIpsString.split(",");
+		}
+		else {
+			_validIps = new String[0];
+		}
 	}
 
 	protected boolean isValidIP(String remoteAddr) {
+		if (_validIps.length == 0) {
+			return true;
+		}
+
 		for (String validIp : _validIps) {
 			if (remoteAddr.equals(validIp) ||
 				remoteAddr.startsWith(validIp + ".")) {

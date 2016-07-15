@@ -1,6 +1,11 @@
-Liferay.on = function(){};
-Liferay.fire = function(){};
-Liferay.detach = function(){};
+Liferay.on = function() {
+};
+
+Liferay.fire = function() {
+};
+
+Liferay.detach = function() {
+};
 
 ;(function(A, Liferay) {
 	var CLICK_EVENTS = {};
