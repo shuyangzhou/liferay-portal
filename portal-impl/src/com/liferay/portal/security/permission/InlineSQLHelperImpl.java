@@ -14,6 +14,7 @@
 
 package com.liferay.portal.security.permission;
 
+import com.liferay.exportimport.kernel.staging.StagingUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -420,6 +421,10 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 		String sql, String className, String classPKField, String userIdField,
 		long[] groupIds, String bridgeJoin) {
 
+		for (int i = 0; i < groupIds.length; i++) {
+			groupIds[i] = StagingUtil.getLiveGroupId(groupIds[i]);
+		}
+
 		PermissionChecker permissionChecker =
 			PermissionThreadLocal.getPermissionChecker();
 
@@ -541,6 +546,10 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 
 		if (Validator.isNull(classPKField)) {
 			throw new IllegalArgumentException("classPKField is null");
+		}
+
+		for (int i = 0; i < groupIds.length; i++) {
+			groupIds[i] = StagingUtil.getLiveGroupId(groupIds[i]);
 		}
 
 		PermissionChecker permissionChecker =

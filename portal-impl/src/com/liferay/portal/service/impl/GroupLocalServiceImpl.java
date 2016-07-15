@@ -373,33 +373,35 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 
 		layoutSetLocalService.addLayoutSet(groupId, false);
 
-		// Resources
+		if (!group.isStagingGroup()) {
+			// Resources
 
-		resourceLocalService.addResources(
-			group.getCompanyId(), 0, 0, Group.class.getName(),
-			group.getGroupId(), false, false, false);
+			resourceLocalService.addResources(
+				group.getCompanyId(), 0, 0, Group.class.getName(),
+				group.getGroupId(), false, false, false);
 
-		if ((classNameId == groupClassNameId) && !user.isDefaultUser()) {
+			if ((classNameId == groupClassNameId) && !user.isDefaultUser()) {
 
-			// Site roles
+				// Site roles
 
-			Role role = roleLocalService.getRole(
-				group.getCompanyId(), RoleConstants.SITE_OWNER);
+				Role role = roleLocalService.getRole(
+					group.getCompanyId(), RoleConstants.SITE_OWNER);
 
-			userGroupRoleLocalService.addUserGroupRoles(
-				userId, groupId, new long[] {role.getRoleId()});
+				userGroupRoleLocalService.addUserGroupRoles(
+					userId, groupId, new long[]{role.getRoleId()});
 
-			// User
+				// User
 
-			userLocalService.addGroupUsers(
-				group.getGroupId(), new long[] {userId});
+				userLocalService.addGroupUsers(
+					group.getGroupId(), new long[]{userId});
 
-			// Asset
+				// Asset
 
-			if (serviceContext != null) {
-				updateAsset(
-					userId, group, serviceContext.getAssetCategoryIds(),
-					serviceContext.getAssetTagNames());
+				if (serviceContext != null) {
+					updateAsset(
+						userId, group, serviceContext.getAssetCategoryIds(),
+						serviceContext.getAssetTagNames());
+				}
 			}
 		}
 

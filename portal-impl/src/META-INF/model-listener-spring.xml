@@ -12,6 +12,9 @@
 	<bean class="com.liferay.portal.model.LayoutModelListener" id="com.liferay.portal.model.LayoutModelListener" />
 	<bean class="com.liferay.portal.model.LayoutSetModelListener" id="com.liferay.portal.model.LayoutSetModelListener" />
 	<bean class="com.liferay.portal.model.PortletPreferencesModelListener" id="com.liferay.portal.model.PortletPreferencesModelListener" />
+	<bean class="com.liferay.portal.model.StagingGroupModelListener" id="com.liferay.portal.model.StagingGroupModelListener" />
+	<bean class="com.liferay.portal.model.StagingUserGroupRoleModelListener" id="com.liferay.portal.model.StagingUserGroupRoleModelListener" />
+	<bean class="com.liferay.portal.model.StagingUserGroupGroupRoleModelListener" id="com.liferay.portal.model.StagingUserGroupGroupRoleModelListener" />
 	<bean class="com.liferay.portal.service.impl.LayoutSetPrototypeLayoutModelListener" id="com.liferay.portal.service.impl.LayoutSetPrototypeLayoutModelListener" />
 	<bean class="com.liferay.portal.service.impl.LayoutSetPrototypeLayoutSetModelListener" id="com.liferay.portal.service.impl.LayoutSetPrototypeLayoutSetModelListener" />
 	<bean class="com.liferay.portlet.announcements.model.GroupModelListener" id="com.liferay.portlet.announcements.model.GroupModelListener" />

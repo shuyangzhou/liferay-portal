@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search.internal;
 
+import com.liferay.exportimport.kernel.staging.StagingUtil;
 import com.liferay.portal.kernel.exception.NoSuchResourceException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -157,6 +158,8 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 			long companyId, long groupId, String className, String classPK,
 			String viewActionId, Document doc)
 		throws Exception {
+
+		groupId = StagingUtil.getLiveGroupId(groupId);
 
 		List<Role> roles = null;
 
@@ -319,6 +322,8 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 			Set<Long> usersGroupIds = usersGroupIdsToRoles.keySet();
 
 			for (long searchGroupId : searchGroupIds) {
+				searchGroupId = StagingUtil.getLiveGroupId(searchGroupId);
+
 				if (!usersGroupIds.contains(searchGroupId) &&
 					_resourcePermissionLocalService.hasResourcePermission(
 						companyId, className, ResourceConstants.SCOPE_GROUP,
