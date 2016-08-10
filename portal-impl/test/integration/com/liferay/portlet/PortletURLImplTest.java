@@ -29,6 +29,7 @@ import com.liferay.portal.util.test.LayoutTestUtil;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
 
 import org.junit.Assert;
@@ -62,11 +63,12 @@ public class PortletURLImplTest {
 
 		Layout layout = LayoutTestUtil.addLayout(_group);
 
-		themeDisplay.setScopeGroupId(_group.getGroupId());
-		themeDisplay.setSiteGroupId(_group.getGroupId());
 		themeDisplay.setLayout(layout);
 		themeDisplay.setPlid(layout.getPlid());
+
 		themeDisplay.setPortalURL("http://localhost:8080");
+		themeDisplay.setScopeGroupId(_group.getGroupId());
+		themeDisplay.setSiteGroupId(_group.getGroupId());
 
 		long plid = themeDisplay.getPlid();
 
@@ -85,7 +87,8 @@ public class PortletURLImplTest {
 			mockServletRequest, plid, PortletKeys.LOGIN, renderParameters);
 
 		PortletURL portletURL = PortletURLFactoryUtil.create(
-			mockServletRequest, PortletKeys.LOGIN, plid, "RENDER_PHASE");
+			mockServletRequest, PortletKeys.LOGIN, plid,
+			PortletRequest.RENDER_PHASE);
 
 		PortletURLImpl portletURLImpl = (PortletURLImpl)portletURL;
 
@@ -107,9 +110,11 @@ public class PortletURLImplTest {
 		Assert.assertEquals(sb.toString(), portletURL.toString());
 
 		portletURLImpl.clearCache();
+
 		Assert.assertEquals(sb.toString(), portletURL.toString());
 
 		portletURLImpl.clearCache();
+
 		Assert.assertEquals(sb.toString(), portletURL.toString());
 	}
 
