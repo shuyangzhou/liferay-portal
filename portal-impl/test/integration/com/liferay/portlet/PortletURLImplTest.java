@@ -76,7 +76,7 @@ public class PortletURLImplTest {
 
 		String[] values = new String[] {"value1", "value2"};
 
-		renderParameters.put("test", values);
+		renderParameters.put("name", values);
 
 		MockHttpServletRequest mockServletRequest =
 			new MockHttpServletRequest();
@@ -103,9 +103,9 @@ public class PortletURLImplTest {
 		sb.append(PortletKeys.LOGIN);
 		sb.append("&p_p_lifecycle=0&_");
 		sb.append(PortletKeys.LOGIN);
-		sb.append("_test=value1&_");
+		sb.append("_name=value1&_");
 		sb.append(PortletKeys.LOGIN);
-		sb.append("_test=value2");
+		sb.append("_name=value2");
 
 		Assert.assertEquals(sb.toString(), portletURL.toString());
 
