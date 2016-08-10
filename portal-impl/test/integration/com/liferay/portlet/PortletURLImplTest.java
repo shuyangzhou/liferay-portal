@@ -74,7 +74,7 @@ public class PortletURLImplTest {
 
 		Map<String, String[]> renderParameters = new HashMap<>();
 
-		String[] values = new String[] {"test1", "test2"};
+		String[] values = new String[] {"value1", "value2"};
 
 		renderParameters.put("test", values);
 
@@ -103,9 +103,9 @@ public class PortletURLImplTest {
 		sb.append(PortletKeys.LOGIN);
 		sb.append("&p_p_lifecycle=0&_");
 		sb.append(PortletKeys.LOGIN);
-		sb.append("_test=test1&_");
+		sb.append("_test=value1&_");
 		sb.append(PortletKeys.LOGIN);
-		sb.append("_test=test2");
+		sb.append("_test=value2");
 
 		Assert.assertEquals(sb.toString(), portletURL.toString());
 
