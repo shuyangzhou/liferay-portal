@@ -417,10 +417,6 @@ public class ResourceBlockLocalServiceImpl
 	}
 
 	@Override
-	@Transactional(
-		isolation = Isolation.READ_COMMITTED,
-		propagation = Propagation.REQUIRES_NEW
-	)
 	public void releasePermissionedModelResourceBlock(
 		PermissionedModel permissionedModel) {
 
@@ -445,10 +441,6 @@ public class ResourceBlockLocalServiceImpl
 	 * @param resourceBlockId the primary key of the resource block
 	 */
 	@Override
-	@Transactional(
-		isolation = Isolation.READ_COMMITTED,
-		propagation = Propagation.REQUIRES_NEW
-	)
 	public void releaseResourceBlock(long resourceBlockId) {
 		Session session = resourceBlockPersistence.openSession();
 

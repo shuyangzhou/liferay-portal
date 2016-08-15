@@ -339,7 +339,6 @@ public interface ResourceBlockLocalService extends BaseLocalService,
 		java.lang.String name, long primKey, long roleId, long actionIdsLong)
 		throws PortalException;
 
-	@Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRES_NEW)
 	public void releasePermissionedModelResourceBlock(
 		PermissionedModel permissionedModel);
 
@@ -363,7 +362,6 @@ public interface ResourceBlockLocalService extends BaseLocalService,
 	*
 	* @param resourceBlockId the primary key of the resource block
 	*/
-	@Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRES_NEW)
 	public void releaseResourceBlock(long resourceBlockId);
 
 	public void removeAllGroupScopePermissions(long companyId,
