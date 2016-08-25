@@ -115,23 +115,21 @@ public class NtlmFilter extends BaseFilter {
 	public boolean isFilterEnabled(
 		HttpServletRequest request, HttpServletResponse response) {
 
-		try {
+		if (BrowserSnifferUtil.isIe(request)) {
 			long companyId = PortalInstances.getCompanyId(request);
 
-			NtlmConfiguration ntlmConfiguration =
-				_configurationProvider.getConfiguration(
-					NtlmConfiguration.class,
-					new CompanyServiceSettingsLocator(
-						companyId, NtlmConstants.SERVICE_NAME));
+			try {
+				NtlmConfiguration ntlmConfiguration =
+					_configurationProvider.getConfiguration(
+						NtlmConfiguration.class,
+						new CompanyServiceSettingsLocator(
+							companyId, NtlmConstants.SERVICE_NAME));
 
-			if (BrowserSnifferUtil.isIe(request) &&
-				ntlmConfiguration.enabled()) {
-
-				return true;
+				return ntlmConfiguration.enabled();
 			}
-		}
-		catch (Exception e) {
-			_log.error(e, e);
+			catch (Exception e) {
+				_log.error(e, e);
+			}
 		}
 
 		return false;
