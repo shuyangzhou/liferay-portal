@@ -107,7 +107,7 @@ public class LayoutLocalServiceHelper implements IdentifiableOSGiService {
 	}
 
 	public String getFriendlyURL(String friendlyURL) {
-		return FriendlyURLNormalizerUtil.normalize(friendlyURL);
+		return FriendlyURLNormalizerUtil.normalizeWithEncoding(friendlyURL);
 	}
 
 	public Map<Locale, String> getFriendlyURLMap(
@@ -354,7 +354,9 @@ public class LayoutLocalServiceHelper implements IdentifiableOSGiService {
 
 		LayoutImpl.validateFriendlyURLKeyword(friendlyURL);
 
-		if (friendlyURL.contains(Portal.FRIENDLY_URL_SEPARATOR)) {
+		if (friendlyURL.contains(Portal.FRIENDLY_URL_SEPARATOR) ||
+			friendlyURL.endsWith("/-")) {
+
 			LayoutFriendlyURLException lfurle = new LayoutFriendlyURLException(
 				LayoutFriendlyURLException.KEYWORD_CONFLICT);
 
