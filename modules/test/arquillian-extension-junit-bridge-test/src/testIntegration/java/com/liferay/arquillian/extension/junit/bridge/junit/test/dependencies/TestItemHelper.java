@@ -16,6 +16,7 @@ package com.liferay.arquillian.extension.junit.bridge.junit.test.dependencies;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -33,6 +34,13 @@ public class TestItemHelper {
 	public TestItemHelper(Class<?> clazz) {
 		_path = Paths.get(
 			System.getProperty("user.home"), clazz.getName() + ".log");
+
+		try {
+			Files.deleteIfExists(_path);
+		}
+		catch (IOException ioe) {
+			throw new UncheckedIOException(ioe);
+		}
 	}
 
 	public List<String> read() throws IOException {
