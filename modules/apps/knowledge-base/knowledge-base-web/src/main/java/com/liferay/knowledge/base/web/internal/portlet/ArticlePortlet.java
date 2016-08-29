@@ -167,6 +167,13 @@ public class ArticlePortlet extends BaseKBPortlet {
 		long defaultValue = GetterUtil.getLong(
 			preferences.getValue("resourcePrimKey", null));
 
+		KBArticle defaultKBArticle = kbArticleService.fetchLatestKBArticle(
+			defaultValue, WorkflowConstants.STATUS_ANY);
+
+		if (defaultKBArticle == null) {
+			defaultValue = 0;
+		}
+
 		String mvcPath = ParamUtil.getString(renderRequest, "mvcPath");
 
 		if ((defaultValue == 0) && mvcPath.equals(viewTemplate)) {
