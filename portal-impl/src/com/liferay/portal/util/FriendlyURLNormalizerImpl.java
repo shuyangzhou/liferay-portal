@@ -14,12 +14,10 @@
 
 package com.liferay.portal.util;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.pacl.DoPrivileged;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
+import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -90,8 +88,6 @@ public class FriendlyURLNormalizerImpl implements FriendlyURLNormalizer {
 			return friendlyURL;
 		}
 
-		friendlyURL = StringUtil.toLowerCase(friendlyURL);
-
 		StringBuilder sb = new StringBuilder(friendlyURL.length());
 
 		boolean modified = false;
@@ -99,40 +95,34 @@ public class FriendlyURLNormalizerImpl implements FriendlyURLNormalizer {
 		for (int i = 0; i < friendlyURL.length(); i++) {
 			char c = friendlyURL.charAt(i);
 
-			if (((CharPool.LOWER_CASE_A <= c) &&
-				 (c <= CharPool.LOWER_CASE_Z)) ||
-				((CharPool.NUMBER_0 <= c) && (c <= CharPool.NUMBER_9)) ||
-				(c == CharPool.UNDERLINE) || (CharPool.PERCENT == c) ||
-				(c == CharPool.SLASH) || (c == CharPool.PERIOD)) {
-
-				sb.append(c);
-			}
-			else if (ArrayUtil.contains(_REPLACE_CHARS, c)) {
+			if (Arrays.binarySearch(_REPLACE_CHARS, c) >= 0) {
 				if ((i == 0) || (CharPool.DASH != sb.charAt(sb.length() - 1))) {
 					sb.append(CharPool.DASH);
-				}
-
-				modified = true;
-			}
-			else {
-				try {
-					sb.append(URLEncoder.encode(String.valueOf(c), "UTF-8"));
 
 					modified = true;
 				}
-				catch (UnsupportedEncodingException uee) {
-					if (_log.isInfoEnabled()) {
-						_log.info(uee, uee);
-					}
+				else {
+					sb.append(c);
 				}
 			}
 		}
 
 		if (modified) {
-			return sb.toString();
+			friendlyURL = sb.toString();
 		}
 
-		return friendlyURL;
+		String[] parts = StringUtil.split(friendlyURL, CharPool.SLASH);
+
+		try {
+			for (int i = 0; i < parts.length; i++) {
+				parts[i] = URLEncoder.encode(parts[i], StringPool.UTF8);
+			}
+		}
+		catch (UnsupportedEncodingException uee) {
+			ReflectionUtil.throwException(uee);
+		}
+
+		return StringUtil.merge(parts, StringPool.SLASH);
 	}
 
 	@Override
@@ -185,9 +175,6 @@ public class FriendlyURLNormalizerImpl implements FriendlyURLNormalizer {
 	}
 
 	private static final char[] _REPLACE_CHARS;
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		FriendlyURLNormalizerImpl.class);
 
 	static {
 		char[] replaceChars = new char[] {
