@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.model.LayoutTemplate;
 import com.liferay.portal.kernel.model.LayoutTemplateConstants;
 import com.liferay.portal.kernel.model.LayoutTypeController;
 import com.liferay.portal.kernel.model.LayoutTypePortlet;
-import com.liferay.portal.kernel.model.Theme;
 import com.liferay.portal.kernel.service.LayoutTemplateLocalServiceUtil;
 import com.liferay.portal.kernel.servlet.DirectRequestDispatcherFactoryUtil;
 import com.liferay.portal.kernel.template.StringTemplateResource;
@@ -69,8 +68,9 @@ public class LayoutTypeControllerImpl implements LayoutTypeController {
 			GetterUtil.getString(
 				PropsUtil.get(
 					PropsKeys.LAYOUT_CONFIGURATION_ACTION_UPDATE, filter)));
-		_editPage = GetterUtil.getString(
-			PropsUtil.get(PropsKeys.LAYOUT_EDIT_PAGE, filter));
+		_editPage = StrutsUtil.TEXT_HTML_DIR.concat(
+			GetterUtil.getString(
+				PropsUtil.get(PropsKeys.LAYOUT_EDIT_PAGE, filter)));
 		_firstPageable = GetterUtil.getBoolean(
 			PropsUtil.get(PropsKeys.LAYOUT_FIRST_PAGEABLE, filter));
 		_fullPageDisplayable = GetterUtil.getBoolean(
@@ -83,8 +83,9 @@ public class LayoutTypeControllerImpl implements LayoutTypeController {
 			PropsUtil.get(PropsKeys.LAYOUT_URL, filter));
 		_urlFriendliable = GetterUtil.getBoolean(
 			PropsUtil.get(PropsKeys.LAYOUT_URL_FRIENDLIABLE, filter), true);
-		_viewPage = GetterUtil.getString(
-			PropsUtil.get(PropsKeys.LAYOUT_VIEW_PAGE, filter));
+		_viewPage = StrutsUtil.TEXT_HTML_DIR.concat(
+			GetterUtil.getString(
+				PropsUtil.get(PropsKeys.LAYOUT_VIEW_PAGE, filter)));
 	}
 
 	@Override
@@ -108,23 +109,19 @@ public class LayoutTypeControllerImpl implements LayoutTypeController {
 	}
 
 	public String getViewPath(String portletId) {
-		String path = StrutsUtil.TEXT_HTML_DIR;
 
 		// Manually check the p_p_id. See LEP-1724.
 
-		if (Validator.isNotNull(portletId)) {
-			if (_type.equals(LayoutConstants.TYPE_PANEL)) {
-				path += "/portal/layout/view/panel.jsp";
-			}
-			else {
-				path += "/portal/layout/view/portlet.jsp";
-			}
-		}
-		else {
-			path = StrutsUtil.TEXT_HTML_DIR + _viewPage;
+		if (Validator.isNull(portletId)) {
+			return _viewPage;
 		}
 
-		return path;
+		if (LayoutConstants.TYPE_PANEL.equals(_type)) {
+			return StrutsUtil.TEXT_HTML_DIR + "/portal/layout/view/panel.jsp";
+		}
+		else {
+			return StrutsUtil.TEXT_HTML_DIR + "/portal/layout/view/portlet.jsp";
+		}
 	}
 
 	@Override
@@ -249,7 +246,7 @@ public class LayoutTypeControllerImpl implements LayoutTypeController {
 	}
 
 	protected String getEditPage() {
-		return StrutsUtil.TEXT_HTML_DIR + _editPage;
+		return _editPage;
 	}
 
 	private void _processTemplate(
@@ -262,36 +259,34 @@ public class LayoutTypeControllerImpl implements LayoutTypeController {
 		LayoutTypePortlet layoutTypePortlet =
 			themeDisplay.getLayoutTypePortlet();
 
-		Theme theme = themeDisplay.getTheme();
+		String themeId = themeDisplay.getThemeId();
 
-		if (themeDisplay.isFacebook() || themeDisplay.isStatePopUp() ||
-			themeDisplay.isWidget() || layoutTypePortlet.hasStateMax()) {
+		String layoutTemplateId = null;
 
-			String ppid = ParamUtil.getString(request, "p_p_id");
+		if (themeDisplay.isStatePopUp() || themeDisplay.isWidget() ||
+			themeDisplay.isFacebook() || layoutTypePortlet.hasStateMax()) {
 
-			String velocityTemplateId = null;
-			String velocityTemplateContent = null;
+			String ppid = null;
 
 			if (themeDisplay.isStatePopUp() || themeDisplay.isWidget()) {
-				velocityTemplateId =
-					theme.getThemeId() +
-						LayoutTemplateConstants.STANDARD_SEPARATOR + "pop_up";
+				layoutTemplateId = "pop_up";
 
-				velocityTemplateContent =
-					LayoutTemplateLocalServiceUtil.getContent(
-						"pop_up", true, theme.getThemeId());
+				ppid = ParamUtil.getString(request, "p_p_id");
 			}
-			else {
+			else if (themeDisplay.isFacebook() ||
+					 layoutTypePortlet.hasStateMax()) {
+
+				layoutTemplateId = "max";
+
 				ppid = StringUtil.split(layoutTypePortlet.getStateMax())[0];
-
-				velocityTemplateId =
-					theme.getThemeId() +
-						LayoutTemplateConstants.STANDARD_SEPARATOR + "max";
-
-				velocityTemplateContent =
-					LayoutTemplateLocalServiceUtil.getContent(
-						"max", true, theme.getThemeId());
 			}
+
+			String velocityTemplateId =
+				themeId + LayoutTemplateConstants.STANDARD_SEPARATOR +
+				layoutTemplateId;
+			String velocityTemplateContent =
+				LayoutTemplateLocalServiceUtil.getContent(
+					layoutTemplateId, true, themeId);
 
 			if (Validator.isNotNull(velocityTemplateContent)) {
 				RuntimePageUtil.processTemplate(
@@ -301,9 +296,7 @@ public class LayoutTypeControllerImpl implements LayoutTypeController {
 			}
 		}
 		else {
-			String themeId = theme.getThemeId();
-
-			String layoutTemplateId = layoutTypePortlet.getLayoutTemplateId();
+			layoutTemplateId = layoutTypePortlet.getLayoutTemplateId();
 
 			if (Validator.isNull(layoutTemplateId)) {
 				layoutTemplateId = PropsValues.DEFAULT_LAYOUT_TEMPLATE_ID;
@@ -311,7 +304,7 @@ public class LayoutTypeControllerImpl implements LayoutTypeController {
 
 			LayoutTemplate layoutTemplate =
 				LayoutTemplateLocalServiceUtil.getLayoutTemplate(
-					layoutTemplateId, false, theme.getThemeId());
+					layoutTemplateId, false, themeId);
 
 			if (layoutTemplate != null) {
 				themeId = layoutTemplate.getThemeId();
@@ -322,8 +315,7 @@ public class LayoutTypeControllerImpl implements LayoutTypeController {
 					layoutTypePortlet.getLayoutTemplateId();
 			String velocityTemplateContent =
 				LayoutTemplateLocalServiceUtil.getContent(
-					layoutTypePortlet.getLayoutTemplateId(), false,
-					theme.getThemeId());
+					layoutTypePortlet.getLayoutTemplateId(), false, themeId);
 
 			if (Validator.isNotNull(velocityTemplateContent)) {
 				RuntimePageUtil.processTemplate(
