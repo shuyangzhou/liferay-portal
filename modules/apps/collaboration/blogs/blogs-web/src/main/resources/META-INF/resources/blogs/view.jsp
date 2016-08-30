@@ -57,7 +57,7 @@ if ((assetCategoryId != 0) || Validator.isNotNull(assetTagName)) {
 
 	results = searchContainerResults.getResults();
 }
-else if (mvcRenderCommandName.equals("/blogs/view_not_published_entries")) {
+else if ((notPublishedEntriesCount > 0) && mvcRenderCommandName.equals("/blogs/view_not_published_entries")) {
 	total = notPublishedEntriesCount;
 
 	searchContainer.setTotal(total);

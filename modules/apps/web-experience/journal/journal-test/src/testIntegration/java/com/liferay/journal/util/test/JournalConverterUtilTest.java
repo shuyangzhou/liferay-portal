@@ -15,9 +15,6 @@
 package com.liferay.journal.util.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-import com.liferay.document.library.kernel.model.DLFolderConstants;
-import com.liferay.document.library.kernel.service.DLAppLocalServiceUtil;
-import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.dynamic.data.mapping.io.DDMFormJSONDeserializer;
 import com.liferay.dynamic.data.mapping.io.DDMFormXSDDeserializer;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
@@ -42,28 +39,20 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.repository.model.FileEntry;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
-import com.liferay.portal.kernel.test.util.RandomTestUtil;
-import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
-import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
-import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.kernel.xml.UnsecureSAXReaderUtil;
-import com.liferay.portal.kernel.xml.XPath;
-import com.liferay.portal.test.randomizerbumpers.TikaSafeRandomizerBumper;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.test.LayoutTestUtil;
 import com.liferay.portal.xml.XMLSchemaImpl;
@@ -354,61 +343,6 @@ public class JournalConverterUtilTest {
 			_ddmStructure, content);
 
 		Assert.assertEquals(expectedFields, actualFields);
-	}
-
-	@Test
-	public void testGetFieldsFromContentWithDocumentLibraryElement()
-		throws Exception {
-
-		Fields expectedFields = new Fields();
-
-		ServiceContext serviceContext =
-			ServiceContextTestUtil.getServiceContext(
-				_group.getGroupId(), TestPropsValues.getUserId());
-
-		FileEntry fileEntry = DLAppLocalServiceUtil.addFileEntry(
-			TestPropsValues.getUserId(), _group.getGroupId(),
-			DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, "Test 1.txt",
-			ContentTypes.TEXT_PLAIN,
-			RandomTestUtil.randomBytes(TikaSafeRandomizerBumper.INSTANCE),
-			serviceContext);
-
-		Field documentLibraryField = getDocumentLibraryField(
-			fileEntry, _ddmStructure.getStructureId());
-
-		expectedFields.put(documentLibraryField);
-
-		Field fieldsDisplayField = getFieldsDisplayField(
-			_ddmStructure.getStructureId(),
-			"document_library_INSTANCE_4aGOvP3N");
-
-		expectedFields.put(fieldsDisplayField);
-
-		String content = read("test-journal-content-doc-library-field.xml");
-
-		XPath xPathSelector = SAXReaderUtil.createXPath("//dynamic-content");
-
-		Document document = UnsecureSAXReaderUtil.read(content);
-
-		Element element = (Element)xPathSelector.selectSingleNode(document);
-
-		String[] previewURLs = new String[2];
-
-		previewURLs[0] = DLUtil.getPreviewURL(
-			fileEntry, fileEntry.getFileVersion(), null, StringPool.BLANK, true,
-			true);
-		previewURLs[1] = DLUtil.getPreviewURL(
-			fileEntry, fileEntry.getFileVersion(), null, StringPool.BLANK,
-			false, false);
-
-		for (int i = 0; i < previewURLs.length; i++) {
-			element.addCDATA(previewURLs[i]);
-
-			Fields actualFields = _journalConverter.getDDMFields(
-				_ddmStructure, document.asXML());
-
-			Assert.assertEquals(expectedFields, actualFields);
-		}
 	}
 
 	@Test
