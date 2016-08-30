@@ -121,7 +121,12 @@ public class PluginPackageImpl
 
 	@Override
 	public String getDownloadURL() {
-		String useDownloadURL = getRepository().getSettings().getProperty(
+		RemotePluginPackageRepository remotePluginPackageRepository =
+			getRepository();
+
+		Properties settings = remotePluginPackageRepository.getSettings();
+
+		String useDownloadURL = settings.getProperty(
 			RemotePluginPackageRepository.SETTING_USE_DOWNLOAD_URL);
 
 		if (!GetterUtil.getBoolean(useDownloadURL, true)) {
