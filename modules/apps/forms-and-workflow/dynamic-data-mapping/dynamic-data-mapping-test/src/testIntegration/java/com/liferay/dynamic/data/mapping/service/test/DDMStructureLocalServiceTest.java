@@ -15,6 +15,7 @@
 package com.liferay.dynamic.data.mapping.service.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.dynamic.data.mapping.exception.InvalidParentStructureException;
 import com.liferay.dynamic.data.mapping.exception.RequiredStructureException;
 import com.liferay.dynamic.data.mapping.exception.StructureDefinitionException;
 import com.liferay.dynamic.data.mapping.exception.StructureDuplicateElementException;
@@ -704,6 +705,28 @@ public class DDMStructureLocalServiceTest extends BaseDDMServiceTestCase {
 				getDataProviderInstanceLinks(structure.getStructureId());
 
 		Assert.assertEquals(0, dataProviderInstanceLinks.size());
+	}
+
+	@Test(expected = InvalidParentStructureException.class)
+	public void testValidateParentStructure() throws Exception {
+		DDMStructure structure1 = addStructure(
+			0, _classNameId, null, "Test Structure 1", null,
+			read("ddm-structure-text-field.xsd"), StorageType.JSON.getValue(),
+			DDMStructureConstants.TYPE_DEFAULT);
+
+		DDMStructure structure2 = addStructure(
+			structure1.getStructureId(), _classNameId, null, "Test Structure 2",
+			null, read("ddm-structure-radio-field.xsd"),
+			StorageType.JSON.getValue(), DDMStructureConstants.TYPE_DEFAULT);
+
+		DDMStructure structure3 = addStructure(
+			structure2.getStructureId(), _classNameId, null, "Test Structure 3",
+			null, read("ddm-structure-select-field.xsd"),
+			StorageType.JSON.getValue(), DDMStructureConstants.TYPE_DEFAULT);
+
+		structure1.setParentStructureId(structure3.getStructureId());
+
+		updateStructure(structure1);
 	}
 
 	protected DDMStructure copyStructure(DDMStructure structure)
