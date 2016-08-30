@@ -40,6 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.portlet.PortletException;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
 import javax.portlet.ResourceRequest;
@@ -229,6 +230,12 @@ public class ActionRequestPortletContainerTest
 		Response response = PortletContainerTestUtil.getPortalAuthentication(
 			httpServletRequest, layout, TEST_PORTLET_ID);
 
+		Assert.assertEquals(200, response.getCode());
+		Assert.assertTrue(testPortlet.isCalledServeResource());
+
+		System.out.println(
+			"^^^^testPortalAuthenticationToken got : " + response.getBody());
+
 		testPortlet.reset();
 
 		// Make an action request using the portal authentication token
@@ -319,6 +326,12 @@ public class ActionRequestPortletContainerTest
 		Response response = PortletContainerTestUtil.getPortalAuthentication(
 			httpServletRequest, layout, TEST_PORTLET_ID);
 
+		Assert.assertEquals(200, response.getCode());
+		Assert.assertTrue(testPortlet.isCalledServeResource());
+
+		System.out.println(
+			"^^^^testXCSRFToken got : " + response.getBody());
+
 		testPortlet.reset();
 
 		// Make an action request using the portal authentication token
@@ -349,19 +362,27 @@ public class ActionRequestPortletContainerTest
 		public void serveResource(
 				ResourceRequest resourceRequest,
 				ResourceResponse resourceResponse)
-			throws IOException {
+			throws IOException, PortletException {
 
+			super.serveResource(resourceRequest, resourceResponse);
+	
 			PrintWriter printWriter = resourceResponse.getWriter();
 
 			PortletURL portletURL = resourceResponse.createActionURL();
 
+			System.out.println("######Test portlet before PortalURL toString()");
 			String queryString = HttpUtil.getQueryString(portletURL.toString());
+			System.out.println("######Test portlet after PortalURL toString()");
 
 			Map<String, String[]> parameterMap = HttpUtil.getParameterMap(
 				queryString);
 
 			String portalAuthenticationToken = MapUtil.getString(
 				parameterMap, "p_auth");
+
+			System.out.println(
+				"######Serving portal auth token : " +
+					portalAuthenticationToken);
 
 			printWriter.write(portalAuthenticationToken);
 		}
