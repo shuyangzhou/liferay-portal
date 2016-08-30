@@ -174,6 +174,10 @@ public class SessionAuthToken implements AuthToken {
 		String sessionToken = getSessionAuthenticationToken(
 			request, _CSRF, false);
 
+		System.out.println(
+			"&&&&&&&Checking incoming portal auth token : " + csrfToken +
+				", with current portal auth token : " + sessionToken);
+
 		if (!csrfToken.equals(sessionToken)) {
 			throw new PrincipalException.MustBeAuthenticated(
 				PortalUtil.getUserId(request));
