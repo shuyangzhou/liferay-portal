@@ -17,10 +17,18 @@ package com.liferay.portal.model.impl;
 import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
+import com.liferay.portal.kernel.layoutconfiguration.util.RuntimePageUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
+import com.liferay.portal.kernel.model.LayoutTemplate;
+import com.liferay.portal.kernel.model.LayoutTemplateConstants;
 import com.liferay.portal.kernel.model.LayoutTypeController;
+import com.liferay.portal.kernel.model.LayoutTypePortlet;
+import com.liferay.portal.kernel.model.Theme;
+import com.liferay.portal.kernel.service.LayoutTemplateLocalServiceUtil;
 import com.liferay.portal.kernel.servlet.DirectRequestDispatcherFactoryUtil;
+import com.liferay.portal.kernel.template.StringTemplateResource;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -29,6 +37,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.struts.StrutsUtil;
 import com.liferay.portal.util.PropsUtil;
+import com.liferay.portal.util.PropsValues;
 import com.liferay.taglib.servlet.PipingServletResponse;
 
 import java.util.Collection;
@@ -154,16 +163,22 @@ public class LayoutTypeControllerImpl implements LayoutTypeController {
 
 		String path = getViewPath(portletId);
 
-		RequestDispatcher requestDispatcher =
-			DirectRequestDispatcherFactoryUtil.getRequestDispatcher(
-				servletContext, path);
-
 		UnsyncStringWriter unsyncStringWriter = new UnsyncStringWriter();
 
 		PipingServletResponse pipingServletResponse = new PipingServletResponse(
 			response, unsyncStringWriter);
 
 		String contentType = pipingServletResponse.getContentType();
+
+		if (path.equals(
+				StrutsUtil.TEXT_HTML_DIR + "/portal/layout/view/portlet.jsp")) {
+
+			_processTemplate(request, pipingServletResponse);
+		}
+
+		RequestDispatcher requestDispatcher =
+			DirectRequestDispatcherFactoryUtil.getRequestDispatcher(
+				servletContext, path);
 
 		requestDispatcher.include(request, pipingServletResponse);
 
@@ -235,6 +250,88 @@ public class LayoutTypeControllerImpl implements LayoutTypeController {
 
 	protected String getEditPage() {
 		return StrutsUtil.TEXT_HTML_DIR + _editPage;
+	}
+
+	private void _processTemplate(
+			HttpServletRequest request, HttpServletResponse response)
+		throws Exception {
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		LayoutTypePortlet layoutTypePortlet =
+			themeDisplay.getLayoutTypePortlet();
+
+		Theme theme = themeDisplay.getTheme();
+
+		if (themeDisplay.isFacebook() || themeDisplay.isStatePopUp() ||
+			themeDisplay.isWidget() || layoutTypePortlet.hasStateMax()) {
+
+			String ppid = ParamUtil.getString(request, "p_p_id");
+
+			String velocityTemplateId = null;
+			String velocityTemplateContent = null;
+
+			if (themeDisplay.isStatePopUp() || themeDisplay.isWidget()) {
+				velocityTemplateId =
+					theme.getThemeId() +
+						LayoutTemplateConstants.STANDARD_SEPARATOR + "pop_up";
+
+				velocityTemplateContent =
+					LayoutTemplateLocalServiceUtil.getContent(
+						"pop_up", true, theme.getThemeId());
+			}
+			else {
+				ppid = StringUtil.split(layoutTypePortlet.getStateMax())[0];
+
+				velocityTemplateId =
+					theme.getThemeId() +
+						LayoutTemplateConstants.STANDARD_SEPARATOR + "max";
+
+				velocityTemplateContent =
+					LayoutTemplateLocalServiceUtil.getContent(
+						"max", true, theme.getThemeId());
+			}
+
+			if (Validator.isNotNull(velocityTemplateContent)) {
+				RuntimePageUtil.processTemplate(
+					request, response, ppid,
+					new StringTemplateResource(
+						velocityTemplateId, velocityTemplateContent));
+			}
+		}
+		else {
+			String themeId = theme.getThemeId();
+
+			String layoutTemplateId = layoutTypePortlet.getLayoutTemplateId();
+
+			if (Validator.isNull(layoutTemplateId)) {
+				layoutTemplateId = PropsValues.DEFAULT_LAYOUT_TEMPLATE_ID;
+			}
+
+			LayoutTemplate layoutTemplate =
+				LayoutTemplateLocalServiceUtil.getLayoutTemplate(
+					layoutTemplateId, false, theme.getThemeId());
+
+			if (layoutTemplate != null) {
+				themeId = layoutTemplate.getThemeId();
+			}
+
+			String velocityTemplateId =
+				themeId + LayoutTemplateConstants.CUSTOM_SEPARATOR +
+					layoutTypePortlet.getLayoutTemplateId();
+			String velocityTemplateContent =
+				LayoutTemplateLocalServiceUtil.getContent(
+					layoutTypePortlet.getLayoutTemplateId(), false,
+					theme.getThemeId());
+
+			if (Validator.isNotNull(velocityTemplateContent)) {
+				RuntimePageUtil.processTemplate(
+					request, response,
+					new StringTemplateResource(
+						velocityTemplateId, velocityTemplateContent));
+			}
+		}
 	}
 
 	private final boolean _browsable;
