@@ -79,8 +79,8 @@ public class TestPortlet extends GenericPortlet {
 		_calledServeResource = true;
 	}
 
-	private boolean _calledProcessAction;
-	private boolean _calledRender;
-	private boolean _calledServeResource;
+	private volatile boolean _calledProcessAction;
+	private volatile boolean _calledRender;
+	private volatile boolean _calledServeResource;
 
 }
