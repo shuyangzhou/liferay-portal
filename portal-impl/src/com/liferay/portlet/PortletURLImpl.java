@@ -853,7 +853,9 @@ public class PortletURLImpl
 			sb.append(themeDisplay.getPathMain());
 			sb.append("/portal/layout?");
 
+			System.out.println("******Before if : " + sb.toString());
 			addPortalAuthToken(sb, key);
+			System.out.println("******After if : " + sb.toString());
 
 			sb.append("p_l_id");
 			sb.append(StringPool.EQUAL);
@@ -901,7 +903,9 @@ public class PortletURLImpl
 
 			sb.append(StringPool.QUESTION);
 
+			System.out.println("******Before else : " + sb.toString());
 			addPortalAuthToken(sb, key);
+			System.out.println("******After else : " + sb.toString());
 		}
 
 		addPortletAuthToken(sb, key);

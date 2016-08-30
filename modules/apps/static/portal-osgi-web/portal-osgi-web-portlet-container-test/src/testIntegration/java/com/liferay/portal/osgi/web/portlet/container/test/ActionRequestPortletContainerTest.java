@@ -370,7 +370,9 @@ public class ActionRequestPortletContainerTest
 
 			PortletURL portletURL = resourceResponse.createActionURL();
 
+			System.out.println("######Test portlet before PortalURL toString()");
 			String queryString = HttpUtil.getQueryString(portletURL.toString());
+			System.out.println("######Test portlet after PortalURL toString()");
 
 			Map<String, String[]> parameterMap = HttpUtil.getParameterMap(
 				queryString);
