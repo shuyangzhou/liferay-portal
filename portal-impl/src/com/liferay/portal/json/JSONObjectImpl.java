@@ -343,7 +343,8 @@ public class JSONObjectImpl implements JSONObject {
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		try {
-			_jsonObject = new org.json.JSONObject(objectInput.readUTF());
+			_jsonObject = new org.json.JSONObject(
+				(String)objectInput.readObject());
 		}
 		catch (Exception e) {
 			throw new IOException(e);
@@ -387,7 +388,7 @@ public class JSONObjectImpl implements JSONObject {
 
 	@Override
 	public void writeExternal(ObjectOutput objectOutput) throws IOException {
-		objectOutput.writeUTF(toString());
+		objectOutput.writeObject(toString());
 	}
 
 	private static final String _NULL_JSON = "{}";
