@@ -91,6 +91,10 @@ public class StripDoctypeFilter {
 	}
 
 	public int read(byte[] bytes, int offset, int length) throws IOException {
+		if (_documentStarted) {
+			return _inputStream.read(bytes, offset, length);
+		}
+
 		int read = 0;
 
 		for (read = 0; read < length; read++) {
@@ -111,6 +115,10 @@ public class StripDoctypeFilter {
 	}
 
 	public int read(char[] chars, int offset, int length) throws IOException {
+		if (_documentStarted) {
+			return _reader.read(chars, offset, length);
+		}
+
 		int read = 0;
 
 		for (read = 0; read < length; read++) {
@@ -131,6 +139,10 @@ public class StripDoctypeFilter {
 	}
 
 	protected StripDoctypeFilter(InputStream inputStream, Reader reader) {
+		if ((inputStream == null) && (reader == null)) {
+			throw new NullPointerException("No underlying source available");
+		}
+
 		_inputStream = inputStream;
 
 		_reader = reader;
@@ -147,11 +159,7 @@ public class StripDoctypeFilter {
 			return _inputStream.read();
 		}
 
-		if (_reader != null) {
-			return _reader.read();
-		}
-
-		throw new IllegalStateException("No underlying source available");
+		return _reader.read();
 	}
 
 	protected void setBuffer(int[] buffer) {
