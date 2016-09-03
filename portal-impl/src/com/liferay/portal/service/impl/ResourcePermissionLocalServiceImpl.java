@@ -1406,11 +1406,6 @@ public class ResourcePermissionLocalServiceImpl
 					companyId, name, scope, primKey,
 					ArrayUtil.subset(roleIds, start, roleIds.length)));
 
-			resourcePermissions.addAll(
-				resourcePermissionPersistence.findByC_N_S_P_R(
-					companyId, name, scope, primKey,
-					ArrayUtil.subset(roleIds, start, roleIds.length)));
-
 			for (ResourcePermission resourcePermission : resourcePermissions) {
 				long roleId = resourcePermission.getRoleId();
 				String[] actionIds = roleIdsToActionIds.remove(roleId);
