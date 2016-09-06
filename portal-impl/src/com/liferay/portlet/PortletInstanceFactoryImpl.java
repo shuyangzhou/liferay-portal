@@ -279,15 +279,27 @@ public class PortletInstanceFactoryImpl implements PortletInstanceFactory {
 
 		PortletContext portletContext = portletConfig.getPortletContext();
 
-		InvokerFilterContainer invokerFilterContainer =
-			new InvokerFilterContainerImpl(portlet, portletContext);
+		InvokerFilterContainer invokerFilterContainer = null;
 
-		InvokerPortlet invokerPortlet = _invokerPortletFactory.create(
-			portlet, portletInstance, portletContext, invokerFilterContainer);
+		try {
+			invokerFilterContainer = new InvokerFilterContainerImpl(
+				portlet, portletContext);
 
-		invokerPortlet.init(portletConfig);
+			InvokerPortlet invokerPortlet = _invokerPortletFactory.create(
+				portlet, portletInstance, portletContext,
+				invokerFilterContainer);
 
-		return invokerPortlet;
+			invokerPortlet.init(portletConfig);
+
+			return invokerPortlet;
+		}
+		finally {
+			if (portlet.isUndeployedPortlet() &&
+				(invokerFilterContainer != null)) {
+
+				((InvokerFilterContainerImpl)invokerFilterContainer).close();
+			}
+		}
 	}
 
 	private InvokerPortletFactory _defaultInvokerPortletFactory;
