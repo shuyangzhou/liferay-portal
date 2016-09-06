@@ -454,6 +454,7 @@ arrayable-operator of OR will act like an IN clause.
 	case-sensitive CDATA #IMPLIED
 	comparator CDATA #IMPLIED
 	arrayable-operator CDATA #IMPLIED
+	arrayable-pagination CDATA #IMPLIED
 >
 
 <!--

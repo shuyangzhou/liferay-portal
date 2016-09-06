@@ -109,6 +109,16 @@ public class EntityFinder {
 		return false;
 	}
 
+	public boolean hasArrayablePagination() {
+		for (EntityColumn column : _columns) {
+			if (column.hasArrayablePagination()) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	public boolean hasColumn(String name) {
 		return Entity.hasColumn(name, _columns);
 	}

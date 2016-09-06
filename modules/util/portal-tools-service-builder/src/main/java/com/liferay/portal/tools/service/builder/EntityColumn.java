@@ -30,8 +30,8 @@ public class EntityColumn implements Cloneable, Comparable<EntityColumn> {
 	public EntityColumn(String name) {
 		this(
 			name, null, null, false, false, false, null, null, true, true,
-			false, null, null, null, null, true, true, false, false, false,
-			false);
+			false, null, null, false, null, null, true, true, false, false,
+			false, false);
 	}
 
 	public EntityColumn(
@@ -39,8 +39,9 @@ public class EntityColumn implements Cloneable, Comparable<EntityColumn> {
 		boolean accessor, boolean filterPrimary, String ejbName,
 		String mappingTable, boolean caseSensitive, boolean orderByAscending,
 		boolean orderColumn, String comparator, String arrayableOperator,
-		String idType, String idParam, boolean convertNull, boolean lazy,
-		boolean localized, boolean jsonEnabled, boolean containerModel,
+		boolean arrayablePagination, String idType, String idParam,
+		boolean convertNull, boolean lazy, boolean localized,
+		boolean jsonEnabled, boolean containerModel,
 		boolean parentContainerModel) {
 
 		_name = name;
@@ -58,6 +59,7 @@ public class EntityColumn implements Cloneable, Comparable<EntityColumn> {
 		_orderColumn = orderColumn;
 		_comparator = comparator;
 		_arrayableOperator = arrayableOperator;
+		_arrayablePagination = arrayablePagination;
 		_idType = idType;
 		_idParam = idParam;
 		_convertNull = convertNull;
@@ -77,7 +79,7 @@ public class EntityColumn implements Cloneable, Comparable<EntityColumn> {
 
 		this(
 			name, dbName, type, primary, accessor, filterPrimary, ejbName,
-			mappingTable, true, true, false, null, null, idType, idParam,
+			mappingTable, true, true, false, null, null, false, idType, idParam,
 			convertNull, lazy, localized, jsonEnabled, containerModel,
 			parentContainerModel);
 	}
@@ -88,9 +90,9 @@ public class EntityColumn implements Cloneable, Comparable<EntityColumn> {
 			getName(), getDBName(), getType(), isPrimary(), isAccessor(),
 			isFilterPrimary(), getEJBName(), getMappingTable(),
 			isCaseSensitive(), isOrderByAscending(), isOrderColumn(),
-			getComparator(), getArrayableOperator(), getIdType(), getIdParam(),
-			isConvertNull(), isLazy(), isLocalized(), isJsonEnabled(),
-			isContainerModel(), isParentContainerModel());
+			getComparator(), getArrayableOperator(), hasArrayablePagination(),
+			getIdType(), getIdParam(), isConvertNull(), isLazy(), isLocalized(),
+			isJsonEnabled(), isContainerModel(), isParentContainerModel());
 	}
 
 	@Override
@@ -227,6 +229,10 @@ public class EntityColumn implements Cloneable, Comparable<EntityColumn> {
 		}
 	}
 
+	public boolean hasArrayablePagination() {
+		return _arrayablePagination;
+	}
+
 	@Override
 	public int hashCode() {
 		return _name.hashCode();
@@ -361,6 +367,10 @@ public class EntityColumn implements Cloneable, Comparable<EntityColumn> {
 		_arrayableOperator = StringUtil.toUpperCase(arrayableOperator);
 	}
 
+	public void setArrayablePagination(boolean arrayablePagination) {
+		_arrayablePagination = arrayablePagination;
+	}
+
 	public void setCaseSensitive(boolean caseSensitive) {
 		_caseSensitive = caseSensitive;
 	}
@@ -446,6 +456,12 @@ public class EntityColumn implements Cloneable, Comparable<EntityColumn> {
 				"Illegal combination of arrayable \"OR\" and comparator \"" +
 					comparator + "\"");
 		}
+
+		if (_arrayablePagination && !_arrayableOperator.equals("OR")) {
+			throw new IllegalArgumentException(
+				"Illegal combination, arrayable pagination can only be used " +
+					"with \"OR\" arrayable comparator.");
+		}
 	}
 
 	protected String convertComparatorToHtml(String comparator) {
@@ -474,6 +490,7 @@ public class EntityColumn implements Cloneable, Comparable<EntityColumn> {
 
 	private final boolean _accessor;
 	private String _arrayableOperator;
+	private boolean _arrayablePagination;
 	private boolean _caseSensitive;
 	private String _comparator;
 	private boolean _containerModel;
