@@ -3907,49 +3907,7 @@ public class StringUtil {
 
 		s = s.trim();
 
-		List<String> lines = new ArrayList<>();
-
-		int lastIndex = 0;
-
-		while (true) {
-			int returnIndex = s.indexOf(CharPool.RETURN, lastIndex);
-			int newLineIndex = s.indexOf(CharPool.NEW_LINE, lastIndex);
-
-			if ((returnIndex == -1) && (newLineIndex == -1)) {
-				break;
-			}
-
-			if (returnIndex == -1) {
-				lines.add(s.substring(lastIndex, newLineIndex));
-
-				lastIndex = newLineIndex + 1;
-			}
-			else if (newLineIndex == -1) {
-				lines.add(s.substring(lastIndex, returnIndex));
-
-				lastIndex = returnIndex + 1;
-			}
-			else if (newLineIndex < returnIndex) {
-				lines.add(s.substring(lastIndex, newLineIndex));
-
-				lastIndex = newLineIndex + 1;
-			}
-			else {
-				lines.add(s.substring(lastIndex, returnIndex));
-
-				lastIndex = returnIndex + 1;
-
-				if (lastIndex == newLineIndex) {
-					lastIndex++;
-				}
-			}
-		}
-
-		if (lastIndex < s.length()) {
-			lines.add(s.substring(lastIndex));
-		}
-
-		return lines.toArray(new String[lines.size()]);
+		return s.split("[\r\n]");
 	}
 
 	/**
