@@ -54,6 +54,10 @@ import javax.portlet.filter.ResourceFilter;
 public class InvokerFilterContainerImpl
 	implements Closeable, InvokerFilterContainer {
 
+	public static final InvokerFilterContainer
+		UNDEPLOYED_INVOKER_FILTER_CONTAINER =
+			new UndeployedInvokerFilterContainerImpl();
+
 	public InvokerFilterContainerImpl(
 			Portlet portlet, PortletContext portletContext)
 		throws PortletException {
@@ -214,6 +218,35 @@ public class InvokerFilterContainerImpl
 		private final com.liferay.portal.kernel.model.PortletFilter
 			_portletFilterModel;
 		private final ServiceRegistration<PortletFilter> _serviceRegistration;
+
+	}
+
+	private static class UndeployedInvokerFilterContainerImpl
+		implements Closeable, InvokerFilterContainer {
+
+		@Override
+		public void close() {
+		}
+
+		@Override
+		public List<ActionFilter> getActionFilters() {
+			return Collections.emptyList();
+		}
+
+		@Override
+		public List<EventFilter> getEventFilters() {
+			return Collections.emptyList();
+		}
+
+		@Override
+		public List<RenderFilter> getRenderFilters() {
+			return Collections.emptyList();
+		}
+
+		@Override
+		public List<ResourceFilter> getResourceFilters() {
+			return Collections.emptyList();
+		}
 
 	}
 
