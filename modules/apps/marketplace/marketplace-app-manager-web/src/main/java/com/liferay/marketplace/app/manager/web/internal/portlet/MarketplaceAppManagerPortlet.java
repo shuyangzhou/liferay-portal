@@ -52,7 +52,6 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.io.File;
@@ -368,24 +367,8 @@ public class MarketplaceAppManagerPortlet extends MVCPortlet {
 
 		int responseCode = HttpServletResponse.SC_OK;
 
-		String deploymentContext = ParamUtil.getString(
-			actionRequest, "deploymentContext");
-
 		try {
 			String fileName = null;
-
-			if (Validator.isNotNull(deploymentContext)) {
-				fileName = _DEPLOY_TO_PREFIX + deploymentContext + ".war";
-			}
-			else {
-				fileName = url.substring(url.lastIndexOf(CharPool.SLASH) + 1);
-
-				int pos = fileName.lastIndexOf(CharPool.PERIOD);
-
-				if (pos != -1) {
-					deploymentContext = fileName.substring(0, pos);
-				}
-			}
 
 			Http.Options options = new Http.Options();
 
