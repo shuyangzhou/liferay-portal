@@ -81,6 +81,9 @@ public interface CalendarBookingService extends BaseService {
 		java.lang.String secondReminderType, ServiceContext serviceContext)
 		throws PortalException;
 
+	/**
+	* @deprecated As of 7.0.0
+	*/
 	@java.lang.Deprecated
 	public CalendarBooking addCalendarBooking(long calendarId,
 		long[] childCalendarIds, long parentCalendarBookingId,
