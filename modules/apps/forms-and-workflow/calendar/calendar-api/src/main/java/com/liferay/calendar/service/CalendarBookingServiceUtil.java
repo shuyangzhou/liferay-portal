@@ -74,6 +74,9 @@ public class CalendarBookingServiceUtil {
 			secondReminderType, serviceContext);
 	}
 
+	/**
+	* @deprecated As of 7.0.0
+	*/
 	@Deprecated
 	public static com.liferay.calendar.model.CalendarBooking addCalendarBooking(
 		long calendarId, long[] childCalendarIds, long parentCalendarBookingId,

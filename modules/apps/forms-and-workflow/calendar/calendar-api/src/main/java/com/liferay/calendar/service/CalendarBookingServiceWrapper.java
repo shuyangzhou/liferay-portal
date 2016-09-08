@@ -67,6 +67,9 @@ public class CalendarBookingServiceWrapper implements CalendarBookingService,
 			secondReminder, secondReminderType, serviceContext);
 	}
 
+	/**
+	* @deprecated As of 7.0.0
+	*/
 	@Deprecated
 	@Override
 	public com.liferay.calendar.model.CalendarBooking addCalendarBooking(

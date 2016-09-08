@@ -189,6 +189,9 @@ public class CalendarBookingServiceSoap {
 		}
 	}
 
+	/**
+	* @deprecated As of 7.0.0
+	*/
 	@Deprecated
 	public static com.liferay.calendar.model.CalendarBookingSoap addCalendarBooking(
 		long calendarId, long[] childCalendarIds, long parentCalendarBookingId,
