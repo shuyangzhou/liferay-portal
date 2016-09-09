@@ -19,10 +19,6 @@ import com.liferay.portal.kernel.util.ReflectionUtil;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
@@ -158,33 +154,22 @@ public class ASMWrapperUtil {
 
 		// Delegate and fallback methods
 
-		List<Method> delegateMethods = new ArrayList<>();
-
-		List<Method> fallbackMethods = new ArrayList<>();
-
 		for (Method method : interfaceClass.getMethods()) {
 			try {
-				delegateMethods.add(
-					delegateObjectClass.getMethod(
-						method.getName(), method.getParameterTypes()));
+				Method delegateMethod = delegateObjectClass.getMethod(
+					method.getName(), method.getParameterTypes());
+
+				_generateMethod(
+					classWriter, delegateMethod, asmWrapperClassBinaryName,
+					"_delegate", delegateObjectClassDescriptor,
+					_getClassBinaryName(delegateObjectClass));
 			}
 			catch (NoSuchMethodException nsme) {
-				fallbackMethods.add(method);
+				_generateMethod(
+					classWriter, method, asmWrapperClassBinaryName, "_default",
+					defaultObjectClassDescriptor,
+					_getClassBinaryName(defaultObject.getClass()));
 			}
-		}
-
-		for (Method delegateMethod : delegateMethods) {
-			_generateMethod(
-				classWriter, delegateMethod, asmWrapperClassBinaryName,
-				"_delegate", delegateObjectClassDescriptor,
-				_getClassBinaryName(delegateObjectClass));
-		}
-
-		for (Method fallbackMethod : fallbackMethods) {
-			_generateMethod(
-				classWriter, fallbackMethod, asmWrapperClassBinaryName,
-				"_default", defaultObjectClassDescriptor,
-				_getClassBinaryName(defaultObject.getClass()));
 		}
 
 		classWriter.visitEnd();
