@@ -407,10 +407,21 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 		LayoutSet layoutSet = layoutSetPersistence.findByG_P(
 			groupId, privateLayout);
 
-		layoutSet.setModifiedDate(new Date());
-		layoutSet.setSettings(settings);
+		LayoutSetBranch layoutSetBranch = _getLayoutSetBranch(layoutSet);
 
-		layoutSetPersistence.update(layoutSet);
+		if (layoutSetBranch == null) {
+			layoutSet.setModifiedDate(new Date());
+			layoutSet.setSettings(settings);
+
+			layoutSetPersistence.update(layoutSet);
+
+			return layoutSet;
+		}
+
+		layoutSetBranch.setModifiedDate(new Date());
+		layoutSetBranch.setSettings(settings);
+
+		layoutSetBranchPersistence.update(layoutSetBranch);
 
 		return layoutSet;
 	}
