@@ -151,21 +151,32 @@ public class ASMWrapperUtil {
 			null, null);
 
 		methodVisitor.visitCode();
+
 		methodVisitor.visitVarInsn(Opcodes.ALOAD, 0);
+
 		methodVisitor.visitMethodInsn(
 			Opcodes.INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false);
+
 		methodVisitor.visitVarInsn(Opcodes.ALOAD, 0);
+
 		methodVisitor.visitVarInsn(Opcodes.ALOAD, 1);
+
 		methodVisitor.visitFieldInsn(
 			Opcodes.PUTFIELD, asmWrapperClassBinaryName, "_delegate",
 			delegateObjectClassDescriptor);
+
 		methodVisitor.visitVarInsn(Opcodes.ALOAD, 0);
+
 		methodVisitor.visitVarInsn(Opcodes.ALOAD, 2);
+
 		methodVisitor.visitFieldInsn(
 			Opcodes.PUTFIELD, asmWrapperClassBinaryName, "_default",
 			defaultObjectClassDescriptor);
+
 		methodVisitor.visitInsn(Opcodes.RETURN);
+
 		methodVisitor.visitMaxs(0, 0);
+
 		methodVisitor.visitEnd();
 
 		// Delegate and fallback methods
@@ -210,7 +221,9 @@ public class ASMWrapperUtil {
 			Type.getMethodDescriptor(method), null, exceptionsBinaryClassNames);
 
 		methodVisitor.visitCode();
+
 		methodVisitor.visitVarInsn(Opcodes.ALOAD, 0);
+
 		methodVisitor.visitFieldInsn(
 			Opcodes.GETFIELD, asmWrapperClassBinaryName, fieldName,
 			targetClassDescriptor);
@@ -234,6 +247,7 @@ public class ASMWrapperUtil {
 		methodVisitor.visitInsn(type.getOpcode(Opcodes.IRETURN));
 
 		methodVisitor.visitMaxs(0, 0);
+
 		methodVisitor.visitEnd();
 	}
 
