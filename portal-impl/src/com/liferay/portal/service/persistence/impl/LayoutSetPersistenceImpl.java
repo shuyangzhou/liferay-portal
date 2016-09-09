@@ -42,6 +42,8 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.impl.LayoutSetImpl;
 import com.liferay.portal.model.impl.LayoutSetModelImpl;
+import com.liferay.portal.model.impl.LayoutSetPrototypeImpl;
+import com.liferay.portal.model.impl.LayoutSetPrototypeModelImpl;
 
 import java.io.Serializable;
 
@@ -1720,7 +1722,6 @@ public class LayoutSetPersistenceImpl extends BasePersistenceImpl<LayoutSet>
 					args);
 			}
 		}
-
 		entityCache.putResult(LayoutSetModelImpl.ENTITY_CACHE_ENABLED,
 			LayoutSetImpl.class, layoutSet.getPrimaryKey(), layoutSet, false);
 

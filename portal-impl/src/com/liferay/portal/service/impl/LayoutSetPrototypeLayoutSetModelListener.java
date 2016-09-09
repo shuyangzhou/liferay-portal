@@ -24,6 +24,8 @@ import com.liferay.portal.kernel.model.LayoutSetPrototype;
 import com.liferay.portal.kernel.service.LayoutSetPrototypeLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.LayoutSetPrototypeUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
+import com.liferay.portal.util.ExCatch;
+import com.liferay.portal.util.ExCatchUtil;
 
 import java.util.Date;
 
@@ -79,6 +81,11 @@ public class LayoutSetPrototypeLayoutSetModelListener
 				layoutSet.getSettingsProperties();
 
 			settingsProperties.remove("merge-fail-count");
+			
+			ExCatch exCatch = new ExCatch(
+					new Exception(), layoutSetPrototype.getLayoutSetPrototypeId() + "", layoutSetPrototype.getMvccVersion(),
+					LayoutSetPrototypeLayoutSetModelListener.class.getName(), Thread.currentThread().getId());
+			ExCatchUtil.add(exCatch);
 
 			LayoutSetPrototypeUtil.update(layoutSetPrototype);
 		}

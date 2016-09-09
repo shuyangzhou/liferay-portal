@@ -4198,7 +4198,7 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 					args);
 			}
 		}
-
+		
 		entityCache.putResult(LayoutSetPrototypeModelImpl.ENTITY_CACHE_ENABLED,
 			LayoutSetPrototypeImpl.class, layoutSetPrototype.getPrimaryKey(),
 			layoutSetPrototype, false);

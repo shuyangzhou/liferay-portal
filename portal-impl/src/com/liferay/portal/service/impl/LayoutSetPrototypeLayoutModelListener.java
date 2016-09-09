@@ -24,7 +24,10 @@ import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.LayoutSetPrototype;
 import com.liferay.portal.kernel.service.LayoutSetLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutSetPrototypeLocalServiceUtil;
+import com.liferay.portal.util.ExCatch;
+import com.liferay.portal.util.ExCatchUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
+import com.liferay.portal.service.persistence.impl.LayoutSetPrototypePersistenceImpl;
 import com.liferay.sites.kernel.util.Sites;
 
 import java.util.Date;
@@ -74,6 +77,12 @@ public class LayoutSetPrototypeLayoutModelListener
 					group.getClassPK());
 
 			layoutSetPrototype.setModifiedDate(modifiedDate);
+			
+			ExCatch exCatch = new ExCatch(
+					new Exception(), layoutSetPrototype.getLayoutSetPrototypeId() + "", layoutSetPrototype.getMvccVersion(),
+					LayoutSetPrototypeLayoutModelListener.class.getName(), Thread.currentThread().getId());
+			ExCatchUtil.add(exCatch);
+			
 
 			LayoutSetPrototypeLocalServiceUtil.updateLayoutSetPrototype(
 				layoutSetPrototype);
