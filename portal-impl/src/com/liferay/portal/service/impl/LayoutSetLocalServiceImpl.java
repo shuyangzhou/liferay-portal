@@ -207,19 +207,44 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 		LayoutSet layoutSet = layoutSetPersistence.findByG_P(
 			groupId, privateLayout);
 
-		if (Validator.isNull(layoutSetPrototypeUuid)) {
-			layoutSetPrototypeUuid = layoutSet.getLayoutSetPrototypeUuid();
+		LayoutSetBranch layoutSetBranch = _getLayoutSetBranch(layoutSet);
+
+		if (layoutSetBranch == null) {
+			if (Validator.isNull(layoutSetPrototypeUuid)) {
+				layoutSetPrototypeUuid = layoutSet.getLayoutSetPrototypeUuid();
+			}
+
+			if (Validator.isNull(layoutSetPrototypeUuid)) {
+				layoutSetPrototypeLinkEnabled = false;
+			}
+
+			layoutSet.setLayoutSetPrototypeLinkEnabled(
+				layoutSetPrototypeLinkEnabled);
+			layoutSet.setLayoutSetPrototypeUuid(layoutSetPrototypeUuid);
+
+			layoutSetPersistence.update(layoutSet);
+
+			return;
 		}
 
 		if (Validator.isNull(layoutSetPrototypeUuid)) {
-			layoutSetPrototypeLinkEnabled = false;
+			layoutSetPrototypeUuid =
+				layoutSetBranch.getLayoutSetPrototypeUuid();
 		}
 
-		layoutSet.setLayoutSetPrototypeLinkEnabled(
+		if (Validator.isNull(layoutSetPrototypeUuid) &&
+			layoutSetPrototypeLinkEnabled) {
+
+			throw new IllegalStateException(
+				"Cannot set layoutSetPrototypeLinkEnabled to true when " +
+					"layoutSetPrototypeUuid is null");
+		}
+
+		layoutSetBranch.setLayoutSetPrototypeLinkEnabled(
 			layoutSetPrototypeLinkEnabled);
-		layoutSet.setLayoutSetPrototypeUuid(layoutSetPrototypeUuid);
+		layoutSetBranch.setLayoutSetPrototypeUuid(layoutSetPrototypeUuid);
 
-		layoutSetPersistence.update(layoutSet);
+		layoutSetBranchPersistence.update(layoutSetBranch);
 	}
 
 	@Override

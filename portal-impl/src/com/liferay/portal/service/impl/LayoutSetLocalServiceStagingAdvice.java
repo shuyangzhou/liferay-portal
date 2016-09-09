@@ -69,16 +69,8 @@ public class LayoutSetLocalServiceStagingAdvice
 		Object thisObject = methodInvocation.getThis();
 		Object[] arguments = methodInvocation.getArguments();
 
-		if (methodName.equals("updateLayoutSetPrototypeLinkEnabled") &&
-			(arguments.length == 4)) {
-
-			updateLayoutSetPrototypeLinkEnabled(
-				(LayoutSetLocalService)thisObject, (Long)arguments[0],
-				(Boolean)arguments[1], (Boolean)arguments[2],
-				(String)arguments[3]);
-		}
-		else if (methodName.equals("updateLogo") && (arguments.length == 4) &&
-				 (arguments[3] instanceof byte[])) {
+		if (methodName.equals("updateLogo") && (arguments.length == 4) &&
+			(arguments[3] instanceof byte[])) {
 
 			returnValue = updateLogo(
 				(LayoutSetLocalService)thisObject, (Long)arguments[0],
@@ -103,45 +95,6 @@ public class LayoutSetLocalServiceStagingAdvice
 		}
 
 		return wrapReturnValue(returnValue);
-	}
-
-	public void updateLayoutSetPrototypeLinkEnabled(
-			LayoutSetLocalService layoutSetLocalService, long groupId,
-			boolean privateLayout, boolean layoutSetPrototypeLinkEnabled,
-			String layoutSetPrototypeUuid)
-		throws PortalException {
-
-		LayoutSet layoutSet = layoutSetPersistence.findByG_P(
-			groupId, privateLayout);
-
-		LayoutSetBranch layoutSetBranch = _getLayoutSetBranch(layoutSet);
-
-		if (layoutSetBranch == null) {
-			layoutSetLocalService.updateLayoutSetPrototypeLinkEnabled(
-				groupId, privateLayout, layoutSetPrototypeLinkEnabled,
-				layoutSetPrototypeUuid);
-
-			return;
-		}
-
-		if (Validator.isNull(layoutSetPrototypeUuid)) {
-			layoutSetPrototypeUuid =
-				layoutSetBranch.getLayoutSetPrototypeUuid();
-		}
-
-		if (Validator.isNull(layoutSetPrototypeUuid) &&
-			layoutSetPrototypeLinkEnabled) {
-
-			throw new IllegalStateException(
-				"Cannot set layoutSetPrototypeLinkEnabled to true when " +
-					"layoutSetPrototypeUuid is null");
-		}
-
-		layoutSetBranch.setLayoutSetPrototypeLinkEnabled(
-			layoutSetPrototypeLinkEnabled);
-		layoutSetBranch.setLayoutSetPrototypeUuid(layoutSetPrototypeUuid);
-
-		layoutSetBranchPersistence.update(layoutSetBranch);
 	}
 
 	public LayoutSet updateLogo(
@@ -323,8 +276,6 @@ public class LayoutSetLocalServiceStagingAdvice
 		_layoutSetLocalServiceStagingAdviceMethodNames = new HashSet<>();
 
 	static {
-		_layoutSetLocalServiceStagingAdviceMethodNames.add(
-			"updateLayoutSetPrototypeLinkEnabled");
 		_layoutSetLocalServiceStagingAdviceMethodNames.add("updateLogo");
 		_layoutSetLocalServiceStagingAdviceMethodNames.add("updateLookAndFeel");
 		_layoutSetLocalServiceStagingAdviceMethodNames.add("updateSettings");
