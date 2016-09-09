@@ -14,6 +14,7 @@
 
 package com.liferay.portal.service.impl;
 
+import com.liferay.exportimport.kernel.staging.LayoutStagingUtil;
 import com.liferay.portal.kernel.exception.LayoutSetVirtualHostException;
 import com.liferay.portal.kernel.exception.NoSuchImageException;
 import com.liferay.portal.kernel.exception.NoSuchVirtualHostException;
@@ -24,6 +25,8 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Image;
 import com.liferay.portal.kernel.model.LayoutSet;
+import com.liferay.portal.kernel.model.LayoutSetBranch;
+import com.liferay.portal.kernel.model.LayoutSetStagingHandler;
 import com.liferay.portal.kernel.model.VirtualHost;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ColorSchemeFactoryUtil;
@@ -459,6 +462,27 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 		}
 
 		return layoutSet;
+	}
+
+	private LayoutSetBranch _getLayoutSetBranch(LayoutSet layoutSet)
+		throws PortalException {
+
+		LayoutSetStagingHandler layoutSetStagingHandler =
+			LayoutStagingUtil.getLayoutSetStagingHandler(layoutSet);
+
+		if (layoutSetStagingHandler != null) {
+			return layoutSetStagingHandler.getLayoutSetBranch();
+		}
+
+		if (LayoutStagingUtil.isBranchingLayoutSet(
+				layoutSet.getGroup(), layoutSet.getPrivateLayout())) {
+
+			layoutSetStagingHandler = new LayoutSetStagingHandler(layoutSet);
+
+			return layoutSetStagingHandler.getLayoutSetBranch();
+		}
+
+		return null;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
