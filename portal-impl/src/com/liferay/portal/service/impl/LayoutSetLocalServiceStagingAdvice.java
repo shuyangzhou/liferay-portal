@@ -15,12 +15,9 @@
 package com.liferay.portal.service.impl;
 
 import com.liferay.exportimport.kernel.staging.LayoutStagingUtil;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.LayoutSet;
-import com.liferay.portal.kernel.model.LayoutSetBranch;
 import com.liferay.portal.kernel.model.LayoutSetStagingHandler;
-import com.liferay.portal.kernel.service.LayoutSetLocalService;
 import com.liferay.portal.kernel.util.ClassLoaderUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portlet.exportimport.staging.StagingAdvicesThreadLocal;
@@ -28,7 +25,6 @@ import com.liferay.portlet.exportimport.staging.StagingAdvicesThreadLocal;
 import java.lang.reflect.Method;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -60,43 +56,7 @@ public class LayoutSetLocalServiceStagingAdvice
 			return wrapReturnValue(methodInvocation.proceed());
 		}
 
-		Object returnValue = null;
-
-		Object thisObject = methodInvocation.getThis();
-		Object[] arguments = methodInvocation.getArguments();
-
-		if (methodName.equals("updateSettings")) {
-			returnValue = updateSettings(
-				(LayoutSetLocalService)thisObject, (Long)arguments[0],
-				(Boolean)arguments[1], (String)arguments[2]);
-		}
-		else {
-			returnValue = methodInvocation.proceed();
-		}
-
-		return wrapReturnValue(returnValue);
-	}
-
-	public LayoutSet updateSettings(
-			LayoutSetLocalService target, long groupId, boolean privateLayout,
-			String settings)
-		throws PortalException {
-
-		LayoutSet layoutSet = layoutSetPersistence.findByG_P(
-			groupId, privateLayout);
-
-		LayoutSetBranch layoutSetBranch = _getLayoutSetBranch(layoutSet);
-
-		if (layoutSetBranch == null) {
-			return target.updateSettings(groupId, privateLayout, settings);
-		}
-
-		layoutSetBranch.setModifiedDate(new Date());
-		layoutSetBranch.setSettings(settings);
-
-		layoutSetBranchPersistence.update(layoutSetBranch);
-
-		return layoutSet;
+		return wrapReturnValue(methodInvocation.proceed());
 	}
 
 	protected LayoutSet unwrapLayoutSet(LayoutSet layoutSet) {
@@ -170,32 +130,7 @@ public class LayoutSetLocalServiceStagingAdvice
 		return returnValue;
 	}
 
-	private LayoutSetBranch _getLayoutSetBranch(LayoutSet layoutSet)
-		throws PortalException {
-
-		LayoutSetStagingHandler layoutSetStagingHandler =
-			LayoutStagingUtil.getLayoutSetStagingHandler(layoutSet);
-
-		if (layoutSetStagingHandler != null) {
-			return layoutSetStagingHandler.getLayoutSetBranch();
-		}
-
-		if (LayoutStagingUtil.isBranchingLayoutSet(
-				layoutSet.getGroup(), layoutSet.getPrivateLayout())) {
-
-			layoutSetStagingHandler = new LayoutSetStagingHandler(layoutSet);
-
-			return layoutSetStagingHandler.getLayoutSetBranch();
-		}
-
-		return null;
-	}
-
 	private static final Set<String>
 		_layoutSetLocalServiceStagingAdviceMethodNames = new HashSet<>();
-
-	static {
-		_layoutSetLocalServiceStagingAdviceMethodNames.add("updateSettings");
-	}
 
 }
