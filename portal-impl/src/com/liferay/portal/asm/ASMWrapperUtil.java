@@ -82,27 +82,6 @@ public class ASMWrapperUtil {
 		}
 	}
 
-	private static List<List<Method>> _computeMethods(
-		Class<?> interfaceClass, Class<?> delegateObjectClass) {
-
-		List<Method> delegateMethods = new ArrayList<>();
-
-		List<Method> fallbackMethods = new ArrayList<>();
-
-		for (Method method : interfaceClass.getMethods()) {
-			try {
-				delegateMethods.add(
-					delegateObjectClass.getMethod(
-						method.getName(), method.getParameterTypes()));
-			}
-			catch (NoSuchMethodException nsme) {
-				fallbackMethods.add(method);
-			}
-		}
-
-		return Arrays.asList(delegateMethods, fallbackMethods);
-	}
-
 	private static <T> byte[] _generateASMWrapperClassData(
 		Class<T> interfaceClass, Object delegateObject, T defaultObject) {
 
@@ -179,17 +158,29 @@ public class ASMWrapperUtil {
 
 		// Delegate and fallback methods
 
-		List<List<Method>> methods = _computeMethods(
-			interfaceClass, delegateObjectClass);
+		List<Method> delegateMethods = new ArrayList<>();
 
-		for (Method delegateMethod : methods.get(0)) {
+		List<Method> fallbackMethods = new ArrayList<>();
+
+		for (Method method : interfaceClass.getMethods()) {
+			try {
+				delegateMethods.add(
+					delegateObjectClass.getMethod(
+						method.getName(), method.getParameterTypes()));
+			}
+			catch (NoSuchMethodException nsme) {
+				fallbackMethods.add(method);
+			}
+		}
+
+		for (Method delegateMethod : delegateMethods) {
 			_generateMethod(
 				classWriter, delegateMethod, asmWrapperClassBinaryName,
 				"_delegate", delegateObjectClassDescriptor,
 				_getClassBinaryName(delegateObjectClass));
 		}
 
-		for (Method fallbackMethod : methods.get(1)) {
+		for (Method fallbackMethod : fallbackMethods) {
 			_generateMethod(
 				classWriter, fallbackMethod, asmWrapperClassBinaryName,
 				"_default", defaultObjectClassDescriptor,
