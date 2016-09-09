@@ -15,22 +15,15 @@
 package com.liferay.portal.service.impl;
 
 import com.liferay.exportimport.kernel.staging.LayoutStagingUtil;
-import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.LayoutSetStagingHandler;
-import com.liferay.portal.kernel.service.LayoutSetLocalService;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ClassLoaderUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portlet.exportimport.staging.StagingAdvicesThreadLocal;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
@@ -45,48 +38,11 @@ public class LayoutSetLocalServiceStagingAdvice
 
 	@Override
 	public Object invoke(MethodInvocation methodInvocation) throws Throwable {
-		if (!StagingAdvicesThreadLocal.isEnabled()) {
-			return methodInvocation.proceed();
-		}
-
-		Method method = methodInvocation.getMethod();
-
-		String methodName = method.getName();
-
-		if (!_layoutSetLocalServiceStagingAdviceMethodNames.contains(
-				methodName)) {
-
+		if (StagingAdvicesThreadLocal.isEnabled()) {
 			return wrapReturnValue(methodInvocation.proceed());
 		}
 
-		Object returnValue = null;
-
-		Object thisObject = methodInvocation.getThis();
-		Object[] arguments = methodInvocation.getArguments();
-
-		try {
-			Class<?> clazz = getClass();
-
-			Class<?>[] parameterTypes = ArrayUtil.append(
-				new Class<?>[] {LayoutSetLocalService.class},
-				method.getParameterTypes());
-
-			Method layoutSetLocalServiceStagingAdviceMethod = clazz.getMethod(
-				methodName, parameterTypes);
-
-			arguments = ArrayUtil.append(new Object[] {thisObject}, arguments);
-
-			returnValue = layoutSetLocalServiceStagingAdviceMethod.invoke(
-				this, arguments);
-		}
-		catch (InvocationTargetException ite) {
-			throw ite.getTargetException();
-		}
-		catch (NoSuchMethodException nsme) {
-			returnValue = methodInvocation.proceed();
-		}
-
-		return wrapReturnValue(returnValue);
+		return methodInvocation.proceed();
 	}
 
 	protected LayoutSet unwrapLayoutSet(LayoutSet layoutSet) {
@@ -108,18 +64,14 @@ public class LayoutSetLocalServiceStagingAdvice
 			return layoutSet;
 		}
 
-		Group group = null;
-
 		try {
-			group = layoutSet.getGroup();
-		}
-		catch (Exception e) {
-			return layoutSet;
-		}
+			if (!LayoutStagingUtil.isBranchingLayoutSet(
+					layoutSet.getGroup(), layoutSet.getPrivateLayout())) {
 
-		if (!LayoutStagingUtil.isBranchingLayoutSet(
-				group, layoutSet.getPrivateLayout())) {
-
+				return layoutSet;
+			}
+		}
+		catch (PortalException pe) {
 			return layoutSet;
 		}
 
@@ -136,10 +88,8 @@ public class LayoutSetLocalServiceStagingAdvice
 
 		List<LayoutSet> wrappedLayoutSets = new ArrayList<>(layoutSets.size());
 
-		for (int i = 0; i < layoutSets.size(); i++) {
-			LayoutSet wrappedLayoutSet = wrapLayoutSet(layoutSets.get(i));
-
-			wrappedLayoutSets.add(wrappedLayoutSet);
+		for (LayoutSet layoutSet : layoutSets) {
+			wrappedLayoutSets.add(wrapLayoutSet(layoutSet));
 		}
 
 		return wrappedLayoutSets;
@@ -159,8 +109,5 @@ public class LayoutSetLocalServiceStagingAdvice
 
 		return returnValue;
 	}
-
-	private static final Set<String>
-		_layoutSetLocalServiceStagingAdviceMethodNames = new HashSet<>();
 
 }
