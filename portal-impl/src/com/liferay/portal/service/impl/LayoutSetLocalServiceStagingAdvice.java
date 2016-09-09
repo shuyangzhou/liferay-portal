@@ -114,10 +114,7 @@ public class LayoutSetLocalServiceStagingAdvice
 		LayoutSet layoutSet = layoutSetPersistence.findByG_P(
 			groupId, privateLayout);
 
-		layoutSet = wrapLayoutSet(layoutSet);
-
-		LayoutSetBranch layoutSetBranch = LayoutStagingUtil.getLayoutSetBranch(
-			layoutSet);
+		LayoutSetBranch layoutSetBranch = _getLayoutSetBranch(layoutSet);
 
 		if (layoutSetBranch == null) {
 			layoutSetLocalService.updateLayoutSetPrototypeLinkEnabled(
@@ -155,10 +152,7 @@ public class LayoutSetLocalServiceStagingAdvice
 		LayoutSet layoutSet = layoutSetPersistence.findByG_P(
 			groupId, privateLayout);
 
-		layoutSet = wrapLayoutSet(layoutSet);
-
-		LayoutSetBranch layoutSetBranch = LayoutStagingUtil.getLayoutSetBranch(
-			layoutSet);
+		LayoutSetBranch layoutSetBranch = _getLayoutSetBranch(layoutSet);
 
 		if (layoutSetBranch == null) {
 			return layoutSetLocalService.updateLogo(
@@ -183,10 +177,7 @@ public class LayoutSetLocalServiceStagingAdvice
 		LayoutSet layoutSet = layoutSetPersistence.findByG_P(
 			groupId, privateLayout);
 
-		layoutSet = wrapLayoutSet(layoutSet);
-
-		LayoutSetBranch layoutSetBranch = LayoutStagingUtil.getLayoutSetBranch(
-			layoutSet);
+		LayoutSetBranch layoutSetBranch = _getLayoutSetBranch(layoutSet);
 
 		if (layoutSetBranch == null) {
 			return target.updateLookAndFeel(
@@ -222,10 +213,7 @@ public class LayoutSetLocalServiceStagingAdvice
 		LayoutSet layoutSet = layoutSetPersistence.findByG_P(
 			groupId, privateLayout);
 
-		layoutSet = wrapLayoutSet(layoutSet);
-
-		LayoutSetBranch layoutSetBranch = LayoutStagingUtil.getLayoutSetBranch(
-			layoutSet);
+		LayoutSetBranch layoutSetBranch = _getLayoutSetBranch(layoutSet);
 
 		if (layoutSetBranch == null) {
 			return target.updateSettings(groupId, privateLayout, settings);
@@ -308,6 +296,27 @@ public class LayoutSetLocalServiceStagingAdvice
 		}
 
 		return returnValue;
+	}
+
+	private LayoutSetBranch _getLayoutSetBranch(LayoutSet layoutSet)
+		throws PortalException {
+
+		LayoutSetStagingHandler layoutSetStagingHandler =
+			LayoutStagingUtil.getLayoutSetStagingHandler(layoutSet);
+
+		if (layoutSetStagingHandler != null) {
+			return layoutSetStagingHandler.getLayoutSetBranch();
+		}
+
+		if (LayoutStagingUtil.isBranchingLayoutSet(
+				layoutSet.getGroup(), layoutSet.getPrivateLayout())) {
+
+			layoutSetStagingHandler = new LayoutSetStagingHandler(layoutSet);
+
+			return layoutSetStagingHandler.getLayoutSetBranch();
+		}
+
+		return null;
 	}
 
 	private static final Set<String>
