@@ -50,13 +50,11 @@ public class ASMWrapperUtil {
 
 		synchronized (classLoader) {
 			try {
-				asmWrapperClass = classLoader.loadClass(asmWrapperClassName);
-			}
-			catch (ClassNotFoundException cnfe) {
-			}
-
-			try {
-				if (asmWrapperClass == null) {
+				try {
+					asmWrapperClass = classLoader.loadClass(
+						asmWrapperClassName);
+				}
+				catch (ClassNotFoundException cnfe) {
 					Method defineClassMethod = ReflectionUtil.getDeclaredMethod(
 						ClassLoader.class, "defineClass", String.class,
 						byte[].class, int.class, int.class);
