@@ -14,7 +14,6 @@
 
 package com.liferay.portal.service.impl;
 
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModelListener;
@@ -22,8 +21,8 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.LayoutSetPrototype;
-import com.liferay.portal.kernel.service.LayoutSetLocalServiceUtil;
-import com.liferay.portal.kernel.service.LayoutSetPrototypeLocalServiceUtil;
+import com.liferay.portal.kernel.service.persistence.LayoutSetPrototypeUtil;
+import com.liferay.portal.kernel.service.persistence.LayoutSetUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.sites.kernel.util.Sites;
 
@@ -55,28 +54,15 @@ public class LayoutSetPrototypeLayoutModelListener
 			return;
 		}
 
-		Group group = null;
-
 		try {
-			group = layout.getGroup();
+			Group group = layout.getGroup();
 
 			if (!group.isLayoutSetPrototype()) {
 				return;
 			}
-		}
-		catch (PortalException pe) {
-			return;
-		}
 
-		try {
 			LayoutSetPrototype layoutSetPrototype =
-				LayoutSetPrototypeLocalServiceUtil.getLayoutSetPrototype(
-					group.getClassPK());
-
-			layoutSetPrototype.setModifiedDate(modifiedDate);
-
-			LayoutSetPrototypeLocalServiceUtil.updateLayoutSetPrototype(
-				layoutSetPrototype);
+				LayoutSetPrototypeUtil.findByPrimaryKey(group.getClassPK());
 
 			LayoutSet layoutSet = layoutSetPrototype.getLayoutSet();
 
@@ -87,7 +73,7 @@ public class LayoutSetPrototypeLayoutModelListener
 
 			settingsProperties.remove(Sites.MERGE_FAIL_COUNT);
 
-			LayoutSetLocalServiceUtil.updateLayoutSet(layoutSet);
+			LayoutSetUtil.update(layoutSet);
 		}
 		catch (Exception e) {
 			_log.error(e, e);

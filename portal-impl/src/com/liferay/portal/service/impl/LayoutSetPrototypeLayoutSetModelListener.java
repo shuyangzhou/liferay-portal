@@ -14,16 +14,15 @@
 
 package com.liferay.portal.service.impl;
 
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.LayoutSetPrototype;
-import com.liferay.portal.kernel.service.LayoutSetPrototypeLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.LayoutSetPrototypeUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
+import com.liferay.sites.kernel.util.Sites;
 
 import java.util.Date;
 
@@ -55,30 +54,22 @@ public class LayoutSetPrototypeLayoutSetModelListener
 			return;
 		}
 
-		Group group = null;
-
 		try {
-			group = layoutSet.getGroup();
+			Group group = layoutSet.getGroup();
 
 			if (!group.isLayoutSetPrototype()) {
 				return;
 			}
-		}
-		catch (PortalException pe) {
-			return;
-		}
 
-		try {
 			LayoutSetPrototype layoutSetPrototype =
-				LayoutSetPrototypeLocalServiceUtil.getLayoutSetPrototype(
-					group.getClassPK());
+				LayoutSetPrototypeUtil.findByPrimaryKey(group.getClassPK());
 
 			layoutSetPrototype.setModifiedDate(modifiedDate);
 
 			UnicodeProperties settingsProperties =
 				layoutSet.getSettingsProperties();
 
-			settingsProperties.remove("merge-fail-count");
+			settingsProperties.remove(Sites.MERGE_FAIL_COUNT);
 
 			LayoutSetPrototypeUtil.update(layoutSetPrototype);
 		}

@@ -60,11 +60,16 @@ public abstract class PQLOperator {
 
 	static {
 		_prioritizedOperatorList.add(Arrays.asList(new String[] {"<", ">"}));
+
 		_prioritizedOperatorList.add(Arrays.asList(new String[] {"<=", ">="}));
+
 		_prioritizedOperatorList.add(Arrays.asList(new String[] {"~", "=="}));
+
 		_prioritizedOperatorList.add(Arrays.asList(new String[] {"!~", "!="}));
-		_prioritizedOperatorList.add(Arrays.asList(new String[] {"AND"}));
+
 		_prioritizedOperatorList.add(Arrays.asList(new String[] {"OR"}));
+
+		_prioritizedOperatorList.add(Arrays.asList(new String[] {"AND"}));
 
 		for (List<String> operators : _prioritizedOperatorList) {
 			_availableOperators.addAll(operators);

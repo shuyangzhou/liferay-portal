@@ -19,7 +19,7 @@
 				<option name="LINE_SEPARATOR" value="&#10;" />
 				<option name="FIELD_NAME_PREFIX" value="_" />
 				<option name="STATIC_FIELD_NAME_PREFIX" value="_" />
-				<option name="INSERT_OVERRIDE_ANNOTATION" value="false" />
+				<option name="INSERT_OVERRIDE_ANNOTATION" value="true" />
 				<option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="500" />
 				<option name="NAMES_COUNT_TO_USE_IMPORT_ON_DEMAND" value="500" />
 				<option name="FIELDS_ORDER_WEIGHT" value="4" />

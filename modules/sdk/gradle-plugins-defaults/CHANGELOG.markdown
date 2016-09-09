@@ -190,12 +190,24 @@ configuration.
 ## 1.2.16 - 2016-09-08
 
 ### Added
-- [LPS-67863]: Allow to override dependency versions in the
+- [LPS-67863]: Allow dependency versions to be overridden in the
 `.version-override-${project.name}.properties` file:
 
-		<artifact group>-<artifact name>=<new version>
+		[artifact group]-[artifact name]=[new version]
+
+### Changed
+- [LPS-66853]: Update the [Liferay Gradle Plugins] dependency to version 2.0.29.
+
+## 1.2.17 - 2016-09-09
+
+### Changed
+- [LPS-61099]: Update the [Liferay Gradle Plugins] dependency to version 2.0.30.
+- [LRDOCS-2841]: Look for the `.releng` dir starting from the project directory,
+not from the root project one. This way, submodules like `content-targeting` can
+have their own separate `.releng` directory.
 
 [Liferay Gradle Plugins]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-plugins
+[LPS-61099]: https://issues.liferay.com/browse/LPS-61099
 [LPS-66853]: https://issues.liferay.com/browse/LPS-66853
 [LPS-67023]: https://issues.liferay.com/browse/LPS-67023
 [LPS-67352]: https://issues.liferay.com/browse/LPS-67352
@@ -206,3 +218,4 @@ configuration.
 [LPS-67996]: https://issues.liferay.com/browse/LPS-67996
 [LPS-68009]: https://issues.liferay.com/browse/LPS-68009
 [LPS-68014]: https://issues.liferay.com/browse/LPS-68014
+[LRDOCS-2841]: https://issues.liferay.com/browse/LRDOCS-2841
