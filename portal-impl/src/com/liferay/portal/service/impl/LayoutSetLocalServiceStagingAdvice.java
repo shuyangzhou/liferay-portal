@@ -23,7 +23,6 @@ import com.liferay.portal.kernel.model.LayoutSetStagingHandler;
 import com.liferay.portal.kernel.service.LayoutSetLocalService;
 import com.liferay.portal.kernel.util.ClassLoaderUtil;
 import com.liferay.portal.kernel.util.ColorSchemeFactoryUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.ThemeFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -69,17 +68,7 @@ public class LayoutSetLocalServiceStagingAdvice
 		Object thisObject = methodInvocation.getThis();
 		Object[] arguments = methodInvocation.getArguments();
 
-		if (methodName.equals("updateLogo") && (arguments.length == 4) &&
-			(arguments[3] instanceof byte[])) {
-
-			returnValue = updateLogo(
-				(LayoutSetLocalService)thisObject, (Long)arguments[0],
-				(Boolean)arguments[1], (Boolean)arguments[2],
-				(byte[])arguments[3]);
-		}
-		else if (methodName.equals("updateLookAndFeel") &&
-				 (arguments.length == 5)) {
-
+		if (methodName.equals("updateLookAndFeel") && (arguments.length == 5)) {
 			returnValue = updateLookAndFeel(
 				(LayoutSetLocalService)thisObject, (Long)arguments[0],
 				(Boolean)arguments[1], (String)arguments[2],
@@ -95,31 +84,6 @@ public class LayoutSetLocalServiceStagingAdvice
 		}
 
 		return wrapReturnValue(returnValue);
-	}
-
-	public LayoutSet updateLogo(
-			LayoutSetLocalService layoutSetLocalService, long groupId,
-			boolean privateLayout, boolean logo, byte[] logoBytes)
-		throws PortalException {
-
-		LayoutSet layoutSet = layoutSetPersistence.findByG_P(
-			groupId, privateLayout);
-
-		LayoutSetBranch layoutSetBranch = _getLayoutSetBranch(layoutSet);
-
-		if (layoutSetBranch == null) {
-			return layoutSetLocalService.updateLogo(
-				groupId, privateLayout, logo, logoBytes);
-		}
-
-		layoutSetBranch.setModifiedDate(new Date());
-
-		PortalUtil.updateImageId(
-			layoutSetBranch, logo, logoBytes, "logoId", 0, 0, 0);
-
-		layoutSetBranchPersistence.update(layoutSetBranch);
-
-		return layoutSet;
 	}
 
 	public LayoutSet updateLookAndFeel(
@@ -276,7 +240,6 @@ public class LayoutSetLocalServiceStagingAdvice
 		_layoutSetLocalServiceStagingAdviceMethodNames = new HashSet<>();
 
 	static {
-		_layoutSetLocalServiceStagingAdviceMethodNames.add("updateLogo");
 		_layoutSetLocalServiceStagingAdviceMethodNames.add("updateLookAndFeel");
 		_layoutSetLocalServiceStagingAdviceMethodNames.add("updateSettings");
 	}
