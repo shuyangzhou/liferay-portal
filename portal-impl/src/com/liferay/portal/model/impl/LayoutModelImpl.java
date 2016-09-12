@@ -1505,6 +1505,14 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 		_lastPublishDate = lastPublishDate;
 	}
 
+	public com.liferay.portal.kernel.util.UnicodeProperties getTypeSettingsProperties() {
+		return null;
+	}
+
+	public void setTypeSettingsProperties(
+		com.liferay.portal.kernel.util.UnicodeProperties typeSettingsProperties) {
+	}
+
 	@Override
 	public StagedModelType getStagedModelType() {
 		return new StagedModelType(PortalUtil.getClassNameId(
@@ -1836,6 +1844,8 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 
 		layoutModelImpl._originalSourcePrototypeLayoutUuid = layoutModelImpl._sourcePrototypeLayoutUuid;
 
+		setTypeSettingsProperties(null);
+
 		layoutModelImpl._columnBitmask = 0;
 	}
 
@@ -2015,6 +2025,8 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 		else {
 			layoutCacheModel.lastPublishDate = Long.MIN_VALUE;
 		}
+
+		layoutCacheModel._typeSettingsProperties = getTypeSettingsProperties();
 
 		return layoutCacheModel;
 	}
