@@ -23,7 +23,9 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.push.notifications.constants.PushNotificationsDestinationNames;
+import com.liferay.push.notifications.internal.messaging.PushNotificationMessagingConfigurator;
 import com.liferay.push.notifications.model.PushNotificationsDevice;
 import com.liferay.push.notifications.sender.BaseResponse;
 import com.liferay.push.notifications.sender.PushNotificationsSender;
@@ -187,6 +189,10 @@ public class PushNotificationsDeviceLocalServiceImpl
 				oldPushNotificationsDevice.getPlatform(), newToken);
 		}
 	}
+
+	@ServiceReference
+	private PushNotificationMessagingConfigurator
+		_pushNotificationMessagingConfigurator;
 
 	private ServiceTrackerMap<String, PushNotificationsSender>
 		_serviceTrackerMap;
