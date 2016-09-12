@@ -584,6 +584,14 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 		java.lang.String companyFallbackVirtualHostname) {
 	}
 
+	public com.liferay.portal.kernel.util.UnicodeProperties getSettingsProperties() {
+		return null;
+	}
+
+	public void setSettingsProperties(
+		com.liferay.portal.kernel.util.UnicodeProperties settingsProperties) {
+	}
+
 	public java.lang.String getVirtualHostname() {
 		return null;
 	}
@@ -713,6 +721,8 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 
 		setCompanyFallbackVirtualHostname(null);
 
+		setSettingsProperties(null);
+
 		setVirtualHostname(null);
 
 		layoutSetModelImpl._columnBitmask = 0;
@@ -798,6 +808,8 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 		layoutSetCacheModel.layoutSetPrototypeLinkEnabled = getLayoutSetPrototypeLinkEnabled();
 
 		layoutSetCacheModel._companyFallbackVirtualHostname = getCompanyFallbackVirtualHostname();
+
+		layoutSetCacheModel._settingsProperties = getSettingsProperties();
 
 		layoutSetCacheModel._virtualHostname = getVirtualHostname();
 
