@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.LayoutSetBranch;
 import com.liferay.portal.kernel.model.LayoutSetStagingHandler;
 import com.liferay.portal.kernel.service.LayoutSetLocalService;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ClassLoaderUtil;
 import com.liferay.portal.kernel.util.ColorSchemeFactoryUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -30,7 +29,6 @@ import com.liferay.portal.kernel.util.ThemeFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portlet.exportimport.staging.StagingAdvicesThreadLocal;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import java.util.ArrayList;
@@ -72,7 +70,7 @@ public class LayoutSetLocalServiceStagingAdvice
 		Object[] arguments = methodInvocation.getArguments();
 
 		if (methodName.equals("updateLayoutSetPrototypeLinkEnabled") &&
-			(arguments.length == 5)) {
+			(arguments.length == 4)) {
 
 			updateLayoutSetPrototypeLinkEnabled(
 				(LayoutSetLocalService)thisObject, (Long)arguments[0],
@@ -101,28 +99,7 @@ public class LayoutSetLocalServiceStagingAdvice
 				(Boolean)arguments[1], (String)arguments[2]);
 		}
 		else {
-			try {
-				Class<?> clazz = getClass();
-
-				Class<?>[] parameterTypes = ArrayUtil.append(
-					new Class<?>[] {LayoutSetLocalService.class},
-					method.getParameterTypes());
-
-				Method layoutSetLocalServiceStagingAdviceMethod =
-					clazz.getMethod(methodName, parameterTypes);
-
-				arguments = ArrayUtil.append(
-					new Object[] {thisObject}, arguments);
-
-				returnValue = layoutSetLocalServiceStagingAdviceMethod.invoke(
-					this, arguments);
-			}
-			catch (InvocationTargetException ite) {
-				throw ite.getTargetException();
-			}
-			catch (NoSuchMethodException nsme) {
-				returnValue = methodInvocation.proceed();
-			}
+			returnValue = methodInvocation.proceed();
 		}
 
 		return wrapReturnValue(returnValue);
