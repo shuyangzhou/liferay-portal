@@ -3267,7 +3267,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 			}
 		}
 
-		group.setTypeSettings(typeSettings);
+		group.setTypeSettingsProperties(typeSettingsProperties);
 
 		groupPersistence.update(group);
 
