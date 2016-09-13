@@ -43,6 +43,7 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -77,8 +78,6 @@ public class FriendlyURLServlet extends HttpServlet {
 		_private = GetterUtil.getBoolean(
 			servletConfig.getInitParameter("private"));
 
-		String proxyPath = PortalUtil.getPathProxy();
-
 		_user = GetterUtil.getBoolean(servletConfig.getInitParameter("user"));
 
 		if (_private) {
@@ -94,8 +93,6 @@ public class FriendlyURLServlet extends HttpServlet {
 		else {
 			_friendlyURLPathPrefix = PortalUtil.getPathFriendlyURLPublic();
 		}
-
-		_pathInfoOffset = _friendlyURLPathPrefix.length() - proxyPath.length();
 	}
 
 	@Override
@@ -195,15 +192,13 @@ public class FriendlyURLServlet extends HttpServlet {
 	}
 
 	protected String getPathInfo(HttpServletRequest request) {
-		String requestURI = request.getRequestURI();
+		String pathInfo = request.getPathInfo();
 
-		int pos = requestURI.indexOf(Portal.JSESSIONID);
-
-		if (pos == -1) {
-			return requestURI.substring(_pathInfoOffset);
+		if (pathInfo == null) {
+			return StringPool.BLANK;
 		}
 
-		return requestURI.substring(_pathInfoOffset, pos);
+		return pathInfo;
 	}
 
 	/**
@@ -428,7 +423,6 @@ public class FriendlyURLServlet extends HttpServlet {
 		FriendlyURLServlet.class);
 
 	private String _friendlyURLPathPrefix;
-	private int _pathInfoOffset;
 	private boolean _private;
 	private boolean _user;
 
