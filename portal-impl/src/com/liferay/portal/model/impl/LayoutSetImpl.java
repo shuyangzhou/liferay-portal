@@ -299,8 +299,6 @@ public class LayoutSetImpl extends LayoutSetBaseImpl {
 	@Override
 	public void setSettingsProperties(UnicodeProperties settingsProperties) {
 		_settingsProperties = settingsProperties;
-
-		super.setSettings(_settingsProperties.toString());
 	}
 
 	/**

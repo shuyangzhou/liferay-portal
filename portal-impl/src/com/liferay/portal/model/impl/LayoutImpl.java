@@ -1237,8 +1237,6 @@ public class LayoutImpl extends LayoutBaseImpl {
 		UnicodeProperties typeSettingsProperties) {
 
 		_typeSettingsProperties = typeSettingsProperties;
-
-		super.setTypeSettings(_typeSettingsProperties.toString());
 	}
 
 	private static String _getFriendlyURLKeyword(String friendlyURL) {
