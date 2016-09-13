@@ -94,26 +94,13 @@ public class UnicodeProperties extends HashMap<String, String> {
 			return;
 		}
 
-		UnsyncBufferedReader unsyncBufferedReader = null;
+		try (UnsyncBufferedReader unsyncBufferedReader =
+				new UnsyncBufferedReader(new UnsyncStringReader(props))) {
 
-		try {
-			unsyncBufferedReader = new UnsyncBufferedReader(
-				new UnsyncStringReader(props));
+			String line = null;
 
-			String line = unsyncBufferedReader.readLine();
-
-			while (line != null) {
+			while ((line = unsyncBufferedReader.readLine()) != null) {
 				put(line);
-				line = unsyncBufferedReader.readLine();
-			}
-		}
-		finally {
-			if (unsyncBufferedReader != null) {
-				try {
-					unsyncBufferedReader.close();
-				}
-				catch (Exception e) {
-				}
 			}
 		}
 	}
