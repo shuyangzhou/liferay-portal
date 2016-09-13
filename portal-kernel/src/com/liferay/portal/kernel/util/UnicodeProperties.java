@@ -137,8 +137,6 @@ public class UnicodeProperties extends HashMap<String, String> {
 			return remove(key);
 		}
 
-		_length += key.length() + value.length() + 2;
-
 		return super.put(key, value);
 	}
 
@@ -148,17 +146,7 @@ public class UnicodeProperties extends HashMap<String, String> {
 			return null;
 		}
 
-		String value = super.remove(key);
-
-		if (value == null) {
-			return null;
-		}
-
-		String keyString = (String)key;
-
-		_length -= keyString.length() + value.length() + 2;
-
-		return value;
+		return super.remove(key);
 	}
 
 	public String setProperty(String key, String value) {
@@ -175,7 +163,7 @@ public class UnicodeProperties extends HashMap<String, String> {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(_length);
+		StringBuilder sb = new StringBuilder();
 
 		Set<String> keys = new TreeSet<>(keySet());
 
@@ -199,8 +187,12 @@ public class UnicodeProperties extends HashMap<String, String> {
 		return sb.toString();
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	protected int getToStringLength() {
-		return _length;
+		return -1;
 	}
 
 	private static String _decode(String value) {
@@ -231,7 +223,6 @@ public class UnicodeProperties extends HashMap<String, String> {
 	private static final Log _log = LogFactoryUtil.getLog(
 		UnicodeProperties.class);
 
-	private int _length;
 	private final boolean _safe;
 
 }
