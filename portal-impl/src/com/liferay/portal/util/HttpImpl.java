@@ -1080,32 +1080,54 @@ public class HttpImpl implements Http {
 			return url;
 		}
 
-		Matcher matcher = _relativeURLPattern.matcher(url);
+		if ((url.length() >= 2) && (url.charAt(0) == CharPool.SLASH)) {
+			char secondChar = url.charAt(1);
 
-		if (matcher.lookingAt()) {
-			return url;
+			if ((('0' <= secondChar) && (secondChar <= '9')) ||
+				(('A' <= secondChar) && (secondChar <= 'Z')) ||
+				('a' <= secondChar) && (secondChar <= 'z')) {
+
+				return url;
+			}
 		}
 
 		boolean modified = false;
+		Matcher matcher = null;
 
 		do {
 			modified = false;
 
-			matcher = _absoluteURLPattern.matcher(url);
-
-			if (matcher.lookingAt()) {
-				url = url.substring(matcher.end());
+			if (url.startsWith(Http.HTTP_WITH_SLASH)) {
+				url = url.substring(Http.HTTP_WITH_SLASH.length());
 
 				modified = true;
 			}
-
-			matcher = _protocolRelativeURLPattern.matcher(url);
-
-			if (matcher.lookingAt()) {
-				url = url.substring(matcher.end());
+			else if (url.startsWith(Http.HTTPS_WITH_SLASH)) {
+				url = url.substring(Http.HTTPS_WITH_SLASH.length());
 
 				modified = true;
 			}
+			else if (url.startsWith(StringPool.SLASH) ||
+					 url.startsWith(StringPool.DOUBLE_BACK_SLASH)) {
+
+				matcher = _protocolRelativeURLPattern.matcher(url);
+
+				if (matcher.lookingAt()) {
+					url = url.substring(matcher.end());
+
+					modified = true;
+				}
+			}
+			else {
+				matcher = _absoluteURLPattern.matcher(url);
+
+				if (matcher.lookingAt()) {
+					url = url.substring(matcher.end());
+
+					modified = true;
+				}
+			}
+
 		} while (modified);
 
 		return url;
@@ -2071,7 +2093,5 @@ public class HttpImpl implements Http {
 	private final List<String> _proxyAuthPrefs = new ArrayList<>();
 	private final CloseableHttpClient _proxyCloseableHttpClient;
 	private final Credentials _proxyCredentials;
-	private final Pattern _relativeURLPattern = Pattern.compile(
-		"^\\s*/[a-zA-Z0-9]+");
 
 }
