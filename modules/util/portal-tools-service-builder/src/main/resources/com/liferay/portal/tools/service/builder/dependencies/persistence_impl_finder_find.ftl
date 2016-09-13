@@ -1,4 +1,5 @@
 <#assign finderColsList = finder.getColumns() />
+<#assign finderArrayableColsList = finder.getArrayableColumns() />
 
 <#--
 Basic Cases Table:
@@ -1332,10 +1333,10 @@ that may or may not be enforced with a unique index at the database level. Case
 <#if !finder.isUnique()>
 </#if>
 
-<#-- Case 7: finder.isCollection() -->
+<#-- Case 7: finder.isCollection() && !finder.hasArrayablePagination() -->
 
 <#if finder.isCollection()>
-	<#if finder.hasArrayableOperator()>
+	<#if finder.hasArrayableOperator() && !finder.hasArrayablePagination()>
 		/**
 		 * Returns all the ${entity.humanNames} where ${finder.getHumanConditions(true)}.
 		 *
@@ -1678,6 +1679,432 @@ that may or may not be enforced with a unique index at the database level. Case
 				finally {
 					closeSession(session);
 				}
+			}
+
+			return list;
+		}
+	</#if>
+</#if>
+
+<#-- Case 7.1: finder.isCollection() && is ArrayablePagination-->
+
+<#if finder.isCollection()>
+	<#if finder.hasArrayableOperator() && finder.hasArrayablePagination()>
+		/**
+		 * Returns all the ${entity.humanNames} where ${finder.getHumanConditions(true)}.
+		 *
+		 * <p>
+		 * <#include "range_comment.ftl">
+		 * </p>
+		 *
+		<#list finderColsList as finderCol>
+			<#if finderCol.hasArrayableOperator()>
+		 * @param ${finderCol.names} the ${finderCol.humanNames}
+			<#else>
+		 * @param ${finderCol.name} the ${finderCol.humanName}
+			</#if>
+		</#list>
+		 * @return the matching ${entity.humanNames}
+		 */
+		@Override
+		public List<${entity.name}> findBy${finder.name}(
+
+		<#list finderColsList as finderCol>
+			<#if finderCol.hasArrayableOperator()>
+				${finderCol.type}[] ${finderCol.names}
+			<#else>
+				${finderCol.type} ${finderCol.name}
+			</#if>
+
+			<#if finderCol_has_next>
+				,
+			</#if>
+		</#list>
+
+		) {
+			return findBy${finder.name}(
+
+			<#list finderColsList as finderCol>
+				<#if finderCol.hasArrayableOperator()>
+					${finderCol.names},
+				<#else>
+					${finderCol.name},
+				</#if>
+			</#list>
+
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+		}
+
+		/**
+		 * Returns a range of all the ${entity.humanNames} where ${finder.getHumanConditions(true)}.
+		 *
+		 * <p>
+		 * <#include "range_comment.ftl">
+		 * </p>
+		 *
+		<#list finderColsList as finderCol>
+			<#if finderCol.hasArrayableOperator()>
+		 * @param ${finderCol.names} the ${finderCol.humanNames}
+			<#else>
+		 * @param ${finderCol.name} the ${finderCol.humanName}
+			</#if>
+		</#list>
+		 * @param start the lower bound of the range of ${entity.humanNames}
+		 * @param end the upper bound of the range of ${entity.humanNames} (not inclusive)
+		 * @return the range of matching ${entity.humanNames}
+		 */
+		@Override
+		public List<${entity.name}> findBy${finder.name}(
+
+		<#list finderColsList as finderCol>
+			<#if finderCol.hasArrayableOperator()>
+				${finderCol.type}[] ${finderCol.names},
+			<#else>
+				${finderCol.type} ${finderCol.name},
+			</#if>
+		</#list>
+
+		int start, int end) {
+			return findBy${finder.name}(
+
+			<#list finderColsList as finderCol>
+				<#if finderCol.hasArrayableOperator()>
+					${finderCol.names},
+				<#else>
+					${finderCol.name},
+				</#if>
+			</#list>
+
+			start, end, null);
+		}
+
+		/**
+		 * Returns an ordered range of all the ${entity.humanNames} where ${finder.getHumanConditions(true)}.
+		 *
+		 * <p>
+		 * <#include "range_comment.ftl">
+		 * </p>
+		 *
+		<#list finderColsList as finderCol>
+			<#if finderCol.hasArrayableOperator()>
+		 * @param ${finderCol.names} the ${finderCol.humanNames}
+			<#else>
+		 * @param ${finderCol.name} the ${finderCol.humanName}
+			</#if>
+		</#list>
+		 * @param start the lower bound of the range of ${entity.humanNames}
+		 * @param end the upper bound of the range of ${entity.humanNames} (not inclusive)
+		 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+		 * @return the ordered range of matching ${entity.humanNames}
+		 */
+		@Override
+		public List<${entity.name}> findBy${finder.name}(
+
+		<#list finderColsList as finderCol>
+			<#if finderCol.hasArrayableOperator()>
+				${finderCol.type}[] ${finderCol.names},
+			<#else>
+				${finderCol.type} ${finderCol.name},
+			</#if>
+		</#list>
+
+		int start, int end, OrderByComparator<${entity.name}> orderByComparator) {
+			return findBy${finder.name}(
+
+			<#list finderColsList as finderCol>
+				<#if finderCol.hasArrayableOperator()>
+					${finderCol.names},
+				<#else>
+					${finderCol.name},
+				</#if>
+			</#list>
+
+			start, end, orderByComparator, true);
+		}
+
+		/**
+		 * Returns an ordered range of all the ${entity.humanNames} where ${finder.getHumanConditions(false)}, optionally using the finder cache.
+		 *
+		 * <p>
+		 * <#include "range_comment.ftl">
+		 * </p>
+		 *
+		<#list finderColsList as finderCol>
+		 * @param ${finderCol.name} the ${finderCol.humanName}
+		</#list>
+		 * @param start the lower bound of the range of ${entity.humanNames}
+		 * @param end the upper bound of the range of ${entity.humanNames} (not inclusive)
+		 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+		 * @param retrieveFromCache whether to retrieve from the finder cache
+		 * @return the ordered range of matching ${entity.humanNames}
+		 */
+		@Override
+		public List<${entity.name}> findBy${finder.name}(
+
+		<#list finderColsList as finderCol>
+			<#if finderCol.hasArrayableOperator()>
+				${finderCol.type}[] ${finderCol.names},
+			<#else>
+				${finderCol.type} ${finderCol.name},
+			</#if>
+		</#list>
+
+		int start, int end, OrderByComparator<${entity.name}> orderByComparator, boolean retrieveFromCache) {
+			<#list finderColsList as finderCol>
+				<#if finderCol.hasArrayableOperator()>
+					if (${finderCol.names} == null) {
+						${finderCol.names} = new ${finderCol.type}[0];
+					}
+					else if (${finderCol.names}.length > 1) {
+						${finderCol.names} =
+							<#if finderCol.type == "String">
+								ArrayUtil.distinct(${finderCol.names}, NULL_SAFE_STRING_COMPARATOR);
+							<#else>
+								ArrayUtil.unique(${finderCol.names});
+							</#if>
+
+						<#if finderCol.type == "String">
+							Arrays.sort(${finderCol.names}, NULL_SAFE_STRING_COMPARATOR);
+						<#else>
+							Arrays.sort(${finderCol.names});
+						</#if>
+					}
+				</#if>
+			</#list>
+
+			if (
+			<#assign firstCol = true />
+			<#list finderColsList as finderCol>
+				<#if finderCol.hasArrayableOperator()>
+					<#if firstCol>
+						<#assign firstCol = false />
+					<#else>
+						&&
+					</#if>
+
+					${finderCol.names}.length == 1
+				</#if>
+			</#list>
+			) {
+				<#if finder.isUnique()>
+					${entity.name} ${entity.varName} = fetchBy${finder.name}(
+						<#list finderColsList as finderCol>
+							<#if finderCol.hasArrayableOperator()>
+								${finderCol.names}[0]
+							<#else>
+								${finderCol.name}
+							</#if>
+
+							<#if finderCol_has_next>
+								,
+							</#if>
+						</#list>);
+
+					if (${entity.varName} == null) {
+						return Collections.emptyList();
+					}
+					else {
+						List<${entity.name}> list = new ArrayList<${entity.name}>(1);
+
+						list.add(${entity.varName});
+
+						return list;
+					}
+				<#else>
+					return findBy${finder.name}(
+						<#list finderColsList as finderCol>
+							<#if finderCol.hasArrayableOperator()>
+								${finderCol.names}[0],
+							<#else>
+								${finderCol.name},
+							</#if>
+						</#list>
+
+						start, end, orderByComparator);
+				</#if>
+			}
+
+			boolean pagination = true;
+			Object[] finderArgs = null;
+
+			if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) && (orderByComparator == null)) {
+				pagination = false;
+				finderArgs = new Object[] {
+					<#list finderColsList as finderCol>
+						<#if finderCol.hasArrayableOperator()>
+							StringUtil.merge(${finderCol.names})
+						<#else>
+							${finderCol.name}
+						</#if>
+
+						<#if finderCol_has_next>
+							,
+						</#if>
+					</#list>
+				};
+			}
+			else {
+				finderArgs = new Object[] {
+					<#list finderColsList as finderCol>
+						<#if finderCol.hasArrayableOperator()>
+							StringUtil.merge(${finderCol.names}),
+						<#else>
+							${finderCol.name},
+						</#if>
+					</#list>
+
+					start, end, orderByComparator
+				};
+			}
+
+			List<${entity.name}> list = null;
+
+			if (retrieveFromCache) {
+				list = (List<${entity.name}>)finderCache.getResult(FINDER_PATH_WITH_PAGINATION_FIND_BY_${finder.name?upper_case}, finderArgs, this);
+
+				if ((list != null) && !list.isEmpty()) {
+					for (${entity.name} ${entity.varName} : list) {
+						if (
+							<#list finderColsList as finderCol>
+								<#if finderCol.hasArrayableOperator()>
+									!ArrayUtil.contains(${finderCol.names}, ${entity.varName}.get${finderCol.methodName}())
+								<#else>
+									<#include "persistence_impl_finder_field_comparator.ftl">
+								</#if>
+
+								<#if finderCol_has_next>
+									||
+								</#if>
+							</#list>
+						) {
+							list = null;
+
+							break;
+						}
+					}
+				}
+			}
+
+			if (list == null) {
+				try {
+					if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) && (databaseInMaxParameters > 0) && (<#list finderArrayableColsList as arrayablefinderCol>
+							(${arrayablefinderCol.names}.length > databaseInMaxParameters)
+
+							<#if arrayablefinderCol_has_next>
+								||
+							</#if>
+						</#list>)) {
+
+						list = new ArrayList<${entity.name}>();
+
+						<#list finderArrayableColsList as arrayablefinderCol>
+							${arrayablefinderCol.type}[][] ${arrayablefinderCol.names}Pages = (${arrayablefinderCol.type}[][])ArrayUtil.split(${arrayablefinderCol.names}, databaseInMaxParameters);
+						</#list>
+
+
+						<#list finderArrayableColsList as arrayablefinderCol>
+							for (${arrayablefinderCol.type}[] ${arrayablefinderCol.names}Page : ${arrayablefinderCol.names}Pages) {
+						</#list>
+
+							list.addAll(_findBy${finder.name}(
+
+							<#list finderColsList as finderCol>
+								<#if finderCol.hasArrayableOperator()>
+									${finderCol.names}Page,
+								<#else>
+									${finderCol.name},
+								</#if>
+							</#list>
+
+							start, end, orderByComparator, pagination));
+						<#list finderArrayableColsList as arrayablefinderCol>
+							}
+						</#list>
+
+						Collections.sort(list, orderByComparator);
+
+						list = Collections.unmodifiableList(list);
+					}
+					else {
+						list = _findBy${finder.name}(
+
+						<#list finderColsList as finderCol>
+							<#if finderCol.hasArrayableOperator()>
+								${finderCol.names},
+							<#else>
+								${finderCol.name},
+							</#if>
+						</#list>
+
+						start, end, orderByComparator, pagination);
+					}
+
+					cacheResult(list);
+
+					finderCache.putResult(FINDER_PATH_WITH_PAGINATION_FIND_BY_${finder.name?upper_case}, finderArgs, list);
+				}
+				catch (Exception e) {
+					finderCache.removeResult(FINDER_PATH_WITH_PAGINATION_FIND_BY_${finder.name?upper_case}, finderArgs);
+
+					throw processException(e);
+				}
+			}
+
+			return list;
+		}
+
+		private List<${entity.name}> _findBy${finder.name}(
+
+		<#list finderColsList as finderCol>
+			<#if finderCol.hasArrayableOperator()>
+				${finderCol.type}[] ${finderCol.names},
+			<#else>
+				${finderCol.type} ${finderCol.name},
+			</#if>
+		</#list>
+
+		int start, int end, OrderByComparator<${entity.name}> orderByComparator, boolean pagination) {
+			List<${entity.name}> list = null;
+
+			<#assign checkPagination = true />
+
+			<#include "persistence_impl_find_by_arrayable_query.ftl">
+
+			<#assign checkPagination = false />
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				<#if bindParameter(finderColsList)>
+					QueryPos qPos = QueryPos.getInstance(q);
+				</#if>
+
+				<@finderQPos
+					_arrayable=true
+				/>
+
+				if (!pagination) {
+					list = (List<${entity.name}>)QueryUtil.list(q, getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<${entity.name}>)QueryUtil.list(q, getDialect(), start, end);
+				}
+			}
+			catch (Exception e) {
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
 			}
 
 			return list;
