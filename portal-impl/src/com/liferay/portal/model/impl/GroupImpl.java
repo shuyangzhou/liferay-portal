@@ -1148,8 +1148,6 @@ public class GroupImpl extends GroupBaseImpl {
 		UnicodeProperties typeSettingsProperties) {
 
 		_typeSettingsProperties = typeSettingsProperties;
-
-		super.setTypeSettings(_typeSettingsProperties.toString());
 	}
 
 	protected long getDefaultPlid(boolean privateLayout) {
