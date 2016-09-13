@@ -218,16 +218,12 @@ public class UnicodeProperties extends HashMap<String, String> {
 	}
 
 	private static String _encode(String value) {
+		String encodedValue = StringUtil.replace(
+			value, StringPool.RETURN_NEW_LINE, _SAFE_NEWLINE_CHARACTER);
+
 		return StringUtil.replace(
-			value,
-			new String[] {
-				StringPool.RETURN_NEW_LINE, StringPool.NEW_LINE,
-				StringPool.RETURN
-			},
-			new String[] {
-				_SAFE_NEWLINE_CHARACTER, _SAFE_NEWLINE_CHARACTER,
-				_SAFE_NEWLINE_CHARACTER
-			});
+			encodedValue, new char[] {CharPool.NEW_LINE, CharPool.RETURN},
+			new String[] {_SAFE_NEWLINE_CHARACTER, _SAFE_NEWLINE_CHARACTER});
 	}
 
 	private boolean _isComment(String line) {
