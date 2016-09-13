@@ -144,13 +144,17 @@ public class UnicodeProperties extends HashMap<String, String> {
 
 	@Override
 	public String remove(Object key) {
-		if ((key == null) || !containsKey(key)) {
+		if (key == null) {
+			return null;
+		}
+
+		String value = super.remove(key);
+
+		if (value == null) {
 			return null;
 		}
 
 		String keyString = (String)key;
-
-		String value = super.remove(key);
 
 		_length -= keyString.length() + value.length() + 2;
 
