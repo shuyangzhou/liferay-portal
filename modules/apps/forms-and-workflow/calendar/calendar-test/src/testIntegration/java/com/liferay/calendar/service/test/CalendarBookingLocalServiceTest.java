@@ -39,10 +39,12 @@ import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.SynchronousMailTestRule;
+import com.liferay.portal.util.test.MailServiceTestUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -104,6 +106,65 @@ public class CalendarBookingLocalServiceTest {
 		Assert.assertEquals(
 			"fr_FR",
 			LocalizationUtil.getDefaultLanguageId(calendarBooking.getTitle()));
+	}
+
+	@Test
+	public void testAddCalendarBookingDoesNotNotifyCreatorTwice()
+		throws Exception {
+
+		ServiceContext serviceContext = createServiceContext();
+
+		_invitingUser = UserTestUtil.addUser();
+
+		CalendarResource calendarResource =
+			CalendarResourceUtil.getUserCalendarResource(
+				_invitingUser.getUserId(), serviceContext);
+
+		Calendar calendar = calendarResource.getDefaultCalendar();
+
+		CalendarResource invitedCalendarResource =
+			CalendarResourceUtil.getUserCalendarResource(
+				_user.getUserId(), serviceContext);
+
+		Calendar invitedCalendar = invitedCalendarResource.getDefaultCalendar();
+
+		long startTime = System.currentTimeMillis() + Time.MINUTE;
+
+		long endTime = startTime + Time.HOUR;
+
+		long firstReminder = Time.MINUTE;
+
+		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_PUBLISH);
+
+		CalendarBooking calendarBooking =
+			CalendarBookingLocalServiceUtil.addCalendarBooking(
+				_invitingUser.getUserId(), calendar.getCalendarId(),
+				new long[] {invitedCalendar.getCalendarId()},
+				CalendarBookingConstants.PARENT_CALENDAR_BOOKING_ID_DEFAULT,
+				RandomTestUtil.randomLocaleStringMap(),
+				RandomTestUtil.randomLocaleStringMap(),
+				RandomTestUtil.randomString(), startTime, endTime, false, null,
+				firstReminder, NotificationType.EMAIL.getValue(), 0,
+				NotificationType.EMAIL.getValue(), serviceContext);
+
+		CalendarBooking childCalendarBooking = getChildCalendarBooking(
+			calendarBooking);
+
+		childCalendarBooking = CalendarBookingLocalServiceUtil.updateStatus(
+			_user.getUserId(), childCalendarBooking,
+			CalendarBookingWorkflowConstants.STATUS_APPROVED, serviceContext);
+
+		CalendarBookingLocalServiceUtil.checkCalendarBookings();
+
+		String mailMessageSubject =
+			"Calendar: Event Reminder for " + StringPool.QUOTE +
+			calendarBooking.getTitle(LocaleUtil.getDefault()) +
+			StringPool.QUOTE;
+
+		List<com.dumbster.smtp.MailMessage> mailMessages =
+			MailServiceTestUtil.getMailMessages("Subject", mailMessageSubject);
+
+		Assert.assertEquals(2, mailMessages.size());
 	}
 
 	@Test
@@ -344,6 +405,7 @@ public class CalendarBookingLocalServiceTest {
 			RandomTestUtil.randomLocaleStringMap();
 
 		int instanceIndex = 2;
+
 		long instanceStartTime = startTime + Time.DAY * instanceIndex;
 
 		CalendarBookingLocalServiceUtil.updateCalendarBookingInstance(
@@ -414,6 +476,7 @@ public class CalendarBookingLocalServiceTest {
 			RandomTestUtil.randomLocaleStringMap();
 
 		int instanceIndex = 2;
+
 		long firstInstancStartTime = startTime + Time.DAY * instanceIndex;
 
 		CalendarBookingLocalServiceUtil.updateCalendarBookingInstance(
@@ -424,6 +487,7 @@ public class CalendarBookingLocalServiceTest {
 			null, false, 0, null, 0, null, serviceContext);
 
 		instanceIndex = 4;
+
 		long secondInstancStartTime =
 			firstInstancStartTime + Time.DAY * instanceIndex;
 
@@ -1033,6 +1097,7 @@ public class CalendarBookingLocalServiceTest {
 			CalendarBookingWorkflowConstants.STATUS_MAYBE, serviceContext);
 
 		int firstReminder = RandomTestUtil.randomInt();
+
 		int secondReminder = RandomTestUtil.randomInt(1, firstReminder);
 
 		childCalendarBooking =
@@ -1093,6 +1158,7 @@ public class CalendarBookingLocalServiceTest {
 			false, false, serviceContext);
 
 		long startTime = System.currentTimeMillis();
+
 		long endTime = startTime + 36000000;
 
 		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_PUBLISH);
@@ -1433,6 +1499,9 @@ public class CalendarBookingLocalServiceTest {
 
 		return childCalendarBooking;
 	}
+
+	@DeleteAfterTestRun
+	private User _invitingUser;
 
 	@DeleteAfterTestRun
 	private User _user;

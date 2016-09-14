@@ -22,6 +22,7 @@ import com.liferay.calendar.model.CalendarResource;
 import com.liferay.calendar.service.CalendarBookingLocalServiceUtil;
 import com.liferay.calendar.upgrade.v1_0_6.UpgradeSchema;
 import com.liferay.calendar.util.CalendarResourceUtil;
+import com.liferay.calendar.util.CalendarUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
@@ -147,9 +148,18 @@ public class UpgradeSchemaTest extends UpgradeSchema {
 			connection = con;
 
 			if (hasColumn("CalendarBooking", "recurringCalendarBookingId")) {
-				runSQL(
-					"alter table CalendarBooking drop column " +
-						"recurringCalendarBookingId");
+
+				// Hack through the OSGi classloading, it does not worth to
+				// export those generated *Table packages just to support this
+				// test.
+
+				ClassLoader classLoader = CalendarUtil.class.getClassLoader();
+
+				alter(
+					classLoader.loadClass(
+						"com.liferay.calendar.internal.upgrade.v1_0_0.util." +
+							"CalendarBookingTable"),
+					new AlterTableDropColumn("recurringCalendarBookingId"));
 			}
 		}
 	}
