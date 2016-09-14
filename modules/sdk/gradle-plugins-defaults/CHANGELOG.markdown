@@ -211,6 +211,21 @@ directory instead of the root project directory. Doing this lets submodules like
 ### Changed
 - [LPS-67766]: Update the [Liferay Gradle Plugins] dependency to version 2.0.31.
 
+## 1.2.19 - 2016-09-13
+
+### Changed
+- [LPS-67352]: Update the [Liferay Gradle Plugins] dependency to version 2.0.32.
+
+## 1.2.20 - 2016-09-13
+
+### Changed
+- [LPS-67986]: Update the [Liferay Gradle Plugins] dependency to version 2.0.33.
+
+## 1.2.21 - 2016-09-13
+
+### Changed
+- [LRDOCS-2981]: Prepend `"Module "` to `appJavadoc` module headings.
+
 [Liferay Gradle Plugins]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-plugins
 [LPS-61099]: https://issues.liferay.com/browse/LPS-61099
 [LPS-66853]: https://issues.liferay.com/browse/LPS-66853
@@ -221,7 +236,9 @@ directory instead of the root project directory. Doing this lets submodules like
 [LPS-67766]: https://issues.liferay.com/browse/LPS-67766
 [LPS-67804]: https://issues.liferay.com/browse/LPS-67804
 [LPS-67863]: https://issues.liferay.com/browse/LPS-67863
+[LPS-67986]: https://issues.liferay.com/browse/LPS-67986
 [LPS-67996]: https://issues.liferay.com/browse/LPS-67996
 [LPS-68009]: https://issues.liferay.com/browse/LPS-68009
 [LPS-68014]: https://issues.liferay.com/browse/LPS-68014
 [LRDOCS-2841]: https://issues.liferay.com/browse/LRDOCS-2841
+[LRDOCS-2981]: https://issues.liferay.com/browse/LRDOCS-2981
