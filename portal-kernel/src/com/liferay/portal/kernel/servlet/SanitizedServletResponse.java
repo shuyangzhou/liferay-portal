@@ -176,7 +176,7 @@ public class SanitizedServletResponse extends HttpServletResponseWrapper {
 			return;
 		}
 
-		if (Validator.isNull(_X_XSS_PROTECTION)) {
+		if (_X_XSS_PROTECTION == null) {
 			return;
 		}
 
@@ -202,8 +202,7 @@ public class SanitizedServletResponse extends HttpServletResponseWrapper {
 
 	private static final boolean _X_FRAME_OPTIONS;
 
-	private static final String _X_XSS_PROTECTION = SystemProperties.get(
-		"http.header.secure.x.xss.protection");
+	private static final String _X_XSS_PROTECTION;
 
 	private static final KeyValuePair[] _xFrameOptionKVPs;
 
@@ -269,6 +268,16 @@ public class SanitizedServletResponse extends HttpServletResponseWrapper {
 		else {
 			_X_FRAME_OPTIONS = GetterUtil.getBoolean(
 				SystemProperties.get(httpHeaderSecureXFrameOptionsKey), true);
+		}
+
+		String xXssProtection = SystemProperties.get(
+			"http.header.secure.x.xss.protection");
+
+		if (Validator.isNull(xXssProtection)) {
+			_X_XSS_PROTECTION = null;
+		}
+		else {
+			_X_XSS_PROTECTION = xXssProtection;
 		}
 	}
 
