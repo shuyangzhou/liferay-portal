@@ -22,8 +22,8 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import java.io.IOException;
 
 import java.util.HashMap;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * <p>
@@ -163,12 +163,12 @@ public class UnicodeProperties extends HashMap<String, String> {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
+		StringBundler sb = new StringBundler(4 * size());
 
-		Set<String> keys = new TreeSet<>(keySet());
+		Map<String, String> treeMap = new TreeMap<>(this);
 
-		for (String key : keys) {
-			String value = get(key);
+		for (Map.Entry<String, String> entry : treeMap.entrySet()) {
+			String value = entry.getValue();
 
 			if (Validator.isNull(value)) {
 				continue;
@@ -178,7 +178,7 @@ public class UnicodeProperties extends HashMap<String, String> {
 				value = _encode(value);
 			}
 
-			sb.append(key);
+			sb.append(entry.getKey());
 			sb.append(StringPool.EQUAL);
 			sb.append(value);
 			sb.append(StringPool.NEW_LINE);
