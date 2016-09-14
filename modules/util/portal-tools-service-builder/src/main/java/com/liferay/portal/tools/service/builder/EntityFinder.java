@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.TextFormatter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,6 +38,14 @@ public class EntityFinder {
 		_dbIndex = dbIndex;
 		_columns = columns;
 
+		_arrayableColumns = new ArrayList<>();
+
+		for (EntityColumn column : columns) {
+			if (column.hasArrayableOperator()) {
+				_arrayableColumns.add(column);
+			}
+		}
+
 		if (isCollection() && isUnique() && !hasArrayableOperator()) {
 			throw new IllegalArgumentException(
 				"A finder cannot return a Collection and be unique unless " +
@@ -48,6 +57,10 @@ public class EntityFinder {
 			throw new IllegalArgumentException(
 				"A unique finder cannot have a custom comparator");
 		}
+	}
+
+	public List<EntityColumn> getArrayableColumns() {
+		return _arrayableColumns;
 	}
 
 	public EntityColumn getColumn(String name) {
@@ -152,6 +165,7 @@ public class EntityFinder {
 		return _unique;
 	}
 
+	private final List<EntityColumn> _arrayableColumns;
 	private final List<EntityColumn> _columns;
 	private final boolean _dbIndex;
 	private final String _name;
