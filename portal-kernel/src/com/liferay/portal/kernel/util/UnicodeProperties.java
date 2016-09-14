@@ -75,7 +75,7 @@ public class UnicodeProperties extends HashMap<String, String> {
 	}
 
 	public String getProperty(String key, String defaultValue) {
-		String value = getProperty(key);
+		String value = get(key);
 
 		if (value == null) {
 			return defaultValue;
@@ -134,7 +134,7 @@ public class UnicodeProperties extends HashMap<String, String> {
 		}
 
 		if (value == null) {
-			return remove(key);
+			return super.remove(key);
 		}
 
 		return super.put(key, value);
