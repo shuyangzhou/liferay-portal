@@ -310,9 +310,7 @@ public class InvokerFilter extends BasePortalLifecycle implements Filter {
 	protected HttpServletResponse secureResponseHeaders(
 		HttpServletRequest request, HttpServletResponse response) {
 
-		if (!GetterUtil.getBoolean(
-				request.getAttribute(_SECURE_RESPONSE), true)) {
-
+		if (Boolean.FALSE.equals(request.getAttribute(_SECURE_RESPONSE))) {
 			return response;
 		}
 
