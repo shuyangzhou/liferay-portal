@@ -69,58 +69,34 @@ public class VerifyResourceActionsTest extends BaseVerifyProcessTestCase {
 
 	@Test
 	public void testDeleteDuplicateBitwiseValuesOnResource() throws Throwable {
-		ResourceAction resourceAction =
-			ResourceActionLocalServiceUtil.fetchResourceAction(
-				_NAME_1, _ACTION_ID_1);
-
-		Assert.assertNotNull(resourceAction);
-
-		resourceAction = ResourceActionLocalServiceUtil.fetchResourceAction(
-			_NAME_1, _ACTION_ID_2);
-
-		Assert.assertNotNull(resourceAction);
-
-		resourceAction = ResourceActionLocalServiceUtil.fetchResourceAction(
-			_NAME_1, _ACTION_ID_3);
-
-		Assert.assertNotNull(resourceAction);
-
-		resourceAction = ResourceActionLocalServiceUtil.fetchResourceAction(
-			_NAME_2, _ACTION_ID_1);
-
-		Assert.assertNotNull(resourceAction);
-
-		resourceAction = ResourceActionLocalServiceUtil.fetchResourceAction(
-			_NAME_2, _ACTION_ID_2);
-
-		Assert.assertNotNull(resourceAction);
+		assertNotNull(_NAME_1, _ACTION_ID_1);
+		assertNotNull(_NAME_1, _ACTION_ID_2);
+		assertNotNull(_NAME_1, _ACTION_ID_3);
+		assertNotNull(_NAME_2, _ACTION_ID_1);
+		assertNotNull(_NAME_2, _ACTION_ID_2);
 
 		doVerify();
 
-		resourceAction = ResourceActionLocalServiceUtil.fetchResourceAction(
-			_NAME_1, _ACTION_ID_1);
+		assertNull(_NAME_1, _ACTION_ID_1);
+		assertNull(_NAME_1, _ACTION_ID_2);
+
+		assertNotNull(_NAME_1, _ACTION_ID_3);
+		assertNotNull(_NAME_2, _ACTION_ID_1);
+		assertNotNull(_NAME_2, _ACTION_ID_2);
+	}
+
+	protected void assertNotNull(String name, String actionId) {
+		ResourceAction resourceAction =
+			ResourceActionLocalServiceUtil.fetchResourceAction(name, actionId);
+
+		Assert.assertNotNull(resourceAction);
+	}
+
+	protected void assertNull(String name, String actionId) {
+		ResourceAction resourceAction =
+			ResourceActionLocalServiceUtil.fetchResourceAction(name, actionId);
 
 		Assert.assertNull(resourceAction);
-
-		resourceAction = ResourceActionLocalServiceUtil.fetchResourceAction(
-			_NAME_1, _ACTION_ID_2);
-
-		Assert.assertNull(resourceAction);
-
-		resourceAction = ResourceActionLocalServiceUtil.fetchResourceAction(
-			_NAME_1, _ACTION_ID_3);
-
-		Assert.assertNotNull(resourceAction);
-
-		resourceAction = ResourceActionLocalServiceUtil.fetchResourceAction(
-			_NAME_2, _ACTION_ID_1);
-
-		Assert.assertNotNull(resourceAction);
-
-		resourceAction = ResourceActionLocalServiceUtil.fetchResourceAction(
-			_NAME_2, _ACTION_ID_2);
-
-		Assert.assertNotNull(resourceAction);
 	}
 
 	protected void createResourceAction(
