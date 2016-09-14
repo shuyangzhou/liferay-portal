@@ -1114,6 +1114,11 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 		return layout;
 	}
 
+	@Override
+	public Layout getLayout(long plid) throws PortalException {
+		return layoutPersistence.findByPrimaryKey(plid);
+	}
+
 	/**
 	 * Returns the layout matching the primary key, group, and privacy; throws a
 	 * {@link NoSuchLayoutException} otherwise.
