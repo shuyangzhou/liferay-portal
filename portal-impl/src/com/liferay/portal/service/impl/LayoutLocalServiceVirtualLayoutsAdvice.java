@@ -15,10 +15,6 @@
 package com.liferay.portal.service.impl;
 
 import com.liferay.exportimport.kernel.staging.MergeLayoutPrototypesThreadLocal;
-import com.liferay.portal.kernel.dao.orm.DynamicQuery;
-import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.Property;
-import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -229,36 +225,6 @@ public class LayoutLocalServiceVirtualLayoutsAdvice
 		}
 
 		return layouts;
-	}
-
-	protected List<Layout> getPrototypeLinkedLayouts(
-		long groupId, boolean privateLayout) {
-
-		Class<?> clazz = getClass();
-
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			Layout.class, clazz.getClassLoader());
-
-		Property groupIdProperty = PropertyFactoryUtil.forName("groupId");
-
-		dynamicQuery.add(groupIdProperty.eq(groupId));
-
-		Property layoutPrototypeUuidProperty = PropertyFactoryUtil.forName(
-			"layoutPrototypeUuid");
-
-		dynamicQuery.add(layoutPrototypeUuidProperty.isNotNull());
-
-		Property privateLayoutProperty = PropertyFactoryUtil.forName(
-			"privateLayout");
-
-		dynamicQuery.add(privateLayoutProperty.eq(privateLayout));
-
-		Property sourcePrototypeLayoutUuidProperty =
-			PropertyFactoryUtil.forName("sourcePrototypeLayoutUuid");
-
-		dynamicQuery.add(sourcePrototypeLayoutUuidProperty.isNotNull());
-
-		return LayoutLocalServiceUtil.dynamicQuery(dynamicQuery);
 	}
 
 	protected boolean isMergeComplete(
