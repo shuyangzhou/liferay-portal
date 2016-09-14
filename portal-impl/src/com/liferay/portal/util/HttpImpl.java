@@ -1081,9 +1081,11 @@ public class HttpImpl implements Http {
 			return url;
 		}
 
-		Matcher matcher = _relativeURLPattern.matcher(url);
+		url = url.trim();
 
-		if (matcher.lookingAt()) {
+		if ((url.length() >= 2) && (url.charAt(0) == CharPool.SLASH) &&
+			_isLetterOrNumber(url.charAt(1))) {
+
 			return url;
 		}
 
@@ -1092,20 +1094,37 @@ public class HttpImpl implements Http {
 		do {
 			modified = false;
 
-			matcher = _absoluteURLPattern.matcher(url);
+			int index = url.indexOf(Http.PROTOCOL_DELIMITER);
 
-			if (matcher.lookingAt()) {
-				url = url.substring(matcher.end());
+			if (index > 0) {
+				for (int i = 0; i < index; i++) {
+					if (!_isLetterOrNumber(url.charAt(i))) {
+						break;
+					}
 
-				modified = true;
+					if (i == (index - 1)) {
+						url = url.substring(
+							index + Http.PROTOCOL_DELIMITER.length());
+
+						modified = true;
+					}
+				}
 			}
 
-			matcher = _protocolRelativeURLPattern.matcher(url);
+			for (int i = 0; i < url.length(); i++) {
+				char targetChar = url.charAt(i);
 
-			if (matcher.lookingAt()) {
-				url = url.substring(matcher.end());
+				if ((targetChar != CharPool.SLASH) &&
+					(targetChar != CharPool.BACK_SLASH)) {
 
-				modified = true;
+					if (i != 0) {
+						url = url.substring(i);
+
+						modified = true;
+					}
+
+					break;
+				}
 			}
 		} while (modified);
 
@@ -2016,6 +2035,20 @@ public class HttpImpl implements Http {
 		}
 	}
 
+	private boolean _isLetterOrNumber(char targetChar) {
+		if (((CharPool.NUMBER_0 <= targetChar) &&
+			 (targetChar <= CharPool.NUMBER_9)) ||
+			((CharPool.UPPER_CASE_A <= targetChar) &&
+			 (targetChar <= CharPool.UPPER_CASE_Z)) ||
+			((CharPool.LOWER_CASE_A <= targetChar) &&
+			 (targetChar <= CharPool.LOWER_CASE_Z))) {
+
+			return true;
+		}
+
+		return false;
+	}
+
 	private static final String _DEFAULT_USER_AGENT =
 		"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
 
@@ -2061,18 +2094,12 @@ public class HttpImpl implements Http {
 
 	private static final ThreadLocal<Cookie[]> _cookies = new ThreadLocal<>();
 
-	private final Pattern _absoluteURLPattern = Pattern.compile(
-		"^[a-zA-Z0-9]+://");
 	private final CloseableHttpClient _closeableHttpClient;
 	private final Pattern _nonProxyHostsPattern;
 	private final PoolingHttpClientConnectionManager
 		_poolingHttpClientConnectionManager;
-	private final Pattern _protocolRelativeURLPattern = Pattern.compile(
-		"^[\\s\\\\/]+");
 	private final List<String> _proxyAuthPrefs = new ArrayList<>();
 	private final CloseableHttpClient _proxyCloseableHttpClient;
 	private final Credentials _proxyCredentials;
-	private final Pattern _relativeURLPattern = Pattern.compile(
-		"^\\s*/[a-zA-Z0-9]+");
 
 }
