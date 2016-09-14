@@ -77,10 +77,11 @@ public class VerifyResourceActionsTest extends BaseVerifyProcessTestCase {
 
 		doVerify();
 
-		assertNull(_NAME_1, _ACTION_ID_1);
-		assertNull(_NAME_1, _ACTION_ID_2);
+		assertNotNull(_NAME_1, _ACTION_ID_1);
 
-		assertNotNull(_NAME_1, _ACTION_ID_3);
+		assertNull(_NAME_1, _ACTION_ID_2);
+		assertNull(_NAME_1, _ACTION_ID_3);
+
 		assertNotNull(_NAME_2, _ACTION_ID_1);
 		assertNotNull(_NAME_2, _ACTION_ID_2);
 	}
