@@ -141,6 +141,15 @@ public class UnicodeProperties extends HashMap<String, String> {
 	}
 
 	@Override
+	public void putAll(Map<? extends String, ? extends String> map) {
+		for (Map.Entry<? extends String, ? extends String> entry :
+				map.entrySet()) {
+
+			put(entry.getKey(), entry.getValue());
+		}
+	}
+
+	@Override
 	public String remove(Object key) {
 		if (key == null) {
 			return null;
