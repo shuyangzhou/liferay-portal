@@ -124,7 +124,7 @@ public class CalendarBookingServiceImpl extends CalendarBookingServiceBaseImpl {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link #addCalendarBooking(long,
+	 * @deprecated As of 2.2.0, replaced by {@link #addCalendarBooking(long,
 	 *             long[], long, long, Map, Map, String, long, long, boolean,
 	 *             String, long, String, long, String, ServiceContext)}
 	 */
@@ -154,7 +154,7 @@ public class CalendarBookingServiceImpl extends CalendarBookingServiceBaseImpl {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0
+	 * @deprecated As of 2.2.0
 	 */
 	@Deprecated
 	@Override
@@ -670,6 +670,7 @@ public class CalendarBookingServiceImpl extends CalendarBookingServiceBaseImpl {
 
 		java.util.Calendar startTimeJCalendar = JCalendarUtil.getJCalendar(
 			calendarBooking.getStartTime() + offset);
+
 		java.util.Calendar endTimeJCalendar = JCalendarUtil.getJCalendar(
 			startTimeJCalendar.getTimeInMillis() + duration);
 
