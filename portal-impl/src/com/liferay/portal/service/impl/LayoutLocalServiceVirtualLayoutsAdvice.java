@@ -132,9 +132,25 @@ public class LayoutLocalServiceVirtualLayoutsAdvice
 			LayoutSet layoutSet = LayoutSetLocalServiceUtil.getLayoutSet(
 				groupId, privateLayout);
 
-			mergeLayoutSetPrototypeLayouts(
-				methodName, arguments, group, layoutSet,
-				WorkflowThreadLocal.isEnabled());
+			boolean workflowEnabled = WorkflowThreadLocal.isEnabled();
+
+			try {
+				if (SitesUtil.isLayoutSetMergeable(group, layoutSet)) {
+					WorkflowThreadLocal.setEnabled(false);
+
+					SitesUtil.mergeLayoutSetPrototypeLayouts(group, layoutSet);
+				}
+			}
+			catch (Exception e) {
+				if (_log.isWarnEnabled()) {
+					_log.warn("Unable to merge layouts for site template", e);
+				}
+			}
+			finally {
+				MergeLayoutPrototypesThreadLocal.setMergeComplete(
+					methodName, arguments);
+				WorkflowThreadLocal.setEnabled(workflowEnabled);
+			}
 
 			List<Layout> layouts = (List<Layout>)methodInvocation.proceed();
 
@@ -223,29 +239,6 @@ public class LayoutLocalServiceVirtualLayoutsAdvice
 		}
 
 		return layouts;
-	}
-
-	protected void mergeLayoutSetPrototypeLayouts(
-		String methodName, Object[] arguments, Group group, LayoutSet layoutSet,
-		boolean workflowEnabled) {
-
-		try {
-			if (SitesUtil.isLayoutSetMergeable(group, layoutSet)) {
-				WorkflowThreadLocal.setEnabled(false);
-
-				SitesUtil.mergeLayoutSetPrototypeLayouts(group, layoutSet);
-			}
-		}
-		catch (Exception e) {
-			if (_log.isWarnEnabled()) {
-				_log.warn("Unable to merge layouts for site template", e);
-			}
-		}
-		finally {
-			MergeLayoutPrototypesThreadLocal.setMergeComplete(
-				methodName, arguments);
-			WorkflowThreadLocal.setEnabled(workflowEnabled);
-		}
 	}
 
 	private static final Class<?>[] _TYPES_L = {Long.TYPE};
