@@ -75,7 +75,11 @@ public class LayoutLocalServiceVirtualLayoutsAdvice
 
 			Group group = layout.getGroup();
 
-			if (isMergeComplete(method, arguments, group)) {
+			if (MergeLayoutPrototypesThreadLocal.isMergeComplete(
+					method.getName(), arguments) &&
+				(!group.isUser() ||
+				 PropsValues.USER_GROUPS_COPY_LAYOUTS_TO_USER_PERSONAL_SITE)) {
+
 				return layout;
 			}
 
@@ -114,7 +118,11 @@ public class LayoutLocalServiceVirtualLayoutsAdvice
 
 			Group group = GroupLocalServiceUtil.getGroup(groupId);
 
-			if (isMergeComplete(method, arguments, group)) {
+			if (MergeLayoutPrototypesThreadLocal.isMergeComplete(
+					method.getName(), arguments) &&
+				(!group.isUser() ||
+				 PropsValues.USER_GROUPS_COPY_LAYOUTS_TO_USER_PERSONAL_SITE)) {
+
 				return methodInvocation.proceed();
 			}
 
@@ -225,21 +233,6 @@ public class LayoutLocalServiceVirtualLayoutsAdvice
 		}
 
 		return layouts;
-	}
-
-	protected boolean isMergeComplete(
-		Method method, Object[] arguments, Group group) {
-
-		if (MergeLayoutPrototypesThreadLocal.isMergeComplete(
-				method.getName(), arguments) &&
-			(!group.isUser() ||
-			 PropsValues.USER_GROUPS_COPY_LAYOUTS_TO_USER_PERSONAL_SITE)) {
-
-			return true;
-		}
-		else {
-			return false;
-		}
 	}
 
 	protected void mergeLayoutSetPrototypeLayouts(
