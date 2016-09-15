@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutSetLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserGroupLocalServiceUtil;
 import com.liferay.portal.kernel.util.AutoResetThreadLocal;
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowThreadLocal;
 import com.liferay.portal.util.PropsValues;
@@ -194,20 +193,17 @@ public class LayoutLocalServiceVirtualLayoutsAdvice
 			Group group, List<Layout> layouts)
 		throws Exception {
 
-		layouts = ListUtil.copy(layouts);
-
-		List<Layout> childLayouts = new ArrayList<>();
+		List<Layout> childLayouts = new ArrayList<>(layouts.size());
 
 		for (Layout layout : layouts) {
-			Layout childLayout = layout;
-
 			Group layoutGroup = layout.getGroup();
 
 			if (layoutGroup.isUserGroup()) {
-				childLayout = new VirtualLayout(layout, group);
+				childLayouts.add(new VirtualLayout(layout, group));
 			}
-
-			childLayouts.add(childLayout);
+			else {
+				childLayouts.add(layout);
+			}
 		}
 
 		return childLayouts;
@@ -218,7 +214,7 @@ public class LayoutLocalServiceVirtualLayoutsAdvice
 			long parentLayoutId)
 		throws Exception {
 
-		layouts = ListUtil.copy(layouts);
+		layouts = new ArrayList<>(layouts);
 
 		List<UserGroup> userUserGroups =
 			UserGroupLocalServiceUtil.getUserUserGroups(group.getClassPK());
@@ -231,10 +227,7 @@ public class LayoutLocalServiceVirtualLayoutsAdvice
 				parentLayoutId);
 
 			for (Layout userGroupLayout : userGroupLayouts) {
-				Layout virtualLayout = new VirtualLayout(
-					userGroupLayout, group);
-
-				layouts.add(virtualLayout);
+				layouts.add(new VirtualLayout(userGroupLayout, group));
 			}
 		}
 
