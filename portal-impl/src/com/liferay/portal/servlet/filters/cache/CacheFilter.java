@@ -31,8 +31,6 @@ import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.struts.LastPath;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -95,16 +93,7 @@ public class CacheFilter extends BasePortalFilter {
 
 		// Url
 
-		sb.append(HttpUtil.getProtocol(request));
-		sb.append(Http.PROTOCOL_DELIMITER);
-
-		String url = PortalUtil.getCurrentCompleteURL(request);
-
-		sb.append(HttpUtil.getDomain(url));
-
-		sb.append(request.getContextPath());
-		sb.append(request.getServletPath());
-		sb.append(request.getPathInfo());
+		sb.append(request.getRequestURL());
 		sb.append(StringPool.QUESTION);
 
 		String queryString = request.getQueryString();
@@ -114,6 +103,8 @@ public class CacheFilter extends BasePortalFilter {
 				JavaConstants.JAVAX_SERVLET_FORWARD_QUERY_STRING);
 
 			if (queryString == null) {
+				String url = PortalUtil.getCurrentCompleteURL(request);
+
 				int pos = url.indexOf(CharPool.QUESTION);
 
 				if (pos > -1) {
