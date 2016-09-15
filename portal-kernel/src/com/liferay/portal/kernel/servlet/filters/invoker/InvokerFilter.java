@@ -14,8 +14,6 @@
 
 package com.liferay.portal.kernel.servlet.filters.invoker;
 
-import com.liferay.portal.kernel.cache.key.CacheKeyGenerator;
-import com.liferay.portal.kernel.cache.key.CacheKeyGeneratorUtil;
 import com.liferay.portal.kernel.concurrent.ConcurrentLFUCache;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -190,19 +188,13 @@ public class InvokerFilter extends BasePortalLifecycle implements Filter {
 				request, _dispatcher, uri, filterChain);
 		}
 
-		CacheKeyGenerator cacheKeyGenerator =
-			CacheKeyGeneratorUtil.getCacheKeyGenerator(
-				InvokerFilter.class.getName());
-
-		String key = String.valueOf(cacheKeyGenerator.getCacheKey(uri));
-
-		InvokerFilterChain invokerFilterChain = _filterChains.get(key);
+		InvokerFilterChain invokerFilterChain = _filterChains.get(uri);
 
 		if (invokerFilterChain == null) {
 			invokerFilterChain = _invokerFilterHelper.createInvokerFilterChain(
 				request, _dispatcher, uri, filterChain);
 
-			_filterChains.put(key, invokerFilterChain);
+			_filterChains.put(uri, invokerFilterChain);
 		}
 
 		return invokerFilterChain.clone(filterChain);
@@ -318,9 +310,7 @@ public class InvokerFilter extends BasePortalLifecycle implements Filter {
 	protected HttpServletResponse secureResponseHeaders(
 		HttpServletRequest request, HttpServletResponse response) {
 
-		if (!GetterUtil.getBoolean(
-				request.getAttribute(_SECURE_RESPONSE), true)) {
-
+		if (Boolean.FALSE.equals(request.getAttribute(_SECURE_RESPONSE))) {
 			return response;
 		}
 
