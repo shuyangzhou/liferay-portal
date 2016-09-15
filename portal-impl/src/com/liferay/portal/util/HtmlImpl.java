@@ -252,7 +252,7 @@ public class HtmlImpl implements Html {
 				if ((mode == ESCAPE_MODE_CSS) && (i < (text.length() - 1))) {
 					char nextChar = text.charAt(i + 1);
 
-					if ((nextChar >= CharPool.NUMBER_0) &&
+					if ((CharPool.NUMBER_0 <= nextChar) &&
 						(nextChar <= CharPool.NUMBER_9)) {
 
 						sb.append(CharPool.SPACE);
@@ -841,9 +841,9 @@ public class HtmlImpl implements Html {
 	}
 
 	private boolean _isUnicodeCompatibilityCharacter(char c) {
-		if (((c >= '\u007f') && (c <= '\u0084')) ||
-			((c >= '\u0086') && (c <= '\u009f')) ||
-			((c >= '\ufdd0') && (c <= '\ufdef'))) {
+		if ((('\u007f' <= c) && (c <= '\u0084')) ||
+			(('\u0086' <= c) && (c <= '\u009f')) ||
+			(('\ufdd0' <= c) && (c <= '\ufdef'))) {
 
 			return true;
 		}
@@ -852,10 +852,10 @@ public class HtmlImpl implements Html {
 	}
 
 	private boolean _isValidXmlCharacter(char c) {
-		if ((c == '\u0009') || (c == CharPool.NEW_LINE) ||
-			(c == CharPool.RETURN) || ((c >= '\u0020') && (c <= '\ud7ff')) ||
-			((c >= '\ue000') && (c <= '\ufffd')) ||
-			Character.isLowSurrogate(c) || Character.isHighSurrogate(c)) {
+		if ((c == CharPool.TAB) || (c == CharPool.NEW_LINE) ||
+			(c == CharPool.RETURN) ||
+			((CharPool.SPACE <= c) && (c <= '\ud7ff')) ||
+			(('\ue000' <= c) && (c <= '\ufffd')) || Character.isSurrogate(c)) {
 
 			return true;
 		}
