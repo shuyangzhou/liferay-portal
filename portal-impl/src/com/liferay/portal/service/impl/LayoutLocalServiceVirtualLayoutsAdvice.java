@@ -151,13 +151,12 @@ public class LayoutLocalServiceVirtualLayoutsAdvice
 					return addUserGroupLayouts(
 						group, layoutSet, layouts, parentLayoutId);
 				}
-				else {
-					return addChildUserGroupLayouts(group, layouts);
-				}
+
+				return addChildUserGroupLayouts(group, layouts);
 			}
-			else if (group.isUserGroup() &&
-					 (parentLayoutId !=
-						 LayoutConstants.DEFAULT_PARENT_LAYOUT_ID)) {
+
+			if (group.isUserGroup() &&
+				(parentLayoutId != LayoutConstants.DEFAULT_PARENT_LAYOUT_ID)) {
 
 				long targetGroupId = _virtualLayoutTargetGroupId.get();
 
