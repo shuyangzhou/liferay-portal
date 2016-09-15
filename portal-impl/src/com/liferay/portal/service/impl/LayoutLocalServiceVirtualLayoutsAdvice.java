@@ -129,56 +129,47 @@ public class LayoutLocalServiceVirtualLayoutsAdvice
 			boolean privateLayout = (Boolean)arguments[1];
 			long parentLayoutId = (Long)arguments[2];
 
-			try {
-				LayoutSet layoutSet = LayoutSetLocalServiceUtil.getLayoutSet(
-					groupId, privateLayout);
+			LayoutSet layoutSet = LayoutSetLocalServiceUtil.getLayoutSet(
+				groupId, privateLayout);
 
-				mergeLayoutSetPrototypeLayouts(
-					methodName, arguments, group, layoutSet,
-					WorkflowThreadLocal.isEnabled());
+			mergeLayoutSetPrototypeLayouts(
+				methodName, arguments, group, layoutSet,
+				WorkflowThreadLocal.isEnabled());
 
-				List<Layout> layouts = (List<Layout>)methodInvocation.proceed();
+			List<Layout> layouts = (List<Layout>)methodInvocation.proceed();
 
-				if (PropsValues.
-						USER_GROUPS_COPY_LAYOUTS_TO_USER_PERSONAL_SITE) {
-
-					return layouts;
-				}
-
-				if (group.isUser()) {
-					_virtualLayoutTargetGroupId.set(group.getGroupId());
-
-					if (parentLayoutId ==
-							LayoutConstants.DEFAULT_PARENT_LAYOUT_ID) {
-
-						return addUserGroupLayouts(
-							group, layoutSet, layouts, parentLayoutId);
-					}
-					else {
-						return addChildUserGroupLayouts(group, layouts);
-					}
-				}
-				else if (group.isUserGroup() &&
-						 (parentLayoutId !=
-							 LayoutConstants.DEFAULT_PARENT_LAYOUT_ID)) {
-
-					long targetGroupId = _virtualLayoutTargetGroupId.get();
-
-					if (targetGroupId != GroupConstants.DEFAULT_LIVE_GROUP_ID) {
-						Group targetGroup = GroupLocalServiceUtil.getGroup(
-							targetGroupId);
-
-						return addChildUserGroupLayouts(targetGroup, layouts);
-					}
-				}
-
+			if (PropsValues.USER_GROUPS_COPY_LAYOUTS_TO_USER_PERSONAL_SITE) {
 				return layouts;
 			}
-			catch (Exception e) {
-				_log.error(e, e);
 
-				throw e;
+			if (group.isUser()) {
+				_virtualLayoutTargetGroupId.set(group.getGroupId());
+
+				if (parentLayoutId ==
+						LayoutConstants.DEFAULT_PARENT_LAYOUT_ID) {
+
+					return addUserGroupLayouts(
+						group, layoutSet, layouts, parentLayoutId);
+				}
+				else {
+					return addChildUserGroupLayouts(group, layouts);
+				}
 			}
+			else if (group.isUserGroup() &&
+					 (parentLayoutId !=
+						 LayoutConstants.DEFAULT_PARENT_LAYOUT_ID)) {
+
+				long targetGroupId = _virtualLayoutTargetGroupId.get();
+
+				if (targetGroupId != GroupConstants.DEFAULT_LIVE_GROUP_ID) {
+					Group targetGroup = GroupLocalServiceUtil.getGroup(
+						targetGroupId);
+
+					return addChildUserGroupLayouts(targetGroup, layouts);
+				}
+			}
+
+			return layouts;
 		}
 
 		return methodInvocation.proceed();
