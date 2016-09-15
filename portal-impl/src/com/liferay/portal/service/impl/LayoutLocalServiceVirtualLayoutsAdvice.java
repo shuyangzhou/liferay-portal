@@ -230,13 +230,11 @@ public class LayoutLocalServiceVirtualLayoutsAdvice
 		boolean workflowEnabled) {
 
 		try {
-			if (!SitesUtil.isLayoutSetMergeable(group, layoutSet)) {
-				return;
+			if (SitesUtil.isLayoutSetMergeable(group, layoutSet)) {
+				WorkflowThreadLocal.setEnabled(false);
+
+				SitesUtil.mergeLayoutSetPrototypeLayouts(group, layoutSet);
 			}
-
-			WorkflowThreadLocal.setEnabled(false);
-
-			SitesUtil.mergeLayoutSetPrototypeLayouts(group, layoutSet);
 		}
 		catch (Exception e) {
 			if (_log.isWarnEnabled()) {
