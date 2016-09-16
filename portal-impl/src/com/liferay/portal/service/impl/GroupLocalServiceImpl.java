@@ -979,6 +979,12 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 		return groupPersistence.fetchByC_F(companyId, friendlyURL);
 	}
 
+	@Override
+	@ThreadLocalCachable
+	public Group fetchGroup(long groupId) {
+		return groupPersistence.fetchByPrimaryKey(groupId);
+	}
+
 	/**
 	 * Returns the group with the matching group key by first searching the
 	 * system groups and then using the finder cache.
