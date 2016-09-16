@@ -243,21 +243,8 @@ public class HtmlImpl implements Html {
 				sb.append(c);
 			}
 			else {
-				sb.append(prefix);
-
-				_appendHexChars(sb, hexBuffer, c);
-
-				sb.append(postfix);
-
-				if ((mode == ESCAPE_MODE_CSS) && (i < (text.length() - 1))) {
-					char nextChar = text.charAt(i + 1);
-
-					if ((CharPool.NUMBER_0 <= nextChar) &&
-						(nextChar <= CharPool.NUMBER_9)) {
-
-						sb.append(CharPool.SPACE);
-					}
-				}
+				_appendEscapeToHexChars(
+					text, mode, prefix, postfix, sb, c, hexBuffer, i);
 			}
 		}
 
@@ -838,6 +825,27 @@ public class HtmlImpl implements Html {
 		}
 
 		sb.append(buffer, index, buffer.length - index);
+	}
+
+	private void _appendEscapeToHexChars(
+		String text, int mode, String prefix, String postfix, StringBuilder sb,
+		char c, char[] hexBuffer, int index) {
+
+		sb.append(prefix);
+
+		_appendHexChars(sb, hexBuffer, c);
+
+		sb.append(postfix);
+
+		if ((mode == ESCAPE_MODE_CSS) && (index < (text.length() - 1))) {
+			char nextChar = text.charAt(index + 1);
+
+			if ((CharPool.NUMBER_0 <= nextChar) &&
+				(nextChar <= CharPool.NUMBER_9)) {
+
+				sb.append(CharPool.SPACE);
+			}
+		}
 	}
 
 	private boolean _isUnicodeCompatibilityCharacter(char c) {
