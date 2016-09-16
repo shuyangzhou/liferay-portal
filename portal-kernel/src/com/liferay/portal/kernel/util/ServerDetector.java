@@ -64,6 +64,11 @@ public class ServerDetector {
 		catch (IllegalArgumentException iae) {
 			_serverType = _detectServerType();
 		}
+
+		if (_serverType == null) {
+			throw new IllegalArgumentException(
+				"Unable to detect server type with id: " + serverId);
+		}
 	}
 
 	public static boolean isGlassfish() {
@@ -253,16 +258,16 @@ public class ServerDetector {
 	static {
 		_serverType = _detectServerType();
 
+		if (_serverType == null) {
+			throw new ExceptionInInitializerError(
+				"Unable to detect server type");
+		}
+
 		if (System.getProperty("external-properties") == null) {
 			if (_log.isInfoEnabled()) {
-				if (_serverType != null) {
-					_log.info(
-						"Detected server " +
-							StringUtil.toLowerCase(_serverType.toString()));
-				}
-				else {
-					_log.info("No server detected");
-				}
+				_log.info(
+					"Detected server " +
+						StringUtil.toLowerCase(_serverType.toString()));
 			}
 		}
 	}
