@@ -228,6 +228,8 @@ public class HtmlImpl implements Html {
 
 		char[] hexBuffer = new char[4];
 
+		boolean modified = false;
+
 		for (int i = 0; i < text.length(); i++) {
 			char c = text.charAt(i);
 
@@ -240,6 +242,8 @@ public class HtmlImpl implements Html {
 						  (c == CharPool.RETURN))) {
 
 					sb.append(CharPool.SPACE);
+
+					modified = true;
 				}
 				else {
 					sb.append(prefix);
@@ -259,6 +263,8 @@ public class HtmlImpl implements Html {
 							sb.append(CharPool.SPACE);
 						}
 					}
+
+					modified = true;
 				}
 			}
 			else if ((mode == ESCAPE_MODE_ATTRIBUTE) &&
@@ -266,17 +272,19 @@ public class HtmlImpl implements Html {
 					  _isUnicodeCompatibilityCharacter(c))) {
 
 				sb.append(CharPool.SPACE);
+
+				modified = true;
 			}
 			else {
 				sb.append(c);
 			}
 		}
 
-		if ((mode != ESCAPE_MODE_ATTRIBUTE) && (sb.length() == text.length())) {
-			return text;
+		if (modified) {
+			return sb.toString();
 		}
 
-		return sb.toString();
+		return text;
 	}
 
 	/**
