@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.util.BitSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -230,16 +231,22 @@ public class HtmlImpl implements Html {
 		for (int i = 0; i < text.length(); i++) {
 			char c = text.charAt(i);
 
-			if ((mode == ESCAPE_MODE_ATTRIBUTE) &&
-				(!_isValidXmlCharacter(c) ||
-				 _isUnicodeCompatibilityCharacter(c))) {
+			if (c < 256) {
+				if (_validChars.get(c)) {
+					sb.append(c);
+				}
+				else {
+					_appendEscapeToHexChars(
+						text, mode, prefix, postfix, sb, c, hexBuffer, i);
+				}
+			}
+			else if ((mode == ESCAPE_MODE_ATTRIBUTE) &&
+					 (!_isValidXmlCharacter(c) ||
+					  _isUnicodeCompatibilityCharacter(c))) {
 
 				sb.append(CharPool.SPACE);
 			}
-			else if ((c > 255) || (c == CharPool.DASH) ||
-					 (c == CharPool.UNDERLINE) ||
-					 Character.isLetterOrDigit(c)) {
-
+			else if (Character.isLetterOrDigit(c)) {
 				sb.append(c);
 			}
 			else {
@@ -895,6 +902,7 @@ public class HtmlImpl implements Html {
 	};
 
 	private static final Map<String, String> _unescapeMap = new HashMap<>();
+	private static final BitSet _validChars = new BitSet(256);
 
 	static {
 		_unescapeMap.put("lt", "<");
@@ -912,6 +920,21 @@ public class HtmlImpl implements Html {
 		_unescapeMap.put("#61", "=");
 		_unescapeMap.put("#43", "+");
 		_unescapeMap.put("#45", "-");
+
+		for (int i = 'a'; i <= 'z'; i++) {
+			_validChars.set(i);
+		}
+
+		for (int i = 'A'; i <= 'Z'; i++) {
+			_validChars.set(i);
+		}
+
+		for (int i = '0'; i <= '9'; i++) {
+			_validChars.set(i);
+		}
+
+		_validChars.set('-');
+		_validChars.set('_');
 	}
 
 	private final Pattern _pattern = Pattern.compile("([\\s<&]|$)");
