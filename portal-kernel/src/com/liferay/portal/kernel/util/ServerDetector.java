@@ -17,6 +17,8 @@ package com.liferay.portal.kernel.util;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
+import java.lang.reflect.Field;
+
 /**
  * @author Brian Wing Shun Chan
  */
@@ -57,17 +59,33 @@ public class ServerDetector {
 		return StringUtil.toLowerCase(_serverType.toString());
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static void init(String serverId) {
+		ServerType serverType = null;
+
 		try {
-			_serverType = ServerType.valueOf(StringUtil.toUpperCase(serverId));
+			serverType = ServerType.valueOf(StringUtil.toUpperCase(serverId));
 		}
 		catch (IllegalArgumentException iae) {
-			_serverType = _detectServerType();
+			serverType = _detectServerType();
 		}
 
-		if (_serverType == null) {
+		if (serverType == null) {
 			throw new IllegalArgumentException(
 				"Unable to detect server type with id: " + serverId);
+		}
+
+		try {
+			Field field = ReflectionUtil.getDeclaredField(
+				ServerDetector.class, "_serverType");
+
+			field.set(null, serverType);
+		}
+		catch (Exception e) {
+			ReflectionUtil.throwException(e);
 		}
 	}
 
@@ -253,15 +271,17 @@ public class ServerDetector {
 
 	private static final Log _log = LogFactoryUtil.getLog(ServerDetector.class);
 
-	private static ServerType _serverType;
+	private static final ServerType _serverType;
 
 	static {
-		_serverType = _detectServerType();
+		ServerType serverType = _detectServerType();
 
-		if (_serverType == null) {
+		if (serverType == null) {
 			throw new ExceptionInInitializerError(
 				"Unable to detect server type");
 		}
+
+		_serverType = serverType;
 
 		if (System.getProperty("external-properties") == null) {
 			if (_log.isInfoEnabled()) {
