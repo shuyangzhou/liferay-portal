@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.util.BitSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -225,42 +226,32 @@ public class HtmlImpl implements Html {
 
 		StringBuilder sb = new StringBuilder(text.length());
 
+		char[] hexBuffer = new char[4];
+
 		for (int i = 0; i < text.length(); i++) {
 			char c = text.charAt(i);
 
-			if ((mode == ESCAPE_MODE_ATTRIBUTE) &&
-				(!_isValidXmlCharacter(c) ||
-				 _isUnicodeCompatibilityCharacter(c))) {
-
-				sb.append(StringPool.SPACE);
+			if (c < 256) {
+				if (_validChars.get(c)) {
+					sb.append(c);
+				}
+				else {
+					_appendEscapeToHexChars(
+						text, mode, prefix, postfix, sb, c, hexBuffer, i);
+				}
 			}
-			else if ((c > 255) || (c == CharPool.DASH) ||
-					 (c == CharPool.UNDERLINE) ||
-					 Character.isLetterOrDigit(c)) {
+			else if ((mode == ESCAPE_MODE_ATTRIBUTE) &&
+					 (!_isValidXmlCharacter(c) ||
+					  _isUnicodeCompatibilityCharacter(c))) {
 
+				sb.append(CharPool.SPACE);
+			}
+			else if (Character.isLetterOrDigit(c)) {
 				sb.append(c);
 			}
 			else {
-				sb.append(prefix);
-
-				String hexString = StringUtil.toHexString(c);
-
-				if (hexString.length() == 1) {
-					sb.append(StringPool.ASCII_TABLE[48]);
-				}
-
-				sb.append(hexString);
-				sb.append(postfix);
-
-				if ((mode == ESCAPE_MODE_CSS) && (i < (text.length() - 1))) {
-					char nextChar = text.charAt(i + 1);
-
-					if ((nextChar >= CharPool.NUMBER_0) &&
-						(nextChar <= CharPool.NUMBER_9)) {
-
-						sb.append(StringPool.SPACE);
-					}
-				}
+				_appendEscapeToHexChars(
+					text, mode, prefix, postfix, sb, c, hexBuffer, i);
 			}
 		}
 
@@ -824,10 +815,50 @@ public class HtmlImpl implements Html {
 		return pos;
 	}
 
+	private static void _appendHexChars(
+		StringBuilder sb, char[] buffer, char c) {
+
+		int index = buffer.length;
+
+		do {
+			buffer[--index] = _HEX_DIGITS[c & 15];
+
+			c >>>= 4;
+		}
+		while (c != 0);
+
+		if (index == (buffer.length - 1)) {
+			sb.append(CharPool.NUMBER_0);
+		}
+
+		sb.append(buffer, index, buffer.length - index);
+	}
+
+	private void _appendEscapeToHexChars(
+		String text, int mode, String prefix, String postfix, StringBuilder sb,
+		char c, char[] hexBuffer, int index) {
+
+		sb.append(prefix);
+
+		_appendHexChars(sb, hexBuffer, c);
+
+		sb.append(postfix);
+
+		if ((mode == ESCAPE_MODE_CSS) && (index < (text.length() - 1))) {
+			char nextChar = text.charAt(index + 1);
+
+			if ((CharPool.NUMBER_0 <= nextChar) &&
+				(nextChar <= CharPool.NUMBER_9)) {
+
+				sb.append(CharPool.SPACE);
+			}
+		}
+	}
+
 	private boolean _isUnicodeCompatibilityCharacter(char c) {
-		if (((c >= '\u007f') && (c <= '\u0084')) ||
-			((c >= '\u0086') && (c <= '\u009f')) ||
-			((c >= '\ufdd0') && (c <= '\ufdef'))) {
+		if ((('\u007f' <= c) && (c <= '\u0084')) ||
+			(('\u0086' <= c) && (c <= '\u009f')) ||
+			(('\ufdd0' <= c) && (c <= '\ufdef'))) {
 
 			return true;
 		}
@@ -846,6 +877,11 @@ public class HtmlImpl implements Html {
 
 		return false;
 	}
+
+	private static final char[] _HEX_DIGITS = {
+		'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd',
+		'e', 'f'
+	};
 
 	private static final String[] _MS_WORD_HTML = new String[] {
 		"&reg;", StringPool.APOSTROPHE, StringPool.QUOTE, StringPool.QUOTE
@@ -866,6 +902,7 @@ public class HtmlImpl implements Html {
 	};
 
 	private static final Map<String, String> _unescapeMap = new HashMap<>();
+	private static final BitSet _validChars = new BitSet(256);
 
 	static {
 		_unescapeMap.put("lt", "<");
@@ -883,6 +920,21 @@ public class HtmlImpl implements Html {
 		_unescapeMap.put("#61", "=");
 		_unescapeMap.put("#43", "+");
 		_unescapeMap.put("#45", "-");
+
+		for (int i = 'a'; i <= 'z'; i++) {
+			_validChars.set(i);
+		}
+
+		for (int i = 'A'; i <= 'Z'; i++) {
+			_validChars.set(i);
+		}
+
+		for (int i = '0'; i <= '9'; i++) {
+			_validChars.set(i);
+		}
+
+		_validChars.set('-');
+		_validChars.set('_');
 	}
 
 	private final Pattern _pattern = Pattern.compile("([\\s<&]|$)");
