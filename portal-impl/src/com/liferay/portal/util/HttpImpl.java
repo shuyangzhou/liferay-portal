@@ -741,6 +741,29 @@ public class HttpImpl implements Http {
 
 		uri = removePathParameters(uri);
 
+		boolean normalizedPath = true;
+
+		for (int i = 0; i < uri.length(); i++) {
+			char c = uri.charAt(i);
+
+			if ((c == CharPool.PERCENT) || (c == CharPool.PERIOD) ||
+				((c == CharPool.SLASH) && ((i + 1) < uri.length()) &&
+				 uri.charAt(i + 1) == CharPool.SLASH)) {
+
+				normalizedPath = false;
+
+				break;
+			}
+		}
+
+		if (normalizedPath) {
+			if (uri.charAt(uri.length() - 1) == CharPool.QUESTION) {
+				return uri.substring(0, uri.length() - 1);
+			}
+
+			return uri;
+		}
+
 		String path = null;
 		String queryString = null;
 
