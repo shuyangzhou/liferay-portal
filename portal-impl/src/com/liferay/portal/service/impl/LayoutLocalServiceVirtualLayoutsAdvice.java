@@ -73,38 +73,14 @@ public class LayoutLocalServiceVirtualLayoutsAdvice
 
 			Group group = GroupLocalServiceUtil.getGroup(groupId);
 
-			if (MergeLayoutPrototypesThreadLocal.isMergeComplete(
-					method.getName(), arguments) &&
-				(!group.isUser() ||
-				 PropsValues.USER_GROUPS_COPY_LAYOUTS_TO_USER_PERSONAL_SITE)) {
-
-				return methodInvocation.proceed();
-			}
-
 			boolean privateLayout = (Boolean)arguments[1];
 			long parentLayoutId = (Long)arguments[2];
 
 			LayoutSet layoutSet = LayoutSetLocalServiceUtil.getLayoutSet(
 				groupId, privateLayout);
 
-			boolean workflowEnabled = WorkflowThreadLocal.isEnabled();
-
-			try {
-				if (SitesUtil.isLayoutSetMergeable(group, layoutSet)) {
-					WorkflowThreadLocal.setEnabled(false);
-
-					SitesUtil.mergeLayoutSetPrototypeLayouts(group, layoutSet);
-				}
-			}
-			catch (Exception e) {
-				if (_log.isWarnEnabled()) {
-					_log.warn("Unable to merge layouts for site template", e);
-				}
-			}
-			finally {
-				MergeLayoutPrototypesThreadLocal.setMergeComplete(
-					methodName, arguments);
-				WorkflowThreadLocal.setEnabled(workflowEnabled);
+			if (!_mergeLayouts(group, layoutSet, arguments)) {
+				return methodInvocation.proceed();
 			}
 
 			List<Layout> layouts = (List<Layout>)methodInvocation.proceed();
@@ -188,6 +164,40 @@ public class LayoutLocalServiceVirtualLayoutsAdvice
 		}
 
 		return layouts;
+	}
+
+	private boolean _mergeLayouts(
+		Group group, LayoutSet layoutSet, Object... arguments) {
+
+		if (MergeLayoutPrototypesThreadLocal.isMergeComplete(
+				"getLayouts", arguments) &&
+			(!group.isUser() ||
+			 PropsValues.USER_GROUPS_COPY_LAYOUTS_TO_USER_PERSONAL_SITE)) {
+
+			return false;
+		}
+
+		boolean workflowEnabled = WorkflowThreadLocal.isEnabled();
+
+		try {
+			if (SitesUtil.isLayoutSetMergeable(group, layoutSet)) {
+				WorkflowThreadLocal.setEnabled(false);
+
+				SitesUtil.mergeLayoutSetPrototypeLayouts(group, layoutSet);
+			}
+		}
+		catch (Exception e) {
+			if (_log.isWarnEnabled()) {
+				_log.warn("Unable to merge layouts for site template", e);
+			}
+		}
+		finally {
+			MergeLayoutPrototypesThreadLocal.setMergeComplete(
+				"getLayouts", arguments);
+			WorkflowThreadLocal.setEnabled(workflowEnabled);
+		}
+
+		return true;
 	}
 
 	private static final Class<?>[] _TYPES_L_B_L = {
