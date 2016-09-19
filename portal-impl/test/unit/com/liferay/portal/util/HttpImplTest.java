@@ -240,6 +240,13 @@ public class HttpImplTest extends PowerMockito {
 				"/TestServlet/one;test=$one@two/two;jsessionid=ae01b0f2af" +
 					";test2=123,456"));
 		Assert.assertEquals("/", _httpImpl.removePathParameters("/;?"));
+
+		try {
+			_httpImpl.removePathParameters(";x=y");
+		}
+		catch (IllegalArgumentException iae) {
+			Assert.assertEquals("Unable to handle uri :;x=y", iae.getMessage());
+		}
 	}
 
 	@Test
