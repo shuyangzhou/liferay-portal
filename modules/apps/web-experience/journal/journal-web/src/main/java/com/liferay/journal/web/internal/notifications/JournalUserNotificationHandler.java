@@ -78,8 +78,7 @@ public class JournalUserNotificationHandler
 				userFullName);
 		}
 		else if (notificationType ==
-					UserNotificationDefinition.
-						NOTIFICATION_TYPE_UPDATE_ENTRY) {
+					UserNotificationDefinition.NOTIFICATION_TYPE_UPDATE_ENTRY) {
 
 			title = ResourceBundleUtil.getString(
 				resourceBundle, "x-updated-a-web-content-article",

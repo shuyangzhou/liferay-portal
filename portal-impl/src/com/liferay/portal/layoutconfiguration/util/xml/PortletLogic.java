@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.servlet.DynamicServletRequest;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
-import com.liferay.portal.kernel.util.PrefixPredicateFilter;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.xml.Document;
@@ -93,7 +92,7 @@ public class PortletLogic extends RuntimeLogic {
 
 		if (!portletId.equals(_request.getParameter("p_p_id"))) {
 			parameterMap = MapUtil.filterByKeys(
-				parameterMap, new PrefixPredicateFilter("p_p_"));
+				parameterMap, (key) -> !key.startsWith("p_p_"));
 		}
 
 		HttpServletRequest request = DynamicServletRequest.addQueryString(
