@@ -741,6 +741,29 @@ public class HttpImpl implements Http {
 
 		uri = removePathParameters(uri);
 
+		boolean normalizedPath = true;
+
+		for (int i = 0; i < uri.length(); i++) {
+			char c = uri.charAt(i);
+
+			if ((c == CharPool.PERCENT) || (c == CharPool.PERIOD) ||
+				((c == CharPool.SLASH) && ((i + 1) < uri.length()) &&
+				 uri.charAt(i + 1) == CharPool.SLASH)) {
+
+				normalizedPath = false;
+
+				break;
+			}
+		}
+
+		if (normalizedPath) {
+			if (uri.charAt(uri.length() - 1) == CharPool.QUESTION) {
+				return uri.substring(0, uri.length() - 1);
+			}
+
+			return uri;
+		}
+
 		String path = null;
 		String queryString = null;
 
@@ -1042,37 +1065,49 @@ public class HttpImpl implements Http {
 			return uri;
 		}
 
-		int pos = uri.indexOf(CharPool.SEMICOLON);
+		int pos = 0;
 
-		if (pos == -1) {
-			return uri;
-		}
+		StringBundler sb = new StringBundler();
 
-		String[] uriParts = StringUtil.split(uri.substring(1), CharPool.SLASH);
+		do {
+			int start = uri.indexOf(CharPool.SEMICOLON, pos);
 
-		StringBundler sb = new StringBundler(uriParts.length * 2);
+			if (start == -1) {
+				if (pos == 0) {
+					return uri;
+				}
+				else {
+					sb.append(uri.substring(pos));
 
-		for (String uriPart : uriParts) {
-			pos = uriPart.indexOf(CharPool.SEMICOLON);
-
-			if (pos == -1) {
-				sb.append(StringPool.SLASH);
-				sb.append(uriPart);
+					return sb.toString();
+				}
 			}
-			else if (pos == 0) {
-				continue;
+			else if (start == 0) {
+				throw new IllegalArgumentException(
+					"Unable to handle uri :" + uri);
 			}
-			else {
-				sb.append(StringPool.SLASH);
-				sb.append(uriPart.substring(0, pos));
+
+			int end = uri.indexOf(CharPool.SLASH, start);
+
+			if (end == -1) {
+				if ((start != 1) && (uri.charAt(start - 1) == CharPool.SLASH)) {
+					start = start - 1;
+				}
+
+				sb.append(uri.substring(pos, start));
+
+				return sb.toString();
 			}
-		}
 
-		if (sb.length() == 0) {
-			return StringPool.SLASH;
-		}
+			if (uri.charAt(start - 1) == CharPool.SLASH) {
+				start = start - 1;
+			}
 
-		return sb.toString();
+			sb.append(uri.substring(pos, start));
+
+			pos = end;
+		}
+		while (true);
 	}
 
 	@Override
