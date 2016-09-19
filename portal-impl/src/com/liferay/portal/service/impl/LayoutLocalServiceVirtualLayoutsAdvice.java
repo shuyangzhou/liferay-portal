@@ -15,6 +15,7 @@
 package com.liferay.portal.service.impl;
 
 import com.liferay.exportimport.kernel.staging.MergeLayoutPrototypesThreadLocal;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -92,9 +93,9 @@ public class LayoutLocalServiceVirtualLayoutsAdvice
 		return methodInvocation.proceed();
 	}
 
-	protected List<Layout> addChildUserGroupLayouts(
+	private List<Layout> _addChildUserGroupLayouts(
 			Group group, List<Layout> layouts)
-		throws Exception {
+		throws PortalException {
 
 		List<Layout> childLayouts = new ArrayList<>(layouts.size());
 
@@ -112,10 +113,10 @@ public class LayoutLocalServiceVirtualLayoutsAdvice
 		return childLayouts;
 	}
 
-	protected List<Layout> addUserGroupLayouts(
+	private List<Layout> _addUserGroupLayouts(
 			Group group, LayoutSet layoutSet, List<Layout> layouts,
 			long parentLayoutId)
-		throws Exception {
+		throws PortalException {
 
 		layouts = new ArrayList<>(layouts);
 
@@ -140,7 +141,7 @@ public class LayoutLocalServiceVirtualLayoutsAdvice
 	private List<Layout> _injectVirtualLayouts(
 			Group group, LayoutSet layoutSet, List<Layout> layouts,
 			long parentLayoutId)
-		throws Exception {
+		throws PortalException {
 
 		if (PropsValues.USER_GROUPS_COPY_LAYOUTS_TO_USER_PERSONAL_SITE) {
 			return layouts;
@@ -150,11 +151,11 @@ public class LayoutLocalServiceVirtualLayoutsAdvice
 			_virtualLayoutTargetGroupId.set(group.getGroupId());
 
 			if (parentLayoutId == LayoutConstants.DEFAULT_PARENT_LAYOUT_ID) {
-				return addUserGroupLayouts(
+				return _addUserGroupLayouts(
 					group, layoutSet, layouts, parentLayoutId);
 			}
 
-			return addChildUserGroupLayouts(group, layouts);
+			return _addChildUserGroupLayouts(group, layouts);
 		}
 
 		if (group.isUserGroup() &&
@@ -166,7 +167,7 @@ public class LayoutLocalServiceVirtualLayoutsAdvice
 				Group targetGroup = GroupLocalServiceUtil.getGroup(
 					targetGroupId);
 
-				return addChildUserGroupLayouts(targetGroup, layouts);
+				return _addChildUserGroupLayouts(targetGroup, layouts);
 			}
 		}
 
