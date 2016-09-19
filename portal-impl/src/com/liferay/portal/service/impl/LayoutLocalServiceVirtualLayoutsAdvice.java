@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutSetLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserGroupLocalServiceUtil;
 import com.liferay.portal.kernel.util.AutoResetThreadLocal;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowThreadLocal;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.sites.kernel.util.SitesUtil;
@@ -66,52 +65,9 @@ public class LayoutLocalServiceVirtualLayoutsAdvice
 
 		Object[] arguments = methodInvocation.getArguments();
 
-		if (methodName.equals("getLayout") &&
-			(Arrays.equals(parameterTypes, _TYPES_L) ||
-			 Arrays.equals(parameterTypes, _TYPES_L_B_L))) {
-
-			Layout layout = (Layout)methodInvocation.proceed();
-
-			Group group = layout.getGroup();
-
-			if (MergeLayoutPrototypesThreadLocal.isMergeComplete(
-					method.getName(), arguments) &&
-				(!group.isUser() ||
-				 PropsValues.USER_GROUPS_COPY_LAYOUTS_TO_USER_PERSONAL_SITE)) {
-
-				return layout;
-			}
-
-			if (Validator.isNull(layout.getLayoutPrototypeUuid()) &&
-				Validator.isNull(layout.getSourcePrototypeLayoutUuid())) {
-
-				return layout;
-			}
-
-			boolean workflowEnabled = WorkflowThreadLocal.isEnabled();
-
-			LayoutSet layoutSet = layout.getLayoutSet();
-
-			try {
-				WorkflowThreadLocal.setEnabled(false);
-
-				SitesUtil.mergeLayoutPrototypeLayout(group, layout);
-
-				if (Validator.isNotNull(
-						layout.getSourcePrototypeLayoutUuid())) {
-
-					SitesUtil.mergeLayoutSetPrototypeLayouts(group, layoutSet);
-				}
-			}
-			finally {
-				MergeLayoutPrototypesThreadLocal.setMergeComplete(
-					methodName, arguments);
-				WorkflowThreadLocal.setEnabled(workflowEnabled);
-			}
-		}
-		else if (methodName.equals("getLayouts") &&
-				 (Arrays.equals(parameterTypes, _TYPES_L_B_L) ||
-				  Arrays.equals(parameterTypes, _TYPES_L_B_L_B_I_I))) {
+		if (methodName.equals("getLayouts") &&
+			(Arrays.equals(parameterTypes, _TYPES_L_B_L) ||
+			 Arrays.equals(parameterTypes, _TYPES_L_B_L_B_I_I))) {
 
 			long groupId = (Long)arguments[0];
 
@@ -233,8 +189,6 @@ public class LayoutLocalServiceVirtualLayoutsAdvice
 
 		return layouts;
 	}
-
-	private static final Class<?>[] _TYPES_L = {Long.TYPE};
 
 	private static final Class<?>[] _TYPES_L_B_L = {
 		Long.TYPE, Boolean.TYPE, Long.TYPE
