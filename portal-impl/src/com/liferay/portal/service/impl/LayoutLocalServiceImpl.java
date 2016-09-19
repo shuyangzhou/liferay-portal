@@ -3249,8 +3249,7 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 
 	private static final ThreadLocal<Long> _virtualLayoutTargetGroupId =
 		new AutoResetThreadLocal<Long>(
-			LayoutLocalServiceVirtualLayoutsAdvice.class +
-				"._virtualLayoutTargetGroupId",
+			LayoutLocalServiceImpl.class + "._virtualLayoutTargetGroupId",
 			GroupConstants.DEFAULT_LIVE_GROUP_ID);
 
 }
