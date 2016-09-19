@@ -1048,6 +1048,10 @@ public class HttpImpl implements Http {
 			return uri;
 		}
 
+		if (pos == 0) {
+			throw new IllegalArgumentException("Unable to handle uri :" + uri);
+		}
+
 		String[] uriParts = StringUtil.split(uri.substring(1), CharPool.SLASH);
 
 		StringBundler sb = new StringBundler(uriParts.length * 2);
