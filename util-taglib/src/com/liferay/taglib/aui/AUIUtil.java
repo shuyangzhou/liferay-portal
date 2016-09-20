@@ -191,27 +191,27 @@ public class AUIUtil {
 	}
 
 	public static String normalizeId(String name) {
-		char[] chars = new char[name.length()];
+		char[] chars = null;
 
-		name.getChars(0, chars.length, chars, 0);
-
-		boolean modified = false;
-
-		for (int i = 0; i < chars.length; i++) {
-			char c = chars[i];
+		for (int i = 0; i < name.length(); i++) {
+			char c = name.charAt(i);
 
 			if ((_validChars.length <= c) || !_validChars[c]) {
-				chars[i] = CharPool.DASH;
+				if (chars == null) {
+					chars = new char[name.length()];
 
-				modified = true;
+					name.getChars(0, chars.length, chars, 0);
+				}
+
+				chars[i] = CharPool.DASH;
 			}
 		}
 
-		if (modified) {
-			return new String(chars);
+		if (chars == null) {
+			return name;
 		}
 
-		return name;
+		return new String(chars);
 	}
 
 	private static final boolean[] _validChars = new boolean[128];
