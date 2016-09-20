@@ -35,7 +35,7 @@ dependencies {
 	compile group: "org.sonatype.plexus", name: "plexus-build-api", transitive: false, version: "0.0.7"
 
 	provided group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "2.0.0"
-	provided group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.0.0"
+	provided group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
 	provided group: "org.apache.maven", name: "maven-plugin-api", transitive: false, version: "3.0.4"
 }
 

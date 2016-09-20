@@ -7,7 +7,7 @@ group = "com.example"
 task runGradleTest
 
 dependencies {
-	testCompile group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "latest.release"
+	testCompile group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
 	testCompile group: "com.liferay.portal", name: "com.liferay.portal.test", version: "latest.release"
 	testCompile group: "junit", name: "junit", version: "4.12"
 }
