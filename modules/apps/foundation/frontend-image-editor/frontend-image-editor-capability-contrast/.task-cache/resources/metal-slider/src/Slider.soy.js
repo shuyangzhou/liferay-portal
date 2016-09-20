@@ -1,4 +1,4 @@
-define("frontend-image-editor-capability-contrast@1.0.4/metal-slider/src/Slider.soy", ['exports', 'metal-component/src/Component', 'metal-soy/src/Soy'], function (exports, _Component2, _Soy) {
+define("frontend-image-editor-capability-contrast@1.0.4/metal-slider/src/Slider.soy", ['exports', 'metal-component/src/all/component', 'metal-soy/src/Soy'], function (exports, _component, _Soy) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -6,7 +6,7 @@ define("frontend-image-editor-capability-contrast@1.0.4/metal-slider/src/Slider.
   });
   exports.templates = exports.Slider = undefined;
 
-  var _Component3 = _interopRequireDefault(_Component2);
+  var _component2 = _interopRequireDefault(_component);
 
   var _Soy2 = _interopRequireDefault(_Soy);
 
@@ -67,6 +67,8 @@ define("frontend-image-editor-capability-contrast@1.0.4/metal-slider/src/Slider.
     goog.require('goog.i18n.bidi');
     /** @suppress {extraRequire} */
     goog.require('goog.asserts');
+    /** @suppress {extraRequire} */
+    goog.require('goog.string');
     var IncrementalDom = goog.require('incrementaldom');
     var ie_open = IncrementalDom.elementOpen;
     var ie_close = IncrementalDom.elementClose;
@@ -93,13 +95,14 @@ define("frontend-image-editor-capability-contrast@1.0.4/metal-slider/src/Slider.
       ie_open('input', null, null, 'name', ($$temp = opt_data.inputName) == null ? '' : $$temp, 'type', 'hidden', 'value', valueNumber__soy5);
       ie_close('input');
       ie_open('span');
-      itext((goog.asserts.assert(valueNumber__soy5 != null), valueNumber__soy5));
+      var dyn0 = valueNumber__soy5;
+      if (typeof dyn0 == 'function') dyn0();else if (dyn0 != null) itext(dyn0);
       ie_close('span');
       var percentage__soy15 = 100 * (valueNumber__soy5 - minNumber__soy4) / (maxNumber__soy3 - minNumber__soy4) + '%';
       ie_open('div', null, null, 'class', 'rail', 'data-onmousedown', 'onRailMouseDown_');
       ie_void('div', null, null, 'class', 'rail-active', 'style', 'width: ' + percentage__soy15);
-      ie_open('div', null, null, 'class', 'rail-handle');
-      ie_void('div', null, null, 'class', 'handle', 'tabindex', '0');
+      ie_open('div', null, null, 'class', 'rail-handle', 'style', 'left: ' + percentage__soy15);
+      ie_void('div', null, null, 'class', 'handle', 'tabindex', '0', 'role', 'slider', 'aria-valuemin', minNumber__soy4, 'aria-valuemax', maxNumber__soy3, 'aria-valuenow', valueNumber__soy5);
       ie_close('div');
       ie_close('div');
       ie_close('div');
@@ -110,6 +113,7 @@ define("frontend-image-editor-capability-contrast@1.0.4/metal-slider/src/Slider.
     }
 
     exports.render.params = ["elementClasses", "inputName", "max", "min", "value"];
+    exports.render.types = { "elementClasses": "any", "inputName": "any", "max": "any", "min": "any", "value": "any" };
     exports.templates = templates = exports;
     return exports;
   });
@@ -124,11 +128,11 @@ define("frontend-image-editor-capability-contrast@1.0.4/metal-slider/src/Slider.
     }
 
     return Slider;
-  }(_Component3.default);
+  }(_component2.default);
 
   _Soy2.default.register(Slider, templates);
-  exports.default = templates;
   exports.Slider = Slider;
   exports.templates = templates;
+  exports.default = templates;
 });
 //# sourceMappingURL=Slider.soy.js.map
