@@ -14,6 +14,7 @@
 
 package com.liferay.taglib.aui;
 
+import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -21,8 +22,6 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
@@ -192,12 +191,46 @@ public class AUIUtil {
 	}
 
 	public static String normalizeId(String name) {
-		Matcher matcher = _friendlyURLPattern.matcher(name);
+		char[] chars = new char[name.length()];
 
-		return matcher.replaceAll(StringPool.DASH);
+		name.getChars(0, chars.length, chars, 0);
+
+		boolean modified = false;
+
+		for (int i = 0; i < chars.length; i++) {
+			char c = chars[i];
+
+			if ((_validChars.length <= c) || !_validChars[c]) {
+				chars[i] = CharPool.DASH;
+
+				modified = true;
+			}
+		}
+
+		if (modified) {
+			return new String(chars);
+		}
+
+		return name;
 	}
 
-	private static final Pattern _friendlyURLPattern = Pattern.compile(
-		"[^A-Za-z0-9/_-]");
+	private static final boolean[] _validChars = new boolean[128];
+
+	static {
+		for (int i = 'a'; i <= 'z'; i++) {
+			_validChars[i] = true;
+		}
+
+		for (int i = 'A'; i <= 'Z'; i++) {
+			_validChars[i] = true;
+		}
+
+		for (int i = '0'; i <= '9'; i++) {
+			_validChars[i] = true;
+		}
+
+		_validChars['-'] = true;
+		_validChars['_'] = true;
+	}
 
 }
