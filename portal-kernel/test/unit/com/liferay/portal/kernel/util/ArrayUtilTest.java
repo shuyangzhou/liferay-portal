@@ -898,7 +898,7 @@ public class ArrayUtilTest {
 	public void testSplitLessThanSplitSize() {
 		int[] array = new int[] {0, 1, 2, 3};
 
-		int[][] arraySplit = (int [][])ArrayUtil.split(array, 5);
+		int[][] arraySplit = (int[][])ArrayUtil.split(array, 5);
 
 		Assert.assertEquals(1, arraySplit.length);
 
