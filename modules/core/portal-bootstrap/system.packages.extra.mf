@@ -2871,7 +2871,7 @@ Export-Package: com.liferay.ibm.icu;version="4.0.1",com.liferay.ibm.ic
  kernel.exception,com.liferay.portal.kernel.model,com.liferay.portal.k
  ernel.security.permission,com.liferay.portal.kernel.service,com.lifer
  ay.portal.kernel.util",com.liferay.portal.kernel.service.persistence.
- impl;version="1.2.0";uses:="com.liferay.portal.kernel.cache,com.lifer
+ impl;version="1.3.0";uses:="com.liferay.portal.kernel.cache,com.lifer
  ay.portal.kernel.dao.db,com.liferay.portal.kernel.dao.jdbc,com.lifera
  y.portal.kernel.dao.orm,com.liferay.portal.kernel.exception,com.lifer
  ay.portal.kernel.model,com.liferay.portal.kernel.service,com.liferay.
@@ -2881,7 +2881,7 @@ Export-Package: com.liferay.ibm.icu;version="4.0.1",com.liferay.ibm.ic
  vlet,javax.servlet.http",com.liferay.portal.kernel.servlet.filters.co
  mpoundsessionid;version="7.0.0";uses:="com.liferay.portal.kernel.serv
  let,javax.servlet.http",com.liferay.portal.kernel.servlet.filters.inv
- oker;version="7.1.0";uses:="com.liferay.portal.kernel.util,javax.serv
+ oker;version="7.2.0";uses:="com.liferay.portal.kernel.util,javax.serv
  let,javax.servlet.http",com.liferay.portal.kernel.servlet.taglib;vers
  ion="7.0.0";uses:="com.liferay.portal.kernel.log,com.liferay.portal.k
  ernel.util,javax.servlet,javax.servlet.http",com.liferay.portal.kerne
