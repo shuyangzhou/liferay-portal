@@ -35,9 +35,9 @@
 
 		<execute function="AssertClick" locator1="MessageBoards#THREAD_LIST_THREAD" value1="${threadSubject}" />
 
-		<execute function="AssertElementPresent" locator1="MessageBoardsThread#MESSAGE_REPLY_1" />
+		<execute function="AssertElementPresent" locator1="MessageBoardsThread#THREAD_REPLY_BUTTON" />
 
-		<execute function="AssertClick" locator1="MessageBoardsThread#MESSAGE_REPLY_1" value1="Reply to Main Thread" />
+		<execute function="AssertClick" locator1="MessageBoardsThread#THREAD_REPLY_BUTTON" value1="Reply to Main Thread" />
 
 		<execute function="Type#sendKeys" locator1="AlloyEditor#CONTENT_FIELD" value1="${threadBody} @${mentionsUserScreenName}" />
 

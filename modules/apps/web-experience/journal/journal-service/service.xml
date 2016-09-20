@@ -114,6 +114,10 @@
 			<finder-column name="groupId" />
 			<finder-column name="DDMTemplateKey" />
 		</finder>
+		<finder name="G_ST" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="status" />
+		</finder>
 		<finder name="G_L" return-type="Collection">
 			<finder-column name="groupId" />
 			<finder-column name="layoutUuid" />
@@ -122,13 +126,13 @@
 			<finder-column name="groupId" />
 			<finder-column arrayable-operator="AND" comparator="!=" name="layoutUuid" />
 		</finder>
-		<finder name="G_ST" return-type="Collection">
-			<finder-column name="groupId" />
-			<finder-column name="status" />
-		</finder>
 		<finder name="C_V" return-type="Collection">
 			<finder-column name="companyId" />
 			<finder-column name="version" />
+		</finder>
+		<finder name="C_DDMTK" return-type="Collection">
+			<finder-column name="classNameId" />
+			<finder-column name="DDMTemplateKey" />
 		</finder>
 		<finder name="C_ST" return-type="Collection">
 			<finder-column name="companyId" />
@@ -137,10 +141,6 @@
 		<finder name="C_NotST" return-type="Collection">
 			<finder-column name="companyId" />
 			<finder-column comparator="!=" name="status" />
-		</finder>
-		<finder name="C_DDMTK" return-type="Collection">
-			<finder-column name="classNameId" />
-			<finder-column name="DDMTemplateKey" />
 		</finder>
 		<finder name="LtD_S" return-type="Collection">
 			<finder-column comparator="&lt;" name="displayDate" />
