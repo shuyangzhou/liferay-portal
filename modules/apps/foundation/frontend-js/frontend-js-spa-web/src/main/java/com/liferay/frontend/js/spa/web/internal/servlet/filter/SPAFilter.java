@@ -17,6 +17,7 @@ package com.liferay.frontend.js.spa.web.internal.servlet.filter;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.BaseFilter;
+import com.liferay.portal.kernel.servlet.BrowserSnifferUtil;
 import com.liferay.portal.kernel.servlet.TryFilter;
 import com.liferay.portal.kernel.util.HttpUtil;
 
@@ -51,8 +52,10 @@ public class SPAFilter extends BaseFilter implements TryFilter {
 	}
 
 	@Override
-	public boolean isFilterEnabled() {
-		return true;
+	public boolean isFilterEnabled(
+		HttpServletRequest request, HttpServletResponse response) {
+
+		return BrowserSnifferUtil.isIe(request);
 	}
 
 	@Override
