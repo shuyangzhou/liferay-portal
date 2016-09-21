@@ -90,6 +90,8 @@ import com.liferay.portal.servlet.ComboServlet;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.util.WebAppPool;
 import com.liferay.portlet.PortletBagFactory;
+import com.liferay.portlet.PortletContextBag;
+import com.liferay.portlet.PortletContextBagPool;
 import com.liferay.portlet.UndeployedPortlet;
 import com.liferay.registry.Filter;
 import com.liferay.registry.Registry;
@@ -822,9 +824,10 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 		String servletContextName, ServletContext servletContext, String[] xmls,
 		PluginPackage pluginPackage) {
 
-		Map<String, Portlet> portletsMap = null;
+		PortletContextBagPool.put(
+			servletContextName, new PortletContextBag(servletContextName));
 
-		Set<String> liferayPortletIds = null;
+		Map<String, Portlet> portletsMap = null;
 
 		try {
 			Set<String> servletURLPatterns = readWebXML(xmls[3]);
@@ -838,60 +841,49 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 					servletContextName, servletContext, xmls[1],
 					servletURLPatterns, pluginPackage));
 
-			liferayPortletIds = readLiferayPortletXML(
+			Set<String> liferayPortletIds = readLiferayPortletXML(
 				servletContextName, servletContext, xmls[2], portletsMap);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
 
-			return Collections.emptyList();
-		}
+			if (_log.isWarnEnabled()) {
 
-		// Check for missing entries in liferay-portlet.xml
+				// Check for missing entries in liferay-portlet.xml
 
-		for (String portletId : portletsMap.keySet()) {
-			if (_log.isWarnEnabled() &&
-				!liferayPortletIds.contains(portletId)) {
+				Set<String> portletIds = new HashSet<>(portletsMap.keySet());
 
-				_log.warn(
-					"Portlet with the name " + portletId +
-						" is described in portlet.xml but does not " +
-							"have a matching entry in liferay-portlet.xml");
-			}
-		}
+				portletIds.removeAll(liferayPortletIds);
 
-		// Check for missing entries in portlet.xml
-
-		for (String portletId : liferayPortletIds) {
-			if (_log.isWarnEnabled() && !portletsMap.containsKey(portletId)) {
-				_log.warn(
-					"Portlet with the name " + portletId +
-						" is described in liferay-portlet.xml but does " +
-							"not have a matching entry in portlet.xml");
-			}
-		}
-
-		PortletBagFactory portletBagFactory = new PortletBagFactory();
-
-		portletBagFactory.setClassLoader(
-			ClassLoaderPool.getClassLoader(servletContextName));
-		portletBagFactory.setServletContext(servletContext);
-		portletBagFactory.setWARFile(true);
-
-		// Return the new portlets
-
-		try {
-			for (Map.Entry<String, Portlet> entry : portletsMap.entrySet()) {
-				Portlet portlet = _portletsMap.remove(entry.getKey());
-
-				if (portlet != null) {
-					PortletInstanceFactoryUtil.clear(portlet);
-
-					PortletConfigFactoryUtil.destroy(portlet);
-					PortletContextFactoryUtil.destroy(portlet);
+				if (!portletIds.isEmpty()) {
+					_log.warn(
+						"Portlets with the names " + portletIds +
+							" are described in portlet.xml but do not " +
+								"have matching entries in liferay-portlet.xml");
 				}
 
-				portlet = entry.getValue();
+				// Check for missing entries in portlet.xml
+
+				liferayPortletIds.removeAll(portletsMap.keySet());
+
+				if (!liferayPortletIds.isEmpty()) {
+					_log.warn(
+						"Portlets with the names " + liferayPortletIds +
+							" are described in liferay-portlet.xml but do " +
+								"not have matching entries in portlet.xml");
+				}
+			}
+
+			PortletBagFactory portletBagFactory = new PortletBagFactory();
+
+			portletBagFactory.setClassLoader(
+				ClassLoaderPool.getClassLoader(servletContextName));
+			portletBagFactory.setServletContext(servletContext);
+			portletBagFactory.setWARFile(true);
+
+			// Return the new portlets
+
+			for (Map.Entry<String, Portlet> entry : portletsMap.entrySet()) {
+				_removePortlet(entry.getKey());
+
+				Portlet portlet = entry.getValue();
 
 				portletBagFactory.create(portlet, true);
 
@@ -912,14 +904,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 			// Clean up portlets added prior to error
 
 			for (Map.Entry<String, Portlet> entry : portletsMap.entrySet()) {
-				Portlet portlet = _portletsMap.remove(entry.getKey());
-
-				if (portlet != null) {
-					PortletInstanceFactoryUtil.clear(portlet);
-
-					PortletConfigFactoryUtil.destroy(portlet);
-					PortletContextFactoryUtil.destroy(portlet);
-				}
+				_removePortlet(entry.getKey());
 			}
 
 			return Collections.emptyList();
@@ -2592,6 +2577,17 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 			spriteFileName);
 
 		portletApp.setSpriteImages(spriteFileName, spriteProperties);
+	}
+
+	private void _removePortlet(String portletId) {
+		Portlet portlet = _portletsMap.remove(portletId);
+
+		if (portlet != null) {
+			PortletInstanceFactoryUtil.clear(portlet);
+
+			PortletConfigFactoryUtil.destroy(portlet);
+			PortletContextFactoryUtil.destroy(portlet);
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

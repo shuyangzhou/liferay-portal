@@ -316,6 +316,10 @@ public class MonitoringInvokerPortlet
 		_invokerPortlet = invokerPortlet;
 	}
 
+	/**
+	 * @deprecated As of 4.0.0, with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public void setPortletFilters() throws PortletException {
 		_invokerPortlet.setPortletFilters();

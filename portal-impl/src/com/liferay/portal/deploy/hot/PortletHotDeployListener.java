@@ -14,6 +14,8 @@
 
 package com.liferay.portal.deploy.hot;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.apache.bridges.struts.LiferayServletContextProvider;
 import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
@@ -29,7 +31,6 @@ import com.liferay.portal.kernel.model.PortletCategory;
 import com.liferay.portal.kernel.model.PortletFilter;
 import com.liferay.portal.kernel.model.PortletURLListener;
 import com.liferay.portal.kernel.portlet.CustomUserAttributes;
-import com.liferay.portal.kernel.portlet.InvokerPortlet;
 import com.liferay.portal.kernel.portlet.PortletBag;
 import com.liferay.portal.kernel.portlet.PortletBagPool;
 import com.liferay.portal.kernel.portlet.PortletInstanceFactoryUtil;
@@ -63,7 +64,6 @@ import com.liferay.registry.ServiceRegistration;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -85,6 +85,7 @@ import org.apache.portals.bridges.struts.StrutsPortlet;
  * @author Ivica Cardic
  * @author Raymond Augé
  */
+@ProviderType
 public class PortletHotDeployListener extends BaseHotDeployListener {
 
 	@Override
@@ -202,51 +203,34 @@ public class PortletHotDeployListener extends BaseHotDeployListener {
 			_log.info("Registering portlets for " + servletContextName);
 		}
 
-		PortletContextBag portletContextBag = new PortletContextBag(
-			servletContextName);
-
-		PortletContextBagPool.put(servletContextName, portletContextBag);
-
 		List<Portlet> portlets = PortletLocalServiceUtil.initWAR(
 			servletContextName, servletContext, xmls,
 			hotDeployEvent.getPluginPackage());
 
-		boolean portletAppInitialized = false;
-
-		boolean strutsBridges = false;
-
 		ClassLoader classLoader = hotDeployEvent.getContextClassLoader();
 
-		Iterator<Portlet> itr = portlets.iterator();
-
-		while (itr.hasNext()) {
-			Portlet portlet = itr.next();
-
-			PortletBag portletBag = PortletBagPool.get(
-				portlet.getRootPortletId());
-
-			if (!portletAppInitialized) {
-				initPortletApp(
-					servletContextName, servletContext, classLoader, portlet);
-
-				portletAppInitialized = true;
-			}
-
-			javax.portlet.Portlet portletInstance =
-				portletBag.getPortletInstance();
-
-			if (ClassUtil.isSubclass(
-					portletInstance.getClass(),
-					StrutsPortlet.class.getName())) {
-
-				strutsBridges = true;
-			}
+		if (!portlets.isEmpty()) {
+			initPortletApp(servletContextName, servletContext, classLoader);
 		}
 
+		boolean strutsBridges = GetterUtil.getBoolean(
+			servletContext.getInitParameter("struts-bridges-context-provider"));
+
 		if (!strutsBridges) {
-			strutsBridges = GetterUtil.getBoolean(
-				servletContext.getInitParameter(
-					"struts-bridges-context-provider"));
+			for (Portlet portlet : portlets) {
+				PortletBag portletBag = PortletBagPool.get(
+					portlet.getRootPortletId());
+
+				javax.portlet.Portlet portletInstance =
+					portletBag.getPortletInstance();
+
+				if (ClassUtil.isSubclass(
+						portletInstance.getClass(),
+						StrutsPortlet.class.getName())) {
+
+					strutsBridges = true;
+				}
+			}
 		}
 
 		if (strutsBridges) {
@@ -279,7 +263,12 @@ public class PortletHotDeployListener extends BaseHotDeployListener {
 
 		processPortletProperties(servletContextName, classLoader);
 
+		boolean ready = GetterUtil.getBoolean(
+			servletContext.getInitParameter("portlets-ready-by-default"), true);
+
 		for (Portlet portlet : portlets) {
+			portlet.setReady(ready);
+
 			List<String> modelNames =
 				ResourceActionsUtil.getPortletModelResources(
 					portlet.getPortletId());
@@ -307,14 +296,6 @@ public class PortletHotDeployListener extends BaseHotDeployListener {
 
 				PortletLocalServiceUtil.checkPortlet(curPortlet);
 			}
-		}
-
-		for (Portlet portlet : portlets) {
-			boolean ready = GetterUtil.getBoolean(
-				servletContext.getInitParameter("portlets-ready-by-default"),
-				true);
-
-			portlet.setReady(ready);
 		}
 
 		JavadocManagerUtil.load(servletContextName, classLoader);
@@ -405,18 +386,19 @@ public class PortletHotDeployListener extends BaseHotDeployListener {
 
 	protected void initPortletApp(
 			String servletContextName, ServletContext servletContext,
-			ClassLoader classLoader, Portlet portlet)
+			ClassLoader classLoader)
 		throws Exception {
 
-		PortletContextBag portletContextBag = PortletContextBagPool.get(
+		PortletApp portletApp = PortletLocalServiceUtil.getPortletApp(
 			servletContextName);
-
-		PortletApp portletApp = portlet.getPortletApp();
 
 		servletContext.setAttribute(PortletServlet.PORTLET_APP, portletApp);
 
 		Map<String, String> customUserAttributes =
 			portletApp.getCustomUserAttributes();
+
+		PortletContextBag portletContextBag = PortletContextBagPool.get(
+			servletContextName);
 
 		for (Map.Entry<String, String> entry :
 				customUserAttributes.entrySet()) {
@@ -450,11 +432,6 @@ public class PortletHotDeployListener extends BaseHotDeployListener {
 			portletContextBag.getPortletFilters().put(
 				portletFilter.getFilterName(), portletFilterInstance);
 		}
-
-		InvokerPortlet invokerPortlet = PortletInstanceFactoryUtil.create(
-			portlet, servletContext);
-
-		invokerPortlet.setPortletFilters();
 
 		Set<PortletURLListener> portletURLListeners =
 			portletApp.getPortletURLListeners();

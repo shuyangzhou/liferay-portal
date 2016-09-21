@@ -2353,7 +2353,7 @@ Export-Package: com.liferay.ibm.icu;version="4.0.1",com.liferay.ibm.ic
  acl";version="1.0.0",com.liferay.portal.deploy.auto;uses:="com.lifera
  y.portal.kernel.deploy.auto,com.liferay.portal.kernel.deploy.auto.con
  text,com.liferay.portal.kernel.plugin,com.liferay.portal.tools.deploy
- ";version="1.0.0",com.liferay.portal.deploy.hot;version="1.1.0";uses:
+ ";version="1.0.0",com.liferay.portal.deploy.hot;version="1.1.1";uses:
  ="com.liferay.portal.kernel.configuration,com.liferay.portal.kernel.d
  eploy.hot,com.liferay.portal.kernel.model,com.liferay.portal.kernel.p
  lugin,com.liferay.portal.kernel.security.pacl,com.liferay.portal.kern
