@@ -439,6 +439,14 @@ public class JournalArticlePersistenceTest {
 	}
 
 	@Test
+	public void testCountByG_ST() throws Exception {
+		_persistence.countByG_ST(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextInt());
+
+		_persistence.countByG_ST(0L, 0);
+	}
+
+	@Test
 	public void testCountByG_L() throws Exception {
 		_persistence.countByG_L(RandomTestUtil.nextLong(), StringPool.BLANK);
 
@@ -466,19 +474,20 @@ public class JournalArticlePersistenceTest {
 	}
 
 	@Test
-	public void testCountByG_ST() throws Exception {
-		_persistence.countByG_ST(RandomTestUtil.nextLong(),
-			RandomTestUtil.nextInt());
-
-		_persistence.countByG_ST(0L, 0);
-	}
-
-	@Test
 	public void testCountByC_V() throws Exception {
 		_persistence.countByC_V(RandomTestUtil.nextLong(),
 			RandomTestUtil.nextDouble());
 
 		_persistence.countByC_V(0L, 0D);
+	}
+
+	@Test
+	public void testCountByC_DDMTK() throws Exception {
+		_persistence.countByC_DDMTK(RandomTestUtil.nextLong(), StringPool.BLANK);
+
+		_persistence.countByC_DDMTK(0L, StringPool.NULL);
+
+		_persistence.countByC_DDMTK(0L, (String)null);
 	}
 
 	@Test
@@ -495,15 +504,6 @@ public class JournalArticlePersistenceTest {
 			RandomTestUtil.nextInt());
 
 		_persistence.countByC_NotST(0L, 0);
-	}
-
-	@Test
-	public void testCountByC_DDMTK() throws Exception {
-		_persistence.countByC_DDMTK(RandomTestUtil.nextLong(), StringPool.BLANK);
-
-		_persistence.countByC_DDMTK(0L, StringPool.NULL);
-
-		_persistence.countByC_DDMTK(0L, (String)null);
 	}
 
 	@Test
