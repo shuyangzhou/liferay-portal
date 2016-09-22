@@ -260,10 +260,8 @@ public class StringBundler implements Serializable {
 				_unsafeStringBuilderThreadLocal.set(usb);
 			}
 			else {
-				usb.ensureCapacity(length);
+				usb.resetAndEnsureCapacity(length);
 			}
-
-			usb.reset();
 		}
 		else {
 			usb = new UnsafeStringBuilder(length);
@@ -331,13 +329,17 @@ public class StringBundler implements Serializable {
 			_count += length;
 		}
 
-		public void ensureCapacity(int newLength) {
+		public void resetAndEnsureCapacity(int newLength) {
 			if (_value.length < newLength) {
-				_value = new char[newLength];
-			}
-		}
+				int newCapacity = _value.length * 2 + 2;
 
-		public void reset() {
+				if ((newCapacity - newLength) < 0) {
+					newCapacity = newLength;
+				}
+
+				_value = new char[newCapacity];
+			}
+
 			_count = 0;
 		}
 
