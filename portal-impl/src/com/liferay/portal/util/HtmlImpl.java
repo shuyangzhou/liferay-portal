@@ -118,6 +118,10 @@ public class HtmlImpl implements Html {
 
 			String replacement = null;
 
+			if ((c < 256) && ((c >= 128) || _VALID_CHARS[c])) {
+				continue;
+			}
+
 			if (c == '<') {
 				replacement = "&lt;";
 			}
@@ -150,20 +154,21 @@ public class HtmlImpl implements Html {
 
 				replacement = StringPool.SPACE;
 			}
-
-			if (replacement != null) {
-				if (sb == null) {
-					sb = new StringBundler();
-				}
-
-				if (i > lastReplacementIndex) {
-					sb.append(text.substring(lastReplacementIndex, i));
-				}
-
-				sb.append(replacement);
-
-				lastReplacementIndex = i + 1;
+			else {
+				continue;
 			}
+
+			if (sb == null) {
+				sb = new StringBundler();
+			}
+
+			if (i > lastReplacementIndex) {
+				sb.append(text.substring(lastReplacementIndex, i));
+			}
+
+			sb.append(replacement);
+
+			lastReplacementIndex = i + 1;
 		}
 
 		if (sb == null) {
