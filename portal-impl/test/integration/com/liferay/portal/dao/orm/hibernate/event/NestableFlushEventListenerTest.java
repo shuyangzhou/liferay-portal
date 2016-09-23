@@ -25,6 +25,8 @@ import com.liferay.portal.model.impl.ClassNameImpl;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.hibernate.EmptyInterceptor;
 import org.hibernate.Query;
@@ -37,6 +39,7 @@ import org.hibernate.event.def.DefaultAutoFlushEventListener;
 import org.hibernate.event.def.DefaultFlushEventListener;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -61,6 +64,21 @@ public class NestableFlushEventListenerTest {
 		_sessionFactoryImpl =
 			(org.hibernate.impl.SessionFactoryImpl)
 				sessionFactoryImpl.getSessionFactoryImplementor();
+	}
+
+	@Before
+	public void setUp() throws Exception {
+		Session session = _sessionFactoryImpl.openSession();
+
+		Query query = session.createQuery(
+			"SELECT className FROM ClassName className");
+
+		List<ClassName> classNames = query.list();
+
+		session.close();
+
+		_assignKeys(classNames, _keys);
+		_assignValues(classNames, _values);
 	}
 
 	@Test
@@ -150,6 +168,50 @@ public class NestableFlushEventListenerTest {
 		session.close();
 	}
 
+	private void _assignKeys(List<ClassName> classNames, long[] keys)
+		throws Exception {
+
+		Stream<ClassName> classNameStream = classNames.stream();
+
+		Stream<Long> classNameIdStream = classNameStream.map(
+			ClassName::getClassNameId);
+
+		List<Long> classNameIds = classNameIdStream.collect(
+			Collectors.toList());
+
+		for (int i = 0; i < keys.length; i++) {
+			long key = RandomTestUtil.nextLong();
+
+			if (!classNameIds.contains(key)) {
+				classNameIds.add(key);
+
+				keys[i] = key;
+			}
+		}
+	}
+
+	private void _assignValues(List<ClassName> classNames, String[] values)
+		throws Exception {
+
+		Stream<ClassName> classNameStream = classNames.stream();
+
+		Stream<String> classNameValueStream = classNameStream.map(
+			ClassName::getValue);
+
+		List<String> classNameValues = classNameValueStream.collect(
+			Collectors.toList());
+
+		for (int i = 0; i < values.length; i++) {
+			String value = RandomTestUtil.randomString();
+
+			if (!classNameValues.contains(value)) {
+				classNameValues.add(value);
+
+				values[i] = value;
+			}
+		}
+	}
+
 	private Session _prepareSession() throws Exception {
 		Session session = _sessionFactoryImpl.openSession(
 			new EmptyInterceptor() {
@@ -170,13 +232,15 @@ public class NestableFlushEventListenerTest {
 		try {
 			_className1 = new TestClassNameImpl(session);
 
-			_className1.setPrimaryKey(RandomTestUtil.nextLong());
+			_className1.setPrimaryKey(_keys[0]);
+			_className1.setValue(_values[0]);
 
 			session.save(_className1);
 
 			_className2 = new ClassNameImpl();
 
-			_className2.setPrimaryKey(RandomTestUtil.nextLong());
+			_className2.setPrimaryKey(_keys[1]);
+			_className2.setValue(_values[1]);
 
 			session.save(_className2);
 		}
@@ -184,11 +248,11 @@ public class NestableFlushEventListenerTest {
 			transaction.commit();
 		}
 
-		_className1.setValue(RandomTestUtil.randomString());
+		_className1.setValue(_values[2]);
 
 		_className1.setMvccVersion(_className1.getMvccVersion() + 1);
 
-		_className2.setValue(RandomTestUtil.randomString());
+		_className2.setValue(_values[3]);
 
 		_className2.setMvccVersion(_className1.getMvccVersion() + 1);
 
@@ -202,6 +266,9 @@ public class NestableFlushEventListenerTest {
 
 	@DeleteAfterTestRun
 	private ClassName _className2;
+
+	private final long[] _keys = new long[2];
+	private final String[] _values = new String[4];
 
 	private class TestClassNameImpl extends ClassNameImpl {
 
