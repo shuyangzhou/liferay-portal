@@ -518,11 +518,11 @@ public abstract class BaseUpgradePortletPreferences extends UpgradeProcess {
 
 				ps2.addBatch();
 			}
-
-			ps1.executeBatch();
-
-			ps2.executeBatch();
 		}
+
+		ps1.executeBatch();
+
+		ps2.executeBatch();
 	}
 
 	private static final String _SELECT =
