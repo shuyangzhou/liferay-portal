@@ -94,24 +94,15 @@ public class JS {
 		for (int i = 0; i < name.length(); i++) {
 			char c = name.charAt(i);
 
-			switch (c) {
-				case CharPool.SPACE:
+			if ((c > _INVALID_CHARS.length) || !_INVALID_CHARS[c]) {
+				if (sb != null) {
+					sb.append(c);
+				}
+			}
+			else if (sb == null) {
+				sb = new StringBuilder(name.length() - 1);
 
-				case CharPool.DASH:
-
-				case CharPool.PERIOD:
-					if (sb == null) {
-						sb = new StringBuilder(name.length() - 1);
-
-						sb.append(name, index, i);
-					}
-
-					break;
-
-				default:
-					if (sb != null) {
-						sb.append(c);
-					}
+				sb.append(name, index, i);
 			}
 		}
 
@@ -151,6 +142,14 @@ public class JS {
 		return decodeURIComponent(s);
 	}
 
+	private static final boolean[] _INVALID_CHARS = new boolean[48];
+
 	private static final Pattern _pattern = Pattern.compile("%u[0-9a-fA-F]{4}");
+
+	static {
+		_INVALID_CHARS[CharPool.SPACE] = true;
+		_INVALID_CHARS[CharPool.DASH] = true;
+		_INVALID_CHARS[CharPool.PERIOD] = true;
+	}
 
 }
