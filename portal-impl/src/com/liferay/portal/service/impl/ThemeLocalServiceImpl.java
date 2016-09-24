@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.theme.ThemeGroupLimit;
 import com.liferay.portal.kernel.util.ColorSchemeFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -47,6 +46,7 @@ import com.liferay.portal.plugin.PluginUtil;
 import com.liferay.portal.service.base.ThemeLocalServiceBaseImpl;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.util.ContextReplace;
+import com.liferay.util.JS;
 
 import java.net.URL;
 
@@ -696,7 +696,7 @@ public class ThemeLocalServiceImpl extends ThemeLocalServiceBaseImpl {
 						servletContextName;
 			}
 
-			themeId = PortalUtil.getJsSafePortletId(themeId);
+			themeId = JS.getSafeName(themeId);
 
 			themeContextReplace.addValue("theme-id", themeId);
 

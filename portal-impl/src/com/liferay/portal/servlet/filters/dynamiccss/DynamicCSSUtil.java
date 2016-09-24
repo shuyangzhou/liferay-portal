@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.util.JS;
 
 import java.net.URLDecoder;
 
@@ -182,7 +183,7 @@ public class DynamicCSSUtil {
 			themePathId = StringUtil.replace(
 				themePathId, CharPool.UNDERLINE, StringPool.BLANK);
 
-			themeId = PortalUtil.getJsSafePortletId(themePathId);
+			themeId = JS.getSafeName(themePathId);
 		}
 		else {
 			Matcher pluginThemeMatcher = _pluginThemePattern.matcher(
@@ -203,7 +204,7 @@ public class DynamicCSSUtil {
 
 				themePathId = sb.toString();
 
-				themeId = PortalUtil.getJsSafePortletId(themePathId);
+				themeId = JS.getSafeName(themePathId);
 			}
 		}
 

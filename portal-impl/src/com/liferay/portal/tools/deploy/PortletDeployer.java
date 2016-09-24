@@ -20,7 +20,6 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -33,6 +32,7 @@ import com.liferay.portal.kernel.xml.UnsecureSAXReaderUtil;
 import com.liferay.portal.tools.ToolDependencies;
 import com.liferay.portal.util.PrefsPropsUtil;
 import com.liferay.portal.util.PropsValues;
+import com.liferay.util.JS;
 
 import java.io.File;
 
@@ -177,7 +177,7 @@ public class PortletDeployer extends BaseDeployer {
 		List<Element> portletElements = rootElement.elements("portlet");
 
 		for (Element portletElement : portletElements) {
-			String portletName = PortalUtil.getJsSafePortletId(
+			String portletName = JS.getSafeName(
 				portletElement.elementText("portlet-name"));
 			String portletClassName = portletElement.elementText(
 				"portlet-class");
