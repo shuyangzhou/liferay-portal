@@ -1,5 +1,5 @@
 dependencies {
-	provided group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.2.0"
+	provided group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
 	provided group: "org.ow2.asm", name: "asm", version: "4.1"
 	provided group: "org.ow2.asm", name: "asm-analysis", version: "4.1"
 	provided group: "org.ow2.asm", name: "asm-tree", version: "4.1"

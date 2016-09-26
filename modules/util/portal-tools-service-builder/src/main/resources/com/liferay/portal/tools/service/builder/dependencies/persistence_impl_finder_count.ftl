@@ -1,4 +1,5 @@
 <#assign finderColsList = finder.getColumns() />
+<#assign finderArrayableColsList = finder.getArrayableColumns() />
 
 /**
  * Returns the number of ${entity.humanNames} where ${finder.getHumanConditions(false)}.
@@ -72,7 +73,7 @@ public int countBy${finder.name}(
 	return count.intValue();
 }
 
-<#if finder.hasArrayableOperator()>
+<#if finder.hasArrayableOperator() && !finder.hasArrayablePagination()>
 	/**
 	 * Returns the number of ${entity.humanNames} where ${finder.getHumanConditions(true)}.
 	 *
@@ -171,6 +172,187 @@ public int countBy${finder.name}(
 			finally {
 				closeSession(session);
 			}
+		}
+
+		return count.intValue();
+	}
+</#if>
+
+<#if finder.hasArrayableOperator() && finder.hasArrayablePagination()>
+	/**
+	 * Returns the number of ${entity.humanNames} where ${finder.getHumanConditions(true)}.
+	 *
+	<#list finderColsList as finderCol>
+		<#if finderCol.hasArrayableOperator()>
+	 * @param ${finderCol.names} the ${finderCol.humanNames}
+		<#else>
+	 * @param ${finderCol.name} the ${finderCol.humanName}
+		</#if>
+	</#list>
+	 * @return the number of matching ${entity.humanNames}
+	 */
+	@Override
+	public int countBy${finder.name}(
+
+	<#list finderColsList as finderCol>
+		<#if finderCol.hasArrayableOperator()>
+			${finderCol.type}[] ${finderCol.names}
+		<#else>
+			${finderCol.type} ${finderCol.name}
+		</#if>
+
+		<#if finderCol_has_next>
+			,
+		</#if>
+	</#list>
+
+	) {
+		<#list finderColsList as finderCol>
+			<#if finderCol.hasArrayableOperator()>
+				if (${finderCol.names} == null) {
+					${finderCol.names} = new ${finderCol.type}[0];
+				}
+				else if (${finderCol.names}.length > 1) {
+					${finderCol.names} =
+						<#if finderCol.type == "String">
+							ArrayUtil.distinct(${finderCol.names}, NULL_SAFE_STRING_COMPARATOR);
+						<#else>
+							ArrayUtil.unique(${finderCol.names});
+						</#if>
+
+					<#if finderCol.type == "String">
+						Arrays.sort(${finderCol.names}, NULL_SAFE_STRING_COMPARATOR);
+					<#else>
+						Arrays.sort(${finderCol.names});
+					</#if>
+				}
+			</#if>
+		</#list>
+
+		Object[] finderArgs = new Object[] {
+			<#list finderColsList as finderCol>
+				<#if finderCol.hasArrayableOperator()>
+					StringUtil.merge(${finderCol.names})
+				<#else>
+					${finderCol.name}
+				</#if>
+
+				<#if finderCol_has_next>
+					,
+				</#if>
+			</#list>
+		};
+
+		Long count = (Long)finderCache.getResult(FINDER_PATH_WITH_PAGINATION_COUNT_BY_${finder.name?upper_case}, finderArgs, this);
+
+		if (count == null) {
+			try {
+				if ((databaseInMaxParameters > 0) && (<#list finderArrayableColsList as arrayablefinderCol>
+							(${arrayablefinderCol.names}.length > databaseInMaxParameters)
+
+							<#if arrayablefinderCol_has_next>
+								||
+							</#if>
+						</#list>)) {
+						count = Long.valueOf(0);
+
+						<#list finderArrayableColsList as arrayablefinderCol>
+							${arrayablefinderCol.type}[][] ${arrayablefinderCol.names}Pages = (${arrayablefinderCol.type}[][])ArrayUtil.split(${arrayablefinderCol.names}, databaseInMaxParameters);
+						</#list>
+
+						<#list finderArrayableColsList as arrayablefinderCol>
+							for (${arrayablefinderCol.type}[] ${arrayablefinderCol.names}Page : ${arrayablefinderCol.names}Pages) {
+						</#list>
+
+							count += Long.valueOf(_countBy${finder.name}(
+
+							<#list finderColsList as finderCol>
+								<#if finderCol.hasArrayableOperator()>
+									${finderCol.names}Page
+								<#else>
+									${finderCol.name}
+								</#if>
+
+								<#if finderCol_has_next>
+									,
+								</#if>
+							</#list>));
+
+					<#list finderArrayableColsList as arrayablefinderCol>
+						}
+					</#list>
+					}
+					else {
+						count = Long.valueOf(_countBy${finder.name}(
+
+						<#list finderColsList as finderCol>
+							<#if finderCol.hasArrayableOperator()>
+								${finderCol.names}
+							<#else>
+								${finderCol.name}
+							</#if>
+
+							<#if finderCol_has_next>
+								,
+							</#if>
+						</#list>));
+					}
+
+					finderCache.putResult(FINDER_PATH_WITH_PAGINATION_COUNT_BY_${finder.name?upper_case}, finderArgs, count);
+			}
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_WITH_PAGINATION_COUNT_BY_${finder.name?upper_case}, finderArgs);
+
+				throw processException(e);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private int _countBy${finder.name}(
+
+	<#list finderColsList as finderCol>
+		<#if finderCol.hasArrayableOperator()>
+			${finderCol.type}[] ${finderCol.names}
+		<#else>
+			${finderCol.type} ${finderCol.name}
+		</#if>
+
+		<#if finderCol_has_next>
+			,
+		</#if>
+	</#list>
+
+	) {
+		Long count = null;
+
+		<#include "persistence_impl_count_by_arrayable_query.ftl">
+
+		String sql = query.toString();
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			Query q = session.createQuery(sql);
+
+			<#if bindParameter(finderColsList)>
+				QueryPos qPos = QueryPos.getInstance(q);
+			</#if>
+
+			<@finderQPos
+				_arrayable=true
+			/>
+
+			count = (Long)q.uniqueResult();
+		}
+		catch (Exception e) {
+			throw processException(e);
+		}
+		finally {
+			closeSession(session);
 		}
 
 		return count.intValue();
