@@ -224,12 +224,14 @@ public abstract class BaseUpgradePortletPreferences extends UpgradeProcess {
 					"getUpdatePortletPreferencesWhereClause");
 		}
 
-		StringBundler sb = new StringBundler(portletIds.length * 5 - 1);
+		StringBundler sb = new StringBundler(portletIds.length * 5 + 3);
+
+		sb.append(StringPool.OPEN_PARENTHESIS);
 
 		for (int i = 0; i < portletIds.length; i++) {
 			String portletId = portletIds[i];
 
-			sb.append("portletId ");
+			sb.append("PortletPreferences.portletId ");
 
 			if (portletId.contains(StringPool.PERCENT)) {
 				sb.append(" like '");
@@ -247,113 +249,190 @@ public abstract class BaseUpgradePortletPreferences extends UpgradeProcess {
 			}
 		}
 
+		sb.append(StringPool.CLOSE_PARENTHESIS);
+
 		return sb.toString();
 	}
 
 	protected void updatePortletPreferences() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer()) {
-			StringBundler sb = new StringBundler(4);
-
-			sb.append("select portletPreferencesId, ownerId, ownerType, ");
-			sb.append("plid, portletId, preferences from PortletPreferences");
-
-			String whereClause = getUpdatePortletPreferencesWhereClause();
-
-			if (Validator.isNotNull(whereClause)) {
-				sb.append(" where ");
-				sb.append(whereClause);
-			}
-
-			try (PreparedStatement ps1 = connection.prepareStatement(
-					sb.toString());
-				PreparedStatement ps2 =
+			try (PreparedStatement ps1 =
 					AutoBatchPreparedStatementUtil.concurrentAutoBatch(
 						connection,
 						"update PortletPreferences set preferences = ? where " +
 							"portletPreferencesId = ?");
-				PreparedStatement ps3 =
+				PreparedStatement ps2 =
 					AutoBatchPreparedStatementUtil.concurrentAutoBatch(
 						connection,
 						"delete from PortletPreferences where " +
-							"portletPreferencesId = ?");
-				ResultSet rs = ps1.executeQuery()) {
+							"portletPreferencesId = ?")) {
 
-				while (rs.next()) {
-					long portletPreferencesId = rs.getLong(
-						"portletPreferencesId");
-					long ownerId = rs.getLong("ownerId");
-					int ownerType = rs.getInt("ownerType");
-					long plid = rs.getLong("plid");
-					String portletId = rs.getString("portletId");
-					String preferences = GetterUtil.getString(
-						rs.getString("preferences"));
+				StringBundler sb = new StringBundler(7);
 
-					long companyId = 0;
+				sb.append(_SELECT);
+				sb.append(", PortletItem.companyId from PortletPreferences ");
+				sb.append(
+					"inner join PortletItem on PortletItem.portletItemId");
+				sb.append("= PortletPreferences.ownerId");
 
-					if (ownerType == PortletKeys.PREFS_OWNER_TYPE_ARCHIVED) {
-						companyId = getCompanyId(
-							"select companyId from PortletItem where " +
-								"portletItemId = ?",
-							ownerId);
+				String whereClause = getUpdatePortletPreferencesWhereClause();
+
+				if (Validator.isNotNull(whereClause)) {
+					sb.append(" where ");
+					sb.append(whereClause);
+					sb.append(" and PortletPreferences.ownerType = ?");
+				}
+				else {
+					sb.append(" where PortletPreferences.ownerType = ?");
+				}
+
+				try (PreparedStatement ps3 = connection.prepareStatement(
+						sb.toString())) {
+
+					ps3.setLong(1, PortletKeys.PREFS_OWNER_TYPE_ARCHIVED);
+
+					try (ResultSet rs = ps3.executeQuery()) {
+						_parseResultSet(rs, ps1, ps2, false);
 					}
-					else if (ownerType ==
-								PortletKeys.PREFS_OWNER_TYPE_COMPANY) {
+				}
 
-						companyId = ownerId;
+				sb = new StringBundler(5);
+
+				sb.append(_SELECT);
+				sb.append(" from PortletPreferences ");
+
+				whereClause = getUpdatePortletPreferencesWhereClause();
+
+				if (Validator.isNotNull(whereClause)) {
+					sb.append(" where ");
+					sb.append(whereClause);
+					sb.append(" and PortletPreferences.ownerType = ?");
+				}
+				else {
+					sb.append(" where PortletPreferences.ownerType = ?");
+				}
+
+				try (PreparedStatement ps3 = connection.prepareStatement(
+						sb.toString())) {
+
+					ps3.setLong(1, PortletKeys.PREFS_OWNER_TYPE_COMPANY);
+
+					try (ResultSet rs = ps3.executeQuery()) {
+						_parseResultSet(rs, ps1, ps2, true);
 					}
-					else if (ownerType == PortletKeys.PREFS_OWNER_TYPE_GROUP) {
-						Object[] group = getGroup(ownerId);
+				}
 
-						if (group != null) {
-							companyId = (Long)group[1];
-						}
+				sb = new StringBundler(7);
+
+				sb.append(_SELECT);
+				sb.append(", Group_.companyId from PortletPreferences ");
+				sb.append("inner join Group_ on Group_.groupId");
+				sb.append("= PortletPreferences.ownerId");
+
+				whereClause = getUpdatePortletPreferencesWhereClause();
+
+				if (Validator.isNotNull(whereClause)) {
+					sb.append(" where ");
+					sb.append(whereClause);
+					sb.append(" and PortletPreferences.ownerType = ?");
+				}
+				else {
+					sb.append(" where PortletPreferences.ownerType = ?");
+				}
+
+				try (PreparedStatement ps3 = connection.prepareStatement(
+						sb.toString())) {
+
+					ps3.setLong(1, PortletKeys.PREFS_OWNER_TYPE_GROUP);
+
+					try (ResultSet rs = ps3.executeQuery()) {
+						_parseResultSet(rs, ps1, ps2, false);
 					}
-					else if (ownerType == PortletKeys.PREFS_OWNER_TYPE_LAYOUT) {
-						Object[] layout = getLayout(plid);
+				}
 
-						if (layout != null) {
-							companyId = (Long)layout[1];
-						}
+				sb = new StringBundler(7);
+
+				sb.append(_SELECT);
+				sb.append(", Layout.companyId from PortletPreferences ");
+				sb.append("inner join Layout on Layout.plid");
+				sb.append("= PortletPreferences.plid");
+
+				whereClause = getUpdatePortletPreferencesWhereClause();
+
+				if (Validator.isNotNull(whereClause)) {
+					sb.append(" where ");
+					sb.append(whereClause);
+					sb.append(" and PortletPreferences.ownerType = ?");
+				}
+				else {
+					sb.append(" where PortletPreferences.ownerType = ?");
+				}
+
+				try (PreparedStatement ps3 = connection.prepareStatement(
+						sb.toString())) {
+
+					ps3.setLong(1, PortletKeys.PREFS_OWNER_TYPE_LAYOUT);
+
+					try (ResultSet rs = ps3.executeQuery()) {
+						_parseResultSet(rs, ps1, ps2, false);
 					}
-					else if (ownerType ==
-								PortletKeys.PREFS_OWNER_TYPE_ORGANIZATION) {
+				}
 
-						companyId = getCompanyId(
-							"select companyId from Organization_ where " +
-								"organizationId = ?",
-							ownerId);
+				sb = new StringBundler(7);
+
+				sb.append(_SELECT);
+				sb.append(", Organization_.companyId from PortletPreferences ");
+				sb.append(
+					"inner join Organization_ on Organization_.organizationId");
+				sb.append("= PortletPreferences.ownerId");
+
+				whereClause = getUpdatePortletPreferencesWhereClause();
+
+				if (Validator.isNotNull(whereClause)) {
+					sb.append(" where ");
+					sb.append(whereClause);
+					sb.append(" and PortletPreferences.ownerType = ?");
+				}
+				else {
+					sb.append(" where PortletPreferences.ownerType = ?");
+				}
+
+				try (PreparedStatement ps3 = connection.prepareStatement(
+						sb.toString())) {
+
+					ps3.setLong(1, PortletKeys.PREFS_OWNER_TYPE_ORGANIZATION);
+
+					try (ResultSet rs = ps3.executeQuery()) {
+						_parseResultSet(rs, ps1, ps2, false);
 					}
-					else if (ownerType == PortletKeys.PREFS_OWNER_TYPE_USER) {
-						companyId = getCompanyId(
-							"select companyId from User_ where userId = ?",
-							ownerId);
+				}
+
+				sb = new StringBundler(7);
+
+				sb.append(_SELECT);
+				sb.append(", User_.companyId from PortletPreferences ");
+				sb.append("inner join User_ on User_.userId");
+				sb.append("= PortletPreferences.ownerId");
+
+				whereClause = getUpdatePortletPreferencesWhereClause();
+
+				if (Validator.isNotNull(whereClause)) {
+					sb.append(" where ");
+					sb.append(whereClause);
+					sb.append(" and PortletPreferences.ownerType = ?");
+				}
+				else {
+					sb.append(" where PortletPreferences.ownerType = ?");
+				}
+
+				try (PreparedStatement ps3 = connection.prepareStatement(
+						sb.toString())) {
+
+					ps3.setLong(1, PortletKeys.PREFS_OWNER_TYPE_USER);
+
+					try (ResultSet rs = ps3.executeQuery()) {
+						_parseResultSet(rs, ps1, ps2, false);
 					}
-					else {
-						throw new UnsupportedOperationException(
-							"Unsupported owner type " + ownerType);
-					}
-
-					if (companyId > 0) {
-						String newPreferences = upgradePreferences(
-							companyId, ownerId, ownerType, plid, portletId,
-							preferences);
-
-						if (!preferences.equals(newPreferences)) {
-							ps2.setString(1, newPreferences);
-							ps2.setLong(2, portletPreferencesId);
-
-							ps2.addBatch();
-						}
-					}
-					else {
-						ps3.setLong(1, portletPreferencesId);
-
-						ps3.addBatch();
-					}
-
-					ps2.executeBatch();
-
-					ps3.executeBatch();
 				}
 			}
 		}
@@ -398,5 +477,58 @@ public abstract class BaseUpgradePortletPreferences extends UpgradeProcess {
 			long companyId, long ownerId, int ownerType, long plid,
 			String portletId, String xml)
 		throws Exception;
+
+	private void _parseResultSet(
+			ResultSet rs, PreparedStatement ps1, PreparedStatement ps2,
+			boolean companyIdIsOwnerId)
+		throws Exception {
+
+		while (rs.next()) {
+			long portletPreferencesId = rs.getLong("portletPreferencesId");
+			long ownerId = rs.getLong("ownerId");
+			int ownerType = rs.getInt("ownerType");
+			long plid = rs.getLong("plid");
+			String portletId = rs.getString("portletId");
+			String preferences = GetterUtil.getString(
+				rs.getString("preferences"));
+
+			long companyId = 0;
+
+			if (companyIdIsOwnerId) {
+				companyId = ownerId;
+			}
+			else {
+				companyId = rs.getLong("companyId");
+			}
+
+			if (companyId > 0) {
+				String newPreferences = upgradePreferences(
+					companyId, ownerId, ownerType, plid, portletId,
+					preferences);
+
+				if (!preferences.equals(newPreferences)) {
+					ps1.setString(1, newPreferences);
+					ps1.setLong(2, portletPreferencesId);
+
+					ps1.addBatch();
+				}
+			}
+			else {
+				ps2.setLong(1, portletPreferencesId);
+
+				ps2.addBatch();
+			}
+
+			ps1.executeBatch();
+
+			ps2.executeBatch();
+		}
+	}
+
+	private static final String _SELECT =
+		"select PortletPreferences.portletPreferencesId," +
+			" PortletPreferences.ownerId, PortletPreferences.ownerType," +
+				" PortletPreferences.plid, PortletPreferences.portletId," +
+					" PortletPreferences.preferences";
 
 }
