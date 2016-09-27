@@ -42,7 +42,6 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.LayoutPrototype;
 import com.liferay.portal.kernel.model.LayoutSetPrototype;
 import com.liferay.portal.kernel.model.Organization;
-import com.liferay.portal.kernel.model.OrganizationConstants;
 import com.liferay.portal.kernel.model.PasswordPolicy;
 import com.liferay.portal.kernel.model.PortalPreferences;
 import com.liferay.portal.kernel.model.Portlet;
@@ -1658,26 +1657,10 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 	protected class DeleteOrganizationActionableDynamicQuery {
 
-		public void setParentOrganizationId(long parentOrganizationId) {
-			_parentOrganizationId = parentOrganizationId;
-		}
-
 		protected DeleteOrganizationActionableDynamicQuery() {
 			_actionableDynamicQuery =
 				organizationLocalService.getActionableDynamicQuery();
 
-			_actionableDynamicQuery.setAddCriteriaMethod(
-				new ActionableDynamicQuery.AddCriteriaMethod() {
-
-					@Override
-					public void addCriteria(DynamicQuery dynamicQuery) {
-						Property property = PropertyFactoryUtil.forName(
-							"parentOrganizationId");
-
-						dynamicQuery.add(property.eq(_parentOrganizationId));
-					}
-
-				});
 			_actionableDynamicQuery.setPerformActionMethod(
 				new ActionableDynamicQuery.PerformActionMethod<Organization>() {
 
@@ -1694,17 +1677,6 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		protected void deleteOrganization(Organization organization)
 			throws PortalException {
 
-			DeleteOrganizationActionableDynamicQuery
-				deleteOrganizationActionableDynamicQuery =
-					new DeleteOrganizationActionableDynamicQuery();
-
-			deleteOrganizationActionableDynamicQuery.setCompanyId(
-				organization.getCompanyId());
-			deleteOrganizationActionableDynamicQuery.setParentOrganizationId(
-				organization.getOrganizationId());
-
-			deleteOrganizationActionableDynamicQuery.performActions();
-
 			organizationLocalService.deleteOrganization(organization);
 		}
 
@@ -1717,8 +1689,6 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		}
 
 		private ActionableDynamicQuery _actionableDynamicQuery;
-		private long _parentOrganizationId =
-			OrganizationConstants.DEFAULT_PARENT_ORGANIZATION_ID;
 
 	}
 
