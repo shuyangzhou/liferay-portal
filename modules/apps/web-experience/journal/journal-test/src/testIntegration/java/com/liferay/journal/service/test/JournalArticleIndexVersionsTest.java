@@ -93,22 +93,26 @@ public class JournalArticleIndexVersionsTest {
 			PortletPreferencesFactoryUtil.getPortalPreferences(
 				TestPropsValues.getUserId(), true);
 
+		_originalPortalPreferencesXML = PortletPreferencesFactoryUtil.toXML(
+			portalPreferenceces);
+
 		portalPreferenceces.setValue(
 			"", "expireAllArticleVersionsEnabled", "true");
 		portalPreferenceces.setValue(
 			"", "indexAllArticleVersionsEnabled", "false");
 
-		_portalPreferences =
-			PortalPreferencesLocalServiceUtil.addPortalPreferences(
-				TestPropsValues.getCompanyId(),
-				PortletKeys.PREFS_OWNER_TYPE_COMPANY,
-				PortletPreferencesFactoryUtil.toXML(portalPreferenceces));
+		PortalPreferencesLocalServiceUtil.updatePreferences(
+			TestPropsValues.getCompanyId(),
+			PortletKeys.PREFS_OWNER_TYPE_COMPANY,
+			PortletPreferencesFactoryUtil.toXML(portalPreferenceces));
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		PortalPreferencesLocalServiceUtil.deletePortalPreferences(
-			_portalPreferences);
+		PortalPreferencesLocalServiceUtil.updatePreferences(
+			TestPropsValues.getCompanyId(),
+			PortletKeys.PREFS_OWNER_TYPE_COMPANY,
+			_originalPortalPreferencesXML);
 	}
 
 	@Test
@@ -319,7 +323,6 @@ public class JournalArticleIndexVersionsTest {
 	@DeleteAfterTestRun
 	private Group _group;
 
-	private com.liferay.portal.kernel.model.PortalPreferences
-		_portalPreferences;
+	private String _originalPortalPreferencesXML;
 
 }

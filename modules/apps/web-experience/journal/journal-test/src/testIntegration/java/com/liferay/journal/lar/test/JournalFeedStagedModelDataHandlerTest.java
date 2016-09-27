@@ -106,6 +106,9 @@ public class JournalFeedStagedModelDataHandlerTest
 			PortletPreferencesFactoryUtil.getPortalPreferences(
 				TestPropsValues.getUserId(), true);
 
+		_originalPortalPreferencesXML = PortletPreferencesFactoryUtil.toXML(
+			portalPreferenceces);
+
 		portalPreferenceces.setValue(
 			"", "publishToLiveByDefaultEnabled", "true");
 		portalPreferenceces.setValue(
@@ -122,11 +125,10 @@ public class JournalFeedStagedModelDataHandlerTest
 		portalPreferenceces.setValue(
 			"", "journalArticlePageBreakToken", "@page_break@");
 
-		_portalPreferences =
-			PortalPreferencesLocalServiceUtil.addPortalPreferences(
-				TestPropsValues.getCompanyId(),
-				PortletKeys.PREFS_OWNER_TYPE_COMPANY,
-				PortletPreferencesFactoryUtil.toXML(portalPreferenceces));
+		PortalPreferencesLocalServiceUtil.updatePreferences(
+			TestPropsValues.getCompanyId(),
+			PortletKeys.PREFS_OWNER_TYPE_COMPANY,
+			PortletPreferencesFactoryUtil.toXML(portalPreferenceces));
 	}
 
 	@After
@@ -134,8 +136,10 @@ public class JournalFeedStagedModelDataHandlerTest
 	public void tearDown() throws Exception {
 		super.tearDown();
 
-		PortalPreferencesLocalServiceUtil.deletePortalPreferences(
-			_portalPreferences);
+		PortalPreferencesLocalServiceUtil.updatePreferences(
+			TestPropsValues.getCompanyId(),
+			PortletKeys.PREFS_OWNER_TYPE_COMPANY,
+			_originalPortalPreferencesXML);
 	}
 
 	@Override
@@ -314,7 +318,6 @@ public class JournalFeedStagedModelDataHandlerTest
 	}
 
 	private Layout _layout;
-	private com.liferay.portal.kernel.model.PortalPreferences
-		_portalPreferences;
+	private String _originalPortalPreferencesXML;
 
 }

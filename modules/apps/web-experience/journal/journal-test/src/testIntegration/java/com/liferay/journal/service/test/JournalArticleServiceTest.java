@@ -124,14 +124,16 @@ public class JournalArticleServiceTest {
 			PortletPreferencesFactoryUtil.getPortalPreferences(
 				TestPropsValues.getUserId(), true);
 
+		_originalPortalPreferencesXML = PortletPreferencesFactoryUtil.toXML(
+			portalPreferenceces);
+
 		portalPreferenceces.setValue(
 			"", "expireAllArticleVersionsEnabled", "true");
 
-		_portalPreferences =
-			PortalPreferencesLocalServiceUtil.addPortalPreferences(
-				TestPropsValues.getCompanyId(),
-				PortletKeys.PREFS_OWNER_TYPE_COMPANY,
-				PortletPreferencesFactoryUtil.toXML(portalPreferenceces));
+		PortalPreferencesLocalServiceUtil.updatePreferences(
+			TestPropsValues.getCompanyId(),
+			PortletKeys.PREFS_OWNER_TYPE_COMPANY,
+			PortletPreferencesFactoryUtil.toXML(portalPreferenceces));
 	}
 
 	@After
@@ -144,8 +146,10 @@ public class JournalArticleServiceTest {
 
 		PortalRunMode.setTestMode(_testMode);
 
-		PortalPreferencesLocalServiceUtil.deletePortalPreferences(
-			_portalPreferences);
+		PortalPreferencesLocalServiceUtil.updatePreferences(
+			TestPropsValues.getCompanyId(),
+			PortletKeys.PREFS_OWNER_TYPE_COMPANY,
+			_originalPortalPreferencesXML);
 	}
 
 	@Test
@@ -763,8 +767,7 @@ public class JournalArticleServiceTest {
 
 	private String _keyword;
 	private JournalArticle _latestArticle;
-	private com.liferay.portal.kernel.model.PortalPreferences
-		_portalPreferences;
+	private String _originalPortalPreferencesXML;
 	private boolean _testMode;
 
 }

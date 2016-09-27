@@ -116,13 +116,15 @@ public class JournalArticleSearchTest extends BaseSearchTestCase {
 			PortletPreferencesFactoryUtil.getPortalPreferences(
 				TestPropsValues.getUserId(), true);
 
+		_originalPortalPreferencesXML = PortletPreferencesFactoryUtil.toXML(
+			portalPreferenceces);
+
 		portalPreferenceces.setValue("", "articleCommentsEnabled", "true");
 
-		_portalPreferences =
-			PortalPreferencesLocalServiceUtil.addPortalPreferences(
-				TestPropsValues.getCompanyId(),
-				PortletKeys.PREFS_OWNER_TYPE_COMPANY,
-				PortletPreferencesFactoryUtil.toXML(portalPreferenceces));
+		PortalPreferencesLocalServiceUtil.updatePreferences(
+			TestPropsValues.getCompanyId(),
+			PortletKeys.PREFS_OWNER_TYPE_COMPANY,
+			PortletPreferencesFactoryUtil.toXML(portalPreferenceces));
 
 		_journalServiceConfiguration =
 			ConfigurationProviderUtil.getCompanyConfiguration(
@@ -134,8 +136,10 @@ public class JournalArticleSearchTest extends BaseSearchTestCase {
 
 	@After
 	public void tearDown() throws Exception {
-		PortalPreferencesLocalServiceUtil.deletePortalPreferences(
-			_portalPreferences);
+		PortalPreferencesLocalServiceUtil.updatePreferences(
+			TestPropsValues.getCompanyId(),
+			PortletKeys.PREFS_OWNER_TYPE_COMPANY,
+			_originalPortalPreferencesXML);
 	}
 
 	@Test
@@ -611,7 +615,6 @@ public class JournalArticleSearchTest extends BaseSearchTestCase {
 	private DDMIndexer _ddmIndexer;
 	private DDMStructure _ddmStructure;
 	private JournalServiceConfiguration _journalServiceConfiguration;
-	private com.liferay.portal.kernel.model.PortalPreferences
-		_portalPreferences;
+	private String _originalPortalPreferencesXML;
 
 }
