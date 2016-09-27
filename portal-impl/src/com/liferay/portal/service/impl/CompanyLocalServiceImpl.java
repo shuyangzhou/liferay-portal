@@ -39,7 +39,6 @@ import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.Contact;
 import com.liferay.portal.kernel.model.ContactConstants;
 import com.liferay.portal.kernel.model.Group;
-import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.LayoutPrototype;
 import com.liferay.portal.kernel.model.LayoutSetPrototype;
 import com.liferay.portal.kernel.model.Organization;
@@ -1615,12 +1614,6 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 					@Override
 					public void addCriteria(DynamicQuery dynamicQuery) {
-						Property parentGroupIdProperty =
-							PropertyFactoryUtil.forName("parentGroupId");
-
-						dynamicQuery.add(
-							parentGroupIdProperty.eq(_parentGroupId));
-
 						Property siteProperty = PropertyFactoryUtil.forName(
 							"site");
 
@@ -1646,17 +1639,6 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		}
 
 		protected void deleteGroup(Group group) throws PortalException {
-			DeleteGroupActionableDynamicQuery
-				deleteGroupActionableDynamicQuery =
-					new DeleteGroupActionableDynamicQuery();
-
-			deleteGroupActionableDynamicQuery.setCompanyId(
-				group.getCompanyId());
-			deleteGroupActionableDynamicQuery.setParentGroupId(
-				group.getGroupId());
-
-			deleteGroupActionableDynamicQuery.performActions();
-
 			groupLocalService.deleteGroup(group);
 
 			LiveUsers.deleteGroup(group.getCompanyId(), group.getGroupId());
@@ -1670,12 +1652,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			_actionableDynamicQuery.setCompanyId(companyId);
 		}
 
-		protected void setParentGroupId(long parentGroupId) {
-			_parentGroupId = parentGroupId;
-		}
-
 		private ActionableDynamicQuery _actionableDynamicQuery;
-		private long _parentGroupId = GroupConstants.DEFAULT_PARENT_GROUP_ID;
 
 	}
 
