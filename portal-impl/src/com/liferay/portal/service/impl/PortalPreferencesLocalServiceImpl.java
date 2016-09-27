@@ -40,37 +40,48 @@ public class PortalPreferencesLocalServiceImpl
 
 		PortalPreferencesWrapperCacheUtil.remove(ownerId, ownerType);
 
-		long portalPreferencesId = counterLocalService.increment();
-
 		PortalPreferences portalPreferences =
-			portalPreferencesPersistence.create(portalPreferencesId);
+			portalPreferencesPersistence.fetchByO_O(ownerId, ownerType);
 
-		portalPreferences.setOwnerId(ownerId);
-		portalPreferences.setOwnerType(ownerType);
+		if (portalPreferences == null) {
+			long portalPreferencesId = counterLocalService.increment();
 
-		if (Validator.isNull(defaultPreferences)) {
-			defaultPreferences = PortletConstants.DEFAULT_PREFERENCES;
+			portalPreferences = portalPreferencesPersistence.create(
+				portalPreferencesId);
+
+			portalPreferences.setOwnerId(ownerId);
+			portalPreferences.setOwnerType(ownerType);
+
+			if (Validator.isNull(defaultPreferences)) {
+				defaultPreferences = PortletConstants.DEFAULT_PREFERENCES;
+			}
+
+			portalPreferences.setPreferences(defaultPreferences);
+
+			try {
+				portalPreferencesPersistence.update(portalPreferences);
+			}
+			catch (SystemException se) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"Add failed, fetch {ownerId=" + ownerId +
+							", ownerType=" + ownerType + "}");
+				}
+
+				portalPreferences = portalPreferencesPersistence.fetchByO_O(
+					ownerId, ownerType, false);
+
+				if (portalPreferences == null) {
+					throw se;
+				}
+			}
+
+			return portalPreferences;
 		}
 
 		portalPreferences.setPreferences(defaultPreferences);
 
-		try {
-			portalPreferencesPersistence.update(portalPreferences);
-		}
-		catch (SystemException se) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					"Add failed, fetch {ownerId=" + ownerId + ", ownerType=" +
-						ownerType + "}");
-			}
-
-			portalPreferences = portalPreferencesPersistence.fetchByO_O(
-				ownerId, ownerType, false);
-
-			if (portalPreferences == null) {
-				throw se;
-			}
-		}
+		portalPreferencesPersistence.update(portalPreferences);
 
 		return portalPreferences;
 	}
