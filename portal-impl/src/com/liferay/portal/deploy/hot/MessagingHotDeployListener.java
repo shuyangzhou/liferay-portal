@@ -20,6 +20,9 @@ import com.liferay.portal.kernel.deploy.hot.HotDeployException;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
+import com.liferay.portal.kernel.messaging.sender.SingleDestinationMessageSenderFactoryUtil;
+import com.liferay.portal.kernel.messaging.sender.SynchronousMessageSender;
+import com.liferay.portal.kernel.messaging.sender.SynchronousMessageSender.Mode;
 
 import javax.servlet.ServletContext;
 
@@ -66,7 +69,18 @@ public class MessagingHotDeployListener extends BaseHotDeployListener {
 		message.put("command", "deploy");
 		message.put("servletContextName", servletContextName);
 
-		MessageBusUtil.sendMessage(DestinationNames.HOT_DEPLOY, message);
+		if (servletContext.getResource(
+				"/WEB-INF/classes/resources-importer/private.lar") == null) {
+
+			MessageBusUtil.sendMessage(DestinationNames.HOT_DEPLOY, message);
+		}
+		else {
+			SynchronousMessageSender synchronousMessageSender =
+				SingleDestinationMessageSenderFactoryUtil.
+					getSynchronousMessageSender(Mode.DIRECT);
+
+			synchronousMessageSender.send(DestinationNames.HOT_DEPLOY, message);
+		}
 	}
 
 	protected void doInvokeUndeploy(HotDeployEvent hotDeployEvent)
