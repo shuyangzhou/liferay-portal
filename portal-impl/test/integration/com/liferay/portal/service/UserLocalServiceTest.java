@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
+import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.util.ArrayList;
@@ -44,6 +45,8 @@ public class UserLocalServiceTest {
 
 	@Test
 	public void testGetNoAnnouncementsDeliveries() throws Exception {
+		Thread.sleep(Time.HOUR);
+
 		User user1 = UserTestUtil.addUser();
 
 		_users.add(user1);
