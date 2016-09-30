@@ -17,6 +17,8 @@ package com.liferay.portlet;
 import com.liferay.portal.kernel.cache.MultiVMPoolUtil;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.PortalCacheHelperUtil;
+import com.liferay.portal.kernel.model.PortalPreferences;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
 /**
@@ -36,6 +38,22 @@ public class PortalPreferencesWrapperCacheUtil {
 	public static void put(
 		long ownerId, int ownerType,
 		PortalPreferencesWrapper portalPreferencesWrapper) {
+
+		PortalPreferencesImpl portalPreferencesImpl =
+			portalPreferencesWrapper.getPortalPreferencesImpl();
+
+		PortalPreferences portalPreferences = ReflectionTestUtil.getFieldValue(
+			portalPreferencesImpl, "_portalPreferences");
+
+		if (portalPreferences.getMvccVersion() == 0) {
+			synchronized (System.out) {
+				System.out.println(
+					"######" + Thread.currentThread().getName() +
+						" is putting mvcc 0 " + portalPreferences);
+
+				new Exception().printStackTrace(System.out);
+			}
+		}
 
 		String cacheKey = _getCacheKey(ownerId, ownerType);
 
