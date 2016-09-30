@@ -1559,11 +1559,14 @@ public abstract class BaseAssetSearchTestCase {
 						List<AssetEntry> assetEntries = search(
 							assetEntryQuery, searchContext);
 
+						Locale searchContextLocale = searchContext.getLocale();
+
 						Assert.assertEquals(
 							ArrayUtils.toString(
-								getOrderedTitles(orderedTitleMaps, locale)),
+								getOrderedTitles(
+									orderedTitleMaps, searchContextLocale)),
 							ArrayUtils.toString(
-								getTitles(assetEntries, locale)));
+								getTitles(assetEntries, searchContextLocale)));
 
 						return null;
 					}
