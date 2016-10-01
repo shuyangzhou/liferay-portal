@@ -32,7 +32,24 @@ public class PortalPreferencesWrapperCacheUtil {
 	public static PortalPreferencesWrapper get(long ownerId, int ownerType) {
 		String cacheKey = _getCacheKey(ownerId, ownerType);
 
-		return _portalPreferencesWrapperPortalCache.get(cacheKey);
+		PortalPreferencesWrapper portalPreferencesWrapper =
+			_portalPreferencesWrapperPortalCache.get(cacheKey);
+
+		PortalPreferencesImpl portalPreferencesImpl =
+			portalPreferencesWrapper.getPortalPreferencesImpl();
+
+		PortalPreferences portalPreferences = ReflectionTestUtil.getFieldValue(
+			portalPreferencesImpl, "_portalPreferences");
+
+		synchronized (System.out) {
+			System.out.println(
+				"######" + Thread.currentThread().getName() + " is getting " +
+					portalPreferences);
+
+			new Exception().printStackTrace(System.out);
+		}
+
+		return portalPreferencesWrapper;
 	}
 
 	public static void put(
@@ -64,6 +81,26 @@ public class PortalPreferencesWrapperCacheUtil {
 
 	public static void remove(long ownerId, int ownerType) {
 		String cacheKey = _getCacheKey(ownerId, ownerType);
+
+		PortalPreferencesWrapper portalPreferencesWrapper =
+			_portalPreferencesWrapperPortalCache.get(cacheKey);
+
+		if (portalPreferencesWrapper != null) {
+			PortalPreferencesImpl portalPreferencesImpl =
+				portalPreferencesWrapper.getPortalPreferencesImpl();
+
+			PortalPreferences portalPreferences =
+				ReflectionTestUtil.getFieldValue(
+					portalPreferencesImpl, "_portalPreferences");
+
+			synchronized (System.out) {
+				System.out.println(
+					"######" + Thread.currentThread().getName() +
+						" is removing " + portalPreferences);
+
+				new Exception().printStackTrace(System.out);
+			}
+		}
 
 		_portalPreferencesWrapperPortalCache.remove(cacheKey);
 	}
