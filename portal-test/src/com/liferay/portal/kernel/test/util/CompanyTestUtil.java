@@ -16,10 +16,12 @@ package com.liferay.portal.kernel.test.util;
 
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.model.PortalPreferences;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -76,6 +78,21 @@ public class CompanyTestUtil {
 
 		PortletPreferences preferences = PrefsPropsUtil.getPreferences(
 			companyId);
+
+		PortalPreferences portalPreferences = ReflectionTestUtil.getFieldValue(
+			ReflectionTestUtil.<Object>getFieldValue(
+				preferences, "_portalPreferencesImpl"),
+			"_portalPreferences");
+
+		if (portalPreferences.getMvccVersion() == 0) {
+			synchronized (System.out) {
+				System.out.println(
+					"######" + Thread.currentThread().getName() +
+						" is getting mvcc 0 " + portalPreferences);
+
+				new Exception().printStackTrace(System.out);
+			}
+		}
 
 		preferences.setValue(PropsKeys.LOCALES, languageIds);
 
