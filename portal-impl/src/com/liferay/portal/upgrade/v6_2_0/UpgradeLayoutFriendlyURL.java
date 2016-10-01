@@ -24,35 +24,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 /**
  * @author Sergio González
  */
 public class UpgradeLayoutFriendlyURL extends UpgradeProcess {
 
 	protected void addLayoutFriendlyURL() throws Exception {
-		try (LoggingTimer loggingTimer = new LoggingTimer();
-			PreparedStatement ps = connection.prepareStatement(
-				"select plid, groupId, companyId, userId, userName, " +
-					"createDate, modifiedDate, privateLayout, friendlyURL " +
-						"from Layout");
-			ResultSet rs = ps.executeQuery()) {
+		_bulkAddLayoutFriendlyURL();
 
-			while (rs.next()) {
-				long plid = rs.getLong("plid");
-				long groupId = rs.getLong("groupId");
-				long companyId = rs.getLong("companyId");
-				long userId = rs.getLong("userId");
-				String userName = rs.getString("userName");
-				Timestamp createDate = rs.getTimestamp("createDate");
-				Timestamp modifiedDate = rs.getTimestamp("modifiedDate");
-				boolean privateLayout = rs.getBoolean("privateLayout");
-				String friendlyURL = rs.getString("friendlyURL");
-
-				addLayoutFriendlyURL(
-					groupId, companyId, userId, userName, createDate,
-					modifiedDate, plid, privateLayout, friendlyURL);
-			}
-		}
+		_bulkFixLayoutFriendlyURLUuid();
 	}
 
 	protected void addLayoutFriendlyURL(
@@ -93,6 +78,93 @@ public class UpgradeLayoutFriendlyURL extends UpgradeProcess {
 	@Override
 	protected void doUpgrade() throws Exception {
 		addLayoutFriendlyURL();
+	}
+
+	private void _bulkAddLayoutFriendlyURL() throws Exception {
+		StringBundler sb = new StringBundler(8);
+
+		sb.append("insert into LayoutFriendlyURL (uuid_, ");
+		sb.append("layoutFriendlyURLId, groupId, companyId, userId, ");
+		sb.append("userName, createDate, modifiedDate, plid, privateLayout, ");
+		sb.append("friendlyURL, languageId) (select uuid_, plid as ");
+		sb.append("layoutFriendlyURLId, groupId, companyId, userId, ");
+		sb.append("userName, createDate, modifiedDate, plid, privateLayout, ");
+		sb.append("friendlyURL, ? as languageId from Layout where ");
+		sb.append("companyId = ?)");
+
+		List<Long> companyIds = _getCompanyIds();
+
+		for (long companyId : companyIds) {
+			try (LoggingTimer loggingTimer = new LoggingTimer();
+				PreparedStatement ps = connection.prepareStatement(
+					sb.toString())) {
+
+				ps.setString(
+					1, UpgradeProcessUtil.getDefaultLanguageId(companyId));
+
+				ps.setLong(2, companyId);
+
+				ps.executeUpdate();
+			}
+		}
+	}
+
+	private void _bulkFixLayoutFriendlyURLUuid() throws Exception {
+		runSQL("create index TMP1 on LayoutFriendlyURL (uuid_, groupId)");
+		runSQL("create index TMP2 on LayoutFriendlyURL (uuid_, privateLayout)");
+
+		Set<String> uuids = new HashSet<>();
+
+		String sql =
+			"select uuid_, groupId, count(*) from LayoutFriendlyURL group by " +
+				"uuid_, groupId having count(*) > 1";
+
+		try (PreparedStatement ps = connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery()) {
+
+			while (rs.next()) {
+				String uuid = rs.getString("uuid_");
+
+				uuids.add(uuid);
+			}
+		}
+
+		for (String uuid : uuids) {
+			String newUuid = PortalUUIDUtil.generate();
+
+			try (LoggingTimer loggingTimer = new LoggingTimer();
+				PreparedStatement ps = connection.prepareStatement(
+					"update LayoutFriendlyURL set uuid_ = ? where uuid_ = ? " +
+						"and privateLayout = ?")) {
+
+				ps.setString(1, newUuid);
+				ps.setString(2, uuid);
+				ps.setBoolean(3, false);
+
+				ps.executeUpdate();
+			}
+		}
+
+		runSQL("drop index TMP1 on LayoutFriendlyURL");
+		runSQL("drop index TMP2 on LayoutFriendlyURL");
+	}
+
+	private List<Long> _getCompanyIds() throws Exception {
+		List<Long> companyIds = new ArrayList<>();
+
+		String sql = "select distinct companyId from Layout";
+
+		try (PreparedStatement ps = connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery()) {
+
+			while (rs.next()) {
+				long companyId = rs.getLong("companyId");
+
+				companyIds.add(companyId);
+			}
+		}
+
+		return companyIds;
 	}
 
 }
