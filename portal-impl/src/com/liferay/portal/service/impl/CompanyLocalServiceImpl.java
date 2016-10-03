@@ -1351,14 +1351,11 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		// Password policy
 
-		passwordPolicyLocalService.deleteNondefaultPasswordPolicies(companyId);
+		List<PasswordPolicy> passwordPolicies =
+			passwordPolicyPersistence.findByCompanyId(companyId);
 
-		PasswordPolicy defaultPasswordPolicy =
-			passwordPolicyLocalService.getDefaultPasswordPolicy(companyId);
-
-		if (defaultPasswordPolicy != null) {
-			passwordPolicyLocalService.deletePasswordPolicy(
-				defaultPasswordPolicy);
+		for (PasswordPolicy passwordPolicy : passwordPolicies) {
+			passwordPolicyLocalService.deletePasswordPolicy(passwordPolicy);
 		}
 
 		// Portal preferences
