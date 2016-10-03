@@ -1266,17 +1266,11 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		deleteGroupActionableDynamicQuery.performActions();
 
-		String[] systemGroups = PortalUtil.getSystemGroups();
-
-		for (String groupName : systemGroups) {
+		for (String groupName : PortalUtil.getSystemGroups()) {
 			Group group = groupLocalService.getGroup(companyId, groupName);
 
 			deleteGroupActionableDynamicQuery.deleteGroup(group);
 		}
-
-		Group companyGroup = groupLocalService.getCompanyGroup(companyId);
-
-		deleteGroupActionableDynamicQuery.deleteGroup(companyGroup);
 
 		// Layout prototype
 
@@ -1613,9 +1607,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 					public void performAction(Group group)
 						throws PortalException {
 
-						if (!PortalUtil.isSystemGroup(group.getGroupKey()) &&
-							!group.isCompany()) {
-
+						if (!PortalUtil.isSystemGroup(group.getGroupKey())) {
 							deleteGroup(group);
 						}
 					}
