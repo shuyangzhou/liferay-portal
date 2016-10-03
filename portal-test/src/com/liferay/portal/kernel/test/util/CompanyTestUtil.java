@@ -88,7 +88,7 @@ public class CompanyTestUtil {
 			synchronized (System.out) {
 				System.out.println(
 					"######" + Thread.currentThread().getName() +
-						" is getting mvcc 0 " + portalPreferences);
+						" is getting mvcc " + portalPreferences);
 
 				new Exception().printStackTrace(System.out);
 			}

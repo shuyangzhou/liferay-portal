@@ -32,7 +32,28 @@ public class PortalPreferencesWrapperCacheUtil {
 	public static PortalPreferencesWrapper get(long ownerId, int ownerType) {
 		String cacheKey = _getCacheKey(ownerId, ownerType);
 
-		return _portalPreferencesWrapperPortalCache.get(cacheKey);
+		PortalPreferencesWrapper portalPreferencesWrapper =
+			_portalPreferencesWrapperPortalCache.get(cacheKey);
+
+		if (portalPreferencesWrapper == null) {
+			return null;
+		}
+
+		PortalPreferencesImpl portalPreferencesImpl =
+			portalPreferencesWrapper.getPortalPreferencesImpl();
+
+		PortalPreferences portalPreferences = ReflectionTestUtil.getFieldValue(
+			portalPreferencesImpl, "_portalPreferences");
+
+		synchronized (System.out) {
+			System.out.println(
+				"######" + Thread.currentThread().getName() + " is getting " +
+					portalPreferences);
+
+			new Exception().printStackTrace(System.out);
+		}
+
+		return portalPreferencesWrapper;
 	}
 
 	public static void put(
@@ -45,14 +66,12 @@ public class PortalPreferencesWrapperCacheUtil {
 		PortalPreferences portalPreferences = ReflectionTestUtil.getFieldValue(
 			portalPreferencesImpl, "_portalPreferences");
 
-		if (portalPreferences.getMvccVersion() == 0) {
-			synchronized (System.out) {
-				System.out.println(
-					"######" + Thread.currentThread().getName() +
-						" is putting mvcc 0 " + portalPreferences);
+		synchronized (System.out) {
+			System.out.println(
+				"######" + Thread.currentThread().getName() +
+					" is putting mvcc " + portalPreferences);
 
-				new Exception().printStackTrace(System.out);
-			}
+			new Exception().printStackTrace(System.out);
 		}
 
 		String cacheKey = _getCacheKey(ownerId, ownerType);
@@ -64,6 +83,26 @@ public class PortalPreferencesWrapperCacheUtil {
 
 	public static void remove(long ownerId, int ownerType) {
 		String cacheKey = _getCacheKey(ownerId, ownerType);
+
+		PortalPreferencesWrapper portalPreferencesWrapper =
+			_portalPreferencesWrapperPortalCache.get(cacheKey);
+
+		if (portalPreferencesWrapper != null) {
+			PortalPreferencesImpl portalPreferencesImpl =
+				portalPreferencesWrapper.getPortalPreferencesImpl();
+
+			PortalPreferences portalPreferences =
+				ReflectionTestUtil.getFieldValue(
+					portalPreferencesImpl, "_portalPreferences");
+
+			synchronized (System.out) {
+				System.out.println(
+					"######" + Thread.currentThread().getName() +
+						" is removing " + portalPreferences);
+
+				new Exception().printStackTrace(System.out);
+			}
+		}
 
 		_portalPreferencesWrapperPortalCache.remove(cacheKey);
 	}
