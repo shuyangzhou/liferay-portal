@@ -44,7 +44,6 @@ import com.liferay.portal.kernel.model.LayoutSetPrototype;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.PasswordPolicy;
 import com.liferay.portal.kernel.model.PortalPreferences;
-import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.model.User;
@@ -1369,11 +1368,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		// Portlets
 
-		List<Portlet> portlets = portletPersistence.findByCompanyId(companyId);
-
-		for (Portlet portlet : portlets) {
-			portletLocalService.deletePortlet(portlet.getId());
-		}
+		portletPersistence.removeByCompanyId(companyId);
 
 		portletLocalService.removeCompanyPortletsPool(companyId);
 
