@@ -23,7 +23,9 @@ import java.io.Serializable;
 
 /**
  * @author Shuyang Zhou
+ * @deprecated As of 2.1.0, with no direct replacement
  */
+@Deprecated
 public class MVCCPortalCacheFactory {
 
 	public static <K extends Serializable>
