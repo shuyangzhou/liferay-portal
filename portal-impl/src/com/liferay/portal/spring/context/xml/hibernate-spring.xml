@@ -21,9 +21,11 @@
 		</property>
 	</bean>
 	<bean class="com.liferay.portal.dao.orm.hibernate.PortletSessionFactoryImpl" id="liferaySessionFactory">
-		<property name="dataSource" ref="liferayDataSource" />
 		<property name="sessionFactoryClassLoader" ref="portletClassLoader" />
 		<property name="sessionFactoryImplementor" ref="liferayHibernateSessionFactory" />
 	</bean>
-	<bean class="com.liferay.portal.kernel.util.InfrastructureUtil" factory-method="getTransactionManager" id="liferayTransactionManager" />
+	<bean class="com.liferay.portal.spring.hibernate.PortletTransactionManager" id="liferayTransactionManager">
+		<constructor-arg ref="originalLiferayTransactionManager" />
+		<constructor-arg ref="liferayHibernateSessionFactory" />
+	</bean>
 </beans>
