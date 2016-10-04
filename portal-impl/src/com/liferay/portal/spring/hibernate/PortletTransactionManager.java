@@ -28,13 +28,11 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 /**
  * @author Shuyang Zhou
  */
-public class PortletTransactionManager
-	implements PlatformTransactionManager {
+public class PortletTransactionManager implements PlatformTransactionManager {
 
 	public PortletTransactionManager(
 		HibernateTransactionManager portalHibernateTransactionManager,
@@ -62,7 +60,7 @@ public class PortletTransactionManager
 				transactionDefinition);
 
 		SessionHolder portalSessionHolder =
-			(SessionHolder)TransactionSynchronizationManager.getResource(
+			(SessionHolder)SpringHibernateThreadLocalUtil.getResource(
 				_portalHibernateTransactionManager.getSessionFactory());
 
 		if (portalSessionHolder == null) {
@@ -72,7 +70,7 @@ public class PortletTransactionManager
 		Connection portalConnection = _getConnection(portalSessionHolder);
 
 		SessionHolder portletSessionHolder =
-			(SessionHolder)TransactionSynchronizationManager.getResource(
+			(SessionHolder)SpringHibernateThreadLocalUtil.getResource(
 				_portletSessionFactory);
 
 		if (portletSessionHolder != null) {
@@ -80,18 +78,15 @@ public class PortletTransactionManager
 				return portalTransactionStatus;
 			}
 
-			Session portletSession = portalSessionHolder.getSession();
+			Session portalSession = portalSessionHolder.getSession();
 
-			portletSession.flush();
-
-			TransactionSynchronizationManager.unbindResource(
-				_portletSessionFactory);
+			portalSession.flush();
 		}
 
 		Session portletSession = _portletSessionFactory.openSession(
 			portalConnection);
 
-		TransactionSynchronizationManager.bindResource(
+		SpringHibernateThreadLocalUtil.setResource(
 			_portletSessionFactory,
 			_createSessionHolder(portletSession, portalSessionHolder));
 
@@ -230,13 +225,8 @@ public class PortletTransactionManager
 		public TransactionStatus reset() {
 			_portletSession.flush();
 
-			TransactionSynchronizationManager.unbindResource(
-				_portletSessionFactory);
-
-			if (_previousPortletSessionHolder != null) {
-				TransactionSynchronizationManager.bindResource(
-					_portletSessionFactory, _previousPortletSessionHolder);
-			}
+			SpringHibernateThreadLocalUtil.setResource(
+				_portletSessionFactory, _previousPortletSessionHolder);
 
 			return _transactionStatus;
 		}
