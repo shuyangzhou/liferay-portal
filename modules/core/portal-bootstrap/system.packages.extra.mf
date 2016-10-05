@@ -2918,7 +2918,7 @@ Export-Package: com.liferay.ibm.icu;version="4.0.1",com.liferay.ibm.ic
  onfiguration,com.liferay.portal.kernel.portlet.configuration.icon,com
  .liferay.portal.kernel.portlet.toolbar,com.liferay.portal.kernel.secu
  rity.permission,com.liferay.portal.kernel.util,javax.portlet,javax.se
- rvlet.http",com.liferay.portal.kernel.transaction;version="7.0.0",com
+ rvlet.http",com.liferay.portal.kernel.transaction;version="7.1.0",com
  .liferay.portal.kernel.trash;version="7.0.0";uses:="com.liferay.asset
  .kernel.model,com.liferay.portal.kernel.exception,com.liferay.portal.
  kernel.model,com.liferay.portal.kernel.search,com.liferay.portal.kern
