@@ -30,12 +30,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicReference;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.connection.ConnectionProvider;
 import org.hibernate.dialect.MySQL5Dialect;
+import org.hibernate.jdbc.Work;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -68,7 +71,7 @@ public class PortletTransactionManagerTest {
 		// NOT_SUPPORTED
 
 		_assertSessionHolders(
-			Arrays.asList((String)null),
+			Arrays.asList((String)null), Arrays.asList((String)null),
 			_runInTransactions(
 				Arrays.asList(_portalTransactionManager),
 				Arrays.asList(_NOT_SUPPORTED_TRANSACTION_CONFIG)));
@@ -76,7 +79,7 @@ public class PortletTransactionManagerTest {
 		// NOT_SUPPORTED, NOT_SUPPORTED
 
 		_assertSessionHolders(
-			Arrays.asList(null, null),
+			Arrays.asList(null, null), Arrays.asList(null, null),
 			_runInTransactions(
 				Arrays.asList(
 					_portalTransactionManager, _portalTransactionManager),
@@ -87,7 +90,7 @@ public class PortletTransactionManagerTest {
 		// NOT_SUPPORTED, REQUIRED
 
 		_assertSessionHolders(
-			Arrays.asList(null, "a"),
+			Arrays.asList(null, "a"), Arrays.asList(null, "a"),
 			_runInTransactions(
 				Arrays.asList(
 					_portalTransactionManager, _portalTransactionManager),
@@ -98,7 +101,7 @@ public class PortletTransactionManagerTest {
 		// NOT_SUPPORTED, REQUIRES_NEW
 
 		_assertSessionHolders(
-			Arrays.asList(null, "a"),
+			Arrays.asList(null, "a"), Arrays.asList(null, "a"),
 			_runInTransactions(
 				Arrays.asList(
 					_portalTransactionManager, _portalTransactionManager),
@@ -109,7 +112,7 @@ public class PortletTransactionManagerTest {
 		// NOT_SUPPORTED, SUPPORTS
 
 		_assertSessionHolders(
-			Arrays.asList(null, null),
+			Arrays.asList(null, null), Arrays.asList(null, null),
 			_runInTransactions(
 				Arrays.asList(
 					_portalTransactionManager, _portalTransactionManager),
@@ -120,7 +123,7 @@ public class PortletTransactionManagerTest {
 		// REQUIRED, NOT_SUPPORTED
 
 		_assertSessionHolders(
-			Arrays.asList("a", null),
+			Arrays.asList("a", null), Arrays.asList("a", null),
 			_runInTransactions(
 				Arrays.asList(
 					_portalTransactionManager, _portalTransactionManager),
@@ -131,7 +134,7 @@ public class PortletTransactionManagerTest {
 		// REQUIRED
 
 		_assertSessionHolders(
-			Arrays.asList("a"),
+			Arrays.asList("a"), Arrays.asList("a"),
 			_runInTransactions(
 				Arrays.asList(_portalTransactionManager),
 				Arrays.asList(_REQUIRED_TRANSACTION_CONFIG)));
@@ -139,7 +142,7 @@ public class PortletTransactionManagerTest {
 		// REQUIRES_NEW
 
 		_assertSessionHolders(
-			Arrays.asList("a"),
+			Arrays.asList("a"), Arrays.asList("a"),
 			_runInTransactions(
 				Arrays.asList(_portalTransactionManager),
 				Arrays.asList(_REQUIRES_NEW_TRANSACTION_CONFIG)));
@@ -147,7 +150,7 @@ public class PortletTransactionManagerTest {
 		// SUPPORTS
 
 		_assertSessionHolders(
-			Arrays.asList((String)null),
+			Arrays.asList((String)null), Arrays.asList((String)null),
 			_runInTransactions(
 				Arrays.asList(_portalTransactionManager),
 				Arrays.asList(_SUPPORTS_TRANSACTION_CONFIG)));
@@ -230,15 +233,17 @@ public class PortletTransactionManagerTest {
 	}
 
 	private void _assertSessionHolders(
-		List<String> tokens, List<SessionHolder> sessionHolders) {
+		List<String> sessionHolderTokens, List<String> connectionTokens,
+		List<SessionHolder> sessionHolders) {
 
-		Assert.assertEquals(tokens.size(), sessionHolders.size());
+		Assert.assertEquals(sessionHolderTokens.size(), sessionHolders.size());
+		Assert.assertEquals(connectionTokens.size(), sessionHolders.size());
 
-		for (int i = 0; i < tokens.size(); i++) {
-			String token = tokens.get(i);
+		for (int i = 0; i < sessionHolderTokens.size(); i++) {
+			String sessionHolderToken = sessionHolderTokens.get(i);
 			SessionHolder sessionHolder = sessionHolders.get(i);
 
-			if (token == null) {
+			if (sessionHolderToken == null) {
 				Assert.assertNull(
 					"SessionHolder at position " + i + " is not null",
 					sessionHolder);
@@ -248,20 +253,80 @@ public class PortletTransactionManagerTest {
 					"SessionHolder at position " + i + " is null",
 					sessionHolder);
 
-				List<String> previousTokens = tokens.subList(0, i);
+				List<String> previousSessionHolderTokens =
+					sessionHolderTokens.subList(0, i);
 				List<SessionHolder> previousSessionHolders =
 					sessionHolders.subList(0, i);
 
-				int tokenIndex = previousTokens.indexOf(token);
+				int sessionHolderTokenIndex =
+					previousSessionHolderTokens.indexOf(sessionHolderToken);
 				int sessionHolderIndex = previousSessionHolders.indexOf(
 					sessionHolder);
 
 				Assert.assertEquals(
-					"Tokens :" + tokens + ", SessionHolders :" +
-						sessionHolders + ", fails at " + i,
-					tokenIndex, sessionHolderIndex);
+					"SessionHolder tokens :" + sessionHolderTokens +
+						", SessionHolders :" + sessionHolders + ", fails at " +
+							i,
+					sessionHolderTokenIndex, sessionHolderIndex);
 			}
 		}
+
+		List<Connection> connections = new ArrayList<>(sessionHolders.size());
+
+		for (SessionHolder sessionHolder : sessionHolders) {
+			connections.add(_getConnection(sessionHolder));
+		}
+
+		for (int i = 0; i < connectionTokens.size(); i++) {
+			String connectionToken = connectionTokens.get(i);
+			Connection connection = connections.get(i);
+
+			if (connectionToken == null) {
+				Assert.assertNull(
+					"Connection at position " + i + " is not null", connection);
+			}
+			else {
+				Assert.assertNotNull(
+					"Connection at position " + i + " is null", connection);
+
+				List<String> previousConnectionTokens =
+					connectionTokens.subList(0, i);
+				List<Connection> previousConnections = connections.subList(
+					0, i);
+
+				int connectionTokenIndex = previousConnectionTokens.indexOf(
+					connectionToken);
+				int connectionIndex = previousConnections.indexOf(connection);
+
+				Assert.assertEquals(
+					"Connection tokens :" + connectionTokens +
+						", Connections :" + connections + ", fails at " + i,
+					connectionTokenIndex, connectionIndex);
+			}
+		}
+	}
+
+	private Connection _getConnection(SessionHolder sessionHolder) {
+		if (sessionHolder == null) {
+			return null;
+		}
+
+		Session session = sessionHolder.getSession();
+
+		AtomicReference<Connection> connectionReference =
+			new AtomicReference<>();
+
+		session.doWork(
+			new Work() {
+
+				@Override
+				public void execute(Connection connection) {
+					connectionReference.set(connection);
+				}
+
+			});
+
+		return connectionReference.get();
 	}
 
 	private List<SessionHolder> _runInTransactions(
