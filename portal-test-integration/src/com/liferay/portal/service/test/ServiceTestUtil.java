@@ -355,9 +355,11 @@ public class ServiceTestUtil {
 
 		MessageBus messageBus = MessageBusUtil.getMessageBus();
 
+		Destination oldDestination = messageBus.getDestination(name);
+
 		messageBus.replace(baseDestination, false);
 
-		baseDestination.close();
+		oldDestination.close();
 	}
 
 	private static void _setThreadLocals() {

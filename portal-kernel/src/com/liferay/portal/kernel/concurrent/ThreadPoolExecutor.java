@@ -397,6 +397,14 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 			}
 
 			for (WorkerTask workerTask : _workerTasks) {
+				System.err.print(
+					"####Thread " + workerTask._thread.getName() + 
+						" is calling interrupt at : ThreadPoolExecutor Line 408");
+				
+				new Exception(
+					"####Thread " + workerTask._thread.getName() + 
+						" is calling interrupt at : ThreadPoolExecutor Line 408").printStackTrace();
+
 				workerTask._thread.interrupt();
 			}
 
@@ -718,6 +726,14 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 		private boolean _interruptIfWaiting() {
 			if (!_thread.isInterrupted() && tryAcquire(1)) {
 				try {
+					System.err.print(
+					"####Thread " + _thread.getName() + 
+						" is calling interrupt at : ThreadPoolExecutor Line 737");
+					
+					new Exception(
+						"####Thread " + _thread.getName() + 
+						" is calling interrupt at : ThreadPoolExecutor Line 737").printStackTrace();
+
 					_thread.interrupt();
 
 					return true;
@@ -744,6 +760,14 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 			try {
 				if ((_runState < _STOP) && Thread.interrupted() &&
 					(_runState >= _STOP)) {
+					
+					System.err.print(
+					"####Thread " + _thread.getName() + 
+						" is calling interrupt at : ThreadPoolExecutor Line 772");
+				
+				new Exception(
+					"####Thread " + _thread.getName() + 
+						" is calling interrupt at : ThreadPoolExecutor Line 772").printStackTrace();
 
 					_thread.interrupt();
 				}

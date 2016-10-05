@@ -240,6 +240,14 @@ public class UnsyncPrintWriter extends PrintWriter {
 			catch (InterruptedIOException iioe) {
 				Thread currentThread = Thread.currentThread();
 
+				System.err.print(
+					"####Thread " + currentThread.getName() + 
+						" is calling interrupt at : UnsyncPrintWriter Line 251 : ");
+				
+				new Exception(
+					"####Thread " + currentThread.getName() + 
+						" is calling interrupt at : UnsyncPrintWriter Line 251 : ", iioe).printStackTrace();
+
 				currentThread.interrupt();
 			}
 			catch (IOException ioe) {
@@ -328,6 +336,14 @@ public class UnsyncPrintWriter extends PrintWriter {
 			catch (InterruptedIOException iioe) {
 				Thread currentThread = Thread.currentThread();
 
+				System.err.print(
+					"####Thread " + currentThread.getName() + 
+						" is calling interrupt at : UnsyncPrintWriter Line 347 : ");
+
+				new Exception(
+					"####Thread " + currentThread.getName() + 
+						" is calling interrupt at : UnsyncPrintWriter Line 347 : ", iioe).printStackTrace();
+
 				currentThread.interrupt();
 			}
 			catch (IOException ioe) {
@@ -347,6 +363,14 @@ public class UnsyncPrintWriter extends PrintWriter {
 			}
 			catch (InterruptedIOException iioe) {
 				Thread currentThread = Thread.currentThread();
+
+				System.err.print(
+					"####Thread " + currentThread.getName() + 
+						" is calling interrupt at : UnsyncPrintWriter Line 375 : ");
+
+				new Exception(
+					"####Thread " + currentThread.getName() + 
+						" is calling interrupt at : UnsyncPrintWriter Line 375 : ", iioe).printStackTrace();
 
 				currentThread.interrupt();
 			}
@@ -368,6 +392,14 @@ public class UnsyncPrintWriter extends PrintWriter {
 			catch (InterruptedIOException iioe) {
 				Thread currentThread = Thread.currentThread();
 
+				System.err.print(
+					"####Thread " + currentThread.getName() + 
+						" is calling interrupt at : UnsyncPrintWriter Line 403 : ");
+
+				new Exception(
+					"####Thread " + currentThread.getName() + 
+						" is calling interrupt at : UnsyncPrintWriter Line 403 : ", iioe).printStackTrace();
+
 				currentThread.interrupt();
 			}
 			catch (IOException ioe) {
@@ -387,6 +419,14 @@ public class UnsyncPrintWriter extends PrintWriter {
 			}
 			catch (InterruptedIOException iioe) {
 				Thread currentThread = Thread.currentThread();
+
+				System.err.print(
+					"####Thread " + currentThread.getName() + 
+						" is calling interrupt at : UnsyncPrintWriter Line 431 : ");
+
+				new Exception(
+					"####Thread " + currentThread.getName() + 
+						" is calling interrupt at : UnsyncPrintWriter Line 431 : ", iioe).printStackTrace();
 
 				currentThread.interrupt();
 			}
