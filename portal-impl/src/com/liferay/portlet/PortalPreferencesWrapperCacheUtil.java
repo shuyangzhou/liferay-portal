@@ -17,6 +17,8 @@ package com.liferay.portlet;
 import com.liferay.portal.kernel.cache.MultiVMPoolUtil;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.PortalCacheHelperUtil;
+import com.liferay.portal.kernel.model.PortalPreferences;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
 /**
@@ -30,12 +32,47 @@ public class PortalPreferencesWrapperCacheUtil {
 	public static PortalPreferencesWrapper get(long ownerId, int ownerType) {
 		String cacheKey = _getCacheKey(ownerId, ownerType);
 
-		return _portalPreferencesWrapperPortalCache.get(cacheKey);
+		PortalPreferencesWrapper portalPreferencesWrapper =
+			_portalPreferencesWrapperPortalCache.get(cacheKey);
+
+		if (portalPreferencesWrapper == null) {
+			return null;
+		}
+
+		PortalPreferencesImpl portalPreferencesImpl =
+			portalPreferencesWrapper.getPortalPreferencesImpl();
+
+		PortalPreferences portalPreferences = ReflectionTestUtil.getFieldValue(
+			portalPreferencesImpl, "_portalPreferences");
+
+		synchronized (System.out) {
+			System.out.println(
+				"######" + Thread.currentThread().getName() + " is getting " +
+					portalPreferences);
+
+			new Exception().printStackTrace(System.out);
+		}
+
+		return portalPreferencesWrapper;
 	}
 
 	public static void put(
 		long ownerId, int ownerType,
 		PortalPreferencesWrapper portalPreferencesWrapper) {
+
+		PortalPreferencesImpl portalPreferencesImpl =
+			portalPreferencesWrapper.getPortalPreferencesImpl();
+
+		PortalPreferences portalPreferences = ReflectionTestUtil.getFieldValue(
+			portalPreferencesImpl, "_portalPreferences");
+
+		synchronized (System.out) {
+			System.out.println(
+				"######" + Thread.currentThread().getName() +
+					" is putting mvcc " + portalPreferences);
+
+			new Exception().printStackTrace(System.out);
+		}
 
 		String cacheKey = _getCacheKey(ownerId, ownerType);
 
@@ -46,6 +83,26 @@ public class PortalPreferencesWrapperCacheUtil {
 
 	public static void remove(long ownerId, int ownerType) {
 		String cacheKey = _getCacheKey(ownerId, ownerType);
+
+		PortalPreferencesWrapper portalPreferencesWrapper =
+			_portalPreferencesWrapperPortalCache.get(cacheKey);
+
+		if (portalPreferencesWrapper != null) {
+			PortalPreferencesImpl portalPreferencesImpl =
+				portalPreferencesWrapper.getPortalPreferencesImpl();
+
+			PortalPreferences portalPreferences =
+				ReflectionTestUtil.getFieldValue(
+					portalPreferencesImpl, "_portalPreferences");
+
+			synchronized (System.out) {
+				System.out.println(
+					"######" + Thread.currentThread().getName() +
+						" is removing " + portalPreferences);
+
+				new Exception().printStackTrace(System.out);
+			}
+		}
 
 		_portalPreferencesWrapperPortalCache.remove(cacheKey);
 	}

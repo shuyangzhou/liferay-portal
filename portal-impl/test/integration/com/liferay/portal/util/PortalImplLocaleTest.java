@@ -111,6 +111,8 @@ public class PortalImplLocaleTest {
 
 	@Test
 	public void testInvalidResourceWithLocale() throws Exception {
+		System.out.println("################testInvalidResourceWithLocale");
+
 		MockHttpServletResponse httpServletResponse = testLocaleForLanguageId(
 			"/en", "/WEB-INF/web.xml;.js", LocaleUtil.GERMANY);
 
@@ -120,21 +122,29 @@ public class PortalImplLocaleTest {
 
 	@Test
 	public void testSiteAvailableLanguageId() throws Exception {
+		System.out.println("################testSiteAvailableLanguageId");
+
 		testLocaleForLanguageId("/en", LocaleUtil.UK);
 	}
 
 	@Test
 	public void testSiteAvailableLocale() throws Exception {
+		System.out.println("################testSiteAvailableLocale");
+
 		testLocaleForLanguageId("/en_GB", LocaleUtil.UK);
 	}
 
 	@Test
 	public void testSiteDefaultLanguageId() throws Exception {
+		System.out.println("################testSiteDefaultLanguageId");
+
 		testLocaleForLanguageId("/de", LocaleUtil.GERMANY);
 	}
 
 	@Test
 	public void testSiteDefaultLocale() throws Exception {
+		System.out.println("################testSiteDefaultLocale");
+
 		testLocaleForLanguageId("/de_DE", LocaleUtil.GERMANY);
 	}
 
