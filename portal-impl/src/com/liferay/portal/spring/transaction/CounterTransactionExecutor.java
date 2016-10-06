@@ -30,9 +30,8 @@ public class CounterTransactionExecutor
 		TransactionAttributeAdapter transactionAttributeAdapter,
 		TransactionStatusAdapter transactionStatusAdapter) {
 
-		_commit(
-			platformTransactionManager, transactionAttributeAdapter,
-			transactionStatusAdapter, null);
+		platformTransactionManager.commit(
+			transactionStatusAdapter.getTransactionStatus());
 	}
 
 	@Override
@@ -83,9 +82,15 @@ public class CounterTransactionExecutor
 			}
 		}
 		else {
-			_commit(
-				platformTransactionManager, transactionAttributeAdapter,
-				transactionStatusAdapter, throwable);
+			try {
+				platformTransactionManager.commit(
+					transactionStatusAdapter.getTransactionStatus());
+			}
+			catch (Throwable t) {
+				t.addSuppressed(throwable);
+
+				throw t;
+			}
 		}
 
 		throw throwable;
@@ -99,37 +104,6 @@ public class CounterTransactionExecutor
 		return new TransactionStatusAdapter(
 			platformTransactionManager.getTransaction(
 				transactionAttributeAdapter));
-	}
-
-	private void _commit(
-		PlatformTransactionManager platformTransactionManager,
-		TransactionAttributeAdapter transactionAttributeAdapter,
-		TransactionStatusAdapter transactionStatusAdapter,
-		Throwable applicationThrowable) {
-
-		try {
-			platformTransactionManager.commit(
-				transactionStatusAdapter.getTransactionStatus());
-		}
-		catch (Throwable t) {
-			if (applicationThrowable != null) {
-				t.addSuppressed(applicationThrowable);
-			}
-
-			if (transactionAttributeAdapter.rollbackOn(t)) {
-				try {
-					platformTransactionManager.rollback(
-						transactionStatusAdapter.getTransactionStatus());
-				}
-				catch (Throwable t2) {
-					t2.addSuppressed(t);
-
-					throw t2;
-				}
-			}
-
-			throw t;
-		}
 	}
 
 }

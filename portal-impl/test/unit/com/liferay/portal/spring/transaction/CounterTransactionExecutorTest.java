@@ -125,6 +125,36 @@ public class CounterTransactionExecutorTest {
 	}
 
 	@Test
+	public void testCommitWithCommitException() throws Throwable {
+		RecordPlatformTransactionManager recordPlatformTransactionManager =
+			new RecordPlatformTransactionManager(_transactionStatus) {
+
+				@Override
+				public void commit(TransactionStatus transactionStatus) {
+					ReflectionUtil.throwException(commitException);
+				}
+
+			};
+
+		TransactionAttributeAdapter transactionAttributeAdapter =
+			_newTransactionAttributeAdapter((t) -> false);
+
+		try {
+			_transactionExecutor.execute(
+				recordPlatformTransactionManager, transactionAttributeAdapter,
+				_newMethodInvocation(() -> null));
+
+			Assert.fail();
+		}
+		catch (Throwable t) {
+			Assert.assertSame(commitException, t);
+		}
+
+		recordPlatformTransactionManager.verify(
+			transactionAttributeAdapter, null, null);
+	}
+
+	@Test
 	public void testRollbackOnAppException() throws Throwable {
 		RecordPlatformTransactionManager recordPlatformTransactionManager =
 			new RecordPlatformTransactionManager(_transactionStatus);
@@ -179,124 +209,6 @@ public class CounterTransactionExecutorTest {
 			Assert.assertSame(rollbackException, t);
 
 			Throwable[] throwables = rollbackException.getSuppressed();
-
-			Assert.assertEquals(1, throwables.length);
-			Assert.assertEquals(appException, throwables[0]);
-		}
-
-		recordPlatformTransactionManager.verify(
-			transactionAttributeAdapter, null, null);
-	}
-
-	@Test
-	public void testRollbackOnCommitException() throws Throwable {
-		RecordPlatformTransactionManager recordPlatformTransactionManager =
-			new RecordPlatformTransactionManager(_transactionStatus) {
-
-				@Override
-				public void commit(TransactionStatus transactionStatus) {
-					ReflectionUtil.throwException(commitException);
-				}
-
-			};
-
-		TransactionAttributeAdapter transactionAttributeAdapter =
-			_newTransactionAttributeAdapter((t) -> t == commitException);
-
-		try {
-			_transactionExecutor.execute(
-				recordPlatformTransactionManager, transactionAttributeAdapter,
-				_newMethodInvocation(() -> null));
-
-			Assert.fail();
-		}
-		catch (Throwable t) {
-			Assert.assertSame(commitException, t);
-		}
-
-		recordPlatformTransactionManager.verify(
-			transactionAttributeAdapter, null, _transactionStatus);
-	}
-
-	@Test
-	public void testRollbackOnCommitExceptionWithAppException()
-		throws Throwable {
-
-		RecordPlatformTransactionManager recordPlatformTransactionManager =
-			new RecordPlatformTransactionManager(_transactionStatus) {
-
-				@Override
-				public void commit(TransactionStatus transactionStatus) {
-					ReflectionUtil.throwException(commitException);
-				}
-
-			};
-
-		TransactionAttributeAdapter transactionAttributeAdapter =
-			_newTransactionAttributeAdapter((t) -> t == commitException);
-
-		try {
-			_transactionExecutor.execute(
-				recordPlatformTransactionManager, transactionAttributeAdapter,
-				_newMethodInvocation(() -> {
-					throw appException;
-				}));
-
-			Assert.fail();
-		}
-		catch (Throwable t) {
-			Assert.assertSame(commitException, t);
-
-			Throwable[] throwables = commitException.getSuppressed();
-
-			Assert.assertEquals(1, throwables.length);
-			Assert.assertEquals(appException, throwables[0]);
-		}
-
-		recordPlatformTransactionManager.verify(
-			transactionAttributeAdapter, null, _transactionStatus);
-	}
-
-	@Test
-	public void testRollbackOnCommitExceptionWithAppExceptionWithRollbackException()
-		throws Throwable {
-
-		RecordPlatformTransactionManager recordPlatformTransactionManager =
-			new RecordPlatformTransactionManager(_transactionStatus) {
-
-				@Override
-				public void commit(TransactionStatus transactionStatus) {
-					ReflectionUtil.throwException(commitException);
-				}
-
-				@Override
-				public void rollback(TransactionStatus transactionStatus) {
-					ReflectionUtil.throwException(rollbackException);
-				}
-
-			};
-
-		TransactionAttributeAdapter transactionAttributeAdapter =
-			_newTransactionAttributeAdapter((t) -> t == commitException);
-
-		try {
-			_transactionExecutor.execute(
-				recordPlatformTransactionManager, transactionAttributeAdapter,
-				_newMethodInvocation(() -> {
-					throw appException;
-				}));
-
-			Assert.fail();
-		}
-		catch (Throwable t) {
-			Assert.assertSame(rollbackException, t);
-
-			Throwable[] throwables = rollbackException.getSuppressed();
-
-			Assert.assertEquals(1, throwables.length);
-			Assert.assertEquals(commitException, throwables[0]);
-
-			throwables = commitException.getSuppressed();
 
 			Assert.assertEquals(1, throwables.length);
 			Assert.assertEquals(appException, throwables[0]);
