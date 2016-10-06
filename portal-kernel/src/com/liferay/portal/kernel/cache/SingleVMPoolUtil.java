@@ -106,9 +106,6 @@ public class SingleVMPoolUtil {
 		_singleVMPool.removePortalCache(portalCacheName);
 	}
 
-	private SingleVMPoolUtil() {
-	}
-
 	private SingleVMPool _getSingleVMPool() {
 		try {
 			while (_singleVMPool == null) {

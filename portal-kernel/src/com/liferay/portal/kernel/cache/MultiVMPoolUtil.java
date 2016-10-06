@@ -119,9 +119,6 @@ public class MultiVMPoolUtil {
 		_multiVMPool.removePortalCache(portalCacheName);
 	}
 
-	private MultiVMPoolUtil() {
-	}
-
 	private MultiVMPool _getMultiVMPool() {
 		try {
 			while (_multiVMPool == null) {
