@@ -2360,7 +2360,7 @@ ${tomcat-gc-log}
 								"portal-impl/test/integration/com/liferay/portlet/asset/service/AssetTagStatsServiceTest.java",
 								"portal-impl/test/integration/com/liferay/portlet/documentlibrary/service/persistence/DLFileEntryFinderTest.java",
 								"portal-kernel/test/unit/com/liferay/portal/log/assertor/PortalLogAssertorTest.java",
-								"*/pacl/test/[\\w]+Test.class",
+								"*/pacl/[\\w]+Test.class",
 								"**/*ServiceHttpTest.java",
 								"**/*ServiceJsonTest.java",
 								"**/*ServiceSoapTest.java"

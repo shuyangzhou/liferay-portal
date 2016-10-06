@@ -139,6 +139,9 @@ public class PACLAggregateTest extends AutoBalanceTestCase {
 		arguments.add(
 			"-Dportal:" + PropsKeys.MODULE_FRAMEWORK_PROPERTIES +
 				_OSGI_CONSOLE);
+		arguments.add(
+			"-Dportal:" + PropsKeys.RETRY_DATA_SOURCE_MAX_RETRIES + "=" +
+				Integer.MAX_VALUE);
 
 		for (String property : hypersonicServerTestRule.getJdbcProperties()) {
 			arguments.add("-D" + property);
