@@ -61,7 +61,14 @@ public class DefaultTransactionExecutorTest
 
 		super.testCommitWithAppExceptionWithCommitException();
 
-		_recordTransactionLifecycleListener.verify(null);
+		_recordTransactionLifecycleListener.verify(commitException);
+	}
+
+	@Override
+	public void testCommitWithCommitException() throws Throwable {
+		super.testCommitWithCommitException();
+
+		_recordTransactionLifecycleListener.verify(commitException);
 	}
 
 	@Override
@@ -78,31 +85,6 @@ public class DefaultTransactionExecutorTest
 		super.testRollbackOnAppExceptionWithRollbackException();
 
 		_recordTransactionLifecycleListener.verify(appException);
-	}
-
-	@Override
-	public void testRollbackOnCommitException() throws Throwable {
-		super.testRollbackOnCommitException();
-
-		_recordTransactionLifecycleListener.verify(commitException);
-	}
-
-	@Override
-	public void testRollbackOnCommitExceptionWithAppException()
-		throws Throwable {
-
-		super.testRollbackOnCommitExceptionWithAppException();
-
-		_recordTransactionLifecycleListener.verify(commitException);
-	}
-
-	@Override
-	public void testRollbackOnCommitExceptionWithAppExceptionWithRollbackException()
-		throws Throwable {
-
-		super.testRollbackOnCommitExceptionWithAppExceptionWithRollbackException();
-
-		_recordTransactionLifecycleListener.verify(commitException);
 	}
 
 	@Override

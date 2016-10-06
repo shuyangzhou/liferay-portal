@@ -137,25 +137,10 @@ public class DefaultTransactionExecutor
 			throw t;
 		}
 		finally {
-			if ((throwable != null) &&
-				transactionAttributeAdapter.rollbackOn(throwable)) {
-
-				// Rollback on commit failure.
-
-				try {
-					platformTransactionManager.rollback(
-						transactionStatusAdapter.getTransactionStatus());
-				}
-				catch (Throwable t) {
-					t.addSuppressed(throwable);
-
-					throw t;
-				}
-				finally {
-					TransactionLifecycleManager.fireTransactionRollbackedEvent(
-						transactionAttributeAdapter, transactionStatusAdapter,
-						throwable);
-				}
+			if (throwable != null) {
+				TransactionLifecycleManager.fireTransactionRollbackedEvent(
+					transactionAttributeAdapter, transactionStatusAdapter,
+					throwable);
 			}
 			else {
 				TransactionLifecycleManager.fireTransactionCommittedEvent(
