@@ -370,7 +370,7 @@ public class ConfigurationImpl
 
 		componentProperties.setProperty(key, value);
 
-		_values.put(key, value);
+		clearCache();
 	}
 
 	protected String buildFilterCacheKey(
