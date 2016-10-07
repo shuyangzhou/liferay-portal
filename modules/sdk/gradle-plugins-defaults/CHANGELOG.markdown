@@ -9,12 +9,12 @@
 - [LPS-67658]: Compile the plugin against Gradle 2.14 to make it compatible with
 both Gradle 2.14+ and Gradle 3.0.
 
-## 1.1.4 - 2016-08-22
+## 1.1.4 - 2016-08-23
 
 ### Changed
 - [LPS-67352]: Update the [Liferay Gradle Plugins] dependency to version 2.0.11.
 
-## 1.1.5 - 2016-08-22
+## 1.1.5 - 2016-08-23
 
 ### Changed
 - [LPS-67694]: Disable the `install` and `uploadArchives` tasks and all their
@@ -65,7 +65,7 @@ Jenkins:
 ### Changed
 - [LPS-67352]: Update the [Liferay Gradle Plugins] dependency to version 2.0.17.
 
-## 1.1.12 - 2016-08-29
+## 1.1.12 - 2016-08-30
 
 ### Changed
 - [LPS-66853]: Update the [Liferay Gradle Plugins] dependency to version 2.0.18.
@@ -380,11 +380,34 @@ following system properties to `true`:
 ### Changed
 - [LPS-68334]: Update the [Liferay Gradle Plugins] dependency to version 2.0.50.
 
+## 1.2.44 - 2016-10-06
+
+### Changed
+- [LPS-66396]: Update the [Liferay Gradle Plugins] dependency to version 3.0.0.
+
+### Fixed
+- [LPS-66396]: Remove dependency from Java 8 class.
+
+## 1.2.45 - 2016-10-06
+
+### Changed
+- [LPS-68415]: Update the [Liferay Gradle Plugins] dependency to version 3.0.1.
+
+## 1.2.46 - 2016-10-06
+
+### Added
+- [LPS-68564]: Bypass https://github.com/npm/npm/issues/14042 and always exclude
+the `fsevents` dependency from the generated `npm-shrinkwrap.json` files.
+
+### Changed
+- [LPS-68564]: Update the [Liferay Gradle Plugins] dependency to version 3.0.2.
+
 [Liferay Gradle Plugins]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-plugins
 [Liferay Gradle Plugins App Javadoc Builder]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-plugins-app-javadoc-builder
 [Liferay Gradle Plugins Node]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-plugins-node
 [LPS-58672]: https://issues.liferay.com/browse/LPS-58672
 [LPS-61099]: https://issues.liferay.com/browse/LPS-61099
+[LPS-66396]: https://issues.liferay.com/browse/LPS-66396
 [LPS-66396]: https://issues.liferay.com/browse/LPS-66396
 [LPS-66853]: https://issues.liferay.com/browse/LPS-66853
 [LPS-66906]: https://issues.liferay.com/browse/LPS-66906
@@ -406,10 +429,12 @@ following system properties to `true`:
 [LPS-68306]: https://issues.liferay.com/browse/LPS-68306
 [LPS-68334]: https://issues.liferay.com/browse/LPS-68334
 [LPS-68402]: https://issues.liferay.com/browse/LPS-68402
+[LPS-68415]: https://issues.liferay.com/browse/LPS-68415
 [LPS-68448]: https://issues.liferay.com/browse/LPS-68448
 [LPS-68485]: https://issues.liferay.com/browse/LPS-68485
 [LPS-68504]: https://issues.liferay.com/browse/LPS-68504
 [LPS-68506]: https://issues.liferay.com/browse/LPS-68506
 [LPS-68540]: https://issues.liferay.com/browse/LPS-68540
+[LPS-68564]: https://issues.liferay.com/browse/LPS-68564
 [LRDOCS-2841]: https://issues.liferay.com/browse/LRDOCS-2841
 [LRDOCS-2981]: https://issues.liferay.com/browse/LRDOCS-2981

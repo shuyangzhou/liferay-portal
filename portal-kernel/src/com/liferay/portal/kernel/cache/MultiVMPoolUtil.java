@@ -16,8 +16,12 @@ package com.liferay.portal.kernel.cache;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.registry.Registry;
+import com.liferay.registry.RegistryUtil;
 
 import java.io.Serializable;
 
@@ -30,6 +34,10 @@ import java.io.Serializable;
 public class MultiVMPoolUtil {
 
 	public static void clear() {
+		if (_multiVMPool == null) {
+			return;
+		}
+
 		_multiVMPool.clear();
 	}
 
@@ -68,14 +76,15 @@ public class MultiVMPoolUtil {
 	public static <K extends Serializable, V extends Serializable>
 		PortalCache<K, V> getPortalCache(String portalCacheName) {
 
-		return (PortalCache<K, V>)_multiVMPool.getPortalCache(portalCacheName);
+		return (PortalCache<K, V>)_instance._getMultiVMPool().getPortalCache(
+			portalCacheName);
 	}
 
 	public static <K extends Serializable, V extends Serializable>
 		PortalCache<K, V> getPortalCache(
 			String portalCacheName, boolean blocking) {
 
-		return (PortalCache<K, V>)_multiVMPool.getPortalCache(
+		return (PortalCache<K, V>)_instance._getMultiVMPool().getPortalCache(
 			portalCacheName, blocking);
 	}
 
@@ -83,14 +92,15 @@ public class MultiVMPoolUtil {
 		PortalCache<K, V> getPortalCache(
 			String portalCacheName, boolean blocking, boolean mvcc) {
 
-		return (PortalCache<K, V>)_multiVMPool.getPortalCache(
+		return (PortalCache<K, V>)_instance._getMultiVMPool().getPortalCache(
 			portalCacheName, blocking, mvcc);
 	}
 
 	public static <K extends Serializable, V extends Serializable>
 		PortalCacheManager<K, V> getPortalCacheManager() {
 
-		return (PortalCacheManager<K, V>)_multiVMPool.getPortalCacheManager();
+		return (PortalCacheManager<K, V>)
+			_instance._getMultiVMPool().getPortalCacheManager();
 	}
 
 	/**
@@ -102,11 +112,46 @@ public class MultiVMPoolUtil {
 	}
 
 	public static void removePortalCache(String portalCacheName) {
+		if (_multiVMPool == null) {
+			return;
+		}
+
 		_multiVMPool.removePortalCache(portalCacheName);
 	}
 
+	private MultiVMPool _getMultiVMPool() {
+		try {
+			while (_multiVMPool == null) {
+				Registry registry = RegistryUtil.getRegistry();
+
+				_multiVMPool = registry.getService(MultiVMPool.class);
+
+				if (_multiVMPool != null) {
+					return _multiVMPool;
+				}
+
+				if (_log.isDebugEnabled()) {
+					_log.debug("Waiting for a multi vm pool");
+				}
+
+				Thread.sleep(500);
+			}
+		}
+		catch (InterruptedException ie) {
+			throw new IllegalStateException(
+				"Unable to initialize MultiVMPoolUtil", ie);
+		}
+
+		return _multiVMPool;
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		MultiVMPoolUtil.class);
+
+	private static final MultiVMPoolUtil _instance = new MultiVMPoolUtil();
+
 	private static volatile MultiVMPool _multiVMPool =
-		ProxyFactory.newServiceTrackedInstance(
+		ProxyFactory.newServiceTrackedInstanceWithoutDummyService(
 			MultiVMPool.class, MultiVMPoolUtil.class, "_multiVMPool");
 
 }

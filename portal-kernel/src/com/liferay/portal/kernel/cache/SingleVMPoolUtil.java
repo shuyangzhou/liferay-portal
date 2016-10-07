@@ -14,8 +14,12 @@
 
 package com.liferay.portal.kernel.cache;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.registry.Registry;
+import com.liferay.registry.RegistryUtil;
 
 import java.io.Serializable;
 
@@ -27,6 +31,10 @@ import java.io.Serializable;
 public class SingleVMPoolUtil {
 
 	public static void clear() {
+		if (_singleVMPool == null) {
+			return;
+		}
+
 		_singleVMPool.clear();
 	}
 
@@ -64,20 +72,22 @@ public class SingleVMPoolUtil {
 	public static <K extends Serializable, V> PortalCache<K, V> getPortalCache(
 		String portalCacheName) {
 
-		return (PortalCache<K, V>)_singleVMPool.getPortalCache(portalCacheName);
+		return (PortalCache<K, V>)_instance._getSingleVMPool().getPortalCache(
+			portalCacheName);
 	}
 
 	public static <K extends Serializable, V> PortalCache<K, V> getPortalCache(
 		String portalCacheName, boolean blocking) {
 
-		return (PortalCache<K, V>)_singleVMPool.getPortalCache(
+		return (PortalCache<K, V>)_instance._getSingleVMPool().getPortalCache(
 			portalCacheName, blocking);
 	}
 
 	public static <K extends Serializable, V> PortalCacheManager<K, V>
 		getPortalCacheManager() {
 
-		return (PortalCacheManager<K, V>)_singleVMPool.getPortalCacheManager();
+		return (PortalCacheManager<K, V>)
+			_instance._getSingleVMPool().getPortalCacheManager();
 	}
 
 	/**
@@ -89,11 +99,46 @@ public class SingleVMPoolUtil {
 	}
 
 	public static void removePortalCache(String portalCacheName) {
+		if (_singleVMPool == null) {
+			return;
+		}
+
 		_singleVMPool.removePortalCache(portalCacheName);
 	}
 
+	private SingleVMPool _getSingleVMPool() {
+		try {
+			while (_singleVMPool == null) {
+				Registry registry = RegistryUtil.getRegistry();
+
+				_singleVMPool = registry.getService(SingleVMPool.class);
+
+				if (_singleVMPool != null) {
+					return _singleVMPool;
+				}
+
+				if (_log.isDebugEnabled()) {
+					_log.debug("Waiting for a single vm pool");
+				}
+
+				Thread.sleep(500);
+			}
+		}
+		catch (InterruptedException ie) {
+			throw new IllegalStateException(
+				"Unable to initialize SingleVMPoolUtil", ie);
+		}
+
+		return _singleVMPool;
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		SingleVMPoolUtil.class);
+
+	private static final SingleVMPoolUtil _instance = new SingleVMPoolUtil();
+
 	private static volatile SingleVMPool _singleVMPool =
-		ProxyFactory.newServiceTrackedInstance(
+		ProxyFactory.newServiceTrackedInstanceWithoutDummyService(
 			SingleVMPool.class, SingleVMPoolUtil.class, "_singleVMPool");
 
 }
