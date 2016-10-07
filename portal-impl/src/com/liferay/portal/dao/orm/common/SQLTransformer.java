@@ -211,6 +211,14 @@ public class SQLTransformer {
 		return _replaceCastText(_castTextPattern.matcher(sql));
 	}
 
+	private String _replaceConcatenate(String sql) {
+		if (_vendorSQLServer) {
+			return StringUtil.replace(sql, " || ", " + ");
+		}
+
+		return sql;
+	}
+
 	private String _replaceCrossJoin(String sql) {
 		if (_vendorSybase) {
 			return StringUtil.replace(sql, "CROSS JOIN", StringPool.COMMA);
@@ -323,6 +331,7 @@ public class SQLTransformer {
 		}
 		else if (_vendorSQLServer) {
 			newSQL = _replaceMod(newSQL);
+			newSQL = _replaceConcatenate(newSQL);
 		}
 		else if (_vendorSybase) {
 			newSQL = _replaceMod(newSQL);
