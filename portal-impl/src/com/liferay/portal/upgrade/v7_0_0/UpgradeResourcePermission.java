@@ -14,13 +14,21 @@
 
 package com.liferay.portal.upgrade.v7_0_0;
 
-import com.liferay.portal.kernel.dao.jdbc.AutoBatchPreparedStatementUtil;
+import com.liferay.portal.dao.orm.common.SQLTransformer;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LoggingTimer;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Sampsa Sohlman
@@ -43,49 +51,143 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 		upgradeResourcePermissions();
 	}
 
+	@Deprecated
 	protected void upgradeResourcePermissions() throws Exception {
+		_upgradePrimKeyId();
+
+		_upgradeViewActionId();
+	}
+
+	private List<String> _getNames() throws Exception {
+		List<String> names = new ArrayList<>();
+
+		String sql = "select distinct name from ResourcePermission";
+
+		try (PreparedStatement ps = connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery()) {
+
+			while (rs.next()) {
+				String name = rs.getString("name");
+
+				names.add(name);
+			}
+		}
+
+		return names;
+	}
+
+	private String _getNameAndPrimKeyNumericLikeClause() {
+		StringBundler sb = new StringBundler(81);
+
+		sb.append("((name = ?) and (");
+
+		for (int i = 0; i <= 9; i++) {
+			sb.append("primKey like '");
+			sb.append(i);
+			sb.append("%'");
+
+			if (i < 9) {
+				sb.append(" or ");
+			}
+		}
+
+		sb.append(") and (");
+
+		for (int i = 0; i <= 9; i++) {
+			sb.append("primKey like '%");
+			sb.append(i);
+			sb.append("'");
+
+			if (i < 9) {
+				sb.append(" or ");
+			}
+		}
+
+		sb.append("))");
+
+		return sb.toString();
+	}
+
+	private void _upgradePrimKeyId() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer()) {
-			String selectSQL =
-				"select resourcePermissionId, primKey, actionIds from " +
-					"ResourcePermission";
-			String updateSQL =
-				"update ResourcePermission set primKeyId = ?, viewActionId = " +
-					"? where resourcePermissionId = ?";
+			List<String> names = _getNames();
 
-			try (PreparedStatement ps1 = connection.prepareStatement(selectSQL);
-				ResultSet rs = ps1.executeQuery();
-				PreparedStatement ps2 =
-					AutoBatchPreparedStatementUtil.concurrentAutoBatch(
-						connection, updateSQL)) {
+			String updateSQL = "update ResourcePermission set primKeyId " +
+				"= CAST_LONG(primKey) where " +
+				_getNameAndPrimKeyNumericLikeClause();
 
-				while (rs.next()) {
-					long resourcePermissionId = rs.getLong(
-						"resourcePermissionId");
-					long actionIds = rs.getLong("actionIds");
+			updateSQL = SQLTransformer.transform(updateSQL);
 
-					long newPrimKeyId = GetterUtil.getLong(
-						rs.getString("primKey"));
+			Iterator<String> nameIterator = names.iterator();
 
-					boolean newViewActionId = false;
+			while (nameIterator.hasNext()) {
+				String name = nameIterator.next();
 
-					if ((actionIds % 2) == 1) {
-						newViewActionId = true;
-					}
+				try (PreparedStatement ps =
+						connection.prepareStatement(updateSQL)) {
 
-					if ((newPrimKeyId == 0) && !newViewActionId) {
-						continue;
-					}
+					ps.setString(1, name);
 
-					ps2.setLong(1, newPrimKeyId);
-					ps2.setBoolean(2, newViewActionId);
-					ps2.setLong(3, resourcePermissionId);
+					ps.executeUpdate();
 
-					ps2.addBatch();
+					nameIterator.remove();
 				}
+				catch (Exception e) {
+					_log.warn(
+						"Unable to update resource " + name + " in bulk: " +
+							e.getMessage());
+				}
+			}
 
-				ps2.executeBatch();
+			for (String name : names) {
+				_upgradePrimKeyIdIndividual(name);
 			}
 		}
 	}
+
+	private void _upgradePrimKeyIdIndividual(String name) throws Exception {
+		String sql = "select resourcePermissionId, primKey, primKeyId from " +
+			"ResourcePermission where primKeyId = 0 and " +
+			_getNameAndPrimKeyNumericLikeClause();
+
+		try (LoggingTimer loggingTimer = new LoggingTimer(name);
+			PreparedStatement ps = connection.prepareStatement(
+				sql, ResultSet.TYPE_FORWARD_ONLY,
+				ResultSet.CONCUR_UPDATABLE)) {
+
+			ps.setString(1, name);
+
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					long newPrimKeyId = GetterUtil.getLong(
+						rs.getString("primKey"));
+
+					if (newPrimKeyId == 0) {
+						continue;
+					}
+
+					rs.updateLong("primKeyId", newPrimKeyId);
+
+					rs.updateRow();
+				}
+			}
+		}
+	}
+
+	private void _upgradeViewActionId() throws Exception {
+		String updateSQL = "update ResourcePermission set viewActionId = " +
+			"[$TRUE$] where MOD(actionIds, 1) = 1";
+
+		updateSQL = SQLTransformer.transform(updateSQL);
+
+		try (LoggingTimer loggingTimer = new LoggingTimer();
+			PreparedStatement ps = connection.prepareStatement(updateSQL)) {
+
+			ps.executeUpdate();
+		}
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		UpgradeResourcePermission.class);
 
 }
