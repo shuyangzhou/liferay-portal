@@ -94,6 +94,10 @@ public class PACLAggregateTest extends AutoBalanceTestCase {
 		try {
 			List<Class<?>> classes = scanTestClasses();
 
+			if (classes.isEmpty()) {
+				return;
+			}
+
 			ProcessChannel<Result> processChannel =
 				localProcessExecutor.execute(
 					createProcessConfig(),
