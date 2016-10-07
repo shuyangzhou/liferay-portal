@@ -55,10 +55,10 @@ public class VerifyAuditedModel extends VerifyProcess {
 			unverifiedTableNames.add(verifiableAuditedModel.getTableName());
 		}
 
-		List<VerifyAuditedModelRunnable> verifyAuditedModelRunnables =
-			new ArrayList<>(unverifiedTableNames.size());
-
 		while (!unverifiedTableNames.isEmpty()) {
+			List<VerifyAuditedModelRunnable> verifyAuditedModelRunnables =
+				new ArrayList<>(unverifiedTableNames.size());
+
 			int count = unverifiedTableNames.size();
 
 			for (VerifiableAuditedModel verifiableAuditedModel :
@@ -85,9 +85,9 @@ public class VerifyAuditedModel extends VerifyProcess {
 				throw new VerifyException(
 					"Circular dependency detected " + unverifiedTableNames);
 			}
-		}
 
-		doVerify(verifyAuditedModelRunnables);
+			doVerify(verifyAuditedModelRunnables);
+		}
 	}
 
 	@Override
