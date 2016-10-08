@@ -36,8 +36,10 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Michael C. Han
@@ -48,7 +50,7 @@ public class VerifyAuditedModel extends VerifyProcess {
 	public void verify(VerifiableAuditedModel... verifiableAuditedModels)
 		throws Exception {
 
-		List<String> unverifiedTableNames = new ArrayList<>();
+		Set<String> unverifiedTableNames = new HashSet<>();
 
 		for (VerifiableAuditedModel verifiableAuditedModel :
 				verifiableAuditedModels) {
@@ -60,15 +62,20 @@ public class VerifyAuditedModel extends VerifyProcess {
 			List<VerifyAuditedModelRunnable> verifyAuditedModelRunnables =
 				new ArrayList<>(unverifiedTableNames.size());
 
-			int count = unverifiedTableNames.size();
-
 			for (VerifiableAuditedModel verifiableAuditedModel :
 					verifiableAuditedModels) {
 
-				if (unverifiedTableNames.contains(
-						verifiableAuditedModel.getJoinByTableName()) ||
-					!unverifiedTableNames.contains(
-						verifiableAuditedModel.getTableName())) {
+				String tableName = verifiableAuditedModel.getTableName();
+
+				if (!unverifiedTableNames.contains(tableName)) {
+					continue;
+				}
+
+				String joinByTableName =
+					verifiableAuditedModel.getJoinByTableName();
+
+				if ((joinByTableName != null) &&
+					unverifiedTableNames.contains(joinByTableName)) {
 
 					continue;
 				}
@@ -78,11 +85,10 @@ public class VerifyAuditedModel extends VerifyProcess {
 
 				verifyAuditedModelRunnables.add(verifyAuditedModelRunnable);
 
-				unverifiedTableNames.remove(
-					verifiableAuditedModel.getTableName());
+				unverifiedTableNames.remove(tableName);
 			}
 
-			if (unverifiedTableNames.size() == count) {
+			if (verifyAuditedModelRunnables.isEmpty()) {
 				throw new VerifyException(
 					"Circular dependency detected " + unverifiedTableNames);
 			}
