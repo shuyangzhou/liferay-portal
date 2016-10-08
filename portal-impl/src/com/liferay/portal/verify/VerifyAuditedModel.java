@@ -319,6 +319,8 @@ public class VerifyAuditedModel extends VerifyProcess {
 						verifiableAuditedModel.isUpdateDates());
 				}
 			}
+
+			_bulkVerifyCreateDateModifiedDate(verifiableAuditedModel);
 		}
 	}
 
@@ -336,7 +338,7 @@ public class VerifyAuditedModel extends VerifyProcess {
 		sb.append(verifiableAuditedModel.getTableName());
 		sb.append(" set ");
 		sb.append("createDate = modifiedDate");
-		sb.append(" where userName is null and ");
+		sb.append(" where ");
 		sb.append("createDate is null and modifiedDate is not null");
 
 		runSQL(sb.toString());
