@@ -120,7 +120,7 @@ public class VerifyResourcePermissions extends VerifyProcess {
 			long ownerId, int cur, int total)
 		throws Exception {
 
-		if (_log.isInfoEnabled() && (((cur + 1) % 100) == 0)) {
+		if (_log.isInfoEnabled() && (((cur + 1) % 1000) == 0)) {
 			cur++;
 
 			_log.info(
@@ -234,7 +234,7 @@ public class VerifyResourcePermissions extends VerifyProcess {
 			ResultSet rs = ps.executeQuery()) {
 
 			for (int i = 1; rs.next(); i++) {
-				if (_log.isInfoEnabled() && (i % 100 == 0)) {
+				if (_log.isInfoEnabled() && (i % 1000 == 0)) {
 					_log.info(
 						"Processed " + i + " of " + total +
 							" resource permissions for company = " + companyId +
@@ -262,7 +262,7 @@ public class VerifyResourcePermissions extends VerifyProcess {
 		Iterator<Map.Entry<Long, Long>> entryIterator = entries.iterator();
 
 		for (int i = 0; entryIterator.hasNext(); i++) {
-			if (_log.isInfoEnabled() && (i % 100 == 0)) {
+			if (_log.isInfoEnabled() && (i % 1000 == 0)) {
 				_log.info(
 					"Added " + i + " of " + total +
 						" missing resource permissions for company = " +
