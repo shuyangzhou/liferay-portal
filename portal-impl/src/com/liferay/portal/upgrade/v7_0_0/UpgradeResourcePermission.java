@@ -178,7 +178,7 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 	private void _upgradeViewActionId() throws Exception {
 		String updateSQL =
 			"update ResourcePermission set viewActionId = [$TRUE$] where " +
-				"MOD(actionIds, 1) = 1";
+				"MOD(actionIds, 2) = 1";
 
 		updateSQL = SQLTransformer.transform(updateSQL);
 
