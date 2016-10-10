@@ -8145,17 +8145,27 @@ public class JournalArticleLocalServiceImpl
 			String languageId)
 		throws PortalException {
 
-		long journalArticleLocalizationId = counterLocalService.increment();
-
 		JournalArticleLocalization journalArticleLocalization =
-			journalArticleLocalizationPersistence.create(
-				journalArticleLocalizationId);
+			journalArticleLocalizationPersistence.fetchByA_L(
+				articlePK, languageId);
 
-		journalArticleLocalization.setCompanyId(companyId);
-		journalArticleLocalization.setArticlePK(articlePK);
-		journalArticleLocalization.setTitle(title);
-		journalArticleLocalization.setDescription(description);
-		journalArticleLocalization.setLanguageId(languageId);
+		if (journalArticleLocalization == null) {
+			long journalArticleLocalizationId = counterLocalService.increment();
+
+			journalArticleLocalization =
+				journalArticleLocalizationPersistence.create(
+					journalArticleLocalizationId);
+
+			journalArticleLocalization.setCompanyId(companyId);
+			journalArticleLocalization.setArticlePK(articlePK);
+			journalArticleLocalization.setTitle(title);
+			journalArticleLocalization.setDescription(description);
+			journalArticleLocalization.setLanguageId(languageId);
+		}
+		else {
+			journalArticleLocalization.setTitle(title);
+			journalArticleLocalization.setDescription(description);
+		}
 
 		return journalArticleLocalizationPersistence.update(
 			journalArticleLocalization);
@@ -8176,10 +8186,26 @@ public class JournalArticleLocalServiceImpl
 			Map<Locale, String> descriptionMap)
 		throws PortalException {
 
-		journalArticleLocalizationPersistence.removeByArticlePK(articleId);
+		List<JournalArticleLocalization> oldJournalArticleLocalizations =
+			new ArrayList<>(
+				journalArticleLocalizationPersistence.findByArticlePK(
+					articleId));
 
-		return _addArticleLocalizedFields(
-			companyId, articleId, titleMap, descriptionMap);
+		List<JournalArticleLocalization> newJournalArticleLocalizations =
+			_addArticleLocalizedFields(
+				companyId, articleId, titleMap, descriptionMap);
+
+		oldJournalArticleLocalizations.removeAll(
+			newJournalArticleLocalizations);
+
+		for (JournalArticleLocalization oldJournalArticleLocalization :
+				oldJournalArticleLocalizations) {
+
+			journalArticleLocalizationPersistence.remove(
+				oldJournalArticleLocalization);
+		}
+
+		return newJournalArticleLocalizations;
 	}
 
 	private JournalArticleLocalization _updateArticleLocalizedFields(
