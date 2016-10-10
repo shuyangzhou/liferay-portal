@@ -195,12 +195,11 @@ public class VerifyResourcePermissions extends VerifyProcess {
 			ownerIds = _getOwnerIds(companyId, verifiableResourcedModel);
 		}
 
-		StringBundler sb = new StringBundler(12);
+		StringBundler sb = new StringBundler(11);
 
 		sb.append("select ");
 		sb.append("count(*)");
-		sb.append(" from ");
-		sb.append("ResourcePermission WHERE (companyId = ");
+		sb.append(" from ResourcePermission WHERE (companyId = ");
 		sb.append(companyId);
 		sb.append(") and (name = '");
 		sb.append(modelName);
