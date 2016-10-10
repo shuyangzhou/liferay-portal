@@ -1,24 +1,7 @@
 dependencies {
-	compile group: "com.liferay", name: "com.liferay.gradle.plugins", version: "3.0.3"
+	compile group: "com.liferay", name: "com.liferay.gradle.plugins", version: "3.0.4"
 	compile group: "com.liferay", name: "com.liferay.gradle.plugins.poshi.runner", version: "1.0.11"
 	compile group: "de.undercouch", name: "gradle-download-task", version: "3.1.1"
 
 	compileOnly fileTree(builtBy: [rootProject.tasks.extractGradleApi214], dir: new File(rootProject.buildDir, "gradle-2.14"))
-}
-
-jarSources {
-	into("samples") {
-		exclude ".gradle"
-		exclude "build"
-
-		filesMatching("settings.gradle") {
-			filter {
-				String line ->
-
-				line.replace "latest.release", project.version
-			}
-		}
-
-		from "samples"
-	}
 }

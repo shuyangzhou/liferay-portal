@@ -14,6 +14,7 @@
 
 package com.liferay.portal.configuration;
 
+import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.util.StringPool;
@@ -169,6 +170,87 @@ public class ConfigurationImplTest {
 
 		Assert.assertEquals("value1", configurationImpl.get("key1"));
 		Assert.assertEquals("value1value2", configurationImpl.get("key2"));
+	}
+
+	@Test
+	public void testSet() throws Exception {
+		TestResourceClassLoader testResourceClassLoader =
+			new TestResourceClassLoader();
+
+		testResourceClassLoader.addPropertiesResource(
+			ConfigurationImplTest.class.getName(), StringPool.BLANK);
+
+		ConfigurationImpl configurationImpl = new ConfigurationImpl(
+			testResourceClassLoader, ConfigurationImplTest.class.getName(),
+			CompanyConstants.SYSTEM, null);
+
+		configurationImpl.set("key", "value1");
+
+		Assert.assertArrayEquals(
+			new String[] {"value1"}, configurationImpl.getArray("key"));
+
+		configurationImpl.set("key", "value2");
+
+		Assert.assertArrayEquals(
+			new String[] {"value2"}, configurationImpl.getArray("key"));
+
+		configurationImpl.set("key", "value3,value4");
+
+		Assert.assertArrayEquals(
+			new String[] {"value3", "value4"},
+			configurationImpl.getArray("key"));
+	}
+
+	@Test
+	public void testSetDoesNotOverrideFilter() throws Exception {
+		TestResourceClassLoader testResourceClassLoader =
+			new TestResourceClassLoader();
+
+		testResourceClassLoader.addPropertiesResource(
+			ConfigurationImplTest.class.getName(),
+			"key=value1\nkey[filter]=value2");
+
+		ConfigurationImpl configurationImpl = new ConfigurationImpl(
+			testResourceClassLoader, ConfigurationImplTest.class.getName(),
+			CompanyConstants.SYSTEM, null);
+
+		Assert.assertArrayEquals(
+			new String[] {"value1"}, configurationImpl.getArray("key"));
+
+		Assert.assertArrayEquals(
+			new String[] {"value2"},
+			configurationImpl.getArray("key", new Filter("filter")));
+
+		configurationImpl.set("key", "value3,value4");
+
+		Assert.assertArrayEquals(
+			new String[] {"value2"},
+			configurationImpl.getArray("key", new Filter("filter")));
+	}
+
+	@Test
+	public void testSetWithFilter() throws Exception {
+		TestResourceClassLoader testResourceClassLoader =
+			new TestResourceClassLoader();
+
+		testResourceClassLoader.addPropertiesResource(
+			ConfigurationImplTest.class.getName(), StringPool.BLANK);
+
+		ConfigurationImpl configurationImpl = new ConfigurationImpl(
+			testResourceClassLoader, ConfigurationImplTest.class.getName(),
+			CompanyConstants.SYSTEM, null);
+
+		configurationImpl.set("key", "value1");
+
+		Assert.assertArrayEquals(
+			new String[] {"value1"},
+			configurationImpl.getArray("key", new Filter("filter")));
+
+		configurationImpl.set("key", "value2,value3");
+
+		Assert.assertArrayEquals(
+			new String[] {"value2", "value3"},
+			configurationImpl.getArray("key", new Filter("filter")));
 	}
 
 	@Test
