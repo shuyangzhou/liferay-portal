@@ -376,11 +376,6 @@ public class VerifyResourcePermissions extends VerifyProcess {
 		}
 	}
 
-	private void _verifyUser(
-			Role role, VerifiableResourcedModel verifiableResourcedModel)
-		throws Exception {
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		VerifyResourcePermissions.class);
 
