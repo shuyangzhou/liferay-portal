@@ -77,6 +77,10 @@ public class PortletTransactionManager implements PlatformTransactionManager {
 		}
 	}
 
+	public SessionFactory getPortletSessionFactory() {
+		return _portletSessionFactory;
+	}
+
 	@Override
 	public TransactionStatus getTransaction(
 			TransactionDefinition transactionDefinition)
