@@ -247,7 +247,7 @@ public class VerifyResourcePermissions extends VerifyProcess {
 				if (newOwnerId == null) {
 					rs.deleteRow();
 				}
-				else if (newOwnerId != oldOwnerId) {
+				else if (!newOwnerId.equals(oldOwnerId)) {
 					rs.updateLong("ownerId", newOwnerId);
 
 					rs.updateRow();
