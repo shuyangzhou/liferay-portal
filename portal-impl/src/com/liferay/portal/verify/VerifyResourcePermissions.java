@@ -198,8 +198,8 @@ public class VerifyResourcePermissions extends VerifyProcess {
 		StringBundler sb = new StringBundler(11);
 
 		sb.append("select ");
-		sb.append("count(*)");
-		sb.append(" from ResourcePermission WHERE (companyId = ");
+		sb.append("count(*) ");
+		sb.append("from ResourcePermission WHERE (companyId = ");
 		sb.append(companyId);
 		sb.append(") and (name = '");
 		sb.append(modelName);
@@ -222,7 +222,7 @@ public class VerifyResourcePermissions extends VerifyProcess {
 			}
 		}
 
-		sb.setStringAt("resourcePermissionId, primKeyId, ownerId", 1);
+		sb.setStringAt("resourcePermissionId, primKeyId, ownerId ", 1);
 
 		try (LoggingTimer loggingTimer = new LoggingTimer(
 				verifiableResourcedModel.getModelName());
@@ -233,7 +233,7 @@ public class VerifyResourcePermissions extends VerifyProcess {
 			ResultSet rs = ps.executeQuery()) {
 
 			for (int i = 1; rs.next(); i++) {
-				if (_log.isInfoEnabled() && (i % 1000 == 0)) {
+				if (_log.isInfoEnabled() && ((i % 1000) == 0)) {
 					_log.info(
 						"Processed " + i + " of " + total +
 							" resource permissions for company = " + companyId +
@@ -241,7 +241,9 @@ public class VerifyResourcePermissions extends VerifyProcess {
 				}
 
 				long primKeyId = rs.getLong("primKeyId");
+
 				Long newOwnerId = ownerIds.remove(primKeyId);
+
 				Long oldOwnerId = rs.getLong("ownerId");
 
 				if (newOwnerId == null) {
@@ -258,10 +260,11 @@ public class VerifyResourcePermissions extends VerifyProcess {
 		total = ownerIds.size();
 
 		Set<Map.Entry<Long, Long>> entries = ownerIds.entrySet();
+
 		Iterator<Map.Entry<Long, Long>> entryIterator = entries.iterator();
 
 		for (int i = 0; entryIterator.hasNext(); i++) {
-			if (_log.isInfoEnabled() && (i % 1000 == 0)) {
+			if (_log.isInfoEnabled() && ((i % 1000) == 0)) {
 				_log.info(
 					"Added " + i + " of " + total +
 						" missing resource permissions for company = " +
