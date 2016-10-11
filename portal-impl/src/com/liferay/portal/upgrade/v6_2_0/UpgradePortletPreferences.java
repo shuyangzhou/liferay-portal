@@ -43,6 +43,7 @@ public class UpgradePortletPreferences extends UpgradeProcess {
 			sb.append("by plid");
 
 			long lastPlid = 0;
+
 			String typeSettings = StringPool.BLANK;
 
 			try (PreparedStatement ps = connection.prepareStatement(
@@ -53,7 +54,9 @@ public class UpgradePortletPreferences extends UpgradeProcess {
 				while (rs.next()) {
 					long portletPreferencesId = rs.getLong(
 						"portletPreferencesId");
+
 					long plid = rs.getLong("plid");
+
 					String portletId = GetterUtil.getString(
 						rs.getString("portletId"));
 
