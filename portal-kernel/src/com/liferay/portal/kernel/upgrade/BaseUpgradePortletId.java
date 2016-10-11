@@ -207,8 +207,7 @@ public abstract class BaseUpgradePortletId extends UpgradeProcess {
 				getTypeSettingsCriteria(oldRootPortletId);
 
 		try (PreparedStatement ps = connection.prepareStatement(
-				sql, ResultSet.TYPE_FORWARD_ONLY,
-				ResultSet.CONCUR_UPDATABLE);
+				sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
 			ResultSet rs = ps.executeQuery()) {
 
 			while (rs.next()) {
@@ -230,8 +229,8 @@ public abstract class BaseUpgradePortletId extends UpgradeProcess {
 		throws Exception {
 
 		String sql =
-			"update PortletPreferences set portletId = '" +
-				newRootPortletId + "' where portletId = '" +
+			"update PortletPreferences set portletId = '" + newRootPortletId +
+				"' where portletId = '" +
 				oldRootPortletId + "'";
 
 		try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -340,8 +339,7 @@ public abstract class BaseUpgradePortletId extends UpgradeProcess {
 				getTypeSettingsCriteria(oldRootPortletId);
 
 		try (PreparedStatement ps = connection.prepareStatement(
-				sql, ResultSet.TYPE_FORWARD_ONLY,
-				ResultSet.CONCUR_UPDATABLE);
+				sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
 			ResultSet rs = ps.executeQuery()) {
 
 			while (rs.next()) {
@@ -369,8 +367,7 @@ public abstract class BaseUpgradePortletId extends UpgradeProcess {
 				getTypeSettingsCriteria(oldRootPortletId);
 
 		try (PreparedStatement ps = connection.prepareStatement(
-				sql, ResultSet.TYPE_FORWARD_ONLY,
-				ResultSet.CONCUR_UPDATABLE);
+				sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
 			ResultSet rs = ps.executeQuery()) {
 
 			while (rs.next()) {

@@ -19,9 +19,8 @@ import com.liferay.portal.kernel.upgrade.BaseUpgradePortletId;
 /**
  * @author     Brian Wing Shun Chan
  * @deprecated As of 7.0.0, replaced by {@link
- *             com.liferay.portal.kernel.upgrade.BaseUpgradePortletId}
+ *             BaseUpgradePortletId}
  */
 @Deprecated
 public class UpgradePortletId extends BaseUpgradePortletId {
-
 }

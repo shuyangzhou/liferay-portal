@@ -27,14 +27,11 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -318,10 +315,10 @@ public abstract class BaseUpgradePortletPreferences extends UpgradeProcess {
 			}
 
 			try (PreparedStatement ps =
-					 AutoBatchPreparedStatementUtil.concurrentAutoBatch(
-						 connection,
-						 "delete from PortletPreferences where " +
-						 "portletPreferencesId = ?")) {
+					AutoBatchPreparedStatementUtil.concurrentAutoBatch(
+						connection,
+						"delete from PortletPreferences where " +
+							"portletPreferencesId = ?")) {
 
 				for (long portletPreferencesId : deletes) {
 					ps.setLong(1, portletPreferencesId);
