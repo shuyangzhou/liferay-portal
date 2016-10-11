@@ -16,7 +16,6 @@ package com.liferay.portal.verify;
 
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.concurrent.ThrowableAwareRunnable;
-import com.liferay.portal.kernel.dao.jdbc.AutoBatchPreparedStatementUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -30,7 +29,6 @@ import com.liferay.portal.kernel.verify.model.VerifiableAuditedModel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 
 import java.util.ArrayList;
@@ -125,14 +123,10 @@ public class VerifyAuditedModel extends VerifyProcess {
 				if (rs.next()) {
 					long companyId = rs.getLong("companyId");
 
-					long userId = 0;
-					String userName = null;
+					long userId = previousUserId;
+					String userName = "Anonymous";
 
-					if (allowAnonymousUser) {
-						userId = previousUserId;
-						userName = "Anonymous";
-					}
-					else {
+					if (!allowAnonymousUser) {
 						userId = rs.getLong("userId");
 
 						userName = getUserName(con, userId);
@@ -294,9 +288,6 @@ public class VerifyAuditedModel extends VerifyProcess {
 				ResultSet rs = ps.executeQuery()) {
 
 				while (rs.next()) {
-					long companyId = rs.getLong("companyId");
-					long primKey = rs.getLong(
-						verifiableAuditedModel.getPrimaryKeyColumnName());
 					long previousUserId = rs.getLong("userId");
 
 					long relatedPrimKey = rs.getLong(
@@ -315,7 +306,7 @@ public class VerifyAuditedModel extends VerifyProcess {
 
 					_verifyAuditedModel(
 						con, rs, verifiableAuditedModel.getTableName(),
-						primKey, auditedModelArray,
+						auditedModelArray,
 						verifiableAuditedModel.isUpdateDates());
 				}
 			}
@@ -337,18 +328,18 @@ public class VerifyAuditedModel extends VerifyProcess {
 		sb.append("update ");
 		sb.append(verifiableAuditedModel.getTableName());
 		sb.append(" set ");
-		sb.append("createDate = modifiedDate");
-		sb.append(" where ");
+		sb.append("createDate = modifiedDate ");
+		sb.append("where ");
 		sb.append("createDate is null and modifiedDate is not null");
 
 		runSQL(sb.toString());
 
-		sb.setStringAt("createDate = CURRENT_TIMESTAMP", 3);
+		sb.setStringAt("createDate = CURRENT_TIMESTAMP ", 3);
 		sb.setStringAt("createDate is null", 5);
 
 		runSQL(sb.toString());
 
-		sb.setStringAt("modifiedDate = createDate", 3);
+		sb.setStringAt("modifiedDate = createDate ", 3);
 		sb.setStringAt("modifiedDate is null", 5);
 
 		runSQL(sb.toString());
@@ -368,8 +359,9 @@ public class VerifyAuditedModel extends VerifyProcess {
 			return;
 		}
 
-		String updateSQL = "update " + verifiableAuditedModel.getTableName() +
-			" set userName = ? where userId = ?";
+		String updateSQL =
+			"update " + verifiableAuditedModel.getTableName() +
+				" set userName = ? where userId = ?";
 
 		try (LoggingTimer loggingTimer = new LoggingTimer(
 				verifiableAuditedModel.getTableName() + "#byUser");
@@ -383,9 +375,10 @@ public class VerifyAuditedModel extends VerifyProcess {
 			}
 		}
 
-		updateSQL = "update " + verifiableAuditedModel.getTableName() +
-			" set userId = ?, userName = ? where companyId = ? and " +
-			"userName is null";
+		updateSQL =
+			"update " + verifiableAuditedModel.getTableName() +
+				" set userId = ?, userName = ? where companyId = ? and " +
+					"userName is null";
 
 		try (LoggingTimer loggingTimer = new LoggingTimer(
 				verifiableAuditedModel.getTableName() + "#byCompany");
@@ -415,8 +408,10 @@ public class VerifyAuditedModel extends VerifyProcess {
 
 		List<Long> companyIds = new ArrayList<>();
 
-		String sql = "select distinct companyId from " +
-			verifiableAuditedModel.getTableName() + " where userName is null";
+		String sql =
+			"select distinct companyId from " +
+				verifiableAuditedModel.getTableName() +
+					" where userName is null";
 
 		try (PreparedStatement ps = connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery()) {
@@ -474,7 +469,7 @@ public class VerifyAuditedModel extends VerifyProcess {
 
 	private void _verifyAuditedModel(
 			Connection con, ResultSet rs, String tableName,
-			long primKey, Object[] auditedModelArray, boolean updateDates)
+			Object[] auditedModelArray, boolean updateDates)
 		throws Exception {
 
 		try {
