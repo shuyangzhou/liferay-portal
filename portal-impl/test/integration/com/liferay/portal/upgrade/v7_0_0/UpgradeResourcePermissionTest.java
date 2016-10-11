@@ -90,7 +90,7 @@ public class UpgradeResourcePermissionTest extends UpgradeResourcePermission {
 		Assert.assertEquals(
 			actionIds1 % 2 == 1, resourcePermission1.getViewActionId());
 		Assert.assertEquals(
-			resourcePermission1.getPrimKeyId(), GetterUtil.getLong(primKey1));
+			GetterUtil.getLong(primKey1), resourcePermission1.getPrimKeyId());
 
 		ResourcePermission resourcePermission2 =
 			ResourcePermissionLocalServiceUtil.getResourcePermission(
