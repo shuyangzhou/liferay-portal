@@ -14,7 +14,6 @@
 
 package com.liferay.portal.upgrade.v6_2_0;
 
-import com.liferay.portal.kernel.dao.jdbc.AutoBatchPreparedStatementUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
@@ -26,9 +25,6 @@ import com.liferay.portal.kernel.util.StringPool;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Julio Camarero
@@ -92,8 +88,6 @@ public class UpgradePortletPreferences extends UpgradeProcess {
 
 	private String _getTypeSettings(long plid) throws Exception {
 		String sql = "select typeSettings from Layout where plid = " + plid;
-
-		Map<Long, String> typeSettings = new HashMap<Long, String>();
 
 		try (PreparedStatement ps = connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery()) {
