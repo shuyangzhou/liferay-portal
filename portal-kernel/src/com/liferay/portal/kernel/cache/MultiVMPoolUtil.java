@@ -106,7 +106,7 @@ public class MultiVMPoolUtil {
 	}
 
 	private static volatile MultiVMPool _multiVMPool =
-		ProxyFactory.newServiceTrackedInstance(
+		ProxyFactory.newServiceTrackedInstanceWithoutDummyService(
 			MultiVMPool.class, MultiVMPoolUtil.class, "_multiVMPool");
 
 }
