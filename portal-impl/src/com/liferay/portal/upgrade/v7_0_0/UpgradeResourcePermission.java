@@ -148,9 +148,8 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 
 	private void _upgradePrimKeyIdIndividual(String name) throws Exception {
 		String sql =
-			"select resourcePermissionId, primKey, primKeyId from " +
-			"ResourcePermission where primKeyId = 0 and " +
-			_getNameAndPrimKeyNumericLikeClause();
+			"select resourcePermissionId, actionIds, primKey, primKeyId from " +
+			"ResourcePermission where name = ? ";
 
 		try (LoggingTimer loggingTimer = new LoggingTimer(name);
 			PreparedStatement ps = connection.prepareStatement(
@@ -160,10 +159,19 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 
 			try (ResultSet rs = ps.executeQuery()) {
 				while (rs.next()) {
-					long newPrimKeyId = GetterUtil.getLong(
-						rs.getString("primKey"));
+					long actionIds = rs.getLong("actionIds");
 
-					if (newPrimKeyId == 0) {
+					String primKey = rs.getString("primKey");
+
+					long newPrimKeyId = GetterUtil.getLong(primKey);
+
+					long primKeyId = rs.getLong("primKeyId");
+
+					if (primKeyId == newPrimKeyId) {
+						continue;
+					}
+
+					if ((newPrimKeyId == 0) && !((actionIds % 2) == 1)) {
 						continue;
 					}
 
