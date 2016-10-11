@@ -20,7 +20,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LoggingTimer;
-import com.liferay.portal.kernel.util.StringBundler;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -56,38 +55,6 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 		_upgradeViewActionId();
 	}
 
-	private String _getNameAndPrimKeyNumericLikeClause() {
-		StringBundler sb = new StringBundler(81);
-
-		sb.append("((name = ?) and (");
-
-		for (int i = 0; i <= 9; i++) {
-			sb.append("primKey like '");
-			sb.append(i);
-			sb.append("%'");
-
-			if (i < 9) {
-				sb.append(" or ");
-			}
-		}
-
-		sb.append(") and (");
-
-		for (int i = 0; i <= 9; i++) {
-			sb.append("primKey like '%");
-			sb.append(i);
-			sb.append("'");
-
-			if (i < 9) {
-				sb.append(" or ");
-			}
-		}
-
-		sb.append("))");
-
-		return sb.toString();
-	}
-
 	private List<String> _getNames() throws Exception {
 		List<String> names = new ArrayList<>();
 
@@ -112,8 +79,7 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 
 			String updateSQL =
 				"update ResourcePermission set primKeyId = " +
-					"CAST_LONG(primKey) where " +
-						_getNameAndPrimKeyNumericLikeClause();
+					"CAST_LONG(primKey) where name = ?";
 
 			updateSQL = SQLTransformer.transform(updateSQL);
 
