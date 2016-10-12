@@ -45,7 +45,6 @@ import com.liferay.portal.kernel.xmlrpc.Response;
 import com.liferay.portal.kernel.xmlrpc.XmlRpcConstants;
 import com.liferay.portal.kernel.xmlrpc.XmlRpcUtil;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.portlet.blogs.pingback.DisabledPingbackException;
 import com.liferay.portlet.blogs.pingback.InvalidSourceURIException;
 import com.liferay.portlet.blogs.pingback.UnavailableSourceURIException;
 
@@ -107,10 +106,6 @@ public class PingbackMethodImpl implements Method {
 			return XmlRpcUtil.createFault(
 				SOURCE_URI_INVALID, isurie.getMessage());
 		}
-		catch (DisabledPingbackException dpe) {
-			return XmlRpcUtil.createFault(
-				XmlRpcConstants.REQUESTED_METHOD_NOT_FOUND, dpe.getMessage());
-		}
 		catch (UnavailableSourceURIException usurie) {
 			return XmlRpcUtil.createFault(
 				SOURCE_URI_DOES_NOT_EXIST, usurie.getMessage());
@@ -154,7 +149,9 @@ public class PingbackMethodImpl implements Method {
 
 	protected Response addPingback(long companyId) throws Exception {
 		if (!PropsValues.BLOGS_PINGBACK_ENABLED) {
-			throw new DisabledPingbackException("Pingbacks are disabled");
+			return XmlRpcUtil.createFault(
+				XmlRpcConstants.REQUESTED_METHOD_NOT_FOUND,
+				"Pingbacks are disabled");
 		}
 
 		Response response = validateSource();
@@ -168,7 +165,9 @@ public class PingbackMethodImpl implements Method {
 		if (!entry.isAllowPingbacks() ||
 			Validator.isNull(entry.getUrlTitle())) {
 
-			throw new DisabledPingbackException("Pingbacks are disabled");
+			return XmlRpcUtil.createFault(
+				XmlRpcConstants.REQUESTED_METHOD_NOT_FOUND,
+				"Pingbacks are disabled");
 		}
 
 		long userId = _userLocalService.getDefaultUserId(companyId);
