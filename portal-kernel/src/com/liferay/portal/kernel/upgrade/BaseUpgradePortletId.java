@@ -228,16 +228,21 @@ public abstract class BaseUpgradePortletId extends UpgradeProcess {
 			String oldRootPortletId, String newRootPortletId)
 		throws Exception {
 
-		String sql =
-			"update PortletPreferences set portletId = '" + newRootPortletId +
-				"' where portletId = '" +
-				oldRootPortletId + "'";
+		StringBundler sb = new StringBundler(5);
 
-		try (PreparedStatement ps = connection.prepareStatement(sql)) {
+		sb.append("update PortletPreferences set portletId = '");
+		sb.append(newRootPortletId);
+		sb.append("' where portletId = '");
+		sb.append(oldRootPortletId);
+		sb.append(StringPool.APOSTROPHE);
+
+		try (PreparedStatement ps = connection.prepareStatement(
+				sb.toString())) {
+
 			ps.executeUpdate();
 		}
 
-		StringBundler sb = new StringBundler(8);
+		sb = new StringBundler(8);
 
 		sb.append("select portletPreferencesId, portletId from ");
 		sb.append("PortletPreferences where portletId like '");
