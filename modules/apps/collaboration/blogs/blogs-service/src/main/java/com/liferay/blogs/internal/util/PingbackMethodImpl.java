@@ -90,7 +90,11 @@ public class PingbackMethodImpl implements Method {
 	@Override
 	public Response execute(long companyId) {
 		try {
-			addPingback(companyId);
+			Response response = addPingback(companyId);
+
+			if (response != null) {
+				return response;
+			}
 
 			return XmlRpcUtil.createSuccess("Pingback accepted");
 		}
@@ -148,12 +152,16 @@ public class PingbackMethodImpl implements Method {
 		}
 	}
 
-	protected void addPingback(long companyId) throws Exception {
+	protected Response addPingback(long companyId) throws Exception {
 		if (!PropsValues.BLOGS_PINGBACK_ENABLED) {
 			throw new DisabledPingbackException("Pingbacks are disabled");
 		}
 
-		validateSource();
+		Response response = validateSource();
+
+		if (response != null) {
+			return response;
+		}
 
 		BlogsEntry entry = getBlogsEntry(companyId);
 
@@ -179,6 +187,8 @@ public class PingbackMethodImpl implements Method {
 		_commentManager.addComment(
 			userId, groupId, className, classPK, body,
 			new IdentityServiceContextFunction(serviceContext));
+
+		return null;
 	}
 
 	protected ServiceContext buildServiceContext(
@@ -358,7 +368,7 @@ public class PingbackMethodImpl implements Method {
 		_userLocalService = userLocalService;
 	}
 
-	protected void validateSource() throws Exception {
+	protected Response validateSource() throws Exception {
 		Source source = null;
 
 		try {
@@ -382,7 +392,7 @@ public class PingbackMethodImpl implements Method {
 				startTag.getAttributeValue("href"));
 
 			if (href.equals(_targetURI)) {
-				return;
+				return null;
 			}
 		}
 
