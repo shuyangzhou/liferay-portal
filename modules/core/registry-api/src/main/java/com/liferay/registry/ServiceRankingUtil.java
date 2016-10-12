@@ -14,7 +14,9 @@
 
 package com.liferay.registry;
 
+import java.util.Collection;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
@@ -52,6 +54,28 @@ public class ServiceRankingUtil {
 
 		return stream.max(
 			Comparator.comparing(Entry::getKey, ServiceRankingUtil::compare));
+	}
+
+	public static <S> ServiceReference<S> getHighestRankingServiceReference(
+		Collection<ServiceReference<S>> serviceReferences) {
+
+		if ((serviceReferences == null) || serviceReferences.isEmpty()) {
+			return null;
+		}
+
+		Iterator<ServiceReference<S>> itr = serviceReferences.iterator();
+
+		ServiceReference<S> serviceReference = itr.next();
+
+		while (itr.hasNext()) {
+			ServiceReference<S> next = itr.next();
+
+			if (compare(serviceReference, next) < 0) {
+				serviceReference = next;
+			}
+		}
+
+		return serviceReference;
 	}
 
 	private static int _getServiceRanking(
