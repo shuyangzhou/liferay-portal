@@ -45,7 +45,6 @@ import com.liferay.portal.kernel.xmlrpc.Response;
 import com.liferay.portal.kernel.xmlrpc.XmlRpcConstants;
 import com.liferay.portal.kernel.xmlrpc.XmlRpcUtil;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.portlet.blogs.pingback.InvalidSourceURIException;
 import com.liferay.portlet.blogs.pingback.UnavailableSourceURIException;
 
 import java.io.IOException;
@@ -101,10 +100,6 @@ public class PingbackMethodImpl implements Method {
 			return XmlRpcUtil.createFault(
 				PINGBACK_ALREADY_REGISTERED,
 				"Pingback is already registered: " + dce.getMessage());
-		}
-		catch (InvalidSourceURIException isurie) {
-			return XmlRpcUtil.createFault(
-				SOURCE_URI_INVALID, isurie.getMessage());
 		}
 		catch (UnavailableSourceURIException usurie) {
 			return XmlRpcUtil.createFault(
@@ -395,8 +390,8 @@ public class PingbackMethodImpl implements Method {
 			}
 		}
 
-		throw new InvalidSourceURIException(
-			"Unable to find target URI in source");
+		return XmlRpcUtil.createFault(
+			SOURCE_URI_INVALID, "Unable to find target URI in source");
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
