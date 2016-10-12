@@ -14,15 +14,12 @@
 
 package com.liferay.portal.words;
 
-import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
+import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
 import com.liferay.portal.kernel.jazzy.InvalidWord;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.SecureRandomUtil;
-import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.words.Words;
-import com.liferay.util.ContentUtil;
 
 import com.swabunga.spell.engine.SpellDictionaryHashMap;
 import com.swabunga.spell.event.DefaultWordFinder;
@@ -30,7 +27,10 @@ import com.swabunga.spell.event.SpellChecker;
 import com.swabunga.spell.event.StringWordTokenizer;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -61,10 +61,26 @@ public class WordsImpl implements Words {
 	@Override
 	public List<String> getDictionaryList() {
 		if (_dictionaryList == null) {
-			_dictionaryList = ListUtil.fromArray(
-				StringUtil.splitLines(
-					ContentUtil.get(
-						"com/liferay/portal/words/dependencies/words.txt")));
+			ClassLoader classLoader = WordsImpl.class.getClassLoader();
+
+			List<String> dictionaryList = new ArrayList<>();
+
+			try (InputStream is = classLoader.getResourceAsStream(
+					"com/liferay/portal/words/dependencies/words.txt");
+				UnsyncBufferedReader unsyncBufferedReader =
+					new UnsyncBufferedReader(new InputStreamReader(is))) {
+
+				String line = null;
+
+				while ((line = unsyncBufferedReader.readLine()) != null) {
+					dictionaryList.add(line);
+				}
+			}
+			catch (IOException ioe) {
+				_log.error(ioe, ioe);
+			}
+
+			_dictionaryList = dictionaryList;
 		}
 
 		return _dictionaryList;
@@ -103,7 +119,8 @@ public class WordsImpl implements Words {
 		}
 
 		try {
-			_spellDictionaryHashMap = new SpellDictionaryHashMap();
+			SpellDictionaryHashMap spellDictionaryHashMap =
+				new SpellDictionaryHashMap();
 
 			String[] dics = new String[] {
 				"center.dic", "centre.dic", "color.dic", "colour.dic",
@@ -111,13 +128,22 @@ public class WordsImpl implements Words {
 				"labeled.dic", "labelled.dic", "yse.dic", "yze.dic"
 			};
 
-			for (int i = 0; i < dics.length; i++) {
-				_spellDictionaryHashMap.addDictionary(
-					new UnsyncStringReader(
-						ContentUtil.get(
-							"com/liferay/portal/words/dependencies/" +
-								dics[i])));
+			ClassLoader classLoader = WordsImpl.class.getClassLoader();
+
+			for (String dic : dics) {
+				try (InputStream is = classLoader.getResourceAsStream(
+						"com/liferay/portal/words/dependencies/" + dic);
+					UnsyncBufferedReader unsyncBufferedReader =
+						new UnsyncBufferedReader(new InputStreamReader(is))) {
+
+					spellDictionaryHashMap.addDictionary(unsyncBufferedReader);
+				}
+				catch (IOException ioe) {
+					_log.error(ioe, ioe);
+				}
 			}
+
+			_spellDictionaryHashMap = spellDictionaryHashMap;
 		}
 		catch (IOException ioe) {
 			_log.error(ioe);
@@ -128,8 +154,8 @@ public class WordsImpl implements Words {
 
 	private static final Log _log = LogFactoryUtil.getLog(WordsImpl.class);
 
-	private List<String> _dictionaryList;
-	private Set<String> _dictionarySet;
-	private SpellDictionaryHashMap _spellDictionaryHashMap;
+	private volatile List<String> _dictionaryList;
+	private volatile Set<String> _dictionarySet;
+	private volatile SpellDictionaryHashMap _spellDictionaryHashMap;
 
 }
