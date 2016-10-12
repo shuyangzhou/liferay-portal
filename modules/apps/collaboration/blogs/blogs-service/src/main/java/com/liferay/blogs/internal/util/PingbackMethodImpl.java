@@ -148,7 +148,7 @@ public class PingbackMethodImpl implements Method {
 		}
 	}
 
-	protected long addPingback(long companyId) throws Exception {
+	protected void addPingback(long companyId) throws Exception {
 		if (!PropsValues.BLOGS_PINGBACK_ENABLED) {
 			throw new DisabledPingbackException("Pingbacks are disabled");
 		}
@@ -176,7 +176,7 @@ public class PingbackMethodImpl implements Method {
 		ServiceContext serviceContext = buildServiceContext(
 			companyId, groupId, entry.getUrlTitle());
 
-		return _commentManager.addComment(
+		_commentManager.addComment(
 			userId, groupId, className, classPK, body,
 			new IdentityServiceContextFunction(serviceContext));
 	}
