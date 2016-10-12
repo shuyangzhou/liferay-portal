@@ -37,7 +37,6 @@ import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.PortalPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.test.IdempotentRetryAssert;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.rule.Sync;
@@ -49,6 +48,7 @@ import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.PortalRunMode;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.StringPool;
@@ -59,8 +59,6 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -86,6 +84,10 @@ public class JournalIndexerTest {
 
 	@Before
 	public void setUp() throws Exception {
+		_testMode = PortalRunMode.isTestMode();
+
+		PortalRunMode.setTestMode(true);
+
 		_group = GroupTestUtil.addGroup();
 
 		CompanyThreadLocal.setCompanyId(TestPropsValues.getCompanyId());
@@ -117,6 +119,8 @@ public class JournalIndexerTest {
 
 	@After
 	public void tearDown() throws Exception {
+		PortalRunMode.setTestMode(_testMode);
+
 		PortalPreferencesLocalServiceUtil.updatePreferences(
 			TestPropsValues.getCompanyId(),
 			PortletKeys.PREFS_OWNER_TYPE_COMPANY,
@@ -582,21 +586,9 @@ public class JournalIndexerTest {
 			final int status, final SearchContext searchContext)
 		throws Exception {
 
-		IdempotentRetryAssert.retryAssert(
-			3, TimeUnit.SECONDS,
-			new Callable<Void>() {
+		int actualCount = searchCount(groupId, head, status, searchContext);
 
-				@Override
-				public Void call() throws Exception {
-					int actualCount = searchCount(
-						groupId, head, status, searchContext);
-
-					Assert.assertEquals(expectedCount, actualCount);
-
-					return null;
-				}
-
-			});
+		Assert.assertEquals(expectedCount, actualCount);
 	}
 
 	protected void assertSearchCount(
@@ -604,20 +596,9 @@ public class JournalIndexerTest {
 			final SearchContext searchContext)
 		throws Exception {
 
-		IdempotentRetryAssert.retryAssert(
-			10, TimeUnit.SECONDS,
-			new Callable<Void>() {
+		int actualCount = searchCount(groupId, searchContext);
 
-				@Override
-				public Void call() throws Exception {
-					int actualCount = searchCount(groupId, searchContext);
-
-					Assert.assertEquals(expectedCount, actualCount);
-
-					return null;
-				}
-
-			});
+		Assert.assertEquals(expectedCount, actualCount);
 	}
 
 	protected void indexVersions(boolean delete, boolean all) throws Exception {
@@ -862,5 +843,6 @@ public class JournalIndexerTest {
 	private Group _group;
 
 	private String _originalPortalPreferencesXML;
+	private boolean _testMode;
 
 }

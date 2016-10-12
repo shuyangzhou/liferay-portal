@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.SearchContext;
-import com.liferay.portal.kernel.test.IdempotentRetryAssert;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.rule.Sync;
@@ -35,15 +34,14 @@ import com.liferay.portal.kernel.test.util.SearchContextTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.PortalRunMode;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portlet.asset.service.persistence.test.AssetEntryQueryTestUtil;
 import com.liferay.portlet.asset.util.AssetUtil;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
-
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -67,9 +65,18 @@ public class JournalArticleIndexableTest {
 
 	@Before
 	public void setUp() throws Exception {
+		_testMode = PortalRunMode.isTestMode();
+
+		PortalRunMode.setTestMode(true);
+
 		_group = GroupTestUtil.addGroup();
 
 		ServiceTestUtil.setUser(TestPropsValues.getUser());
+	}
+
+	@After
+	public void tearDown() {
+		PortalRunMode.setTestMode(_testMode);
 	}
 
 	@Test
@@ -128,22 +135,11 @@ public class JournalArticleIndexableTest {
 			final SearchContext searchContext)
 		throws Exception {
 
-		IdempotentRetryAssert.retryAssert(
-			3, TimeUnit.SECONDS,
-			new Callable<Void>() {
+		int actualCount = searchCount(
+			assetEntryQuery, searchContext, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS);
 
-				@Override
-				public Void call() throws Exception {
-					int actualCount = searchCount(
-						assetEntryQuery, searchContext, QueryUtil.ALL_POS,
-						QueryUtil.ALL_POS);
-
-					Assert.assertEquals(expectedCount, actualCount);
-
-					return null;
-				}
-
-			});
+		Assert.assertEquals(expectedCount, actualCount);
 	}
 
 	protected int searchCount(
@@ -159,5 +155,7 @@ public class JournalArticleIndexableTest {
 
 	@DeleteAfterTestRun
 	private Group _group;
+
+	private boolean _testMode;
 
 }

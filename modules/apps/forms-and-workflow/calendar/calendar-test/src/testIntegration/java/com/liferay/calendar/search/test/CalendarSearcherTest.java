@@ -31,7 +31,6 @@ import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.test.IdempotentRetryAssert;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.rule.Sync;
@@ -42,6 +41,7 @@ import com.liferay.portal.kernel.test.util.SearchContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.PortalRunMode;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.security.permission.SimplePermissionChecker;
@@ -50,8 +50,6 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -78,6 +76,10 @@ public class CalendarSearcherTest {
 
 	@Before
 	public void setUp() throws Exception {
+		_testMode = PortalRunMode.isTestMode();
+
+		PortalRunMode.setTestMode(true);
+
 		setUpPermissionThreadLocal();
 		setUpPrincipalThreadLocal();
 
@@ -89,6 +91,8 @@ public class CalendarSearcherTest {
 
 	@After
 	public void tearDown() {
+		PortalRunMode.setTestMode(_testMode);
+
 		PermissionThreadLocal.setPermissionChecker(_originalPermissionChecker);
 
 		PrincipalThreadLocal.setName(_originalName);
@@ -261,25 +265,13 @@ public class CalendarSearcherTest {
 	protected void assertSearch(final String keywords, final int length)
 		throws Exception {
 
-		IdempotentRetryAssert.retryAssert(
-			3, TimeUnit.SECONDS,
-			new Callable<Void>() {
+		_searchContext.setKeywords(StringUtil.toLowerCase(keywords));
 
-				@Override
-				public Void call() throws Exception {
-					_searchContext.setKeywords(
-						StringUtil.toLowerCase(keywords));
+		Indexer<?> indexer = CalendarSearcher.getInstance();
 
-					Indexer<?> indexer = CalendarSearcher.getInstance();
+		Hits hits = indexer.search(_searchContext);
 
-					Hits hits = indexer.search(_searchContext);
-
-					Assert.assertEquals(length, hits.getLength());
-
-					return null;
-				}
-
-			});
+		Assert.assertEquals(length, hits.getLength());
 	}
 
 	protected boolean isExactPhraseQueryImplementedForSearchEngine() {
@@ -328,6 +320,7 @@ public class CalendarSearcherTest {
 	private String _originalName;
 	private PermissionChecker _originalPermissionChecker;
 	private SearchContext _searchContext;
+	private boolean _testMode;
 
 	@DeleteAfterTestRun
 	private User _user;

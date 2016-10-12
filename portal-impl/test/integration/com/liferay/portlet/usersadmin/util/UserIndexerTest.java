@@ -22,24 +22,25 @@ import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserServiceUtil;
-import com.liferay.portal.kernel.test.IdempotentRetryAssert;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
+import com.liferay.portal.kernel.test.rule.Sync;
+import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.SearchContextTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.PortalRunMode;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -49,18 +50,30 @@ import org.junit.Test;
 /**
  * @author André de Oliveira
  */
+@Sync
 public class UserIndexerTest {
 
 	@ClassRule
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
-		new LiferayIntegrationTestRule();
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(),
+			SynchronousDestinationTestRule.INSTANCE);
 
 	@Before
 	public void setUp() throws Exception {
+		_testMode = PortalRunMode.isTestMode();
+
+		PortalRunMode.setTestMode(true);
+
 		_indexer = new UserIndexer();
 
 		_serviceContext = ServiceContextTestUtil.getServiceContext();
+	}
+
+	@After
+	public void tearDown() {
+		PortalRunMode.setTestMode(_testMode);
 	}
 
 	@Test
@@ -326,20 +339,11 @@ public class UserIndexerTest {
 			final SearchContext searchContext, final int length)
 		throws Exception {
 
-		return IdempotentRetryAssert.retryAssert(
-			3, TimeUnit.SECONDS,
-			new Callable<Hits>() {
+		Hits hits = _indexer.search(searchContext);
 
-				@Override
-				public Hits call() throws Exception {
-					Hits hits = _indexer.search(searchContext);
+		Assert.assertEquals(length, hits.getLength());
 
-					Assert.assertEquals(length, hits.getLength());
-
-					return hits;
-				}
-
-			});
+		return hits;
 	}
 
 	protected Hits assertHits(String keywords, int length) throws Exception {
@@ -401,6 +405,7 @@ public class UserIndexerTest {
 
 	private Indexer<User> _indexer;
 	private ServiceContext _serviceContext;
+	private boolean _testMode;
 
 	@DeleteAfterTestRun
 	private final List<User> _users = new ArrayList<>();

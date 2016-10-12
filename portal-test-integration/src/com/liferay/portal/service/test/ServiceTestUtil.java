@@ -46,6 +46,7 @@ import com.liferay.portal.kernel.test.util.RoleTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
+import com.liferay.portal.kernel.util.PortalRunMode;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.ReflectionUtil;
@@ -264,6 +265,8 @@ public class ServiceTestUtil {
 		}
 
 		// Shutdown
+
+		PortalRunMode.setTestMode(true);
 
 		Registry registry = RegistryUtil.getRegistry();
 

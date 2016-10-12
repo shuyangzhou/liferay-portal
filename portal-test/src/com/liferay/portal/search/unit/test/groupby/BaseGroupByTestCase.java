@@ -19,19 +19,31 @@ import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.GroupBy;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.SearchContext;
-import com.liferay.portal.kernel.test.IdempotentRetryAssert;
+import com.liferay.portal.kernel.util.PortalRunMode;
 import com.liferay.portal.search.unit.test.BaseIndexingTestCase;
 
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 
 /**
  * @author Miguel Angelo Caldas Gallindo
  */
 public abstract class BaseGroupByTestCase extends BaseIndexingTestCase {
+
+	@Before
+	public void setUp() {
+		_testMode = PortalRunMode.isTestMode();
+
+		PortalRunMode.setTestMode(true);
+	}
+
+	@After
+	public void tearDown() {
+		PortalRunMode.setTestMode(_testMode);
+	}
 
 	protected void addDocuments(final String name, int count) throws Exception {
 		final String field = GROUP_FIELD;
@@ -86,86 +98,52 @@ public abstract class BaseGroupByTestCase extends BaseIndexingTestCase {
 		addDocuments("three", 3);
 		addDocuments("two", 2);
 
-		IdempotentRetryAssert.retryAssert(
-			3, TimeUnit.SECONDS,
-			new Callable<Void>() {
+		SearchContext searchContext = createSearchContext();
 
-				@Override
-				public Void call() throws Exception {
-					SearchContext searchContext = createSearchContext();
+		searchContext.setGroupBy(new GroupBy(GROUP_FIELD));
 
-					searchContext.setGroupBy(new GroupBy(GROUP_FIELD));
+		Map<String, Hits> groupedHitsMap = searchGroups(searchContext);
 
-					Map<String, Hits> groupedHitsMap = searchGroups(
-						searchContext);
+		Assert.assertEquals(3, groupedHitsMap.size());
 
-					Assert.assertEquals(3, groupedHitsMap.size());
-
-					assertGroup("sixteen", 16, groupedHitsMap);
-					assertGroup("three", 3, groupedHitsMap);
-					assertGroup("two", 2, groupedHitsMap);
-
-					return null;
-				}
-
-			});
+		assertGroup("sixteen", 16, groupedHitsMap);
+		assertGroup("three", 3, groupedHitsMap);
+		assertGroup("two", 2, groupedHitsMap);
 	}
 
 	protected void testStartAndEnd() throws Exception {
 		addDocuments("sixteen", 16);
 
-		IdempotentRetryAssert.retryAssert(
-			3, TimeUnit.SECONDS,
-			new Callable<Void>() {
+		SearchContext searchContext = createSearchContext();
 
-				@Override
-				public Void call() throws Exception {
-					SearchContext searchContext = createSearchContext();
+		searchContext.setEnd(9);
+		searchContext.setGroupBy(new GroupBy(GROUP_FIELD));
+		searchContext.setStart(4);
 
-					searchContext.setEnd(9);
-					searchContext.setGroupBy(new GroupBy(GROUP_FIELD));
-					searchContext.setStart(4);
+		Map<String, Hits> groupedHitsMap = searchGroups(searchContext);
 
-					Map<String, Hits> groupedHitsMap = searchGroups(
-						searchContext);
-
-					assertGroup("sixteen", 16, 6, groupedHitsMap);
-
-					return null;
-				}
-
-			});
+		assertGroup("sixteen", 16, 6, groupedHitsMap);
 	}
 
 	protected void testStartAndSize() throws Exception {
 		addDocuments("sixteen", 16);
 
-		IdempotentRetryAssert.retryAssert(
-			3, TimeUnit.SECONDS,
-			new Callable<Void>() {
+		SearchContext searchContext = createSearchContext();
 
-				@Override
-				public Void call() throws Exception {
-					SearchContext searchContext = createSearchContext();
+		GroupBy groupBy = new GroupBy(GROUP_FIELD);
 
-					GroupBy groupBy = new GroupBy(GROUP_FIELD);
+		groupBy.setSize(3);
+		groupBy.setStart(8);
 
-					groupBy.setSize(3);
-					groupBy.setStart(8);
+		searchContext.setGroupBy(groupBy);
 
-					searchContext.setGroupBy(groupBy);
+		Map<String, Hits> groupedHitsMap = searchGroups(searchContext);
 
-					Map<String, Hits> groupedHitsMap = searchGroups(
-						searchContext);
-
-					assertGroup("sixteen", 16, 3, groupedHitsMap);
-
-					return null;
-				}
-
-			});
+		assertGroup("sixteen", 16, 3, groupedHitsMap);
 	}
 
 	protected static final String GROUP_FIELD = Field.USER_NAME;
+
+	private boolean _testMode;
 
 }

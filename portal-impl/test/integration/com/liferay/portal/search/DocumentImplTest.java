@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.search.QueryConfig;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.SortFactoryUtil;
-import com.liferay.portal.kernel.test.IdempotentRetryAssert;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.rule.Sync;
@@ -39,6 +38,7 @@ import com.liferay.portal.kernel.test.util.SearchContextTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.PortalRunMode;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -49,8 +49,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -74,6 +72,10 @@ public class DocumentImplTest {
 
 	@Before
 	public void setUp() throws Exception {
+		_testMode = PortalRunMode.isTestMode();
+
+		PortalRunMode.setTestMode(true);
+
 		_group = GroupTestUtil.addGroup();
 
 		_indexer = IndexerRegistryUtil.getIndexer(User.class);
@@ -119,6 +121,8 @@ public class DocumentImplTest {
 
 	@After
 	public void tearDown() throws Exception {
+		PortalRunMode.setTestMode(_testMode);
+
 		_indexer.unregisterIndexerPostProcessor(_indexerPostProcessor);
 	}
 
@@ -337,18 +341,7 @@ public class DocumentImplTest {
 
 		final Query query = _indexer.getFullQuery(searchContext);
 
-		IdempotentRetryAssert.retryAssert(
-			10, TimeUnit.SECONDS,
-			new Callable<Void>() {
-
-				@Override
-				public Void call() throws Exception {
-					assertSort(sort, query, searchContext, screenNames);
-
-					return null;
-				}
-
-			});
+		assertSort(sort, query, searchContext, screenNames);
 	}
 
 	protected void checkSearchContext(
@@ -557,5 +550,6 @@ public class DocumentImplTest {
 	private final Map<String, Integer> _integers = new HashMap<>();
 	private final Map<String, Long[]> _longArrays = new HashMap<>();
 	private final Map<String, Long> _longs = new HashMap<>();
+	private boolean _testMode;
 
 }

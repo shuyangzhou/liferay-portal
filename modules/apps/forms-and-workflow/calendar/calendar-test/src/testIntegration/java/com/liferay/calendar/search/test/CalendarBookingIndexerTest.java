@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.test.IdempotentRetryAssert;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.rule.Sync;
@@ -45,6 +44,7 @@ import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.PortalRunMode;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
@@ -54,8 +54,6 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -81,6 +79,10 @@ public class CalendarBookingIndexerTest {
 
 	@Before
 	public void setUp() throws Exception {
+		_testMode = PortalRunMode.isTestMode();
+
+		PortalRunMode.setTestMode(true);
+
 		setUpPermissionThreadLocal();
 		setUpPrincipalThreadLocal();
 
@@ -92,6 +94,8 @@ public class CalendarBookingIndexerTest {
 
 	@After
 	public void tearDown() {
+		PortalRunMode.setTestMode(_testMode);
+
 		PermissionThreadLocal.setPermissionChecker(_originalPermissionChecker);
 
 		PrincipalThreadLocal.setName(_originalName);
@@ -166,26 +170,13 @@ public class CalendarBookingIndexerTest {
 			final String keywords, final int expectedLength)
 		throws Exception {
 
-		IdempotentRetryAssert.retryAssert(
-			3, TimeUnit.SECONDS,
-			new Callable<Void>() {
+		_searchContext.setKeywords(StringUtil.toLowerCase(keywords));
 
-				@Override
-				public Void call() throws Exception {
-					_searchContext.setKeywords(
-						StringUtil.toLowerCase(keywords));
+		Indexer<CalendarBooking> indexer = new CalendarBookingIndexer();
 
-					Indexer<CalendarBooking> indexer =
-						new CalendarBookingIndexer();
+		Hits hits = indexer.search(_searchContext);
 
-					Hits hits = indexer.search(_searchContext);
-
-					Assert.assertEquals(expectedLength, hits.getLength());
-
-					return null;
-				}
-
-			});
+		Assert.assertEquals(expectedLength, hits.getLength());
 	}
 
 	protected void setUpPermissionThreadLocal() throws Exception {
@@ -225,6 +216,7 @@ public class CalendarBookingIndexerTest {
 	private String _originalName;
 	private PermissionChecker _originalPermissionChecker;
 	private SearchContext _searchContext;
+	private boolean _testMode;
 
 	@DeleteAfterTestRun
 	private User _user;
