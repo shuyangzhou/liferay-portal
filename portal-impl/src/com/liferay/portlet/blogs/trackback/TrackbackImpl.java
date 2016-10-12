@@ -34,7 +34,9 @@ import com.liferay.portlet.blogs.linkback.LinkbackConsumerUtil;
 /**
  * @author Alexander Chow
  * @author André de Oliveira
+ * @deprecated As of 7.0.0, with no direct replacement
  */
+@Deprecated
 public class TrackbackImpl implements Trackback {
 
 	@Override
