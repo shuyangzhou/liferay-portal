@@ -45,7 +45,6 @@ import com.liferay.portal.kernel.xmlrpc.Response;
 import com.liferay.portal.kernel.xmlrpc.XmlRpcConstants;
 import com.liferay.portal.kernel.xmlrpc.XmlRpcUtil;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.portlet.blogs.pingback.UnavailableSourceURIException;
 
 import java.io.IOException;
 
@@ -100,10 +99,6 @@ public class PingbackMethodImpl implements Method {
 			return XmlRpcUtil.createFault(
 				PINGBACK_ALREADY_REGISTERED,
 				"Pingback is already registered: " + dce.getMessage());
-		}
-		catch (UnavailableSourceURIException usurie) {
-			return XmlRpcUtil.createFault(
-				SOURCE_URI_DOES_NOT_EXIST, usurie.getMessage());
 		}
 		catch (Exception e) {
 			if (_log.isDebugEnabled()) {
@@ -375,8 +370,8 @@ public class PingbackMethodImpl implements Method {
 				_log.debug(e, e);
 			}
 
-			throw new UnavailableSourceURIException(
-				"Error accessing source URI", e);
+			return XmlRpcUtil.createFault(
+				SOURCE_URI_DOES_NOT_EXIST, "Error accessing source URI");
 		}
 
 		List<StartTag> startTags = source.getAllStartTags("a");
