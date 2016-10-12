@@ -19,9 +19,7 @@ import com.liferay.blogs.kernel.model.BlogsEntry;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactory;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.Function;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -29,7 +27,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portlet.blogs.trackback.Trackback;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -138,15 +135,6 @@ public class TrackbackMVCActionCommandTest extends PowerMockito {
 		addTrackback();
 
 		assertSuccess();
-
-		Mockito.verify(
-			_trackback
-		).addTrackback(
-			Matchers.same(_blogsEntry), Matchers.same(_themeDisplay),
-			Matchers.eq("__excerpt__"), Matchers.eq("__url__"),
-			Matchers.eq("__blogName__"), Matchers.eq("__title__"),
-			(Function<String, ServiceContext>)Matchers.any()
-		);
 	}
 
 	@Test
@@ -166,7 +154,7 @@ public class TrackbackMVCActionCommandTest extends PowerMockito {
 
 	protected void addTrackback() throws Exception {
 		TrackbackMVCActionCommand trackbackMVCActionCommand =
-			new TrackbackMVCActionCommand(_trackback);
+			new TrackbackMVCActionCommand();
 
 		trackbackMVCActionCommand.addTrackback(_actionRequest, _actionResponse);
 	}
@@ -323,8 +311,5 @@ public class TrackbackMVCActionCommandTest extends PowerMockito {
 	private PortletPreferences _portletPreferences;
 
 	private final ThemeDisplay _themeDisplay = new ThemeDisplay();
-
-	@Mock
-	private Trackback _trackback;
 
 }
