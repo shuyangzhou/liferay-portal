@@ -1,3 +1,46 @@
 <?xml version="1.0"?>
 
-<model-hints></model-hints>
+<model-hints>
+	<model name="com.liferay.blogs.model.BlogsEntry">
+		<field name="uuid" type="String" />
+		<field name="entryId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="title" type="String" />
+		<field name="subtitle" type="String" />
+		<field name="urlTitle" type="String" />
+		<field name="description" type="String" />
+		<field name="content" type="String" />
+		<field name="displayDate" type="Date" />
+		<field name="allowPingbacks" type="boolean" />
+		<field name="allowTrackbacks" type="boolean" />
+		<field name="trackbacks" type="String" />
+		<field name="coverImageCaption" type="String" />
+		<field name="coverImageFileEntryId" type="long" />
+		<field name="coverImageURL" type="String" />
+		<field name="smallImage" type="boolean" />
+		<field name="smallImageFileEntryId" type="long" />
+		<field name="smallImageId" type="long" />
+		<field name="smallImageURL" type="String" />
+		<field name="lastPublishDate" type="Date" />
+		<field name="status" type="int" />
+		<field name="statusByUserId" type="long" />
+		<field name="statusByUserName" type="String" />
+		<field name="statusDate" type="Date" />
+	</model>
+	<model name="com.liferay.blogs.model.BlogsStatsUser">
+		<field name="statsUserId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="entryCount" type="int" />
+		<field name="lastPostDate" type="Date" />
+		<field name="ratingsTotalEntries" type="int" />
+		<field name="ratingsTotalScore" type="double" />
+		<field name="ratingsAverageScore" type="double" />
+	</model>
+</model-hints>

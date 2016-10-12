@@ -25,7 +25,7 @@ import com.liferay.blogs.kernel.exception.EntrySmallImageNameException;
 import com.liferay.blogs.kernel.exception.EntrySmallImageScaleException;
 import com.liferay.blogs.kernel.exception.EntryTitleException;
 import com.liferay.blogs.kernel.exception.NoSuchEntryException;
-import com.liferay.blogs.kernel.model.BlogsEntry;
+import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.blogs.service.BlogsEntryLocalService;
 import com.liferay.blogs.service.BlogsEntryService;
 import com.liferay.blogs.web.constants.BlogsPortletKeys;

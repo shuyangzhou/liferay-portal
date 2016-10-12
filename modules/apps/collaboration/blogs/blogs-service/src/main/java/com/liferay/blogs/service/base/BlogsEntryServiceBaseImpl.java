@@ -18,7 +18,10 @@ import com.liferay.asset.kernel.service.persistence.AssetEntryPersistence;
 import com.liferay.asset.kernel.service.persistence.AssetLinkPersistence;
 
 import com.liferay.blogs.kernel.service.persistence.BlogsStatsUserPersistence;
+import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.blogs.service.BlogsEntryService;
+import com.liferay.blogs.service.persistence.BlogsEntryFinder;
+import com.liferay.blogs.service.persistence.BlogsEntryPersistence;
 
 import com.liferay.expando.kernel.service.persistence.ExpandoRowPersistence;
 
@@ -38,7 +41,6 @@ import com.liferay.portal.kernel.service.persistence.PortletPreferencesPersisten
 import com.liferay.portal.kernel.service.persistence.SubscriptionPersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.service.persistence.WorkflowInstanceLinkPersistence;
-import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
@@ -103,6 +105,43 @@ public abstract class BlogsEntryServiceBaseImpl extends BaseServiceImpl
 	 */
 	public void setBlogsEntryService(BlogsEntryService blogsEntryService) {
 		this.blogsEntryService = blogsEntryService;
+	}
+
+	/**
+	 * Returns the blogs entry persistence.
+	 *
+	 * @return the blogs entry persistence
+	 */
+	public BlogsEntryPersistence getBlogsEntryPersistence() {
+		return blogsEntryPersistence;
+	}
+
+	/**
+	 * Sets the blogs entry persistence.
+	 *
+	 * @param blogsEntryPersistence the blogs entry persistence
+	 */
+	public void setBlogsEntryPersistence(
+		BlogsEntryPersistence blogsEntryPersistence) {
+		this.blogsEntryPersistence = blogsEntryPersistence;
+	}
+
+	/**
+	 * Returns the blogs entry finder.
+	 *
+	 * @return the blogs entry finder
+	 */
+	public BlogsEntryFinder getBlogsEntryFinder() {
+		return blogsEntryFinder;
+	}
+
+	/**
+	 * Sets the blogs entry finder.
+	 *
+	 * @param blogsEntryFinder the blogs entry finder
+	 */
+	public void setBlogsEntryFinder(BlogsEntryFinder blogsEntryFinder) {
+		this.blogsEntryFinder = blogsEntryFinder;
 	}
 
 	/**
@@ -839,6 +878,14 @@ public abstract class BlogsEntryServiceBaseImpl extends BaseServiceImpl
 		return BlogsEntryService.class.getName();
 	}
 
+	protected Class<?> getModelClass() {
+		return BlogsEntry.class;
+	}
+
+	protected String getModelClassName() {
+		return BlogsEntry.class.getName();
+	}
+
 	/**
 	 * Performs a SQL query.
 	 *
@@ -846,7 +893,7 @@ public abstract class BlogsEntryServiceBaseImpl extends BaseServiceImpl
 	 */
 	protected void runSQL(String sql) {
 		try {
-			DataSource dataSource = InfrastructureUtil.getDataSource();
+			DataSource dataSource = blogsEntryPersistence.getDataSource();
 
 			DB db = DBManagerUtil.getDB();
 
@@ -867,6 +914,10 @@ public abstract class BlogsEntryServiceBaseImpl extends BaseServiceImpl
 	protected com.liferay.blogs.service.BlogsEntryLocalService blogsEntryLocalService;
 	@BeanReference(type = BlogsEntryService.class)
 	protected BlogsEntryService blogsEntryService;
+	@BeanReference(type = BlogsEntryPersistence.class)
+	protected BlogsEntryPersistence blogsEntryPersistence;
+	@BeanReference(type = BlogsEntryFinder.class)
+	protected BlogsEntryFinder blogsEntryFinder;
 	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
 	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
 	@ServiceReference(type = com.liferay.portal.kernel.service.CompanyLocalService.class)

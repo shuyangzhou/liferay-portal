@@ -14,7 +14,7 @@
 
 package com.liferay.blogs.internal.atom;
 
-import com.liferay.blogs.kernel.model.BlogsEntry;
+import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.blogs.service.BlogsEntryService;
 import com.liferay.portal.atom.AtomPager;
 import com.liferay.portal.atom.AtomUtil;

@@ -1,7 +1,9 @@
 Bundle-Name: Liferay Blogs Service
 Bundle-SymbolicName: com.liferay.blogs.service
 Bundle-Version: 1.1.0
-Export-Package: com.liferay.blogs.service.permission
+Export-Package:\
+	com.liferay.blogs.service.permission,\
+	com.liferay.blogs.util.comparator
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Blogs
 Liferay-Service: true

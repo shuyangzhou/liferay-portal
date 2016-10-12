@@ -25,12 +25,10 @@ import com.liferay.blogs.kernel.exception.EntryDisplayDateException;
 import com.liferay.blogs.kernel.exception.EntrySmallImageNameException;
 import com.liferay.blogs.kernel.exception.EntrySmallImageScaleException;
 import com.liferay.blogs.kernel.exception.EntryTitleException;
-import com.liferay.blogs.kernel.model.BlogsEntry;
-import com.liferay.blogs.kernel.service.persistence.BlogsEntryFinder;
-import com.liferay.blogs.kernel.service.persistence.BlogsEntryPersistence;
-import com.liferay.blogs.kernel.util.comparator.EntryDisplayDateComparator;
-import com.liferay.blogs.kernel.util.comparator.EntryIdComparator;
+import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.blogs.service.base.BlogsEntryLocalServiceBaseImpl;
+import com.liferay.blogs.util.comparator.EntryDisplayDateComparator;
+import com.liferay.blogs.util.comparator.EntryIdComparator;
 import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.portal.kernel.comment.CommentManagerUtil;
@@ -74,7 +72,6 @@ import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
-import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -89,7 +86,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
-import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.util.LayoutURLUtil;
 import com.liferay.portal.util.PrefsPropsUtil;
 import com.liferay.portal.util.PropsValues;
@@ -695,42 +691,6 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 	}
 
 	@Override
-	public BlogsEntry fetchBlogsEntry(long entryId) {
-		return
-			com.liferay.blogs.kernel.service.BlogsEntryLocalServiceUtil.
-				fetchBlogsEntry(entryId);
-	}
-
-	@Override
-	public BlogsEntry fetchBlogsEntryByUuidAndGroupId(
-		String uuid, long groupId) {
-
-		return
-			com.liferay.blogs.kernel.service.BlogsEntryLocalServiceUtil.
-				fetchBlogsEntryByUuidAndGroupId(uuid, groupId);
-	}
-
-	@Override
-	public List<BlogsEntry> getBlogsEntriesByUuidAndCompanyId(
-		String uuid, long companyId, int start, int end,
-		OrderByComparator<BlogsEntry> orderByComparator) {
-
-		return
-			com.liferay.blogs.kernel.service.BlogsEntryLocalServiceUtil.
-				getBlogsEntriesByUuidAndCompanyId(
-					uuid, companyId, start, end, orderByComparator);
-	}
-
-	@Override
-	public BlogsEntry getBlogsEntryByUuidAndGroupId(String uuid, long groupId)
-		throws PortalException {
-
-		return
-			com.liferay.blogs.kernel.service.BlogsEntryLocalServiceUtil.
-				getBlogsEntryByUuidAndGroupId(uuid, groupId);
-	}
-
-	@Override
 	public List<BlogsEntry> getCompanyEntries(
 		long companyId, Date displayDate,
 		QueryDefinition<BlogsEntry> queryDefinition) {
@@ -1111,13 +1071,6 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 		assetLinkLocalService.updateLinks(
 			userId, assetEntry.getEntryId(), assetLinkEntryIds,
 			AssetLinkConstants.TYPE_RELATED);
-	}
-
-	@Override
-	public BlogsEntry updateBlogsEntry(BlogsEntry blogsEntry) {
-		return
-			com.liferay.blogs.kernel.service.BlogsEntryLocalServiceUtil.
-				updateBlogsEntry(blogsEntry);
 	}
 
 	@Override
@@ -2264,12 +2217,6 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 				"Content has more than " + contentMaxLength + " characters");
 		}
 	}
-
-	@ServiceReference(type = BlogsEntryFinder.class)
-	protected BlogsEntryFinder blogsEntryFinder;
-
-	@ServiceReference(type = BlogsEntryPersistence.class)
-	protected BlogsEntryPersistence blogsEntryPersistence;
 
 	private static final String _COVER_IMAGE_FOLDER_NAME = "Cover Image";
 

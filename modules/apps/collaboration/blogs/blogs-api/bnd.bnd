@@ -5,6 +5,8 @@ Export-Package:\
 	com.liferay.blogs.configuration,\
 	com.liferay.blogs.configuration.definition,\
 	com.liferay.blogs.exception,\
-	com.liferay.blogs.service
+	com.liferay.blogs.model,\
+	com.liferay.blogs.service,\
+	com.liferay.blogs.service.persistence
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Blogs

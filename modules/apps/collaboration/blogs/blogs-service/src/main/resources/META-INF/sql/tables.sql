@@ -1,0 +1,43 @@
+create table BlogsEntry (
+	uuid_ VARCHAR(75) null,
+	entryId LONG not null primary key,
+	groupId LONG,
+	companyId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	title VARCHAR(75) null,
+	subtitle VARCHAR(75) null,
+	urlTitle VARCHAR(75) null,
+	description VARCHAR(75) null,
+	content VARCHAR(75) null,
+	displayDate DATE null,
+	allowPingbacks BOOLEAN,
+	allowTrackbacks BOOLEAN,
+	trackbacks VARCHAR(75) null,
+	coverImageCaption VARCHAR(75) null,
+	coverImageFileEntryId LONG,
+	coverImageURL VARCHAR(75) null,
+	smallImage BOOLEAN,
+	smallImageFileEntryId LONG,
+	smallImageId LONG,
+	smallImageURL VARCHAR(75) null,
+	lastPublishDate DATE null,
+	status INTEGER,
+	statusByUserId LONG,
+	statusByUserName VARCHAR(75) null,
+	statusDate DATE null
+);
+
+create table BlogsStatsUser (
+	statsUserId LONG not null primary key,
+	groupId LONG,
+	companyId LONG,
+	userId LONG,
+	entryCount INTEGER,
+	lastPostDate DATE null,
+	ratingsTotalEntries INTEGER,
+	ratingsTotalScore DOUBLE,
+	ratingsAverageScore DOUBLE
+);
