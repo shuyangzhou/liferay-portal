@@ -3,7 +3,7 @@
 
 <service-builder api-package-path="com.liferay.blogs.kernel" auto-import-default-references="false" package-path="com.liferay.portlet.blogs">
 	<namespace>Blogs</namespace>
-	<entity local-service="true" name="BlogsEntry" remote-service="true" trash-enabled="true" uuid="true">
+	<entity deprecated="true" local-service="true" name="BlogsEntry" remote-service="true" trash-enabled="true" uuid="true">
 
 		<!-- PK fields -->
 
@@ -182,7 +182,7 @@
 		<reference entity="RatingsStats" package-path="com.liferay.portlet.ratings" />
 		<reference entity="TrashEntry" package-path="com.liferay.portlet.trash" />
 	</entity>
-	<entity local-service="true" name="BlogsStatsUser" remote-service="false">
+	<entity deprecated="true" local-service="true" name="BlogsStatsUser" remote-service="false">
 
 		<!-- PK fields -->
 
