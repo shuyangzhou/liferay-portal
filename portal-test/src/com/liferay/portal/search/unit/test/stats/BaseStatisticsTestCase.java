@@ -20,20 +20,32 @@ import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.Stats;
 import com.liferay.portal.kernel.search.StatsResults;
-import com.liferay.portal.kernel.test.IdempotentRetryAssert;
+import com.liferay.portal.kernel.util.PortalRunMode;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.search.unit.test.BaseIndexingTestCase;
 
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 
 /**
  * @author Miguel Angelo Caldas Gallindo
  */
 public abstract class BaseStatisticsTestCase extends BaseIndexingTestCase {
+
+	@Before
+	public void setUp() {
+		_testMode = PortalRunMode.isTestMode();
+
+		PortalRunMode.setTestMode(true);
+	}
+
+	@After
+	public void tearDown() {
+		PortalRunMode.setTestMode(_testMode);
+	}
 
 	protected static String toString(StatsResults statsResults) {
 		StringBundler sb = new StringBundler(19);
@@ -122,23 +134,14 @@ public abstract class BaseStatisticsTestCase extends BaseIndexingTestCase {
 	protected void testGetStats() throws Exception {
 		addDocuments(31);
 
-		IdempotentRetryAssert.retryAssert(
-			3, TimeUnit.SECONDS,
-			new Callable<Void>() {
-
-				@Override
-				public Void call() throws Exception {
-					assertStats();
-
-					return null;
-				}
-
-			});
+		assertStats();
 	}
 
 	protected static final String STAT_FIELD = Field.PRIORITY;
 
 	protected static final String STAT_SORTABLE_FIELD =
 		STAT_FIELD + "_Number_sortable";
+
+	private boolean _testMode;
 
 }

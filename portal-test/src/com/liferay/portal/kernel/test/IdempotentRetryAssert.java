@@ -19,7 +19,9 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author André de Oliveira
+ * @deprecated As of 7.0.0, with no direct replacement
  */
+@Deprecated
 public class IdempotentRetryAssert {
 
 	public static <T> T retryAssert(

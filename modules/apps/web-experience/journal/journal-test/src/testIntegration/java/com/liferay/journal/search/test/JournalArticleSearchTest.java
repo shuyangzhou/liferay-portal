@@ -49,7 +49,6 @@ import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.PortalPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.test.IdempotentRetryAssert;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
@@ -71,8 +70,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -136,6 +133,8 @@ public class JournalArticleSearchTest extends BaseSearchTestCase {
 
 	@After
 	public void tearDown() throws Exception {
+		super.tearDown();
+
 		PortalPreferencesLocalServiceUtil.updatePreferences(
 			TestPropsValues.getCompanyId(),
 			PortletKeys.PREFS_OWNER_TYPE_COMPANY,
@@ -366,21 +365,9 @@ public class JournalArticleSearchTest extends BaseSearchTestCase {
 			final SearchContext searchContext)
 		throws Exception {
 
-		IdempotentRetryAssert.retryAssert(
-			3, TimeUnit.SECONDS,
-			new Callable<Void>() {
+		Hits hits = IndexSearcherHelperUtil.search(searchContext, query);
 
-				@Override
-				public Void call() throws Exception {
-					Hits hits = IndexSearcherHelperUtil.search(
-						searchContext, query);
-
-					Assert.assertEquals(length, hits.getLength());
-
-					return null;
-				}
-
-			});
+		Assert.assertEquals(length, hits.getLength());
 	}
 
 	@Override
