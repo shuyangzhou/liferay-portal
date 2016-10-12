@@ -24,7 +24,9 @@ import com.liferay.portlet.blogs.linkback.LinkbackConsumer;
 
 /**
  * @author André de Oliveira
+ * @deprecated As of 7.0.0, with no direct replacement
  */
+@Deprecated
 public interface Trackback {
 
 	public void addTrackback(
