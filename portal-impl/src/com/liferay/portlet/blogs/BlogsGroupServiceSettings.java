@@ -30,7 +30,10 @@ import java.util.Map;
 
 /**
  * @author Iván Zaera
+ * @deprecated As of 7.0.0, replaced by {@link
+ *             com.liferay.blogs.settings.BlogsGroupServiceSettings}
  */
+@Deprecated
 @Settings.Config(settingsIds = BlogsConstants.SERVICE_NAME)
 public class BlogsGroupServiceSettings {
 

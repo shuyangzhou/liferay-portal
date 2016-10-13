@@ -22,7 +22,10 @@ import com.liferay.portal.kernel.service.SubscriptionLocalServiceUtil;
 
 /**
  * @author Eduardo Garcia
+ * @deprecated As of 7.0.0, replaced by {@link
+ *             com.liferay.blogs.internal.model.listener.GroupModelListener}
  */
+@Deprecated
 public class GroupModelListener extends BaseModelListener<Group> {
 
 	@Override
