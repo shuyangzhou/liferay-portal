@@ -57,7 +57,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.service.impl.ResourcePermissionLocalServiceImpl;
 import com.liferay.portal.util.PortalInstances;
 
-import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -424,19 +423,13 @@ public class VerifyPermission extends VerifyProcess {
 
 		runSQL(sb.toString());
 
-		try (CallableStatement cs = connection.prepareCall(
-				"{call DBMS_ERRLOG.CREATE_ERROR_LOG('ResourcePermission')}")) {
-
-			cs.execute();
-		}
-
 		for (long companyId : companyIds) {
 			Role powerUserRole = RoleLocalServiceUtil.getRole(
 				companyId, RoleConstants.POWER_USER);
 			Role userRole = RoleLocalServiceUtil.getRole(
 				companyId, RoleConstants.USER);
 
-			sb = new StringBundler(20);
+			sb = new StringBundler(24);
 
 			sb.append("update ResourcePermission r1 set roleId = ");
 			sb.append(userRole.getRoleId());
@@ -456,13 +449,15 @@ public class VerifyPermission extends VerifyProcess {
 			sb.append(userGroupClassNameId);
 			sb.append(") and Layout.type_ = '");
 			sb.append(LayoutConstants.TYPE_PORTLET);
-			sb.append("') log errors into ERR$_ResourcePermission ('') ");
-			sb.append("reject limit unlimited");
+			sb.append("') and not exists (select resourcePermissionId from ");
+			sb.append("ResourcePermission r2 where r1.name = r2.name and ");
+			sb.append("r1.scope = r2.scope and r1.primKey = r2.primKey and ");
+			sb.append("r2.roleId = ");
+			sb.append(userRole.getRoleId());
+			sb.append(")");
 
 			runSQL(sb.toString());
 		}
-
-		runSQL("drop table ERR$_ResourcePermission");
 
 		runSQL("alter table ResourcePermission drop column plid");
 	}

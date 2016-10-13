@@ -43,6 +43,10 @@
 		</module>
 		<module name="NoWhitespaceBefore" />
 		<module name="OneStatementPerLine" />
+		<module name="OperatorWrap">
+			<property name="option" value="eol" />
+			<property name="tokens" value="ASSIGN, BAND, BAND_ASSIGN, BOR, BOR_ASSIGN, BSR, BSR_ASSIGN, BXOR, BXOR_ASSIGN, COLON, DIV, DIV_ASSIGN, EQUAL, GE, GT, LAND, LE, LITERAL_INSTANCEOF, LOR, LT, MINUS, MINUS_ASSIGN, MOD, MOD_ASSIGN, NOT_EQUAL, PLUS, PLUS_ASSIGN, QUESTION, SL, SL_ASSIGN, SR, SR_ASSIGN, STAR, STAR_ASSIGN, TYPE_EXTENSION_AND" />
+		</module>
 		<module name="PackageName" />
 		<module name="ParameterName">
 			<message key="name.invalidPattern" value="Parameter ''{0}'' must match pattern ''{1}''" />
@@ -137,6 +141,7 @@
 			<message key="literal.string.move" value="Add the string ''{0}'' to the previous literal string" />
 			<message key="plus.statement.too.long" value="Use StringBuilder/StringBundler instead of concatenating over more than 3 lines" />
 			<message key="start.character.invalid" value="When concatenating multiple literal strings using '+', only the first literal string can start with ''{0}''" />
+			<message key="tabbing.incorrect" value="Expected indentation is ''{0}'' tabs" />
 		</module>
 		<module name="com.liferay.source.formatter.checkstyle.checks.SizeIsZero">
 			<message key="method.use" value="Use method ''{0}'' instead" />

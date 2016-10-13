@@ -116,7 +116,7 @@ public class KBCommentResultRowSplitter implements ResultRowSplitter {
 		}
 
 		return String.format(
-			"%s (%s)", LanguageUtil.get(_resourceBundle, "completed"),
+			"%s (%s)", LanguageUtil.get(_resourceBundle, "resolved"),
 			completedKBCommentsCount);
 	}
 

@@ -21,6 +21,7 @@ import com.liferay.dynamic.data.mapping.service.DDMStructureLocalServiceUtil;
 import com.liferay.dynamic.data.mapping.service.DDMTemplateLocalServiceUtil;
 import com.liferay.dynamic.data.mapping.test.util.DDMStructureTestUtil;
 import com.liferay.dynamic.data.mapping.test.util.DDMTemplateTestUtil;
+import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.StagedModel;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
@@ -32,10 +33,12 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
 import org.junit.Rule;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
@@ -50,6 +53,37 @@ public class DDMTemplateStagedModelDataHandlerTest
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
 			new LiferayIntegrationTestRule(), TransactionalTestRule.INSTANCE);
+
+	@Test
+	public void testPublishTemplateToLiveBeforeStructure() throws Exception {
+		DDMTemplate template = DDMTemplateTestUtil.addTemplate(
+			stagingGroup.getGroupId(), 0,
+			PortalUtil.getClassNameId(_CLASS_NAME));
+
+		DDMStructure structure = DDMStructureTestUtil.addStructure(
+			stagingGroup.getGroupId(), _CLASS_NAME);
+
+		exportImportTemplate(template);
+
+		template.setClassPK(structure.getStructureId());
+
+		DDMTemplateLocalServiceUtil.updateDDMTemplate(template);
+
+		exportImportTemplateAndStructure(template, structure);
+
+		DDMStructure importedStructure =
+			DDMStructureLocalServiceUtil.fetchDDMStructureByUuidAndGroupId(
+				structure.getUuid(), liveGroup.getGroupId());
+
+		DDMTemplate importedTemplate = (DDMTemplate)getStagedModel(
+			template.getUuid(), liveGroup);
+
+		Assert.assertNotNull(importedTemplate);
+
+		Assert.assertNotNull(importedStructure);
+		Assert.assertEquals(
+			importedStructure.getStructureId(), importedTemplate.getClassPK());
+	}
 
 	@Override
 	protected Map<String, List<StagedModel>> addDependentStagedModelsMap(
@@ -84,6 +118,36 @@ public class DDMTemplateStagedModelDataHandlerTest
 			PortalUtil.getClassNameId(_CLASS_NAME));
 	}
 
+	protected void exportImportTemplate(DDMTemplate template) throws Exception {
+		exportTemplateAndStructure(template, null);
+		importTemplateAndStructure(template, null);
+	}
+
+	protected void exportImportTemplateAndStructure(
+			DDMTemplate template, DDMStructure structure)
+		throws Exception {
+
+		exportTemplateAndStructure(template, structure);
+		importTemplateAndStructure(template, structure);
+	}
+
+	protected void exportTemplateAndStructure(
+			DDMTemplate template, DDMStructure structure)
+		throws Exception {
+
+		initExport();
+
+		if (Objects.nonNull(structure)) {
+			StagedModelDataHandlerUtil.exportStagedModel(
+				portletDataContext, structure);
+		}
+
+		if (Objects.nonNull(template)) {
+			StagedModelDataHandlerUtil.exportStagedModel(
+				portletDataContext, template);
+		}
+	}
+
 	@Override
 	protected StagedModel getStagedModel(String uuid, Group group) {
 		try {
@@ -98,6 +162,29 @@ public class DDMTemplateStagedModelDataHandlerTest
 	@Override
 	protected Class<? extends StagedModel> getStagedModelClass() {
 		return DDMTemplate.class;
+	}
+
+	protected void importTemplateAndStructure(
+			DDMTemplate template, DDMStructure structure)
+		throws Exception {
+
+		initImport();
+
+		if (Objects.nonNull(structure)) {
+			DDMStructure exportedStructure =
+				(DDMStructure)readExportedStagedModel(structure);
+
+			StagedModelDataHandlerUtil.importStagedModel(
+				portletDataContext, exportedStructure);
+		}
+
+		if (Objects.nonNull(template)) {
+			DDMTemplate exportedTemplate = (DDMTemplate)readExportedStagedModel(
+				template);
+
+			StagedModelDataHandlerUtil.importStagedModel(
+				portletDataContext, exportedTemplate);
+		}
 	}
 
 	@Override
