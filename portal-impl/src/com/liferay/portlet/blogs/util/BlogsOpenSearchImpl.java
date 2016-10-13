@@ -23,7 +23,10 @@ import com.liferay.portal.kernel.util.StringPool;
 
 /**
  * @author Brian Wing Shun Chan
+ * @deprecated As of 7.0.0, replaced by {@link
+ *             com.liferay.blogs.web.internal.search.BlogsOpenSearchImpl}
  */
+@Deprecated
 @OSGiBeanProperties
 public class BlogsOpenSearchImpl extends HitsOpenSearchImpl {
 

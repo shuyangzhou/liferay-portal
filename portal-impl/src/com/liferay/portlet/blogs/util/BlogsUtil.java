@@ -45,7 +45,10 @@ import javax.portlet.PortletRequest;
 /**
  * @author Brian Wing Shun Chan
  * @author Thiago Moreira
+ * @deprecated As of 7.0.0, replaced by {@link
+ *             com.liferay.blogs.util.BlogsUtil}
  */
+@Deprecated
 public class BlogsUtil {
 
 	public static final String DISPLAY_STYLE_ABSTRACT = "abstract";
