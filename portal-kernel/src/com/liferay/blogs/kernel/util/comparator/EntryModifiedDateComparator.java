@@ -20,7 +20,10 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 
 /**
  * @author Roberto Díaz
+ * @deprecated As of 7.0.0, replaced by {@link
+ *             com.liferay.blogs.util.comparator.EntryModifiedDateComparator}
  */
+@Deprecated
 public class EntryModifiedDateComparator extends OrderByComparator<BlogsEntry> {
 
 	public static final String ORDER_BY_ASC =
