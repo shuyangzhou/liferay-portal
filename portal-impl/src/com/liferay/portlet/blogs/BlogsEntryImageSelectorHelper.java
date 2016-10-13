@@ -23,7 +23,10 @@ import com.liferay.portal.kernel.util.FileUtil;
 
 /**
  * @author Roberto Díaz
+ * @deprecated As of 7.0.0, replaced by {@link
+ *             com.liferay.blogs.util.BlogsEntryImageSelectorHelper}
  */
+@Deprecated
 public class BlogsEntryImageSelectorHelper {
 
 	public BlogsEntryImageSelectorHelper(
