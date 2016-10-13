@@ -33,6 +33,7 @@ import com.liferay.blogs.kernel.util.comparator.EntryDisplayDateComparator;
 import com.liferay.blogs.kernel.util.comparator.EntryIdComparator;
 import com.liferay.blogs.service.base.BlogsEntryLocalServiceBaseImpl;
 import com.liferay.blogs.settings.BlogsGroupServiceSettings;
+import com.liferay.blogs.social.BlogsActivityKeys;
 import com.liferay.blogs.util.BlogsEntryAttachmentFileEntryUtil;
 import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
@@ -99,7 +100,6 @@ import com.liferay.portal.util.LayoutURLUtil;
 import com.liferay.portal.util.PrefsPropsUtil;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.blogs.service.permission.BlogsPermission;
-import com.liferay.portlet.blogs.social.BlogsActivityKeys;
 import com.liferay.portlet.blogs.util.BlogsUtil;
 import com.liferay.portlet.blogs.util.LinkbackProducerUtil;
 import com.liferay.social.kernel.model.SocialActivityConstants;
@@ -592,6 +592,7 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 			blogsEntryLocalService.deleteEntry(entry);
 		}
 	}
+
 
 	@Indexable(type = IndexableType.DELETE)
 	@Override
