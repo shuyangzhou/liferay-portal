@@ -25,7 +25,10 @@ import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 
 /**
  * @author Jorge Ferrer
+ * @deprecated As of 7.0.0, replaced by {@link
+ *             com.liferay.blogs.service.permission.BlogsPermission}
  */
+@Deprecated
 @OSGiBeanProperties(
 	property = {"resource.name=" + BlogsPermission.RESOURCE_NAME}
 )
