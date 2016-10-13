@@ -166,6 +166,7 @@
 
 		<!-- References -->
 
+		<reference entity="BlogsStatsUser" package-path="com.liferay.blogs" />
 		<reference entity="Company" package-path="com.liferay.portal" />
 		<reference entity="Group" package-path="com.liferay.portal" />
 		<reference entity="Image" package-path="com.liferay.portal" />
@@ -177,7 +178,6 @@
 		<reference entity="WorkflowInstanceLink" package-path="com.liferay.portal" />
 		<reference entity="AssetEntry" package-path="com.liferay.portlet.asset" />
 		<reference entity="AssetLink" package-path="com.liferay.portlet.asset" />
-		<reference entity="BlogsStatsUser" package-path="com.liferay.portlet.blogs" />
 		<reference entity="ExpandoRow" package-path="com.liferay.portlet.expando" />
 		<reference entity="RatingsStats" package-path="com.liferay.portlet.ratings" />
 		<reference entity="TrashEntry" package-path="com.liferay.portlet.trash" />
@@ -238,8 +238,8 @@
 
 		<!-- References -->
 
+		<reference entity="BlogsEntry" package-path="com.liferay.blogs" />
 		<reference entity="Group" package-path="com.liferay.portal" />
-		<reference entity="BlogsEntry" package-path="com.liferay.portlet.blogs" />
 	</entity>
 	<exceptions>
 		<exception>EntryContent</exception>
