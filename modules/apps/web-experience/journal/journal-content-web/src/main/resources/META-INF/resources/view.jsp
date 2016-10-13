@@ -88,7 +88,7 @@ AssetRendererFactory<JournalArticle> assetRendererFactory = AssetRendererFactory
 							</c:otherwise>
 						</c:choose>
 					</c:when>
-					<c:when test="<%= (articleDisplay != null) %>">
+					<c:when test="<%= articleDisplay != null %>">
 						<div class="text-right user-tool-asset-addon-entries">
 							<liferay-ui:asset-addon-entry-display assetAddonEntries="<%= journalContentDisplayContext.getSelectedUserToolAssetAddonEntries() %>" />
 						</div>
