@@ -74,7 +74,7 @@ public class BlogsEntryAttachmentFileEntryHelperUpdateContentTest
 			testUpdateContentWithEmptyBlogsEntryAttachmentFileEntryReferences()
 		throws Exception {
 
-		String content = BlogsEntryAttachmentFileEntryHelper.updateContent(
+		String content = BlogsEntryAttachmentFileEntryUtil.updateContent(
 			populateContentWithSingleImgTag(_tempFileEntryImgTag),
 			Collections.<BlogsEntryAttachmentFileEntryReference>emptyList());
 
@@ -86,7 +86,7 @@ public class BlogsEntryAttachmentFileEntryHelperUpdateContentTest
 
 	@Test
 	public void testUpdateContentWithMultipleImgTags() throws Exception {
-		String content = BlogsEntryAttachmentFileEntryHelper.updateContent(
+		String content = BlogsEntryAttachmentFileEntryUtil.updateContent(
 			populateContentWithMultipleImgTags(_tempFileEntryImgTag),
 			_blogsEntryAttachmentFileEntryReferences);
 
@@ -98,7 +98,7 @@ public class BlogsEntryAttachmentFileEntryHelperUpdateContentTest
 
 	@Test
 	public void testUpdateContentWithoutImgTag() throws Exception {
-		String content = BlogsEntryAttachmentFileEntryHelper.updateContent(
+		String content = BlogsEntryAttachmentFileEntryUtil.updateContent(
 			populateContentWithSingleImgTag(StringPool.BLANK),
 			_blogsEntryAttachmentFileEntryReferences);
 
@@ -110,7 +110,7 @@ public class BlogsEntryAttachmentFileEntryHelperUpdateContentTest
 
 	@Test
 	public void testUpdateContentWithSingleImgTag() throws Exception {
-		String content = BlogsEntryAttachmentFileEntryHelper.updateContent(
+		String content = BlogsEntryAttachmentFileEntryUtil.updateContent(
 			populateContentWithSingleImgTag(_tempFileEntryImgTag),
 			_blogsEntryAttachmentFileEntryReferences);
 

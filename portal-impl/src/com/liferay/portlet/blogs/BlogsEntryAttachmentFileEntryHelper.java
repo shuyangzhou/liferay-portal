@@ -39,7 +39,7 @@ import java.util.regex.Pattern;
  * @author Sergio González
  * @author Roberto Díaz
  * @deprecated As of 7.0.0, replaced by {@link
- *             com.liferay.blogs.util.BlogsEntryAttachmentFileEntryHelper}
+ *             com.liferay.blogs.util.BlogsEntryAttachmentFileEntryUtil}
  */
 @Deprecated
 public class BlogsEntryAttachmentFileEntryHelper {

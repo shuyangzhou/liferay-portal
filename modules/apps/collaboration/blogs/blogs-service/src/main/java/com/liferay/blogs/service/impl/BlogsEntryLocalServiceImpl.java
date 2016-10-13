@@ -32,7 +32,7 @@ import com.liferay.blogs.kernel.util.comparator.EntryDisplayDateComparator;
 import com.liferay.blogs.kernel.util.comparator.EntryIdComparator;
 import com.liferay.blogs.service.base.BlogsEntryLocalServiceBaseImpl;
 import com.liferay.blogs.settings.BlogsGroupServiceSettings;
-import com.liferay.blogs.util.BlogsEntryAttachmentFileEntryHelper;
+import com.liferay.blogs.util.BlogsEntryAttachmentFileEntryUtil;
 import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.friendly.url.model.FriendlyURL;
@@ -502,7 +502,7 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 		Folder folder = addAttachmentsFolder(userId, groupId);
 
 		FileEntry originalFileEntry =
-			BlogsEntryAttachmentFileEntryHelper.
+			BlogsEntryAttachmentFileEntryUtil.
 				addBlogsEntryAttachmentFileEntry(
 					groupId, userId, entryId, folder.getFolderId(),
 					imageSelector.getImageTitle(),
@@ -1722,7 +1722,7 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 		}
 
 		FileEntry processedImageFileEntry =
-			BlogsEntryAttachmentFileEntryHelper.
+			BlogsEntryAttachmentFileEntryUtil.
 				addBlogsEntryAttachmentFileEntry(
 					groupId, userId, entryId, folderId, title, mimeType, bytes);
 

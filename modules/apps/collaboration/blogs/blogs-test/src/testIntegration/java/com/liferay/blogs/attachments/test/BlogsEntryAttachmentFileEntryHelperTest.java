@@ -17,8 +17,8 @@ package com.liferay.blogs.attachments.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.blogs.kernel.model.BlogsEntry;
 import com.liferay.blogs.service.BlogsEntryLocalServiceUtil;
-import com.liferay.blogs.util.BlogsEntryAttachmentFileEntryHelper;
 import com.liferay.blogs.util.BlogsEntryAttachmentFileEntryReference;
+import com.liferay.blogs.util.BlogsEntryAttachmentFileEntryUtil;
 import com.liferay.portal.kernel.editor.EditorConstants;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
@@ -126,7 +126,7 @@ public class BlogsEntryAttachmentFileEntryHelperTest {
 					null, tempFileEntry, StringPool.BLANK));
 
 		List<FileEntry> tempBlogsEntryAttachmentFileEntries =
-			BlogsEntryAttachmentFileEntryHelper.
+			BlogsEntryAttachmentFileEntryUtil.
 				getTempBlogsEntryAttachmentFileEntries(
 					getContent(tempFileEntryImgTag));
 
@@ -153,7 +153,7 @@ public class BlogsEntryAttachmentFileEntryHelperTest {
 			tempFileEntry);
 
 		List<FileEntry> tempBlogsEntryAttachmentFileEntries =
-			BlogsEntryAttachmentFileEntryHelper.
+			BlogsEntryAttachmentFileEntryUtil.
 				getTempBlogsEntryAttachmentFileEntries(
 					getContent(tempFileEntryImgTag));
 
@@ -189,7 +189,7 @@ public class BlogsEntryAttachmentFileEntryHelperTest {
 			_user.getUserId(), _group.getGroupId());
 
 		return
-			BlogsEntryAttachmentFileEntryHelper.
+			BlogsEntryAttachmentFileEntryUtil.
 				addBlogsEntryAttachmentFileEntries(
 					_group.getGroupId(), _user.getUserId(), entry.getEntryId(),
 					folder.getFolderId(), tempFileEntries);

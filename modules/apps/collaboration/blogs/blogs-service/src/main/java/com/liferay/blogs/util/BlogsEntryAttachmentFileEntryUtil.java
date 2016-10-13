@@ -39,7 +39,7 @@ import java.util.regex.Pattern;
  * @author Sergio González
  * @author Roberto Díaz
  */
-public class BlogsEntryAttachmentFileEntryHelper {
+public class BlogsEntryAttachmentFileEntryUtil {
 
 	public static List<BlogsEntryAttachmentFileEntryReference>
 			addBlogsEntryAttachmentFileEntries(
@@ -224,6 +224,6 @@ public class BlogsEntryAttachmentFileEntryHelper {
 	private static final int _UNIQUE_FILE_NAME_TRIES = 50;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		BlogsEntryAttachmentFileEntryHelper.class);
+		BlogsEntryAttachmentFileEntryUtil.class);
 
 }

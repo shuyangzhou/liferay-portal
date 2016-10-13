@@ -28,8 +28,8 @@ import com.liferay.blogs.kernel.exception.NoSuchEntryException;
 import com.liferay.blogs.kernel.model.BlogsEntry;
 import com.liferay.blogs.service.BlogsEntryLocalService;
 import com.liferay.blogs.service.BlogsEntryService;
-import com.liferay.blogs.util.BlogsEntryAttachmentFileEntryHelper;
 import com.liferay.blogs.util.BlogsEntryAttachmentFileEntryReference;
+import com.liferay.blogs.util.BlogsEntryAttachmentFileEntryUtil;
 import com.liferay.blogs.util.BlogsEntryImageSelectorHelper;
 import com.liferay.blogs.web.constants.BlogsPortletKeys;
 import com.liferay.document.library.kernel.exception.FileSizeException;
@@ -524,7 +524,7 @@ public class EditEntryMVCActionCommand extends BaseMVCActionCommand {
 				serviceContext);
 
 			List<FileEntry> tempBlogsEntryAttachments =
-				BlogsEntryAttachmentFileEntryHelper.
+				BlogsEntryAttachmentFileEntryUtil.
 					getTempBlogsEntryAttachmentFileEntries(content);
 
 			if (!tempBlogsEntryAttachments.isEmpty()) {
@@ -532,13 +532,13 @@ public class EditEntryMVCActionCommand extends BaseMVCActionCommand {
 					themeDisplay.getUserId(), entry.getGroupId());
 
 				blogsEntryAttachmentFileEntryReferences =
-					BlogsEntryAttachmentFileEntryHelper.
+					BlogsEntryAttachmentFileEntryUtil.
 						addBlogsEntryAttachmentFileEntries(
 							entry.getGroupId(), themeDisplay.getUserId(),
 							entry.getEntryId(), folder.getFolderId(),
 							tempBlogsEntryAttachments);
 
-				content = BlogsEntryAttachmentFileEntryHelper.updateContent(
+				content = BlogsEntryAttachmentFileEntryUtil.updateContent(
 					content, blogsEntryAttachmentFileEntryReferences);
 
 				entry.setContent(content);
@@ -572,7 +572,7 @@ public class EditEntryMVCActionCommand extends BaseMVCActionCommand {
 			entry = _blogsEntryLocalService.getEntry(entryId);
 
 			List<FileEntry> tempBlogsEntryAttachmentFileEntries =
-				BlogsEntryAttachmentFileEntryHelper.
+				BlogsEntryAttachmentFileEntryUtil.
 					getTempBlogsEntryAttachmentFileEntries(content);
 
 			if (!tempBlogsEntryAttachmentFileEntries.isEmpty()) {
@@ -580,13 +580,13 @@ public class EditEntryMVCActionCommand extends BaseMVCActionCommand {
 					themeDisplay.getUserId(), entry.getGroupId());
 
 				blogsEntryAttachmentFileEntryReferences =
-					BlogsEntryAttachmentFileEntryHelper.
+					BlogsEntryAttachmentFileEntryUtil.
 						addBlogsEntryAttachmentFileEntries(
 							entry.getGroupId(), themeDisplay.getUserId(),
 							entry.getEntryId(), folder.getFolderId(),
 							tempBlogsEntryAttachmentFileEntries);
 
-				content = BlogsEntryAttachmentFileEntryHelper.updateContent(
+				content = BlogsEntryAttachmentFileEntryUtil.updateContent(
 					content, blogsEntryAttachmentFileEntryReferences);
 			}
 
