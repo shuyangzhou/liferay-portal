@@ -40,7 +40,7 @@ if (ListUtil.isEmpty(folders) && ListUtil.isEmpty(articles)) {
 %>
 
 <c:choose>
-	<c:when test="<%= (ListUtil.isEmpty(articles) && ListUtil.isNotEmpty(folders) && (folders.size() == 1)) %>">
+	<c:when test="<%= ListUtil.isEmpty(articles) && ListUtil.isNotEmpty(folders) && (folders.size() == 1) %>">
 
 		<%
 		JournalFolder folder = folders.get(0);
