@@ -14,11 +14,11 @@
 
 package com.liferay.portal.upgrade.util;
 
+import com.liferay.blogs.util.BlogsUtil;
 import com.liferay.portal.kernel.upgrade.util.BaseUpgradeColumnImpl;
 import com.liferay.portal.kernel.upgrade.util.UpgradeColumn;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portlet.blogs.util.BlogsUtil;
 
 import java.util.HashSet;
 import java.util.Set;
