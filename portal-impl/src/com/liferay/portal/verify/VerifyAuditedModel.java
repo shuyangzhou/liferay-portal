@@ -361,7 +361,7 @@ public class VerifyAuditedModel extends VerifyProcess {
 
 		String updateSQL =
 			"update " + verifiableAuditedModel.getTableName() +
-			" set userName = ? where userId = ?";
+				" set userName = ? where userId = ?";
 
 		try (LoggingTimer loggingTimer = new LoggingTimer(
 				verifiableAuditedModel.getTableName() + "#byUser");
@@ -377,8 +377,8 @@ public class VerifyAuditedModel extends VerifyProcess {
 
 		updateSQL =
 			"update " + verifiableAuditedModel.getTableName() +
-			" set userId = ?, userName = ? where companyId = ? and " +
-			"userName is null";
+				" set userId = ?, userName = ? where companyId = ? and " +
+					"userName is null";
 
 		try (LoggingTimer loggingTimer = new LoggingTimer(
 				verifiableAuditedModel.getTableName() + "#byCompany");
@@ -410,7 +410,8 @@ public class VerifyAuditedModel extends VerifyProcess {
 
 		String sql =
 			"select distinct companyId from " +
-			verifiableAuditedModel.getTableName() + " where userName is null";
+				verifiableAuditedModel.getTableName() +
+					" where userName is null";
 
 		try (PreparedStatement ps = connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery()) {
