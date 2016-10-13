@@ -687,7 +687,7 @@ public class JournalConverterImpl implements JournalConverter {
 				childDynamicElementElement.addAttribute("name", childFieldName);
 
 				String instanceId = getFieldInstanceId(
-					ddmFields, fieldName, (count + i));
+					ddmFields, fieldName, count + i);
 
 				childDynamicElementElement.addAttribute(
 					"instance-id", instanceId);

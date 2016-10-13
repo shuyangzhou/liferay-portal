@@ -12,30 +12,13 @@
  * details.
  */
 
-package com.liferay.portlet.blogs.pingback;
-
-import com.liferay.portal.kernel.exception.PortalException;
+package com.liferay.blogs.constants;
 
 /**
- * @author Marcellus Tavares
- * @deprecated As of 7.0.0, with no direct replacement
+ * @author Iván Zaera
  */
-@Deprecated
-public class InvalidSourceURIException extends PortalException {
+public class BlogsConstants {
 
-	public InvalidSourceURIException() {
-	}
-
-	public InvalidSourceURIException(String msg) {
-		super(msg);
-	}
-
-	public InvalidSourceURIException(String msg, Throwable cause) {
-		super(msg, cause);
-	}
-
-	public InvalidSourceURIException(Throwable cause) {
-		super(cause);
-	}
+	public static final String SERVICE_NAME = "com.liferay.blogs";
 
 }
