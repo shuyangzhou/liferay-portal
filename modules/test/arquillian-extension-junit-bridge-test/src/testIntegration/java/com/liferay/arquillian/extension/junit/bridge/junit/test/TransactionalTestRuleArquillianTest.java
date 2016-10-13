@@ -86,6 +86,16 @@ public class TransactionalTestRuleArquillianTest
 
 					@Override
 					public <T> T invoke(
+							Object platformTransactionManager,
+							TransactionConfig transactionConfig,
+							Callable<T> callable)
+						throws Throwable {
+
+						return invoke(transactionConfig, callable);
+					}
+
+					@Override
+					public <T> T invoke(
 							TransactionConfig transactionConfig,
 							Callable<T> callable)
 						throws Throwable {
