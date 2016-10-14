@@ -14,9 +14,10 @@
 
 package com.liferay.blogs.service.persistence.impl;
 
-import com.liferay.blogs.kernel.model.BlogsStatsUser;
-import com.liferay.blogs.kernel.service.persistence.BlogsStatsUserFinder;
-import com.liferay.blogs.kernel.service.persistence.BlogsStatsUserUtil;
+import com.liferay.blogs.model.BlogsStatsUser;
+import com.liferay.blogs.model.impl.BlogsStatsUserImpl;
+import com.liferay.blogs.service.persistence.BlogsStatsUserFinder;
+import com.liferay.blogs.service.persistence.BlogsStatsUserUtil;
 import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -28,7 +29,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portlet.blogs.model.impl.BlogsStatsUserImpl;
 
 import java.util.ArrayList;
 import java.util.Date;
