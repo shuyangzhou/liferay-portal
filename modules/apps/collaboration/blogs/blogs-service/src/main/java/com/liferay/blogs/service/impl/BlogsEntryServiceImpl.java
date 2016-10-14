@@ -16,12 +16,12 @@ package com.liferay.blogs.service.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.blogs.kernel.model.BlogsEntry;
-import com.liferay.blogs.kernel.service.persistence.BlogsEntryFinder;
-import com.liferay.blogs.kernel.service.persistence.BlogsEntryPersistence;
+import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.blogs.service.base.BlogsEntryServiceBaseImpl;
 import com.liferay.blogs.service.permission.BlogsEntryPermission;
 import com.liferay.blogs.service.permission.BlogsPermission;
+import com.liferay.blogs.service.persistence.BlogsEntryFinder;
+import com.liferay.blogs.service.persistence.BlogsEntryPersistence;
 import com.liferay.blogs.util.comparator.EntryDisplayDateComparator;
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;
 import com.liferay.portal.kernel.exception.PortalException;
