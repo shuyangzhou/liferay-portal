@@ -715,22 +715,6 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 	}
 
 	@Override
-	public BlogsEntry fetchBlogsEntry(long entryId) {
-		return
-			com.liferay.blogs.kernel.service.BlogsEntryLocalServiceUtil.
-				fetchBlogsEntry(entryId);
-	}
-
-	@Override
-	public BlogsEntry fetchBlogsEntryByUuidAndGroupId(
-		String uuid, long groupId) {
-
-		return
-			com.liferay.blogs.kernel.service.BlogsEntryLocalServiceUtil.
-				fetchBlogsEntryByUuidAndGroupId(uuid, groupId);
-	}
-
-	@Override
 	public BlogsEntry fetchEntry(long groupId, String urlTitle) {
 		Group group = groupPersistence.fetchByPrimaryKey(groupId);
 
@@ -743,26 +727,6 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 		}
 
 		return blogsEntryPersistence.fetchByG_UT(groupId, urlTitle);
-	}
-
-	@Override
-	public List<BlogsEntry> getBlogsEntriesByUuidAndCompanyId(
-		String uuid, long companyId, int start, int end,
-		OrderByComparator<BlogsEntry> orderByComparator) {
-
-		return
-			com.liferay.blogs.kernel.service.BlogsEntryLocalServiceUtil.
-				getBlogsEntriesByUuidAndCompanyId(
-					uuid, companyId, start, end, orderByComparator);
-	}
-
-	@Override
-	public BlogsEntry getBlogsEntryByUuidAndGroupId(String uuid, long groupId)
-		throws PortalException {
-
-		return
-			com.liferay.blogs.kernel.service.BlogsEntryLocalServiceUtil.
-				getBlogsEntryByUuidAndGroupId(uuid, groupId);
 	}
 
 	@Override
@@ -846,15 +810,6 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 		}
 
 		return blogsEntryPersistence.findByG_UT(groupId, urlTitle);
-	}
-
-	@Override
-	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
-		final PortletDataContext portletDataContext) {
-
-		return
-			com.liferay.blogs.kernel.service.BlogsEntryLocalServiceUtil.
-				getExportActionableDynamicQuery(portletDataContext);
 	}
 
 	@Override
@@ -964,15 +919,6 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 			return blogsEntryPersistence.countByG_U_LtD_S(
 				groupId, userId, displayDate, queryDefinition.getStatus());
 		}
-	}
-
-	@Override
-	public IndexableActionableDynamicQuery
-		getIndexableActionableDynamicQuery() {
-
-		return
-			com.liferay.blogs.kernel.service.BlogsEntryLocalServiceUtil.
-				getIndexableActionableDynamicQuery();
 	}
 
 	@Override
@@ -1156,13 +1102,6 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 		assetLinkLocalService.updateLinks(
 			userId, assetEntry.getEntryId(), assetLinkEntryIds,
 			AssetLinkConstants.TYPE_RELATED);
-	}
-
-	@Override
-	public BlogsEntry updateBlogsEntry(BlogsEntry blogsEntry) {
-		return
-			com.liferay.blogs.kernel.service.BlogsEntryLocalServiceUtil.
-				updateBlogsEntry(blogsEntry);
 	}
 
 	@Override
