@@ -14,6 +14,7 @@
 
 package com.liferay.blogs.verify;
 
+import com.liferay.blogs.internal.verify.model.BlogsEntryVerifiableModel;
 import com.liferay.blogs.kernel.model.BlogsEntry;
 import com.liferay.blogs.service.BlogsEntryLocalService;
 import com.liferay.portal.kernel.log.Log;
@@ -22,7 +23,6 @@ import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.verify.VerifyProcess;
 import com.liferay.portal.verify.VerifyResourcePermissions;
-import com.liferay.portal.verify.model.BlogsEntryVerifiableModel;
 
 import java.util.List;
 
