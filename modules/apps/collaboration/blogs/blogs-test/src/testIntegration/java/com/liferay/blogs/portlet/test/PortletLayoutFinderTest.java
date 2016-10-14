@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.struts;
+package com.liferay.blogs.portlet.test;
 
 import com.liferay.blogs.kernel.model.BlogsEntry;
 import com.liferay.portal.kernel.exception.NoSuchLayoutException;
@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.struts.BaseFindActionHelper;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.test.LayoutTestUtil;
 
@@ -56,7 +57,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
  * @author Eduardo Garcia
  */
 @Sync
-public class FindActionTest {
+public class PortletLayoutFinderTest {
 
 	@ClassRule
 	@Rule
