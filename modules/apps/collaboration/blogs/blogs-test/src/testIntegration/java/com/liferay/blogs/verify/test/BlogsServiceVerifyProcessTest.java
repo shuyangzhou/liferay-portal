@@ -15,6 +15,18 @@
 package com.liferay.blogs.verify.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.blogs.kernel.model.BlogsEntry;
+import com.liferay.blogs.service.BlogsEntryLocalServiceUtil;
+import com.liferay.portal.kernel.model.ResourceConstants;
+import com.liferay.portal.kernel.model.ResourcePermission;
+import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.model.RoleConstants;
+import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
+import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
+import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
+import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.verify.VerifyProcess;
 import com.liferay.portal.verify.test.BaseVerifyProcessTestCase;
@@ -24,9 +36,11 @@ import com.liferay.registry.RegistryUtil;
 import com.liferay.registry.ServiceTracker;
 
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
@@ -58,11 +72,46 @@ public class BlogsServiceVerifyProcessTest extends BaseVerifyProcessTestCase {
 		_serviceTracker.close();
 	}
 
+	@Test
+	public void testVerifyResourcePermissions() throws Exception {
+		_blogsEntry = BlogsEntryLocalServiceUtil.addEntry(
+			TestPropsValues.getUserId(), RandomTestUtil.randomString(),
+			RandomTestUtil.randomString(),
+			ServiceContextTestUtil.getServiceContext());
+
+		Role role = RoleLocalServiceUtil.getRole(
+			TestPropsValues.getCompanyId(), RoleConstants.OWNER);
+
+		ResourcePermission resourcePermission =
+			ResourcePermissionLocalServiceUtil.fetchResourcePermission(
+				TestPropsValues.getCompanyId(), BlogsEntry.class.getName(),
+				ResourceConstants.SCOPE_INDIVIDUAL,
+				String.valueOf(_blogsEntry.getPrimaryKey()), role.getRoleId());
+
+		Assert.assertNotNull(resourcePermission);
+
+		ResourcePermissionLocalServiceUtil.deleteResourcePermission(
+			resourcePermission);
+
+		doVerify();
+
+		resourcePermission =
+			ResourcePermissionLocalServiceUtil.fetchResourcePermission(
+				TestPropsValues.getCompanyId(), BlogsEntry.class.getName(),
+				ResourceConstants.SCOPE_INDIVIDUAL,
+				String.valueOf(_blogsEntry.getPrimaryKey()), role.getRoleId());
+
+		Assert.assertNotNull(resourcePermission);
+	}
+
 	@Override
 	protected VerifyProcess getVerifyProcess() {
 		return _serviceTracker.getService();
 	}
 
 	private static ServiceTracker<VerifyProcess, VerifyProcess> _serviceTracker;
+
+	@DeleteAfterTestRun
+	private BlogsEntry _blogsEntry;
 
 }

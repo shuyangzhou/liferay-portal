@@ -21,6 +21,8 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.verify.VerifyProcess;
+import com.liferay.portal.verify.VerifyResourcePermissions;
+import com.liferay.portal.verify.model.BlogsEntryVerifiableModel;
 
 import java.util.List;
 
@@ -40,6 +42,7 @@ public class BlogsServiceVerifyProcess extends VerifyProcess {
 	@Override
 	protected void doVerify() throws Exception {
 		updateEntryAssets();
+		verifyResourcedModels();
 		verifyStatus();
 	}
 
@@ -80,6 +83,12 @@ public class BlogsServiceVerifyProcess extends VerifyProcess {
 		}
 	}
 
+	protected void verifyResourcedModels() throws Exception {
+		try (LoggingTimer loggingTimer = new LoggingTimer()) {
+			_verifyResourcePermissions.verify(new BlogsEntryVerifiableModel());
+		}
+	}
+
 	protected void verifyStatus() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer()) {
 			runSQL(
@@ -93,5 +102,7 @@ public class BlogsServiceVerifyProcess extends VerifyProcess {
 		BlogsServiceVerifyProcess.class);
 
 	private BlogsEntryLocalService _blogsEntryLocalService;
+	private final VerifyResourcePermissions _verifyResourcePermissions =
+		new VerifyResourcePermissions();
 
 }
