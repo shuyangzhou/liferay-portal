@@ -14,6 +14,7 @@
 
 package com.liferay.blogs.portlet.test;
 
+import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.blogs.kernel.model.BlogsEntry;
 import com.liferay.portal.kernel.exception.NoSuchLayoutException;
 import com.liferay.portal.kernel.model.Group;
@@ -48,6 +49,7 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import org.springframework.mock.web.MockHttpServletRequest;
 
@@ -56,6 +58,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
  * @author Laszlo Csontos
  * @author Eduardo Garcia
  */
+@RunWith(Arquillian.class)
 @Sync
 public class PortletLayoutFinderTest {
 
