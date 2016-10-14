@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.portlet.PortletProviderUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.rule.Sync;
@@ -142,7 +143,9 @@ public class PortletLayoutFinderTest {
 
 		HttpServletRequest request = getHttpServletRequest();
 
-		BaseFindActionHelper.setTargetLayout(
+		ReflectionTestUtil.invoke(
+			BaseFindActionHelper.class, "setTargetLayout",
+			new Class<?>[] {HttpServletRequest.class, long.class, long.class},
 			request, _blogsEntryGroupId, _blogLayout.getPlid());
 
 		Layout layout = (Layout)request.getAttribute(WebKeys.LAYOUT);
@@ -157,7 +160,9 @@ public class PortletLayoutFinderTest {
 
 		HttpServletRequest request = getHttpServletRequest();
 
-		BaseFindActionHelper.setTargetLayout(
+		ReflectionTestUtil.invoke(
+			BaseFindActionHelper.class, "setTargetLayout",
+			new Class<?>[] {HttpServletRequest.class, long.class, long.class},
 			request, _blogsEntryGroupId, _blogLayout.getPlid());
 
 		Layout layout = (Layout)request.getAttribute(WebKeys.LAYOUT);
