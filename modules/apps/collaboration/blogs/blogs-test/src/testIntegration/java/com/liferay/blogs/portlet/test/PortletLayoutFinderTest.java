@@ -191,7 +191,7 @@ public class PortletLayoutFinderTest {
 		preferenceMap.put("assetLinkBehavior", new String[] {"viewInPortlet"});
 
 		PortletInstance portletInstance = new PortletInstance(
-			com.liferay.portlet.util.test.PortletKeys.TEST);
+			"com_liferay_hello_world_web_portlet_HelloWorldPortlet");
 
 		_testPortletId = portletInstance.getPortletInstanceKey();
 
