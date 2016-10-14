@@ -16,6 +16,7 @@ package com.liferay.blogs.service.persistence.impl;
 
 import com.liferay.blogs.kernel.model.BlogsEntry;
 import com.liferay.blogs.kernel.service.persistence.BlogsEntryFinder;
+import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -29,7 +30,6 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portlet.blogs.model.impl.BlogsEntryImpl;
-import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.sql.Timestamp;
 
@@ -81,7 +81,8 @@ public class BlogsEntryFinderImpl
 		try {
 			session = openSession();
 
-			String sql = CustomSQLUtil.get(COUNT_BY_ORGANIZATION_IDS);
+			String sql = CustomSQLUtil.get(
+				getClass(), COUNT_BY_ORGANIZATION_IDS);
 
 			if (queryDefinition.getStatus() != WorkflowConstants.STATUS_ANY) {
 				if (queryDefinition.isExcludeStatus()) {
@@ -146,7 +147,7 @@ public class BlogsEntryFinderImpl
 		try {
 			session = openSession();
 
-			String sql = CustomSQLUtil.get(FIND_BY_GROUP_IDS);
+			String sql = CustomSQLUtil.get(getClass(), FIND_BY_GROUP_IDS);
 
 			if (queryDefinition.getStatus() != WorkflowConstants.STATUS_ANY) {
 				if (queryDefinition.isExcludeStatus()) {
@@ -212,7 +213,8 @@ public class BlogsEntryFinderImpl
 		try {
 			session = openSession();
 
-			String sql = CustomSQLUtil.get(FIND_BY_ORGANIZATION_IDS);
+			String sql = CustomSQLUtil.get(
+				getClass(), FIND_BY_ORGANIZATION_IDS);
 
 			if (queryDefinition.getStatus() != WorkflowConstants.STATUS_ANY) {
 				if (queryDefinition.isExcludeStatus()) {
@@ -268,7 +270,7 @@ public class BlogsEntryFinderImpl
 		try {
 			session = openSession();
 
-			String sql = CustomSQLUtil.get(FIND_BY_NO_ASSETS);
+			String sql = CustomSQLUtil.get(getClass(), FIND_BY_NO_ASSETS);
 
 			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
