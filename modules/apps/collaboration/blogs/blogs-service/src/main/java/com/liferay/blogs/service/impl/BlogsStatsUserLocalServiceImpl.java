@@ -20,8 +20,6 @@ import com.liferay.blogs.exception.NoSuchStatsUserException;
 import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.blogs.model.BlogsStatsUser;
 import com.liferay.blogs.service.base.BlogsStatsUserLocalServiceBaseImpl;
-import com.liferay.blogs.service.persistence.BlogsStatsUserFinder;
-import com.liferay.blogs.service.persistence.BlogsStatsUserPersistence;
 import com.liferay.blogs.util.comparator.EntryDisplayDateComparator;
 import com.liferay.blogs.util.comparator.StatsUserLastPostDateComparator;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -30,7 +28,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.util.Date;
 import java.util.List;
@@ -249,12 +246,6 @@ public class BlogsStatsUserLocalServiceImpl
 
 		return blogsStatsUserPersistence.update(blogsStatsUser);
 	}
-
-	@ServiceReference(type = BlogsStatsUserFinder.class)
-	protected BlogsStatsUserFinder blogsStatsUserFinder;
-
-	@ServiceReference(type = BlogsStatsUserPersistence.class)
-	protected BlogsStatsUserPersistence blogsStatsUserPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		BlogsStatsUserLocalServiceImpl.class);
