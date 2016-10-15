@@ -27,6 +27,7 @@ import aQute.bnd.annotation.ProviderType;
  */
 @ProviderType
 public class BlogsStatsUserImpl extends BlogsStatsUserBaseImpl {
+
 	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -34,4 +35,5 @@ public class BlogsStatsUserImpl extends BlogsStatsUserBaseImpl {
 	 */
 	public BlogsStatsUserImpl() {
 	}
+
 }
