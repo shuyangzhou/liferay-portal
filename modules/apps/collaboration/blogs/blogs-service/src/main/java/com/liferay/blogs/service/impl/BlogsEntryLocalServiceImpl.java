@@ -103,6 +103,7 @@ import com.liferay.portal.util.PrefsPropsUtil;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.blogs.service.permission.BlogsPermission;
 import com.liferay.blogs.util.BlogsUtil;
+import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.linkback.LinkbackProducerUtil;
 import com.liferay.social.kernel.model.SocialActivityConstants;
 import com.liferay.trash.kernel.exception.RestoreEntryException;
@@ -587,6 +588,16 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 				entry.getStatusByUserId(), entry.getEntryId(),
 				WorkflowConstants.STATUS_APPROVED, serviceContext,
 				new HashMap<String, Serializable>());
+		}
+	}
+
+	@Override
+	public BlogsEntry deleteBlogsEntry(BlogsEntry blogsEntry) {
+		try {
+			return blogsEntryLocalService.deleteEntry(blogsEntry);
+		}
+		catch (PortalException pe) {
+			return ReflectionUtil.throwException(pe);
 		}
 	}
 
