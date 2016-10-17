@@ -302,13 +302,15 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 		entry.setTitle(title);
 		entry.setSubtitle(subtitle);
 
-		if (Validator.isNotNull(urlTitle)) {
-			FriendlyURL friendlyURL = friendlyURLLocalService.addFriendlyURL(
-				user.getCompanyId(), groupId, BlogsEntry.class, entryId,
-				urlTitle);
-
-			entry.setUrlTitle(friendlyURL.getUrlTitle());
+		if (Validator.isNull(urlTitle)) {
+			urlTitle = getUniqueUrlTitle(entryId, groupId, title);
 		}
+
+		FriendlyURL friendlyURL = friendlyURLLocalService.addFriendlyURL(
+			user.getCompanyId(), groupId, BlogsEntry.class, entryId,
+			urlTitle);
+
+		entry.setUrlTitle(friendlyURL.getUrlTitle());
 
 		entry.setDescription(description);
 		entry.setContent(content);
