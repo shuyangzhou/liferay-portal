@@ -38,7 +38,6 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.PortalRunMode;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
@@ -53,7 +52,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -79,16 +77,7 @@ public class JournalArticleScheduledTest {
 	public void setUp() throws Exception {
 		_group = GroupTestUtil.addGroup();
 
-		_testMode = PortalRunMode.isTestMode();
-
-		PortalRunMode.setTestMode(true);
-
 		ServiceTestUtil.setUser(TestPropsValues.getUser());
-	}
-
-	@After
-	public void tearDown() {
-		PortalRunMode.setTestMode(_testMode);
 	}
 
 	@Test
@@ -226,7 +215,5 @@ public class JournalArticleScheduledTest {
 
 	@DeleteAfterTestRun
 	private Group _group;
-
-	private boolean _testMode;
 
 }

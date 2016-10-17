@@ -505,7 +505,6 @@
 	<bean class="com.liferay.portal.verify.model.AssetCategoryVerifiableModel" />
 	<bean class="com.liferay.portal.verify.model.AssetTagVerifiableModel" />
 	<bean class="com.liferay.portal.verify.model.AssetVocabularyVerifiableModel" />
-	<bean class="com.liferay.portal.verify.model.BlogsEntryVerifiableModel" />
 	<bean class="com.liferay.portal.verify.model.DLFileEntryVerifiableModel" />
 	<bean class="com.liferay.portal.verify.model.DLFileShortcutVerifiableModel" />
 	<bean class="com.liferay.portal.verify.model.DLFileVersionVerifiableModel" />
@@ -552,7 +551,6 @@
 	<bean class="com.liferay.portlet.asset.util.AssetCategoryIndexer" id="com.liferay.portlet.asset.util.AssetCategoryIndexer" />
 	<bean class="com.liferay.portlet.asset.util.AssetEntryIndexer" id="com.liferay.portlet.asset.util.AssetEntryIndexer" />
 	<bean class="com.liferay.portlet.asset.util.AssetVocabularyIndexer" id="com.liferay.portlet.asset.util.AssetVocabularyIndexer" />
-	<bean class="com.liferay.portlet.blogs.util.BlogsOpenSearchImpl" id="com.liferay.portlet.blogs.util.BlogsOpenSearchImpl" />
 	<bean class="com.liferay.document.library.kernel.antivirus.AntivirusScannerUtil" id="com.liferay.document.library.kernel.antivirus.AntivirusScannerUtil">
 		<property name="antivirusScanner">
 			<bean class="com.liferay.portlet.documentlibrary.antivirus.AntivirusScannerImpl" />

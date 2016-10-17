@@ -55,7 +55,6 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.PortalRunMode;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -114,10 +113,6 @@ public class JournalArticleServiceTest {
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID, "Version 1",
 			"This is a test article.");
 
-		_testMode = PortalRunMode.isTestMode();
-
-		PortalRunMode.setTestMode(true);
-
 		ServiceTestUtil.setUser(TestPropsValues.getUser());
 
 		PortalPreferences portalPreferenceces =
@@ -143,8 +138,6 @@ public class JournalArticleServiceTest {
 				_group.getGroupId(), _article.getArticleId(),
 				new ServiceContext());
 		}
-
-		PortalRunMode.setTestMode(_testMode);
 
 		PortalPreferencesLocalServiceUtil.updatePreferences(
 			TestPropsValues.getCompanyId(),
@@ -267,7 +260,7 @@ public class JournalArticleServiceTest {
 		Assert.assertEquals(
 			"Version 2", _latestArticle.getTitle(LocaleUtil.getDefault()));
 		Assert.assertTrue(_latestArticle.isApproved());
-		Assert.assertTrue(1.1 == _latestArticle.getVersion());
+		Assert.assertTrue(_latestArticle.getVersion() == 1.1);
 	}
 
 	@Test
@@ -295,7 +288,7 @@ public class JournalArticleServiceTest {
 		Assert.assertEquals(
 			"Version 2", _latestArticle.getTitle(LocaleUtil.getDefault()));
 		Assert.assertTrue(_latestArticle.isApproved());
-		Assert.assertTrue(1.1 == _latestArticle.getVersion());
+		Assert.assertTrue(_latestArticle.getVersion() == 1.1);
 	}
 
 	@Test
@@ -768,6 +761,5 @@ public class JournalArticleServiceTest {
 	private String _keyword;
 	private JournalArticle _latestArticle;
 	private String _originalPortalPreferencesXML;
-	private boolean _testMode;
 
 }

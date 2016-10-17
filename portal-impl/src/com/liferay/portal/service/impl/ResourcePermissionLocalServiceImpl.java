@@ -1407,6 +1407,8 @@ public class ResourcePermissionLocalServiceImpl
 					companyId, name, scope, primKey,
 					ArrayUtil.subset(roleIds, start, roleIds.length)));
 
+			roleIdsToActionIds = new HashMap<>(roleIdsToActionIds);
+
 			for (ResourcePermission resourcePermission : resourcePermissions) {
 				long roleId = resourcePermission.getRoleId();
 

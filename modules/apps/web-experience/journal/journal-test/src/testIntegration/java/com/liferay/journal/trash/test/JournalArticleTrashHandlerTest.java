@@ -49,7 +49,6 @@ import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.trash.TrashHandler;
 import com.liferay.portal.kernel.trash.TrashHandlerRegistryUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.PortalRunMode;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -85,7 +84,6 @@ import java.io.InputStream;
 
 import java.util.List;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -246,18 +244,9 @@ public class JournalArticleTrashHandlerTest
 	public void setUp() throws Exception {
 		setUpDDMFormXSDDeserializer();
 
-		_testMode = PortalRunMode.isTestMode();
-
-		PortalRunMode.setTestMode(true);
-
 		ServiceTestUtil.setUser(TestPropsValues.getUser());
 
 		super.setUp();
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		PortalRunMode.setTestMode(_testMode);
 	}
 
 	@Test
@@ -493,7 +482,6 @@ public class JournalArticleTrashHandlerTest
 	private static final int _FOLDER_NAME_MAX_LENGTH = 100;
 
 	private DDMFormXSDDeserializer _ddmFormXSDDeserializer;
-	private boolean _testMode;
 	private final WhenIsAssetable _whenIsAssetable =
 		new DefaultWhenIsAssetable();
 	private final WhenIsIndexableBaseModel _whenIsIndexableBaseModel =
