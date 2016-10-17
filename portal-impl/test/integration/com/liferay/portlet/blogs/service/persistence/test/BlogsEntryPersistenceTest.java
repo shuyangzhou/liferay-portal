@@ -57,8 +57,11 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
+ * @deprecated As of 7.0.0, replaced by {@link
+            com.liferay.blogs.model.impl.BlogsEntryImpl}
  * @generated
  */
+@Deprecated
 public class BlogsEntryPersistenceTest {
 	@ClassRule
 	@Rule
