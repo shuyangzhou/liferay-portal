@@ -14,24 +14,24 @@
 
 package com.liferay.portal.security.pacl.test.hook.service.impl;
 
-import com.liferay.blogs.kernel.service.BlogsEntryLocalService;
-import com.liferay.blogs.kernel.service.BlogsEntryLocalServiceWrapper;
+import com.liferay.message.boards.kernel.service.MBStatsUserLocalService;
+import com.liferay.message.boards.kernel.service.MBStatsUserLocalServiceWrapper;
 
 /**
  * @author Brian Wing Shun Chan
  */
-public class TestPACLBlogsEntryLocalServiceImpl
-	extends BlogsEntryLocalServiceWrapper {
+public class TestPACLMBStatsUserLocalServiceImpl
+	extends MBStatsUserLocalServiceWrapper {
 
-	public TestPACLBlogsEntryLocalServiceImpl(
-		BlogsEntryLocalService blogsEntryLocalService) {
+	public TestPACLMBStatsUserLocalServiceImpl(
+		MBStatsUserLocalService mbStatsUserLocalService) {
 
-		super(blogsEntryLocalService);
+		super(mbStatsUserLocalService);
 	}
 
 	@Override
-	public int getBlogsEntriesCount() {
-		return -123;
+	public int getMBStatsUsersCount() {
+		return -456;
 	}
 
 }
