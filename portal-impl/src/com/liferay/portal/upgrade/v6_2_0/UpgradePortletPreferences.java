@@ -43,6 +43,7 @@ public class UpgradePortletPreferences extends UpgradeProcess {
 			sb.append("by plid");
 
 			long lastPlid = 0;
+
 			String typeSettings = StringPool.BLANK;
 
 			try (PreparedStatement ps = connection.prepareStatement(
@@ -98,8 +99,8 @@ public class UpgradePortletPreferences extends UpgradeProcess {
 		}
 
 		sql =
-			"select typeSettings from LayoutRevision where " +
-				"layoutRevisionId = " + plid;
+			"select typeSettings from LayoutRevision where layoutRevisionId " +
+				"= " + plid;
 
 		try (PreparedStatement ps = connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery()) {
