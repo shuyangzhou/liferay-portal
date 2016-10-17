@@ -656,7 +656,7 @@ public class BlogsEntryLocalServiceTest {
 	}
 
 	@Test
-	public void testURLTitleIsNotSavedWhenAddingDraftEntry() throws Exception {
+	public void testURLTitleIsSavedWhenAddingDraftEntry() throws Exception {
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(_group, _user.getUserId());
 
@@ -666,11 +666,11 @@ public class BlogsEntryLocalServiceTest {
 			_user.getUserId(), RandomTestUtil.randomString(),
 			RandomTestUtil.randomString(), serviceContext);
 
-		Assert.assertTrue(Validator.isNull(entry.getUrlTitle()));
+		Assert.assertTrue(Validator.isNotNull(entry.getUrlTitle()));
 	}
 
 	@Test
-	public void testURLTitleIsNotSavedWhenAddingDraftEntryWithWorkflow()
+	public void testURLTitleIsSavedWhenAddingDraftEntryWithWorkflow()
 		throws Exception {
 
 		ServiceContext serviceContext =
@@ -680,7 +680,7 @@ public class BlogsEntryLocalServiceTest {
 			_user.getUserId(), RandomTestUtil.randomString(), false,
 			serviceContext);
 
-		Assert.assertTrue(Validator.isNull(entry.getUrlTitle()));
+		Assert.assertTrue(Validator.isNotNull(entry.getUrlTitle()));
 	}
 
 	@Test
