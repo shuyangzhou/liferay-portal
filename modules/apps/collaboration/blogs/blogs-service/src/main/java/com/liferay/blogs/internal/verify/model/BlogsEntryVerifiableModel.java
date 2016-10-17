@@ -12,16 +12,14 @@
  * details.
  */
 
-package com.liferay.portal.verify.model;
+package com.liferay.blogs.internal.verify.model;
 
 import com.liferay.blogs.kernel.model.BlogsEntry;
 import com.liferay.portal.kernel.verify.model.VerifiableResourcedModel;
 
 /**
  * @author Brian Wing Shun Chan
- * @deprecated As of 7.0.0, with no direct replacement
  */
-@Deprecated
 public class BlogsEntryVerifiableModel implements VerifiableResourcedModel {
 
 	@Override
