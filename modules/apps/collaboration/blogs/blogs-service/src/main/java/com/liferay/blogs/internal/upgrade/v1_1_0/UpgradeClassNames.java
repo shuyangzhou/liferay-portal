@@ -14,12 +14,20 @@
 
 package com.liferay.blogs.internal.upgrade.v1_1_0;
 
+import com.liferay.portal.kernel.upgrade.UpgradeException;
 import com.liferay.portal.upgrade.v7_0_0.UpgradeKernelPackage;
 
 /**
  * @author Preston Crary
  */
 public class UpgradeClassNames extends UpgradeKernelPackage {
+
+	@Override
+	public void doUpgrade() throws UpgradeException {
+		System.out.println("Running : " + UpgradeClassNames.class.getName());
+
+		super.doUpgrade();
+	}
 
 	@Override
 	protected String[][] getClassNames() {
