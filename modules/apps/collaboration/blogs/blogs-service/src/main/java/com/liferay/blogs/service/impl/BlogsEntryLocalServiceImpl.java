@@ -20,15 +20,13 @@ import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetLinkConstants;
 import com.liferay.blogs.constants.BlogsConstants;
 import com.liferay.blogs.exception.EntryUrlTitleException;
-import com.liferay.blogs.kernel.exception.EntryContentException;
-import com.liferay.blogs.kernel.exception.EntryCoverImageCropException;
-import com.liferay.blogs.kernel.exception.EntryDisplayDateException;
-import com.liferay.blogs.kernel.exception.EntrySmallImageNameException;
-import com.liferay.blogs.kernel.exception.EntrySmallImageScaleException;
-import com.liferay.blogs.kernel.exception.EntryTitleException;
-import com.liferay.blogs.kernel.model.BlogsEntry;
-import com.liferay.blogs.kernel.service.persistence.BlogsEntryFinder;
-import com.liferay.blogs.kernel.service.persistence.BlogsEntryPersistence;
+import com.liferay.blogs.exception.EntryContentException;
+import com.liferay.blogs.exception.EntryCoverImageCropException;
+import com.liferay.blogs.exception.EntryDisplayDateException;
+import com.liferay.blogs.exception.EntrySmallImageNameException;
+import com.liferay.blogs.exception.EntrySmallImageScaleException;
+import com.liferay.blogs.exception.EntryTitleException;
+import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.blogs.util.comparator.EntryDisplayDateComparator;
 import com.liferay.blogs.util.comparator.EntryIdComparator;
 import com.liferay.blogs.service.base.BlogsEntryLocalServiceBaseImpl;
@@ -36,12 +34,9 @@ import com.liferay.blogs.settings.BlogsGroupServiceSettings;
 import com.liferay.blogs.social.BlogsActivityKeys;
 import com.liferay.blogs.util.BlogsEntryAttachmentFileEntryUtil;
 import com.liferay.document.library.kernel.model.DLFolderConstants;
-import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.friendly.url.model.FriendlyURL;
 import com.liferay.friendly.url.service.FriendlyURLLocalService;
 import com.liferay.portal.kernel.comment.CommentManagerUtil;
-import com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery;
-import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -82,7 +77,6 @@ import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
-import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -103,6 +97,7 @@ import com.liferay.portal.util.PrefsPropsUtil;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.blogs.service.permission.BlogsPermission;
 import com.liferay.blogs.util.BlogsUtil;
+import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.linkback.LinkbackProducerUtil;
 import com.liferay.social.kernel.model.SocialActivityConstants;
 import com.liferay.trash.kernel.exception.RestoreEntryException;
@@ -591,6 +586,16 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 	}
 
 	@Override
+	public BlogsEntry deleteBlogsEntry(BlogsEntry blogsEntry) {
+		try {
+			return blogsEntryLocalService.deleteEntry(blogsEntry);
+		}
+		catch (PortalException pe) {
+			return ReflectionUtil.throwException(pe);
+		}
+	}
+
+	@Override
 	public void deleteEntries(long groupId) throws PortalException {
 		for (BlogsEntry entry : blogsEntryPersistence.findByGroupId(groupId)) {
 			blogsEntryLocalService.deleteEntry(entry);
@@ -715,22 +720,6 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 	}
 
 	@Override
-	public BlogsEntry fetchBlogsEntry(long entryId) {
-		return
-			com.liferay.blogs.kernel.service.BlogsEntryLocalServiceUtil.
-				fetchBlogsEntry(entryId);
-	}
-
-	@Override
-	public BlogsEntry fetchBlogsEntryByUuidAndGroupId(
-		String uuid, long groupId) {
-
-		return
-			com.liferay.blogs.kernel.service.BlogsEntryLocalServiceUtil.
-				fetchBlogsEntryByUuidAndGroupId(uuid, groupId);
-	}
-
-	@Override
 	public BlogsEntry fetchEntry(long groupId, String urlTitle) {
 		Group group = groupPersistence.fetchByPrimaryKey(groupId);
 
@@ -743,26 +732,6 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 		}
 
 		return blogsEntryPersistence.fetchByG_UT(groupId, urlTitle);
-	}
-
-	@Override
-	public List<BlogsEntry> getBlogsEntriesByUuidAndCompanyId(
-		String uuid, long companyId, int start, int end,
-		OrderByComparator<BlogsEntry> orderByComparator) {
-
-		return
-			com.liferay.blogs.kernel.service.BlogsEntryLocalServiceUtil.
-				getBlogsEntriesByUuidAndCompanyId(
-					uuid, companyId, start, end, orderByComparator);
-	}
-
-	@Override
-	public BlogsEntry getBlogsEntryByUuidAndGroupId(String uuid, long groupId)
-		throws PortalException {
-
-		return
-			com.liferay.blogs.kernel.service.BlogsEntryLocalServiceUtil.
-				getBlogsEntryByUuidAndGroupId(uuid, groupId);
 	}
 
 	@Override
@@ -846,15 +815,6 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 		}
 
 		return blogsEntryPersistence.findByG_UT(groupId, urlTitle);
-	}
-
-	@Override
-	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
-		final PortletDataContext portletDataContext) {
-
-		return
-			com.liferay.blogs.kernel.service.BlogsEntryLocalServiceUtil.
-				getExportActionableDynamicQuery(portletDataContext);
 	}
 
 	@Override
@@ -964,15 +924,6 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 			return blogsEntryPersistence.countByG_U_LtD_S(
 				groupId, userId, displayDate, queryDefinition.getStatus());
 		}
-	}
-
-	@Override
-	public IndexableActionableDynamicQuery
-		getIndexableActionableDynamicQuery() {
-
-		return
-			com.liferay.blogs.kernel.service.BlogsEntryLocalServiceUtil.
-				getIndexableActionableDynamicQuery();
 	}
 
 	@Override
@@ -1156,13 +1107,6 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 		assetLinkLocalService.updateLinks(
 			userId, assetEntry.getEntryId(), assetLinkEntryIds,
 			AssetLinkConstants.TYPE_RELATED);
-	}
-
-	@Override
-	public BlogsEntry updateBlogsEntry(BlogsEntry blogsEntry) {
-		return
-			com.liferay.blogs.kernel.service.BlogsEntryLocalServiceUtil.
-				updateBlogsEntry(blogsEntry);
 	}
 
 	@Override
@@ -2323,12 +2267,6 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 			entry.getCompanyId(), entry.getGroupId(), classNameId,
 			entry.getEntryId(), urlTitle);
 	}
-
-	@ServiceReference(type = BlogsEntryPersistence.class)
-	protected BlogsEntryPersistence blogsEntryPersistence;
-
-	@ServiceReference(type = BlogsEntryFinder.class)
-	protected BlogsEntryFinder blogsEntryFinder;
 
 	@ServiceReference(type = ClassNameLocalService.class)
 	protected ClassNameLocalService classNameLocalService;
