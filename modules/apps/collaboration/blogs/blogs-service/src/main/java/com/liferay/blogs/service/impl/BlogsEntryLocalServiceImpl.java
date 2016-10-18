@@ -304,7 +304,8 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 		long entryId = counterLocalService.increment();
 
 		if (Validator.isNotNull(urlTitle)) {
-			long classNameId = PortalUtil.getClassNameId(BlogsEntry.class);
+			long classNameId = classNameLocalService.getClassNameId(
+				BlogsEntry.class);
 
 			friendlyURLLocalService.validate(
 				user.getCompanyId(), groupId, classNameId, urlTitle);
@@ -1238,7 +1239,8 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 		validate(title, urlTitle, content, status);
 
 		if (Validator.isNotNull(urlTitle)) {
-			long classNameId = PortalUtil.getClassNameId(BlogsEntry.class);
+			long classNameId = classNameLocalService.getClassNameId(
+				BlogsEntry.class);
 
 			friendlyURLLocalService.validate(
 				entry.getCompanyId(), entry.getGroupId(), classNameId, entryId,
@@ -1919,6 +1921,7 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 			BlogsEntry.class.getName(), PortletProvider.Action.VIEW);
 
 		subscriptionSender.setPortletId(portletId);
+
 		subscriptionSender.setReplyToAddress(fromAddress);
 		subscriptionSender.setScopeGroupId(entry.getGroupId());
 		subscriptionSender.setServiceContext(serviceContext);
