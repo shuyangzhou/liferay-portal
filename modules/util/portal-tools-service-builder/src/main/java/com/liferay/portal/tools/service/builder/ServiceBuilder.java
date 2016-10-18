@@ -3527,6 +3527,10 @@ public class ServiceBuilder {
 				continue;
 			}
 
+			if (entity.isDeprecated()) {
+				continue;
+			}
+
 			List<EntityFinder> finderList = entity.getFinderList();
 
 			for (int j = 0; j < finderList.size(); j++) {
@@ -3770,6 +3774,10 @@ public class ServiceBuilder {
 			}
 
 			if (!entity.isDefaultDataSource()) {
+				continue;
+			}
+
+			if (entity.isDeprecated()) {
 				continue;
 			}
 
