@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.blogs.internal.upgrade.v1_2_0;
+package com.liferay.blogs.internal.upgrade.v1_1_0;
 
 import com.liferay.portal.upgrade.v7_0_0.UpgradeKernelPackage;
 

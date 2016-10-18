@@ -15,7 +15,7 @@
 package com.liferay.blogs.internal.upgrade;
 
 import com.liferay.blogs.internal.upgrade.v1_1_0.UpgradeFriendlyURL;
-import com.liferay.blogs.internal.upgrade.v1_2_0.UpgradeClassNames;
+import com.liferay.blogs.internal.upgrade.v1_1_0.UpgradeClassNames;
 import com.liferay.friendly.url.service.FriendlyURLLocalService;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 
