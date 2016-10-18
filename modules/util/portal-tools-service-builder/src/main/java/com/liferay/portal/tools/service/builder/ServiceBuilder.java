@@ -2381,14 +2381,23 @@ public class ServiceBuilder {
 
 		List<Entity> entities = new ArrayList<>();
 
+		boolean hasDeprecated = false;
+
 		for (Entity entity : _ejbList) {
 			if (entity.hasColumns()) {
-				entities.add(entity);
+				if (entity.isDeprecated()) {
+					hasDeprecated = true;
+				}
+				else {
+					entities.add(entity);
+				}
 			}
 		}
 
 		if (entities.isEmpty()) {
-			xmlFile.delete();
+			if (!hasDeprecated) {
+				xmlFile.delete();
+			}
 
 			return;
 		}
@@ -5447,7 +5456,11 @@ public class ServiceBuilder {
 	private Map<String, Object> _putDeprecatedKeys(
 		Map<String, Object> context, JavaClass javaClass) {
 
-		context.put("classDeprecated", false);
+		Entity entity = (Entity)context.get("entity");
+
+		context.put("classDeprecated", entity.isDeprecated());
+
+		context.put("classDeprecatedComment", "");
 
 		if (javaClass != null) {
 			DocletTag tag = javaClass.getTagByName("deprecated");
