@@ -109,7 +109,7 @@ public class PortalLifecycleUtil {
 	private static boolean _inFlushDestroys;
 	private static final List<PortalLifecycle> _portalLifecyclesDestroy =
 		Collections.synchronizedList(new ArrayList<PortalLifecycle>());
-	private static List<PortalLifecycle> _portalLifecyclesInit =
+	private static volatile List<PortalLifecycle> _portalLifecyclesInit =
 		Collections.synchronizedList(new ArrayList<PortalLifecycle>());
 
 }
