@@ -263,7 +263,9 @@ public class ModuleApplicationContextExtender extends AbstractExtender {
 					}
 
 					@Override
-					public void upgrade(DBProcessContext dbProcessContext) {
+					public void upgrade(DBProcessContext dbProcessContext)
+						throws UpgradeException {
+
 						DBContext dbContext = dbProcessContext.getDBContext();
 
 						DBManager dbManager = dbContext.getDBManager();
@@ -281,7 +283,7 @@ public class ModuleApplicationContextExtender extends AbstractExtender {
 								true);
 						}
 						catch (Exception e) {
-							new UpgradeException(e);
+							throw new UpgradeException(e);
 						}
 					}
 
