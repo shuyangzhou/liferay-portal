@@ -177,12 +177,11 @@ public class LiferaySettingsPlugin implements Plugin<Settings> {
 			final Path projectPathRootDirPath, final String projectPathPrefix)
 		throws IOException {
 
+		final String buildProfile = System.getProperty("build.profile");
 		final Set<Path> excludedDirPaths = getDirPaths(
 			"build.exclude.dirs", rootDirPath);
 		final Set<ProjectDirType> excludedProjectDirTypes = _getFlags(
 			"build.exclude.", ProjectDirType.class);
-		final boolean portalBuild = Boolean.getBoolean("portal.build");
-		final boolean portalPreBuild = Boolean.getBoolean("portal.pre.build");
 
 		Files.walkFileTree(
 			rootDirPath,
@@ -210,15 +209,9 @@ public class LiferaySettingsPlugin implements Plugin<Settings> {
 						return FileVisitResult.SKIP_SUBTREE;
 					}
 
-					if (portalBuild &&
-						Files.notExists(dirPath.resolve(".lfrbuild-portal"))) {
-
-						return FileVisitResult.SKIP_SUBTREE;
-					}
-
-					if (portalPreBuild &&
+					if (Validator.isNotNull(buildProfile) &&
 						Files.notExists(
-							dirPath.resolve(".lfrbuild-portal-pre"))) {
+							dirPath.resolve(".lfrbuild-" + buildProfile))) {
 
 						return FileVisitResult.SKIP_SUBTREE;
 					}
