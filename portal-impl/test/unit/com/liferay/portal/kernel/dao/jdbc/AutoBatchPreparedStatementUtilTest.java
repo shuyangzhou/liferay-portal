@@ -14,7 +14,13 @@
 
 package com.liferay.portal.kernel.dao.jdbc;
 
+import com.liferay.portal.dao.db.BaseDB;
+import com.liferay.portal.dao.db.DBManagerImpl;
 import com.liferay.portal.kernel.concurrent.DefaultNoticeableFuture;
+import com.liferay.portal.kernel.dao.db.DB;
+import com.liferay.portal.kernel.dao.db.DBManager;
+import com.liferay.portal.kernel.dao.db.DBManagerUtil;
+import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.nio.intraband.CancelingPortalExecutorManagerUtilAdvice;
 import com.liferay.portal.kernel.nio.intraband.PortalExecutorManagerUtilAdvice;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
@@ -31,6 +37,8 @@ import com.liferay.portal.test.rule.AdviseWith;
 import com.liferay.portal.test.rule.AspectJNewEnvTestRule;
 import com.liferay.registry.BasicRegistryImpl;
 import com.liferay.registry.RegistryUtil;
+
+import java.io.IOException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
@@ -51,6 +59,7 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -73,6 +82,15 @@ public class AutoBatchPreparedStatementUtilTest {
 	@Before
 	public void setUp() {
 		RegistryUtil.setRegistry(new BasicRegistryImpl());
+
+		_dbManager = DBManagerUtil.getDBManager();
+
+		DBManagerUtil.setDBManager(new MockDBManager(new MockDB(null)));
+	}
+
+	@After
+	public void tearDown() {
+		DBManagerUtil.setDBManager(_dbManager);
 	}
 
 	@AdviseWith(adviceClasses = {PropsUtilAdvice.class})
@@ -173,6 +191,36 @@ public class AutoBatchPreparedStatementUtilTest {
 
 		doTestNotSupportBatchUpdates();
 		doTestNotSupportBatchUpdatesConcurrent();
+	}
+
+	@AdviseWith(adviceClasses = {PropsUtilAdvice.class})
+	@Test
+	public void testSQLServerAndSybase() throws Exception {
+		PropsUtilAdvice.setProps(PropsKeys.HIBERNATE_JDBC_BATCH_SIZE, "0");
+
+		MockDB.setDBType(DBType.SQLSERVER);
+
+		try (PreparedStatement preparedStatement =
+				AutoBatchPreparedStatementUtil.concurrentAutoBatch(
+					(Connection)ProxyUtil.newProxyInstance(
+						ClassLoader.getSystemClassLoader(),
+						new Class<?>[] {Connection.class},
+						new ConnectionInvocationHandler(
+							new PreparedStatementInvocationHandler(false))),
+					StringPool.BLANK)) {
+		}
+
+		MockDB.setDBType(DBType.SYBASE);
+
+		try (PreparedStatement preparedStatement =
+				AutoBatchPreparedStatementUtil.concurrentAutoBatch(
+					(Connection)ProxyUtil.newProxyInstance(
+						ClassLoader.getSystemClassLoader(),
+						new Class<?>[] {Connection.class},
+						new ConnectionInvocationHandler(
+							new PreparedStatementInvocationHandler(false))),
+					StringPool.BLANK)) {
+		}
 	}
 
 	@AdviseWith(
@@ -616,6 +664,8 @@ public class AutoBatchPreparedStatementUtilTest {
 			PreparedStatement.class.getMethod("close"), methods.remove(0));
 	}
 
+	private DBManager _dbManager;
+
 	private static class ConnectionInvocationHandler
 		implements InvocationHandler {
 
@@ -679,6 +729,70 @@ public class AutoBatchPreparedStatementUtilTest {
 		}
 
 		private final boolean _supportBatchUpdates;
+
+	}
+
+	private static class MockDB extends BaseDB {
+
+		public static void setDBType(DBType dBType) {
+			_dbType = dBType;
+		}
+
+		public MockDB(DBType dbType) {
+			super(dbType, 0, 0);
+
+			_dbType = dbType;
+		}
+
+		@Override
+		public String buildSQL(String template) throws IOException {
+			return null;
+		}
+
+		@Override
+		public DBType getDBType() {
+			return _dbType;
+		}
+
+		@Override
+		protected String buildCreateFileContent(
+				String sqlDir, String databaseName, int population)
+			throws IOException {
+
+			return null;
+		}
+
+		@Override
+		protected String getServerName() {
+			return null;
+		}
+
+		@Override
+		protected String[] getTemplate() {
+			return new String[TEMPLATE.length];
+		}
+
+		@Override
+		protected String reword(String data) throws IOException {
+			return null;
+		}
+
+		private static DBType _dbType;
+
+	}
+
+	private static class MockDBManager extends DBManagerImpl {
+
+		public MockDBManager(DB db) {
+			_db = db;
+		}
+
+		@Override
+		public DB getDB() {
+			return _db;
+		}
+
+		private final DB _db;
 
 	}
 
