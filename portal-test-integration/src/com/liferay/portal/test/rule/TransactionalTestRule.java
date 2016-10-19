@@ -185,8 +185,8 @@ public class TransactionalTestRule implements TestRule {
 					@Override
 					public Object call() throws Exception {
 						try {
-							return TransactionalFrameworkMethod.super.invokeExplosively(
-								target, params);
+							return TransactionalFrameworkMethod.super.
+								invokeExplosively(target, params);
 						}
 						catch (Throwable t) {
 							ReflectionUtil.throwException(t);
