@@ -88,11 +88,19 @@ public class ProxyFactory {
 		Class<T> serviceClass, Class<?> declaringClass, String fieldName,
 		String filterString) {
 
-		T dummyService = newDummyInstance(serviceClass);
+		try {
+			T awaitService = (T)ProxyUtil.newProxyInstance(
+				serviceClass.getClassLoader(), new Class[] {serviceClass},
+				new AwaitServiceInvocationHandler<T>(
+					serviceClass, declaringClass, fieldName, filterString));
 
-		return _newServiceTrackedInstance(
-			serviceClass, declaringClass, fieldName, filterString,
-			dummyService);
+			return _newServiceTrackedInstance(
+				serviceClass, declaringClass, fieldName, filterString,
+				awaitService);
+		}
+		catch (ReflectiveOperationException roe) {
+			return ReflectionUtil.throwException(roe);
+		}
 	}
 
 	/**
