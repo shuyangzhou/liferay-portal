@@ -14,8 +14,11 @@
 
 package com.liferay.portal.configuration.module.configuration.internal;
 
+import aQute.bnd.annotation.metatype.Meta;
+
 import com.liferay.portal.kernel.settings.LocalizedValuesMap;
 import com.liferay.portal.kernel.settings.TypedSettings;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.lang.reflect.Constructor;
@@ -65,9 +68,72 @@ public class ConfigurationInvocationHandler<S> implements InvocationHandler {
 		}
 	}
 
+	private Object _getValue(Class<?> returnType, String key)
+		throws IllegalAccessException, InstantiationException,
+			   InvocationTargetException, NoSuchMethodException {
+
+		if (returnType.equals(boolean.class) ||
+			returnType.equals(double.class) || returnType.equals(float.class) ||
+			returnType.equals(int.class) || returnType.equals(long.class)) {
+
+			String value = _typedSettings.getValue(key, null);
+
+			if (value == null) {
+				return value;
+			}
+			else if (returnType.equals(boolean.class)) {
+				return GetterUtil.getBoolean(value);
+			}
+			else if (returnType.equals(double.class)) {
+				return GetterUtil.getDouble(value);
+			}
+			else if (returnType.equals(float.class)) {
+				return GetterUtil.getFloat(value);
+			}
+			else if (returnType.equals(int.class)) {
+				return GetterUtil.getInteger(value);
+			}
+			else if (returnType.equals(long.class)) {
+				return GetterUtil.getLong(value);
+			}
+		}
+		else if (returnType.equals(LocalizedValuesMap.class)) {
+			LocalizedValuesMap localizedValuesMap =
+				_typedSettings.getLocalizedValuesMap(key);
+
+			if (localizedValuesMap.getDefaultValue() == null) {
+				return null;
+			}
+
+			return localizedValuesMap;
+		}
+		else if (returnType.equals(String.class)) {
+			return _typedSettings.getValue(key, null);
+		}
+		else if (returnType.equals(String[].class)) {
+			return _typedSettings.getValues(key, null);
+		}
+		else if (returnType.isEnum()) {
+			String value = _typedSettings.getValue(key, null);
+
+			if (value == null) {
+				return value;
+			}
+
+			Method valueOfMethod = returnType.getDeclaredMethod(
+				"valueOf", String.class);
+
+			return valueOfMethod.invoke(returnType, value);
+		}
+
+		Constructor<?> constructor = returnType.getConstructor(String.class);
+
+		return constructor.newInstance(_typedSettings.getValue(key, null));
+	}
+
 	private Object _invokeConfigurationOverride(Method method, Object[] args)
-		throws IllegalAccessException, InvocationTargetException,
-			   NoSuchMethodException {
+		throws IllegalAccessException, InstantiationException,
+			   InvocationTargetException, NoSuchMethodException {
 
 		Class<?> clazz = _configurationOverrideInstance.getClass();
 
@@ -77,10 +143,22 @@ public class ConfigurationInvocationHandler<S> implements InvocationHandler {
 	}
 
 	private Object _invokeTypedSettings(Method method)
-		throws NoSuchMethodException, IllegalAccessException,
-			   InvocationTargetException, InstantiationException {
+		throws IllegalAccessException, InstantiationException,
+			   InvocationTargetException, NoSuchMethodException {
 
 		Class<?> returnType = method.getReturnType();
+
+		Object value = null;
+
+		Meta.AD annotation = method.getAnnotation(Meta.AD.class);
+
+		if ((annotation != null) && !Meta.NULL.equals(annotation.id())) {
+			value = _getValue(returnType, annotation.id());
+		}
+
+		if (value != null) {
+			return value;
+		}
 
 		if (returnType.equals(boolean.class)) {
 			return _typedSettings.getBooleanValue(method.getName());
