@@ -85,7 +85,7 @@ public class VerifyUUID extends VerifyProcess {
 
 		sb.append("update ");
 		sb.append(verifiableUUIDModel.getTableName());
-		sb.append(" set uuid_ = (? || cast_text(");
+		sb.append(" set uuid_ = CONCAT(?, cast_text(");
 		sb.append(verifiableUUIDModel.getPrimaryKeyColumnName());
 		sb.append(")) where (uuid_ is null) and (");
 		sb.append(verifiableUUIDModel.getPrimaryKeyColumnName());
