@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.kernel.test.rule;
+package com.liferay.portal.test.rule;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -40,10 +40,7 @@ import org.junit.runners.model.Statement;
 
 /**
  * @author Shuyang Zhou
- * @deprecated As of 3.0.0, see {@link
- *             com.liferay.portal.test.rule.TransactionalTestRule}
  */
-@Deprecated
 public class TransactionalTestRule implements TestRule {
 
 	public static final TransactionalTestRule INSTANCE =
