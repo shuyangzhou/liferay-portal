@@ -109,18 +109,17 @@ public class LanFileServerHandler
 
 		String message = exception.getMessage();
 
-		if (!message.startsWith(
+		Channel channel = channelHandlerContext.channel();
+
+		if (!message.startsWith("An established connection was aborted") &&
+			!message.startsWith(
 				"An existing connectionn was forcibly closed") &&
 			!message.startsWith("Connection reset by peer")) {
-
-			Channel channel = channelHandlerContext.channel();
 
 			_logger.error(
 				"Client {}: {}", channel.remoteAddress(),
 				exception.getMessage(), exception);
 		}
-
-		Channel channel = channelHandlerContext.channel();
 
 		channel.close();
 	}

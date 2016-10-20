@@ -27,7 +27,6 @@ import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.FileTime;
 
 /**
@@ -124,7 +123,7 @@ public class SyncChunkedFile implements ChunkedInput<ByteBuf> {
 			int bytesRead = 0;
 
 			if (_closeAggressively || (_fileChannel == null)) {
-				_fileChannel = FileChannel.open(_path, StandardOpenOption.READ);
+				_fileChannel = FileChannel.open(_path);
 
 				_fileChannel.position(_offset);
 			}
