@@ -40,7 +40,10 @@ import org.junit.runners.model.Statement;
 
 /**
  * @author Shuyang Zhou
+ * @deprecated As of 3.0.0, see {@link
+ *             com.liferay.portal.test.rule.TransactionalTestRule}
  */
+@Deprecated
 public class TransactionalTestRule implements TestRule {
 
 	public static final TransactionalTestRule INSTANCE =
@@ -185,8 +188,8 @@ public class TransactionalTestRule implements TestRule {
 					@Override
 					public Object call() throws Exception {
 						try {
-							return TransactionalFrameworkMethod.super.invokeExplosively(
-								target, params);
+							return TransactionalFrameworkMethod.super.
+								invokeExplosively(target, params);
 						}
 						catch (Throwable t) {
 							ReflectionUtil.throwException(t);
