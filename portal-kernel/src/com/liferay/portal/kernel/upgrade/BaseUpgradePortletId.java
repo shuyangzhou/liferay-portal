@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LoggingTimer;
+import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -36,7 +37,11 @@ import java.sql.SQLException;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 /**
@@ -206,6 +211,8 @@ public abstract class BaseUpgradePortletId extends UpgradeProcess {
 			"select groupId, typeSettings from Group_ where " +
 				getTypeSettingsCriteria(oldRootPortletId);
 
+		Set<ObjectValuePair<Long, String>> updates = new HashSet<>();
+
 		try (PreparedStatement ps = connection.prepareStatement(
 				sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
 			ResultSet rs = ps.executeQuery()) {
@@ -217,10 +224,12 @@ public abstract class BaseUpgradePortletId extends UpgradeProcess {
 				String newTypeSettings = getNewTypeSettings(
 					typeSettings, oldRootPortletId, newRootPortletId);
 
-				rs.updateString("typeSettings", typeSettings);
-
-				rs.updateRow();
+				updates.add(new ObjectValuePair<>(groupId, newTypeSettings));
 			}
+		}
+
+		for (ObjectValuePair<Long, String> update : updates) {
+			updateGroup(update.getKey(), update.getValue());
 		}
 	}
 
@@ -251,6 +260,8 @@ public abstract class BaseUpgradePortletId extends UpgradeProcess {
 		sb.append(oldRootPortletId);
 		sb.append("_USER_%_INSTANCE_%'");
 
+		Set<ObjectValuePair<String, Long>> updates = new HashSet<>();
+
 		try (PreparedStatement ps = connection.prepareStatement(
 				sb.toString(), ResultSet.TYPE_FORWARD_ONLY,
 				ResultSet.CONCUR_UPDATABLE);
@@ -263,9 +274,20 @@ public abstract class BaseUpgradePortletId extends UpgradeProcess {
 				String newPortletId = StringUtil.replace(
 					portletId, oldRootPortletId, newRootPortletId);
 
-				rs.updateString("portletId", newPortletId);
+				updates.add(
+					new ObjectValuePair<>(newPortletId, portletPreferencesId));
+			}
+		}
 
-				rs.updateRow();
+		for (ObjectValuePair<String, Long> update : updates) {
+			try (PreparedStatement ps = connection.prepareStatement(
+					"update PortletPreferences set portletId = ? where " +
+						"portletPreferencesId = ?")) {
+
+				ps.setString(1, update.getKey());
+				ps.setLong(2, update.getValue());
+
+				ps.executeUpdate();
 			}
 		}
 	}
@@ -291,6 +313,8 @@ public abstract class BaseUpgradePortletId extends UpgradeProcess {
 			long plid, String oldPortletId, String newPortletId)
 		throws Exception {
 
+		Set<String> updates = new HashSet<>();
+
 		try (PreparedStatement ps = connection.prepareStatement(
 				"select typeSettings from Layout where plid = " + plid,
 				ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
@@ -302,15 +326,17 @@ public abstract class BaseUpgradePortletId extends UpgradeProcess {
 				String newTypeSettings = StringUtil.replace(
 					typeSettings, oldPortletId, newPortletId);
 
-				rs.updateString("typeSettings", newTypeSettings);
-
-				rs.updateRow();
+				updates.add(newTypeSettings);
 			}
 		}
 		catch (Exception e) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(e, e);
 			}
+		}
+
+		for (String update : updates) {
+			updateLayout(plid, update);
 		}
 	}
 
@@ -343,6 +369,8 @@ public abstract class BaseUpgradePortletId extends UpgradeProcess {
 			"select layoutRevisionId, typeSettings from LayoutRevision where " +
 				getTypeSettingsCriteria(oldRootPortletId);
 
+		Set<ObjectValuePair<Long, String>> updates = new HashSet<>();
+
 		try (PreparedStatement ps = connection.prepareStatement(
 				sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
 			ResultSet rs = ps.executeQuery()) {
@@ -355,10 +383,13 @@ public abstract class BaseUpgradePortletId extends UpgradeProcess {
 					typeSettings, oldRootPortletId, newRootPortletId,
 					exactMatch);
 
-				rs.updateString("typeSettings", newTypeSettings);
-
-				rs.updateRow();
+				updates.add(
+					new ObjectValuePair<>(layoutRevisionId, newTypeSettings));
 			}
+		}
+
+		for (ObjectValuePair<Long, String> update : updates) {
+			updateLayoutRevision(update.getKey(), update.getValue());
 		}
 	}
 
@@ -370,6 +401,8 @@ public abstract class BaseUpgradePortletId extends UpgradeProcess {
 		String sql =
 			"select plid, typeSettings from Layout where " +
 				getTypeSettingsCriteria(oldRootPortletId);
+
+		Set<ObjectValuePair<Long, String>> updates = new HashSet<>();
 
 		try (PreparedStatement ps = connection.prepareStatement(
 				sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
@@ -383,10 +416,12 @@ public abstract class BaseUpgradePortletId extends UpgradeProcess {
 					typeSettings, oldRootPortletId, newRootPortletId,
 					exactMatch);
 
-				rs.updateString("typeSettings", newTypeSettings);
-
-				rs.updateRow();
+				updates.add(new ObjectValuePair<>(plid, newTypeSettings));
 			}
+		}
+
+		for (ObjectValuePair<Long, String> update : updates) {
+			updateLayout(update.getKey(), update.getValue());
 		}
 	}
 
@@ -437,6 +472,8 @@ public abstract class BaseUpgradePortletId extends UpgradeProcess {
 			boolean updateName)
 		throws Exception {
 
+		Map<Long, ObjectValuePair<String, String>> updates = new HashMap<>();
+
 		try (PreparedStatement ps = connection.prepareStatement(
 				"select resourcePermissionId, name, scope, primKey from " +
 					"ResourcePermission where name = '" + oldRootPortletId +
@@ -484,15 +521,31 @@ public abstract class BaseUpgradePortletId extends UpgradeProcess {
 					}
 				}
 
-				rs.updateString("name", newName);
-				rs.updateString("primKey", primKey);
-
-				rs.updateRow();
+				updates.put(
+					resourcePermissionId,
+					new ObjectValuePair<>(newName, primKey));
 			}
 		}
 		catch (SQLException sqle) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(sqle, sqle);
+			}
+		}
+
+		for (Entry<Long, ObjectValuePair<String, String>> entry :
+				updates.entrySet()) {
+
+			ObjectValuePair<String, String> objectValuePair = entry.getValue();
+
+			try (PreparedStatement ps = connection.prepareStatement(
+					"update ResourcePermission set name = ?, primKey = ? " +
+						"where resourcePermissionId = ?")) {
+
+				ps.setString(1, objectValuePair.getKey());
+				ps.setString(2, objectValuePair.getValue());
+				ps.setLong(3, entry.getKey());
+
+				ps.executeUpdate();
 			}
 		}
 	}
