@@ -73,11 +73,16 @@ public class ProxyFactory {
 			new ServiceTrackedInvocationHandler<>(interfaceClass));
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #newServiceTrackedInstance(Class, Class, String, String, boolean)}
+	 */
+	@Deprecated
 	public static <T> T newServiceTrackedInstance(
 		Class<T> serviceClass, Class<?> declaringClass, String fieldName) {
 
 		return newServiceTrackedInstance(
-			serviceClass, declaringClass, fieldName, null);
+			serviceClass, declaringClass, fieldName, null, false);
 	}
 
 	public static <T> T newServiceTrackedInstance(
@@ -88,15 +93,17 @@ public class ProxyFactory {
 			serviceClass, declaringClass, fieldName, null, blocking);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #newServiceTrackedInstance(Class, Class, String, String, boolean)}
+	 */
+	@Deprecated
 	public static <T> T newServiceTrackedInstance(
 		Class<T> serviceClass, Class<?> declaringClass, String fieldName,
 		String filterString) {
 
-		T dummyService = newDummyInstance(serviceClass);
-
-		return _newServiceTrackedInstance(
-			serviceClass, declaringClass, fieldName, filterString,
-			dummyService);
+		return newServiceTrackedInstance(
+			serviceClass, declaringClass, fieldName, filterString, false);
 	}
 
 	public static <T> T newServiceTrackedInstance(
@@ -139,19 +146,29 @@ public class ProxyFactory {
 				interfaceClass, filterString));
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #newServiceTrackedInstance(Class, Class, String, String, boolean)}
+	 */
+	@Deprecated
 	public static <T> T newServiceTrackedInstanceWithoutDummyService(
 		Class<T> serviceClass, Class<?> declaringClass, String fieldName) {
 
-		return newServiceTrackedInstanceWithoutDummyService(
-			serviceClass, declaringClass, fieldName, null);
+		return newServiceTrackedInstance(
+			serviceClass, declaringClass, fieldName, true);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #newServiceTrackedInstance(Class, Class, String, String, boolean)}
+	 */
+	@Deprecated
 	public static <T> T newServiceTrackedInstanceWithoutDummyService(
 		Class<T> serviceClass, Class<?> declaringClass, String fieldName,
 		String filterString) {
 
-		return _newServiceTrackedInstance(
-			serviceClass, declaringClass, fieldName, filterString, null);
+		return newServiceTrackedInstance(
+			serviceClass, declaringClass, fieldName, filterString, true);
 	}
 
 	private static <T> T _newServiceTrackedInstance(
