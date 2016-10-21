@@ -328,8 +328,8 @@ public class SQLTransformer {
 			newSQL = _replaceNegativeComparison(newSQL);
 		}
 		else if (_vendorSQLServer) {
-			newSQL = _replaceMod(newSQL);
 			newSQL = _replaceConcatenate(newSQL);
+			newSQL = _replaceMod(newSQL);
 		}
 		else if (_vendorSybase) {
 			newSQL = _replaceConcatenate(newSQL);
