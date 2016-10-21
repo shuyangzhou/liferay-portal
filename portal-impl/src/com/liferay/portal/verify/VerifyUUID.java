@@ -17,7 +17,6 @@ package com.liferay.portal.verify;
 import com.liferay.portal.dao.orm.common.SQLTransformer;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.concurrent.ThrowableAwareRunnable;
-import com.liferay.portal.kernel.dao.jdbc.AutoBatchPreparedStatementUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -79,7 +78,6 @@ public class VerifyUUID extends VerifyProcess {
 		throws Exception {
 
 		long maxPrimKeyValue = _getMaxPrimaryKeyValue(verifiableUUIDModel);
-		int maxPrimKeyLength = String.valueOf(maxPrimKeyValue).length();
 
 		StringBundler sb = new StringBundler(5);
 
@@ -112,6 +110,7 @@ public class VerifyUUID extends VerifyProcess {
 					pastPrefixes, primKeyLength);
 
 				ps.setString(1, prefix);
+
 				ps.setLong(2, primKeyValue);
 				ps.setLong(3, primKeyValue * 10);
 
