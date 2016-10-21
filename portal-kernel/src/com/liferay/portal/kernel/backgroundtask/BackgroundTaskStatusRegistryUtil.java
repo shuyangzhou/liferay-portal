@@ -66,6 +66,6 @@ public class BackgroundTaskStatusRegistryUtil {
 		_backgroundTaskStatusRegistry = ProxyFactory.newServiceTrackedInstance(
 			BackgroundTaskStatusRegistry.class,
 			BackgroundTaskStatusRegistryUtil.class,
-			"_backgroundTaskStatusRegistry");
+			"_backgroundTaskStatusRegistry", false);
 
 }

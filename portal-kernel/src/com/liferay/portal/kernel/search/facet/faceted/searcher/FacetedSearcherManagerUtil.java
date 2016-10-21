@@ -36,6 +36,6 @@ public class FacetedSearcherManagerUtil {
 	private static volatile FacetedSearcherManager _facetedSearcherManager =
 		ProxyFactory.newServiceTrackedInstance(
 			FacetedSearcherManager.class, FacetedSearcherManagerUtil.class,
-			"_facetedSearcherManager");
+			"_facetedSearcherManager", false);
 
 }

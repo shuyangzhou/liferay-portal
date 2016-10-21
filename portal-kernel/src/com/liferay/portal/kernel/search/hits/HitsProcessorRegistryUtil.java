@@ -41,6 +41,6 @@ public class HitsProcessorRegistryUtil {
 	private static volatile HitsProcessorRegistry _hitsProcessorRegistry =
 		ProxyFactory.newServiceTrackedInstance(
 			HitsProcessorRegistry.class, HitsProcessorRegistryUtil.class,
-			"_hitsProcessorRegistry");
+			"_hitsProcessorRegistry", false);
 
 }

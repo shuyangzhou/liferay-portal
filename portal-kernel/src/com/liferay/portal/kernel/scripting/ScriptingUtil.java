@@ -106,6 +106,6 @@ public class ScriptingUtil {
 
 	private static volatile Scripting _scripting =
 		ProxyFactory.newServiceTrackedInstance(
-			Scripting.class, ScriptingUtil.class, "_scripting");
+			Scripting.class, ScriptingUtil.class, "_scripting", false);
 
 }

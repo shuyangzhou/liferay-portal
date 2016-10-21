@@ -69,6 +69,7 @@ public class LayoutStagingUtil {
 
 	private static volatile LayoutStaging _layoutStaging =
 		ProxyFactory.newServiceTrackedInstance(
-			LayoutStaging.class, LayoutStagingUtil.class, "_layoutStaging");
+			LayoutStaging.class, LayoutStagingUtil.class, "_layoutStaging",
+			false);
 
 }

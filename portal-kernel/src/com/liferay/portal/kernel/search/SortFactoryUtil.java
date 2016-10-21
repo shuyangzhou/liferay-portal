@@ -77,6 +77,6 @@ public class SortFactoryUtil {
 
 	private static volatile SortFactory _sortFactory =
 		ProxyFactory.newServiceTrackedInstance(
-			SortFactory.class, SortFactoryUtil.class, "_sortFactory");
+			SortFactory.class, SortFactoryUtil.class, "_sortFactory", false);
 
 }

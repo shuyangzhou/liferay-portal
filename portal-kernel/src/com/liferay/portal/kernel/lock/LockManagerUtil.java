@@ -115,6 +115,6 @@ public class LockManagerUtil {
 
 	private static volatile LockManager _lockManager =
 		ProxyFactory.newServiceTrackedInstance(
-			LockManager.class, LockManagerUtil.class, "_lockManager");
+			LockManager.class, LockManagerUtil.class, "_lockManager", false);
 
 }

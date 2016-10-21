@@ -36,6 +36,6 @@ public class JournalConverterManagerUtil {
 	private static volatile JournalConverterManager _journalConverterManager =
 		ProxyFactory.newServiceTrackedInstance(
 			JournalConverterManager.class, JournalConverterManagerUtil.class,
-			"_journalConverterManager");
+			"_journalConverterManager", false);
 
 }

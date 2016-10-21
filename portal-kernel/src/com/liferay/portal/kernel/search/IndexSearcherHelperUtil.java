@@ -65,6 +65,6 @@ public class IndexSearcherHelperUtil {
 	private static volatile IndexSearcherHelper _indexSearcherHelper =
 		ProxyFactory.newServiceTrackedInstance(
 			IndexSearcherHelper.class, IndexSearcherHelperUtil.class,
-			"_indexSearcherHelper");
+			"_indexSearcherHelper", false);
 
 }

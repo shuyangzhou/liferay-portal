@@ -64,6 +64,6 @@ public class BackgroundTaskDisplayFactoryUtil {
 		_backgroundTaskDisplayFactory = ProxyFactory.newServiceTrackedInstance(
 			BackgroundTaskDisplayFactory.class,
 			BackgroundTaskDisplayFactoryUtil.class,
-			"_backgroundTaskDisplayFactory");
+			"_backgroundTaskDisplayFactory", false);
 
 }

@@ -65,6 +65,6 @@ public class StorageEngineManagerUtil {
 	private static volatile StorageEngineManager _storageEngineManager =
 		ProxyFactory.newServiceTrackedInstance(
 			StorageEngineManager.class, StorageEngineManagerUtil.class,
-			"_storageEngineManager");
+			"_storageEngineManager", false);
 
 }
