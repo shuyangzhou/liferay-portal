@@ -250,6 +250,6 @@ public class IndexWriterHelperUtil {
 	private static volatile IndexWriterHelper _indexWriterHelper =
 		ProxyFactory.newServiceTrackedInstance(
 			IndexWriterHelper.class, IndexWriterHelperUtil.class,
-			"_indexWriterHelper");
+			"_indexWriterHelper", false);
 
 }

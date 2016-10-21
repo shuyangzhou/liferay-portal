@@ -1385,7 +1385,7 @@ public class MainServlet extends ActionServlet {
 	private static volatile InactiveRequestHandler _inactiveRequesthandler =
 		ProxyFactory.newServiceTrackedInstance(
 			InactiveRequestHandler.class, MainServlet.class,
-			"_inactiveRequesthandler");
+			"_inactiveRequesthandler", false);
 
 	private ServiceRegistration<ModuleServiceLifecycle>
 		_moduleServiceLifecycleServiceRegistration;

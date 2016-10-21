@@ -734,6 +734,6 @@ public class StagingUtil {
 
 	private static volatile Staging _staging =
 		ProxyFactory.newServiceTrackedInstance(
-			Staging.class, StagingUtil.class, "_staging");
+			Staging.class, StagingUtil.class, "_staging", false);
 
 }

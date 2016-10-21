@@ -94,6 +94,6 @@ public class EntityCacheUtil {
 
 	private static volatile EntityCache _entityCache =
 		ProxyFactory.newServiceTrackedInstance(
-			EntityCache.class, EntityCacheUtil.class, "_entityCache");
+			EntityCache.class, EntityCacheUtil.class, "_entityCache", false);
 
 }

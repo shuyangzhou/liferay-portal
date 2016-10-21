@@ -72,6 +72,6 @@ public class ClusterLinkUtil {
 
 	private static volatile ClusterLink _clusterLink =
 		ProxyFactory.newServiceTrackedInstance(
-			ClusterLink.class, ClusterLinkUtil.class, "_clusterLink");
+			ClusterLink.class, ClusterLinkUtil.class, "_clusterLink", false);
 
 }

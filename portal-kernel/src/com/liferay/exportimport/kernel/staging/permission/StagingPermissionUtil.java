@@ -43,6 +43,6 @@ public class StagingPermissionUtil {
 	private static volatile StagingPermission _stagingPermission =
 		ProxyFactory.newServiceTrackedInstance(
 			StagingPermission.class, StagingPermissionUtil.class,
-			"_stagingPermission");
+			"_stagingPermission", false);
 
 }

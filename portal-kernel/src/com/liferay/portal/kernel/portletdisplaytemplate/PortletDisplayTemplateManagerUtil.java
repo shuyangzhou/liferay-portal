@@ -62,6 +62,6 @@ public class PortletDisplayTemplateManagerUtil {
 		_portletDisplayTemplateManager = ProxyFactory.newServiceTrackedInstance(
 			PortletDisplayTemplateManager.class,
 			PortletDisplayTemplateManagerUtil.class,
-			"_portletDisplayTemplateManager");
+			"_portletDisplayTemplateManager", false);
 
 }

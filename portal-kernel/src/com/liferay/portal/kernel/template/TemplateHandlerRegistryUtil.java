@@ -45,6 +45,6 @@ public class TemplateHandlerRegistryUtil {
 	private static volatile TemplateHandlerRegistry _templateHandlerRegistry =
 		ProxyFactory.newServiceTrackedInstance(
 			TemplateHandlerRegistry.class, TemplateHandlerRegistryUtil.class,
-			"_templateHandlerRegistry");
+			"_templateHandlerRegistry", false);
 
 }

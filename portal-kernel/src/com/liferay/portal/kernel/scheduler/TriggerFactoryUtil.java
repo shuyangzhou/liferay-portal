@@ -71,6 +71,7 @@ public class TriggerFactoryUtil {
 
 	private static volatile TriggerFactory _triggerFactory =
 		ProxyFactory.newServiceTrackedInstance(
-			TriggerFactory.class, TriggerFactoryUtil.class, "_triggerFactory");
+			TriggerFactory.class, TriggerFactoryUtil.class, "_triggerFactory",
+			false);
 
 }

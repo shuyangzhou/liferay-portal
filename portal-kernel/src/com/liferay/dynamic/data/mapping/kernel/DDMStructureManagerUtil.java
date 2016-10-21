@@ -184,6 +184,6 @@ public class DDMStructureManagerUtil {
 	private static volatile DDMStructureManager _ddmStructureManager =
 		ProxyFactory.newServiceTrackedInstance(
 			DDMStructureManager.class, DDMStructureManagerUtil.class,
-			"_ddmStructureManager");
+			"_ddmStructureManager", false);
 
 }

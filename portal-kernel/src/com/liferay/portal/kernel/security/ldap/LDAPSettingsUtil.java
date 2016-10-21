@@ -101,6 +101,6 @@ public class LDAPSettingsUtil {
 
 	private static volatile LDAPSettings _ldapSettings =
 		ProxyFactory.newServiceTrackedInstance(
-			LDAPSettings.class, LDAPSettingsUtil.class, "_ldapSettings");
+			LDAPSettings.class, LDAPSettingsUtil.class, "_ldapSettings", false);
 
 }

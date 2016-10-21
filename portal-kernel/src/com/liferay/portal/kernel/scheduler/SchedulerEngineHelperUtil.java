@@ -333,6 +333,6 @@ public class SchedulerEngineHelperUtil {
 	private static volatile SchedulerEngineHelper _instance =
 		ProxyFactory.newServiceTrackedInstance(
 			SchedulerEngineHelper.class, SchedulerEngineHelperUtil.class,
-			"_instance");
+			"_instance", false);
 
 }

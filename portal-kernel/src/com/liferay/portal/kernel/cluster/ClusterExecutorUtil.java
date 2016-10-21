@@ -76,6 +76,6 @@ public class ClusterExecutorUtil {
 	private static volatile ClusterExecutor _clusterExecutor =
 		ProxyFactory.newServiceTrackedInstance(
 			ClusterExecutor.class, ClusterExecutorUtil.class,
-			"_clusterExecutor");
+			"_clusterExecutor", false);
 
 }

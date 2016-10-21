@@ -75,6 +75,6 @@ public class FinderCacheUtil {
 
 	private static volatile FinderCache _finderCache =
 		ProxyFactory.newServiceTrackedInstance(
-			FinderCache.class, FinderCacheUtil.class, "_finderCache");
+			FinderCache.class, FinderCacheUtil.class, "_finderCache", false);
 
 }

@@ -168,6 +168,7 @@ public class CommentManagerUtil {
 
 	private static volatile CommentManager _commentManager =
 		ProxyFactory.newServiceTrackedInstance(
-			CommentManager.class, CommentManagerUtil.class, "_commentManager");
+			CommentManager.class, CommentManagerUtil.class, "_commentManager",
+			false);
 
 }
