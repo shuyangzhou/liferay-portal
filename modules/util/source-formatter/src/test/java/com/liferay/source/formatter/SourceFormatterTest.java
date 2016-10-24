@@ -15,6 +15,7 @@
 package com.liferay.source.formatter;
 
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.test.rule.TimeoutTestRule;
 import com.liferay.portal.kernel.util.ReleaseInfo;
 
 import java.util.ArrayList;
@@ -22,12 +23,17 @@ import java.util.Collections;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 
 /**
  * @author Hugo Huijser
  */
 public class SourceFormatterTest {
+
+	@Rule
+	public final TestRule testRule = new TimeoutTestRule();
 
 	@Test
 	public void testFileNameWithIncorrectExtension() throws Exception {

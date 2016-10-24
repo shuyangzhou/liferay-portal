@@ -44,7 +44,7 @@ public class ReflectionTest {
 
 	@BeforeClass
 	public static void setUpClass() {
-		Assume.assumeTrue(JavaDetector.isJDK7());
+		Assume.assumeTrue("JDK is not 7", JavaDetector.isJDK7());
 	}
 
 	@Test
