@@ -18,9 +18,6 @@ import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 
 import java.io.InputStream;
 
-import java.lang.management.ManagementFactory;
-import java.lang.management.RuntimeMXBean;
-
 import java.util.Date;
 import java.util.Map;
 
@@ -73,37 +70,18 @@ public class ThreadUtil {
 		try {
 			String vendorURL = System.getProperty("java.vendor.url");
 
-			if (!vendorURL.equals("http://java.oracle.com/") &&
-				!vendorURL.equals("http://java.sun.com/")) {
+			if ((!vendorURL.equals("http://java.oracle.com/") &&
+				 !vendorURL.equals("http://java.sun.com/")) ||
+				!HeapUtil.isSupported()) {
 
-				return StringPool.BLANK;
-			}
-
-			RuntimeMXBean runtimeMXBean = ManagementFactory.getRuntimeMXBean();
-
-			String name = runtimeMXBean.getName();
-
-			if (Validator.isNull(name)) {
-				return StringPool.BLANK;
-			}
-
-			int pos = name.indexOf(CharPool.AT);
-
-			if (pos == -1) {
-				return StringPool.BLANK;
-			}
-
-			String pidString = name.substring(0, pos);
-
-			if (!Validator.isNumber(pidString)) {
 				return StringPool.BLANK;
 			}
 
 			Runtime runtime = Runtime.getRuntime();
 
-			int pid = GetterUtil.getInteger(pidString);
-
-			String[] cmd = new String[] {"jstack", String.valueOf(pid)};
+			String[] cmd = new String[] {
+				"jstack", String.valueOf(HeapUtil.getProcessId())
+			};
 
 			Process process = runtime.exec(cmd);
 
