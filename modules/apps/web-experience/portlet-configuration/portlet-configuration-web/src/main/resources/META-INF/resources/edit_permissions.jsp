@@ -19,6 +19,9 @@
 <%
 String tabs2 = ParamUtil.getString(request, "tabs2", "regular-roles");
 
+int cur = ParamUtil.getInteger(request, SearchContainer.DEFAULT_CUR_PARAM);
+int delta = ParamUtil.getInteger(request, SearchContainer.DEFAULT_DELTA_PARAM);
+
 String redirect = ParamUtil.getString(request, "redirect");
 String returnToFullPageURL = ParamUtil.getString(request, "returnToFullPageURL");
 
@@ -117,6 +120,8 @@ definePermissionsURL.setWindowState(LiferayWindowState.POP_UP);
 	<portlet:actionURL name="updateRolePermissions" var="updateRolePermissionsURL">
 		<portlet:param name="mvcPath" value="/edit_permissions.jsp" />
 		<portlet:param name="tabs2" value="<%= tabs2 %>" />
+		<portlet:param name="cur" value="<%= String.valueOf(cur) %>" />
+		<portlet:param name="delta" value="<%= String.valueOf(delta) %>" />
 		<portlet:param name="returnToFullPageURL" value="<%= returnToFullPageURL %>" />
 		<portlet:param name="portletConfiguration" value="<%= Boolean.TRUE.toString() %>" />
 		<portlet:param name="portletResource" value="<%= portletResource %>" />
@@ -263,10 +268,11 @@ definePermissionsURL.setWindowState(LiferayWindowState.POP_UP);
 				%>
 
 				<liferay-ui:search-container
+					iteratorURL="<%= currentURLObj %>"
 					total="<%= roles.size() %>"
 				>
 					<liferay-ui:search-container-results
-						results="<%= roles %>"
+						results="<%= roles.subList(searchContainer.getStart(), searchContainer.getResultEnd()) %>"
 					/>
 
 					<liferay-ui:search-container-row
@@ -370,7 +376,7 @@ definePermissionsURL.setWindowState(LiferayWindowState.POP_UP);
 
 					</liferay-ui:search-container-row>
 
-					<liferay-ui:search-iterator markupView="lexicon" paginate="<%= false %>" searchContainer="<%= searchContainer %>" />
+					<liferay-ui:search-iterator markupView="lexicon" searchContainer="<%= searchContainer %>" />
 				</liferay-ui:search-container>
 			</div>
 		</div>
