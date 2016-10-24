@@ -7749,7 +7749,7 @@ public class JournalArticleLocalServiceImpl
 				previousApprovedArticle.getModifiedDate());
 			assetEntry.setTitle(previousApprovedArticle.getTitleMapAsXML());
 
-			assetEntryPersistence.update(assetEntry);
+			assetEntryLocalService.updateAssetEntry(assetEntry);
 		}
 	}
 
