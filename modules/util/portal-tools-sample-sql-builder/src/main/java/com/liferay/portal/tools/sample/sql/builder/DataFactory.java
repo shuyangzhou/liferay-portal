@@ -78,6 +78,8 @@ import com.liferay.dynamic.data.mapping.model.impl.DDMStructureVersionModelImpl;
 import com.liferay.dynamic.data.mapping.model.impl.DDMTemplateLinkModelImpl;
 import com.liferay.dynamic.data.mapping.model.impl.DDMTemplateModelImpl;
 import com.liferay.dynamic.data.mapping.storage.StorageType;
+import com.liferay.friendly.url.model.FriendlyURLModel;
+import com.liferay.friendly.url.model.impl.FriendlyURLModelImpl;
 import com.liferay.journal.constants.JournalPortletKeys;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleConstants;
@@ -1678,6 +1680,25 @@ public class DataFactory {
 		return dlFolderModels;
 	}
 
+	public FriendlyURLModel newFriendlyURLModel(
+		BlogsEntryModel blogsEntryModel) {
+
+		FriendlyURLModel friendlyURLModel = new FriendlyURLModelImpl();
+
+		friendlyURLModel.setUuid(SequentialUUID.generate());
+		friendlyURLModel.setFriendlyURLId(_counter.get());
+		friendlyURLModel.setGroupId(blogsEntryModel.getGroupId());
+		friendlyURLModel.setCompanyId(_companyId);
+		friendlyURLModel.setCreateDate(new Date());
+		friendlyURLModel.setModifiedDate(new Date());
+		friendlyURLModel.setClassNameId(getClassNameId(BlogsEntry.class));
+		friendlyURLModel.setClassPK(blogsEntryModel.getEntryId());
+		friendlyURLModel.setUrlTitle(blogsEntryModel.getUrlTitle());
+		friendlyURLModel.setMain(true);
+
+		return friendlyURLModel;
+	}
+
 	public GroupModel newGroupModel(UserModel userModel) throws Exception {
 		return newGroupModel(
 			_counter.get(), getClassNameId(User.class), userModel.getUserId(),
@@ -2766,6 +2787,7 @@ public class DataFactory {
 		blogsEntryModel.setContent("This is test blog " + index + ".");
 		blogsEntryModel.setDisplayDate(new Date());
 		blogsEntryModel.setLastPublishDate(new Date());
+		blogsEntryModel.setStatusByUserId(_sampleUserId);
 		blogsEntryModel.setStatusDate(new Date());
 
 		return blogsEntryModel;

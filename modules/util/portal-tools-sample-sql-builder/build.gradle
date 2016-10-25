@@ -1,5 +1,4 @@
 dependencies {
-	compile group: "com.liferay", name: "com.liferay.blogs.api", version: "3.0.0"
 	compile group: "com.liferay", name: "com.liferay.blogs.web", version: "1.0.0"
 	compile group: "com.liferay", name: "com.liferay.document.library.api", version: "3.0.0"
 	compile group: "com.liferay", name: "com.liferay.document.library.web", version: "1.0.0"
@@ -18,6 +17,8 @@ dependencies {
 	compile group: "javax.portlet", name: "portlet-api", version: "2.0"
 	compile project(":apps:collaboration:blogs:blogs-api")
 	compile project(":apps:collaboration:blogs:blogs-service")
+	compile project(":apps:foundation:friendly-url:friendly-url-api")
+	compile project(":apps:foundation:friendly-url:friendly-url-service")
 	compile project(":apps:web-experience:journal:journal-api")
 	compile project(":apps:web-experience:journal:journal-service")
 
