@@ -104,9 +104,9 @@ public class HtmlImplTest {
 
 	@Test
 	public void testEscapeHtmlAttributeMultiline() {
-		String original = "This is\na multi-line\ntitle";
-		String escaped = _htmlImpl.escape(
-			"This is\na multi-line\ntitle", HtmlImpl.ESCAPE_MODE_ATTRIBUTE);
+		String original = "\tThis is\na multi-line\ntitle\r";
+
+		String escaped = _htmlImpl.escapeAttribute(original);
 
 		String extracted = _htmlImpl.extractText(escaped);
 
