@@ -37,25 +37,32 @@ public class PortalProfileGatekeeper {
 
 	@Activate
 	public void activate(BundleContext bundleContext) {
-		Set<String> portalProfileNames = SetUtil.fromArray(
+		Set<String> blacklistPortalProfileNames = SetUtil.fromArray(
 			StringUtil.split(
-				bundleContext.getProperty("portal.profile.names")));
+				bundleContext.getProperty("blacklist.portal.profile.names")));
 
-		if (portalProfileNames.isEmpty()) {
+		Set<String> whitelistPortalProfileNames = SetUtil.fromArray(
+			StringUtil.split(
+				bundleContext.getProperty("whitelist.portal.profile.names")));
+
+		if (whitelistPortalProfileNames.isEmpty()) {
 			String name = ReleaseInfo.getName();
 
 			if (name.contains("Community")) {
-				portalProfileNames.add(PortalProfile.PORTAL_PROFILE_NAME_CE);
+				whitelistPortalProfileNames.add(
+					PortalProfile.PORTAL_PROFILE_NAME_CE);
 			}
 			else {
-				portalProfileNames.add(PortalProfile.PORTAL_PROFILE_NAME_DXP);
+				whitelistPortalProfileNames.add(
+					PortalProfile.PORTAL_PROFILE_NAME_DXP);
 			}
 		}
 
 		_serviceTracker = new ServiceTracker<>(
 			bundleContext, PortalProfile.class,
 			new PortalProfileServiceTrackerCustomizer(
-				bundleContext, portalProfileNames));
+				bundleContext, blacklistPortalProfileNames,
+				whitelistPortalProfileNames));
 
 		_serviceTracker.open();
 	}
@@ -80,7 +87,15 @@ public class PortalProfileGatekeeper {
 			for (String portalProfileName :
 					portalProfile.getPortalProfileNames()) {
 
-				if (_portalProfileNames.contains(portalProfileName)) {
+				if (_blacklistPortalProfileNames.contains(portalProfileName)) {
+					return null;
+				}
+			}
+
+			for (String portalProfileName :
+					portalProfile.getPortalProfileNames()) {
+
+				if (_whitelistPortalProfileNames.contains(portalProfileName)) {
 					portalProfile.activate();
 
 					break;
@@ -101,14 +116,18 @@ public class PortalProfileGatekeeper {
 		}
 
 		private PortalProfileServiceTrackerCustomizer(
-			BundleContext bundleContext, Set<String> portalProfileNames) {
+			BundleContext bundleContext,
+			Set<String> blacklistPortalProfileNames,
+			Set<String> whitelistPortalProfileNames) {
 
 			_bundleContext = bundleContext;
-			_portalProfileNames = portalProfileNames;
+			_blacklistPortalProfileNames = blacklistPortalProfileNames;
+			_whitelistPortalProfileNames = whitelistPortalProfileNames;
 		}
 
+		private final Set<String> _blacklistPortalProfileNames;
 		private final BundleContext _bundleContext;
-		private final Set<String> _portalProfileNames;
+		private final Set<String> _whitelistPortalProfileNames;
 
 	}
 

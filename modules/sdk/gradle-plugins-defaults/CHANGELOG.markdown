@@ -576,15 +576,22 @@ version, update the `npm-shrinkwrap.json` and `package.json` files accordingly.
 ### Changed
 - [LPS-68917]: Update the [Liferay Gradle Plugins] dependency to version 3.0.23.
 
-## 1.2.73 - 2016-10-20
+## 1.2.73 - 2016-10-25
 
 ### Changed
-- [LPS-66853]: Update the [Liferay Gradle Plugins] dependency to version 3.0.24.
+- [LPS-52675]: Update the [Liferay Gradle Plugins] dependency to version 3.0.25.
+
+## 1.2.74 - 2016-10-25
+
+### Added
+- [LPS-68935]: Set the Maven description to the project description when
+publishing.
 
 [Liferay CDN]: https://cdn.lfrs.sl/repository.liferay.com/nexus/content/groups/public
 [Liferay Gradle Plugins]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-plugins
 [Liferay Gradle Plugins App Javadoc Builder]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-plugins-app-javadoc-builder
 [Liferay Gradle Plugins Node]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-plugins-node
+[LPS-52675]: https://issues.liferay.com/browse/LPS-52675
 [LPS-58672]: https://issues.liferay.com/browse/LPS-58672
 [LPS-61099]: https://issues.liferay.com/browse/LPS-61099
 [LPS-66396]: https://issues.liferay.com/browse/LPS-66396
@@ -628,6 +635,7 @@ version, update the `npm-shrinkwrap.json` and `package.json` files accordingly.
 [LPS-68838]: https://issues.liferay.com/browse/LPS-68838
 [LPS-68839]: https://issues.liferay.com/browse/LPS-68839
 [LPS-68917]: https://issues.liferay.com/browse/LPS-68917
+[LPS-68935]: https://issues.liferay.com/browse/LPS-68935
 [LRDOCS-2594]: https://issues.liferay.com/browse/LRDOCS-2594
 [LRDOCS-2841]: https://issues.liferay.com/browse/LRDOCS-2841
 [LRDOCS-2981]: https://issues.liferay.com/browse/LRDOCS-2981
