@@ -109,7 +109,7 @@ public class SourceFormatterTest {
 	}
 
 	@Rule
-	public final TestRule testRule = TimeoutTestRule.INSTANCE;
+	public final TestRule testRule = new TimeoutTestRule(100);
 
 	private static final int _MAX_MESSAGE_SIZE = 10000;
 
