@@ -14,8 +14,10 @@
 
 package com.liferay.portal.kernel.test.rule;
 
+import com.liferay.portal.kernel.process.ProcessUtil;
 import com.liferay.portal.kernel.test.rule.BaseTestRule.StatementWrapper;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.util.HeapUtil;
 import com.liferay.portal.kernel.util.OSDetector;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.ThreadUtil;
@@ -35,8 +37,6 @@ public class TimeoutTestRule implements TestRule {
 	public static final TimeoutTestRule INSTANCE = new TimeoutTestRule(
 		TestPropsValues.CI_TEST_TIMEOUT_TIME);
 
-	public static final int TIMEOUT_EXIT_CODE = 200;
-
 	public TimeoutTestRule(long timeout) {
 		_timeout = timeout;
 	}
@@ -55,12 +55,16 @@ public class TimeoutTestRule implements TestRule {
 
 			@Override
 			public void evaluate() throws Throwable {
+				System.out.println("############################ About to evaluate");
+
 				FutureTask<Void> futureTask = new FutureTask<>(
 
 					new Callable<Void>() {
 
 						@Override
-						public Void call() throws InterruptedException {
+						public Void call() throws Exception {
+							System.out.println("############################ Inside " + Thread.currentThread().getName());
+
 							Thread.sleep(_timeout);
 
 							StringBundler sb = new StringBundler(6);
@@ -74,7 +78,9 @@ public class TimeoutTestRule implements TestRule {
 
 							System.out.println(sb.toString());
 
-							System.exit(TIMEOUT_EXIT_CODE);
+							ProcessUtil.execute(
+								ProcessUtil.ECHO_OUTPUT_PROCESSOR, "kill", "-9",
+								String.valueOf(HeapUtil.getProcessId()));
 
 							return null;
 						}
@@ -84,6 +90,8 @@ public class TimeoutTestRule implements TestRule {
 				Thread timeoutMonitoringThread = new Thread(
 					futureTask,
 					"Timeout monitoring thread for " + description.toString());
+
+				System.out.println("############################ About to start " + timeoutMonitoringThread.getName());
 
 				timeoutMonitoringThread.start();
 
