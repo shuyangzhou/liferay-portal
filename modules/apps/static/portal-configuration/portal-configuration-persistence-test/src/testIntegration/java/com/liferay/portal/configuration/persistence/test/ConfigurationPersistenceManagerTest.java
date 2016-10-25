@@ -14,9 +14,9 @@
 
 package com.liferay.portal.configuration.persistence.test;
 
+import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.portal.configuration.persistence.ConfigurationPersistenceManager;
-import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.IOException;
@@ -25,8 +25,6 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 
 import org.apache.felix.cm.PersistenceManager;
-
-import org.jboss.arquillian.junit.Arquillian;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -44,7 +42,6 @@ import org.osgi.util.tracker.ServiceTracker;
  * @author Raymond Augé
  */
 @RunWith(Arquillian.class)
-@Sync
 public class ConfigurationPersistenceManagerTest {
 
 	@Before

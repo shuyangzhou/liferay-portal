@@ -14,6 +14,7 @@
 
 package com.liferay.item.selector.test;
 
+import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.item.selector.ItemSelectorReturnTypeResolver;
 import com.liferay.item.selector.ItemSelectorReturnTypeResolverHandler;
 import com.liferay.item.selector.ItemSelectorView;
@@ -27,9 +28,6 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.test.api.ArquillianResource;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -39,6 +37,7 @@ import org.junit.runner.RunWith;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
+import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 
@@ -50,7 +49,10 @@ public class ItemSelectorReturnTypeResolverHandlerTest {
 
 	@Before
 	public void setUp() throws Exception {
-		_bundleContext = bundle.getBundleContext();
+		_bundle = FrameworkUtil.getBundle(
+			ItemSelectorReturnTypeResolverHandlerTest.class);
+
+		_bundleContext = _bundle.getBundleContext();
 
 		_serviceReference = _bundleContext.getServiceReference(
 			ItemSelectorReturnTypeResolverHandler.class);
@@ -222,9 +224,6 @@ public class ItemSelectorReturnTypeResolverHandlerTest {
 		}
 	}
 
-	@ArquillianResource
-	public Bundle bundle;
-
 	protected ServiceRegistration<ItemSelectorReturnTypeResolver>
 		registerItemSelectorReturnTypeResolver(
 			ItemSelectorReturnTypeResolver itemSelectorReturnTypeResolver,
@@ -269,6 +268,7 @@ public class ItemSelectorReturnTypeResolverHandlerTest {
 		serviceRegistrations.forEach(ServiceRegistration::unregister);
 	}
 
+	private Bundle _bundle;
 	private BundleContext _bundleContext;
 	private ItemSelectorReturnTypeResolverHandler
 		_itemSelectorReturnTypeResolverHandler;
