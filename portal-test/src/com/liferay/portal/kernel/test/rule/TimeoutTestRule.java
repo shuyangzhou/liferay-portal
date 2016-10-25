@@ -70,16 +70,20 @@ public class TimeoutTestRule implements TestRule {
 
 							System.out.println("############################ Done sleeping, about to generate thread dump");
 
-							StringBundler sb = new StringBundler(6);
+//							StringBundler sb = new StringBundler(6);
+//
+//							sb.append("Thread dump for ");
+//							sb.append(description.toString());
+//							sb.append(" timeout after waited ");
+//							sb.append(_timeout);
+//							sb.append("ms:");
+//							sb.append(ThreadUtil.threadDump());
+//
+//							System.out.println(sb.toString());
 
-							sb.append("Thread dump for ");
-							sb.append(description.toString());
-							sb.append(" timeout after waited ");
-							sb.append(_timeout);
-							sb.append("ms:");
-							sb.append(ThreadUtil.threadDump());
-
-							System.out.println(sb.toString());
+							ProcessUtil.execute(
+								ProcessUtil.ECHO_OUTPUT_PROCESSOR, "jstack", "-F",
+								"-l", String.valueOf(HeapUtil.getProcessId()));
 
 							System.out.println("############################ Done thead dump, about to run " + Arrays.asList("kill", "-9",
 								String.valueOf(HeapUtil.getProcessId())));
