@@ -82,7 +82,7 @@ public class TimeoutTestRule implements TestRule {
 //							System.out.println(sb.toString());
 
 							ProcessUtil.execute(
-								ProcessUtil.ECHO_OUTPUT_PROCESSOR, "jstack", "-F",
+								ProcessUtil.ECHO_OUTPUT_PROCESSOR, "jstack",
 								"-l", String.valueOf(HeapUtil.getProcessId()));
 
 							System.out.println("############################ Done thead dump, about to run " + Arrays.asList("kill", "-9",
