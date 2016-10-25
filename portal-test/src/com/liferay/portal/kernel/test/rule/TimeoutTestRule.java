@@ -55,6 +55,8 @@ public class TimeoutTestRule implements TestRule {
 
 			@Override
 			public void evaluate() throws Throwable {
+				System.out.println("############################ About to evaluate");
+
 				FutureTask<Void> futureTask = new FutureTask<>(
 
 					new Callable<Void>() {
