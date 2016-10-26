@@ -117,14 +117,12 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 	}
 
 	private void _upgradePrimKeyIdIndividual(String name) throws Exception {
-		String sql =
-			"select resourcePermissionId, actionIds, primKey, primKeyId from " +
-			"ResourcePermission where name = ? ";
-
 		Map<Long, Long> updates = new HashMap<>();
 
 		try (LoggingTimer loggingTimer = new LoggingTimer(name);
-			PreparedStatement ps = connection.prepareStatement(sql)) {
+			PreparedStatement ps = connection.prepareStatement(
+				"select resourcePermissionId, actionIds, primKey, primKeyId " +
+					"from ResourcePermission where name = ? ")) {
 
 			ps.setString(1, name);
 
