@@ -14,16 +14,20 @@
 
 package com.liferay.portal.upgrade.v6_2_0;
 
-import com.liferay.portal.kernel.dao.jdbc.AutoBatchPreparedStatementUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LoggingTimer;
+import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Julio Camarero
@@ -32,36 +36,41 @@ public class UpgradePortletPreferences extends UpgradeProcess {
 
 	protected void deletePortletPreferences() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer()) {
-			StringBundler sb = new StringBundler(7);
+			StringBundler sb = new StringBundler(6);
 
-			sb.append("select PortletPreferences.portletPreferencesId, ");
-			sb.append("PortletPreferences.plid,");
-			sb.append("PortletPreferences.portletId, Layout.typeSettings ");
-			sb.append("from PortletPreferences inner join Layout on ");
-			sb.append("PortletPreferences.plid = Layout.plid where ");
-			sb.append("preferences like '%<portlet-preferences />%' or ");
-			sb.append("preferences like '' or preferences is null");
+			sb.append("select portletPreferencesId, plid, portletId from ");
+			sb.append("PortletPreferences where (ownerType = ");
+			sb.append(PortletKeys.PREFS_OWNER_TYPE_LAYOUT);
+			sb.append(") and (preferences like '%<portlet-preferences %/>%' ");
+			sb.append("or preferences like '' or preferences is null) order ");
+			sb.append("by plid");
 
-			String selectSQL = sb.toString();
+			long lastPlid = 0;
 
-			String deleteSQL =
-				"delete from PortletPreferences where portletPreferencesId = ?";
+			String typeSettings = StringPool.BLANK;
 
-			try (PreparedStatement ps1 = connection.prepareStatement(selectSQL);
-				PreparedStatement ps2 =
-					AutoBatchPreparedStatementUtil.autoBatch(
-						connection.prepareStatement(deleteSQL));
-				ResultSet rs = ps1.executeQuery()) {
+			List<Long> deletePortletPreferencesIds = new ArrayList<>();
+
+			try (PreparedStatement ps = connection.prepareStatement(
+					sb.toString());
+				ResultSet rs = ps.executeQuery()) {
 
 				while (rs.next()) {
 					long portletPreferencesId = rs.getLong(
 						"portletPreferencesId");
+					long plid = rs.getLong("plid");
 					String portletId = GetterUtil.getString(
 						rs.getString("portletId"));
-					String typeSettings = GetterUtil.getString(
-						rs.getString("typeSettings"));
 
-					if (typeSettings.contains(portletId)) {
+					if (lastPlid != plid) {
+						typeSettings = _getTypeSettings(plid);
+
+						lastPlid = plid;
+					}
+
+					if ((typeSettings != null) &&
+						typeSettings.contains(portletId)) {
+
 						continue;
 					}
 
@@ -71,12 +80,23 @@ public class UpgradePortletPreferences extends UpgradeProcess {
 								portletPreferencesId);
 					}
 
-					ps2.setLong(1, portletPreferencesId);
+					deletePortletPreferencesIds.add(portletPreferencesId);
+				}
+			}
 
-					ps2.addBatch();
+			String deleteSQL =
+				"delete from PortletPreferences where portletPreferencesId = ?";
+
+			try (PreparedStatement ps = connection.prepareStatement(
+					deleteSQL)) {
+
+				for (long portletPreferencesId : deletePortletPreferencesIds) {
+					ps.setLong(1, portletPreferencesId);
+
+					ps.addBatch();
 				}
 
-				ps2.executeBatch();
+				ps.executeBatch();
 			}
 		}
 	}
@@ -84,6 +104,32 @@ public class UpgradePortletPreferences extends UpgradeProcess {
 	@Override
 	protected void doUpgrade() throws Exception {
 		deletePortletPreferences();
+	}
+
+	private String _getTypeSettings(long plid) throws Exception {
+		String sql = "select typeSettings from Layout where plid = " + plid;
+
+		try (PreparedStatement ps = connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery()) {
+
+			if (rs.next()) {
+				return rs.getString("typeSettings");
+			}
+		}
+
+		sql =
+			"select typeSettings from LayoutRevision where layoutRevisionId " +
+				"= " + plid;
+
+		try (PreparedStatement ps = connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery()) {
+
+			if (rs.next()) {
+				return rs.getString("typeSettings");
+			}
+		}
+
+		return null;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
