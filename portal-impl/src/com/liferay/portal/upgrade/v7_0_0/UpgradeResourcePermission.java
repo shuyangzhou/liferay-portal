@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -51,29 +50,10 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 		upgradeResourcePermissions();
 	}
 
-	@Deprecated
 	protected void upgradeResourcePermissions() throws Exception {
 		_upgradePrimKeyId();
 
 		_upgradeViewActionId();
-	}
-
-	private List<String> _getNames() throws Exception {
-		List<String> names = new ArrayList<>();
-
-		String sql = "select distinct name from ResourcePermission";
-
-		try (PreparedStatement ps = connection.prepareStatement(sql);
-			ResultSet rs = ps.executeQuery()) {
-
-			while (rs.next()) {
-				String name = rs.getString("name");
-
-				names.add(name);
-			}
-		}
-
-		return names;
 	}
 
 	private String _getNameAndPrimKeyNumericLikeClause() {
@@ -108,13 +88,32 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 		return sb.toString();
 	}
 
+	private List<String> _getNames() throws Exception {
+		List<String> names = new ArrayList<>();
+
+		String sql = "select distinct name from ResourcePermission";
+
+		try (PreparedStatement ps = connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery()) {
+
+			while (rs.next()) {
+				String name = rs.getString("name");
+
+				names.add(name);
+			}
+		}
+
+		return names;
+	}
+
 	private void _upgradePrimKeyId() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer()) {
 			List<String> names = _getNames();
 
-			String updateSQL = "update ResourcePermission set primKeyId " +
-				"= CAST_LONG(primKey) where " +
-				_getNameAndPrimKeyNumericLikeClause();
+			String updateSQL =
+				"update ResourcePermission set primKeyId = " +
+					"CAST_LONG(primKey) where " +
+						_getNameAndPrimKeyNumericLikeClause();
 
 			updateSQL = SQLTransformer.transform(updateSQL);
 
@@ -133,9 +132,11 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 					nameIterator.remove();
 				}
 				catch (Exception e) {
-					_log.warn(
-						"Unable to update resource " + name + " in bulk: " +
-							e.getMessage());
+					if (_log.isWarnEnabled()) {
+						_log.warn(
+							"Unable to update resource " + name + " in bulk: " +
+								e.getMessage());
+					}
 				}
 			}
 
@@ -146,14 +147,14 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 	}
 
 	private void _upgradePrimKeyIdIndividual(String name) throws Exception {
-		String sql = "select resourcePermissionId, primKey, primKeyId from " +
+		String sql =
+			"select resourcePermissionId, primKey, primKeyId from " +
 			"ResourcePermission where primKeyId = 0 and " +
 			_getNameAndPrimKeyNumericLikeClause();
 
 		try (LoggingTimer loggingTimer = new LoggingTimer(name);
 			PreparedStatement ps = connection.prepareStatement(
-				sql, ResultSet.TYPE_FORWARD_ONLY,
-				ResultSet.CONCUR_UPDATABLE)) {
+				sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE)) {
 
 			ps.setString(1, name);
 
@@ -175,8 +176,9 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 	}
 
 	private void _upgradeViewActionId() throws Exception {
-		String updateSQL = "update ResourcePermission set viewActionId = " +
-			"[$TRUE$] where MOD(actionIds, 1) = 1";
+		String updateSQL =
+			"update ResourcePermission set viewActionId = [$TRUE$] where " +
+				"MOD(actionIds, 1) = 1";
 
 		updateSQL = SQLTransformer.transform(updateSQL);
 
