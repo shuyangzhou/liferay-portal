@@ -77,8 +77,8 @@ public class ThreadUtil {
 		try {
 			NoticeableFuture<ObjectValuePair<byte[], byte[]>> noticeableFuture =
 				ProcessUtil.execute(
-					ProcessUtil.COLLECTOR_OUTPUT_PROCESSOR, "jstack", "-F",
-					"-l", String.valueOf(HeapUtil.getProcessId()));
+					ProcessUtil.COLLECTOR_OUTPUT_PROCESSOR, "jstack", "-l",
+					String.valueOf(HeapUtil.getProcessId()));
 
 			ObjectValuePair<byte[], byte[]> objectValuePair =
 				noticeableFuture.get();
