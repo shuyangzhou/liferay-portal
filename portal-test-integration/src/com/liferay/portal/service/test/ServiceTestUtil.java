@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.scheduler.SchedulerEngineHelper;
-import com.liferay.portal.kernel.scheduler.SchedulerEngineHelperUtil;
 import com.liferay.portal.kernel.search.SearchEngineHelperUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
@@ -154,6 +153,8 @@ public class ServiceTestUtil {
 
 		// Scheduler
 
+		final Registry registry = RegistryUtil.getRegistry();
+
 		ServiceDependencyManager schedulerServiceDependencyManager =
 			new ServiceDependencyManager();
 
@@ -163,7 +164,10 @@ public class ServiceTestUtil {
 				@Override
 				public void dependenciesFulfilled() {
 					try {
-						SchedulerEngineHelperUtil.start();
+						SchedulerEngineHelper schedulerEngineHelper =
+							registry.getService(SchedulerEngineHelper.class);
+
+						schedulerEngineHelper.start();
 					}
 					catch (Exception e) {
 						_log.error(e, e);
@@ -175,8 +179,6 @@ public class ServiceTestUtil {
 				}
 
 			});
-
-		final Registry registry = RegistryUtil.getRegistry();
 
 		Filter filter = registry.getFilter(
 			"(objectClass=com.liferay.portal.scheduler.quartz.internal." +

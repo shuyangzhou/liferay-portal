@@ -38,7 +38,6 @@ import com.liferay.portal.kernel.resiliency.spi.agent.annotation.Direction;
 import com.liferay.portal.kernel.resiliency.spi.agent.annotation.DistributedRegistry;
 import com.liferay.portal.kernel.resiliency.spi.agent.annotation.MatchType;
 import com.liferay.portal.kernel.search.IndexerRegistry;
-import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourceActionLocalServiceUtil;
 import com.liferay.portal.kernel.util.BasePortalLifecycle;
@@ -154,8 +153,13 @@ public class StartupAction extends SimpleAction {
 
 				@Override
 				public void dependenciesFulfilled() {
-					IndexerRegistryUtil.register(new MBMessageIndexer());
-					IndexerRegistryUtil.register(new PluginPackageIndexer());
+					Registry registry = RegistryUtil.getRegistry();
+
+					IndexerRegistry indexerRegistry = registry.getService(
+						IndexerRegistry.class);
+
+					indexerRegistry.register(new MBMessageIndexer());
+					indexerRegistry.register(new PluginPackageIndexer());
 				}
 
 				@Override
