@@ -15,6 +15,7 @@
 package com.liferay.portal.upgrade.v7_0_0;
 
 import com.liferay.portal.dao.orm.common.SQLTransformer;
+import com.liferay.portal.kernel.dao.jdbc.AutoBatchPreparedStatementUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
@@ -25,8 +26,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * @author Sampsa Sohlman
@@ -117,9 +121,10 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 			"select resourcePermissionId, actionIds, primKey, primKeyId from " +
 			"ResourcePermission where name = ? ";
 
+		Map<Long, Long> updates = new HashMap<>();
+
 		try (LoggingTimer loggingTimer = new LoggingTimer(name);
-			PreparedStatement ps = connection.prepareStatement(
-				sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE)) {
+			PreparedStatement ps = connection.prepareStatement(sql)) {
 
 			ps.setString(1, name);
 
@@ -141,11 +146,27 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 						continue;
 					}
 
-					rs.updateLong("primKeyId", newPrimKeyId);
-
-					rs.updateRow();
+					updates.put(
+						rs.getLong("resourcePermissionId"), newPrimKeyId);
 				}
 			}
+		}
+
+		try (LoggingTimer loggingTimer = new LoggingTimer(name);
+			PreparedStatement ps =
+				AutoBatchPreparedStatementUtil.concurrentAutoBatch(
+					connection,
+					"update ResourcePermission set primKeyId = ? where " +
+						"resourcePermissionId = ?")) {
+
+			for (Entry<Long, Long> entry : updates.entrySet()) {
+				ps.setLong(1, entry.getValue());
+				ps.setLong(2, entry.getKey());
+
+				ps.addBatch();
+			}
+
+			ps.executeBatch();
 		}
 	}
 
