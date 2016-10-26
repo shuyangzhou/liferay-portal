@@ -48,12 +48,6 @@
 	Liferay.BrowserSelectors.run();
 </aui:script>
 
-<aui:script use="aui-base">
-	if (A.UA.mobile) {
-		Liferay.Util.addInputCancel();
-	}
-</aui:script>
-
 <aui:script>
 	if (Liferay.Data.ICONS_INLINE_SVG) {
 		svg4everybody(
@@ -61,6 +55,12 @@
 				polyfill: true
 			}
 		);
+	}
+</aui:script>
+
+<aui:script use="aui-base">
+	if (A.UA.mobile) {
+		Liferay.Util.addInputCancel();
 	}
 </aui:script>
 
