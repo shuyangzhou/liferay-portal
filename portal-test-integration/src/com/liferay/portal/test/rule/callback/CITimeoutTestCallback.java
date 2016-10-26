@@ -14,56 +14,86 @@
 
 package com.liferay.portal.test.rule.callback;
 
+import com.liferay.ibm.icu.impl.Assert;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.test.rule.callback.BaseTestCallback;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.util.Time;
 
-import org.junit.Assert;
 import org.junit.runner.Description;
 
 /**
  * @author Shuyang Zhou
  */
-public class CITimeoutTestCallback extends BaseTestCallback<Long, Object> {
+public class CITimeoutTestCallback extends BaseTestCallback<Thread, Object> {
 
 	public static final CITimeoutTestCallback INSTANCE =
 		new CITimeoutTestCallback();
 
 	@Override
-	public void afterClass(Description description, Long startTime) {
-		long testTime = System.currentTimeMillis() - startTime;
+	public void afterClass(
+		Description description, Thread ciTimeoutMonitorThread) {
 
-		if (testTime <= TestPropsValues.CI_TEST_TIMEOUT_TIME) {
-			return;
-		}
-
-		String message =
-			description.getClassName() + " spent " + testTime +
-				"ms and surpassed the timeout threshold " +
-					TestPropsValues.CI_TEST_TIMEOUT_TIME + "ms.";
-
-		System.setProperty(_CI_TIMEOUT_TEST_CLASS_MESSAGE, message);
-
-		Assert.fail(
-			message + " Marked it as failed and aborting subsequent tests.");
+		ciTimeoutMonitorThread.interrupt();
 	}
 
 	@Override
-	public Long beforeClass(Description description) {
-		String message = System.getProperty(_CI_TIMEOUT_TEST_CLASS_MESSAGE);
+	public Thread beforeClass(Description description) {
+		Thread ciTimeoutMonitorThread = new Thread(
+			"CI timeout monitor thread for " + description.getClassName()) {
 
-		if (message != null) {
-			Assert.fail(
-				"Abort running " + description.getClassName() + " due to : " +
-					message);
-		}
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(TestPropsValues.CI_TEST_TIMEOUT_TIME);
 
-		return System.currentTimeMillis();
+					Thread killerThread = new Thread(
+						"CI timeout killer thread for " +
+							description.getClassName()) {
+
+						@Override
+						public void run() {
+							try {
+								Thread.sleep(Time.MINUTE);
+
+								System.exit(140);
+							}
+							catch (InterruptedException ie) {
+								_log.error(getName() + " got cancelled");
+							}
+						}
+
+					};
+
+					killerThread.start();
+
+					Assert.fail(
+						"Scheduled to kill the current CI jvm in 1 minute, " +
+							"because of " + description.getClassName() +
+							" timeout");
+				}
+				catch (InterruptedException ie) {
+					if (_log.isDebugEnabled()) {
+						_log.debug(
+							description.getClassName() +
+								" completed in time, cancelled timeout " +
+									"monitoring.");
+					}
+				}
+			}
+
+		};
+
+		ciTimeoutMonitorThread.start();
+
+		return ciTimeoutMonitorThread;
 	}
 
 	private CITimeoutTestCallback() {
 	}
 
-	private static final String _CI_TIMEOUT_TEST_CLASS_MESSAGE =
-		"CI_TIMEOUT_TEST_CLASS_MESSAGE";
+	private static final Log _log = LogFactoryUtil.getLog(
+		CITimeoutTestCallback.class);
 
 }
