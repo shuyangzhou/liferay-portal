@@ -18,6 +18,9 @@ import com.liferay.portal.kernel.concurrent.ConcurrentHashSet;
 import com.liferay.portal.kernel.concurrent.FutureListener;
 import com.liferay.portal.kernel.concurrent.NoticeableFuture;
 import com.liferay.portal.kernel.concurrent.ThreadPoolExecutor;
+import com.liferay.portal.kernel.dao.db.DB;
+import com.liferay.portal.kernel.dao.db.DBManagerUtil;
+import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.executor.PortalExecutorManagerUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -65,6 +68,17 @@ public class AutoBatchPreparedStatementUtil {
 	public static PreparedStatement concurrentAutoBatch(
 			Connection connection, String sql)
 		throws SQLException {
+
+		DB db = DBManagerUtil.getDB();
+
+		DBType dbType = db.getDBType();
+
+		if ((dbType == DBType.SQLSERVER) || (dbType == DBType.SYBASE)) {
+			PreparedStatement preparedStatement = connection.prepareStatement(
+				sql);
+
+			return autoBatch(preparedStatement);
+		}
 
 		DatabaseMetaData databaseMetaData = connection.getMetaData();
 
