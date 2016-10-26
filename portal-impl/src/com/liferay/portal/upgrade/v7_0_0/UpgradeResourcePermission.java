@@ -187,6 +187,18 @@ public class UpgradeResourcePermission extends UpgradeProcess {
 
 			ps.executeUpdate();
 		}
+
+		updateSQL =
+			"update ResourcePermission set viewActionId = [$FALSE$] where " +
+				"MOD(actionIds, 2) = 0";
+
+		updateSQL = SQLTransformer.transform(updateSQL);
+
+		try (LoggingTimer loggingTimer = new LoggingTimer();
+			PreparedStatement ps = connection.prepareStatement(updateSQL)) {
+
+			ps.executeUpdate();
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
