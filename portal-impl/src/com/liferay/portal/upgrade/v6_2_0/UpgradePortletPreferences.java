@@ -26,8 +26,8 @@ import com.liferay.portal.kernel.util.StringPool;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Julio Camarero
@@ -49,7 +49,7 @@ public class UpgradePortletPreferences extends UpgradeProcess {
 
 			String typeSettings = StringPool.BLANK;
 
-			List<Long> deletePortletPreferencesIds = new ArrayList<>();
+			Set<Long> deletePortletPreferencesIds = new HashSet<>();
 
 			try (PreparedStatement ps = connection.prepareStatement(
 					sb.toString());
