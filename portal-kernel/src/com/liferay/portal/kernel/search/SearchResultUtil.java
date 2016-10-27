@@ -45,6 +45,6 @@ public class SearchResultUtil {
 	private static volatile SearchResultTranslator _searchResultTranslator =
 		ProxyFactory.newServiceTrackedInstance(
 			SearchResultTranslator.class, SearchResultUtil.class,
-			"_searchResultTranslator");
+			"_searchResultTranslator", false);
 
 }

@@ -34,6 +34,6 @@ public class CollatorUtil {
 
 	private static volatile Collator _collator =
 		ProxyFactory.newServiceTrackedInstance(
-			Collator.class, CollatorUtil.class, "_collator");
+			Collator.class, CollatorUtil.class, "_collator", false);
 
 }

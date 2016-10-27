@@ -84,6 +84,6 @@ public class PortletDataHandlerStatusMessageSenderUtil {
 			ProxyFactory.newServiceTrackedInstance(
 				PortletDataHandlerStatusMessageSender.class,
 				PortletDataHandlerStatusMessageSenderUtil.class,
-				"_dataHandlerStatusMessageSender");
+				"_dataHandlerStatusMessageSender", false);
 
 }

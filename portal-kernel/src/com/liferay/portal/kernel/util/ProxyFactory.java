@@ -73,22 +73,63 @@ public class ProxyFactory {
 			new ServiceTrackedInvocationHandler<>(interfaceClass));
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #newServiceTrackedInstance(Class, Class, String, String, boolean)}
+	 */
+	@Deprecated
 	public static <T> T newServiceTrackedInstance(
 		Class<T> serviceClass, Class<?> declaringClass, String fieldName) {
 
 		return newServiceTrackedInstance(
-			serviceClass, declaringClass, fieldName, null);
+			serviceClass, declaringClass, fieldName, null, false);
 	}
 
 	public static <T> T newServiceTrackedInstance(
 		Class<T> serviceClass, Class<?> declaringClass, String fieldName,
+		boolean blocking) {
+
+		return newServiceTrackedInstance(
+			serviceClass, declaringClass, fieldName, null, blocking);
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #newServiceTrackedInstance(Class, Class, String, String, boolean)}
+	 */
+	@Deprecated
+	public static <T> T newServiceTrackedInstance(
+		Class<T> serviceClass, Class<?> declaringClass, String fieldName,
 		String filterString) {
 
-		T dummyService = newDummyInstance(serviceClass);
+		return newServiceTrackedInstance(
+			serviceClass, declaringClass, fieldName, filterString, false);
+	}
 
-		return _newServiceTrackedInstance(
-			serviceClass, declaringClass, fieldName, filterString,
-			dummyService);
+	public static <T> T newServiceTrackedInstance(
+		Class<T> serviceClass, Class<?> declaringClass, String fieldName,
+		String filterString, boolean blocking) {
+
+		try {
+			T placeHolderService = null;
+
+			if (blocking) {
+				placeHolderService = (T)ProxyUtil.newProxyInstance(
+					serviceClass.getClassLoader(), new Class[] {serviceClass},
+					new AwaitServiceInvocationHandler<T>(
+						serviceClass, declaringClass, fieldName));
+			}
+			else {
+				placeHolderService = newDummyInstance(serviceClass);
+			}
+
+			return _newServiceTrackedInstance(
+				serviceClass, declaringClass, fieldName, filterString,
+				placeHolderService);
+		}
+		catch (ReflectiveOperationException roe) {
+			return ReflectionUtil.throwException(roe);
+		}
 	}
 
 	/**
@@ -105,19 +146,29 @@ public class ProxyFactory {
 				interfaceClass, filterString));
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #newServiceTrackedInstance(Class, Class, String, String, boolean)}
+	 */
+	@Deprecated
 	public static <T> T newServiceTrackedInstanceWithoutDummyService(
 		Class<T> serviceClass, Class<?> declaringClass, String fieldName) {
 
-		return newServiceTrackedInstanceWithoutDummyService(
-			serviceClass, declaringClass, fieldName, null);
+		return newServiceTrackedInstance(
+			serviceClass, declaringClass, fieldName, true);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #newServiceTrackedInstance(Class, Class, String, String, boolean)}
+	 */
+	@Deprecated
 	public static <T> T newServiceTrackedInstanceWithoutDummyService(
 		Class<T> serviceClass, Class<?> declaringClass, String fieldName,
 		String filterString) {
 
-		return _newServiceTrackedInstance(
-			serviceClass, declaringClass, fieldName, filterString, null);
+		return newServiceTrackedInstance(
+			serviceClass, declaringClass, fieldName, filterString, true);
 	}
 
 	private static <T> T _newServiceTrackedInstance(
@@ -184,6 +235,57 @@ public class ProxyFactory {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(ProxyFactory.class);
+
+	private static class AwaitServiceInvocationHandler<T>
+		implements InvocationHandler {
+
+		@Override
+		public Object invoke(Object proxy, Method method, Object[] arguments)
+			throws Throwable {
+
+			Object service = null;
+
+			while (true) {
+				service = _field.get(null);
+
+				if (!ProxyUtil.isProxyClass(service.getClass()) ||
+					(ProxyUtil.getInvocationHandler(service) != this)) {
+
+					break;
+				}
+
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						"Waiting for a real service instance " +
+							_interfaceClass.getName());
+				}
+
+				Thread.sleep(500);
+			}
+
+			return method.invoke(service, arguments);
+		}
+
+		private AwaitServiceInvocationHandler(
+				Class<T> interfaceClass, Class<?> declaringClass,
+				String fieldName)
+			throws ReflectiveOperationException {
+
+			_interfaceClass = interfaceClass;
+
+			_field = declaringClass.getDeclaredField(fieldName);
+
+			if (!Modifier.isStatic(_field.getModifiers())) {
+				throw new IllegalArgumentException(_field + " is not static");
+			}
+
+			_field.setAccessible(true);
+		}
+
+		private final Field _field;
+		private final Class<T> _interfaceClass;
+
+	}
 
 	private static class DummyInvocationHandler<T>
 		implements InvocationHandler {

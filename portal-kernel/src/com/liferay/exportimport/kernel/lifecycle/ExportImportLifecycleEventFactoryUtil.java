@@ -38,6 +38,6 @@ public class ExportImportLifecycleEventFactoryUtil {
 			ProxyFactory.newServiceTrackedInstance(
 				ExportImportLifecycleEventFactory.class,
 				ExportImportLifecycleEventFactoryUtil.class,
-				"_exportImportLifecycleEventFactory");
+				"_exportImportLifecycleEventFactory", false);
 
 }

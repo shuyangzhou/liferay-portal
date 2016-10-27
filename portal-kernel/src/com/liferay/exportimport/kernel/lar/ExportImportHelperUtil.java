@@ -651,6 +651,6 @@ public class ExportImportHelperUtil {
 	private static volatile ExportImportHelper _exportImportHelper =
 		ProxyFactory.newServiceTrackedInstance(
 			ExportImportHelper.class, ExportImportHelperUtil.class,
-			"_exportImportHelper");
+			"_exportImportHelper", false);
 
 }

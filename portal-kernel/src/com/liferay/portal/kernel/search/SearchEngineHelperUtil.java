@@ -110,10 +110,10 @@ public class SearchEngineHelperUtil {
 	private static volatile SearchEngineHelper _searchEngineHelper =
 		ProxyFactory.newServiceTrackedInstance(
 			SearchEngineHelper.class, SearchEngineHelperUtil.class,
-			"_searchEngineHelper");
+			"_searchEngineHelper", false);
 	private static volatile SearchPermissionChecker _searchPermissionChecker =
 		ProxyFactory.newServiceTrackedInstance(
 			SearchPermissionChecker.class, SearchEngineHelperUtil.class,
-			"_searchPermissionChecker");
+			"_searchPermissionChecker", false);
 
 }

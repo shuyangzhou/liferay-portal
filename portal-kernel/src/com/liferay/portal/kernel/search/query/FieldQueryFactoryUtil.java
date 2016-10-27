@@ -32,6 +32,6 @@ public class FieldQueryFactoryUtil {
 	private static volatile FieldQueryFactory _fieldQueryFactory =
 		ProxyFactory.newServiceTrackedInstance(
 			FieldQueryFactory.class, FieldQueryFactoryUtil.class,
-			"_fieldQueryFactory");
+			"_fieldQueryFactory", false);
 
 }

@@ -35,6 +35,6 @@ public class ExportImportProcessCallbackRegistryUtil {
 			ProxyFactory.newServiceTrackedInstance(
 				ExportImportProcessCallbackRegistry.class,
 				ExportImportProcessCallbackRegistryUtil.class,
-				"_exportImportProcessCommitCallbackRegistry");
+				"_exportImportProcessCommitCallbackRegistry", false);
 
 }

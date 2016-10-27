@@ -48,6 +48,6 @@ public class BackgroundTaskExecutorRegistryUtil {
 			ProxyFactory.newServiceTrackedInstance(
 				BackgroundTaskExecutorRegistry.class,
 				BackgroundTaskExecutorRegistryUtil.class,
-				"_backgroundTaskExecutorRegistry");
+				"_backgroundTaskExecutorRegistry", false);
 
 }

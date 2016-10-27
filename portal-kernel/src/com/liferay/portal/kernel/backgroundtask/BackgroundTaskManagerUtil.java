@@ -362,6 +362,6 @@ public class BackgroundTaskManagerUtil {
 	private static volatile BackgroundTaskManager _backgroundTaskManager =
 		ProxyFactory.newServiceTrackedInstance(
 			BackgroundTaskManager.class, BackgroundTaskManagerUtil.class,
-			"_backgroundTaskManager");
+			"_backgroundTaskManager", false);
 
 }

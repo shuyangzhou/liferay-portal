@@ -37,6 +37,6 @@ public class ExportImportLifecycleManagerUtil {
 		_exportImportLifecycleManager = ProxyFactory.newServiceTrackedInstance(
 			ExportImportLifecycleManager.class,
 			ExportImportLifecycleManagerUtil.class,
-			"_exportImportLifecycleManager");
+			"_exportImportLifecycleManager", false);
 
 }

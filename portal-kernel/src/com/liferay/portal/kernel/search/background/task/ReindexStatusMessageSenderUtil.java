@@ -61,7 +61,7 @@ public class ReindexStatusMessageSenderUtil {
 	private static volatile ReindexStatusMessageSender
 		_reindexStatusMessageSender = ProxyFactory.newServiceTrackedInstance(
 			ReindexStatusMessageSender.class,
-			ReindexStatusMessageSenderUtil.class,
-			"_reindexStatusMessageSender");
+			ReindexStatusMessageSenderUtil.class, "_reindexStatusMessageSender",
+			false);
 
 }

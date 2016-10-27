@@ -61,6 +61,6 @@ public class IndexAdminHelperUtil {
 	private static volatile IndexAdminHelper _indexAdminHelper =
 		ProxyFactory.newServiceTrackedInstance(
 			IndexAdminHelper.class, IndexAdminHelperUtil.class,
-			"_indexAdminHelper");
+			"_indexAdminHelper", false);
 
 }
