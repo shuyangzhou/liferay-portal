@@ -1,0 +1,8 @@
+dependencies {
+	compile group: "org.aspectj", name: "aspectjrt", version: "1.8.9"
+	compile group: "org.aspectj", name: "aspectjweaver", version: "1.8.9"
+}
+
+liferay {
+	deployDir = appServerLibGlobalDir
+}
