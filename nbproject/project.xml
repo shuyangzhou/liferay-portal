@@ -325,6 +325,7 @@
 				<classpath mode="compile">lib/global/portlet.jar</classpath>
 				<classpath mode="compile">lib/portal/abdera.jar</classpath>
 				<classpath mode="compile">lib/portal/ant.jar</classpath>
+				<classpath mode="compile">lib/portal/ant-launcher.jar</classpath>
 				<classpath mode="compile">lib/portal/antlr2.jar</classpath>
 				<classpath mode="compile">lib/portal/antlr3-runtime.jar</classpath>
 				<classpath mode="compile">lib/portal/antlr3.jar</classpath>
