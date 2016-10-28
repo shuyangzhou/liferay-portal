@@ -4,7 +4,8 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.liferay</groupId>
   <artifactId>com.liferay.portal.tools.service.builder</artifactId>
-  <version>1.0.133</version>
+  <version>1.0.134</version>
+  <description>Liferay Portal Tools Service Builder</description>
   <licenses>
     <license>
       <name>LGPL 2.1</name>
