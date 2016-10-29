@@ -20,7 +20,7 @@ import com.liferay.portal.kernel.messaging.sender.SingleDestinationMessageSender
 import com.liferay.portal.kernel.messaging.sender.SynchronousMessageSender;
 import com.liferay.portal.kernel.security.pacl.permission.PortalMessageBusPermission;
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
 
 /**
  * @author Michael C. Han
@@ -202,7 +202,7 @@ public class MessageBusUtil {
 	private static final Log _log = LogFactoryUtil.getLog(MessageBusUtil.class);
 
 	private static volatile MessageBus _messageBus =
-		ProxyFactory.newServiceTrackedInstance(
+		ServiceProxyFactory.newServiceTrackedInstance(
 			MessageBus.class, MessageBusUtil.class, "_messageBus", true);
 	private static SynchronousMessageSender.Mode _synchronousMessageSenderMode;
 

@@ -16,7 +16,7 @@ package com.liferay.portal.kernel.messaging;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
 
 import java.util.Collection;
 
@@ -50,7 +50,7 @@ public class DestinationFactoryUtil {
 		DestinationFactoryUtil.class);
 
 	private static volatile DestinationFactory _destinationFactory =
-		ProxyFactory.newServiceTrackedInstance(
+		ServiceProxyFactory.newServiceTrackedInstance(
 			DestinationFactory.class, DestinationFactoryUtil.class,
 			"_destinationFactory", true);
 

@@ -16,7 +16,7 @@ package com.liferay.portal.kernel.messaging.sender;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
 
 /**
  * @author Michael C. Han
@@ -68,7 +68,7 @@ public class SingleDestinationMessageSenderFactoryUtil {
 
 	private static volatile SingleDestinationMessageSenderFactory
 		_singleDestinationMessageSenderFactory =
-			ProxyFactory.newServiceTrackedInstance(
+			ServiceProxyFactory.newServiceTrackedInstance(
 				SingleDestinationMessageSenderFactory.class,
 				SingleDestinationMessageSenderFactoryUtil.class,
 				"_singleDestinationMessageSenderFactory", true);

@@ -19,7 +19,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.pacl.PACLConstants;
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
 
 /**
  * @author Shuyang Zhou
@@ -78,7 +78,7 @@ public class PortalExecutorManagerUtil {
 		PortalExecutorManagerUtil.class);
 
 	private static volatile PortalExecutorManager _portalExecutorManager =
-		ProxyFactory.newServiceTrackedInstance(
+		ServiceProxyFactory.newServiceTrackedInstance(
 			PortalExecutorManager.class, PortalExecutorManagerUtil.class,
 			"_portalExecutorManager", true);
 

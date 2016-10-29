@@ -15,7 +15,7 @@
 package com.liferay.portal.kernel.search.query;
 
 import com.liferay.portal.kernel.search.Query;
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
 
 /**
  * @author Michael C. Han
@@ -30,7 +30,7 @@ public class FieldQueryFactoryUtil {
 	}
 
 	private static volatile FieldQueryFactory _fieldQueryFactory =
-		ProxyFactory.newServiceTrackedInstance(
+		ServiceProxyFactory.newServiceTrackedInstance(
 			FieldQueryFactory.class, FieldQueryFactoryUtil.class,
 			"_fieldQueryFactory", false);
 

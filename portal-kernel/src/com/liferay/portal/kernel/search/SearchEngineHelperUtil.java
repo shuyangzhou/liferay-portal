@@ -15,7 +15,7 @@
 package com.liferay.portal.kernel.search;
 
 import com.liferay.portal.kernel.model.CompanyConstants;
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
 
 import java.util.Collection;
 import java.util.Set;
@@ -108,11 +108,11 @@ public class SearchEngineHelperUtil {
 	}
 
 	private static volatile SearchEngineHelper _searchEngineHelper =
-		ProxyFactory.newServiceTrackedInstance(
+		ServiceProxyFactory.newServiceTrackedInstance(
 			SearchEngineHelper.class, SearchEngineHelperUtil.class,
 			"_searchEngineHelper", false);
 	private static volatile SearchPermissionChecker _searchPermissionChecker =
-		ProxyFactory.newServiceTrackedInstance(
+		ServiceProxyFactory.newServiceTrackedInstance(
 			SearchPermissionChecker.class, SearchEngineHelperUtil.class,
 			"_searchPermissionChecker", false);
 

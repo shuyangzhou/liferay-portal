@@ -16,7 +16,7 @@ package com.liferay.exportimport.kernel.staging.permission;
 
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
 
 /**
  * @author Jorge Ferrer
@@ -41,7 +41,7 @@ public class StagingPermissionUtil {
 	}
 
 	private static volatile StagingPermission _stagingPermission =
-		ProxyFactory.newServiceTrackedInstance(
+		ServiceProxyFactory.newServiceTrackedInstance(
 			StagingPermission.class, StagingPermissionUtil.class,
 			"_stagingPermission", false);
 

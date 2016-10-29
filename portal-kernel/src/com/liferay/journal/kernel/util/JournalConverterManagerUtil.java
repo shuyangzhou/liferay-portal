@@ -14,7 +14,7 @@
 
 package com.liferay.journal.kernel.util;
 
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
 
 import java.util.Locale;
 
@@ -34,7 +34,7 @@ public class JournalConverterManagerUtil {
 	}
 
 	private static volatile JournalConverterManager _journalConverterManager =
-		ProxyFactory.newServiceTrackedInstance(
+		ServiceProxyFactory.newServiceTrackedInstance(
 			JournalConverterManager.class, JournalConverterManagerUtil.class,
 			"_journalConverterManager", false);
 

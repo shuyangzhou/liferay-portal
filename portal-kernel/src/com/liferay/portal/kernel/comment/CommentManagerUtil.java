@@ -19,7 +19,7 @@ import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermissio
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.Function;
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
 
 /**
  * @author Adolfo Pérez
@@ -167,7 +167,7 @@ public class CommentManagerUtil {
 	}
 
 	private static volatile CommentManager _commentManager =
-		ProxyFactory.newServiceTrackedInstance(
+		ServiceProxyFactory.newServiceTrackedInstance(
 			CommentManager.class, CommentManagerUtil.class, "_commentManager",
 			false);
 

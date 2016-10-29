@@ -18,7 +18,7 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
 
 import java.io.File;
 
@@ -61,7 +61,7 @@ public class DDMTemplateManagerUtil {
 	}
 
 	private static volatile DDMTemplateManager _ddmTemplateManager =
-		ProxyFactory.newServiceTrackedInstance(
+		ServiceProxyFactory.newServiceTrackedInstance(
 			DDMTemplateManager.class, DDMTemplateManagerUtil.class,
 			"_ddmTemplateManager", false);
 
