@@ -94,6 +94,6 @@ public class SingleVMPoolUtil {
 
 	private static volatile SingleVMPool _singleVMPool =
 		ServiceProxyFactory.newServiceTrackedInstance(
-			SingleVMPool.class, SingleVMPoolUtil.class, "_singleVMPool", false);
+			SingleVMPool.class, SingleVMPoolUtil.class, "_singleVMPool", true);
 
 }
