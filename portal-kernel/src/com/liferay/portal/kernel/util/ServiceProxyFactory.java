@@ -50,7 +50,7 @@ public class ServiceProxyFactory {
 			if (blocking) {
 				placeHolderService = (T)ProxyUtil.newProxyInstance(
 					serviceClass.getClassLoader(), new Class[] {serviceClass},
-					new AwaitServiceInvocationHandler<T>(
+					new AwaitServiceInvocationHandler(
 						serviceClass, declaringClass, fieldName));
 			}
 			else {
@@ -133,7 +133,7 @@ public class ServiceProxyFactory {
 	private static final Log _log = LogFactoryUtil.getLog(
 		ServiceProxyFactory.class);
 
-	private static class AwaitServiceInvocationHandler<T>
+	private static class AwaitServiceInvocationHandler
 		implements InvocationHandler {
 
 		@Override
@@ -164,7 +164,7 @@ public class ServiceProxyFactory {
 		}
 
 		private AwaitServiceInvocationHandler(
-				Class<T> interfaceClass, Class<?> declaringClass,
+				Class<?> interfaceClass, Class<?> declaringClass,
 				String fieldName)
 			throws ReflectiveOperationException {
 
@@ -180,7 +180,7 @@ public class ServiceProxyFactory {
 		}
 
 		private final Field _field;
-		private final Class<T> _interfaceClass;
+		private final Class<?> _interfaceClass;
 
 	}
 
