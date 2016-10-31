@@ -504,16 +504,22 @@ public class PoshiRunnerContext {
 		Multimap<Properties, String> multimap = HashMultimap.create();
 
 		for (String classCommandName : classCommandNames) {
-			Properties properties = _classCommandNamePropertiesMap.get(
-				classCommandName);
+			Properties properties = new Properties();
 
-			Set<String> propertyNames = properties.stringPropertyNames();
+			properties.putAll(
+				_classCommandNamePropertiesMap.get(classCommandName));
 
-			for (String propertyName : propertyNames) {
-				if (propertyName.matches(
-						PropsValues.TEST_BATCH_GROUP_IGNORE_REGEX)) {
+			if (Validator.isNotNull(
+					PropsValues.TEST_BATCH_GROUP_IGNORE_REGEX)) {
 
-					properties.remove(propertyName);
+				Set<String> propertyNames = properties.stringPropertyNames();
+
+				for (String propertyName : propertyNames) {
+					if (propertyName.matches(
+							PropsValues.TEST_BATCH_GROUP_IGNORE_REGEX)) {
+
+						properties.remove(propertyName);
+					}
 				}
 			}
 

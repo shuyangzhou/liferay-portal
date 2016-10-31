@@ -168,6 +168,14 @@ public class DLFileShortcutLocalServiceUtil {
 			folderId, toFileEntryId, serviceContext);
 	}
 
+	public static com.liferay.document.library.kernel.model.DLFileShortcut updateStatus(
+		long userId, long fileShortcutId, int status,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .updateStatus(userId, fileShortcutId, status, serviceContext);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		return getService().getActionableDynamicQuery();
 	}
@@ -449,13 +457,6 @@ public class DLFileShortcutLocalServiceUtil {
 	public static void updateFileShortcutsActive(long toFileEntryId,
 		boolean active) {
 		getService().updateFileShortcutsActive(toFileEntryId, active);
-	}
-
-	public static void updateStatus(long userId, long fileShortcutId,
-		int status,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().updateStatus(userId, fileShortcutId, status, serviceContext);
 	}
 
 	public static DLFileShortcutLocalService getService() {

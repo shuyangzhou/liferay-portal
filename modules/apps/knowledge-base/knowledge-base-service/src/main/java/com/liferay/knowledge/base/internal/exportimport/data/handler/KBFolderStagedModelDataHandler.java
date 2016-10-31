@@ -119,6 +119,8 @@ public class KBFolderStagedModelDataHandler
 				kbFolder.getUuid(), portletDataContext.getScopeGroupId());
 
 			if (existingKBFolder == null) {
+				serviceContext.setUuid(kbFolder.getUuid());
+
 				importedKBFolder = _kbFolderLocalService.addKBFolder(
 					userId, portletDataContext.getScopeGroupId(),
 					kbFolder.getClassNameId(), kbFolder.getParentKBFolderId(),

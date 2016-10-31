@@ -163,6 +163,9 @@ public interface DLFileShortcutLocalService extends BaseLocalService,
 		long repositoryId, long folderId, long toFileEntryId,
 		ServiceContext serviceContext) throws PortalException;
 
+	public DLFileShortcut updateStatus(long userId, long fileShortcutId,
+		int status, ServiceContext serviceContext) throws PortalException;
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
@@ -356,7 +359,4 @@ public interface DLFileShortcutLocalService extends BaseLocalService,
 	public void updateFileShortcuts(long oldToFileEntryId, long newToFileEntryId);
 
 	public void updateFileShortcutsActive(long toFileEntryId, boolean active);
-
-	public void updateStatus(long userId, long fileShortcutId, int status,
-		ServiceContext serviceContext) throws PortalException;
 }
