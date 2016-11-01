@@ -45,8 +45,6 @@ public abstract class BaseSchedulerEngineConfigurator {
 		schedulerEngineProxyBean.setSynchronousMessageSenderMode(
 			SynchronousMessageSender.Mode.DIRECT);
 
-		schedulerEngineProxyBean.afterPropertiesSet();
-
 		InvocationHandlerFactory invocationHandlerFactory =
 			MessagingProxyInvocationHandler.getInvocationHandlerFactory();
 
