@@ -1114,6 +1114,9 @@ Error-Prone was automatically installed. Please rerun your task.
 							<var name="junit.classpath" value="${junit.classpath};${module.dir}/classes" />
 						</sequential>
 					</for>
+
+					<echo>*****************************${junit.classpath} </echo>
+					<input>Press Return key to continue...</input>
 				</then>
 			</if>
 
