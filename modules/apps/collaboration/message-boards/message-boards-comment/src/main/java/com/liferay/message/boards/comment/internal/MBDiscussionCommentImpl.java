@@ -21,9 +21,10 @@ import com.liferay.portal.kernel.comment.DiscussionComment;
 import com.liferay.portal.kernel.comment.DiscussionCommentIterator;
 import com.liferay.portal.kernel.comment.WorkflowableComment;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portlet.ratings.model.impl.RatingsStatsImpl;
 import com.liferay.ratings.kernel.model.RatingsEntry;
 import com.liferay.ratings.kernel.model.RatingsStats;
-import com.liferay.ratings.kernel.service.persistence.RatingsStatsUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,7 +107,14 @@ public class MBDiscussionCommentImpl
 			}
 		}
 
-		return RatingsStatsUtil.create(0);
+		RatingsStats ratingsStats = new RatingsStatsImpl();
+
+		ratingsStats.setNew(true);
+		ratingsStats.setPrimaryKey(0);
+
+		ratingsStats.setCompanyId(CompanyThreadLocal.getCompanyId());
+
+		return ratingsStats;
 	}
 
 	/**
