@@ -341,8 +341,8 @@ public class JournalServiceVerifyProcess extends VerifyLayout {
 		}
 		catch (PortalException pe) {
 			_log.error(
-				"Unable to obtain fileEntry with groupId " + groupId +
-					", folderId " + folderId + " and title " + title,
+				"Unable to get file entry with group ID " + groupId +
+					", folder ID " + folderId + ", and title " + title,
 				pe);
 
 			return;
