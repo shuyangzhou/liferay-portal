@@ -88,7 +88,6 @@ import com.liferay.portal.kernel.service.PortletPreferencesLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.service.persistence.PortletPreferencesUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -259,9 +258,11 @@ public class PortletImportController implements ImportController {
 		int ownerType = PortletKeys.PREFS_OWNER_TYPE_LAYOUT;
 
 		PortletPreferences portletPreferences =
-			PortletPreferencesUtil.fetchByO_O_P_P(
-				ownerId, ownerType, portletDataContext.getPlid(),
-				portletDataContext.getPortletId());
+			(PortletPreferences)
+				_portletPreferencesLocalService.fetchPreferences(
+					portletDataContext.getCompanyId(), ownerId, ownerType,
+					portletDataContext.getPlid(),
+					portletDataContext.getPortletId());
 
 		if (portletPreferences == null) {
 			portletPreferences =
@@ -640,9 +641,11 @@ public class PortletImportController implements ImportController {
 		int ownerType = PortletKeys.PREFS_OWNER_TYPE_LAYOUT;
 
 		PortletPreferences portletPreferences =
-			PortletPreferencesUtil.fetchByO_O_P_P(
-				ownerId, ownerType, portletDataContext.getPlid(),
-				portletDataContext.getPortletId());
+			(PortletPreferences)
+				_portletPreferencesLocalService.fetchPreferences(
+					portletDataContext.getCompanyId(), ownerId, ownerType,
+					portletDataContext.getPlid(),
+					portletDataContext.getPortletId());
 
 		if (portletPreferences == null) {
 			portletPreferences =
