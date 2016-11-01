@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
-import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
@@ -44,6 +43,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -63,9 +63,9 @@ public class AssetTagFinderTest {
 
 	@Before
 	public void setUp() throws Exception {
-		Group group = GroupTestUtil.addGroup();
+		_group = GroupTestUtil.addGroup();
 
-		Layout layout = LayoutTestUtil.addLayout(group);
+		Layout layout = LayoutTestUtil.addLayout(_group);
 
 		Map<Locale, String> nameMap = new HashMap<>();
 
@@ -74,10 +74,10 @@ public class AssetTagFinderTest {
 		nameMap.put(LocaleUtil.getDefault(), name);
 
 		ServiceContext serviceContext =
-			ServiceContextTestUtil.getServiceContext(group.getGroupId());
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
 
 		_scopeGroup = GroupLocalServiceUtil.addGroup(
-			TestPropsValues.getUserId(), group.getParentGroupId(),
+			TestPropsValues.getUserId(), _group.getParentGroupId(),
 			Layout.class.getName(), layout.getPlid(),
 			GroupConstants.DEFAULT_LIVE_GROUP_ID, nameMap,
 			RandomTestUtil.randomLocaleStringMap(),
@@ -85,6 +85,13 @@ public class AssetTagFinderTest {
 			GroupConstants.DEFAULT_MEMBERSHIP_RESTRICTION,
 			StringPool.SLASH + FriendlyURLNormalizerUtil.normalize(name), false,
 			true, serviceContext);
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		GroupLocalServiceUtil.deleteGroup(_scopeGroup);
+
+		GroupLocalServiceUtil.deleteGroup(_group);
 	}
 
 	@Test
@@ -182,7 +189,7 @@ public class AssetTagFinderTest {
 			serviceContext);
 	}
 
-	@DeleteAfterTestRun
+	private Group _group;
 	private Group _scopeGroup;
 
 }
