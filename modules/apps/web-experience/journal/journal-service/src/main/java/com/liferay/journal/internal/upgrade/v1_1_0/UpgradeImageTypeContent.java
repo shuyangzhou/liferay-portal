@@ -173,8 +173,8 @@ public class UpgradeImageTypeContent extends UpgradeProcess {
 		}
 		catch (PortalException pe) {
 			_log.error(
-				"Unable to obtain fileEntry with groupId " + groupId +
-					", folderId " + folderId + " and fileName " + fileName,
+				"Unable to get file entry with group ID " + groupId +
+					", folder ID " + folderId + ", and file name " + fileName,
 				pe);
 		}
 

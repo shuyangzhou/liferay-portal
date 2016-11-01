@@ -156,8 +156,8 @@ public class JournalArticlePermission implements BaseModelPermissionChecker {
 		}
 		catch (ConfigurationException ce) {
 			_log.error(
-				"Unable to obtain Company Configuration for Journal Service " +
-					"and Company " + permissionChecker.getCompanyId(),
+				"Unable to get journal service configuration for company " +
+					permissionChecker.getCompanyId(),
 				ce);
 
 			return false;
@@ -196,9 +196,7 @@ public class JournalArticlePermission implements BaseModelPermissionChecker {
 				}
 				else {
 					if (!article.isInTrash()) {
-						_log.error(
-							"Unable to obtain JournalFolder with folderId" +
-								folderId);
+						_log.error("Unable to get journal folder " + folderId);
 
 						return false;
 					}
@@ -228,7 +226,7 @@ public class JournalArticlePermission implements BaseModelPermissionChecker {
 			article = _journalArticleLocalService.fetchArticle(classPK);
 
 			if (article == null) {
-				_log.error("Unable to find JournalArticle with id" + classPK);
+				_log.error("Unable to find journal article " + classPK);
 
 				return false;
 			}
@@ -246,8 +244,8 @@ public class JournalArticlePermission implements BaseModelPermissionChecker {
 
 		if (article == null) {
 			_log.error(
-				"Unable to find JournalArticle with groupId " + groupId +
-					", articleId " + articleId + " and version " + version);
+				"Unable to get journal article with group ID " + groupId +
+					", article ID " + articleId + ", and version " + version);
 
 			return false;
 		}
@@ -264,8 +262,8 @@ public class JournalArticlePermission implements BaseModelPermissionChecker {
 
 		if (article == null) {
 			_log.error(
-				"Unable to find JournalArticle with groupId " + groupId +
-					", articleId " + articleId + " and status " + status);
+				"Unable to get journal article with group ID " + groupId +
+					", article ID " + articleId + ", and status " + status);
 
 			return false;
 		}
@@ -282,8 +280,8 @@ public class JournalArticlePermission implements BaseModelPermissionChecker {
 
 		if (article == null) {
 			_log.error(
-				"Unable to find JournalArticle with groupId " + groupId +
-					"and articleId " + articleId);
+				"Unable to get journal article with group ID " + groupId +
+					" and article ID " + articleId);
 
 			return false;
 		}

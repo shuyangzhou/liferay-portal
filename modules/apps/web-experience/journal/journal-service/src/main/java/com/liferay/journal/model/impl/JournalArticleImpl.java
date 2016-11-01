@@ -234,7 +234,7 @@ public class JournalArticleImpl extends JournalArticleBaseImpl {
 		}
 		catch (PortalException pe) {
 			_log.error(
-				"Unable to find DDM Structure with DDMStructureKey " +
+				"Unable to get DDM structure with DDM structure key " +
 					getDDMStructureKey(),
 				pe);
 		}
@@ -254,8 +254,8 @@ public class JournalArticleImpl extends JournalArticleBaseImpl {
 		}
 		catch (PortalException pe) {
 			_log.error(
-				"Unable to find DDM Template for DDM Structure with " +
-					"DDMStructureKey " + getDDMStructureKey(),
+				"Unable to get DDM template for DDM structure with" +
+					"DDM structure key " + getDDMStructureKey(),
 				pe);
 		}
 
@@ -429,7 +429,7 @@ public class JournalArticleImpl extends JournalArticleBaseImpl {
 		}
 		catch (Exception e) {
 			if (_log.isDebugEnabled()) {
-				_log.debug("Unable to find folder for " + getResourcePrimKey());
+				_log.debug("Unable to get folder for " + getResourcePrimKey());
 			}
 		}
 
