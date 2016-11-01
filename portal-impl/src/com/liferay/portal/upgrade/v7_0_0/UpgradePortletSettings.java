@@ -243,21 +243,9 @@ public abstract class UpgradePortletSettings extends UpgradeProcess {
 			SettingsDescriptor settingsDescriptor =
 				_settingsFactory.getSettingsDescriptor(serviceName);
 
-			StringBundler sb = new StringBundler(5);
-
-			sb.append("select portletPreferencesId, preferences from ");
-			sb.append("PortletPreferences where ");
-			sb.append("(ownerType = ? or ownerType = ?) and ");
-			sb.append("portletId = ? and preferences not like ");
-			sb.append("'%<portlet-preferences %/>%'");
-
-			String selectSQL = sb.toString();
-
-			String updateSQL = "update PortletPreferences set ".concat(
-				"preferences = ? where portletPreferencesId = ?");
-
 			try (PreparedStatement ps1 = connection.prepareStatement(
-					selectSQL)) {
+					"select portletPreferencesId, preferences from " +
+						"PortletPreferences " + _WHERE_CLAUSE)) {
 
 				ps1.setInt(1, ownerType);
 				ps1.setInt(2, PortletKeys.PREFS_OWNER_TYPE_ARCHIVED);
@@ -266,7 +254,9 @@ public abstract class UpgradePortletSettings extends UpgradeProcess {
 				try (ResultSet rs = ps1.executeQuery();
 						PreparedStatement ps2 =
 							AutoBatchPreparedStatementUtil.concurrentAutoBatch(
-								connection, updateSQL)) {
+								connection,
+								"update PortletPreferences set preferences = " +
+									"? where portletPreferencesId = ?")) {
 
 					while (rs.next()) {
 						ps2.setString(
@@ -300,27 +290,19 @@ public abstract class UpgradePortletSettings extends UpgradeProcess {
 			SettingsDescriptor serviceSettingsDescriptor =
 				_settingsFactory.getSettingsDescriptor(serviceName);
 
-			StringBundler sb = new StringBundler(5);
+			StringBundler sb = new StringBundler(3);
 
 			sb.append("select portletPreferencesId, ownerId, ownerType, ");
 			sb.append("plid, portletId, preferences from PortletPreferences ");
-			sb.append("where (ownerType = ? or ownerType = ?) and ");
-			sb.append("portletId = ? and preferences not like ");
-			sb.append("'%<portlet-preferences %/>%'");
-
-			String selectSQL = sb.toString();
+			sb.append(_WHERE_CLAUSE);
 
 			String insertSQL =
 				"insert into PortletPreferences (mvccVersion, " +
 					"portletPreferencesId, ownerId, ownerType, plid, " +
 						"portletId, preferences) values (?, ?, ?, ?, ?, ?, ?)";
 
-			String updateSQL =
-				"update PortletPreferences set preferences = ? ".concat(
-					"where portletPreferencesId = ?");
-
 			try (PreparedStatement ps1 = connection.prepareStatement(
-				selectSQL)) {
+				sb.toString())) {
 
 				ps1.setInt(1, ownerType);
 				ps1.setInt(2, PortletKeys.PREFS_OWNER_TYPE_ARCHIVED);
@@ -332,7 +314,9 @@ public abstract class UpgradePortletSettings extends UpgradeProcess {
 							connection, insertSQL);
 					PreparedStatement ps3 =
 						AutoBatchPreparedStatementUtil.concurrentAutoBatch(
-							connection, updateSQL)) {
+							connection,
+							"update PortletPreferences set preferences = ? " +
+								"where portletPreferencesId = ?")) {
 
 					while (rs.next()) {
 						if (portletId.equals(rs.getString("portletId")) &&
@@ -427,6 +411,10 @@ public abstract class UpgradePortletSettings extends UpgradeProcess {
 
 		return PortletPreferencesFactoryUtil.toXML(jxPortletPreferences);
 	}
+
+	private static final String _WHERE_CLAUSE =
+		"where (ownerType = ? or ownerType = ?) and portletId = ? and " +
+			"preferences not like '%<portlet-preferences %/>%'";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		UpgradePortletSettings.class);
