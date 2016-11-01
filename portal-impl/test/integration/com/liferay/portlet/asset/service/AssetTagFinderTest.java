@@ -15,7 +15,6 @@
 package com.liferay.portlet.asset.service;
 
 import com.liferay.asset.kernel.model.AssetTag;
-import com.liferay.asset.kernel.service.AssetTagLocalServiceUtil;
 import com.liferay.asset.kernel.service.persistence.AssetTagFinderUtil;
 import com.liferay.message.boards.kernel.model.MBCategoryConstants;
 import com.liferay.message.boards.kernel.model.MBMessage;
@@ -64,7 +63,28 @@ public class AssetTagFinderTest {
 
 	@Before
 	public void setUp() throws Exception {
-		_scopeGroup = addScopeGroup();
+		Group group = GroupTestUtil.addGroup();
+
+		Layout layout = LayoutTestUtil.addLayout(group);
+
+		Map<Locale, String> nameMap = new HashMap<>();
+
+		String name = RandomTestUtil.randomString();
+
+		nameMap.put(LocaleUtil.getDefault(), name);
+
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(group.getGroupId());
+
+		_scopeGroup = GroupLocalServiceUtil.addGroup(
+			TestPropsValues.getUserId(), group.getParentGroupId(),
+			Layout.class.getName(), layout.getPlid(),
+			GroupConstants.DEFAULT_LIVE_GROUP_ID, nameMap,
+			RandomTestUtil.randomLocaleStringMap(),
+			GroupConstants.TYPE_SITE_OPEN, true,
+			GroupConstants.DEFAULT_MEMBERSHIP_RESTRICTION,
+			StringPool.SLASH + FriendlyURLNormalizerUtil.normalize(name), false,
+			true, serviceContext);
 	}
 
 	@Test
@@ -146,14 +166,6 @@ public class AssetTagFinderTest {
 			initialSiteGroupAssetTags.size(), siteGroupAssetTags.size());
 	}
 
-	protected void addAssetTag(long groupId, String name) throws Exception {
-		ServiceContext serviceContext =
-			ServiceContextTestUtil.getServiceContext(groupId);
-
-		AssetTagLocalServiceUtil.addTag(
-			TestPropsValues.getUserId(), groupId, name, serviceContext);
-	}
-
 	protected void addMBMessage(long groupId, String assetTagName)
 		throws Exception {
 
@@ -168,31 +180,6 @@ public class AssetTagFinderTest {
 			MBCategoryConstants.DEFAULT_PARENT_CATEGORY_ID,
 			RandomTestUtil.randomString(), RandomTestUtil.randomString(), true,
 			serviceContext);
-	}
-
-	protected Group addScopeGroup() throws Exception {
-		Group group = GroupTestUtil.addGroup();
-
-		Layout layout = LayoutTestUtil.addLayout(group);
-
-		Map<Locale, String> nameMap = new HashMap<>();
-
-		String name = RandomTestUtil.randomString();
-
-		nameMap.put(LocaleUtil.getDefault(), name);
-
-		ServiceContext serviceContext =
-			ServiceContextTestUtil.getServiceContext(group.getGroupId());
-
-		return GroupLocalServiceUtil.addGroup(
-			TestPropsValues.getUserId(), group.getParentGroupId(),
-			Layout.class.getName(), layout.getPlid(),
-			GroupConstants.DEFAULT_LIVE_GROUP_ID, nameMap,
-			RandomTestUtil.randomLocaleStringMap(),
-			GroupConstants.TYPE_SITE_OPEN, true,
-			GroupConstants.DEFAULT_MEMBERSHIP_RESTRICTION,
-			StringPool.SLASH + FriendlyURLNormalizerUtil.normalize(name), false,
-			true, serviceContext);
 	}
 
 	@DeleteAfterTestRun
