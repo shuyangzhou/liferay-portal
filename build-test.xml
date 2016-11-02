@@ -3729,6 +3729,12 @@ create database lportal${database.index} character set utf8;</echo>
 							<replacetoken>drop database lportal;</replacetoken>
 							<replacevalue></replacevalue>
 						</replace>
+						<replace file="create.sql">
+							<replacetoken>connect to lportal;</replacetoken>
+							<replacevalue>update db cfg for lportal using logprimary 2;
+update db cfg for lportal using logsecond 254;
+connect to lportal;</replacevalue>
+						</replace>
 					</then>
 					<elseif>
 						<equals arg1="${database.type}" arg2="oracle" />
