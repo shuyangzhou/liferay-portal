@@ -19,6 +19,10 @@
 <%
 String redirect = ParamUtil.getString(request, "redirect");
 
+if (Validator.isNull(redirect)) {
+	redirect = currentURL;
+}
+
 Comment comment = (Comment)request.getAttribute(WebKeys.COMMENT);
 
 long commentId = BeanParamUtil.getLong(comment, request, "commentId");
@@ -57,6 +61,7 @@ if (comment instanceof WorkflowableComment) {
 	<aui:input name="commentId" type="hidden" value="<%= commentId %>" />
 	<aui:input name="parentCommentId" type="hidden" value="<%= parentCommentId %>" />
 	<aui:input name="workflowAction" type="hidden" value="<%= String.valueOf(pending ? WorkflowConstants.ACTION_SAVE_DRAFT : WorkflowConstants.ACTION_PUBLISH) %>" />
+	<aui:input name="ajax" type="hidden" value="<%= false %>" />
 
 	<liferay-ui:error exception="<%= CaptchaConfigurationException.class %>" message="a-captcha-error-occurred-please-contact-an-administrator" />
 	<liferay-ui:error exception="<%= CaptchaTextException.class %>" message="text-verification-failed" />

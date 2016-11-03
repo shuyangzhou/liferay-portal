@@ -550,6 +550,11 @@ username=liferay</echo>
 			<replacevalue><![CDATA[cluster.name: LiferayElasticsearchCluster]]></replacevalue>
 		</replace>
 
+		<replace file="${elasticsearch.dir}/config/elasticsearch.yml">
+			<replacetoken><![CDATA[# bootstrap.mlockall: true]]></replacetoken>
+			<replacevalue><![CDATA[bootstrap.mlockall: true]]></replacevalue>
+		</replace>
+
 		<antcall target="configure-elasticsearch-osgi-bundle-properties" />
 
 		<get-testcase-property property.name="elastic.shield.enabled" />
@@ -572,7 +577,7 @@ username=liferay</echo>
 			<then>
 				<exec dir="${elasticsearch.dir}/bin" executable="/bin/bash">
 					<arg value="-c" />
-					<arg value="./elasticsearch -Des.insecure.allow.root=true -d -p pid-elasticsearch" />
+					<arg value="ES_HEAP_SIZE=512m ./elasticsearch -Des.insecure.allow.root=true -d -p pid-elasticsearch" />
 				</exec>
 			</then>
 			<elseif>
@@ -580,7 +585,7 @@ username=liferay</echo>
 				<then>
 					<exec dir="${elasticsearch.dir}/bin" executable="cmd" spawn="true">
 						<arg value="/c" />
-						<arg value="elasticsearch -d -p pid-elasticsearch" />
+						<arg value="ES_HEAP_SIZE=512m elasticsearch -d -p pid-elasticsearch" />
 					</exec>
 				</then>
 			</elseif>

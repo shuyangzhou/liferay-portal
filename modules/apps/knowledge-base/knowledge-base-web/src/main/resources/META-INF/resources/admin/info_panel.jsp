@@ -146,7 +146,7 @@ boolean showSidebarHeader = ParamUtil.getBoolean(request, "showSidebarHeader", G
 							<liferay-ui:message key="status" />
 						</dt>
 						<dd>
-							<liferay-ui:message key="<%= KBUtil.getStatusLabel(kbArticle.getStatus()) %>" />
+							<liferay-ui:message key="<%= WorkflowConstants.getStatusLabel(kbArticle.getStatus()) %>" />
 						</dd>
 						<dt class="h5">
 							<liferay-ui:message key="priority" />

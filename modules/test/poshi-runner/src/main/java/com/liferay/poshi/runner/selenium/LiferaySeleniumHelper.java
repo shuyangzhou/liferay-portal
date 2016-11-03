@@ -14,17 +14,13 @@
 
 package com.liferay.poshi.runner.selenium;
 
-import com.liferay.poshi.runner.PoshiRunnerContext;
 import com.liferay.poshi.runner.PoshiRunnerGetterUtil;
 import com.liferay.poshi.runner.exception.PoshiRunnerWarningException;
-import com.liferay.poshi.runner.util.AntCommands;
 import com.liferay.poshi.runner.util.EmailCommands;
 import com.liferay.poshi.runner.util.FileUtil;
 import com.liferay.poshi.runner.util.GetterUtil;
-import com.liferay.poshi.runner.util.HtmlUtil;
 import com.liferay.poshi.runner.util.OSDetector;
 import com.liferay.poshi.runner.util.PropsValues;
-import com.liferay.poshi.runner.util.RuntimeVariables;
 import com.liferay.poshi.runner.util.StringUtil;
 import com.liferay.poshi.runner.util.Validator;
 
@@ -40,8 +36,6 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import java.net.URL;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -50,12 +44,6 @@ import java.util.Objects;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -69,9 +57,7 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
-import org.sikuli.api.DesktopScreenRegion;
 import org.sikuli.api.ImageTarget;
-import org.sikuli.api.ScreenRegion;
 import org.sikuli.api.robot.Keyboard;
 import org.sikuli.api.robot.desktop.DesktopKeyboard;
 
@@ -95,66 +81,6 @@ public class LiferaySeleniumHelper {
 
 	public static void addToLiferayExceptions(List<Exception> exceptions) {
 		_liferayExceptions.addAll(exceptions);
-	}
-
-	public static void antCommand(
-			LiferaySelenium liferaySelenium, String fileName, String target)
-		throws Exception {
-
-		AntCommands antCommands = new AntCommands(fileName, target);
-
-		ExecutorService executorService = Executors.newCachedThreadPool();
-
-		Future<Void> future = executorService.submit(antCommands);
-
-		try {
-			future.get(150, TimeUnit.SECONDS);
-		}
-		catch (ExecutionException ee) {
-			throw ee;
-		}
-		catch (TimeoutException te) {
-		}
-	}
-
-	public static void assertAlert(
-			LiferaySelenium liferaySelenium, String pattern)
-		throws Exception {
-
-		TestCase.assertEquals(pattern, liferaySelenium.getAlert());
-	}
-
-	public static void assertAlertNotPresent(LiferaySelenium liferaySelenium)
-		throws Exception {
-
-		if (liferaySelenium.isAlertPresent()) {
-			throw new Exception("Alert is present");
-		}
-	}
-
-	public static void assertChecked(
-			LiferaySelenium liferaySelenium, String locator)
-		throws Exception {
-
-		liferaySelenium.assertElementPresent(locator);
-
-		if (liferaySelenium.isNotChecked(locator)) {
-			throw new Exception(
-				"Element is not checked at \"" + locator + "\"");
-		}
-	}
-
-	public static void assertConfirmation(
-			LiferaySelenium liferaySelenium, String pattern)
-		throws Exception {
-
-		String confirmation = liferaySelenium.getConfirmation();
-
-		if (!pattern.equals(confirmation)) {
-			throw new Exception(
-				"Expected text \"" + pattern +
-					"\" does not match actual text \"" + confirmation + "\"");
-		}
 	}
 
 	public static void assertConsoleErrors() throws Exception {
@@ -233,69 +159,6 @@ public class LiferaySeleniumHelper {
 	public static void assertConsoleTextPresent(String text) throws Exception {
 		if (!isConsoleTextPresent(text)) {
 			throw new Exception("\"" + text + "\" is not present in console");
-		}
-	}
-
-	public static void assertEditable(
-			LiferaySelenium liferaySelenium, String locator)
-		throws Exception {
-
-		if (liferaySelenium.isNotEditable(locator)) {
-			throw new Exception(
-				"Element is not editable at \"" + locator + "\"");
-		}
-	}
-
-	public static void assertElementNotPresent(
-			LiferaySelenium liferaySelenium, String locator)
-		throws Exception {
-
-		if (liferaySelenium.isElementPresent(locator)) {
-			throw new Exception("Element is present at \"" + locator + "\"");
-		}
-	}
-
-	public static void assertElementPresent(
-			LiferaySelenium liferaySelenium, String locator)
-		throws Exception {
-
-		if (liferaySelenium.isElementNotPresent(locator)) {
-			throw new Exception(
-				"Element is not present at \"" + locator + "\"");
-		}
-	}
-
-	public static void assertEmailBody(
-			LiferaySelenium liferaySelenium, String index, String body)
-		throws Exception {
-
-		TestCase.assertEquals(body, liferaySelenium.getEmailBody(index));
-	}
-
-	public static void assertEmailSubject(
-			LiferaySelenium liferaySelenium, String index, String subject)
-		throws Exception {
-
-		TestCase.assertEquals(subject, liferaySelenium.getEmailSubject(index));
-	}
-
-	public static void assertHTMLSourceTextNotPresent(
-			LiferaySelenium liferaySelenium, String value)
-		throws Exception {
-
-		if (isHTMLSourceTextPresent(liferaySelenium, value)) {
-			throw new Exception(
-				"Pattern \"" + value + "\" does exists in the HTML source");
-		}
-	}
-
-	public static void assertHTMLSourceTextPresent(
-			LiferaySelenium liferaySelenium, String value)
-		throws Exception {
-
-		if (!isHTMLSourceTextPresent(liferaySelenium, value)) {
-			throw new Exception(
-				"Pattern \"" + value + "\" does not exists in the HTML source");
 		}
 	}
 
@@ -454,220 +317,6 @@ public class LiferaySeleniumHelper {
 		}
 	}
 
-	public static void assertNotAlert(
-		LiferaySelenium liferaySelenium, String pattern) {
-
-		TestCase.assertTrue(
-			Objects.equals(pattern, liferaySelenium.getAlert()));
-	}
-
-	public static void assertNotChecked(
-			LiferaySelenium liferaySelenium, String locator)
-		throws Exception {
-
-		liferaySelenium.assertElementPresent(locator);
-
-		if (liferaySelenium.isChecked(locator)) {
-			throw new Exception("Element is checked at \"" + locator + "\"");
-		}
-	}
-
-	public static void assertNotEditable(
-			LiferaySelenium liferaySelenium, String locator)
-		throws Exception {
-
-		if (liferaySelenium.isEditable(locator)) {
-			throw new Exception("Element is editable at \"" + locator + "\"");
-		}
-	}
-
-	public static void assertNotLocation(
-			LiferaySelenium liferaySelenium, String pattern)
-		throws Exception {
-
-		TestCase.assertTrue(
-			Objects.equals(pattern, liferaySelenium.getLocation()));
-	}
-
-	public static void assertNotPartialText(
-			LiferaySelenium liferaySelenium, String locator, String pattern)
-		throws Exception {
-
-		liferaySelenium.assertElementPresent(locator);
-
-		if (liferaySelenium.isPartialText(locator, pattern)) {
-			String text = liferaySelenium.getText(locator);
-
-			throw new Exception(
-				"\"" + text + "\" contains \"" + pattern + "\" at \"" +
-					locator + "\"");
-		}
-	}
-
-	public static void assertNotSelectedLabel(
-			LiferaySelenium liferaySelenium, String selectLocator,
-			String pattern)
-		throws Exception {
-
-		liferaySelenium.assertElementPresent(selectLocator);
-
-		if (liferaySelenium.isSelectedLabel(selectLocator, pattern)) {
-			String text = liferaySelenium.getSelectedLabel(selectLocator);
-
-			throw new Exception(
-				"Pattern \"" + pattern + "\" matches \"" + text + "\" at \"" +
-					selectLocator + "\"");
-		}
-	}
-
-	public static void assertNotText(
-			LiferaySelenium liferaySelenium, String locator, String pattern)
-		throws Exception {
-
-		liferaySelenium.assertElementPresent(locator);
-
-		if (liferaySelenium.isText(locator, pattern)) {
-			String text = liferaySelenium.getText(locator);
-
-			throw new Exception(
-				"Pattern \"" + pattern + "\" matches \"" + text + "\" at \"" +
-					locator + "\"");
-		}
-	}
-
-	public static void assertNotValue(
-			LiferaySelenium liferaySelenium, String locator, String pattern)
-		throws Exception {
-
-		liferaySelenium.assertElementPresent(locator);
-
-		if (liferaySelenium.isValue(locator, pattern)) {
-			String value = liferaySelenium.getElementValue(locator);
-
-			throw new Exception(
-				"Pattern \"" + pattern + "\" matches \"" + value + "\" at \"" +
-					locator + "\"");
-		}
-	}
-
-	public static void assertNotVisible(
-			LiferaySelenium liferaySelenium, String locator)
-		throws Exception {
-
-		liferaySelenium.assertElementPresent(locator);
-
-		if (liferaySelenium.isVisible(locator)) {
-			throw new Exception("Element is visible at \"" + locator + "\"");
-		}
-	}
-
-	public static void assertPartialConfirmation(
-			LiferaySelenium liferaySelenium, String pattern)
-		throws Exception {
-
-		String confirmation = liferaySelenium.getConfirmation();
-
-		if (!confirmation.contains(pattern)) {
-			throw new Exception(
-				"\"" + confirmation + "\" does not contain \"" + pattern +
-					"\"");
-		}
-	}
-
-	public static void assertPartialText(
-			LiferaySelenium liferaySelenium, String locator, String pattern)
-		throws Exception {
-
-		liferaySelenium.assertElementPresent(locator);
-
-		if (liferaySelenium.isNotPartialText(locator, pattern)) {
-			String text = liferaySelenium.getText(locator);
-
-			throw new Exception(
-				"\"" + text + "\" does not contain \"" + pattern + "\" at \"" +
-					locator + "\"");
-		}
-	}
-
-	public static void assertSelectedLabel(
-			LiferaySelenium liferaySelenium, String selectLocator,
-			String pattern)
-		throws Exception {
-
-		liferaySelenium.assertElementPresent(selectLocator);
-
-		if (liferaySelenium.isNotSelectedLabel(selectLocator, pattern)) {
-			String text = liferaySelenium.getSelectedLabel(selectLocator);
-
-			throw new Exception(
-				"Expected text \"" + pattern +
-					"\" does not match actual text \"" + text + "\" at \"" +
-						selectLocator + "\"");
-		}
-	}
-
-	public static void assertText(
-			LiferaySelenium liferaySelenium, String locator, String pattern)
-		throws Exception {
-
-		liferaySelenium.assertElementPresent(locator);
-
-		if (liferaySelenium.isNotText(locator, pattern)) {
-			String text = liferaySelenium.getText(locator);
-
-			throw new Exception(
-				"Expected text \"" + pattern +
-					"\" does not match actual text \"" + text + "\" at \"" +
-						locator + "\"");
-		}
-	}
-
-	public static void assertTextNotPresent(
-			LiferaySelenium liferaySelenium, String pattern)
-		throws Exception {
-
-		if (liferaySelenium.isTextPresent(pattern)) {
-			throw new Exception("\"" + pattern + "\" is present");
-		}
-	}
-
-	public static void assertTextPresent(
-			LiferaySelenium liferaySelenium, String pattern)
-		throws Exception {
-
-		if (liferaySelenium.isTextNotPresent(pattern)) {
-			throw new Exception("\"" + pattern + "\" is not present");
-		}
-	}
-
-	public static void assertValue(
-			LiferaySelenium liferaySelenium, String locator, String pattern)
-		throws Exception {
-
-		liferaySelenium.assertElementPresent(locator);
-
-		if (liferaySelenium.isNotValue(locator, pattern)) {
-			String value = liferaySelenium.getElementValue(locator);
-
-			throw new Exception(
-				"Expected text \"" + pattern +
-					"\" does not match actual text \"" + value + "\" at \"" +
-						locator + "\"");
-		}
-	}
-
-	public static void assertVisible(
-			LiferaySelenium liferaySelenium, String locator)
-		throws Exception {
-
-		liferaySelenium.assertElementPresent(locator);
-
-		if (liferaySelenium.isNotVisible(locator)) {
-			throw new Exception(
-				"Element is not visible at \"" + locator + "\"");
-		}
-	}
-
 	public static void captureScreen(String fileName) throws Exception {
 		if (!PropsValues.SAVE_SCREENSHOT) {
 			return;
@@ -811,14 +460,6 @@ public class LiferaySeleniumHelper {
 		return sb.toString();
 	}
 
-	public static boolean isConfirmation(
-		LiferaySelenium liferaySelenium, String pattern) {
-
-		String confirmation = liferaySelenium.getConfirmation();
-
-		return pattern.equals(confirmation);
-	}
-
 	public static boolean isConsoleTextPresent(String text) throws Exception {
 		String content = getTestConsoleLogFileContent();
 
@@ -853,55 +494,6 @@ public class LiferaySeleniumHelper {
 				return true;
 			}
 		}
-
-		return false;
-	}
-
-	public static boolean isElementPresentAfterWait(
-			LiferaySelenium liferaySelenium, String locator)
-		throws Exception {
-
-		for (int second = 0;; second++) {
-			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
-				return liferaySelenium.isElementPresent(locator);
-			}
-
-			if (liferaySelenium.isElementPresent(locator)) {
-				break;
-			}
-
-			Thread.sleep(1000);
-		}
-
-		return liferaySelenium.isElementPresent(locator);
-	}
-
-	public static boolean isHTMLSourceTextPresent(
-			LiferaySelenium liferaySelenium, String value)
-		throws Exception {
-
-		URL url = new URL(liferaySelenium.getLocation());
-
-		InputStream inputStream = url.openStream();
-
-		BufferedReader bufferedReader = new BufferedReader(
-			new InputStreamReader(inputStream));
-
-		String line = null;
-
-		while ((line = bufferedReader.readLine()) != null) {
-			Pattern pattern = Pattern.compile(value);
-
-			Matcher matcher = pattern.matcher(line);
-
-			if (matcher.find()) {
-				return true;
-			}
-		}
-
-		inputStream.close();
-
-		bufferedReader.close();
 
 		return false;
 	}
@@ -1014,71 +606,6 @@ public class LiferaySeleniumHelper {
 		return false;
 	}
 
-	public static boolean isNotChecked(
-		LiferaySelenium liferaySelenium, String locator) {
-
-		return !liferaySelenium.isChecked(locator);
-	}
-
-	public static boolean isNotPartialText(
-		LiferaySelenium liferaySelenium, String locator, String value) {
-
-		return !liferaySelenium.isPartialText(locator, value);
-	}
-
-	public static boolean isNotText(
-			LiferaySelenium liferaySelenium, String locator, String value)
-		throws Exception {
-
-		return !liferaySelenium.isText(locator, value);
-	}
-
-	public static boolean isNotValue(
-			LiferaySelenium liferaySelenium, String locator, String value)
-		throws Exception {
-
-		return !liferaySelenium.isValue(locator, value);
-	}
-
-	public static boolean isNotVisible(
-		LiferaySelenium liferaySelenium, String locator) {
-
-		return !liferaySelenium.isVisible(locator);
-	}
-
-	public static boolean isSikuliImagePresent(
-			LiferaySelenium liferaySelenium, String image)
-		throws Exception {
-
-		ScreenRegion screenRegion = new DesktopScreenRegion();
-
-		ImageTarget imageTarget = getImageTarget(liferaySelenium, image);
-
-		if (screenRegion.find(imageTarget) != null) {
-			return true;
-		}
-
-		return false;
-	}
-
-	public static boolean isTCatEnabled() {
-		return PropsValues.TCAT_ENABLED;
-	}
-
-	public static boolean isTestName(String testName) {
-		if (testName.equals(PoshiRunnerContext.getTestCaseCommandName())) {
-			return true;
-		}
-
-		return false;
-	}
-
-	public static boolean isTextNotPresent(
-		LiferaySelenium liferaySelenium, String pattern) {
-
-		return !liferaySelenium.isTextPresent(pattern);
-	}
-
 	public static void pause(String waitTime) throws Exception {
 		Thread.sleep(GetterUtil.getInteger(waitTime));
 	}
@@ -1113,46 +640,6 @@ public class LiferaySeleniumHelper {
 		}
 	}
 
-	public static void replyToEmail(
-			LiferaySelenium liferaySelenium, String to, String body)
-		throws Exception {
-
-		EmailCommands.replyToEmail(to, body);
-
-		liferaySelenium.pause("3000");
-	}
-
-	public static void saveScreenshot(LiferaySelenium liferaySelenium)
-		throws Exception {
-
-		if (!PropsValues.SAVE_SCREENSHOT) {
-			return;
-		}
-
-		_screenshotCount++;
-
-		captureScreen(
-			_CURRENT_DIR_NAME + "test-results/functional/screenshots/" +
-				_screenshotCount + ".jpg");
-	}
-
-	public static void saveScreenshotBeforeAction(
-			LiferaySelenium liferaySelenium, boolean actionFailed)
-		throws Exception {
-
-		if (!PropsValues.SAVE_SCREENSHOT) {
-			return;
-		}
-
-		if (actionFailed) {
-			_screenshotErrorCount++;
-		}
-
-		captureScreen(
-			_CURRENT_DIR_NAME + "test-results/functional/screenshots" +
-				"/ScreenshotBeforeAction" + _screenshotErrorCount + ".jpg");
-	}
-
 	public static void selectFieldText() {
 		Keyboard keyboard = new DesktopKeyboard();
 
@@ -1163,417 +650,10 @@ public class LiferaySeleniumHelper {
 		keyboard.keyUp(KeyEvent.VK_CONTROL);
 	}
 
-	public static void sendEmail(
-			LiferaySelenium liferaySelenium, String to, String subject,
-			String body)
-		throws Exception {
-
-		EmailCommands.sendEmail(to, subject, body);
-
-		liferaySelenium.pause("3000");
-	}
-
-	public static void typeAceEditor(
-		LiferaySelenium liferaySelenium, String locator, String value) {
-
-		liferaySelenium.typeKeys(locator, "");
-
-		Keyboard keyboard = new DesktopKeyboard();
-
-		Matcher matcher = _aceEditorPattern.matcher(value);
-
-		int x = 0;
-
-		while (matcher.find()) {
-			int y = matcher.start();
-
-			String line = value.substring(x, y);
-
-			keyboard.type(line.trim());
-
-			String specialCharacter = matcher.group();
-
-			if (specialCharacter.equals("(")) {
-				keyboard.type("(");
-			}
-			else if (specialCharacter.equals("${line.separator}")) {
-				liferaySelenium.keyPress(locator, "\\SPACE");
-				liferaySelenium.keyPress(locator, "\\RETURN");
-			}
-
-			x = y + specialCharacter.length();
-		}
-
-		String line = value.substring(x);
-
-		keyboard.type(line.trim());
-	}
-
-	public static void typeCKEditor(
-		LiferaySelenium liferaySelenium, String locator, String value) {
-
-		StringBuilder sb = new StringBuilder();
-
-		String idAttribute = liferaySelenium.getAttribute(locator + "@id");
-
-		int x = idAttribute.indexOf("cke__");
-
-		int y = idAttribute.indexOf("cke__", x + 1);
-
-		if (y == -1) {
-			y = idAttribute.length();
-		}
-
-		sb.append(idAttribute.substring(x + 4, y));
-
-		sb.append(".setHTML(\"");
-		sb.append(HtmlUtil.escapeJS(value.replace("\\", "\\\\")));
-		sb.append("\")");
-
-		liferaySelenium.runScript(sb.toString());
-	}
-
 	public static void typeScreen(String value) {
 		Keyboard keyboard = new DesktopKeyboard();
 
 		keyboard.type(value);
-	}
-
-	public static void waitForConfirmation(
-			LiferaySelenium liferaySelenium, String pattern)
-		throws Exception {
-
-		int timeout =
-			PropsValues.TIMEOUT_EXPLICIT_WAIT /
-				PropsValues.TIMEOUT_IMPLICIT_WAIT;
-
-		for (int second = 0;; second++) {
-			if (second >= timeout) {
-				assertConfirmation(liferaySelenium, pattern);
-			}
-
-			try {
-				if (isConfirmation(liferaySelenium, pattern)) {
-					break;
-				}
-			}
-			catch (Exception e) {
-			}
-		}
-	}
-
-	public static void waitForElementNotPresent(
-			LiferaySelenium liferaySelenium, String locator)
-		throws Exception {
-
-		for (int second = 0;; second++) {
-			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
-				liferaySelenium.assertElementNotPresent(locator);
-			}
-
-			try {
-				if (liferaySelenium.isElementNotPresent(locator)) {
-					break;
-				}
-			}
-			catch (Exception e) {
-			}
-
-			Thread.sleep(1000);
-		}
-	}
-
-	public static void waitForElementPresent(
-			LiferaySelenium liferaySelenium, String locator)
-		throws Exception {
-
-		for (int second = 0;; second++) {
-			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
-				liferaySelenium.assertElementPresent(locator);
-			}
-
-			try {
-				if (liferaySelenium.isElementPresent(locator)) {
-					break;
-				}
-			}
-			catch (Exception e) {
-			}
-
-			Thread.sleep(1000);
-		}
-	}
-
-	public static void waitForNotPartialText(
-			LiferaySelenium liferaySelenium, String locator, String value)
-		throws Exception {
-
-		value = RuntimeVariables.replace(value);
-
-		for (int second = 0;; second++) {
-			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
-				liferaySelenium.assertNotPartialText(locator, value);
-			}
-
-			try {
-				if (liferaySelenium.isNotPartialText(locator, value)) {
-					break;
-				}
-			}
-			catch (Exception e) {
-			}
-
-			Thread.sleep(1000);
-		}
-	}
-
-	public static void waitForNotSelectedLabel(
-			LiferaySelenium liferaySelenium, String selectLocator,
-			String pattern)
-		throws Exception {
-
-		for (int second = 0;; second++) {
-			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
-				liferaySelenium.assertNotSelectedLabel(selectLocator, pattern);
-			}
-
-			try {
-				if (liferaySelenium.isNotSelectedLabel(
-						selectLocator, pattern)) {
-
-					break;
-				}
-			}
-			catch (Exception e) {
-			}
-
-			Thread.sleep(1000);
-		}
-	}
-
-	public static void waitForNotText(
-			LiferaySelenium liferaySelenium, String locator, String value)
-		throws Exception {
-
-		value = RuntimeVariables.replace(value);
-
-		for (int second = 0;; second++) {
-			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
-				liferaySelenium.assertNotText(locator, value);
-			}
-
-			try {
-				if (liferaySelenium.isNotText(locator, value)) {
-					break;
-				}
-			}
-			catch (Exception e) {
-			}
-
-			Thread.sleep(1000);
-		}
-	}
-
-	public static void waitForNotValue(
-			LiferaySelenium liferaySelenium, String locator, String value)
-		throws Exception {
-
-		value = RuntimeVariables.replace(value);
-
-		for (int second = 0;; second++) {
-			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
-				liferaySelenium.assertNotValue(locator, value);
-			}
-
-			try {
-				if (liferaySelenium.isNotValue(locator, value)) {
-					break;
-				}
-			}
-			catch (Exception e) {
-			}
-
-			Thread.sleep(1000);
-		}
-	}
-
-	public static void waitForNotVisible(
-			LiferaySelenium liferaySelenium, String locator)
-		throws Exception {
-
-		for (int second = 0;; second++) {
-			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
-				liferaySelenium.assertNotVisible(locator);
-			}
-
-			try {
-				if (liferaySelenium.isNotVisible(locator)) {
-					break;
-				}
-			}
-			catch (Exception e) {
-			}
-
-			Thread.sleep(1000);
-		}
-	}
-
-	public static void waitForPartialText(
-			LiferaySelenium liferaySelenium, String locator, String value)
-		throws Exception {
-
-		value = RuntimeVariables.replace(value);
-
-		for (int second = 0;; second++) {
-			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
-				liferaySelenium.assertPartialText(locator, value);
-			}
-
-			try {
-				if (liferaySelenium.isPartialText(locator, value)) {
-					break;
-				}
-			}
-			catch (Exception e) {
-			}
-
-			Thread.sleep(1000);
-		}
-	}
-
-	public static void waitForSelectedLabel(
-			LiferaySelenium liferaySelenium, String selectLocator,
-			String pattern)
-		throws Exception {
-
-		for (int second = 0;; second++) {
-			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
-				liferaySelenium.assertSelectedLabel(selectLocator, pattern);
-			}
-
-			try {
-				if (liferaySelenium.isSelectedLabel(selectLocator, pattern)) {
-					break;
-				}
-			}
-			catch (Exception e) {
-			}
-
-			Thread.sleep(1000);
-		}
-	}
-
-	public static void waitForText(
-			LiferaySelenium liferaySelenium, String locator, String value)
-		throws Exception {
-
-		value = RuntimeVariables.replace(value);
-
-		for (int second = 0;; second++) {
-			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
-				liferaySelenium.assertText(locator, value);
-			}
-
-			try {
-				if (liferaySelenium.isText(locator, value)) {
-					break;
-				}
-			}
-			catch (Exception e) {
-			}
-
-			Thread.sleep(1000);
-		}
-	}
-
-	public static void waitForTextNotPresent(
-			LiferaySelenium liferaySelenium, String value)
-		throws Exception {
-
-		value = RuntimeVariables.replace(value);
-
-		for (int second = 0;; second++) {
-			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
-				liferaySelenium.assertTextNotPresent(value);
-			}
-
-			try {
-				if (liferaySelenium.isTextNotPresent(value)) {
-					break;
-				}
-			}
-			catch (Exception e) {
-			}
-
-			Thread.sleep(1000);
-		}
-	}
-
-	public static void waitForTextPresent(
-			LiferaySelenium liferaySelenium, String value)
-		throws Exception {
-
-		value = RuntimeVariables.replace(value);
-
-		for (int second = 0;; second++) {
-			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
-				liferaySelenium.assertTextPresent(value);
-			}
-
-			try {
-				if (liferaySelenium.isTextPresent(value)) {
-					break;
-				}
-			}
-			catch (Exception e) {
-			}
-
-			Thread.sleep(1000);
-		}
-	}
-
-	public static void waitForValue(
-			LiferaySelenium liferaySelenium, String locator, String value)
-		throws Exception {
-
-		value = RuntimeVariables.replace(value);
-
-		for (int second = 0;; second++) {
-			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
-				liferaySelenium.assertValue(locator, value);
-			}
-
-			try {
-				if (liferaySelenium.isValue(locator, value)) {
-					break;
-				}
-			}
-			catch (Exception e) {
-			}
-
-			Thread.sleep(1000);
-		}
-	}
-
-	public static void waitForVisible(
-			LiferaySelenium liferaySelenium, String locator)
-		throws Exception {
-
-		for (int second = 0;; second++) {
-			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
-				liferaySelenium.assertVisible(locator);
-			}
-
-			try {
-				if (liferaySelenium.isVisible(locator)) {
-					break;
-				}
-			}
-			catch (Exception e) {
-			}
-
-			Thread.sleep(1000);
-		}
 	}
 
 	public static void writePoshiWarnings() throws Exception {
@@ -1625,30 +705,9 @@ public class LiferaySeleniumHelper {
 		return bufferedReader;
 	}
 
-	private static List<ScreenRegion> _getScreenRegions(
-			LiferaySelenium liferaySelenium, String image)
-		throws Exception {
-
-		ScreenRegion screenRegion = new DesktopScreenRegion();
-
-		ImageTarget imageTarget = getImageTarget(liferaySelenium, image);
-
-		return screenRegion.findAll(imageTarget);
-	}
-
-	private static final String _CURRENT_DIR_NAME =
-		PoshiRunnerGetterUtil.getCanonicalPath(".");
-
-	private static final String _TEST_DEPENDENCIES_DIR_NAME =
-		PropsValues.TEST_DEPENDENCIES_DIR_NAME;
-
-	private static final Pattern _aceEditorPattern = Pattern.compile(
-		"\\(|\\$\\{line\\.separator\\}");
 	private static final List<String> _errorTimestamps = new ArrayList<>();
 	private static final List<Exception> _javaScriptExceptions =
 		new ArrayList<>();
 	private static final List<Exception> _liferayExceptions = new ArrayList<>();
-	private static int _screenshotCount;
-	private static int _screenshotErrorCount;
 
 }
