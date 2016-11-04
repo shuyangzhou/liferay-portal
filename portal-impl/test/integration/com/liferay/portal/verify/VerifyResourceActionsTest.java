@@ -19,15 +19,12 @@ import com.liferay.portal.kernel.model.ResourceAction;
 import com.liferay.portal.kernel.service.ResourceActionLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.ResourceActionUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
-import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.TransactionalTestRule;
 import com.liferay.portal.verify.test.BaseVerifyProcessTestCase;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -52,60 +49,59 @@ public class VerifyResourceActionsTest extends BaseVerifyProcessTestCase {
 
 		createResourceAction(_NAME_1, _ACTION_ID_1, 2);
 		createResourceAction(_NAME_1, _ACTION_ID_2, 2);
+		createResourceAction(_NAME_1, _ACTION_ID_3, 2);
 		createResourceAction(_NAME_2, _ACTION_ID_1, 2);
 		createResourceAction(_NAME_2, _ACTION_ID_2, 4);
+
+		ResourceActionLocalServiceUtil.checkResourceActions();
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		super.tearDown();
+
+		deleteResourceAction(_NAME_1, _ACTION_ID_1);
+		deleteResourceAction(_NAME_1, _ACTION_ID_2);
+		deleteResourceAction(_NAME_1, _ACTION_ID_3);
+		deleteResourceAction(_NAME_2, _ACTION_ID_1);
+		deleteResourceAction(_NAME_2, _ACTION_ID_2);
 	}
 
 	@Test
 	public void testDeleteDuplicateBitwiseValuesOnResource() throws Throwable {
-		ResourceActionLocalServiceUtil.checkResourceActions();
-
-		ResourceAction resourceAction =
-			ResourceActionLocalServiceUtil.fetchResourceAction(
-				_NAME_1, _ACTION_ID_1);
-
-		Assert.assertNotNull(resourceAction);
-
-		resourceAction = ResourceActionLocalServiceUtil.fetchResourceAction(
-			_NAME_1, _ACTION_ID_2);
-
-		Assert.assertNotNull(resourceAction);
-
-		resourceAction = ResourceActionLocalServiceUtil.fetchResourceAction(
-			_NAME_2, _ACTION_ID_1);
-
-		Assert.assertNotNull(resourceAction);
-
-		resourceAction = ResourceActionLocalServiceUtil.fetchResourceAction(
-			_NAME_2, _ACTION_ID_2);
-
-		Assert.assertNotNull(resourceAction);
+		assertNotNull(_NAME_1, _ACTION_ID_1);
+		assertNotNull(_NAME_1, _ACTION_ID_2);
+		assertNotNull(_NAME_1, _ACTION_ID_3);
+		assertNotNull(_NAME_2, _ACTION_ID_1);
+		assertNotNull(_NAME_2, _ACTION_ID_2);
 
 		doVerify();
 
-		resourceAction = ResourceActionLocalServiceUtil.fetchResourceAction(
-			_NAME_1, _ACTION_ID_1);
+		assertNotNull(_NAME_1, _ACTION_ID_1);
 
-		Assert.assertNotNull(resourceAction);
+		assertNull(_NAME_1, _ACTION_ID_2);
+		assertNull(_NAME_1, _ACTION_ID_3);
 
-		resourceAction = ResourceActionLocalServiceUtil.fetchResourceAction(
-			_NAME_1, _ACTION_ID_2);
+		assertNotNull(_NAME_2, _ACTION_ID_1);
+		assertNotNull(_NAME_2, _ACTION_ID_2);
+	}
 
-		Assert.assertNull(resourceAction);
-
-		resourceAction = ResourceActionLocalServiceUtil.fetchResourceAction(
-			_NAME_2, _ACTION_ID_1);
-
-		Assert.assertNotNull(resourceAction);
-
-		resourceAction = ResourceActionLocalServiceUtil.fetchResourceAction(
-			_NAME_2, _ACTION_ID_2);
+	protected void assertNotNull(String name, String actionId) {
+		ResourceAction resourceAction =
+			ResourceActionLocalServiceUtil.fetchResourceAction(name, actionId);
 
 		Assert.assertNotNull(resourceAction);
 	}
 
+	protected void assertNull(String name, String actionId) {
+		ResourceAction resourceAction =
+			ResourceActionLocalServiceUtil.fetchResourceAction(name, actionId);
+
+		Assert.assertNull(resourceAction);
+	}
+
 	protected void createResourceAction(
-		final String name, final String actionId, final long bitwiseValue) {
+		String name, String actionId, long bitwiseValue) {
 
 		long resourceActionId = CounterLocalServiceUtil.increment(
 			ResourceAction.class.getName());
@@ -117,7 +113,16 @@ public class VerifyResourceActionsTest extends BaseVerifyProcessTestCase {
 		resourceAction.setActionId(actionId);
 		resourceAction.setBitwiseValue(bitwiseValue);
 
-		_resourceActions.add(ResourceActionUtil.update(resourceAction));
+		ResourceActionUtil.update(resourceAction);
+	}
+
+	protected void deleteResourceAction(String name, String actionId) {
+		ResourceAction resourceAction =
+			ResourceActionLocalServiceUtil.fetchResourceAction(name, actionId);
+
+		if (resourceAction != null) {
+			ResourceActionLocalServiceUtil.deleteResourceAction(resourceAction);
+		}
 	}
 
 	@Override
@@ -129,11 +134,10 @@ public class VerifyResourceActionsTest extends BaseVerifyProcessTestCase {
 
 	private static final String _ACTION_ID_2 = "action2";
 
+	private static final String _ACTION_ID_3 = "action3";
+
 	private static final String _NAME_1 = "portlet1";
 
 	private static final String _NAME_2 = "portlet2";
-
-	@DeleteAfterTestRun
-	private final List<ResourceAction> _resourceActions = new ArrayList<>();
 
 }
