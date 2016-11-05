@@ -1,0 +1,7 @@
+<aspectj>
+	<aspects>
+		<aspect name="com.liferay.ci.thread.interruption.aspect.ThreadInterruptionAspect"/>
+	</aspects>
+
+	<weaver options="-verbose -showWeaveInfo" />
+</aspectj>
