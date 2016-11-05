@@ -235,7 +235,6 @@
 	<classpathentry kind="lib" path="lib/portal/slf4j-api.jar"/>
 	<classpathentry kind="lib" path="lib/portal/soap.jar"/>
 	<classpathentry kind="lib" path="lib/portal/spring-aop.jar"/>
-	<classpathentry kind="lib" path="lib/portal/spring-aspects.jar"/>
 	<classpathentry kind="lib" path="lib/portal/spring-beans.jar"/>
 	<classpathentry kind="lib" path="lib/portal/spring-context.jar"/>
 	<classpathentry kind="lib" path="lib/portal/spring-context-support.jar"/>

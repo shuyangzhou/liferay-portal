@@ -461,7 +461,6 @@
 				<classpath mode="compile">lib/portal/slf4j-api.jar</classpath>
 				<classpath mode="compile">lib/portal/soap.jar</classpath>
 				<classpath mode="compile">lib/portal/spring-aop.jar</classpath>
-				<classpath mode="compile">lib/portal/spring-aspects.jar</classpath>
 				<classpath mode="compile">lib/portal/spring-beans.jar</classpath>
 				<classpath mode="compile">lib/portal/spring-context.jar</classpath>
 				<classpath mode="compile">lib/portal/spring-context-support.jar</classpath>
