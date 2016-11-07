@@ -791,6 +791,7 @@ Error-Prone was automatically installed. Please rerun your task.
 				<jvmarg value="-Djava.net.preferIPv4Stack=true" />
 				<jvmarg value="-Dliferay.log.dir=${liferay.home}/logs" />
 				<jvmarg value="-Dliferay.mode=test" />
+				<jvmarg value="-Dsun.zip.disableMemoryMapping=true" />
 				<jvmarg value="-Dosgi.state.dir=${liferay.home}/osgi/state" />
 				<jvmarg value="-Drelease.versions.test.other.dir=${release.versions.test.other.dir}" />
 				<misc />
