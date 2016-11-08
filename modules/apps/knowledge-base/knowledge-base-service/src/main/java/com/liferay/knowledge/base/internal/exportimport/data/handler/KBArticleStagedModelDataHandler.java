@@ -266,7 +266,7 @@ public class KBArticleStagedModelDataHandler
 		KBArticle importedKBArticle = null;
 
 		if (portletDataContext.isDataStrategyMirror()) {
-			KBArticle existingKBArticle = _kbArticlePersistence.fetchByR_G_V(
+			KBArticle existingKBArticle = _kbArticleLocalService.fetchKBArticle(
 				resourcePrimaryKey, portletDataContext.getScopeGroupId(),
 				kbArticle.getVersion());
 
@@ -278,9 +278,8 @@ public class KBArticleStagedModelDataHandler
 			if (existingKBArticle == null) {
 				serviceContext.setUuid(kbArticle.getUuid());
 
-				existingKBArticle = _kbArticlePersistence.fetchByR_G_L_First(
-					resourcePrimaryKey, portletDataContext.getScopeGroupId(),
-					true, null);
+				existingKBArticle = _kbArticleLocalService.fetchLatestKBArticle(
+					resourcePrimaryKey, portletDataContext.getScopeGroupId());
 
 				if (existingKBArticle == null) {
 					importedKBArticle = _kbArticleLocalService.addKBArticle(
@@ -467,11 +466,13 @@ public class KBArticleStagedModelDataHandler
 		_kbArticleLocalService = kbArticleLocalService;
 	}
 
+	/**
+	 * @deprecated As of 1.1.0, with no direct replacement
+	 */
+	@Deprecated
 	@Reference(unbind = "-")
 	protected void setKBArticlePersistence(
 		KBArticlePersistence kbArticlePersistence) {
-
-		_kbArticlePersistence = kbArticlePersistence;
 	}
 
 	@Reference(unbind = "-")
@@ -499,7 +500,6 @@ public class KBArticleStagedModelDataHandler
 	private ExportImportContentProcessorController
 		_exportImportContentProcessorController;
 	private KBArticleLocalService _kbArticleLocalService;
-	private KBArticlePersistence _kbArticlePersistence;
 	private KBFolderLocalService _kbFolderLocalService;
 	private Portal _portal;
 	private PortletFileRepository _portletFileRepository;
