@@ -115,7 +115,7 @@ public class KBFolderStagedModelDataHandler
 		KBFolder importedKBFolder = null;
 
 		if (portletDataContext.isDataStrategyMirror()) {
-			KBFolder existingKBFolder = _kbFolderPersistence.fetchByUUID_G(
+			KBFolder existingKBFolder = _kbFolderLocalService.fetchKBFolder(
 				kbFolder.getUuid(), portletDataContext.getScopeGroupId());
 
 			if (existingKBFolder == null) {
@@ -158,14 +158,15 @@ public class KBFolderStagedModelDataHandler
 		_kbFolderLocalService = kbFolderLocalService;
 	}
 
+	/**
+	 * @deprecated As of 1.1.0, with no direct replacement
+	 */
+	@Deprecated
 	@Reference(unbind = "-")
 	protected void setKbFolderPersistence(
 		KBFolderPersistence kbFolderPersistence) {
-
-		_kbFolderPersistence = kbFolderPersistence;
 	}
 
 	private KBFolderLocalService _kbFolderLocalService;
-	private KBFolderPersistence _kbFolderPersistence;
 
 }
