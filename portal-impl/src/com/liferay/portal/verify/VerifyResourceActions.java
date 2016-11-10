@@ -40,7 +40,7 @@ public class VerifyResourceActions extends VerifyProcess {
 		sb.append("ra1.bitwiseValue from ResourceAction ra1 inner join ");
 		sb.append("ResourceAction ra2 on (ra1.name = ra2.name) and ");
 		sb.append("(ra1.bitwiseValue = ra2.bitwiseValue) and (ra1.actionId ");
-		sb.append("!= ra2.actionId)");
+		sb.append("!= ra2.actionId) order by ra1.resourceActionId");
 
 		try (LoggingTimer loggingTimer = new LoggingTimer();
 			PreparedStatement ps = connection.prepareStatement(sb.toString());
