@@ -244,6 +244,8 @@ jdbc.counter.connectionProperties=oracle.jdbc.ReadTimeout=0;oracle.net.CONNECT_T
 				</then>
 			</if>
 
+			<print-file file.name="@{properties.file}" />
+
 			<post-action />
 		</sequential>
 	</macrodef>
