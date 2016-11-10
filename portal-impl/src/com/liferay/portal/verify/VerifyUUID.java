@@ -77,9 +77,9 @@ public class VerifyUUID extends VerifyProcess {
 	protected void verifyUUID(VerifiableUUIDModel verifiableUUIDModel)
 		throws Exception {
 
-		long maxPrimKeyValue = _getMaxPrimaryKeyValue(verifiableUUIDModel);
+		long maxPK = _getMaxPK(verifiableUUIDModel);
 
-		if (maxPrimKeyValue == 0) {
+		if (maxPK == 0) {
 			return;
 		}
 
@@ -95,9 +95,7 @@ public class VerifyUUID extends VerifyProcess {
 		sb.append(verifiableUUIDModel.getPrimaryKeyColumnName());
 		sb.append(" < ?)");
 
-		String updateSQL = sb.toString();
-
-		updateSQL = SQLTransformer.transform(updateSQL);
+		String updateSQL = SQLTransformer.transform(sb.toString());
 
 		try (LoggingTimer loggingTimer = new LoggingTimer(
 				verifiableUUIDModel.getTableName());
@@ -106,34 +104,26 @@ public class VerifyUUID extends VerifyProcess {
 
 			List<String> pastPrefixes = new ArrayList<>();
 
-			int primKeyLength = 1;
-			long primKeyValue = 1;
+			long pk = 1;
 
-			while (primKeyValue <= maxPrimKeyValue) {
-				String prefix = _getNonConflictingPrefix(
-					pastPrefixes, primKeyLength);
-
-				ps.setString(1, prefix);
-
-				ps.setLong(2, primKeyValue);
-				ps.setLong(3, primKeyValue * 10);
+			for (int suffixLength = 1; pk <= maxPK; suffixLength++) {
+				ps.setString(1, _getNextUUIDPrefix(pastPrefixes, suffixLength));
+				ps.setLong(2, pk);
+				ps.setLong(3, pk *= 10);
 
 				ps.executeUpdate();
-
-				primKeyLength++;
-				primKeyValue *= 10;
 			}
 		}
 	}
 
-	private long _getMaxPrimaryKeyValue(VerifiableUUIDModel verifiableUUIDModel)
+	private long _getMaxPK(VerifiableUUIDModel verifiableUUIDModel)
 		throws Exception {
 
 		StringBundler sb = new StringBundler(4);
 
 		sb.append("select max(");
 		sb.append(verifiableUUIDModel.getPrimaryKeyColumnName());
-		sb.append(") as maxPrimaryKeyValue from ");
+		sb.append(") as maxPK from ");
 		sb.append(verifiableUUIDModel.getTableName());
 
 		try (Connection con = DataAccess.getUpgradeOptimizedConnection();
@@ -141,31 +131,29 @@ public class VerifyUUID extends VerifyProcess {
 			ResultSet rs = ps.executeQuery()) {
 
 			if (rs.next()) {
-				return rs.getLong("maxPrimaryKeyValue");
+				return rs.getLong("maxPK");
 			}
 		}
 
 		return 0;
 	}
 
-	private String _getNonConflictingPrefix(
-		List<String> pastPrefixes, int suffixLength) {
-
+	private String _getNextUUIDPrefix(List<String> prefixes, int suffixLength) {
 		iterate:
 		while (true) {
 			String uuid = PortalUUIDUtil.generate();
 
-			String prefix = uuid.substring(0, uuid.length() - suffixLength);
+			String nextPrefix = uuid.substring(0, uuid.length() - suffixLength);
 
-			for (String pastPrefix : pastPrefixes) {
-				if (pastPrefix.startsWith(prefix)) {
+			for (String prefix : prefixes) {
+				if (prefix.startsWith(nextPrefix)) {
 					continue iterate;
 				}
 			}
 
-			pastPrefixes.add(prefix);
+			prefixes.add(nextPrefix);
 
-			return prefix;
+			return nextPrefix;
 		}
 	}
 
