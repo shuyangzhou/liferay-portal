@@ -151,25 +151,22 @@ public class VerifyUUID extends VerifyProcess {
 	private String _getNonConflictingPrefix(
 		List<String> pastPrefixes, int suffixLength) {
 
-		String prefix = null;
-
-		boolean unique = false;
-
-		while (!unique) {
+		iterate:
+		while (true) {
 			String uuid = PortalUUIDUtil.generate();
 
-			prefix = uuid.substring(0, uuid.length() - suffixLength);
-
-			unique = true;
+			String prefix = uuid.substring(0, uuid.length() - suffixLength);
 
 			for (String pastPrefix : pastPrefixes) {
-				unique &= !pastPrefix.startsWith(prefix);
+				if (pastPrefix.startsWith(prefix)) {
+					continue iterate;
+				}
 			}
+
+			pastPrefixes.add(prefix);
+
+			return prefix;
 		}
-
-		pastPrefixes.add(prefix);
-
-		return prefix;
 	}
 
 	private class VerifyUUIDRunnable extends ThrowableAwareRunnable {
