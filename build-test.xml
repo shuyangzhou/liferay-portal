@@ -244,6 +244,8 @@ jdbc.counter.connectionProperties=oracle.jdbc.ReadTimeout=0;oracle.net.CONNECT_T
 				</then>
 			</if>
 
+			<print-file file.name="@{properties.file}" />
+
 			<post-action />
 		</sequential>
 	</macrodef>
@@ -5646,6 +5648,8 @@ tunnel.servlet.hosts.allowed=</echo>
 jdbc.default.connectionProperties=oracle.jdbc.ReadTimeout=0;oracle.net.CONNECT_TIMEOUT=0]]></echo>
 			</then>
 		</if>
+
+		<print-file file.name="@{properties.file}" />
 
 		<get-testcase-property property.name="captcha.max.challenges" />
 
