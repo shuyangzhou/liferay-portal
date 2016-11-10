@@ -79,7 +79,7 @@ public class VerifyUUID extends VerifyProcess {
 
 		long maxPrimKeyValue = _getMaxPrimaryKeyValue(verifiableUUIDModel);
 
-		StringBundler sb = new StringBundler(5);
+		StringBundler sb = new StringBundler(9);
 
 		sb.append("update ");
 		sb.append(verifiableUUIDModel.getTableName());
@@ -125,7 +125,7 @@ public class VerifyUUID extends VerifyProcess {
 	private long _getMaxPrimaryKeyValue(VerifiableUUIDModel verifiableUUIDModel)
 		throws Exception {
 
-		StringBundler sb = new StringBundler();
+		StringBundler sb = new StringBundler(4);
 
 		sb.append("select max(");
 		sb.append(verifiableUUIDModel.getPrimaryKeyColumnName());
