@@ -163,12 +163,7 @@ public class VerifyUUID extends VerifyProcess {
 			unique = true;
 
 			for (String pastPrefix : pastPrefixes) {
-				if (pastPrefix.length() > prefix.length()) {
-					unique &= !pastPrefix.startsWith(prefix);
-				}
-				else {
-					unique &= !prefix.startsWith(pastPrefix);
-				}
+				unique &= !pastPrefix.startsWith(prefix);
 			}
 		}
 
