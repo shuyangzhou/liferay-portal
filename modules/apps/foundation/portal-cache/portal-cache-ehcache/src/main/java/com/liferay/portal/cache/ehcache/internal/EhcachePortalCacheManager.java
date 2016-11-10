@@ -157,7 +157,13 @@ public class EhcachePortalCacheManager<K extends Serializable, V>
 
 	@Override
 	protected void doClearAll() {
-		_cacheManager.clearAll();
+		for (String cacheName : _cacheManager.getCacheNames()) {
+			Cache cache = _cacheManager.getCache(cacheName);
+
+			if (cache != null) {
+				cache.removeAll();
+			}
+		}
 	}
 
 	@Override
