@@ -79,6 +79,10 @@ public class VerifyUUID extends VerifyProcess {
 
 		long maxPrimKeyValue = _getMaxPrimaryKeyValue(verifiableUUIDModel);
 
+		if (maxPrimKeyValue == 0) {
+			return;
+		}
+
 		StringBundler sb = new StringBundler(9);
 
 		sb.append("update ");
