@@ -243,6 +243,10 @@ public abstract class UpgradePortletSettings extends UpgradeProcess {
 		SettingsDescriptor settingsDescriptor =
 			_settingsFactory.getSettingsDescriptor(serviceName);
 
+		if (settingsDescriptor == null) {
+			return;
+		}
+
 		Set<String> serviceKeys = settingsDescriptor.getAllKeys();
 
 		try (LoggingTimer loggingTimer = new LoggingTimer(portletId);
@@ -277,15 +281,27 @@ public abstract class UpgradePortletSettings extends UpgradeProcess {
 			_log.debug("Upgrading main portlet " + portletId + " settings");
 		}
 
-		SettingsDescriptor portletSettingsDescriptor =
-			_settingsFactory.getSettingsDescriptor(portletId);
+		Set<String> portletKeys = null;
 
-		Set<String> portletKeys = portletSettingsDescriptor.getAllKeys();
+		if (resetPortletInstancePreferences) {
+			SettingsDescriptor portletSettingsDescriptor =
+				_settingsFactory.getSettingsDescriptor(portletId);
+
+			portletKeys = portletSettingsDescriptor.getAllKeys();
+		}
 
 		SettingsDescriptor serviceSettingsDescriptor =
 			_settingsFactory.getSettingsDescriptor(serviceName);
 
-		Set<String> serviceKeys = serviceSettingsDescriptor.getAllKeys();
+		boolean resetServicePreferences = false;
+
+		Set<String> serviceKeys = null;
+
+		if (serviceSettingsDescriptor != null) {
+			resetServicePreferences = true;
+
+			serviceKeys = serviceSettingsDescriptor.getAllKeys();
+		}
 
 		String selectSQL =
 			"select portletPreferencesId, ownerId, ownerType, " +
@@ -358,7 +374,9 @@ public abstract class UpgradePortletSettings extends UpgradeProcess {
 						ps2.addBatch();
 					}
 
-					_resetAndOptionallyAddBatch(ps3, rs, serviceKeys);
+					if (resetServicePreferences) {
+						_resetAndOptionallyAddBatch(ps3, rs, serviceKeys);
+					}
 				}
 
 				ps2.executeBatch();
