@@ -17,6 +17,7 @@ package com.liferay.message.boards.web.internal.upgrade.v1_0_0;
 import com.liferay.message.boards.kernel.constants.MBConstants;
 import com.liferay.message.boards.web.constants.MBPortletKeys;
 import com.liferay.portal.kernel.settings.SettingsFactory;
+import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portlet.messageboards.MBGroupServiceSettings;
 
@@ -35,8 +36,10 @@ public class UpgradePortletSettings
 		MBGroupServiceSettings.registerSettingsMetadata();
 
 		upgradeMainPortlet(
+			null,
+			SettingsFactoryUtil.getSettingsDescriptor(MBConstants.SERVICE_NAME),
 			MBPortletKeys.MESSAGE_BOARDS, MBConstants.SERVICE_NAME,
-			PortletKeys.PREFS_OWNER_TYPE_GROUP, false);
+			PortletKeys.PREFS_OWNER_TYPE_GROUP);
 	}
 
 }

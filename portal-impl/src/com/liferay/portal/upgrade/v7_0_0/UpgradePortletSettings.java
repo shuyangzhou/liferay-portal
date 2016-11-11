@@ -233,6 +233,49 @@ public abstract class UpgradePortletSettings extends UpgradeProcess {
 	}
 
 	protected void upgradeDisplayPortlet(
+			SettingsDescriptor settingsDescriptor, String portletId,
+			int ownerType)
+		throws Exception {
+
+		if (settingsDescriptor == null) {
+			return;
+		}
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("Upgrading display portlet " + portletId + " settings");
+		}
+
+		Set<String> serviceKeys = settingsDescriptor.getAllKeys();
+
+		try (LoggingTimer loggingTimer = new LoggingTimer(portletId);
+			PreparedStatement ps1 = connection.prepareStatement(
+				"select portletPreferencesId, preferences from " +
+					"PortletPreferences " + _WHERE_CLAUSE)) {
+
+			ps1.setInt(1, ownerType);
+			ps1.setInt(2, PortletKeys.PREFS_OWNER_TYPE_ARCHIVED);
+			ps1.setString(3, portletId);
+
+			try (ResultSet rs = ps1.executeQuery();
+					PreparedStatement ps2 =
+						AutoBatchPreparedStatementUtil.concurrentAutoBatch(
+							connection, _UPDATE)) {
+
+				while (rs.next()) {
+					_resetAndOptionallyAddBatch(ps2, rs, serviceKeys);
+				}
+
+				ps2.executeBatch();
+			}
+		}
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #upgradeDisplayPortlet(SettingsDescriptor, String, int)}
+	 */
+	@Deprecated
+	protected void upgradeDisplayPortlet(
 			String portletId, String serviceName, int ownerType)
 		throws Exception {
 
@@ -272,6 +315,125 @@ public abstract class UpgradePortletSettings extends UpgradeProcess {
 		}
 	}
 
+	protected void upgradeMainPortlet(
+			SettingsDescriptor portletSettingsDescriptor,
+			SettingsDescriptor serviceSettingsDescriptor, String portletId,
+			String serviceName, int ownerType)
+		throws Exception {
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("Upgrading main portlet " + portletId + " settings");
+		}
+
+		boolean resetPortletInstancePreferences = false;
+
+		Set<String> portletKeys = null;
+
+		if (portletSettingsDescriptor != null) {
+			resetPortletInstancePreferences = true;
+
+			portletKeys = portletSettingsDescriptor.getAllKeys();
+		}
+
+		boolean resetServicePreferences = false;
+
+		Set<String> serviceKeys = null;
+
+		if (serviceSettingsDescriptor != null) {
+			resetServicePreferences = true;
+
+			serviceKeys = serviceSettingsDescriptor.getAllKeys();
+		}
+
+		String selectSQL =
+			"select portletPreferencesId, ownerId, ownerType, " +
+				"PortletPreferences.plid, portletId, preferences from " +
+					"PortletPreferences " + _WHERE_CLAUSE;
+
+		if (ownerType == PortletKeys.PREFS_OWNER_TYPE_LAYOUT) {
+			selectSQL = StringUtil.replace(
+				selectSQL, " from PortletPreferences",
+				", Layout.groupId from PortletPreferences inner join Layout " +
+					"on PortletPreferences.plid = Layout.plid");
+		}
+
+		String insertSQL =
+			"insert into PortletPreferences (mvccVersion, " +
+				"portletPreferencesId, ownerId, ownerType, plid, portletId, " +
+					"preferences) values (?, ?, ?, ?, ?, ?, ?)";
+
+		try (LoggingTimer loggingTimer = new LoggingTimer(portletId);
+			PreparedStatement ps1 = connection.prepareStatement(selectSQL)) {
+
+			ps1.setInt(1, ownerType);
+			ps1.setInt(2, PortletKeys.PREFS_OWNER_TYPE_ARCHIVED);
+			ps1.setString(3, portletId);
+
+			try (ResultSet rs = ps1.executeQuery();
+				PreparedStatement ps2 =
+					AutoBatchPreparedStatementUtil.concurrentAutoBatch(
+						connection, insertSQL);
+				PreparedStatement ps3 =
+					AutoBatchPreparedStatementUtil.concurrentAutoBatch(
+						connection, _UPDATE)) {
+
+				while (rs.next()) {
+					if (portletId.equals(rs.getString("portletId")) &&
+						(ownerType == rs.getInt("ownerType"))) {
+
+						long ownerId = rs.getLong("ownerId");
+						long plid = rs.getLong("plid");
+						String preferences = rs.getString("preferences");
+
+						if (ownerType == PortletKeys.PREFS_OWNER_TYPE_LAYOUT) {
+							ownerId = rs.getLong("groupId");
+
+							plid = 0;
+
+							_logCopyPortletSettings(
+								portletId, plid, serviceName, ownerId);
+						}
+
+						if (resetPortletInstancePreferences) {
+							if (_log.isDebugEnabled()) {
+								_log.debug(
+									"Delete portlet instance keys from " +
+										"service settings");
+							}
+
+							preferences = _resetPreferences(
+								preferences, portletKeys);
+						}
+
+						ps2.setLong(1, 0);
+						ps2.setLong(2, increment());
+						ps2.setLong(3, ownerId);
+						ps2.setInt(4, PortletKeys.PREFS_OWNER_TYPE_GROUP);
+						ps2.setLong(5, plid);
+						ps2.setString(6, serviceName);
+						ps2.setString(7, preferences);
+
+						ps2.addBatch();
+					}
+
+					if (resetServicePreferences) {
+						_resetAndOptionallyAddBatch(ps3, rs, serviceKeys);
+					}
+				}
+
+				ps2.executeBatch();
+
+				ps3.executeBatch();
+			}
+		}
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #upgradeMainPortlet(SettingsDescriptor, SettingsDescriptor,
+	 *								   String, String, int)}
+	 */
+	@Deprecated
 	protected void upgradeMainPortlet(
 			String portletId, String serviceName, int ownerType,
 			boolean resetPortletInstancePreferences)
