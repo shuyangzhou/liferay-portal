@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.jndi.JNDIUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.pacl.DoPrivileged;
+import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.ClassLoaderUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -226,6 +227,18 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 
 		comboPooledDataSource.setIdentityToken(identityToken);
 
+		String connectionPropertiesString = (String)properties.remove(
+			"connectionProperties");
+
+		if (connectionPropertiesString != null) {
+			Properties connectionProperties = PropertiesUtil.load(
+				StringUtil.replace(
+					connectionPropertiesString, CharPool.SEMICOLON,
+					CharPool.NEW_LINE));
+
+			comboPooledDataSource.setProperties(connectionProperties);
+		}
+
 		Enumeration<String> enu =
 			(Enumeration<String>)properties.propertyNames();
 
@@ -315,6 +328,19 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 
 		Object hikariDataSource = hikariDataSourceClazz.newInstance();
 
+		String connectionPropertiesString = (String)properties.remove(
+			"connectionProperties");
+
+		if (connectionPropertiesString != null) {
+			Properties connectionProperties = PropertiesUtil.load(
+				StringUtil.replace(
+					connectionPropertiesString, CharPool.SEMICOLON,
+					CharPool.NEW_LINE));
+
+			BeanUtil.setProperty(
+				hikariDataSource, "dataSourceProperties", connectionProperties);
+		}
+
 		for (Map.Entry<Object, Object> entry : properties.entrySet()) {
 			String key = (String)entry.getKey();
 			String value = (String)entry.getValue();
@@ -370,6 +396,9 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 
 	protected DataSource initDataSourceTomcat(Properties properties)
 		throws Exception {
+
+		System.out.println(
+			"###############" + properties.getProperty("connectionProperties"));
 
 		PoolProperties poolProperties = new PoolProperties();
 
