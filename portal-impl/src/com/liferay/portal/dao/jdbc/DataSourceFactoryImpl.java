@@ -397,6 +397,9 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 	protected DataSource initDataSourceTomcat(Properties properties)
 		throws Exception {
 
+		System.out.println(
+			"###############" + properties.getProperty("connectionProperties"));
+
 		PoolProperties poolProperties = new PoolProperties();
 
 		for (Map.Entry<Object, Object> entry : properties.entrySet()) {
