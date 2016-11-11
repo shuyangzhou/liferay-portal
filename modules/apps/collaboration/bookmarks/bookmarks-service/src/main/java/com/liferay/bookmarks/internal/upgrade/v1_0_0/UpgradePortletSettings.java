@@ -17,6 +17,7 @@ package com.liferay.bookmarks.internal.upgrade.v1_0_0;
 import com.liferay.bookmarks.constants.BookmarksConstants;
 import com.liferay.bookmarks.constants.BookmarksPortletKeys;
 import com.liferay.portal.kernel.settings.SettingsFactory;
+import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 
 /**
@@ -32,8 +33,11 @@ public class UpgradePortletSettings
 	@Override
 	protected void doUpgrade() throws Exception {
 		upgradeMainPortlet(
+			null,
+			SettingsFactoryUtil.getSettingsDescriptor(
+				BookmarksConstants.SERVICE_NAME),
 			BookmarksPortletKeys.BOOKMARKS, BookmarksConstants.SERVICE_NAME,
-			PortletKeys.PREFS_OWNER_TYPE_LAYOUT, false);
+			PortletKeys.PREFS_OWNER_TYPE_LAYOUT);
 	}
 
 }

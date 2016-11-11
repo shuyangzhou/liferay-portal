@@ -16,7 +16,9 @@ package com.liferay.document.library.web.internal.upgrade.v1_0_0;
 
 import com.liferay.document.library.web.constants.DLPortletKeys;
 import com.liferay.document.library.web.internal.settings.DLPortletInstanceSettings;
+import com.liferay.portal.kernel.settings.SettingsDescriptor;
 import com.liferay.portal.kernel.settings.SettingsFactory;
+import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portlet.documentlibrary.DLGroupServiceSettings;
 import com.liferay.portlet.documentlibrary.constants.DLConstants;
@@ -36,15 +38,20 @@ public class UpgradePortletSettings
 		DLGroupServiceSettings.registerSettingsMetadata();
 		DLPortletInstanceSettings.registerSettingsMetadata();
 
+		SettingsDescriptor settingsDescriptor =
+			SettingsFactoryUtil.getSettingsDescriptor(DLConstants.SERVICE_NAME);
+
 		upgradeMainPortlet(
-			DLPortletKeys.DOCUMENT_LIBRARY, DLConstants.SERVICE_NAME,
-			PortletKeys.PREFS_OWNER_TYPE_GROUP, true);
+			SettingsFactoryUtil.getSettingsDescriptor(
+				DLPortletKeys.DOCUMENT_LIBRARY),
+			settingsDescriptor, DLPortletKeys.DOCUMENT_LIBRARY,
+			DLConstants.SERVICE_NAME, PortletKeys.PREFS_OWNER_TYPE_GROUP);
 
 		upgradeDisplayPortlet(
-			DLPortletKeys.DOCUMENT_LIBRARY, DLConstants.SERVICE_NAME,
+			settingsDescriptor, DLPortletKeys.DOCUMENT_LIBRARY,
 			PortletKeys.PREFS_OWNER_TYPE_LAYOUT);
 		upgradeDisplayPortlet(
-			DLPortletKeys.MEDIA_GALLERY_DISPLAY, DLConstants.SERVICE_NAME,
+			settingsDescriptor, DLPortletKeys.MEDIA_GALLERY_DISPLAY,
 			PortletKeys.PREFS_OWNER_TYPE_LAYOUT);
 	}
 

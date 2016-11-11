@@ -17,6 +17,7 @@ package com.liferay.journal.internal.upgrade.v0_0_5;
 import com.liferay.journal.constants.JournalConstants;
 import com.liferay.journal.constants.JournalPortletKeys;
 import com.liferay.portal.kernel.settings.SettingsFactory;
+import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 
 /**
@@ -32,8 +33,12 @@ public class UpgradePortletSettings
 	@Override
 	protected void doUpgrade() throws Exception {
 		upgradeMainPortlet(
+			SettingsFactoryUtil.getSettingsDescriptor(
+				JournalPortletKeys.JOURNAL),
+			SettingsFactoryUtil.getSettingsDescriptor(
+				JournalConstants.SERVICE_NAME),
 			JournalPortletKeys.JOURNAL, JournalConstants.SERVICE_NAME,
-			PortletKeys.PREFS_OWNER_TYPE_GROUP, false);
+			PortletKeys.PREFS_OWNER_TYPE_GROUP);
 	}
 
 }
