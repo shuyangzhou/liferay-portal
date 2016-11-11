@@ -98,14 +98,7 @@ public class ServiceTrackerFieldUpdaterCustomizer<S, T>
 		registry.ungetService(serviceReference);
 	}
 
-	private void _updateService() {
-		Optional<Entry<ServiceReference<S>, T>> optionalEntry =
-			ServiceRankingUtil.getHighestRankingEntry(_trackedServices);
-
-		Optional<T> optionalService = optionalEntry.map(Entry::getValue);
-
-		T newService = optionalService.orElse(_dummyTrackedService);
-
+	protected void doServiceUpdate(T newService) {
 		try {
 			T oldService = (T)_serviceField.get(_serviceHolder);
 
@@ -120,6 +113,17 @@ public class ServiceTrackerFieldUpdaterCustomizer<S, T>
 		catch (IllegalAccessException iae) {
 			throw new RuntimeException(iae);
 		}
+	}
+
+	private void _updateService() {
+		Optional<Entry<ServiceReference<S>, T>> optionalEntry =
+			ServiceRankingUtil.getHighestRankingEntry(_trackedServices);
+
+		Optional<T> optionalService = optionalEntry.map(Entry::getValue);
+
+		T newService = optionalService.orElse(_dummyTrackedService);
+
+		doServiceUpdate(newService);
 	}
 
 	private final T _dummyTrackedService;
