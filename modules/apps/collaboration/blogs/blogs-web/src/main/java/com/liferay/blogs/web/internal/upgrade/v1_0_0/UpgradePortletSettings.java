@@ -18,6 +18,7 @@ import com.liferay.blogs.constants.BlogsConstants;
 import com.liferay.blogs.settings.BlogsGroupServiceSettings;
 import com.liferay.blogs.web.constants.BlogsPortletKeys;
 import com.liferay.portal.kernel.settings.SettingsFactory;
+import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 
 /**
@@ -35,8 +36,11 @@ public class UpgradePortletSettings
 		BlogsGroupServiceSettings.registerSettingsMetadata();
 
 		upgradeMainPortlet(
+			SettingsFactoryUtil.getSettingsDescriptor(BlogsPortletKeys.BLOGS),
+			SettingsFactoryUtil.getSettingsDescriptor(
+				BlogsConstants.SERVICE_NAME),
 			BlogsPortletKeys.BLOGS, BlogsConstants.SERVICE_NAME,
-			PortletKeys.PREFS_OWNER_TYPE_GROUP, true);
+			PortletKeys.PREFS_OWNER_TYPE_GROUP);
 	}
 
 }
