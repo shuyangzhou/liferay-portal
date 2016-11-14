@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.service.PortalPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.PortalPreferencesUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
@@ -84,10 +85,12 @@ public class PortalPreferencesImplTest {
 	}
 
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
+		_testOwnerId = RandomTestUtil.nextLong();
+
 		PortalPreferences portalPreferences =
 			PortletPreferencesFactoryUtil.getPortalPreferences(
-				PortletKeys.PREFS_OWNER_ID_DEFAULT, true);
+				_testOwnerId, true);
 
 		portalPreferences.setValue(_NAMESPACE, "testKey", "testValue");
 
@@ -107,8 +110,7 @@ public class PortalPreferencesImplTest {
 				@Override
 				public Void call() throws NoSuchPreferencesException {
 					PortalPreferencesUtil.removeByO_O(
-						PortletKeys.PREFS_OWNER_ID_DEFAULT,
-						PortletKeys.PREFS_OWNER_TYPE_USER);
+						_testOwnerId, PortletKeys.PREFS_OWNER_TYPE_USER);
 
 					return null;
 				}
@@ -116,8 +118,7 @@ public class PortalPreferencesImplTest {
 			});
 
 		PortalPreferencesWrapperCacheUtil.remove(
-			PortletKeys.PREFS_OWNER_ID_DEFAULT,
-			PortletKeys.PREFS_OWNER_TYPE_USER);
+			_testOwnerId, PortletKeys.PREFS_OWNER_TYPE_USER);
 	}
 
 	@Test
@@ -128,7 +129,7 @@ public class PortalPreferencesImplTest {
 			public Void call() {
 				PortalPreferences portalPreferences =
 					PortletPreferencesFactoryUtil.getPortalPreferences(
-						PortletKeys.PREFS_OWNER_ID_DEFAULT, true);
+						_testOwnerId, true);
 
 				portalPreferences.resetValues(_NAMESPACE);
 
@@ -143,6 +144,7 @@ public class PortalPreferencesImplTest {
 
 			Assert.fail();
 		}
+
 		catch (Exception e) {
 			Throwable cause = e.getCause();
 
@@ -160,7 +162,7 @@ public class PortalPreferencesImplTest {
 				public Void call() {
 					PortalPreferences portalPreferences =
 						PortletPreferencesFactoryUtil.getPortalPreferences(
-							PortletKeys.PREFS_OWNER_ID_DEFAULT, true);
+							_testOwnerId, true);
 
 					portalPreferences.setValues(
 						_NAMESPACE, _KEY_1, new String[] {null, _VALUE_2});
@@ -177,7 +179,7 @@ public class PortalPreferencesImplTest {
 				public Void call() {
 					PortalPreferences portalPreferences =
 						PortletPreferencesFactoryUtil.getPortalPreferences(
-							PortletKeys.PREFS_OWNER_ID_DEFAULT, true);
+							_testOwnerId, true);
 
 					portalPreferences.setValue(_NAMESPACE, _KEY_1, _VALUE_1);
 
@@ -208,7 +210,7 @@ public class PortalPreferencesImplTest {
 				public Void call() {
 					PortalPreferences portalPreferences =
 						PortletPreferencesFactoryUtil.getPortalPreferences(
-							PortletKeys.PREFS_OWNER_ID_DEFAULT, true);
+							_testOwnerId, true);
 
 					portalPreferences.setValue(_NAMESPACE, _KEY_1, _VALUE_1);
 
@@ -224,7 +226,7 @@ public class PortalPreferencesImplTest {
 				public Void call() {
 					PortalPreferences portalPreferences =
 						PortletPreferencesFactoryUtil.getPortalPreferences(
-							PortletKeys.PREFS_OWNER_ID_DEFAULT, true);
+							_testOwnerId, true);
 
 					portalPreferences.setValue(_NAMESPACE, _KEY_2, _VALUE_1);
 
@@ -237,7 +239,7 @@ public class PortalPreferencesImplTest {
 
 		PortalPreferences portalPreferences =
 			PortletPreferencesFactoryUtil.getPortalPreferences(
-				PortletKeys.PREFS_OWNER_ID_DEFAULT, true);
+				_testOwnerId, true);
 
 		Assert.assertEquals(
 			_VALUE_1, portalPreferences.getValue(_NAMESPACE, _KEY_1));
@@ -254,7 +256,7 @@ public class PortalPreferencesImplTest {
 				public Void call() {
 					PortalPreferences portalPreferences =
 						PortletPreferencesFactoryUtil.getPortalPreferences(
-							PortletKeys.PREFS_OWNER_ID_DEFAULT, true);
+							_testOwnerId, true);
 
 					portalPreferences.setValue(_NAMESPACE, _KEY_1, _VALUE_1);
 
@@ -270,7 +272,7 @@ public class PortalPreferencesImplTest {
 				public Void call() {
 					PortalPreferences portalPreferences =
 						PortletPreferencesFactoryUtil.getPortalPreferences(
-							PortletKeys.PREFS_OWNER_ID_DEFAULT, true);
+							_testOwnerId, true);
 
 					portalPreferences.setValue(_NAMESPACE, _KEY_1, _VALUE_2);
 
@@ -301,7 +303,7 @@ public class PortalPreferencesImplTest {
 				public Void call() {
 					PortalPreferences portalPreferences =
 						PortletPreferencesFactoryUtil.getPortalPreferences(
-							PortletKeys.PREFS_OWNER_ID_DEFAULT, true);
+							_testOwnerId, true);
 
 					portalPreferences.setValues(_NAMESPACE, _KEY_1, _VALUES_1);
 
@@ -317,7 +319,7 @@ public class PortalPreferencesImplTest {
 				public Void call() {
 					PortalPreferences portalPreferences =
 						PortletPreferencesFactoryUtil.getPortalPreferences(
-							PortletKeys.PREFS_OWNER_ID_DEFAULT, true);
+							_testOwnerId, true);
 
 					portalPreferences.setValues(_NAMESPACE, _KEY_2, _VALUES_1);
 
@@ -330,7 +332,7 @@ public class PortalPreferencesImplTest {
 
 		PortalPreferences portalPreferences =
 			PortletPreferencesFactoryUtil.getPortalPreferences(
-				PortletKeys.PREFS_OWNER_ID_DEFAULT, true);
+				_testOwnerId, true);
 
 		Assert.assertArrayEquals(
 			_VALUES_1, portalPreferences.getValues(_NAMESPACE, _KEY_1));
@@ -347,7 +349,7 @@ public class PortalPreferencesImplTest {
 				public Void call() {
 					PortalPreferences portalPreferences =
 						PortletPreferencesFactoryUtil.getPortalPreferences(
-							PortletKeys.PREFS_OWNER_ID_DEFAULT, true);
+							_testOwnerId, true);
 
 					portalPreferences.setValues(_NAMESPACE, _KEY_1, _VALUES_1);
 
@@ -363,7 +365,7 @@ public class PortalPreferencesImplTest {
 				public Void call() {
 					PortalPreferences portalPreferences =
 						PortletPreferencesFactoryUtil.getPortalPreferences(
-							PortletKeys.PREFS_OWNER_ID_DEFAULT, true);
+							_testOwnerId, true);
 
 					portalPreferences.setValues(_NAMESPACE, _KEY_1, _VALUES_2);
 
@@ -412,7 +414,7 @@ public class PortalPreferencesImplTest {
 		FinderCacheUtil.clearLocalCache();
 	}
 
-	protected static class SynchronizedTransactionExecutor
+	protected class SynchronizedTransactionExecutor
 		extends DefaultTransactionExecutor {
 
 		@Override
@@ -441,8 +443,7 @@ public class PortalPreferencesImplTest {
 			}
 			finally {
 				PortalPreferencesWrapperCacheUtil.remove(
-					PortletKeys.PREFS_OWNER_ID_DEFAULT,
-					PortletKeys.PREFS_OWNER_TYPE_USER);
+					_testOwnerId, PortletKeys.PREFS_OWNER_TYPE_USER);
 			}
 		}
 
@@ -460,8 +461,7 @@ public class PortalPreferencesImplTest {
 
 	}
 
-	protected static class SynchronousInvocationHandler
-		implements InvocationHandler {
+	protected class SynchronousInvocationHandler implements InvocationHandler {
 
 		@Override
 		public Object invoke(Object proxy, Method method, Object[] args)
@@ -515,5 +515,7 @@ public class PortalPreferencesImplTest {
 		new InheritableThreadLocal<>();
 	private static TransactionInterceptor _transactionInterceptor;
 	private static Method _updatePreferencesMethod;
+
+	private long _testOwnerId;
 
 }
