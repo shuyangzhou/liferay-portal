@@ -505,14 +505,12 @@ public class JournalArticleWrapper implements JournalArticle,
 	}
 
 	@Override
-	public com.liferay.dynamic.data.mapping.model.DDMStructure getDDMStructure()
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public com.liferay.dynamic.data.mapping.model.DDMStructure getDDMStructure() {
 		return _journalArticle.getDDMStructure();
 	}
 
 	@Override
-	public com.liferay.dynamic.data.mapping.model.DDMTemplate getDDMTemplate()
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public com.liferay.dynamic.data.mapping.model.DDMTemplate getDDMTemplate() {
 		return _journalArticle.getDDMTemplate();
 	}
 

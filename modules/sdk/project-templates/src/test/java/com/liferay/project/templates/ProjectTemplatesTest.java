@@ -530,6 +530,42 @@ public class ProjectTemplatesTest {
 	}
 
 	@Test
+	public void testBuildTemplateRest() throws Exception {
+		File gradleProjectDir = _buildTemplateWithGradle("rest", "my-rest");
+
+		_testExists(gradleProjectDir, "bnd.bnd");
+
+		_testContains(
+			gradleProjectDir,
+			"src/main/java/my/rest/application/MyRestApplication.java",
+			"public class MyRestApplication extends Application");
+		_testContains(
+			gradleProjectDir,
+			"src/main/resources/configuration" +
+				"/com.liferay.portal.remote.cxf.common.configuration." +
+					"CXFEndpointPublisherConfiguration-cxf",
+					"contextPath=/my-rest");
+
+		File mavenProjectDir = _buildTemplateWithMaven(
+			"rest", "my-rest", "-DclassName=MyRest", "-Dpackage=my.rest");
+
+		_testContains(
+			mavenProjectDir,
+			"src/main/java/my/rest/application/MyRestApplication.java",
+			"public class MyRestApplication extends Application");
+		_testContains(
+			mavenProjectDir,
+			"src/main/resources/configuration" +
+				"/com.liferay.portal.remote.cxf.common.configuration." +
+					"CXFEndpointPublisherConfiguration-cxf",
+					"contextPath=/my-rest");
+
+		_buildProjects(
+			gradleProjectDir, mavenProjectDir, "build/libs/my.rest-1.0.0.jar",
+			"target/my-rest-1.0.0.jar");
+	}
+
+	@Test
 	public void testBuildTemplateService() throws Exception {
 		File gradleProjectDir = _buildTemplateWithGradle(
 			"service", "servicepreaction", "--class-name", "FooAction",
@@ -676,7 +712,7 @@ public class ProjectTemplatesTest {
 
 		_testContains(
 			gradleProjectDir,
-			"src/main/java/blade/test/theme/contributor" +
+			"src/main/java/blade/test/context/contributor" +
 				"/BladeTestTemplateContextContributor.java",
 			"public class BladeTestTemplateContextContributor",
 			"implements TemplateContextContributor");
@@ -696,6 +732,7 @@ public class ProjectTemplatesTest {
 
 		_testContains(
 			gradleProjectDir, "build.gradle",
+			"name: \"com.liferay.gradle.plugins.theme.builder\"",
 			"apply plugin: \"com.liferay.portal.tools.theme.builder\"");
 		_testContains(
 			gradleProjectDir,
