@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.search.QueryConfig;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.SortFactoryUtil;
-import com.liferay.portal.kernel.test.IdempotentRetryAssert;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.rule.Sync;
@@ -49,8 +48,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -325,8 +322,7 @@ public class DocumentImplTest {
 	}
 
 	protected void checkSearchContext(
-			final SearchContext searchContext, final Sort sort,
-			final String[] screenNames)
+			SearchContext searchContext, Sort sort, String[] screenNames)
 		throws Exception {
 
 		QueryConfig queryConfig = searchContext.getQueryConfig();
@@ -335,20 +331,9 @@ public class DocumentImplTest {
 
 		searchContext.setSorts(sort);
 
-		final Query query = _indexer.getFullQuery(searchContext);
+		Query query = _indexer.getFullQuery(searchContext);
 
-		IdempotentRetryAssert.retryAssert(
-			10, TimeUnit.SECONDS,
-			new Callable<Void>() {
-
-				@Override
-				public Void call() throws Exception {
-					assertSort(sort, query, searchContext, screenNames);
-
-					return null;
-				}
-
-			});
+		assertSort(sort, query, searchContext, screenNames);
 	}
 
 	protected void checkSearchContext(

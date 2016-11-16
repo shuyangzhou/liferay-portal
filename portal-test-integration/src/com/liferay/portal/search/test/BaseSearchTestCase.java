@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUti
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.IdentityServiceContextFunction;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.test.IdempotentRetryAssert;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -49,8 +48,6 @@ import com.liferay.portal.test.randomizerbumpers.BBCodeRandomizerBumper;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -257,20 +254,9 @@ public abstract class BaseSearchTestCase {
 			final int expectedCount, final SearchContext searchContext)
 		throws Exception {
 
-		IdempotentRetryAssert.retryAssert(
-			10, TimeUnit.SECONDS,
-			new Callable<Void>() {
+		int actualCount = searchBaseModelsCount(searchContext);
 
-				@Override
-				public Void call() throws Exception {
-					int actualCount = searchBaseModelsCount(searchContext);
-
-					Assert.assertEquals(expectedCount, actualCount);
-
-					return null;
-				}
-
-			});
+		Assert.assertEquals(expectedCount, actualCount);
 	}
 
 	protected void assertBaseModelsCount(
@@ -292,21 +278,9 @@ public abstract class BaseSearchTestCase {
 			final long expectedCount, final long userId)
 		throws Exception {
 
-		IdempotentRetryAssert.retryAssert(
-			3, TimeUnit.SECONDS,
-			new Callable<Void>() {
+		long actualCount = searchGroupEntriesCount(group.getGroupId(), userId);
 
-				@Override
-				public Void call() throws Exception {
-					long actualCount = searchGroupEntriesCount(
-						group.getGroupId(), userId);
-
-					Assert.assertEquals(expectedCount, actualCount);
-
-					return null;
-				}
-
-			});
+		Assert.assertEquals(expectedCount, actualCount);
 	}
 
 	protected void assertGroupEntriesCount(long expectedCount, User user)

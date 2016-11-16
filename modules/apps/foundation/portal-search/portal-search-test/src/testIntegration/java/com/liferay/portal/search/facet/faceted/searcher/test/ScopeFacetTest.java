@@ -23,7 +23,9 @@ import com.liferay.portal.kernel.search.facet.ScopeFacet;
 import com.liferay.portal.kernel.search.facet.collector.FacetCollector;
 import com.liferay.portal.kernel.search.facet.collector.TermCollector;
 import com.liferay.portal.kernel.search.facet.faceted.searcher.FacetedSearcher;
-import com.liferay.portal.kernel.test.IdempotentRetryAssert;
+import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.Sync;
+import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.SearchContextTestUtil;
 import com.liferay.portal.search.test.util.AssertUtils;
@@ -33,8 +35,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -45,12 +45,15 @@ import org.junit.runner.RunWith;
  * @author André de Oliveira
  */
 @RunWith(Arquillian.class)
+@Sync
 public class ScopeFacetTest extends BaseFacetedSearcherTestCase {
 
 	@ClassRule
 	@Rule
-	public static final LiferayIntegrationTestRule liferayIntegrationTestRule =
-		new LiferayIntegrationTestRule();
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(),
+			SynchronousDestinationTestRule.INSTANCE);
 
 	@Test
 	public void testSearchByFacet() throws Exception {
@@ -162,30 +165,19 @@ public class ScopeFacetTest extends BaseFacetedSearcherTestCase {
 			final Map<Long, Integer> expected)
 		throws Exception {
 
-		IdempotentRetryAssert.retryAssert(
-			10, TimeUnit.SECONDS,
-			new Callable<Void>() {
+		FacetedSearcher facetedSearcher = createFacetedSearcher();
 
-				@Override
-				public Void call() throws Exception {
-					FacetedSearcher facetedSearcher = createFacetedSearcher();
+		facetedSearcher.search(searchContext);
 
-					facetedSearcher.search(searchContext);
+		Map<String, Facet> facets = searchContext.getFacets();
 
-					Map<String, Facet> facets = searchContext.getFacets();
+		Facet facet = facets.get(Field.GROUP_ID);
 
-					Facet facet = facets.get(Field.GROUP_ID);
+		FacetCollector facetCollector = facet.getFacetCollector();
 
-					FacetCollector facetCollector = facet.getFacetCollector();
-
-					AssertUtils.assertEquals(
-						searchContext.getKeywords(), expected,
-						toMap(facetCollector.getTermCollectors()));
-
-					return null;
-				}
-
-			});
+		AssertUtils.assertEquals(
+			searchContext.getKeywords(), expected,
+			toMap(facetCollector.getTermCollectors()));
 	}
 
 	protected SearchContext getSearchContext(String keywords) throws Exception {

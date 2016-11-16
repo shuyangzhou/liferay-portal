@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.test.IdempotentRetryAssert;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.rule.Sync;
@@ -50,8 +49,6 @@ import com.liferay.wiki.service.WikiPageLocalServiceUtil;
 import com.liferay.wiki.util.test.WikiTestUtil;
 
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -164,87 +161,48 @@ public class WikiPageTitleSearcherTest {
 		addPage(_node.getNodeId(), title, content);
 	}
 
-	protected void assertSearch(final String keywords, final int length)
-		throws Exception {
+	protected void assertSearch(String keywords, int length) throws Exception {
+		Indexer<?> indexer = WikiPageTitleSearcher.getInstance();
 
-		IdempotentRetryAssert.retryAssert(
-			3, TimeUnit.SECONDS,
-			new Callable<Void>() {
+		_searchContext.setKeywords(StringUtil.toLowerCase(keywords));
 
-				@Override
-				public Void call() throws Exception {
-					Indexer<?> indexer = WikiPageTitleSearcher.getInstance();
+		Hits hits = indexer.search(_searchContext);
 
-					_searchContext.setKeywords(
-						StringUtil.toLowerCase(keywords));
-
-					Hits hits = indexer.search(_searchContext);
-
-					Assert.assertEquals(length, hits.getLength());
-
-					return null;
-				}
-
-			});
+		Assert.assertEquals(length, hits.getLength());
 	}
 
-	protected void assertSearchNode(final String keywords, final long nodeId)
+	protected void assertSearchNode(String keywords, long nodeId)
 		throws Exception {
 
-		IdempotentRetryAssert.retryAssert(
-			3, TimeUnit.SECONDS,
-			new Callable<Void>() {
+		Indexer<?> indexer = WikiPageTitleSearcher.getInstance();
 
-				@Override
-				public Void call() throws Exception {
-					Indexer<?> indexer = WikiPageTitleSearcher.getInstance();
+		_searchContext.setKeywords(StringUtil.toLowerCase(keywords));
 
-					_searchContext.setKeywords(
-						StringUtil.toLowerCase(keywords));
+		Hits hits = indexer.search(_searchContext);
 
-					Hits hits = indexer.search(_searchContext);
+		List<SearchResult> searchResults = SearchResultUtil.getSearchResults(
+			hits, LocaleUtil.getDefault());
 
-					List<SearchResult> searchResults =
-						SearchResultUtil.getSearchResults(
-							hits, LocaleUtil.getDefault());
+		for (SearchResult searchResult : searchResults) {
+			WikiPage page = WikiPageLocalServiceUtil.getPage(
+				searchResult.getClassPK());
 
-					for (SearchResult searchResult : searchResults) {
-						WikiPage page = WikiPageLocalServiceUtil.getPage(
-							searchResult.getClassPK());
-
-						Assert.assertEquals(nodeId, page.getNodeId());
-					}
-
-					return null;
-				}
-
-			});
+			Assert.assertEquals(nodeId, page.getNodeId());
+		}
 	}
 
-	protected void assertSearchTitle(final String keywords, final String title)
+	protected void assertSearchTitle(String keywords, String title)
 		throws Exception {
 
-		IdempotentRetryAssert.retryAssert(
-			3, TimeUnit.SECONDS,
-			new Callable<Void>() {
+		Indexer<?> indexer = WikiPageTitleSearcher.getInstance();
 
-				@Override
-				public Void call() throws Exception {
-					Indexer<?> indexer = WikiPageTitleSearcher.getInstance();
+		_searchContext.setKeywords(StringUtil.toLowerCase(keywords));
 
-					_searchContext.setKeywords(
-						StringUtil.toLowerCase(keywords));
+		Hits hits = indexer.search(_searchContext);
 
-					Hits hits = indexer.search(_searchContext);
-
-					for (Document document : hits.getDocs()) {
-						Assert.assertEquals(title, document.get(Field.TITLE));
-					}
-
-					return null;
-				}
-
-			});
+		for (Document document : hits.getDocs()) {
+			Assert.assertEquals(title, document.get(Field.TITLE));
+		}
 	}
 
 	protected SearchContext getSearchContext(Group group) throws Exception {

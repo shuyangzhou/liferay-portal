@@ -23,15 +23,15 @@ import com.liferay.portal.kernel.search.facet.MultiValueFacet;
 import com.liferay.portal.kernel.search.facet.collector.FacetCollector;
 import com.liferay.portal.kernel.search.facet.collector.TermCollector;
 import com.liferay.portal.kernel.search.facet.faceted.searcher.FacetedSearcher;
-import com.liferay.portal.kernel.test.IdempotentRetryAssert;
+import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.Sync;
+import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.util.SearchContextTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -44,22 +44,25 @@ import org.junit.runner.RunWith;
  * @author André de Oliveira
  */
 @RunWith(Arquillian.class)
+@Sync
 public class AssetTagNamesFacetTest extends BaseFacetedSearcherTestCase {
 
 	@ClassRule
 	@Rule
-	public static final LiferayIntegrationTestRule liferayIntegrationTestRule =
-		new LiferayIntegrationTestRule();
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(),
+			SynchronousDestinationTestRule.INSTANCE);
 
 	@Test
 	public void testSearchByFacet() throws Exception {
 		Group group = userSearchFixture.addGroup();
 
-		final String tag = "enterprise. open-source for life";
+		String tag = "enterprise. open-source for life";
 
 		userSearchFixture.addUser(group, tag);
 
-		final SearchContext searchContext = getSearchContext(tag);
+		SearchContext searchContext = getSearchContext(tag);
 
 		MultiValueFacet multiValueFacet = new MultiValueFacet(searchContext);
 
@@ -68,31 +71,20 @@ public class AssetTagNamesFacetTest extends BaseFacetedSearcherTestCase {
 
 		searchContext.addFacet(multiValueFacet);
 
-		IdempotentRetryAssert.retryAssert(
-			10, TimeUnit.SECONDS,
-			new Callable<Void>() {
+		FacetedSearcher facetedSearcher = createFacetedSearcher();
 
-				@Override
-				public Void call() throws Exception {
-					FacetedSearcher facetedSearcher = createFacetedSearcher();
+		facetedSearcher.search(searchContext);
 
-					facetedSearcher.search(searchContext);
+		Map<String, Facet> facets = searchContext.getFacets();
 
-					Map<String, Facet> facets = searchContext.getFacets();
+		Facet facet = facets.get(Field.ASSET_TAG_NAMES);
 
-					Facet facet = facets.get(Field.ASSET_TAG_NAMES);
+		FacetCollector facetCollector = facet.getFacetCollector();
 
-					FacetCollector facetCollector = facet.getFacetCollector();
+		Map<String, Integer> results = toMap(
+			facetCollector.getTermCollectors());
 
-					Map<String, Integer> results = toMap(
-						facetCollector.getTermCollectors());
-
-					Assert.assertEquals((Integer)1, results.get(tag));
-
-					return null;
-				}
-
-			});
+		Assert.assertEquals((Integer)1, results.get(tag));
 	}
 
 	protected static Map<String, Integer> toMap(

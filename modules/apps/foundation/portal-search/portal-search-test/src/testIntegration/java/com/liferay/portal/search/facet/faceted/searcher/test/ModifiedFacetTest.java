@@ -27,7 +27,9 @@ import com.liferay.portal.kernel.search.facet.collector.FacetCollector;
 import com.liferay.portal.kernel.search.facet.collector.TermCollector;
 import com.liferay.portal.kernel.search.facet.config.FacetConfiguration;
 import com.liferay.portal.kernel.search.facet.faceted.searcher.FacetedSearcher;
-import com.liferay.portal.kernel.test.IdempotentRetryAssert;
+import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.Sync;
+import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.SearchContextTestUtil;
 import com.liferay.portal.search.test.util.AssertUtils;
@@ -39,8 +41,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -52,12 +52,15 @@ import org.junit.runner.RunWith;
  * @author André de Oliveira
  */
 @RunWith(Arquillian.class)
+@Sync
 public class ModifiedFacetTest extends BaseFacetedSearcherTestCase {
 
 	@ClassRule
 	@Rule
-	public static final LiferayIntegrationTestRule liferayIntegrationTestRule =
-		new LiferayIntegrationTestRule();
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(),
+			SynchronousDestinationTestRule.INSTANCE);
 
 	@Test
 	public void testRanges() throws Exception {
@@ -80,30 +83,17 @@ public class ModifiedFacetTest extends BaseFacetedSearcherTestCase {
 				}
 			};
 
-		IdempotentRetryAssert.retryAssert(
-			10, TimeUnit.SECONDS,
-			new Callable<Void>() {
+		SearchContext searchContext = getSearchContext(keyword);
 
-				@Override
-				public Void call() throws Exception {
-					SearchContext searchContext = getSearchContext(keyword);
+		ModifiedFacet modifiedFacet = new ModifiedFacet(searchContext);
 
-					ModifiedFacet modifiedFacet = new ModifiedFacet(
-						searchContext);
+		setConfigurationRanges(modifiedFacet, configRange1, configRange2);
 
-					setConfigurationRanges(
-						modifiedFacet, configRange1, configRange2);
+		setCustomRange(modifiedFacet, searchContext, customRange);
 
-					setCustomRange(modifiedFacet, searchContext, customRange);
+		searchContext.addFacet(modifiedFacet);
 
-					searchContext.addFacet(modifiedFacet);
-
-					assertRanges(frequencies, modifiedFacet, searchContext);
-
-					return null;
-				}
-
-			});
+		assertRanges(frequencies, modifiedFacet, searchContext);
 	}
 
 	protected static void assertEquals(

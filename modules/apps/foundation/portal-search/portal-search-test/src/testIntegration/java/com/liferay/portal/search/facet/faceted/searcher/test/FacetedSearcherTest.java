@@ -23,7 +23,6 @@ import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.facet.faceted.searcher.FacetedSearcher;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
-import com.liferay.portal.kernel.test.IdempotentRetryAssert;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
@@ -37,8 +36,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -121,27 +118,14 @@ public class FacetedSearcherTest extends BaseFacetedSearcherTestCase {
 			user.getScreenName(), StringUtil.toLowerCase(tag));
 	}
 
-	protected void assertSearch(
-			final String tag, final Map<String, String> expected)
+	protected void assertSearch(String tag, Map<String, String> expected)
 		throws Exception {
 
-		IdempotentRetryAssert.retryAssert(
-			10, TimeUnit.SECONDS,
-			new Callable<Void>() {
+		FacetedSearcher facetedSearcher = createFacetedSearcher();
 
-				@Override
-				public Void call() throws Exception {
-					FacetedSearcher facetedSearcher = createFacetedSearcher();
+		Hits hits = facetedSearcher.search(getSearchContext(tag));
 
-					Hits hits = facetedSearcher.search(getSearchContext(tag));
-
-					AssertUtils.assertEquals(
-						tag, expected, toMap(hits.toList()));
-
-					return null;
-				}
-
-			});
+		AssertUtils.assertEquals(tag, expected, toMap(hits.toList()));
 	}
 
 	protected void deactivate(Group group) {
