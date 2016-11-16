@@ -100,13 +100,9 @@ public class TikaSafeRandomizerBumperTest {
 	public void testExceptionInInitializerError()
 		throws ClassNotFoundException {
 
-		String propertyKey = "tika.config";
-
-		String propertyValue = System.getProperty(propertyKey);
+		PortalClassLoaderUtil.setClassLoader(null);
 
 		try {
-			System.setProperty(propertyKey, "bad.tika.config");
-
 			Class.forName(TikaSafeRandomizerBumper.class.getName());
 
 			Assert.fail();
@@ -115,9 +111,6 @@ public class TikaSafeRandomizerBumperTest {
 			Throwable cause = eiie.getCause();
 
 			Assert.assertTrue(cause instanceof NullPointerException);
-		}
-		finally {
-			System.setProperty(propertyKey, propertyValue);
 		}
 	}
 
