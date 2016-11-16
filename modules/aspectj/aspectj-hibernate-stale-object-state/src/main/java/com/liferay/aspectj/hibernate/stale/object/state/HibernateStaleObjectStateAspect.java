@@ -29,9 +29,12 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.SuppressAjWarnings;
 
+import org.hibernate.HibernateException;
+import org.hibernate.ObjectDeletedException;
 import org.hibernate.StaleObjectStateException;
 import org.hibernate.event.DeleteEvent;
 import org.hibernate.event.MergeEvent;
+import org.hibernate.event.SaveOrUpdateEvent;
 
 /**
  * @author Preston Crary
@@ -44,16 +47,20 @@ public class HibernateStaleObjectStateAspect {
 		throwing = "sose",
 		value = "execution(void org.hibernate.event.def.DefaultMergeEventListener.onMerge(org.hibernate.event.MergeEvent)) && args(mergeEvent)"
 	)
-	public void supressMergeFailureCause(
+	public void suppressMergeFailureCause(
 		MergeEvent mergeEvent, StaleObjectStateException sose) {
 
-		Object object = mergeEvent.getOriginal();
+		_suppressFailureCause(mergeEvent.getOriginal(), sose);
+	}
 
-		if (!(object instanceof MVCCModel)) {
-			return;
-		}
+	@AfterThrowing(
+		throwing = "ode",
+		value = "execution(void org.hibernate.event.SaveOrUpdateEventListener.onSaveOrUpdate(org.hibernate.event.SaveOrUpdateEvent)) && args(saveOrUpdateEvent)"
+	)
+	public void suppressUpdateFailureCause(
+		SaveOrUpdateEvent saveOrUpdateEvent, ObjectDeletedException ode) {
 
-		sose.addSuppressed(_events.get(new EventKey((BaseModel<?>)object)));
+		_suppressFailureCause(saveOrUpdateEvent.getObject(), ode);
 	}
 
 	@AfterReturning(
@@ -72,26 +79,53 @@ public class HibernateStaleObjectStateAspect {
 		_trackEvent(mergeEvent.getOriginal());
 	}
 
+	@AfterReturning(
+		"execution(void org.hibernate.event.SaveOrUpdateEventListener." +
+			"onSaveOrUpdate(org.hibernate.event.SaveOrUpdateEvent)) &&" +
+				"args(saveOrUpdateEvent)"
+	)
+	public void trackSaveOrUpdateEvent(SaveOrUpdateEvent saveOrUpdateEvent) {
+		_trackEvent(saveOrUpdateEvent.getObject());
+	}
+
+	private void _suppressFailureCause(Object object, HibernateException he) {
+		if (!(object instanceof MVCCModel)) {
+			return;
+		}
+
+		he.addSuppressed(_events.get(new EventKey((BaseModel<?>)object)));
+	}
+
 	private void _trackEvent(Object object) {
 		if (!(object instanceof MVCCModel)) {
 			return;
 		}
 
-		BaseModel<?> baseModel = (BaseModel<?>)object;
+		ConflictingLiferayUpdateException clue =
+			new ConflictingLiferayUpdateException();
 
-		StaleObjectStateException sose = new StaleObjectStateException(
-			baseModel.getModelClassName(), baseModel.getPrimaryKeyObj());
+		ConflictingLiferayUpdateException previousCLUE = _events.put(
+			new EventKey((BaseModel<?>)object), clue);
 
-		StaleObjectStateException previousSOSE = _events.put(
-			new EventKey(baseModel), sose);
-
-		if (previousSOSE != null) {
-			sose.addSuppressed(previousSOSE);
+		if (previousCLUE != null) {
+			clue.addSuppressed(previousCLUE);
 		}
 	}
 
-	private final Map<EventKey, StaleObjectStateException> _events =
+	private final Map<EventKey, ConflictingLiferayUpdateException> _events =
 		new ConcurrentHashMap<>();
+
+	private static class ConflictingLiferayUpdateException
+		extends RuntimeException {
+
+		@Override
+		public String getMessage() {
+			return "This update caused an MVCCModel to become stale. Either " +
+				"combine the updates or retrieve the model from the database " +
+					"before the stale update.";
+		}
+
+	}
 
 	private static class EventKey {
 
