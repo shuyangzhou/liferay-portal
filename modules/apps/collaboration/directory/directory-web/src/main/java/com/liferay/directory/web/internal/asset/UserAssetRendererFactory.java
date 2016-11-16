@@ -17,6 +17,7 @@ package com.liferay.directory.web.internal.asset;
 import com.liferay.asset.kernel.model.AssetRenderer;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.model.BaseAssetRendererFactory;
+import com.liferay.directory.web.internal.constants.DirectoryPortletKeys;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
@@ -87,6 +88,11 @@ public class UserAssetRendererFactory extends BaseAssetRendererFactory<User> {
 	@Override
 	public String getIconCssClass() {
 		return "user";
+	}
+
+	@Override
+	public String getPortletId() {
+		return DirectoryPortletKeys.SITE_MEMBERS_DIRECTORY;
 	}
 
 	@Override

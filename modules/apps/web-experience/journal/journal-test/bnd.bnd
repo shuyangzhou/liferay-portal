@@ -2,6 +2,8 @@ Bundle-Name: Liferay Journal Test
 Bundle-SymbolicName: com.liferay.journal.test
 Bundle-Version: 1.0.0
 Import-Package:\
+	!com.fasterxml.jackson.*,\
+	\
 	!com.liferay.util.xml,\
 	\
 	!org.junit.experimental.theories,\
