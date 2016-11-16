@@ -184,8 +184,8 @@ public class WabGenerator
 
 	protected void registerArtifactUrlTransformer(BundleContext bundleContext) {
 		_serviceRegistration = bundleContext.registerService(
-			ArtifactUrlTransformer.class, new WarArtifactUrlTransformer(),
-			null);
+			ArtifactUrlTransformer.class,
+			new WarArtifactUrlTransformer(bundleContext), null);
 	}
 
 	protected void registerURLStreamHandlerService(

@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.journal.lar.test;
+package com.liferay.journal.exportimport.data.handler.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.journal.model.JournalFolder;
