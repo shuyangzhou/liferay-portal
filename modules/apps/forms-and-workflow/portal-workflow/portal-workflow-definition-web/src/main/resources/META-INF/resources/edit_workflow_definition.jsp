@@ -40,7 +40,7 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 %>
 
 <liferay-portlet:actionURL name='<%= (workflowDefinition == null) ? "addWorkflowDefinition" : "updateWorkflowDefinition" %>' var="editWorkflowDefinitionURL">
-	<portlet:param name="mvcPath" value="/view.jsp" />
+	<portlet:param name="mvcPath" value="/edit_workflow_definition.jsp" />
 </liferay-portlet:actionURL>
 
 <div class="container-fluid-1280 workflow-definition-container">
@@ -127,7 +127,7 @@ Ticket ticket = TicketLocalServiceUtil.addTicket(user.getCompanyId(), User.class
 				}
 			},
 			tempRandomSuffix: '<%= TempFileEntryUtil.TEMP_RANDOM_SUFFIX %>',
-			uploadFile: '<liferay-portlet:actionURL doAsUserId="<%= user.getUserId() %>" name="uploadWorkflowDefinitionFile"><portlet:param name="mvcPath" value="/edit_workflow_definition.jsp" /></liferay-portlet:actionURL>&ticketKey=<%= ticket.getKey() %>'
+			uploadFile: '<liferay-portlet:resourceURL doAsUserId="<%= user.getUserId() %>" id="uploadWorkflowDefinitionFile" />&ticketKey=<%= ticket.getKey() %>'
 		}
 	);
 </aui:script>

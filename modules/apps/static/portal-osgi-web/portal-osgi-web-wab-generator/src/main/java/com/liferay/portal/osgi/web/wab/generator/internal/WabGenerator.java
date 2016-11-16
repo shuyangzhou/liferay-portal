@@ -46,6 +46,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import javax.servlet.ServletContext;
+
 import org.apache.felix.fileinstall.ArtifactUrlTransformer;
 
 import org.osgi.framework.Bundle;
@@ -56,6 +58,9 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicy;
+import org.osgi.service.component.annotations.ReferencePolicyOption;
 import org.osgi.service.url.URLConstants;
 import org.osgi.service.url.URLStreamHandlerService;
 import org.osgi.util.tracker.BundleTracker;
@@ -78,6 +83,10 @@ public class WabGenerator
 			classLoader, file, parameters);
 
 		return wabProcessor.getProcessedFile();
+	}
+
+	public ServletContext getServletContext() {
+		return _servletContext;
 	}
 
 	@Activate
@@ -184,7 +193,7 @@ public class WabGenerator
 
 	protected void registerArtifactUrlTransformer(BundleContext bundleContext) {
 		_serviceRegistration = bundleContext.registerService(
-			ArtifactUrlTransformer.class, new WarArtifactUrlTransformer(),
+			ArtifactUrlTransformer.class, new WarArtifactUrlTransformer(this),
 			null);
 	}
 
@@ -216,12 +225,27 @@ public class WabGenerator
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
+	@Reference(
+		cardinality = ReferenceCardinality.OPTIONAL,
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY,
+		target = "(&(original.bean=true)(bean.id=javax.servlet.ServletContext))"
+	)
+	protected void setServletContext(ServletContext servletContext) {
+		_servletContext = servletContext;
+	}
+
 	protected void unsetModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
+	}
+
+	protected void unsetServletContext(ServletContext servletContext) {
+		_servletContext = null;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(WabGenerator.class);
 
 	private ServiceRegistration<ArtifactUrlTransformer> _serviceRegistration;
+	private volatile ServletContext _servletContext;
 
 }

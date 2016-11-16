@@ -75,6 +75,8 @@
 
 					<mkdir dir="${tstamp.value}" />
 
+					<unzip dest="${tstamp.value}" src="${test.build.liferay.portal.zip.file.name}" />
+
 					<copy
 						file="portal-impl/src/portal-ext.properties"
 						overwrite="true"
@@ -87,29 +89,9 @@ module.framework.properties.osgi.console=11312</echo>
 
 					<print-file file.name="${tstamp.value}/WEB-INF/classes/portal-ext.properties" />
 
-					<zip basedir="${tstamp.value}" destfile="${test.build.liferay.portal.zip.file.name}" update="true">
-						<patternset>
-							<include name="WEB-INF/classes/portal-ext.properties" />
-						</patternset>
-					</zip>
+					<delete file="${test.build.liferay.portal.zip.file.name}" />
 
-					<delete dir="${tstamp.value}" />
-
-					<var name="tstamp.value" unset="true" />
-
-					<tstamp>
-						<format pattern="yyyyMMddkkmmssSSS" property="tstamp.value" />
-					</tstamp>
-
-					<mkdir dir="${tstamp.value}" />
-
-					<unzip dest="${tstamp.value}" src="${test.build.liferay.portal.zip.file.name}">
-						<patternset>
-							<include name="WEB-INF/classes/portal-ext.properties" />
-						</patternset>
-					</unzip>
-
-					<print-file file.name="${tstamp.value}/WEB-INF/classes/portal-ext.properties" />
+					<zip basedir="${tstamp.value}" destfile="${test.build.liferay.portal.zip.file.name}" />
 
 					<delete dir="${tstamp.value}" />
 
@@ -5785,6 +5767,21 @@ portal.security.manager.strategy=liferay</echo>
 javascript.fast.load=false</echo>
 			</then>
 		</if>
+
+		<get-testcase-property property.name="blacklist.portal.profile.names" />
+
+		<if>
+			<not>
+				<isset property="blacklist.portal.profile.names" />
+			</not>
+			<then>
+				<property name="blacklist.portal.profile.names" value="com.liferay.chat.service,com.liferay.chat.web" />
+			</then>
+		</if>
+
+		<echo append="true" file="portal-impl/src/portal-ext.properties">
+
+module.framework.properties.blacklist.portal.profile.names=${blacklist.portal.profile.names}</echo>
 
 		<get-testcase-property property.name="portal.version" />
 

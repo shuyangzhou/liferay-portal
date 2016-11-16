@@ -365,6 +365,34 @@ public class ProjectTemplatesTest {
 	}
 
 	@Test
+	public void testBuildTemplateMVCPortletWithPortletName() throws Exception {
+		File gradleProjectDir = _buildTemplateWithGradle(
+			"mvc-portlet", "portlet");
+
+		_testExists(gradleProjectDir, "bnd.bnd");
+		_testExists(
+			gradleProjectDir, "src/main/resources/META-INF/resources/init.jsp");
+		_testExists(
+			gradleProjectDir, "src/main/resources/META-INF/resources/view.jsp");
+
+		_testContains(
+			gradleProjectDir, "build.gradle",
+			"apply plugin: \"com.liferay.plugin\"");
+		_testContains(
+			gradleProjectDir,
+			"src/main/java/portlet/portlet/PortletPortlet.java",
+			"public class PortletPortlet extends MVCPortlet {");
+
+		File mavenProjectDir = _buildTemplateWithMaven(
+			"mvc-portlet", "portlet", "-DclassName=Portlet",
+			"-Dpackage=portlet");
+
+		_buildProjects(
+			gradleProjectDir, mavenProjectDir, "build/libs/portlet-1.0.0.jar",
+			"target/portlet-1.0.0.jar");
+	}
+
+	@Test
 	public void testBuildTemplateMVCPortletWithPortletSuffix()
 		throws Exception {
 
@@ -530,6 +558,66 @@ public class ProjectTemplatesTest {
 	}
 
 	@Test
+	public void testBuildTemplatePortletWithPortletName() throws Exception {
+		File gradleProjectDir = _buildTemplateWithGradle("portlet", "portlet");
+
+		_testExists(gradleProjectDir, "bnd.bnd");
+
+		_testContains(
+			gradleProjectDir, "build.gradle",
+			"apply plugin: \"com.liferay.plugin\"");
+		_testContains(
+			gradleProjectDir,
+			"src/main/java/portlet/portlet/PortletPortlet.java",
+			"package portlet.portlet;", "javax.portlet.display-name=portlet",
+			"public class PortletPortlet extends GenericPortlet {",
+			"printWriter.print(\"portlet Portlet");
+
+		File mavenProjectDir = _buildTemplateWithMaven(
+			"portlet", "portlet", "-DclassName=Portlet", "-Dpackage=portlet");
+
+		_buildProjects(
+			gradleProjectDir, mavenProjectDir, "build/libs/portlet-1.0.0.jar",
+			"target/portlet-1.0.0.jar");
+	}
+
+	@Test
+	public void testBuildTemplateRest() throws Exception {
+		File gradleProjectDir = _buildTemplateWithGradle("rest", "my-rest");
+
+		_testExists(gradleProjectDir, "bnd.bnd");
+
+		_testContains(
+			gradleProjectDir,
+			"src/main/java/my/rest/application/MyRestApplication.java",
+			"public class MyRestApplication extends Application");
+		_testContains(
+			gradleProjectDir,
+			"src/main/resources/configuration" +
+				"/com.liferay.portal.remote.cxf.common.configuration." +
+					"CXFEndpointPublisherConfiguration-cxf",
+					"contextPath=/my-rest");
+
+		File mavenProjectDir = _buildTemplateWithMaven(
+			"rest", "my-rest", "-DclassName=MyRest", "-Dpackage=my.rest");
+
+		_testContains(
+			mavenProjectDir,
+			"src/main/java/my/rest/application/MyRestApplication.java",
+			"public class MyRestApplication extends Application");
+		_testContains(
+			mavenProjectDir,
+			"src/main/resources/configuration" +
+				"/com.liferay.portal.remote.cxf.common.configuration." +
+					"CXFEndpointPublisherConfiguration-cxf",
+					"contextPath=/my-rest");
+
+		_buildProjects(
+			gradleProjectDir, mavenProjectDir, "build/libs/my.rest-1.0.0.jar",
+			"target/my-rest-1.0.0.jar");
+	}
+
+	@Test
 	public void testBuildTemplateService() throws Exception {
 		File gradleProjectDir = _buildTemplateWithGradle(
 			"service", "servicepreaction", "--class-name", "FooAction",
@@ -676,7 +764,7 @@ public class ProjectTemplatesTest {
 
 		_testContains(
 			gradleProjectDir,
-			"src/main/java/blade/test/theme/contributor" +
+			"src/main/java/blade/test/context/contributor" +
 				"/BladeTestTemplateContextContributor.java",
 			"public class BladeTestTemplateContextContributor",
 			"implements TemplateContextContributor");
@@ -696,6 +784,7 @@ public class ProjectTemplatesTest {
 
 		_testContains(
 			gradleProjectDir, "build.gradle",
+			"name: \"com.liferay.gradle.plugins.theme.builder\"",
 			"apply plugin: \"com.liferay.portal.tools.theme.builder\"");
 		_testContains(
 			gradleProjectDir,
