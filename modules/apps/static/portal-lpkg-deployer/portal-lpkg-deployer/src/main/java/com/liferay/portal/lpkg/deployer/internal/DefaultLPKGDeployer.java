@@ -548,7 +548,9 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 
 	private void _uninstallOrphanOverridingJars(
 			BundleContext bundleContext, List<File> jarFiles)
-		throws BundleException {
+		throws Exception {
+
+		Set<Bundle> bundles = new HashSet<>();
 
 		for (Bundle bundle : bundleContext.getBundles()) {
 			String location = bundle.getLocation();
@@ -566,10 +568,45 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 
 			bundle.uninstall();
 
+			bundles.add(bundle);
+
 			if (_log.isInfoEnabled()) {
 				_log.info(
 					"Uninstalled orphan overriding JAR bundle " + location);
 			}
+		}
+
+		Bundle systemBundle = bundleContext.getBundle(0);
+
+		FrameworkWiring frameworkWiring = systemBundle.adapt(
+			FrameworkWiring.class);
+
+		final DefaultNoticeableFuture<FrameworkEvent> defaultNoticeableFuture =
+			new DefaultNoticeableFuture<>();
+
+		frameworkWiring.refreshBundles(
+			bundles,
+			new FrameworkListener() {
+
+				@Override
+				public void frameworkEvent(FrameworkEvent frameworkEvent) {
+					if (frameworkEvent.getType() == FrameworkEvent.ERROR) {
+						defaultNoticeableFuture.setException(
+							frameworkEvent.getThrowable());
+					}
+					else {
+						defaultNoticeableFuture.set(frameworkEvent);
+					}
+				}
+
+			});
+
+		FrameworkEvent frameworkEvent = defaultNoticeableFuture.get();
+
+		bundles.clear();
+
+		if (frameworkEvent.getType() != FrameworkEvent.PACKAGES_REFRESHED) {
+			throw new Exception(frameworkEvent.getThrowable());
 		}
 	}
 
