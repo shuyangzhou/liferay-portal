@@ -33,7 +33,7 @@ public class ProxyFactory {
 
 	public static <T> T newDummyInstance(Class<T> interfaceClass) {
 		return (T)ProxyUtil.newProxyInstance(
-			interfaceClass.getClassLoader(), new Class[] {interfaceClass},
+			interfaceClass.getClassLoader(), new Class<?>[] {interfaceClass},
 			new DummyInvocationHandler<T>());
 	}
 
@@ -43,7 +43,7 @@ public class ProxyFactory {
 		throws Exception {
 
 		return newInstance(
-			classLoader, new Class[] {interfaceClass}, implClassName);
+			classLoader, new Class<?>[] {interfaceClass}, implClassName);
 	}
 
 	public static Object newInstance(
@@ -66,7 +66,7 @@ public class ProxyFactory {
 	@Deprecated
 	public static <T> T newServiceTrackedInstance(Class<T> interfaceClass) {
 		return (T)ProxyUtil.newProxyInstance(
-			interfaceClass.getClassLoader(), new Class[] {interfaceClass},
+			interfaceClass.getClassLoader(), new Class<?>[] {interfaceClass},
 			new ServiceTrackedInvocationHandler<>(interfaceClass));
 	}
 
@@ -106,7 +106,7 @@ public class ProxyFactory {
 		Class<T> interfaceClass, String filterString) {
 
 		return (T)ProxyUtil.newProxyInstance(
-			interfaceClass.getClassLoader(), new Class[] {interfaceClass},
+			interfaceClass.getClassLoader(), new Class<?>[] {interfaceClass},
 			new ServiceTrackedInvocationHandler<>(
 				interfaceClass, filterString));
 	}
