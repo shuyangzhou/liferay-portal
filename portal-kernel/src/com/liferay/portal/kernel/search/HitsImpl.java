@@ -16,6 +16,7 @@ package com.liferay.portal.kernel.search;
 
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.ArrayList;
@@ -219,6 +220,26 @@ public class HitsImpl implements Hits {
 		}
 
 		return subset;
+	}
+
+	@Override
+	public String toString() {
+		if ((_docs == null) || (_docs.length == 0)) {
+			return "{}";
+		}
+
+		StringBundler sb = new StringBundler(2 * _docs.length + 1);
+
+		sb.append(StringPool.OPEN_BRACKET);
+
+		for (Document document : _docs) {
+			sb.append(document);
+			sb.append(StringPool.COMMA_AND_SPACE);
+		}
+
+		sb.setStringAt(StringPool.CLOSE_BRACKET, sb.index() - 1);
+
+		return sb.toString();
 	}
 
 	private static final Document[] _EMPTY_DOCUMENTS = new Document[0];
