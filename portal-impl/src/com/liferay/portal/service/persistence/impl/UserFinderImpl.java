@@ -461,20 +461,40 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 				sql = StringUtil.replace(sql, _STATUS_SQL, StringPool.BLANK);
 			}
 
-			StringBundler sb = new StringBundler(paramsList.size() * 3 + 2);
+			StringBundler sb = null;
+
+			DB db = getDB();
+
+			boolean sybase = false;
+
+			if (db.getDBType() == DBType.SYBASE) {
+				sybase = true;
+
+				sb = new StringBundler(paramsList.size() * 7 + 1);
+			}
+			else {
+				sb = new StringBundler(paramsList.size() * 4 + 1);
+			}
 
 			sb.append("SELECT COUNT(userId) AS COUNT_VALUE FROM (");
 
 			for (int i = 0; i < paramsList.size(); i++) {
-				if (i == 0) {
-					sb.append(StringPool.OPEN_PARENTHESIS);
-				}
-				else {
-					sb.append(" UNION (");
+				if (i != 0) {
+					sb.append(" UNION ");
 				}
 
+				if (sybase) {
+					sb.append("SELECT userId FROM ");
+				}
+
+				sb.append(StringPool.OPEN_PARENTHESIS);
 				sb.append(replaceJoinAndWhere(sql, paramsList.get(i)));
 				sb.append(StringPool.CLOSE_PARENTHESIS);
+
+				if (sybase) {
+					sb.append(" params");
+					sb.append(i);
+				}
 			}
 
 			sb.append(") userId");
