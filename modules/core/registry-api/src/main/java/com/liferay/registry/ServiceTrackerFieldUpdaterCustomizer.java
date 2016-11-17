@@ -121,9 +121,7 @@ public class ServiceTrackerFieldUpdaterCustomizer<S, T>
 
 		Optional<T> optionalService = optionalEntry.map(Entry::getValue);
 
-		T newService = optionalService.orElse(_dummyTrackedService);
-
-		doServiceUpdate(newService);
+		doServiceUpdate(optionalService.orElse(_dummyTrackedService));
 	}
 
 	private final T _dummyTrackedService;
