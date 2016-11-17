@@ -192,14 +192,12 @@ public class BookmarksEntrySearchTest extends BaseSearchTestCase {
 	}
 
 	@Override
-	protected long searchGroupEntriesCount(long groupId, long creatorUserId)
+	protected Hits searchGroupEntries(long groupId, long creatorUserId)
 		throws Exception {
 
-		Hits hits = BookmarksEntryServiceUtil.search(
+		return BookmarksEntryServiceUtil.search(
 			groupId, creatorUserId, WorkflowConstants.STATUS_APPROVED,
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-
-		return hits.getLength();
 	}
 
 	@Override

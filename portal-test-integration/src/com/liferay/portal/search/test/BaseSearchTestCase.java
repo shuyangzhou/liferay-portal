@@ -254,9 +254,9 @@ public abstract class BaseSearchTestCase {
 			final int expectedCount, final SearchContext searchContext)
 		throws Exception {
 
-		int actualCount = searchBaseModelsCount(searchContext);
+		Hits hits = searchBaseModelsCount(searchContext);
 
-		Assert.assertEquals(expectedCount, actualCount);
+		Assert.assertEquals(hits.toString(), expectedCount, hits.getLength());
 	}
 
 	protected void assertBaseModelsCount(
@@ -278,9 +278,18 @@ public abstract class BaseSearchTestCase {
 			final long expectedCount, final long userId)
 		throws Exception {
 
-		long actualCount = searchGroupEntriesCount(group.getGroupId(), userId);
+		Hits hits = searchGroupEntries(group.getGroupId(), userId);
 
-		Assert.assertEquals(expectedCount, actualCount);
+		if (hits == null) {
+			long actualCount = searchGroupEntriesCount(
+				group.getGroupId(), userId);
+
+			Assert.assertEquals(expectedCount, actualCount);
+
+			return;
+		}
+
+		Assert.assertEquals(hits.toString(), expectedCount, hits.getLength());
 	}
 
 	protected void assertGroupEntriesCount(long expectedCount, User user)
@@ -409,7 +418,7 @@ public abstract class BaseSearchTestCase {
 		assertBaseModelsCount(initialBaseModelsSearchCount + 1, searchContext);
 	}
 
-	protected int searchBaseModelsCount(
+	protected Hits searchBaseModelsCount(
 			Class<?> clazz, long groupId, SearchContext searchContext)
 		throws Exception {
 
@@ -417,12 +426,10 @@ public abstract class BaseSearchTestCase {
 
 		searchContext.setGroupIds(new long[] {groupId});
 
-		Hits results = indexer.search(searchContext);
-
-		return results.getLength();
+		return indexer.search(searchContext);
 	}
 
-	protected int searchBaseModelsCount(SearchContext searchContext)
+	protected Hits searchBaseModelsCount(SearchContext searchContext)
 		throws Exception {
 
 		return searchBaseModelsCount(
@@ -751,6 +758,12 @@ public abstract class BaseSearchTestCase {
 		else {
 			assertBaseModelsCount(initialBaseModelsCount + 1, searchContext);
 		}
+	}
+
+	protected Hits searchGroupEntries(long groupId, long userId)
+		throws Exception {
+
+		return null;
 	}
 
 	protected long searchGroupEntriesCount(long groupId, long userId)

@@ -126,14 +126,14 @@ public class SearchPaginationTest {
 		Hits hits = getSearchWithOneResult(
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
-		Assert.assertEquals(1, hits.getLength());
+		Assert.assertEquals(hits.toString(), 1, hits.getLength());
 	}
 
 	@Test
 	public void testSearchWithOneResultWhenTotalEqualsStart() throws Exception {
 		Hits hits = getSearchWithOneResult(_USERS_COUNT, 2 * _USERS_COUNT);
 
-		Assert.assertEquals(1, hits.getLength());
+		Assert.assertEquals(hits.toString(), 1, hits.getLength());
 	}
 
 	@Test
@@ -142,7 +142,7 @@ public class SearchPaginationTest {
 
 		Hits hits = getSearchWithOneResult(1000, 1000 + _USERS_COUNT);
 
-		Assert.assertEquals(1, hits.getLength());
+		Assert.assertEquals(hits.toString(), 1, hits.getLength());
 	}
 
 	@Test
@@ -150,7 +150,7 @@ public class SearchPaginationTest {
 		Hits hits = getSearchWithoutResults(
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
-		Assert.assertEquals(0, hits.getLength());
+		Assert.assertEquals(hits.toString(), 0, hits.getLength());
 	}
 
 	@Test
@@ -159,7 +159,7 @@ public class SearchPaginationTest {
 
 		Hits hits = getSearchWithoutResults(_USERS_COUNT, 2 * _USERS_COUNT);
 
-		Assert.assertEquals(0, hits.getLength());
+		Assert.assertEquals(hits.toString(), 0, hits.getLength());
 	}
 
 	@Test
@@ -168,7 +168,7 @@ public class SearchPaginationTest {
 
 		Hits hits = getSearchWithoutResults(1000, 1000 + _USERS_COUNT);
 
-		Assert.assertEquals(0, hits.getLength());
+		Assert.assertEquals(hits.toString(), 0, hits.getLength());
 	}
 
 	@Test
@@ -177,31 +177,32 @@ public class SearchPaginationTest {
 
 		Hits hits = getSearchWithoutResults(1000, 1001);
 
-		Assert.assertEquals(0, hits.getLength());
-		Assert.assertEquals(0, hits.getDocs().length);
+		Assert.assertEquals(hits.toString(), 0, hits.getLength());
+		Assert.assertEquals(hits.toString(), 0, hits.getDocs().length);
 	}
 
 	@Test
 	public void testSearchWithResults() throws Exception {
 		Hits hits = getHits(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
-		Assert.assertEquals(_USERS_COUNT, hits.getLength());
-		Assert.assertEquals(5, hits.getDocs().length);
+		Assert.assertEquals(hits.toString(), _USERS_COUNT, hits.getLength());
+		Assert.assertEquals(hits.toString(), 5, hits.getDocs().length);
 	}
 
 	@Test
 	public void testSearchWithResultsWhenTotalEqualsStart() throws Exception {
 		Hits hits = getHits(_USERS_COUNT, 2 * _USERS_COUNT);
 
-		Assert.assertEquals(_USERS_COUNT, hits.getLength());
-		Assert.assertEquals(_USERS_COUNT, hits.getDocs().length);
+		Assert.assertEquals(hits.toString(), _USERS_COUNT, hits.getLength());
+		Assert.assertEquals(
+			hits.toString(), _USERS_COUNT, hits.getDocs().length);
 	}
 
 	@Test
 	public void testSearchWithResultsWhenTotalLessThanStart() throws Exception {
 		Hits hits = getHits(1000, 1000 + _USERS_COUNT);
 
-		Assert.assertEquals(_USERS_COUNT, hits.getLength());
+		Assert.assertEquals(hits.toString(), _USERS_COUNT, hits.getLength());
 	}
 
 	@Test
@@ -210,8 +211,8 @@ public class SearchPaginationTest {
 
 		Hits hits = getHits(1000, 1001);
 
-		Assert.assertEquals(_USERS_COUNT, hits.getLength());
-		Assert.assertEquals(1, hits.getDocs().length);
+		Assert.assertEquals(hits.toString(), _USERS_COUNT, hits.getLength());
+		Assert.assertEquals(hits.toString(), 1, hits.getDocs().length);
 	}
 
 	protected Hits getHits(int start, int end) throws Exception {
@@ -259,7 +260,8 @@ public class SearchPaginationTest {
 
 		Hits hits = getHits(start, end);
 
-		Assert.assertEquals(expectedTotal, hits.getDocs().length);
+		Assert.assertEquals(
+			hits.toString(), expectedTotal, hits.getDocs().length);
 
 		List<User> returnedUsers = new ArrayList<>();
 

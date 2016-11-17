@@ -262,7 +262,7 @@ public class CalendarSearcherTest {
 
 		Hits hits = indexer.search(_searchContext);
 
-		Assert.assertEquals(length, hits.getLength());
+		Assert.assertEquals(hits.toString(), length, hits.getLength());
 	}
 
 	protected boolean isExactPhraseQueryImplementedForSearchEngine() {

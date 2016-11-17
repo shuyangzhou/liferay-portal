@@ -146,7 +146,7 @@ public class DDLRecordSearchTest {
 
 		Hits hits = DDLRecordLocalServiceUtil.search(searchContext);
 
-		Assert.assertEquals(1, hits.getLength());
+		Assert.assertEquals(hits.toString(), 1, hits.getLength());
 	}
 
 	@Test
@@ -325,7 +325,7 @@ public class DDLRecordSearchTest {
 
 		Hits hits = DDLRecordLocalServiceUtil.search(_searchContext);
 
-		Assert.assertEquals(length, hits.getLength());
+		Assert.assertEquals(hits.toString(), length, hits.getLength());
 	}
 
 	protected DDMForm createDDMForm() {

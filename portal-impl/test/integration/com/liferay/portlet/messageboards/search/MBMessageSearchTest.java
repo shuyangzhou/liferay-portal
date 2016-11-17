@@ -211,14 +211,12 @@ public class MBMessageSearchTest extends BaseSearchTestCase {
 	}
 
 	@Override
-	protected long searchGroupEntriesCount(long groupId, long creatorUserId)
+	protected Hits searchGroupEntries(long groupId, long creatorUserId)
 		throws Exception {
 
-		Hits hits = MBThreadServiceUtil.search(
+		return MBThreadServiceUtil.search(
 			groupId, creatorUserId, WorkflowConstants.STATUS_APPROVED,
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-
-		return hits.getLength();
 	}
 
 	@Override
