@@ -19,16 +19,18 @@ import com.liferay.portal.kernel.test.JDKLoggerTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
 import com.liferay.portal.kernel.test.rule.NewEnv;
-import com.liferay.portal.kernel.test.rule.NewEnvTestRule;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
+import com.liferay.portal.test.rule.AdviseWith;
+import com.liferay.portal.test.rule.AspectJNewEnvTestRule;
 
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -42,13 +44,7 @@ public class TikaSafeRandomizerBumperTest {
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
-			CodeCoverageAssertor.INSTANCE, NewEnvTestRule.INSTANCE);
-
-	@Before
-	public void setUp() {
-		PortalClassLoaderUtil.setClassLoader(
-			TikaSafeRandomizerBumperTest.class.getClassLoader());
-	}
+			CodeCoverageAssertor.INSTANCE, AspectJNewEnvTestRule.INSTANCE);
 
 	@Test
 	public void testAcceptAny() {
@@ -95,18 +91,13 @@ public class TikaSafeRandomizerBumperTest {
 			tikaSafeRandomizerBumper, _BROKEN_EXE_BYTES, false, Level.INFO);
 	}
 
+	@AdviseWith(adviceClasses = {ReflectionTestUtilAdvice.class})
 	@NewEnv(type = NewEnv.Type.CLASSLOADER)
 	@Test
 	public void testExceptionInInitializerError()
 		throws ClassNotFoundException {
 
-		String propertyKey = "tika.config";
-
-		String propertyValue = System.getProperty(propertyKey);
-
 		try {
-			System.setProperty(propertyKey, "bad.tika.config");
-
 			Class.forName(TikaSafeRandomizerBumper.class.getName());
 
 			Assert.fail();
@@ -114,11 +105,27 @@ public class TikaSafeRandomizerBumperTest {
 		catch (ExceptionInInitializerError eiie) {
 			Throwable cause = eiie.getCause();
 
-			Assert.assertTrue(cause instanceof NullPointerException);
+			Assert.assertTrue(cause instanceof RuntimeException);
+
+			Assert.assertSame(
+				ReflectionTestUtilAdvice._MESSAGE, cause.getMessage());
 		}
-		finally {
-			System.setProperty(propertyKey, propertyValue);
+	}
+
+	@Aspect
+	public static class ReflectionTestUtilAdvice {
+
+		@Around(
+			"execution(public static T " +
+				"com.liferay.portal.kernel.test.ReflectionTestUtil." +
+					"getFieldValue(java.lang.Class<?>, java.lang.String))"
+		)
+		public <T> T getFieldValue() {
+			throw new RuntimeException(_MESSAGE);
 		}
+
+		private static final String _MESSAGE = "This is a test.";
+
 	}
 
 	protected void doAccept(

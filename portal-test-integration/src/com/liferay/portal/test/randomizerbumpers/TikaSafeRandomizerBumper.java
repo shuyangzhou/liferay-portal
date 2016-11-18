@@ -18,10 +18,11 @@ import com.liferay.portal.kernel.io.DummyWriter;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.randomizerbumpers.RandomizerBumper;
-import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.util.FileImpl;
 
 import org.apache.tika.config.TikaConfig;
 import org.apache.tika.metadata.Metadata;
@@ -107,12 +108,9 @@ public class TikaSafeRandomizerBumper implements RandomizerBumper<byte[]> {
 	private static final TikaConfig _tikaConfig;
 
 	static {
-		String tikaConfig = System.getProperty("tika.config");
-
-		ClassLoader classLoader = PortalClassLoaderUtil.getClassLoader();
-
 		try {
-			_tikaConfig = new TikaConfig(classLoader.getResource(tikaConfig));
+			_tikaConfig = ReflectionTestUtil.getFieldValue(
+				FileImpl.class, "_tikaConfig");
 		}
 		catch (Exception e) {
 			throw new ExceptionInInitializerError(e);
