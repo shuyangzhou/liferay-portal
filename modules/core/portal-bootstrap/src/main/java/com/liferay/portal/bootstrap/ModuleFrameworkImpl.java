@@ -58,6 +58,7 @@ import java.io.InputStream;
 
 import java.net.URL;
 
+import java.nio.file.DirectoryStream;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -84,7 +85,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 import java.util.jar.Attributes;
 import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
@@ -1174,7 +1174,7 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 		refreshBundles.clear();
 
-		Set<String> overrideFileNames = new HashSet<>();
+		Set<String> overrideStaticFileNames = new HashSet<>();
 
 		for (Path jarPath : jarPaths) {
 			try (InputStream inputStream = Files.newInputStream(jarPath)) {
@@ -1186,14 +1186,16 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 				if (bundle != null) {
 					bundles.add(bundle);
 
-					overrideFileNames.add(
+					overrideStaticFileNames.add(
 						path.substring(path.lastIndexOf(StringPool.SLASH) + 1));
 				}
 			}
 		}
 
+		String deployDir = bundleContext.getProperty("lpkg.deployer.dir");
+
 		File file = new File(
-			bundleContext.getProperty("lpkg.deployer.dir") + StringPool.SLASH +
+			deployDir + StringPool.SLASH +
 				StaticLPKGResolver.getStaticLPKGFileName());
 
 		if (file.exists()) {
@@ -1242,7 +1244,7 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 							String fileName =
 								matcher.group(1) + matcher.group(4);
 
-							if (overrideFileNames.contains(fileName)) {
+							if (overrideStaticFileNames.contains(fileName)) {
 								if (_log.isInfoEnabled()) {
 									StringBundler sb = new StringBundler(7);
 
@@ -1270,6 +1272,36 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 						}
 					}
 				}
+			}
+		}
+
+		Set<String> overrideLPKGFileNames = new HashSet<>();
+
+		try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(
+				Paths.get(deployDir, "override"))) {
+
+			for (Path path : directoryStream) {
+				String fileName = String.valueOf(path.getFileName());
+
+				String pathName = StringUtil.toLowerCase(fileName);
+
+				if (pathName.endsWith("jar")) {
+					overrideLPKGFileNames.add(fileName);
+				}
+			}
+		}
+
+		for (Bundle bundle : bundleContext.getBundles()) {
+			String location = bundle.getLocation();
+
+			Matcher matcher = _pattern.matcher(location);
+
+			if (matcher.matches()) {
+				location = matcher.group(1) + matcher.group(4);
+			}
+
+			if (overrideLPKGFileNames.contains(location)) {
+				bundle.uninstall();
 			}
 		}
 
@@ -1308,21 +1340,7 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 			bundleTracker.open();
 
-			try {
-				countDownLatch.await(30, TimeUnit.SECONDS);
-			}
-			catch (InterruptedException ie) {
-				StringBundler sb = new StringBundler(4);
-
-				sb.append("Unable to initialize ");
-				sb.append(bundle);
-				sb.append(". Delete the directory ${liferay.home}/osgi/state ");
-				sb.append("and restart.");
-
-				_log.fatal(sb.toString());
-
-				System.exit(-1);
-			}
+			countDownLatch.await();
 		}
 
 		throwableCollector.rethrow();
@@ -1492,7 +1510,7 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		ModuleFrameworkImpl.class);
 
 	private static final Pattern _pattern = Pattern.compile(
-		"(.*?)(-\\d+\\.\\d+\\.\\d+)(\\..+)?(\\.jar)");
+		"/?(.*?)(-\\d+\\.\\d+\\.\\d+)(\\..+)?(\\.jar)");
 
 	private Framework _framework;
 	private final Map<ApplicationContext, List<ServiceRegistration<?>>>

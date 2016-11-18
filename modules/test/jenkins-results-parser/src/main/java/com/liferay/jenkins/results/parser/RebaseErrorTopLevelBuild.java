@@ -72,10 +72,24 @@ public class RebaseErrorTopLevelBuild extends TopLevelBuild {
 				return result;
 			}
 
+			long time = System.currentTimeMillis();
+
 			Map<String, String> stopPropertiesMap = getStopPropertiesMap();
 
-			if (!stopPropertiesMap.containsKey("TOP_LEVEL_GITHUB_COMMENT_ID")) {
-				return result;
+			while (!stopPropertiesMap.containsKey(
+						"TOP_LEVEL_GITHUB_COMMENT_ID")) {
+
+				if ((System.currentTimeMillis() - time) > (5 * 60 * 1000)) {
+					System.out.println(
+						"No entry exists for TOP_LEVEL_GITHUB_COMMENT_ID in " +
+							"stop.properties");
+
+					return result;
+				}
+
+				JenkinsResultsParserUtil.sleep(10 * 1000);
+
+				stopPropertiesMap = getStopPropertiesMap();
 			}
 
 			StringBuilder sb = new StringBuilder();
