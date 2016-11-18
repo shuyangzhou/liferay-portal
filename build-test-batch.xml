@@ -909,9 +909,8 @@ app.server.type=@{app.server.type}]]></echo>
 
 							<antcall inheritall="false" target="stop-app-server" />
 
-							<delete dir="${liferay.home}/osgi/marketplace/override" />
-
-							<delete>
+							<delete includeemptydirs="false">
+								<fileset dir="${liferay.home}/osgi/marketplace/override" />
 								<fileset dir="${liferay.home}/osgi/static" />
 							</delete>
 
@@ -1613,7 +1612,7 @@ app.server.type=@{app.server.type}]]></echo>
 				<gradle-execute dir="modules" task="assemble">
 					<arg value="--continue" />
 					<arg value="--parallel" />
-					<arg value="-Dbuild.exclude.dirs=third-party" />
+					<arg value="-Dbuild.exclude.dirs=private/apps/saml,third-party" />
 				</gradle-execute>
 			</test-action>
 

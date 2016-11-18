@@ -864,7 +864,7 @@ public abstract class BaseBuild implements Build {
 			buildCur = buildCur.getParentBuild();
 
 			if (buildCur == null) {
-				throw new RuntimeException("Incomplete Build tree");
+				throw new RuntimeException("Incomplete build tree");
 			}
 		}
 

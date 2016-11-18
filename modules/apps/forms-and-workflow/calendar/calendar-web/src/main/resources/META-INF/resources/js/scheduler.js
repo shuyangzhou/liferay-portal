@@ -437,8 +437,19 @@ AUI.add(
 								}
 							);
 						}
-						else if (schedulerEvent.isMasterBooking() && confirm(Liferay.Language.get('deleting-this-event-will-cancel-the-meeting-with-your-guests-would-you-like-to-delete'))) {
-							remoteServices.deleteEvent(schedulerEvent, success);
+						else if (schedulerEvent.isMasterBooking()) {
+							var confirmationMessage;
+
+							if (schedulerEvent.get('hasChildCalendarBookings')) {
+								confirmationMessage = Liferay.Language.get('deleting-this-event-will-cancel-the-meeting-with-your-guests-would-you-like-to-delete');
+							}
+							else {
+								confirmationMessage = Liferay.Language.get('would-you-like-to-delete-this-event');
+							}
+
+							if (confirm(confirmationMessage)) {
+								remoteServices.deleteEvent(schedulerEvent, success);
+							}
 						}
 
 						event.preventDefault();
