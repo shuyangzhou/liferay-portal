@@ -44,19 +44,24 @@ public class BaseModelSearchResult<T extends BaseModel<T>>
 	@Override
 	public String toString() {
 		if ((_baseModels == null) || _baseModels.isEmpty()) {
-			return "{}";
+			return "{baseModels={}, length=".concat(
+				String.valueOf(_length)).concat(StringPool.CLOSE_BRACKET);
 		}
 
-		StringBundler sb = new StringBundler(2 * _baseModels.size() + 1);
+		StringBundler sb = new StringBundler(2 * _baseModels.size() + 4);
 
-		sb.append(StringPool.OPEN_BRACKET);
+		sb.append("{baseModels={");
 
-		for (T t : _baseModels) {
-			sb.append(t);
+		for (T baseModel : _baseModels) {
+			sb.append(baseModel);
 			sb.append(StringPool.COMMA_AND_SPACE);
 		}
 
 		sb.setStringAt(StringPool.CLOSE_BRACKET, sb.index() - 1);
+
+		sb.append(", length=");
+		sb.append(_length);
+		sb.append(StringPool.CLOSE_BRACKET);
 
 		return sb.toString();
 	}
