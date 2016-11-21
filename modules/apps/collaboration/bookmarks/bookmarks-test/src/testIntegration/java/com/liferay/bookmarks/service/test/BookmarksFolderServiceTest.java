@@ -124,7 +124,7 @@ public class BookmarksFolderServiceTest {
 
 		Hits hits = indexer.search(searchContext);
 
-		Assert.assertEquals(1, hits.getLength());
+		Assert.assertEquals(hits.toString(), 1, hits.getLength());
 	}
 
 	@Test
@@ -152,7 +152,7 @@ public class BookmarksFolderServiceTest {
 
 		Hits hits = indexer.search(searchContext);
 
-		Assert.assertEquals(1, hits.getLength());
+		Assert.assertEquals(hits.toString(), 1, hits.getLength());
 
 		BookmarksFolderLocalServiceUtil.deleteFolder(folderId);
 
@@ -183,7 +183,7 @@ public class BookmarksFolderServiceTest {
 
 		Hits hits = indexer.search(searchContext);
 
-		Assert.assertEquals(1, hits.getLength());
+		Assert.assertEquals(hits.toString(), 1, hits.getLength());
 
 		List<Document> results = hits.toList();
 
@@ -225,11 +225,11 @@ public class BookmarksFolderServiceTest {
 
 		Hits hits = indexer.search(searchContext);
 
-		Assert.assertEquals(4, hits.getLength());
+		Assert.assertEquals(hits.toString(), 4, hits.getLength());
 
 		Document[] documents = hits.getDocs();
 
-		Assert.assertEquals(2, documents.length);
+		Assert.assertEquals(documents.toString(), 2, documents.length);
 	}
 
 	@DeleteAfterTestRun
