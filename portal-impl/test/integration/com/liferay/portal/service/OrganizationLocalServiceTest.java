@@ -622,7 +622,7 @@ public class OrganizationLocalServiceTest {
 
 		Hits hits = searchOrganizationsAndUsers(organization, null);
 
-		Assert.assertEquals(2, hits.getLength());
+		Assert.assertEquals(hits.toString(), 2, hits.getLength());
 
 		hits = searchOrganizationsAndUsers(organization, "Organization1");
 
@@ -654,14 +654,14 @@ public class OrganizationLocalServiceTest {
 
 		Hits hits = searchOrganizationsAndUsers(organization, null);
 
-		Assert.assertEquals(1, hits.getLength());
+		Assert.assertEquals(hits.toString(), 1, hits.getLength());
 
 		Assert.assertEquals(
 			String.valueOf(_user.getUserId()), hits.doc(0).get(Field.USER_ID));
 
 		hits = searchOrganizationsAndUsers(organization, "Organization1");
 
-		Assert.assertEquals(0, hits.getLength());
+		Assert.assertEquals (hits.toString(), 0, hits.getLength());
 
 		hits = searchOrganizationsAndUsers(organization, "user1");
 
@@ -685,7 +685,7 @@ public class OrganizationLocalServiceTest {
 
 		Hits hits = searchOrganizationsAndUsers(organization, null);
 
-		Assert.assertEquals(1, hits.getLength());
+		Assert.assertEquals(hits.toString(), 1, hits.getLength());
 
 		Assert.assertEquals(
 			String.valueOf(suborganization.getOrganizationId()),
@@ -712,15 +712,15 @@ public class OrganizationLocalServiceTest {
 
 		Hits hits = searchOrganizationsAndUsers(organization, null);
 
-		Assert.assertEquals(0, hits.getLength());
+		Assert.assertEquals(hits.toString(), 0, hits.getLength());
 
 		hits = searchOrganizationsAndUsers(organization, "Organization1");
 
-		Assert.assertEquals(0, hits.getLength());
+		Assert.assertEquals(hits.toString(), 0, hits.getLength());
 
 		hits = searchOrganizationsAndUsers(organization, "user1");
 
-		Assert.assertEquals(0, hits.getLength());
+		Assert.assertEquals(hits.toString(), 0, hits.getLength());
 	}
 
 	protected List<Object> getOrganizationsAndUsers(Organization organization) {
