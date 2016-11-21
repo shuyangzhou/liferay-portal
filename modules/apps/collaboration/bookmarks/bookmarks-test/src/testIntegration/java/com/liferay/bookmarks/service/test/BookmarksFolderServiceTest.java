@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Assert;
@@ -229,7 +230,7 @@ public class BookmarksFolderServiceTest {
 
 		Document[] documents = hits.getDocs();
 
-		Assert.assertEquals(documents.toString(), 2, documents.length);
+		Assert.assertEquals(Arrays.toString(documents), 2, documents.length);
 	}
 
 	@DeleteAfterTestRun

@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.search.unit.test.BaseIndexingTestCase;
 
+import java.util.Arrays;
 import java.util.Map;
 
 import org.junit.Assert;
@@ -57,7 +58,7 @@ public abstract class BaseGroupByTestCase extends BaseIndexingTestCase {
 
 		Document[] docs = hits.getDocs();
 
-		Assert.assertEquals(docs.toString(), docsCount, docs.length);
+		Assert.assertEquals(Arrays.toString(docs), docsCount, docs.length);
 	}
 
 	protected void assertGroup(
