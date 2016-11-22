@@ -31,6 +31,8 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
+import com.liferay.portal.kernel.test.rule.Sync;
+import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.util.OrganizationTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
@@ -56,7 +58,9 @@ public class OrganizationLocalServiceTest {
 	@ClassRule
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
-		new LiferayIntegrationTestRule();
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(),
+			SynchronousDestinationTestRule.INSTANCE);
 
 	@Test
 	public void testAddOrganization() throws Exception {
@@ -605,6 +609,7 @@ public class OrganizationLocalServiceTest {
 			organizationB.getGroupId(), groupAA.getParentGroupId());
 	}
 
+	@Sync
 	@Test
 	public void testSearchOrganizationsAndUsers() throws Exception {
 		Organization organization = OrganizationTestUtil.addOrganization();
@@ -646,6 +651,7 @@ public class OrganizationLocalServiceTest {
 			organization.getOrganizationId(), _user);
 	}
 
+	@Sync
 	@Test
 	public void testSearchOrganizationsAndUsersWhenNoOrganizations()
 		throws Exception {
@@ -685,6 +691,7 @@ public class OrganizationLocalServiceTest {
 			organization.getOrganizationId(), _user);
 	}
 
+	@Sync
 	@Test
 	public void testSearchOrganizationsAndUsersWhenNoUsers() throws Exception {
 		Organization organization = OrganizationTestUtil.addOrganization();
@@ -721,6 +728,7 @@ public class OrganizationLocalServiceTest {
 		Assert.assertEquals(hits.toString(), 0, hits.getLength());
 	}
 
+	@Sync
 	@Test
 	public void testSearchOrganizationsAndUsersWithRootOrganization()
 		throws Exception {
