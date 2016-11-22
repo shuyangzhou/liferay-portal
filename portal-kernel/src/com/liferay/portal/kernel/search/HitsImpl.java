@@ -19,7 +19,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -213,13 +213,7 @@ public class HitsImpl implements Hits {
 
 	@Override
 	public List<Document> toList() {
-		List<Document> subset = new ArrayList<>(_docs.length);
-
-		for (Document doc : _docs) {
-			subset.add(doc);
-		}
-
-		return subset;
+		return Arrays.asList(_docs);
 	}
 
 	@Override
