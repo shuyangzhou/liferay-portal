@@ -225,10 +225,18 @@ public class HitsImpl implements Hits {
 	@Override
 	public String toString() {
 		if ((_docs == null) || (_docs.length == 0)) {
-			return "{}";
+			StringBundler sb = new StringBundler(5);
+
+			sb.append("{docs={}, length=");
+			sb.append(_length);
+			sb.append(", query=");
+			sb.append(_query);
+			sb.append(StringPool.CLOSE_BRACKET);
+
+			return sb.toString();
 		}
 
-		StringBundler sb = new StringBundler(2 * _docs.length + 1);
+		StringBundler sb = new StringBundler(2 * _docs.length + 4);
 
 		sb.append(StringPool.OPEN_BRACKET);
 
@@ -237,7 +245,12 @@ public class HitsImpl implements Hits {
 			sb.append(StringPool.COMMA_AND_SPACE);
 		}
 
-		sb.setStringAt(StringPool.CLOSE_BRACKET, sb.index() - 1);
+		sb.setStringAt("}, length=", sb.index() - 1);
+
+		sb.append(_length);
+		sb.append(", query=");
+		sb.append(_query);
+		sb.append(StringPool.CLOSE_BRACKET);
 
 		return sb.toString();
 	}
