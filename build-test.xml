@@ -5562,6 +5562,10 @@ osb.lcs.portlet.oauth.consumer.secret=${osb.lcs.portlet.oauth.consumer.secret}</
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+	<category name="com.liferay.portal.dao.orm.hibernate.VerifySessionFactoryWrapper">
+		<priority value="INFO" />
+	</category>
+
 	<category name="com.liferay.portal.spring.hibernate.DialectDetector">
 		<priority value="${dialect.detector.log.level}" />
 	</category>
@@ -8697,6 +8701,8 @@ jdbc.default.password=${database.mysql.password}</echo>
 		<if>
 			<equals arg1="${openam.enabled}" arg2="true" />
 			<then>
+				<ant antfile="build-test-authentication.xml" target="delete-openam-config" />
+
 				<ant antfile="build-test-authentication.xml" target="setup-openam" />
 			</then>
 		</if>

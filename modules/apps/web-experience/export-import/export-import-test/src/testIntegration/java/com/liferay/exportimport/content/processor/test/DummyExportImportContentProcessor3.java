@@ -16,6 +16,7 @@ package com.liferay.exportimport.content.processor.test;
 
 import com.liferay.exportimport.content.processor.ExportImportContentProcessor;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
+import com.liferay.portal.kernel.model.StagedModel;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -30,11 +31,11 @@ import org.osgi.service.component.annotations.Component;
 	service = {ExportImportContentProcessor.class}
 )
 public class DummyExportImportContentProcessor3
-	implements ExportImportContentProcessor<DummyStagedModel, String> {
+	implements ExportImportContentProcessor<String> {
 
 	@Override
 	public String replaceExportContentReferences(
-			PortletDataContext portletDataContext, DummyStagedModel stagedModel,
+			PortletDataContext portletDataContext, StagedModel stagedModel,
 			String content, boolean exportReferencedContent,
 			boolean escapeContent)
 		throws Exception {
@@ -44,7 +45,7 @@ public class DummyExportImportContentProcessor3
 
 	@Override
 	public String replaceImportContentReferences(
-			PortletDataContext portletDataContext, DummyStagedModel stagedModel,
+			PortletDataContext portletDataContext, StagedModel stagedModel,
 			String content)
 		throws Exception {
 
@@ -52,8 +53,7 @@ public class DummyExportImportContentProcessor3
 	}
 
 	@Override
-	public boolean validateContentReferences(long groupId, String content) {
-		return false;
+	public void validateContentReferences(long groupId, String content) {
 	}
 
 }
