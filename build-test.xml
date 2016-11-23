@@ -5612,18 +5612,14 @@ osb.lcs.portlet.oauth.consumer.secret=${osb.lcs.portlet.oauth.consumer.secret}</
 		<get-database-property property.name="database.username" />
 		<get-database-property property.name="database.version" />
 
-		<echo append="true" file="portal-impl/src/portal-ext.properties">
-
+		<generate-jdbc-properties properties.file="portal-impl/src/portal-ext.properties">
+			<post-action>
+				<echo file="@{properties.file}" append="true"><![CDATA[
 liferay.home=${liferay.home}
 
 plugin.notifications.enabled=false
 
 jdbc.default.jndi.name=
-
-jdbc.default.driverClassName=${database.driver}
-jdbc.default.url=${database.url}
-jdbc.default.username=${database.username}
-jdbc.default.password=${database.password}
 
 captcha.max.challenges=-1
 
@@ -5639,15 +5635,9 @@ sprite.root.dir=/tmp/sprite
 
 axis.servlet.hosts.allowed=
 
-tunnel.servlet.hosts.allowed=</echo>
-
-		<if>
-			<equals arg1="${database.type}" arg2="oracle" />
-			<then>
-				<echo append="true" file="portal-impl/src/portal-ext.properties"><![CDATA[
-jdbc.default.connectionProperties=oracle.jdbc.ReadTimeout=0;oracle.net.CONNECT_TIMEOUT=0]]></echo>
-			</then>
-		</if>
+tunnel.servlet.hosts.allowed=]]></echo>
+			</post-action>
+		</generate-jdbc-properties>
 
 		<get-testcase-property property.name="captcha.max.challenges" />
 
