@@ -552,6 +552,16 @@
 		<execute function="Click" locator1="Button#CLOSE_MODAL" />
 	</command>
 
+	<command name="testOpenSSOConnection">
+		<execute function="AssertClick" locator1="PortalSettingsAuthentication#AUTHENTICATION_OPEN_SSO_TEST_OPEN_SSO_CONFIGURATION_BUTTON" value1="Test OpenSSO Configuration" />
+
+		<execute function="AssertTextEquals" locator1="Modal#BODY" value1="Liferay has successfully connected to the OpenSSO server." />
+
+		<var name="key_modalTitle" value="OpenSSO" />
+
+		<execute function="Click" locator1="Button#CLOSE_MODAL" />
+	</command>
+
 	<command name="viewAuthenticationCASCP">
 		<execute macro="Panel#expandPanel">
 			<var name="panelHeading" value="Authentication" />

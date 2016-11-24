@@ -45,15 +45,15 @@ import java.sql.SQLException;
 
 import java.util.List;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Shuyang Zhou
  * @author Tina Tian
  */
-@Component(service = DBStore.class)
 public class DBStore extends BaseStore {
+
+	public DBStore(DLContentLocalService dlContentLocalService) {
+		_dlContentLocalService = dlContentLocalService;
+	}
 
 	@Override
 	public void addDirectory(
@@ -465,15 +465,8 @@ public class DBStore extends BaseStore {
 		}
 	}
 
-	@Reference(unbind = "-")
-	protected void setDLContentLocalService(
-		DLContentLocalService dlContentLocalService) {
-
-		_dlContentLocalService = dlContentLocalService;
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(DBStore.class);
 
-	private DLContentLocalService _dlContentLocalService;
+	private final DLContentLocalService _dlContentLocalService;
 
 }

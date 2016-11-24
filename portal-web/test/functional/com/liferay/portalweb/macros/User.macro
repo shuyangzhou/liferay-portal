@@ -1901,9 +1901,11 @@
 	</command>
 
 	<command name="loginUserWithOpenSSOEnabledPG">
-		<description message="Log into OpenSSO as ${userScreenName} using the password ${password}." />
+		<description message="Log into OpenAM as ${userScreenName} using the password ${password}." />
 
-		<execute macro="Navigator#openURL" />
+		<execute macro="Navigator#openSpecificURL">
+			<var name="url" value="${hostsURL}" />
+		</execute>
 
 		<execute function="AssertClick" locator1="UserBar#USER_SIGN_IN" value1="Sign In" />
 
