@@ -77,7 +77,10 @@ public class DBStoreRegistrator {
 	protected Store prepare(Store store) {
 		DB db = DBManagerUtil.getDB();
 
-		if (db.getDBType() != DBType.POSTGRESQL) {
+		if ((db.getDBType() == DBType.DB2) ||
+			(db.getDBType() == DBType.MYSQL) ||
+			(db.getDBType() == DBType.SYBASE)) {
+
 			return store;
 		}
 
