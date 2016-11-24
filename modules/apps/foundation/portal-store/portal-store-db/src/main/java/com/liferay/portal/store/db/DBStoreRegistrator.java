@@ -14,6 +14,7 @@
 
 package com.liferay.portal.store.db;
 
+import com.liferay.document.library.kernel.service.DLContentLocalService;
 import com.liferay.document.library.kernel.store.BaseStore;
 import com.liferay.document.library.kernel.store.Store;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
@@ -25,6 +26,7 @@ import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.ClassLoaderUtil;
+import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.spring.aop.MethodInterceptorInvocationHandler;
 import com.liferay.portlet.documentlibrary.store.TempFileMethodInterceptor;
@@ -34,7 +36,6 @@ import java.io.InputStream;
 
 import java.util.Arrays;
 import java.util.Dictionary;
-import java.util.Hashtable;
 import java.util.List;
 
 import org.aopalliance.intercept.MethodInterceptor;
@@ -52,21 +53,16 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true)
 public class DBStoreRegistrator {
 
-	@Reference(unbind = "-")
-	public void setDBStore(DBStore dbStore) {
-		_dbStore = dbStore;
-	}
-
 	@Activate
 	protected void activate(BundleContext bundleContext) {
-		Dictionary<String, String> properties = new Hashtable<>();
+		Dictionary<String, String> properties = new HashMapDictionary<>();
 
 		properties.put("store.type", "com.liferay.portal.store.db.DBStore");
 
-		_dbStore = prepare(_dbStore);
+		Store store = prepare(new DBStore(_dlContentLocalService));
 
 		_serviceRegistration = bundleContext.registerService(
-			Store.class, _dbStore, properties);
+			Store.class, store, properties);
 	}
 
 	@Deactivate
@@ -106,7 +102,9 @@ public class DBStoreRegistrator {
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
-	private Store _dbStore;
+	@Reference
+	private DLContentLocalService _dlContentLocalService;
+
 	private ServiceRegistration<Store> _serviceRegistration;
 
 	/**
