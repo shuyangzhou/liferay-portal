@@ -29,6 +29,7 @@ import com.liferay.portal.search.elasticsearch.internal.index.LiferayDocumentTyp
 import com.liferay.portal.search.unit.test.BaseIndexingTestCase;
 import com.liferay.portal.search.unit.test.IndexingFixture;
 
+import java.util.Arrays;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
@@ -113,7 +114,7 @@ public class GeoLocationPointFieldTest extends BaseIndexingTestCase {
 
 		Document[] documents = hits.getDocs();
 
-		Assert.assertEquals(1, documents.length);
+		Assert.assertEquals(Arrays.toString(documents), 1, documents.length);
 
 		return documents[0];
 	}
