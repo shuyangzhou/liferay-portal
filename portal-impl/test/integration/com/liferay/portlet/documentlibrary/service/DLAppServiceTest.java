@@ -1810,8 +1810,7 @@ public class DLAppServiceTest extends BaseDLAppTestCase {
 	}
 
 	protected static void search(
-			FileEntry fileEntry, boolean rootFolder, String keywords,
-			boolean assertTrue)
+			FileEntry fileEntry, String keywords, boolean expected)
 		throws Exception {
 
 		SearchContext searchContext = new SearchContext();
@@ -1834,11 +1833,9 @@ public class DLAppServiceTest extends BaseDLAppTestCase {
 
 		Hits hits = indexer.search(searchContext);
 
-		List<Document> documents = hits.toList();
-
 		boolean found = false;
 
-		for (Document document : documents) {
+		for (Document document : hits.getDocs()) {
 			long fileEntryId = GetterUtil.getLong(
 				document.get(Field.ENTRY_CLASS_PK));
 
@@ -1849,23 +1846,7 @@ public class DLAppServiceTest extends BaseDLAppTestCase {
 			}
 		}
 
-		String message = "Search engine could not find ";
-
-		if (rootFolder) {
-			message += "root file entry by " + keywords;
-		}
-		else {
-			message += "file entry by " + keywords;
-		}
-
-		message += " using query " + hits.getQuery();
-
-		if (assertTrue) {
-			Assert.assertTrue(message, found);
-		}
-		else {
-			Assert.assertFalse(message, found);
-		}
+		Assert.assertEquals(hits.toString(), expected, found);
 	}
 
 	protected static void searchFile(long groupId, long folderId)
