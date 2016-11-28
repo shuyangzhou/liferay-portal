@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.junit.Assert;
@@ -162,14 +161,17 @@ public class DynamicQueryTest {
 		DynamicQuery dynamicQuery = ClassNameLocalServiceUtil.dynamicQuery();
 
 		dynamicQuery.addOrder(OrderFactoryUtil.desc("classNameId"));
-		dynamicQuery.setLimit(QueryUtil.ALL_POS, _allClassNames.size());
+		dynamicQuery.setLimit(
+			_allClassNames.size() - 10, _allClassNames.size());
 
-		_allClassNames = new ArrayList<>(_allClassNames);
+		List<ClassName> expectedResults = new ArrayList<>();
 
-		Collections.reverse(_allClassNames);
+		for (int i = 9; i >= 0; i--) {
+			expectedResults.add(_allClassNames.get(i));
+		}
 
 		Assert.assertEquals(
-			_allClassNames,
+			expectedResults,
 			ClassNameLocalServiceUtil.<ClassName>dynamicQuery(dynamicQuery));
 	}
 
