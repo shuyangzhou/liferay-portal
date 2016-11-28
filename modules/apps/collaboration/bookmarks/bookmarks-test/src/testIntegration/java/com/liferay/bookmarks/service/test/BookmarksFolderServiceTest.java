@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Assert;
@@ -124,7 +125,7 @@ public class BookmarksFolderServiceTest {
 
 		Hits hits = indexer.search(searchContext);
 
-		Assert.assertEquals(1, hits.getLength());
+		Assert.assertEquals(hits.toString(), 1, hits.getLength());
 	}
 
 	@Test
@@ -152,7 +153,7 @@ public class BookmarksFolderServiceTest {
 
 		Hits hits = indexer.search(searchContext);
 
-		Assert.assertEquals(1, hits.getLength());
+		Assert.assertEquals(hits.toString(), 1, hits.getLength());
 
 		BookmarksFolderLocalServiceUtil.deleteFolder(folderId);
 
@@ -183,7 +184,7 @@ public class BookmarksFolderServiceTest {
 
 		Hits hits = indexer.search(searchContext);
 
-		Assert.assertEquals(1, hits.getLength());
+		Assert.assertEquals(hits.toString(), 1, hits.getLength());
 
 		List<Document> results = hits.toList();
 
@@ -225,11 +226,11 @@ public class BookmarksFolderServiceTest {
 
 		Hits hits = indexer.search(searchContext);
 
-		Assert.assertEquals(4, hits.getLength());
+		Assert.assertEquals(hits.toString(), 4, hits.getLength());
 
 		Document[] documents = hits.getDocs();
 
-		Assert.assertEquals(2, documents.length);
+		Assert.assertEquals(Arrays.toString(documents), 2, documents.length);
 	}
 
 	@DeleteAfterTestRun
