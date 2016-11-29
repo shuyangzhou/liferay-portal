@@ -31,8 +31,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import org.apache.felix.utils.log.Logger;
-
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -46,13 +44,12 @@ public class WebBundleDeployer {
 
 	public WebBundleDeployer(
 			BundleContext bundleContext, Dictionary<String, Object> properties,
-			EventUtil eventUtil, Logger logger)
+			EventUtil eventUtil)
 		throws Exception {
 
 		_bundleContext = bundleContext;
 		_properties = properties;
 		_eventUtil = eventUtil;
-		_logger = logger;
 	}
 
 	public void close() {
@@ -172,7 +169,7 @@ public class WebBundleDeployer {
 	private void _initWabBundle(Bundle bundle) {
 		try {
 			WabBundleProcessor newWabBundleProcessor = new WabBundleProcessor(
-				bundle, _logger);
+				bundle);
 
 			WabBundleProcessor oldWabBundleProcessor =
 				_wabBundleProcessors.putIfAbsent(bundle, newWabBundleProcessor);
@@ -192,7 +189,6 @@ public class WebBundleDeployer {
 
 	private final BundleContext _bundleContext;
 	private final EventUtil _eventUtil;
-	private final Logger _logger;
 	private final Dictionary<String, Object> _properties;
 	private final ConcurrentMap<Bundle, WabBundleProcessor>
 		_wabBundleProcessors = new ConcurrentHashMap<>();

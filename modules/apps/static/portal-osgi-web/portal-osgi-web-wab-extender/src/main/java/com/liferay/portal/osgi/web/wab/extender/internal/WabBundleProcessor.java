@@ -14,6 +14,8 @@
 
 package com.liferay.portal.osgi.web.wab.extender.internal;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -64,8 +66,6 @@ import javax.servlet.annotation.HandlesTypes;
 import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionListener;
 
-import org.apache.felix.utils.log.Logger;
-
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
@@ -81,9 +81,8 @@ import org.osgi.util.tracker.ServiceTracker;
  */
 public class WabBundleProcessor {
 
-	public WabBundleProcessor(Bundle bundle, Logger logger) {
+	public WabBundleProcessor(Bundle bundle) {
 		_bundle = bundle;
-		_logger = logger;
 
 		BundleWiring bundleWiring = _bundle.adapt(BundleWiring.class);
 
@@ -144,7 +143,7 @@ public class WabBundleProcessor {
 			ServletContext servletContext =
 				ModifiableServletContextAdapter.createInstance(
 					servletContextHelperRegistration.getServletContext(),
-					_bundle.getBundleContext(), webXMLDefinition, _logger);
+					_bundle.getBundleContext(), webXMLDefinition);
 
 			initServletContainerInitializers(_bundle, servletContext);
 
@@ -169,8 +168,7 @@ public class WabBundleProcessor {
 			initServlets(webXMLDefinition.getServletDefinitions());
 		}
 		catch (Exception e) {
-			_logger.log(
-				Logger.LOG_ERROR,
+			_log.error(
 				"Catastrophic initialization failure! Shutting down " +
 					_contextName + " WAB due to: " + e.getMessage(),
 				e);
@@ -198,7 +196,9 @@ public class WabBundleProcessor {
 			annotatedClass = bundle.loadClass(className);
 		}
 		catch (Throwable t) {
-			_logger.log(Logger.LOG_DEBUG, t.getMessage());
+			if (_log.isDebugEnabled()) {
+				_log.debug(t, t);
+			}
 
 			return;
 		}
@@ -223,7 +223,9 @@ public class WabBundleProcessor {
 			classAnnotations = annotatedClass.getAnnotations();
 		}
 		catch (Throwable t) {
-			_logger.log(Logger.LOG_DEBUG, t.getMessage());
+			if (_log.isDebugEnabled()) {
+				_log.debug(t, t);
+			}
 		}
 
 		for (Annotation classAnnotation : classAnnotations) {
@@ -244,7 +246,9 @@ public class WabBundleProcessor {
 			classMethods = annotatedClass.getDeclaredMethods();
 		}
 		catch (Throwable t) {
-			_logger.log(Logger.LOG_DEBUG, t.getMessage());
+			if (_log.isDebugEnabled()) {
+				_log.debug(t, t);
+			}
 		}
 
 		for (Method method : classMethods) {
@@ -254,7 +258,9 @@ public class WabBundleProcessor {
 				methodAnnotations = method.getDeclaredAnnotations();
 			}
 			catch (Throwable t) {
-				_logger.log(Logger.LOG_DEBUG, t.getMessage());
+				if (_log.isDebugEnabled()) {
+					_log.debug(t, t);
+				}
 			}
 
 			for (Annotation methodAnnotation : methodAnnotations) {
@@ -276,7 +282,9 @@ public class WabBundleProcessor {
 			declaredFields = annotatedClass.getDeclaredFields();
 		}
 		catch (Throwable t) {
-			_logger.log(Logger.LOG_DEBUG, t.getMessage());
+			if (_log.isDebugEnabled()) {
+				_log.debug(t, t);
+			}
 		}
 
 		for (Field field : declaredFields) {
@@ -286,7 +294,9 @@ public class WabBundleProcessor {
 				fieldAnnotations = field.getDeclaredAnnotations();
 			}
 			catch (Throwable t) {
-				_logger.log(Logger.LOG_DEBUG, t.getMessage());
+				if (_log.isDebugEnabled()) {
+					_log.debug(t, t);
+				}
 			}
 
 			for (Annotation fieldAnnotation : fieldAnnotations) {
@@ -309,7 +319,7 @@ public class WabBundleProcessor {
 				serviceRegistration.unregister();
 			}
 			catch (Exception e) {
-				_logger.log(Logger.LOG_ERROR, e.getMessage(), e);
+				_log.error(e, e);
 			}
 		}
 
@@ -324,7 +334,7 @@ public class WabBundleProcessor {
 				serviceRegistration.unregister();
 			}
 			catch (Exception e) {
-				_logger.log(Logger.LOG_ERROR, e.getMessage(), e);
+				_log.error(e, e);
 			}
 		}
 
@@ -339,7 +349,7 @@ public class WabBundleProcessor {
 				serviceRegistration.unregister();
 			}
 			catch (Exception e) {
-				_logger.log(Logger.LOG_ERROR, e.getMessage(), e);
+				_log.error(e, e);
 			}
 		}
 
@@ -561,7 +571,7 @@ public class WabBundleProcessor {
 					fqcn, bundle, bundleWiring, servletContext);
 			}
 			catch (IOException ioe) {
-				_logger.log(Logger.LOG_ERROR, ioe.getMessage(), ioe);
+				_log.error(ioe, ioe);
 			}
 		}
 	}
@@ -652,7 +662,7 @@ public class WabBundleProcessor {
 				ServletContainerInitializer.class);
 		}
 		catch (Exception e) {
-			_logger.log(Logger.LOG_ERROR, e.getMessage(), e);
+			_log.error(e, e);
 
 			return;
 		}
@@ -702,7 +712,7 @@ public class WabBundleProcessor {
 				annotatedClasses, servletContext);
 		}
 		catch (Throwable t) {
-			_logger.log(Logger.LOG_ERROR, t.getMessage(), t);
+			_log.error(t, t);
 		}
 	}
 
@@ -730,10 +740,10 @@ public class WabBundleProcessor {
 				webXMLDefinition.addListenerDefinition(listenerDefinition);
 			}
 			catch (Exception e) {
-				_logger.log(
-					Logger.LOG_ERROR,
+				_log.error(
 					"Bundle " + _bundle + " is unable to load listener " +
-						listenerClassName);
+						listenerClassName,
+					e);
 			}
 		}
 	}
@@ -754,6 +764,9 @@ public class WabBundleProcessor {
 
 	private static final String _VENDOR = "Liferay, Inc.";
 
+	private static final Log _log = LogFactoryUtil.getLog(
+		WabBundleProcessor.class);
+
 	private final Bundle _bundle;
 	private final ClassLoader _bundleClassLoader;
 	private final BundleContext _bundleContext;
@@ -762,7 +775,6 @@ public class WabBundleProcessor {
 		new ConcurrentSkipListSet<>();
 	private final Set<ServiceRegistration<?>> _listenerRegistrations =
 		new ConcurrentSkipListSet<>();
-	private final Logger _logger;
 	private ServiceReference<ServletContextHelperRegistration>
 		_servletContextHelperRegistrationServiceReference;
 	private final Set<ServiceRegistration<Servlet>> _servletRegistrations =

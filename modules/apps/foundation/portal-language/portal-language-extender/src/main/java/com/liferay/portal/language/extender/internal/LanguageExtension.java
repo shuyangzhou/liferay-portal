@@ -15,6 +15,8 @@
 package com.liferay.portal.language.extender.internal;
 
 import com.liferay.osgi.util.ServiceTrackerFactory;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.AggregateResourceBundle;
 import com.liferay.portal.kernel.util.CacheResourceBundleLoader;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
@@ -30,7 +32,6 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import org.apache.felix.utils.extender.Extension;
-import org.apache.felix.utils.log.Logger;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -46,12 +47,11 @@ public class LanguageExtension implements Extension {
 
 	public LanguageExtension(
 		BundleContext bundleContext, Bundle bundle,
-		List<BundleCapability> bundleCapabilities, Logger logger) {
+		List<BundleCapability> bundleCapabilities) {
 
 		_bundleContext = bundleContext;
 		_bundle = bundle;
 		_bundleCapabilities = bundleCapabilities;
-		_logger = logger;
 	}
 
 	@Override
@@ -86,9 +86,8 @@ public class LanguageExtension implements Extension {
 			if (resourceBundleLoader != null) {
 				registerResourceBundleLoader(attributes, resourceBundleLoader);
 			}
-			else {
-				_logger.log(
-					Logger.LOG_WARNING,
+			else if (_log.isWarnEnabled()) {
+				_log.warn(
 					"Unable to handle " + capability + " in " +
 						_bundle.getSymbolicName());
 			}
@@ -142,10 +141,12 @@ public class LanguageExtension implements Extension {
 				ResourceBundleLoader.class, resourceBundleLoader, properties));
 	}
 
+	private static final Log _log = LogFactoryUtil.getLog(
+		LanguageExtension.class);
+
 	private final Bundle _bundle;
 	private final List<BundleCapability> _bundleCapabilities;
 	private final BundleContext _bundleContext;
-	private final Logger _logger;
 	private final Collection<ServiceRegistration<ResourceBundleLoader>>
 		_serviceRegistrations = new ArrayList<>();
 

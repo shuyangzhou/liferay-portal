@@ -169,6 +169,10 @@ public class SystemProperties {
 
 		ClassLoader classLoader = currentThread.getContextClassLoader();
 
+		if (classLoader == null) {
+			classLoader = ClassLoader.getSystemClassLoader();
+		}
+
 		load(classLoader);
 	}
 

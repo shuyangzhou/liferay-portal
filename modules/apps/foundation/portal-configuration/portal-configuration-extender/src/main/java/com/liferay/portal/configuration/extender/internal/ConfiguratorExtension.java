@@ -19,6 +19,8 @@ import com.liferay.portal.configuration.extender.ConfigurationDescriptionFactory
 import com.liferay.portal.configuration.extender.FactoryConfigurationDescription;
 import com.liferay.portal.configuration.extender.NamedConfigurationContent;
 import com.liferay.portal.configuration.extender.SingleConfigurationDescription;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Supplier;
@@ -29,7 +31,6 @@ import java.util.Collection;
 import java.util.Dictionary;
 
 import org.apache.felix.utils.extender.Extension;
-import org.apache.felix.utils.log.Logger;
 
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.service.cm.Configuration;
@@ -41,13 +42,12 @@ import org.osgi.service.cm.ConfigurationAdmin;
 public class ConfiguratorExtension implements Extension {
 
 	public ConfiguratorExtension(
-		ConfigurationAdmin configurationAdmin, Logger logger, String namespace,
+		ConfigurationAdmin configurationAdmin, String namespace,
 		Collection<NamedConfigurationContent> namedConfigurationContents,
 		Collection<ConfigurationDescriptionFactory>
 			configurationDescriptionFactories) {
 
 		_configurationAdmin = configurationAdmin;
-		_logger = logger;
 		_namespace = namespace;
 		_configurationContents = namedConfigurationContents;
 		_configurationDescriptionFactories = configurationDescriptionFactories;
@@ -112,8 +112,7 @@ public class ConfiguratorExtension implements Extension {
 					(SingleConfigurationDescription)configurationDescription);
 			}
 			else {
-				_logger.log(
-					Logger.LOG_ERROR,
+				_log.error(
 					configurationDescriptionFactory + " returned an " +
 						"unsupported configuration description " +
 							configurationDescription);
@@ -149,11 +148,13 @@ public class ConfiguratorExtension implements Extension {
 			properties = propertiesSupplier.get();
 		}
 		catch (Throwable t) {
-			_logger.log(
-				Logger.LOG_WARNING,
-				"Supplier from factory configuration description " +
-					factoryConfigurationDescription + " threw an exception: ",
-				t);
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"Supplier from factory configuration description " +
+						factoryConfigurationDescription +
+							" threw an exception: ",
+					t);
+			}
 
 			return;
 		}
@@ -184,11 +185,12 @@ public class ConfiguratorExtension implements Extension {
 			properties = propertiesSupplier.get();
 		}
 		catch (Throwable t) {
-			_logger.log(
-				Logger.LOG_WARNING,
-				"Supplier from description " + description + " threw an " +
-					"exception: ",
-				t);
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"Supplier from description " + description + " threw an " +
+						"exception: ",
+					t);
+			}
 
 			return;
 		}
@@ -196,11 +198,13 @@ public class ConfiguratorExtension implements Extension {
 		configuration.update(properties);
 	}
 
+	private static final Log _log = LogFactoryUtil.getLog(
+		ConfiguratorExtension.class);
+
 	private final ConfigurationAdmin _configurationAdmin;
 	private final Collection<NamedConfigurationContent> _configurationContents;
 	private final Collection<ConfigurationDescriptionFactory>
 		_configurationDescriptionFactories;
-	private final Logger _logger;
 	private final String _namespace;
 
 }
