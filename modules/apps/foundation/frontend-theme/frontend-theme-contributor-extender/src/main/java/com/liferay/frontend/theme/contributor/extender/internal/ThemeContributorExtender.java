@@ -14,6 +14,8 @@
 
 package com.liferay.frontend.theme.contributor.extender.internal;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringPool;
 
@@ -30,7 +32,6 @@ import java.util.List;
 
 import org.apache.felix.utils.extender.AbstractExtender;
 import org.apache.felix.utils.extender.Extension;
-import org.apache.felix.utils.log.Logger;
 
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -50,7 +51,6 @@ public class ThemeContributorExtender extends AbstractExtender {
 	@Activate
 	protected void activate(BundleContext bundleContext) throws Exception {
 		_bundleContext = bundleContext;
-		_logger = new Logger(bundleContext);
 
 		start(bundleContext);
 	}
@@ -64,7 +64,9 @@ public class ThemeContributorExtender extends AbstractExtender {
 
 	@Override
 	protected void debug(Bundle bundle, String s) {
-		_logger.log(Logger.LOG_DEBUG, "[" + bundle + "] " + s);
+		if (_log.isDebugEnabled()) {
+			_log.debug("[" + bundle + "] " + s);
+		}
 	}
 
 	@Override
@@ -93,12 +95,14 @@ public class ThemeContributorExtender extends AbstractExtender {
 
 	@Override
 	protected void error(String s, Throwable t) {
-		_logger.log(Logger.LOG_ERROR, s, t);
+		_log.error(s, t);
 	}
 
 	@Override
 	protected void warn(Bundle bundle, String s, Throwable t) {
-		_logger.log(Logger.LOG_WARNING, "[" + bundle + "] " + s, t);
+		if (_log.isWarnEnabled()) {
+			_log.warn("[" + bundle + "] " + s, t);
+		}
 	}
 
 	private String _getProperty(
@@ -181,7 +185,9 @@ public class ThemeContributorExtender extends AbstractExtender {
 		}
 	}
 
+	private static final Log _log = LogFactoryUtil.getLog(
+		ThemeContributorExtender.class);
+
 	private BundleContext _bundleContext;
-	private Logger _logger;
 
 }

@@ -15,6 +15,8 @@
 package com.liferay.portal.remote.http.tunnel.extender.internal;
 
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.remote.http.tunnel.extender.configuration.HttpTunnelExtenderConfiguration;
 import com.liferay.portal.servlet.TunnelServlet;
@@ -31,7 +33,6 @@ import javax.servlet.Servlet;
 
 import org.apache.felix.utils.extender.AbstractExtender;
 import org.apache.felix.utils.extender.Extension;
-import org.apache.felix.utils.log.Logger;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -62,7 +63,6 @@ public class HttpTunnelExtender extends AbstractExtender {
 
 		_httpTunnelExtenderConfiguration = ConfigurableUtil.createConfigurable(
 			HttpTunnelExtenderConfiguration.class, properties);
-		_logger = new Logger(bundleContext);
 
 		start(bundleContext);
 	}
@@ -76,7 +76,9 @@ public class HttpTunnelExtender extends AbstractExtender {
 
 	@Override
 	protected void debug(Bundle bundle, String s) {
-		_logger.log(Logger.LOG_DEBUG, "[" + bundle + "] " + s);
+		if (_log.isDebugEnabled()) {
+			_log.debug("[" + bundle + "] " + s);
+		}
 	}
 
 	@Override
@@ -92,7 +94,7 @@ public class HttpTunnelExtender extends AbstractExtender {
 
 	@Override
 	protected void error(String s, Throwable t) {
-		_logger.log(Logger.LOG_ERROR, s, t);
+		_log.error(s, t);
 	}
 
 	@Modified
@@ -107,12 +109,16 @@ public class HttpTunnelExtender extends AbstractExtender {
 
 	@Override
 	protected void warn(Bundle bundle, String s, Throwable t) {
-		_logger.log(Logger.LOG_WARNING, "[" + bundle + "] " + s, t);
+		if (_log.isWarnEnabled()) {
+			_log.warn("[" + bundle + "] " + s, t);
+		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		HttpTunnelExtender.class);
 
 	private BundleContext _bundleContext;
 	private HttpTunnelExtenderConfiguration _httpTunnelExtenderConfiguration;
-	private Logger _logger;
 
 	private final class ServiceRegistrations {
 

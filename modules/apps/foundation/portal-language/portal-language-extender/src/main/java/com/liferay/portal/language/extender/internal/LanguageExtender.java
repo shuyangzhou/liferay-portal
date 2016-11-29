@@ -14,11 +14,13 @@
 
 package com.liferay.portal.language.extender.internal;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
 import java.util.List;
 
 import org.apache.felix.utils.extender.AbstractExtender;
 import org.apache.felix.utils.extender.Extension;
-import org.apache.felix.utils.log.Logger;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -39,14 +41,14 @@ public class LanguageExtender extends AbstractExtender {
 
 		setSynchronous(true);
 
-		_logger = new Logger(bundleContext);
-
 		start(bundleContext);
 	}
 
 	@Override
 	protected void debug(Bundle bundle, String s) {
-		_logger.log(Logger.LOG_DEBUG, "[" + bundle + "] " + s);
+		if (_log.isDebugEnabled()) {
+			_log.debug("[" + bundle + "] " + s);
+		}
 	}
 
 	@Override
@@ -61,20 +63,24 @@ public class LanguageExtender extends AbstractExtender {
 		}
 
 		return new LanguageExtension(
-			_bundleContext, bundle, bundleCapabilities, _logger);
+			_bundleContext, bundle, bundleCapabilities);
 	}
 
 	@Override
 	protected void error(String s, Throwable throwable) {
-		_logger.log(Logger.LOG_ERROR, s, throwable);
+		_log.error(s, throwable);
 	}
 
 	@Override
 	protected void warn(Bundle bundle, String s, Throwable throwable) {
-		_logger.log(Logger.LOG_WARNING, "[" + bundle + "] " + s);
+		if (_log.isWarnEnabled()) {
+			_log.warn("[" + bundle + "] " + s, throwable);
+		}
 	}
 
+	private static final Log _log = LogFactoryUtil.getLog(
+		LanguageExtender.class);
+
 	private BundleContext _bundleContext;
-	private Logger _logger;
 
 }

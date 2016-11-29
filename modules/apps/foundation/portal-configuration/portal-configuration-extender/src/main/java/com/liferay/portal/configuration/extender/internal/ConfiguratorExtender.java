@@ -18,6 +18,8 @@ import com.liferay.portal.configuration.extender.BundleStorage;
 import com.liferay.portal.configuration.extender.ConfigurationDescriptionFactory;
 import com.liferay.portal.configuration.extender.NamedConfigurationContent;
 import com.liferay.portal.configuration.extender.NamedConfigurationContentFactory;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.io.IOException;
 
@@ -32,7 +34,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.felix.utils.extender.AbstractExtender;
 import org.apache.felix.utils.extender.Extension;
-import org.apache.felix.utils.log.Logger;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -55,8 +56,6 @@ public class ConfiguratorExtender extends AbstractExtender {
 	@Activate
 	protected void activate(BundleContext bundleContext) throws Exception {
 		setSynchronous(true);
-
-		_logger = new Logger(bundleContext);
 
 		start(bundleContext);
 	}
@@ -93,7 +92,9 @@ public class ConfiguratorExtender extends AbstractExtender {
 
 	@Override
 	protected void debug(Bundle bundle, String s) {
-		_logger.log(Logger.LOG_DEBUG, "[" + bundle + "] " + s);
+		if (_log.isDebugEnabled()) {
+			_log.debug("[" + bundle + "] " + s);
+		}
 	}
 
 	@Override
@@ -114,7 +115,9 @@ public class ConfiguratorExtender extends AbstractExtender {
 				}
 			}
 			catch (Throwable t) {
-				_logger.log(Logger.LOG_INFO, t.getMessage(), t);
+				if (_log.isWarnEnabled()) {
+					_log.warn(t, t);
+				}
 			}
 		}
 
@@ -123,14 +126,13 @@ public class ConfiguratorExtender extends AbstractExtender {
 		}
 
 		return new ConfiguratorExtension(
-			_configurationAdmin, new Logger(bundle.getBundleContext()),
-			bundle.getSymbolicName(), namedConfigurationContents,
-			_configurationDescriptionFactories);
+			_configurationAdmin, bundle.getSymbolicName(),
+			namedConfigurationContents, _configurationDescriptionFactories);
 	}
 
 	@Override
 	protected void error(String s, Throwable throwable) {
-		_logger.log(Logger.LOG_ERROR, s, throwable);
+		_log.error(s, throwable);
 	}
 
 	protected void removeConfigurationDescriptionFactory(
@@ -156,13 +158,17 @@ public class ConfiguratorExtender extends AbstractExtender {
 
 	@Override
 	protected void warn(Bundle bundle, String s, Throwable throwable) {
-		_logger.log(Logger.LOG_WARNING, "[" + bundle + "] " + s);
+		if (_log.isWarnEnabled()) {
+			_log.warn("[" + bundle + "] " + s, throwable);
+		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		ConfiguratorExtender.class);
 
 	private ConfigurationAdmin _configurationAdmin;
 	private final Collection<ConfigurationDescriptionFactory>
 		_configurationDescriptionFactories = new CopyOnWriteArrayList<>();
-	private Logger _logger;
 	private final Collection<NamedConfigurationContentFactory>
 		_namedConfigurationContentFactories = new CopyOnWriteArrayList<>();
 

@@ -18,18 +18,24 @@ import com.liferay.document.library.kernel.exception.DuplicateFileException;
 import com.liferay.document.library.kernel.exception.NoSuchContentException;
 import com.liferay.document.library.kernel.exception.NoSuchFileException;
 import com.liferay.document.library.kernel.model.DLContent;
+import com.liferay.document.library.kernel.model.DLContentDataBlobModel;
 import com.liferay.document.library.kernel.service.DLContentLocalService;
 import com.liferay.document.library.kernel.store.BaseStore;
 import com.liferay.document.library.kernel.store.Store;
+import com.liferay.portal.kernel.dao.db.DB;
+import com.liferay.portal.kernel.dao.db.DBManagerUtil;
+import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.io.AutoDeleteFileInputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
-import com.liferay.portal.kernel.transaction.Transactional;
+import com.liferay.portal.kernel.transaction.TransactionConfig;
+import com.liferay.portal.kernel.transaction.TransactionConfig.Factory;
+import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -41,10 +47,11 @@ import java.io.InputStream;
 import java.nio.channels.FileChannel;
 
 import java.sql.Blob;
-import java.sql.SQLException;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -52,7 +59,11 @@ import org.osgi.service.component.annotations.Reference;
  * @author Shuyang Zhou
  * @author Tina Tian
  */
-@Component(service = DBStore.class)
+@Component(
+	immediate = true,
+	property = "store.type=com.liferay.portal.store.db.DBStore",
+	service = Store.class
+)
 public class DBStore extends BaseStore {
 
 	@Override
@@ -123,119 +134,40 @@ public class DBStore extends BaseStore {
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED)
 	public InputStream getFileAsStream(
 			long companyId, long repositoryId, String fileName)
 		throws NoSuchFileException {
 
-		DLContent dlContent = null;
-
 		try {
-			dlContent = _dlContentLocalService.getContent(
+			DLContent dlContent = _dlContentLocalService.getContent(
 				companyId, repositoryId, fileName);
+
+			return TransactionInvokerUtil.invoke(
+				_transactionConfig,
+				new GetBlobDataCallable(dlContent.getContentId()));
 		}
-		catch (NoSuchContentException nsce) {
-			throw new NoSuchFileException(
-				companyId, repositoryId, fileName, nsce);
-		}
-
-		dlContent.resetOriginalValues();
-
-		Blob blobData = dlContent.getData();
-
-		if (blobData == null) {
-			if (_log.isWarnEnabled()) {
-				StringBundler sb = new StringBundler(7);
-
-				sb.append("No blob data found for file {companyId=");
-				sb.append(companyId);
-				sb.append(", repositoryId=");
-				sb.append(repositoryId);
-				sb.append(", fileName=");
-				sb.append(fileName);
-				sb.append("}");
-
-				_log.warn(sb.toString());
-			}
-
-			return null;
-		}
-
-		try {
-			return blobData.getBinaryStream();
-		}
-		catch (SQLException sqle) {
-			StringBundler sb = new StringBundler(7);
-
-			sb.append("Unable to load data binary stream for file {companyId=");
-			sb.append(companyId);
-			sb.append(", repositoryId=");
-			sb.append(repositoryId);
-			sb.append(", fileName=");
-			sb.append(fileName);
-			sb.append("}");
-
-			throw new SystemException(sb.toString(), sqle);
+		catch (Throwable t) {
+			throw new NoSuchFileException(companyId, repositoryId, fileName, t);
 		}
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED)
 	public InputStream getFileAsStream(
 			long companyId, long repositoryId, String fileName,
 			String versionLabel)
 		throws NoSuchFileException {
 
-		DLContent dlContent = null;
-
 		try {
-			dlContent = _dlContentLocalService.getContent(
+			DLContent dlContent = _dlContentLocalService.getContent(
 				companyId, repositoryId, fileName, versionLabel);
+
+			return TransactionInvokerUtil.invoke(
+				_transactionConfig,
+				new GetBlobDataCallable(dlContent.getContentId()));
 		}
-		catch (NoSuchContentException nsce) {
+		catch (Throwable t) {
 			throw new NoSuchFileException(
-				companyId, repositoryId, fileName, versionLabel, nsce);
-		}
-
-		Blob blobData = dlContent.getData();
-
-		if (blobData == null) {
-			if (_log.isWarnEnabled()) {
-				StringBundler sb = new StringBundler(9);
-
-				sb.append("No blob data found for file {companyId=");
-				sb.append(companyId);
-				sb.append(", repositoryId=");
-				sb.append(repositoryId);
-				sb.append(", fileName=");
-				sb.append(fileName);
-				sb.append(", versionLabel=");
-				sb.append(versionLabel);
-				sb.append("}");
-
-				_log.warn(sb.toString());
-			}
-
-			return null;
-		}
-
-		try {
-			return blobData.getBinaryStream();
-		}
-		catch (SQLException sqle) {
-			StringBundler sb = new StringBundler(9);
-
-			sb.append("Unable to load data binary stream for file {companyId=");
-			sb.append(companyId);
-			sb.append(", repositoryId=");
-			sb.append(repositoryId);
-			sb.append(", fileName=");
-			sb.append(fileName);
-			sb.append(", versionLabel=");
-			sb.append(versionLabel);
-			sb.append("}");
-
-			throw new SystemException(sb.toString(), sqle);
+				companyId, repositoryId, fileName, versionLabel, t);
 		}
 	}
 
@@ -465,15 +397,57 @@ public class DBStore extends BaseStore {
 		}
 	}
 
-	@Reference(unbind = "-")
-	protected void setDLContentLocalService(
-		DLContentLocalService dlContentLocalService) {
+	@Activate
+	protected void activate() {
+		DB db = DBManagerUtil.getDB();
 
-		_dlContentLocalService = dlContentLocalService;
+		if ((db.getDBType() == DBType.DB2) ||
+			(db.getDBType() == DBType.MYSQL) ||
+			(db.getDBType() == DBType.SYBASE)) {
+
+			_transactionConfig = Factory.create(
+				Propagation.SUPPORTS,
+				new Class<?>[] {PortalException.class, SystemException.class});
+		}
+		else {
+			_transactionConfig = Factory.create(
+				Propagation.REQUIRED,
+				new Class<?>[] {PortalException.class, SystemException.class});
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(DBStore.class);
 
+	@Reference
 	private DLContentLocalService _dlContentLocalService;
+
+	private TransactionConfig _transactionConfig;
+
+	private class GetBlobDataCallable implements Callable<InputStream> {
+
+		@Override
+		public InputStream call() throws Exception {
+			DLContentDataBlobModel dlContentDataBlobModel =
+				_dlContentLocalService.getDataBlobModel(_contentId);
+
+			Blob blob = dlContentDataBlobModel.getDataBlob();
+
+			InputStream inputStream = blob.getBinaryStream();
+
+			if (_transactionConfig.getPropagation() == Propagation.REQUIRED) {
+				inputStream = new AutoDeleteFileInputStream(
+					FileUtil.createTempFile(inputStream));
+			}
+
+			return inputStream;
+		}
+
+		private GetBlobDataCallable(long contentId) {
+			_contentId = contentId;
+		}
+
+		private final long _contentId;
+
+	}
 
 }

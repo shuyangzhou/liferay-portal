@@ -15,6 +15,8 @@
 package com.liferay.portal.osgi.web.wab.extender.internal;
 
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.osgi.web.servlet.context.helper.ServletContextHelperFactory;
 import com.liferay.portal.osgi.web.wab.extender.internal.configuration.WabExtenderConfiguration;
@@ -27,7 +29,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.felix.utils.extender.AbstractExtender;
 import org.apache.felix.utils.extender.Extension;
-import org.apache.felix.utils.log.Logger;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -56,7 +57,6 @@ public class WabFactory extends AbstractExtender {
 		_bundleContext = componentContext.getBundleContext();
 
 		_eventUtil = new EventUtil(_bundleContext);
-		_logger = new Logger(_bundleContext);
 
 		Dictionary<String, Object> properties =
 			componentContext.getProperties();
@@ -66,12 +66,12 @@ public class WabFactory extends AbstractExtender {
 
 		try {
 			_webBundleDeployer = new WebBundleDeployer(
-				_bundleContext, properties, _eventUtil, _logger);
+				_bundleContext, properties, _eventUtil);
 
 			super.start(_bundleContext);
 		}
 		catch (Exception e) {
-			_logger.log(Logger.LOG_ERROR, e.getMessage(), e);
+			_log.error(e, e);
 		}
 	}
 
@@ -85,8 +85,6 @@ public class WabFactory extends AbstractExtender {
 
 		_eventUtil = null;
 
-		_logger = null;
-
 		_webBundleDeployer.close();
 
 		_webBundleDeployer = null;
@@ -94,7 +92,9 @@ public class WabFactory extends AbstractExtender {
 
 	@Override
 	protected void debug(Bundle bundle, String message) {
-		_logger.log(Logger.LOG_DEBUG, "[" + bundle + "] " + message);
+		if (_log.isDebugEnabled()) {
+			_log.debug("[" + bundle + "] " + message);
+		}
 	}
 
 	@Override
@@ -104,7 +104,7 @@ public class WabFactory extends AbstractExtender {
 
 	@Override
 	protected void error(String message, Throwable t) {
-		_logger.log(Logger.LOG_ERROR, message, t);
+		_log.error(message, t);
 	}
 
 	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")
@@ -114,12 +114,15 @@ public class WabFactory extends AbstractExtender {
 
 	@Override
 	protected void warn(Bundle bundle, String message, Throwable t) {
-		_logger.log(Logger.LOG_WARNING, "[" + bundle + "] " + message, t);
+		if (_log.isWarnEnabled()) {
+			_log.warn("[" + bundle + "] " + message, t);
+		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(WabFactory.class);
 
 	private BundleContext _bundleContext;
 	private EventUtil _eventUtil;
-	private Logger _logger;
 
 	@Reference
 	private ServletContextHelperFactory _servletContextHelperFactory;
@@ -141,8 +144,7 @@ public class WabFactory extends AbstractExtender {
 					TimeUnit.MILLISECONDS);
 			}
 			catch (InterruptedException ie) {
-				_logger.log(
-					Logger.LOG_ERROR,
+				_log.error(
 					String.format(
 						"The wait for bundle {0}/{1} to start before " +
 							"destroying was interrupted",

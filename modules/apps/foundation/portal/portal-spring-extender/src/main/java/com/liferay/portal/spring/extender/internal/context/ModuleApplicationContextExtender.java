@@ -18,6 +18,8 @@ import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBContext;
 import com.liferay.portal.kernel.dao.db.DBManager;
 import com.liferay.portal.kernel.dao.db.DBProcessContext;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.configuration.configurator.ServiceConfigurator;
@@ -46,7 +48,6 @@ import org.apache.felix.dm.DependencyManager;
 import org.apache.felix.dm.ServiceDependency;
 import org.apache.felix.utils.extender.AbstractExtender;
 import org.apache.felix.utils.extender.Extension;
-import org.apache.felix.utils.log.Logger;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -70,7 +71,6 @@ public class ModuleApplicationContextExtender extends AbstractExtender {
 		_bundleContext = bundleContext;
 
 		_dependencyManager = new DependencyManager(bundleContext);
-		_logger = new Logger(bundleContext);
 
 		start(bundleContext);
 	}
@@ -84,7 +84,9 @@ public class ModuleApplicationContextExtender extends AbstractExtender {
 
 	@Override
 	protected void debug(Bundle bundle, String s) {
-		_logger.log(Logger.LOG_DEBUG, "[" + bundle + "] " + s);
+		if (_log.isDebugEnabled()) {
+			_log.debug("[" + bundle + "] " + s);
+		}
 	}
 
 	@Override
@@ -100,7 +102,7 @@ public class ModuleApplicationContextExtender extends AbstractExtender {
 
 	@Override
 	protected void error(String s, Throwable throwable) {
-		_logger.log(Logger.LOG_ERROR, s, throwable);
+		_log.error(s, throwable);
 	}
 
 	@Reference(
@@ -133,12 +135,16 @@ public class ModuleApplicationContextExtender extends AbstractExtender {
 
 	@Override
 	protected void warn(Bundle bundle, String s, Throwable throwable) {
-		_logger.log(Logger.LOG_DEBUG, "[" + bundle + "] " + s);
+		if (_log.isWarnEnabled()) {
+			_log.warn("[" + bundle + "] " + s, throwable);
+		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		ModuleApplicationContextExtender.class);
 
 	private BundleContext _bundleContext;
 	private DependencyManager _dependencyManager;
-	private Logger _logger;
 	private ServiceConfigurator _serviceConfigurator;
 
 	private class ModuleApplicationContextExtension implements Extension {
@@ -167,9 +173,9 @@ public class ModuleApplicationContextExtender extends AbstractExtender {
 			URL resource = _bundle.getResource("/META-INF/sql/" + templateName);
 
 			if (resource == null) {
-				_logger.log(
-					Logger.LOG_DEBUG,
-					"Unable to locate SQL template " + templateName);
+				if (_log.isDebugEnabled()) {
+					_log.debug("Unable to locate SQL template " + templateName);
+				}
 
 				return null;
 			}

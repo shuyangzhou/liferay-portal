@@ -37,8 +37,6 @@ import java.util.Collection;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
-import org.apache.felix.utils.log.Logger;
-
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 
@@ -96,7 +94,7 @@ public class ConfiguratorExtensionTest {
 	@Test
 	public void testExceptionInSupplierDoesNotStopExtension() throws Exception {
 		ConfiguratorExtension configuratorExtension = new ConfiguratorExtension(
-			_configurationAdmin, new Logger(_bundleContext), "aBundle",
+			_configurationAdmin, "aBundle",
 			Arrays.<NamedConfigurationContent>asList(
 				new StringSingleNamedConfigurationContent(
 					"test.pid", "key=value")),
@@ -342,7 +340,7 @@ public class ConfiguratorExtensionTest {
 		throws Exception {
 
 		ConfiguratorExtension configuratorExtension = new ConfiguratorExtension(
-			_configurationAdmin, new Logger(_bundleContext), namespace,
+			_configurationAdmin, namespace,
 			Arrays.asList(namedConfigurationContents),
 			Arrays.<ConfigurationDescriptionFactory>asList(
 				new StringConfigurationDescriptionFactory()));
