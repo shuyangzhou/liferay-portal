@@ -14,6 +14,7 @@
 
 package com.liferay.portal.osgi.web.wab.extender.internal;
 
+import com.liferay.osgi.felix.util.AbstractExtender;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.osgi.web.servlet.context.helper.ServletContextHelperFactory;
@@ -25,7 +26,6 @@ import java.util.Dictionary;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.felix.utils.extender.AbstractExtender;
 import org.apache.felix.utils.extender.Extension;
 import org.apache.felix.utils.log.Logger;
 
@@ -51,8 +51,6 @@ public class WabFactory extends AbstractExtender {
 
 	@Activate
 	public void activate(ComponentContext componentContext) {
-		setSynchronous(true);
-
 		BundleContext bundleContext = componentContext.getBundleContext();
 
 		_eventUtil = new EventUtil(bundleContext);

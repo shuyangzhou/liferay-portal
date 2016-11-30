@@ -14,9 +14,10 @@
 
 package com.liferay.portal.language.extender.internal;
 
+import com.liferay.osgi.felix.util.AbstractExtender;
+
 import java.util.List;
 
-import org.apache.felix.utils.extender.AbstractExtender;
 import org.apache.felix.utils.extender.Extension;
 import org.apache.felix.utils.log.Logger;
 
@@ -36,8 +37,6 @@ public class LanguageExtender extends AbstractExtender {
 
 	@Activate
 	protected void activate(BundleContext bundleContext) throws Exception {
-		setSynchronous(true);
-
 		_logger = new Logger(bundleContext);
 
 		start(bundleContext);

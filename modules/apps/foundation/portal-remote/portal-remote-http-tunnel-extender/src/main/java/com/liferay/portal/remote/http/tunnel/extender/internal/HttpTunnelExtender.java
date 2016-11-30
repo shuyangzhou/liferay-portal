@@ -14,6 +14,7 @@
 
 package com.liferay.portal.remote.http.tunnel.extender.internal;
 
+import com.liferay.osgi.felix.util.AbstractExtender;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.remote.http.tunnel.extender.configuration.HttpTunnelExtenderConfiguration;
@@ -29,7 +30,6 @@ import java.util.Map;
 import javax.servlet.Filter;
 import javax.servlet.Servlet;
 
-import org.apache.felix.utils.extender.AbstractExtender;
 import org.apache.felix.utils.extender.Extension;
 import org.apache.felix.utils.log.Logger;
 
@@ -57,8 +57,6 @@ public class HttpTunnelExtender extends AbstractExtender {
 	protected void activate(
 			BundleContext bundleContext, Map<String, Object> properties)
 		throws Exception {
-
-		setSynchronous(true);
 
 		_httpTunnelExtenderConfiguration = ConfigurableUtil.createConfigurable(
 			HttpTunnelExtenderConfiguration.class, properties);
