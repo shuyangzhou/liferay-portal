@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.model.ListTypeConstants;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.OrganizationConstants;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
@@ -30,6 +31,8 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
+import com.liferay.portal.kernel.test.rule.Sync;
+import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.util.OrganizationTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
@@ -50,12 +53,15 @@ import org.junit.Test;
  * @author Jorge Ferrer
  * @author Sergio González
  */
+@Sync
 public class OrganizationLocalServiceTest {
 
 	@ClassRule
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
-		new LiferayIntegrationTestRule();
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(),
+			SynchronousDestinationTestRule.INSTANCE);
 
 	@Test
 	public void testAddOrganization() throws Exception {
@@ -622,18 +628,24 @@ public class OrganizationLocalServiceTest {
 
 		Hits hits = searchOrganizationsAndUsers(organization, null);
 
-		Assert.assertEquals(2, hits.getLength());
+		Assert.assertEquals(hits.toString(), 2, hits.getLength());
 
 		hits = searchOrganizationsAndUsers(organization, "Organization1");
 
+		Document document = hits.doc(0);
+
 		Assert.assertEquals(
+			document.toString(),
 			String.valueOf(suborganization.getOrganizationId()),
-			hits.doc(0).get(Field.ORGANIZATION_ID));
+			document.get(Field.ORGANIZATION_ID));
 
 		hits = searchOrganizationsAndUsers(organization, "user1");
 
+		document = hits.doc(0);
+
 		Assert.assertEquals(
-			String.valueOf(_user.getUserId()), hits.doc(0).get(Field.USER_ID));
+			document.toString(), String.valueOf(_user.getUserId()),
+			document.get(Field.USER_ID));
 
 		UserLocalServiceUtil.deleteOrganizationUser(
 			organization.getOrganizationId(), _user);
@@ -654,19 +666,25 @@ public class OrganizationLocalServiceTest {
 
 		Hits hits = searchOrganizationsAndUsers(organization, null);
 
-		Assert.assertEquals(1, hits.getLength());
+		Assert.assertEquals(hits.toString(), 1, hits.getLength());
+
+		Document document = hits.doc(0);
 
 		Assert.assertEquals(
-			String.valueOf(_user.getUserId()), hits.doc(0).get(Field.USER_ID));
+			document.toString(), String.valueOf(_user.getUserId()),
+			document.get(Field.USER_ID));
 
 		hits = searchOrganizationsAndUsers(organization, "Organization1");
 
-		Assert.assertEquals(0, hits.getLength());
+		Assert.assertEquals(hits.toString(), 0, hits.getLength());
 
 		hits = searchOrganizationsAndUsers(organization, "user1");
 
+		document = hits.doc(0);
+
 		Assert.assertEquals(
-			String.valueOf(_user.getUserId()), hits.doc(0).get(Field.USER_ID));
+			document.toString(), String.valueOf(_user.getUserId()),
+			document.get(Field.USER_ID));
 
 		UserLocalServiceUtil.deleteOrganizationUser(
 			organization.getOrganizationId(), _user);
@@ -685,21 +703,27 @@ public class OrganizationLocalServiceTest {
 
 		Hits hits = searchOrganizationsAndUsers(organization, null);
 
-		Assert.assertEquals(1, hits.getLength());
+		Assert.assertEquals(hits.toString(), 1, hits.getLength());
+
+		Document document = hits.doc(0);
 
 		Assert.assertEquals(
+			document.toString(),
 			String.valueOf(suborganization.getOrganizationId()),
-			hits.doc(0).get(Field.ORGANIZATION_ID));
+			document.get(Field.ORGANIZATION_ID));
 
 		hits = searchOrganizationsAndUsers(organization, "Organization1");
 
+		document = hits.doc(0);
+
 		Assert.assertEquals(
+			document.toString(),
 			String.valueOf(suborganization.getOrganizationId()),
-			hits.doc(0).get(Field.ORGANIZATION_ID));
+			document.get(Field.ORGANIZATION_ID));
 
 		hits = searchOrganizationsAndUsers(organization, "user1");
 
-		Assert.assertEquals(0, hits.getLength());
+		Assert.assertEquals(hits.toString(), 0, hits.getLength());
 	}
 
 	@Test
@@ -712,15 +736,15 @@ public class OrganizationLocalServiceTest {
 
 		Hits hits = searchOrganizationsAndUsers(organization, null);
 
-		Assert.assertEquals(0, hits.getLength());
+		Assert.assertEquals(hits.toString(), 0, hits.getLength());
 
 		hits = searchOrganizationsAndUsers(organization, "Organization1");
 
-		Assert.assertEquals(0, hits.getLength());
+		Assert.assertEquals(hits.toString(), 0, hits.getLength());
 
 		hits = searchOrganizationsAndUsers(organization, "user1");
 
-		Assert.assertEquals(0, hits.getLength());
+		Assert.assertEquals(hits.toString(), 0, hits.getLength());
 	}
 
 	protected List<Object> getOrganizationsAndUsers(Organization organization) {

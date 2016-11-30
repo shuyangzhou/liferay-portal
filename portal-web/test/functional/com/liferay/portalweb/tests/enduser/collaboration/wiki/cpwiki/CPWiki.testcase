@@ -24,6 +24,89 @@
 		</if>
 	</tear-down>
 
+	<command name="AddChildPageFormatMediaWiki" priority="4">
+		<property name="osgi.modules.includes" value="wiki-engine-mediawiki" />
+
+		<execute macro="Navigator#openURL" />
+
+		<execute macro="ProductMenu#gotoSitesContent">
+			<var name="portlet" value="Wiki" />
+		</execute>
+
+		<execute macro="WikiNavigator#gotoNode">
+			<var name="wikiNodeName" value="Main" />
+		</execute>
+
+		<execute function="Click" locator1="Button#PLUS" />
+
+		<execute macro="WikiEntry#selectPageFormat">
+			<var name="pageFormat" value="MediaWiki" />
+		</execute>
+
+		<execute macro="WikiEntry#confirmMediaWiki" />
+
+		<execute macro="WikiEntry#addPageTitle">
+			<var name="wikiPageTitle" value="MediaWiki Page Title" />
+		</execute>
+
+		<execute macro="WikiEntry#addMediaWikiDescription">
+			<var name="wikiPageContent" value="''MediaWiki Page Content''" />
+		</execute>
+
+		<execute macro="PortletEntry#publish" />
+
+		<execute macro="ProductMenu#gotoSitesContent">
+			<var name="portlet" value="Wiki" />
+		</execute>
+
+		<execute macro="WikiNavigator#gotoNode">
+			<var name="wikiNodeName" value="Main" />
+		</execute>
+
+		<execute macro="WikiNavigator#gotoCP">
+			<var name="wikiPageTitle" value="MediaWiki Page Title" />
+		</execute>
+
+		<execute macro="WikiNavigator#gotoAddChildPageViaCP" />
+
+		<execute macro="WikiEntry#selectPageFormat">
+			<var name="pageFormat" value="MediaWiki" />
+		</execute>
+
+		<execute macro="WikiEntry#confirmMediaWiki" />
+
+		<execute macro="WikiEntry#addPageTitle">
+			<var name="wikiPageTitle" value="MediaWiki Child Page Title" />
+		</execute>
+
+		<execute macro="WikiEntry#addMediaWikiDescription">
+			<var name="wikiPageContent" value="''MediaWiki Child Page Content''" />
+		</execute>
+
+		<execute macro="PortletEntry#publish" />
+
+		<execute macro="ProductMenu#gotoSitesContent">
+			<var name="portlet" value="Wiki" />
+		</execute>
+
+		<execute macro="WikiNavigator#gotoNode">
+			<var name="wikiNodeName" value="Main" />
+		</execute>
+
+		<execute macro="WikiNavigator#gotoCP">
+			<var name="wikiPageTitle" value="MediaWiki Page Title" />
+		</execute>
+
+		<execute macro="WikiNavigator#gotoChildPageCP">
+			<var name="wikiChildPageContent" value="MediaWiki Child Page Content" />
+			<var name="wikiChildPageTitle" value="MediaWiki Child Page Title" />
+		</execute>
+
+		<execute macro="WikiEntry#viewPageContentBody">
+			<var name="wikiPageContent" value="MediaWiki Child Page Content" />
+		</execute>
+	</command>
+
 	<command name="AddWikiFrontPage" priority="5">
 		<property name="portal.acceptance" value="true" />
 

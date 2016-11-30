@@ -553,8 +553,7 @@ public class AssetPublisherUtil {
 		}
 
 		if (deleteMissingAssetEntries) {
-			AssetPublisherUtil.removeAndStoreSelection(
-				missingAssetEntryUuids, portletPreferences);
+			removeAndStoreSelection(missingAssetEntryUuids, portletPreferences);
 
 			if (!missingAssetEntryUuids.isEmpty()) {
 				SessionMessages.add(
@@ -925,9 +924,8 @@ public class AssetPublisherUtil {
 			return GetterUtil.getBoolean(emailAssetEntryAddedEnabled);
 		}
 		else {
-			return
-				AssetPublisherWebConfigurationValues.
-					EMAIL_ASSET_ENTRY_ADDED_ENABLED;
+			return AssetPublisherWebConfigurationValues.
+				EMAIL_ASSET_ENTRY_ADDED_ENABLED;
 		}
 	}
 
@@ -2024,7 +2022,7 @@ public class AssetPublisherUtil {
 				portletPreferencesModel.getCompanyId(),
 				com.liferay.portal.kernel.model.PortletPreferences.class.
 					getName(),
-				AssetPublisherUtil.getSubscriptionClassPK(
+				getSubscriptionClassPK(
 					portletPreferencesModel.getPlid(),
 					portletPreferencesModel.getPortletId()));
 

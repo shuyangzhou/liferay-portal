@@ -1947,6 +1947,8 @@
 			<var name="portlet" value="Server Administration" />
 		</execute>
 
+		<execute function="Pause" locator1="5000" />
+
 		<execute macro="ServerAdministration#executeServerResourcesActions">
 			<var name="actionsDescription" value="Reindex all search indexes." />
 		</execute>
@@ -2169,6 +2171,8 @@
 		</execute>
 
 		<execute macro="IFrame#closeFrame" />
+
+		<execute function="Pause" locator1="5000" />
 
 		<execute macro="Page#add">
 			<var name="pageName" value="Search Page" />

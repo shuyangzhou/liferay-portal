@@ -297,6 +297,21 @@
 			<var name="dmDocumentVersionNumber" value="1.1" />
 			<var name="dmRepositoryName" value="true" />
 		</execute>
+
+		<execute macro="Navigator#openURL" />
+
+		<execute macro="ProductMenu#gotoSitesContent">
+			<var name="portlet" value="Documents and Media" />
+		</execute>
+
+		<execute macro="DMRepository#gotoCP">
+			<var name="dmRepositoryName" value="Documentum Repository Name" />
+		</execute>
+
+		<execute macro="DMDocument#deleteCP">
+			<var name="dmDocumentTitle" value="Document_3.txt" />
+			<var name="recycleBinDisabled" value="true" />
+		</execute>
 	</command>
 
 	<command name="CheckoutDocument" priority="5">
@@ -333,6 +348,10 @@
 		</execute>
 
 		<execute macro="DMDocument#viewCheckedoutCP" >
+			<var name="dmRepositoryName" value="true" />
+		</execute>
+
+		<execute macro="DMDocument#cancelCheckoutCP">
 			<var name="dmRepositoryName" value="true" />
 		</execute>
 	</command>
@@ -485,6 +504,21 @@
 		<execute macro="DMDocument#cannotViewDocumentMetadataCP">
 			<var name="metadataData" value="ISO-8859-1" />
 			<var name="metadataLabel" value="Content Encoding" />
+		</execute>
+
+		<execute macro="Navigator#openURL" />
+
+		<execute macro="ProductMenu#gotoSitesContent">
+			<var name="portlet" value="Documents and Media" />
+		</execute>
+
+		<execute macro="DMRepository#gotoCP">
+			<var name="dmRepositoryName" value="Documentum Repository Name" />
+		</execute>
+
+		<execute macro="DMDocument#deleteCP">
+			<var name="dmDocumentTitle" value="Document_3.doc" />
+			<var name="recycleBinDisabled" value="true" />
 		</execute>
 	</command>
 
@@ -689,6 +723,10 @@
 		<execute macro="DMDocument#viewCheckedoutCP" >
 			<var name="dmRepositoryName" value="true" />
 		</execute>
+
+		<execute macro="DMDocument#cancelCheckoutCP">
+			<var name="dmRepositoryName" value="true" />
+		</execute>
 	</command>
 
 	<command name="MoveDocumentToHome" priority="5">
@@ -807,7 +845,6 @@
 			<var name="checkedOut" value="true" />
 			<var name="dmDocumentTitle" value="Document_1.xls" />
 			<var name="dmDocumentTitleEdit" value="Document_1_Edit.jpg" />
-			<var name="dmRepositoryName" value="true" />
 		</execute>
 
 		<execute macro="Navigator#openURL" />
@@ -821,14 +858,18 @@
 		</execute>
 
 		<execute macro="DMDocument#viewIconLockedCP">
-			<var name="dmDocumentTitle" value="Document_1_Edit.xls" />
+			<var name="dmDocumentTitle" value="Document_1_Edit.jpg" />
 		</execute>
 
 		<execute macro="DMNavigator#gotoDocumentCP">
-			<var name="dmDocumentTitle" value="Document_1_Edit.xls" />
+			<var name="dmDocumentTitle" value="Document_1_Edit.jpg" />
 		</execute>
 
 		<execute macro="DMDocument#viewCheckedoutCP" >
+			<var name="dmRepositoryName" value="true" />
+		</execute>
+
+		<execute macro="DMDocument#cancelCheckoutCP">
 			<var name="dmRepositoryName" value="true" />
 		</execute>
 	</command>

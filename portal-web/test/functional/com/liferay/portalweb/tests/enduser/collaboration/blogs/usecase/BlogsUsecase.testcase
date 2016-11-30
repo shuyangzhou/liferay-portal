@@ -84,7 +84,7 @@
 		</execute>
 	</command>
 
-	<command name="AddBlogsEntryWithInlineImage" priority="4">
+	<!-- <command name="AddBlogsEntryWithInlineImage" priority="4">
 		<execute macro="Navigator#openURL" />
 
 		<execute macro="ProductMenu#gotoSitesContent">
@@ -122,7 +122,7 @@
 		<execute macro="BlogsEntry#viewInlineImage">
 			<var name="uploadFileName" value="Document_1" />
 		</execute>
-	</command>
+	</command> -->
 
 	<command name="AllowMultiplePortletConfigurationsPerSite" priority="4">
 		<execute macro="ProductMenu#gotoControlPanelSites">
@@ -1987,7 +1987,7 @@
 		</execute>
 	</command>
 
-	<command name="ViewBlogsEntryWithUploadedCoverImage" priority="4">
+	<!-- <command name="ViewBlogsEntryWithUploadedCoverImage" priority="4">
 		<execute macro="Navigator#openURL" />
 
 		<execute macro="ProductMenu#gotoSitesContent">
@@ -2017,7 +2017,7 @@
 			<var name="entryContent" value="Blogs Entry Content" />
 			<var name="entryTitle" value="Blogs Entry Title" />
 		</execute>
-	</command>
+	</command> -->
 
 	<command name="ViewNoBlogsDraftDisplaysInAP" priority="4">
 		<execute macro="Page#add">

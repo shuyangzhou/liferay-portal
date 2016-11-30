@@ -121,6 +121,9 @@ public interface BeanProperties {
 
 	public void setProperties(Object bean, HttpServletRequest request);
 
+	public void setProperties(
+		Object bean, HttpServletRequest request, String[] ignoreProperties);
+
 	public void setProperty(Object bean, String param, Object value);
 
 	public void setPropertySilent(Object bean, String param, Object value);
