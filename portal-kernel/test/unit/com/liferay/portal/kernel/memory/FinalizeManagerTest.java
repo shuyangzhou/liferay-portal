@@ -284,7 +284,9 @@ public class FinalizeManagerTest {
 			Assert.assertNull(markFinalizeAction.getId());
 		}
 
-		Assert.assertNull(_getReferent(reference));
+		if (!threadEnabled || (referenceType != ReferenceType.PHANTOM)) {
+			Assert.assertNull(_getReferent(reference));
+		}
 
 		if (threadEnabled) {
 			_checkThreadState();

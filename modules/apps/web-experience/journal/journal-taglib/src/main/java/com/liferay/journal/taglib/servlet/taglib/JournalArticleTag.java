@@ -67,7 +67,7 @@ public class JournalArticleTag extends IncludeTag {
 		}
 		catch (PortalException pe) {
 			if (_log.isDebugEnabled()) {
-				_log.debug("Unable to get Journal Article Display", pe);
+				_log.debug("Unable to get journal article display", pe);
 			}
 
 			return SKIP_BODY;

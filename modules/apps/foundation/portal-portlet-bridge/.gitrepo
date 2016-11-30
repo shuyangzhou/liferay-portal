@@ -3,7 +3,7 @@
 ;
 [subrepo]
 	cmdver = liferay
-	commit = a40253f0ffa9da2c59f3fe4afc3dc716420e0891
+	commit = 59e9b9ac5422fa73c7cdf8e9d25d36713bed5bf4
 	mode = push
-	parent = ba87af61fa1c5bd90adc0d6e09abaded245a716f
+	parent = b8cc7871bd86152a91c21363704a6e9b1ddef816
 	remote = git@github.com:liferay/com-liferay-portal-portlet-bridge.git
