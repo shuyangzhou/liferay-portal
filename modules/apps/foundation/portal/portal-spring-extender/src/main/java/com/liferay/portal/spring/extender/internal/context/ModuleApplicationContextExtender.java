@@ -14,6 +14,7 @@
 
 package com.liferay.portal.spring.extender.internal.context;
 
+import com.liferay.osgi.felix.util.AbstractExtender;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBContext;
 import com.liferay.portal.kernel.dao.db.DBManager;
@@ -44,7 +45,6 @@ import javax.sql.DataSource;
 
 import org.apache.felix.dm.DependencyManager;
 import org.apache.felix.dm.ServiceDependency;
-import org.apache.felix.utils.extender.AbstractExtender;
 import org.apache.felix.utils.extender.Extension;
 import org.apache.felix.utils.log.Logger;
 
@@ -65,8 +65,6 @@ public class ModuleApplicationContextExtender extends AbstractExtender {
 
 	@Activate
 	protected void activate(BundleContext bundleContext) throws Exception {
-		setSynchronous(true);
-
 		_dependencyManager = new DependencyManager(bundleContext);
 		_logger = new Logger(bundleContext);
 

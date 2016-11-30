@@ -14,6 +14,7 @@
 
 package com.liferay.frontend.theme.contributor.extender.internal;
 
+import com.liferay.osgi.felix.util.AbstractExtender;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringPool;
 
@@ -28,7 +29,6 @@ import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.List;
 
-import org.apache.felix.utils.extender.AbstractExtender;
 import org.apache.felix.utils.extender.Extension;
 import org.apache.felix.utils.log.Logger;
 
@@ -49,8 +49,6 @@ public class ThemeContributorExtender extends AbstractExtender {
 
 	@Activate
 	protected void activate(BundleContext bundleContext) throws Exception {
-		setSynchronous(true);
-
 		_logger = new Logger(bundleContext);
 
 		start(bundleContext);
