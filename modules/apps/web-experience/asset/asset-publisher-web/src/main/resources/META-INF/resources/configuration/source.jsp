@@ -20,7 +20,7 @@
 List<AssetRendererFactory<?>> classTypesAssetRendererFactories = (List<AssetRendererFactory<?>>)request.getAttribute("configuration.jsp-classTypesAssetRendererFactories");
 %>
 
-<aui:fieldset label="asset-entry-type">
+<aui:fieldset cssClass="source-container" label="asset-entry-type">
 
 	<%
 	Set<Long> availableClassNameIdsSet = SetUtil.fromArray(assetPublisherDisplayContext.getAvailableClassNameIds());
@@ -238,7 +238,7 @@ List<AssetRendererFactory<?>> classTypesAssetRendererFactories = (List<AssetRend
 	var ddmStructureFieldName = $('#<portlet:namespace />ddmStructureFieldName');
 	var orderByColumn1 = $('#<portlet:namespace />orderByColumn1');
 	var orderByColumn2 = $('#<portlet:namespace />orderByColumn2');
-	var sourcePanel = $('#<portlet:namespace />assetPublisherSourcePanel');
+	var sourcePanel = $('.source-container');
 
 	<%
 	for (AssetRendererFactory<?> curRendererFactory : classTypesAssetRendererFactories) {
@@ -408,7 +408,7 @@ List<AssetRendererFactory<?>> classTypesAssetRendererFactories = (List<AssetRend
 
 	sourcePanel.on(
 		'click',
-		'.asset-subtypefields-wrapper-enable .field',
+		'.asset-subtypefields-wrapper-enable label',
 		function(event) {
 			var assetSubtypeFieldsPopupNodes = $('.asset-subtypefields-popup .btn');
 
@@ -443,8 +443,7 @@ List<AssetRendererFactory<?>> classTypesAssetRendererFactories = (List<AssetRend
 				{
 					dialog: {
 						constrain: true,
-						modal: true,
-						width: 600
+						modal: true
 					},
 					eventName: '<portlet:namespace />selectDDMStructureField',
 					id: '<portlet:namespace />selectDDMStructure' + currentTarget.attr('id'),

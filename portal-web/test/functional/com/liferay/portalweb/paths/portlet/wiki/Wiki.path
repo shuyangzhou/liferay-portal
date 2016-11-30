@@ -87,6 +87,11 @@
 </tr>
 <!--CHILD_PAGE-->
 <tr>
+	<td>CHILD_PAGE_CONTENT</td>
+	<td>//li[contains(@class,'list-group')]//p</td>
+	<td></td>
+</tr>
+<tr>
 	<td>CHILD_PAGE_HEADER</td>
 	<td>//div[@class='sidenav-content']/h4</td>
 	<td></td>

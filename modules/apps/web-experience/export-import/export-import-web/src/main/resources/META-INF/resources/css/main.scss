@@ -48,7 +48,7 @@
 		}
 
 		.select-options {
-			margin-left: 20px ;
+			margin-left: 20px;
 			margin-top: 20px;
 		}
 	}
@@ -121,7 +121,7 @@
 }
 
 .layout-selector {
-	padding-left: 0px;
+	padding-left: 0;
 }
 
 .layout-selector-options {
@@ -228,29 +228,6 @@
 }
 
 .portlet-export-import {
-	.lfr-create-date-column, .lfr-completion-date-column, .lfr-status-column, .lfr-user-column {
-		max-width: none;
-		min-width: 0;
-	}
-
-	.lfr-description-column {
-		max-width: 400px;
-		min-width: 400px;
-		width: 60%;
-	}
-
-	.lfr-download-column {
-		max-width: 200px;
-		min-width: 200px;
-		width: 60%;
-	}
-
-	.lfr-title-column {
-		max-width: 150px;
-		min-width: 150px;
-		width: 20%;
-	}
-
 	.process-list {
 		.background-task-status-column {
 			.background-task-status-in-progress {
@@ -297,6 +274,12 @@
 				height: 30px;
 				width: 30px;
 			}
+		}
+
+		.lfr-create-date-column, .lfr-completion-date-column, .lfr-download-column, .lfr-status-column {
+			max-width: none;
+			min-width: 0;
+			width: auto;
 		}
 	}
 }

@@ -653,7 +653,7 @@ publishing.
 [Liferay Gradle Plugins Baseline] instead.
 - [LPS-67573]: Remove all deprecated methods.
 
-## 2.0.1 - 2016-11-18
+## 2.0.1 - 2016-11-21
 
 ### Added
 - [LPS-69288]: Set the `app.description` project property to override the
@@ -664,7 +664,35 @@ in the `appJavadoc` task.
 version if the `com.liferay.app.defaults.plugin` is applied.
 
 ### Changed
-- [LPS-69248]: Update the [Liferay Gradle Plugins] dependency to version 3.0.38.
+- [LPS-69271]: Update the [Liferay Gradle Plugins] dependency to version 3.0.38.
+
+## 2.0.2 - 2016-11-22
+
+### Changed
+- [LPS-66853]: Update the [Liferay Gradle Plugins] dependency to version 3.0.39.
+
+## 2.0.3 - 2016-11-23
+
+### Changed
+- [LPS-66853]: Update the [Liferay Gradle Plugins] dependency to version 3.0.40.
+
+## 2.0.4 - 2016-11-24
+
+### Changed
+- [LPS-69271]: Update the [Liferay Gradle Plugins] dependency to version 3.0.41.
+
+## 2.0.5 - 2016-11-28
+
+### Changed
+- [LPS-67352]: Update the [Liferay Gradle Plugins] dependency to version 3.0.42.
+
+## 2.0.6 - 2016-11-29
+
+### Added
+- [LPS-68813]: Add task `findSecurityBugs` to check for security problems.
+
+### Changed
+- [LPS-69445]: Update the [Liferay Gradle Plugins] dependency to version 3.0.43.
 
 [Liferay CDN]: https://cdn.lfrs.sl/repository.liferay.com/nexus/content/groups/public
 [Liferay Gradle Plugins]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-plugins
@@ -715,6 +743,7 @@ version if the `com.liferay.app.defaults.plugin` is applied.
 [LPS-68666]: https://issues.liferay.com/browse/LPS-68666
 [LPS-68772]: https://issues.liferay.com/browse/LPS-68772
 [LPS-68779]: https://issues.liferay.com/browse/LPS-68779
+[LPS-68813]: https://issues.liferay.com/browse/LPS-68813
 [LPS-68817]: https://issues.liferay.com/browse/LPS-68817
 [LPS-68838]: https://issues.liferay.com/browse/LPS-68838
 [LPS-68839]: https://issues.liferay.com/browse/LPS-68839
@@ -724,8 +753,9 @@ version if the `com.liferay.app.defaults.plugin` is applied.
 [LPS-69013]: https://issues.liferay.com/browse/LPS-69013
 [LPS-69026]: https://issues.liferay.com/browse/LPS-69026
 [LPS-69223]: https://issues.liferay.com/browse/LPS-69223
-[LPS-69248]: https://issues.liferay.com/browse/LPS-69248
+[LPS-69271]: https://issues.liferay.com/browse/LPS-69271
 [LPS-69288]: https://issues.liferay.com/browse/LPS-69288
+[LPS-69445]: https://issues.liferay.com/browse/LPS-69445
 [LRDOCS-2594]: https://issues.liferay.com/browse/LRDOCS-2594
 [LRDOCS-2841]: https://issues.liferay.com/browse/LRDOCS-2841
 [LRDOCS-2981]: https://issues.liferay.com/browse/LRDOCS-2981

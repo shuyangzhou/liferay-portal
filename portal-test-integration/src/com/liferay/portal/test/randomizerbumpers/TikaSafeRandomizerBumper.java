@@ -108,9 +108,13 @@ public class TikaSafeRandomizerBumper implements RandomizerBumper<byte[]> {
 	private static final TikaConfig _tikaConfig;
 
 	static {
+		ClassLoader classLoader = FileImpl.class.getClassLoader();
+
 		try {
 			_tikaConfig = ReflectionTestUtil.getFieldValue(
-				FileImpl.class, "_tikaConfig");
+				classLoader.loadClass(
+					FileImpl.class.getName() + "$TikaConfigHolder"),
+				"_tikaConfig");
 		}
 		catch (Exception e) {
 			throw new ExceptionInInitializerError(e);

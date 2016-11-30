@@ -3148,9 +3148,15 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 
 		String trimmedPreviousLine = StringUtil.trimLeading(previousLine);
 
-		if (line.contains("// ") || line.contains("*/") ||
-			line.contains("*/") || previousLine.contains("// ") ||
-			previousLine.contains("*/") || previousLine.contains("*/")) {
+		String strippedQuotesLine = stripQuotes(line);
+		String strippedQuotesPreviousLine = stripQuotes(previousLine);
+
+		if (strippedQuotesLine.contains("// ") ||
+			strippedQuotesLine.contains("*/") ||
+			strippedQuotesLine.contains("*/") ||
+			strippedQuotesPreviousLine.contains("// ") ||
+			strippedQuotesPreviousLine.contains("*/") ||
+			strippedQuotesPreviousLine.contains("*/")) {
 
 			return null;
 		}
@@ -3298,9 +3304,7 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 				}
 			}
 
-			if (trimmedPreviousLine.equals("return") &&
-				!line.endsWith(StringPool.PERIOD)) {
-
+			if (trimmedPreviousLine.equals("return")) {
 				for (int i = 0;; i++) {
 					String nextLine = getLine(content, lineCount + i + 1);
 

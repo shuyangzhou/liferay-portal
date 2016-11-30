@@ -420,7 +420,7 @@ while (manageableCalendarsIterator.hasNext()) {
 									<liferay-util:include page="/scheduler.jsp" servletContext="<%= application %>">
 										<liferay-util:param name="activeView" value="<%= activeView %>" />
 										<liferay-util:param name="date" value="<%= String.valueOf(startTime) %>" />
-										<liferay-util:param name="filterCalendarBookings" value='<%= "window." + renderResponse.getNamespace() + "filterCalendarBookings" %>' />
+										<liferay-util:param name="filterCalendarBookings" value='<%= renderResponse.getNamespace() + "filterCalendarBookings" %>' />
 										<liferay-util:param name="hideAgendaView" value="<%= Boolean.TRUE.toString() %>" />
 										<liferay-util:param name="hideMonthView" value="<%= Boolean.TRUE.toString() %>" />
 										<liferay-util:param name="preventPersistence" value="<%= Boolean.TRUE.toString() %>" />
@@ -488,7 +488,7 @@ while (manageableCalendarsIterator.hasNext()) {
 
 <aui:script>
 	function <portlet:namespace />filterCalendarBookings(calendarBooking) {
-		return <%= calendarBookingId %> !== calendarBooking.calendarBookingId;
+		return '<%= calendarBookingId %>' !== calendarBooking.calendarBookingId;
 	}
 
 	function <portlet:namespace />resolver(data) {

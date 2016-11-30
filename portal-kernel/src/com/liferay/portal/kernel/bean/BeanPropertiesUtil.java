@@ -247,6 +247,12 @@ public class BeanPropertiesUtil {
 		getBeanProperties().setProperties(bean, request);
 	}
 
+	public static void setProperties(
+		Object bean, HttpServletRequest request, String[] ignoreProperties) {
+
+		getBeanProperties().setProperties(bean, request, ignoreProperties);
+	}
+
 	public static void setProperty(Object bean, String param, Object value) {
 		getBeanProperties().setProperty(bean, param, value);
 	}

@@ -1,4 +1,10 @@
 <definition>
+	<command name="gotoAddChildPageViaCP">
+		<execute function="Click" locator1="Icon#HEADER_VERTICAL_ELLIPSIS" />
+
+		<execute function="AssertClick" locator1="MenuItem#ADD_CHILD_PAGE" value1="Add Child Page" />
+	</command>
+
 	<command name="gotoAddPageViaPG">
 		<execute function="Click#makeVisibleClickAt" locator1="Portlet#ICON_PLUS_SIGN" />
 
@@ -39,6 +45,14 @@
 
 	<command name="gotoChangeParent">
 		<execute function="AssertClick" locator1="Wiki#PAGE_TABS_CHANGE_PARENT" value1="Change Parent" />
+	</command>
+
+	<command name="gotoChildPageCP">
+		<execute function="AssertTextEquals" locator1="Wiki#CHILD_PAGE_CONTENT" value1="${wikiChildPageContent}" />
+
+		<var name="key_wikiChildPageTitle" value="${wikiChildPageTitle}" />
+
+		<execute function="AssertClick" locator1="Wiki#CHILD_PAGE_TITLE" value1="${wikiChildPageTitle}" />
 	</command>
 
 	<command name="gotoChildPagePG">

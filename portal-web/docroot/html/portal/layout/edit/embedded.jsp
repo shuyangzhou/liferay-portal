@@ -27,4 +27,10 @@ if (selLayout != null) {
 }
 %>
 
-<aui:input cssClass="lfr-input-text-container" id="urlEmbedded" label="url" name="TypeSettingsProperties--embeddedLayoutURL--" type="text" value="<%= url %>" />
+<aui:input cssClass="lfr-input-text-container" id="urlEmbedded" label="url" name="TypeSettingsProperties--embeddedLayoutURL--" type="text" value="<%= url %>">
+	<aui:validator errorMessage="please-enter-a-valid-url" name="required">
+		function(node) {
+			return AUI().one('#<portlet:namespace />template').val() === 'embedded';
+		}
+	</aui:validator>
+</aui:input>

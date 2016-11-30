@@ -18,10 +18,14 @@ import com.liferay.journal.constants.JournalPortletKeys;
 import com.liferay.journal.web.util.ExportArticleUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.portlet.PortletPreferences;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
@@ -48,7 +52,24 @@ public class ExportArticleMVCResourceCommand extends BaseMVCResourceCommand {
 		throws Exception {
 
 		try {
-			_exportArticleUtil.sendFile(resourceRequest, resourceResponse);
+			String targetExtension = ParamUtil.getString(
+				resourceRequest, "targetExtension");
+
+			targetExtension = StringUtil.toUpperCase(targetExtension);
+
+			PortletPreferences portletPreferences =
+				resourceRequest.getPreferences();
+
+			String[] allowedExtensions = StringUtil.split(
+				portletPreferences.getValue("extensions", null));
+
+			if (ArrayUtil.contains(
+					allowedExtensions,
+					StringUtil.toUpperCase(targetExtension))) {
+
+				_exportArticleUtil.sendFile(
+					targetExtension, resourceRequest, resourceResponse);
+			}
 		}
 		catch (Exception e) {
 			PortalUtil.sendError(

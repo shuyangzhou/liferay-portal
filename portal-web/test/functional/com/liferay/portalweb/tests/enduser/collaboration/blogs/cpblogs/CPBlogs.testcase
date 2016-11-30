@@ -235,7 +235,7 @@
 		</execute>
 	</command>
 
-	<command name="AddBlogsEntryWithInlineImageViaURL" priority="4">
+	<!-- <command name="AddBlogsEntryWithInlineImageViaURL" priority="4">
 		<execute macro="Navigator#openURL" />
 
 		<execute macro="ProductMenu#gotoSitesContent">
@@ -278,7 +278,7 @@
 		<execute macro="BlogsEntry#viewInlineImage">
 			<var name="uploadFileName" value="https://cdn.lfrs.sl/www.liferay.com/osb-community-theme/images/custom/heading.png" />
 		</execute>
-	</command>
+	</command> -->
 
 	<command name="AddBlogsEntryWithSubtitle" priority="4">
 		<execute macro="Navigator#openURL" />
@@ -792,7 +792,7 @@
 		</execute>
 	</command>
 
-	<command name="ViewCoverImageDetails" priority="3">
+	<!-- <command name="ViewCoverImageDetails" priority="3">
 		<execute macro="Navigator#openURL" />
 
 		<execute macro="ProductMenu#gotoSitesContent">
@@ -831,7 +831,7 @@
 			<var name="uploadFileName" value="Document_1.jpg" />
 			<var name="versionNumber" value="1.0" />
 		</execute>
-	</command>
+	</command> -->
 
 	<command name="ViewErrorMessageForNullCustomAbstract" priority="4">
 		<execute macro="Navigator#openURL" />

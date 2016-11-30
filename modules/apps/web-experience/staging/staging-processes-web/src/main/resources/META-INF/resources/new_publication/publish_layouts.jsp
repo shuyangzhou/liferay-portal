@@ -174,7 +174,6 @@ renderResponse.setTitle(!configuredPublish ? LanguageUtil.get(request, "new-publ
 	<aui:input name="originalCmd" type="hidden" value="<%= cmd %>" />
 	<aui:input name="currentURL" type="hidden" value="<%= currentURL %>" />
 	<aui:input name="redirect" type="hidden" value="<%= basePortletURL %>" />
-	<aui:input name="exportImportConfigurationId" type="hidden" value="<%= exportImportConfigurationId %>" />
 	<aui:input name="groupId" type="hidden" value="<%= stagingGroupId %>" />
 	<aui:input name="privateLayout" type="hidden" value="<%= privateLayout %>" />
 	<aui:input name="layoutSetBranchName" type="hidden" value="<%= layoutSetBranchName %>" />
