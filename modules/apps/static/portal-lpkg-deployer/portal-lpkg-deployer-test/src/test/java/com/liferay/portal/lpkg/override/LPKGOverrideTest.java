@@ -120,10 +120,71 @@ public class LPKGOverrideTest {
 									null);
 							}
 							else {
+								Path overridePath = Paths.get(
+									file.toString(), name);
+
 								Files.copy(
 									zipFile.getInputStream(zipEntry),
-									Paths.get(file.toString(), name),
+									overridePath,
 									StandardCopyOption.REPLACE_EXISTING);
+
+								String overrideString = overridePath.toString();
+
+								if (overrideString.endsWith(".war")) {
+									Path fileName = overridePath.getFileName();
+
+									String fileNameString = fileName.toString();
+
+									fileNameString = fileNameString.replace(
+										"-dxp", StringPool.BLANK);
+
+									overrides.put(
+										"war.".concat(
+											fileNameString.substring(
+												0, fileNameString.length() - 4)),
+										null);
+
+									continue;
+								}
+
+								try (FileSystem fileSystem = FileSystems.newFileSystem(
+										overridePath, null)) {
+
+									Path path = fileSystem.getPath("META-INF/MANIFEST.MF");
+
+									try (InputStream inputStream = Files.newInputStream(path);
+										UnsyncByteArrayOutputStream outputStream =
+											new UnsyncByteArrayOutputStream()) {
+
+										Manifest manifest = new Manifest(inputStream);
+
+										Attributes attributes = manifest.getMainAttributes();
+
+										String versionString = (String)attributes.getValue(
+											"Bundle-Version");
+
+										Version version = new Version(versionString);
+
+										version = new Version(
+											version.getMajor(), version.getMinor(),
+											version.getMicro() + 1, version.getQualifier());
+
+										versionString = version.toString();
+
+										attributes.putValue("Bundle-Version", versionString);
+
+										overrides.put(
+											attributes.getValue("Bundle-SymbolicName"),
+											versionString);
+
+										manifest.write(outputStream);
+
+										Files.write(
+											path, outputStream.toByteArray(),
+											StandardOpenOption.TRUNCATE_EXISTING,
+											StandardOpenOption.WRITE);
+									}
+								}
 							}
 						}
 					}
@@ -131,90 +192,23 @@ public class LPKGOverrideTest {
 			}
 		}
 
-		try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(
-				Paths.get(file.toURI()))) {
+		StringBundler sb = new StringBundler(overrides.size() * 4);
 
-			for (Path overridePath : directoryStream) {
-				String overrideString = overridePath.toString();
-
-				if (overrideString.endsWith(".war")) {
-					Path fileName = overridePath.getFileName();
-
-					String fileNameString = fileName.toString();
-
-					fileNameString = fileNameString.replace(
-						"-dxp", StringPool.BLANK);
-
-					overrides.put(
-						"war.".concat(
-							fileNameString.substring(
-								0, fileNameString.length() - 4)),
-						null);
-
-					continue;
-				}
-
-				if (!overrideString.endsWith(".jar")) {
-					continue;
-				}
-
-				try (FileSystem fileSystem = FileSystems.newFileSystem(
-						overridePath, null)) {
-
-					Path path = fileSystem.getPath("META-INF/MANIFEST.MF");
-
-					try (InputStream inputStream = Files.newInputStream(path);
-						UnsyncByteArrayOutputStream outputStream =
-							new UnsyncByteArrayOutputStream()) {
-
-						Manifest manifest = new Manifest(inputStream);
-
-						Attributes attributes = manifest.getMainAttributes();
-
-						String versionString = (String)attributes.getValue(
-							"Bundle-Version");
-
-						Version version = new Version(versionString);
-
-						version = new Version(
-							version.getMajor(), version.getMinor(),
-							version.getMicro() + 1, version.getQualifier());
-
-						versionString = version.toString();
-
-						attributes.putValue("Bundle-Version", versionString);
-
-						overrides.put(
-							attributes.getValue("Bundle-SymbolicName"),
-							versionString);
-
-						manifest.write(outputStream);
-
-						Files.write(
-							path, outputStream.toByteArray(),
-							StandardOpenOption.TRUNCATE_EXISTING,
-							StandardOpenOption.WRITE);
-					}
-				}
-			}
-
-			StringBundler sb = new StringBundler(overrides.size() * 4);
-
-			for (Entry<String, String> entry : overrides.entrySet()) {
-				sb.append(entry.getKey());
-				sb.append(StringPool.COLON);
-				sb.append(entry.getValue());
-				sb.append(StringPool.NEW_LINE);
-			}
-
-			sb.setIndex(sb.index() - 1);
-
-			Files.write(
-				Paths.get(liferayHome, "/overrides"),
-				Arrays.asList(sb.toString()), StandardCharsets.UTF_8,
-				StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING,
-				StandardOpenOption.WRITE);
+		for (Entry<String, String> entry : overrides.entrySet()) {
+			sb.append(entry.getKey());
+			sb.append(StringPool.COLON);
+			sb.append(entry.getValue());
+			sb.append(StringPool.NEW_LINE);
 		}
+
+		sb.setIndex(sb.index() - 1);
+
+		Files.write(
+			Paths.get(liferayHome, "/overrides"),
+			Arrays.asList(sb.toString()), StandardCharsets.UTF_8,
+			StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING,
+			StandardOpenOption.WRITE);
+
 	}
 
 	private static final Pattern _pattern = Pattern.compile(
