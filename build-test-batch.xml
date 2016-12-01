@@ -1342,7 +1342,7 @@ app.server.type=@{app.server.type}]]></echo>
 				<param name="database.type" value="@{database.type}" />
 			</antcall>
 
-			<antcall inheritAll="false" target="prepare-system-ext-properties" />
+			<echo file="${app.server.classes.portal.dir}/system-ext.properties">log.sanitizer.enabled=false</echo>
 
 			<ant dir="modules" inheritAll="false" target="build-app-lpkg-all">
 				<property name="osgi.dir" value="${app.server.parent.dir}/osgi" />
