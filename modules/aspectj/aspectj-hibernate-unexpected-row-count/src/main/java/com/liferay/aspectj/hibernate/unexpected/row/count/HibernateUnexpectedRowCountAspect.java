@@ -14,14 +14,18 @@
 
 package com.liferay.aspectj.hibernate.unexpected.row.count;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.ReflectionUtil;
+
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 
-import java.sql.PreparedStatement;
-
-import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.SuppressAjWarnings;
+
+import org.hibernate.jdbc.AbstractBatcher;
+import org.hibernate.jdbc.BatchingBatcher;
 
 /**
  * @author Preston Crary
@@ -30,55 +34,38 @@ import org.aspectj.lang.annotation.SuppressAjWarnings;
 @SuppressAjWarnings("adviceDidNotMatch")
 public class HibernateUnexpectedRowCountAspect {
 
-	@AfterThrowing(
-		throwing = "re",
-		value = "execution(void org.hibernate.jdbc.BatchingBatcher.doExecuteBatch(java.sql.PreparedStatement)) && args(preparedStatement) && this(batchingBatcher)"
+	@Before(
+		"handler(java.lang.RuntimeException) &&" +
+			"withincode(void org.hibernate.jdbc.BatchingBatcher." +
+				"doExecuteBatch(java.sql.PreparedStatement)) &&" +
+					"args(runtimeException) && this(batchingBatcher)"
 	)
 	public void logUpdateSQL(
-			Object batchingBatcher, PreparedStatement preparedStatement,
-			RuntimeException re)
-		throws ReflectiveOperationException {
+		BatchingBatcher batchingBatcher, RuntimeException runtimeException) {
 
-		Class<?> clazz = re.getClass();
-
-		if (!_STALE_STATE_EXCEPTION_NAME.equals(clazz.getName())) {
-			return;
+		try {
+			_log.error(
+				"batchUpdateSQL = " + _batchUpdateSQLField.get(batchingBatcher),
+				runtimeException);
 		}
-
-		Class<?> batchingBatcherClass = batchingBatcher.getClass();
-
-		Class<?> abstractBatcherClass = batchingBatcherClass.getSuperclass();
-
-		Field batchUpdateSQLField = abstractBatcherClass.getDeclaredField(
-			"batchUpdateSQL");
-
-		batchUpdateSQLField.setAccessible(true);
-
-		String batchUpdateSQL = (String)batchUpdateSQLField.get(
-			batchingBatcher);
-
-		Field logField = abstractBatcherClass.getDeclaredField("log");
-
-		logField.setAccessible(true);
-
-		Class<?> logClass = logField.getType();
-
-		Method errorMethod = logClass.getMethod("error", String.class);
-
-		Object log = logField.get(batchingBatcher);
-
-		StringBuilder sb = new StringBuilder();
-
-		sb.append("{preparedStatement=");
-		sb.append(preparedStatement);
-		sb.append(", batchUpdateSQL=");
-		sb.append(batchUpdateSQL);
-		sb.append("}");
-
-		errorMethod.invoke(log, sb.toString());
+		catch (ReflectiveOperationException roe) {
+			runtimeException.addSuppressed(roe);
+		}
 	}
 
-	private static final String _STALE_STATE_EXCEPTION_NAME =
-		"org.hibernate.StaleStateException";
+	private static final Log _log = LogFactoryUtil.getLog(
+		HibernateUnexpectedRowCountAspect.class);
+
+	private static final Field _batchUpdateSQLField;
+
+	static {
+		try {
+			_batchUpdateSQLField = ReflectionUtil.getDeclaredField(
+				AbstractBatcher.class, "batchUpdateSQL");
+		}
+		catch (Exception e) {
+			throw new ExceptionInInitializerError(e);
+		}
+	}
 
 }
