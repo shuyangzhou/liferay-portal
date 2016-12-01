@@ -161,8 +161,14 @@ public class DynamicQueryTest {
 	public void testOrderBy() {
 		DynamicQuery dynamicQuery = ClassNameLocalServiceUtil.dynamicQuery();
 
+		Property classNameIdProperty = PropertyFactoryUtil.forName(
+			"classNameId");
+
+		ClassName endClassName = _allClassNames.get(_allClassNames.size() - 1);
+
+		dynamicQuery.add(classNameIdProperty.le(endClassName.getClassNameId()));
+
 		dynamicQuery.addOrder(OrderFactoryUtil.desc("classNameId"));
-		dynamicQuery.setLimit(QueryUtil.ALL_POS, _allClassNames.size());
 
 		_allClassNames = new ArrayList<>(_allClassNames);
 
