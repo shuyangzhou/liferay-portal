@@ -106,6 +106,12 @@ buildLexicon {
 
 	eachFile new StripPathSegmentsAction(7)
 
+	filter {
+		String line ->
+
+		line.replace ".offsetWidth // force reflow", ".offsetWidth.toFixed() // force reflow"
+	}
+
 	from {
 		zipTree(configurations.lexicon.singleFile)
 	}

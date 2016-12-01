@@ -1,4 +1,5 @@
 <definition component-name="portal-plugins-osgi">
+	<property name="osgi.modules.includes" value="twitter-web" />
 	<property name="portal.release" value="true" />
 	<property name="plugins.deployment.type" value="osgi" />
 	<property name="testray.main.component.name" value="Social Networking" />
@@ -16,8 +17,6 @@
 	</tear-down>
 
 	<command name="TwitterPortletSmoke" priority="4">
-		<property name="portlet.plugins.includes" value="twitter-portlet" />
-
 		<var name="appName" value="Twitter" />
 
 		<execute macro="Navigator#gotoPage">

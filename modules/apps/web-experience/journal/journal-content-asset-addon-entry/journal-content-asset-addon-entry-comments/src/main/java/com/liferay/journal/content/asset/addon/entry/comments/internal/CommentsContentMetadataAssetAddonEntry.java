@@ -14,8 +14,9 @@
 
 package com.liferay.journal.content.asset.addon.entry.comments.internal;
 
-import com.liferay.journal.configuration.JournalServiceConfigurationValues;
+import com.liferay.journal.configuration.JournalServiceConfiguration;
 import com.liferay.journal.content.asset.addon.entry.common.ContentMetadataAssetAddonEntry;
+import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.servlet.taglib.ui.AssetAddonEntry;
 import com.liferay.portal.kernel.servlet.taglib.ui.BaseJSPAssetAddonEntry;
@@ -25,18 +26,26 @@ import java.io.IOException;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.ConfigurationPolicy;
+import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Julio Camarero
  */
-@Component(immediate = true, service = ContentMetadataAssetAddonEntry.class)
+@Component(
+	configurationPid = "com.liferay.journal.configuration.JournalServiceConfiguration",
+	configurationPolicy = ConfigurationPolicy.OPTIONAL, immediate = true,
+	service = ContentMetadataAssetAddonEntry.class
+)
 public class CommentsContentMetadataAssetAddonEntry
 	extends BaseJSPAssetAddonEntry implements ContentMetadataAssetAddonEntry {
 
@@ -94,9 +103,7 @@ public class CommentsContentMetadataAssetAddonEntry
 
 	@Override
 	public boolean isEnabled() {
-		if (!JournalServiceConfigurationValues.
-				JOURNAL_ARTICLE_COMMENTS_ENABLED) {
-
+		if (!_journalServiceConfiguration.articleCommentsEnabled()) {
 			return false;
 		}
 
@@ -121,7 +128,15 @@ public class CommentsContentMetadataAssetAddonEntry
 		super.setServletContext(servletContext);
 	}
 
+	@Activate
+	@Modified
+	protected void activate(Map<String, Object> properties) {
+		_journalServiceConfiguration = ConfigurableUtil.createConfigurable(
+			JournalServiceConfiguration.class, properties);
+	}
+
 	private CommentRatingsContentMetadataAssetAddonEntry
 		_commentRatingsContentMetadataAssetAddonEntry;
+	private JournalServiceConfiguration _journalServiceConfiguration;
 
 }

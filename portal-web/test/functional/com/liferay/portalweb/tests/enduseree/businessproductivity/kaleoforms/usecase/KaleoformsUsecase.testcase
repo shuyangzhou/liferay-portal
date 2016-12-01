@@ -4721,23 +4721,13 @@
 			<var name="workflowTask" value="Review" />
 		</execute>
 
-		<execute macro="Workflow#approveTaskByActions">
+		<execute macro="Workflow#viewPendingTasks">
 			<var name="workflowAssetTitle" value="Kaleo Forms Process" />
 			<var name="workflowAssetType" value="${workflowAssetType}" />
 			<var name="workflowTask" value="Review" />
 		</execute>
 
-		<execute macro="Page#gotoMyAccount">
-			<var name="portletName" value="My Workflow Tasks" />
-		</execute>
-
-		<execute macro="Workflow#viewCompletedTask">
-			<var name="workflowAssetTitle" value="Kaleo Forms Process" />
-			<var name="workflowAssetType" value="${workflowAssetType}" />
-			<var name="workflowTask" value="Review" />
-		</execute>
-
-		<execute macro="Workflow#gotoCompletedTaskAssignedToMePreview">
+		<execute macro="Workflow#gotoTaskDetails">
 			<var name="workflowAssetTitle" value="Kaleo Forms Process" />
 		</execute>
 
@@ -4746,9 +4736,29 @@
 			<var name="fieldValue" value="Kaleo Text Field" />
 		</execute>
 
-		<var name="key_fieldName" value="Date" />
+		<execute macro="WorkflowAsset#previewViewContentFieldNotPresent">
+			<var name="fieldLabel" value="Date" />
+		</execute>
 
-		<execute function="AssertElementNotPresent" locator1="DDLEditRecord#TEXT_FIELD" />
+		<execute macro="Navigator#openURL" />
+
+		<execute macro="ProductMenu#gotoSitesContent">
+			<var name="portlet" value="Kaleo Forms Admin" />
+		</execute>
+
+		<execute macro="KaleoFormsAdmin#editProcess">
+			<var name="kfProcessName" value="Kaleo Forms Process" />
+		</execute>
+
+		<execute macro="KaleoFormsAdmin#gotoProgressStep">
+			<var name="kfProgressName" value="Forms" />
+		</execute>
+
+		<execute macro="KaleoFormsAdmin#unassignForm">
+			<var name="workflowTask" value="review" />
+		</execute>
+
+		<execute macro="KaleoFormsAdmin#saveForm" />
 
 		<execute macro="Navigator#openURL" />
 
@@ -4765,10 +4775,14 @@
 			<var name="portletName" value="My Workflow Tasks" />
 		</execute>
 
-		<execute macro="Workflow#viewCompletedTask">
+		<execute macro="Workflow#viewPendingTasks">
 			<var name="workflowAssetTitle" value="Kaleo Forms Process" />
 			<var name="workflowAssetType" value="${workflowAssetType}" />
 			<var name="workflowTask" value="Review" />
+		</execute>
+
+		<execute macro="Workflow#gotoTaskDetails">
+			<var name="workflowAssetTitle" value="Kaleo Forms Process" />
 		</execute>
 
 		<execute macro="WorkflowAsset#previewViewContent">
@@ -4801,7 +4815,7 @@
 			<var name="workflowTask" value="Review" />
 		</execute>
 
-		<execute macro="Workflow#gotoCompletedTaskAssignedToMePreview">
+		<execute macro="Workflow#gotoTaskDetails">
 			<var name="workflowAssetTitle" value="Kaleo Forms Process" />
 		</execute>
 

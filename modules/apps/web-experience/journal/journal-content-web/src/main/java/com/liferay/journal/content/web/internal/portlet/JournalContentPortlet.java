@@ -25,9 +25,11 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.PortletRequestModel;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PrefsParamUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -174,7 +176,25 @@ public class JournalContentPortlet extends MVCPortlet {
 			resourceRequest.getResourceID());
 
 		if (resourceID.equals("exportArticle")) {
-			_exportArticleUtil.sendFile(resourceRequest, resourceResponse);
+			String targetExtension = ParamUtil.getString(
+				resourceRequest, "targetExtension");
+
+			targetExtension = StringUtil.toUpperCase(targetExtension);
+
+			PortletPreferences portletPreferences =
+				resourceRequest.getPreferences();
+
+			String[] allowedExtensions = StringUtil.split(
+				portletPreferences.getValue(
+					"userToolAssetAddonEntryKeys", null));
+
+			if (ArrayUtil.contains(
+					allowedExtensions,
+					"enable" + StringUtil.toUpperCase(targetExtension))) {
+
+				_exportArticleUtil.sendFile(
+					targetExtension, resourceRequest, resourceResponse);
+			}
 		}
 		else {
 			resourceRequest.setAttribute(

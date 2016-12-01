@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.SystemProperties;
+import com.liferay.portal.spring.hibernate.DialectDetector;
 import com.liferay.portal.test.rule.callback.ClearThreadLocalTestCallback;
 import com.liferay.portal.test.rule.callback.HotDeployAwaitTestCallback;
 import com.liferay.portal.test.rule.callback.LogAssertionTestCallback;
@@ -38,6 +39,8 @@ import com.liferay.util.log4j.Log4JUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import org.apache.log4j.Level;
 
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
@@ -112,6 +115,10 @@ public class LiferayIntegrationTestRule extends AggregateTestRule {
 
 								configureLog4j = true;
 							}
+
+							Log4JUtil.setLevel(
+								DialectDetector.class.getName(),
+								Level.INFO.toString(), false);
 
 							ClassPathUtil.initializeClassPaths(
 								new MockServletContext());

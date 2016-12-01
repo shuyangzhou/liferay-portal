@@ -57,7 +57,7 @@ int startYear = ParamUtil.get(request, "schedulerStartDateYear", cal.get(Calenda
 				firstDayOfWeek="<%= cal.getFirstDayOfWeek() - 1 %>"
 				monthParam="schedulerStartDateMonth"
 				monthValue="<%= startMonth %>"
-				name="startDate"
+				name="schedulerStartDate"
 				yearParam="schedulerStartDateYear"
 				yearValue="<%= startYear %>"
 			/>
@@ -68,11 +68,12 @@ int startYear = ParamUtil.get(request, "schedulerStartDateYear", cal.get(Calenda
 				amPmParam="schedulerStartDateAmPm"
 				amPmValue="<%= startAmPm %>"
 				cssClass="form-group form-group-inline"
+				dateParam="schedulerStartTimeDate"
 				hourParam="schedulerStartDateHour"
 				hourValue="<%= startHour %>"
 				minuteParam="schedulerStartDateMinute"
 				minuteValue="<%= startMinute %>"
-				name="startTime"
+				name="schedulerStartTime"
 			/>
 		</div>
 	</aui:field-wrapper>
@@ -90,7 +91,7 @@ int startYear = ParamUtil.get(request, "schedulerStartDateYear", cal.get(Calenda
 				firstDayOfWeek="<%= cal.getFirstDayOfWeek() - 1 %>"
 				monthParam="schedulerEndDateMonth"
 				monthValue="<%= endMonth %>"
-				name="endDate"
+				name="schedulerEndDate"
 				yearParam="schedulerEndDateYear"
 				yearValue="<%= endYear %>"
 			/>
@@ -101,11 +102,12 @@ int startYear = ParamUtil.get(request, "schedulerStartDateYear", cal.get(Calenda
 				amPmParam="schedulerEndDateAmPm"
 				amPmValue="<%= endAmPm %>"
 				cssClass="form-group form-group-inline"
+				dateParam="schedulerEndTimeDate"
 				hourParam="schedulerEndDateHour"
 				hourValue="<%= endHour %>"
 				minuteParam="schedulerEndDateMinute"
 				minuteValue="<%= endMinute %>"
-				name="endTime"
+				name="schedulerEndTime"
 			/>
 		</div>
 	</aui:field-wrapper>

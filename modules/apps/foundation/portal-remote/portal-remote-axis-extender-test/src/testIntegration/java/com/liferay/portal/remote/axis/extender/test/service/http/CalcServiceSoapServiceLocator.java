@@ -40,7 +40,7 @@ public class CalcServiceSoapServiceLocator extends org.apache.axis.client.Servic
     }
 
     public com.liferay.portal.remote.axis.extender.test.service.http.CalcServiceSoap getCalcServiceSoapPort() throws javax.xml.rpc.ServiceException {
-       java.net.URL endpoint;
+        java.net.URL endpoint;
         try {
             endpoint = new java.net.URL(CalcServiceSoapPort_address);
         }
@@ -119,22 +119,22 @@ public class CalcServiceSoapServiceLocator extends org.apache.axis.client.Servic
     }
 
     /**
-    * Set the endpoint address for the specified port name.
-    */
+     * Set the endpoint address for the specified port name.
+     */
     public void setEndpointAddress(java.lang.String portName, java.lang.String address) throws javax.xml.rpc.ServiceException {
-        
-if ("CalcServiceSoapPort".equals(portName)) {
+
+        if ("CalcServiceSoapPort".equals(portName)) {
             setCalcServiceSoapPortEndpointAddress(address);
         }
-        else 
-{ // Unknown Port Name
+        else
+        { // Unknown Port Name
             throw new javax.xml.rpc.ServiceException(" Cannot set Endpoint Address for Unknown Port" + portName);
         }
     }
 
     /**
-    * Set the endpoint address for the specified port name.
-    */
+     * Set the endpoint address for the specified port name.
+     */
     public void setEndpointAddress(javax.xml.namespace.QName portName, java.lang.String address) throws javax.xml.rpc.ServiceException {
         setEndpointAddress(portName.getLocalPart(), address);
     }

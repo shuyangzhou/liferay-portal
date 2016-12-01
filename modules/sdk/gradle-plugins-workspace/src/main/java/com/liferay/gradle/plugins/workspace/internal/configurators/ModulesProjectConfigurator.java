@@ -38,16 +38,14 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.gradle.api.Action;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
-import org.gradle.api.artifacts.dsl.RepositoryHandler;
-import org.gradle.api.artifacts.repositories.MavenArtifactRepository;
 import org.gradle.api.file.CopySourceSpec;
 import org.gradle.api.initialization.Settings;
 import org.gradle.api.plugins.ExtensionAware;
 import org.gradle.api.plugins.JavaPlugin;
 import org.gradle.api.tasks.Copy;
+import org.gradle.jvm.tasks.Jar;
 
 /**
  * @author Andrea Di Giorgi
@@ -72,11 +70,16 @@ public class ModulesProjectConfigurator extends BaseProjectConfigurator {
 
 		_applyPlugins(project);
 
-		_addRepositoryDefault(project);
+		if (isDefaultRepositoryEnabled()) {
+			GradleUtil.addDefaultRepositories(project);
+		}
+
 		_configureLiferay(project, workspaceExtension);
 		_configureTaskRunPoshi(project);
 
-		_configureRootTaskDistBundle(project);
+		Jar jar = (Jar)GradleUtil.getTask(project, JavaPlugin.JAR_TASK_NAME);
+
+		_configureRootTaskDistBundle(jar);
 	}
 
 	@Override
@@ -119,26 +122,6 @@ public class ModulesProjectConfigurator extends BaseProjectConfigurator {
 		return projectDirs;
 	}
 
-	private MavenArtifactRepository _addRepositoryDefault(Project project) {
-		if (!isDefaultRepositoryEnabled()) {
-			return null;
-		}
-
-		RepositoryHandler repositoryHandler = project.getRepositories();
-
-		return repositoryHandler.maven(
-			new Action<MavenArtifactRepository>() {
-
-				@Override
-				public void execute(
-					MavenArtifactRepository mavenArtifactRepository) {
-
-					mavenArtifactRepository.setUrl(_DEFAULT_REPOSITORY_URL);
-				}
-
-			});
-	}
-
 	private void _applyPlugins(Project project) {
 		GradleUtil.applyPlugin(project, LiferayOSGiPlugin.class);
 		GradleUtil.applyPlugin(project, PoshiRunnerPlugin.class);
@@ -157,7 +140,9 @@ public class ModulesProjectConfigurator extends BaseProjectConfigurator {
 		liferayExtension.setAppServerParentDir(workspaceExtension.getHomeDir());
 	}
 
-	private void _configureRootTaskDistBundle(final Project project) {
+	private void _configureRootTaskDistBundle(final Jar jar) {
+		Project project = jar.getProject();
+
 		Copy copy = (Copy)GradleUtil.getTask(
 			project.getRootProject(),
 			RootProjectConfigurator.DIST_BUNDLE_TASK_NAME);
@@ -168,10 +153,7 @@ public class ModulesProjectConfigurator extends BaseProjectConfigurator {
 
 				@SuppressWarnings("unused")
 				public void doCall(CopySourceSpec copySourceSpec) {
-					Task jarTask = GradleUtil.getTask(
-						project, JavaPlugin.JAR_TASK_NAME);
-
-					copySourceSpec.from(jarTask);
+					copySourceSpec.from(jar);
 				}
 
 			});
@@ -185,10 +167,6 @@ public class ModulesProjectConfigurator extends BaseProjectConfigurator {
 	}
 
 	private static final boolean _DEFAULT_REPOSITORY_ENABLED = true;
-
-	private static final String _DEFAULT_REPOSITORY_URL =
-		"https://cdn.lfrs.sl/repository.liferay.com/nexus/content/groups" +
-			"/public";
 
 	private static final String _NAME = "modules";
 
