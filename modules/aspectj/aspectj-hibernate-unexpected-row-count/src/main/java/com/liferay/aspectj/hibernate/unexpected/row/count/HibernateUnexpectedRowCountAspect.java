@@ -14,14 +14,22 @@
 
 package com.liferay.aspectj.hibernate.unexpected.row.count;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.ReflectionUtil;
+import com.liferay.portal.kernel.util.StringBundler;
+
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 
 import java.sql.PreparedStatement;
 
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.SuppressAjWarnings;
+
+import org.hibernate.StaleStateException;
+import org.hibernate.jdbc.AbstractBatcher;
+import org.hibernate.jdbc.BatchingBatcher;
 
 /**
  * @author Preston Crary
@@ -31,54 +39,39 @@ import org.aspectj.lang.annotation.SuppressAjWarnings;
 public class HibernateUnexpectedRowCountAspect {
 
 	@AfterThrowing(
-		throwing = "re",
+		argNames = "batchingBatcher,preparedStatement,sse",
+		throwing = "sse",
 		value = "execution(void org.hibernate.jdbc.BatchingBatcher.doExecuteBatch(java.sql.PreparedStatement)) && args(preparedStatement) && this(batchingBatcher)"
 	)
 	public void logUpdateSQL(
-			Object batchingBatcher, PreparedStatement preparedStatement,
-			RuntimeException re)
+			BatchingBatcher batchingBatcher,
+			PreparedStatement preparedStatement, StaleStateException sse)
 		throws ReflectiveOperationException {
 
-		Class<?> clazz = re.getClass();
-
-		if (!_STALE_STATE_EXCEPTION_NAME.equals(clazz.getName())) {
-			return;
-		}
-
-		Class<?> batchingBatcherClass = batchingBatcher.getClass();
-
-		Class<?> abstractBatcherClass = batchingBatcherClass.getSuperclass();
-
-		Field batchUpdateSQLField = abstractBatcherClass.getDeclaredField(
-			"batchUpdateSQL");
-
-		batchUpdateSQLField.setAccessible(true);
-
-		String batchUpdateSQL = (String)batchUpdateSQLField.get(
-			batchingBatcher);
-
-		Field logField = abstractBatcherClass.getDeclaredField("log");
-
-		logField.setAccessible(true);
-
-		Class<?> logClass = logField.getType();
-
-		Method errorMethod = logClass.getMethod("error", String.class);
-
-		Object log = logField.get(batchingBatcher);
-
-		StringBuilder sb = new StringBuilder();
+		StringBundler sb = new StringBundler(5);
 
 		sb.append("{preparedStatement=");
 		sb.append(preparedStatement);
 		sb.append(", batchUpdateSQL=");
-		sb.append(batchUpdateSQL);
+		sb.append(_batchUpdateSQLField.get(batchingBatcher));
 		sb.append("}");
 
-		errorMethod.invoke(log, sb.toString());
+		_log.error(sb.toString(), sse);
 	}
 
-	private static final String _STALE_STATE_EXCEPTION_NAME =
-		"org.hibernate.StaleStateException";
+	private static final Log _log = LogFactoryUtil.getLog(
+		HibernateUnexpectedRowCountAspect.class);
+
+	private static final Field _batchUpdateSQLField;
+
+	static {
+		try {
+			_batchUpdateSQLField = ReflectionUtil.getDeclaredField(
+				AbstractBatcher.class, "batchUpdateSQL");
+		}
+		catch (Exception e) {
+			throw new ExceptionInInitializerError(e);
+		}
+	}
 
 }
