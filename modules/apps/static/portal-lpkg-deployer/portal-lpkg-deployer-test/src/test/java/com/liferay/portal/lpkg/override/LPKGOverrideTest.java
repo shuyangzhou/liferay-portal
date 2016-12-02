@@ -76,8 +76,6 @@ public class LPKGOverrideTest {
 			file.mkdir();
 		}
 
-		Map<String, String> overrides = new HashMap<>();
-
 		try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(
 				Paths.get(liferayHome, "/osgi/marketplace"))) {
 
@@ -114,7 +112,7 @@ public class LPKGOverrideTest {
 										liferayHome, "/osgi/static/", name),
 									StandardCopyOption.REPLACE_EXISTING);
 
-								overrides.put(
+								_overrides.put(
 									"static.".concat(
 										name.substring(0, name.length() - 4)),
 									null);
@@ -145,7 +143,7 @@ public class LPKGOverrideTest {
 					fileNameString = fileNameString.replace(
 						"-dxp", StringPool.BLANK);
 
-					overrides.put(
+					_overrides.put(
 						"war.".concat(
 							fileNameString.substring(
 								0, fileNameString.length() - 4)),
@@ -158,49 +156,12 @@ public class LPKGOverrideTest {
 					continue;
 				}
 
-				try (FileSystem fileSystem = FileSystems.newFileSystem(
-						overridePath, null)) {
-
-					Path path = fileSystem.getPath("META-INF/MANIFEST.MF");
-
-					try (InputStream inputStream = Files.newInputStream(path);
-						UnsyncByteArrayOutputStream outputStream =
-							new UnsyncByteArrayOutputStream()) {
-
-						Manifest manifest = new Manifest(inputStream);
-
-						Attributes attributes = manifest.getMainAttributes();
-
-						String versionString = (String)attributes.getValue(
-							"Bundle-Version");
-
-						Version version = new Version(versionString);
-
-						version = new Version(
-							version.getMajor(), version.getMinor(),
-							version.getMicro() + 1, version.getQualifier());
-
-						versionString = version.toString();
-
-						attributes.putValue("Bundle-Version", versionString);
-
-						overrides.put(
-							attributes.getValue("Bundle-SymbolicName"),
-							versionString);
-
-						manifest.write(outputStream);
-
-						Files.write(
-							path, outputStream.toByteArray(),
-							StandardOpenOption.TRUNCATE_EXISTING,
-							StandardOpenOption.WRITE);
-					}
-				}
+				_incrementModuleVersions(overridePath, true);
 			}
 
-			StringBundler sb = new StringBundler(overrides.size() * 4);
+			StringBundler sb = new StringBundler(_overrides.size() * 4);
 
-			for (Entry<String, String> entry : overrides.entrySet()) {
+			for (Entry<String, String> entry : _overrides.entrySet()) {
 				sb.append(entry.getKey());
 				sb.append(StringPool.COLON);
 				sb.append(entry.getValue());
@@ -215,9 +176,64 @@ public class LPKGOverrideTest {
 				StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING,
 				StandardOpenOption.WRITE);
 		}
+
+		try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(
+				Paths.get(liferayHome, "/osgi/static"))) {
+
+			for (Path overridePath : directoryStream) {
+				_incrementModuleVersions(overridePath, false);
+			}
+		}
+	}
+
+	private void _incrementModuleVersions(Path path, boolean recordOverride)
+		throws IOException {
+
+		try (FileSystem fileSystem = FileSystems.newFileSystem(
+				path, null)) {
+
+			Path manifestPath = fileSystem.getPath("META-INF/MANIFEST.MF");
+
+			try (InputStream inputStream = Files.newInputStream(manifestPath);
+				UnsyncByteArrayOutputStream outputStream =
+					new UnsyncByteArrayOutputStream()) {
+
+				Manifest manifest = new Manifest(inputStream);
+
+				Attributes attributes = manifest.getMainAttributes();
+
+				String versionString = (String)attributes.getValue(
+					"Bundle-Version");
+
+				Version version = new Version(versionString);
+
+				version = new Version(
+					version.getMajor(), version.getMinor(),
+					version.getMicro() + 1, version.getQualifier());
+
+				versionString = version.toString();
+
+				attributes.putValue("Bundle-Version", versionString);
+
+				if (recordOverride) {
+					_overrides.put(
+						attributes.getValue("Bundle-SymbolicName"),
+						versionString);
+				}
+
+				manifest.write(outputStream);
+
+				Files.write(
+					manifestPath, outputStream.toByteArray(),
+					StandardOpenOption.TRUNCATE_EXISTING,
+					StandardOpenOption.WRITE);
+			}
+		}
 	}
 
 	private static final Pattern _pattern = Pattern.compile(
 		"(.*?)(-\\d+\\.\\d+\\.\\d+)(\\..+)?(\\.[jw]ar)");
+
+	private final Map<String, String> _overrides = new HashMap<>();
 
 }
