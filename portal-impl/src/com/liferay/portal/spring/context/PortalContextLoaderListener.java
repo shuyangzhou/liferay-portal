@@ -143,13 +143,6 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 		}
 
 		try {
-			ModuleFrameworkUtilAdapter.stopRuntime();
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
-
-		try {
 			PortalLifecycleUtil.reset();
 		}
 		catch (Exception e) {
@@ -163,6 +156,8 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 		try {
 			super.contextDestroyed(servletContextEvent);
 
+			ModuleFrameworkUtilAdapter.stopRuntime();
+
 			try {
 				ModuleFrameworkUtilAdapter.stopFramework(
 					PropsValues.MODULE_FRAMEWORK_STOP_WAIT_TIMEOUT);
@@ -175,6 +170,9 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 				_arrayApplicationContext);
 
 			_arrayApplicationContext.close();
+		}
+		catch (Exception e) {
+			_log.error(e, e);
 		}
 		finally {
 			PortalContextLoaderLifecycleThreadLocal.setDestroying(false);
@@ -251,6 +249,8 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 				_arrayApplicationContext);
 
 			ModuleFrameworkUtilAdapter.startFramework();
+
+			ModuleFrameworkUtilAdapter.startRuntime();
 		}
 		catch (Exception e) {
 			throw new RuntimeException(e);
@@ -344,8 +344,6 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 
 		try {
 			ModuleFrameworkUtilAdapter.registerContext(applicationContext);
-
-			ModuleFrameworkUtilAdapter.startRuntime();
 		}
 		catch (Exception e) {
 			throw new RuntimeException(e);
