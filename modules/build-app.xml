@@ -271,9 +271,11 @@
 			<fileset dir="${osgi.dir}/core" includes="com.liferay.portal.bootstrap.jar,org.eclipse.osgi.jar" />
 		</path>
 
+		<echo>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^${portal.lib.dir}</echo>
 		<java
 			classname="com.liferay.portal.tools.target.platform.indexer.client.TargetPlatformIndexerClient"
 			classpathref="target.platform.indexer.classpath"
+			failonerror="true"
 			fork="true"
 			newenvironment="true"
 		>
