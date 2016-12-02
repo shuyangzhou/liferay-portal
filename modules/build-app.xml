@@ -13,7 +13,7 @@
 	<property location="${modules.dir}/../bundles" name="liferay.home" />
 	<property location="${modules.dir}/.." name="project.dir" />
 
-	<property name="portal.lib.dir" location="${app.server.tomcat.lib.portal.dir}" />
+	<property name="portal.lib.dir" value="${app.server.tomcat.lib.portal.dir}" />
 
 	<property name="osgi.dir" value="${liferay.home}/osgi" />
 

@@ -1344,6 +1344,7 @@ app.server.type=@{app.server.type}]]></echo>
 
 			<ant dir="modules" inheritAll="false" target="build-app-lpkg-all">
 				<property name="osgi.dir" value="${app.server.parent.dir}/osgi" />
+				<property name="project.dir" value="${basedir}" />
 			</ant>
 		</sequential>
 	</macrodef>
