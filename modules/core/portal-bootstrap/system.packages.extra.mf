@@ -3433,7 +3433,7 @@ Export-Package: com.liferay.ibm.icu;version="4.0.1",com.liferay.ibm.ic
  al.kernel.upgrade,com.liferay.portal.kernel.upgrade.v6_2_0,com.lifera
  y.portal.kernel.xml,com.liferay.portlet,javax.portlet";version="1.0.0
  ",com.liferay.portal.upgrade.v6_2_0.util;version="1.0.0",com.liferay.
- portal.upgrade.v7_0_0;version="1.4.0";uses:="com.liferay.portal.kerne
+ portal.upgrade.v7_0_0;version="1.5.0";uses:="com.liferay.portal.kerne
  l.dao.orm,com.liferay.portal.kernel.settings,com.liferay.portal.kerne
  l.upgrade,com.liferay.portal.upgrade.util,com.liferay.portal.upgrade.
  v7_0_0.util,javax.portlet",com.liferay.portal.upgrade.v7_0_0.util;ver
