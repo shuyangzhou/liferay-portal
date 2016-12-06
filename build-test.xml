@@ -1581,7 +1581,8 @@ jdbc.counter.connectionProperties=oracle.jdbc.ReadTimeout=0;oracle.net.CONNECT_T
 					threadpool.search.size: 1\n\
 					threadpool.snapshot.size: 1\n\
 					threadpool.suggest.size: 1\n\
-					threadpool.warmer.size: 1
+					threadpool.warmer.size: 1\n\
+					transport.local.workers: 1
 				logExceptionsOnly=false
 			</echo>
 		</sequential>
