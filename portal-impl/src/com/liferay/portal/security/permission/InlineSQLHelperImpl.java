@@ -677,25 +677,34 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 			sb1.append(permissionChecker.getOwnerRoleId());
 			sb1.append(")");
 
-			StringBundler sb2 = new StringBundler(groupIds.length);
-
-			sb2.append(groupIdField);
-			sb2.append(" IN (");
+			StringBundler groupIdsSB = new StringBundler(groupIds.length);
 
 			for (int i = 0; i < groupIds.length; i++) {
 				if (!isEnabled(0, groupIds[i])) {
-					sb2.append(groupIds[i]);
-					sb2.append(", ");
+					groupIdsSB.append(groupIds[i]);
+					groupIdsSB.append(",");
 
 					groupAdmin = true;
 				}
 			}
 
-			sb2.setIndex(sb2.index() - 1);
-
-			sb2.append(")");
-
 			if (groupAdmin) {
+				groupIdsSB.setIndex(groupIdsSB.index() - 1);
+
+				StringBundler sb2 = new StringBundler(4);
+
+				sb2.append("ResourcePermission.primKeyId");
+
+				if (groupIdsSB.toString().contains(",")) {
+					sb2.append(" IN (");
+					sb2.append(groupIdsSB.toString());
+					sb2.append(")");
+				}
+				else {
+					sb2.append(" = ");
+					sb2.append(groupIdsSB.toString());
+				}
+
 				groupAdminResourcePermissionSB.append(sb1);
 				groupAdminResourcePermissionSB.append(" AND ");
 				groupAdminResourcePermissionSB.append(sb2);
