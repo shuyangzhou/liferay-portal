@@ -41,7 +41,11 @@
 	</sql>
 	<sql id="com.liferay.portal.kernel.security.permission.InlineSQLHelper.joinResourcePermission">
 		<![CDATA[
-			INNER JOIN ResourcePermission ON
+			SELECT DISTINCT
+				ResourcePermission.primKeyId
+			FROM
+				ResourcePermission
+			WHERE
 				(ResourcePermission.companyId = [$COMPANY_ID$]) AND
 				(ResourcePermission.name = '[$CLASS_NAME$]') AND
 				(ResourcePermission.scope = [$RESOURCE_SCOPE_INDIVIDUAL$]) AND
