@@ -272,7 +272,11 @@ public class EmbeddedElasticsearchConnection
 					elasticsearchConfiguration.clusterName());
 		}
 
-		_node = createNode(settingsBuilder.build());
+		Settings settings = settingsBuilder.build();
+
+		System.out.println("^^^^^^^^^^^^^^" + settings.toDelimitedString('\n'));
+
+		_node = createNode(settings);
 
 		_node.start();
 
