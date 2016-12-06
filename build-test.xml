@@ -1561,6 +1561,7 @@ jdbc.counter.connectionProperties=oracle.jdbc.ReadTimeout=0;oracle.net.CONNECT_T
 				additionalConfigurations=\
 					cluster.routing.allocation.disk.threshold_enabled: false\n\
 					cluster.service.slow_task_logging_threshold: 600s\n\
+					httpEnabled: false\n\
 					index.indexing.slowlog.threshold.index.warn: 600s\n\
 					index.search.slowlog.threshold.fetch.warn: 600s\n\
 					index.search.slowlog.threshold.query.warn: 600s\n\
