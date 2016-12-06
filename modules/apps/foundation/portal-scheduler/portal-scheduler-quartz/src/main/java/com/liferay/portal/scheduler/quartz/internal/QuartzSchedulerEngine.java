@@ -513,6 +513,7 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			_props.get(PropsKeys.SCHEDULER_ENABLED));
 
 		if (!_schedulerEngineEnabled) {
+			System.out.println("^^^^^^^^^^Scheduler is disabled");
 			return;
 		}
 
@@ -723,6 +724,10 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 				}
 			}
 		}
+
+		System.out.println(
+			"*********************For engine: " + propertiesPrefix + ", " +
+				properties);
 
 		schedulerFactory.initialize(properties);
 
