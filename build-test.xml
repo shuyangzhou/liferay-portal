@@ -1566,6 +1566,7 @@ jdbc.counter.connectionProperties=oracle.jdbc.ReadTimeout=0;oracle.net.CONNECT_T
 					index.search.slowlog.threshold.query.warn: 600s\n\
 					monitor.jvm.gc.old.warn: 600s\n\
 					monitor.jvm.gc.young.warn: 600s
+				httpEnabled=false
 				logExceptionsOnly=false
 			</echo>
 		</sequential>
