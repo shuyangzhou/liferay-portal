@@ -156,6 +156,8 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 		try {
 			super.contextDestroyed(servletContextEvent);
 
+			ModuleFrameworkUtilAdapter.stopRuntime();
+
 			try {
 				ModuleFrameworkUtilAdapter.stopRuntime();
 			}
@@ -175,6 +177,9 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 				_arrayApplicationContext);
 
 			_arrayApplicationContext.close();
+		}
+		catch (Exception e) {
+			_log.error(e, e);
 		}
 		finally {
 			PortalContextLoaderLifecycleThreadLocal.setDestroying(false);
