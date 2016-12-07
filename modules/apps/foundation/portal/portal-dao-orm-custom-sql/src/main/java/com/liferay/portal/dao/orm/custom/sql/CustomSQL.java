@@ -45,11 +45,16 @@ import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleEvent;
 import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.SynchronousBundleListener;
 
 /**
  * @author Brian Wing Shun Chan
@@ -124,13 +129,13 @@ public class CustomSQL {
 	}
 
 	public String get(Class<?> clazz, String id) {
-		BundleContext bundleContext = _getBundleContext(clazz);
+		Map<String, String> sqls = _sqlPool.get(FrameworkUtil.getBundle(clazz));
 
-		if (!_customSQLPool.isBundleContextLoaded(bundleContext)) {
-			_loadCustomSQL(clazz);
+		if (sqls == null) {
+			sqls = _loadCustomSQL(clazz);
 		}
 
-		return _customSQLPool.get(bundleContext, id);
+		return sqls.get(id);
 	}
 
 	public String get(
@@ -206,7 +211,15 @@ public class CustomSQL {
 	 */
 	@Deprecated
 	public String get(String id) {
-		return _customSQLPool.get(id);
+		for (Map<String, String> sqls : _sqlPool.values()) {
+			String sql = sqls.get(id);
+
+			if (sql != null) {
+				return sql;
+			}
+		}
+
+		return null;
 	}
 
 	/**
@@ -677,39 +690,19 @@ public class CustomSQL {
 		}
 	}
 
+	/**
+	 * @deprecated As of 1.0.0, with no direct replacement
+	 */
+	@Deprecated
 	protected void read(
 			BundleContext bundleContext, ClassLoader classLoader, String source)
 		throws Exception {
 
-		try (InputStream is = classLoader.getResourceAsStream(source)) {
-			if (is == null) {
-				return;
-			}
+		Map<String, String> sqls = new HashMap<>();
 
-			if (_log.isDebugEnabled()) {
-				_log.debug("Loading " + source);
-			}
+		_read(classLoader, source, sqls);
 
-			Document document = UnsecureSAXReaderUtil.read(is);
-
-			Element rootElement = document.getRootElement();
-
-			for (Element sqlElement : rootElement.elements("sql")) {
-				String file = sqlElement.attributeValue("file");
-
-				if (Validator.isNotNull(file)) {
-					read(bundleContext, classLoader, file);
-				}
-				else {
-					String id = sqlElement.attributeValue("id");
-					String content = transform(sqlElement.getText());
-
-					content = replaceIsNull(content);
-
-					_customSQLPool.put(bundleContext, id, content);
-				}
-			}
-		}
+		_sqlPool.put(bundleContext.getBundle(), sqls);
 	}
 
 	protected String transform(String sql) {
@@ -762,23 +755,56 @@ public class CustomSQL {
 		return sb.toString();
 	}
 
-	private BundleContext _getBundleContext(Class<?> clazz) {
-		Bundle bundle = FrameworkUtil.getBundle(clazz);
+	private Map<String, String> _loadCustomSQL(Class<?> clazz) {
+		Map<String, String> sqls = new HashMap<>();
 
-		return bundle.getBundleContext();
-	}
-
-	private void _loadCustomSQL(Class<?> clazz) {
 		try {
 			ClassLoader classLoader = clazz.getClassLoader();
 
-			BundleContext bundleContext = _getBundleContext(clazz);
+			_read(classLoader, "custom-sql/default.xml", sqls);
+			_read(classLoader, "META-INF/custom-sql/default.xml", sqls);
 
-			read(bundleContext, classLoader, "custom-sql/default.xml");
-			read(bundleContext, classLoader, "META-INF/custom-sql/default.xml");
+			_sqlPool.put(FrameworkUtil.getBundle(clazz), sqls);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
+		}
+
+		return sqls;
+	}
+
+	private void _read(
+			ClassLoader classLoader, String source, Map<String, String> sqls)
+		throws Exception {
+
+		try (InputStream is = classLoader.getResourceAsStream(source)) {
+			if (is == null) {
+				return;
+			}
+
+			if (_log.isDebugEnabled()) {
+				_log.debug("Loading " + source);
+			}
+
+			Document document = UnsecureSAXReaderUtil.read(is);
+
+			Element rootElement = document.getRootElement();
+
+			for (Element sqlElement : rootElement.elements("sql")) {
+				String file = sqlElement.attributeValue("file");
+
+				if (Validator.isNotNull(file)) {
+					_read(classLoader, file, sqls);
+				}
+				else {
+					String id = sqlElement.attributeValue("id");
+					String content = transform(sqlElement.getText());
+
+					content = replaceIsNull(content);
+
+					sqls.put(id, content);
+				}
+			}
 		}
 	}
 
@@ -892,12 +918,21 @@ public class CustomSQL {
 			DataAccess.cleanUp(con);
 		}
 
-		if (_customSQLPool == null) {
-			_customSQLPool = new CustomSQLPool();
-		}
-		else {
-			_customSQLPool.clear();
-		}
+		Bundle bundle = FrameworkUtil.getBundle(getClass());
+
+		BundleContext bundleContext = bundle.getBundleContext();
+
+		bundleContext.addBundleListener(
+			new SynchronousBundleListener() {
+
+				@Override
+				public void bundleChanged(BundleEvent bundleEvent) {
+					if (bundleEvent.getType() == BundleEvent.UNINSTALLED) {
+						_sqlPool.remove(bundleEvent.getBundle());
+					}
+				}
+
+			});
 	}
 
 	private static final boolean _CUSTOM_SQL_AUTO_ESCAPE_WILDCARDS_ENABLED =
@@ -926,9 +961,10 @@ public class CustomSQL {
 
 	private static final Log _log = LogFactoryUtil.getLog(CustomSQL.class);
 
-	private CustomSQLPool _customSQLPool;
 	private String _functionIsNotNull;
 	private String _functionIsNull;
+	private final Map<Bundle, Map<String, String>> _sqlPool =
+		new ConcurrentHashMap<>();
 	private boolean _vendorDB2;
 	private boolean _vendorHSQL;
 	private boolean _vendorInformix;
