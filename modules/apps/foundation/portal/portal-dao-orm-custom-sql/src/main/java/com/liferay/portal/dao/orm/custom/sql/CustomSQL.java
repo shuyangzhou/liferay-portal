@@ -14,8 +14,6 @@
 
 package com.liferay.portal.dao.orm.custom.sql;
 
-import com.liferay.portal.kernel.configuration.Configuration;
-import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;
 import com.liferay.portal.kernel.dao.orm.WildcardMode;
@@ -27,7 +25,6 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -49,7 +46,6 @@ import java.sql.SQLException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -655,28 +651,11 @@ public class CustomSQL {
 		return sql;
 	}
 
+	/**
+	 * @deprecated As of 1.0.0, with no direct replacement
+	 */
+	@Deprecated
 	protected String[] getConfigs() {
-		ClassLoader classLoader = CustomSQL.class.getClassLoader();
-
-		if (PortalClassLoaderUtil.getClassLoader() == classLoader) {
-			Properties propsUtil = PortalUtil.getPortalProperties();
-
-			return StringUtil.split(
-				propsUtil.getProperty("custom.sql.configs"));
-		}
-
-		if (classLoader.getResource("portlet.properties") != null) {
-			Configuration configuration =
-				ConfigurationFactoryUtil.getConfiguration(
-					classLoader, "portlet");
-
-			return ArrayUtil.append(
-				StringUtil.split(configuration.get("custom.sql.configs")),
-				new String[] {
-					"custom-sql/default.xml", "META-INF/custom-sql/default.xml"
-				});
-		}
-
 		return new String[] {
 			"custom-sql/default.xml", "META-INF/custom-sql/default.xml"
 		};
@@ -795,11 +774,8 @@ public class CustomSQL {
 
 			BundleContext bundleContext = _getBundleContext(clazz);
 
-			String[] configs = getConfigs();
-
-			for (String config : configs) {
-				read(bundleContext, classLoader, config);
-			}
+			read(bundleContext, classLoader, "custom-sql/default.xml");
+			read(bundleContext, classLoader, "META-INF/custom-sql/default.xml");
 		}
 		catch (Exception e) {
 			_log.error(e, e);
