@@ -89,8 +89,12 @@ public class CustomSQL {
 		reloadCustomSQL(getClass());
 	}
 
+	/**
+	 * @deprecated As of 1.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public CustomSQL(Class<?> clazz) throws SQLException {
-		reloadCustomSQL(clazz);
+		_reloadCustomSQL();
 	}
 
 	public String appendCriteria(String sql, String criteria) {
@@ -201,6 +205,10 @@ public class CustomSQL {
 		return sql;
 	}
 
+	/**
+	 * @deprecated As of 1.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public String get(String id) {
 		return _customSQLPool.get(id);
 	}

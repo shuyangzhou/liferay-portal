@@ -103,8 +103,11 @@ public class CustomSQLUtil {
 		return _instance._customSQL.keywords(keywordsArray, lowerCase);
 	}
 
+	/**
+	 * @deprecated As of 1.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static void reloadCustomSQL(Class<?> clazz) throws SQLException {
-		_instance._customSQL.reloadCustomSQL(clazz);
 	}
 
 	public static String removeGroupBy(String sql) {
