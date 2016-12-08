@@ -17,10 +17,17 @@ package com.liferay.portal.model.impl;
 import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
+import com.liferay.portal.kernel.layoutconfiguration.util.RuntimePageUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
+import com.liferay.portal.kernel.model.LayoutTemplate;
+import com.liferay.portal.kernel.model.LayoutTemplateConstants;
 import com.liferay.portal.kernel.model.LayoutTypeController;
+import com.liferay.portal.kernel.model.LayoutTypePortlet;
+import com.liferay.portal.kernel.service.LayoutTemplateLocalServiceUtil;
 import com.liferay.portal.kernel.servlet.DirectRequestDispatcherFactoryUtil;
+import com.liferay.portal.kernel.template.StringTemplateResource;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -29,6 +36,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.struts.StrutsUtil;
 import com.liferay.portal.util.PropsUtil;
+import com.liferay.portal.util.PropsValues;
 import com.liferay.taglib.servlet.PipingServletResponse;
 
 import java.util.Collection;
@@ -60,8 +68,9 @@ public class LayoutTypeControllerImpl implements LayoutTypeController {
 			GetterUtil.getString(
 				PropsUtil.get(
 					PropsKeys.LAYOUT_CONFIGURATION_ACTION_UPDATE, filter)));
-		_editPage = GetterUtil.getString(
-			PropsUtil.get(PropsKeys.LAYOUT_EDIT_PAGE, filter));
+		_editPage = StrutsUtil.TEXT_HTML_DIR.concat(
+			GetterUtil.getString(
+				PropsUtil.get(PropsKeys.LAYOUT_EDIT_PAGE, filter)));
 		_firstPageable = GetterUtil.getBoolean(
 			PropsUtil.get(PropsKeys.LAYOUT_FIRST_PAGEABLE, filter));
 		_fullPageDisplayable = GetterUtil.getBoolean(
@@ -74,8 +83,9 @@ public class LayoutTypeControllerImpl implements LayoutTypeController {
 			PropsUtil.get(PropsKeys.LAYOUT_URL, filter));
 		_urlFriendliable = GetterUtil.getBoolean(
 			PropsUtil.get(PropsKeys.LAYOUT_URL_FRIENDLIABLE, filter), true);
-		_viewPage = GetterUtil.getString(
-			PropsUtil.get(PropsKeys.LAYOUT_VIEW_PAGE, filter));
+		_viewPage = StrutsUtil.TEXT_HTML_DIR.concat(
+			GetterUtil.getString(
+				PropsUtil.get(PropsKeys.LAYOUT_VIEW_PAGE, filter)));
 	}
 
 	@Override
@@ -99,23 +109,19 @@ public class LayoutTypeControllerImpl implements LayoutTypeController {
 	}
 
 	public String getViewPath(String portletId) {
-		String path = StrutsUtil.TEXT_HTML_DIR;
 
 		// Manually check the p_p_id. See LEP-1724.
 
-		if (Validator.isNotNull(portletId)) {
-			if (_type.equals(LayoutConstants.TYPE_PANEL)) {
-				path += "/portal/layout/view/panel.jsp";
-			}
-			else {
-				path += "/portal/layout/view/portlet.jsp";
-			}
-		}
-		else {
-			path = StrutsUtil.TEXT_HTML_DIR + _viewPage;
+		if (Validator.isNull(portletId)) {
+			return _viewPage;
 		}
 
-		return path;
+		if (LayoutConstants.TYPE_PANEL.equals(_type)) {
+			return StrutsUtil.TEXT_HTML_DIR + "/portal/layout/view/panel.jsp";
+		}
+		else {
+			return StrutsUtil.TEXT_HTML_DIR + "/portal/layout/view/portlet.jsp";
+		}
 	}
 
 	@Override
@@ -154,16 +160,22 @@ public class LayoutTypeControllerImpl implements LayoutTypeController {
 
 		String path = getViewPath(portletId);
 
-		RequestDispatcher requestDispatcher =
-			DirectRequestDispatcherFactoryUtil.getRequestDispatcher(
-				servletContext, path);
-
 		UnsyncStringWriter unsyncStringWriter = new UnsyncStringWriter();
 
 		PipingServletResponse pipingServletResponse = new PipingServletResponse(
 			response, unsyncStringWriter);
 
 		String contentType = pipingServletResponse.getContentType();
+
+		if (path.equals(
+				StrutsUtil.TEXT_HTML_DIR + "/portal/layout/view/portlet.jsp")) {
+
+			_processTemplate(request, pipingServletResponse);
+		}
+
+		RequestDispatcher requestDispatcher =
+			DirectRequestDispatcherFactoryUtil.getRequestDispatcher(
+				servletContext, path);
 
 		requestDispatcher.include(request, pipingServletResponse);
 
@@ -234,7 +246,84 @@ public class LayoutTypeControllerImpl implements LayoutTypeController {
 	}
 
 	protected String getEditPage() {
-		return StrutsUtil.TEXT_HTML_DIR + _editPage;
+		return _editPage;
+	}
+
+	private void _processTemplate(
+			HttpServletRequest request, HttpServletResponse response)
+		throws Exception {
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		LayoutTypePortlet layoutTypePortlet =
+			themeDisplay.getLayoutTypePortlet();
+
+		String themeId = themeDisplay.getThemeId();
+
+		String layoutTemplateId = null;
+
+		if (themeDisplay.isStatePopUp() || themeDisplay.isWidget() ||
+			themeDisplay.isFacebook() || layoutTypePortlet.hasStateMax()) {
+
+			String ppid = null;
+
+			if (themeDisplay.isStatePopUp() || themeDisplay.isWidget()) {
+				layoutTemplateId = "pop_up";
+
+				ppid = ParamUtil.getString(request, "p_p_id");
+			}
+			else if (themeDisplay.isFacebook() ||
+					 layoutTypePortlet.hasStateMax()) {
+
+				layoutTemplateId = "max";
+
+				ppid = StringUtil.split(layoutTypePortlet.getStateMax())[0];
+			}
+
+			String velocityTemplateId =
+				themeId + LayoutTemplateConstants.STANDARD_SEPARATOR +
+				layoutTemplateId;
+			String velocityTemplateContent =
+				LayoutTemplateLocalServiceUtil.getContent(
+					layoutTemplateId, true, themeId);
+
+			if (Validator.isNotNull(velocityTemplateContent)) {
+				RuntimePageUtil.processTemplate(
+					request, response, ppid,
+					new StringTemplateResource(
+						velocityTemplateId, velocityTemplateContent));
+			}
+		}
+		else {
+			layoutTemplateId = layoutTypePortlet.getLayoutTemplateId();
+
+			if (Validator.isNull(layoutTemplateId)) {
+				layoutTemplateId = PropsValues.DEFAULT_LAYOUT_TEMPLATE_ID;
+			}
+
+			LayoutTemplate layoutTemplate =
+				LayoutTemplateLocalServiceUtil.getLayoutTemplate(
+					layoutTemplateId, false, themeId);
+
+			if (layoutTemplate != null) {
+				themeId = layoutTemplate.getThemeId();
+			}
+
+			String velocityTemplateId =
+				themeId + LayoutTemplateConstants.CUSTOM_SEPARATOR +
+					layoutTypePortlet.getLayoutTemplateId();
+			String velocityTemplateContent =
+				LayoutTemplateLocalServiceUtil.getContent(
+					layoutTypePortlet.getLayoutTemplateId(), false, themeId);
+
+			if (Validator.isNotNull(velocityTemplateContent)) {
+				RuntimePageUtil.processTemplate(
+					request, response,
+					new StringTemplateResource(
+						velocityTemplateId, velocityTemplateContent));
+			}
+		}
 	}
 
 	private final boolean _browsable;
