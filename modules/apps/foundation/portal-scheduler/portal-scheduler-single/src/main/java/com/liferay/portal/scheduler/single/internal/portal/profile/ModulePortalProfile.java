@@ -14,6 +14,9 @@
 
 package com.liferay.portal.scheduler.single.internal.portal.profile;
 
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.Props;
+import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.profile.BaseDSModulePortalProfile;
 import com.liferay.portal.profile.PortalProfile;
 import com.liferay.portal.scheduler.single.internal.SingleSchedulerEngineConfigurator;
@@ -23,6 +26,7 @@ import java.util.Collections;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Shuyang Zhou
@@ -32,10 +36,19 @@ public class ModulePortalProfile extends BaseDSModulePortalProfile {
 
 	@Activate
 	public void activate(ComponentContext componentContext) {
-		init(
-			componentContext,
-			Collections.singleton(PortalProfile.PORTAL_PROFILE_NAME_CE),
-			SingleSchedulerEngineConfigurator.class.getName());
+		if (GetterUtil.getBoolean(_props.get(PropsKeys.SCHEDULER_ENABLED))) {
+			init(
+				componentContext,
+				Collections.singleton(PortalProfile.PORTAL_PROFILE_NAME_CE),
+				SingleSchedulerEngineConfigurator.class.getName());
+		}
 	}
+
+	@Reference(unbind = "-")
+	protected void setProps(Props props) {
+		_props = props;
+	}
+
+	private Props _props;
 
 }
