@@ -185,6 +185,8 @@ public class LayoutSetCacheModel implements CacheModel<LayoutSet>,
 
 		layoutSetImpl.setCompanyFallbackVirtualHostname(_companyFallbackVirtualHostname);
 
+		layoutSetImpl.setSettingsProperties(_settingsProperties);
+
 		layoutSetImpl.setVirtualHostname(_virtualHostname);
 
 		return layoutSetImpl;
@@ -217,6 +219,7 @@ public class LayoutSetCacheModel implements CacheModel<LayoutSet>,
 		layoutSetPrototypeLinkEnabled = objectInput.readBoolean();
 
 		_companyFallbackVirtualHostname = (java.lang.String)objectInput.readObject();
+		_settingsProperties = (com.liferay.portal.kernel.util.UnicodeProperties)objectInput.readObject();
 		_virtualHostname = (java.lang.String)objectInput.readObject();
 	}
 
@@ -277,6 +280,7 @@ public class LayoutSetCacheModel implements CacheModel<LayoutSet>,
 		objectOutput.writeBoolean(layoutSetPrototypeLinkEnabled);
 
 		objectOutput.writeObject(_companyFallbackVirtualHostname);
+		objectOutput.writeObject(_settingsProperties);
 		objectOutput.writeObject(_virtualHostname);
 	}
 
@@ -296,5 +300,6 @@ public class LayoutSetCacheModel implements CacheModel<LayoutSet>,
 	public String layoutSetPrototypeUuid;
 	public boolean layoutSetPrototypeLinkEnabled;
 	public java.lang.String _companyFallbackVirtualHostname;
+	public com.liferay.portal.kernel.util.UnicodeProperties _settingsProperties;
 	public java.lang.String _virtualHostname;
 }

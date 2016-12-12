@@ -342,6 +342,7 @@ public class LayoutSetImpl extends LayoutSetBaseImpl {
 	@CacheField(propagateToInterface = true)
 	private String _companyFallbackVirtualHostname;
 
+	@CacheField(propagateToInterface = true)
 	private UnicodeProperties _settingsProperties;
 
 	@CacheField(propagateToInterface = true)

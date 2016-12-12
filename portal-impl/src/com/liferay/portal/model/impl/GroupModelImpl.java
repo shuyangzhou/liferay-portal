@@ -1114,6 +1114,14 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		return _originalActive;
 	}
 
+	public com.liferay.portal.kernel.util.UnicodeProperties getTypeSettingsProperties() {
+		return null;
+	}
+
+	public void setTypeSettingsProperties(
+		com.liferay.portal.kernel.util.UnicodeProperties typeSettingsProperties) {
+	}
+
 	public long getColumnBitmask() {
 		return _columnBitmask;
 	}
@@ -1355,6 +1363,8 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 		groupModelImpl._setOriginalActive = false;
 
+		setTypeSettingsProperties(null);
+
 		groupModelImpl._columnBitmask = 0;
 	}
 
@@ -1447,6 +1457,8 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		groupCacheModel.inheritContent = getInheritContent();
 
 		groupCacheModel.active = getActive();
+
+		groupCacheModel._typeSettingsProperties = getTypeSettingsProperties();
 
 		return groupCacheModel;
 	}

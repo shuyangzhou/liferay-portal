@@ -297,11 +297,14 @@ public class LayoutCacheModel implements CacheModel<Layout>, Externalizable,
 
 		layoutImpl.resetOriginalValues();
 
+		layoutImpl.setTypeSettingsProperties(_typeSettingsProperties);
+
 		return layoutImpl;
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
 		mvccVersion = objectInput.readLong();
 		uuid = objectInput.readUTF();
 
@@ -343,6 +346,8 @@ public class LayoutCacheModel implements CacheModel<Layout>, Externalizable,
 		layoutPrototypeLinkEnabled = objectInput.readBoolean();
 		sourcePrototypeLayoutUuid = objectInput.readUTF();
 		lastPublishDate = objectInput.readLong();
+
+		_typeSettingsProperties = (com.liferay.portal.kernel.util.UnicodeProperties)objectInput.readObject();
 	}
 
 	@Override
@@ -481,6 +486,8 @@ public class LayoutCacheModel implements CacheModel<Layout>, Externalizable,
 		}
 
 		objectOutput.writeLong(lastPublishDate);
+
+		objectOutput.writeObject(_typeSettingsProperties);
 	}
 
 	public long mvccVersion;
@@ -513,4 +520,5 @@ public class LayoutCacheModel implements CacheModel<Layout>, Externalizable,
 	public boolean layoutPrototypeLinkEnabled;
 	public String sourcePrototypeLayoutUuid;
 	public long lastPublishDate;
+	public com.liferay.portal.kernel.util.UnicodeProperties _typeSettingsProperties;
 }
