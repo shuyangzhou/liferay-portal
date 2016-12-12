@@ -144,6 +144,7 @@ public class PortalPreferencesImplTest {
 
 			Assert.fail();
 		}
+
 		catch (Exception e) {
 			Throwable cause = e.getCause();
 
@@ -413,7 +414,7 @@ public class PortalPreferencesImplTest {
 		FinderCacheUtil.clearLocalCache();
 	}
 
-	protected static class SynchronizedTransactionExecutor
+	protected class SynchronizedTransactionExecutor
 		extends DefaultTransactionExecutor {
 
 		@Override
@@ -466,8 +467,7 @@ public class PortalPreferencesImplTest {
 
 	}
 
-	protected static class SynchronousInvocationHandler
-		implements InvocationHandler {
+	protected class SynchronousInvocationHandler implements InvocationHandler {
 
 		@Override
 		public Object invoke(Object proxy, Method method, Object[] args)
