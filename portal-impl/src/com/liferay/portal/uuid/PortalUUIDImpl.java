@@ -37,10 +37,33 @@ public class PortalUUIDImpl implements PortalUUID {
 
 	@Override
 	public String generate() {
-		UUID uuid = new UUID(
-			SecureRandomUtil.nextLong(), SecureRandomUtil.nextLong());
+		long mostSigBits = SecureRandomUtil.nextLong();
 
-		return uuid.toString();
+		long leastSigBits = SecureRandomUtil.nextLong();
+
+		char[] buffer = new char[16];
+
+		StringBuilder sb = new StringBuilder(36);
+
+		_appendDigits(sb, buffer, mostSigBits >> 32, 8);
+
+		sb.append(CharPool.DASH);
+
+		_appendDigits(sb, buffer, mostSigBits >> 16, 4);
+
+		sb.append(StringPool.DASH);
+
+		_appendDigits(sb, buffer, mostSigBits, 4);
+
+		sb.append(StringPool.DASH);
+
+		_appendDigits(sb, buffer, leastSigBits >> 48, 4);
+
+		sb.append(StringPool.DASH);
+
+		_appendDigits(sb, buffer, leastSigBits, 12);
+
+		return sb.toString();
 	}
 
 	@Override
@@ -53,5 +76,31 @@ public class PortalUUIDImpl implements PortalUUID {
 		return StringUtil.replace(
 			uuid, CharPool.DASH, StringPool.DOUBLE_UNDERLINE);
 	}
+
+	private void _appendDigits(
+		StringBuilder sb, char[] buffer, long val, int digits) {
+
+		long high = 1L << (digits * 4);
+
+		long hex = high | (val & (high - 1));
+
+		int index = 16;
+
+		do {
+			buffer[--index] = _HEX_DIGITS[(int)(hex & 15)];
+
+			hex >>>= 4;
+		}
+		while (hex != 0);
+
+		index++;
+
+		sb.append(buffer, index, 16 - index);
+	}
+
+	private static final char[] _HEX_DIGITS = {
+		'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd',
+		'e', 'f'
+	};
 
 }

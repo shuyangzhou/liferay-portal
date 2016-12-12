@@ -211,6 +211,12 @@ public class SQLTransformer {
 		return _replaceCastText(_castTextPattern.matcher(sql));
 	}
 
+	private String _replaceConcatenate(String sql) {
+		Matcher matcher = _concatPattern.matcher(sql);
+
+		return matcher.replaceAll("$1 + $2");
+	}
+
 	private String _replaceCrossJoin(String sql) {
 		if (_vendorSybase) {
 			return StringUtil.replace(sql, "CROSS JOIN", StringPool.COMMA);
@@ -332,9 +338,11 @@ public class SQLTransformer {
 			newSQL = _replaceNegativeComparison(newSQL);
 		}
 		else if (_vendorSQLServer) {
+			newSQL = _replaceConcatenate(newSQL);
 			newSQL = _replaceMod(newSQL);
 		}
 		else if (_vendorSybase) {
+			newSQL = _replaceConcatenate(newSQL);
 			newSQL = _replaceMod(newSQL);
 			newSQL = _replaceReplace(newSQL);
 		}
@@ -442,6 +450,8 @@ public class SQLTransformer {
 		"CAST_LONG\\((.+?)\\)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern _castTextPattern = Pattern.compile(
 		"CAST_TEXT\\((.+?)\\)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern _concatPattern = Pattern.compile(
+		"CONCAT\\((.+?),(.+?)\\)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern _instrPattern = Pattern.compile(
 		"INSTR\\((.+?),(.+?)\\)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern _integerDivisionPattern = Pattern.compile(
