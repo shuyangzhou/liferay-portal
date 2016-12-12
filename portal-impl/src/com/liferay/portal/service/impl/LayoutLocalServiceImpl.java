@@ -2517,7 +2517,7 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 		validateTypeSettingsProperties(layout, typeSettingsProperties);
 
 		layout.setModifiedDate(now);
-		layout.setTypeSettings(typeSettingsProperties.toString());
+		layout.setTypeSettingsProperties(typeSettingsProperties);
 
 		layoutPersistence.update(layout);
 
