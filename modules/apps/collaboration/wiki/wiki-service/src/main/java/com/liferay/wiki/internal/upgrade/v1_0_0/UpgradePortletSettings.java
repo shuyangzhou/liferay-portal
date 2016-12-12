@@ -15,6 +15,7 @@
 package com.liferay.wiki.internal.upgrade.v1_0_0;
 
 import com.liferay.portal.kernel.settings.SettingsFactory;
+import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.wiki.constants.WikiConstants;
 import com.liferay.wiki.constants.WikiPortletKeys;
@@ -32,8 +33,9 @@ public class UpgradePortletSettings
 	@Override
 	protected void doUpgrade() throws Exception {
 		upgradeDisplayPortlet(
-			WikiPortletKeys.WIKI_DISPLAY, WikiConstants.SERVICE_NAME,
-			PortletKeys.PREFS_OWNER_TYPE_LAYOUT);
+			SettingsFactoryUtil.getSettingsDescriptor(
+				WikiConstants.SERVICE_NAME),
+			WikiPortletKeys.WIKI_DISPLAY, PortletKeys.PREFS_OWNER_TYPE_LAYOUT);
 	}
 
 }
