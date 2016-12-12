@@ -299,8 +299,6 @@ public class LayoutSetImpl extends LayoutSetBaseImpl {
 	@Override
 	public void setSettingsProperties(UnicodeProperties settingsProperties) {
 		_settingsProperties = settingsProperties;
-
-		super.setSettings(_settingsProperties.toString());
 	}
 
 	/**
@@ -342,6 +340,7 @@ public class LayoutSetImpl extends LayoutSetBaseImpl {
 	@CacheField(propagateToInterface = true)
 	private String _companyFallbackVirtualHostname;
 
+	@CacheField(propagateToInterface = true)
 	private UnicodeProperties _settingsProperties;
 
 	@CacheField(propagateToInterface = true)
