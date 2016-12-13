@@ -15,6 +15,8 @@
 package com.liferay.portal.kernel.process;
 
 import com.liferay.portal.kernel.io.PathHolder;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
@@ -43,7 +45,50 @@ public class ProcessConfig implements Serializable {
 	}
 
 	public String getJavaExecutable() {
-		return _javaExecutable;
+		String jHome = System.getenv().get("JAVA_HOME");
+
+		if ((_javaExecutable != null) &&
+			_javaExecutable.contains(File.separator)) {
+
+			return _javaExecutable;
+		}
+
+		if ((jHome != null) && !jHome.isEmpty()) {
+			if (_log.isTraceEnabled()) {
+				_log.trace("The environment variable JAVA_HOME has been set");
+			}
+
+			String fullPath;
+
+			if (jHome.endsWith(File.separator)) {
+				fullPath = jHome + "bin" + File.separator + "java";
+
+				if (_log.isTraceEnabled()) {
+					_log.trace("Java executable is " + fullPath);
+				}
+
+				return fullPath;
+			}
+			else {
+				fullPath =
+					jHome + File.separator + "bin" + File.separator + "java";
+
+				if (_log.isTraceEnabled()) {
+					_log.trace("Java executable is " + fullPath);
+				}
+
+				return fullPath;
+			}
+		}
+		else {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"JAVA_HOME is should be set. Continuing with \"java\" " +
+						"from PATH");
+			}
+
+			return _javaExecutable;
+		}
 	}
 
 	public ClassLoader getReactClassLoader() {
@@ -130,6 +175,8 @@ public class ProcessConfig implements Serializable {
 
 		return classPathHolders;
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(ProcessConfig.class);
 
 	private static final long serialVersionUID = 1L;
 
