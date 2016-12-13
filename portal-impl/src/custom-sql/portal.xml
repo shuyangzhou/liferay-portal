@@ -52,7 +52,7 @@
 				(ResourcePermission.viewActionId = [$TRUE$]) AND
 				(
 					(
-						[$ROLE_IDS_OR_OWNER_ID$] AND
+						[$ROLE_IDS_OR_OWNER_ID$]
 						[$PRIM_KEYS$]
 					)
 					[$GROUP_ADMIN_RESOURCE_PERMISSION$]

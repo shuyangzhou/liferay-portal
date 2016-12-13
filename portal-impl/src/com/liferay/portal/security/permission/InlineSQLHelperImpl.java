@@ -629,12 +629,19 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 			permissionJoin = bridgeJoin.concat(permissionJoin);
 		}
 
+		String roleIdsOrOwnerIdSQL = getRoleIdsOrOwnerIdSQL(
+			permissionChecker, groupIds, userIdField);
+
 		StringBundler primKeysSQL = new StringBundler(
-			2 + (2 * groupIds.length));
+			3 + (2 * groupIds.length));
 
 		StringBundler groupAdminResourcePermissionSB = null;
 
 		if ((groupIds.length > 0) && Validator.isNotNull(groupIdField)) {
+			if (!roleIdsOrOwnerIdSQL.isEmpty()) {
+				primKeysSQL.append(" AND ");
+			}
+
 			if (groupIds.length == 1) {
 				primKeysSQL.append("(ResourcePermission.primKeyId = ");
 				primKeysSQL.append(groupIds[0]);
@@ -694,9 +701,6 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 				}
 			}
 		}
-
-		String roleIdsOrOwnerIdSQL = getRoleIdsOrOwnerIdSQL(
-			permissionChecker, groupIds, userIdField);
 
 		int scope = ResourceConstants.SCOPE_INDIVIDUAL;
 
