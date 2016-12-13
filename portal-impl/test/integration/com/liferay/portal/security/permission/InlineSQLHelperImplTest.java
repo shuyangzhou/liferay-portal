@@ -422,8 +422,6 @@ public class InlineSQLHelperImplTest extends InlineSQLHelperImpl {
 	}
 
 	private void _assertValidSql(String sql) throws Exception {
-		sql = StringUtil.replace(sql, "[$FALSE$]", "null");
-
 		try (Connection connection = DataAccess.getConnection();
 			PreparedStatement ps = connection.prepareStatement(sql)) {
 

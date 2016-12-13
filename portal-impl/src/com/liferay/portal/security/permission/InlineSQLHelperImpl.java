@@ -642,80 +642,82 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 
 		permissionJoin += CustomSQLUtil.get(JOIN_RESOURCE_PERMISSION);
 
-		StringBundler sb = new StringBundler(8);
+		StringBundler primKeysSQL = new StringBundler(
+			2 + (2 * groupIds.length));
 
-		if (Validator.isNotNull(groupIdField) && (groupIds.length > 0)) {
-			sb.append("(ResourcePermission.primKeyId");
+		StringBundler groupAdminResourcePermissionSB = null;
 
-			if (groupIds.length > 1) {
-				sb.append(" IN (");
-				sb.append(StringUtil.merge(groupIds));
-				sb.append(StringPool.CLOSE_PARENTHESIS);
+		if ((groupIds.length > 0) && Validator.isNotNull(groupIdField)) {
+			if (groupIds.length == 1) {
+				primKeysSQL.append("(ResourcePermission.primKeyId = ");
+				primKeysSQL.append(groupIds[0]);
+				primKeysSQL.append(")");
 			}
 			else {
-				sb.append(" = ");
-				sb.append(groupIds[0]);
-			}
+				StringBundler groupIdsSB = new StringBundler(
+					2 * groupIds.length);
 
-			sb.append(")");
-		}
+				primKeysSQL.append("(ResourcePermission.primKeyId IN (");
 
-		StringBundler groupAdminResourcePermissionSB = new StringBundler(3);
+				for (long groupId : groupIds) {
+					if (!isEnabled(0, groupId)) {
+						groupIdsSB.append(groupId);
+						groupIdsSB.append(",");
+					}
 
-		if (Validator.isNotNull(groupIdField) && (groupIds.length > 1)) {
-			boolean groupAdmin = false;
-
-			StringBundler sb1 = new StringBundler(4);
-
-			sb1.append("(ResourcePermission.primKeyId = 0) AND ");
-			sb1.append("(ResourcePermission.roleId = ");
-			sb1.append(permissionChecker.getOwnerRoleId());
-			sb1.append(")");
-
-			StringBundler groupIdsSB = new StringBundler(groupIds.length);
-
-			for (int i = 0; i < groupIds.length; i++) {
-				if (!isEnabled(0, groupIds[i])) {
-					groupIdsSB.append(groupIds[i]);
-					groupIdsSB.append(",");
-
-					groupAdmin = true;
-				}
-			}
-
-			if (groupAdmin) {
-				groupIdsSB.setIndex(groupIdsSB.index() - 1);
-
-				StringBundler sb2 = new StringBundler(4);
-
-				sb2.append("ResourcePermission.primKeyId");
-
-				if (groupIdsSB.toString().contains(",")) {
-					sb2.append(" IN (");
-					sb2.append(groupIdsSB.toString());
-					sb2.append(")");
-				}
-				else {
-					sb2.append(" = ");
-					sb2.append(groupIdsSB.toString());
+					primKeysSQL.append(groupId);
+					primKeysSQL.append(",");
 				}
 
-				groupAdminResourcePermissionSB.append(sb1);
-				groupAdminResourcePermissionSB.append(" OR ");
-				groupAdminResourcePermissionSB.append(sb2);
+				primKeysSQL.setIndex(primKeysSQL.index() - 1);
+
+				primKeysSQL.append("))");
+
+				if (groupIdsSB.index() > 0) {
+					groupIdsSB.setIndex(groupIdsSB.index() - 1);
+
+					groupAdminResourcePermissionSB = new StringBundler(8);
+
+					groupAdminResourcePermissionSB.append(
+						" OR ((ResourcePermission.primKeyId = 0) AND ");
+
+					groupAdminResourcePermissionSB.append(
+						"(ResourcePermission.roleId = ");
+
+					groupAdminResourcePermissionSB.append(
+						permissionChecker.getOwnerRoleId());
+
+					groupAdminResourcePermissionSB.append(
+						") OR ResourcePermission.primKeyId");
+
+					if (groupIdsSB.index() > 1) {
+						groupAdminResourcePermissionSB.append(" IN (");
+						groupAdminResourcePermissionSB.append(
+							groupIdsSB.toString());
+
+						groupAdminResourcePermissionSB.append(")");
+					}
+					else {
+						groupAdminResourcePermissionSB.append(" = ");
+						groupAdminResourcePermissionSB.append(
+							groupIdsSB.toString());
+					}
+
+					groupAdminResourcePermissionSB.append(")");
+				}
 			}
-			else {
-				groupAdminResourcePermissionSB.append("[$FALSE$] <> [$FALSE$]");
-			}
-		}
-		else {
-			groupAdminResourcePermissionSB.append("[$FALSE$] <> [$FALSE$]");
 		}
 
 		String roleIdsOrOwnerIdSQL = getRoleIdsOrOwnerIdSQL(
 			permissionChecker, groupIds, userIdField);
 
 		int scope = ResourceConstants.SCOPE_INDIVIDUAL;
+
+		String groupAdminSQL = StringPool.BLANK;
+
+		if (groupAdminResourcePermissionSB != null) {
+			groupAdminSQL = groupAdminResourcePermissionSB.toString();
+		}
 
 		permissionJoin = StringUtil.replace(
 			permissionJoin,
@@ -725,9 +727,9 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 				"[$RESOURCE_SCOPE_INDIVIDUAL$]", "[$ROLE_IDS_OR_OWNER_ID$]"
 			},
 			new String[] {
-				className, String.valueOf(companyId),
-				groupAdminResourcePermissionSB.toString(), sb.toString(),
-				String.valueOf(scope), roleIdsOrOwnerIdSQL
+				className, String.valueOf(companyId), groupAdminSQL,
+				primKeysSQL.toString(), String.valueOf(scope),
+				roleIdsOrOwnerIdSQL
 			});
 
 		StringBundler sb4 = new StringBundler(6);
