@@ -438,12 +438,16 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 		String[] lastNames, String[] screenNames, String[] emailAddresses,
 		int status, LinkedHashMap<String, Object> params, boolean andOperator) {
 
-		List<Long> userIds = doFindByC_FN_MN_LN_SN_EA_S(
+		List<Long> userCounts = doFindByC_FN_MN_LN_SN_EA_S(
 			companyId, firstNames, middleNames, lastNames, screenNames,
 			emailAddresses, status, params, andOperator, QueryUtil.ALL_POS,
-			QueryUtil.ALL_POS, null);
+			QueryUtil.ALL_POS, null, true);
 
-		return userIds.size();
+		if ((userCounts == null) || userCounts.isEmpty()) {
+			return 0;
+		}
+
+		return userCounts.get(0).intValue();
 	}
 
 	@Override
@@ -661,6 +665,18 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 		String[] lastNames, String[] screenNames, String[] emailAddresses,
 		int status, LinkedHashMap<String, Object> params, boolean andOperator,
 		int start, int end, OrderByComparator<User> obc) {
+
+		return doFindByC_FN_MN_LN_SN_EA_S(
+			companyId, firstNames, middleNames, lastNames, screenNames,
+			emailAddresses, status, params, andOperator, start, end, obc,
+			false);
+	}
+
+	protected List<Long> doFindByC_FN_MN_LN_SN_EA_S(
+		long companyId, String[] firstNames, String[] middleNames,
+		String[] lastNames, String[] screenNames, String[] emailAddresses,
+		int status, LinkedHashMap<String, Object> params, boolean andOperator,
+		int start, int end, OrderByComparator<User> obc, boolean count) {
 
 		firstNames = CustomSQLUtil.keywords(firstNames);
 		middleNames = CustomSQLUtil.keywords(middleNames);
@@ -907,41 +923,114 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 
 			StringBundler sb = new StringBundler(20);
 
+			DB db = getDB();
+
+			boolean sybase = false;
+
+			if (db.getDBType() == DBType.SYBASE) {
+				sybase = true;
+			}
+
+			if (count) {
+				sb.append("SELECT COUNT(userId) AS COUNT_VALUE FROM (");
+			}
+
+			if (count && sybase) {
+				sb.append("SELECT userId FROM ");
+			}
+
 			sb.append(StringPool.OPEN_PARENTHESIS);
 			sb.append(replaceJoinAndWhere(sql, params1));
 			sb.append(StringPool.CLOSE_PARENTHESIS);
 
+			if (count && sybase) {
+				sb.append(" params1");
+			}
+
 			if (params2 != null) {
-				sb.append(" UNION (");
+				if (count && sybase) {
+					sb.append(" UNION SELECT userId FROM (");
+				}
+				else {
+					sb.append(" UNION (");
+				}
+
 				sb.append(replaceJoinAndWhere(sql, params2));
 				sb.append(StringPool.CLOSE_PARENTHESIS);
+
+				if (count && sybase) {
+					sb.append(" params2");
+				}
 			}
 
 			if (params3 != null) {
-				sb.append(" UNION (");
+				if (count && sybase) {
+					sb.append(" UNION SELECT userId FROM (");
+				}
+				else {
+					sb.append(" UNION (");
+				}
+
 				sb.append(replaceJoinAndWhere(sql, params3));
 				sb.append(StringPool.CLOSE_PARENTHESIS);
+
+				if (count && sybase) {
+					sb.append(" params3");
+				}
 			}
 
 			if (params4 != null) {
-				sb.append(" UNION (");
+				if (count && sybase) {
+					sb.append(" UNION SELECT userId FROM (");
+				}
+				else {
+					sb.append(" UNION (");
+				}
+
 				sb.append(replaceJoinAndWhere(sql, params4));
 				sb.append(StringPool.CLOSE_PARENTHESIS);
+
+				if (count && sybase) {
+					sb.append(" params4");
+				}
 			}
 
 			if (params5 != null) {
-				sb.append(" UNION (");
+				if (count && sybase) {
+					sb.append(" UNION SELECT userId FROM (");
+				}
+				else {
+					sb.append(" UNION (");
+				}
+
 				sb.append(replaceJoinAndWhere(sql, params5));
 				sb.append(StringPool.CLOSE_PARENTHESIS);
+
+				if (count && sybase) {
+					sb.append(" params5");
+				}
 			}
 
 			if (params6 != null) {
-				sb.append(" UNION (");
+				if (count && sybase) {
+					sb.append(" UNION SELECT userId FROM (");
+				}
+				else {
+					sb.append(" UNION (");
+				}
+
 				sb.append(replaceJoinAndWhere(sql, params6));
 				sb.append(StringPool.CLOSE_PARENTHESIS);
+
+				if (count && sybase) {
+					sb.append(" params6");
+				}
 			}
 
-			if (obc != null) {
+			if (count) {
+				sb.append(") userId");
+			}
+			else if (obc != null) {
 				sb.append(" ORDER BY ");
 				sb.append(obc.toString());
 			}
@@ -952,7 +1041,12 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 
 			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
-			q.addScalar("userId", Type.LONG);
+			if (count) {
+				q.addScalar("COUNT_VALUE", Type.LONG);
+			}
+			else {
+				q.addScalar("userId", Type.LONG);
+			}
 
 			QueryPos qPos = QueryPos.getInstance(q);
 
