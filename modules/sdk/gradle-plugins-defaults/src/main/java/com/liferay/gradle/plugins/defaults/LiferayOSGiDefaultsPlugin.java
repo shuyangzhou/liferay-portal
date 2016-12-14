@@ -43,12 +43,14 @@ import com.liferay.gradle.plugins.node.tasks.PublishNodeModuleTask;
 import com.liferay.gradle.plugins.patcher.PatchTask;
 import com.liferay.gradle.plugins.service.builder.BuildServiceTask;
 import com.liferay.gradle.plugins.service.builder.ServiceBuilderPlugin;
+import com.liferay.gradle.plugins.source.formatter.SourceFormatterPlugin;
 import com.liferay.gradle.plugins.test.integration.TestIntegrationBasePlugin;
 import com.liferay.gradle.plugins.tlddoc.builder.TLDDocBuilderPlugin;
 import com.liferay.gradle.plugins.tlddoc.builder.tasks.TLDDocTask;
 import com.liferay.gradle.plugins.upgrade.table.builder.UpgradeTableBuilderPlugin;
 import com.liferay.gradle.plugins.util.PortalTools;
 import com.liferay.gradle.plugins.whip.WhipPlugin;
+import com.liferay.gradle.plugins.wsdd.builder.BuildWSDDTask;
 import com.liferay.gradle.plugins.wsdd.builder.WSDDBuilderPlugin;
 import com.liferay.gradle.plugins.wsdl.builder.WSDLBuilderPlugin;
 import com.liferay.gradle.plugins.xsd.builder.XSDBuilderPlugin;
@@ -91,6 +93,9 @@ import java.util.jar.Manifest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import nebula.plugin.extraconfigurations.OptionalBasePlugin;
 import nebula.plugin.extraconfigurations.ProvidedBasePlugin;
 
@@ -131,6 +136,7 @@ import org.gradle.api.file.FileCopyDetails;
 import org.gradle.api.file.FileTree;
 import org.gradle.api.file.SourceDirectorySet;
 import org.gradle.api.internal.GradleInternal;
+import org.gradle.api.internal.artifacts.publish.ArchivePublishArtifact;
 import org.gradle.api.internal.project.ProjectInternal;
 import org.gradle.api.invocation.Gradle;
 import org.gradle.api.logging.Logger;
@@ -179,6 +185,10 @@ import org.gradle.plugins.ide.idea.model.IdeaModule;
 import org.gradle.process.ExecSpec;
 import org.gradle.util.CollectionUtils;
 import org.gradle.util.GUtil;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 /**
  * @author Andrea Di Giorgi
@@ -339,6 +349,9 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 		_configureConfigurations(project);
 		_configureDeployDir(project, deployToAppServerLibs, deployToTools);
 		_configureJavaPlugin(project);
+		_configureLocalPortalTool(
+			project, portalRootDir, SourceFormatterPlugin.CONFIGURATION_NAME,
+			_SOURCE_FORMATTER_PORTAL_TOOL_NAME);
 		_configurePmd(project, portalRootDir);
 		_configureProject(project);
 		configureRepositories(project);
@@ -371,6 +384,17 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 						ServiceBuilderPlugin.CONFIGURATION_NAME,
 						_SERVICE_BUILDER_PORTAL_TOOL_NAME);
 					_configureTaskBuildService(project);
+				}
+
+			});
+
+		GradleUtil.withPlugin(
+			project, WSDDBuilderPlugin.class,
+			new Action<WSDDBuilderPlugin>() {
+
+				@Override
+				public void execute(WSDDBuilderPlugin wsddBuilderPlugin) {
+					_configureTaskBuildWSDD(project);
 				}
 
 			});
@@ -1337,6 +1361,29 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 			artifactHandler.add(
 				Dependency.ARCHIVES_CONFIGURATION, jarTLDDocTask);
 		}
+
+		if (GradleUtil.hasPlugin(project, WSDDBuilderPlugin.class)) {
+			BuildWSDDTask buildWSDDTask = (BuildWSDDTask)GradleUtil.getTask(
+				project, WSDDBuilderPlugin.BUILD_WSDD_TASK_NAME);
+
+			if (buildWSDDTask.getEnabled()) {
+				Task buildWSDDJarTask = GradleUtil.getTask(
+					project, buildWSDDTask.getName() + "Jar");
+
+				artifactHandler.add(
+					Dependency.ARCHIVES_CONFIGURATION, buildWSDDJarTask,
+					new Closure<Void>(project) {
+
+						@SuppressWarnings("unused")
+						public void doCall(
+							ArchivePublishArtifact archivePublishArtifact) {
+
+							archivePublishArtifact.setClassifier("wsdd");
+						}
+
+					});
+			}
+		}
 	}
 
 	private void _configureBasePlugin(Project project, File portalRootDir) {
@@ -1617,6 +1664,21 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 			return;
 		}
 
+		File dir = new File(
+			portalRootDir, "tools/sdk/dependencies/" + portalToolName + "/lib");
+
+		if (!dir.exists()) {
+			Logger logger = project.getLogger();
+
+			if (logger.isWarnEnabled()) {
+				logger.warn(
+					"Unable to find {}, using default version of {}", dir,
+					portalToolName);
+			}
+
+			return;
+		}
+
 		Configuration configuration = GradleUtil.getConfiguration(
 			project, configurationName);
 
@@ -1626,9 +1688,6 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 		args.put("module", portalToolName);
 
 		configuration.exclude(args);
-
-		File dir = new File(
-			portalRootDir, "tools/sdk/dependencies/" + portalToolName + "/lib");
 
 		FileTree fileTree = FileUtil.getJarsFileTree(project, dir);
 
@@ -1944,6 +2003,26 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 				project, ServiceBuilderPlugin.BUILD_SERVICE_TASK_NAME);
 
 		buildServiceTask.setBuildNumberIncrement(false);
+	}
+
+	private void _configureTaskBuildWSDD(Project project) {
+		BuildWSDDTask buildWSDDTask = (BuildWSDDTask)GradleUtil.getTask(
+			project, WSDDBuilderPlugin.BUILD_WSDD_TASK_NAME);
+
+		boolean remoteServices = false;
+
+		try {
+			remoteServices = _hasRemoteServices(buildWSDDTask);
+		}
+		catch (Exception e) {
+			throw new GradleException(
+				"Unable to read " + buildWSDDTask.getInputFile(), e);
+		}
+
+		if (!remoteServices) {
+			buildWSDDTask.setEnabled(false);
+			buildWSDDTask.setFinalizedBy(Collections.emptySet());
+		}
 	}
 
 	private void _configureTaskCompileJSP(Project project) {
@@ -2839,6 +2918,47 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 		return versions;
 	}
 
+	private boolean _hasRemoteServices(BuildWSDDTask buildWSDDTask)
+		throws Exception {
+
+		if (FileUtil.exists(buildWSDDTask.getProject(), "server-config.wsdd")) {
+			return true;
+		}
+
+		File serviceXmlFile = buildWSDDTask.getInputFile();
+
+		if (!serviceXmlFile.exists()) {
+			return false;
+		}
+
+		DocumentBuilderFactory documentBuilderFactory =
+			DocumentBuilderFactory.newInstance();
+
+		DocumentBuilder documentBuilder =
+			documentBuilderFactory.newDocumentBuilder();
+
+		Document document = documentBuilder.parse(serviceXmlFile);
+
+		Element serviceBuilderElement = document.getDocumentElement();
+
+		NodeList entityNodeList = serviceBuilderElement.getElementsByTagName(
+			"entity");
+
+		for (int i = 0; i < entityNodeList.getLength(); i++) {
+			Element entityElement = (Element)entityNodeList.item(i);
+
+			String remoteService = entityElement.getAttribute("remote-service");
+
+			if (Validator.isNull(remoteService) ||
+				Boolean.parseBoolean(remoteService)) {
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	private boolean _hasTests(Project project) {
 		SourceSet sourceSet = GradleUtil.getSourceSet(
 			project, SourceSet.TEST_SOURCE_SET_NAME);
@@ -3119,6 +3239,9 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 
 	private static final String _SERVICE_BUILDER_PORTAL_TOOL_NAME =
 		"com.liferay.portal.tools.service.builder";
+
+	private static final String _SOURCE_FORMATTER_PORTAL_TOOL_NAME =
+		"com.liferay.source.formatter";
 
 	private static final BackupFilesBuildAdapter _backupFilesBuildAdapter =
 		new BackupFilesBuildAdapter();

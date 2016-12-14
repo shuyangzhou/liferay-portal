@@ -838,7 +838,7 @@ public class UserImpl extends UserBaseImpl {
 
 	@Override
 	public boolean isEmailAddressVerificationComplete() {
-		if (isDefaultUser()) {
+		if (isDefaultUser() || isEmailAddressVerified()) {
 			return true;
 		}
 
@@ -855,7 +855,7 @@ public class UserImpl extends UserBaseImpl {
 		}
 
 		if (emailAddressVerificationRequired) {
-			return super.isEmailAddressVerified();
+			return false;
 		}
 
 		return true;
@@ -911,7 +911,7 @@ public class UserImpl extends UserBaseImpl {
 
 	@Override
 	public boolean isTermsOfUseComplete() {
-		if (isDefaultUser()) {
+		if (isDefaultUser() || isAgreedToTermsOfUse()) {
 			return true;
 		}
 
@@ -920,7 +920,7 @@ public class UserImpl extends UserBaseImpl {
 			PropsValues.TERMS_OF_USE_REQUIRED);
 
 		if (termsOfUseRequired) {
-			return super.isAgreedToTermsOfUse();
+			return false;
 		}
 
 		return true;

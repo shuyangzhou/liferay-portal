@@ -31,7 +31,7 @@ import org.osgi.service.component.annotations.Component;
 	service = EditorConfigContributor.class
 )
 public class TinyMCESimpleEditorConfigContributor
-	extends BaseTinyMCEEditorConfigConfigurator {
+	extends BaseTinyMCEEditorConfigContributor {
 
 	@Override
 	public void populateConfigJSONObject(

@@ -29,6 +29,17 @@ String title = BeanParamUtil.getString(wikiPage, request, "title");
 boolean editTitle = ParamUtil.getBoolean(request, "editTitle");
 
 String selectedFormat = BeanParamUtil.getString(wikiPage, request, "format", wikiGroupServiceOverriddenConfiguration.defaultFormat());
+
+Collection<String> formats = wikiEngineRenderer.getFormats();
+
+if (!formats.contains(selectedFormat)) {
+	Iterator<String> iterator = formats.iterator();
+
+	if (iterator.hasNext()) {
+		selectedFormat = iterator.next();
+	}
+}
+
 String parentTitle = BeanParamUtil.getString(wikiPage, request, "parentTitle");
 
 boolean editable = false;
@@ -278,10 +289,6 @@ if (portletTitleBasedNavigation) {
 
 						<aui:input label="Summary" name="summary" />
 
-						<%
-						Collection<String> formats = wikiEngineRenderer.getFormats();
-						%>
-
 						<c:choose>
 							<c:when test="<%= !formats.isEmpty() %>">
 								<aui:select changesContext="<%= true %>" name="format">
@@ -317,16 +324,16 @@ if (portletTitleBasedNavigation) {
 					</aui:fieldset>
 
 					<c:if test="<%= wikiPage != null %>">
-						<liferay-ui:custom-attributes-available className="<%= WikiPage.class.getName() %>">
+						<liferay-expando:custom-attributes-available className="<%= WikiPage.class.getName() %>">
 							<aui:fieldset collapsed="<%= true %>" collapsible="<%= true %>" label="custom-fields">
-								<liferay-ui:custom-attribute-list
+								<liferay-expando:custom-attribute-list
 									className="<%= WikiPage.class.getName() %>"
 									classPK="<%= (templatePage != null) ? templatePage.getPrimaryKey() : wikiPage.getPrimaryKey() %>"
 									editable="<%= true %>"
 									label="<%= true %>"
 								/>
 							</aui:fieldset>
-						</liferay-ui:custom-attributes-available>
+						</liferay-expando:custom-attributes-available>
 					</c:if>
 
 					<c:if test="<%= (wikiPage == null) || wikiPage.isNew() %>">

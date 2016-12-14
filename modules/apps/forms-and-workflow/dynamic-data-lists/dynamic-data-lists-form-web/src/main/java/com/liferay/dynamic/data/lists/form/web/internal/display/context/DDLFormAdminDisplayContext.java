@@ -252,12 +252,11 @@ public class DDLFormAdminDisplayContext {
 	}
 
 	public String getOrderByCol() {
-		return ParamUtil.getString(
-			_renderRequest, "orderByCol", "modified-date");
+		return ParamUtil.getString(_renderRequest, "orderByCol", "create-date");
 	}
 
 	public String getOrderByType() {
-		return ParamUtil.getString(_renderRequest, "orderByType", "asc");
+		return ParamUtil.getString(_renderRequest, "orderByType", "desc");
 	}
 
 	public PortletURL getPortletURL() {
@@ -435,6 +434,10 @@ public class DDLFormAdminDisplayContext {
 			_ddlFormAdminRequestHelper.getPermissionChecker(),
 			_ddlFormAdminRequestHelper.getScopeGroupId(),
 			DDLActionKeys.ADD_RECORD_SET);
+	}
+
+	public boolean isShowCopyRecordSetButton() {
+		return isShowAddRecordSetButton();
 	}
 
 	public boolean isShowDeleteRecordSetIcon(DDLRecordSet recordSet) {

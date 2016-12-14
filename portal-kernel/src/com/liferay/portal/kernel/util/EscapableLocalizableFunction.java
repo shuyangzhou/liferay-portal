@@ -16,7 +16,9 @@ package com.liferay.portal.kernel.util;
 
 import java.io.Serializable;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * @author Roberto Díaz
@@ -35,16 +37,16 @@ public class EscapableLocalizableFunction implements Serializable {
 	}
 
 	public String getEscapedValue(Locale locale) {
-		if (_escapedValue == null) {
+		if (Validator.isNull(_escapedValueMap.get(locale))) {
 			if (_escape) {
-				_escapedValue = escape(locale);
+				_escapedValueMap.put(locale, escape(locale));
 			}
 			else {
-				_escapedValue = String.valueOf(_function);
+				_escapedValueMap.put(locale, getOriginalValue(locale));
 			}
 		}
 
-		return _escapedValue;
+		return _escapedValueMap.get(locale);
 	}
 
 	public String getOriginalValue(Locale locale) {
@@ -56,7 +58,7 @@ public class EscapableLocalizableFunction implements Serializable {
 	}
 
 	private final boolean _escape;
-	private String _escapedValue;
+	private final Map<Locale, String> _escapedValueMap = new HashMap<>();
 	private final Function<Locale, String> _function;
 
 }

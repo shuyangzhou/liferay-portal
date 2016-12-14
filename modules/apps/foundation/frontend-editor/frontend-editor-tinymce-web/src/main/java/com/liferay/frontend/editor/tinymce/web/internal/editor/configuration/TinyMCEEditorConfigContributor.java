@@ -44,7 +44,7 @@ import org.osgi.service.component.annotations.Reference;
 	property = {"editor.name=tinymce"}, service = EditorConfigContributor.class
 )
 public class TinyMCEEditorConfigContributor
-	extends BaseTinyMCEEditorConfigConfigurator {
+	extends BaseTinyMCEEditorConfigContributor {
 
 	@Override
 	public void populateConfigJSONObject(

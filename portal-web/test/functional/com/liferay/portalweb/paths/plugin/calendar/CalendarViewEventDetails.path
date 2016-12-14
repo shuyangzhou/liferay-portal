@@ -285,7 +285,7 @@
 <!--REPEAT_SUMMARY-->
 <tr>
 	<td>REPEAT_OCCURRENCE_SUMMARY</td>
-	<td>//dl[contains(@class,'property-list')]/dd[4]</td>
+	<td>//dl[contains(@class,'property-list')]/dd[5]</td>
 	<td></td>
 </tr>
 <tr>
