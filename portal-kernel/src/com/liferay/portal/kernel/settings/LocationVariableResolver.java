@@ -135,17 +135,11 @@ public class LocationVariableResolver {
 				"Invalid server property location " + location);
 		}
 
-		String serviceName = location.substring(0, i);
-
-		Settings portalPropertiesSettings =
-			_settingsLocatorHelper.getPortalPropertiesSettings();
-
 		Settings settings = _settingsLocatorHelper.getConfigurationBeanSettings(
-			serviceName, portalPropertiesSettings);
+			location.substring(0, i),
+			_settingsLocatorHelper.getPortalPropertiesSettings());
 
-		String property = location.substring(i + 1);
-
-		return settings.getValue(property, null);
+		return settings.getValue(location.substring(i + 1), null);
 	}
 
 	private static final String _LOCATION_VARIABLE_END = "}";
