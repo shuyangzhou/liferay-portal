@@ -37,8 +37,8 @@ public class PortletInstance {
 		String portletInstanceKey) {
 
 		return new PortletInstance(
-			_getPortletName(portletInstanceKey), _getUserId(portletInstanceKey),
-			_getInstanceId(portletInstanceKey));
+			getPortletName(portletInstanceKey), getUserId(portletInstanceKey),
+			getInstanceId(portletInstanceKey));
 	}
 
 	public static PortletInstance fromPortletNameAndUserIdAndInstanceId(
@@ -50,6 +50,48 @@ public class PortletInstance {
 		return new PortletInstance(
 			portletName, userIdAndInstanceIdEncoder.getUserId(),
 			userIdAndInstanceIdEncoder.getInstanceId());
+	}
+
+	public static String getInstanceId(String portletInstanceKey) {
+		int index = portletInstanceKey.indexOf(_INSTANCE_SEPARATOR);
+
+		if (index == -1) {
+			return null;
+		}
+
+		return portletInstanceKey.substring(
+			index + _INSTANCE_SEPARATOR.length());
+	}
+
+	public static String getPortletName(String portletInstanceKey) {
+		int x = portletInstanceKey.indexOf(_USER_SEPARATOR);
+		int y = portletInstanceKey.indexOf(_INSTANCE_SEPARATOR);
+
+		if ((x == -1) && (y == -1)) {
+			return portletInstanceKey;
+		}
+		else if (x != -1) {
+			return portletInstanceKey.substring(0, x);
+		}
+
+		return portletInstanceKey.substring(0, y);
+	}
+
+	public static long getUserId(String portletInstanceKey) {
+		int x = portletInstanceKey.indexOf(_USER_SEPARATOR);
+		int y = portletInstanceKey.indexOf(_INSTANCE_SEPARATOR);
+
+		if (x == -1) {
+			return 0;
+		}
+
+		if (y != -1) {
+			return GetterUtil.getLong(
+				portletInstanceKey.substring(x + _USER_SEPARATOR.length(), y));
+		}
+
+		return GetterUtil.getLong(
+			portletInstanceKey.substring(x + _USER_SEPARATOR.length()));
 	}
 
 	public PortletInstance(String portletName) {
@@ -181,48 +223,6 @@ public class PortletInstance {
 		}
 
 		return new UserIdAndInstanceIdEncoder(0, userIdAndInstanceId);
-	}
-
-	private static String _getInstanceId(String portletInstanceKey) {
-		int index = portletInstanceKey.indexOf(_INSTANCE_SEPARATOR);
-
-		if (index == -1) {
-			return null;
-		}
-
-		return portletInstanceKey.substring(
-			index + _INSTANCE_SEPARATOR.length());
-	}
-
-	private static String _getPortletName(String portletInstanceKey) {
-		int x = portletInstanceKey.indexOf(_USER_SEPARATOR);
-		int y = portletInstanceKey.indexOf(_INSTANCE_SEPARATOR);
-
-		if ((x == -1) && (y == -1)) {
-			return portletInstanceKey;
-		}
-		else if (x != -1) {
-			return portletInstanceKey.substring(0, x);
-		}
-
-		return portletInstanceKey.substring(0, y);
-	}
-
-	private static long _getUserId(String portletInstanceKey) {
-		int x = portletInstanceKey.indexOf(_USER_SEPARATOR);
-		int y = portletInstanceKey.indexOf(_INSTANCE_SEPARATOR);
-
-		if (x == -1) {
-			return 0;
-		}
-
-		if (y != -1) {
-			return GetterUtil.getLong(
-				portletInstanceKey.substring(x + _USER_SEPARATOR.length(), y));
-		}
-
-		return GetterUtil.getLong(
-			portletInstanceKey.substring(x + _USER_SEPARATOR.length()));
 	}
 
 	private void _validatePortletName(String portletName) {
