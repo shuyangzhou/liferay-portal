@@ -144,8 +144,10 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 		long companyId, long ownerId, int ownerType, long plid,
 		String portletId) {
 
-		if (PortletConstants.hasUserId(portletId)) {
-			ownerId = PortletConstants.getUserId(portletId);
+		long userId = PortletConstants.getUserId(portletId);
+
+		if (userId > 0) {
+			ownerId = userId;
 			ownerType = PortletKeys.PREFS_OWNER_TYPE_USER;
 		}
 

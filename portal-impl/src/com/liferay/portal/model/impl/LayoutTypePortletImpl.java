@@ -1708,15 +1708,13 @@ public class LayoutTypePortletImpl
 				_log.error(se, se);
 			}
 
-			if (PortletConstants.hasInstanceId(portletId) ||
-				preferencesUniquePerLayout) {
+			String instanceId = null;
 
-				String instanceId = null;
+			if (PortletConstants.hasInstanceId(portletId)) {
+				instanceId = PortletConstants.generateInstanceId();
+			}
 
-				if (PortletConstants.hasInstanceId(portletId)) {
-					instanceId = PortletConstants.generateInstanceId();
-				}
-
+			if ((instanceId != null) || preferencesUniquePerLayout) {
 				newPortletId = PortletConstants.assemblePortletId(
 					portletId, _portalPreferences.getUserId(), instanceId);
 

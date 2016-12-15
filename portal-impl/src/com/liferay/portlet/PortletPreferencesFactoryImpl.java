@@ -257,8 +257,10 @@ public class PortletPreferencesFactoryImpl
 		long ownerId = PortletKeys.PREFS_OWNER_ID_DEFAULT;
 		int ownerType = PortletKeys.PREFS_OWNER_TYPE_LAYOUT;
 
-		if (PortletConstants.hasUserId(portletId)) {
-			ownerId = PortletConstants.getUserId(portletId);
+		long userId = PortletConstants.getUserId(portletId);
+
+		if (userId > 0) {
+			ownerId = userId;
 			ownerType = PortletKeys.PREFS_OWNER_TYPE_USER;
 		}
 
@@ -457,9 +459,9 @@ public class PortletPreferencesFactoryImpl
 			}
 		}
 
-		if (PortletConstants.hasUserId(originalPortletId) &&
-			(PortletConstants.getUserId(originalPortletId) == userId)) {
+		long portletUserId = PortletConstants.getUserId(originalPortletId);
 
+		if ((portletUserId > 0) && (portletUserId == userId)) {
 			ownerId = userId;
 			ownerType = PortletKeys.PREFS_OWNER_TYPE_USER;
 			plid = layout.getPlid();
@@ -549,8 +551,10 @@ public class PortletPreferencesFactoryImpl
 			ownerId = PortletKeys.PREFS_OWNER_ID_DEFAULT;
 			ownerType = PortletKeys.PREFS_OWNER_TYPE_LAYOUT;
 
-			if (PortletConstants.hasUserId(portletId)) {
-				ownerId = PortletConstants.getUserId(portletId);
+			long userId = PortletConstants.getUserId(portletId);
+
+			if (userId > 0) {
+				ownerId = userId;
 				ownerType = PortletKeys.PREFS_OWNER_TYPE_USER;
 			}
 		}
@@ -689,8 +693,10 @@ public class PortletPreferencesFactoryImpl
 		long ownerId = PortletKeys.PREFS_OWNER_ID_DEFAULT;
 		int ownerType = PortletKeys.PREFS_OWNER_TYPE_LAYOUT;
 
-		if (PortletConstants.hasUserId(portletId)) {
-			ownerId = PortletConstants.getUserId(portletId);
+		long userId = PortletConstants.getUserId(portletId);
+
+		if (userId > 0) {
+			ownerId = userId;
 			ownerType = PortletKeys.PREFS_OWNER_TYPE_USER;
 		}
 
@@ -850,8 +856,10 @@ public class PortletPreferencesFactoryImpl
 			plid = group.getClassPK();
 		}
 
-		if (PortletConstants.hasUserId(originalPortletId)) {
-			ownerId = PortletConstants.getUserId(originalPortletId);
+		long userId = PortletConstants.getUserId(portletId);
+
+		if (userId > 0) {
+			ownerId = userId;
 			ownerType = PortletKeys.PREFS_OWNER_TYPE_USER;
 		}
 		else if (!uniquePerLayout) {

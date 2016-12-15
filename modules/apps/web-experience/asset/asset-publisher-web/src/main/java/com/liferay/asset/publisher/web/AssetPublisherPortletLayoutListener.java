@@ -76,7 +76,9 @@ public class AssetPublisherPortletLayoutListener
 			long ownerId = PortletKeys.PREFS_OWNER_ID_DEFAULT;
 			int ownerType = PortletKeys.PREFS_OWNER_TYPE_LAYOUT;
 
-			if (PortletConstants.hasUserId(portletId)) {
+			long userId = PortletConstants.getUserId(portletId);
+
+			if (userId > 0) {
 				ownerType = PortletKeys.PREFS_OWNER_TYPE_USER;
 				ownerId = PortletConstants.getUserId(portletId);
 			}
