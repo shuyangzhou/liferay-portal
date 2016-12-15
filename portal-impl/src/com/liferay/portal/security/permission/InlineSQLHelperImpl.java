@@ -632,73 +632,28 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 		String roleIdsOrOwnerIdSQL = getRoleIdsOrOwnerIdSQL(
 			permissionChecker, groupIds, userIdField);
 
-		StringBundler primKeysSQL = new StringBundler(
-			3 + (2 * groupIds.length));
-
 		StringBundler groupAdminResourcePermissionSB = null;
 
-		if ((groupIds.length > 0) && Validator.isNotNull(groupIdField)) {
-			if (!roleIdsOrOwnerIdSQL.isEmpty()) {
-				primKeysSQL.append(" AND ");
-			}
+		for (long groupId : groupIds) {
+			if (!isEnabled(0, groupId)) {
+				groupAdminResourcePermissionSB = new StringBundler(5);
 
-			if (groupIds.length == 1) {
-				primKeysSQL.append("(ResourcePermission.primKeyId = ");
-				primKeysSQL.append(groupIds[0]);
-				primKeysSQL.append(")");
-			}
-			else {
-				StringBundler groupIdsSB = new StringBundler(
-					2 * groupIds.length);
-
-				primKeysSQL.append("(ResourcePermission.primKeyId IN (");
-
-				for (long groupId : groupIds) {
-					if (!isEnabled(0, groupId)) {
-						groupIdsSB.append(groupId);
-						groupIdsSB.append(",");
-					}
-
-					primKeysSQL.append(groupId);
-					primKeysSQL.append(",");
+				if (!roleIdsOrOwnerIdSQL.isEmpty()) {
+					groupAdminResourcePermissionSB.append(" OR ");
 				}
 
-				primKeysSQL.setIndex(primKeysSQL.index() - 1);
+				groupAdminResourcePermissionSB.append(
+					"((ResourcePermission.primKeyId = 0) AND ");
 
-				primKeysSQL.append("))");
+				groupAdminResourcePermissionSB.append(
+					"(ResourcePermission.roleId = ");
 
-				if (groupIdsSB.index() > 0) {
-					groupIdsSB.setIndex(groupIdsSB.index() - 1);
+				groupAdminResourcePermissionSB.append(
+					permissionChecker.getOwnerRoleId());
 
-					groupAdminResourcePermissionSB = new StringBundler(8);
+				groupAdminResourcePermissionSB.append("))");
 
-					groupAdminResourcePermissionSB.append(
-						" OR ((ResourcePermission.primKeyId = 0) AND ");
-
-					groupAdminResourcePermissionSB.append(
-						"(ResourcePermission.roleId = ");
-
-					groupAdminResourcePermissionSB.append(
-						permissionChecker.getOwnerRoleId());
-
-					groupAdminResourcePermissionSB.append(
-						") OR ResourcePermission.primKeyId");
-
-					if (groupIdsSB.index() > 1) {
-						groupAdminResourcePermissionSB.append(" IN (");
-						groupAdminResourcePermissionSB.append(
-							groupIdsSB.toString());
-
-						groupAdminResourcePermissionSB.append(")");
-					}
-					else {
-						groupAdminResourcePermissionSB.append(" = ");
-						groupAdminResourcePermissionSB.append(
-							groupIdsSB.toString());
-					}
-
-					groupAdminResourcePermissionSB.append(")");
-				}
+				break;
 			}
 		}
 
@@ -714,13 +669,12 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 			permissionJoin,
 			new String[] {
 				"[$CLASS_NAME$]", "[$COMPANY_ID$]",
-				"[$GROUP_ADMIN_RESOURCE_PERMISSION$]", "[$PRIM_KEYS$]",
+				"[$GROUP_ADMIN_RESOURCE_PERMISSION$]",
 				"[$RESOURCE_SCOPE_INDIVIDUAL$]", "[$ROLE_IDS_OR_OWNER_ID$]"
 			},
 			new String[] {
 				className, String.valueOf(companyId), groupAdminSQL,
-				primKeysSQL.toString(), String.valueOf(scope),
-				roleIdsOrOwnerIdSQL
+				String.valueOf(scope), roleIdsOrOwnerIdSQL
 			});
 
 		StringBundler sb = new StringBundler(8);
