@@ -136,12 +136,6 @@ public class ThemeContributorExtension implements Extension {
 	private class ThemeContributorPortalWebResources
 		implements PortalWebResources {
 
-		public ThemeContributorPortalWebResources(
-			ServletContext servletContext) {
-
-			_servletContext = servletContext;
-		}
-
 		@Override
 		public String getContextPath() {
 			return _servletContext.getContextPath();
@@ -160,6 +154,12 @@ public class ThemeContributorExtension implements Extension {
 		@Override
 		public ServletContext getServletContext() {
 			return _servletContext;
+		}
+
+		private ThemeContributorPortalWebResources(
+			ServletContext servletContext) {
+
+			_servletContext = servletContext;
 		}
 
 		private final ServletContext _servletContext;
