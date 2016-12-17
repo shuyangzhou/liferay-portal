@@ -162,11 +162,7 @@ public class ThemeContributorExtension implements Extension {
 			return _servletContext;
 		}
 
-		protected void setServletContext(ServletContext servletContext) {
-			_servletContext = servletContext;
-		}
-
-		private volatile ServletContext _servletContext;
+		private final ServletContext _servletContext;
 
 	}
 
