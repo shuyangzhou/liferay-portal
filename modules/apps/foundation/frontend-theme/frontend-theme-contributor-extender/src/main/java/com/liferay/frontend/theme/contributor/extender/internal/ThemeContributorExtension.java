@@ -81,16 +81,16 @@ public class ThemeContributorExtension implements Extension {
 					ServletContext servletContext = bundleContext.getService(
 						serviceReference);
 
+					PortalWebResources portalWebResources =
+						new ThemeContributorPortalWebResources(servletContext);
+
 					serviceRegistrations.add(
 						bundleContext.registerService(
 							PortalWebResources.class.getName(),
-							new ThemeContributorPortalWebResources(
-								servletContext),
-							null));
+							portalWebResources, null));
 
-					String contextPath = servletContext.getContextPath();
-
-					_bundleWebResources.setServletContextPath(contextPath);
+					_bundleWebResources.setServletContextPath(
+						portalWebResources.getContextPath());
 
 					serviceRegistrations.add(
 						bundleContext.registerService(
