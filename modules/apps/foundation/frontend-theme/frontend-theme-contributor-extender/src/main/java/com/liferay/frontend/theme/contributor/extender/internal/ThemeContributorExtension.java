@@ -138,7 +138,7 @@ public class ThemeContributorExtension implements Extension {
 
 		@Override
 		public String getContextPath() {
-			return _servletContext.getContextPath();
+			return _contextPath;
 		}
 
 		@Override
@@ -160,8 +160,10 @@ public class ThemeContributorExtension implements Extension {
 			ServletContext servletContext) {
 
 			_servletContext = servletContext;
+			_contextPath = servletContext.getContextPath();
 		}
 
+		private final String _contextPath;
 		private final ServletContext _servletContext;
 
 	}
