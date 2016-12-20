@@ -55,7 +55,9 @@ public class JSLoaderModulesPortalWebResources {
 	protected void setJSLoaderModulesServlet(
 		JSLoaderModulesServlet jsLoaderModulesServlet) {
 
-		_jsLoaderModulesServlet = jsLoaderModulesServlet;
+		_servletContext = jsLoaderModulesServlet.getServletContext();
+
+		_contextPath = _servletContext.getContextPath();
 	}
 
 	@Reference(unbind = "-")
@@ -65,9 +67,10 @@ public class JSLoaderModulesPortalWebResources {
 		_jsLoaderModulesTracker = jsLoaderModulesTracker;
 	}
 
-	private JSLoaderModulesServlet _jsLoaderModulesServlet;
+	private String _contextPath;
 	private JSLoaderModulesTracker _jsLoaderModulesTracker;
 	private ServiceRegistration<?> _serviceRegistration;
+	private ServletContext _servletContext;
 
 	private class InternalPortalWebResources
 		implements com.liferay.portal.kernel.servlet.PortalWebResources {
