@@ -17,6 +17,8 @@ package com.liferay.taglib.aui;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.taglib.aui.base.BaseFieldsetGroupTag;
 
+import javax.servlet.jsp.JspWriter;
+
 /**
  * @author Eduardo Lundgren
  * @author Bruno Basto
@@ -43,6 +45,15 @@ public class FieldsetGroupTag extends BaseFieldsetGroupTag {
 		}
 
 		return "/html/taglib/aui/fieldset_group/start.jsp";
+	}
+
+	@Override
+	protected int processEndTag() throws Exception {
+		JspWriter jspWriter = pageContext.getOut();
+
+		jspWriter.write("</div></div>");
+
+		return EVAL_PAGE;
 	}
 
 }

@@ -24,6 +24,7 @@ import javax.portlet.PortletResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.JspWriter;
 
 /**
  * @author Julio Camarero
@@ -67,6 +68,15 @@ public class FieldsetTag extends BaseFieldsetTag {
 	@Override
 	protected boolean isCleanUpSetAttributes() {
 		return _CLEAN_UP_SET_ATTRIBUTES;
+	}
+
+	@Override
+	protected int processEndTag() throws Exception {
+		JspWriter jspWriter = pageContext.getOut();
+
+		jspWriter.write("</div></fieldset>");
+
+		return EVAL_PAGE;
 	}
 
 	@Override

@@ -27,6 +27,7 @@ import javax.portlet.PortletResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.JspWriter;
 
 /**
  * @author Eduardo Lundgren
@@ -99,6 +100,15 @@ public class NavBarSearchTag extends BaseNavBarSearchTag {
 		}
 
 		return "/html/taglib/aui/nav_bar_search/start.jsp";
+	}
+
+	@Override
+	protected int processEndTag() throws Exception {
+		JspWriter jspWriter = pageContext.getOut();
+
+		jspWriter.write("</div></div>");
+
+		return EVAL_PAGE;
 	}
 
 	@Override
