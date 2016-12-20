@@ -2554,7 +2554,7 @@ Export-Package: com.liferay.ibm.icu;version="4.0.1",com.liferay.ibm.ic
  .0";uses:="com.liferay.portal.kernel.json,com.liferay.portal.kernel.l
  icense",com.liferay.portal.kernel.lock;version="7.0.0";uses:="com.lif
  eray.portal.kernel.exception",com.liferay.portal.kernel.log;version="
- 7.0.0",com.liferay.portal.kernel.lpkg;version="1.0.0",com.liferay.por
+ 7.1.0",com.liferay.portal.kernel.lpkg;version="1.0.0",com.liferay.por
  tal.kernel.management;version="7.0.0";uses:="com.liferay.portal.kerne
  l.cluster,com.liferay.portal.kernel.exception,com.liferay.portal.kern
  el.model,com.liferay.portal.kernel.util",com.liferay.portal.kernel.ma
